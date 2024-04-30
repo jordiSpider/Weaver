@@ -2,7 +2,6 @@
 
 from typing import List, Any
 from abc import ABC, abstractmethod
-import re
 
 from Config import Config, Folder, JsonFile
 
@@ -104,19 +103,9 @@ class SetValueJsonItemChange(Change):
         for json_content in json_content_list:
             root_item = json_content
             for elem in root_item_path:
-                matches = re.search("item_(\d+)", elem)
+                root_item = root_item[elem]
 
-                if(matches):
-                    root_item = root_item[int(matches.group(1))]
-                else:
-                    root_item = root_item[elem]
-
-            matches = re.search("item_(\d+)", item_name)
-
-            if(matches):
-                root_item[int(matches.group(1))] = self._item_value
-            else:
-                root_item[item_name] = self._item_value
+            root_item[item_name] = self._item_value
 
 
 class MoveFolderChange(Change):

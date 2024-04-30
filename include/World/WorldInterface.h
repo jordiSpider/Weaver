@@ -20,7 +20,6 @@ public:
 	virtual ~WorldInterface();
 
     virtual void initializeAnimals()=0;
-    virtual void saveOptimizationResult(fs::path resultFolder)=0;
     virtual void evolveWorld()=0;
     virtual double getMassRatio() const=0;
     virtual void addAppliedMoisture(MoisturePatch &moisturePatch)=0;

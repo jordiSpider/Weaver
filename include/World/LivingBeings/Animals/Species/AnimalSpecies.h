@@ -135,6 +135,7 @@ private:
 	static id_type animalSpeciesCounter;
 
 	const id_type animalSpeciesId;
+	bool extinguished;
 	const HuntingMode defaultHuntingMode;
 
 	InstarVector<std::vector<std::unordered_map<Species*, std::vector<Instar>>>> edibleSpecies;
@@ -491,8 +492,8 @@ public:
 	virtual const unsigned int& getStatisticsIndividualsPerInstar() const { return statisticsIndividualsPerInstar; };
 	virtual unsigned int getTotalInitialPopulation() const;
 	virtual unsigned int getTotalStatisticsInitialPopulation();
-	
-	
+	virtual bool isExtinguished() const { return extinguished; };
+	virtual void setExtinguished(bool extinguished) { this->extinguished = extinguished; };
 	virtual const std::vector<int>& getPredationEventsOnOtherSpecies() const;
 	virtual const HuntingMode& getDefaultHuntingMode() const { return defaultHuntingMode; };
 

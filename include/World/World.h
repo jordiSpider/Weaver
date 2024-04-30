@@ -54,10 +54,6 @@ private:
 	double currentMovePercentage;
 	unsigned int currentNumberOfTerrainCellsMoved;
 
-	const int burnIn;
-
-	std::vector<std::pair<double, double>> speciesAmplitude;
-
 
 	/**
      * @name Patches
@@ -89,8 +85,6 @@ private:
 		const AnimalSpecies* const predatorSpecies, const std::vector<InstarVector<std::vector<AnimalInterface*>>> &animalsPopulation
 	) const;
 
-	const int getBurnIn() const;
-
 protected:
 	void calculateTotalNumberOfOntogeneticLinks();
 
@@ -112,7 +106,7 @@ public:
 	World(std::string filesNameRoot);
 
 	// Create a new, empty world
-    World(json * jsonTree, json &worldConfig, fs::path outputFolder, fs::path WeaverFolder, fs::path configPath, int burnIn, const double &massRatio);
+    World(json * jsonTree, json &worldConfig, fs::path outputFolder, fs::path WeaverFolder, fs::path configPath, const double &massRatio);
 	virtual ~World(); // Destructor
 
 	void calculateAttackStatistics(std::vector<InstarVector<std::vector<std::vector<TerrainCellInterface*>::iterator>>> &mapSpeciesInhabitableTerrainCells);
@@ -121,8 +115,6 @@ public:
 	void initializeAnimals();
 
 	void evolveWorld();
-
-	void saveOptimizationResult(fs::path resultFolder);
 
 	void increaseMovePrintBar();
 
@@ -416,7 +408,7 @@ protected:
 	void saveResourceSpeciesSnapshot(fs::path filenameRoot, std::string filename, int day, ResourceSpecies* species);
 	void saveWaterSnapshot(fs::path filenameRoot, std::string filename, int day);
 	//void deleteExtinguishedReproducingAnimals();
-	bool isExtinguished(int day);
+	bool isExtinguished();
 
 	fs::path outputFolder;
 	fs::path inputFolder;

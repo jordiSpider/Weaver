@@ -68,18 +68,18 @@ std::string_view WorldFactory::Type::printAvailableValues()
 
 
 
-unique_ptr<WorldInterface> WorldFactory::createInstance(json* jsonTree, json &worldConfig, fs::path outputFolder, fs::path WeaverFolder, fs::path configPath, int burnIn) {
+unique_ptr<WorldInterface> WorldFactory::createInstance(json* jsonTree, json &worldConfig, fs::path outputFolder, fs::path WeaverFolder, fs::path configPath) {
     switch(Type::stringToEnumValue(worldConfig["world"]["simulationType"])) {
         case Type::Arthropods: {
-            return make_unique<ArthropodsWorld>(jsonTree, worldConfig, outputFolder, WeaverFolder, configPath, burnIn);
+            return make_unique<ArthropodsWorld>(jsonTree, worldConfig, outputFolder, WeaverFolder, configPath);
             break;
         }
         case Type::Dinosaurs: {
-            return make_unique<DinosaursWorld>(jsonTree, worldConfig, outputFolder, WeaverFolder, configPath, burnIn);
+            return make_unique<DinosaursWorld>(jsonTree, worldConfig, outputFolder, WeaverFolder, configPath);
             break;
         }
 		case Type::Aquatic: {
-            return make_unique<AquaticWorld>(jsonTree, worldConfig, outputFolder, WeaverFolder, configPath, burnIn);
+            return make_unique<AquaticWorld>(jsonTree, worldConfig, outputFolder, WeaverFolder, configPath);
             break;
         }
         default: {

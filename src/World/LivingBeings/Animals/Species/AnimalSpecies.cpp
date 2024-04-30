@@ -103,7 +103,7 @@ const id_type& AnimalSpecies::getAnimalSpeciesCounter()
 
 AnimalSpecies::AnimalSpecies(const json &info, bool initIndividualsPerDensities, WorldInterface* const worldInterface) 
 	: Species(info["name"], info["individualsPerInstar"].size()), 
-	  animalSpeciesId(animalSpeciesCounter++), 
+	  animalSpeciesId(animalSpeciesCounter++), extinguished(false), 
 	  defaultHuntingMode(info["defaultHuntingMode"]), 
 	  edibleSpecies(getNumberOfInstars(), vector<unordered_map<Species*, vector<Instar>>>(Species::Type::size())),
 	  edibleSearchParams(getNumberOfInstars()), 

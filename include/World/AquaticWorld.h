@@ -10,7 +10,7 @@
 
 class AquaticWorld : public World {
 public:
-    AquaticWorld(nlohmann::json * jsonTree, nlohmann::json &worldConfig, fs::path outputFolder, fs::path WeaverFolder, fs::path configPath, int burnIn);
+    AquaticWorld(nlohmann::json * jsonTree, nlohmann::json &worldConfig, fs::path outputFolder, fs::path WeaverFolder, fs::path configPath);
 	virtual ~AquaticWorld();
 
     double calculateNewBiomass(const double &biomass, const double &rateOfIncrease, const ResourceSpecies* const species) const;

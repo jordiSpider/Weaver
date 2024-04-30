@@ -6,8 +6,8 @@ using json = nlohmann::json;
 
 
 
-DinosaursWorld::DinosaursWorld(json * jsonTree, json &worldConfig, fs::path outputFolder, fs::path WeaverFolder, fs::path configPath, int burnIn)
-    : World(jsonTree, worldConfig, outputFolder, WeaverFolder, configPath, burnIn, 1000.0)
+DinosaursWorld::DinosaursWorld(json * jsonTree, json &worldConfig, fs::path outputFolder, fs::path WeaverFolder, fs::path configPath)
+    : World(jsonTree, worldConfig, outputFolder, WeaverFolder, configPath, 1000.0)
 {
 
 }

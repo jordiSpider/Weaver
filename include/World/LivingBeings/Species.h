@@ -35,8 +35,6 @@ private:
 	const std::string scientificName;
 	float conversionToWetMass;
 
-	bool extinguished;
-
 protected:
 	explicit Species(const std::string& scientificName, const unsigned int numberOfInstars);
 	virtual ~Species();
@@ -87,9 +85,6 @@ public:
 	void setInstarK_Density(const Instar &instar, const double &newK_Density);
 	double convertToWetMass(const double &dryMass) const;
 	double convertToDryMass(const double &wetMass) const;
-
-	virtual bool isExtinguished() const { return extinguished; };
-	virtual void setExtinguished(bool extinguished) { this->extinguished = extinguished; };
 
 	const unsigned int& getNumberOfInstars() const;
 	const std::vector<Instar>& getInstarsRange() const;

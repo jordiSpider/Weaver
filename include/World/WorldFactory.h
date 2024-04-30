@@ -42,7 +42,7 @@ public:
     };
 
 
-	static std::unique_ptr<WorldInterface> createInstance(nlohmann::json* jsonTree, nlohmann::json &worldConfig, fs::path outputFolder, fs::path WeaverFolder, fs::path configPath, int burnIn);
+	static std::unique_ptr<WorldInterface> createInstance(nlohmann::json* jsonTree, nlohmann::json &worldConfig, fs::path outputFolder, fs::path WeaverFolder, fs::path configPath);
 };
 
 #endif // WORLD_FACTORY_H_

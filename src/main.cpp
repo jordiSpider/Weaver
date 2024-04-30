@@ -66,17 +66,12 @@ int main(int argc, char ** argv)
     options.add_options()
         ("O,outputFolder", "Result output folder path", cxxopts::value<fs::path>(outputFolder)->default_value((WeaverRootPath / RESULT_SIMULATION_FOLDER).string()));
 
-	int burnIn;
-	options.add_options()
-        ("optimization-burn-in", "Burn-in value", cxxopts::value<int>(burnIn)->default_value("-1"));
-
 	bool silentMode;
 	options.add_options()
         ("silent", "Run the program in silent mode, suppressing standard output", cxxopts::value<bool>(silentMode)->default_value("false"));
 
 	options.add_options()
 		("h,help", "Print usage");
-
 
 	auto result = options.parse(argc, argv);
 
@@ -90,26 +85,7 @@ int main(int argc, char ** argv)
 	{
 		cerr << "Error: Required arguments are missing." << endl;
 		cerr << "Try 'Weaver --help' for more information." << endl;
-		return 1;
-	}
-
-	if(result.count("optimization-log"))
-	{
-		if(!result.count("burn-in"))
-		{
-			cerr << "Error: Required arguments are missing: 'burn-in'." << endl;
-			cerr << "Try 'Weaver --help' for more information." << endl;
-			return 1;
-		}
-	}
-	else
-	{
-		if(result.count("burn-in"))
-		{
-			cerr << "Error: Required arguments are missing: 'optimization-log'." << endl;
-			cerr << "Try 'Weaver --help' for more information." << endl;
-			return 1;
-		}
+        return 1;
 	}
 
 
@@ -176,7 +152,7 @@ int main(int argc, char ** argv)
 
 	json worldConfig = readConfigFile(inputConfigPath / fs::path("world_params.json"), WeaverFolder / fs::path(SCHEMA_FOLDER) / fs::path(WORLD_PARAMS_SCHEMA));
 
-	unique_ptr<WorldInterface> myWorld = WorldFactory::createInstance(&simulationConfiguration, worldConfig, resultFolder, WeaverFolder, inputConfigPath, burnIn);
+	unique_ptr<WorldInterface> myWorld = WorldFactory::createInstance(&simulationConfiguration, worldConfig, resultFolder, WeaverFolder, inputConfigPath);
 
 	myWorld->initializeAnimals();
 
@@ -195,11 +171,6 @@ int main(int argc, char ** argv)
 	myWorld->evolveWorld();
 
 	cout << "DONE" << endl;
-
-	if(result.count("optimization-burn-in"))
-	{
-		myWorld->saveOptimizationResult(resultFolder);
-	}
 
 	#ifdef USE_CPU_PROFILER
 		ProfilerStop();

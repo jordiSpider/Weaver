@@ -18,8 +18,8 @@ using json = nlohmann::json;
 
 
 
-World::World(json * jsonTree, json &worldConfig, fs::path outputFolder, fs::path WeaverFolder, fs::path configPath, int burnIn, const double &massRatio)
-	: currentMovePercentage(printBarEach), currentNumberOfTerrainCellsMoved(0), WeaverFolder(WeaverFolder), massRatio(massRatio), burnIn(burnIn)
+World::World(json * jsonTree, json &worldConfig, fs::path outputFolder, fs::path WeaverFolder, fs::path configPath, const double &massRatio)
+	: currentMovePercentage(printBarEach), currentNumberOfTerrainCellsMoved(0), WeaverFolder(WeaverFolder), massRatio(massRatio)
 {
 	inputFolder = configPath;
 
@@ -86,8 +86,6 @@ World::World(json * jsonTree, json &worldConfig, fs::path outputFolder, fs::path
 
 	readResourceSpeciesFromJSONFiles();
 	readAnimalSpeciesFromJSONFiles();
-
-	speciesAmplitude.resize(getExistingSpecies().size(), make_pair(numeric_limits<double>::max(), 0.0));
 
 	initializeMap(worldConfig["world"]["mapConfig"]);
 
@@ -767,29 +765,6 @@ void World::updateAllMoistureSource(const unsigned int timeStep)
 	}
 }
 
-void World::saveOptimizationResult(fs::path resultFolder)
-{
-	json optimizationResultContent;
-
-	for(const AnimalSpecies* const animalSpecies : getExistingAnimalSpecies())
-	{
-		optimizationResultContent["animalSpecies"][animalSpecies->getScientificName()]["isExtinguished"] = animalSpecies->isExtinguished();
-		optimizationResultContent["animalSpecies"][animalSpecies->getScientificName()]["amplitude"]["min"] = speciesAmplitude[animalSpecies->getId()].first;
-		optimizationResultContent["animalSpecies"][animalSpecies->getScientificName()]["amplitude"]["max"] = speciesAmplitude[animalSpecies->getId()].second;
-	}
-
-	for(const ResourceSpecies* const resourceSpecies : getExistingResourceSpecies())
-	{
-		optimizationResultContent["resourceSpecies"][resourceSpecies->getScientificName()]["isExtinguished"] = resourceSpecies->isExtinguished();
-		optimizationResultContent["resourceSpecies"][resourceSpecies->getScientificName()]["amplitude"]["min"] = speciesAmplitude[resourceSpecies->getId()].first;
-		optimizationResultContent["resourceSpecies"][resourceSpecies->getScientificName()]["amplitude"]["max"] = speciesAmplitude[resourceSpecies->getId()].second;
-	}
-
-	ofstream jsonFile(resultFolder / "optimization_result.json");
-	jsonFile << setw(4) << optimizationResultContent.dump() << endl;
-	jsonFile.close();
-}
-
 void World::evolveWorld()
 {
 	saveWaterSnapshot(outputFolder / fs::path("Snapshots"), "Water_initial", 0);
@@ -1008,14 +983,14 @@ void World::evolveWorld()
 			}
 		}
 
-		bool extinctionStatus = isExtinguished(timeStep);
-
-		if(exitAtFirstExtinction && extinctionStatus)
+		if(exitAtFirstExtinction)
 		{
-			break;
+			if (isExtinguished())
+			{
+				break;
+			}
 		}
 	}
-
 
 	saveWaterSnapshot(outputFolder / fs::path("Snapshots"), "Water_final", runDays*timeStepsPerDay);
 
@@ -1165,55 +1140,37 @@ void World::increaseMovePrintBar()
 	}
 }
 
-bool World::isExtinguished(int day)
+bool World::isExtinguished()
 {
-	bool extinctionStatus = false; 
-
 	vector<double> worldResourceBiomass(getExistingResourceSpecies().size(), 0.0);
 	vector<vector<unsigned int>> worldAnimalsPopulation(getExistingAnimalSpecies().size(), vector<unsigned int>(LifeStage::size(), 0));
 
 	worldMap->obtainWorldResourceBiomassAndAnimalsPopulation(worldResourceBiomass, worldAnimalsPopulation);
 
-	for(ResourceSpecies* const resourceSpecies : getMutableExistingResourceSpecies())
+	for(const auto &resourceBiomass : worldResourceBiomass)
 	{
-		if(day > getBurnIn())
+		if(resourceBiomass < numeric_limits<double>::epsilon())
 		{
-			speciesAmplitude[resourceSpecies->getId()].first = fmin(speciesAmplitude[resourceSpecies->getId()].first, worldResourceBiomass[resourceSpecies->getResourceSpeciesId()]);
-			speciesAmplitude[resourceSpecies->getId()].second = fmax(speciesAmplitude[resourceSpecies->getId()].second, worldResourceBiomass[resourceSpecies->getResourceSpeciesId()]);
-		}
-
-		if(worldResourceBiomass[resourceSpecies->getResourceSpeciesId()] < numeric_limits<double>::epsilon())
-		{
-			resourceSpecies->setExtinguished(true);
-			extinctionStatus = true;
+			return true;
 		}
 	}
 
-	for(AnimalSpecies* const animalSpecies : getMutableExistingAnimalSpecies())
+	for(const auto &animalPopulation : worldAnimalsPopulation)
 	{
 		unsigned int population = 0;
 
-		for(const auto &elem : worldAnimalsPopulation[animalSpecies->getAnimalSpeciesId()])
+		for(const auto &elem : animalPopulation)
 		{
 			population += elem;
 		}
 
-
-		if(day > getBurnIn())
-		{
-			speciesAmplitude[animalSpecies->getId()].first = fmin(speciesAmplitude[animalSpecies->getId()].first, population);
-			speciesAmplitude[animalSpecies->getId()].second = fmax(speciesAmplitude[animalSpecies->getId()].second, population);
-		}
-
-
 		if(population == 0)
 		{
-			animalSpecies->setExtinguished(true);
-			extinctionStatus = true;
+			return true;
 		}
 	}
 
-	return extinctionStatus;
+	return false;
 }
 
 // TODO Mario Initialize animals with initIndividualsPerDensities
@@ -1249,10 +1206,6 @@ void World::initializeMap(const json &mapConfig)
 	cout << "DONE" << endl;
 }
 
-const int World::getBurnIn() const
-{
-	return burnIn;
-}
 
 void World::readPatchesFromJSONFiles(const json &moistureBasePatchInfo, const bool initialPatches)
 {
