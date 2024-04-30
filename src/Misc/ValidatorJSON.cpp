@@ -3061,7 +3061,7 @@ void ValidatorJSON::validateElem(const json& config, json& schema) {
 					break;
 				}
 				case TypeElemJSON::floater: {
-					if(!config.is_number_float() && !config.is_number_integer()) {
+					if(!config.is_number_float()) {
 						throwValidatorConfigJSONException("': Not an element of type '" + string(schema["type"]) + "'");
 					}
 

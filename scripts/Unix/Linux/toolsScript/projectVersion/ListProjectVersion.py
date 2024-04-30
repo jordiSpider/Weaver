@@ -23,9 +23,7 @@ class Development(LinuxProjectVersion):
                 "cxxopts",
                 "nlohmann-json",
                 "fmt",
-                "boost-geometry",
-                "boost-serialization",
-                "tbb"
+                "boost-geometry"
             ],
             "x64-linux"
         )

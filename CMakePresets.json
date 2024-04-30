@@ -10,572 +10,17 @@
         {
             "name": "base",
             "hidden": true,
-            "displayName": "Base configuration (hidden)",
+            "displayName": "Base configuration",
             "toolchainFile": "$env{VCPKG_ROOT}/scripts/buildsystems/vcpkg.cmake",
-            "generator": "Ninja",
             "cacheVariables": {
                 "CMAKE_C_COMPILER": "gcc",
                 "CMAKE_CXX_COMPILER": "g++",
-                "CMAKE_WINDOWS_EXPORT_ALL_SYMBOLS": "ON",
-                "PRESET_NAME": "${presetName}"
+                "CMAKE_WINDOWS_EXPORT_ALL_SYMBOLS": "ON"
             },
             "environment": {
                 "BUILD_FOLDER": "cmake-build"
             }
         },
-
-
-
-        {
-            "name": "Release",
-            "inherits": [
-                "base"
-            ],
-            "hidden": true,
-            "displayName": "Release build type (hidden)",
-            "cacheVariables": {
-                "CMAKE_BUILD_TYPE": "Release"
-            }
-        },
-        {
-            "name": "Debug",
-            "inherits": [
-                "base"
-            ],
-            "hidden": true,
-            "displayName": "Debug build type (hidden)",
-            "cacheVariables": {
-                "CMAKE_BUILD_TYPE": "Debug",
-                "CMAKE_DEBUG_POSTFIX": "_d",
-                "CHECK_MEMORY_LEAKS": true
-            }
-        },
-
-        
-        
-        {
-            "name": "Linux",
-            "inherits": [
-                "base"
-            ],
-            "hidden": true,
-            "displayName": "Linux (hidden)",
-            "condition": {
-                "type": "equals",
-                "lhs": "${hostSystemName}",
-                "rhs": "Linux"
-            },
-            "cacheVariables": {
-                "CMAKE_EXECUTABLE_SUFFIX_CXX": ".out",
-                "CMAKE_SHARED_LIBRARY_SUFFIX_CXX": ".so",
-                "VCPKG_TARGET_TRIPLET": "x64-linux",
-                "VCPKG_HOST_TRIPLET": "x64-linux"
-            }
-        },
-        {
-            "name": "Windows",
-            "inherits": [
-                "base"
-            ],
-            "hidden": true,
-            "displayName": "Windows (hidden)",
-            "condition": {
-                "type": "equals",
-                "lhs": "${hostSystemName}",
-                "rhs": "Windows"
-            },
-            "cacheVariables": {
-                "CMAKE_EXECUTABLE_SUFFIX_CXX": ".exe",
-                "CMAKE_SHARED_LIBRARY_SUFFIX_CXX": ".dll",
-                "VCPKG_TARGET_TRIPLET": "x64-mingw-static",
-                "VCPKG_HOST_TRIPLET": "x64-mingw-static",
-                "CMAKE_PREFIX_PATH": "$env{MSYS2_ROOT}/mingw64",
-                "CMAKE_MAKE_PROGRAM": "$env{MSYS2_ROOT}/mingw64/bin/mingw32-make.exe"
-            }
-        },
-        {
-            "name": "Darwin",
-            "inherits": [
-                "base"
-            ],
-            "hidden": true,
-            "displayName": "MacOS (hidden)",
-            "condition": {
-                "type": "equals",
-                "lhs": "${hostSystemName}",
-                "rhs": "Darwin"
-            },
-            "cacheVariables": {
-                "CMAKE_EXECUTABLE_SUFFIX_CXX": ".out",
-                "CMAKE_SHARED_LIBRARY_SUFFIX_CXX": ".so"
-            }
-        },
-
-        
-        
-        {
-            "name": "IBM",
-            "inherits": [
-                "base"
-            ],
-            "hidden": true,
-            "displayName": "IBM executable - base configuration (hidden)",
-            "binaryDir": "${sourceDir}/$env{BUILD_FOLDER}/$env{PRESET_BUILD_FOLDER}/${presetName}",
-            "cacheVariables": {
-                "BUILD_IBM": "ON"
-            },
-            "environment": {
-                "PRESET_BUILD_FOLDER": "IBM"
-            }
-        },
-        {
-            "name": "IBM-CPU-Profiler",
-            "inherits": [
-                "IBM"
-            ],
-            "hidden": true,
-            "displayName": "IBM-CPU-Profiler executable - base configuration (hidden)",
-            "binaryDir": "${sourceDir}/$env{BUILD_FOLDER}/$env{PRESET_BUILD_FOLDER}/${presetName}",
-            "cacheVariables": {
-                "USE_CPU_PROFILER": true
-            }
-        },
-        {
-            "name": "IBM-Heap-Profiler",
-            "inherits": [
-                "IBM"
-            ],
-            "hidden": true,
-            "displayName": "IBM-Heap-Profiler executable - base configuration (hidden)",
-            "binaryDir": "${sourceDir}/$env{BUILD_FOLDER}/$env{PRESET_BUILD_FOLDER}/${presetName}",
-            "cacheVariables": {
-                "USE_HEAP_PROFILER": true
-            }
-        },
-
-        
-        
-        {
-            "name": "2D-World",
-            "inherits": [
-                "base"
-            ],
-            "hidden": true,
-            "displayName": "2D-World (hidden)",
-            "cacheVariables": {
-                "DIMENSIONS": "2"
-            }
-        },
-        {
-            "name": "3D-World",
-            "inherits": [
-                "base"
-            ],
-            "hidden": true,
-            "displayName": "3D-World (hidden)",
-            "cacheVariables": {
-                "DIMENSIONS": "3"
-            }
-        },
-
-        
-        
-        {
-            "name": "build-linux-IBM-2D",
-            "hidden": false,
-            "displayName": "IBM - 2D World - Release executable",
-            "inherits": [
-                "Linux",
-                "Release",
-                "IBM",
-                "2D-World"
-            ]
-        },
-        {
-            "name": "build-linux-IBM-3D",
-            "hidden": false,
-            "displayName": "IBM - 3D World - Release executable",
-            "inherits": [
-                "Linux",
-                "Release",
-                "IBM",
-                "3D-World"
-            ]
-        },
-        {
-            "name": "build-linux-IBM-2D-debug",
-            "hidden": false,
-            "displayName": "IBM - 2D World - Debug executable",
-            "inherits": [
-                "Linux",
-                "Debug",
-                "IBM",
-                "2D-World"
-            ]
-        },
-        {
-            "name": "build-linux-IBM-3D-debug",
-            "hidden": false,
-            "displayName": "IBM - 3D World - Debug executable",
-            "inherits": [
-                "Linux",
-                "Debug",
-                "IBM",
-                "3D-World"
-            ]
-        },
-        {
-            "name": "build-linux-IBM-CPU-Profiler-2D",
-            "hidden": false,
-            "displayName": "IBM - 2D World - CPU-Profiler executable",
-            "inherits": [
-                "build-linux-IBM-2D-debug",
-                "IBM-CPU-Profiler"
-            ]
-        },
-        {
-            "name": "build-linux-IBM-CPU-Profiler-3D",
-            "hidden": false,
-            "displayName": "IBM - 3D World - CPU-Profiler executable",
-            "inherits": [
-                "build-linux-IBM-3D-debug",
-                "IBM-CPU-Profiler"
-            ]
-        },
-        {
-            "name": "build-linux-IBM-Heap-Profiler-2D",
-            "hidden": false,
-            "displayName": "IBM - 2D World - Heap-Profiler executable",
-            "inherits": [
-                "build-linux-IBM-2D-debug",
-                "IBM-Heap-Profiler"
-            ]
-        },
-        {
-            "name": "build-linux-IBM-Heap-Profiler-3D",
-            "hidden": false,
-            "displayName": "IBM - 3D World - Heap-Profiler executable",
-            "inherits": [
-                "build-linux-IBM-3D-debug",
-                "IBM-Heap-Profiler"
-            ]
-        },
-        {
-            "name": "build-windows-IBM-2D",
-            "hidden": false,
-            "displayName": "IBM - 2D World - Release executable",
-            "inherits": [
-                "Windows",
-                "Release",
-                "IBM",
-                "2D-World"
-            ]
-        },
-        {
-            "name": "build-windows-IBM-3D",
-            "hidden": false,
-            "displayName": "IBM - 3D World - Release executable",
-            "inherits": [
-                "Windows",
-                "Release",
-                "IBM",
-                "3D-World"
-            ]
-        },
-
-
-
-        {
-            "name": "Tools",
-            "inherits": [
-                "base"
-            ],
-            "hidden": true,
-            "displayName": "Tools executables - base configuration (hidden)",
-            "environment": {
-                "PRESET_BUILD_FOLDER": "tools"
-            }
-        },
-
-        
-        
-        {
-            "name": "Update-Config-Tool",
-            "inherits": [
-                "Tools"
-            ],
-            "cacheVariables": {
-                "BUILD_UPDATE_CONFIG_TOOL": "ON"
-            },
-            "hidden": true,
-            "displayName": "Update config tool executable - base configuration (hidden)",
-            "binaryDir": "${sourceDir}/$env{BUILD_FOLDER}/$env{PRESET_BUILD_FOLDER}/${presetName}"
-        },
-
-        
-        
-        {
-            "name": "build-linux-update-config-tool",
-            "inherits": [
-                "Update-Config-Tool",
-                "Linux",
-                "Release"
-            ],
-            "hidden": false,
-            "displayName": "Update config tool - Release executable",
-            "binaryDir": "${sourceDir}/$env{BUILD_FOLDER}/$env{PRESET_BUILD_FOLDER}/${presetName}"
-        },
-        {
-            "name": "build-linux-update-config-tool-debug",
-            "inherits": [
-                "Update-Config-Tool",
-                "Linux",
-                "Debug"
-            ],
-            "hidden": false,
-            "displayName": "Update config tool - Debug executable",
-            "binaryDir": "${sourceDir}/$env{BUILD_FOLDER}/$env{PRESET_BUILD_FOLDER}/${presetName}"
-        },
-
-
-
-        {
-            "name": "Optimiser-Tool",
-            "inherits": [
-                "Tools"
-            ],
-            "cacheVariables": {
-                "BUILD_OPTIMISER_TOOL": "ON"
-            },
-            "hidden": true,
-            "displayName": "Optimiser tool executable - base configuration (hidden)",
-            "binaryDir": "${sourceDir}/$env{BUILD_FOLDER}/$env{PRESET_BUILD_FOLDER}/${presetName}"
-        },
-
-        
-        
-        {
-            "name": "build-linux-optimiser-tool-2D",
-            "inherits": [
-                "Optimiser-Tool",
-                "Linux",
-                "Release",
-                "build-linux-IBM-2D"
-            ],
-            "hidden": false,
-            "displayName": "Optimiser tool - 2D World - Release executable",
-            "binaryDir": "${sourceDir}/$env{BUILD_FOLDER}/$env{PRESET_BUILD_FOLDER}/${presetName}"
-        },
-        {
-            "name": "build-linux-optimiser-tool-3D",
-            "inherits": [
-                "Optimiser-Tool",
-                "Linux",
-                "Release",
-                "build-linux-IBM-3D"
-            ],
-            "hidden": false,
-            "displayName": "Optimiser tool - 3D World - Release executable",
-            "binaryDir": "${sourceDir}/$env{BUILD_FOLDER}/$env{PRESET_BUILD_FOLDER}/${presetName}"
-        },
-        {
-            "name": "build-linux-optimiser-tool-2D-debug",
-            "inherits": [
-                "Optimiser-Tool",
-                "Linux",
-                "Debug",
-                "build-linux-IBM-2D-debug"
-            ],
-            "hidden": false,
-            "displayName": "Optimiser tool - 2D World - Debug executable",
-            "binaryDir": "${sourceDir}/$env{BUILD_FOLDER}/$env{PRESET_BUILD_FOLDER}/${presetName}"
-        },
-        {
-            "name": "build-linux-optimiser-tool-3D-debug",
-            "inherits": [
-                "Optimiser-Tool",
-                "Linux",
-                "Debug",
-                "build-linux-IBM-3D-debug"
-            ],
-            "hidden": false,
-            "displayName": "Optimiser tool - 3D World - Debug executable",
-            "binaryDir": "${sourceDir}/$env{BUILD_FOLDER}/$env{PRESET_BUILD_FOLDER}/${presetName}"
-        },
-
-        
-        
-        {
-            "name": "build-linux-all-tools-2D",
-            "inherits": [
-                "build-linux-update-config-tool",
-                "build-linux-optimiser-tool-2D"
-            ],
-            "hidden": false,
-            "displayName": "All tools - 2D World - Release executables",
-            "binaryDir": "${sourceDir}/$env{BUILD_FOLDER}/$env{PRESET_BUILD_FOLDER}/${presetName}"
-        },
-        {
-            "name": "build-linux-all-tools-3D",
-            "inherits": [
-                "build-linux-update-config-tool",
-                "build-linux-optimiser-tool-3D"
-            ],
-            "hidden": false,
-            "displayName": "All tools - 3D World - Release executables",
-            "binaryDir": "${sourceDir}/$env{BUILD_FOLDER}/$env{PRESET_BUILD_FOLDER}/${presetName}"
-        },
-
-
-
-        {
-            "name": "R-Packages",
-            "inherits": [
-                "base"
-            ],
-            "hidden": true,
-            "displayName": "R-Packages - base configuration (hidden)",
-            "cacheVariables": {
-                "BUILD_R_PACKAGES": "ON"
-            },
-            "environment": {
-                "PRESET_BUILD_FOLDER": "R_packages"
-            }
-        },
-
-        
-        
-        {
-            "name": "Optimiser-R-Package",
-            "inherits": [
-                "R-Packages"
-            ],
-            "hidden": true,
-            "displayName": "Optimiser-R-Package - base configuration (hidden)",
-            "cacheVariables": {
-                "BUILD_OPTIMISER_PACKAGE": "ON"
-            }
-        },
-        {
-            "name": "WSL-Optimiser-R-Package",
-            "inherits": [
-                "R-Packages"
-            ],
-            "hidden": true,
-            "displayName": "WSL-Optimiser-R-Package - base configuration (hidden)",
-            "cacheVariables": {
-                "BUILD_WSL_OPTIMISER_PACKAGE": "ON"
-            }
-        },
-
-        
-        
-        {
-            "name": "build-linux-optimiser-R-package-2D",
-            "inherits": [
-                "Optimiser-R-Package",
-                "build-linux-optimiser-tool-2D"
-            ],
-            "hidden": false,
-            "displayName": "Optimiser-R-Package - 2D World - Release",
-            "binaryDir": "${sourceDir}/$env{BUILD_FOLDER}/$env{PRESET_BUILD_FOLDER}/${presetName}"
-        },
-        {
-            "name": "build-linux-optimiser-R-package-3D",
-            "inherits": [
-                "Optimiser-R-Package",
-                "build-linux-optimiser-tool-3D"
-            ],
-            "hidden": false,
-            "displayName": "Optimiser-R-Package - 3D World - Release",
-            "binaryDir": "${sourceDir}/$env{BUILD_FOLDER}/$env{PRESET_BUILD_FOLDER}/${presetName}"
-        },
-        {
-            "name": "build-linux-optimiser-R-package-2D-debug",
-            "inherits": [
-                "Optimiser-R-Package",
-                "build-linux-optimiser-tool-2D-debug"
-            ],
-            "hidden": false,
-            "displayName": "Optimiser-R-Package - 2D World - Debug",
-            "binaryDir": "${sourceDir}/$env{BUILD_FOLDER}/$env{PRESET_BUILD_FOLDER}/${presetName}"
-        },
-        {
-            "name": "build-linux-optimiser-R-package-3D-debug",
-            "inherits": [
-                "Optimiser-R-Package",
-                "build-linux-optimiser-tool-3D-debug"
-            ],
-            "hidden": false,
-            "displayName": "Optimiser-R-Package - 3D World - Debug",
-            "binaryDir": "${sourceDir}/$env{BUILD_FOLDER}/$env{PRESET_BUILD_FOLDER}/${presetName}"
-        },
-        {
-            "name": "build-linux-WSL-optimiser-R-package-2D",
-            "inherits": [
-                "WSL-Optimiser-R-Package",
-                "build-linux-optimiser-tool-2D"
-            ],
-            "hidden": false,
-            "displayName": "WSL-Optimiser-R-Package - 2D World - Release",
-            "binaryDir": "${sourceDir}/$env{BUILD_FOLDER}/$env{PRESET_BUILD_FOLDER}/${presetName}"
-        },
-        {
-            "name": "build-linux-WSL-optimiser-R-package-3D",
-            "inherits": [
-                "WSL-Optimiser-R-Package",
-                "build-linux-optimiser-tool-3D"
-            ],
-            "hidden": false,
-            "displayName": "WSL-Optimiser-R-Package - 3D World - Release",
-            "binaryDir": "${sourceDir}/$env{BUILD_FOLDER}/$env{PRESET_BUILD_FOLDER}/${presetName}"
-        },
-        {
-            "name": "build-linux-WSL-optimiser-R-package-2D-debug",
-            "inherits": [
-                "WSL-Optimiser-R-Package",
-                "build-linux-optimiser-tool-2D-debug"
-            ],
-            "hidden": false,
-            "displayName": "WSL-Optimiser-R-Package - 2D World - Debug",
-            "binaryDir": "${sourceDir}/$env{BUILD_FOLDER}/$env{PRESET_BUILD_FOLDER}/${presetName}"
-        },
-        {
-            "name": "build-linux-WSL-optimiser-R-package-3D-debug",
-            "inherits": [
-                "WSL-Optimiser-R-Package",
-                "build-linux-optimiser-tool-3D-debug"
-            ],
-            "hidden": false,
-            "displayName": "WSL-Optimiser-R-Package - 3D World - Debug",
-            "binaryDir": "${sourceDir}/$env{BUILD_FOLDER}/$env{PRESET_BUILD_FOLDER}/${presetName}"
-        },
-
-        
-        
-        {
-            "name": "build-linux-all-R-packages-2D",
-            "inherits": [
-                "build-linux-optimiser-R-package-2D",
-                "build-linux-WSL-optimiser-R-package-2D"
-            ],
-            "hidden": false,
-            "displayName": "All R-Packages - 2D World - Release",
-            "binaryDir": "${sourceDir}/$env{BUILD_FOLDER}/$env{PRESET_BUILD_FOLDER}/${presetName}"
-        },
-        {
-            "name": "build-linux-all-R-packages-3D",
-            "inherits": [
-                "build-linux-optimiser-R-package-3D",
-                "build-linux-WSL-optimiser-R-package-3D"
-            ],
-            "hidden": false,
-            "displayName": "All R-Packages - 3D World - Release",
-            "binaryDir": "${sourceDir}/$env{BUILD_FOLDER}/$env{PRESET_BUILD_FOLDER}/${presetName}"
-        },
-
-        
-        
         {
             "name": "build-doc",
             "inherits": [
@@ -586,7 +31,7 @@
             "binaryDir": "${sourceDir}/$env{BUILD_FOLDER}/${presetName}",
             "cacheVariables": {
                 "BUILD_SPHINX_DOC": "ON",
-                "BUILD_DOC_VERBOSE": "OFF"
+                "BUILD_DOC_VERBOSE": "ON"
             }
         },
         {
@@ -648,232 +93,313 @@
             "cacheVariables": {
                 "CLEAN_DOC": "ON"
             }
+        },
+        {
+            "name": "Ninja",
+            "inherits": [
+                "base"
+            ],
+            "hidden": true,
+            "displayName": "Configuration to generate with Ninja",
+            "generator": "Ninja",
+            "cacheVariables": {
+                "PRESET_NAME": "${presetName}",
+                "BUILD_EXE": "ON",
+                "CMAKE_WINDOWS_EXPORT_ALL_SYMBOLS": "ON"
+            }
+        },
+        {
+            "name": "Release",
+            "inherits": [
+                "base"
+            ],
+            "hidden": true,
+            "displayName": "Configuration to build Release version",
+            "cacheVariables": {
+                "CMAKE_BUILD_TYPE": "Release"
+            }
+        },
+        {
+            "name": "2D-World",
+            "inherits": [
+                "base"
+            ],
+            "hidden": true,
+            "displayName": "Configuration to 2D-World",
+            "cacheVariables": {
+                "DIMENSIONS": "2"
+            }
+        },
+        {
+            "name": "3D-World",
+            "inherits": [
+                "base"
+            ],
+            "hidden": true,
+            "displayName": "Configuration to 3D-World",
+            "cacheVariables": {
+                "DIMENSIONS": "3"
+            }
+        },
+        {
+            "name": "Debug",
+            "inherits": [
+                "base"
+            ],
+            "hidden": true,
+            "displayName": "Configuration to build Debug version",
+            "cacheVariables": {
+                "CMAKE_BUILD_TYPE": "Debug",
+                "CMAKE_DEBUG_POSTFIX": "_d"
+            }
+        },
+        {
+            "name": "Linux",
+            "inherits": [
+                "base"
+            ],
+            "hidden": true,
+            "displayName": "Configuration for building on Linux",
+            "binaryDir": "${sourceDir}/$env{BUILD_FOLDER}/${presetName}",
+            "condition": {
+                "type": "equals",
+                "lhs": "${hostSystemName}",
+                "rhs": "Linux"
+            },
+            "cacheVariables": {
+                "CMAKE_EXECUTABLE_SUFFIX_CXX": ".out",
+                "CMAKE_SHARED_LIBRARY_SUFFIX_CXX": ".so",
+                "VCPKG_TARGET_TRIPLET": "x64-linux",
+                "VCPKG_HOST_TRIPLET": "x64-linux"
+            }
+        },
+        {
+            "name": "Windows",
+            "inherits": [
+                "base"
+            ],
+            "hidden": true,
+            "displayName": "Configuration for building on Windows",
+            "binaryDir": "${sourceDir}\\$env{BUILD_FOLDER}\\${presetName}",
+            "condition": {
+                "type": "equals",
+                "lhs": "${hostSystemName}",
+                "rhs": "Windows"
+            },
+            "cacheVariables": {
+                "CMAKE_EXECUTABLE_SUFFIX_CXX": ".exe",
+                "CMAKE_SHARED_LIBRARY_SUFFIX_CXX": ".dll",
+                "VCPKG_TARGET_TRIPLET": "x64-mingw-static",
+                "VCPKG_HOST_TRIPLET": "x64-mingw-static",
+                "CMAKE_PREFIX_PATH": "$env{MSYS2_ROOT}/mingw64",
+                "CMAKE_MAKE_PROGRAM": "$env{MSYS2_ROOT}/mingw64/bin/mingw32-make.exe"
+            }
+        },
+        {
+            "name": "Darwin",
+            "inherits": [
+                "base"
+            ],
+            "hidden": true,
+            "displayName": "Configuration for building on MacOS",
+            "binaryDir": "${sourceDir}/$env{BUILD_FOLDER}/${presetName}",
+            "condition": {
+                "type": "equals",
+                "lhs": "${hostSystemName}",
+                "rhs": "Darwin"
+            },
+            "cacheVariables": {
+                "CMAKE_EXECUTABLE_SUFFIX_CXX": ".out",
+                "CMAKE_SHARED_LIBRARY_SUFFIX_CXX": ".so"
+            }
+        },
+        {
+            "name": "Linux Release",
+            "inherits": [
+                "Linux",
+                "Release"
+            ],
+            "hidden": true,
+            "displayName": "Configuration to build Release version on Linux"
+        },
+        {
+            "name": "Linux Debug",
+            "inherits": [
+                "Linux",
+                "Debug"
+            ],
+            "hidden": true,
+            "displayName": "Configuration to build Debug version on Linux"
+        },
+        {
+            "name": "Windows Release",
+            "inherits": [
+                "Windows",
+                "Release"
+            ],
+            "hidden": true,
+            "displayName": "Configuration to build Release version on Windows"
+        },
+        {
+            "name": "linux",
+            "displayName": "Configuration to build Release version on Linux using Ninja",
+            "inherits": [
+                "Linux Release",
+                "Ninja"
+            ],
+            "hidden": true
+        },
+        {
+            "name": "linux-2D",
+            "displayName": "Configuration to build Release version on Linux using Ninja",
+            "inherits": [
+                "linux",
+                "2D-World"
+            ]
+        },
+        {
+            "name": "linux-3D",
+            "displayName": "Configuration to build Release version on Linux using Ninja",
+            "inherits": [
+                "linux",
+                "3D-World"
+            ]
+        },
+        {
+            "name": "linux-debug",
+            "displayName": "Configuration to build Debug version on Linux using Ninja",
+            "inherits": [
+                "Linux Debug",
+                "Ninja"
+            ],
+            "cacheVariables": {
+                "CHECK_MEMORY_LEAKS": true
+            },
+            "hidden": true
+        },
+        {
+            "name": "linux-debug-2D",
+            "displayName": "Configuration to build Debug version on Linux using Ninja",
+            "inherits": [
+                "linux-debug",
+                "2D-World"
+            ],
+            "cacheVariables": {
+                "CHECK_MEMORY_LEAKS": true
+            }
+        },
+        {
+            "name": "linux-debug-3D",
+            "displayName": "Configuration to build Debug version on Linux using Ninja",
+            "inherits": [
+                "linux-debug",
+                "3D-World"
+            ],
+            "cacheVariables": {
+                "CHECK_MEMORY_LEAKS": true
+            }
+        },
+        {
+            "name": "linux-cpuProfiler",
+            "displayName": "Configuration to generate CPU profiler of the project on Linux",
+            "inherits": [
+                "Linux Debug",
+                "Ninja"
+            ],
+            "hidden": true,
+            "cacheVariables": {
+                "USE_CPU_PROFILER": true
+            }
+        },
+        {
+            "name": "linux-cpuProfiler-2D",
+            "displayName": "Configuration to generate CPU profiler of the project on Linux",
+            "inherits": [
+                "linux-cpuProfiler",
+                "2D-World"
+            ],
+            "cacheVariables": {
+                "USE_CPU_PROFILER": true
+            }
+        },
+        {
+            "name": "linux-cpuProfiler-3D",
+            "displayName": "Configuration to generate CPU profiler of the project on Linux",
+            "inherits": [
+                "linux-cpuProfiler",
+                "3D-World"
+            ],
+            "cacheVariables": {
+                "USE_CPU_PROFILER": true
+            }
+        },
+        {
+            "name": "linux-heapProfiler",
+            "displayName": "Configuration to generate Heap profiler of the project on Linux",
+            "inherits": [
+                "Linux Debug",
+                "Ninja"
+            ],
+            "hidden": true,
+            "cacheVariables": {
+                "USE_HEAP_PROFILER": true
+            }
+        },
+        {
+            "name": "linux-heapProfiler-2D",
+            "displayName": "Configuration to generate Heap profiler of the project on Linux",
+            "inherits": [
+                "linux-heapProfiler",
+                "2D-World"
+            ],
+            "cacheVariables": {
+                "USE_HEAP_PROFILER": true
+            }
+        },
+        {
+            "name": "linux-heapProfiler-3D",
+            "displayName": "Configuration to generate Heap profiler of the project on Linux",
+            "inherits": [
+                "linux-heapProfiler",
+                "3D-World"
+            ],
+            "cacheVariables": {
+                "USE_HEAP_PROFILER": true
+            }
+        },
+        {
+            "name": "windows",
+            "displayName": "Configuration to build Release version on Windows using Ninja",
+            "inherits": [
+                "Windows Release",
+                "Ninja"
+            ],
+            "hidden": true
+        },
+        {
+            "name": "windows-2D",
+            "displayName": "Configuration to build Release version on Windows using Ninja",
+            "inherits": [
+                "windows",
+                "2D-World"
+            ]
+        },
+        {
+            "name": "windows-3D",
+            "displayName": "Configuration to build Release version on Windows using Ninja",
+            "inherits": [
+                "windows",
+                "3D-World"
+            ]
         }
     ],
     "buildPresets": 
     [
         {
             "name": "base",
-            "targets": ["main_target"],
-            "hidden": true
+            "hidden": true,
+            "cleanFirst": false
         },
-
-
-
-        {
-            "name": "build-linux-IBM-2D",
-            "configurePreset": "build-linux-IBM-2D",
-            "inherits": [
-                "base"
-            ]
-        },
-        {
-            "name": "build-linux-IBM-3D",
-            "configurePreset": "build-linux-IBM-3D",
-            "inherits": [
-                "base"
-            ]
-        },
-        {
-            "name": "build-linux-IBM-2D-debug",
-            "configurePreset": "build-linux-IBM-2D-debug",
-            "inherits": [
-                "base"
-            ]
-        },
-        {
-            "name": "build-linux-IBM-3D-debug",
-            "configurePreset": "build-linux-IBM-3D-debug",
-            "inherits": [
-                "base"
-            ]
-        },
-        {
-            "name": "build-linux-IBM-CPU-Profiler-2D",
-            "configurePreset": "build-linux-IBM-CPU-Profiler-2D",
-            "inherits": [
-                "base"
-            ]
-        },
-        {
-            "name": "build-linux-IBM-CPU-Profiler-3D",
-            "configurePreset": "build-linux-IBM-CPU-Profiler-3D",
-            "inherits": [
-                "base"
-            ]
-        },
-        {
-            "name": "build-linux-IBM-Heap-Profiler-2D",
-            "configurePreset": "build-linux-IBM-Heap-Profiler-2D",
-            "inherits": [
-                "base"
-            ]
-        },
-        {
-            "name": "build-linux-IBM-Heap-Profiler-3D",
-            "configurePreset": "build-linux-IBM-Heap-Profiler-3D",
-            "inherits": [
-                "base"
-            ]
-        },
-        {
-            "name": "build-windows-IBM-2D",
-            "configurePreset": "build-windows-IBM-2D",
-            "inherits": [
-                "base"
-            ]
-        },
-        {
-            "name": "build-windows-IBM-3D",
-            "configurePreset": "build-windows-IBM-3D",
-            "inherits": [
-                "base"
-            ]
-        },
-
-
-
-        {
-            "name": "build-linux-update-config-tool",
-            "configurePreset": "build-linux-update-config-tool",
-            "inherits": [
-                "base"
-            ]
-        },
-        {
-            "name": "build-linux-update-config-tool-debug",
-            "configurePreset": "build-linux-update-config-tool-debug",
-            "inherits": [
-                "base"
-            ]
-        },
-
-
-
-        {
-            "name": "build-linux-optimiser-tool-2D",
-            "configurePreset": "build-linux-optimiser-tool-2D",
-            "inherits": [
-                "base"
-            ]
-        },
-        {
-            "name": "build-linux-optimiser-tool-3D",
-            "configurePreset": "build-linux-optimiser-tool-3D",
-            "inherits": [
-                "base"
-            ]
-        },
-        {
-            "name": "build-linux-optimiser-tool-2D-debug",
-            "configurePreset": "build-linux-optimiser-tool-2D-debug",
-            "inherits": [
-                "base"
-            ]
-        },
-        {
-            "name": "build-linux-optimiser-tool-3D-debug",
-            "configurePreset": "build-linux-optimiser-tool-3D-debug",
-            "inherits": [
-                "base"
-            ]
-        },
-
-        
-        
-        {
-            "name": "build-linux-all-tools-2D",
-            "configurePreset": "build-linux-all-tools-2D",
-            "inherits": [
-                "base"
-            ]
-        },
-        {
-            "name": "build-linux-all-tools-3D",
-            "configurePreset": "build-linux-all-tools-3D",
-            "inherits": [
-                "base"
-            ]
-        },
-
-
-
-        {
-            "name": "build-linux-optimiser-R-package-2D",
-            "configurePreset": "build-linux-optimiser-R-package-2D",
-            "inherits": [
-                "base"
-            ]
-        },
-        {
-            "name": "build-linux-optimiser-R-package-3D",
-            "configurePreset": "build-linux-optimiser-R-package-3D",
-            "inherits": [
-                "base"
-            ]
-        },
-        {
-            "name": "build-linux-optimiser-R-package-2D-debug",
-            "configurePreset": "build-linux-optimiser-R-package-2D-debug",
-            "inherits": [
-                "base"
-            ]
-        },
-        {
-            "name": "build-linux-optimiser-R-package-3D-debug",
-            "configurePreset": "build-linux-optimiser-R-package-3D-debug",
-            "inherits": [
-                "base"
-            ]
-        },
-        {
-            "name": "build-linux-WSL-optimiser-R-package-2D",
-            "configurePreset": "build-linux-WSL-optimiser-R-package-2D",
-            "inherits": [
-                "base"
-            ]
-        },
-        {
-            "name": "build-linux-WSL-optimiser-R-package-3D",
-            "configurePreset": "build-linux-WSL-optimiser-R-package-3D",
-            "inherits": [
-                "base"
-            ]
-        },
-        {
-            "name": "build-linux-WSL-optimiser-R-package-2D-debug",
-            "configurePreset": "build-linux-WSL-optimiser-R-package-2D-debug",
-            "inherits": [
-                "base"
-            ]
-        },
-        {
-            "name": "build-linux-WSL-optimiser-R-package-3D-debug",
-            "configurePreset": "build-linux-WSL-optimiser-R-package-3D-debug",
-            "inherits": [
-                "base"
-            ]
-        },
-
-        
-        
-        {
-            "name": "build-linux-all-R-packages-2D",
-            "configurePreset": "build-linux-all-R-packages-2D",
-            "inherits": [
-                "base"
-            ]
-        },
-        {
-            "name": "build-linux-all-R-packages-3D",
-            "configurePreset": "build-linux-all-R-packages-3D",
-            "inherits": [
-                "base"
-            ]
-        },
-
-        
-        
         {
             "name": "build-doc",
             "configurePreset": "build-doc",
@@ -915,391 +441,79 @@
             "inherits": [
                 "base"
             ]
+        },
+        {
+            "name": "linux-2D",
+            "configurePreset": "linux-2D",
+            "inherits": [
+                "base"
+            ]
+        },
+        {
+            "name": "linux-3D",
+            "configurePreset": "linux-3D",
+            "inherits": [
+                "base"
+            ]
+        },
+        {
+            "name": "linux-debug-2D",
+            "configurePreset": "linux-debug-2D",
+            "inherits": [
+                "base"
+            ]
+        },
+        {
+            "name": "linux-debug-3D",
+            "configurePreset": "linux-debug-3D",
+            "inherits": [
+                "base"
+            ]
+        },
+        {
+            "name": "linux-cpuProfiler-2D",
+            "configurePreset": "linux-cpuProfiler-2D",
+            "inherits": [
+                "base"
+            ]
+        },
+        {
+            "name": "linux-cpuProfiler-3D",
+            "configurePreset": "linux-cpuProfiler-3D",
+            "inherits": [
+                "base"
+            ]
+        },
+        {
+            "name": "linux-heapProfiler-2D",
+            "configurePreset": "linux-heapProfiler-2D",
+            "inherits": [
+                "base"
+            ]
+        },
+        {
+            "name": "linux-heapProfiler-3D",
+            "configurePreset": "linux-heapProfiler-3D",
+            "inherits": [
+                "base"
+            ]
+        },
+        {
+            "name": "windows-2D",
+            "configurePreset": "windows-2D",
+            "inherits": [
+                "base"
+            ]
+        },
+        {
+            "name": "windows-3D",
+            "configurePreset": "windows-3D",
+            "inherits": [
+                "base"
+            ]
         }
     ],
     "workflowPresets": [
-        {
-            "name": "build-linux-IBM-2D",
-            "steps": [
-                {
-                    "type": "configure",
-                    "name": "build-linux-IBM-2D"
-                },
-                {
-                    "type": "build",
-                    "name": "build-linux-IBM-2D"
-                }
-            ]
-        },
-        {
-            "name": "build-linux-IBM-3D",
-            "steps": [
-                {
-                    "type": "configure",
-                    "name": "build-linux-IBM-3D"
-                },
-                {
-                    "type": "build",
-                    "name": "build-linux-IBM-3D"
-                }
-            ]
-        },
-        {
-            "name": "build-linux-IBM-2D-debug",
-            "steps": [
-                {
-                    "type": "configure",
-                    "name": "build-linux-IBM-2D-debug"
-                },
-                {
-                    "type": "build",
-                    "name": "build-linux-IBM-2D-debug"
-                }
-            ]
-        },
-        {
-            "name": "build-linux-IBM-3D-debug",
-            "steps": [
-                {
-                    "type": "configure",
-                    "name": "build-linux-IBM-3D-debug"
-                },
-                {
-                    "type": "build",
-                    "name": "build-linux-IBM-3D-debug"
-                }
-            ]
-        },
-        {
-            "name": "build-linux-IBM-CPU-Profiler-2D",
-            "steps": [
-                {
-                    "type": "configure",
-                    "name": "build-linux-IBM-CPU-Profiler-2D"
-                },
-                {
-                    "type": "build",
-                    "name": "build-linux-IBM-CPU-Profiler-2D"
-                }
-            ]
-        },
-        {
-            "name": "build-linux-IBM-CPU-Profiler-3D",
-            "steps": [
-                {
-                    "type": "configure",
-                    "name": "build-linux-IBM-CPU-Profiler-3D"
-                },
-                {
-                    "type": "build",
-                    "name": "build-linux-IBM-CPU-Profiler-3D"
-                }
-            ]
-        },
-        {
-            "name": "build-linux-IBM-Heap-Profiler-2D",
-            "steps": [
-                {
-                    "type": "configure",
-                    "name": "build-linux-IBM-Heap-Profiler-2D"
-                },
-                {
-                    "type": "build",
-                    "name": "build-linux-IBM-Heap-Profiler-2D"
-                }
-            ]
-        },
-        {
-            "name": "build-linux-IBM-Heap-Profiler-3D",
-            "steps": [
-                {
-                    "type": "configure",
-                    "name": "build-linux-IBM-Heap-Profiler-3D"
-                },
-                {
-                    "type": "build",
-                    "name": "build-linux-IBM-Heap-Profiler-3D"
-                }
-            ]
-        },
-        {
-            "name": "build-windows-IBM-2D",
-            "steps": [
-                {
-                    "type": "configure",
-                    "name": "build-windows-IBM-2D"
-                },
-                {
-                    "type": "build",
-                    "name": "build-windows-IBM-2D"
-                }
-            ]
-        },
-        {
-            "name": "build-windows-IBM-3D",
-            "steps": [
-                {
-                    "type": "configure",
-                    "name": "build-windows-IBM-3D"
-                },
-                {
-                    "type": "build",
-                    "name": "build-windows-IBM-3D"
-                }
-            ]
-        },
-
-
-
-        {
-            "name": "build-linux-update-config-tool",
-            "steps": [
-                {
-                    "type": "configure",
-                    "name": "build-linux-update-config-tool"
-                },
-                {
-                    "type": "build",
-                    "name": "build-linux-update-config-tool"
-                }
-            ]
-        },
-        {
-            "name": "build-linux-update-config-tool-debug",
-            "steps": [
-                {
-                    "type": "configure",
-                    "name": "build-linux-update-config-tool-debug"
-                },
-                {
-                    "type": "build",
-                    "name": "build-linux-update-config-tool-debug"
-                }
-            ]
-        },
-
-
-
-        {
-            "name": "build-linux-optimiser-tool-2D",
-            "steps": [
-                {
-                    "type": "configure",
-                    "name": "build-linux-optimiser-tool-2D"
-                },
-                {
-                    "type": "build",
-                    "name": "build-linux-optimiser-tool-2D"
-                }
-            ]
-        },
-        {
-            "name": "build-linux-optimiser-tool-3D",
-            "steps": [
-                {
-                    "type": "configure",
-                    "name": "build-linux-optimiser-tool-3D"
-                },
-                {
-                    "type": "build",
-                    "name": "build-linux-optimiser-tool-3D"
-                }
-            ]
-        },
-        {
-            "name": "build-linux-optimiser-tool-2D-debug",
-            "steps": [
-                {
-                    "type": "configure",
-                    "name": "build-linux-optimiser-tool-2D-debug"
-                },
-                {
-                    "type": "build",
-                    "name": "build-linux-optimiser-tool-2D-debug"
-                }
-            ]
-        },
-        {
-            "name": "build-linux-optimiser-tool-3D-debug",
-            "steps": [
-                {
-                    "type": "configure",
-                    "name": "build-linux-optimiser-tool-3D-debug"
-                },
-                {
-                    "type": "build",
-                    "name": "build-linux-optimiser-tool-3D-debug"
-                }
-            ]
-        },
-
-        
-        
-        {
-            "name": "build-linux-all-tools-2D",
-            "steps": [
-                {
-                    "type": "configure",
-                    "name": "build-linux-all-tools-2D"
-                },
-                {
-                    "type": "build",
-                    "name": "build-linux-all-tools-2D"
-                }
-            ]
-        },
-        {
-            "name": "build-linux-all-tools-3D",
-            "steps": [
-                {
-                    "type": "configure",
-                    "name": "build-linux-all-tools-3D"
-                },
-                {
-                    "type": "build",
-                    "name": "build-linux-all-tools-3D"
-                }
-            ]
-        },
-
-
-
-        {
-            "name": "build-linux-optimiser-R-package-2D",
-            "steps": [
-                {
-                    "type": "configure",
-                    "name": "build-linux-optimiser-R-package-2D"
-                },
-                {
-                    "type": "build",
-                    "name": "build-linux-optimiser-R-package-2D"
-                }
-            ]
-        },
-        {
-            "name": "build-linux-optimiser-R-package-3D",
-            "steps": [
-                {
-                    "type": "configure",
-                    "name": "build-linux-optimiser-R-package-3D"
-                },
-                {
-                    "type": "build",
-                    "name": "build-linux-optimiser-R-package-3D"
-                }
-            ]
-        },
-        {
-            "name": "build-linux-optimiser-R-package-2D-debug",
-            "steps": [
-                {
-                    "type": "configure",
-                    "name": "build-linux-optimiser-R-package-2D-debug"
-                },
-                {
-                    "type": "build",
-                    "name": "build-linux-optimiser-R-package-2D-debug"
-                }
-            ]
-        },
-        {
-            "name": "build-linux-optimiser-R-package-3D-debug",
-            "steps": [
-                {
-                    "type": "configure",
-                    "name": "build-linux-optimiser-R-package-3D-debug"
-                },
-                {
-                    "type": "build",
-                    "name": "build-linux-optimiser-R-package-3D-debug"
-                }
-            ]
-        },
-        {
-            "name": "build-linux-WSL-optimiser-R-package-2D",
-            "steps": [
-                {
-                    "type": "configure",
-                    "name": "build-linux-WSL-optimiser-R-package-2D"
-                },
-                {
-                    "type": "build",
-                    "name": "build-linux-WSL-optimiser-R-package-2D"
-                }
-            ]
-        },
-        {
-            "name": "build-linux-WSL-optimiser-R-package-3D",
-            "steps": [
-                {
-                    "type": "configure",
-                    "name": "build-linux-WSL-optimiser-R-package-3D"
-                },
-                {
-                    "type": "build",
-                    "name": "build-linux-WSL-optimiser-R-package-3D"
-                }
-            ]
-        },
-        {
-            "name": "build-linux-WSL-optimiser-R-package-2D-debug",
-            "steps": [
-                {
-                    "type": "configure",
-                    "name": "build-linux-WSL-optimiser-R-package-2D-debug"
-                },
-                {
-                    "type": "build",
-                    "name": "build-linux-WSL-optimiser-R-package-2D-debug"
-                }
-            ]
-        },
-        {
-            "name": "build-linux-WSL-optimiser-R-package-3D-debug",
-            "steps": [
-                {
-                    "type": "configure",
-                    "name": "build-linux-WSL-optimiser-R-package-3D-debug"
-                },
-                {
-                    "type": "build",
-                    "name": "build-linux-WSL-optimiser-R-package-3D-debug"
-                }
-            ]
-        },
-
-        
-        
-        {
-            "name": "build-linux-all-R-packages-2D",
-            "steps": [
-                {
-                    "type": "configure",
-                    "name": "build-linux-all-R-packages-2D"
-                },
-                {
-                    "type": "build",
-                    "name": "build-linux-all-R-packages-2D"
-                }
-            ]
-        },
-        {
-            "name": "build-linux-all-R-packages-3D",
-            "steps": [
-                {
-                    "type": "configure",
-                    "name": "build-linux-all-R-packages-3D"
-                },
-                {
-                    "type": "build",
-                    "name": "build-linux-all-R-packages-3D"
-                }
-            ]
-        },
-
-
-
         {
             "name": "build-doc",
             "steps": [
@@ -1375,6 +589,136 @@
                 {
                     "type": "build",
                     "name": "clean-doc"
+                }
+            ]
+        },
+        {
+            "name": "linux-2D",
+            "steps": [
+                {
+                    "type": "configure",
+                    "name": "linux-2D"
+                },
+                {
+                    "type": "build",
+                    "name": "linux-2D"
+                }
+            ]
+        },
+        {
+            "name": "linux-3D",
+            "steps": [
+                {
+                    "type": "configure",
+                    "name": "linux-3D"
+                },
+                {
+                    "type": "build",
+                    "name": "linux-3D"
+                }
+            ]
+        },
+        {
+            "name": "linux-debug-2D",
+            "steps": [
+                {
+                    "type": "configure",
+                    "name": "linux-debug-2D"
+                },
+                {
+                    "type": "build",
+                    "name": "linux-debug-2D"
+                }
+            ]
+        },
+        {
+            "name": "linux-debug-3D",
+            "steps": [
+                {
+                    "type": "configure",
+                    "name": "linux-debug-3D"
+                },
+                {
+                    "type": "build",
+                    "name": "linux-debug-3D"
+                }
+            ]
+        },
+        {
+            "name": "linux-cpuProfiler-2D",
+            "steps": [
+                {
+                    "type": "configure",
+                    "name": "linux-cpuProfiler-2D"
+                },
+                {
+                    "type": "build",
+                    "name": "linux-cpuProfiler-2D"
+                }
+            ]
+        },
+        {
+            "name": "linux-cpuProfiler-3D",
+            "steps": [
+                {
+                    "type": "configure",
+                    "name": "linux-cpuProfiler-3D"
+                },
+                {
+                    "type": "build",
+                    "name": "linux-cpuProfiler-3D"
+                }
+            ]
+        },
+        {
+            "name": "linux-heapProfiler-2D",
+            "steps": [
+                {
+                    "type": "configure",
+                    "name": "linux-heapProfiler-2D"
+                },
+                {
+                    "type": "build",
+                    "name": "linux-heapProfiler-2D"
+                }
+            ]
+        },
+        {
+            "name": "linux-heapProfiler-3D",
+            "steps": [
+                {
+                    "type": "configure",
+                    "name": "linux-heapProfiler-3D"
+                },
+                {
+                    "type": "build",
+                    "name": "linux-heapProfiler-3D"
+                }
+            ]
+        },
+        {
+            "name": "windows-2D",
+            "steps": [
+                {
+                    "type": "configure",
+                    "name": "windows-2D"
+                },
+                {
+                    "type": "build",
+                    "name": "windows-2D"
+                }
+            ]
+        },
+        {
+            "name": "windows-3D",
+            "steps": [
+                {
+                    "type": "configure",
+                    "name": "windows-3D"
+                },
+                {
+                    "type": "build",
+                    "name": "windows-3D"
                 }
             ]
         }

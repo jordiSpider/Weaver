@@ -92,44 +92,6 @@ json::parser_callback_t check_duplicate_keys = [](int depth, json::parse_event_t
 	return true;
 };
 
-json readConfigFile(fs::path configPath) {
-	try {
-        // Read configuration file
-		ifstream configFile(configPath);
-
-        if (!configFile.is_open()) {
-			throwLineInfoException("Error al abrir el archivo \"" + configPath.string() + "\".");
-        }
-
-        json configuration;
-
-		try
-		{
-			configuration = json::parse(
-				configFile, /* Configuration file */
-				check_duplicate_keys, /* Callback */
-				true, /* Allow exceptions */
-				true /* Ignore comments */
-			);
-		}
-		catch (json::exception &e)
-		{
-			cout << e.what() << endl;
-		}
-
-		return configuration;
-
-    } catch (const std::ifstream::failure& e) {
-		string message = string("Error de ifstream: ") + e.what();
-		throwLineInfoException(message);
-    } catch (const std::exception& e) {
-		string message = string("Error general: ") + e.what();
-        throwLineInfoException(message);
-    } catch (...) {
-		throwLineInfoException("Error desconocido.");
-    }
-}
-
 json readConfigFile(fs::path configPath, fs::path schemaPath) {
 	// Read configuration file
 	ifstream configFile(configPath);
@@ -184,14 +146,4 @@ json readConfigFile(fs::path configPath, fs::path schemaPath) {
     }
 
 	return configuration;
-}
-
-void saveConfigFile(fs::path configPath, json fileContent) {
-	ofstream outputFile(configPath);
-
-    if(outputFile.is_open()) 
-	{
-        outputFile << fileContent.dump(4) << endl;
-		outputFile.close();
-    }
 }

@@ -4,117 +4,86 @@ set(EXTERNAL_LIBRARIES
     cxxopts
     nlohmann_json
     boost
-    fmt
-    tbb
 )
 
 # ===========================
 # magic_enum
 
-set(LIBRARY_PACKAGE_NAME_magic_enum magic_enum)
-set(LIBRARY_COMPONENTS_BASE_magic_enum magic_enum)
-set(LIBRARY_COMPONENTS_magic_enum )
-set(LIBRARY_VCPKG_FOLDER_NAME_magic_enum magic-enum)
+set(LIBRARY_magic_enum magic_enum::magic_enum)
+set(LIBRARY_COMPONENTS_magic_enum)
 
 # ===========================
 # cxxopts
 
-set(LIBRARY_PACKAGE_NAME_cxxopts cxxopts)
-set(LIBRARY_COMPONENTS_BASE_cxxopts cxxopts)
-set(LIBRARY_COMPONENTS_cxxopts )
-set(LIBRARY_VCPKG_FOLDER_NAME_cxxopts cxxopts)
+set(LIBRARY_cxxopts cxxopts::cxxopts)
+set(LIBRARY_COMPONENTS_cxxopts)
 
 # ===========================
 # nlohmann_json
 
-set(LIBRARY_PACKAGE_NAME_nlohmann_json nlohmann_json)
-set(LIBRARY_COMPONENTS_BASE_nlohmann_json nlohmann_json)
-set(LIBRARY_COMPONENTS_nlohmann_json )
-set(LIBRARY_VCPKG_FOLDER_NAME_nlohmann_json nlohmann-json)
+set(LIBRARY_nlohmann_json nlohmann_json::nlohmann_json)
+set(LIBRARY_COMPONENTS_nlohmann_json)
 
 # ===========================
 # fmt
 
-set(LIBRARY_PACKAGE_NAME_fmt fmt)
-set(LIBRARY_COMPONENTS_BASE_fmt fmt-header-only)
-set(LIBRARY_COMPONENTS_fmt )
-set(LIBRARY_VCPKG_FOLDER_NAME_fmt fmt)
+set(LIBRARY_fmt fmt::fmt-header-only)
+set(LIBRARY_COMPONENTS_fmt)
 
 # ===========================
-# Boost
+# boost
 
-set(LIBRARY_PACKAGE_NAME_boost Boost)
-set(LIBRARY_COMPONENTS_BASE_boost boost)
-set(LIBRARY_COMPONENTS_boost 
-    geometry
-)
-set(LIBRARY_COMPONENT_CLASSES_boost_geometry )
-set(LIBRARY_VCPKG_FOLDER_NAME_Boost boost)
-
-# ===========================
-# TBB
-
-set(LIBRARY_PACKAGE_NAME_tbb TBB)
-set(LIBRARY_COMPONENTS_BASE_tbb tbb tbbmalloc)
-set(LIBRARY_COMPONENTS_tbb )
-set(LIBRARY_VCPKG_FOLDER_NAME_tbb tbb)
+set(LIBRARY_boost Boost)
+set(LIBRARY_COMPONENTS_boost)
 
 
 
 set(EXTERNAL_CLASSES)
 
 foreach(library ${EXTERNAL_LIBRARIES})
-    foreach(component_base ${LIBRARY_COMPONENTS_BASE_${library}})
-        list(APPEND ${library}_components_base ${LIBRARY_PACKAGE_NAME_${library}}::${component_base})
-    endforeach()
-    
-    if(LIBRARY_COMPONENTS_${library})
-        foreach(component ${LIBRARY_COMPONENTS_${library}})
-            if(LIBRARY_COMPONENT_CLASSES_${library}_${component})
-                set(${library}_${component}_classes ${LIBRARY_COMPONENT_CLASSES_${library}_${component}})
-            else()
-                set(libraryInclude "$ENV{VCPKG_ROOT}/packages/${library}-${component}_${VCPKG_HOST_TRIPLET}/${INCLUDE_DIRECTORY}")
-                file(GLOB_RECURSE libraryFiles "${libraryInclude}/*.h" "${libraryInclude}/*.hpp")
+    # Comprobar si la lista está vacía
+    list(LENGTH LIBRARY_COMPONENTS_${library} numbreOfComponents)
 
-                foreach(file ${libraryFiles})
-                    string(REGEX MATCH "${INCLUDE_DIRECTORY}/([A-Za-z0-9_/\\-]+)\.(h|hpp)" matchedPart "${file}")
-                    set(class ${CMAKE_MATCH_1})
+    if(numbreOfComponents EQUAL 0)
+        # List all library files
 
-                    list(APPEND ${library}_${component}_classes ${class})
-                endforeach()
-            endif()
+        string(REPLACE "_" "-" refactorLibrary ${library})
+        set(libraryInclude "$ENV{VCPKG_ROOT}/packages/${refactorLibrary}_${VCPKG_HOST_TRIPLET}/${INCLUDE_DIRECTORY}")
+        file(GLOB_RECURSE libraryFiles "${libraryInclude}/*.h" "${libraryInclude}/*.hpp")
 
-            foreach(class ${${library}_${component}_classes})
-                list(APPEND EXTERNAL_CLASSES ${class})
+        foreach(file ${libraryFiles})
+            string(REGEX MATCH "${INCLUDE_DIRECTORY}/([A-Za-z0-9_/]+)\.(h|hpp)" matchedPart "${file}")
+            set(class ${CMAKE_MATCH_1})
 
-                string(REPLACE "/" ${PATH_SEP} refactorClass ${class})
-
-                set(MAP_DEPEN_${refactorClass} ${${library}_components_base})
-            endforeach()
-        endforeach()
-    else()
-        if(LIBRARY_CLASSES_${library})
-            set(${library}_classes ${LIBRARY_CLASSES_${library}})
-        else()
-            set(libraryInclude "$ENV{VCPKG_ROOT}/packages/${LIBRARY_VCPKG_FOLDER_NAME_${library}}_${VCPKG_HOST_TRIPLET}/${INCLUDE_DIRECTORY}")
-            file(GLOB_RECURSE libraryFiles "${libraryInclude}/*.h" "${libraryInclude}/*.hpp")
-
-            foreach(file ${libraryFiles})
-                string(REGEX MATCH "${INCLUDE_DIRECTORY}/([A-Za-z0-9_/\\-]+)\.(h|hpp)" matchedPart "${file}")
-                set(class ${CMAKE_MATCH_1})
-
-                list(APPEND ${library}_classes ${class})
-            endforeach()
-        endif()
-
-        foreach(class ${${library}_classes})
             list(APPEND EXTERNAL_CLASSES ${class})
 
             string(REPLACE "/" ${PATH_SEP} refactorClass ${class})
 
-            set(MAP_DEPEN_${refactorClass} ${${library}_components_base})
+            set(MAP_DEPEN_${refactorClass} ${LIBRARY_${library}})
         endforeach()
-    endif()
 
-    find_package(${LIBRARY_PACKAGE_NAME_${library}} REQUIRED)
+        find_package(${library})
+    else()
+        foreach(component ${LIBRARY_COMPONENTS_${library}})
+            # List all library files
+
+            string(REPLACE "_" "-" refactorLibrary ${library})
+            set(libraryInclude "$ENV{VCPKG_ROOT}/packages/${refactorLibrary}-${component}_${VCPKG_HOST_TRIPLET}/${INCLUDE_DIRECTORY}")
+            file(GLOB_RECURSE libraryFiles "${libraryInclude}/*.h" "${libraryInclude}/*.hpp")
+
+            foreach(file ${libraryFiles})
+                string(REGEX MATCH "${INCLUDE_DIRECTORY}/([A-Za-z0-9_/]+)\.(h|hpp)" matchedPart "${file}")
+                set(class ${CMAKE_MATCH_1})
+
+                list(APPEND EXTERNAL_CLASSES ${class})
+
+                string(REPLACE "/" ${PATH_SEP} refactorClass ${class})
+
+                set(MAP_DEPEN_${refactorClass} "${LIBRARY_${library}}::${component}")
+            endforeach()
+
+        endforeach()
+
+        find_package(${library} COMPONENTS ${LIBRARY_COMPONENTS_${library}})
+    endif()
 endforeach()

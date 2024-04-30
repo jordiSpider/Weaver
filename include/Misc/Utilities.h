@@ -27,8 +27,6 @@ std::string getResultFolderName(const std::string& baseName);
 fs::path obtainResultFolder(const std::string& baseName, fs::path outputFolder);
 std::string createOutputFile(std::ofstream &file, fs::path filenameRoot, std::string filename, std::string extension, std::ios_base::openmode openMode = std::ofstream::out);
 std::string createOutputFile(std::ofstream &file, fs::path filenameRoot, std::string filename, std::string extension, date_type timeStep, unsigned int recordEach, std::ios_base::openmode openMode = std::ofstream::out);
-nlohmann::json readConfigFile(fs::path configPath);
 nlohmann::json readConfigFile(fs::path configPath, fs::path schemaPath);
-void saveConfigFile(fs::path configPath, nlohmann::json fileContent);
 
 #endif // UTILITIES_H_
