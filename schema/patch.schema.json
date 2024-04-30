@@ -14,6 +14,10 @@
                         "randomGaussian"
                     ],
                     "required": true
+                },
+                "resourceMaximumCapacity": {
+                    "type": "floater",
+                    "required": true
                 }
             },
             "conditionals": [
@@ -36,7 +40,7 @@
                             "add": {
                                 "properties": { 
                                     "value": {
-                                        "type": "float",
+                                        "type": "floater",
                                         "required": true
                                     }
                                 }
@@ -79,11 +83,11 @@
                                         "required": true
                                     },
                                     "sigma": {
-                                        "type": "float",
+                                        "type": "floater",
                                         "required": true
                                     },
                                     "amplitude": {
-                                        "type": "float",
+                                        "type": "floater",
                                         "required": true
                                     }
                                 }
@@ -126,7 +130,7 @@
                                         "required": true
                                     },
                                     "value": {
-                                        "type": "float",
+                                        "type": "floater",
                                         "required": true
                                     }
                                 }
@@ -191,7 +195,7 @@
                                         "required": true
                                     },
                                     "value": {
-                                        "type": "float",
+                                        "type": "floater",
                                         "required": true
                                     }
                                 }
@@ -234,14 +238,48 @@
                                         "required": true
                                     },
                                     "maxSigma": {
-                                        "type": "float",
+                                        "type": "floater",
                                         "required": true
                                     },
                                     "maxAmplitude": {
-                                        "type": "float",
+                                        "type": "floater",
                                         "required": true
                                     }
                                 }
+                            }
+                        }
+                    ]
+                },
+                {
+                    "if": {
+                        "type": "property_exists",
+                        "value": [
+                            "value"
+                        ]
+                    },
+                    "then": [ 
+                        {
+                            "add": {
+                                "requiredConditions": [
+                                    {
+                                        "condition": {
+                                            "type": "less_equal_than",
+                                            "lhs": {
+                                                "type": "property",
+                                                "value": [
+                                                    "value"
+                                                ]
+                                            },
+                                            "rhs": {
+                                                "type": "property",
+                                                "value": [
+                                                    "resourceMaximumCapacity"
+                                                ]
+                                            }
+                                        },
+                                        "error": "Item 'value' must be less than or equal to item 'resourceMaximumCapacity'"
+                                    }
+                                ]
                             }
                         }
                     ]

@@ -9,11 +9,10 @@
 #define LOCI_H_
 
 #include <vector>
+
 #include "Allele.h"
 #include "Maths/Random.h"
-#include "SimulationConstants.h"
 
-using namespace std;
 
 /**
  * This is the specification for a locus. One locus just contains a
@@ -23,11 +22,11 @@ using namespace std;
 class Locus
 {
 private:
-	vector<Allele*> alleles;
+	std::vector<const Allele*> alleles;
 public:
-	Locus(int numberOfAlleles);
+	Locus(const unsigned int &numberOfAlleles);
 	virtual ~Locus();
-	Allele* getAlleleRandomly();
+	inline const Allele* const getAlleleRandomly() const { return alleles.at(Random::randomIndex(alleles.size())); };
 };
 
 #endif /* LOCI_H_ */

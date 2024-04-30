@@ -30,8 +30,8 @@ class DarwinTools(UnixTools):
     ## @brief DarwinTools class initializer
     #
     # @param config Project configuration
-    def __init__(self, config: Dict, working_directory: str, tool_script_name: str):
-        super().__init__(config, working_directory, tool_script_name, str(SO_TYPE.Darwin))
+    def __init__(self, config: Dict, working_directory: str, tool_script_base_path: str, tool_script_name: str):
+        super().__init__(config, working_directory, tool_script_base_path, tool_script_name, str(SO_TYPE.Darwin))
         ## Extension of the executable generated from the script
         self._executable_extension: str = "app"
 

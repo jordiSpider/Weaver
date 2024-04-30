@@ -5,21 +5,18 @@
 #include "Maths/Random.h"
 #include <vector>
 
-using namespace std;
 
 class Gamete
 {
 private:
-    vector<Chromosome *> chromosomes;
+    std::vector<Chromosome *> chromosomes;
 
 public:
-    Gamete();
+    Gamete(const unsigned int &numberOfChromosomes);
     ~Gamete();
-    unsigned int size();
-    void pushChromosome(Chromosome *newChromosome);
-    const Chromosome * getRandomChromosome();
-    const Chromosome * getChromosome(const unsigned int& position);
-    void deleteChromosomes();
+    inline unsigned int size() const { return chromosomes.size(); }
+    inline void pushChromosome(Chromosome *newChromosome) { chromosomes.emplace_back(newChromosome); }
+    inline Chromosome* getChromosome(const unsigned int& position) { return chromosomes.at(position); }
 };
 
 #endif

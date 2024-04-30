@@ -7,20 +7,27 @@
 
 #ifndef WEAVER_ANIMAL_H_
 #define WEAVER_ANIMAL_H_
+
 #include <cmath>
 #include <vector>
 #include <unordered_map>
 #include <list>
-#include "Chromosome.h"
-#include "ChromosomesGenerator.h"
-#include "Genome.h"
-#include "SimulationConstants.h"
-#include "AnimalSpecies.h"
-#include "Fungus.h"
 #include <float.h>
 #include <iostream>
 #include <math.h>
+
+#include "Genome.h"
+#include "Gamete.h"
+#include "Edible.h"
+#include "SimulationConstants.h"
+#include "Maths/Math_Functions.h"
+#include "Maths/Random.h"
 #include "Types.h"
+#include "Trait.h"
+#include "AnimalSpecies.h"
+#include "SimulType.h"
+#include "Output.h"
+
 
 class TerrainCell;
 
@@ -47,18 +54,258 @@ using namespace std;
 
 class Animal: public Edible
 {
-protected:
+public:
 
-	//AnimalSpecies* mySpecies;
-	unsigned int huntingMode;
-	Genome* genome;
+	static id_type animalCounter;
+
+	#ifdef _DEBUG
+	list<int> searchedAnimalsToday;
+	list<int> encounteredAnimalsToday;
+	list<int> huntedAnimalsToday;
+	list<int> predatedAnimalsToday;
+	#endif
+
+	/**
+	 * Constructs an animal with the specified id and chromosomes,
+	 * emplacing it at the specified position.It also initializes
+	 * the array of traits based on the array of pairs of chromosomes.
+	 * @param id the unique id of this Animal
+	 * @param chromosomes an array of pairs of Chromosome, each pair
+	 * containing the genetic material related to each trait
+	 * @param position the Cell for this animal to be emplaced
+	 */
+	//Animal(int id, vector<pair<Chromosome*, Chromosome*> >* chromosomes, TerrainCell* position);
+	explicit Animal(double eggMassAtBirth, TerrainCell* position, double timeStep, double timeStepsPerDay, int g_numb_prt1,
+			int g_numb_prt2, int ID_prt1, int ID_prt2, AnimalSpecies* const mySpecies, unsigned int gender,
+			bool temporary=false);
+	explicit Animal(Gamete* const firstParentGamete, Gamete* const secondParentGamete, double eggMassAtBirth, TerrainCell* position, double timeStep, double timeStepsPerDay, int g_numb_prt1,
+			int g_numb_prt2, int ID_prt1, int ID_prt2, AnimalSpecies* const mySpecies, unsigned int gender,
+			bool temporary=false);
+	/**
+	 * Destroys this Animal deleting its data.
+	 */
+	virtual ~Animal();
+
+	inline AnimalSpecies* const getSpecies() const override { return static_cast<AnimalSpecies* const>(mySpecies); }
+	inline const double calculateDryMass() const { return getCurrentBodySize() + getTrait(Trait::energy_tank); }
+	inline const double turnIntoDryMassToBeEaten(const double &predatorVoracity, const float &profitability, const double &leftovers) const { return calculateDryMass(); }
+	inline const double calculateWetMass() { return getSpecies()->getConversionToWetMass() * calculateDryMass(); }
+	inline const double getVoracity() const { return getTrait(Trait::voracity); }
+	inline virtual const double& getMassAtBirth() const { return massAtBirth; }
+	inline virtual const double getRemainingVoracity() const { return max(getTrait(Trait::voracity) - foodMass, 0.0); }
+	inline virtual const double& getAssim() const { return getTrait(Trait::assim); }
+	inline virtual const double getCurrentBodySize() const { return currentBodySize; }
+	inline virtual const double getSpeed() const { return getTrait(Trait::speed); }
+	inline const HuntingMode& getHuntingMode() const { return huntingMode; }
+	inline virtual const bool isHunting() const { return getHuntingMode() != HuntingMode::does_not_hunt; }
+	inline virtual const Instar& getInstar() const { return instar; }
+	virtual void incrementEncountersWithPredator(const int &predatorId);
+
+	inline const double& getAgeInInstar(const Instar& instar) const { return finalDevTimeVector[instar.getValue()-1]; }
+	inline const double& getAgeFirstReproduction() const { return getAgeInInstar(getSpecies()->getInstarFirstReproduction()); }
+	inline const double& getAgeLastInstar() const { return finalDevTimeVector.back(); }
+	inline const double& getMassesInInstar(const Instar& instar) const { return massesVector[instar.getValue()-1]; }
+	inline const double& getMassesFirstReproduction() const { return getMassesInInstar(getSpecies()->getInstarFirstReproduction()); }
+	inline const double& getMassesLastInstar() const { return massesVector.back(); }
+
+	const double& getTrait(const TraitType& type) const;
+	void setTrait(const TraitType& type, const double& newValue);
+
+	virtual bool canEatEdible(Edible* edibleToCheck);
+	virtual double calculateEncounterProbability(Edible* edibleToBeEncountered, double muForPDF, double sigmaForPDF, double encounterHuntedVoracitySAW, double encounterHunterVoracitySAW, double encounterVoracitiesProductSAW, double encounterHunterSizeSAW, double encounterHuntedSizeSAW, double encounterProbabilityDensityFunctionSAW, double encounterHuntedVoracityAH, double encounterHunterVoracityAH, double encounterVoracitiesProductAH, double encounterHunterSizeAH, double encounterHuntedSizeAH, double encounterProbabilityDensityFunctionAH);
+	virtual bool encounterEdible(Edible* searchedAnimal, float attackOrExposedAttackProbability, int timeStep, FILE* encounterProbabilitiesFile, FILE* predationProbabilitiesFile, double muForPDF, double sigmaForPDF, double encounterHuntedVoracitySAW, double encounterHunterVoracitySAW, double encounterVoracitiesProductSAW, double encounterHunterSizeSAW, double encounterHuntedSizeSAW, double encounterProbabilityDensityFunctionSAW, double encounterHuntedVoracityAH, double encounterHunterVoracityAH, double encounterVoracitiesProductAH, double encounterHunterSizeAH, double encounterHuntedSizeAH, double encounterProbabilityDensityFunctionAH);
+	virtual double calculatePredationProbability(Edible* edibleToBePredated, bool retaliation, double muForPDF, double sigmaForPDF, double predationSpeedRatioAH, double predationHunterVoracityAH, double predationProbabilityDensityFunctionAH, double predationSpeedRatioSAW, double predationHunterVoracitySAW, double predationProbabilityDensityFunctionSAW);
+	virtual bool predateEdible(Edible* edibleToBePredated, int day, bool retaliation, FILE* encounterProbabilitiesFile, FILE* predationProbabilitiesFile, double muForPDF, double sigmaForPDF, double predationSpeedRatioAH, double predationHunterVoracityAH, double predationProbabilityDensityFunctionAH, double predationSpeedRatioSAW, double predationHunterVoracitySAW, double predationProbabilityDensityFunctionSAW, double maxSearchArea);
+	virtual double calculateEdibilityValue(Edible* edibleToBeEvaluated, double muForPDF, double sigmaForPDF, double predationSpeedRatioAH, double predationHunterVoracityAH, double predationProbabilityDensityFunctionAH, double predationSpeedRatioSAW, double predationHunterVoracitySAW, double predationProbabilityDensityFunctionSAW, double encounterHuntedVoracitySAW, double encounterHunterVoracitySAW, double encounterVoracitiesProductSAW, double encounterHunterSizeSAW, double encounterHuntedSizeSAW, double encounterProbabilityDensityFunctionSAW, double encounterHuntedVoracityAH, double encounterHunterVoracityAH, double encounterVoracitiesProductAH, double encounterHunterSizeAH, double encounterHuntedSizeAH, double encounterProbabilityDensityFunctionAH);
+	virtual double calculateEdibilityValueWithMass(Edible* edibleToBeEvaluated, double muForPDF, double sigmaForPDF, double predationSpeedRatioAH, double predationHunterVoracityAH, double predationProbabilityDensityFunctionAH, double predationSpeedRatioSAW, double predationHunterVoracitySAW, double predationProbabilityDensityFunctionSAW, double encounterHuntedVoracitySAW, double encounterHunterVoracitySAW, double encounterVoracitiesProductSAW, double encounterHunterSizeSAW, double encounterHuntedSizeSAW, double encounterProbabilityDensityFunctionSAW, double encounterHuntedVoracityAH, double encounterHunterVoracityAH, double encounterVoracitiesProductAH, double encounterHunterSizeAH, double encounterHuntedSizeAH, double encounterProbabilityDensityFunctionAH);
+	virtual float getMeanExperience(Species* species) { return meanExperiencesPerSpecies.at(species); };
+
+	virtual bool isDepleted(double foodDemand) { return false; };
+	virtual double anyLeft() { return 0.0; };
+	virtual void substractBiomass(double dryMassToBeSubstracted) {};
+
+	virtual bool isSated() { return sated; };
+	virtual bool isExhausted() { return steps >= getTrait(Trait::search_area); };
+
+	virtual bool isMature() { return mature; };
+	virtual bool isMated() { return mated; };
+	virtual unsigned int getGender() const { return gender; }
+
+	inline virtual const LifeStage& getLifeStage() const { return lifeStage; };
+	virtual void setNewLifeStage(const LifeStage newLifeStage);
+	virtual void setNewLifeStage(const LifeStage newLifeStage, double dayOfDeath);
+	virtual void setNewLifeStage(const LifeStage newLifeStage, double dayOfDeath, int predatorId);
+	virtual double getDateOfDeath() const { return dateOfDeath; };
+	virtual void setDateOfDeath(double dateOfDeath) { this->dateOfDeath = dateOfDeath; };
+	virtual int getPredatedByID() const { return predatedByID; };
+	virtual void setPredatedByID(int predatorId) { this->predatedByID = predatorId; };
+
+	virtual pair<bool, bool> interpolateTraits();
+	virtual void printTraits(FILE* traitsFile);
+	virtual void adjustTraits();
+	virtual void isReadyToBeBorn(int timeStep, int timeStepsPerDay);
+	virtual void isReadyToResumeFromPupaOrDecreasePupaTimer();
+	virtual void isReadyToResumeFromHandlingOrDecreaseHandlingTimer();
+	virtual void isReadyToResumeFromDiapauseOrIncreaseDiapauseTimeSteps(float relativeHumidity);
+	virtual void calculateGrowthCurves(float temperature, std::FILE* tuneTraitsFile, bool printGrowthData, double ageAtInitialization);
+	virtual double getEggDryMassAtBirth() { return eggDryMassAtBirth; };
+	virtual void tuneTraits(int timeStep, int timeStepsPerDay, float temperature, float relativeHumidity, std::FILE* tuneTraitsFile, bool printGrowthData, bool fromForceMolting1, SimulType simulType, TerrainCell*(*getCell)(unsigned int, unsigned int, unsigned int));
+	virtual TerrainCell* move(int timeStep, int timeStepsPerDay, FILE* encounterProbabilitiesFile, FILE* predationProbabilitiesFile, bool saveEdibilitiesFile, FILE* edibilitiesFile, TerrainCell*(*getCellByBearing)(TerrainCell*, TerrainCell*), unsigned int worldDepth, unsigned int worldLength, unsigned int worldWidth, TerrainCell*(*getCell)(unsigned int, unsigned int, unsigned int), double pdfThreshold, double muForPDF, double sigmaForPDF, vector<AnimalSpecies*> *existingAnimalSpecies, double predationSpeedRatioAH, double predationHunterVoracityAH, double predationProbabilityDensityFunctionAH, double predationSpeedRatioSAW, double predationHunterVoracitySAW, double predationProbabilityDensityFunctionSAW, double maxSearchArea, double encounterHuntedVoracitySAW, double encounterHunterVoracitySAW, double encounterVoracitiesProductSAW, double encounterHunterSizeSAW, double encounterHuntedSizeSAW, double encounterProbabilityDensityFunctionSAW, double encounterHuntedVoracityAH, double encounterHunterVoracityAH, double encounterVoracitiesProductAH, double encounterHunterSizeAH, double encounterHuntedSizeAH, double encounterProbabilityDensityFunctionAH);
+	virtual double calculatePredatoryRiskEdibilityValue(Edible* edibleToBeEvaluated, double muForPDF, double sigmaForPDF, double predationSpeedRatioAH, double predationHunterVoracityAH, double predationProbabilityDensityFunctionAH, double predationSpeedRatioSAW, double predationHunterVoracitySAW, double predationProbabilityDensityFunctionSAW, double encounterHuntedVoracitySAW, double encounterHunterVoracitySAW, double encounterVoracitiesProductSAW, double encounterHunterSizeSAW, double encounterHuntedSizeSAW, double encounterProbabilityDensityFunctionSAW, double encounterHuntedVoracityAH, double encounterHunterVoracityAH, double encounterVoracitiesProductAH, double encounterHunterSizeAH, double encounterHuntedSizeAH, double encounterProbabilityDensityFunctionAH);
+	virtual bool hasTriedToHunt(Animal* edibleToCheck);
+	virtual void printVoracities(int timeStep, int timeStepsPerDay, FILE* voracitiesFile, SimulType simulType);
+	virtual void dieFromBackground(int timeStep, bool growthAndReproTest);
+	virtual void assimilateFoodMass(int timeStep);
+	virtual void metabolize(int timeStep, int timeStepPerDay, SimulType simulType);
+	virtual void grow(int timeStep, int timeStepsPerDay);
+	list<Animal*> * breed(int timeStep, int timeStepsPerDay, float temperature, bool saveAnimalConstitutiveTraits, FILE* constitutiveTraitsFile);
+	virtual bool postBreeding(int timeStep, int timeStepsPerDay);
+	virtual const Genome& getGenome() const { return genome; };
+	virtual int getGenerationNumberFromMaleParent() const { return generationNumberFromMaleParent; };
+	virtual void setGenomeFromMatedMale(const Animal* matedMale);
+	virtual list<int> * getEncounterEvents();
+
+	friend std::ostream& operator<<(std::ostream& os, const Animal& animal);
+
+	void clearGenomeFromMatedMale();
+	double getSearchArea() { return getTrait(Trait::search_area); };
+
+	virtual void increaseAge(int increase);
+
+	inline void doDefinitive() { 
+		Edible::doDefinitive();
+		Animal::animalCounter++;
+	};
+
+	/**
+	 * Returns the chromosomes of this Animal.
+	 * @return the array of pairs of Chromosome of this Animal
+	 */
+	vector<pair<Chromosome*, Chromosome*> >* getChromosomes();
+
+	/**
+	 * Returns true if the state of this Animal is ACTIVE, false otherwise.
+	 * @return true if the state of this Animal is ACTIVE, false otherwise
+	 */
+	bool isActive();
+
+	double getNormalizedHuntedVoracity(double huntedVoracity);
+	double getNormalizedHunterVoracity();
+	double getNormalizedVoracityProduct(double hunterVoracity);
+	double getNormalizedHuntedBodySize(double huntedBodySize);
+	double getNormalizedHunterBodySize();
+	double getNormalizedPDF(double probabilityDensityFunction);
+	double getNormalizedSpeedRatio(double hunterSpd);
+
+	friend double getLog_mass_ratio(Animal* hunter, Animal* hunted);
+
+	double getSearchAreaHunter();
+
+	double getSpeedHunter();
+
+	virtual inline TerrainCell* const getPosition() const { return position; }
+
+	//void incrementEncounters_prey();
+
+	int computeEggBatchNumber();
+	list<Animal*> * breedAsexually( int objectiveEggsNumber,int timeStep, int timeStepsPerDay, float temperature, bool saveAnimalConstitutiveTraits, FILE* constitutiveTraitsFile);
+	list<Animal*> * breedSexually( int objectiveEggsNumber,int timeStep, int timeStepsPerDay, float temperature, bool saveAnimalConstitutiveTraits, FILE* constitutiveTraitsFile);
+
+	void printGenetics(ostream& geneticsFile);
+
+	double nextDinoMassPredicted;
+	double currentAge;
+	double daysExperienced;
+	double tankAtGrowth;
+	double slopeTarget;
+	double interceptTarget;
+	double foodMass;
+	double finalJMaxVB;
+	double maxNextInstarMassFromVBPlasticity;
+	float edibleToBePredatedProfitability;
+	double foodMassLeftForNextTimeStep;
+	double lastHuntedAnimalDryMass;
+	int days_digest;
+	
+
+	std::list<pair<TerrainCell *, Animal *>> eatenTodayList;
+	std::list<TerrainCell *> cellsTrackedToday;
+	double biomassTrackedToday;
+	bool hasEvaluatedTheWholeWorld;
+	int eatenToday;
+	double wetMassAtTheBeginningOfTheTimeStep;
+	double oldSearchArea;
+	
+	void updateLimits();
+	void sumPseudoGrowthMean();
+	void calculatePseudoGrowthMean();
+	void sumPseudoGrowthSd();
+	void calculatePseudoGrowthSd();
+
+
+	float forceMolting(int timeStepsPerDay, double ageAtInitialization, Instar instarAtInitialization, SimulType simulType, TerrainCell*(*getCell)(unsigned int, unsigned int, unsigned int));
+	float forceMolting2(int timeStepsPerDay, double ageAtInitialization, Instar instarAtInitialization);
+
+
+
+	bool searchAnimalsAndResourceToEat(int timeStep, int timeStepsPerDay, FILE* encounterProbabilitiesFile, FILE* predationProbabilitiesFile, bool saveEdibilitiesFile, FILE* edibilitiesFile, double pdfThreshold, double muForPDF, double sigmaForPDF, std::vector<AnimalSpecies*> *existingAnimalSpecies, double predationSpeedRatioAH, double predationHunterVoracityAH, double predationProbabilityDensityFunctionAH, double predationSpeedRatioSAW, double predationHunterVoracitySAW, double predationProbabilityDensityFunctionSAW, double maxSearchArea, double encounterHuntedVoracitySAW, double encounterHunterVoracitySAW, double encounterVoracitiesProductSAW, double encounterHunterSizeSAW, double encounterHuntedSizeSAW, double encounterProbabilityDensityFunctionSAW, double encounterHuntedVoracityAH, double encounterHunterVoracityAH, double encounterVoracitiesProductAH, double encounterHunterSizeAH, double encounterHuntedSizeAH, double encounterProbabilityDensityFunctionAH);
+
+	/**
+	 * Moves one step from the current position. The decision is made
+	 * considering both preys and predators in the neighbor cells.
+	 */
+	void moveOneStep(TerrainCell*(*getCellByBearing)(TerrainCell*, TerrainCell*), unsigned int worldDepth, unsigned int worldLength, unsigned int worldWidth, TerrainCell*(*getCell)(unsigned int, unsigned int, unsigned int), double muForPDF, double sigmaForPDF, double predationSpeedRatioAH, double predationHunterVoracityAH, double predationProbabilityDensityFunctionAH, double predationSpeedRatioSAW, double predationHunterVoracitySAW, double predationProbabilityDensityFunctionSAW, double encounterHuntedVoracitySAW, double encounterHunterVoracitySAW, double encounterVoracitiesProductSAW, double encounterHunterSizeSAW, double encounterHuntedSizeSAW, double encounterProbabilityDensityFunctionSAW, double encounterHuntedVoracityAH, double encounterHunterVoracityAH, double encounterVoracitiesProductAH, double encounterHunterSizeAH, double encounterHuntedSizeAH, double encounterProbabilityDensityFunctionAH);
+
+	void setPosition(TerrainCell* newPosition) { this->position = newPosition; };
+	void setDateEgg(double newDateEgg) { this->date_egg = newDateEgg; };
+	int getDateEgg() const { return date_egg; }
+	void setMassAtBirth(double massAtBirth) { this->massAtBirth = massAtBirth; };
+
+	void checkReadyToReproduce();
+
+	const double& getSpeedIni() const { return speed_ini; }
+	const double& getPhenoIni() const { return pheno_ini; }
+	int getAgeFirstRep() const { return age_first_rep; }
+	int getRepCount() const { return rep_count; }
+	int getFecundity() const { return fecundity; }
+	int getGenerationNumberFromFemaleParent() const { return generationNumberFromFemaleParent; }
+	int getID_Prt1() const { return ID_prt1; }
+	int getID_Prt2() const { return ID_prt2; }
+	int getTodayEncountersWithPredators() const { return todayEncountersWithPredators; }
+	const std::list<int>& getEncounterEvents() const { return encounterEvents; }
+	int getDaysDigest() const { return days_digest; }
+	const double& getVoracityIni() const { return voracity_ini; }
+	const double& getSearchAreaIni() const { return search_area_ini; }
+	const double& getTankIni() const { return tank_ini; }
+
+
+
+
+	void becomePredated(int timeStep);
+
+
+	/**
+	 * Returns the days digest.
+	 * @return the days digest
+	 */
+	int getDaysDigest();
+	int getMaxReproductionEvents();
+
+	const std::vector<double>& getTraits() const { return traits; }
+
+	void updateBiomassExperiencedPerSpecies(int timeStepsPerDay);
+
+	void assimilateLastHuntedAnimalAndComputeHandlingTime();
+
+protected:
+	HuntingMode huntingMode;
+	Genome genome;
 	double eggDryMassAtBirth;
 	double factorEggMassFromMom;
-	unordered_map<Trait, double> fixedTraits;
-	unordered_map<Trait, double> variableTraits;
+	std::vector<double> traits;
+	const TraitType* const variableTraits;
 	//double vonBertK;
 
-	double Linf;
 	vector<double> actualMoltingTimeVector;
 	vector<double> actualMoltingMassVector;
 	vector<double> finalDevTimeVector;
@@ -69,7 +316,6 @@ protected:
  */	double currentBodySize;
 	double currentPostTempGrowth;
 	double currentPostTempLinf;
-	double thisAnimalVonBertTime0;
 
 	double maxPostTvor;
 	double minPostTvor;
@@ -100,13 +346,13 @@ protected:
 	 */
 	double steps;
 	unsigned int stepsAttempted;
-	unsigned int lifeStage;
+	LifeStage lifeStage;
 
 	list<int> encounterEvents;
 	list<Edible*> ediblesHasTriedToPredate;
 	int predatedByID;
-	map<Species*, double> abundancesExperiencedPerSpecies;
-	map<Species*, double> meanExperiencesPerSpecies;
+	map<const Species* const, double> biomassExperiencedPerSpecies;
+	map<const Species* const, double> meanExperiencesPerSpecies;
 
 	//int encounters_prey;
 	int todayEncountersWithPredators;
@@ -145,237 +391,70 @@ protected:
 	int age_first_rep;
 	unsigned int gender;
 
+	double lengthAtBirth;
+
+	CurveParams* growthCurveParams;
+
+	double getValueGrowthCurve(const double &age, const double &midpointValue);
+
 	void initTraits();
-	double getTotalMetabolicDryMassLoss(double wetMass, double temperature, double proportionOfTimeTheAnimalWasMoving, int timeStepsPerDay);
+	double getTotalMetabolicDryMassLoss(double wetMass, double temperature, double proportionOfTimeTheAnimalWasMoving, int timeStepsPerDay, SimulType simulType);
+	inline void deleteHomologousCorrelosomes() { genome.deleteHomologousCorrelosomes(); }
+	void setOtherAttributes(double eggMassAtBirth, TerrainCell* position, double timeStep, double timeStepsPerDay, int g_numb_prt1,
+			int g_numb_prt2, int ID_prt1, int ID_prt2, unsigned int gender);
+};
 
-public:
+template <> struct fmt::formatter<Animal> {
+    // Presentation format: 'f' - fixed, 'e' - exponential.
+    char presentation = 'f';
 
-	friend class TerrainCell;
+    // Parses format specifications of the form ['f' | 'e'].
+    constexpr auto parse(format_parse_context& ctx) -> decltype(ctx.begin()) {
+        // [ctx.begin(), ctx.end()) is a character range that contains a part of
+        // the format string starting from the format specifications to be parsed,
+        // e.g. in
+        //
+        //   fmt::format("{:f} - point of interest", point{1, 2});
+        //
+        // the range will contain "f} - point of interest". The formatter should
+        // parse specifiers until '}' or the end of the range. In this example
+        // the formatter should parse the 'f' specifier and return an iterator
+        // pointing to '}'.
 
-	enum HUNTING_MODES
-	{
-		DOES_NOT_HUNT, SIT_AND_WAIT, // Sit and Wait
-		ACTIVE_HUNTING
-	// Active Hunting
-	};
+        // Please also note that this character range may be empty, in case of
+        // the "{}" format string, so therefore you should check ctx.begin()
+        // for equality with ctx.end().
 
-	enum LIFE_STAGES
-	{
-		UNBORN, ACTIVE, STARVED, PREDATED, REPRODUCING, PUPA, SATIATED, HANDLING, DIAPAUSE, BACKGROUND, SENESCED, SHOCKED
-	};
+        // Parse the presentation format and store it in the formatter:
+        auto it = ctx.begin(), end = ctx.end();
+        if (it != end && (*it == 'f' || *it == 'e')) presentation = *it++;
 
-	#ifdef _DEBUG
-	list<int> searchedAnimalsToday;
-	list<int> encounteredAnimalsToday;
-	list<int> huntedAnimalsToday;
-	list<int> predatedAnimalsToday;
-	#endif
+        // Check if reached the end of the range:
+        if (it != end && *it != '}') throw format_error("invalid format");
 
-	/**
-	 * Constructs an animal with the specified id and chromosomes,
-	 * emplacing it at the specified position.It also initializes
-	 * the array of traits based on the array of pairs of chromosomes.
-	 * @param id the unique id of this Animal
-	 * @param chromosomes an array of pairs of Chromosome, each pair
-	 * containing the genetic material related to each trait
-	 * @param position the Cell for this animal to be emplaced
-	 */
-	//Animal(int id, vector<pair<Chromosome*, Chromosome*> >* chromosomes, TerrainCell* position);
-	Animal(Genome* genome, double eggMassAtBirth, TerrainCell* position, double timeStep, double timeStepsPerDay, int g_numb_prt1,
-			int g_numb_prt2, int ID_prt1, int ID_prt2, Species* mySpecies, unsigned int gender,
-			unsigned int huntingMode, bool temporary=false);
-	/**
-	 * Destroys this Animal deleting its data.
-	 */
-	virtual ~Animal();
+        // Return an iterator past the end of the parsed range:
+        return ctx.begin();
+    }
 
-	virtual double calculateDryMass() {	return currentBodySize + getTrait(Trait::energy_tank); };
-	virtual double turnIntoDryMassToBeEaten(double predatorVoracity, float profitability, double leftovers) {	return calculateDryMass(); };
-	virtual double calculateWetMass() {	return mySpecies->getConversionToWetMass() * calculateDryMass(); };
-	virtual double getVoracity() { return getTrait(Trait::voracity); };
-	virtual double getMassAtBirth() { return massAtBirth; };
-	virtual double getRemainingVoracity() { return max(getTrait(Trait::voracity) - foodMass, 0.0); };
-	virtual double getAssim() { return getTrait(Trait::assim); };
-	virtual double getCurrentBodySize() { return currentBodySize; };
-	virtual double getSpeed() { return getTrait(Trait::speed); };
-	virtual int getHuntingMode() { return huntingMode; };
-	inline virtual const Instar& getInstar() const { return instar; };
-	virtual void incrementEncountersWithPredator(int predatorId);
-
-	inline const double& getAgeInInstar(const Instar& instar) const { return finalDevTimeVector[instar.getValue()-1]; }
-	inline const double& getAgeFirstReproduction() const { return getAgeInInstar(mySpecies->getInstarFirstReproduction()); }
-	inline const double& getAgeLastInstar() const { return finalDevTimeVector.back(); }
-	inline const double& getMassesInInstar(const Instar& instar) const { return massesVector[instar.getValue()-1]; }
-	inline const double& getMassesFirstReproduction() const { return getMassesInInstar(mySpecies->getInstarFirstReproduction()); }
-	inline const double& getMassesLastInstar() const { return massesVector.back(); }
-
-	const double& getTrait(const Trait& trait) const;
-	void setTrait(const Trait& trait, const double& newValue);
-
-	virtual bool canEatEdible(Edible* edibleToCheck);
-	virtual double calculateEncounterProbability(Edible* edibleToBeEncountered);
-	virtual bool encounterEdible(Edible* searchedAnimal, float attackOrExposedAttackProbability, int timeStep, ostream& encounterProbabilitiesFile, ostream& predationProbabilitiesFile);
-	virtual double calculatePredationProbability(Edible* edibleToBePredated, bool retaliation);
-	virtual bool predateEdible(Edible* edibleToBePredated, int day, bool retaliation, ostream& encounterProbabilitiesFile, ostream& predationProbabilitiesFile);
-	virtual double calculateEdibilityValue(Edible* edibleToBeEvaluated);
-	virtual double calculateEdibilityValueWithMass(Edible* edibleToBeEvaluated);
-	virtual float getMeanExperience(Species* species) { return meanExperiencesPerSpecies[species]; };
-
-	virtual bool isSated() { return sated; };
-	virtual bool isExhausted() { return steps >= getTrait(Trait::search_area); };
-
-	virtual bool isMature() { return mature; };
-	virtual bool isMated() { return mated; };
-	virtual unsigned int getGender() { return gender; };
-
-	virtual unsigned int getLifeStage() { return lifeStage; };
-	virtual void setNewLifeStage(unsigned int newLifeStage);
-	virtual void setNewLifeStage(unsigned int newLifeStage, double dayOfDeath);
-	virtual void setNewLifeStage(unsigned int newLifeStage, double dayOfDeath, int predatorId);
-	virtual double getDateOfDeath() { return dateOfDeath; };
-	virtual void setDateOfDeath(double dateOfDeath) { this->dateOfDeath = dateOfDeath; };
-	virtual int getPredatedByID() { return predatedByID; };
-	virtual void setPredatedByID(int predatorId) { this->predatedByID = predatorId; };
-
-	virtual pair<bool, bool> interpolateTraits();
-	virtual void printTraits(ostream& traitsFile);
-	virtual void adjustTraits();
-	virtual void isReadyToBeBorn(int timeStep, int timeStepsPerDay);
-	virtual void isReadyToResumeFromPupaOrDecreasePupaTimer();
-	virtual void isReadyToResumeFromHandlingOrDecreaseHandlingTimer();
-	virtual void isReadyToResumeFromDiapauseOrIncreaseDiapauseTimeSteps(float relativeHumidity);
-	virtual void calculateGrowthCurves(float temperature, ostream& tuneTraitsFile, bool printGrowthData, double ageAtInitialization);
-	virtual double getEggDryMassAtBirth() { return eggDryMassAtBirth; };
-	virtual void tuneTraits(int timeStep, int timeStepsPerDay, float temperature, float relativeHumidity, ostream& tuneTraitsFile, bool printGrowthData, bool fromForceMolting1);
-	virtual TerrainCell* move(int timeStep, int timeStepsPerDay, ostream& encounterProbabilitiesFile, ostream& predationProbabilitiesFile, ostream& edibilitiesFile);
-	virtual double calculatePredatoryRiskEdibilityValue(Edible* edibleToBeEvaluated);
-	virtual bool hasTriedToHunt(Edible* edibleToCheck);
-	virtual void printVoracities(int timeStep, int timeStepsPerDay, ostream& voracitiesFile);
-	virtual void dieFromBackground(int timeStep);
-	virtual void assimilateFoodMass(int timeStep);
-	virtual void metabolize(int timeStep, int timeStepPerDay);
-	virtual void grow(int timeStep, int timeStepsPerDay);
-	virtual list<Edible*> * breed(int timeStep, int timeStepsPerDay, float temperature);
-	virtual bool postBreeding(int timeStep, int timeStepsPerDay);
-	virtual const Genome* getGenome() const { return genome; };
-	virtual int getGenerationNumberFromMaleParent() const { return generationNumberFromMaleParent; };
-	virtual void setGenomeFromMatedMale(const Edible* matedMale);
-	virtual list<int> * getEncounterEvents();
-
-	virtual ostream& print(ostream& os);
-
-	void clearGenomeFromMatedMale();
-	double getSearchArea() { return getTrait(Trait::search_area); };
-
-	virtual void increaseAge(int increase);
-
-	/**
-	 * Returns the chromosomes of this Animal.
-	 * @return the array of pairs of Chromosome of this Animal
-	 */
-	vector<pair<Chromosome*, Chromosome*> >* getChromosomes();
-
-	/**
-	 * Returns true if the state of this Animal is ACTIVE, false otherwise.
-	 * @return true if the state of this Animal is ACTIVE, false otherwise
-	 */
-	bool isActive();
-
-	double getNormalizedHuntedVoracity(double huntedVoracity);
-	double getNormalizedHunterVoracity();
-	double getNormalizedVoracityProduct(double hunterVoracity);
-	double getNormalizedHuntedBodySize(double huntedBodySize);
-	double getNormalizedHunterBodySize();
-	double getNormalizedPDF(double probabilityDensityFunction);
-	double getNormalizedSpeedRatio(double hunterSpd);
-
-	friend double getLog_mass_ratio(Animal* hunter, Animal* hunted);
-
-	double getSearchAreaHunter();
-
-	double getSpeedHunter();
-
-	virtual inline TerrainCell* getPosition(){ return position; };
-
-	//void incrementEncounters_prey();
-
-	int computeEggBatchNumber();
-	list<Edible*> * breedAsexually( int objectiveEggsNumber,int timeStep, int timeStepsPerDay, float temperature );
-	list<Edible*> * breedSexually( int objectiveEggsNumber,int timeStep, int timeStepsPerDay, float temperature );
-
-	void printGenetics(ostream& geneticsFile);
-
-	double nextDinoMassPredicted;
-	double currentAge;
-	double daysExperienced;
-	double tankAtGrowth;
-	double slopeTarget;
-	double interceptTarget;
-	double foodMass;
-	double finalJMaxVB;
-	double maxNextInstarMassFromVBPlasticity;
-	float edibleToBePredatedProfitability;
-	double foodMassLeftForNextTimeStep;
-	double lastHuntedAnimalDryMass;
-	int days_digest;
-	
-
-	std::list<pair<TerrainCell *, Animal *>> eatenTodayList;
-	std::list<TerrainCell *> cellsTrackedToday;
-	double biomassTrackedToday;
-	bool hasEvaluatedTheWholeWorld;
-	int eatenToday;
-	double wetMassAtTheBeginningOfTheTimeStep;
-	double oldSearchArea;
-	
-	void updateLimits();
-	void sumPseudoGrowthMean();
-	void calculatePseudoGrowthMean();
-	void sumPseudoGrowthSd();
-	void calculatePseudoGrowthSd();
-
-
-	float forceMolting(int timeStepsPerDay, double ageAtInitialization, Instar instarAtInitialization);
-	float forceMolting2(int timeStepsPerDay, double ageAtInitialization, Instar instarAtInitialization);
-
-
-
-	bool searchAnimalsAndFungiToEat(int timeStep, int timeStepsPerDay, ostream& encounterProbabilitiesFile, ostream& predationProbabilitiesFile, ostream& edibilitiesFile);
-
-	/**
-	 * Moves one step from the current position. The decision is made
-	 * considering both preys and predators in the neighbor cells.
-	 */
-	void moveOneStep();
-
-	void setPosition(TerrainCell* newPosition) { this->position = newPosition; };
-	void setDateEgg(double newDateEgg) { this->date_egg = newDateEgg; };
-	void setMassAtBirth(double massAtBirth) { this->massAtBirth = massAtBirth; };
-
-	void checkReadyToReproduce();
-
-
-
-
-
-	void becomePredated(int timeStep);
-
-
-	/**
-	 * Returns the days digest.
-	 * @return the days digest
-	 */
-	int getDaysDigest();
-	int getMaxReproductionEvents();
-
-
-
-	void updateAbundancesExperiencedPerSpecies(int timeStepsPerDay);
-
-	void assimilateLastHuntedAnimalAndComputeHandlingTime();
-
-
-
+    // Formats the point p using the parsed format specification (presentation)
+    // stored in this formatter.
+    template <typename FormatContext>
+    auto format(const Animal& animal, FormatContext& ctx) const -> decltype(ctx.out()) {
+		return fmt::format_to(
+			ctx.out(),
+			"{}\t{}\t{}\t{}\t{}\t{}\t{}\t{}\t{}\t{}\t{}\t{}\t{}\t{}\t{}\t{}\t{}\t{}\t{}\t{}\t{}\t{}\t{}\t{}\t{}\t{}\t{}\t{}\t{}\t",
+			animal.getIdStr(), animal.getSpecies()->getScientificName(),
+			animal.getGender(), animal.getPosition()->getX(), animal.getPosition()->getY(),
+			animal.getPosition()->getZ(), (int)animal.getLifeStage().getValue(), animal.getInstar(), animal.getPhenoIni(),
+			animal.getDateEgg(), animal.getAgeFirstRep(), animal.getRepCount(), animal.getFecundity(),
+			animal.getDateOfDeath(), animal.getGenerationNumberFromFemaleParent(), 
+			animal.getGenerationNumberFromMaleParent(), animal.getID_Prt1(), animal.getID_Prt2(),
+			animal.getTodayEncountersWithPredators(), animal.getEncounterEvents().size(),
+			animal.getDaysDigest(), animal.getVoracityIni(), animal.getSearchAreaIni(), animal.getSpeedIni(),
+			animal.getTankIni(), animal.getPhenoIni(), animal.getCurrentBodySize(), animal.calculateDryMass(), 
+			fmt::join(animal.getTraits(), "\t")
+		);
+    }
 };
 
 #endif /* WEAVER_ANIMAL_H_ */

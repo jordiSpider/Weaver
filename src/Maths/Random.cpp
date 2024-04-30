@@ -101,7 +101,7 @@ double Random::randomUniform() {
  * @param size
  * @return one random index within the range [0,size).
  */
-int Random::randomIndex(int size) {
+unsigned int Random::randomIndex(const unsigned int &size) {
 	std::uniform_int_distribution<int> dist(0, size - 1);
 	return dist(rng);
 }

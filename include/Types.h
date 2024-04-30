@@ -46,37 +46,4 @@ typedef unsigned int id_type;
 #define MAX_NUM_DIGITS_ID (std::numeric_limits<id_type>::digits10 + 1)
 
 
-
-class Instar {
-private:
-    unsigned int value;
-
-public:
-    Instar();
-    explicit Instar(unsigned int value);
-    inline const unsigned int& getValue() const { return value; }
-    inline void moveOnPreviousInstar() { value--; }
-    inline void moveOnNextInstar() { value++; }
-    friend bool operator<(const Instar& lhs, const Instar& rhs);
-    friend bool operator<(const Instar& lhs, const unsigned int& rhs);
-    friend bool operator<(const unsigned int& lhs, const Instar& rhs);
-    friend bool operator<=(const Instar& lhs, const Instar& rhs);
-    friend bool operator<=(const Instar& lhs, const unsigned int& rhs);
-    friend bool operator<=(const unsigned int& lhs, const Instar& rhs);
-    friend bool operator>(const Instar& lhs, const Instar& rhs);
-    friend bool operator>(const Instar& lhs, const unsigned int& rhs);
-    friend bool operator>(const unsigned int& lhs, const Instar& rhs);
-    friend bool operator>=(const Instar& lhs, const Instar& rhs);
-    friend bool operator>=(const Instar& lhs, const unsigned int& rhs);
-    friend bool operator>=(const unsigned int& lhs, const Instar& rhs);
-    friend bool operator==(const Instar& lhs, const Instar& rhs);
-    friend bool operator==(const Instar& lhs, const unsigned int& rhs);
-    friend bool operator==(const unsigned int& lhs, const Instar& rhs);
-    friend bool operator!=(const Instar& lhs, const Instar& rhs);
-    friend bool operator!=(const Instar& lhs, const unsigned int& rhs);
-    friend bool operator!=(const unsigned int& lhs, const Instar& rhs);
-    friend std::ostream& operator<<(std::ostream& os, const Instar& instar);
-};
-
-
 #endif /* TYPES_H_ */

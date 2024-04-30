@@ -28,12 +28,12 @@ double Math_Functions::dells(double temperature, double Topt, double ED, double 
 
 	if(::isnan(newActivationEnergy))
 	{
-		cout << "ACTIVATION ENERGY NAN - CHECK IF ED>E" << endl;
+		Output::cout("ACTIVATION ENERGY NAN - CHECK IF ED>E\n");
 	}
 
 	if(::isnan(result))
 	{
-		cout << "ACTIVATION ENERGY NAN - CHECK IF ED>E" << endl;
+		Output::cout("ACTIVATION ENERGY NAN - CHECK IF ED>E\n");
 	}
 	/*if(newActivationEnergy == 0.6)
 	{

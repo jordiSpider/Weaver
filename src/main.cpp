@@ -11,13 +11,24 @@
 #include <iostream>
 #include <sys/time.h>
 #include <ctime>
+#include <chrono>
 #include <ostream>
 #include <fstream>
 #include "Maths/Random.h"
 #include "Maths/Parabola.h"
-#include "FungusSpecies.h"
 #include "SimulationConstants.h"
+#include "GlobalVariable.h"
 #include "Utilities.h"
+#include "CLI11/CLI11.h"
+#include "Output.h"
+
+#ifdef USE_CPU_PROFILER
+	#include "gperftools/profiler.h"
+#endif
+
+#ifdef USE_HEAP_PROFILER
+	#include "gperftools/heap-profiler.h"
+#endif
 
 // Library nlohmann JSON
 #include "nlohmann/json.h"
@@ -71,24 +82,60 @@ int main(int argc, char ** argv)
 	task_scheduler_init init(TBB_NUM_THREADS);
 #endif
 */
+	auto start = std::chrono::high_resolution_clock::now();
+
+	#ifdef USE_CPU_PROFILER
+		ProfilerStart("./profiler/cpuProfiler.txt");
+	#endif
+	
+	#ifdef USE_HEAP_PROFILER
+		HeapProfilerStart("./profiler/heapProfiler");
+	#endif
+
+	CLI::App app{"Weaver description"};
+
+	fs::path inputFolder;
+    auto inputFolderOption = app.add_option("-I,--inputFolder", inputFolder, "Folder where to look for the input file")->required(false);
+	inputFolderOption->default_val(fs::current_path());
+
+    fs::path inputFile;
+    auto inputFileOption = app.add_option("-i,--inputFile", inputFile, "Input file defining the simulation")->required(false);
+	inputFileOption->default_val("run_params.json");
+
+	fs::path outputFolder;
+    auto outputFolderOption = app.add_option("-o,--outputFolder", outputFolder, "Output directory where the simulation results folder will be created")->required(false);
+	outputFolderOption->default_val(RESULT_SIMULATION_FOLDER);
+
+	try {
+		app.parse(argc, argv);
+	} catch (const CLI::ParseError &e) {
+		return app.exit(e);
+	}
+
+
+	fs::path WeaverFolder = std::filesystem::path(argv[0]).parent_path();
+	
+
 
 	//timestamp_t t0 = get_timestamp();
 
 	// Read configuration file
-	json configuration = readConfigFile(fs::path("run_params.json"));
+	json configuration = readConfigFile1(inputFolder / inputFile, WeaverFolder);
 
-	fs::path outputDirectory = obtainOutputDirectory(configuration);
-	fs::create_directories(outputDirectory);
+	fs::path resultFolder = obtainResultFolder(configuration, outputFolder);
+	fs::create_directories(resultFolder);
 
-	ofstream logFile;
+	
 	if(configuration["simulation"]["outputStream"]["enabled"])
 	{
-		setOutputStream(logFile, outputDirectory, configuration["simulation"]["outputStream"]["selectedChannel"]);
+		Output::setOutputStream(resultFolder, configuration["simulation"]["outputStream"]["selectedChannel"]);
 	}
 	else
 	{
-		cout.setstate(std::ios_base::failbit);
+		Output::setOutputStream(Output::nullFile);
 	}
+
+	Output::setErrorOutputStream(stderr);
 
 	if(configuration["simulation"]["initFromFixedSeed"]["enabled"])
 	{
@@ -100,23 +147,25 @@ int main(int argc, char ** argv)
 		Random::initRandomGenerator((unsigned)time(NULL));
 	}	
 
-	cout << "===============================================" << endl;
-	cout << "Reading configuration and initializing world..." << endl;
-	cout << "===============================================" << endl;
-	cout << endl;
+	Output::cout("===============================================\n");
+	Output::cout("Reading configuration and initializing world...\n");
+	Output::cout("===============================================\n\n");
 
-	World * myWorld = new World(&configuration, outputDirectory);
+	World * myWorld = new World(&configuration, inputFolder, inputFolder / inputFile, resultFolder, WeaverFolder);
 
 	myWorld->initializeAnimals();
 
 
-	cout << "DONE" << endl;
+	#ifdef USE_HEAP_PROFILER
+		HeapProfilerDump("prueba");
+	#endif
 
-	cout << endl;
-	cout << "======================" << endl;
-	cout << "Running simulation ..." << endl;
-	cout << "======================" << endl;
-	cout << endl;
+
+	Output::cout("DONE\n\n");
+
+	Output::cout("======================\n");
+	Output::cout("Running simulation ...\n");
+	Output::cout("======================\n\n");
 
 	myWorld->evolveWorld();
 
@@ -162,10 +211,7 @@ int main(int argc, char ** argv)
 	volume->SetProperty(property);
 
 	// a renderer and render window
-	vtkSmartPointer<vtkRenderer> renderer = vtkSmartPointer<vtkRenderer>::New();
-	renderer->SetBackground(0.9, 0.9, 0.9);
-
-	vtkSmartPointer<vtkRenderWindow> renderWindow = vtkSmartPointer<vtkRenderWindow>::New();
+	vtkSmartPointer<vtkRenderer> coutow> renderWindow = vtkSmartPointer<vtkRenderWindow>::New();
 	renderWindow->SetSize(900, 600);
 	renderWindow->AddRenderer(renderer);
 
@@ -180,9 +226,24 @@ int main(int argc, char ** argv)
 	// begin mouse interaction
 	iren->Start();
 */
-	cout << "DONE" << std::endl;
+	Output::cout("DONE\n");
 
 	delete myWorld;
+
+	#ifdef USE_CPU_PROFILER
+		ProfilerStop();
+	#endif
+
+	#ifdef USE_HEAP_PROFILER
+		HeapProfilerStop();
+	#endif
+
+	auto end = std::chrono::high_resolution_clock::now();
+
+	std::chrono::duration<double> elapsed = end - start;
+
+	ofstream timeFile(resultFolder / fs::path("executionTime.txt"));
+	timeFile << elapsed.count() << " segs" << endl;
 
 	exit(0);
 }

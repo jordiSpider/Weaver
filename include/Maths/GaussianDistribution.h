@@ -12,6 +12,7 @@
 #include <vector>
 #include <iostream>
 #include "Constants.h"
+#include "Output.h"
 #include "Types.h"
 
 class Gaussian1D {
@@ -45,7 +46,6 @@ public:
 	void setAmplitude(float newValue);
 
 	float getCenter();
-	void setCenter(float newCenter);
 
 	double getValueAtDistance(float distance);
 	double getValueAtPoint(float point);
@@ -72,8 +72,6 @@ public:
 	double getAmplitude() { return amplitude; };
 	void setAmplitude(float newValue);
 
-	void setCenter(float newCenterX, float newCenterY, float newCenterZ);
-	void setCenter(fPoint3D newCenter);
 	fPoint3D getCenter() { return center; };
 
 	double getValueAtDistance(float xDistance, float yDistance, float zDistance);
@@ -112,8 +110,6 @@ public:
 	float getAmplitude();
 	void setAmplitude(float newValue);
 
-	void setCenter(float newCenterX, float newCenterY, float newCenterZ);
-	void setCenter(fPoint3D newCenter);
 	fPoint3D getCenter();
 
 	double getValueAtDistance(float xDistance, float yDistance, float zDistance);

@@ -24,8 +24,8 @@
                     "type": "unsigned_integer",
                     "required": true
                 },
-                "maximumFungiCapacity": {
-                    "type": "float",
+                "totalMaximumResourceCapacity": {
+                    "type": "floater",
                     "required": true
                 },
                 "inEnemyFreeSpace": {
@@ -59,11 +59,11 @@
                     "required": true
                 },
                 "relativeHumidityOnRainEvent": {
-                    "type": "float",
+                    "type": "floater",
                     "required": true
                 },
                 "relativeHumidityDecayOverTime": {
-                    "type": "float",
+                    "type": "floater",
                     "required": true
                 },
                 "timeStepsBetweenRainEvents": {
@@ -71,7 +71,7 @@
                     "required": true
                 },
                 "standardDeviationForRainEvent": {
-                    "type": "float",
+                    "type": "floater",
                     "required": true
                 }
             },

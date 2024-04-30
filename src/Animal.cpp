@@ -7,16 +7,48 @@
 
 #include "Animal.h"
 #include "TerrainCell.h"
+#include "World.h"
+#include "Resource.h"
 #include "LineInfoException.h"
 #include "Maths/Random.h"
-#include "Maths/Math_Functions.h"
+#include "AnimalSpecies.h"
 
 
-Animal::Animal(Genome* genome, double factorEggMassFromMom, TerrainCell* position, double timeStep, double timeStepsPerDay, int g_numb_prt1,
-		int g_numb_prt2, int ID_prt1, int ID_prt2, Species* mySpecies, unsigned int gender,
-		unsigned int huntingMode, bool temporary) : Edible(mySpecies, temporary)
+id_type Animal::animalCounter = 0;
+
+Animal::Animal(double factorEggMassFromMom, TerrainCell* position, double timeStep, double timeStepsPerDay, int g_numb_prt1,
+		int g_numb_prt2, int ID_prt1, int ID_prt2, AnimalSpecies* const mySpecies, unsigned int gender,
+		bool temporary) 
+	: Edible(mySpecies, temporary), genome(getSpecies()->getLoci(), getSpecies()->getRandomlyCreatedPositionsForChromosomes(), getSpecies()->getNumberOfChromosomes(), 
+	  getSpecies()->getNumberOfLociPerChromosome(), getSpecies()->getNumberOfChiasmasPerChromosome()), huntingMode(getSpecies()->getDefaultHuntingMode()),
+	  lifeStage(LifeStage::UNBORN), variableTraits(getSpecies()->getTypeVariableTraits()), traits(Trait::size(), 0.0)
 {
-	this->genome = genome;
+	if(!temporary) {
+		Animal::animalCounter++;
+	}
+
+	setOtherAttributes(factorEggMassFromMom, position, timeStep, timeStepsPerDay, g_numb_prt1,
+					   g_numb_prt2, ID_prt1, ID_prt2, gender);
+}
+
+Animal::Animal(Gamete* const firstParentGamete, Gamete* const secondParentGamete, double factorEggMassFromMom, TerrainCell* position, double timeStep, double timeStepsPerDay, int g_numb_prt1,
+		int g_numb_prt2, int ID_prt1, int ID_prt2, AnimalSpecies* const mySpecies, unsigned int gender,
+		bool temporary) 
+	: Edible(mySpecies, temporary), genome(firstParentGamete, secondParentGamete, getSpecies()->getRandomlyCreatedPositionsForChromosomes(), 
+	  getSpecies()->getNumberOfLociPerChromosome(), getSpecies()->getNumberOfChiasmasPerChromosome()), huntingMode(getSpecies()->getDefaultHuntingMode()),
+	  lifeStage(LifeStage::UNBORN), variableTraits(getSpecies()->getTypeVariableTraits()), traits(Trait::size(), 0.0)
+{
+	if(!temporary) {
+		Animal::animalCounter++;
+	}
+
+	setOtherAttributes(factorEggMassFromMom, position, timeStep, timeStepsPerDay, g_numb_prt1,
+					   g_numb_prt2, ID_prt1, ID_prt2, gender);
+}
+
+void Animal::setOtherAttributes(double eggMassAtBirth, TerrainCell* position, double timeStep, double timeStepsPerDay, int g_numb_prt1,
+			int g_numb_prt2, int ID_prt1, int ID_prt2, unsigned int gender)
+{
 	this->eggDryMassAtBirth = -1;
 	this->factorEggMassFromMom = factorEggMassFromMom;
 	mated = false;
@@ -25,22 +57,21 @@ Animal::Animal(Genome* genome, double factorEggMassFromMom, TerrainCell* positio
 	this->position = position;
 	this->targetNeighborToTravelTo = NULL;
 	this->gender = gender;
-	this->huntingMode = huntingMode;
 	this->predatedByID = -1;
-	this->setMassAtBirth(mySpecies->getEggDryMass());
+	this->setMassAtBirth(getSpecies()->getEggDryMass());
 
-	for(vector<Species*>::iterator it = mySpecies->getEdibleFungusSpecies()->begin(); it != mySpecies->getEdibleFungusSpecies()->end(); it++)
+	for(auto it = getSpecies()->getEdibleResourceSpecies()->begin(); it != getSpecies()->getEdibleResourceSpecies()->end(); it++)
 	{
-		abundancesExperiencedPerSpecies[(*it)] = mySpecies->getEdiblePreference((*it));
-		meanExperiencesPerSpecies[(*it)] = mySpecies->getEdiblePreference((*it));
+		biomassExperiencedPerSpecies[(*it)] = getSpecies()->getEdiblePreference((Species*)(*it));
+		meanExperiencesPerSpecies[(*it)] = getSpecies()->getEdiblePreference((Species*)(*it));
 	}
-	for(vector<Species*>::iterator it = mySpecies->getEdibleAnimalSpecies()->begin(); it != mySpecies->getEdibleAnimalSpecies()->end(); it++)
+	for(auto it = getSpecies()->getEdibleAnimalSpecies()->begin(); it != getSpecies()->getEdibleAnimalSpecies()->end(); it++)
 	{
-		abundancesExperiencedPerSpecies[(*it)] = mySpecies->getEdiblePreference((*it));
-		meanExperiencesPerSpecies[(*it)] = mySpecies->getEdiblePreference((*it));
+		biomassExperiencedPerSpecies[(*it)] = getSpecies()->getEdiblePreference((Species*)(*it));
+		meanExperiencesPerSpecies[(*it)] = getSpecies()->getEdiblePreference((Species*)(*it));
 	}
 
-	fixedTraits = mySpecies->getFixedTraits();
+	getSpecies()->initializeFixedTraits(traits);
 
 	steps = 0;
 	stepsAttempted = 0;
@@ -52,7 +83,6 @@ Animal::Animal(Genome* genome, double factorEggMassFromMom, TerrainCell* positio
 	edibleToBePredatedProfitability = 1.0;
 	foodMassLeftForNextTimeStep = 0.0;
 	lastHuntedAnimalDryMass = 1.0; //To avoid divisions by 0
-	lifeStage = UNBORN;
 	//encounters_prey = 0;
 	todayEncountersWithPredators = 0;
 	daysWithoutFood = 0;
@@ -62,20 +92,20 @@ Animal::Animal(Genome* genome, double factorEggMassFromMom, TerrainCell* positio
 	currentAge = 0; //Dinosaurs
     daysExperienced = 0;
 
-	actualMoltingTimeVector.reserve(mySpecies->getNumberOfInstars()-1);
-	actualMoltingMassVector.reserve(mySpecies->getNumberOfInstars()-1);
-	finalDevTimeVector.reserve(mySpecies->getNumberOfInstars()-1);
-	for (int i = 0; i < mySpecies->getNumberOfInstars()-1; ++i)
+	actualMoltingTimeVector.reserve(getSpecies()->getNumberOfInstars()-1);
+	actualMoltingMassVector.reserve(getSpecies()->getNumberOfInstars()-1);
+	finalDevTimeVector.reserve(getSpecies()->getNumberOfInstars()-1);
+	for (int i = 0; i < getSpecies()->getNumberOfInstars()-1; ++i)
 	{
 		finalDevTimeVector.push_back(-1);
 	}
-	lengthsVector.reserve(mySpecies->getNumberOfInstars()-1); //Dinosaurs ini
-	for (int i = 0; i < mySpecies->getNumberOfInstars()-1; ++i)
+	lengthsVector.reserve(getSpecies()->getNumberOfInstars()-1); //Dinosaurs ini
+	for (int i = 0; i < getSpecies()->getNumberOfInstars()-1; ++i)
 	{
 		lengthsVector.push_back(-1);
 	}
-	massesVector.reserve(mySpecies->getNumberOfInstars()-1);
-	for (int i = 0; i < mySpecies->getNumberOfInstars()-1; ++i)
+	massesVector.reserve(getSpecies()->getNumberOfInstars()-1);
+	for (int i = 0; i < getSpecies()->getNumberOfInstars()-1; ++i)
 	{
 		massesVector.push_back(-1);
 	}  //Dinosaurs end
@@ -95,7 +125,7 @@ Animal::Animal(Genome* genome, double factorEggMassFromMom, TerrainCell* positio
 	lastDayMoved = -1;
 	days_digest = 0;
 	eatenToday = 0;
-	wetMassAtTheBeginningOfTheTimeStep = eggDryMassAtBirth*mySpecies->getConversionToWetMass();
+	wetMassAtTheBeginningOfTheTimeStep = eggDryMassAtBirth*getSpecies()->getConversionToWetMass();
 	tankAtGrowth = 0.0;
 	slopeTarget = 0.0;
 	interceptTarget = 0.0;
@@ -110,57 +140,114 @@ Animal::Animal(Genome* genome, double factorEggMassFromMom, TerrainCell* positio
 
 	initTraits();
 	pseudoGrowth = getTrait(Trait::growth);
+
+	switch(getSpecies()->getGrowthCurve()->getType()) {
+		case CurveType::VonBertalanffy: {
+			growthCurveParams = new VonBertalanffyCurveParams();
+			break;
+		}
+		case CurveType::Logistic: {
+			growthCurveParams = new LogisticCurveParams();
+			break;
+		}
+		case CurveType::Logistic3P: {
+			growthCurveParams = new Logistic3PCurveParams();
+			break;
+		}
+		case CurveType::Logistic4P: {
+			growthCurveParams = new Logistic4PCurveParams();
+			break;
+		}
+		case CurveType::Gompertz: {
+			growthCurveParams = new GompertzCurveParams();
+			break;
+		}
+		case CurveType::Exponential: {
+			growthCurveParams = new ExponentialCurveParams();
+			break;
+		}
+		default: {
+			throwLineInfoException("Default case");
+			break;
+		}
+	}
 }
 
 Animal::~Animal()
 {
-	delete genome;
 	if(genomeFromMatedMale != NULL)	delete genomeFromMatedMale;
+
+	switch(getSpecies()->getGrowthCurve()->getType()) {
+		case CurveType::VonBertalanffy: {
+			delete reinterpret_cast<VonBertalanffyCurveParams*>(growthCurveParams);
+			break;
+		}
+		case CurveType::Logistic: {
+			delete reinterpret_cast<LogisticCurveParams*>(growthCurveParams);
+			break;
+		}
+		case CurveType::Logistic3P: {
+			delete reinterpret_cast<Logistic3PCurveParams*>(growthCurveParams);
+			break;
+		}
+		case CurveType::Logistic4P: {
+			delete reinterpret_cast<Logistic4PCurveParams*>(growthCurveParams);
+			break;
+		}
+		case CurveType::Gompertz: {
+			delete reinterpret_cast<GompertzCurveParams*>(growthCurveParams);
+			break;
+		}
+		case CurveType::Exponential: {
+			delete reinterpret_cast<ExponentialCurveParams*>(growthCurveParams);
+			break;
+		}
+		default: {
+			throwLineInfoException("Default case");
+			break;
+		}
+	}
 }
 
 void Animal::initTraits()
 {
-	genome->createHomologousCorrelosomes();
-
 	//TODO Here each group can have 2 or 3 traits. This MUST be implemented.
 	//Correlations of EACH group can be positive or negative. This is already implemented.
 	//TODO Maybe, move this method to the class Genome so it will be all well organized (see variables involved).
 	int distanceFromDominant;
 	int moduleNumber;
 
-	for(Trait trait : mySpecies->getVariableTraits())
+	for(size_t i = 0; i < getSpecies()->getNumberOfVariableTraits(); i++)
 	{
-		variableTraits[trait] = 0.0;
-
-		unsigned int trait_order = mySpecies->getTraitOrder(trait);
-		moduleNumber = trait_order / mySpecies->getTraitsPerModule();
+		unsigned int trait_order = getSpecies()->getTraitOrder(variableTraits[i]);
+		moduleNumber = trait_order / getSpecies()->getTraitsPerModule();
 		//The division is made using RHO. For every trait, the left side alleles of their own chromosomes must be added.
-		for (int j = 0; j < mySpecies->getRhoRangePerModule(moduleNumber); ++j) {
-			if(genome->getHomologousCorrelosomes()->at(trait_order).first->getAlleles()->at(j)->getAlphabeticOrder() >= genome->getHomologousCorrelosomes()->at(trait_order).second->getAlleles()->at(j)->getAlphabeticOrder())
+		for (int j = 0; j < getSpecies()->getRhoRangePerModule(moduleNumber); ++j) {
+			if(genome.getHomologousCorrelosomes().at(trait_order).first->getAllele(j)->getAlphabeticOrder() >= genome.getHomologousCorrelosomes().at(trait_order).second->getAllele(j)->getAlphabeticOrder())
 			{
-				variableTraits[trait] += genome->getHomologousCorrelosomes()->at(trait_order).first->getAlleles()->at(j)->getValue();
+				traits[variableTraits[i]] += genome.getHomologousCorrelosomes().at(trait_order).first->getAllele(j)->getValue();
 			}
 			else
 			{
-				variableTraits[trait] += genome->getHomologousCorrelosomes()->at(trait_order).second->getAlleles()->at(j)->getValue();
+				traits[variableTraits[i]] += genome.getHomologousCorrelosomes().at(trait_order).second->getAllele(j)->getValue();
 			}
 		}
 
 		//The right side depends on two factors: the sign for RHO for the current module and the dominance of the chromosome.
-		distanceFromDominant = trait_order % mySpecies->getTraitsPerModule();
+		distanceFromDominant = trait_order % getSpecies()->getTraitsPerModule();
 
 		//If RHO is positive, for every trait the right side alleles of the dominant chromosome must be added.
-		if(mySpecies->getRhoPerModule(moduleNumber) >= 0)
+		if(getSpecies()->getRhoPerModule(moduleNumber) >= 0)
 		{
-			for (unsigned int j = mySpecies->getRhoRangePerModule(moduleNumber); j < mySpecies->getNumberOfLociPerTrait(); ++j)
+			for (unsigned int j = getSpecies()->getRhoRangePerModule(moduleNumber); j < getSpecies()->getNumberOfLociPerTrait(); ++j)
 			{
-				if(genome->getHomologousCorrelosomes()->at(trait_order-distanceFromDominant).first->getAlleles()->at(j)->getAlphabeticOrder() >= genome->getHomologousCorrelosomes()->at(trait_order-distanceFromDominant).second->getAlleles()->at(j)->getAlphabeticOrder())
+				if(genome.getHomologousCorrelosomes().at(trait_order-distanceFromDominant).first->getAllele(j)->getAlphabeticOrder() >= genome.getHomologousCorrelosomes().at(trait_order-distanceFromDominant).second->getAllele(j)->getAlphabeticOrder())
 				{
-					variableTraits[trait] += genome->getHomologousCorrelosomes()->at(trait_order-distanceFromDominant).first->getAlleles()->at(j)->getValue();
+					traits[variableTraits[i]] += genome.getHomologousCorrelosomes().at(trait_order-distanceFromDominant).first->getAllele(j)->getValue();
 				}
 				else
 				{
-					variableTraits[trait] += genome->getHomologousCorrelosomes()->at(trait_order-distanceFromDominant).second->getAlleles()->at(j)->getValue();
+					traits[variableTraits[i]] += genome.getHomologousCorrelosomes().at(trait_order-distanceFromDominant).second->getAllele(j)->getValue();
 				}
 
 			}
@@ -170,37 +257,37 @@ void Animal::initTraits()
 			//If the trait IS dominant, the right side alleles of its chromosome must be added.
 			if(distanceFromDominant == 0)
 			{
-				for (unsigned int j = mySpecies->getRhoRangePerModule(moduleNumber); j < mySpecies->getNumberOfLociPerTrait(); ++j)
+				for (unsigned int j = getSpecies()->getRhoRangePerModule(moduleNumber); j < getSpecies()->getNumberOfLociPerTrait(); ++j)
 				{
-					if(genome->getHomologousCorrelosomes()->at(trait_order).first->getAlleles()->at(j)->getAlphabeticOrder() >= genome->getHomologousCorrelosomes()->at(trait_order).second->getAlleles()->at(j)->getAlphabeticOrder())
+					if(genome.getHomologousCorrelosomes().at(trait_order).first->getAllele(j)->getAlphabeticOrder() >= genome.getHomologousCorrelosomes().at(trait_order).second->getAllele(j)->getAlphabeticOrder())
 					{
-						variableTraits[trait] += genome->getHomologousCorrelosomes()->at(trait_order).first->getAlleles()->at(j)->getValue();
+						traits[variableTraits[i]] += genome.getHomologousCorrelosomes().at(trait_order).first->getAllele(j)->getValue();
 					}
 					else
 					{
-						variableTraits[trait] += genome->getHomologousCorrelosomes()->at(trait_order).second->getAlleles()->at(j)->getValue();
+						traits[variableTraits[i]] += genome.getHomologousCorrelosomes().at(trait_order).second->getAllele(j)->getValue();
 					}
 				}
 			}
 			//If the trait is NOT dominant, 1 - the right side alleles of the dominant chromosome must be added.
 			else
 			{
-				for (unsigned int j = mySpecies->getRhoRangePerModule(moduleNumber); j < mySpecies->getNumberOfLociPerTrait(); ++j)
+				for (unsigned int j = getSpecies()->getRhoRangePerModule(moduleNumber); j < getSpecies()->getNumberOfLociPerTrait(); ++j)
 				{
-					if(genome->getHomologousCorrelosomes()->at(trait_order-distanceFromDominant).first->getAlleles()->at(j)->getAlphabeticOrder() >= genome->getHomologousCorrelosomes()->at(trait_order-distanceFromDominant).second->getAlleles()->at(j)->getAlphabeticOrder())
+					if(genome.getHomologousCorrelosomes().at(trait_order-distanceFromDominant).first->getAllele(j)->getAlphabeticOrder() >= genome.getHomologousCorrelosomes().at(trait_order-distanceFromDominant).second->getAllele(j)->getAlphabeticOrder())
 					{
-						variableTraits[trait] += (1.0 - genome->getHomologousCorrelosomes()->at(trait_order-distanceFromDominant).first->getAlleles()->at(j)->getValue());
+						traits[variableTraits[i]] += (1.0 - genome.getHomologousCorrelosomes().at(trait_order-distanceFromDominant).first->getAllele(j)->getValue());
 					}
 					else
 					{
-						variableTraits[trait] += (1.0 - genome->getHomologousCorrelosomes()->at(trait_order-distanceFromDominant).second->getAlleles()->at(j)->getValue());
+						traits[variableTraits[i]] += (1.0 - genome.getHomologousCorrelosomes().at(trait_order-distanceFromDominant).second->getAllele(j)->getValue());
 					}
 				}
 			}
 		}
 	}
 
-	genome->deleteHomologousCorrelosomes();
+	deleteHomologousCorrelosomes();
 
 	//TODO See if we need to restrict the values to something "plausible"
 	//and to avoid negative traits HERE. Maybe we don't need to do it
@@ -211,25 +298,48 @@ void Animal::initTraits()
 
 void Animal::adjustTraits()
 {
-	//pseudoGrowthMean and pseudoGrowthSd have been calculated only using the first generation
-	double normalizedPseudoGrowth = (pseudoGrowth - mySpecies->getPseudoGrowthMean()) / mySpecies->getPseudoGrowthSd();
-	double valueFromNormalDistributionForCholesky = mySpecies->getValueFromNormalDistributionY();
+	if(getSpecies()->getGrowthCurve()->getType() == CurveType::Logistic || getSpecies()->getGrowthCurve()->getType() == CurveType::VonBertalanffy)
+	{
+		//pseudoGrowthMean and pseudoGrowthSd have been calculated only using the first generation
+		double normalizedPseudoGrowth = (pseudoGrowth - getSpecies()->getPseudoGrowthMean()) / getSpecies()->getPseudoGrowthSd();
+		double valueFromNormalDistributionForCholesky = getSpecies()->getValueFromNormalDistributionY();
 
-	//double Knorm = normalizedPseudoGrowth * mySpecies->cholMat[0][0];
-	Linf = normalizedPseudoGrowth * mySpecies->getValueFromCholMat(1,0) + valueFromNormalDistributionForCholesky * mySpecies->getValueFromCholMat(1,1);
-	//ASÍ ERA ANTES:
-	//Linf = (mySpecies->vonBertLinf/mySpecies->vonBertKini)*traits[Trait::growth]+mySpecies->LinfKcorr*randomUniform();
+		//double Knorm = normalizedPseudoGrowth * getSpecies()->cholMat[0][0];
+		double Linf = normalizedPseudoGrowth * getSpecies()->getValueFromCholMat(1,0) + valueFromNormalDistributionForCholesky * getSpecies()->getValueFromCholMat(1,1);
+		//ASÍ ERA ANTES:
+		//Linf = (getSpecies()->vonBertLinf/getSpecies()->vonBertKini)*traits[Trait::growth]+getSpecies()->LinfKcorr*randomUniform();
 
-	//Controlling the range of Linfs for adults
-	//Here we use OriginLimits because pseudoGrowth was NOT interpolated
-	double minNormalizedPseudoGrowth = (mySpecies->getMinObservedPseudoValue(Trait::growth) - mySpecies->getPseudoGrowthMean()) / mySpecies->getPseudoGrowthSd();
-	double maxNormalizedPseudoGrowth = (mySpecies->getMaxObservedPseudoValue(Trait::growth) - mySpecies->getPseudoGrowthMean()) / mySpecies->getPseudoGrowthSd();
-	//TODO -3.5 y 3.5 porque son los valores mínimos y máximos fijados artificialmente por nosotros para la distribución normal Y
-	double minLinf = minNormalizedPseudoGrowth * mySpecies->getValueFromCholMat(1,0) + (-3.5) * mySpecies->getValueFromCholMat(1,1);
-	double maxLinf = maxNormalizedPseudoGrowth * mySpecies->getValueFromCholMat(1,0) + (3.5) * mySpecies->getValueFromCholMat(1,1);
+		//Controlling the range of Linfs for adults
+		//Here we use OriginLimits because pseudoGrowth was NOT interpolated
+		double minNormalizedPseudoGrowth = (getSpecies()->getMinObservedPseudoValue(Trait::growth) - getSpecies()->getPseudoGrowthMean()) / getSpecies()->getPseudoGrowthSd();
+		double maxNormalizedPseudoGrowth = (getSpecies()->getMaxObservedPseudoValue(Trait::growth) - getSpecies()->getPseudoGrowthMean()) / getSpecies()->getPseudoGrowthSd();
+		//TODO -3.5 y 3.5 porque son los valores mínimos y máximos fijados artificialmente por nosotros para la distribución normal Y
+		double minLinf = minNormalizedPseudoGrowth * getSpecies()->getValueFromCholMat(1,0) + (-3.5) * getSpecies()->getValueFromCholMat(1,1);
+		double maxLinf = maxNormalizedPseudoGrowth * getSpecies()->getValueFromCholMat(1,0) + (3.5) * getSpecies()->getValueFromCholMat(1,1);
 
-	Linf = Math_Functions::linearInterpolate(Linf, minLinf, maxLinf, mySpecies->getVonBertLdistanceMin(), mySpecies->getVonBertLdistanceMax());
+		switch(getSpecies()->getGrowthCurve()->getType()) {
+			case CurveType::VonBertalanffy: {
+				const VonBertalanffyCurve* const castGrowthCurve = static_cast<const VonBertalanffyCurve* const>(getSpecies()->getGrowthCurve());
 
+				Linf = Math_Functions::linearInterpolate(Linf, minLinf, maxLinf, castGrowthCurve->getLdistanceMin(), castGrowthCurve->getLdistanceMax());
+
+				static_cast<VonBertalanffyCurveParams* const>(growthCurveParams)->setAsymptoticSize(Linf);
+				break;
+			}
+			case CurveType::Logistic: {
+				const LogisticCurve* const castGrowthCurve = static_cast<const LogisticCurve* const>(getSpecies()->getGrowthCurve());
+
+				Linf = Math_Functions::linearInterpolate(Linf, minLinf, maxLinf, castGrowthCurve->getLdistanceMin(), castGrowthCurve->getLdistanceMax());
+
+				static_cast<LogisticCurveParams* const>(growthCurveParams)->setAsymptoticSize(Linf);
+				break;
+			}
+			default: {
+				throwLineInfoException("Default case");
+				break;
+			}
+		}
+	}
 
 	pheno_ini = getTrait(Trait::pheno);
 
@@ -250,13 +360,13 @@ void Animal::adjustTraits()
 	//OLD assim_ini = traits[Trait::assim];
 
     //Dinosaurs fixed part ini - dummy initialization, it changes in calculateGrowthCurves() or in forceMolting() and forceMolting2()
-	setTrait(Trait::energy_tank, tank_ini*pow(mySpecies->getEggDryMass(),mySpecies->getBetaScaleTank()));
+	setTrait(Trait::energy_tank, tank_ini*pow(getSpecies()->getEggDryMass(),getSpecies()->getBetaScaleTank()));
 	
-	currentBodySize = mySpecies->getEggDryMass()-getTrait(Trait::energy_tank);
+	currentBodySize = getSpecies()->getEggDryMass()-getTrait(Trait::energy_tank);
 	//cout << traits[Trait::energy_tank] << endl;
 	//Dinosaurs fixed part end
 	
-	eggDryMassForClutch=mySpecies->getEggDryMass(); //this is just a dummy initialization
+	eggDryMassForClutch=getSpecies()->getEggDryMass(); //this is just a dummy initialization
 
 
 }
@@ -266,45 +376,51 @@ void Animal::increaseAge(int increase)
 	currentAge += increase;
 }
 
-const double& Animal::getTrait(const Trait& trait) const
+const double& Animal::getTrait(const TraitType& type) const
 {
-	try
-	{
-		return fixedTraits.at(trait);
-	}
-	catch(const std::out_of_range& e)
-	{
-		try
-		{
-			return variableTraits.at(trait);
-		}
-		catch(const std::out_of_range& e)
-		{
-			throwLineInfoException("Trait " + to_string((unsigned int)trait) + " not found");
-		}
-	}
+	return traits[type];
 }
 
-void Animal::setTrait(const Trait& trait, const double& newValue)
+void Animal::setTrait(const TraitType& type, const double& newValue)
 {
-	try
-	{
-		fixedTraits.at(trait) = newValue;
-	}
-	catch(const std::out_of_range& e)
-	{
-		try
-		{
-			variableTraits.at(trait) = newValue;
-		}
-		catch(const std::out_of_range& e)
-		{
-			throwLineInfoException("Trait " + to_string((unsigned int)trait) + " not found");
-		}
-	}
+	traits[type] = newValue;
 }
 
-void Animal::tuneTraits(int timeStep, int timeStepsPerDay, float temperature, float relativeHumidity, ostream& tuneTraitsFile, bool printGrowthData, bool fromForceMolting1)
+double Animal::getValueGrowthCurve(const double &age, const double &midpointValue)
+{
+	growthCurveParams->setGrowthCoefficient(getTrait(Trait::growth));
+	growthCurveParams->setTime(age);
+	switch(getSpecies()->getGrowthCurve()->getType()) {
+		case CurveType::VonBertalanffy: {
+			break;
+		}
+		case CurveType::Logistic: {
+			static_cast<LogisticCurveParams* const>(growthCurveParams)->setMidpointValue(midpointValue);
+			break;
+		}
+		case CurveType::Logistic3P: {
+			break;
+		}
+		case CurveType::Logistic4P: {
+			break;
+		}
+		case CurveType::Gompertz: {
+			break;
+		}
+		case CurveType::Exponential: {
+			static_cast<ExponentialCurveParams* const>(growthCurveParams)->setValueTime0(lengthAtBirth);
+			break;
+		}
+		default: {
+			throwLineInfoException("Default case");
+			break;
+		}
+	}
+
+	return getSpecies()->getGrowthCurve()->getValue(*growthCurveParams);
+}
+
+void Animal::tuneTraits(int timeStep, int timeStepsPerDay, float temperature, float relativeHumidity, std::FILE* tuneTraitsFile, bool printGrowthData, bool fromForceMolting1, SimulType simulType, TerrainCell*(*getCell)(unsigned int, unsigned int, unsigned int))
 {
 	#ifdef _DEBUG
 	searchedAnimalsToday.clear();
@@ -325,15 +441,15 @@ void Animal::tuneTraits(int timeStep, int timeStepsPerDay, float temperature, fl
 	//Using Change_K (and Dells) for tuning Growth according to temperature
 	double newT = 273 + temperature;
 	//Optimo para las curvas de crecimiento=35. Para Vor Speed Search será 25
-	double ToptVoracity = 273 + mySpecies->getTempOptVoracity();
-	double ToptSearch = 273 + mySpecies->getTempOptSearch();
-	double ToptSpeed = 273 + mySpecies->getTempOptSpeed();
+	double ToptVoracity = 273 + getSpecies()->getTempOptVoracity();
+	double ToptSearch = 273 + getSpecies()->getTempOptSearch();
+	double ToptSpeed = 273 + getSpecies()->getTempOptSpeed();
 
 	//the two values below are now going to be used again
-	double preTsearch = search_area_ini*pow(calculateWetMass(), mySpecies->getScaleForSearchArea());
+	double preTsearch = search_area_ini*pow(calculateWetMass(), getSpecies()->getScaleForSearchArea());
 	
 	
-	double preTspeed = (speed_ini*pow(calculateWetMass(), mySpecies->getScaleForSpeed()))*(1-exp(-22*pow(calculateWetMass(),-0.6)));  //25.5𝑀0.26(1−𝑒−22𝑀−0.6) Hirt et al. 2017
+	double preTspeed = (speed_ini*pow(calculateWetMass(), getSpecies()->getScaleForSpeed()))*(1-exp(-22*pow(calculateWetMass(),-0.6)));  //25.5𝑀0.26(1−𝑒−22𝑀−0.6) Hirt et al. 2017
 
 	/*
 	double dellsToptVor = dells(ToptVoracity, ToptVoracity, traits[Trait::actE_vor]);
@@ -348,12 +464,12 @@ void Animal::tuneTraits(int timeStep, int timeStepsPerDay, float temperature, fl
 	double postTspeed = linearInterpolate(dellsNewTSpeed, 0, dellsToptSpeed, 0, preTspeed);
 
 	//3___
-	maxPostTvor = postTvor + postTvor * mySpecies->maxPlasticityDueToConditionVor;
-	minPostTvor = postTvor - postTvor * mySpecies->minPlasticityDueToConditionVor;
-	maxPostTsearch = postTsearch + postTsearch * mySpecies->maxPlasticityDueToConditionSearch;
-	minPostTsearch = postTsearch - postTsearch * mySpecies->minPlasticityDueToConditionSearch;
-	maxPostTspeed = postTspeed + postTspeed * mySpecies->maxPlasticityDueToConditionSpeed;
-	minPostTspeed = postTspeed - postTspeed * mySpecies->minPlasticityDueToConditionSpeed;
+	maxPostTvor = postTvor + postTvor * getSpecies()->maxPlasticityDueToConditionVor;
+	minPostTvor = postTvor - postTvor * getSpecies()->minPlasticityDueToConditionVor;
+	maxPostTsearch = postTsearch + postTsearch * getSpecies()->maxPlasticityDueToConditionSearch;
+	minPostTsearch = postTsearch - postTsearch * getSpecies()->minPlasticityDueToConditionSearch;
+	maxPostTspeed = postTspeed + postTspeed * getSpecies()->maxPlasticityDueToConditionSpeed;
+	minPostTspeed = postTspeed - postTspeed * getSpecies()->minPlasticityDueToConditionSpeed;
 	*/
 	//cout << "id... " << getId() << endl;
 	//cout << "time 1... " << maxPostTsearch << endl;
@@ -385,72 +501,75 @@ void Animal::tuneTraits(int timeStep, int timeStepsPerDay, float temperature, fl
     //double finalJMaxVB = 0.0;
     // I have made this Public in Animal class as to use it in other functions
 
-    //double minMassAtCurrentAge = currentBodySize + currentBodySize * mySpecies->getMinPlasticityKVonBertalanffy();
+    //double minMassAtCurrentAge = currentBodySize + currentBodySize * getSpecies()->getMinPlasticityKVonBertalanffy();
 
 	//Forcing continuous growth in Dinosaurs
-   /*	double dinoTankPredicted = tank_ini*pow(calculateDryMass(),mySpecies->getBetaScaleTank());
-	currentBodySize = mySpecies->getAssignedForMolt()*(calculateDryMass() - dinoTankPredicted);
-	traits[Trait::energy_tank] = mySpecies->getAssignedForMolt()*dinoTankPredicted;*/
+   /*	double dinoTankPredicted = tank_ini*pow(calculateDryMass(),getSpecies()->getBetaScaleTank());
+	currentBodySize = getSpecies()->getAssignedForMolt()*(calculateDryMass() - dinoTankPredicted);
+	traits[Trait::energy_tank] = getSpecies()->getAssignedForMolt()*dinoTankPredicted;*/
 
+	lengthAtBirth = pow((getMassAtBirth()/getSpecies()->getCoefficientForMassAforMature()),1/getSpecies()->getScaleForMassBforMature()); 
+		
+	//fix_xmid_K =  log((Asym-trex[1,"FC_Km"])/trex[1,"FC_Km"])*(1/target_K)
+	
+	double asymptoticSize = 0.0;
+	switch(getSpecies()->getGrowthCurve()->getType()) {
+		case CurveType::VonBertalanffy: {
+			asymptoticSize = static_cast<VonBertalanffyCurveParams* const>(growthCurveParams)->getAsymptoticSize();
+			break;
+		}
+		case CurveType::Logistic: {
+			asymptoticSize = static_cast<LogisticCurveParams* const>(growthCurveParams)->getAsymptoticSize();
+			break;
+		}
+		default: {
+			break;
+		}
+	}
+
+	xmid = log((asymptoticSize-lengthAtBirth)/lengthAtBirth)*(1/getTrait(Trait::growth));
        
 	//Forcing continuous growth in Dinosaurs - warning this involves heavy investment in growth - reproduction?
-   	double dinoLengthPredicted = 0.0;
+   	double dinoLengthPredicted = getValueGrowthCurve(currentAge, xmid);
 	//if(currentAge > 5){ //to surpass the critical young stages
-	if(mySpecies->getGrowthType() == 0){
-		dinoLengthPredicted = Linf*(1-exp(-getTrait(Trait::growth)*(currentAge-thisAnimalVonBertTime0)));
-		//exit(-1);
-	}
-	if(mySpecies->getGrowthType() == 1){
-		
-		lengthAtBirth = pow((getMassAtBirth()/mySpecies->getCoefficientForMassAforMature()),1/mySpecies->getScaleForMassBforMature()); 
-		
-		//fix_xmid_K =  log((Asym-trex[1,"FC_Km"])/trex[1,"FC_Km"])*(1/target_K)
-		
-		xmid = log((Linf-lengthAtBirth)/lengthAtBirth)*(1/getTrait(Trait::growth));
-		
-		dinoLengthPredicted = Linf/(1+exp((xmid-currentAge)*getTrait(Trait::growth)));
-	}
-	/*}else{   //this is to avoid animals to be born with size of zero age but being much older-thus need to be larger
-	  dinoLengthPredicted = Linf*(1-exp(-traits[Trait::growth]*(0-thisAnimalVonBertTime0)));	
-	}*/
 
-	double dinoMassPredicted = mySpecies->getCoefficientForMassAforMature()*pow(dinoLengthPredicted,mySpecies->getScaleForMassBforMature());
+	double dinoMassPredicted = getSpecies()->getCoefficientForMassAforMature()*pow(dinoLengthPredicted,getSpecies()->getScaleForMassBforMature());
 
     //dinos2023 - moulting only if realized mass is > predicted mass
-	 if(position->getTheWorld()->getSimulType() == 1){
+ 	if(simulType == SimulType::dinosaurs && instar < getSpecies()->getNumberOfInstars()){
 		if(calculateDryMass() > dinoMassPredicted){	
-		double dinoTankPredicted = tank_ini*pow(calculateDryMass(),mySpecies->getBetaScaleTank());
-		currentBodySize = mySpecies->getAssignedForMolt()*(calculateDryMass() - dinoTankPredicted);
-		setTrait(Trait::energy_tank, mySpecies->getAssignedForMolt()*dinoTankPredicted);
-	}
+			double dinoTankPredicted = tank_ini*pow(calculateDryMass(),getSpecies()->getBetaScaleTank());
+			currentBodySize = getSpecies()->getAssignedForMolt()*(calculateDryMass() - dinoTankPredicted);
+			setTrait(Trait::energy_tank, getSpecies()->getAssignedForMolt()*dinoTankPredicted);
+		}
 	 }
 	//end dinos2023
 
 //not for arthropods only for debugging 	
 /* if(calculateDryMass() > dinoMassPredicted){ //(currentAge>5) && (
-    double dinoTankPredicted = tank_ini*pow(dinoMassPredicted,mySpecies->getBetaScaleTank());
+    double dinoTankPredicted = tank_ini*pow(dinoMassPredicted,getSpecies()->getBetaScaleTank());
 	double dinoBodyPredicted = dinoMassPredicted - dinoTankPredicted;
     currentBodySize = dinoBodyPredicted;
-	traits[Trait::energy_tank] = mySpecies->getAssignedForMolt()*(calculateDryMass()-currentBodySize);
+	traits[Trait::energy_tank] = getSpecies()->getAssignedForMolt()*(calculateDryMass()-currentBodySize);
 	//cout << "holar" << endl;
 	}   */  
 //END - not for arthropods only for debugging 
 
 	//death criterion fixed to the true plasticity bands - Dinosaurs
 	double minMassAtCurrentAge;
-	double longevity = mySpecies->getLongevitySinceMaturation()*ageOfFirstMaturation;
+	double longevity = getSpecies()->getLongevitySinceMaturation()*ageOfFirstMaturation;
 
 /* 	cout << ageOfFirstMaturation << endl;
 	exit(-1); */
 
 	if (currentAge>(0.15*longevity)){ //arthropod to prevent the tiny animals from dying too soon...
-	minMassAtCurrentAge = dinoMassPredicted - dinoMassPredicted * mySpecies->getMinPlasticityKVonBertalanffy();
+	minMassAtCurrentAge = dinoMassPredicted - dinoMassPredicted * getSpecies()->getMinPlasticityKVonBertalanffy();
 	}else{
-    minMassAtCurrentAge = dinoMassPredicted - dinoMassPredicted * 3 * mySpecies->getMinPlasticityKVonBertalanffy();
+    minMassAtCurrentAge = dinoMassPredicted - dinoMassPredicted * 3 * getSpecies()->getMinPlasticityKVonBertalanffy();
 	}
 //Dinosaurs
-/* 	double minMassAtCurrentAge = Linf*(1-exp(-traits[Trait::growth]*(currentAge-thisAnimalVonBertTime0)));
-	minMassAtCurrentAge = 0.1*mySpecies->getCoefficientForMassAforMature()*pow(minMassAtCurrentAge,mySpecies->getScaleForMassBforMature()); //+ mySpecies->getMinPlasticityKVonBertalanffy()*mySpecies->getCoefficientForMassAforMature()*pow(minMassAtCurrentAge,mySpecies->getScaleForMassBforMature());
+/* 	double minMassAtCurrentAge = static_cast<const LogisticCurveParams *>(growthCurveParams)->getAsymptoticSize()*(1-exp(-traits[Trait::growth]*(currentAge-thisAnimalVonBertTime0)));
+	minMassAtCurrentAge = 0.1*getSpecies()->getCoefficientForMassAforMature()*pow(minMassAtCurrentAge,getSpecies()->getScaleForMassBforMature()); //+ getSpecies()->getMinPlasticityKVonBertalanffy()*getSpecies()->getCoefficientForMassAforMature()*pow(minMassAtCurrentAge,getSpecies()->getScaleForMassBforMature());
  */
 
 
@@ -471,25 +590,15 @@ void Animal::tuneTraits(int timeStep, int timeStepsPerDay, float temperature, fl
 
 	double nextDinoLengthPredicted = 0.0; 
 	//double nextDinoMassPredicted;
-	if(!isMature()){ 
-		
-		if(mySpecies->getGrowthType() == 0){
-			if(currentAge==0 || currentAge==1){
-				nextDinoLengthPredicted = Linf*(1-exp(-getTrait(Trait::growth)*(1-thisAnimalVonBertTime0)));
-			}else{
-				nextDinoLengthPredicted = Linf*(1-exp(-getTrait(Trait::growth)*((currentAge+1)-thisAnimalVonBertTime0)));
-			}
+	if(!isMature()){
+		if(currentAge == 0 || currentAge == 1){
+			nextDinoLengthPredicted = getValueGrowthCurve(1, xmid);
+		}
+		else {
+			nextDinoLengthPredicted = getValueGrowthCurve(currentAge+1, xmid);
 		}
 
-		if(mySpecies->getGrowthType() == 1){
-			if(currentAge==0 || currentAge==1){
-				nextDinoLengthPredicted = Linf/(1+exp((xmid-1)*getTrait(Trait::growth)));
-			}else{
-				nextDinoLengthPredicted = Linf/(1+exp((xmid-(currentAge+1))*getTrait(Trait::growth)));
-			}
-		}
-
-		nextDinoMassPredicted = mySpecies->getCoefficientForMassAforMature()*pow(nextDinoLengthPredicted,mySpecies->getScaleForMassBforMature());
+		nextDinoMassPredicted = getSpecies()->getCoefficientForMassAforMature()*pow(nextDinoLengthPredicted,getSpecies()->getScaleForMassBforMature());
 
 
 	
@@ -520,14 +629,14 @@ void Animal::tuneTraits(int timeStep, int timeStepsPerDay, float temperature, fl
 				interceptTarget = calculateDryMass()-slopeTarget*currentAge;
 				nextDinoMassPredicted = interceptTarget + slopeTarget*(currentAge+1);
 
-				//nextDinoMassPredicted = mySpecies->getCoefficientForMassAforMature()*pow(nextDinoLengthPredicted,mySpecies->getScaleForMassBforMature());	
+				//nextDinoMassPredicted = getSpecies()->getCoefficientForMassAforMature()*pow(nextDinoLengthPredicted,getSpecies()->getScaleForMassBforMature());	
 				slopeTarget = 0.0;
 				interceptTarget = 0.0;
 			}else{//force currentAge-1 for calculations as to avoid nans
 				slopeTarget = (massForNextReproduction - calculateDryMass())/(ageForNextReproduction-(currentAge-1));
 				interceptTarget = calculateDryMass()-slopeTarget*(currentAge-1);
 				nextDinoMassPredicted = interceptTarget + slopeTarget*currentAge;
-			    //nextDinoMassPredicted = mySpecies->getCoefficientForMassAforMature()*pow(nextDinoLengthPredicted,mySpecies->getScaleForMassBforMature());	
+			    //nextDinoMassPredicted = getSpecies()->getCoefficientForMassAforMature()*pow(nextDinoLengthPredicted,getSpecies()->getScaleForMassBforMature());	
 				
 				
 				slopeTarget = 0.0;
@@ -545,7 +654,7 @@ void Animal::tuneTraits(int timeStep, int timeStepsPerDay, float temperature, fl
 				slopeTarget = (massForNextReproduction-calculateDryMass())/(ageForNextReproduction-currentAge);
 				interceptTarget = massForNextReproduction-slopeTarget*ageForNextReproduction;
 				nextDinoMassPredicted = interceptTarget + slopeTarget*ageForNextReproduction;
-				//nextDinoMassPredicted = mySpecies->getCoefficientForMassAforMature()*pow(nextDinoLengthPredicted,mySpecies->getScaleForMassBforMature());	
+				//nextDinoMassPredicted = getSpecies()->getCoefficientForMassAforMature()*pow(nextDinoLengthPredicted,getSpecies()->getScaleForMassBforMature());	
 				/* cout << "comorl?.........+++++++++++++++++++++++++++++++++++++++" << endl;
 				cout << getId() << endl;
 		        cout << gender << endl;
@@ -644,11 +753,11 @@ void Animal::tuneTraits(int timeStep, int timeStepsPerDay, float temperature, fl
 
 		
 
-    minTotalMetabolicDryMassLoss = getTotalMetabolicDryMassLoss(wetMassAtTheBeginningOfTheTimeStep, temperature, 0, timeStepsPerDay);
+    minTotalMetabolicDryMassLoss = getTotalMetabolicDryMassLoss(wetMassAtTheBeginningOfTheTimeStep, temperature, 0, timeStepsPerDay, simulType);
 
-    minNextDinoMassPredicted = nextDinoMassPredicted - nextDinoMassPredicted * mySpecies->getMinPlasticityKVonBertalanffy();
+    minNextDinoMassPredicted = nextDinoMassPredicted - nextDinoMassPredicted * getSpecies()->getMinPlasticityKVonBertalanffy();
 	
-	maxNextDinoMassPredicted = nextDinoMassPredicted + nextDinoMassPredicted * mySpecies->getMaxPlasticityKVonBertalanffy();
+	maxNextDinoMassPredicted = nextDinoMassPredicted + nextDinoMassPredicted * getSpecies()->getMaxPlasticityKVonBertalanffy();
 
     targetMass = maxNextDinoMassPredicted - calculateDryMass();
 
@@ -662,26 +771,26 @@ void Animal::tuneTraits(int timeStep, int timeStepsPerDay, float temperature, fl
 	else //isMature == true
     {
 
-					/* double lengthAtBirth = Linf*(1-exp(-traits[Trait::growth]*(0-thisAnimalVonBertTime0)));
-					eggDryMassForClutch = mySpecies->getCoefficientForMassA()*pow(lengthAtBirth,mySpecies->getScaleForMassB())+mySpecies->getCoefficientForMassA()*pow(lengthAtBirth,mySpecies->getScaleForMassB()) * traits[Trait::factorEggMass];
+					/* double lengthAtBirth = static_cast<const LogisticCurveParams *>(growthCurveParams)->getAsymptoticSize()*(1-exp(-traits[Trait::growth]*(0-thisAnimalVonBertTime0)));
+					eggDryMassForClutch = getSpecies()->getCoefficientForMassA()*pow(lengthAtBirth,getSpecies()->getScaleForMassB())+getSpecies()->getCoefficientForMassA()*pow(lengthAtBirth,getSpecies()->getScaleForMassB()) * traits[Trait::factorEggMass];
 
-					if(mySpecies->hasEggClutchFromEquation())
+					if(getSpecies()->hasEggClutchFromEquation())
 					{
-						clutchDryMass = (mySpecies->getForClutchMassCoefficient() * pow(lastMassBeforeMaturationOrOviposition, mySpecies->getForClutchMassScale())) / mySpecies->getConversionToWetMass();
+						clutchDryMass = (getSpecies()->getForClutchMassCoefficient() * pow(lastMassBeforeMaturationOrOviposition, getSpecies()->getForClutchMassScale())) / getSpecies()->getConversionToWetMass();
 					}
 					else //If it does not come from equation,
 					{
-						clutchDryMass = eggDryMassForClutch*mySpecies->getEggsPerBatch(); //clutch dry mass is identical to the mass of an egg - done for mites or others that only lay one egg at a time.
+						clutchDryMass = eggDryMassForClutch*getSpecies()->getEggsPerBatch(); //clutch dry mass is identical to the mass of an egg - done for mites or others that only lay one egg at a time.
 					} */
 
 
 
 
-	minTotalMetabolicDryMassLoss = getTotalMetabolicDryMassLoss(wetMassAtTheBeginningOfTheTimeStep, temperature, 0, timeStepsPerDay);
+	minTotalMetabolicDryMassLoss = getTotalMetabolicDryMassLoss(wetMassAtTheBeginningOfTheTimeStep, temperature, 0, timeStepsPerDay, simulType);
 
-    minNextDinoMassPredicted = nextDinoMassPredicted - nextDinoMassPredicted * mySpecies->getMinPlasticityKVonBertalanffy();
+    minNextDinoMassPredicted = nextDinoMassPredicted - nextDinoMassPredicted * getSpecies()->getMinPlasticityKVonBertalanffy();
 	
-	maxNextDinoMassPredicted = nextDinoMassPredicted + nextDinoMassPredicted * (mySpecies->getMaxPlasticityKVonBertalanffy()*1.0);
+	maxNextDinoMassPredicted = nextDinoMassPredicted + nextDinoMassPredicted * (getSpecies()->getMaxPlasticityKVonBertalanffy()*1.0);
 
     
 	targetMass = maxNextDinoMassPredicted - calculateDryMass();
@@ -714,7 +823,7 @@ void Animal::tuneTraits(int timeStep, int timeStepsPerDay, float temperature, fl
 	cout << maxNextDinoMassPredicted << endl;
 	cout << targetMass << endl;*/
 
-   /* if(mySpecies->getId() == 1){
+   /* if(getSpecies()->getId() == 1){
 			cout << massForNextReproduction << endl;
 			cout << calculateDryMass() << endl;
 			cout << ageForNextReproduction << endl;
@@ -742,21 +851,21 @@ void Animal::tuneTraits(int timeStep, int timeStepsPerDay, float temperature, fl
     double dellsNewT = Math_Functions::dells(
     		newT,
 			ToptVoracity,
-			mySpecies->getEdVoracity(),
+			getSpecies()->getEdVoracity(),
 			getTrait(Trait::actE_vor)
 			);
 
     double dellsMinT = Math_Functions::dells(
     		0+273,
 			ToptVoracity,
-			mySpecies->getEdVoracity(),
+			getSpecies()->getEdVoracity(),
 			getTrait(Trait::actE_vor)
 			);
 
     double dellsMaxT = Math_Functions::dells(
     		ToptVoracity,
 			ToptVoracity,
-			mySpecies->getEdVoracity(),
+			getSpecies()->getEdVoracity(),
 			getTrait(Trait::actE_vor)
     		);
 
@@ -764,7 +873,7 @@ void Animal::tuneTraits(int timeStep, int timeStepsPerDay, float temperature, fl
     		dellsNewT,
 			dellsMinT,
 			dellsMaxT,
-			mySpecies->getMinVorExtremeT(),
+			getSpecies()->getMinVorExtremeT(),
 			voracity_ini
 			);
 
@@ -773,7 +882,7 @@ void Animal::tuneTraits(int timeStep, int timeStepsPerDay, float temperature, fl
     cout << "dellsMinT: " << dellsMinT << endl;
     cout << "dellsMaxT: " << dellsMaxT << endl;
 
-    cout << "mySpecies->getMinVorExtremeT(): " << mySpecies->getMinVorExtremeT() << endl;
+    cout << "getSpecies()->getMinVorExtremeT(): " << getSpecies()->getMinVorExtremeT() << endl;
     cout << "voracity_ini: " << voracity_ini << endl;*/
 
     //cout << "postTvor: " << postTvor << endl;
@@ -820,8 +929,8 @@ void Animal::tuneTraits(int timeStep, int timeStepsPerDay, float temperature, fl
     		targetMass,
 			0,
 			fullTrajectoryMass,
-			preFinalVoracity - preFinalVoracity * mySpecies->getMinPlasticityDueToConditionVor(),
-			preFinalVoracity + preFinalVoracity * mySpecies->getMaxPlasticityDueToConditionVor()
+			preFinalVoracity - preFinalVoracity * getSpecies()->getMinPlasticityDueToConditionVor(),
+			preFinalVoracity + preFinalVoracity * getSpecies()->getMaxPlasticityDueToConditionVor()
 			);
 
 				
@@ -831,26 +940,26 @@ void Animal::tuneTraits(int timeStep, int timeStepsPerDay, float temperature, fl
 	//cout << "here: " << traits[Trait::voracity]/calculateDryMass() << endl;
 
     //BELOW WE INCLUDE TEMP TUNING FOR SEARCH AREA AND SPEED
-    double dellsNewTsearch = Math_Functions::dells(newT, ToptSearch, mySpecies->getEdSearch(), getTrait(Trait::actE_search));
-    double dellsMinTsearch = Math_Functions::dells(0+273, ToptSearch, mySpecies->getEdSearch(), getTrait(Trait::actE_search));
-    double dellsMaxTsearch = Math_Functions::dells(ToptSearch, ToptSearch, mySpecies->getEdSearch(), getTrait(Trait::actE_search));
+    double dellsNewTsearch = Math_Functions::dells(newT, ToptSearch, getSpecies()->getEdSearch(), getTrait(Trait::actE_search));
+    double dellsMinTsearch = Math_Functions::dells(0+273, ToptSearch, getSpecies()->getEdSearch(), getTrait(Trait::actE_search));
+    double dellsMaxTsearch = Math_Functions::dells(ToptSearch, ToptSearch, getSpecies()->getEdSearch(), getTrait(Trait::actE_search));
     postTsearch = Math_Functions::linearInterpolate(
     		dellsNewTsearch,
 			dellsMinTsearch,
 			dellsMaxTsearch,
-			preTsearch - preTsearch * mySpecies->getFractSearchExtremeT(),
+			preTsearch - preTsearch * getSpecies()->getFractSearchExtremeT(),
 			preTsearch);
 	
 	postTsearch = preTsearch; //this is to have more predictive mobilities
 
-    double dellsNewTspeed = Math_Functions::dells(newT, ToptSpeed, mySpecies->getEdSpeed(), getTrait(Trait::actE_speed));
-    double dellsMinTspeed = Math_Functions::dells(0+273, ToptSpeed, mySpecies->getEdSpeed(), getTrait(Trait::actE_speed));
-    double dellsMaxTspeed = Math_Functions::dells(ToptSpeed, ToptSpeed, mySpecies->getEdSpeed(), getTrait(Trait::actE_speed));
+    double dellsNewTspeed = Math_Functions::dells(newT, ToptSpeed, getSpecies()->getEdSpeed(), getTrait(Trait::actE_speed));
+    double dellsMinTspeed = Math_Functions::dells(0+273, ToptSpeed, getSpecies()->getEdSpeed(), getTrait(Trait::actE_speed));
+    double dellsMaxTspeed = Math_Functions::dells(ToptSpeed, ToptSpeed, getSpecies()->getEdSpeed(), getTrait(Trait::actE_speed));
     postTspeed = Math_Functions::linearInterpolate(
     		dellsNewTspeed,
     		dellsMinTspeed,
 			dellsMaxTspeed,
-			preTspeed - preTspeed * mySpecies->getFractSpeedExtremeT(),
+			preTspeed - preTspeed * getSpecies()->getFractSpeedExtremeT(),
 			preTspeed);
 
     //BELOW WE INCLUDE CONDITION-DEPENDENT PLASTICITY FOR SEARCH AREA AND SPEED
@@ -858,12 +967,12 @@ void Animal::tuneTraits(int timeStep, int timeStepsPerDay, float temperature, fl
     		targetMass,
     		0,
 			fullTrajectoryMass,
-			postTsearch - postTsearch*mySpecies->getMinPlasticityDueToConditionSearch(),
-			postTsearch + postTsearch*mySpecies->getMaxPlasticityDueToConditionSearch());
+			postTsearch - postTsearch*getSpecies()->getMinPlasticityDueToConditionSearch(),
+			postTsearch + postTsearch*getSpecies()->getMaxPlasticityDueToConditionSearch());
 
     finalSearch = postTsearch; //this is to have more predictive mobilities
    
-    maxPostTsearch = postTsearch + postTsearch * mySpecies->getMaxPlasticityDueToConditionSearch();
+    maxPostTsearch = postTsearch + postTsearch * getSpecies()->getMaxPlasticityDueToConditionSearch();
 	setTrait(Trait::search_area, finalSearch);
 
     //traits[Trait::search_area] = preTsearch;
@@ -872,8 +981,8 @@ void Animal::tuneTraits(int timeStep, int timeStepsPerDay, float temperature, fl
     		targetMass,
 			0,
 			fullTrajectoryMass,
-			postTspeed - postTspeed * mySpecies->getMinPlasticityDueToConditionSpeed(),
-			postTspeed + postTspeed * mySpecies->getMaxPlasticityDueToConditionSpeed()
+			postTspeed - postTspeed * getSpecies()->getMinPlasticityDueToConditionSpeed(),
+			postTspeed + postTspeed * getSpecies()->getMaxPlasticityDueToConditionSpeed()
 			);
 
 	setTrait(Trait::speed, finalSpeed);
@@ -885,11 +994,15 @@ void Animal::tuneTraits(int timeStep, int timeStepsPerDay, float temperature, fl
 
 	if(::isnan(finalSpeed) || ::isnan(finalSearch) || ::isnan(finalVoracity) || ::isinf(finalSpeed) || ::isinf(finalSearch) || ::isinf(finalVoracity))
 	{
+		setNewLifeStage(LifeStage::SHOCKED, timeStep);
+		return;
+		/*
 		cout << "Animal id: " << this->getId() << " (" << this->getSpecies()->getScientificName() << ") - The growing curve resulted in a NaN value." << endl;
 		cout << finalVoracity << endl;
 		cout << finalSpeed << endl;
 		cout << finalSearch << endl;
 		exit(-1);
+		*/
 	}
 
 	
@@ -902,8 +1015,8 @@ void Animal::tuneTraits(int timeStep, int timeStepsPerDay, float temperature, fl
 
 	 //below we establish a decrease in activity due to previous encounters with predators
     //the punishment on the traits depends on the parameter decreaseOnTraitsDueToEncounters
-	double vorAfterEncounters = getTrait(Trait::voracity) / (mySpecies->getDecreaseOnTraitsDueToEncounters()*todayEncountersWithPredators+1);
-	double searchAfterEncounters = getTrait(Trait::search_area) / (mySpecies->getDecreaseOnTraitsDueToEncounters()*todayEncountersWithPredators+1);
+	double vorAfterEncounters = getTrait(Trait::voracity) / (getSpecies()->getDecreaseOnTraitsDueToEncounters()*todayEncountersWithPredators+1);
+	double searchAfterEncounters = getTrait(Trait::search_area) / (getSpecies()->getDecreaseOnTraitsDueToEncounters()*todayEncountersWithPredators+1);
 
 	//vorAfterEncounters=min(vorAfterEncounters,maxNextInstarMassFromVBPlasticity);
 
@@ -911,7 +1024,7 @@ void Animal::tuneTraits(int timeStep, int timeStepsPerDay, float temperature, fl
 		if(calculateDryMass() < maxNextDinoMassPredicted){
 		vorAfterEncounters = maxNextDinoMassPredicted - calculateDryMass(); //min(vorAfterEncounters+calculateDryMass(),maxNextDinoMassPredicted)-calculateDryMass();
 		}else{
-		/* if(mySpecies->getScientificName() == "Microbisium_sp" && instar+2 == 4){
+		/* if(getSpecies()->getScientificName() == "Microbisium_sp" && instar+2 == 4){
 			cout << calculateDryMass() << endl;
 			cout << maxNextDinoMassPredicted << endl;
 			cout << vorAfterEncounters << endl;
@@ -943,45 +1056,53 @@ void Animal::tuneTraits(int timeStep, int timeStepsPerDay, float temperature, fl
 	
 	//Dinos2023 - this should occur only for Dinos or large vertebrates but needs to be tested for invertebrates
 	//We truncate voracity using the allometric equation of Garland 1983 for terrestrial mammals 
-    if(position->getTheWorld()->getSimulType() == 0){  //is a simulation on arthropods
-		double AmNat = (0.1*pow((calculateWetMass()),0.75))/mySpecies->getConversionToWetMass();
+	switch (simulType) {
+		case SimulType::dinosaurs: {
+			double Garland1983 = ((152*pow((calculateWetMass()),0.738))/1000)/getSpecies()->getConversionToWetMass();
 		
-		if(AmNat < getTrait(Trait::voracity)){
-			setTrait(Trait::voracity, AmNat);
-		}  
-	}
-    if(position->getTheWorld()->getSimulType() == 1){  //is a simulation on dinosaurs
-		double Garland1983 = ((152*pow((calculateWetMass()),0.738))/1000)/mySpecies->getConversionToWetMass();
+			/* if(traits[Trait::voracity] > 60){
+				cout << Garland1983 << endl;
+				cout << traits[Trait::voracity] << endl; 
+				cout << calculateDryMass() << endl;
+				cout << currentAge << endl;
+				cout << timeStep << endl;
+				exit(-1);
+			} */
+			
+			
+			if(Garland1983 < getTrait(Trait::voracity)){
+				setTrait(Trait::voracity, Garland1983);
+			}  
+			break;
+		}
+		case SimulType::arthropods: {
+			double AmNat = (0.1*pow((calculateWetMass()),0.75))/getSpecies()->getConversionToWetMass();
 		
-	/* 	if(traits[Trait::voracity] > 60){
-			cout << Garland1983 << endl;
-			cout << traits[Trait::voracity] << endl; 
-			cout << calculateDryMass() << endl;
-			cout << currentAge << endl;
-			cout << timeStep << endl;
-			exit(-1);
-		} */
-		
-		
-		if(Garland1983 < getTrait(Trait::voracity)){
-			setTrait(Trait::voracity, Garland1983);
-		}  
+			if(AmNat < getTrait(Trait::voracity)){
+				setTrait(Trait::voracity, AmNat);
+			}  
+			break;
+		}
+		default: {
+			throwLineInfoException("Default case");
+			break;
+		}
 	}
 	//end Dinos2023
 
 
 	//We assume that encounters DO NOT AFFECT the animal speed - although in reality stamina should be affected
 	//However this affects also to the predators so we do not consider this for now
-	//traits[Trait::speed] = traits[Trait::speed] / (mySpecies->decreaseOnTraitsDueToEncounters*todayEncountersWithPredators+1);
+	//traits[AnimalSpecies::TraitOrderConverter::speed] = traits[AnimalSpecies::TraitOrderConverter::speed] / (getSpecies()->decreaseOnTraitsDueToEncounters*todayEncountersWithPredators+1);
 
 	//traits[Trait::energy_tank] < 0
 	if(getTrait(Trait::energy_tank) < 0) //Dinosaurs calculateDryMass() < minMassAtCurrentAge
 	{
-		setNewLifeStage(LIFE_STAGES::STARVED, timeStep);
+		setNewLifeStage(LifeStage::STARVED, timeStep);
 	}
 	/*else if(minMassAtCurrentAge >= finalJMaxVB+calculateDryMass())//Jordi note: I do not follow why this sentence //Gabi: prevents from crashing when the limits are reverted (due to disadjudments in the curve values)
 	{
-		//cout << "For species " << mySpecies->getScientificName() << ": maxKplasticityForVonBertalanfy and minKplasticityForVonBertalanfy are not set correctly. Modify these values and re-run..." << endl;
+		//cout << "For species " << getSpecies()->getScientificName() << ": maxKplasticityForVonBertalanfy and minKplasticityForVonBertalanfy are not set correctly. Modify these values and re-run..." << endl;
 		lifeStage = STARVED;
 		setDateOfDeath(timeStep);
 	}
@@ -1002,103 +1123,89 @@ void Animal::tuneTraits(int timeStep, int timeStepsPerDay, float temperature, fl
 	if(timeStep==200){
 	if (0.99 > Random::randomUniform()) //to induce a bottleneck 
 	{
-		setNewLifeStage(LIFE_STAGES::BACKGROUND, timeStep);
+		setNewLifeStage(LifeStage::BACKGROUND, timeStep);
 	}
 	}else{  */
 	//arthros and dinos to create patches of enemy free space - kill all predators in designated patches for initialization
 
 	//create patches with predator (enemy) free space at initialization
-	if(position->getTheWorld()->getCell2(position->getZ(), position->getY(), position->getX())->isInEnemyFreeSpace() && timeStep == 0 && this->getHuntingMode()!=DOES_NOT_HUNT)
+	if((*getCell)(position->getZ(), position->getY(), position->getX())->isInEnemyFreeSpace() && timeStep == 0 && this->getHuntingMode() != HuntingMode::does_not_hunt)
 	{	
-		setNewLifeStage(LIFE_STAGES::BACKGROUND, timeStep);
+		setNewLifeStage(LifeStage::BACKGROUND, timeStep);
 	}
 	
 	//create patches with consumer competitor free space at initialization
-	if(position->getTheWorld()->getCell2(position->getZ(), position->getY(), position->getX())->isInCompetitorFreeSpace() && timeStep == 0 && this->getHuntingMode()==DOES_NOT_HUNT)
+	if((*getCell)(position->getZ(), position->getY(), position->getX())->isInCompetitorFreeSpace() && timeStep == 0 && this->getHuntingMode() == HuntingMode::does_not_hunt)
 	{	
-		setNewLifeStage(LIFE_STAGES::BACKGROUND, timeStep);
+		setNewLifeStage(LifeStage::BACKGROUND, timeStep);
 	}
 	
 	//background mortality
-	if(getId() != 0){
-    if (mySpecies->getProbabilityDeathFromBackground() > Random::randomUniform())
-	{
-		setNewLifeStage(LIFE_STAGES::BACKGROUND, timeStep);
-	}	
-    }
+	//if(getId() != 0){
+/*	if(position->getTheWorld()->getSimulType() == 1 && getSpecies()->getScientificName() == "Tyrannosaurus_sp"){  //for Trex
+			double GompertzA = 0.002;
+			double GompertzG = 0.2214;
+			double currentAgeInYears = currentAge*371;
+			double prop_alive = exp((GompertzA/GompertzG)*(1 - exp(GompertzG*currentAgeInYears)));
+			if (((1-prop_alive)/371) > Random::randomUniform()) //prob death per day
+			{
+				setNewLifeStage(LifeStage::BACKGROUND, timeStep);
+			}	
+		
+	}else{ *///arthropods & other dinosaurs
+    
+	//}
 	//}
 	
 
 	if(isMature() && gender == AnimalSpecies::GENDERS::MALE)
 	{
-		setTrait(Trait::search_area, getTrait(Trait::search_area) * mySpecies->getMaleMobility());
+		setTrait(Trait::search_area, getTrait(Trait::search_area) * getSpecies()->getMaleMobility());
 	}
 
 	//TODO PARA LOS CRECIMIENTO INDETERMINADO, SE DEJAN POR AHORA QUE SIGAN MOVIENDOSE INFINITO
 	//TODO EN UN FUTURO SE HARÁ PARA LOS INDETERMINADO, DEJANDO QUE SIGAN CRECIENDO SI ALCANZAN EL TIEMPO DE LONGEVITY
-	if(currentAge >= ageOfFirstMaturation * mySpecies->getLongevitySinceMaturation())
+	if(currentAge >= ageOfFirstMaturation * getSpecies()->getLongevitySinceMaturation())
 	{
-		setNewLifeStage(LIFE_STAGES::SENESCED, timeStep);
+		setNewLifeStage(LifeStage::SENESCED, timeStep);
 	}
 
 
 	//below it means that metabolic downregulation only exists for predators, such as spiders
-	if(huntingMode != Animal::HUNTING_MODES::DOES_NOT_HUNT && daysWithoutFood >= mySpecies->getDaysWithoutFoodForMetabolicDownregulation())
+	if(getHuntingMode() != HuntingMode::does_not_hunt && daysWithoutFood >= getSpecies()->getDaysWithoutFoodForMetabolicDownregulation())
 	{
-		setTrait(Trait::voracity, getTrait(Trait::voracity) - mySpecies->getPercentageCostForMetabolicDownregulationVoracity() * getTrait(Trait::voracity));
-		setTrait(Trait::search_area, getTrait(Trait::search_area) - mySpecies->getPercentageCostForMetabolicDownregulationSearchArea() * getTrait(Trait::search_area));
-		setTrait(Trait::speed, getTrait(Trait::speed) - mySpecies->getPercentageCostForMetabolicDownregulationSpeed() * getTrait(Trait::speed));
+		setTrait(Trait::voracity, getTrait(Trait::voracity) - getSpecies()->getPercentageCostForMetabolicDownregulationVoracity() * getTrait(Trait::voracity));
+		setTrait(Trait::search_area, getTrait(Trait::search_area) - getSpecies()->getPercentageCostForMetabolicDownregulationSearchArea() * getTrait(Trait::search_area));
+		setTrait(Trait::speed, getTrait(Trait::speed) - getSpecies()->getPercentageCostForMetabolicDownregulationSpeed() * getTrait(Trait::speed));
 	}
 
-	//In this version the dummy1 trait involves Maximum Critical Temperature (CTmax)
-	if(getTrait(Trait::dummy1)<(temperature+273))
+	//In this version the shock_resistance trait involves Maximum Critical Temperature (CTmax)
+	if(getTrait(Trait::shock_resistance)<(temperature+273))
 	{
-		setNewLifeStage(LIFE_STAGES::SHOCKED, timeStep);
+		setNewLifeStage(LifeStage::SHOCKED, timeStep);
 	}
 
-	if(relativeHumidity < mySpecies->getMinRelativeHumidityThreshold())
+	if(relativeHumidity < getSpecies()->getMinRelativeHumidityThreshold())
 	{
-		setNewLifeStage(LIFE_STAGES::DIAPAUSE);
+		setNewLifeStage(LifeStage::DIAPAUSE);
 	}
 
 
 
 	if(printGrowthData)
 	{
-		tuneTraitsFile << getIdStr() << "\t"
-		<< mySpecies->getScientificName() << "\t"
-		<< lifeStage << "\t"
-		<< currentAge << "\t"
-		<< instar << "\t"
-		<< currentBodySize << "\t"
-		<< getTrait(Trait::energy_tank) << "\t"
-		<< tankAtGrowth << "\t" //done to document excessInvestment behavior
-		<< calculateDryMass() << "\t"
-		<< isMature() << "\t"
-		<< minMassAtCurrentAge << "\t"
-		<< finalJMinVB << "\t"
-		<< finalJMaxVB << "\t"
-		<< voracity_ini << "\t"
-		<< calculateDryMass()+finalJMinVB << "\t"
-		<< calculateDryMass()+getTrait(Trait::voracity) << "\t"
-		<< maxNextInstarMassFromVBPlasticity << "\t"
-		<< calculateWetMass() << "\t"
-		<< preTsearch << "\t"
-		<< preTspeed << "\t"
-		<< postTsearch << "\t"
-		<< postTspeed << "\t"
-		<< iniCurrentInstarMass << "\t"
-		<< targetNextInstarMass << "\t"
-		<< minTotalMetabolicDryMassLoss << "\t"
-		<< finalSearch << "\t"
-		<< finalSpeed << "\t"
-		<< preFinalVoracity << "\t"
-		<< finalVoracity << "\t"
-		<< getTrait(Trait::voracity) << "\t"
-		<< getTrait(Trait::search_area) << "\t"
-		<< getTrait(Trait::speed) << "\t"
-		<< getDateOfDeath() << "\t";
-		tuneTraitsFile << endl;
+		Output::print(
+			tuneTraitsFile, "{}\t{}\t{}\t{}\t{}\t{}\t{}\t{}\t{}\t{}\t{}\t{}\t{}\t{}\t{}\t{}\t{}\t{}\t{}\t{}\t{}\t{}\t{}\t{}\t{}\t{}\t{}\t{}\t{}\t{}\t{}\t{}\t{}\t\n",
+			getIdStr(), getSpecies()->getScientificName(), (int)lifeStage.getValue(), currentAge, instar,
+			currentBodySize, getTrait(Trait::energy_tank), tankAtGrowth, calculateDryMass(),
+			isMature(), minMassAtCurrentAge, finalJMinVB, finalJMaxVB, voracity_ini,
+			calculateDryMass()+finalJMinVB, calculateDryMass()+getTrait(Trait::voracity),
+			maxNextInstarMassFromVBPlasticity, calculateWetMass(), preTsearch, preTspeed,
+			postTsearch, postTspeed, iniCurrentInstarMass, targetNextInstarMass,
+			minTotalMetabolicDryMassLoss, finalSearch, finalSpeed, preFinalVoracity,
+			finalVoracity, getTrait(Trait::voracity), getTrait(Trait::search_area),
+			getTrait(Trait::speed), getDateOfDeath()
+		);
 	}
 
 /*  	if(isMature() == 1 && timeStep > 449 && getId() == 0){
@@ -1123,7 +1230,7 @@ void Animal::tuneTraits(int timeStep, int timeStepsPerDay, float temperature, fl
 	//TODO Diapausa cuando se pone el huevo. diapauseTimer = pheno. Solamente se disminuye diapauseTimer si las condiciones (temperatura y/o humedad) lo permiten, por debajo de un umbral.
 	//TODO Los numeros de individuos por instar ahora van a ser DENSIDADES por instar. Que pasaran a ser numero de individuos dependiendo del área habitable.
 
-	//TODO Eliminar el hongo cuando sea <= 0, y borrar minimumfungicapacity y getZeroFungi.
+	//TODO Eliminar el hongo cuando sea <= 0, y borrar minimumresourcecapacity y getZeroResource.
 	//TODO Añadir un parametro que decida si el animal crece por mudas o continuo (dinosaurios)
 
 
@@ -1133,61 +1240,72 @@ void Animal::tuneTraits(int timeStep, int timeStepsPerDay, float temperature, fl
 
 }
 
-double Animal::getTotalMetabolicDryMassLoss(double wetMass, double temperature, double proportionOfTimeTheAnimalWasMoving, int timeStepsPerDay)
+double Animal::getTotalMetabolicDryMassLoss(double wetMass, double temperature, double proportionOfTimeTheAnimalWasMoving, int timeStepsPerDay, SimulType simulType)
 {
-	
-double totalMetabolicDryMassLoss = 0;
+	double totalMetabolicDryMassLoss = 0;
 
-	if(position->getTheWorld()->getSimulType() == 0){
-		double basalMetabolicTax = exp(-7.2945+43.966*getTrait(Trait::actE_met)+getTrait(Trait::met_rate)*log(wetMass)-getTrait(Trait::actE_met)*(1/((temperature+273.15)*BOLZMANN)));
+	switch (simulType) {
+		case SimulType::dinosaurs: {
+			//here Grady et al. 2014 provide results in Watts (j/s) and M in g
+			double basalMetabolicTax = 0.002*pow(wetMass*1000,getTrait(Trait::met_rate));
 
-		double fraction_with_stress = (Math_Functions::linearInterpolate(todayEncountersWithPredators, 0, mySpecies->getMaxEncountersT(), 0, 0.407)/timeStepsPerDay)*basalMetabolicTax;
+			double fraction_with_stress = (Math_Functions::linearInterpolate(todayEncountersWithPredators, 0, getSpecies()->getMaxEncountersT(), 0, 0.407)/timeStepsPerDay)*basalMetabolicTax;
 
-		//TODO multiplicar por timeStep
-		//24 because the metab rates are given in days.
-		basalMetabolicTax = basalMetabolicTax + fraction_with_stress;
-		double loss_from_bmr = (1-proportionOfTimeTheAnimalWasMoving)*basalMetabolicTax*24;
-		//TODO This 3 is a raw value from bibl.
-		double field_met_tax = 3*basalMetabolicTax;
-		double loss_from_fmr = proportionOfTimeTheAnimalWasMoving*field_met_tax*24;
+			//TODO multiplicar por timeStep
+			//24*3600 because the metab rates are given in J/s.
+			basalMetabolicTax = basalMetabolicTax + fraction_with_stress;
+			
+			double distanceMoved = proportionOfTimeTheAnimalWasMoving*getTrait(Trait::search_area);
+			double field_met_tax = distanceMoved*(10.7*pow(calculateWetMass(),0.68)); //Calder 2016 for mammals - Jouls
+			//field_met_tax = 0;
+			//Remove this and use cost of transport in Calders
+			//double loss_from_bmr = (1-proportionOfTimeTheAnimalWasMoving)*basalMetabolicTax*24*3600;
+			//TODO This 3 is a raw value from bibl.
+			//double field_met_tax = 3*basalMetabolicTax;
+			//double loss_from_fmr = proportionOfTimeTheAnimalWasMoving*field_met_tax*24*3600;
 
-		//7 is NOT referred to weeks. Conversion from Jules.
-		loss_from_bmr=loss_from_bmr/7;
-		loss_from_fmr=loss_from_fmr/7;
-		totalMetabolicDryMassLoss = (loss_from_bmr + loss_from_fmr) / mySpecies->getConversionToWetMass();
+			double loss_from_bmr = basalMetabolicTax*24*3600;
+			double loss_from_fmr = field_met_tax;
+
+			//7 is NOT referred to weeks. Conversion from Jules.
+			loss_from_bmr=loss_from_bmr/7;//7 joule = 1mg 
+			loss_from_fmr=loss_from_fmr/7;
+			//here we transform from mg to Kg to dinoWeaver
+			totalMetabolicDryMassLoss = ((loss_from_bmr + loss_from_fmr)*0.000001) / getSpecies()->getConversionToWetMass();
+			break;
+		}
+		case SimulType::arthropods: {
+			double basalMetabolicTax = exp(-7.2945+43.966*getTrait(Trait::actE_met)+getTrait(Trait::met_rate)*log(wetMass)-getTrait(Trait::actE_met)*(1/((temperature+273.15)*BOLZMANN)));
+
+			double fraction_with_stress = (Math_Functions::linearInterpolate(todayEncountersWithPredators, 0, getSpecies()->getMaxEncountersT(), 0, 0.407)/timeStepsPerDay)*basalMetabolicTax;
+
+			//TODO multiplicar por timeStep
+			//24 because the metab rates are given in days.
+			basalMetabolicTax = basalMetabolicTax + fraction_with_stress;
+			double loss_from_bmr = (1-proportionOfTimeTheAnimalWasMoving)*basalMetabolicTax*24;
+			//TODO This 3 is a raw value from bibl.
+			double field_met_tax = 3*basalMetabolicTax;
+			double loss_from_fmr = proportionOfTimeTheAnimalWasMoving*field_met_tax*24;
+
+			//7 is NOT referred to weeks. Conversion from Jules.
+			loss_from_bmr=loss_from_bmr/7;
+			loss_from_fmr=loss_from_fmr/7;
+			totalMetabolicDryMassLoss = (loss_from_bmr + loss_from_fmr) / getSpecies()->getConversionToWetMass();
+			break;
+		}
+		default: {
+			throwLineInfoException("Default case");
+			break;
+		}
 	}
 
+	totalMetabolicDryMassLoss = totalMetabolicDryMassLoss / timeStepsPerDay;
 
-	if(position->getTheWorld()->getSimulType() == 1){
-		//here Grady et al. 2014 provide results in Watts (j/s) and M in g
-		double basalMetabolicTax = 0.002*pow(wetMass*1000,getTrait(Trait::met_rate));
-
-		double fraction_with_stress = (Math_Functions::linearInterpolate(todayEncountersWithPredators, 0, mySpecies->getMaxEncountersT(), 0, 0.407)/timeStepsPerDay)*basalMetabolicTax;
-
-		//TODO multiplicar por timeStep
-		//24*3600 because the metab rates are given in J/s.
-		basalMetabolicTax = basalMetabolicTax + fraction_with_stress;
-		double loss_from_bmr = (1-proportionOfTimeTheAnimalWasMoving)*basalMetabolicTax*24*3600;
-		//TODO This 3 is a raw value from bibl.
-		double field_met_tax = 3*basalMetabolicTax;
-		double loss_from_fmr = proportionOfTimeTheAnimalWasMoving*field_met_tax*24*3600;
-
-		//7 is NOT referred to weeks. Conversion from Jules.
-		loss_from_bmr=loss_from_bmr/7;//7 joule = 1mg 
-		loss_from_fmr=loss_from_fmr/7;
-		//here we transform from mg to Kg to dinoWeaver
-		totalMetabolicDryMassLoss = ((loss_from_bmr + loss_from_fmr)*0.000001) / mySpecies->getConversionToWetMass();
-	}
-
-
-totalMetabolicDryMassLoss = totalMetabolicDryMassLoss / timeStepsPerDay;
-
-
-return totalMetabolicDryMassLoss;
+	return totalMetabolicDryMassLoss;
 }
 
 //TODO parametro para que se ejecuten cada X timesteps
-void Animal::metabolize(int timeStep, int timeStepsPerDay)
+void Animal::metabolize(int timeStep, int timeStepsPerDay, SimulType simulType)
 {
 	#ifdef _DEBUG
 		double lastEnergyTank = traits[Trait::energy_tank];
@@ -1197,7 +1315,7 @@ void Animal::metabolize(int timeStep, int timeStepsPerDay)
 	//double currentAge = ((double)(timeStep-diapauseTimeSteps)/(double)timeStepsPerDay) - traits[Trait::pheno] + 1.0/timeStepsPerDay;
 
 	double proportionOfTimeTheAnimalWasMoving;
-	if(lifeStage == SATIATED || lifeStage == HANDLING)
+	if(lifeStage == LifeStage::SATIATED || lifeStage == LifeStage::HANDLING)
 	{
 		proportionOfTimeTheAnimalWasMoving = 0;
 	}
@@ -1214,12 +1332,12 @@ void Animal::metabolize(int timeStep, int timeStepsPerDay)
 	steps = 0;
 	stepsAttempted = 0;
 
-	double totalMetabolicDryMassLoss = getTotalMetabolicDryMassLoss(wetMassAtTheBeginningOfTheTimeStep, position->temperature, proportionOfTimeTheAnimalWasMoving, timeStepsPerDay);
+	double totalMetabolicDryMassLoss = getTotalMetabolicDryMassLoss(wetMassAtTheBeginningOfTheTimeStep, position->getTemperature(), proportionOfTimeTheAnimalWasMoving, timeStepsPerDay, simulType);
 
 	//Downregulation only here, do not change this into getMetabolicDryMassLoss because it would alter the expected loss in tuneTraits
-	if(huntingMode != Animal::HUNTING_MODES::DOES_NOT_HUNT && daysWithoutFood >= mySpecies->getDaysWithoutFoodForMetabolicDownregulation())
+	if(getHuntingMode() != HuntingMode::does_not_hunt && daysWithoutFood >= getSpecies()->getDaysWithoutFoodForMetabolicDownregulation())
 	{
-		totalMetabolicDryMassLoss -= totalMetabolicDryMassLoss * mySpecies->getPercentageMetabolicDownregulation();
+		totalMetabolicDryMassLoss -= totalMetabolicDryMassLoss * getSpecies()->getPercentageMetabolicDownregulation();
 	}
 
 	setTrait(Trait::energy_tank, getTrait(Trait::energy_tank) - totalMetabolicDryMassLoss);
@@ -1229,7 +1347,7 @@ void Animal::metabolize(int timeStep, int timeStepsPerDay)
 		if(afterLossEnergyTank >= lastEnergyTank)
 		{
 			cerr << "The metabolic loss was 0 or positive:" << endl;
-			cerr << " - Animal: " << id << "(" << mySpecies->getScientificName() << ")" << endl;
+			cerr << " - Animal: " << id << "(" << getSpecies()->getScientificName() << ")" << endl;
 			cerr << " - Last energy tank: " << lastEnergyTank << endl;
 			cerr << " - After loss energy tank: " << afterLossEnergyTank << endl;
 		}
@@ -1241,16 +1359,16 @@ void Animal::grow(int timeStep, int timeStepsPerDay)
 {
 	//Dinosaurs double currentAge = ((double)(timeStep-diapauseTimeSteps)/(double)timeStepsPerDay) - traits[Trait::pheno] + 1.0/timeStepsPerDay;
 
-		double lengthAtBirth = 0;
-		double xmid = 0;					
-		double propAdultMass = 0;
-		double currentEggs = 0;
-	 
+	double lengthAtBirth = 0;
+	double xmid = 0;					
+	double propAdultMass = 0;
+	double currentEggs = 0;
+	
 
-		if(mySpecies->getGrowthType() == 1){
-			lengthAtBirth = pow((getMassAtBirth()/mySpecies->getCoefficientForMassAforMature()),1/mySpecies->getScaleForMassBforMature()); 
-			xmid = log((Linf-lengthAtBirth)/lengthAtBirth)*(1/getTrait(Trait::growth));
-		}
+	if(getSpecies()->getGrowthCurve()->getType() == CurveType::Logistic){
+		lengthAtBirth = pow((getMassAtBirth()/getSpecies()->getCoefficientForMassAforMature()),1/getSpecies()->getScaleForMassBforMature()); 
+		xmid = log((static_cast<LogisticCurveParams* const>(growthCurveParams)->getAsymptoticSize()-lengthAtBirth)/lengthAtBirth)*(1/getTrait(Trait::growth));
+	}
 		
 	if(!isMature())
 	{
@@ -1260,26 +1378,12 @@ void Animal::grow(int timeStep, int timeStepsPerDay)
 		double daysForPseudoTargetReproduction;
 		daysForPseudoTargetReproduction = 1.1*currentAge;//1.1 because reproTimeFactor is no longer in use
 		ageForNextReproduction = currentAge + daysForPseudoTargetReproduction;
-		double currentLength = 0;
-		double nextReproLength = 0;
-		
-		if(mySpecies->getGrowthType() == 0){
-
-			currentLength = Linf*(1-exp(-getTrait(Trait::growth)*(currentAge-thisAnimalVonBertTime0)));
-			nextReproLength = Linf*(1-exp(-getTrait(Trait::growth)*(ageForNextReproduction-thisAnimalVonBertTime0)));
-		
-		}
-
-		if(mySpecies->getGrowthType() == 1){
-
-			currentLength = Linf/(1+exp((xmid-currentAge)*getTrait(Trait::growth)));
-			nextReproLength = Linf/(1+exp((xmid-ageForNextReproduction)*getTrait(Trait::growth)));
-
-		}
+		double currentLength = getValueGrowthCurve(currentAge, xmid);
+		double nextReproLength = getValueGrowthCurve(ageForNextReproduction, xmid);
 
 
-		massOfMaturationOrLastReproduction = mySpecies->getCoefficientForMassAforMature()*pow(currentLength,mySpecies->getScaleForMassBforMature());
-		massForNextReproduction = mySpecies->getCoefficientForMassAforMature()*pow(nextReproLength,mySpecies->getScaleForMassBforMature());
+		massOfMaturationOrLastReproduction = getSpecies()->getCoefficientForMassAforMature()*pow(currentLength,getSpecies()->getScaleForMassBforMature());
+		massForNextReproduction = getSpecies()->getCoefficientForMassAforMature()*pow(nextReproLength,getSpecies()->getScaleForMassBforMature());
 		//end arthro
 
 		//arthro - assignedForMolt is considered for molting or investment could be lower than the actual target
@@ -1293,8 +1397,8 @@ void Animal::grow(int timeStep, int timeStepsPerDay)
 
 			//massesVector[instar+1]
 
-			double investment = calculateDryMass()*mySpecies->getAssignedForMolt();
-			double next_tank = tank_ini * pow(massesVector[instar.getValue()], mySpecies->getBetaScaleTank());
+			double investment = calculateDryMass()*getSpecies()->getAssignedForMolt();
+			double next_tank = tank_ini * pow(massesVector[instar.getValue()], getSpecies()->getBetaScaleTank());
 			double next_size = massesVector[instar.getValue()] - next_tank;
 			double excessInvestment = investment-massesVector[instar.getValue()];
 			lastMassBeforeMaturationOrOviposition = calculateDryMass();
@@ -1304,8 +1408,8 @@ void Animal::grow(int timeStep, int timeStepsPerDay)
 			//exit(-1);
 		
 
-	 		currentBodySize = next_size + excessInvestment*mySpecies->getExcessInvestInSize();
-			setTrait(Trait::energy_tank, next_tank + excessInvestment*(1-mySpecies->getExcessInvestInSize()));
+	 		currentBodySize = next_size + excessInvestment*getSpecies()->getExcessInvestInSize();
+			setTrait(Trait::energy_tank, next_tank + excessInvestment*(1-getSpecies()->getExcessInvestInSize()));
 			
 			tankAtGrowth = getTrait(Trait::energy_tank);
 
@@ -1315,14 +1419,14 @@ void Animal::grow(int timeStep, int timeStepsPerDay)
 				if(afterMoultEnergyTank >= lastEnergyTank)
 				{
 					cerr << "The energy tank after moult was higher than before:" << endl;
-					cerr << " - Animal: " << id << "(" << mySpecies->getScientificName() << ")" << endl;
+					cerr << " - Animal: " << id << "(" << getSpecies()->getScientificName() << ")" << endl;
 					cerr << " - Last energy tank: " << lastEnergyTank << endl;
 					cerr << " - After moult energy tank: " << afterMoultEnergyTank << endl;
 				}
 				if(afterMoultBodySize <= lastBodySize)
 				{
 					cerr << "The body size after moult was lower than before: " << endl;
-					cerr << " - Animal: " << id << "(" << mySpecies->getScientificName() << ")" << endl;
+					cerr << " - Animal: " << id << "(" << getSpecies()->getScientificName() << ")" << endl;
 					cerr << " - Last body size: " << lastBodySize << endl;
 					cerr << " - After moult body size: " << afterMoultBodySize << endl;
 				}
@@ -1330,17 +1434,17 @@ void Animal::grow(int timeStep, int timeStepsPerDay)
 			
 			instar.moveOnNextInstar();
 
-			/* if(mySpecies->hasIndeterminateGrowth() && (instar+2 > mySpecies->getInstarFirstReproduction())){
+			/* if(getSpecies()->hasIndeterminateGrowth() && (instar+2 > getSpecies()->getInstarFirstReproduction())){
 
-			 if((mySpecies->getInstarFirstReproduction() % 2 == 0) &&
-			  ((instar+2 - mySpecies->getInstarFirstReproduction()) % 2 == 0)){ //both even
+			 if((getSpecies()->getInstarFirstReproduction() % 2 == 0) &&
+			  ((instar+2 - getSpecies()->getInstarFirstReproduction()) % 2 == 0)){ //both even
 
 				mature = true;
 
 			 }else{ //at least one is odd
 
-			  if((mySpecies->getInstarFirstReproduction() % 2 > 0) &&
-			   ((instar+2 - mySpecies->getInstarFirstReproduction()) % 2 == 0)){ //second even
+			  if((getSpecies()->getInstarFirstReproduction() % 2 > 0) &&
+			   ((instar+2 - getSpecies()->getInstarFirstReproduction()) % 2 == 0)){ //second even
 
 				mature = true;
 
@@ -1353,8 +1457,8 @@ void Animal::grow(int timeStep, int timeStepsPerDay)
 
 			}else{ */
 
-				//(instar+2 == mySpecies->getInstarFirstReproduction()) ||
-				if((instar >= mySpecies->getInstarFirstReproduction()) || (instar == mySpecies->getNumberOfInstars()))
+				//(instar+2 == getSpecies()->getInstarFirstReproduction()) ||
+				if((instar >= getSpecies()->getInstarFirstReproduction()) || (instar == getSpecies()->getNumberOfInstars()))
 				{
 
 					mature = true;
@@ -1368,11 +1472,11 @@ void Animal::grow(int timeStep, int timeStepsPerDay)
 		//arthro but really for dinos when molting algorithm above is muted - ends loop
 		//exactly in the same place
 
-		/*cout << finalDevTimeVector[(mySpecies->getInstarFirstReproduction()-2)] << endl;
+		/*cout << finalDevTimeVector[(getSpecies()->getInstarFirstReproduction()-2)] << endl;
 		exit(-1);*/
 
 		//warning, to use this below need to uncomment the } above
-		/* if(currentAge >= finalDevTimeVector[(mySpecies->getInstarFirstReproduction()-2)]){
+		/* if(currentAge >= finalDevTimeVector[(getSpecies()->getInstarFirstReproduction()-2)]){
 				
 				//arthros and dinos especially this line below is necessary
 				//when growth by moulting is muted
@@ -1381,7 +1485,7 @@ void Animal::grow(int timeStep, int timeStepsPerDay)
 				mature = true; */
 			    //end arthro
 				
-				/* cout << mySpecies->getId() << endl;
+				/* cout << getSpecies()->getId() << endl;
 				exit(-1);  */
 
 			
@@ -1401,12 +1505,12 @@ void Animal::grow(int timeStep, int timeStepsPerDay)
 
 				//arthros but very important for repro in Dinos!!!! ageOfFirstMaturation by age not by instar
 				 /* cout << currentAge << endl;
-				cout << finalDevTimeVector[(mySpecies->getInstarFirstReproduction()-2)] << endl;
+				cout << finalDevTimeVector[(getSpecies()->getInstarFirstReproduction()-2)] << endl;
 				exit(-1);  */
 
-				if(currentAge == getAgeFirstReproduction()){ //instar+2 == mySpecies->getInstarFirstReproduction()){
+				if(currentAge == getAgeFirstReproduction()){ //instar+2 == getSpecies()->getInstarFirstReproduction()){
 				 	
-					//if(mySpecies->getGrowthType() == 0){
+					//if(getSpecies()->getGrowthType() == 0){
 
 						ageOfMaturation = currentAge;
 						
@@ -1414,7 +1518,7 @@ void Animal::grow(int timeStep, int timeStepsPerDay)
 
 					//}
 
-					/*if(mySpecies->getGrowthType() == 1){
+					/*if(getSpecies()->getGrowthType() == 1){
 
 						ageOfMaturation = xmid;
 						
@@ -1432,7 +1536,7 @@ void Animal::grow(int timeStep, int timeStepsPerDay)
 				} */
 				if(currentAge==round(ageOfFirstMaturation)) // rep_count==0
 				{
-					pupaTimer = mySpecies->getPupaPeriodLength()*timeStepsPerDay;
+					pupaTimer = getSpecies()->getPupaPeriodLength()*timeStepsPerDay;
 				}
 				//double currentAge = ((double)(timeStep-diapauseTimeSteps)/(double)timeStepsPerDay) - traits[Trait::pheno] + 1.0/timeStepsPerDay;
 				//DONE RepFactor for different genders
@@ -1442,34 +1546,63 @@ void Animal::grow(int timeStep, int timeStepsPerDay)
 
 					//Dinosaurs
 					//and arthros we remove eggDryMass from script because it may not work - early death from starvation
-					//double lengthAtBirth = Linf*(1-exp(-traits[Trait::growth]*(0-thisAnimalVonBertTime0)));
-					eggDryMassForClutch = mySpecies->getEggDryMass()+mySpecies->getEggDryMass()*getTrait(Trait::factorEggMass);
+					//double lengthAtBirth = static_cast<const LogisticCurveParams *>(growthCurveParams)->getAsymptoticSize()*(1-exp(-traits[Trait::growth]*(0-thisAnimalVonBertTime0)));
+					eggDryMassForClutch = getSpecies()->getEggDryMass()+getSpecies()->getEggDryMass()*getTrait(Trait::factorEggMass);
 				
-					double maxMassAtCurrentAge = eggDryMassForClutch + eggDryMassForClutch*mySpecies->getMaxPlasticityKVonBertalanffy();
+					double maxMassAtCurrentAge = eggDryMassForClutch + eggDryMassForClutch*getSpecies()->getMaxPlasticityKVonBertalanffy();
 					//below is a shorter limit for death - if minPlasticityKVonBertalanffy == 0, death occurs when total body mass = body size
-					double minMassAtCurrentAge = eggDryMassForClutch - eggDryMassForClutch * mySpecies->getMinPlasticityKVonBertalanffy();//Dinosaurs
+					double minMassAtCurrentAge = eggDryMassForClutch - eggDryMassForClutch * getSpecies()->getMinPlasticityKVonBertalanffy();//Dinosaurs
 
 					//below final eggDryMass is set after the female eggMass trait, if it surpasses the
 					//growing curve band limits, it is set to the limit  //Dinosaurs
 					eggDryMassForClutch = min(eggDryMassForClutch, maxMassAtCurrentAge);
 					eggDryMassForClutch = max(eggDryMassForClutch, minMassAtCurrentAge);
 				
-				/* double lengthAtBirth = Linf*(1-exp(-traits[Trait::growth]*(0-thisAnimalVonBertTime0)));
-				eggDryMassForClutch = mySpecies->getCoefficientForMassA()*pow(lengthAtBirth,mySpecies->getScaleForMassB())+mySpecies->getCoefficientForMassA()*pow(lengthAtBirth,mySpecies->getScaleForMassB()) * traits[Trait::factorEggMass];
+				/* double lengthAtBirth = static_cast<const LogisticCurveParams *>(growthCurveParams)->getAsymptoticSize()*(1-exp(-traits[Trait::growth]*(0-thisAnimalVonBertTime0)));
+				eggDryMassForClutch = getSpecies()->getCoefficientForMassA()*pow(lengthAtBirth,getSpecies()->getScaleForMassB())+getSpecies()->getCoefficientForMassA()*pow(lengthAtBirth,getSpecies()->getScaleForMassB()) * traits[Trait::factorEggMass];
  */
 
 					if(eggDryMassForClutch < 0){
 						//cout << "lengthAtBirth: " << lengthAtBirth << endl;
-						cout << "eggDryMassForClutch: " << eggDryMassForClutch << endl;
-						cout << "Linf: " << Linf << endl;
-						cout << "Growth: " << getTrait(Trait::growth) << endl;
-						cout << "thisAnimalVonBertTime0: " << thisAnimalVonBertTime0 << endl;
+						Output::cout("eggDryMassForClutch: {}\n", eggDryMassForClutch);
+						double asymptoticSize;
+						switch(getSpecies()->getGrowthCurve()->getType()) {
+							case CurveType::VonBertalanffy: {
+								asymptoticSize = static_cast<VonBertalanffyCurveParams* const>(growthCurveParams)->getAsymptoticSize();
+								break;
+							}
+							case CurveType::Logistic: {
+								asymptoticSize = static_cast<LogisticCurveParams* const>(growthCurveParams)->getAsymptoticSize();
+								break;
+							}
+							case CurveType::Logistic3P: {
+								asymptoticSize = static_cast<const Logistic3PCurve* const>(getSpecies()->getGrowthCurve())->getAsymptoticSize();
+								break;
+							}
+							case CurveType::Logistic4P: {
+								asymptoticSize = static_cast<const Logistic4PCurve* const>(getSpecies()->getGrowthCurve())->getAsymptoticSize();
+								break;
+							}
+							case CurveType::Gompertz: {
+								asymptoticSize = static_cast<const GompertzCurve* const>(getSpecies()->getGrowthCurve())->getAsymptoticSize();
+								break;
+							}
+							default: {
+								asymptoticSize = 0.0;
+								break;
+							}
+						}
+						Output::cout("asymptoticSize: {}\n", asymptoticSize);
+						Output::cout("Growth: {}\n", getTrait(Trait::growth));
+						if(getSpecies()->getGrowthCurve()->getType() == CurveType::VonBertalanffy) {
+							Output::cout("thisAnimalVonBertTime0: {}\n", static_cast<const VonBertalanffyCurve* const>(getSpecies()->getGrowthCurve())->getVonBertTime0());
+						}
 						exit(-1);
 					}
 
-					if(mySpecies->hasEggClutchFromEquation())
+					if(getSpecies()->hasEggClutchFromEquation())
 					{
-						clutchDryMass = (mySpecies->getForClutchMassCoefficient() * pow(lastMassBeforeMaturationOrOviposition, mySpecies->getForClutchMassScale())) / mySpecies->getConversionToWetMass();
+						clutchDryMass = (getSpecies()->getForClutchMassCoefficient() * pow(lastMassBeforeMaturationOrOviposition, getSpecies()->getForClutchMassScale())) / getSpecies()->getConversionToWetMass();
 					}
 					else //If it does not come from equation,
 					{
@@ -1477,29 +1610,21 @@ void Animal::grow(int timeStep, int timeStepsPerDay)
 						
 						
 						//arthro
-						if(mySpecies->hasIndeterminateGrowth()){
+						if(getSpecies()->hasIndeterminateGrowth()){
 
-							double lengthAtThisAge = 0;
-							
-							if(mySpecies->getGrowthType() == 0){
-							  lengthAtThisAge = Linf*(1-exp(-getTrait(Trait::growth)*(currentAge-thisAnimalVonBertTime0)));
-							}
-
-							if(mySpecies->getGrowthType() == 1){
-							  lengthAtThisAge = Linf/(1+exp((xmid-currentAge)*getTrait(Trait::growth)));
-							}
+							double lengthAtThisAge = getValueGrowthCurve(currentAge, xmid);
 
 
-							double massAtThisAge = mySpecies->getCoefficientForMassAforMature()*pow(lengthAtThisAge,mySpecies->getScaleForMassBforMature());
+							double massAtThisAge = getSpecies()->getCoefficientForMassAforMature()*pow(lengthAtThisAge,getSpecies()->getScaleForMassBforMature());
 							
 							propAdultMass = getMassesFirstReproduction()/getMassesLastInstar();
 							
 							currentEggs = Math_Functions::linearInterpolate(massAtThisAge,getMassesFirstReproduction(),getMassesLastInstar(),
-							round(mySpecies->getEggsPerBatch()*propAdultMass), mySpecies->getEggsPerBatch()); 
+							round(getSpecies()->getEggsPerBatch()*propAdultMass), getSpecies()->getEggsPerBatch()); 
 							
 							clutchDryMass = eggDryMassForClutch*currentEggs;//for mites or others that lay only one egg per batch
 						}else{
-							clutchDryMass = eggDryMassForClutch*mySpecies->getEggsPerBatch();	
+							clutchDryMass = eggDryMassForClutch*getSpecies()->getEggsPerBatch();	
 						}
 						//end arthro
 					
@@ -1517,10 +1642,10 @@ void Animal::grow(int timeStep, int timeStepsPerDay)
 					exit(-1); */
 
 					//arthros
-					double longevity = mySpecies->getLongevitySinceMaturation()*ageOfFirstMaturation;
-					double reproTime = longevity - ageOfFirstMaturation + mySpecies->getPupaPeriodLength();
+					double longevity = getSpecies()->getLongevitySinceMaturation()*ageOfFirstMaturation;
+					double reproTime = longevity - ageOfFirstMaturation + getSpecies()->getPupaPeriodLength();
 				
-					daysForTargetReproduction = floor(reproTime/mySpecies->getFemaleMaxReproductionEvents());
+					daysForTargetReproduction = floor(reproTime/getSpecies()->getFemaleMaxReproductionEvents());
 					
 					
 					//end athros
@@ -1531,35 +1656,25 @@ void Animal::grow(int timeStep, int timeStepsPerDay)
 				{
 					
 					//arthro - to make targets more continuous also for dinos
-					double currentLength = 0;
-					double nextReproLength = 0;
-							
-						if(mySpecies->getGrowthType() == 0){
-		  				    currentLength = Linf*(1-exp(-getTrait(Trait::growth)*(currentAge-thisAnimalVonBertTime0)));
-    		   			    nextReproLength = Linf*(1-exp(-getTrait(Trait::growth)*((currentAge+1)-thisAnimalVonBertTime0)));
-						}
-
-						if(mySpecies->getGrowthType() == 1){
-		  				    currentLength = Linf/(1+exp((xmid-currentAge)*getTrait(Trait::growth)));
-    		   			    nextReproLength = Linf/(1+exp((xmid-(currentAge+1))*getTrait(Trait::growth)));
-						}
+					double currentLength = getValueGrowthCurve(currentAge, xmid);
+					double nextReproLength = getValueGrowthCurve(currentAge+1, xmid);
 					
 					
-					double nextReproMass = mySpecies->getCoefficientForMassAforMature()*pow(nextReproLength,mySpecies->getScaleForMassBforMature());	
-					double currentMass =mySpecies->getCoefficientForMassAforMature()*pow(currentLength,mySpecies->getScaleForMassBforMature());
+					double nextReproMass = getSpecies()->getCoefficientForMassAforMature()*pow(nextReproLength,getSpecies()->getScaleForMassBforMature());	
+					double currentMass =getSpecies()->getCoefficientForMassAforMature()*pow(currentLength,getSpecies()->getScaleForMassBforMature());
 
-					if(mySpecies->hasIndeterminateGrowth()){
-						if(instar < mySpecies->getNumberOfInstars()){
+					if(getSpecies()->hasIndeterminateGrowth()){
+						if(instar < getSpecies()->getNumberOfInstars()){
 							massForNextReproduction = nextReproMass;
 						}else{
 							massForNextReproduction = currentMass;
 						}
-						//daysForTargetReproduction = ceil( ((mySpecies->maleReproductionFactor * (massesVector[mySpecies->numberOfInstars-1] - massesVector[mySpecies->numberOfInstars-2])*ageOfMaturation) / lastMassBeforeMaturationOrOviposition ));
+						//daysForTargetReproduction = ceil( ((getSpecies()->maleReproductionFactor * (massesVector[getSpecies()->numberOfInstars-1] - massesVector[getSpecies()->numberOfInstars-2])*ageOfMaturation) / lastMassBeforeMaturationOrOviposition ));
 						daysForTargetReproduction = ceil(0.01);
 					}else{
 					
-					massForNextReproduction = lastMassBeforeMaturationOrOviposition + (nextReproMass-currentMass);
-					//daysForTargetReproduction = ceil( ((mySpecies->maleReproductionFactor * (massesVector[mySpecies->numberOfInstars-1] - massesVector[mySpecies->numberOfInstars-2])*ageOfMaturation) / lastMassBeforeMaturationOrOviposition ));
+					massForNextReproduction = lastMassBeforeMaturationOrOviposition + (nextReproMass-currentMass); //lastMassBeforeMaturationOrOviposition + (nextReproMass-currentMass);
+					//daysForTargetReproduction = ceil( ((getSpecies()->maleReproductionFactor * (massesVector[getSpecies()->numberOfInstars-1] - massesVector[getSpecies()->numberOfInstars-2])*ageOfMaturation) / lastMassBeforeMaturationOrOviposition ));
 					daysForTargetReproduction = ceil(0.01);
 					}
 					//end arthro
@@ -1568,16 +1683,16 @@ void Animal::grow(int timeStep, int timeStepsPerDay)
 				if(currentAge==round(ageOfFirstMaturation)){//currentAge==ageOfFirstMaturation rep_count==0
 				//arthro
 				/* ageOfLastMoultOrReproduction = currentAge; //Dinosaurs removed this + ageOfLastMoultOrReproduction
-					ageForNextReproduction = currentAge + mySpecies->getPupaPeriodLength();  *///Dinosaurs removed this + ageOfLastMoultOrReproduction + daysForTargetReproduction;
+					ageForNextReproduction = currentAge + getSpecies()->getPupaPeriodLength();  *///Dinosaurs removed this + ageOfLastMoultOrReproduction + daysForTargetReproduction;
 					
 /* 					cout << ageForNextReproduction << endl;
-					cout << mySpecies->getId() << endl;
+					cout << getSpecies()->getId() << endl;
 					exit(-1); 
  */	
-					setNewLifeStage(LIFE_STAGES::PUPA);
+					setNewLifeStage(LifeStage::PUPA);
 					/*cout << "pupaTimer: " << pupaTimer << endl;
 					exit(-1);*/		/* + daysForTargetReproduction */
-                    ageForNextReproduction = currentAge + mySpecies->getPupaPeriodLength();
+                    ageForNextReproduction = currentAge + getSpecies()->getPupaPeriodLength();
 
 
 				}else{
@@ -1590,7 +1705,7 @@ void Animal::grow(int timeStep, int timeStepsPerDay)
 			//arthro
 			ageOfLastMoultOrReproduction = currentAge;
 			//dinos2023 - to ensure that ageForNextReproduction does not surpass the next instar (year)
-			if(instar < mySpecies->getNumberOfInstars()){
+			if(instar < getSpecies()->getNumberOfInstars()){
 				ageForNextReproduction = min(ageForNextReproduction,finalDevTimeVector[instar.getValue()-1]+round(0.9*(finalDevTimeVector[instar.getValue()]-finalDevTimeVector[instar.getValue()-1])));
 			}
 
@@ -1604,7 +1719,7 @@ void Animal::grow(int timeStep, int timeStepsPerDay)
 	{
 		//Jordi: the following is to force males to molt whether they mate or not - otherwise they stop growing if the do not mate
 		if(gender == AnimalSpecies::GENDERS::MALE){
-			if(mySpecies->hasIndeterminateGrowth() && (instar < mySpecies->getNumberOfInstars())){
+			if(getSpecies()->hasIndeterminateGrowth() && (instar < getSpecies()->getNumberOfInstars())){
 				if(currentAge > finalDevTimeVector[instar.getValue()-1]+1){//plus one day enough to mate
 			    //cout << "rep_count: " << rep_count << endl;
 				mature = false;
@@ -1614,11 +1729,11 @@ void Animal::grow(int timeStep, int timeStepsPerDay)
 		
 		//Dinos2023 Recalculate this here because females that are initialized as adults
 		//should use their factorEggMass trait too
-		eggDryMassForClutch = mySpecies->getEggDryMass()+mySpecies->getEggDryMass()*getTrait(Trait::factorEggMass);
+		eggDryMassForClutch = getSpecies()->getEggDryMass()+getSpecies()->getEggDryMass()*getTrait(Trait::factorEggMass);
 
-		double maxMassAtCurrentAge = eggDryMassForClutch + eggDryMassForClutch*mySpecies->getMaxPlasticityKVonBertalanffy();
+		double maxMassAtCurrentAge = eggDryMassForClutch + eggDryMassForClutch*getSpecies()->getMaxPlasticityKVonBertalanffy();
 		//below is a shorter limit for death - if minPlasticityKVonBertalanffy == 0, death occurs when total body mass = body size
-		double minMassAtCurrentAge = eggDryMassForClutch - eggDryMassForClutch * mySpecies->getMinPlasticityKVonBertalanffy();//Dinosaurs
+		double minMassAtCurrentAge = eggDryMassForClutch - eggDryMassForClutch * getSpecies()->getMinPlasticityKVonBertalanffy();//Dinosaurs
 
 		//below final eggDryMass is set after the female eggMass trait, if it surpasses the
 		//growing curve band limits, it is set to the limit  //Dinosaurs
@@ -1643,13 +1758,13 @@ void Animal::grow(int timeStep, int timeStepsPerDay)
 		
 		/* if(currentAge == ageForNextReproduction){
 			
-			cout << mySpecies->getId() << endl;
+			cout << getSpecies()->getId() << endl;
 			cout << ageForNextReproduction << endl;
 
 			exit(-1);
 		}   */
 
-		   /*  cout << mySpecies->getId() << endl;
+		   /*  cout << getSpecies()->getId() << endl;
 			cout << ageForNextReproduction << endl;
 			cout << timeStep << endl;
 			cout << currentAge << endl;
@@ -1674,7 +1789,7 @@ void Animal::grow(int timeStep, int timeStepsPerDay)
  */
 
 		
-		if(investmentForReproduction >= massForNextReproduction &&  currentAge >= ageForNextReproduction  && mySpecies->getEggsPerBatch()>0)  //Arthropods post-dinos July 2021  && mySpecies->getEggsPerBatch()>0
+		if(investmentForReproduction >= massForNextReproduction &&  currentAge >= ageForNextReproduction  && getSpecies()->getEggsPerBatch()>0)  //Arthropods post-dinos July 2021  && getSpecies()->getEggsPerBatch()>0
 		{
 
 			
@@ -1682,7 +1797,7 @@ void Animal::grow(int timeStep, int timeStepsPerDay)
 			
 
 
-			/* cout << mySpecies->getId() << endl;
+			/* cout << getSpecies()->getId() << endl;
 			cout << ageForNextReproduction << endl;
 			cout << currentAge << endl;
 			exit(-1); */
@@ -1697,7 +1812,7 @@ void Animal::grow(int timeStep, int timeStepsPerDay)
 
 			double daysForTargetReproduction;
 
-			if(mySpecies->getSexualType() != AnimalSpecies::SEXUAL_TYPES::DIPLOID || (mySpecies->getSexualType() == AnimalSpecies::SEXUAL_TYPES::DIPLOID && isMated()))
+			if(getSpecies()->getSexualType() != SexualType::diploid || (getSpecies()->getSexualType() == SexualType::diploid && isMated()))
 			{
 				
 /* 			if(getId() == 0){ // && timeStep == 0
@@ -1714,7 +1829,7 @@ void Animal::grow(int timeStep, int timeStepsPerDay)
 			//exit(-1);      
 		    }  */
 				
-				setNewLifeStage(LIFE_STAGES::REPRODUCING);
+				setNewLifeStage(LifeStage::REPRODUCING);
 
 			/*if(currentAge >= ageForNextReproduction){
 			cout << "investmentForReproduction: " << investmentForReproduction << endl;
@@ -1725,7 +1840,7 @@ void Animal::grow(int timeStep, int timeStepsPerDay)
 				
 			
 				//double expectedLengthAtNextAge = currentPostTempLinf*(1-exp(-currentPostTempGrowth*(ageOfMaturation+(1.0/timeStepsPerDay)-thisAnimalVonBertTime0)));
-				//double expectedMassAtNextAge = mySpecies->coefficientForMassA*pow(expectedLengthAtNextAge,mySpecies->scaleForMassB);
+				//double expectedMassAtNextAge = getSpecies()->coefficientForMassA*pow(expectedLengthAtNextAge,getSpecies()->scaleForMassB);
 				//double neededEnergyFromCurrentMassToNextAge = expectedMassAtNextAge - getDryMass();
 				//double proportionOfTimeTheAnimalWasMoving = 0;
 				//double expectedMinimumMetabolicDryMassLoss = getTotalMetabolicDryMassLoss(getDryMass(), proportionOfTimeTheAnimalWasMoving);
@@ -1733,13 +1848,13 @@ void Animal::grow(int timeStep, int timeStepsPerDay)
 
 //arthro and for dinos, why was egg size calcultaed again, is enough with the calculation at maturation
 /* 				clutchDryMass = 0;
-				double lengthAtBirth = Linf*(1-exp(-traits[Trait::growth]*(0-thisAnimalVonBertTime0)));
-				eggDryMassForClutch = mySpecies->getCoefficientForMassA()*pow(lengthAtBirth,mySpecies->getScaleForMassB())+mySpecies->getCoefficientForMassA()*pow(lengthAtBirth,mySpecies->getScaleForMassB()) * traits[Trait::factorEggMass];
+				double lengthAtBirth = static_cast<const LogisticCurveParams *>(growthCurveParams)->getAsymptoticSize()*(1-exp(-traits[Trait::growth]*(0-thisAnimalVonBertTime0)));
+				eggDryMassForClutch = getSpecies()->getCoefficientForMassA()*pow(lengthAtBirth,getSpecies()->getScaleForMassB())+getSpecies()->getCoefficientForMassA()*pow(lengthAtBirth,getSpecies()->getScaleForMassB()) * traits[Trait::factorEggMass];
 
  				if(eggDryMassForClutch < 0){
 					cout << "lengthAtBirth2: " << lengthAtBirth << endl;
 					cout << "eggDryMassForClutch2: " << eggDryMassForClutch << endl;
-					cout << "Linf:" << Linf << endl;
+					cout << "asymptoticSize:" << static_cast<const LogisticCurveParams *>(growthCurveParams)->getAsymptoticSize() << endl;
 					cout << "Growth:" << traits[Trait::growth] << endl;
 					cout << "thisAnimalVonBertTime02: " << thisAnimalVonBertTime0 << endl;
 					exit(-1);
@@ -1751,35 +1866,27 @@ void Animal::grow(int timeStep, int timeStepsPerDay)
 				}*/
 
 
-				if(mySpecies->hasEggClutchFromEquation())
+				if(getSpecies()->hasEggClutchFromEquation())
 				{
-					clutchDryMass = (mySpecies->getForClutchMassCoefficient() * pow(lastMassBeforeMaturationOrOviposition, mySpecies->getForClutchMassScale())) / mySpecies->getConversionToWetMass();
+					clutchDryMass = (getSpecies()->getForClutchMassCoefficient() * pow(lastMassBeforeMaturationOrOviposition, getSpecies()->getForClutchMassScale())) / getSpecies()->getConversionToWetMass();
 				}
 				else //If it does not come from equation,
 				{
 						//arthro
-						if(mySpecies->hasIndeterminateGrowth()){
+						if(getSpecies()->hasIndeterminateGrowth()){
 		
-							double lengthAtThisAge = 0;
-							
-							if(mySpecies->getGrowthType() == 0){
-							  lengthAtThisAge = Linf*(1-exp(-getTrait(Trait::growth)*(currentAge-thisAnimalVonBertTime0)));
-							}
-
-							if(mySpecies->getGrowthType() == 1){
-							  lengthAtThisAge = Linf/(1+exp((xmid-currentAge)*getTrait(Trait::growth)));
-							}
+							double lengthAtThisAge = getValueGrowthCurve(currentAge, xmid);
 						
-							double massAtThisAge = mySpecies->getCoefficientForMassAforMature()*pow(lengthAtThisAge,mySpecies->getScaleForMassBforMature());
+							double massAtThisAge = getSpecies()->getCoefficientForMassAforMature()*pow(lengthAtThisAge,getSpecies()->getScaleForMassBforMature());
 												
 							propAdultMass = getMassesFirstReproduction()/getMassesLastInstar();
 							
 							currentEggs = Math_Functions::linearInterpolate(massAtThisAge,getMassesFirstReproduction(),getMassesLastInstar(),
-							round(mySpecies->getEggsPerBatch()*propAdultMass), mySpecies->getEggsPerBatch()); 
+							round(getSpecies()->getEggsPerBatch()*propAdultMass), getSpecies()->getEggsPerBatch()); 
 							
 							clutchDryMass = eggDryMassForClutch*currentEggs;//for mites or others that lay only one egg per batch
 						}else{
-							clutchDryMass = eggDryMassForClutch*mySpecies->getEggsPerBatch();	
+							clutchDryMass = eggDryMassForClutch*getSpecies()->getEggsPerBatch();	
 						}
 						//end arthro
 				}
@@ -1805,9 +1912,9 @@ void Animal::grow(int timeStep, int timeStepsPerDay)
 				
 				//arthros
 				//daysForTargetReproduction = ceil( (clutchDryMass*ageOfMaturation) / lastMassBeforeMaturationOrOviposition);
-				double longevity = mySpecies->getLongevitySinceMaturation()*ageOfFirstMaturation;
+				double longevity = getSpecies()->getLongevitySinceMaturation()*ageOfFirstMaturation;
 				double reproTime = longevity - ageOfFirstMaturation;
-				daysForTargetReproduction = floor(reproTime/mySpecies->getFemaleMaxReproductionEvents());
+				daysForTargetReproduction = floor(reproTime/getSpecies()->getFemaleMaxReproductionEvents());
 				//end arthros
 
 				ageForNextReproduction = currentAge + daysForTargetReproduction;
@@ -1821,36 +1928,28 @@ void Animal::grow(int timeStep, int timeStepsPerDay)
 				
 
 				double nextClutchDryMass;
-				if(mySpecies->hasEggClutchFromEquation())
+				if(getSpecies()->hasEggClutchFromEquation())
 				{
-					nextClutchDryMass = (mySpecies->getForClutchMassCoefficient() * pow(lastMassBeforeMaturationOrOviposition, mySpecies->getForClutchMassScale())) / mySpecies->getConversionToWetMass();
+					nextClutchDryMass = (getSpecies()->getForClutchMassCoefficient() * pow(lastMassBeforeMaturationOrOviposition, getSpecies()->getForClutchMassScale())) / getSpecies()->getConversionToWetMass();
 				}
 				else //If it does not come from equation,
 				{
 						//arthro
-						if(mySpecies->hasIndeterminateGrowth()){
-							double lengthAtThisAge = 0;
-							
-							if(mySpecies->getGrowthType() == 0){
-							  lengthAtThisAge = Linf*(1-exp(-getTrait(Trait::growth)*(ageForNextReproduction-thisAnimalVonBertTime0)));
-							}
+						if(getSpecies()->hasIndeterminateGrowth()){
+							double lengthAtThisAge = getValueGrowthCurve(ageForNextReproduction, xmid);
 
-							if(mySpecies->getGrowthType() == 1){
-							  lengthAtThisAge = Linf/(1+exp((xmid-ageForNextReproduction)*getTrait(Trait::growth)));
-							}
-
-							double massAtThisAge = mySpecies->getCoefficientForMassAforMature()*pow(lengthAtThisAge,mySpecies->getScaleForMassBforMature());
+							double massAtThisAge = getSpecies()->getCoefficientForMassAforMature()*pow(lengthAtThisAge,getSpecies()->getScaleForMassBforMature());
 											
 							propAdultMass = getMassesFirstReproduction()/getMassesLastInstar();
 							
 							currentEggs = Math_Functions::linearInterpolate(massAtThisAge,getMassesFirstReproduction(),getMassesLastInstar(),
-							round(mySpecies->getEggsPerBatch()*propAdultMass), mySpecies->getEggsPerBatch()); 
+							round(getSpecies()->getEggsPerBatch()*propAdultMass), getSpecies()->getEggsPerBatch()); 
 							
 							nextClutchDryMass = eggDryMassForClutch*currentEggs;//for mites or others that lay only one egg per batch
 							massForNextReproduction = (calculateDryMass()-clutchDryMass) + nextClutchDryMass;	
 
 						}else{
-							nextClutchDryMass = eggDryMassForClutch*mySpecies->getEggsPerBatch();	
+							nextClutchDryMass = eggDryMassForClutch*getSpecies()->getEggsPerBatch();	
 						    massForNextReproduction = massOfMaturationOrLastReproduction + nextClutchDryMass;	
 				
 						}
@@ -1864,8 +1963,8 @@ void Animal::grow(int timeStep, int timeStepsPerDay)
 			}
 			else if(currentAge >= ageForNextReproduction)
 			{
-				//massForNextReproduction = lastMassBeforeMaturationOrOviposition + (mySpecies->maleReproductionFactor * (massesVector[mySpecies->numberOfInstars-1] - massesVector[mySpecies->numberOfInstars-2]));
-				//daysForTargetReproduction = ceil( ((mySpecies->maleReproductionFactor * (massesVector[mySpecies->numberOfInstars-1] - massesVector[mySpecies->numberOfInstars-2])*ageOfMaturation) / lastMassBeforeMaturationOrOviposition ));
+				//massForNextReproduction = lastMassBeforeMaturationOrOviposition + (getSpecies()->maleReproductionFactor * (massesVector[getSpecies()->numberOfInstars-1] - massesVector[getSpecies()->numberOfInstars-2]));
+				//daysForTargetReproduction = ceil( ((getSpecies()->maleReproductionFactor * (massesVector[getSpecies()->numberOfInstars-1] - massesVector[getSpecies()->numberOfInstars-2])*ageOfMaturation) / lastMassBeforeMaturationOrOviposition ));
 				//daysForTargetReproduction = ceil(0.056*ageOfMaturation);
 				//ageForNextReproduction = currentAge + daysForTargetReproduction;
 				//ageOfLastMoultOrReproduction = currentAge;
@@ -1877,7 +1976,7 @@ void Animal::grow(int timeStep, int timeStepsPerDay)
 
 bool Animal::isActive()
 {
-	return lifeStage == ACTIVE;
+	return lifeStage == LifeStage::ACTIVE;
 }
 
 /**
@@ -1891,7 +1990,7 @@ void Animal::isReadyToBeBorn(int timeStep, int timeStepsPerDay)
 	double thisCurrentAge = ((double)(timeStep-diapauseTimeSteps)/(double)timeStepsPerDay) - getTrait(Trait::pheno) + 1.0/timeStepsPerDay;
 	if (thisCurrentAge > 0)
 	{
-		setNewLifeStage(LIFE_STAGES::ACTIVE);
+		setNewLifeStage(LifeStage::ACTIVE);
 		currentAge = round(thisCurrentAge);
 		ageOfLastMoultOrReproduction = thisCurrentAge;//Dinosaurs end
 	}
@@ -1906,7 +2005,7 @@ void Animal::isReadyToResumeFromPupaOrDecreasePupaTimer()
 
 	if (pupaTimer == 0)
 	{
-		setNewLifeStage(LIFE_STAGES::ACTIVE);
+		setNewLifeStage(LifeStage::ACTIVE);
 	}
 	else
 	{
@@ -1918,7 +2017,7 @@ void Animal::isReadyToResumeFromHandlingOrDecreaseHandlingTimer()
 {
 	if (handlingTimer == 0)
 	{
-		setNewLifeStage(LIFE_STAGES::ACTIVE);
+		setNewLifeStage(LifeStage::ACTIVE);
 	}
 	else
 	{
@@ -1928,11 +2027,11 @@ void Animal::isReadyToResumeFromHandlingOrDecreaseHandlingTimer()
 
 void Animal::isReadyToResumeFromDiapauseOrIncreaseDiapauseTimeSteps(float relativeHumidity)
 {
-	if (relativeHumidity >= mySpecies->getMinRelativeHumidityThreshold())
+	if (relativeHumidity >= getSpecies()->getMinRelativeHumidityThreshold())
 	{
 		if(pupaTimer > 0)
 		{
-			setNewLifeStage(LIFE_STAGES::PUPA);
+			setNewLifeStage(LifeStage::PUPA);
 		}
 		/*
 		else if(handlingTimer > 0)
@@ -1942,7 +2041,7 @@ void Animal::isReadyToResumeFromDiapauseOrIncreaseDiapauseTimeSteps(float relati
 		*/
 		else
 		{
-			setNewLifeStage(LIFE_STAGES::ACTIVE);
+			setNewLifeStage(LifeStage::ACTIVE);
 		}
 	}
 	else
@@ -1953,49 +2052,49 @@ void Animal::isReadyToResumeFromDiapauseOrIncreaseDiapauseTimeSteps(float relati
 
 double Animal::getNormalizedHuntedVoracity(double huntedVoracity)
 {
-	return Math_Functions::linearInterpolate(huntedVoracity,mySpecies->getMinVorHunted(),mySpecies->getMaxVorHunted(),0,1); 
-	//return ((huntedVoracity - mySpecies->getMeanVorHunted()) / mySpecies->getSdVoracityHunted());
+	return Math_Functions::linearInterpolate(huntedVoracity,getSpecies()->getMinVorHunted(),getSpecies()->getMaxVorHunted(),0,1); 
+	//return ((huntedVoracity - getSpecies()->getMeanVorHunted()) / getSpecies()->getSdVoracityHunted());
 }
 
 double Animal::getNormalizedHunterVoracity()
 {
-	return Math_Functions::linearInterpolate(getTrait(Trait::voracity),mySpecies->getMinVorHunter(),mySpecies->getMaxVorHunter(),0,1); 
-	//return ((traits[Trait::voracity] - mySpecies->getMeanVoracityHunter()) / mySpecies->getSdVoracityHunter());
+	return Math_Functions::linearInterpolate(getTrait(Trait::voracity),getSpecies()->getMinVorHunter(),getSpecies()->getMaxVorHunter(),0,1); 
+	//return ((traits[Trait::voracity] - getSpecies()->getMeanVoracityHunter()) / getSpecies()->getSdVoracityHunter());
 }
 
 double Animal::getNormalizedVoracityProduct(double huntedVoracity)
 {
 	
-	return Math_Functions::linearInterpolate(getTrait(Trait::voracity)* huntedVoracity,mySpecies->getMinVorXVor(),mySpecies->getMaxVorXVor(),0,1); 
-	/*return ((traits[Trait::voracity] * huntedVoracity - mySpecies->getMeanVoracityXVoracity())
-			/ mySpecies->getSdVoracityXVoracity());*/
+	return Math_Functions::linearInterpolate(getTrait(Trait::voracity)* huntedVoracity,getSpecies()->getMinVorXVor(),getSpecies()->getMaxVorXVor(),0,1); 
+	/*return ((traits[Trait::voracity] * huntedVoracity - getSpecies()->getMeanVoracityXVoracity())
+			/ getSpecies()->getSdVoracityXVoracity());*/
 }
 
 double Animal::getNormalizedHuntedBodySize(double huntedBodySize)
 {
-	return Math_Functions::linearInterpolate(huntedBodySize,mySpecies->getMinSizeHunted(),mySpecies->getMaxSizeHunted(),0,1); 
-	//return ((huntedBodySize - mySpecies->getMeanSizeHunted()) / mySpecies->getSdSizeHunted());
+	return Math_Functions::linearInterpolate(huntedBodySize,getSpecies()->getMinSizeHunted(),getSpecies()->getMaxSizeHunted(),0,1); 
+	//return ((huntedBodySize - getSpecies()->getMeanSizeHunted()) / getSpecies()->getSdSizeHunted());
 }
 
 double Animal::getNormalizedHunterBodySize()
 {
-	return Math_Functions::linearInterpolate(currentBodySize,mySpecies->getMinSizeHunter(),mySpecies->getMaxSizeHunter(),0,1); 
-	//return ((currentBodySize - mySpecies->getMeanSizeHunter()) / mySpecies->getSdSizeHunter());
+	return Math_Functions::linearInterpolate(currentBodySize,getSpecies()->getMinSizeHunter(),getSpecies()->getMaxSizeHunter(),0,1); 
+	//return ((currentBodySize - getSpecies()->getMeanSizeHunter()) / getSpecies()->getSdSizeHunter());
 }
 
 double Animal::getNormalizedPDF(double probabilityDensityFunction)
 {
-	return Math_Functions::linearInterpolate(probabilityDensityFunction,mySpecies->getMinProbabilityDensityFunction(),mySpecies->getMaxProbabilityDensityFunction(),0,1);
-	/*return ((probabilityDensityFunction - mySpecies->getMeanProbabilityDensityFunction())
-			/ mySpecies->getSdProbabilityDensityFunction());*/
+	return Math_Functions::linearInterpolate(probabilityDensityFunction,getSpecies()->getMinProbabilityDensityFunction(),getSpecies()->getMaxProbabilityDensityFunction(),0,1);
+	/*return ((probabilityDensityFunction - getSpecies()->getMeanProbabilityDensityFunction())
+			/ getSpecies()->getSdProbabilityDensityFunction());*/
 }
 
 double Animal::getNormalizedSpeedRatio(double huntedSpeed)
 {
 
-	return Math_Functions::linearInterpolate(getTrait(Trait::speed)/huntedSpeed,mySpecies->getMinSpeedRatio(),mySpecies->getMaxSpeedRatio(),0,1);
-	/*return (((traits[Trait::speed] / huntedSpeed) - mySpecies->getMeanSpeedRatio())
-			/ mySpecies->getSdSpeedRatio());*/
+	return Math_Functions::linearInterpolate(getTrait(Trait::speed)/huntedSpeed,getSpecies()->getMinSpeedRatio(),getSpecies()->getMaxSpeedRatio(),0,1);
+	/*return (((traits[Trait::speed] / huntedSpeed) - getSpecies()->getMeanSpeedRatio())
+			/ getSpecies()->getSdSpeedRatio());*/
 
 }
 
@@ -2006,16 +2105,16 @@ double calculateLogMassRatio(double hunterAnimalDryMass, double huntedAnimalDryM
 
 double Animal::getSearchAreaHunter()
 {
-	return ((getTrait(Trait::search_area) - mySpecies->getMeanSearchAreaHunter())
-			/ mySpecies->getSdSearchAreaHunter());
+	return ((getTrait(Trait::search_area) - getSpecies()->getMeanSearchAreaHunter())
+			/ getSpecies()->getSdSearchAreaHunter());
 }
 
 double Animal::getSpeedHunter()
 {
-	return ((getTrait(Trait::speed) - mySpecies->getMeanSpeedHunter()) / mySpecies->getSdSpeedHunter());
+	return ((getTrait(Trait::speed) - getSpecies()->getMeanSpeedHunter()) / getSpecies()->getSdSpeedHunter());
 }
 
-void Animal::incrementEncountersWithPredator(int predatorId)
+void Animal::incrementEncountersWithPredator(const int &predatorId)
 {
 	encounterEvents.push_back(predatorId);//the ID of the predator that has encounter gets recorded in a vector
 	todayEncountersWithPredators++;
@@ -2028,46 +2127,46 @@ void Animal::incrementEncountersWithPredator(int predatorId)
 	total_prey_encs++;
 }*/
 
-ostream& Animal::print(ostream& os)
+ostream& operator<<(std::ostream& os, const Animal& animal)
 {
-	os << getIdStr() << "\t"
-	<< mySpecies->getScientificName() << "\t"
-	<< gender << "\t"
-	<< position->getX() << "\t"
-	<< position->getY() << "\t"
-	<< position->getZ() << "\t"
-	<< lifeStage << "\t"
-	<< instar << "\t"
-	<< pheno_ini << "\t"
-	<< date_egg << "\t"
-	<< age_first_rep << "\t"
-	<< rep_count << "\t"
-	<< fecundity << "\t"
-	<< getDateOfDeath() << "\t"
-	<< generationNumberFromFemaleParent << "\t"
-	<< generationNumberFromMaleParent << "\t"
-	<< ID_prt1 << "\t"
-	<< ID_prt2 << "\t"
-	<< todayEncountersWithPredators << "\t"
-	<< encounterEvents.size() << "\t"
-	<< days_digest << "\t"
-	<< voracity_ini << "\t"
-	<< search_area_ini << "\t"
-	<< speed_ini << "\t"
-	<< tank_ini << "\t"
-	<< pheno_ini << "\t"
-	<< getCurrentBodySize() << "\t"
-	<< calculateDryMass() << "\t";
+	os << static_cast<const Edible&>(animal)
+	<< animal.getSpecies()->getScientificName() << "\t"
+	<< animal.gender << "\t"
+	<< animal.position->getX() << "\t"
+	<< animal.position->getY() << "\t"
+	<< animal.position->getZ() << "\t"
+	<< animal.lifeStage << "\t"
+	<< animal.instar << "\t"
+	<< animal.pheno_ini << "\t"
+	<< animal.date_egg << "\t"
+	<< animal.age_first_rep << "\t"
+	<< animal.rep_count << "\t"
+	<< animal.fecundity << "\t"
+	<< animal.getDateOfDeath() << "\t"
+	<< animal.generationNumberFromFemaleParent << "\t"
+	<< animal.generationNumberFromMaleParent << "\t"
+	<< animal.ID_prt1 << "\t"
+	<< animal.ID_prt2 << "\t"
+	<< animal.todayEncountersWithPredators << "\t"
+	<< animal.encounterEvents.size() << "\t"
+	<< animal.days_digest << "\t"
+	<< animal.voracity_ini << "\t"
+	<< animal.search_area_ini << "\t"
+	<< animal.speed_ini << "\t"
+	<< animal.tank_ini << "\t"
+	<< animal.pheno_ini << "\t"
+	<< animal.getCurrentBodySize() << "\t"
+	<< animal.calculateDryMass() << "\t";
 
 
 
-	for (size_t i = 0; i < TraitConverter::size(); ++i) {
+	for (size_t i = 0; i < Trait::size(); ++i) {
 		/*os << "CR" << i << "_1: " << *(chromosomes->at(i).first) << endl;
 		os << "CR" << i << "_2: " << *(chromosomes->at(i).second) << endl;
 		os << "TRT_" << i << ": " << traits.at(i) << endl;*/
 		try
 		{
-			os << getTrait((Trait)i) << "\t";
+			os << animal.getTrait((TraitType)i) << "\t";
 		}
 		catch(const LineInfoException& e)
 		{
@@ -2098,22 +2197,22 @@ ostream& Animal::print(ostream& os)
 	return os;
 }
 
-void Animal::printVoracities(int timeStep, int timeStepsPerDay, ostream& voracitiesFile)
+void Animal::printVoracities(int timeStep, int timeStepsPerDay, FILE* voracitiesFile, SimulType simulType)
 {
 	//Dinosaurs double currentAge = ((double)(timeStep-diapauseTimeSteps)/(double)timeStepsPerDay) - traits[Trait::pheno] + 1.0/timeStepsPerDay;
 	double dryMassAfterAssim = calculateDryMass() + foodMass;
-	double wetMassAfterAssim = dryMassAfterAssim * mySpecies->getConversionToWetMass();
+	double wetMassAfterAssim = dryMassAfterAssim * getSpecies()->getConversionToWetMass();
 	double prop_time_mov;
 
 	double lengthAtBirth = 0;
 	double xmid = 0;						 
 
-	if(mySpecies->getGrowthType() == 1){
-		lengthAtBirth = pow((getMassAtBirth()/mySpecies->getCoefficientForMassAforMature()),1/mySpecies->getScaleForMassBforMature()); 
-		xmid = log((Linf-lengthAtBirth)/lengthAtBirth)*(1/getTrait(Trait::growth));
+	if(getSpecies()->getGrowthCurve()->getType() == CurveType::Logistic){
+		lengthAtBirth = pow((getMassAtBirth()/getSpecies()->getCoefficientForMassAforMature()),1/getSpecies()->getScaleForMassBforMature()); 
+		xmid = log((static_cast<LogisticCurveParams* const>(growthCurveParams)->getAsymptoticSize()-lengthAtBirth)/lengthAtBirth)*(1/getTrait(Trait::growth));
 	}
 
-	if(lifeStage == SATIATED || lifeStage == HANDLING)
+	if(lifeStage == LifeStage::SATIATED || lifeStage == LifeStage::HANDLING)
 	{
 		prop_time_mov = 0;
 	}
@@ -2125,33 +2224,25 @@ void Animal::printVoracities(int timeStep, int timeStepsPerDay, ostream& voracit
 		  prop_time_mov = 0;	
 		}
 	}
-	double totalMetabolicDryMassLossAfterAssim = getTotalMetabolicDryMassLoss(wetMassAtTheBeginningOfTheTimeStep, position->temperature, prop_time_mov, timeStepsPerDay);
+	double totalMetabolicDryMassLossAfterAssim = getTotalMetabolicDryMassLoss(wetMassAtTheBeginningOfTheTimeStep, position->getTemperature(), prop_time_mov, timeStepsPerDay, simulType);
 	if(totalMetabolicDryMassLossAfterAssim)										
-	if(huntingMode != Animal::HUNTING_MODES::DOES_NOT_HUNT && daysWithoutFood >= mySpecies->getDaysWithoutFoodForMetabolicDownregulation())
+	if(getHuntingMode() != HuntingMode::does_not_hunt && daysWithoutFood >= getSpecies()->getDaysWithoutFoodForMetabolicDownregulation())
 	{
-		totalMetabolicDryMassLossAfterAssim -= totalMetabolicDryMassLossAfterAssim * mySpecies->getPercentageMetabolicDownregulation();
+		totalMetabolicDryMassLossAfterAssim -= totalMetabolicDryMassLossAfterAssim * getSpecies()->getPercentageMetabolicDownregulation();
 	}
 	double dryMassAfterMetabLoss = (dryMassAfterAssim - totalMetabolicDryMassLossAfterAssim);
 
-	double expectedLengthAtNextTimeStep = 0;
-							
-			if(mySpecies->getGrowthType() == 0){
-			  expectedLengthAtNextTimeStep = Linf*(1-exp(-getTrait(Trait::growth)*(currentAge+(round((1.0/(double)timeStepsPerDay)))-thisAnimalVonBertTime0)));
-			}
-
-			if(mySpecies->getGrowthType() == 1){
-			  expectedLengthAtNextTimeStep = Linf/(1+exp((xmid-(currentAge+(round((1.0/(double)timeStepsPerDay)))))*getTrait(Trait::growth)));
-			}
+	double expectedLengthAtNextTimeStep = getValueGrowthCurve(currentAge+(round((1.0/(double)timeStepsPerDay))), xmid);
 
 
 
 	double expectedMassAtNextTimeStep;
 
 
-    if(instar == mySpecies->getInstarFirstReproduction()){
-    	expectedMassAtNextTimeStep = mySpecies->getCoefficientForMassAforMature()*pow(expectedLengthAtNextTimeStep,mySpecies->getScaleForMassBforMature());
+    if(instar == getSpecies()->getInstarFirstReproduction()){
+    	expectedMassAtNextTimeStep = getSpecies()->getCoefficientForMassAforMature()*pow(expectedLengthAtNextTimeStep,getSpecies()->getScaleForMassBforMature());
     }else{
-    	expectedMassAtNextTimeStep = mySpecies->getCoefficientForMassA()*pow(expectedLengthAtNextTimeStep,mySpecies->getScaleForMassB());
+    	expectedMassAtNextTimeStep = getSpecies()->getCoefficientForMassA()*pow(expectedLengthAtNextTimeStep,getSpecies()->getScaleForMassB());
 	}
 
 
@@ -2162,39 +2253,22 @@ void Animal::printVoracities(int timeStep, int timeStepsPerDay, ostream& voracit
 
   	double dinoLengthPredicted = 0;
 
-	if(mySpecies->getGrowthType() == 0){
-		if(instar > 1){
-			dinoLengthPredicted = Linf*(1-exp(-getTrait(Trait::growth)*(currentAge-thisAnimalVonBertTime0)));
-		}else{  //this is to avoid animals to be born with size of zero age but being much older- yhus need to be larger
-			dinoLengthPredicted = Linf*(1-exp(-getTrait(Trait::growth)*(0-thisAnimalVonBertTime0)));	
-		}
+	if(instar > 1) {
+		dinoLengthPredicted = getValueGrowthCurve(currentAge, xmid);
+	}
+	else {
+		dinoLengthPredicted = getValueGrowthCurve(0, xmid);
 	}
 
-	if(mySpecies->getGrowthType() == 1){
-		if(instar > 1){
-			dinoLengthPredicted = Linf/(1+exp((xmid-currentAge)*getTrait(Trait::growth)));
-		}else{  //this is to avoid animals to be born with size of zero age but being much older- yhus need to be larger
-			dinoLengthPredicted = Linf/(1+exp((xmid-0)*getTrait(Trait::growth)));
-		}
-	}
+	double dinoMassPredicted = getSpecies()->getCoefficientForMassAforMature()*pow(dinoLengthPredicted,getSpecies()->getScaleForMassBforMature());
 
-	double dinoMassPredicted = mySpecies->getCoefficientForMassAforMature()*pow(dinoLengthPredicted,mySpecies->getScaleForMassBforMature());
+    double minMassAtCurrentAge = dinoMassPredicted - dinoMassPredicted * getSpecies()->getMinPlasticityKVonBertalanffy();
 
-    double minMassAtCurrentAge = dinoMassPredicted - dinoMassPredicted * mySpecies->getMinPlasticityKVonBertalanffy();
-
-    double nextDinoLengthPredicted = 0;
-		
-	if(mySpecies->getGrowthType() == 0){
-		nextDinoLengthPredicted = Linf*(1-exp(-getTrait(Trait::growth)*((currentAge+1)-thisAnimalVonBertTime0)));
-	}
-
-	if(mySpecies->getGrowthType() == 1){
-		nextDinoLengthPredicted = Linf/(1+exp((xmid-(currentAge+1))*getTrait(Trait::growth)));
-	}
+    double nextDinoLengthPredicted = getValueGrowthCurve(currentAge+1, xmid);
 
 	
 	
-	//double nextDinoMassPredicted = mySpecies->getCoefficientForMassAforMature()*pow(nextDinoLengthPredicted,mySpecies->getScaleForMassBforMature());
+	//double nextDinoMassPredicted = getSpecies()->getCoefficientForMassAforMature()*pow(nextDinoLengthPredicted,getSpecies()->getScaleForMassBforMature());
 
 	
 	/*if(getId() == 2 && timeStep == 51){
@@ -2202,101 +2276,105 @@ void Animal::printVoracities(int timeStep, int timeStepsPerDay, ostream& voracit
     			exit(-1);
     		}*/
 
-	voracitiesFile << getIdStr() << "\t"
-	<< mySpecies->getScientificName() << "\t"
-	<< lifeStage << "\t"
-	<< currentAge-1 << "\t" //Dinosaurs - it has been updated in tuneTraits
-	<< instar << "\t"
-	<< currentBodySize << "\t"
-	<< getTrait(Trait::energy_tank) << "\t"
-	<< calculateDryMass() << "\t"
-	<< nextDinoMassPredicted << "\t" //Dinosaures
-	<< minMassAtCurrentAge << "\t"
-	<< getTrait(Trait::voracity) << "\t"
-	<< foodMass << "\t"
-	<< calculateDryMass() + foodMass << "\t"
-	<< totalMetabolicDryMassLossAfterAssim << "\t"
-	<< eatenToday << "\t"
-	<< steps << "\t"
-	<< stepsAttempted << "\t"
-	<< oldSearchArea << "\t"
-	<< sated << "\t"
-	<< ((timeStepMaximumSearchArea > 0) ? steps / timeStepMaximumSearchArea : 0) << "\t"
-	<< handlingTimer << "\t"
-	<< getTrait(Trait::voracity) / calculateDryMass() << "\t"
-	<< gender << "\t"
-	<< mated << "\t"
-	<< eggDryMassForClutch << "\t"
-	<< getTrait(Trait::growth) << "\t"
-	<< Linf << "\t"
-	<< pseudoGrowth << "\t"
-	<< Linf << "\t"
-	<< getTrait(Trait::factorEggMass) << "\t"
-	<< eggDryMassAtBirth << "\t"
-	<< getDateOfDeath() << "\t"
-	<< ageOfFirstMaturation << "\t"
-	<< rep_count << "\t";
+	double asymptoticSize;
 
-	voracitiesFile << endl;
+	switch(getSpecies()->getGrowthCurve()->getType()) {
+		case CurveType::VonBertalanffy: {
+			asymptoticSize = static_cast<VonBertalanffyCurveParams* const>(growthCurveParams)->getAsymptoticSize();
+			break;
+		}
+		case CurveType::Logistic: {
+			asymptoticSize = static_cast<LogisticCurveParams* const>(growthCurveParams)->getAsymptoticSize();
+			break;
+		}
+		case CurveType::Logistic3P: {
+			asymptoticSize = static_cast<const Logistic3PCurve* const>(getSpecies()->getGrowthCurve())->getAsymptoticSize();
+			break;
+		}
+		case CurveType::Logistic4P: {
+			asymptoticSize = static_cast<const Logistic4PCurve* const>(getSpecies()->getGrowthCurve())->getAsymptoticSize();
+			break;
+		}
+		case CurveType::Gompertz: {
+			asymptoticSize = static_cast<const GompertzCurve* const>(getSpecies()->getGrowthCurve())->getAsymptoticSize();
+			break;
+		}
+		default: {
+			asymptoticSize = 0.0;
+			break;
+		}
+	}
 
+	Output::print(
+		voracitiesFile, "{}\t{}\t{}\t{}\t{}\t{}\t{}\t{}\t{}\t{}\t{}\t{}\t{}\t{}\t{}\t{}\t{}\t{}\t{}\t{}\t{}\t{}\t{}\t{}\t{}\t{}\t{}\t{}\t{}\t{}\t{}\t{}\t{}\t{}\t\n",
+		getIdStr(), getSpecies()->getScientificName(), (int)lifeStage.getValue(), currentAge-1,
+		instar, currentBodySize, getTrait(Trait::energy_tank), calculateDryMass(),
+		nextDinoMassPredicted, minMassAtCurrentAge, getTrait(Trait::voracity),
+		foodMass, calculateDryMass() + foodMass, totalMetabolicDryMassLossAfterAssim,
+		eatenToday, steps, stepsAttempted, oldSearchArea, sated,
+		((timeStepMaximumSearchArea > 0) ? steps / timeStepMaximumSearchArea : 0),
+		handlingTimer, getTrait(Trait::voracity) / calculateDryMass(), gender,
+		mated, eggDryMassForClutch, getTrait(Trait::growth), asymptoticSize,
+		pseudoGrowth, asymptoticSize, getTrait(Trait::factorEggMass), eggDryMassAtBirth,
+		getDateOfDeath(), ageOfFirstMaturation, rep_count
+	);
 }
 
 void Animal::printGenetics(ostream& geneticsFile)
 {
 	geneticsFile << getIdStr() << "\t"
-	<< mySpecies->getScientificName() << "\t"
+	<< getSpecies()->getScientificName() << "\t"
 	<< generationNumberFromFemaleParent << "\t"
 	<< generationNumberFromMaleParent << "\t"
 	<< ID_prt1 << "\t"
 	<< ID_prt2 << "\t";
 
-	for (unsigned int i = 0; i < mySpecies->getNumberOfTraits(); ++i)
+	for (unsigned int i = 0; i < getSpecies()->getNumberOfVariableTraits(); ++i)
 	{
-		geneticsFile << *(genome->getHomologousChromosomes()->at(i).first) << *(genome->getHomologousChromosomes()->at(i).second);
+		geneticsFile << *(genome.getHomologousChromosomes().at(i).first) << *(genome.getHomologousChromosomes().at(i).second);
 	}
 	geneticsFile << endl;
 }
 
-void Animal::printTraits(ostream& traitsFile)
+void Animal::printTraits(FILE* traitsFile)
 {
-	traitsFile << getIdStr() << "\t"
-	<< mySpecies->getScientificName() << "\t"
-	<< generationNumberFromFemaleParent << "\t"
-	<< generationNumberFromMaleParent << "\t"
-	<< ID_prt1 << "\t"
-	<< ID_prt2 << "\t";
+	Output::print(
+		traitsFile, "{}\t{}\t{}\t{}\t{}\t{}\t",
+		getIdStr(), getSpecies()->getScientificName(), generationNumberFromFemaleParent,
+		generationNumberFromMaleParent, ID_prt1, ID_prt2
+	);
 
-	for (size_t i = 0; i < TraitConverter::size(); ++i)
+	for (size_t i = 0; i < Trait::size(); ++i)
 	{
 		try
 		{
-			traitsFile << getTrait((Trait)i) << "\t";
+			Output::print(traitsFile, "{}\t", getTrait((TraitType)i));
 		}
 		catch(const LineInfoException& e)
 		{
-			traitsFile << -1 << "\t";
+			Output::print(traitsFile, "{}\t", -1);
 		}
 	}
-	traitsFile << endl;
+	Output::print(traitsFile, "\n");
 }
 
 void Animal::updateLimits()
 {
-	for(const auto& [key, value] : variableTraits)
+	for(size_t i = 0; i < getSpecies()->getNumberOfVariableTraits(); i++)
 	{
-		mySpecies->setMinObservedPseudoValue(key, min(mySpecies->getMinObservedPseudoValue(key), getTrait(key)));
-		mySpecies->setMaxObservedPseudoValue(key, max(mySpecies->getMaxObservedPseudoValue(key), getTrait(key)));
+		getSpecies()->setMinObservedPseudoValue(variableTraits[i], min(getSpecies()->getMinObservedPseudoValue(variableTraits[i]), getTrait(variableTraits[i])));
+		getSpecies()->setMaxObservedPseudoValue(variableTraits[i], max(getSpecies()->getMaxObservedPseudoValue(variableTraits[i]), getTrait(variableTraits[i])));
 	}
 }
 
 void Animal::sumPseudoGrowthMean()
 {
-	mySpecies->setPseudoGrowthMean(mySpecies->getPseudoGrowthMean() + pseudoGrowth);
+	getSpecies()->setPseudoGrowthMean(getSpecies()->getPseudoGrowthMean() + pseudoGrowth);
 }
 
 void Animal::sumPseudoGrowthSd()
 {
-	mySpecies->setPseudoGrowthSd(mySpecies->getPseudoGrowthSd() + pow(pseudoGrowth - mySpecies->getPseudoGrowthMean(), 2));
+	getSpecies()->setPseudoGrowthSd(getSpecies()->getPseudoGrowthSd() + pow(pseudoGrowth - getSpecies()->getPseudoGrowthMean(), 2));
 }
 /*
 void Animal::sumPseudoLengthMean()
@@ -2304,26 +2382,26 @@ void Animal::sumPseudoLengthMean()
 
 
 	//growth cambia según dells a Topt = 35 (usando changedKmin changedKmax etc..)
-	double vonBertLinf = linearInterpolate(traits[Trait::growth], mySpecies->minRestrictedLimits[Trait::growth], mySpecies->maxRestrictedLimits[Trait::growth], mySpecies->vonBertLdistanceMin, mySpecies->vonBertLdistanceMax);
+	double vonBertLinf = linearInterpolate(traits[Trait::growth], getSpecies()->minRestrictedLimits[Trait::growth], getSpecies()->maxRestrictedLimits[Trait::growth], getSpecies()->vonBertLdistanceMin, getSpecies()->vonBertLdistanceMax);
 	//vonBertLinf disminuye según tempSizeRuleConstant (usando Topt = 35)
 	//finalDevTimeVector cambia usando dells (usamos la misma Topt = 35 otra vez)
-	double pseudoVonBertMaxLength = vonBertLinf*(1-exp(-traits[Trait::growth]*(finalDevTimeVector[CADAINSTAR]-mySpecies->vonBertTime0)));
+	double pseudoVonBertMaxLength = vonBertLinf*(1-exp(-traits[Trait::growth]*(finalDevTimeVector[CADAINSTAR]-getSpecies()->vonBertTime0)));
 	//calculamos mean y sd para pseudoVonBertMaxLength
 
 	double normalizedPseudoVonBertMaxLength = (pseudoVonBertMaxLength - pseudoVonBertMaxLengthMean) / pseudoVonBertMaxLengthSd;
 	vonBertMaxLength<-normalizedPseudoGrowth*cholMat[1,2]+normalizedPseudoVonBertMaxLength*cholMat[2,2]
 
 	pseudoGrowth = traits[Trait::growth];
-	mySpecies->pseudoGrowthMean += pseudoGrowth;
+	getSpecies()->pseudoGrowthMean += pseudoGrowth;
 }
 
 void Animal::sumPseudoLengthSd()
 {
-	mySpecies->pseudoGrowthSd += pow(pseudoGrowth - mySpecies->pseudoGrowthMean, 2);
+	getSpecies()->pseudoGrowthSd += pow(pseudoGrowth - getSpecies()->pseudoGrowthMean, 2);
 }
 */
 
-void Animal::setNewLifeStage(unsigned int newLifeStage)
+void Animal::setNewLifeStage(const LifeStage newLifeStage)
 {
 	position->eraseAnimal(this, lifeStage);
 
@@ -2331,25 +2409,25 @@ void Animal::setNewLifeStage(unsigned int newLifeStage)
 	position->addAnimal(this);
 }
 
-void Animal::setNewLifeStage(unsigned int newLifeStage, double dayOfDeath)
+void Animal::setNewLifeStage(const LifeStage newLifeStage, double dayOfDeath)
 {
 	setNewLifeStage(newLifeStage);
 
 	switch (newLifeStage)
 	{
-	case LIFE_STAGES::STARVED:
+	case LifeStage::STARVED:
 		setDateOfDeath(dayOfDeath);
 		break;
-	case LIFE_STAGES::PREDATED:
+	case LifeStage::PREDATED:
 		setDateOfDeath(dayOfDeath);
 		break;
-	case LIFE_STAGES::BACKGROUND:
+	case LifeStage::BACKGROUND:
 		setDateOfDeath(dayOfDeath);
 		break;
-	case LIFE_STAGES::SENESCED:
+	case LifeStage::SENESCED:
 		setDateOfDeath(dayOfDeath);
 		break;
-	case LIFE_STAGES::SHOCKED:
+	case LifeStage::SHOCKED:
 		setDateOfDeath(dayOfDeath);
 		break;
 	default:
@@ -2358,13 +2436,13 @@ void Animal::setNewLifeStage(unsigned int newLifeStage, double dayOfDeath)
 	}
 }
 
-void Animal::setNewLifeStage(unsigned int newLifeStage, double dayOfDeath, int predatorId)
+void Animal::setNewLifeStage(const LifeStage newLifeStage, double dayOfDeath, int predatorId)
 {
 	setNewLifeStage(newLifeStage, dayOfDeath);
 
 	switch (newLifeStage)
 	{
-	case LIFE_STAGES::PREDATED:
+	case LifeStage::PREDATED:
 		setPredatedByID(predatorId);
 		break;
 	default:
@@ -2377,100 +2455,119 @@ pair<bool, bool> Animal::interpolateTraits()
 {
 	bool isInsideRestrictedRanges = true;
 	bool isViableAnimal = true;
-	for(const auto& [key, value] : variableTraits)
+	for(size_t i = 0; i < getSpecies()->getNumberOfVariableTraits(); i++)
 	{
-		variableTraits[key] = Math_Functions::linearInterpolate(variableTraits[key], mySpecies->getMinObservedPseudoValue(key), mySpecies->getMaxObservedPseudoValue(key),
-				mySpecies->getMinRestrictedRange(key), mySpecies->getMaxRestrictedRange(key));
-		if(variableTraits[key] < mySpecies->getMinRestrictedRange(key) || variableTraits[key] > mySpecies->getMaxRestrictedRange(key))
+		setTrait(variableTraits[i], Math_Functions::linearInterpolate(getTrait(variableTraits[i]), getSpecies()->getMinObservedPseudoValue(variableTraits[i]), getSpecies()->getMaxObservedPseudoValue(variableTraits[i]),
+				getSpecies()->getMinRestrictedRange(variableTraits[i]), getSpecies()->getMaxRestrictedRange(variableTraits[i])));
+		if(getTrait(variableTraits[i]) < getSpecies()->getMinRestrictedRange(variableTraits[i]) || getTrait(variableTraits[i]) > getSpecies()->getMaxRestrictedRange(variableTraits[i]))
 		{
-			//cout << "WARNING: individual " << id << " on species " << mySpecies->getScientificName() << ": trait number " << i << ": " << traits[i] << " out of RESTRICTED RANGES: " << mySpecies->minRestrictedRanges[i] << " - " << mySpecies->maxRestrictedRanges[i] << endl << flush;
+			//cout << "WARNING: individual " << id << " on species " << getSpecies()->getScientificName() << ": trait number " << i << ": " << traits[i] << " out of RESTRICTED RANGES: " << getSpecies()->minRestrictedRanges[i] << " - " << getSpecies()->maxRestrictedRanges[i] << endl << flush;
 			isInsideRestrictedRanges = false;
 		}
-		if(variableTraits[key] < mySpecies->getMinTraitLimit(key) || variableTraits[key] > mySpecies->getMaxTraitLimit(key))
+		if(getTrait(variableTraits[i]) < getSpecies()->getMinTraitLimit(variableTraits[i]) || getTrait(variableTraits[i]) > getSpecies()->getMaxTraitLimit(variableTraits[i]))
 		{
-			cout << "WARNING: individual " << getId() << " on species " << mySpecies->getScientificName() << ": trait number " << key << ": " << variableTraits[key] << " out of LIMITS: " << mySpecies->getMinTraitLimit(key) << " - " << mySpecies->getMaxTraitLimit(key) << endl << flush;
+			Output::coutFlush("WARNING: individual {} on species {}: trait number {}: {} out of LIMITS: {} - {}\n", getId(), getSpecies()->getScientificName(), (int)variableTraits[i], getTrait(variableTraits[i]), getSpecies()->getMinTraitLimit(variableTraits[i]), getSpecies()->getMaxTraitLimit(variableTraits[i]));
 			isViableAnimal = false;
 		}
 	}
 	return make_pair(isInsideRestrictedRanges, isViableAnimal);
 }
 
-void Animal::calculateGrowthCurves(float temperature, ostream& tuneTraitsFile, bool printGrowthData, double ageAtInitialization) //Dinosaurs
+void Animal::calculateGrowthCurves(float temperature, std::FILE* tuneTraitsFile, bool printGrowthData, double ageAtInitialization) //Dinosaurs
 {
 	
 	double lengthAtBirth = 0;
 	double xmid = 0;						 
 
-	if(mySpecies->getGrowthType() == 1){
-		lengthAtBirth = pow((getMassAtBirth()/mySpecies->getCoefficientForMassAforMature()),1/mySpecies->getScaleForMassBforMature()); 
-		xmid = log((Linf-lengthAtBirth)/lengthAtBirth)*(1/getTrait(Trait::growth));
+	if(getSpecies()->getGrowthCurve()->getType() == CurveType::Logistic){
+		lengthAtBirth = pow((getMassAtBirth()/getSpecies()->getCoefficientForMassAforMature()),1/getSpecies()->getScaleForMassBforMature()); 
+		xmid = log((static_cast<LogisticCurveParams* const>(growthCurveParams)->getAsymptoticSize()-lengthAtBirth)/lengthAtBirth)*(1/getTrait(Trait::growth));
 	}
 
 	//vonBertK is now the actual growth trait
 
-	//Calculating Linf and changing growth curves according to LinfKcorr
+	//Calculating asymptoticSize and changing growth curves according to LinfKcorr
 	//Cholesky has been called AFTER the creation of each species and the matrix has been saved as cholMat
 	//The creation of the cholMat is performed inside the setLinfKcorr function
 
 	//Using Change_K (and Dells) for tuning Growth according to temperature
 	//double tmin = 270;
-	double tmax = 273 + mySpecies->getTempFromLab();
+	double tmax = 273 + getSpecies()->getTempFromLab();
 	/*double newT = 273 + temperature;
 	//Optimo para las curvas de crecimiento=35. Para Vor Speed Search será 25
-	double Topt = 273 + mySpecies->getTempOptGrowth();
+	double Topt = 273 + getSpecies()->getTempOptGrowth();
 	double activationEnergyGrowth = 0.65;//changed from 0.66 now following Dell, perhaps take it out as an entry parameter, but since is growth assume MTE
 
-	double dellsNewT = dells(newT, Topt, mySpecies->getEdGrowth(), activationEnergyGrowth);
-	double changeKmin = mySpecies->getMinTraitRange(Trait::growth)-0.000001;
-	double changedKmin = linearInterpolate(dellsNewT, dells(xmin, Topt, mySpecies->getEdGrowth(), activationEnergyGrowth), dells(xmax, Topt, mySpecies->getEdGrowth(), activationEnergyGrowth), changeKmin, mySpecies->getMinTraitRange(Trait::growth));
-	double changedKmax = linearInterpolate(dellsNewT, dells(xmin, Topt, mySpecies->getEdGrowth(), activationEnergyGrowth), dells(xmax, Topt, mySpecies->getEdGrowth(), activationEnergyGrowth), changeKmin, mySpecies->getMaxTraitRange(Trait::growth));
+	double dellsNewT = dells(newT, Topt, getSpecies()->getEdGrowth(), activationEnergyGrowth);
+	double changeKmin = getSpecies()->getMinTraitRange(Trait::growth)-0.000001;
+	double changedKmin = linearInterpolate(dellsNewT, dells(xmin, Topt, getSpecies()->getEdGrowth(), activationEnergyGrowth), dells(xmax, Topt, getSpecies()->getEdGrowth(), activationEnergyGrowth), changeKmin, getSpecies()->getMinTraitRange(Trait::growth));
+	double changedKmax = linearInterpolate(dellsNewT, dells(xmin, Topt, getSpecies()->getEdGrowth(), activationEnergyGrowth), dells(xmax, Topt, getSpecies()->getEdGrowth(), activationEnergyGrowth), changeKmin, getSpecies()->getMaxTraitRange(Trait::growth));
 */
 	//This equals K<-interpol(Knorm, Kmin, Kmax)
-	//currentPostTempGrowth = linearInterpolate(traits[Trait::growth], mySpecies->getMinTraitRange(Trait::growth), mySpecies->getMaxTraitRange(Trait::growth), changedKmin, changedKmax);
+	//currentPostTempGrowth = linearInterpolate(traits[Trait::growth], getSpecies()->getMinTraitRange(Trait::growth), getSpecies()->getMaxTraitRange(Trait::growth), changedKmin, changedKmax);
 
-	//Decrease in Linf according to TempSizeRuleConstant
-	double thisAnimalTempSizeRuleConstant = mySpecies->getTempSizeRuleConstant();
-	double degreesDifference = abs(temperature - mySpecies->getTempFromLab());
-	if(temperature > mySpecies->getTempFromLab())
+	//Decrease in asymptoticSize according to TempSizeRuleConstant
+	double thisAnimalTempSizeRuleConstant = getSpecies()->getTempSizeRuleConstant();
+	double degreesDifference = abs(temperature - getSpecies()->getTempFromLab());
+	if(temperature > getSpecies()->getTempFromLab())
 	{
 		thisAnimalTempSizeRuleConstant = (-thisAnimalTempSizeRuleConstant);
 	}
 
 	//Here the TSR rule is improved by directly affecting asymptotic body mass, not length.
-	/*double preTsrLinfMass = mySpecies->getCoefficientForMassAforMature()*pow(Linf,mySpecies->getScaleForMassBforMature());
+	/*double preTsrLinfMass = getSpecies()->getCoefficientForMassAforMature()*pow(static_cast<const LogisticCurveParams *>(growthCurveParams)->getAsymptoticSize(),getSpecies()->getScaleForMassBforMature());
 	double postTsrLinfMass = preTsrLinfMass + thisAnimalTempSizeRuleConstant*degreesDifference*preTsrLinfMass;
 
-	currentPostTempLinf = pow(postTsrLinfMass/mySpecies->getCoefficientForMassAforMature(),1/mySpecies->getScaleForMassBforMature());*/
+	currentPostTempLinf = pow(postTsrLinfMass/getSpecies()->getCoefficientForMassAforMature(),1/getSpecies()->getScaleForMassBforMature());*/
 
 	if(printGrowthData)
 	{
-		tuneTraitsFile
-		<< getTrait(Trait::growth) << "\t"
-		<< Linf << "\t"; //<< currentPostTempLinf << "\t";
+		double asymptoticSize;
+
+		switch(getSpecies()->getGrowthCurve()->getType()) {
+			case CurveType::VonBertalanffy: {
+				asymptoticSize = static_cast<VonBertalanffyCurveParams* const>(growthCurveParams)->getAsymptoticSize();
+				break;
+			}
+			case CurveType::Logistic: {
+				asymptoticSize = static_cast<LogisticCurveParams* const>(growthCurveParams)->getAsymptoticSize();
+				break;
+			}
+			case CurveType::Logistic3P: {
+				asymptoticSize = static_cast<const Logistic3PCurve* const>(getSpecies()->getGrowthCurve())->getAsymptoticSize();
+				break;
+			}
+			case CurveType::Logistic4P: {
+				asymptoticSize = static_cast<const Logistic4PCurve* const>(getSpecies()->getGrowthCurve())->getAsymptoticSize();
+				break;
+			}
+			case CurveType::Gompertz: {
+				asymptoticSize = static_cast<const GompertzCurve* const>(getSpecies()->getGrowthCurve())->getAsymptoticSize();
+				break;
+			}
+			default: {
+				asymptoticSize = 0.0;
+				break;
+			}
+		}
+
+		Output::print(tuneTraitsFile, "{}\t{}\t", getTrait(Trait::growth), asymptoticSize);
 	}
 
     //Here to calculate the new dev time we need to calculate the mass of the adult after TSR has been applied
     double ageLastInstar = getAgeLastInstar();
 
 	
-    double maxLfromSpeciesLastInstar = 0;
+    double maxLfromSpeciesLastInstar = getValueGrowthCurve(ageLastInstar, xmid);
 
-	if(mySpecies->getGrowthType() == 0){
-		maxLfromSpeciesLastInstar = Linf*(1-exp(-getTrait(Trait::growth)*(ageLastInstar-thisAnimalVonBertTime0)));
-	}
-
-	if(mySpecies->getGrowthType() == 1){
-		maxLfromSpeciesLastInstar = Linf/(1+exp((xmid-ageLastInstar)*getTrait(Trait::growth)));
-	}
-
-    double massLastInstarForDevT = mySpecies->getCoefficientForMassAforMature()*pow(maxLfromSpeciesLastInstar,mySpecies->getScaleForMassBforMature());
+    double massLastInstarForDevT = getSpecies()->getCoefficientForMassAforMature()*pow(maxLfromSpeciesLastInstar,getSpecies()->getScaleForMassBforMature());
 
     double postTSRMassLastInstarForDevT = massLastInstarForDevT + thisAnimalTempSizeRuleConstant*degreesDifference*massLastInstarForDevT;
 
     //transform to g in wetMass to adjust to the equation by Gillooly et al. 2012
-    double massLastInstarForDevTinG = mySpecies->getConversionToWetMass() * postTSRMassLastInstarForDevT * 1000;
+    double massLastInstarForDevTinG = getSpecies()->getConversionToWetMass() * postTSRMassLastInstarForDevT * 1000;
 
-    double devTime = exp(-0.11 * (temperature / (1 + temperature / 273)) + mySpecies->getDevInter()) * pow(massLastInstarForDevTinG, 0.25);
+    double devTime = exp(-0.11 * (temperature / (1 + temperature / 273)) + getSpecies()->getDevInter()) * pow(massLastInstarForDevTinG, 0.25);
 
 	//double finalDevTimeProportion = devTime / ageLastInstar;
 
@@ -2479,12 +2576,9 @@ void Animal::calculateGrowthCurves(float temperature, ostream& tuneTraitsFile, b
 	//Fixing t0 in BV
 	//Original length without
 	//Jordi: Are the three sentences below necessary anymore?
-//	double maxLfromSpeciesMatureAge = Linf*(1-exp(-traits[Trait::growth]*(matureAge-mySpecies->getVonBertTime0())));
+//	double maxLfromSpeciesMatureAge = static_cast<const LogisticCurveParams *>(growthCurveParams)->getAsymptoticSize()*(1-exp(-traits[Trait::growth]*(matureAge-getSpecies()->getVonBertTime0())));
 //	double thisAnimalMaxLfromSpeciesMatureAge = maxLfromSpeciesMatureAge + thisAnimalTempSizeRuleConstant*degreesDifference*maxLfromSpeciesMatureAge;
 //	double thisAnimalMatureAge = matureAge*finalDevTimeProportion;
-
-	//below we anchor VBt0 regardless of temperature - after a detailed study across Taxa by Jordi
-	thisAnimalVonBertTime0 = mySpecies->getVonBertTime0();
 
 	if(eggDryMassAtBirth == -1)//for the new borns
 	{
@@ -2497,63 +2591,57 @@ void Animal::calculateGrowthCurves(float temperature, ostream& tuneTraitsFile, b
 		}
 
 	/* 		if(ageAtInitialization < 1){ //Dinosaurs
-			lengthAtBirth = Linf*(1-exp(-traits[Trait::growth]*(0-thisAnimalVonBertTime0)));
+			lengthAtBirth = static_cast<const LogisticCurveParams *>(growthCurveParams)->getAsymptoticSize()*(1-exp(-traits[Trait::growth]*(0-thisAnimalVonBertTime0)));
 			}else{
-			lengthAtBirth = Linf*(1-exp(-traits[Trait::growth]*(ageAtInitialization-thisAnimalVonBertTime0)));	
+			lengthAtBirth = static_cast<const LogisticCurveParams *>(growthCurveParams)->getAsymptoticSize()*(1-exp(-traits[Trait::growth]*(ageAtInitialization-thisAnimalVonBertTime0)));	
 			}
 
 		}else{ //newborn during simulation */
 
-		//lengthAtBirth = Linf*(1-exp(-traits[Trait::growth]*(0-thisAnimalVonBertTime0)));
+		//lengthAtBirth = static_cast<const LogisticCurveParams *>(growthCurveParams)->getAsymptoticSize()*(1-exp(-traits[Trait::growth]*(0-thisAnimalVonBertTime0)));
 		
 		//}
 
 
-		//eggDryMassAtBirth = mySpecies->getCoefficientForMassA()*pow(lengthAtBirth,mySpecies->getScaleForMassB());
-		eggDryMassAtBirth = mySpecies->getEggDryMass() + mySpecies->getEggDryMass() * factorEggMassFromMom;
-		//traits[Trait::energy_tank] =  tank_ini * pow(eggDryMassAtBirth, mySpecies->getBetaScaleTank());
+		//eggDryMassAtBirth = getSpecies()->getCoefficientForMassA()*pow(lengthAtBirth,getSpecies()->getScaleForMassB());
+		eggDryMassAtBirth = getSpecies()->getEggDryMass() + getSpecies()->getEggDryMass() * factorEggMassFromMom;
+		//traits[Trait::energy_tank] =  tank_ini * pow(eggDryMassAtBirth, getSpecies()->getBetaScaleTank());
 		//currentBodySize = eggDryMassAtBirth - traits[Trait::energy_tank];
 
 		
-		double maxMassAtCurrentAge = eggDryMassAtBirth + eggDryMassAtBirth*mySpecies->getMaxPlasticityKVonBertalanffy();
+		double maxMassAtCurrentAge = eggDryMassAtBirth + eggDryMassAtBirth*getSpecies()->getMaxPlasticityKVonBertalanffy();
 		//below is a shorter limit for death - if minPlasticityKVonBertalanffy == 0, death occurs when total body mass = body size
-		double minMassAtCurrentAge = eggDryMassAtBirth - eggDryMassAtBirth * mySpecies->getMinPlasticityKVonBertalanffy();//Dinosaurs
+		double minMassAtCurrentAge = eggDryMassAtBirth - eggDryMassAtBirth * getSpecies()->getMinPlasticityKVonBertalanffy();//Dinosaurs
 
 		//below final eggDryMass is set after the female eggMass trait, if it surpasses the
 		//growing curve band limits, it is set to the limit  //Dinosaurs
 		eggDryMassAtBirth = min(eggDryMassAtBirth, maxMassAtCurrentAge);
 		eggDryMassAtBirth = max(eggDryMassAtBirth, minMassAtCurrentAge);
 
-		setTrait(Trait::energy_tank, tank_ini * pow(eggDryMassAtBirth, mySpecies->getBetaScaleTank()));
+		setTrait(Trait::energy_tank, tank_ini * pow(eggDryMassAtBirth, getSpecies()->getBetaScaleTank()));
 		currentBodySize = eggDryMassAtBirth - getTrait(Trait::energy_tank);
 	}
 
 
-	//Now we calculate the vector of Ls using Linf and von Bertalanfy function on each age
+	//Now we calculate the vector of Ls using asymptoticSize and von Bertalanfy function on each age
 	//And we use each L as the next_L in the growth equations to calculate the next_M
 
 
-/* 	lengthsVector = new double[mySpecies->getNumberOfInstars()]; //Dinosaurs take out of the heap... better memory?
-	massesVector = new double[mySpecies->getNumberOfInstars()];
+/* 	lengthsVector = new double[getSpecies()->getNumberOfInstars()]; //Dinosaurs take out of the heap... better memory?
+	massesVector = new double[getSpecies()->getNumberOfInstars()];
  */
 	for (int i = 0; i < finalDevTimeVector.size(); ++i)
 	{
 		Instar instar(i+1);
-		finalDevTimeVector[i] = mySpecies->getDevTime(instar);
+		finalDevTimeVector[i] = getSpecies()->getDevTime(instar);
 		
-		if(mySpecies->getGrowthType() == 0){
-			lengthsVector[i] = Linf*(1-exp(-getTrait(Trait::growth)*(finalDevTimeVector[i]-thisAnimalVonBertTime0)));
-		}
-
-		if(mySpecies->getGrowthType() == 1){
-			lengthsVector[i] = Linf/(1+exp((xmid-finalDevTimeVector[i])*getTrait(Trait::growth)));
-		}
+		lengthsVector[i] = getValueGrowthCurve(finalDevTimeVector[i], xmid);
 
 
-		if(mySpecies->getNumberOfInstars() == mySpecies->getInstarFirstReproduction()){
-			massesVector[i] = mySpecies->getCoefficientForMassAforMature()*pow(lengthsVector[i],mySpecies->getScaleForMassBforMature());
+		if(getSpecies()->getNumberOfInstars() == getSpecies()->getInstarFirstReproduction()){
+			massesVector[i] = getSpecies()->getCoefficientForMassAforMature()*pow(lengthsVector[i],getSpecies()->getScaleForMassBforMature());
 		}else{
-			massesVector[i] = mySpecies->getCoefficientForMassA()*pow(lengthsVector[i],mySpecies->getScaleForMassB());
+			massesVector[i] = getSpecies()->getCoefficientForMassA()*pow(lengthsVector[i],getSpecies()->getScaleForMassB());
 		}
 
 		//TSR is applied directly here so the k value is effectively changed at the individual level
@@ -2564,7 +2652,7 @@ void Animal::calculateGrowthCurves(float temperature, ostream& tuneTraitsFile, b
 	for (int i = 0; i < finalDevTimeVector.size(); ++i)
 	{
 		Instar instar(i+1);
-		finalDevTimeVector[i] = mySpecies->getDevTime(instar)*finalDevTimeProportion;
+		finalDevTimeVector[i] = getSpecies()->getDevTime(instar)*finalDevTimeProportion;
 
 		// cout << "finalDevTimeVector[i] :"<< finalDevTimeVector[i] << endl;
 		// cout << "lengthsVector[i] :" << lengthsVector[i] << endl;
@@ -2573,15 +2661,15 @@ void Animal::calculateGrowthCurves(float temperature, ostream& tuneTraitsFile, b
 	}
 
 		//arthro
-		//ageOfFirstMaturation = finalDevTimeVector[mySpecies->getInstarFirstReproduction()-2];
+		//ageOfFirstMaturation = finalDevTimeVector[getSpecies()->getInstarFirstReproduction()-2];
 
-					//if(mySpecies->getGrowthType() == 0){
+					//if(getSpecies()->getGrowthType() == 0){
 
 						ageOfFirstMaturation = getAgeFirstReproduction();
 
 					//}
 
-					/*if(mySpecies->getGrowthType() == 1){
+					/*if(getSpecies()->getGrowthType() == 1){
 
 						ageOfFirstMaturation = xmid;
 					
@@ -2594,22 +2682,21 @@ void Animal::calculateGrowthCurves(float temperature, ostream& tuneTraitsFile, b
 }
 
 //The function below is to grow the animals that need to be at a certain instar at the beginning of the simulation
-float Animal::forceMolting(int timeStepsPerDay, double ageAtInitialization, Instar instarAtInitialization)
+float Animal::forceMolting(int timeStepsPerDay, double ageAtInitialization, Instar instarAtInitialization, SimulType simulType, TerrainCell*(*getCell)(unsigned int, unsigned int, unsigned int))
 {
 	const vector<float> temperatureCycle = position->getTemperatureCycle();
 	int temperatureCycleDay = Random::randomIndex(temperatureCycle.size());
 	float temperatureCycleTemperature = temperatureCycle.at(temperatureCycleDay);
-	ofstream noStream;
-	calculateGrowthCurves(temperatureCycleTemperature, noStream, false, -1);//Dinosaurs
+	calculateGrowthCurves(temperatureCycleTemperature, Output::nullFile, false, -1);//Dinosaurs
 
 	double lengthAtBirth = 0;
 	double xmid = 0;				
 	double propAdultMass = 0;
 	double currentEggs = 0;		 
 
-	if(mySpecies->getGrowthType() == 1){
-		lengthAtBirth = pow((getMassAtBirth()/mySpecies->getCoefficientForMassAforMature()),1/mySpecies->getScaleForMassBforMature()); 
-		xmid = log((Linf-lengthAtBirth)/lengthAtBirth)*(1/getTrait(Trait::growth));
+	if(getSpecies()->getGrowthCurve()->getType() == CurveType::Logistic){
+		lengthAtBirth = pow((getMassAtBirth()/getSpecies()->getCoefficientForMassAforMature()),1/getSpecies()->getScaleForMassBforMature()); 
+		xmid = log((static_cast<LogisticCurveParams* const>(growthCurveParams)->getAsymptoticSize()-lengthAtBirth)/lengthAtBirth)*(1/getTrait(Trait::growth));
 	}
 
 
@@ -2630,7 +2717,7 @@ float Animal::forceMolting(int timeStepsPerDay, double ageAtInitialization, Inst
 	}
 	else
 	{
-		instar = Instar(mySpecies->getNumberOfInstars());
+		instar = Instar(getSpecies()->getNumberOfInstars());
 
 		actualMoltingTimeVector.push_back(getAgeInInstar(instar));
 		actualMoltingMassVector.push_back(getMassesInInstar(instar));
@@ -2644,7 +2731,7 @@ float Animal::forceMolting(int timeStepsPerDay, double ageAtInitialization, Inst
 		}
 	}
 
-	//int maturationInstar = mySpecies->getInstarFirstReproduction();
+	//int maturationInstar = getSpecies()->getInstarFirstReproduction();
 	//ageOfMaturation = finalDevTimeVector[maturationInstar];
 	//cout << maturationInstar << endl;
 
@@ -2659,22 +2746,22 @@ float Animal::forceMolting(int timeStepsPerDay, double ageAtInitialization, Inst
 	}
 
 /* cout << instar+2 << endl;
-cout << mySpecies->getInstarFirstReproduction() << endl;
+cout << getSpecies()->getInstarFirstReproduction() << endl;
 exit(-1);
  */
 
 
-	/* if(mySpecies->hasIndeterminateGrowth() && (instar+2 > mySpecies->getInstarFirstReproduction())){
+	/* if(getSpecies()->hasIndeterminateGrowth() && (instar+2 > getSpecies()->getInstarFirstReproduction())){
 
-	 if((mySpecies->getInstarFirstReproduction() % 2 == 0) &&
-	  ((instar+2 - mySpecies->getInstarFirstReproduction()) % 2 == 0)){ //both even
+	 if((getSpecies()->getInstarFirstReproduction() % 2 == 0) &&
+	  ((instar+2 - getSpecies()->getInstarFirstReproduction()) % 2 == 0)){ //both even
 
 		mature = true;
 
 	 }else{ //at least one is odd
 
-	  if((mySpecies->getInstarFirstReproduction() % 2 > 0) &&
-	   ((instar+2 - mySpecies->getInstarFirstReproduction()) % 2 == 0)){ //second even
+	  if((getSpecies()->getInstarFirstReproduction() % 2 > 0) &&
+	   ((instar+2 - getSpecies()->getInstarFirstReproduction()) % 2 == 0)){ //second even
 
 		mature = true;
 
@@ -2685,8 +2772,8 @@ exit(-1);
 
 	}else{ */
 
-		//(instar+2 == mySpecies->getInstarFirstReproduction()) ||
-		if((instar >= mySpecies->getInstarFirstReproduction()) || (instar == mySpecies->getNumberOfInstars())){
+		//(instar+2 == getSpecies()->getInstarFirstReproduction()) ||
+		if((instar >= getSpecies()->getInstarFirstReproduction()) || (instar == getSpecies()->getNumberOfInstars())){
 			mature = true;
 		}
 
@@ -2695,9 +2782,9 @@ exit(-1);
 	if(isMature()){
 	
 	
-	  //if(mySpecies->getGrowthType() == 0){
+	  //if(getSpecies()->getGrowthType() == 0){
 		
-		if(instar == mySpecies->getInstarFirstReproduction()){
+		if(instar == getSpecies()->getInstarFirstReproduction()){
 			ageOfMaturation = ageAtInitialization;
 			ageOfFirstMaturation = getAgeFirstReproduction(); //Dinos2023 - to prevent dates to close to target next maturation
 		}else{
@@ -2706,7 +2793,7 @@ exit(-1);
 		}
 	 // }
 
-	  /*if(mySpecies->getGrowthType() == 1){
+	  /*if(getSpecies()->getGrowthType() == 1){
 		
 		if(ageAtInitialization >= xmid){
 							ageOfMaturation = xmid;
@@ -2723,10 +2810,10 @@ exit(-1);
 	
 	}
 
-	//Decrease in Linf according to TempSizeRuleConstant
-	double thisAnimalTempSizeRuleConstant = mySpecies->getTempSizeRuleConstant();
-	double degreesDifference = abs(temperatureCycleTemperature - mySpecies->getTempFromLab());
-	if(temperatureCycleTemperature > mySpecies->getTempFromLab())
+	//Decrease in asymptoticSize according to TempSizeRuleConstant
+	double thisAnimalTempSizeRuleConstant = getSpecies()->getTempSizeRuleConstant();
+	double degreesDifference = abs(temperatureCycleTemperature - getSpecies()->getTempFromLab());
+	if(temperatureCycleTemperature > getSpecies()->getTempFromLab())
 	{
 		thisAnimalTempSizeRuleConstant = (-thisAnimalTempSizeRuleConstant);
 	}
@@ -2736,22 +2823,14 @@ exit(-1);
 
 
 
-		double expectedLengthAtCurrentAge = 0;
-		
-		if(mySpecies->getGrowthType() == 0){
-			expectedLengthAtCurrentAge = Linf*(1-exp(-getTrait(Trait::growth)*(ageAtInitialization-thisAnimalVonBertTime0)));
-	    }
-
-	    if(mySpecies->getGrowthType() == 1){
-			expectedLengthAtCurrentAge = Linf/(1+exp((xmid-ageAtInitialization)*getTrait(Trait::growth)));
-	    }
+		double expectedLengthAtCurrentAge = getValueGrowthCurve(ageAtInitialization, xmid);
 
 		
-		double expectedMassAtCurrentAge = mySpecies->getCoefficientForMassA()*pow(expectedLengthAtCurrentAge,mySpecies->getScaleForMassB());
+		double expectedMassAtCurrentAge = getSpecies()->getCoefficientForMassA()*pow(expectedLengthAtCurrentAge,getSpecies()->getScaleForMassB());
 
 		expectedMassAtCurrentAge = expectedMassAtCurrentAge + expectedMassAtCurrentAge*thisAnimalTempSizeRuleConstant*degreesDifference;
 
-		setTrait(Trait::energy_tank, tank_ini * pow(expectedMassAtCurrentAge, mySpecies->getBetaScaleTank()));
+		setTrait(Trait::energy_tank, tank_ini * pow(expectedMassAtCurrentAge, getSpecies()->getBetaScaleTank()));
 		currentBodySize = expectedMassAtCurrentAge - getTrait(Trait::energy_tank);
 
 		//to force initialization in juveniles 
@@ -2760,41 +2839,23 @@ exit(-1);
 		daysForPseudoTargetReproduction = 1.1*currentAge; //1.1 because reproTimeFactor is no longer in use
 		ageForNextReproduction = currentAge + daysForPseudoTargetReproduction;
 		
-		double currentLength = 0;
-		double nextReproLength = 0;
+		double currentLength = getValueGrowthCurve(currentAge, xmid);
+		double nextReproLength = getValueGrowthCurve(ageForNextReproduction, xmid);
 		
-		if(mySpecies->getGrowthType() == 0){
-			currentLength = Linf*(1-exp(-getTrait(Trait::growth)*(currentAge-thisAnimalVonBertTime0)));
-			nextReproLength = Linf*(1-exp(-getTrait(Trait::growth)*(ageForNextReproduction-thisAnimalVonBertTime0)));
-	    }
-
-	    if(mySpecies->getGrowthType() == 1){
-			currentLength = Linf/(1+exp((xmid-currentAge)*getTrait(Trait::growth)));
-			nextReproLength = Linf/(1+exp((xmid-ageForNextReproduction)*getTrait(Trait::growth)));
-	    }
-		
-		massOfMaturationOrLastReproduction = mySpecies->getCoefficientForMassAforMature()*pow(currentLength,mySpecies->getScaleForMassBforMature());
-		massForNextReproduction = mySpecies->getCoefficientForMassAforMature()*pow(nextReproLength,mySpecies->getScaleForMassBforMature());
+		massOfMaturationOrLastReproduction = getSpecies()->getCoefficientForMassAforMature()*pow(currentLength,getSpecies()->getScaleForMassBforMature());
+		massForNextReproduction = getSpecies()->getCoefficientForMassAforMature()*pow(nextReproLength,getSpecies()->getScaleForMassBforMature());
 		//end arthro
 
 	}else{//is mature
 
 
-		double expectedLengthAtCurrentAge = 0;
-		
-		if(mySpecies->getGrowthType() == 0){
-			expectedLengthAtCurrentAge = Linf*(1-exp(-getTrait(Trait::growth)*(ageAtInitialization-thisAnimalVonBertTime0)));
-	    }
+		double expectedLengthAtCurrentAge = getValueGrowthCurve(ageAtInitialization, xmid);
 
-	    if(mySpecies->getGrowthType() == 1){
-			expectedLengthAtCurrentAge = Linf/(1+exp((xmid-ageAtInitialization)*getTrait(Trait::growth)));
-	    }
-
-		double expectedMassAtCurrentAge = mySpecies->getCoefficientForMassAforMature()*pow(expectedLengthAtCurrentAge,mySpecies->getScaleForMassBforMature());
+		double expectedMassAtCurrentAge = getSpecies()->getCoefficientForMassAforMature()*pow(expectedLengthAtCurrentAge,getSpecies()->getScaleForMassBforMature());
 
 		expectedMassAtCurrentAge = expectedMassAtCurrentAge + expectedMassAtCurrentAge*thisAnimalTempSizeRuleConstant*degreesDifference;
 
-		setTrait(Trait::energy_tank, tank_ini * pow(expectedMassAtCurrentAge, mySpecies->getBetaScaleTank()));
+		setTrait(Trait::energy_tank, tank_ini * pow(expectedMassAtCurrentAge, getSpecies()->getBetaScaleTank()));
 		currentBodySize = expectedMassAtCurrentAge - getTrait(Trait::energy_tank);
 
 
@@ -2807,12 +2868,12 @@ exit(-1);
 		if(gender == AnimalSpecies::GENDERS::FEMALE)
 		{
 			clutchDryMass=0;//Dinosaurs
-			//double lengthAtBirth = Linf*(1-exp(-traits[Trait::growth]*(0-thisAnimalVonBertTime0)));
-			eggDryMassForClutch = mySpecies->getEggDryMass() + mySpecies->getEggDryMass()* getTrait(Trait::factorEggMass);
+			//double lengthAtBirth = static_cast<const LogisticCurveParams *>(growthCurveParams)->getAsymptoticSize()*(1-exp(-traits[Trait::growth]*(0-thisAnimalVonBertTime0)));
+			eggDryMassForClutch = getSpecies()->getEggDryMass() + getSpecies()->getEggDryMass()* getTrait(Trait::factorEggMass);
 
-			double maxMassAtCurrentAge = eggDryMassForClutch + eggDryMassForClutch*mySpecies->getMaxPlasticityKVonBertalanffy();
+			double maxMassAtCurrentAge = eggDryMassForClutch + eggDryMassForClutch*getSpecies()->getMaxPlasticityKVonBertalanffy();
 					//below is a shorter limit for death - if minPlasticityKVonBertalanffy == 0, death occurs when total body mass = body size
-			double minMassAtCurrentAge = eggDryMassForClutch - eggDryMassForClutch * mySpecies->getMinPlasticityKVonBertalanffy();//Dinosaurs
+			double minMassAtCurrentAge = eggDryMassForClutch - eggDryMassForClutch * getSpecies()->getMinPlasticityKVonBertalanffy();//Dinosaurs
 
 					//below final eggDryMass is set after the female eggMass trait, if it surpasses the
 					//growing curve band limits, it is set to the limit  //Dinosaurs
@@ -2820,82 +2881,64 @@ exit(-1);
 			eggDryMassForClutch = max(eggDryMassForClutch, minMassAtCurrentAge);
 			
 			
-			if(mySpecies->hasEggClutchFromEquation())
+			if(getSpecies()->hasEggClutchFromEquation())
 			{
-				clutchDryMass = (mySpecies->getForClutchMassCoefficient() * pow(lastMassBeforeMaturationOrOviposition, mySpecies->getForClutchMassScale())) / mySpecies->getConversionToWetMass();
+				clutchDryMass = (getSpecies()->getForClutchMassCoefficient() * pow(lastMassBeforeMaturationOrOviposition, getSpecies()->getForClutchMassScale())) / getSpecies()->getConversionToWetMass();
 			}
 			else //If it does not come from equation,
 			{
 						//arthro
-						if(mySpecies->hasIndeterminateGrowth()){
+						if(getSpecies()->hasIndeterminateGrowth()){
 							
-							double lengthAtThisAge = 0;
-							
-							if(mySpecies->getGrowthType() == 0){
-								lengthAtThisAge = Linf*(1-exp(-getTrait(Trait::growth)*(currentAge-thisAnimalVonBertTime0)));
-							}
-
-							if(mySpecies->getGrowthType() == 1){
-								lengthAtThisAge = Linf/(1+exp((xmid-currentAge)*getTrait(Trait::growth)));
-							}
+							double lengthAtThisAge = getValueGrowthCurve(currentAge, xmid);
 
 							
-							double massAtThisAge = mySpecies->getCoefficientForMassAforMature()*pow(lengthAtThisAge,mySpecies->getScaleForMassBforMature());
+							double massAtThisAge = getSpecies()->getCoefficientForMassAforMature()*pow(lengthAtThisAge,getSpecies()->getScaleForMassBforMature());
 						
 							propAdultMass = getMassesFirstReproduction()/getMassesLastInstar();
 							
 							currentEggs = Math_Functions::linearInterpolate(massAtThisAge,getMassesFirstReproduction(),getMassesLastInstar(),
-							round(mySpecies->getEggsPerBatch()*propAdultMass), mySpecies->getEggsPerBatch()); 
+							round(getSpecies()->getEggsPerBatch()*propAdultMass), getSpecies()->getEggsPerBatch()); 
 							
 							clutchDryMass = eggDryMassForClutch*currentEggs;//for mites or others that lay only one egg per batch
 						}else{
-							clutchDryMass = eggDryMassForClutch*mySpecies->getEggsPerBatch();	
+							clutchDryMass = eggDryMassForClutch*getSpecies()->getEggsPerBatch();	
 						}
 						//end arthro
 			}
 			massForNextReproduction = lastMassBeforeMaturationOrOviposition + clutchDryMass;
 			//arthros
 			//daysForTargetReproduction = ceil( (clutchDryMass*ageOfMaturation) / lastMassBeforeMaturationOrOviposition);
-			double longevity = mySpecies->getLongevitySinceMaturation()*ageOfFirstMaturation;
+			double longevity = getSpecies()->getLongevitySinceMaturation()*ageOfFirstMaturation;
 			double reproTime = longevity - ageOfFirstMaturation;
 				
-			daysForTargetReproduction = floor(reproTime/mySpecies->getFemaleMaxReproductionEvents());
+			daysForTargetReproduction = floor(reproTime/getSpecies()->getFemaleMaxReproductionEvents());
 			//end arthros
 			
 			
 
-			//daysForTargetReproduction = ceil(mySpecies->getReproTimeFactor()*ageOfFirstMaturation);
+			//daysForTargetReproduction = ceil(getSpecies()->getReproTimeFactor()*ageOfFirstMaturation);
 		}
 		else
 		{
 		  	//arthro - to make targets more continuous also for dinos
-			double currentLength = 0;
-			double nextReproLength = 0;
-			
-			if(mySpecies->getGrowthType() == 0){
-				currentLength = Linf*(1-exp(-getTrait(Trait::growth)*(currentAge-thisAnimalVonBertTime0)));
-				nextReproLength = Linf*(1-exp(-getTrait(Trait::growth)*(ageForNextReproduction-thisAnimalVonBertTime0)));
-			}
-
-			if(mySpecies->getGrowthType() == 1){
-				currentLength = Linf/(1+exp((xmid-currentAge)*getTrait(Trait::growth)));
-				nextReproLength = Linf/(1+exp((xmid-ageForNextReproduction)*getTrait(Trait::growth)));
-			}
+			double currentLength = getValueGrowthCurve(currentAge, xmid);
+			double nextReproLength = getValueGrowthCurve(ageForNextReproduction, xmid);
     		
-			double nextReproMass = mySpecies->getCoefficientForMassAforMature()*pow(nextReproLength,mySpecies->getScaleForMassBforMature());	
-			double currentMass = mySpecies->getCoefficientForMassAforMature()*pow(currentLength,mySpecies->getScaleForMassBforMature());
+			double nextReproMass = getSpecies()->getCoefficientForMassAforMature()*pow(nextReproLength,getSpecies()->getScaleForMassBforMature());	
+			double currentMass = getSpecies()->getCoefficientForMassAforMature()*pow(currentLength,getSpecies()->getScaleForMassBforMature());
 
-			if(mySpecies->hasIndeterminateGrowth()){
-				if(instar < mySpecies->getNumberOfInstars()){
+			if(getSpecies()->hasIndeterminateGrowth()){
+				if(instar < getSpecies()->getNumberOfInstars()){
 					massForNextReproduction = nextReproMass;
 				}else{
 					massForNextReproduction = currentMass;
 				}
-				//daysForTargetReproduction = ceil( ((mySpecies->maleReproductionFactor * (massesVector[mySpecies->numberOfInstars-1] - massesVector[mySpecies->numberOfInstars-2])*ageOfMaturation) / lastMassBeforeMaturationOrOviposition ));
+				//daysForTargetReproduction = ceil( ((getSpecies()->maleReproductionFactor * (massesVector[getSpecies()->numberOfInstars-1] - massesVector[getSpecies()->numberOfInstars-2])*ageOfMaturation) / lastMassBeforeMaturationOrOviposition ));
 				daysForTargetReproduction = ceil(0.01);
 			}else{
 				massForNextReproduction = lastMassBeforeMaturationOrOviposition + (nextReproMass-currentMass);
-				//daysForTargetReproduction = ceil( ((mySpecies->maleReproductionFactor * (massesVector[mySpecies->numberOfInstars-1] - massesVector[mySpecies->numberOfInstars-2])*ageOfMaturation) / lastMassBeforeMaturationOrOviposition ));
+				//daysForTargetReproduction = ceil( ((getSpecies()->maleReproductionFactor * (massesVector[getSpecies()->numberOfInstars-1] - massesVector[getSpecies()->numberOfInstars-2])*ageOfMaturation) / lastMassBeforeMaturationOrOviposition ));
 				daysForTargetReproduction = ceil(0.01);
 			}
 			//end arthro
@@ -2918,8 +2961,7 @@ exit(-1);
 	    }*/
 
 
-		ofstream noStream2;
-		tuneTraits(-1, 1, temperatureCycleTemperature, 100, noStream2, false, true);
+		tuneTraits(-1, 1, temperatureCycleTemperature, 100, Output::nullFile, false, true, simulType, getCell);
 	}
 
 
@@ -2934,22 +2976,21 @@ float Animal::forceMolting2(int timeStepsPerDay, double ageAtInitialization, Ins
 	const vector<float> temperatureCycle = position->getTemperatureCycle();
 	int temperatureCycleDay = Random::randomIndex(temperatureCycle.size());
 	float temperatureCycleTemperature = temperatureCycle.at(temperatureCycleDay);
-	ofstream noStream;
 
 	double lengthAtBirth = 0;
 	double xmid = 0;					
 	double propAdultMass = 0;
 	double currentEggs = 0;		 	 
 
-	if(mySpecies->getGrowthType() == 1){
-		lengthAtBirth = pow((getMassAtBirth()/mySpecies->getCoefficientForMassAforMature()),1/mySpecies->getScaleForMassBforMature());  
-		xmid = log((Linf-lengthAtBirth)/lengthAtBirth)*(1/getTrait(Trait::growth));
+	if(getSpecies()->getGrowthCurve()->getType() == CurveType::Logistic){
+		lengthAtBirth = pow((getMassAtBirth()/getSpecies()->getCoefficientForMassAforMature()),1/getSpecies()->getScaleForMassBforMature());  
+		xmid = log((static_cast<LogisticCurveParams* const>(growthCurveParams)->getAsymptoticSize()-lengthAtBirth)/lengthAtBirth)*(1/getTrait(Trait::growth));
 	}
 
-	for (int i = 0; i < mySpecies->getDevTimeVector().size(); ++i)  //Dinosaurs for calculteGrowthCurves with ageAtInitialization != 0
+	for (int i = 0; i < getSpecies()->getDevTimeVector().size(); ++i)  //Dinosaurs for calculteGrowthCurves with ageAtInitialization != 0
 	{
 		Instar instar(i+1);
-		finalDevTimeVector[i] = mySpecies->getDevTime(instar);
+		finalDevTimeVector[i] = getSpecies()->getDevTime(instar);
 	}
 
 	if(ageAtInitialization == -1)
@@ -2969,7 +3010,7 @@ float Animal::forceMolting2(int timeStepsPerDay, double ageAtInitialization, Ins
 	}
 	else
 	{
-		instar = Instar(mySpecies->getNumberOfInstars());
+		instar = Instar(getSpecies()->getNumberOfInstars());
 
 		actualMoltingTimeVector.push_back(getAgeInInstar(instar));
 		actualMoltingMassVector.push_back(getMassesInInstar(instar));
@@ -2983,25 +3024,36 @@ float Animal::forceMolting2(int timeStepsPerDay, double ageAtInitialization, Ins
 		}
 	}
 
+
+    double reproTime;
+	double daysForTargetReproduction;
+			
+	//double addedAge = Random::randomIndex(daysForTargetReproduction);
 	
-	if(instar == 1){ //Dinosaurs and arthro - fixed for short-lifecycle mites - initialization is now done at random ages within the instar to generate reproduction variability
+    if(instar == 1){ //Dinosaurs and arthro - fixed for short-lifecycle mites - initialization is now done at random ages within the instar to generate reproduction variability
 		
 		ageAtInitialization = Random::randomIndex(finalDevTimeVector[0]);
 	
-	}else if((instar > 1) && (instar < mySpecies->getNumberOfInstars())){
+	}else if((instar > 1) && (instar < getSpecies()->getNumberOfInstars())){
 	
 		ageAtInitialization = ageAtInitialization + Random::randomIndex(finalDevTimeVector[instar.getValue()]-getAgeInInstar(instar));	
 	    
 	} else { //is the last instar
 		//age at initialization of animals in the last instar depends on longevity
+		//cout << "before" << endl;
+		//cout << ageAtInitialization << endl;
 		
-		ageAtInitialization = ageAtInitialization+Random::randomIndex((getAgeFirstReproduction()*mySpecies->getLongevitySinceMaturation())-ageAtInitialization);
+		//cout << ageAtInitialization << endl;
+		
+		// ageAtInitialization = ageAtInitialization + addedAge;
+		
+		ageAtInitialization = ageAtInitialization+Random::randomIndex((getAgeFirstReproduction()*getSpecies()->getLongevitySinceMaturation())-ageAtInitialization);
 	} 
 	
-	calculateGrowthCurves(temperatureCycleTemperature, noStream, false, ageAtInitialization); //Dinosaurs
+	calculateGrowthCurves(temperatureCycleTemperature, Output::nullFile, false, ageAtInitialization); //Dinosaurs
 	
 	currentAge = ageAtInitialization; //Dinosaurs
-	//int maturationInstar = mySpecies->getInstarFirstReproduction();
+	//int maturationInstar = getSpecies()->getInstarFirstReproduction();
 	//ageOfMaturation = finalDevTimeVector[maturationInstar];
 	//cout << maturationInstar << endl;
 
@@ -3016,27 +3068,27 @@ float Animal::forceMolting2(int timeStepsPerDay, double ageAtInitialization, Ins
 	}
 
 /* cout << instar+2 << endl;
-cout << mySpecies->getInstarFirstReproduction() << endl;
+cout << getSpecies()->getInstarFirstReproduction() << endl;
 exit(-1);
  */
-	//if(mySpecies->hasIndeterminateGrowth() && (instar+2 >= mySpecies->getInstarFirstReproduction())){
+	//if(getSpecies()->hasIndeterminateGrowth() && (instar+2 >= getSpecies()->getInstarFirstReproduction())){
 
-	 //if((mySpecies->getInstarFirstReproduction() % 2 == 0) &&
-	 // ((instar+2 - mySpecies->getInstarFirstReproduction()) % 2 == 0)){ //both even
+	 //if((getSpecies()->getInstarFirstReproduction() % 2 == 0) &&
+	 // ((instar+2 - getSpecies()->getInstarFirstReproduction()) % 2 == 0)){ //both even
 
 		//mature = true;
 
 	 //}else{ //at least one is odd
 
-	  //if((mySpecies->getInstarFirstReproduction() % 2 > 0) &&
-	   //((instar+2 - mySpecies->getInstarFirstReproduction()) % 2 == 0)){ //second even
+	  //if((getSpecies()->getInstarFirstReproduction() % 2 > 0) &&
+	   //((instar+2 - getSpecies()->getInstarFirstReproduction()) % 2 == 0)){ //second even
 
 		//mature = true;
 
 	  //}/////*else{
 
-		 ////if((mySpecies->getInstarFirstReproduction() % 2 > 0) &&
-		 ////(instar+2 == mySpecies->getNumberOfInstars()+1)){ //first is odd
+		 ////if((getSpecies()->getInstarFirstReproduction() % 2 > 0) &&
+		 ////(instar+2 == getSpecies()->getNumberOfInstars()+1)){ //first is odd
 
 			 ////mature = true;
 
@@ -3049,26 +3101,26 @@ exit(-1);
 
 	//}else{
 
-		//(instar+2 == mySpecies->getInstarFirstReproduction()) ||
-		if((instar >= mySpecies->getInstarFirstReproduction()) || (instar == mySpecies->getNumberOfInstars())){
+		//(instar+2 == getSpecies()->getInstarFirstReproduction()) ||
+		if((instar >= getSpecies()->getInstarFirstReproduction()) || (instar == getSpecies()->getNumberOfInstars())){
 			mature = true;
 		}
 
 	//}
 
 	if(isMature()){
-	 // if(mySpecies->getGrowthType() == 0){
+	 // if(getSpecies()->getGrowthType() == 0){
 		
-		if(instar == mySpecies->getInstarFirstReproduction()){
-			ageOfMaturation = ageAtInitialization;
+		//if(instar == getSpecies()->getInstarFirstReproduction()){
+			ageOfMaturation = getAgeFirstReproduction();
 			ageOfFirstMaturation = getAgeFirstReproduction(); //Dinos2023 - to prevent dates to close to target next maturation
-		}else{
-			ageOfMaturation = ageAtInitialization;
-			ageOfFirstMaturation = getAgeFirstReproduction();
-		}
+		//}else{
+			//ageOfMaturation = getAgeFirstReproduction();
+			//ageOfFirstMaturation = getAgeFirstReproduction();
+		//}
 	  //}
 
-	/* if(mySpecies->getGrowthType() == 1){
+	/* if(getSpecies()->getGrowthType() == 1){
 		
 		if(ageAtInitialization >= xmid){
 							ageOfMaturation = xmid;
@@ -3081,10 +3133,10 @@ exit(-1);
 	  }*/
 	}
 
-	//Decrease in Linf according to TempSizeRuleConstant
-	double thisAnimalTempSizeRuleConstant = mySpecies->getTempSizeRuleConstant();
-	double degreesDifference = abs(temperatureCycleTemperature - mySpecies->getTempFromLab());
-	if(temperatureCycleTemperature > mySpecies->getTempFromLab())
+	//Decrease in asymptoticSize according to TempSizeRuleConstant
+	double thisAnimalTempSizeRuleConstant = getSpecies()->getTempSizeRuleConstant();
+	double degreesDifference = abs(temperatureCycleTemperature - getSpecies()->getTempFromLab());
+	if(temperatureCycleTemperature > getSpecies()->getTempFromLab())
 	{
 		thisAnimalTempSizeRuleConstant = (-thisAnimalTempSizeRuleConstant);
 	}
@@ -3094,62 +3146,36 @@ exit(-1);
 
 
 
-		double expectedLengthAtCurrentAge = 0;
-		
-		if(mySpecies->getGrowthType() == 0){
-			expectedLengthAtCurrentAge = Linf*(1-exp(-getTrait(Trait::growth)*(ageAtInitialization-thisAnimalVonBertTime0)));
-	    }
+		double expectedLengthAtCurrentAge = getValueGrowthCurve(ageAtInitialization, xmid);
 
-	    if(mySpecies->getGrowthType() == 1){
-			expectedLengthAtCurrentAge = Linf/(1+exp((xmid-ageAtInitialization)*getTrait(Trait::growth)));
-	    }
-
-		double expectedMassAtCurrentAge = mySpecies->getCoefficientForMassA()*pow(expectedLengthAtCurrentAge,mySpecies->getScaleForMassB());
+		double expectedMassAtCurrentAge = getSpecies()->getCoefficientForMassA()*pow(expectedLengthAtCurrentAge,getSpecies()->getScaleForMassB());
 
 		expectedMassAtCurrentAge = expectedMassAtCurrentAge + expectedMassAtCurrentAge*thisAnimalTempSizeRuleConstant*degreesDifference;
 
-		setTrait(Trait::energy_tank, tank_ini * pow(expectedMassAtCurrentAge, mySpecies->getBetaScaleTank()));
+		setTrait(Trait::energy_tank, tank_ini * pow(expectedMassAtCurrentAge, getSpecies()->getBetaScaleTank()));
 		currentBodySize = expectedMassAtCurrentAge - getTrait(Trait::energy_tank);
 
 		//to force initialization in juveniles - arthro - the values are dummy and won't be used unitl updated 
 		double daysForPseudoTargetReproduction;
 		daysForPseudoTargetReproduction = 1.1*currentAge; //1.1 because reproTimeFactor is no longer in use
 		ageForNextReproduction = currentAge + daysForPseudoTargetReproduction;
-		double currentLength = 0;
-		double nextReproLength = 0;
-		
-		if(mySpecies->getGrowthType() == 0){
-			currentLength = Linf*(1-exp(-getTrait(Trait::growth)*(currentAge-thisAnimalVonBertTime0)));
-			nextReproLength = Linf*(1-exp(-getTrait(Trait::growth)*(ageForNextReproduction-thisAnimalVonBertTime0)));
-	    }
+		double currentLength = getValueGrowthCurve(currentAge, xmid);
+		double nextReproLength = getValueGrowthCurve(ageForNextReproduction, xmid);
 
-	    if(mySpecies->getGrowthType() == 1){
-			currentLength = Linf/(1+exp((xmid-currentAge)*getTrait(Trait::growth)));
-			nextReproLength = Linf/(1+exp((xmid-ageForNextReproduction)*getTrait(Trait::growth)));
-	    }
-
-		massOfMaturationOrLastReproduction = mySpecies->getCoefficientForMassAforMature()*pow(currentLength,mySpecies->getScaleForMassBforMature());
-		massForNextReproduction = mySpecies->getCoefficientForMassAforMature()*pow(nextReproLength,mySpecies->getScaleForMassBforMature());
+		massOfMaturationOrLastReproduction = getSpecies()->getCoefficientForMassAforMature()*pow(currentLength,getSpecies()->getScaleForMassBforMature());
+		massForNextReproduction = getSpecies()->getCoefficientForMassAforMature()*pow(nextReproLength,getSpecies()->getScaleForMassBforMature());
 		//end arthro
 
 	}else{//is mature
 
 
-		double expectedLengthAtCurrentAge = 0;
-		
-		if(mySpecies->getGrowthType() == 0){
-			expectedLengthAtCurrentAge = Linf*(1-exp(-getTrait(Trait::growth)*(ageAtInitialization-thisAnimalVonBertTime0)));
-	    }
+		double expectedLengthAtCurrentAge = getValueGrowthCurve(ageAtInitialization, xmid);
 
-	    if(mySpecies->getGrowthType() == 1){
-			expectedLengthAtCurrentAge = Linf/(1+exp((xmid-ageAtInitialization)*getTrait(Trait::growth)));
-	    }
-
-		double expectedMassAtCurrentAge = mySpecies->getCoefficientForMassAforMature()*pow(expectedLengthAtCurrentAge,mySpecies->getScaleForMassBforMature());
+		double expectedMassAtCurrentAge = getSpecies()->getCoefficientForMassAforMature()*pow(expectedLengthAtCurrentAge,getSpecies()->getScaleForMassBforMature());
 
 		expectedMassAtCurrentAge = expectedMassAtCurrentAge + expectedMassAtCurrentAge*thisAnimalTempSizeRuleConstant*degreesDifference;
 
-		setTrait(Trait::energy_tank, tank_ini * pow(expectedMassAtCurrentAge, mySpecies->getBetaScaleTank()));
+		setTrait(Trait::energy_tank, tank_ini * pow(expectedMassAtCurrentAge, getSpecies()->getBetaScaleTank()));
 		currentBodySize = expectedMassAtCurrentAge - getTrait(Trait::energy_tank);
 
 
@@ -3159,76 +3185,58 @@ exit(-1);
 		
 		double expectedLengthAtFormerAge = 0;
 
-		if(ageAtInitialization > 0){
-			if(mySpecies->getGrowthType() == 0){
-				expectedLengthAtFormerAge = Linf*(1-exp(-getTrait(Trait::growth)*((ageAtInitialization-1)-thisAnimalVonBertTime0)));
-			}
-
-			if(mySpecies->getGrowthType() == 1){
-				expectedLengthAtFormerAge = Linf/(1+exp((xmid-(ageAtInitialization-1))*getTrait(Trait::growth)));
-			}
-	    }else{
-			if(mySpecies->getGrowthType() == 0){
-				expectedLengthAtFormerAge = Linf*(1-exp(-getTrait(Trait::growth)*(0-thisAnimalVonBertTime0)));
-			}
-
-			if(mySpecies->getGrowthType() == 1){
-				expectedLengthAtFormerAge = Linf/(1+exp((xmid-0)*getTrait(Trait::growth)));
-			}
+		if(ageAtInitialization > 0) {
+			expectedLengthAtFormerAge = getValueGrowthCurve(ageAtInitialization-1, xmid);
+		}
+		else {
+			expectedLengthAtFormerAge = getValueGrowthCurve(0, xmid);
 		}
 
 
 
-		double expectedMassAtFomerAge = mySpecies->getCoefficientForMassAforMature()*pow(expectedLengthAtFormerAge,mySpecies->getScaleForMassBforMature());
+		double expectedMassAtFomerAge = getSpecies()->getCoefficientForMassAforMature()*pow(expectedLengthAtFormerAge,getSpecies()->getScaleForMassBforMature());
 		
 		massOfMaturationOrLastReproduction = getMassesInInstar(instar);
-		ageOfMaturation = getAgeInInstar(instar);
+		//ageOfMaturation = getAgeInInstar(instar);
 		lastMassBeforeMaturationOrOviposition = getMassesInInstar(instar);
-		double daysForTargetReproduction;
+		//double daysForTargetReproduction;
+
 		if(gender == AnimalSpecies::GENDERS::FEMALE)
 		{
 			clutchDryMass=0;//Dinosaurs
-			//double lengthAtBirth = Linf*(1-exp(-traits[Trait::growth]*(0-thisAnimalVonBertTime0)));
-			eggDryMassForClutch = mySpecies->getEggDryMass() + mySpecies->getEggDryMass()* getTrait(Trait::factorEggMass);
+			//double lengthAtBirth = static_cast<const LogisticCurveParams *>(growthCurveParams)->getAsymptoticSize()*(1-exp(-traits[Trait::growth]*(0-thisAnimalVonBertTime0)));
+			eggDryMassForClutch = getSpecies()->getEggDryMass() + getSpecies()->getEggDryMass()* getTrait(Trait::factorEggMass);
 
-			double maxMassAtCurrentAge = eggDryMassForClutch + eggDryMassForClutch*mySpecies->getMaxPlasticityKVonBertalanffy();
+			double maxMassAtCurrentAge = eggDryMassForClutch + eggDryMassForClutch*getSpecies()->getMaxPlasticityKVonBertalanffy();
 			//below is a shorter limit for death - if minPlasticityKVonBertalanffy == 0, death occurs when total body mass = body size
-			double minMassAtCurrentAge = eggDryMassForClutch - eggDryMassForClutch * mySpecies->getMinPlasticityKVonBertalanffy();//Dinosaurs
+			double minMassAtCurrentAge = eggDryMassForClutch - eggDryMassForClutch * getSpecies()->getMinPlasticityKVonBertalanffy();//Dinosaurs
 
 			//below final eggDryMass is set after the female eggMass trait, if it surpasses the
 			//growing curve band limits, it is set to the limit  //Dinosaurs
 			eggDryMassForClutch = min(eggDryMassForClutch, maxMassAtCurrentAge);
 			eggDryMassForClutch = max(eggDryMassForClutch, minMassAtCurrentAge);
 
-			if(mySpecies->hasEggClutchFromEquation())
+			if(getSpecies()->hasEggClutchFromEquation())
 			{
-				clutchDryMass = (mySpecies->getForClutchMassCoefficient() * pow(lastMassBeforeMaturationOrOviposition, mySpecies->getForClutchMassScale())) / mySpecies->getConversionToWetMass();
+				clutchDryMass = (getSpecies()->getForClutchMassCoefficient() * pow(lastMassBeforeMaturationOrOviposition, getSpecies()->getForClutchMassScale())) / getSpecies()->getConversionToWetMass();
 			}
 			else //If it does not come from equation,
 			{
 						//arthro
-						if(mySpecies->hasIndeterminateGrowth()){
+						if(getSpecies()->hasIndeterminateGrowth()){
 
-							double lengthAtThisAge = 0;
-							
-							if(mySpecies->getGrowthType() == 0){
-								lengthAtThisAge = Linf*(1-exp(-getTrait(Trait::growth)*(currentAge-thisAnimalVonBertTime0)));
-							}
+							double lengthAtThisAge = getValueGrowthCurve(currentAge, xmid);
 
-							if(mySpecies->getGrowthType() == 1){
-								lengthAtThisAge = Linf/(1+exp((xmid-currentAge)*getTrait(Trait::growth)));
-							}
-
-							double massAtThisAge = mySpecies->getCoefficientForMassAforMature()*pow(lengthAtThisAge,mySpecies->getScaleForMassBforMature());
+							double massAtThisAge = getSpecies()->getCoefficientForMassAforMature()*pow(lengthAtThisAge,getSpecies()->getScaleForMassBforMature());
 							
 							propAdultMass = getMassesFirstReproduction()/getMassesLastInstar();
 							
 							currentEggs = Math_Functions::linearInterpolate(massAtThisAge,getMassesFirstReproduction(),getMassesLastInstar(),
-							round(mySpecies->getEggsPerBatch()*propAdultMass), mySpecies->getEggsPerBatch()); 
+							round(getSpecies()->getEggsPerBatch()*propAdultMass), getSpecies()->getEggsPerBatch()); 
 							
 							clutchDryMass = eggDryMassForClutch*currentEggs;//for mites or others that lay only one egg per batch
 						}else{
-							clutchDryMass = eggDryMassForClutch*mySpecies->getEggsPerBatch();	
+							clutchDryMass = eggDryMassForClutch*getSpecies()->getEggsPerBatch();	
 						}
 						//end arthro
 			}
@@ -3249,47 +3257,38 @@ exit(-1);
 		exit(-1);
 		} */
 			
-			//arthros
-			//daysForTargetReproduction = ceil( (clutchDryMass*ageOfMaturation) / lastMassBeforeMaturationOrOviposition);
-			double longevity = mySpecies->getLongevitySinceMaturation()*ageOfFirstMaturation;
-			double reproTime = longevity - ageOfFirstMaturation;
+		//arthros
+		//daysForTargetReproduction = ceil( (clutchDryMass*ageOfMaturation) / lastMassBeforeMaturationOrOviposition);
+		double longevity = getSpecies()->getLongevitySinceMaturation()*ageOfFirstMaturation;
+		reproTime = longevity - ageOfFirstMaturation;
 				
-			daysForTargetReproduction = floor(reproTime/mySpecies->getFemaleMaxReproductionEvents());
+			daysForTargetReproduction = floor(reproTime/getSpecies()->getFemaleMaxReproductionEvents());
 			//end arthros
 			
  			
-			//daysForTargetReproduction = ceil(mySpecies->getReproTimeFactor()*ageOfFirstMaturation);
+			//daysForTargetReproduction = ceil(getSpecies()->getReproTimeFactor()*ageOfFirstMaturation);
 		}
 		else
 		{
 				//arthro - to make targets more continuous also for dinos
-				double currentLength = 0;
-				double nextReproLength = 0;
+				double currentLength = getValueGrowthCurve(currentAge, xmid);
+				double nextReproLength = getValueGrowthCurve(ageForNextReproduction, xmid);
 				
-				if(mySpecies->getGrowthType() == 0){
-					currentLength = Linf*(1-exp(-getTrait(Trait::growth)*(currentAge-thisAnimalVonBertTime0)));
-					nextReproLength = Linf*(1-exp(-getTrait(Trait::growth)*(ageForNextReproduction-thisAnimalVonBertTime0)));
-				}
+    			double nextReproMass = getSpecies()->getCoefficientForMassAforMature()*pow(nextReproLength,getSpecies()->getScaleForMassBforMature());	
+				double currentMass =getSpecies()->getCoefficientForMassAforMature()*pow(currentLength,getSpecies()->getScaleForMassBforMature());
 
-				if(mySpecies->getGrowthType() == 1){
-					currentLength = Linf/(1+exp((xmid-currentAge)*getTrait(Trait::growth)));
-					nextReproLength = Linf/(1+exp((xmid-ageForNextReproduction)*getTrait(Trait::growth)));
-				}
-    			double nextReproMass = mySpecies->getCoefficientForMassAforMature()*pow(nextReproLength,mySpecies->getScaleForMassBforMature());	
-				double currentMass =mySpecies->getCoefficientForMassAforMature()*pow(currentLength,mySpecies->getScaleForMassBforMature());
-
-				if(mySpecies->hasIndeterminateGrowth()){
-					if(instar < mySpecies->getNumberOfInstars()){
+				if(getSpecies()->hasIndeterminateGrowth()){
+					if(instar < getSpecies()->getNumberOfInstars()){
 					  	massForNextReproduction = nextReproMass;
 					}else{
 					  	massForNextReproduction = currentMass;
 					}
-					//daysForTargetReproduction = ceil( ((mySpecies->maleReproductionFactor * (massesVector[mySpecies->numberOfInstars-1] - massesVector[mySpecies->numberOfInstars-2])*ageOfMaturation) / lastMassBeforeMaturationOrOviposition ));
+					//daysForTargetReproduction = ceil( ((getSpecies()->maleReproductionFactor * (massesVector[getSpecies()->numberOfInstars-1] - massesVector[getSpecies()->numberOfInstars-2])*ageOfMaturation) / lastMassBeforeMaturationOrOviposition ));
 					daysForTargetReproduction = ceil(0.01);
 				}else{
 					
 					  massForNextReproduction = calculateDryMass() + (nextReproMass-currentMass);
-					//daysForTargetReproduction = ceil( ((mySpecies->maleReproductionFactor * (massesVector[mySpecies->numberOfInstars-1] - massesVector[mySpecies->numberOfInstars-2])*ageOfMaturation) / lastMassBeforeMaturationOrOviposition ));
+					//daysForTargetReproduction = ceil( ((getSpecies()->maleReproductionFactor * (massesVector[getSpecies()->numberOfInstars-1] - massesVector[getSpecies()->numberOfInstars-2])*ageOfMaturation) / lastMassBeforeMaturationOrOviposition ));
 					  daysForTargetReproduction = ceil(0.01);
 				}
 				//end arthro
@@ -3298,9 +3297,9 @@ exit(-1);
 		//Dinosaurs - this allows dinosaurs to start reproducing readily 
 		//at the beginning of the simulation
 		ageOfLastMoultOrReproduction = ageAtInitialization;
-		//if(mySpecies->hasIndeterminateGrowth()){
-		ageForNextReproduction = ageAtInitialization + Random::randomIndex(getAgeInInstar(instar)) + 2; //add two days at least
-
+		//if(getSpecies()->hasIndeterminateGrowth()){  //+ Random::randomIndex(getAgeInInstar(instar))
+		ageForNextReproduction = ageAtInitialization + Random::randomIndex(daysForTargetReproduction); //add two days at least
+									//
 
         /* cout << "Id            xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx" << endl;
 		cout << getId() << endl;
@@ -3315,7 +3314,7 @@ exit(-1);
 			
 		//}	
 
-		double daysActiveSinceMaturation = round(Random::randomUniform()*daysForTargetReproduction);
+		//double daysActiveSinceMaturation = round(Random::randomUniform()*daysForTargetReproduction);
 		//expectedMassAtCurrentAge = massOfMaturationOrLastReproduction; // + daysActiveSinceMaturation * ((massForNextReproduction - massOfMaturationOrLastReproduction) / (ageForNextReproduction - ageOfLastMoultOrReproduction));
 		//traits[Trait::energy_tank] = expectedMassAtCurrentAge - currentBodySize;
 
@@ -3337,17 +3336,17 @@ exit(-1);
 }
 
 
-TerrainCell* Animal::move(int timeStep, int timeStepsPerDay, ostream& encounterProbabilitiesFile, ostream& predationProbabilitiesFile, ostream& edibilitiesFile)
+TerrainCell* Animal::move(int timeStep, int timeStepsPerDay, FILE* encounterProbabilitiesFile, FILE* predationProbabilitiesFile, bool saveEdibilitiesFile, FILE* edibilitiesFile, TerrainCell*(*getCellByBearing)(TerrainCell*, TerrainCell*), unsigned int worldDepth, unsigned int worldLength, unsigned int worldWidth, TerrainCell*(*getCell)(unsigned int, unsigned int, unsigned int), double pdfThreshold, double muForPDF, double sigmaForPDF, vector<AnimalSpecies*> *existingAnimalSpecies, double predationSpeedRatioAH, double predationHunterVoracityAH, double predationProbabilityDensityFunctionAH, double predationSpeedRatioSAW, double predationHunterVoracitySAW, double predationProbabilityDensityFunctionSAW, double maxSearchArea, double encounterHuntedVoracitySAW, double encounterHunterVoracitySAW, double encounterVoracitiesProductSAW, double encounterHunterSizeSAW, double encounterHuntedSizeSAW, double encounterProbabilityDensityFunctionSAW, double encounterHuntedVoracityAH, double encounterHunterVoracityAH, double encounterVoracitiesProductAH, double encounterHunterSizeAH, double encounterHuntedSizeAH, double encounterProbabilityDensityFunctionAH)
 {
 
 
 	#ifdef _DEBUG
-	cout << "moving animal... " << endl << flush;
+	Output::coutFlush("moving animal... \n");
 	#endif
 
 	if (lastDayMoved < timeStep)
 	{
-		updateAbundancesExperiencedPerSpecies(timeStepsPerDay);
+		updateBiomassExperiencedPerSpecies(timeStepsPerDay);
 		handlingTimer = 0.0;
 		//cout << sated << endl;
 		/* cout << "foodMass.. voracity... food left" << endl;
@@ -3365,17 +3364,17 @@ TerrainCell* Animal::move(int timeStep, int timeStepsPerDay, ostream& encounterP
 			biomassTrackedToday = 0;
 			cellsTrackedToday.clear();
 			hasEvaluatedTheWholeWorld = false;
-			searchAnimalsAndFungiToEat(timeStep, timeStepsPerDay, encounterProbabilitiesFile, predationProbabilitiesFile, edibilitiesFile);
+			searchAnimalsAndResourceToEat(timeStep, timeStepsPerDay, encounterProbabilitiesFile, predationProbabilitiesFile, saveEdibilitiesFile, edibilitiesFile, pdfThreshold, muForPDF, sigmaForPDF, existingAnimalSpecies, predationSpeedRatioAH, predationHunterVoracityAH, predationProbabilityDensityFunctionAH, predationSpeedRatioSAW, predationHunterVoracitySAW, predationProbabilityDensityFunctionSAW, maxSearchArea, encounterHuntedVoracitySAW, encounterHunterVoracitySAW, encounterVoracitiesProductSAW, encounterHunterSizeSAW, encounterHuntedSizeSAW, encounterProbabilityDensityFunctionSAW, encounterHuntedVoracityAH, encounterHunterVoracityAH, encounterVoracitiesProductAH, encounterHunterSizeAH, encounterHuntedSizeAH, encounterProbabilityDensityFunctionAH);
 
 			//Mature MALES will move now even when they are sated
-			if(calculateDryMass() > mySpecies->getQuitCellThreshold()){
+			if(calculateDryMass() > getSpecies()->getQuitCellThreshold()){
 				while (handlingTimer < timeStepMaximumHandlingTimer &&
 				steps < getTrait(Trait::search_area) - (0.5 * position->getSize()) &&
-				lifeStage == ACTIVE && days_digest == 0 &&
+				lifeStage == LifeStage::ACTIVE && days_digest == 0 &&
 				(!sated || (sated && mature && gender == AnimalSpecies::GENDERS::MALE)))
 				{
-				moveOneStep();
-				searchAnimalsAndFungiToEat(timeStep, timeStepsPerDay, encounterProbabilitiesFile, predationProbabilitiesFile, edibilitiesFile);
+				moveOneStep(getCellByBearing, worldDepth, worldLength, worldWidth, getCell, muForPDF, sigmaForPDF, predationSpeedRatioAH, predationHunterVoracityAH, predationProbabilityDensityFunctionAH, predationSpeedRatioSAW, predationHunterVoracitySAW, predationProbabilityDensityFunctionSAW, encounterHuntedVoracitySAW, encounterHunterVoracitySAW, encounterVoracitiesProductSAW, encounterHunterSizeSAW, encounterHuntedSizeSAW, encounterProbabilityDensityFunctionSAW, encounterHuntedVoracityAH, encounterHunterVoracityAH, encounterVoracitiesProductAH, encounterHunterSizeAH, encounterHuntedSizeAH, encounterProbabilityDensityFunctionAH);
+				searchAnimalsAndResourceToEat(timeStep, timeStepsPerDay, encounterProbabilitiesFile, predationProbabilitiesFile, saveEdibilitiesFile, edibilitiesFile, pdfThreshold, muForPDF, sigmaForPDF, existingAnimalSpecies, predationSpeedRatioAH, predationHunterVoracityAH, predationProbabilityDensityFunctionAH, predationSpeedRatioSAW, predationHunterVoracitySAW, predationProbabilityDensityFunctionSAW, maxSearchArea, encounterHuntedVoracitySAW, encounterHunterVoracitySAW, encounterVoracitiesProductSAW, encounterHunterSizeSAW, encounterHuntedSizeSAW, encounterProbabilityDensityFunctionSAW, encounterHuntedVoracityAH, encounterHunterVoracityAH, encounterVoracitiesProductAH, encounterHunterSizeAH, encounterHuntedSizeAH, encounterProbabilityDensityFunctionAH);
 				}
 			}else{
 				if(stepsAttempted<1){
@@ -3384,11 +3383,11 @@ TerrainCell* Animal::move(int timeStep, int timeStepsPerDay, ostream& encounterP
 				//cout << "whe are here" << endl;
 				while (handlingTimer < timeStepMaximumHandlingTimer &&
 				steps < getTrait(Trait::search_area) - (0.5 * position->getSize()) &&
-				lifeStage == ACTIVE && days_digest == 0 &&
+				lifeStage == LifeStage::ACTIVE && days_digest == 0 &&
 				(!sated || (sated && mature && gender == AnimalSpecies::GENDERS::MALE)))
 				{
-				moveOneStep();
-				searchAnimalsAndFungiToEat(timeStep, timeStepsPerDay, encounterProbabilitiesFile, predationProbabilitiesFile, edibilitiesFile);
+				moveOneStep(getCellByBearing, worldDepth, worldLength, worldWidth, getCell, muForPDF, sigmaForPDF, predationSpeedRatioAH, predationHunterVoracityAH, predationProbabilityDensityFunctionAH, predationSpeedRatioSAW, predationHunterVoracitySAW, predationProbabilityDensityFunctionSAW, encounterHuntedVoracitySAW, encounterHunterVoracitySAW, encounterVoracitiesProductSAW, encounterHunterSizeSAW, encounterHuntedSizeSAW, encounterProbabilityDensityFunctionSAW, encounterHuntedVoracityAH, encounterHunterVoracityAH, encounterVoracitiesProductAH, encounterHunterSizeAH, encounterHuntedSizeAH, encounterProbabilityDensityFunctionAH);
+				searchAnimalsAndResourceToEat(timeStep, timeStepsPerDay, encounterProbabilitiesFile, predationProbabilitiesFile, saveEdibilitiesFile, edibilitiesFile, pdfThreshold, muForPDF, sigmaForPDF, existingAnimalSpecies, predationSpeedRatioAH, predationHunterVoracityAH, predationProbabilityDensityFunctionAH, predationSpeedRatioSAW, predationHunterVoracitySAW, predationProbabilityDensityFunctionSAW, maxSearchArea, encounterHuntedVoracitySAW, encounterHunterVoracitySAW, encounterVoracitiesProductSAW, encounterHunterSizeSAW, encounterHuntedSizeSAW, encounterProbabilityDensityFunctionSAW, encounterHuntedVoracityAH, encounterHunterVoracityAH, encounterVoracitiesProductAH, encounterHunterSizeAH, encounterHuntedSizeAH, encounterProbabilityDensityFunctionAH);
 				}
 				}
 			}
@@ -3401,7 +3400,7 @@ TerrainCell* Animal::move(int timeStep, int timeStepsPerDay, ostream& encounterP
 			//cout << targetNeighborToTravelTo->getX() << "-" << targetNeighborToTravelTo->getY() << "-" << targetNeighborToTravelTo->getZ() << endl;
 
 			//For having into account metabolic downregulation on Spiders
-			if(huntingMode != Animal::HUNTING_MODES::DOES_NOT_HUNT)
+			if(getHuntingMode() != HuntingMode::does_not_hunt)
 			{
 				if(foodMass > 0)
 				{
@@ -3422,21 +3421,21 @@ TerrainCell* Animal::move(int timeStep, int timeStepsPerDay, ostream& encounterP
 	return position;
 }
 
-bool edibleCompare(const std::pair<double, pair<Edible*, Edible*>>& firstElem, const std::pair<double, pair<Edible*, Edible*>>& secondElem) {
+bool edibleCompare(const std::pair<double, pair<Animal*, Edible*>>& firstElem, const std::pair<double, pair<Animal*, Edible*>>& secondElem) {
   return firstElem.first > secondElem.first;
 }
 
-bool Animal::searchAnimalsAndFungiToEat(int timeStep, int timeStepsPerDay, ostream& encounterProbabilitiesFile, ostream& predationProbabilitiesFile, ostream& edibilitiesFile)
+bool Animal::searchAnimalsAndResourceToEat(int timeStep, int timeStepsPerDay, FILE* encounterProbabilitiesFile, FILE* predationProbabilitiesFile, bool saveEdibilitiesFile, FILE* edibilitiesFile, double pdfThreshold, double muForPDF, double sigmaForPDF, vector<AnimalSpecies*> *existingAnimalSpecies, double predationSpeedRatioAH, double predationHunterVoracityAH, double predationProbabilityDensityFunctionAH, double predationSpeedRatioSAW, double predationHunterVoracitySAW, double predationProbabilityDensityFunctionSAW, double maxSearchArea, double encounterHuntedVoracitySAW, double encounterHunterVoracitySAW, double encounterVoracitiesProductSAW, double encounterHunterSizeSAW, double encounterHuntedSizeSAW, double encounterProbabilityDensityFunctionSAW, double encounterHuntedVoracityAH, double encounterHunterVoracityAH, double encounterVoracitiesProductAH, double encounterHunterSizeAH, double encounterHuntedSizeAH, double encounterProbabilityDensityFunctionAH)
 {
 	cellsTrackedToday.push_back(position);
 
 	if(isMature() && !isMated())
 	{
-		vector<Edible*> * activeAnimals = position->getAnimalsBySpecies(Animal::LIFE_STAGES::ACTIVE, mySpecies);
-		vector<Edible*> * satiatedAnimals = position->getAnimalsBySpecies(Animal::LIFE_STAGES::SATIATED, mySpecies);
-		vector<Edible*> * handlingAnimals = position->getAnimalsBySpecies(Animal::LIFE_STAGES::HANDLING, mySpecies);
-		vector<Edible*> * diapauseAnimals = position->getAnimalsBySpecies(Animal::LIFE_STAGES::DIAPAUSE, mySpecies);
-		vector<Edible*> searchableAnimals = vector<Edible*>();
+		vector<Animal*> * activeAnimals = position->getAnimalsBySpecies(LifeStage::ACTIVE, getSpecies());
+		vector<Animal*> * satiatedAnimals = position->getAnimalsBySpecies(LifeStage::SATIATED, getSpecies());
+		vector<Animal*> * handlingAnimals = position->getAnimalsBySpecies(LifeStage::HANDLING, getSpecies());
+		vector<Animal*> * diapauseAnimals = position->getAnimalsBySpecies(LifeStage::DIAPAUSE, getSpecies());
+		vector<Animal*> searchableAnimals = vector<Animal*>();
 		searchableAnimals.insert(searchableAnimals.end(), activeAnimals->begin(), activeAnimals->end());
 		searchableAnimals.insert(searchableAnimals.end(), satiatedAnimals->begin(), satiatedAnimals->end());
 		searchableAnimals.insert(searchableAnimals.end(), handlingAnimals->begin(), handlingAnimals->end());
@@ -3445,7 +3444,7 @@ bool Animal::searchAnimalsAndFungiToEat(int timeStep, int timeStepsPerDay, ostre
 		//std::random_shuffle(searchableAnimals.begin(), searchableAnimals.end());
 		for(auto animalsIt = searchableAnimals.begin(); animalsIt != searchableAnimals.end(); animalsIt++)
 		{
-			Edible* currentAnimal = *animalsIt;
+			Animal* currentAnimal = *animalsIt;
 			if(currentAnimal->isMature() && gender != currentAnimal->getGender() && !currentAnimal->isMated())
 			{
 				if(gender == AnimalSpecies::GENDERS::MALE)
@@ -3479,35 +3478,25 @@ bool Animal::searchAnimalsAndFungiToEat(int timeStep, int timeStepsPerDay, ostre
 		searchableAnimals.clear();
 	}
 
-	vector<pair<double, pair<Edible*, Edible*>>> ediblesByEdibility;
-
-	double pdfThreshold;
-
-	if(position->getTheWorld()->getSimulType() == 0){
-		 pdfThreshold = 0.08;
-	}
-
-	if(position->getTheWorld()->getSimulType() == 1){
-		 pdfThreshold = 0.0003;
-	}
+	vector<pair<double, pair<Animal*, Edible*>>> ediblesByEdibility;
 
 
-	for(vector<Species*>::iterator speciesIt = position->getTheWorld()->existingAnimalSpecies.begin(); speciesIt != position->getTheWorld()->existingAnimalSpecies.end(); speciesIt++)
+	for(auto speciesIt = existingAnimalSpecies->begin(); speciesIt != existingAnimalSpecies->end(); speciesIt++)
 	{
-		Species* currentAnimalSpecies = *speciesIt;
-		vector<Edible*> * activeAnimals = position->getAnimalsBySpecies(Animal::LIFE_STAGES::ACTIVE, currentAnimalSpecies);
-		vector<Edible*> * satiatedAnimals = position->getAnimalsBySpecies(Animal::LIFE_STAGES::SATIATED, currentAnimalSpecies);
-		vector<Edible*> * handlingAnimals = position->getAnimalsBySpecies(Animal::LIFE_STAGES::HANDLING, currentAnimalSpecies);
-		vector<Edible*> * diapauseAnimals = position->getAnimalsBySpecies(Animal::LIFE_STAGES::DIAPAUSE, currentAnimalSpecies);
+		AnimalSpecies* currentAnimalSpecies = *speciesIt;
+		vector<Animal*> * activeAnimals = position->getAnimalsBySpecies(LifeStage::ACTIVE, currentAnimalSpecies);
+		vector<Animal*> * satiatedAnimals = position->getAnimalsBySpecies(LifeStage::SATIATED, currentAnimalSpecies);
+		vector<Animal*> * handlingAnimals = position->getAnimalsBySpecies(LifeStage::HANDLING, currentAnimalSpecies);
+		vector<Animal*> * diapauseAnimals = position->getAnimalsBySpecies(LifeStage::DIAPAUSE, currentAnimalSpecies);
 
-		if(currentAnimalSpecies->canEatAnimalSpecies(mySpecies) && mySpecies->canEatAnimalSpecies(currentAnimalSpecies))
+		if(currentAnimalSpecies->canEatAnimalSpecies(getSpecies()) && getSpecies()->canEatAnimalSpecies(currentAnimalSpecies))
 		{
-			for(vector<Edible*>::iterator animalsIt = activeAnimals->begin(); animalsIt != activeAnimals->end(); animalsIt++)
+			for(auto animalsIt = activeAnimals->begin(); animalsIt != activeAnimals->end(); animalsIt++)
 			{
-				Edible* currentAnimal = *animalsIt;
+				Animal* currentAnimal = *animalsIt;
 				
 				//Dinosaurs but elsewhere - to prevent unreasonable encounters and ingestion of very large prey
-				double probabilityDensityFunction = exp(-0.5 * pow((log(calculateWetMass()/currentAnimal->calculateWetMass()) - position->getTheWorld()->getMuForPDF()) / position->getTheWorld()->getSigmaForPDF(), 2)) / (position->getTheWorld()->getSigmaForPDF() * sqrt(2*PI));
+				double probabilityDensityFunction = exp(-0.5 * pow((log(calculateWetMass()/currentAnimal->calculateWetMass()) - muForPDF) / sigmaForPDF, 2)) / (sigmaForPDF * sqrt(2*PI));
 				
 
 
@@ -3516,108 +3505,108 @@ bool Animal::searchAnimalsAndFungiToEat(int timeStep, int timeStepsPerDay, ostre
 				if (currentAnimal->canEatEdible(this) && canEatEdible(currentAnimal) && currentAnimal != this)
 				{
 					
-					if(currentAnimal->calculatePredationProbability(this, false) > calculatePredationProbability(currentAnimal, false))
+					if(currentAnimal->calculatePredationProbability(this, false, muForPDF, sigmaForPDF, predationSpeedRatioAH, predationHunterVoracityAH, predationProbabilityDensityFunctionAH, predationSpeedRatioSAW, predationHunterVoracitySAW, predationProbabilityDensityFunctionSAW) > calculatePredationProbability(currentAnimal, false, muForPDF, sigmaForPDF, predationSpeedRatioAH, predationHunterVoracityAH, predationProbabilityDensityFunctionAH, predationSpeedRatioSAW, predationHunterVoracitySAW, predationProbabilityDensityFunctionSAW))
 					{
-						ediblesByEdibility.push_back(make_pair(currentAnimal->calculateEdibilityValue(this), make_pair(currentAnimal, this)));
+						ediblesByEdibility.push_back(make_pair(currentAnimal->calculateEdibilityValue(this, muForPDF, sigmaForPDF, predationSpeedRatioAH, predationHunterVoracityAH, predationProbabilityDensityFunctionAH, predationSpeedRatioSAW, predationHunterVoracitySAW, predationProbabilityDensityFunctionSAW, encounterHuntedVoracitySAW, encounterHunterVoracitySAW, encounterVoracitiesProductSAW, encounterHunterSizeSAW, encounterHuntedSizeSAW, encounterProbabilityDensityFunctionSAW, encounterHuntedVoracityAH, encounterHunterVoracityAH, encounterVoracitiesProductAH, encounterHunterSizeAH, encounterHuntedSizeAH, encounterProbabilityDensityFunctionAH), make_pair(currentAnimal, this)));
 					}
 					else
 					{
-						ediblesByEdibility.push_back(make_pair(calculateEdibilityValue(currentAnimal), make_pair(this, currentAnimal)));
+						ediblesByEdibility.push_back(make_pair(calculateEdibilityValue(currentAnimal, muForPDF, sigmaForPDF, predationSpeedRatioAH, predationHunterVoracityAH, predationProbabilityDensityFunctionAH, predationSpeedRatioSAW, predationHunterVoracitySAW, predationProbabilityDensityFunctionSAW, encounterHuntedVoracitySAW, encounterHunterVoracitySAW, encounterVoracitiesProductSAW, encounterHunterSizeSAW, encounterHuntedSizeSAW, encounterProbabilityDensityFunctionSAW, encounterHuntedVoracityAH, encounterHunterVoracityAH, encounterVoracitiesProductAH, encounterHunterSizeAH, encounterHuntedSizeAH, encounterProbabilityDensityFunctionAH), make_pair(this, currentAnimal)));
 						biomassTrackedToday += currentAnimal->calculateDryMass();
 					}
 				}
 				else if (currentAnimal->canEatEdible(this) && currentAnimal != this)
 				{
-					ediblesByEdibility.push_back(make_pair(currentAnimal->calculateEdibilityValue(this), make_pair(currentAnimal, this)));
+					ediblesByEdibility.push_back(make_pair(currentAnimal->calculateEdibilityValue(this, muForPDF, sigmaForPDF, predationSpeedRatioAH, predationHunterVoracityAH, predationProbabilityDensityFunctionAH, predationSpeedRatioSAW, predationHunterVoracitySAW, predationProbabilityDensityFunctionSAW, encounterHuntedVoracitySAW, encounterHunterVoracitySAW, encounterVoracitiesProductSAW, encounterHunterSizeSAW, encounterHuntedSizeSAW, encounterProbabilityDensityFunctionSAW, encounterHuntedVoracityAH, encounterHunterVoracityAH, encounterVoracitiesProductAH, encounterHunterSizeAH, encounterHuntedSizeAH, encounterProbabilityDensityFunctionAH), make_pair(currentAnimal, this)));
 				}
 				else if (canEatEdible(currentAnimal) && currentAnimal != this)
 				{
-					ediblesByEdibility.push_back(make_pair(calculateEdibilityValue(currentAnimal), make_pair(this, currentAnimal)));
+					ediblesByEdibility.push_back(make_pair(calculateEdibilityValue(currentAnimal, muForPDF, sigmaForPDF, predationSpeedRatioAH, predationHunterVoracityAH, predationProbabilityDensityFunctionAH, predationSpeedRatioSAW, predationHunterVoracitySAW, predationProbabilityDensityFunctionSAW, encounterHuntedVoracitySAW, encounterHunterVoracitySAW, encounterVoracitiesProductSAW, encounterHunterSizeSAW, encounterHuntedSizeSAW, encounterProbabilityDensityFunctionSAW, encounterHuntedVoracityAH, encounterHunterVoracityAH, encounterVoracitiesProductAH, encounterHunterSizeAH, encounterHuntedSizeAH, encounterProbabilityDensityFunctionAH), make_pair(this, currentAnimal)));
 					biomassTrackedToday += currentAnimal->calculateDryMass();
 				}
 				}
 			}
 		}
-		else if(currentAnimalSpecies->canEatAnimalSpecies(mySpecies))
+		else if(currentAnimalSpecies->canEatAnimalSpecies(getSpecies()))
 		{
-			for(vector<Edible*>::iterator animalsIt = activeAnimals->begin(); animalsIt != activeAnimals->end(); animalsIt++)
+			for(auto animalsIt = activeAnimals->begin(); animalsIt != activeAnimals->end(); animalsIt++)
 			{
-				Edible* currentAnimal = *animalsIt;
+				Animal* currentAnimal = *animalsIt;
 
-				double probabilityDensityFunction = exp(-0.5 * pow((log(calculateWetMass()/currentAnimal->calculateWetMass()) - position->getTheWorld()->getMuForPDF()) / position->getTheWorld()->getSigmaForPDF(), 2)) / (position->getTheWorld()->getSigmaForPDF() * sqrt(2*PI));
+				double probabilityDensityFunction = exp(-0.5 * pow((log(calculateWetMass()/currentAnimal->calculateWetMass()) - muForPDF) / sigmaForPDF, 2)) / (sigmaForPDF * sqrt(2*PI));
 				
 				if(probabilityDensityFunction >= pdfThreshold){ //Dinosaurs but elsewhere
 
 				if (currentAnimal->canEatEdible(this) && currentAnimal != this)
 				{
-					ediblesByEdibility.push_back(make_pair(currentAnimal->calculateEdibilityValue(this), make_pair(currentAnimal, this)));
+					ediblesByEdibility.push_back(make_pair(currentAnimal->calculateEdibilityValue(this, muForPDF, sigmaForPDF, predationSpeedRatioAH, predationHunterVoracityAH, predationProbabilityDensityFunctionAH, predationSpeedRatioSAW, predationHunterVoracitySAW, predationProbabilityDensityFunctionSAW, encounterHuntedVoracitySAW, encounterHunterVoracitySAW, encounterVoracitiesProductSAW, encounterHunterSizeSAW, encounterHuntedSizeSAW, encounterProbabilityDensityFunctionSAW, encounterHuntedVoracityAH, encounterHunterVoracityAH, encounterVoracitiesProductAH, encounterHunterSizeAH, encounterHuntedSizeAH, encounterProbabilityDensityFunctionAH), make_pair(currentAnimal, this)));
 				}
 
 				}
 			}
 		}
-		else if(mySpecies->canEatAnimalSpecies(currentAnimalSpecies))
+		else if(getSpecies()->canEatAnimalSpecies(currentAnimalSpecies))
 		{
 			//HANDLING animals can't predate, but can be predated
-			for(vector<Edible*>::iterator animalsIt = activeAnimals->begin(); animalsIt != activeAnimals->end(); animalsIt++)
+			for(auto animalsIt = activeAnimals->begin(); animalsIt != activeAnimals->end(); animalsIt++)
 			{
-				Edible* currentAnimal = *animalsIt;
+				Animal* currentAnimal = *animalsIt;
 
-				double probabilityDensityFunction = exp(-0.5 * pow((log(calculateWetMass()/currentAnimal->calculateWetMass()) - position->getTheWorld()->getMuForPDF()) / position->getTheWorld()->getSigmaForPDF(), 2)) / (position->getTheWorld()->getSigmaForPDF() * sqrt(2*PI));
+				double probabilityDensityFunction = exp(-0.5 * pow((log(calculateWetMass()/currentAnimal->calculateWetMass()) - muForPDF) / sigmaForPDF, 2)) / (sigmaForPDF * sqrt(2*PI));
 				
 				if(probabilityDensityFunction >= pdfThreshold){ //Dinosaurs but elsewhere
 
 				if (canEatEdible(currentAnimal) && currentAnimal != this)
 				{
-					ediblesByEdibility.push_back(make_pair(calculateEdibilityValue(currentAnimal), make_pair(this, currentAnimal)));
+					ediblesByEdibility.push_back(make_pair(calculateEdibilityValue(currentAnimal, muForPDF, sigmaForPDF, predationSpeedRatioAH, predationHunterVoracityAH, predationProbabilityDensityFunctionAH, predationSpeedRatioSAW, predationHunterVoracitySAW, predationProbabilityDensityFunctionSAW, encounterHuntedVoracitySAW, encounterHunterVoracitySAW, encounterVoracitiesProductSAW, encounterHunterSizeSAW, encounterHuntedSizeSAW, encounterProbabilityDensityFunctionSAW, encounterHuntedVoracityAH, encounterHunterVoracityAH, encounterVoracitiesProductAH, encounterHunterSizeAH, encounterHuntedSizeAH, encounterProbabilityDensityFunctionAH), make_pair(this, currentAnimal)));
 					biomassTrackedToday += currentAnimal->calculateDryMass();
 				}
 
 				}
 			}
-			for(vector<Edible*>::iterator animalsIt = satiatedAnimals->begin(); animalsIt != satiatedAnimals->end(); animalsIt++)
+			for(auto animalsIt = satiatedAnimals->begin(); animalsIt != satiatedAnimals->end(); animalsIt++)
 			{
-				Edible* currentAnimal = *animalsIt;
+				Animal* currentAnimal = *animalsIt;
 
-				double probabilityDensityFunction = exp(-0.5 * pow((log(calculateWetMass()/currentAnimal->calculateWetMass()) - position->getTheWorld()->getMuForPDF()) / position->getTheWorld()->getSigmaForPDF(), 2)) / (position->getTheWorld()->getSigmaForPDF() * sqrt(2*PI));
+				double probabilityDensityFunction = exp(-0.5 * pow((log(calculateWetMass()/currentAnimal->calculateWetMass()) - muForPDF) / sigmaForPDF, 2)) / (sigmaForPDF * sqrt(2*PI));
 				
 				if(probabilityDensityFunction >= pdfThreshold){ //Dinosaurs but elsewhere
 
 				if (canEatEdible(currentAnimal) && currentAnimal != this)
 				{
-					ediblesByEdibility.push_back(make_pair(calculateEdibilityValue(currentAnimal), make_pair(this, currentAnimal)));
+					ediblesByEdibility.push_back(make_pair(calculateEdibilityValue(currentAnimal, muForPDF, sigmaForPDF, predationSpeedRatioAH, predationHunterVoracityAH, predationProbabilityDensityFunctionAH, predationSpeedRatioSAW, predationHunterVoracitySAW, predationProbabilityDensityFunctionSAW, encounterHuntedVoracitySAW, encounterHunterVoracitySAW, encounterVoracitiesProductSAW, encounterHunterSizeSAW, encounterHuntedSizeSAW, encounterProbabilityDensityFunctionSAW, encounterHuntedVoracityAH, encounterHunterVoracityAH, encounterVoracitiesProductAH, encounterHunterSizeAH, encounterHuntedSizeAH, encounterProbabilityDensityFunctionAH), make_pair(this, currentAnimal)));
 					biomassTrackedToday += currentAnimal->calculateDryMass();
 				}
 
 				}
 			}
-			for(vector<Edible*>::iterator animalsIt = handlingAnimals->begin(); animalsIt != handlingAnimals->end(); animalsIt++)
+			for(auto animalsIt = handlingAnimals->begin(); animalsIt != handlingAnimals->end(); animalsIt++)
 			{
-				Edible* currentAnimal = *animalsIt;
+				Animal* currentAnimal = *animalsIt;
 
-				double probabilityDensityFunction = exp(-0.5 * pow((log(calculateWetMass()/currentAnimal->calculateWetMass()) - position->getTheWorld()->getMuForPDF()) / position->getTheWorld()->getSigmaForPDF(), 2)) / (position->getTheWorld()->getSigmaForPDF() * sqrt(2*PI));
+				double probabilityDensityFunction = exp(-0.5 * pow((log(calculateWetMass()/currentAnimal->calculateWetMass()) - muForPDF) / sigmaForPDF, 2)) / (sigmaForPDF * sqrt(2*PI));
 				
 				if(probabilityDensityFunction >= pdfThreshold){ //Dinosaurs but elsewhere
 
 				if (canEatEdible(currentAnimal) && currentAnimal != this)
 				{
-					ediblesByEdibility.push_back(make_pair(calculateEdibilityValue(currentAnimal), make_pair(this, currentAnimal)));
+					ediblesByEdibility.push_back(make_pair(calculateEdibilityValue(currentAnimal, muForPDF, sigmaForPDF, predationSpeedRatioAH, predationHunterVoracityAH, predationProbabilityDensityFunctionAH, predationSpeedRatioSAW, predationHunterVoracitySAW, predationProbabilityDensityFunctionSAW, encounterHuntedVoracitySAW, encounterHunterVoracitySAW, encounterVoracitiesProductSAW, encounterHunterSizeSAW, encounterHuntedSizeSAW, encounterProbabilityDensityFunctionSAW, encounterHuntedVoracityAH, encounterHunterVoracityAH, encounterVoracitiesProductAH, encounterHunterSizeAH, encounterHuntedSizeAH, encounterProbabilityDensityFunctionAH), make_pair(this, currentAnimal)));
 					biomassTrackedToday += currentAnimal->calculateDryMass();
 				}
 
 				}
 			}
-			for(vector<Edible*>::iterator animalsIt = diapauseAnimals->begin(); animalsIt != diapauseAnimals->end(); animalsIt++)
+			for(auto animalsIt = diapauseAnimals->begin(); animalsIt != diapauseAnimals->end(); animalsIt++)
 			{
-				Edible* currentAnimal = *animalsIt;
+				Animal* currentAnimal = *animalsIt;
 
-				double probabilityDensityFunction = exp(-0.5 * pow((log(calculateWetMass()/currentAnimal->calculateWetMass()) - position->getTheWorld()->getMuForPDF()) / position->getTheWorld()->getSigmaForPDF(), 2)) / (position->getTheWorld()->getSigmaForPDF() * sqrt(2*PI));
+				double probabilityDensityFunction = exp(-0.5 * pow((log(calculateWetMass()/currentAnimal->calculateWetMass()) - muForPDF) / sigmaForPDF, 2)) / (sigmaForPDF * sqrt(2*PI));
 				
 				if(probabilityDensityFunction >= pdfThreshold){ //Dinosaurs but elsewhere
 
 				if (canEatEdible(currentAnimal) && currentAnimal != this)
 				{
-					ediblesByEdibility.push_back(make_pair(calculateEdibilityValue(currentAnimal), make_pair(this, currentAnimal)));
+					ediblesByEdibility.push_back(make_pair(calculateEdibilityValue(currentAnimal, muForPDF, sigmaForPDF, predationSpeedRatioAH, predationHunterVoracityAH, predationProbabilityDensityFunctionAH, predationSpeedRatioSAW, predationHunterVoracitySAW, predationProbabilityDensityFunctionSAW, encounterHuntedVoracitySAW, encounterHunterVoracitySAW, encounterVoracitiesProductSAW, encounterHunterSizeSAW, encounterHuntedSizeSAW, encounterProbabilityDensityFunctionSAW, encounterHuntedVoracityAH, encounterHunterVoracityAH, encounterVoracitiesProductAH, encounterHunterSizeAH, encounterHuntedSizeAH, encounterProbabilityDensityFunctionAH), make_pair(this, currentAnimal)));
 					biomassTrackedToday += currentAnimal->calculateDryMass();
 				}
 
@@ -3626,15 +3615,15 @@ bool Animal::searchAnimalsAndFungiToEat(int timeStep, int timeStepsPerDay, ostre
 		}
 	}
 
-    for(vector<Edible*>::iterator fungusIt = position->getFungi()->begin(); fungusIt != position->getFungi()->end(); fungusIt++)
+    for(auto resourceIt = position->getResources()->begin(); resourceIt != position->getResources()->end(); resourceIt++)
 	{
-		Edible* currentFungus = *fungusIt;
-		if(mySpecies->canEatFungusSpecies(currentFungus->getSpecies()))
+		Resource* currentResource = *resourceIt;
+		if(getSpecies()->canEatResourceSpecies(currentResource->getSpecies()))
 		{
-			if(canEatEdible(currentFungus))
+			if(canEatEdible(currentResource))
 			{
-				ediblesByEdibility.push_back(make_pair(calculateEdibilityValue(currentFungus), make_pair(this, currentFungus)));
-				biomassTrackedToday += currentFungus->calculateDryMass();
+				ediblesByEdibility.push_back(make_pair(calculateEdibilityValue(currentResource, muForPDF, sigmaForPDF, predationSpeedRatioAH, predationHunterVoracityAH, predationProbabilityDensityFunctionAH, predationSpeedRatioSAW, predationHunterVoracitySAW, predationProbabilityDensityFunctionSAW, encounterHuntedVoracitySAW, encounterHunterVoracitySAW, encounterVoracitiesProductSAW, encounterHunterSizeSAW, encounterHuntedSizeSAW, encounterProbabilityDensityFunctionSAW, encounterHuntedVoracityAH, encounterHunterVoracityAH, encounterVoracitiesProductAH, encounterHunterSizeAH, encounterHuntedSizeAH, encounterProbabilityDensityFunctionAH), make_pair(this, currentResource)));
+				biomassTrackedToday += currentResource->calculateDryMass();
 			
 			}
 		}
@@ -3643,34 +3632,33 @@ bool Animal::searchAnimalsAndFungiToEat(int timeStep, int timeStepsPerDay, ostre
 	//Sorting the elements by edibility
 	std::sort(ediblesByEdibility.begin(), ediblesByEdibility.end(), edibleCompare);
 
-	for(auto ediblesIt = ediblesByEdibility.begin(); ediblesIt != ediblesByEdibility.end(); ediblesIt++)
+	if(saveEdibilitiesFile)
 	{
-		edibilitiesFile
-		<< timeStep << "\t"
-		<< getId() << "\t"
-		<< getSpecies()->getScientificName() << "\t"
-		<< foodMass << "\t"
-		<< (*ediblesIt).second.first->getId() << "\t"
-		<< (*ediblesIt).second.first->getSpecies()->getScientificName() << "\t"
-		<< (*ediblesIt).second.first->calculateDryMass() << "\t"
-		<< (*ediblesIt).second.second->getId() << "\t"
-		<< (*ediblesIt).second.second->getSpecies()->getScientificName() << "\t"
-		<< (*ediblesIt).second.second->calculateDryMass() << "\t"
-		<< (*ediblesIt).second.first->calculateEncounterProbability((*ediblesIt).second.second) << "\t"
-		<< (*ediblesIt).second.first->calculatePredationProbability((*ediblesIt).second.second, false) << "\t"
-		<< (*ediblesIt).second.first->getSpecies()->getEdiblePreference((*ediblesIt).second.second->getSpecies()) << "\t"
-		<< (*ediblesIt).second.first->getMeanExperience((*ediblesIt).second.second->getSpecies()) << "\t"
-		<< (*ediblesIt).first << endl;
+		for(auto ediblesIt = ediblesByEdibility.begin(); ediblesIt != ediblesByEdibility.end(); ediblesIt++)
+		{
+			Output::print(
+				edibilitiesFile, "{}\t{}\t{}\t{}\t{}\t{}\t{}\t{}\t{}\t{}\t{}\t{}\t{}\t{}\t{}\t\n",
+				timeStep, getId(), getSpecies()->getScientificName(), foodMass,
+				(*ediblesIt).second.first->getId(), (*ediblesIt).second.first->getSpecies()->getScientificName(),
+				(*ediblesIt).second.first->calculateDryMass(), (*ediblesIt).second.second->getId(),
+				(*ediblesIt).second.second->getSpecies()->getScientificName(), (*ediblesIt).second.second->calculateDryMass(),
+				(*ediblesIt).second.first->calculateEncounterProbability((*ediblesIt).second.second, muForPDF, sigmaForPDF, encounterHuntedVoracitySAW, encounterHunterVoracitySAW, encounterVoracitiesProductSAW, encounterHunterSizeSAW, encounterHuntedSizeSAW, encounterProbabilityDensityFunctionSAW, encounterHuntedVoracityAH, encounterHunterVoracityAH, encounterVoracitiesProductAH, encounterHunterSizeAH, encounterHuntedSizeAH, encounterProbabilityDensityFunctionAH),
+				(*ediblesIt).second.first->calculatePredationProbability((*ediblesIt).second.second, false, muForPDF, sigmaForPDF, predationSpeedRatioAH, predationHunterVoracityAH, predationProbabilityDensityFunctionAH, predationSpeedRatioSAW, predationHunterVoracitySAW, predationProbabilityDensityFunctionSAW),
+				(*ediblesIt).second.first->getSpecies()->getEdiblePreference((*ediblesIt).second.second->getSpecies()),
+				(*ediblesIt).second.first->getMeanExperience((*ediblesIt).second.second->getSpecies()),
+				(*ediblesIt).first
+			);
+		}
 	}
 
 	bool hasEatenOnce = false;
-	for(vector<pair<double, pair<Edible*, Edible*>>>::iterator ediblesIt = ediblesByEdibility.begin(); !hasEatenOnce && ediblesIt != ediblesByEdibility.end(); ediblesIt++)
+	for(auto ediblesIt = ediblesByEdibility.begin(); !hasEatenOnce && ediblesIt != ediblesByEdibility.end(); ediblesIt++)
 	{
-		Edible* huntingAnimal = (*ediblesIt).second.first;
+		Animal* huntingAnimal = (*ediblesIt).second.first;
 		Edible* targetAnimal = (*ediblesIt).second.second;
 
 
-		double probabilityDensityFunction = exp(-0.5 * pow((log(huntingAnimal->calculateWetMass()/targetAnimal->calculateWetMass()) - position->getTheWorld()->getMuForPDF()) / position->getTheWorld()->getSigmaForPDF(), 2)) / (position->getTheWorld()->getSigmaForPDF() * sqrt(2*PI));
+		double probabilityDensityFunction = exp(-0.5 * pow((log(huntingAnimal->calculateWetMass()/targetAnimal->calculateWetMass()) - muForPDF) / sigmaForPDF, 2)) / (sigmaForPDF * sqrt(2*PI));
 				
 		//Checking again if the hunting animal is already sated or has traveled its total search area.
 		//This could happen when the hunting animal is actually the current moving animal and it is getting its step increased hunt after hunt.
@@ -3682,12 +3670,12 @@ bool Animal::searchAnimalsAndFungiToEat(int timeStep, int timeStepsPerDay, ostre
 			{
 				attackOrExposedAttackProbability = targetAnimal->getSpecies()->getExposedAttackProbability();
 			}
-			bool searchWasSuccessful = huntingAnimal->encounterEdible(targetAnimal, attackOrExposedAttackProbability, timeStep, encounterProbabilitiesFile, predationProbabilitiesFile);
+			bool searchWasSuccessful = huntingAnimal->encounterEdible(targetAnimal, attackOrExposedAttackProbability, timeStep, encounterProbabilitiesFile, predationProbabilitiesFile, muForPDF, sigmaForPDF, encounterHuntedVoracitySAW, encounterHunterVoracitySAW, encounterVoracitiesProductSAW, encounterHunterSizeSAW, encounterHuntedSizeSAW, encounterProbabilityDensityFunctionSAW, encounterHuntedVoracityAH, encounterHunterVoracityAH, encounterVoracitiesProductAH, encounterHunterSizeAH, encounterHuntedSizeAH, encounterProbabilityDensityFunctionAH);
 			if(searchWasSuccessful)
 			{
 				//Steps only goes up when at least the animal HAS TRIED TO HUNT the prey. It goes up regardless of the success
 				//The steps penalization is assumed depending on the search area and the longest diagonal
-				bool huntWasSuccessful = huntingAnimal->predateEdible(targetAnimal, timeStep, false, encounterProbabilitiesFile, predationProbabilitiesFile);
+				bool huntWasSuccessful = huntingAnimal->predateEdible(targetAnimal, timeStep, false, encounterProbabilitiesFile, predationProbabilitiesFile, muForPDF, sigmaForPDF, predationSpeedRatioAH, predationHunterVoracityAH, predationProbabilityDensityFunctionAH, predationSpeedRatioSAW, predationHunterVoracitySAW, predationProbabilityDensityFunctionSAW, maxSearchArea);
 				if(huntWasSuccessful)
 				{
 					hasEatenOnce = true;
@@ -3704,7 +3692,7 @@ bool Animal::searchAnimalsAndFungiToEat(int timeStep, int timeStepsPerDay, ostre
 					//Counter attack only takes place if the target animal was not the current moving animal.
 					if(targetAnimal->canEatEdible(huntingAnimal) && targetAnimal != this)
 					{
-						bool counterHuntWasSuccessful = targetAnimal->predateEdible(huntingAnimal, timeStep, true, encounterProbabilitiesFile, predationProbabilitiesFile);
+						bool counterHuntWasSuccessful = targetAnimal->predateEdible(huntingAnimal, timeStep, true, encounterProbabilitiesFile, predationProbabilitiesFile, muForPDF, sigmaForPDF, predationSpeedRatioAH, predationHunterVoracityAH, predationProbabilityDensityFunctionAH, predationSpeedRatioSAW, predationHunterVoracitySAW, predationProbabilityDensityFunctionSAW, maxSearchArea);
 						if(counterHuntWasSuccessful)
 						{
 							hasEatenOnce = true;
@@ -3726,7 +3714,7 @@ bool Animal::searchAnimalsAndFungiToEat(int timeStep, int timeStepsPerDay, ostre
 		if(foodMass > traits[Trait::voracity])
 		{
 			cerr << "The food mass eaten was higher than the voracity value:" << endl;
-			cerr << " - Animal: " << id << "(" << mySpecies->getScientificName() << ")" << endl;
+			cerr << " - Animal: " << id << "(" << getSpecies()->getScientificName() << ")" << endl;
 			cerr << " - Food mass eaten: " << foodMass << endl;
 			cerr << " - Voracity value: " << traits[Trait::voracity] << endl;
 		}
@@ -3756,11 +3744,11 @@ bool Animal::searchAnimalsAndFungiToEat(int timeStep, int timeStepsPerDay, ostre
 	return false;
 }
 
-void Animal::setGenomeFromMatedMale(const Edible* matedMale)
+void Animal::setGenomeFromMatedMale(const Animal* matedMale)
 {
 	mated = true;
 	if(genomeFromMatedMale != NULL)	delete genomeFromMatedMale;
-	genomeFromMatedMale = matedMale->getGenome()->clone();										   
+	genomeFromMatedMale = matedMale->getGenome().clone(getSpecies()->getRandomlyCreatedPositionsForChromosomes());										   
 	//genomeFromMatedMale = matedGenome->clone();
 	idFromMatedMale = matedMale->getId();
 	generationNumberFromMatedMale = matedMale->getGenerationNumberFromMaleParent();
@@ -3794,7 +3782,7 @@ bool Animal::postBreeding(int timeStep, int timeStepsPerDay)
 
 		//cout << "rep_count: " << rep_count << endl;
 		//cout << "max rep: "<< getMaxReproductionEvents() << endl;
-		//cout << mySpecies->getScientificName() << endl;
+		//cout << getSpecies()->getScientificName() << endl;
 
 		return true;
 
@@ -3804,7 +3792,7 @@ bool Animal::postBreeding(int timeStep, int timeStepsPerDay)
 		//this below is allow females with indeterminate growth to keep growing while reproducing
 		//Dinos2023 - animals can now follow mature patterns, be mature while growing, does it work?
 		//if we comment below indeterminate growth stops - thus, we need another formula to avoid excessive food targets
-	 	if(instar < mySpecies->getNumberOfInstars())
+	 	if(instar < getSpecies()->getNumberOfInstars())
 		{
 			//Mature will be false only if is NOT the last instar, otherwise the animal will reproduce again
 			mature = false;
@@ -3817,33 +3805,22 @@ bool Animal::postBreeding(int timeStep, int timeStepsPerDay)
 int Animal::computeEggBatchNumber()
 {
 	// Simplification of floor(clutchMassForReproduction /
-	// (mySpecies->getEggDryMass() + mySpecies->getEffDryMass() * traits[Trait::factorEggMass]));
+	// (getSpecies()->getEggDryMass() + getSpecies()->getEffDryMass() * traits[Trait::factorEggMass]));
 
-	return floor(clutchDryMass / (mySpecies->getEggDryMass() * (1 + getTrait(Trait::factorEggMass))));
+	return floor(clutchDryMass / (getSpecies()->getEggDryMass() * (1 + getTrait(Trait::factorEggMass))));
 }
 
-list<Edible*> * Animal::breedAsexually( int objectiveEggsNumber,int timeStep, int timeStepsPerDay, float temperature )
+list<Animal*> * Animal::breedAsexually( int objectiveEggsNumber,int timeStep, int timeStepsPerDay, float temperature, bool saveAnimalConstitutiveTraits, FILE* constitutiveTraitsFile)
 {
 	double totalOffspringDryMass = 0.0;
 
-	vector<Gamete*>* femaleGametes = new vector<Gamete *>();
-	vector<Gamete*>* maleGametes = new vector<Gamete *>();
-
-	list<Edible*> * offspring = new list<Edible *>();
+	list<Animal*> * offspring = new list<Animal *>();
 
 	//Asexual animals are always females (or treated as females) and they DO NOT perform meiosis.
 	int offSpringGender = AnimalSpecies::GENDERS::FEMALE;
 	int createdEggsNumber = 0;
 	int generationDam;
 	int generationSire;
-
-	// Generate as much female gametes as needed depending on the eggNumber
-	while( femaleGametes->size() < objectiveEggsNumber )
-	{
-		// Create four copies of female gametes and male gametes
-		femaleGametes->push_back( genome->cloneFirstGameteFromHaploid() );
-		maleGametes->push_back( genome->cloneFirstGameteFromHaploid() );
-	}
 
 	/*if(nextOffspringToBeBorn != NULL)
 	{
@@ -3862,36 +3839,24 @@ list<Edible*> * Animal::breedAsexually( int objectiveEggsNumber,int timeStep, in
 		generationDam = generationNumberFromFemaleParent + 1;
 		generationSire = generationNumberFromFemaleParent + 1;
 
-		Gamete* femaleGameteSelected = femaleGametes->back();
-		Gamete* maleGameteSelected = maleGametes->back();
+		Gamete* femaleGameteSelected = genome.cloneFirstGameteFromHaploid();
+		Gamete* maleGameteSelected = genome.cloneFirstGameteFromHaploid();
 
-		vector<pair<Chromosome*, Chromosome*> >* inheritedChromosomes = new vector<pair<Chromosome*, Chromosome*> >(femaleGameteSelected->size());
-
-		for (unsigned int i = 0; i < femaleGameteSelected->size(); ++i)
-		{
-			inheritedChromosomes->at(i) = make_pair(femaleGameteSelected->getChromosome(i)->clone(), maleGameteSelected->getChromosome(i)->clone());
-		}
-
-		offspringGenome = new Genome(inheritedChromosomes, mySpecies);
-
-		// Delete gametes as they are no longer needed but don't delete its chromosomes as they have passed to the offspring
-		femaleGametes->pop_back();
-		maleGametes->pop_back();
+		Animal* newOffspring = new Animal(femaleGameteSelected, maleGameteSelected, getTrait(Trait::factorEggMass), position, round(((double)timeStep/(double)timeStepsPerDay)), timeStepsPerDay, generationNumberFromFemaleParent + 1, generationNumberFromMatedMale + 1, getId(), idFromMatedMale, getSpecies(), offSpringGender, true);
 
 		delete femaleGameteSelected;
 		delete maleGameteSelected;
 
-		Animal* newOffspring = new Animal(offspringGenome, getTrait(Trait::factorEggMass), position, round(((double)timeStep/(double)timeStepsPerDay)), timeStepsPerDay, generationNumberFromFemaleParent + 1, generationNumberFromMatedMale + 1, getId(), idFromMatedMale, mySpecies, offSpringGender, mySpecies->getDefaultHuntingMode());
-
 		pair<bool, bool> isInsideRestrictedRangesAndIsViableOffSpring = newOffspring->interpolateTraits();
 
 		//TODO ALWAYS print the traits after interpolating and before adjusting
-		//(*offSpringsIt)->printTraits(constitutiveTraitsFile);
+		if(saveAnimalConstitutiveTraits) {
+			newOffspring->printTraits(constitutiveTraitsFile);
+		}
 
 		//REMEMBER to adjustTraits here after printing the traits!
 		newOffspring->adjustTraits();
-		ofstream noStream;
-		newOffspring->calculateGrowthCurves(temperature, noStream, false, 0); //Dinosaurs
+		newOffspring->calculateGrowthCurves(temperature, Output::nullFile, false, 0); //Dinosaurs
 		totalOffspringDryMass += newOffspring->getEggDryMassAtBirth();
 
 		newOffspring->setMassAtBirth(newOffspring->getEggDryMassAtBirth());
@@ -3902,10 +3867,11 @@ list<Edible*> * Animal::breedAsexually( int objectiveEggsNumber,int timeStep, in
 		if(isInsideRestrictedRangesAndIsViableOffSpring.second)
 		{
 			offspring->push_back(newOffspring);
+			newOffspring->doDefinitive();
 		}
 		else // non-viable offspring -> kill it
 		{
-			std::cout << "Deleting non-viable Animal with ID: "<< newOffspring->getId() << std::endl;
+			Output::cout("Deleting non-viable Animal with ID: {}\n", newOffspring->getId());
 			delete newOffspring;
 		}
 	}
@@ -3927,79 +3893,52 @@ list<Edible*> * Animal::breedAsexually( int objectiveEggsNumber,int timeStep, in
 	}
 	else
 	{
-		unsigned int oldStage = lifeStage;
-		lifeStage = ACTIVE;
-		position->addAnimal(this);
-		position->eraseAnimal(this, oldStage);
+		setNewLifeStage(LifeStage::ACTIVE);
 		//clearGenomeFromMatedMale();
 		//CARE delete only when in TerrainCell
 		//position->addAnimal(this);
 		//position->eraseAnimal(this, REPRODUCING);
 	}
 
-
-	for(auto elem : *femaleGametes) {
-		delete elem;
-	}
-	femaleGametes->clear();
-	delete femaleGametes;
-
-	for(auto elem : *maleGametes) {
-		delete elem;
-	}
-	maleGametes->clear();
-	delete maleGametes;
-
-	
-
 	return offspring;
 }
 
 
-list<Edible*> * Animal::breedSexually( int objectiveEggsNumber,int timeStep, int timeStepsPerDay, float temperature )
+list<Animal*> * Animal::breedSexually( int objectiveEggsNumber,int timeStep, int timeStepsPerDay, float temperature, bool saveAnimalConstitutiveTraits, FILE* constitutiveTraitsFile)
 {
 	double totalOffspringDryMass = 0.0;
 
-	vector<Gamete*>* femaleGametes = new vector<Gamete *>();
-	
-	list<Edible*> * offspring = new list<Edible *>();
+	list<Animal*> * offspring = new list<Animal *>();
 
 	int offSpringGender;
 	int createdEggsNumber = 0;
 	int generationDam;
 	int generationSire;
 
-	// Generate as much female gametes as needed depending on the eggNumber
-	while( femaleGametes->size() < objectiveEggsNumber )
-	{
-		// Create four copies of female gametes and male gametes
-		femaleGametes->push_back( genome->cloneFirstGameteFromHaploid() );
-	}
-
 	while( createdEggsNumber < objectiveEggsNumber )
 	{
 		Genome* offspringGenome = NULL;
 		createdEggsNumber ++;  // DUDA: Debe hacerse antes o sólo si se crea el offspring?
 		
-		Gamete* femaleGameteSelected = femaleGametes->back();
+		Gamete* femaleGameteSelected = genome.cloneFirstGameteFromHaploid();
 		Gamete* maleGameteSelected = NULL;
 		
-		if(mySpecies->getSexualType() == AnimalSpecies::SEXUAL_TYPES::DIPLOID)
+		if(getSpecies()->getSexualType() == SexualType::diploid)
 		{
 			maleGameteSelected = genomeFromMatedMale->getRandomGameteFromMeiosis();
 			//gender here depends on the species sexRatio
-			offSpringGender = mySpecies->getRandomGender();
+			offSpringGender = getSpecies()->getRandomGender();
 		}
-		else if(mySpecies->getSexualType() == AnimalSpecies::SEXUAL_TYPES::HAPLODIPLOID)
+		else if(getSpecies()->getSexualType() == SexualType::haplodiploid)
 		{
 			if(isMated())
 			{
 				//Gender here depends on the species sexRatio
-				offSpringGender = mySpecies->getRandomGender();
+				offSpringGender = getSpecies()->getRandomGender();
 				if(offSpringGender == AnimalSpecies::GENDERS::MALE)
 				{
 					//Males are haploid so they will use only the female gamete (duplicated for simplicity, in reality they have only one)
-					maleGameteSelected = new Gamete();
+					maleGameteSelected = new Gamete(getSpecies()->getNumberOfChromosomes());
 					for(unsigned int i = 0; i < femaleGameteSelected->size(); ++i)
 					{
 						maleGameteSelected->pushChromosome(femaleGameteSelected->getChromosome(i)->clone());
@@ -4014,7 +3953,7 @@ list<Edible*> * Animal::breedSexually( int objectiveEggsNumber,int timeStep, int
 			else //!isMated()
 			{
 				//Males are haploid so they will use only the female gamete (duplicated for simplicity, in reality they have only one)
-				maleGameteSelected = new Gamete();
+				maleGameteSelected = new Gamete(getSpecies()->getNumberOfChromosomes());
 				for(unsigned int i = 0; i < femaleGameteSelected->size(); ++i)
 				{
 					maleGameteSelected->pushChromosome(femaleGameteSelected->getChromosome(i)->clone());
@@ -4027,32 +3966,21 @@ list<Edible*> * Animal::breedSexually( int objectiveEggsNumber,int timeStep, int
 		generationDam = generationNumberFromFemaleParent + 1; 
 		generationSire = generationNumberFromMatedMale + 1;
 
-		vector<pair<Chromosome*, Chromosome*> >* inheritedChromosomes = new vector<pair<Chromosome*, Chromosome*> >(femaleGameteSelected->size());
-
-		for (unsigned int i = 0; i < femaleGameteSelected->size(); ++i)
-		{
-			inheritedChromosomes->at(i) = make_pair(femaleGameteSelected->getChromosome(i)->clone(), maleGameteSelected->getChromosome(i)->clone());
-		}
-
-		offspringGenome = new Genome(inheritedChromosomes, mySpecies);
-
-		// Delete gametes as they are no longer needed but don't delete its chromosomes as they have passed to the offspring
-		femaleGametes->pop_back();
+		Animal* newOffspring = new Animal(femaleGameteSelected, maleGameteSelected, getTrait(Trait::factorEggMass), position, round(((double)timeStep/(double)timeStepsPerDay)), timeStepsPerDay, generationNumberFromFemaleParent + 1, generationNumberFromMatedMale + 1, getId(), idFromMatedMale, getSpecies(), offSpringGender, true);
 
 		delete femaleGameteSelected;
 		delete maleGameteSelected;
 
-		Animal* newOffspring = new Animal(offspringGenome, getTrait(Trait::factorEggMass), position, round(((double)timeStep/(double)timeStepsPerDay)), timeStepsPerDay, generationNumberFromFemaleParent + 1, generationNumberFromMatedMale + 1, getId(), idFromMatedMale, mySpecies, offSpringGender, mySpecies->getDefaultHuntingMode());
-
 		pair<bool, bool> isInsideRestrictedRangesAndIsViableOffSpring = newOffspring->interpolateTraits();
 
 		//TODO ALWAYS print the traits after interpolating and before adjusting
-		//(*offSpringsIt)->printTraits(constitutiveTraitsFile);
+		if(saveAnimalConstitutiveTraits) {
+			newOffspring->printTraits(constitutiveTraitsFile);
+		}
 
 		//REMEMBER to adjustTraits here after printing the traits!
 		newOffspring->adjustTraits();
-		ofstream noStream;
-		newOffspring->calculateGrowthCurves(temperature, noStream, false, 0); //Dinosaurs
+		newOffspring->calculateGrowthCurves(temperature, Output::nullFile, false, 0); //Dinosaurs
 		totalOffspringDryMass += newOffspring->getEggDryMassAtBirth();
 
 		newOffspring->setMassAtBirth(newOffspring->getEggDryMassAtBirth());
@@ -4063,10 +3991,11 @@ list<Edible*> * Animal::breedSexually( int objectiveEggsNumber,int timeStep, int
 		if(isInsideRestrictedRangesAndIsViableOffSpring.second)
 		{
 			offspring->push_back(newOffspring);
+			newOffspring->doDefinitive();
 		}
 		else // non-viable offspring -> kill it
 		{
-			std::cout << "Deleting non-viable Animal with ID: "<< newOffspring->getId() << std::endl;
+			Output::cout("Deleting non-viable Animal with ID: {}\n", newOffspring->getId());
 			delete newOffspring;
 		}
 	}
@@ -4086,48 +4015,37 @@ list<Edible*> * Animal::breedSexually( int objectiveEggsNumber,int timeStep, int
 	}
 	else
 	{
-		unsigned int oldStage = lifeStage;
-		lifeStage = ACTIVE;
-		position->addAnimal(this);
-		position->eraseAnimal(this, oldStage);
+		setNewLifeStage(LifeStage::ACTIVE);
 		//clearGenomeFromMatedMale();
 		//CARE delete only when in TerrainCell
 		//position->addAnimal(this);
 		//position->eraseAnimal(this, REPRODUCING);
 	}
 
-
-	for(auto elem : *femaleGametes) {
-		delete elem;
-	}
-	femaleGametes->clear();
-	delete femaleGametes;
-	
-
 	return offspring;
 }
 
-list<Edible*> * Animal::breed(int timeStep, int timeStepsPerDay, float temperature)
+list<Animal*> * Animal::breed(int timeStep, int timeStepsPerDay, float temperature, bool saveAnimalConstitutiveTraits, FILE* constitutiveTraitsFile)
 {
 	int currentEggBatchNumber = computeEggBatchNumber();
 
 	// Stores animals to be born
-	list<Edible*> * offspring = NULL;
+	list<Animal*> * offspring = NULL;
 
-	switch (mySpecies->getSexualType())
+	switch (getSpecies()->getSexualType())
 	{
-		case AnimalSpecies::SEXUAL_TYPES::ASEXUAL:
-			offspring = breedAsexually(currentEggBatchNumber, timeStep, timeStepsPerDay, temperature);
+		case SexualType::asexual:
+			offspring = breedAsexually(currentEggBatchNumber, timeStep, timeStepsPerDay, temperature, saveAnimalConstitutiveTraits, constitutiveTraitsFile);
 			break;
-		case AnimalSpecies::SEXUAL_TYPES::DIPLOID:
-			offspring = breedSexually(currentEggBatchNumber, timeStep, timeStepsPerDay, temperature);
+		case SexualType::diploid:
+			offspring = breedSexually(currentEggBatchNumber, timeStep, timeStepsPerDay, temperature, saveAnimalConstitutiveTraits, constitutiveTraitsFile);
 			break;
-		case AnimalSpecies::SEXUAL_TYPES::HAPLODIPLOID:
-			offspring = breedSexually(currentEggBatchNumber, timeStep, timeStepsPerDay, temperature);
+		case SexualType::haplodiploid:
+			offspring = breedSexually(currentEggBatchNumber, timeStep, timeStepsPerDay, temperature, saveAnimalConstitutiveTraits, constitutiveTraitsFile);
 			break;
 		default:
-			std::cerr << "Check out animal sexuality, this is not a valid SEXUAL_TYPE value: " << mySpecies->getSexualType() << std::endl;
-			exit(-1);
+			throwLineInfoException("Default case");
+			break;
 	}
 
 	return offspring;
@@ -4141,7 +4059,7 @@ bool cellEqual(const std::pair<double, TerrainCell*>& firstElem, const std::pair
   return firstElem.first > secondElem.first;
 }
 
-void Animal::moveOneStep()
+void Animal::moveOneStep(TerrainCell*(*getCellByBearing)(TerrainCell*, TerrainCell*), unsigned int worldDepth, unsigned int worldLength, unsigned int worldWidth, TerrainCell*(*getCell)(unsigned int, unsigned int, unsigned int), double muForPDF, double sigmaForPDF, double predationSpeedRatioAH, double predationHunterVoracityAH, double predationProbabilityDensityFunctionAH, double predationSpeedRatioSAW, double predationHunterVoracitySAW, double predationProbabilityDensityFunctionSAW, double encounterHuntedVoracitySAW, double encounterHunterVoracitySAW, double encounterVoracitiesProductSAW, double encounterHunterSizeSAW, double encounterHuntedSizeSAW, double encounterProbabilityDensityFunctionSAW, double encounterHuntedVoracityAH, double encounterHunterVoracityAH, double encounterVoracitiesProductAH, double encounterHunterSizeAH, double encounterHuntedSizeAH, double encounterProbabilityDensityFunctionAH)
 {
 	stepsAttempted++;
 	//bool obstacleFound = false;
@@ -4149,7 +4067,7 @@ void Animal::moveOneStep()
 	{
 		//cout << "TOWARDS TARGET NEIGHBOR... " << id << " ## D.remaining: " << position->getDistanceToCell(targetNeighborToTravelTo) << " d: " << ((int) round((traits[Trait::search_area] - steps) / position->getSize())) << " s: " << (traits[Trait::search_area] - steps) << endl << flush;
 		//TODO OBSTACULOS en getCellByBearing!!
-		TerrainCell* cellToMoveTo = position->getTheWorld()->getCellByBearing(position, targetNeighborToTravelTo);
+		TerrainCell* cellToMoveTo = (*getCellByBearing)(position, targetNeighborToTravelTo);
 		//if(cellToMoveTo != NULL)
 		//{
 			double distanceToAdd = position->getDistanceToCell(cellToMoveTo);
@@ -4171,21 +4089,21 @@ void Animal::moveOneStep()
 	}
 	else
 	{
-		//cout << mySpecies->getScientificName() << "#" << id << ": SEARCH TARGET START... " << " stepsLeft: " << ((int) round((traits[Trait::search_area] - steps) / position->getSize())) << " searchAreaLeft: " << (traits[Trait::search_area] - steps) << endl << flush;
+		//cout << getSpecies()->getScientificName() << "#" << id << ": SEARCH TARGET START... " << " stepsLeft: " << ((int) round((traits[Trait::search_area] - steps) / position->getSize())) << " searchAreaLeft: " << (traits[Trait::search_area] - steps) << endl << flush;
 		int maxAnimalDistance = (int) round((getTrait(Trait::search_area) - steps)/position->getSize());
-		int maxWorldX = max(((position->getTheWorld()->getWidth()-1)-position->getX()), position->getX());
-		int maxWorldY = max((position->getTheWorld()->getLength()-1)-position->getY(), position->getY());
-		int maxWorldZ = max((position->getTheWorld()->getDepth()-1)-position->getZ(), position->getZ());
+		int maxWorldX = max(((int)(worldWidth-1)-position->getX()), position->getX());
+		int maxWorldY = max((int)(worldLength-1)-position->getY(), position->getY());
+		int maxWorldZ = max((int)(worldDepth-1)-position->getZ(), position->getZ());
 		int maxWorldDistance = max(max(maxWorldX, maxWorldY), maxWorldZ);
 		int maxDistance = min(maxWorldDistance, maxAnimalDistance);
-		//cout << mySpecies->getScientificName() << "#" << id << ": position = " << position->getX() << "-" << position->getY() << "-" << position->getZ() << "; maxDistance = " << maxDistance << endl << flush;
+		//cout << getSpecies()->getScientificName() << "#" << id << ": position = " << position->getX() << "-" << position->getY() << "-" << position->getZ() << "; maxDistance = " << maxDistance << endl << flush;
 
 		if(!hasEvaluatedTheWholeWorld)
 		{
 			for(int distance = 1; distance <= maxDistance && (targetNeighborToTravelTo == NULL || targetNeighborToTravelTo == position); distance++)
 			{
-				//cout << mySpecies->getScientificName() << "#" << id << ": looking for resources at distance = " << distance << " of " << maxDistance << endl << flush;
-				vector<TerrainCell*> * neighbors = position->getCellsAtDistance(distance, getTrait(Trait::search_area) - steps + position->getSize(),this->getSpecies()->isMobile());
+				//cout << getSpecies()->getScientificName() << "#" << id << ": looking for resources at distance = " << distance << " of " << maxDistance << endl << flush;
+				vector<TerrainCell*> * neighbors = position->getCellsAtDistance(distance, getTrait(Trait::search_area) - steps + position->getSize(),this->getSpecies()->isMobile(), worldDepth, worldLength, worldWidth, getCell);
 				list<TerrainCell*>::iterator cellsTrackedTodayIt;
 				//TODO what will happen if they have tracked all already?
 
@@ -4213,7 +4131,7 @@ void Animal::moveOneStep()
 					else
 					{
 						double edibilityValue, predatoryRiskEdibilityValue, conspecificBiomass;
-						tie(edibilityValue, predatoryRiskEdibilityValue, conspecificBiomass) = currentTargetNeighbor->getCellEvaluation(this);
+						tie(edibilityValue, predatoryRiskEdibilityValue, conspecificBiomass) = currentTargetNeighbor->getCellEvaluation(this, muForPDF, sigmaForPDF, predationSpeedRatioAH, predationHunterVoracityAH, predationProbabilityDensityFunctionAH, predationSpeedRatioSAW, predationHunterVoracitySAW, predationProbabilityDensityFunctionSAW, encounterHuntedVoracitySAW, encounterHunterVoracitySAW, encounterVoracitiesProductSAW, encounterHunterSizeSAW, encounterHuntedSizeSAW, encounterProbabilityDensityFunctionSAW, encounterHuntedVoracityAH, encounterHunterVoracityAH, encounterVoracitiesProductAH, encounterHunterSizeAH, encounterHuntedSizeAH, encounterProbabilityDensityFunctionAH);
 						if((edibilityValue + conspecificBiomass) > 0.0)
 						{
 							resourceAvailableOnCurrentTargetNeighbor = true;
@@ -4232,7 +4150,7 @@ void Animal::moveOneStep()
 					}
 				}
 
-				//cout << mySpecies->getScientificName() << "#" << id << ": position = " << position->getX() << "-" << position->getY() << "-" << position->getZ() << "; neighbors size = " << neighbors->size() << "; possibleTargetNeighbors size = " << possibleTargetNeighbors->size() << endl << flush;
+				//cout << getSpecies()->getScientificName() << "#" << id << ": position = " << position->getX() << "-" << position->getY() << "-" << position->getZ() << "; neighbors size = " << neighbors->size() << "; possibleTargetNeighbors size = " << possibleTargetNeighbors->size() << endl << flush;
 
 				double bestCellEvaluation = DBL_MIN;
 				//neighbors here DOES include the animal's current position
@@ -4246,7 +4164,7 @@ void Animal::moveOneStep()
 					if (distanceToCurrentNeighbor == closestNeighborDistance || distanceToCurrentNeighbor == 0)
 					{
 						double edibilityValue, predatoryRiskEdibilityValue, conspecificBiomass;
-						tie(edibilityValue, predatoryRiskEdibilityValue, conspecificBiomass) = currentTargetNeighbor->getCellEvaluation(this);
+						tie(edibilityValue, predatoryRiskEdibilityValue, conspecificBiomass) = currentTargetNeighbor->getCellEvaluation(this, muForPDF, sigmaForPDF, predationSpeedRatioAH, predationHunterVoracityAH, predationProbabilityDensityFunctionAH, predationSpeedRatioSAW, predationHunterVoracitySAW, predationProbabilityDensityFunctionSAW, encounterHuntedVoracitySAW, encounterHunterVoracitySAW, encounterVoracitiesProductSAW, encounterHunterSizeSAW, encounterHuntedSizeSAW, encounterProbabilityDensityFunctionSAW, encounterHuntedVoracityAH, encounterHunterVoracityAH, encounterVoracitiesProductAH, encounterHunterSizeAH, encounterHuntedSizeAH, encounterProbabilityDensityFunctionAH);
 						neighborsByEdibilityEvaluation.push_back(make_pair(edibilityValue, currentTargetNeighbor));
 						neighborsByPredatoryRiskEdibilityEvaluation.push_back(make_pair(predatoryRiskEdibilityValue, currentTargetNeighbor));
 						neighborsByConspecificEvaluation.push_back(make_pair(conspecificBiomass, currentTargetNeighbor));
@@ -4297,14 +4215,14 @@ void Animal::moveOneStep()
 						}
 					}
 
-					double cellEdibilityAndRiskEvaluation = mySpecies->getCellEvaluationBiomass() * cellEdibilityEvaluation
-											- mySpecies->getCellEvaluationRisk() * cellPredatoryRiskEdibilityEvaluation;
+					double cellEdibilityAndRiskEvaluation = getSpecies()->getCellEvaluationBiomass() * cellEdibilityEvaluation
+											- getSpecies()->getCellEvaluationRisk() * cellPredatoryRiskEdibilityEvaluation;
 
-					double cellConspecificAndAntiEvaluation = mySpecies->getCellEvaluationProConspecific() * cellConspecificEvaluation
-											- mySpecies->getCellEvaluationAntiConspecific() * pow(cellConspecificEvaluation,2);
+					double cellConspecificAndAntiEvaluation = getSpecies()->getCellEvaluationProConspecific() * cellConspecificEvaluation
+											- getSpecies()->getCellEvaluationAntiConspecific() * pow(cellConspecificEvaluation,2);
 
-					double weighedEdibility = cellEdibilityAndRiskEvaluation * (1.0 - mySpecies->getConspecificWeighing());
-					double weighedConspecific = cellConspecificAndAntiEvaluation * mySpecies->getConspecificWeighing();
+					double weighedEdibility = cellEdibilityAndRiskEvaluation * (1.0 - getSpecies()->getConspecificWeighing());
+					double weighedConspecific = cellConspecificAndAntiEvaluation * getSpecies()->getConspecificWeighing();
 					double weighedEvaluation = (weighedEdibility + weighedConspecific); 
 					neighborsByWeighedEvaluation.push_back(make_pair(weighedEvaluation, currentTargetNeighbor));
 				}
@@ -4334,7 +4252,7 @@ void Animal::moveOneStep()
 				{
 					hasEvaluatedTheWholeWorld = true;
 				}
-				vector<TerrainCell*> * neighbors = position->getCellsAtDistance(maxDistance, DBL_MAX, this->getSpecies()->isMobile()); //arthros and for dinos
+				vector<TerrainCell*> * neighbors = position->getCellsAtDistance(maxDistance, DBL_MAX, this->getSpecies()->isMobile(), worldDepth, worldLength, worldWidth, getCell); //arthros and for dinos
 				if(neighbors->size() > 0){
 				targetNeighborToTravelTo = neighbors->at(Random::randomIndex(neighbors->size()));
 				}
@@ -4345,7 +4263,7 @@ void Animal::moveOneStep()
 		}
 		else //hasEvaluatedTheWholeWorld==true
 		{
-			vector<TerrainCell*> * neighbors = position->getCellsAtDistance(maxDistance, DBL_MAX, this->getSpecies()->isMobile());
+			vector<TerrainCell*> * neighbors = position->getCellsAtDistance(maxDistance, DBL_MAX, this->getSpecies()->isMobile(), worldDepth, worldLength, worldWidth, getCell);
 			if(neighbors->size() > 0){
 			targetNeighborToTravelTo = neighbors->at(Random::randomIndex(neighbors->size()));
 			}
@@ -4356,7 +4274,7 @@ void Animal::moveOneStep()
 		}
 
 		//TODO OBSTACULOS en getCellByBearing!!
-		TerrainCell* cellToMoveTo = position->getTheWorld()->getCellByBearing(position, targetNeighborToTravelTo);
+		TerrainCell* cellToMoveTo = (*getCellByBearing)(position, targetNeighborToTravelTo);
 		double distanceToAdd = position->getDistanceToCell(cellToMoveTo);
 		
 		steps += distanceToAdd;
@@ -4370,16 +4288,18 @@ void Animal::moveOneStep()
 		position->migrateAnimalTo(this, cellToMoveTo);
 		position = cellToMoveTo;
 
-		//cout << mySpecies->getScientificName() << "#" << id << ": SEARCH TARGET OVER... " << " stepsLeft: " << ((int) round((traits[Trait::search_area] - steps) / position->getSize())) << " searchAreaLeft: " << (traits[Trait::search_area] - steps) << endl << flush;
+		//cout << getSpecies()->getScientificName() << "#" << id << ": SEARCH TARGET OVER... " << " stepsLeft: " << ((int) round((traits[Trait::search_area] - steps) / position->getSize())) << " searchAreaLeft: " << (traits[Trait::search_area] - steps) << endl << flush;
 	}
 
 }
 
-void Animal::dieFromBackground(int timeStep)
+void Animal::dieFromBackground(int timeStep, bool growthAndReproTest)
 {
-	if (mySpecies->getProbabilityDeathFromBackground() > Random::randomUniform())
-	{
-		setNewLifeStage(LIFE_STAGES::BACKGROUND, timeStep);
+	if(!growthAndReproTest) {
+		if(getSpecies()->getProbabilityDeathFromBackground() > Random::randomUniform())
+		{
+			setNewLifeStage(LifeStage::BACKGROUND, timeStep);
+		}
 	}
 }
 
@@ -4412,8 +4332,8 @@ void Animal::assimilateFoodMass(int timeStep)
 
 		*/
 
-        /*double maxNextInstarLengthFromVBPlasticity = lengthsVector[instar+1] + mySpecies->getMaxPlasticityKVonBertalanffy()*lengthsVector[instar+1];
-        double maxNextInstarMassFromVBPlasticity = mySpecies->getCoefficientForMassA()*pow(maxNextInstarLengthFromVBPlasticity,mySpecies->getScaleForMassB());
+        /*double maxNextInstarLengthFromVBPlasticity = lengthsVector[instar+1] + getSpecies()->getMaxPlasticityKVonBertalanffy()*lengthsVector[instar+1];
+        double maxNextInstarMassFromVBPlasticity = getSpecies()->getCoefficientForMassA()*pow(maxNextInstarLengthFromVBPlasticity,getSpecies()->getScaleForMassB());
 
         if(calculateDryMass() > maxNextInstarMassFromVBPlasticity){
         	foodMass=0;
@@ -4424,7 +4344,7 @@ void Animal::assimilateFoodMass(int timeStep)
 		            cout << "dryMass + foodMass" << calculateDryMass()+foodMass << endl;
 		}
         }*/
-		/* if(mySpecies->getId() == 1 && timeStep >30 && timeStep <40){
+		/* if(getSpecies()->getId() == 1 && timeStep >30 && timeStep <40){
 			cout << timeStep << endl;
 			cout << foodMass << endl;
 			cout << traits[Trait::energy_tank] << endl;
@@ -4447,7 +4367,7 @@ void Animal::assimilateFoodMass(int timeStep)
 			daysDigestWithoutTemp = linearInterpolate(food_mass/traits[Trait::voracity], 0, 1, 1, 3);
 
 			days_digest = ceil(daysDigestWithoutTemp * linearInterpolate(position->temperature, MIN_T, MAX_T, 1,
-					mySpecies->Q10DIGEST));
+					getSpecies()->Q10DIGEST));
 			eating = false;
 		}
 		 */
@@ -4471,7 +4391,7 @@ void Animal::assimilateFoodMass(int timeStep)
 
 void Animal::becomePredated(int timeStep)
 {
-	setNewLifeStage(PREDATED, timeStep, getId());
+	setNewLifeStage(LifeStage::PREDATED, timeStep, getId());
 }
 
 
@@ -4484,11 +4404,11 @@ int Animal::getMaxReproductionEvents()
 {
 	if(gender == AnimalSpecies::GENDERS::FEMALE)
 	{
-		return mySpecies->getFemaleMaxReproductionEvents();
+		return getSpecies()->getFemaleMaxReproductionEvents();
 	}
 	else
 	{
-		return mySpecies->getMaleMaxReproductionEvents();
+		return getSpecies()->getMaleMaxReproductionEvents();
 	}
 }
 
@@ -4497,7 +4417,7 @@ list<int> * Animal::getEncounterEvents()
 	return &encounterEvents;
 }
 
-double Animal::calculatePredationProbability(Edible* edibleAnimal, bool retaliation)
+double Animal::calculatePredationProbability(Edible* edibleAnimal, bool retaliation, double muForPDF, double sigmaForPDF, double predationSpeedRatioAH, double predationHunterVoracityAH, double predationProbabilityDensityFunctionAH, double predationSpeedRatioSAW, double predationHunterVoracitySAW, double predationProbabilityDensityFunctionSAW)
 {
 	double predationProbability = 1;
 	if(edibleAnimal->getSpecies()->isMobile())
@@ -4512,7 +4432,7 @@ double Animal::calculatePredationProbability(Edible* edibleAnimal, bool retaliat
 	      normalizedSpeedRatio = getNormalizedSpeedRatio(getTrait(Trait::speed));
 	    }
 
-		double probabilityDensityFunction = exp(-0.5 * pow((log(calculateWetMass()/edibleAnimal->calculateWetMass()) - position->getTheWorld()->getMuForPDF()) / position->getTheWorld()->getSigmaForPDF(), 2)) / (position->getTheWorld()->getSigmaForPDF() * sqrt(2*PI));
+		double probabilityDensityFunction = exp(-0.5 * pow((log(calculateWetMass()/edibleAnimal->calculateWetMass()) - muForPDF) / sigmaForPDF, 2)) / (sigmaForPDF * sqrt(2*PI));
 		double normalizedPDF = getNormalizedPDF(probabilityDensityFunction);
 
 /* 		if(getSpecies()->getScientificName()=="Tyrannosaurus_sp"){
@@ -4522,20 +4442,20 @@ double Animal::calculatePredationProbability(Edible* edibleAnimal, bool retaliat
  */
 
 
-		if (huntingMode == ACTIVE_HUNTING || retaliation)
+		if (getHuntingMode() == HuntingMode::active_hunting || retaliation)
 		{
 			predationProbability = 
-					(position->getTheWorld()->getPredationSpeedRatioAh() * normalizedSpeedRatio +
-					position->getTheWorld()->getPredationHunterVoracityAH() * normalizedHunterVoracity +
-					position->getTheWorld()->getPredationProbabilityDensityFunctionAH() * normalizedPDF)/3;
+					(predationSpeedRatioAH * normalizedSpeedRatio +
+					predationHunterVoracityAH * normalizedHunterVoracity +
+					predationProbabilityDensityFunctionAH * normalizedPDF)/3;
 
 		}
-		else if (huntingMode == SIT_AND_WAIT)
+		else if (getHuntingMode() == HuntingMode::sit_and_wait)
 		{
 			predationProbability = 
-					(position->getTheWorld()->getPredationSpeedRatioSaw() * normalizedSpeedRatio + //##spd_ratio does not matter anymore
-					position->getTheWorld()->getPredationHunterVoracitySAW() * normalizedHunterVoracity +
-					position->getTheWorld()->getPredationProbabilityDensityFunctionSAW() * normalizedPDF)/3;
+					(predationSpeedRatioSAW * normalizedSpeedRatio + //##spd_ratio does not matter anymore
+					predationHunterVoracitySAW * normalizedHunterVoracity +
+					predationProbabilityDensityFunctionSAW * normalizedPDF)/3;
 		}
 	}
 
@@ -4548,7 +4468,7 @@ double Animal::calculatePredationProbability(Edible* edibleAnimal, bool retaliat
 	return predationProbability;
 }
 
-bool Animal::predateEdible(Edible* edibleToBePredated, int timeStep, bool retaliation, ostream& encounterProbabilitiesFile, ostream& predationProbabilitiesFile)
+bool Animal::predateEdible(Edible* edibleToBePredated, int timeStep, bool retaliation, FILE* encounterProbabilitiesFile, FILE* predationProbabilitiesFile, double muForPDF, double sigmaForPDF, double predationSpeedRatioAH, double predationHunterVoracityAH, double predationProbabilityDensityFunctionAH, double predationSpeedRatioSAW, double predationHunterVoracitySAW, double predationProbabilityDensityFunctionSAW, double maxSearchArea)
 {
 	if(edibleToBePredated->getSpecies()->isMobile())
 	{
@@ -4560,8 +4480,8 @@ bool Animal::predateEdible(Edible* edibleToBePredated, int timeStep, bool retali
 
 	if(!retaliation && edibleToBePredated->getSpecies()->isMobile())
 	{
-		double halfLongestDiagonalInsideCurrentCell = sqrt(3 * pow(position->size, 2));
-		double distanceToAdd = halfLongestDiagonalInsideCurrentCell*getTrait(Trait::search_area)/position->getTheWorld()->getMaxSearchArea();
+		double halfLongestDiagonalInsideCurrentCell = sqrt(3 * pow(position->getSize(), 2));
+		double distanceToAdd = halfLongestDiagonalInsideCurrentCell*getTrait(Trait::search_area)/maxSearchArea;
 		steps += distanceToAdd;
 		if(timeStepMaximumSearchArea > 0.0)
 		{
@@ -4581,7 +4501,7 @@ bool Animal::predateEdible(Edible* edibleToBePredated, int timeStep, bool retali
 	{
 		position->increaseMultipleSameHuntedAnimalToday();
 		//cerr << "The animal hunted off the same animal at least twice the same day: " << endl;
-		//cerr << " - Animal: " << id << "(" << mySpecies->getScientificName() << ")" << endl;
+		//cerr << " - Animal: " << id << "(" << getSpecies()->getScientificName() << ")" << endl;
 		//cerr << " - Animal hunted off: " << huntedAnimal->getId() << "(" << huntedAnimal->getSpecies()->getScientificName() << ")" << endl;
 	}
 	huntedAnimalsToday.push_back(edibleToBePredated->getId());
@@ -4591,7 +4511,7 @@ bool Animal::predateEdible(Edible* edibleToBePredated, int timeStep, bool retali
 
 //getSpecies()->getKillProbability() > randomPredationProbability
 
-    double prob = calculatePredationProbability(edibleToBePredated, retaliation);//Dinosaur
+    double prob = calculatePredationProbability(edibleToBePredated, retaliation, muForPDF, sigmaForPDF, predationSpeedRatioAH, predationHunterVoracityAH, predationProbabilityDensityFunctionAH, predationSpeedRatioSAW, predationHunterVoracitySAW, predationProbabilityDensityFunctionSAW);//Dinosaur
 //prob*
 	if (((getSpecies()->getKillProbability() > randomPredationProbability) && edibleToBePredated->getSpecies()->isMobile()) || !edibleToBePredated->getSpecies()->isMobile()) ///arthropods + Dinosaur //
 	{
@@ -4600,29 +4520,29 @@ bool Animal::predateEdible(Edible* edibleToBePredated, int timeStep, bool retali
 		{
 			position->increaseMultipleSamePredatedAnimalToday();
 			//cerr << "The animal predated the same animal at least twice the same day: " << endl;
-			//cerr << " - Animal: " << id << "(" << mySpecies->getScientificName() << ")" << endl;
+			//cerr << " - Animal: " << id << "(" << getSpecies()->getScientificName() << ")" << endl;
 			//cerr << " - Animal predated: " << huntedAnimal->getId() << "(" << huntedAnimal->getSpecies()->getScientificName() << ")" << endl;
 		}
 		predatedAnimalsToday.push_back(edibleToBePredated->getId());
 		#endif
 
-		mySpecies->addPredationEventOnOtherSpecies(edibleToBePredated->getSpecies()->getId());
+		getSpecies()->addPredationEventOnOtherSpecies(edibleToBePredated->getSpecies()->getId());
 		eatenToday++;
 		huntWasSuccessful = true;
 
-		edibleToBePredatedProfitability = mySpecies->getEdibleProfitability(edibleToBePredated->getSpecies());
+		edibleToBePredatedProfitability = getSpecies()->getEdibleProfitability(edibleToBePredated->getSpecies());
 
 		//arthro and for dinos
-	    double forNotToDepleteFungi = getTrait(Trait::voracity)/(edibleToBePredatedProfitability+getTrait(Trait::assim));
+	    double forNotToDepleteResource = getTrait(Trait::voracity)/(edibleToBePredatedProfitability+getTrait(Trait::assim));
 		double leftovers;
 
-        if(edibleToBePredated->isDepleted(forNotToDepleteFungi)){ //fungi leftover to partially fulfill voracity
+        if(edibleToBePredated->isDepleted(forNotToDepleteResource)){ //resource leftover to partially fulfill voracity
 	      leftovers = edibleToBePredated->anyLeft()*(edibleToBePredatedProfitability+getTrait(Trait::assim));
         }else{ //the entire voracity is available
-		  leftovers = forNotToDepleteFungi;
+		  leftovers = forNotToDepleteResource;
 		}  
 
-		//The target animal is cleaned up from its source lifestage vector. Or the fungus is substracted.
+		//The target animal is cleaned up from its source lifestage vector. Or the resource is substracted.
 		double fullDryMassToBeEaten = position->turnEdibleIntoDryMassToBeEaten(edibleToBePredated, timeStep, this, leftovers);
 		//end arthro
 		
@@ -4635,12 +4555,12 @@ bool Animal::predateEdible(Edible* edibleToBePredated, int timeStep, bool retali
 		//arthro and for dinos commented to prevent segmentation fault if zero biomass - use it when minspores = 0 but need to check several parts
 		/* if (edibleToBePredated->isExtinct())
 		{
-			position->deleteFungus(edibleToBePredated);
+			position->deleteResource(edibleToBePredated);
 			delete edibleToBePredated;
 		} */
 
 		//double profitableDryMassToBeEaten = fullDryMassToBeEaten * edibleToBePredatedProfitability;
-		abundancesExperiencedPerSpecies[edibleToBePredated->getSpecies()] += fullDryMassToBeEaten;
+		biomassExperiencedPerSpecies[edibleToBePredated->getSpecies()] += fullDryMassToBeEaten;
 		
 		//Assim with handling time will be calculated according to the FULL dry mass
 		//It will be reduced to only profitableMass after handling calculations
@@ -4657,56 +4577,58 @@ bool Animal::predateEdible(Edible* edibleToBePredated, int timeStep, bool retali
 	
 	}
 
-	predationProbabilitiesFile << getIdStr() << "\t"
-	<< edibleToBePredated->getIdStr() << "\t"
-	<< getSpecies()->getScientificName() << "\t"
-	<< edibleToBePredated->getSpecies()->getScientificName() << "\t"
-	<< ((edibleToBePredated->getHuntingMode()!=DOES_NOT_HUNT)?1:0) << "\t"
-	<< calculateDryMass() << "\t"
-	<< edibleToBePredated->calculateDryMass() << "\t"
-	<< randomPredationProbability << "\t"
-	<< prob << "\t"
-	<< ((prob*getSpecies()->getKillProbability() > randomPredationProbability)?1:0) << "\t"
-	<< endl;
+	Output::print(
+		predationProbabilitiesFile, "{}\t{}\t{}\t{}\t{}\t{}\t{}\t{}\t{}\t{}\t\n", 
+		getIdStr(), edibleToBePredated->getIdStr(), getSpecies()->getScientificName(),
+		edibleToBePredated->getSpecies()->getScientificName(), ((edibleToBePredated->isHunting()) ? 1 : 0),
+		calculateDryMass(), edibleToBePredated->calculateDryMass(), randomPredationProbability,
+		prob, ((prob*getSpecies()->getKillProbability() > randomPredationProbability) ? 1 : 0)
+	);
 
 
 	return huntWasSuccessful;
 }
 
-void Animal::updateAbundancesExperiencedPerSpecies(int timeStepsPerDay)
+void Animal::updateBiomassExperiencedPerSpecies(int timeStepsPerDay)
 {
-	float totalOfAbundances = 0;
+	float totalExperiencedBiomass = 0;
 	daysExperienced++;
-	for(map<Species*, double>::iterator it = abundancesExperiencedPerSpecies.begin(); it != abundancesExperiencedPerSpecies.end(); it++)
+	for(auto it = biomassExperiencedPerSpecies.begin(); it != biomassExperiencedPerSpecies.end(); it++)
 	{
-		totalOfAbundances += (*it).second;
+		totalExperiencedBiomass += (*it).second;
 	}
-	if(totalOfAbundances > 0.0)
+	if(totalExperiencedBiomass > 0.0)
 	{
-		for(map<Species*, double>::iterator it = abundancesExperiencedPerSpecies.begin(); it != abundancesExperiencedPerSpecies.end(); it++)
+		for(auto it = biomassExperiencedPerSpecies.begin(); it != biomassExperiencedPerSpecies.end(); it++)
 		{
-			(*it).second = (*it).second / totalOfAbundances;
+			(*it).second = (*it).second / totalExperiencedBiomass;
 		}
 	}
 
-	double experienceInfluencePerTimeStep = mySpecies->getExperienceInfluencePerDay() / timeStepsPerDay;
-	for(map<Species*, double>::iterator it = meanExperiencesPerSpecies.begin(); it != meanExperiencesPerSpecies.end(); it++)
+	double experienceInfluencePerTimeStep = getSpecies()->getExperienceInfluencePerDay() / timeStepsPerDay;
+
+	/*
+		To update the experience of a species, a weighted average is performed, where the variable 'experienceInfluencePerTimeStep' 
+		determines whether recent experience or past experience is more important. If the value 'experienceInfluencePerTimeStep' is 
+		close to 1, recent experience is more important.
+	*/
+	for(auto it = meanExperiencesPerSpecies.begin(); it != meanExperiencesPerSpecies.end(); it++)
 	{
 		//1.0 will be the base value, meaning it has not come across any animal yet
-		(*it).second = abundancesExperiencedPerSpecies[(*it).first] * experienceInfluencePerTimeStep + (*it).second * (1.0 - experienceInfluencePerTimeStep);
+		(*it).second = biomassExperiencedPerSpecies[(*it).first] * experienceInfluencePerTimeStep + (*it).second * (1.0 - experienceInfluencePerTimeStep);
 		//cout << (*it).second << endl;
 	}
 
-	//Jordi - 23/03/2022 - this "abundancesExperiencedPerSpecies" needs to turn it back to the original biomass scale, otherwise only the last food item matters added to a 0-1 value
-	if(totalOfAbundances > 0.0)
+	//Jordi - 23/03/2022 - this "biomassExperiencedPerSpecies" needs to turn it back to the original biomass scale, otherwise only the last food item matters added to a 0-1 value
+	if(totalExperiencedBiomass > 0.0)
 	{
-		for(map<Species*, double>::iterator it = abundancesExperiencedPerSpecies.begin(); it != abundancesExperiencedPerSpecies.end(); it++)
+		for(auto it = biomassExperiencedPerSpecies.begin(); it != biomassExperiencedPerSpecies.end(); it++)
 		{
-			if(daysExperienced <= 5){ //this 5 needs to be taken out to the Json file - was already declared somwhere bu Gabi!!!
-				(*it).second = (*it).second * totalOfAbundances; //however, to do this well, it really needs to take account of all food items in the last 5 days
+			if(daysExperienced <= static_cast<unsigned int>(getTrait(Trait::memoryDepth))){ //this 5 needs to be taken out to the Json file - was already declared somwhere bu Gabi!!!
+				(*it).second = (*it).second * totalExperiencedBiomass; //however, to do this well, it really needs to take account of all food items in the last 5 days
 			}else{
-				(*it).second = (*it).second * totalOfAbundances; 
-				(*it).second = (*it).second/5; ///experience averaged over the last 5 days and continue experiencing from 0 days
+				(*it).second = (*it).second * totalExperiencedBiomass; 
+				(*it).second = (*it).second/static_cast<unsigned int>(getTrait(Trait::memoryDepth)); ///experience averaged over the last 5 days and continue experiencing from 0 days
 				daysExperienced = 0;	
 			}
 		}
@@ -4720,7 +4642,7 @@ void Animal::assimilateLastHuntedAnimalAndComputeHandlingTime()
 					
 	if(foodMassLeftForNextTimeStep > 0.0 && timeStepMaximumHandlingTimer > 0.0)
 	{
-		double kelvinTemperature = position->temperature + 273;
+		double kelvinTemperature = position->getTemperature() + 273;
 		double log_ratio = calculateLogMassRatio(calculateDryMass(), lastHuntedAnimalDryMass);
 		double lnHandlingTime = -1814 + 0.7261*log_ratio + 12.04*kelvinTemperature + (-0.02006)*pow(kelvinTemperature, 2);
 		double handlingTime = (1.0/exp(lnHandlingTime)) / (60 * 60 * 24); //Converted here to DAYS
@@ -4800,43 +4722,43 @@ void Animal::assimilateLastHuntedAnimalAndComputeHandlingTime()
 
 		if(::isnan(foodMass) || ::isnan(handlingTimer))
 		{
-			cout << "Animal id: " << this->getId() << " (" << this->getSpecies()->getScientificName() << ") - The assimilation resulted in a NaN value for foodMass or handlingTimer." << endl;
+			Output::cout("Animal id: {} ({}) - The assimilation resulted in a NaN value for foodMass or handlingTimer.\n", this->getId(), this->getSpecies()->getScientificName());
 		}
 	}
 }
 
-double Animal::calculatePredatoryRiskEdibilityValue(Edible* edibleToBeEvaluated)
+double Animal::calculatePredatoryRiskEdibilityValue(Edible* edibleToBeEvaluated, double muForPDF, double sigmaForPDF, double predationSpeedRatioAH, double predationHunterVoracityAH, double predationProbabilityDensityFunctionAH, double predationSpeedRatioSAW, double predationHunterVoracitySAW, double predationProbabilityDensityFunctionSAW, double encounterHuntedVoracitySAW, double encounterHunterVoracitySAW, double encounterVoracitiesProductSAW, double encounterHunterSizeSAW, double encounterHuntedSizeSAW, double encounterProbabilityDensityFunctionSAW, double encounterHuntedVoracityAH, double encounterHunterVoracityAH, double encounterVoracitiesProductAH, double encounterHunterSizeAH, double encounterHuntedSizeAH, double encounterProbabilityDensityFunctionAH)
 {
-	double edibilityValue = (calculateEncounterProbability(edibleToBeEvaluated)
-			+ calculatePredationProbability(edibleToBeEvaluated, false)
-			+ mySpecies->getEdiblePreference(edibleToBeEvaluated->getSpecies())
+	double edibilityValue = (calculateEncounterProbability(edibleToBeEvaluated, muForPDF, sigmaForPDF, encounterHuntedVoracitySAW, encounterHunterVoracitySAW, encounterVoracitiesProductSAW, encounterHunterSizeSAW, encounterHuntedSizeSAW, encounterProbabilityDensityFunctionSAW, encounterHuntedVoracityAH, encounterHunterVoracityAH, encounterVoracitiesProductAH, encounterHunterSizeAH, encounterHuntedSizeAH, encounterProbabilityDensityFunctionAH)
+			+ calculatePredationProbability(edibleToBeEvaluated, false, muForPDF, sigmaForPDF, predationSpeedRatioAH, predationHunterVoracityAH, predationProbabilityDensityFunctionAH, predationSpeedRatioSAW, predationHunterVoracitySAW, predationProbabilityDensityFunctionSAW)
+			+ getSpecies()->getEdiblePreference(edibleToBeEvaluated->getSpecies())
 			+ getMeanExperience(edibleToBeEvaluated->getSpecies()))/4;
 
 	return edibilityValue;
 }
 
-double Animal::calculateEdibilityValue(Edible* edibleToBeEvaluated)
+double Animal::calculateEdibilityValue(Edible* edibleToBeEvaluated, double muForPDF, double sigmaForPDF, double predationSpeedRatioAH, double predationHunterVoracityAH, double predationProbabilityDensityFunctionAH, double predationSpeedRatioSAW, double predationHunterVoracitySAW, double predationProbabilityDensityFunctionSAW, double encounterHuntedVoracitySAW, double encounterHunterVoracitySAW, double encounterVoracitiesProductSAW, double encounterHunterSizeSAW, double encounterHuntedSizeSAW, double encounterProbabilityDensityFunctionSAW, double encounterHuntedVoracityAH, double encounterHunterVoracityAH, double encounterVoracitiesProductAH, double encounterHunterSizeAH, double encounterHuntedSizeAH, double encounterProbabilityDensityFunctionAH)
 {
-	double edibilityValue = (calculateEncounterProbability(edibleToBeEvaluated)
-			+ calculatePredationProbability(edibleToBeEvaluated, false)
-			+ mySpecies->getEdiblePreference(edibleToBeEvaluated->getSpecies())
+	double edibilityValue = (calculateEncounterProbability(edibleToBeEvaluated, muForPDF, sigmaForPDF, encounterHuntedVoracitySAW, encounterHunterVoracitySAW, encounterVoracitiesProductSAW, encounterHunterSizeSAW, encounterHuntedSizeSAW, encounterProbabilityDensityFunctionSAW, encounterHuntedVoracityAH, encounterHunterVoracityAH, encounterVoracitiesProductAH, encounterHunterSizeAH, encounterHuntedSizeAH, encounterProbabilityDensityFunctionAH)
+			+ calculatePredationProbability(edibleToBeEvaluated, false, muForPDF, sigmaForPDF, predationSpeedRatioAH, predationHunterVoracityAH, predationProbabilityDensityFunctionAH, predationSpeedRatioSAW, predationHunterVoracitySAW, predationProbabilityDensityFunctionSAW)
+			+ getSpecies()->getEdiblePreference(edibleToBeEvaluated->getSpecies())
 			+ getMeanExperience(edibleToBeEvaluated->getSpecies()))/4;
 
 	return edibilityValue;
 }
 
-double Animal::calculateEdibilityValueWithMass(Edible* edibleToBeEvaluated)
+double Animal::calculateEdibilityValueWithMass(Edible* edibleToBeEvaluated, double muForPDF, double sigmaForPDF, double predationSpeedRatioAH, double predationHunterVoracityAH, double predationProbabilityDensityFunctionAH, double predationSpeedRatioSAW, double predationHunterVoracitySAW, double predationProbabilityDensityFunctionSAW, double encounterHuntedVoracitySAW, double encounterHunterVoracitySAW, double encounterVoracitiesProductSAW, double encounterHunterSizeSAW, double encounterHuntedSizeSAW, double encounterProbabilityDensityFunctionSAW, double encounterHuntedVoracityAH, double encounterHunterVoracityAH, double encounterVoracitiesProductAH, double encounterHunterSizeAH, double encounterHuntedSizeAH, double encounterProbabilityDensityFunctionAH)
 {
 	double edibilityValue = edibleToBeEvaluated->calculateDryMass()
-			* ((calculateEncounterProbability(edibleToBeEvaluated)
-			+ calculatePredationProbability(edibleToBeEvaluated, false)
-			+ mySpecies->getEdiblePreference(edibleToBeEvaluated->getSpecies())
+			* ((calculateEncounterProbability(edibleToBeEvaluated, muForPDF, sigmaForPDF, encounterHuntedVoracitySAW, encounterHunterVoracitySAW, encounterVoracitiesProductSAW, encounterHunterSizeSAW, encounterHuntedSizeSAW, encounterProbabilityDensityFunctionSAW, encounterHuntedVoracityAH, encounterHunterVoracityAH, encounterVoracitiesProductAH, encounterHunterSizeAH, encounterHuntedSizeAH, encounterProbabilityDensityFunctionAH)
+			+ calculatePredationProbability(edibleToBeEvaluated, false, muForPDF, sigmaForPDF, predationSpeedRatioAH, predationHunterVoracityAH, predationProbabilityDensityFunctionAH, predationSpeedRatioSAW, predationHunterVoracitySAW, predationProbabilityDensityFunctionSAW)
+			+ getSpecies()->getEdiblePreference(edibleToBeEvaluated->getSpecies())
 			+ getMeanExperience(edibleToBeEvaluated->getSpecies()))/4);
 
 	return edibilityValue;
 }
 
-double Animal::calculateEncounterProbability(Edible* edibleToBeEncountered)
+double Animal::calculateEncounterProbability(Edible* edibleToBeEncountered, double muForPDF, double sigmaForPDF, double encounterHuntedVoracitySAW, double encounterHunterVoracitySAW, double encounterVoracitiesProductSAW, double encounterHunterSizeSAW, double encounterHuntedSizeSAW, double encounterProbabilityDensityFunctionSAW, double encounterHuntedVoracityAH, double encounterHunterVoracityAH, double encounterVoracitiesProductAH, double encounterHunterSizeAH, double encounterHuntedSizeAH, double encounterProbabilityDensityFunctionAH)
 {
 	double encounterProbability = 1.0;
 	if(edibleToBeEncountered->getSpecies()->isMobile())
@@ -4848,66 +4770,62 @@ double Animal::calculateEncounterProbability(Edible* edibleToBeEncountered)
 		double normalizedHuntedBodySize = getNormalizedHuntedBodySize(edibleToBeEncountered->getCurrentBodySize());
 		double normalizedHunterBodySize = getNormalizedHunterBodySize();
 
-		double probabilityDensityFunction = exp(-0.5 * pow((log(calculateWetMass()/edibleToBeEncountered->calculateWetMass()) - position->getTheWorld()->getMuForPDF()) / position->getTheWorld()->getSigmaForPDF(), 2)) / (position->getTheWorld()->getSigmaForPDF() * sqrt(2*PI));
+		double probabilityDensityFunction = exp(-0.5 * pow((log(calculateWetMass()/edibleToBeEncountered->calculateWetMass()) - muForPDF) / sigmaForPDF, 2)) / (sigmaForPDF * sqrt(2*PI));
 		double normalizedPDF = getNormalizedPDF(probabilityDensityFunction);
 
-		if (huntingMode == SIT_AND_WAIT)// || isAnExposedAnimal)
-		{
-			encounterProbability = 
-					(position->getTheWorld()->getEncounterHuntedVoracitySAW() * normalizedHuntedVoracity +
-					position->getTheWorld()->getEncounterHunterVoracitySAW() * normalizedHunterVoracity +
-					position->getTheWorld()->getEncounterVoracitiesProductSAW() * normalizedVoracityProduct +
-					position->getTheWorld()->getEncounterHunterSizeSAW() * normalizedHunterBodySize +
-					position->getTheWorld()->getEncounterHuntedSizeSAW() * normalizedHuntedBodySize +
-					position->getTheWorld()->getEncounterProbabilityDensityFunctionSAW() * normalizedPDF)/6;
-		}
-		else if (huntingMode == ACTIVE_HUNTING)
-		{
-			encounterProbability = 
-					(position->getTheWorld()->getEncounterHuntedVoracityAH() * normalizedHuntedVoracity +
-					position->getTheWorld()->getEncounterHunterVoracityAH() * normalizedHunterVoracity +
-					position->getTheWorld()->getEncounterVoracitiesProductAH() * normalizedVoracityProduct +
-					position->getTheWorld()->getEncounterHunterSizeAH() * normalizedHunterBodySize +
-					position->getTheWorld()->getEncounterHuntedSizeAH() * normalizedHuntedBodySize +
-					position->getTheWorld()->getEncounterProbabilityDensityFunctionAH() * normalizedPDF)/6;
-
-			/*encounterProbability = (1 / (1 + exp(-1 * (1 +
-					position->getTheWorld()->getEncounterHuntedVoracityAH() * normalizedHuntedVoracity +
-					position->getTheWorld()->getEncounterHunterVoracityAH() * normalizedHunterVoracity +
-					position->getTheWorld()->getEncounterVoracitiesProductAH() * normalizedVoracityProduct +
-					position->getTheWorld()->getEncounterHunterSizeAH() * normalizedHunterBodySize +
-					position->getTheWorld()->getEncounterHuntedSizeAH() * normalizedHuntedBodySize +
-					position->getTheWorld()->getEncounterProbabilityDensityFunctionAH() * normalizedPDF))));*/
-
+		switch (getHuntingMode()) {
+			case HuntingMode::sit_and_wait: {
+				encounterProbability = 
+					(encounterHuntedVoracitySAW * normalizedHuntedVoracity +
+					encounterHunterVoracitySAW * normalizedHunterVoracity +
+					encounterVoracitiesProductSAW * normalizedVoracityProduct +
+					encounterHunterSizeSAW * normalizedHunterBodySize +
+					encounterHuntedSizeSAW * normalizedHuntedBodySize +
+					encounterProbabilityDensityFunctionSAW * normalizedPDF)/6;
+				break;
+			}
+			case HuntingMode::active_hunting: {
+				encounterProbability = 
+					(encounterHuntedVoracityAH * normalizedHuntedVoracity +
+					encounterHunterVoracityAH * normalizedHunterVoracity +
+					encounterVoracitiesProductAH * normalizedVoracityProduct +
+					encounterHunterSizeAH * normalizedHunterBodySize +
+					encounterHuntedSizeAH * normalizedHuntedBodySize +
+					encounterProbabilityDensityFunctionAH * normalizedPDF)/6;
+				break;
+			}
+			case HuntingMode::does_not_hunt: {
+				break;
+			}
+			default: {
+				throwLineInfoException("Default case");
+				break;
+			}
 		}
 	}
 
 	return encounterProbability;
 }
 
-bool Animal::encounterEdible(Edible* edibleToBeEncountered, float attackOrExposedAttackProbability, int day, ostream& encounterProbabilitiesFile, ostream& predationProbabilitiesFile)
+bool Animal::encounterEdible(Edible* edibleToBeEncountered, float attackOrExposedAttackProbability, int day, FILE* encounterProbabilitiesFile, FILE* predationProbabilitiesFile, double muForPDF, double sigmaForPDF, double encounterHuntedVoracitySAW, double encounterHunterVoracitySAW, double encounterVoracitiesProductSAW, double encounterHunterSizeSAW, double encounterHuntedSizeSAW, double encounterProbabilityDensityFunctionSAW, double encounterHuntedVoracityAH, double encounterHunterVoracityAH, double encounterVoracitiesProductAH, double encounterHunterSizeAH, double encounterHuntedSizeAH, double encounterProbabilityDensityFunctionAH)
 {
 	double randomEncounterProbability = Random::randomUniform();
 
-	encounterProbabilitiesFile << getIdStr() << "\t"
-	<< edibleToBeEncountered->getIdStr() << "\t"
-	<< mySpecies->getScientificName() << "\t"
-	<< edibleToBeEncountered->getSpecies()->getScientificName() << "\t"
-	<< ((edibleToBeEncountered->getHuntingMode()!=DOES_NOT_HUNT)?1:0) << "\t"
-	<< calculateDryMass() << "\t"
-	<< edibleToBeEncountered->calculateDryMass() << "\t"
-	<< randomEncounterProbability << "\t"
-	<< calculateEncounterProbability(edibleToBeEncountered) << "\t"
-	<< attackOrExposedAttackProbability << "\t"											 
-	<< ((attackOrExposedAttackProbability*calculateEncounterProbability(edibleToBeEncountered) > randomEncounterProbability)?1:0) << "\t"
-	<< endl;
+	Output::print(
+		encounterProbabilitiesFile, "{}\t{}\t{}\t{}\t{}\t{}\t{}\t{}\t{}\t{}\t{}\t\n",
+		getIdStr(), edibleToBeEncountered->getIdStr(), getSpecies()->getScientificName(),
+		edibleToBeEncountered->getSpecies()->getScientificName(), ((edibleToBeEncountered->isHunting()) ? 1 : 0),
+		calculateDryMass(), edibleToBeEncountered->calculateDryMass(), randomEncounterProbability,
+		calculateEncounterProbability(edibleToBeEncountered, muForPDF, sigmaForPDF, encounterHuntedVoracitySAW, encounterHunterVoracitySAW, encounterVoracitiesProductSAW, encounterHunterSizeSAW, encounterHuntedSizeSAW, encounterProbabilityDensityFunctionSAW, encounterHuntedVoracityAH, encounterHunterVoracityAH, encounterVoracitiesProductAH, encounterHunterSizeAH, encounterHuntedSizeAH, encounterProbabilityDensityFunctionAH),
+		attackOrExposedAttackProbability, ((attackOrExposedAttackProbability*calculateEncounterProbability(edibleToBeEncountered, muForPDF, sigmaForPDF, encounterHuntedVoracitySAW, encounterHunterVoracitySAW, encounterVoracitiesProductSAW, encounterHunterSizeSAW, encounterHuntedSizeSAW, encounterProbabilityDensityFunctionSAW, encounterHuntedVoracityAH, encounterHunterVoracityAH, encounterVoracitiesProductAH, encounterHunterSizeAH, encounterHuntedSizeAH, encounterProbabilityDensityFunctionAH) > randomEncounterProbability)?1:0)
+	);
 
 	#ifdef _DEBUG
 	if(find(searchedAnimalsToday.begin(), searchedAnimalsToday.end(), edibleToBeEncountered->getId()) != searchedAnimalsToday.end())
 	{
 		position->increaseMultipleSameSearchedAnimalToday();
 		//cerr << "The animal searched for the same animal at least twice the same day: " << endl;
-		//cerr << " - Animal: " << id << "(" << mySpecies->getScientificName() << ")" << endl;
+		//cerr << " - Animal: " << id << "(" << getSpecies()->getScientificName() << ")" << endl;
 		//cerr << " - Animal searched for: " << searchedAnimal->getId() << "(" << searchedAnimal->getSpecies()->getScientificName() << ")" << endl;
 	}
 	searchedAnimalsToday.push_back(edibleToBeEncountered->getId());
@@ -4921,7 +4839,7 @@ bool Animal::encounterEdible(Edible* edibleToBeEncountered, float attackOrExpose
 		{
 			position->increaseMultipleSameEncounteredAnimalToday();
 			//cerr << "The animal encountered the same animal at least twice the same day: " << endl;
-			//cerr << " - Animal: " << id << "(" << mySpecies->getScientificName() << ")" << endl;
+			//cerr << " - Animal: " << id << "(" << getSpecies()->getScientificName() << ")" << endl;
 			//cerr << " - Animal encountered: " << searchedAnimal->getId() << "(" << searchedAnimal->getSpecies()->getScientificName() << ")" << endl;
 		}
 		encounteredAnimalsToday.push_back(edibleToBeEncountered->getId());
@@ -4953,36 +4871,36 @@ bool Animal::canEatEdible(Edible* edibleToCheck)
 	//exit(-1);
 	//}
 
-   //this was incorrect in Gabi's version, he used just fungus biomass vs min spore parameter
-   //now considering everything the animal takes what is left by if available by decresing its voracity value
-   double forNotToDepleteFungi = getTrait(Trait::voracity)/(mySpecies->getEdibleProfitability(edibleToCheck->getSpecies())+getTrait(Trait::assim));
+	//this was incorrect in Gabi's version, he used just resource biomass vs min spore parameter
+	//now considering everything the animal takes what is left by if available by decresing its voracity value
+	double forNotToDepleteResource = getTrait(Trait::voracity)/(getSpecies()->getEdibleProfitability(edibleToCheck->getSpecies())+getTrait(Trait::assim));
 
-  //this to to feed on what is left if he entire voracity cannot be satisfied
-  //Warning: this prevents this animal to fulfill entirely its original voracity (voracity shrinks) with and alternative
- //fungus species if it were available - need to test this behavior
- 
-   
-  //arthros and for dinos - this allows feeding on the leftovers without surpassing
-  //the limit imposed by the minspores... so fungi can grow back
-  bool newVor = false;
-  if(edibleToCheck->isDepleted(forNotToDepleteFungi))
-  {
-	  if(edibleToCheck->anyLeft()*(mySpecies->getEdibleProfitability(edibleToCheck->getSpecies())+getTrait(Trait::assim))>0){
-	  newVor = true;
-      }
-  }  
+	//this to to feed on what is left if he entire voracity cannot be satisfied
+	//Warning: this prevents this animal to fulfill entirely its original voracity (voracity shrinks) with and alternative
+	//resource species if it were available - need to test this behavior
 	
+	
+	//arthros and for dinos - this allows feeding on the leftovers without surpassing
+	//the limit imposed by the minspores... so resource can grow back
+	bool newVor = false;
+	if(edibleToCheck->isDepleted(forNotToDepleteResource))
+	{
+		if(edibleToCheck->anyLeft()*(getSpecies()->getEdibleProfitability(edibleToCheck->getSpecies())+getTrait(Trait::assim))>0){
+			newVor = true;
+		}
+	}
+		
 	return !sated &&
 			!isExhausted() &&  
-			(mySpecies->canEatAnimalSpecies(edibleToCheck->getSpecies()) || mySpecies->canEatFungusSpecies(edibleToCheck->getSpecies())) &&
-			(!edibleToCheck->isDepleted(forNotToDepleteFungi) || newVor == true) &&
+			(getSpecies()->canEatAnimalSpecies((AnimalSpecies*)edibleToCheck->getSpecies()) || getSpecies()->canEatResourceSpecies((ResourceSpecies*)edibleToCheck->getSpecies())) &&
+			(!edibleToCheck->isDepleted(forNotToDepleteResource) || newVor == true) &&
 			edibleToCheck->getPredatedByID() == -1 &&
 			predatedByID == -1 &&
-			!hasTriedToHunt(edibleToCheck);
+			!hasTriedToHunt((Animal*)edibleToCheck);
 	// && log_mass_ratio >= position->theWorld->getMinLogMassRatio() && log_mass_ratio <= position->theWorld->getMaxLogMassRatio()/*6.678*/;
 }
 
-bool Animal::hasTriedToHunt(Edible* edibleToCheck)
+bool Animal::hasTriedToHunt(Animal* edibleToCheck)
 {
 	return find(ediblesHasTriedToPredate.begin(), ediblesHasTriedToPredate.end(), edibleToCheck) != ediblesHasTriedToPredate.end();
 }

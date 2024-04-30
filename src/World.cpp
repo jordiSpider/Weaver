@@ -1,5 +1,4 @@
 #include "World.h"
-#include "TerrainCell.h"
 /*
 #include "tbb/tbb.h"
 */
@@ -8,52 +7,154 @@
 #include <algorithm> // transform
 #include "Utilities.h"
 #include "GlobalVariable.h"
-#include "AnimalSpecies.h"
+
+using namespace std;
 
 /*
 using namespace tbb;
 */
 
-World::World(json * jsonTree, fs::path outputDirectory)
-{
+SimulType::SimulType(const string& typeStr) : value(stringToEnumValue(typeStr)) {};
 
-	std::string simulTypeString = (*jsonTree)["simulation"]["simulationType"];
-	if (simulTypeString == "arthropods")
-	{
-			simulType = 0;
+const unordered_map<string_view, const SimulType::SimulTypeValue> SimulType::generateMap() 
+{
+	unordered_map<string_view, const SimulType::SimulTypeValue> enumMap;
+
+	for(size_t i = 0; i < size(); i++) {
+		const SimulType::SimulTypeValue simulType = static_cast<const SimulType::SimulTypeValue>(i);
+		enumMap.insert({to_string(simulType), simulType});
 	}
-	else if (simulTypeString == "dinosaurs")
-	{
-			simulType = 1;
+
+	return enumMap;
+}
+
+const unordered_map<string_view, const SimulType::SimulTypeValue> SimulType::stringToEnum = SimulType::generateMap();
+
+const string SimulType::generateAvailableValues()
+{
+	constexpr auto typeNames = magic_enum::enum_names<SimulTypeValue>();
+
+	auto values = fmt::format("{}", typeNames[0]);
+	for(size_t i = 1; i < typeNames.size(); i++) {
+		values += fmt::format(", {}", typeNames[i]);
 	}
+
+	return values;
+}
+
+const string SimulType::enumValues = SimulType::generateAvailableValues();
+
+
+constexpr size_t World::ResourceType::size() 
+{ 
+	return magic_enum::enum_count<ResourceTypeValue>(); 
+}
+
+std::string_view World::ResourceType::to_string(const World::ResourceType::ResourceTypeValue& resourceType) 
+{ 
+	return magic_enum::enum_name(resourceType); 
+}
+
+const unordered_map<string_view, const World::ResourceType::ResourceTypeValue> World::ResourceType::generateMap() 
+{
+	unordered_map<string_view, const ResourceTypeValue> enumMap;
+
+	for(size_t i = 0; i < size(); i++) {
+		const ResourceTypeValue resourceType = static_cast<const ResourceTypeValue>(i);
+		enumMap.insert({to_string(resourceType), resourceType});
+	}
+
+	return enumMap;
+}
+
+const unordered_map<string_view, const World::ResourceType::ResourceTypeValue> World::ResourceType::stringToEnum = World::ResourceType::generateMap();
+
+const string World::ResourceType::generateAvailableValues()
+{
+	constexpr auto typeNames = magic_enum::enum_names<ResourceTypeValue>();
+
+	auto values = fmt::format("{}", typeNames[0]);
+	for(size_t i = 1; i < typeNames.size(); i++) {
+		values += fmt::format(", {}", typeNames[i]);
+	}
+
+	return values;
+}
+
+const string World::ResourceType::enumValues = World::ResourceType::generateAvailableValues();
+
+std::string_view World::ResourceType::printAvailableValues() 
+{ 
+	return enumValues; 
+}
+
+World::ResourceType::ResourceTypeValue World::ResourceType::stringToEnumValue(const std::string &str) 
+{ 
+	try
+	{
+		return stringToEnum.at(str);
+	}
+	catch(const std::out_of_range& e) 
+	{
+		throwLineInfoException(fmt::format("Unknown simulation type '{}'. Valid values are {}", str, printAvailableValues()));
+	}
+}
+
+
+
+Terrain3D World::terrain = Terrain3D();
+
+
+World::World(json * jsonTree, fs::path FolderI, fs::path inputFile, fs::path outputFolder, fs::path WeaverFolder) : WeaverFolder(WeaverFolder)
+{
+	string configFolder;
+	try
+	{
+		configFolder = (*jsonTree)["simulation"].at("configFolder");
+	}
+	catch(const json::out_of_range& e)
+	{
+		configFolder = CONFIG_FOLDER;
+	}
+	string configName = (*jsonTree)["simulation"]["configName"];
+	inputFolder = FolderI / fs::path(configFolder) / fs::path(configName);
+
+	json worldConfig = readConfigFile1(inputFolder / fs::path("world_params.json"), WeaverFolder);
+
+	simulType = SimulType(string(worldConfig["world"]["simulationType"]));
+
+	switch (simulType) {
+		case SimulType::dinosaurs: {
+			massRatio = 1000.0; //in kg for dinosaurs
+			break;
+		}
+		case SimulType::arthropods: {
+			massRatio = 0.001; //in mg for arthropods
+			break;
+		}
+		default: {
+			throwLineInfoException("Default case");
+			break;
+		}
+	}
+
 	exitAtFirstExtinction = (*jsonTree)["simulation"]["exitAtFirstExtinction"];
 	runDays = (*jsonTree)["simulation"]["runDays"];
 	recordEach = (*jsonTree)["simulation"]["recordEach"];
 	numberOfCombinations = (*jsonTree)["simulation"]["numberOfCombinations"];
 	timeStepsPerDay = (*jsonTree)["simulation"]["timeStepsPerDay"];
+	growthAndReproTest = (*jsonTree)["simulation"]["growthAndReproTest"];
 	//TODO tunetraits and metab every X STEPS
 	//TODO growth every X STEPS
 
 	// Set output directory
-	setOutputDirectory(outputDirectory);
+	setOutputFolder(outputFolder);
 
 	// Read space configuration
-	string configDirectory;
-	try
-	{
-		configDirectory = (*jsonTree)["simulation"].at("configDirectory");
-	}
-	catch(const json::out_of_range& e)
-	{
-		configDirectory = CONFIG_FOLDER;
-	}
-	string configName = (*jsonTree)["simulation"]["configName"];
-	inputDirectory = fs::path(configDirectory) / fs::path(configName);
-
-	json worldConfig = readConfigFile(inputDirectory / fs::path("world_params.json"));
+	
 
 
-	setFungiToPreysCapacityTransference(worldConfig["world"]["spaceConfiguration"]["fungiToPreysCapacityTransference"]);
+	setResourceToPreysCapacityTransference(worldConfig["world"]["spaceConfiguration"]["resourceToPreysCapacityTransference"]);
 	setPreysToPredatorsCapacityTransference(worldConfig["world"]["spaceConfiguration"]["preysToPredatorsCapacityTransference"]);
 
 	setEncounterHuntedSizeAH(worldConfig["world"]["life"]["encounterHuntedSizeAH"]);
@@ -80,14 +181,14 @@ World::World(json * jsonTree, fs::path outputDirectory)
 	setDepth(worldConfig["world"]["spaceConfiguration"]["dimensions"]["depth"]);
 	setLength(worldConfig["world"]["spaceConfiguration"]["dimensions"]["length"]);
 	setWidth(worldConfig["world"]["spaceConfiguration"]["dimensions"]["width"]);
-	setObstacleDirectoryName(fs::path(worldConfig["world"]["spaceConfiguration"]["obstacleDirectory"]));
-	setMoistureDirectoryName(fs::path(worldConfig["world"]["spaceConfiguration"]["moistureDirectory"]));
-	setFungiDirectoryName(fs::path(worldConfig["world"]["life"]["fungiDirectory"]));
-	setSpeciesDirectoryName(fs::path(worldConfig["world"]["life"]["speciesDirectory"]));
+	setObstacleFolderName(fs::path(worldConfig["world"]["spaceConfiguration"]["obstacleFolder"]));
+	setMoistureFolderName(fs::path(worldConfig["world"]["spaceConfiguration"]["moistureFolder"]));
+	setResourceFolderName(fs::path(worldConfig["world"]["life"]["resourceFolder"]));
+	setSpeciesFolderName(fs::path(worldConfig["world"]["life"]["speciesFolder"]));
 	
 	initIndividualsPerDensities = worldConfig["world"]["life"]["initIndividualsPerDensities"]["enabled"];
 
-	competitionAmongFungiSpecies = worldConfig["world"]["life"]["competitionAmongFungiSpecies"];
+	competitionAmongResourceSpecies = worldConfig["world"]["life"]["competitionAmongResourceSpecies"];
 
 	setExitTimeThreshold(worldConfig["world"]["life"]["exitTimeThreshold"]);
 	setInitialEcosystemSize(worldConfig["world"]["life"]["initIndividualsPerDensities"]["initialEcosystemSize"]);
@@ -103,21 +204,26 @@ World::World(json * jsonTree, fs::path outputDirectory)
 	setHeatingCodeTemperatureCycle(worldConfig["world"]["spaceConfiguration"]["temperatureFilename"]); // By default, 20 Celsius degrees
 	*/
 
-	readFungusSpeciesFromJSONFiles();
+	readResourceSpeciesFromJSONFiles();
 	readAnimalSpeciesFromJSONFiles();
 
-	initializeTerrainDimensions();
+	initializeTerrainDimensions(worldConfig["world"]["spaceConfiguration"]["moistureBasePatch"]);
 
 	readObstaclePatchesFromJSONFiles();
 	readMoisturePatchesFromJSONFiles();
 
-	initializeFungi();
+	initializeResource();
 	//initializeAnimals();
 
 	encountersMatrixFilename = (*jsonTree)["simulation"]["encountersMatrixFilename"];
 	predationsMatrixFilename = (*jsonTree)["simulation"]["predationsMatrixFilename"];
 	nodesMatrixFilename = (*jsonTree)["simulation"]["nodesMatrixFilename"];
 	predationEventsOnOtherSpeciesFilename = (*jsonTree)["simulation"]["predationEventsOnOtherSpeciesFilename"];
+
+	saveAnimalConstitutiveTraits = (*jsonTree)["simulation"]["saveAnimalConstitutiveTraits"];
+
+	saveEdibilitiesFile = (*jsonTree)["simulation"]["saveEdibilitiesFile"];
+
 	saveGeneticsSummaries = (*jsonTree)["simulation"]["saveGeneticsSummaries"];
 
 	if ((*jsonTree)["simulation"]["saveIntermidiateVolumes"])
@@ -130,51 +236,33 @@ World::World(json * jsonTree, fs::path outputDirectory)
 		saveIntermidiateVolumes = false;
 	}
 
-	createOutputFile(edibilitiesFile, outputDirectory, (*jsonTree)["simulation"]["edibilitiesFilename"], "txt", std::ofstream::out | std::ofstream::trunc);
-	
-	edibilitiesFile
-	<< "timeStep" << "\t"
-	<< "searcherId" << "\t"
-	<< "searcherSpecies" << "\t"
-	<< "foodMass" << "\t"
-	<< "predatorId" << "\t"
-	<< "predatorSpecies" << "\t"
-	<< "predatorDryMass" << "\t"
-	<< "predatedId" << "\t"
-	<< "predatedSpecies" << "\t"
-	<< "predatedDryMass" << "\t"
-	<< "encounterProbability" << "\t"
-	<< "predationProbability" << "\t"
-	<< "preference" << "\t"
-	<< "experience" << "\t"
-	<< "edibility" << endl;
+	initializeOutputFiles(jsonTree, inputFile);
 }
 
-void World::setOutputDirectory(fs::path outputDirectory)
+void World::setOutputFolder(fs::path outputFolder)
 {
-  this->outputDirectory = outputDirectory;
+  this->outputFolder = outputFolder;
 
-  fs::create_directories(outputDirectory / fs::path("Snapshots"));
-  fs::create_directories(outputDirectory / fs::path("Matrices"));
-  fs::create_directories(outputDirectory / fs::path("animals_each_day_start"));
-  fs::create_directories(outputDirectory / fs::path("animals_each_day_end"));
-  fs::create_directories(outputDirectory / fs::path("cells_each_day"));
-  fs::create_directories(outputDirectory / fs::path("animals_each_day_growth"));
-  fs::create_directories(outputDirectory / fs::path("animals_each_day_voracities"));
-  fs::create_directories(outputDirectory / fs::path("animals_each_day_encounterProbabilities"));
-  fs::create_directories(outputDirectory / fs::path("animals_each_day_predationProbabilities"));
-  fs::create_directories(outputDirectory / fs::path("geneticsSummaries"));
+  fs::create_directories(outputFolder / fs::path("Snapshots"));
+  fs::create_directories(outputFolder / fs::path("Matrices"));
+  fs::create_directories(outputFolder / fs::path("animals_each_day_start"));
+  fs::create_directories(outputFolder / fs::path("animals_each_day_end"));
+  fs::create_directories(outputFolder / fs::path("cells_each_day"));
+  fs::create_directories(outputFolder / fs::path("animals_each_day_growth"));
+  fs::create_directories(outputFolder / fs::path("animals_each_day_voracities"));
+  fs::create_directories(outputFolder / fs::path("animals_each_day_encounterProbabilities"));
+  fs::create_directories(outputFolder / fs::path("animals_each_day_predationProbabilities"));
 }
 
-void World::setFungiToPreysCapacityTransference(double fungiToPreysCapacityTransference)
+void World::setResourceToPreysCapacityTransference(double resourceToPreysCapacityTransference)
 {
-	if (fungiToPreysCapacityTransference > 0)
+	if (resourceToPreysCapacityTransference > 0)
 	{
-		this->fungiToPreysCapacityTransference = fungiToPreysCapacityTransference;
+		this->resourceToPreysCapacityTransference = resourceToPreysCapacityTransference;
 	}
 	else
 	{
-		std::cerr << "Error, fungiToPreysCapacityTransference must be a positive value. You entered " << fungiToPreysCapacityTransference << " ... EXITING" << std::endl;
+		std::cerr << "Error, resourceToPreysCapacityTransference must be a positive value. You entered " << resourceToPreysCapacityTransference << " ... EXITING" << std::endl;
 		exit(-1);
 	}
 }
@@ -196,10 +284,10 @@ World::~World()
 {
 	eraseTerrain();
 
-	for(auto elem : existingFungiSpecies) {
+	for(auto elem : existingResourceSpecies) {
 		delete elem;
 	}
-	existingFungiSpecies.clear();
+	existingResourceSpecies.clear();
 
 	for(auto elem : existingAnimalSpecies) {
 		delete elem;
@@ -209,14 +297,14 @@ World::~World()
 
 void World::readAnimalSpeciesFromJSONFiles()
 {
-	cout << "Reading all animal species from JSON files ... " << endl;
+	Output::cout("Reading all animal species from JSON files ... \n");
 	
-	fs::path speciesDirectory = inputDirectory / speciesDirectoryName;
+	fs::path speciesFolder = inputFolder / speciesFolderName;
 	fs::directory_iterator end_iter;
-	if (fs::exists(speciesDirectory) && fs::is_directory(speciesDirectory))
+	if (fs::exists(speciesFolder) && fs::is_directory(speciesFolder))
 	{
 		vector<fs::path> filePaths;
-		copy(fs::directory_iterator(speciesDirectory), fs::directory_iterator(), back_inserter(filePaths));
+		copy(fs::directory_iterator(speciesFolder), fs::directory_iterator(), back_inserter(filePaths));
 		sort(filePaths.begin(), filePaths.end());             // directory iteration is not ordered on some file systems, so we sort them
 		json ptMain;
 		for (vector<fs::path>::const_iterator it(filePaths.begin()); it != filePaths.end(); ++it)
@@ -226,65 +314,20 @@ void World::readAnimalSpeciesFromJSONFiles()
 				ptMain.clear();
 
 				// Read configuration file
-				ptMain = readConfigFile(*it, fs::path(SCHEMA_FOLDER) / fs::path(SPECIES_SCHEMA));
+				ptMain = readConfigFile(*it, WeaverFolder / fs::path(SCHEMA_FOLDER) / fs::path(SPECIES_SCHEMA));
 
-				std::cout << " - Animal scientific name: " << ptMain["animal"]["name"] << endl;
+				Output::cout(" - Animal scientific name: {}\n", (string)ptMain["animal"]["name"]);
 
 				AnimalSpecies* newSpecies = new AnimalSpecies(
 					ptMain["animal"]["name"], ptMain["animal"]["genetics"]["numberOfLociPerTrait"], 
 					ptMain["animal"]["genetics"]["numberOfAllelesPerLocus"], ptMain["animal"]["genetics"]["restrictPerTrait"], 
 					ptMain["animal"]["genetics"]["correlationCoefficientRhoPerModule"], ptMain["animal"]["genetics"]["traitsPerModule"], 
-					ptMain["animal"]["genetics"]["numberOfChromosomes"], ptMain["animal"]["genetics"]["numberOfChiasmasPerChromosome"],
-					ptMain["animal"]["traits"], ptMain["animal"]["traits"]["minTraitsRanges"], 
-					ptMain["animal"]["traits"]["maxTraitsRanges"], ptMain["animal"]["traits"]["minTraitLimits"], 
-					ptMain["animal"]["traits"]["maxTraitLimits"], ptMain["animal"]["traits"]["order"]
+					ptMain["animal"]["genetics"]["numberOfChiasmasPerChromosome"], ptMain["animal"]["traits"]["fixedTraits"], ptMain["animal"]["traits"]["variableTraits"]["minTraitsRanges"], 
+					ptMain["animal"]["traits"]["variableTraits"]["maxTraitsRanges"], ptMain["animal"]["traits"]["variableTraits"]["minTraitLimits"], 
+					ptMain["animal"]["traits"]["variableTraits"]["maxTraitLimits"], ptMain["animal"]["traits"]["variableTraits"]["order"], ptMain["animal"]["sexualType"],
+					ptMain["animal"]["defaultHuntingMode"], ptMain["animal"]["growthCurve"]
 				);
 				
-				std::string growthTypeString = ptMain["animal"]["growthType"];
-				unsigned int growthType;
-				if (growthTypeString == "VonBertalanffy")
-				{
-					growthType = 0;
-				}
-				else if (growthTypeString == "logistic")
-				{
-					growthType = 1;
-				}
-                newSpecies->setGrowthType(growthType);
-
-				std::string huntingModeString = ptMain["animal"]["huntingMode"];
-				unsigned int huntingMode;
-				if (huntingModeString == "does_not_hunt")
-				{
-					huntingMode = Animal::HUNTING_MODES::DOES_NOT_HUNT;
-				}
-				else if (huntingModeString == "sit_and_wait")
-				{
-					huntingMode = Animal::HUNTING_MODES::SIT_AND_WAIT;
-				}
-				else if (huntingModeString == "active_hunting")
-				{
-					huntingMode = Animal::HUNTING_MODES::ACTIVE_HUNTING;
-				}
-				newSpecies->setDefaultHuntingMode(huntingMode);
-
-				std::string sexualTypeString = ptMain["animal"]["sexualType"];
-				unsigned int sexualType;
-				if (sexualTypeString == "diploid")
-				{
-					sexualType = AnimalSpecies::SEXUAL_TYPES::DIPLOID;
-				}
-				else if (sexualTypeString == "haplodiploid")
-				{
-					sexualType = AnimalSpecies::SEXUAL_TYPES::HAPLODIPLOID;
-				}
-				else if (sexualTypeString == "asexual")
-				{
-					sexualType = AnimalSpecies::SEXUAL_TYPES::ASEXUAL;
-				}
-				newSpecies->setSexualType(sexualType);
-
-				newSpecies->computeRestrictedTraits();
 
 				//Added for new growth_curves
 				if(initIndividualsPerDensities == false)
@@ -294,7 +337,7 @@ void World::readAnimalSpeciesFromJSONFiles()
 				newSpecies->setStatisticsInitialPopulation(ptMain["animal"]["statisticsIndividualsPerInstar"]);
 
 				unsigned int numberOfInstars = newSpecies->getInitialPopulation().size();
-				cout << "numberOfInstars: " << numberOfInstars << endl;
+				Output::cout("numberOfInstars: {}\n", numberOfInstars);
 
 				newSpecies->setAssignedForMolt(ptMain["animal"]["assignedForMolt"]);
 				newSpecies->setBetaScaleTank(ptMain["animal"]["betaScaleTank"]);
@@ -306,11 +349,8 @@ void World::readAnimalSpeciesFromJSONFiles()
 
 				//Added for new growth_curves
 				newSpecies->setDevTimeVector(ptMain["animal"]["devTimeVector"]);
-				newSpecies->setVonBertTime0(ptMain["animal"]["vonBertTime0"]);
 				newSpecies->setLinfKcorr(ptMain["animal"]["LinfKcorr"]);
 				newSpecies->setDevTimeConstant(ptMain["animal"]["devTimeConstant"]);
-				newSpecies->setVonBertLdistanceMin(ptMain["animal"]["vonBertLdistanceMin"]);
-				newSpecies->setVonBertLdistanceMax(ptMain["animal"]["vonBertLdistanceMax"]);
 				newSpecies->setLongevitySinceMaturation(ptMain["animal"]["longevitySinceMaturation"]);
 				newSpecies->setReproTimeFactor(ptMain["animal"]["reproTimeFactor"]);
 				newSpecies->setTempOptGrowth(ptMain["animal"]["tempOptGrowth"]);
@@ -398,8 +438,8 @@ void World::readAnimalSpeciesFromJSONFiles()
 			}
 		}
 
-		cout << "DONE" << endl << endl;
-		cout << "Assigning links between species from JSON files edible species information ... " << endl;
+		Output::cout("DONE\n\n");
+		Output::cout("Assigning links between species from JSON files edible species information ... \n");
 
 		//Who eats whom
 		for (vector<fs::path>::const_iterator it(filePaths.begin()); it != filePaths.end(); ++it)
@@ -409,56 +449,56 @@ void World::readAnimalSpeciesFromJSONFiles()
 				ptMain.clear();
 
 				// Read configuration file
-				ptMain = readConfigFile(*it, fs::path(SCHEMA_FOLDER) / fs::path(SPECIES_SCHEMA));
+				ptMain = readConfigFile(*it, WeaverFolder / fs::path(SCHEMA_FOLDER) / fs::path(SPECIES_SCHEMA));
 
 				string scientificName = ptMain["animal"]["name"];
-				cout << "Animal species " << scientificName << " eats: " << endl;
+				Output::cout("Animal species {} eats: \n", scientificName);
 
-				for( auto elem : ptMain["animal"]["edibleFungusSpecies"])
+				for( auto elem : ptMain["animal"]["edibleResourceSpecies"])
 				{
 					string speciesToBeAddedName = elem;
-					Species* fungusSpeciesToBeAdded = getFungusSpecies(speciesToBeAddedName);
-					if (fungusSpeciesToBeAdded == NULL)
+					ResourceSpecies* resourceSpeciesToBeAdded = getResourceSpecies(speciesToBeAddedName);
+					if (resourceSpeciesToBeAdded == NULL)
 					{
-						cerr << "Trying to add an edible fungus species that does not exist. Please check the species name or contact developers." << endl;
+						cerr << "Trying to add an edible resource species that does not exist. Please check the species name or contact developers." << endl;
 						exit(-1);
 					}
-					cout << " - Fungus: " << speciesToBeAddedName << endl;
-					getAnimalSpecies(scientificName)->addEdibleFungusSpecies(fungusSpeciesToBeAdded);
+					Output::cout(" - Resource: {}\n", speciesToBeAddedName);
+					getAnimalSpecies(scientificName)->addEdibleResourceSpecies(resourceSpeciesToBeAdded);
 				}
 
 				int i = 0;
-				for( auto elem : ptMain["animal"]["edibleFungusPreferences"])
+				for( auto elem : ptMain["animal"]["edibleResourcePreferences"])
 				{
-					float edibleFungusPreferenceToBeAdded = elem;
-					Species* fungusSpeciesToBeAdded = getAnimalSpecies(scientificName)->getEdibleFungusSpecies()->at(i);
+					float edibleResourcePreferenceToBeAdded = elem;
+					Species* resourceSpeciesToBeAdded = getAnimalSpecies(scientificName)->getEdibleResourceSpecies()->at(i);
 
-					cout << " - Fungus: " << fungusSpeciesToBeAdded->getScientificName() << " -> Preference: " << edibleFungusPreferenceToBeAdded << endl;
-					getAnimalSpecies(scientificName)->addEdiblePreference(fungusSpeciesToBeAdded, edibleFungusPreferenceToBeAdded);
+					Output::cout(" - Resource: {} -> Preference: {}\n", resourceSpeciesToBeAdded->getScientificName(), edibleResourcePreferenceToBeAdded);
+					getAnimalSpecies(scientificName)->addEdiblePreference(resourceSpeciesToBeAdded, edibleResourcePreferenceToBeAdded);
 					++i;
 				}
 
 				i = 0;
-				for( auto elem : ptMain["animal"]["edibleFungusProfitability"])
+				for( auto elem : ptMain["animal"]["edibleResourceProfitability"])
 				{
-					float edibleFungusProfitabilityToBeAdded = elem;
-					Species* fungusSpeciesToBeAdded = getAnimalSpecies(scientificName)->getEdibleFungusSpecies()->at(i);
+					float edibleResourceProfitabilityToBeAdded = elem;
+					Species* resourceSpeciesToBeAdded = getAnimalSpecies(scientificName)->getEdibleResourceSpecies()->at(i);
 
-					cout << " - Fungus: " << fungusSpeciesToBeAdded->getScientificName() << " -> Profitability: " << edibleFungusProfitabilityToBeAdded << endl;
-					getAnimalSpecies(scientificName)->addEdibleProfitability(fungusSpeciesToBeAdded, edibleFungusProfitabilityToBeAdded);
+					Output::cout(" - Resource: {} -> Profitability: {}\n", resourceSpeciesToBeAdded->getScientificName(), edibleResourceProfitabilityToBeAdded);
+					getAnimalSpecies(scientificName)->addEdibleProfitability(resourceSpeciesToBeAdded, edibleResourceProfitabilityToBeAdded);
 					++i;
 				}
 
 				for( auto elem : ptMain["animal"]["edibleAnimalSpecies"])
 				{
 					string speciesToBeAddedName = elem;
-					Species* animalSpeciesToBeAdded = getAnimalSpecies(speciesToBeAddedName);
+					AnimalSpecies* animalSpeciesToBeAdded = getAnimalSpecies(speciesToBeAddedName);
 					if (animalSpeciesToBeAdded == NULL)
 					{
 						cerr << "Trying to add an edible animal species that does not exist. Please check the species name or contact developers." << endl;
 						exit(-1);
 					}
-					cout << " - Animal: " << speciesToBeAddedName << endl;
+					Output::cout(" - Animal: {}\n", speciesToBeAddedName);
 					getAnimalSpecies(scientificName)->addEdibleAnimalSpecies(animalSpeciesToBeAdded);
 				}
 
@@ -466,9 +506,9 @@ void World::readAnimalSpeciesFromJSONFiles()
 				for( auto elem : ptMain["animal"]["edibleAnimalPreferences"])
 				{
 					float edibleAnimalPreferenceToBeAdded = elem;
-					Species* animalSpeciesToBeAdded = getAnimalSpecies(scientificName)->getEdibleAnimalSpecies()->at(i);
+					AnimalSpecies* animalSpeciesToBeAdded = getAnimalSpecies(scientificName)->getEdibleAnimalSpecies()->at(i);
 
-					cout << " - Animal: " << animalSpeciesToBeAdded->getScientificName() << " -> Preference: " << edibleAnimalPreferenceToBeAdded << endl;
+					Output::cout(" - Animal: {} -> Preference: {}\n", animalSpeciesToBeAdded->getScientificName(), edibleAnimalPreferenceToBeAdded);
 					getAnimalSpecies(scientificName)->addEdiblePreference(animalSpeciesToBeAdded, edibleAnimalPreferenceToBeAdded);
 					++i;
 				}
@@ -477,42 +517,42 @@ void World::readAnimalSpeciesFromJSONFiles()
 				for( auto elem : ptMain["animal"]["edibleAnimalProfitability"])
 				{
 					float edibleAnimalProfitabilityToBeAdded = elem;
-					Species* animalSpeciesToBeAdded = getAnimalSpecies(scientificName)->getEdibleAnimalSpecies()->at(i);
+					AnimalSpecies* animalSpeciesToBeAdded = getAnimalSpecies(scientificName)->getEdibleAnimalSpecies()->at(i);
 
-					cout << " - Animal: " << animalSpeciesToBeAdded->getScientificName() << " -> Profitability: " << edibleAnimalProfitabilityToBeAdded << endl;
+					Output::cout(" - Animal: {} -> Profitability: {}\n", animalSpeciesToBeAdded->getScientificName(), edibleAnimalProfitabilityToBeAdded);
 					getAnimalSpecies(scientificName)->addEdibleProfitability(animalSpeciesToBeAdded, edibleAnimalProfitabilityToBeAdded);
 					++i;
 				}
 
-				cout << endl;
+				Output::cout("\n");
 			}
 		}
 	}
 	else
 	{
-		cerr << "The specified path \"" + speciesDirectory.string() + "\" does not exist or it is not a directory" << endl;
+		cerr << "The specified path \"" + speciesFolder.string() + "\" does not exist or it is not a directory" << endl;
 		exit(-1);
 	}
 
-	cout << "DONE" << endl << endl;
+	Output::cout("DONE\n\n");
 
-	for (vector<Species *>::iterator speciesIt = existingAnimalSpecies.begin(); speciesIt != existingAnimalSpecies.end(); speciesIt++)
+	for(auto speciesIt = existingAnimalSpecies.begin(); speciesIt != existingAnimalSpecies.end(); speciesIt++)
 	{
-		(*speciesIt)->setInitialPredationEventsOnOtherSpecies(existingAnimalSpecies.size() + existingFungiSpecies.size());
+		(*speciesIt)->setInitialPredationEventsOnOtherSpecies(existingAnimalSpecies.size() + existingResourceSpecies.size());
 	}
 
 }
 
-void World::readFungusSpeciesFromJSONFiles()
+void World::readResourceSpeciesFromJSONFiles()
 {
-	cout << "Reading all fungus species from JSON files ... " << endl;
+	Output::cout("Reading all resource species from JSON files ... \n");
 	
-	fs::path fungiDirectory = inputDirectory / fungiDirectoryName;
+	fs::path resourceFolder = inputFolder / resourceFolderName;
 	fs::directory_iterator end_iter;
-	if (fs::exists(fungiDirectory) && fs::is_directory(fungiDirectory))
+	if (fs::exists(resourceFolder) && fs::is_directory(resourceFolder))
 	{
 		vector<fs::path> filePaths;
-		copy(fs::directory_iterator(fungiDirectory), fs::directory_iterator(), back_inserter(filePaths));
+		copy(fs::directory_iterator(resourceFolder), fs::directory_iterator(), back_inserter(filePaths));
 		sort(filePaths.begin(), filePaths.end());             // directory iteration is not ordered on some file systems, so we sort them
 		json ptMain;
 		for(vector<fs::path>::const_iterator it(filePaths.begin()); it != filePaths.end(); ++it)
@@ -522,43 +562,64 @@ void World::readFungusSpeciesFromJSONFiles()
 				ptMain.clear();
 
 				// Read configuration file
-				ptMain = readConfigFile(*it, fs::path(SCHEMA_FOLDER) / fs::path(FUNGI_SCHEMA));
+				ptMain = readConfigFile(*it, WeaverFolder / fs::path(SCHEMA_FOLDER) / fs::path(RESOURCE_SCHEMA));
 
-				std::cout << " - Fungus scientific name: " << ptMain["fungus"]["name"] << endl << endl;
+				Output::cout(" - Resource scientific name: {}\n\n", (string)ptMain["resource"]["name"]);
 
-				FungusSpecies * newSpecies = new FungusSpecies(ptMain["fungus"]["name"], ptMain["fungus"]["ACTIVATION_ENERGY"], ptMain["fungus"]["NORMALIZATION_B"], ptMain["fungus"]["patchesDirectory"]);
-				newSpecies->setCellMass(ptMain["fungus"]["cellMass"]);
-				newSpecies->setConversionToWetMass(ptMain["fungus"]["conversionToWetMass"]);
-				newSpecies->setGrowingRateParams(ptMain["fungus"]["minHR"], ptMain["fungus"]["maxHR"], ptMain["fungus"]["maxRScale"]);
-				newSpecies->setMinimumEdibleBiomass(ptMain["fungus"]["minimumNumberOfEdibleSpores"], ptMain["fungus"]["cellMass"]);
+				ResourceSpecies * newSpecies;
 
-				addFungusSpecies(newSpecies);
+				
+				switch(ResourceType::stringToEnumValue(ptMain["resource"]["resourceType"])) {
+					case ResourceType::BasalResource: {
+						newSpecies = new BasalResourceSpecies(ptMain["resource"]["name"], ptMain["resource"]["ACTIVATION_ENERGY"], 
+							ptMain["resource"]["NORMALIZATION_B"], ptMain["resource"]["patchesFolder"]
+						);
+						break;
+					}
+					case ResourceType::NoBasalResource: {
+						newSpecies = new NoBasalResourceSpecies(ptMain["resource"]["name"], ptMain["resource"]["ACTIVATION_ENERGY"], 
+							ptMain["resource"]["NORMALIZATION_B"], ptMain["resource"]["patchesFolder"]
+						);
+						break;
+					}
+					default: {
+						throwLineInfoException("Default case");
+						break;
+					}
+				}
+				
+				newSpecies->setCellMass(ptMain["resource"]["cellMass"]);
+				newSpecies->setConversionToWetMass(ptMain["resource"]["conversionToWetMass"]);
+				newSpecies->setGrowingRateParams(ptMain["resource"]["minHR"], ptMain["resource"]["maxHR"], ptMain["resource"]["maxRScale"], ptMain["resource"]["variableIntrinsicRateOfIncrease"]);
+				newSpecies->setMinimumEdibleBiomass(ptMain["resource"]["minimumNumberOfEdibleSpores"], ptMain["resource"]["cellMass"]);
+
+				addResourceSpecies(newSpecies);
 			}
 		}
 	}
 	else
 	{
-		cerr << "The specified path \"" + fungiDirectory.string() + "\" does not exist or it is not a directory" << endl;
+		cerr << "The specified path \"" + resourceFolder.string() + "\" does not exist or it is not a directory" << endl;
 		exit(-1);
 	}
 }
 
-void World::initializeFungi()
+void World::initializeResource()
 {
-	cout << "Reading all fungus patches from JSON files ... " << endl;
+	Output::cout("Reading all resource patches from JSON files ... \n");
 	
 	fs::directory_iterator end_iter;
 
-	for (vector<Species *>::iterator itFungiSpecies = existingFungiSpecies.begin(); itFungiSpecies != existingFungiSpecies.end(); itFungiSpecies++)
+	for (auto itResourceSpecies = existingResourceSpecies.begin(); itResourceSpecies != existingResourceSpecies.end(); itResourceSpecies++)
 	{
-		Species* currentFungusSpecies = *itFungiSpecies;
-		cout << " - Fungus scientific name: " << currentFungusSpecies->getScientificName() << endl << endl;
-		fs::path patchesDirectory = inputDirectory / fungiDirectoryName / fs::path(currentFungusSpecies->getPatchesDirectoryName());
+		ResourceSpecies* currentResourceSpecies = *itResourceSpecies;
+		Output::cout(" - Resource scientific name: {}\n\n", currentResourceSpecies->getScientificName());
+		fs::path patchesFolder = inputFolder / resourceFolderName / fs::path(currentResourceSpecies->getPatchesFolderName());
 		json ptMain;
-		if (fs::exists(patchesDirectory) && fs::is_directory(patchesDirectory))
+		if (fs::exists(patchesFolder) && fs::is_directory(patchesFolder))
 		{
 			vector<fs::path> filePaths;
-			copy(fs::directory_iterator(patchesDirectory), fs::directory_iterator(), back_inserter(filePaths));
+			copy(fs::directory_iterator(patchesFolder), fs::directory_iterator(), back_inserter(filePaths));
 			sort(filePaths.begin(), filePaths.end());             // directory iteration is not ordered on some file systems, so we sort them
 
 			for (vector<fs::path>::const_iterator it(filePaths.begin()); it != filePaths.end(); ++it)
@@ -566,19 +627,21 @@ void World::initializeFungi()
 				if (it->extension() == ".json")
 				{
 					string patchFilename = it->string();
-					cout << patchFilename << endl;
+					Output::cout("{}\n", patchFilename);
 
 					ptMain.clear();
 
 					// Read configuration file
-					ptMain = readConfigFile(*it, fs::path(SCHEMA_FOLDER) / fs::path(PATCH_SCHEMA));
+					ptMain = readConfigFile(*it, WeaverFolder / fs::path(SCHEMA_FOLDER) / fs::path(PATCH_SCHEMA));
 
 					string type = ptMain["patch"]["type"];
+
+					double resourceMaximumCapacity = ptMain["patch"]["resourceMaximumCapacity"];
 
 					if (type == "homogeneous")
 					{
 						float value = ptMain["patch"]["value"];
-						setHomogeneousFungus(currentFungusSpecies, value);
+						setHomogeneousResource(currentResourceSpecies, value, resourceMaximumCapacity);
 					}
 					else if (type == "gaussian")
 					{
@@ -588,7 +651,7 @@ void World::initializeFungi()
 						unsigned int z = ptMain["patch"]["zPos"];
 						float sigma = ptMain["patch"]["sigma"];
 						float amplitude = ptMain["patch"]["amplitude"];
-						setGaussianFungusPatch(currentFungusSpecies, x, y, z, radius, sigma, amplitude);
+						setGaussianResourcePatch(currentResourceSpecies, x, y, z, radius, sigma, amplitude, resourceMaximumCapacity);
 					}
 					else if (type == "sphere")
 					{
@@ -597,25 +660,24 @@ void World::initializeFungi()
 						unsigned int y = ptMain["patch"]["yPos"];
 						unsigned int z = ptMain["patch"]["zPos"];
 						float value = ptMain["patch"]["value"];
-						setSphericalFungusPatch(currentFungusSpecies, x, y, z, radius, value);
+						setSphericalResourcePatch(currentResourceSpecies, x, y, z, radius, value, resourceMaximumCapacity);
 					}
 					else if (type == "cubic")
 					{
-std::cout << "CUBICOOOOO\n\n" << std::endl;
+						Output::cout("CUBICOOOOO\n\n\n");
 
-						Coordinate3D<int> patchCenter;
-						Coordinate3D<int> patchDimensions;
+						Coordinate3D<int> patchCenter(
+							ptMain["patch"]["center"]["x"], 
+							ptMain["patch"]["center"]["y"], 
+							ptMain["patch"]["center"]["z"]
+						);
+						Coordinate3D<int> patchDimensions(
+							ptMain["patch"]["dimensions"]["x"], 
+							ptMain["patch"]["dimensions"]["y"], 
+							ptMain["patch"]["dimensions"]["z"]
+						);
 
-						patchCenter.setX(ptMain["patch"]["center"]["x"]);
-						patchCenter.setY(ptMain["patch"]["center"]["y"]);
-						patchCenter.setZ(ptMain["patch"]["center"]["z"]);
-
-						patchDimensions.setX(ptMain["patch"]["dimensions"]["x"]);
-						patchDimensions.setY(ptMain["patch"]["dimensions"]["y"]);
-						patchDimensions.setZ(ptMain["patch"]["dimensions"]["z"]);
-
-						float value = ptMain["patch"]["value"];
-						setCubicFungusPatch(currentFungusSpecies, patchCenter, patchDimensions, value);
+						setCubicResourcePatch(currentResourceSpecies, patchCenter, patchDimensions, ptMain["patch"]["value"], resourceMaximumCapacity);
 
 					}
 					else if (type == "randomGaussian")
@@ -627,30 +689,28 @@ std::cout << "CUBICOOOOO\n\n" << std::endl;
 						float maxSigma = ptMain["patch"]["maxSigma"];
 						float maxAmplitude = ptMain["patch"]["maxAmplitude"];
 
-						setRandomGaussianFungusPatches(currentFungusSpecies, numberOfPatches, patchesRadius, maxSigma, useRandomSigma, maxAmplitude, useRandomAmplitude);
+						setRandomGaussianResourcePatches(currentResourceSpecies, numberOfPatches, patchesRadius, maxSigma, useRandomSigma, maxAmplitude, useRandomAmplitude, resourceMaximumCapacity);
 					}
 				}
 			}
 		}
 		else
 		{
-			cerr << "The specified path \"" + patchesDirectory.string() + "\" does not exist or it is not a directory" << endl;
+			cerr << "The specified path \"" + patchesFolder.string() + "\" does not exist or it is not a directory" << endl;
 			exit(-1);
 		}
 	}
 }
 
-void World::addFungusSpecies(FungusSpecies * newSpecies)
+void World::addResourceSpecies(ResourceSpecies * newSpecies)
 {
-	if (std::find(existingFungiSpecies.begin(), existingFungiSpecies.end(), newSpecies) == existingFungiSpecies.end())
+	if (std::find(existingResourceSpecies.begin(), existingResourceSpecies.end(), newSpecies) == existingResourceSpecies.end())
 	{
-		existingFungiSpecies.push_back(newSpecies);
+		existingResourceSpecies.push_back(newSpecies);
 	}
 	else
 	{
-		std::cerr << "Error, the " << newSpecies->getScientificName() << " was already added to this world ... EXITING"
-				<< std::endl;
-		exit(-1);
+		throwLineInfoException("Error, the " + newSpecies->getScientificName() + " was already added to this world");
 	}
 }
 
@@ -663,15 +723,13 @@ void World::addAnimalSpecies(AnimalSpecies * newSpecies)
 	}
 	else
 	{
-		std::cerr << "Error, the " << newSpecies->getScientificName() << " was already added to this world ... EXITING"
-				<< std::endl;
-		exit(-1);
+		throwLineInfoException("Error, the " + newSpecies->getScientificName() + " was already added to this world");
 	}
 }
 
-Species * World::getFungusSpecies(string name)
+ResourceSpecies * World::getResourceSpecies(string name)
 {
-	for (vector<Species*>::iterator it = existingFungiSpecies.begin(); it != existingFungiSpecies.end(); it++)
+	for (auto it = existingResourceSpecies.begin(); it != existingResourceSpecies.end(); it++)
 	{
 		if ((*it)->getScientificName() == name)
 		{
@@ -682,9 +740,9 @@ Species * World::getFungusSpecies(string name)
 	return NULL;
 }
 
-Species * World::getAnimalSpecies(string name)
+AnimalSpecies * World::getAnimalSpecies(const string& name)
 {
-	for (vector<Species*>::iterator it = existingAnimalSpecies.begin(); it != existingAnimalSpecies.end(); it++)
+	for (auto it = existingAnimalSpecies.begin(); it != existingAnimalSpecies.end(); it++)
 	{
 		if ((*it)->getScientificName() == name)
 		{
@@ -693,20 +751,6 @@ Species * World::getAnimalSpecies(string name)
 	}
 
 	return NULL;
-}
-
-void World::addPlantSpecies(PlantSpecies * newSpecies, unsigned int initialPopulationSize)
-{
-	if (existingPlantSpecies.find(newSpecies) == existingPlantSpecies.end())
-	{
-		existingPlantSpecies[newSpecies] = initialPopulationSize;
-	}
-	else
-	{
-		std::cerr << "Error, the " << newSpecies->getScientificName() << " was already added to this world ... EXITING"
-				<< std::endl;
-		exit(-1);
-	}
 }
 
 void World::printAnimalsAlongCells(int day, int simulationPoint)
@@ -723,17 +767,15 @@ void World::printAnimalsAlongCells(int day, int simulationPoint)
 			pathBySimulationPoint = "animals_each_day_end";
 		}
 		
-		ofstream file;
-		createOutputFile(file, outputDirectory / fs::path(pathBySimulationPoint) / fs::path("animals_day_"), "txt", day, recordEach);
-		if (!file.is_open())
+		FILE* file = nullptr;
+		createOutputFile(&file, outputFolder / fs::path(pathBySimulationPoint), "animals_day_", "txt", day, recordEach);
+		if (!isFileOpen(file))
 		{
-			cerr << "Error opening the file." << endl;
+			Output::cerr("Error opening the file.\n");
 		}
 		else
 		{
-			file
-					<< "id\tspecies\tgender\tx\ty\tz\tstate\tinstar\tpheno_ini\tdate_egg\tage_first_rep\trep_count\tfecundity\tdate_death\tg_numb_prt1\tg_numb_prt2\tID_prt1\tID_prt2\tencounters_pred\tglobal_pred_encs\tdays_digest\tvor_ini\tsearch_ini\tspeed_ini\ttank_ini\tpheno_ini\tcurrentBodySize\tcurrentDryMass\t" << TraitConverter::printAvailableTraits() //\t1\t2\t3\t4\t5\t6\t7\t8\t9\t10\t11\t12\t13\t14\t15\t16\t17\t18\t19\t20\t21\t22\t23\t24\t25\t26\t27\t28\t29\t30\t31\t32\t33\t34\t35\t36\t37\t38\t39\t40\t41\t42\t43\t44\t45\t46\t47\t48\t49\t50\t51\t52\t53\t54\t55\t56\t57\t58\t59\t60\t61\t62\t63\t64\t65\t66\t67\t68\t69\t70\t71\t72"
-					<< endl;
+			Output::print(file, "id\tspecies\tgender\tx\ty\tz\tstate\tinstar\tpheno_ini\tdate_egg\tage_first_rep\trep_count\tfecundity\tdate_death\tg_numb_prt1\tg_numb_prt2\tID_prt1\tID_prt2\tencounters_pred\tglobal_pred_encs\tdays_digest\tvor_ini\tsearch_ini\tspeed_ini\ttank_ini\tpheno_ini\tcurrentBodySize\tcurrentDryMass\t{}\n", Trait::printAvailableTraits());
 			TerrainCell* cellToPrintFrom;
 			for (unsigned int z = 0; z < depth; z++)
 			{
@@ -741,15 +783,15 @@ void World::printAnimalsAlongCells(int day, int simulationPoint)
 				{
 					for (unsigned int x = 0; x < width; x++)
 					{
-						cellToPrintFrom = terrain[z][y][x];
+						cellToPrintFrom = getCell(z,y,x);
 						if(!cellToPrintFrom->isObstacle())
 						{
-							terrain[z][y][x]->printAnimals(file);
+							getCell(z,y,x)->printAnimals(file);
 						}
 					}
 				}
 			}
-			file.close();
+			fclose(file);
 		}
 	}
 }
@@ -760,26 +802,26 @@ void World::printAnimalsAlongCells(int day, int simulationPoint)
 
 		string pathBySimulationPoint = "cells_each_day";
 		
-		ofstream file;
-		createOutputFile(file, outputDirectory / fs::path(pathBySimulationPoint) / fs::path("cells_day_"), "txt", day, recordEach);
-		if(!file.is_open())
+		FILE* file = nullptr;
+		createOutputFile(&file, outputFolder / fs::path(pathBySimulationPoint), "cells_day_", "txt", day, recordEach);
+		if(!isFileOpen(file))
 		{
-			cerr << "Error opening the file." << endl;
+			Output::cerr("Error opening the file.\n");
 		}
 		else
 		{
-			file << "x\ty\tz\t";
+			Output::print(file, "x\ty\tz\t");
 
-			for (vector<Species *>::iterator itFungiSpecies = existingFungiSpecies.begin(); itFungiSpecies != existingFungiSpecies.end(); itFungiSpecies++)
+			for (auto itResourceSpecies = existingResourceSpecies.begin(); itResourceSpecies != existingResourceSpecies.end(); itResourceSpecies++)
 			{
-				file << (*itFungiSpecies)->getScientificName() << "\t";
+				Output::print(file, "{}\t", (*itResourceSpecies)->getScientificName());
 			}
 
-			for (vector<Species *>::iterator itSpecies = existingAnimalSpecies.begin(); itSpecies != existingAnimalSpecies.end(); itSpecies++)
+			for (auto itSpecies = existingAnimalSpecies.begin(); itSpecies != existingAnimalSpecies.end(); itSpecies++)
 			{
-				file << (*itSpecies)->getScientificName() << "\t";
+				Output::print(file, "{}\t", (*itSpecies)->getScientificName());
 			}
-			file << endl;
+			Output::print(file, "\n");
 
 			TerrainCell* cellToPrintFrom;
 			for (unsigned int z = 0; z < depth; z++)
@@ -788,21 +830,21 @@ void World::printAnimalsAlongCells(int day, int simulationPoint)
 				{
 					for (unsigned int x = 0; x < width; x++)
 					{
-						cellToPrintFrom = terrain[z][y][x];
+						cellToPrintFrom = getCell(z,y,x);
 						if(!cellToPrintFrom->isObstacle())
 						{
-							terrain[z][y][x]->printCell(file);
+							getCell(z,y,x)->printCell(file);
 						}
 					}
 				}
 			}
-			file.close();
+			fclose(file);
 		}
 	}
  }
 
 
-ostream& World::printDailySummary(ostream& os, int day)
+void World::printDailySummary(FILE* file, int day)
 {
 	double biomass = 0;
 	int numberOfUnbornPreys = 0, numberOfActivePreys = 0, numberOfStarvedPreys = 0, numberOfPredatedPreys = 0,
@@ -817,82 +859,82 @@ ostream& World::printDailySummary(ostream& os, int day)
 		{
 			for (unsigned int x = 0; x < width; x++)
 			{
-				biomass += terrain[z][y][x]->getTotalFungusBiomass();
+				biomass += getCell(z,y,x)->getTotalResourceBiomass();
 
-				numberOfUnbornPreys += terrain[z][y][x]->getLifeStagePopulation(Animal::LIFE_STAGES::UNBORN,
-						Animal::HUNTING_MODES::DOES_NOT_HUNT);
-				numberOfActivePreys += terrain[z][y][x]->getLifeStagePopulation(Animal::LIFE_STAGES::ACTIVE,
-						Animal::HUNTING_MODES::DOES_NOT_HUNT);
-				numberOfStarvedPreys += terrain[z][y][x]->getLifeStagePopulation(Animal::LIFE_STAGES::STARVED,
-						Animal::HUNTING_MODES::DOES_NOT_HUNT);
-				numberOfPredatedPreys += terrain[z][y][x]->getLifeStagePopulation(Animal::LIFE_STAGES::PREDATED,
-						Animal::HUNTING_MODES::DOES_NOT_HUNT);
-				numberOfReproducingPreys += terrain[z][y][x]->getLifeStagePopulation(Animal::LIFE_STAGES::REPRODUCING,
-						Animal::HUNTING_MODES::DOES_NOT_HUNT);
-				numberOfSenescedPreys += terrain[z][y][x]->getLifeStagePopulation(Animal::LIFE_STAGES::SENESCED,
-						Animal::HUNTING_MODES::DOES_NOT_HUNT);
-				numberOfShockedPreys += terrain[z][y][x]->getLifeStagePopulation(Animal::LIFE_STAGES::SHOCKED,
-						Animal::HUNTING_MODES::DOES_NOT_HUNT);
+				numberOfUnbornPreys += getCell(z,y,x)->getLifeStagePopulation(LifeStage::UNBORN,
+						HuntingMode::does_not_hunt);
+				numberOfActivePreys += getCell(z,y,x)->getLifeStagePopulation(LifeStage::ACTIVE,
+						HuntingMode::does_not_hunt);
+				numberOfStarvedPreys += getCell(z,y,x)->getLifeStagePopulation(LifeStage::STARVED,
+						HuntingMode::does_not_hunt);
+				numberOfPredatedPreys += getCell(z,y,x)->getLifeStagePopulation(LifeStage::PREDATED,
+						HuntingMode::does_not_hunt);
+				numberOfReproducingPreys += getCell(z,y,x)->getLifeStagePopulation(LifeStage::REPRODUCING,
+						HuntingMode::does_not_hunt);
+				numberOfSenescedPreys += getCell(z,y,x)->getLifeStagePopulation(LifeStage::SENESCED,
+						HuntingMode::does_not_hunt);
+				numberOfShockedPreys += getCell(z,y,x)->getLifeStagePopulation(LifeStage::SHOCKED,
+						HuntingMode::does_not_hunt);
 
-				numberOfUnbornPredators += terrain[z][y][x]->getLifeStagePopulation(Animal::LIFE_STAGES::UNBORN,
-						Animal::HUNTING_MODES::ACTIVE_HUNTING);
-				numberOfUnbornPredators += terrain[z][y][x]->getLifeStagePopulation(Animal::LIFE_STAGES::UNBORN,
-						Animal::HUNTING_MODES::SIT_AND_WAIT);
-				numberOfActivePredators += terrain[z][y][x]->getLifeStagePopulation(Animal::LIFE_STAGES::ACTIVE,
-						Animal::HUNTING_MODES::ACTIVE_HUNTING);
-				numberOfActivePredators += terrain[z][y][x]->getLifeStagePopulation(Animal::LIFE_STAGES::ACTIVE,
-						Animal::HUNTING_MODES::SIT_AND_WAIT);
-				numberOfStarvedPredators += terrain[z][y][x]->getLifeStagePopulation(Animal::LIFE_STAGES::STARVED,
-						Animal::HUNTING_MODES::ACTIVE_HUNTING);
-				numberOfStarvedPredators += terrain[z][y][x]->getLifeStagePopulation(Animal::LIFE_STAGES::STARVED,
-						Animal::HUNTING_MODES::SIT_AND_WAIT);
-				numberOfPredatedPredators += terrain[z][y][x]->getLifeStagePopulation(Animal::LIFE_STAGES::PREDATED,
-						Animal::HUNTING_MODES::ACTIVE_HUNTING);
-				numberOfPredatedPredators += terrain[z][y][x]->getLifeStagePopulation(Animal::LIFE_STAGES::PREDATED,
-						Animal::HUNTING_MODES::SIT_AND_WAIT);
-				numberOfReproducingPredators += terrain[z][y][x]->getLifeStagePopulation(
-						Animal::LIFE_STAGES::REPRODUCING, Animal::HUNTING_MODES::ACTIVE_HUNTING);
-				numberOfReproducingPredators += terrain[z][y][x]->getLifeStagePopulation(
-						Animal::LIFE_STAGES::REPRODUCING, Animal::HUNTING_MODES::SIT_AND_WAIT);
-				numberOfBackgroundPredators += terrain[z][y][x]->getLifeStagePopulation(Animal::LIFE_STAGES::BACKGROUND,
-						Animal::HUNTING_MODES::ACTIVE_HUNTING);
-				numberOfBackgroundPredators += terrain[z][y][x]->getLifeStagePopulation(Animal::LIFE_STAGES::BACKGROUND,
-						Animal::HUNTING_MODES::SIT_AND_WAIT);
-				numberOfSenescedPredators += terrain[z][y][x]->getLifeStagePopulation(Animal::LIFE_STAGES::SENESCED,
-						Animal::HUNTING_MODES::ACTIVE_HUNTING);
-				numberOfSenescedPredators += terrain[z][y][x]->getLifeStagePopulation(Animal::LIFE_STAGES::SENESCED,
-						Animal::HUNTING_MODES::SIT_AND_WAIT);
-				numberOfShockedPredators += terrain[z][y][x]->getLifeStagePopulation(Animal::LIFE_STAGES::SHOCKED,
-						Animal::HUNTING_MODES::ACTIVE_HUNTING);
-				numberOfShockedPredators += terrain[z][y][x]->getLifeStagePopulation(Animal::LIFE_STAGES::SHOCKED,
-						Animal::HUNTING_MODES::SIT_AND_WAIT);
+				numberOfUnbornPredators += getCell(z,y,x)->getLifeStagePopulation(LifeStage::UNBORN,
+						HuntingMode::active_hunting);
+				numberOfUnbornPredators += getCell(z,y,x)->getLifeStagePopulation(LifeStage::UNBORN,
+						HuntingMode::sit_and_wait);
+				numberOfActivePredators += getCell(z,y,x)->getLifeStagePopulation(LifeStage::ACTIVE,
+						HuntingMode::active_hunting);
+				numberOfActivePredators += getCell(z,y,x)->getLifeStagePopulation(LifeStage::ACTIVE,
+						HuntingMode::sit_and_wait);
+				numberOfStarvedPredators += getCell(z,y,x)->getLifeStagePopulation(LifeStage::STARVED,
+						HuntingMode::active_hunting);
+				numberOfStarvedPredators += getCell(z,y,x)->getLifeStagePopulation(LifeStage::STARVED,
+						HuntingMode::sit_and_wait);
+				numberOfPredatedPredators += getCell(z,y,x)->getLifeStagePopulation(LifeStage::PREDATED,
+						HuntingMode::active_hunting);
+				numberOfPredatedPredators += getCell(z,y,x)->getLifeStagePopulation(LifeStage::PREDATED,
+						HuntingMode::sit_and_wait);
+				numberOfReproducingPredators += getCell(z,y,x)->getLifeStagePopulation(
+						LifeStage::REPRODUCING, HuntingMode::active_hunting);
+				numberOfReproducingPredators += getCell(z,y,x)->getLifeStagePopulation(
+						LifeStage::REPRODUCING, HuntingMode::sit_and_wait);
+				numberOfBackgroundPredators += getCell(z,y,x)->getLifeStagePopulation(LifeStage::BACKGROUND,
+						HuntingMode::active_hunting);
+				numberOfBackgroundPredators += getCell(z,y,x)->getLifeStagePopulation(LifeStage::BACKGROUND,
+						HuntingMode::sit_and_wait);
+				numberOfSenescedPredators += getCell(z,y,x)->getLifeStagePopulation(LifeStage::SENESCED,
+						HuntingMode::active_hunting);
+				numberOfSenescedPredators += getCell(z,y,x)->getLifeStagePopulation(LifeStage::SENESCED,
+						HuntingMode::sit_and_wait);
+				numberOfShockedPredators += getCell(z,y,x)->getLifeStagePopulation(LifeStage::SHOCKED,
+						HuntingMode::active_hunting);
+				numberOfShockedPredators += getCell(z,y,x)->getLifeStagePopulation(LifeStage::SHOCKED,
+						HuntingMode::sit_and_wait);
 
 			}
 		}
 	}
 
-	os << day << "\t" << biomass << "\t" << numberOfUnbornPreys << "\t" << numberOfActivePreys << "\t"
-			<< numberOfStarvedPreys << "\t" << numberOfPredatedPreys << "\t" << numberOfReproducingPreys << "\t"
-			<< numberOfSenescedPreys << "\t" << numberOfShockedPreys << "\t" << numberOfUnbornPredators << "\t" << numberOfActivePredators << "\t"
-			<< numberOfStarvedPredators << "\t" << numberOfPredatedPredators << "\t" << numberOfReproducingPredators
-			<< "\t" << numberOfBackgroundPredators << "\t" << numberOfSenescedPredators << "\t" 
-			<< numberOfShockedPredators << endl;
-			
-	return os;
+	Output::print(
+		file, "{}\t{}\t{}\t{}\t{}\t{}\t{}\t{}\t{}\t{}\t{}\t{}\t{}\t{}\t{}\t{}\t{}\t\n",
+		day, biomass, numberOfUnbornPreys, numberOfActivePreys, numberOfStarvedPreys,
+		numberOfPredatedPreys, numberOfReproducingPreys, numberOfSenescedPreys,
+		numberOfShockedPreys, numberOfUnbornPredators, numberOfActivePredators,
+		numberOfStarvedPredators, numberOfPredatedPredators, numberOfReproducingPredators,
+		numberOfBackgroundPredators, numberOfSenescedPredators, numberOfShockedPredators
+	);
 }
 
-ostream& World::printExtendedDailySummary(ostream& os, int day)
+void World::printExtendedDailySummary(FILE* file, int day)
 {
-	map<Species*, double>* worldFungiBiomass = new map<Species*, double>();
-	for (vector<Species *>::iterator itFungiSpecies = existingFungiSpecies.begin(); itFungiSpecies != existingFungiSpecies.end(); itFungiSpecies++)
+	map<ResourceSpecies*, double>* worldResourceBiomass = new map<ResourceSpecies*, double>();
+	for (auto itResourceSpecies = existingResourceSpecies.begin(); itResourceSpecies != existingResourceSpecies.end(); itResourceSpecies++)
 	{
-		worldFungiBiomass->insert(std::pair<Species*, double>((*itFungiSpecies),0));
+		worldResourceBiomass->insert(std::pair<ResourceSpecies*, double>((*itResourceSpecies),0));
 	}
 
-	map<Species*, vector<unsigned int>* >* worldAnimalsPopulation = new map<Species*, vector<unsigned int>* >();
-	for (vector<Species *>::iterator itSpecies = existingAnimalSpecies.begin(); itSpecies != existingAnimalSpecies.end(); itSpecies++)
+	map<AnimalSpecies*, vector<unsigned int>* >* worldAnimalsPopulation = new map<AnimalSpecies*, vector<unsigned int>* >();
+	for(auto itSpecies = existingAnimalSpecies.begin(); itSpecies != existingAnimalSpecies.end(); itSpecies++)
 	{
-		worldAnimalsPopulation->insert(std::pair<Species*, vector<unsigned int>*>((*itSpecies), new vector<unsigned int>(Animal::LIFE_STAGES::SHOCKED+1, 0)));
+		worldAnimalsPopulation->insert(std::pair<AnimalSpecies*, vector<unsigned int>*>((*itSpecies), new vector<unsigned int>(LifeStage::SHOCKED+1, 0)));
 	}
 
 	TerrainCell* cellToUpdateFrom;
@@ -902,30 +944,30 @@ ostream& World::printExtendedDailySummary(ostream& os, int day)
 		{
 			for (unsigned int x = 0; x < width; x++)
 			{
-				cellToUpdateFrom = terrain[z][y][x];
+				cellToUpdateFrom = getCell(z,y,x);
 				if(!cellToUpdateFrom->isObstacle())
 				{
-					cellToUpdateFrom->updateWorldFungiBiomassAndAnimalsPopulation(worldFungiBiomass, worldAnimalsPopulation);
+					cellToUpdateFrom->updateWorldResourceBiomassAndAnimalsPopulation(worldResourceBiomass, worldAnimalsPopulation);
 				}
 			}
 		}
 	}
 
-	os << day << "\t";
+	Output::print(file, "{}\t", day);
 
-	for (vector<Species *>::iterator itFungiSpecies = existingFungiSpecies.begin(); itFungiSpecies != existingFungiSpecies.end(); itFungiSpecies++)
+	for (auto itResourceSpecies = existingResourceSpecies.begin(); itResourceSpecies != existingResourceSpecies.end(); itResourceSpecies++)
 	{
-		os << worldFungiBiomass->at(*itFungiSpecies) << "\t";
+		Output::print(file, "{}\t", worldResourceBiomass->at(*itResourceSpecies));
 	}
 
-	for (vector<Species *>::iterator itSpecies = existingAnimalSpecies.begin(); itSpecies != existingAnimalSpecies.end(); itSpecies++)
+	for (auto itSpecies = existingAnimalSpecies.begin(); itSpecies != existingAnimalSpecies.end(); itSpecies++)
 	{
-		for (unsigned int lifeStage = 0; lifeStage <= Animal::LIFE_STAGES::SHOCKED; ++lifeStage)
+		for(const auto &lifeStage : LifeStage::getEnumValues())
 		{
-			os << worldAnimalsPopulation->at(*itSpecies)->at(lifeStage) << "\t";
+			Output::print(file, "{}\t", worldAnimalsPopulation->at(*itSpecies)->at(lifeStage));
 		}
 	}
-	os << endl;
+	Output::print(file, "\n");
 
 /*
 	os << day << "\t" << biomass << "\t" << numberOfUnbornPreys << "\t" << numberOfActivePreys << "\t"
@@ -935,10 +977,10 @@ ostream& World::printExtendedDailySummary(ostream& os, int day)
 			<< "\t" << numberOfBackgroundPredators << "\t" << numberOfSenescedPredators << endl;
 			*/
 
-	worldFungiBiomass->clear();
-	delete worldFungiBiomass;
+	worldResourceBiomass->clear();
+	delete worldResourceBiomass;
 	
-	for (vector<Species *>::iterator itSpecies = existingAnimalSpecies.begin(); itSpecies != existingAnimalSpecies.end(); itSpecies++)
+	for (auto itSpecies = existingAnimalSpecies.begin(); itSpecies != existingAnimalSpecies.end(); itSpecies++)
 	{
 	
 		delete worldAnimalsPopulation->at(*itSpecies);
@@ -946,21 +988,18 @@ ostream& World::printExtendedDailySummary(ostream& os, int day)
 	}
 	worldAnimalsPopulation->clear();
 	delete worldAnimalsPopulation;
-
-	return os;
 }
 
 void World::printGeneticsSummaries(int day)
 {
-
-	map<Species*, vector<unsigned int>* >* worldAnimalsPopulation = new map<Species*, vector<unsigned int>* >();
-	map<Species*, vector<set<double>* >* >* worldGeneticsFrequencies = new map<Species*, vector<set<double>* >* >();
-	for (vector<Species *>::iterator itSpecies = existingAnimalSpecies.begin(); itSpecies != existingAnimalSpecies.end(); itSpecies++)
+	map<AnimalSpecies*, vector<unsigned int>* >* worldAnimalsPopulation = new map<AnimalSpecies*, vector<unsigned int>* >();
+	map<AnimalSpecies*, vector<set<double>* >* >* worldGeneticsFrequencies = new map<AnimalSpecies*, vector<set<double>* >* >();
+	for(auto itSpecies = existingAnimalSpecies.begin(); itSpecies != existingAnimalSpecies.end(); itSpecies++)
 	{
-		worldAnimalsPopulation->insert(std::pair<Species*, vector<unsigned int>*>((*itSpecies), new vector<unsigned int>(Animal::LIFE_STAGES::SHOCKED+1, 0)));
+		worldAnimalsPopulation->insert(std::pair<AnimalSpecies*, vector<unsigned int>*>((*itSpecies), new vector<unsigned int>(LifeStage::SHOCKED+1, 0)));
 		//We multiply x2 because there are PAIRS of chromosomes. We store this data this way: T1_CR1, T2_CR1... T13_CR1.. T1_CR2, T2_CR2... T13_CR2
-		unsigned int totalNumberOfLoci = (*itSpecies)->getNumberOfTraits() * (*itSpecies)->getNumberOfLociPerTrait() * 2;
-		worldGeneticsFrequencies->insert(std::pair<Species*, vector<set<double>* >*>((*itSpecies), new vector<set<double>* >(totalNumberOfLoci)));
+		unsigned int totalNumberOfLoci = (*itSpecies)->getNumberOfVariableTraits() * (*itSpecies)->getNumberOfLociPerTrait() * 2;
+		worldGeneticsFrequencies->insert(std::pair<AnimalSpecies*, vector<set<double>* >*>((*itSpecies), new vector<set<double>* >(totalNumberOfLoci)));
 		for(unsigned int i = 0; i < totalNumberOfLoci; ++i)
 		{
 			worldGeneticsFrequencies->at((*itSpecies))->at(i) = new set<double>();
@@ -974,7 +1013,7 @@ void World::printGeneticsSummaries(int day)
 		{
 			for (unsigned int x = 0; x < width; x++)
 			{
-				cellToUpdateFrom = terrain[z][y][x];
+				cellToUpdateFrom = getCell(z,y,x);
 				if(!cellToUpdateFrom->isObstacle())
 				{
 					cellToUpdateFrom->updateAnimalsPopulationAndGeneticsFrequencies(worldAnimalsPopulation, worldGeneticsFrequencies);
@@ -986,51 +1025,56 @@ void World::printGeneticsSummaries(int day)
 	}
 
 	double sum, mean;
-	for (vector<Species *>::iterator itSpecies = existingAnimalSpecies.begin(); itSpecies != existingAnimalSpecies.end(); itSpecies++)
+	for(auto itSpecies = existingAnimalSpecies.begin(); itSpecies != existingAnimalSpecies.end(); itSpecies++)
 	{
-		string scientificName = (*itSpecies)->getScientificName();
-		
-		ofstream geneticsSummaryFile;
-		createOutputFile(geneticsSummaryFile, outputDirectory / fs::path("geneticsSummaries"), scientificName + "_geneticsSummary", "txt", ofstream::app);
-		if (!geneticsSummaryFile.is_open())
-		{
-			cerr << "Error opening the file." << endl;
-		}
-		else
-		{
-			geneticsSummaryFile << day << "\t";
-			geneticsSummaryFile << worldAnimalsPopulation->at(*itSpecies)->at(Animal::LIFE_STAGES::UNBORN) + worldAnimalsPopulation->at(*itSpecies)->at(Animal::LIFE_STAGES::ACTIVE) + worldAnimalsPopulation->at(*itSpecies)->at(Animal::LIFE_STAGES::REPRODUCING) << "\t";
+		Output::print(geneticsSummaryFile[*itSpecies], "{}\t", day);
+		Output::print(geneticsSummaryFile[*itSpecies], "{}\t", worldAnimalsPopulation->at(*itSpecies)->at(LifeStage::UNBORN) + worldAnimalsPopulation->at(*itSpecies)->at(LifeStage::ACTIVE) + worldAnimalsPopulation->at(*itSpecies)->at(LifeStage::REPRODUCING));
 
-			//We multiply x2 because there are PAIRS of chromosomes. We store this data this way: T1_CR1, T2_CR1... T13_CR1.. T1_CR2, T2_CR2... T13_CR2
-			for(unsigned int selectedChromosome = 0; selectedChromosome < (*itSpecies)->getNumberOfTraits()*2; ++selectedChromosome)
+		//We multiply x2 because there are PAIRS of chromosomes. We store this data this way: T1_CR1, T2_CR1... T13_CR1.. T1_CR2, T2_CR2... T13_CR2
+		for(unsigned int selectedChromosome = 0; selectedChromosome < (*itSpecies)->getNumberOfVariableTraits()*2; ++selectedChromosome)
+		{
+			sum = 0;
+			mean = 0;
+			for(unsigned int selectedLoci = 0; selectedLoci < (*itSpecies)->getNumberOfLociPerTrait(); ++selectedLoci)
 			{
-				sum = 0;
-				mean = 0;
-				for(unsigned int selectedLoci = 0; selectedLoci < (*itSpecies)->getNumberOfLociPerTrait(); ++selectedLoci)
-				{
-					sum += worldGeneticsFrequencies->at((*itSpecies))->at(selectedChromosome*(*itSpecies)->getNumberOfLociPerTrait()+selectedLoci)->size();
-				}
-				mean = sum / (*itSpecies)->getNumberOfLociPerTrait();
-				geneticsSummaryFile << mean << "\t";
+				sum += worldGeneticsFrequencies->at((*itSpecies))->at(selectedChromosome*(*itSpecies)->getNumberOfLociPerTrait()+selectedLoci)->size();
 			}
-			geneticsSummaryFile << endl;
-			geneticsSummaryFile.close();
+			mean = sum / (*itSpecies)->getNumberOfLociPerTrait();
+			Output::print(geneticsSummaryFile[*itSpecies], "{}\t", mean);
 		}
-
+		Output::print(geneticsSummaryFile[*itSpecies], "\n");
 	}
+
+	// Delete worldAnimalsPopulation
+	for(auto &[key, value] : *worldAnimalsPopulation) {
+		delete value;
+	}
+	worldAnimalsPopulation->clear();
+	delete worldAnimalsPopulation;
+
+	// Delete worldGeneticsFrequencies
+	for(auto &[key, value] : *worldGeneticsFrequencies) {
+		for(auto elem : *value) {
+			delete elem;
+		}
+		value->clear();
+		delete value;
+	}
+	worldGeneticsFrequencies->clear();
+	delete worldGeneticsFrequencies;
 }
 
-void World::saveAnimalSpeciesSnapshot(fs::path filenameRoot, int day, Species* species)
+void World::saveAnimalSpeciesSnapshot(fs::path filenameRoot, string filename, int day, AnimalSpecies* species)
 {
 	if (species->getTotalInitialPopulation() > 0)
 	{
 		string scientificName = species->getScientificName();
 		std::replace(scientificName.begin(), scientificName.end(), ' ', '_');
 
-		ofstream file;
-		string filename = createOutputFile(file, fs::path(filenameRoot.string() + "_" + scientificName + "_day_"), "dat", day, recordEach, ios::out | ios::binary);
+		FILE* file = nullptr;
+		string fullPath = createOutputFile(&file, filenameRoot, filename + "_" + scientificName + "_day_", "dat", day, recordEach);
 
-		std::cout << "Saving Animal as " << filename << "... ";
+		Output::cout("Saving Animal as {}... ", fullPath);
 
 		float value;
 		for (unsigned int z = 0; z < depth; z++)
@@ -1039,35 +1083,36 @@ void World::saveAnimalSpeciesSnapshot(fs::path filenameRoot, int day, Species* s
 			{
 				for (unsigned int x = 0; x < width; x++)
 				{
-					TerrainCell* currentTerrainCell = terrain[z][y][x];
+					TerrainCell* currentTerrainCell = getCell(z,y,x);
 					if(!currentTerrainCell->isObstacle())
 					{
-						value = currentTerrainCell->getLifeStagePopulation(Animal::LIFE_STAGES::ACTIVE, species);
+						value = currentTerrainCell->getLifeStagePopulation(LifeStage::ACTIVE, species);
 					}
 					else
 					{
 						value = 0.0;
 					}
-					file.write((char *) &value, sizeof(float));
+
+					Output::print(file, "{}", value);
 				}
 			}
 		}
 
-		std::cout << "DONE" << std::endl;
+		Output::cout("DONE\n");
 
-		file.close();
+		fclose(file);
 	}
 }
 
-void World::saveFungusSpeciesSnapshot(fs::path filenameRoot, int day, Species* species)
+void World::saveResourceSpeciesSnapshot(fs::path filenameRoot, string filename, int day, ResourceSpecies* species)
 {
 	string scientificName = species->getScientificName();
 	std::replace(scientificName.begin(), scientificName.end(), ' ', '_');
 
-	ofstream file;
-	string filename = createOutputFile(file, fs::path(filenameRoot.string() + "_" + scientificName + "_day_"), "dat", day, recordEach, ios::out | ios::binary);
+	FILE* file = nullptr;
+	string fullPath = createOutputFile(&file, filenameRoot, filename + "_" + scientificName + "_day_", "dat", day, recordEach);
 
-	std::cout << "Saving Fungus as " << filename << "... ";
+	Output::cout("Saving Resource as {}... ", fullPath);
 
 	float value;
 
@@ -1078,31 +1123,32 @@ void World::saveFungusSpeciesSnapshot(fs::path filenameRoot, int day, Species* s
 		{
 			for (unsigned int x = 0; x < width; x++)
 			{
-				currentTerrainCell = terrain[z][y][x];
+				currentTerrainCell = getCell(z,y,x);
 				if(!currentTerrainCell->isObstacle())
 				{
-					value = currentTerrainCell->getFungusBiomass(species);
+					value = currentTerrainCell->getResourceBiomass(species);
 				}
 				else
 				{
 					value = 0.0;
 				}
-				file.write((char *) &value, sizeof(float));
+
+				Output::print(file, "{}", value);
 			}
 		}
 	}
 
-	std::cout << "DONE" << std::endl;
+	Output::cout("DONE\n");
 
-	file.close();
+	fclose(file);
 }
 
-void World::saveWaterSnapshot(fs::path filenameRoot, int day)
+void World::saveWaterSnapshot(fs::path filenameRoot, string filename, int day)
 {
-	ofstream file;
-	string filename = createOutputFile(file, fs::path(filenameRoot.string() + "_day_"), "dat", day, recordEach, ios::out | ios::binary);
+	FILE* file = nullptr;
+	string fullPath = createOutputFile(&file, filenameRoot, filename + "_day_", "dat", day, recordEach);
 
-	std::cout << "Saving Water volume as " << filename << "... ";
+	Output::cout("Saving Water volume as {}... ", fullPath);
 
 	float value;
 
@@ -1113,43 +1159,41 @@ void World::saveWaterSnapshot(fs::path filenameRoot, int day)
 		{
 			for (unsigned int x = 0; x < width; x++)
 			{
-				currentTerrainCell = terrain[z][y][x];
+				currentTerrainCell = getCell(z,y,x);
 				if(!currentTerrainCell->isObstacle())
 				{
 					value = currentTerrainCell->getWater();
-					file.write((const char*) &value, sizeof(float));
+					Output::print(file, "{}", value);
 				}
 			}
 		}
 	}
 
-	file.close();
-	std::cout << "DONE" << std::endl;
+	fclose(file);
+	Output::cout("DONE\n");
 }
 
-void World::printPredationEventsOnOtherSpeciesMatrix(ostream& predationEventsOnOtherSpeciesFile)
+void World::printPredationEventsOnOtherSpeciesMatrix(FILE* predationEventsOnOtherSpeciesFile)
 {
-	predationEventsOnOtherSpeciesFile << "\t";
+	Output::print(predationEventsOnOtherSpeciesFile, "\t");
 	for (unsigned int i = 0; i < existingAnimalSpecies.size(); i++)
 	{
-		predationEventsOnOtherSpeciesFile << existingAnimalSpecies[i]->getScientificName() << "\t";
+		Output::print(predationEventsOnOtherSpeciesFile, "{}\t", existingAnimalSpecies[i]->getScientificName());
 	}
 
-	predationEventsOnOtherSpeciesFile << endl;
+	Output::print(predationEventsOnOtherSpeciesFile, "\n");
 
 	vector<int>* currentPredationEventsOnOtherSpecies;
 	for (unsigned int i = 0; i < existingAnimalSpecies.size(); i++)
 	{
-		predationEventsOnOtherSpeciesFile << existingAnimalSpecies[i]->getScientificName() << "\t";
+		Output::print(predationEventsOnOtherSpeciesFile, "{}\t", existingAnimalSpecies[i]->getScientificName());
 		currentPredationEventsOnOtherSpecies = existingAnimalSpecies[i]->getPredationEventsOnOtherSpecies();
 		for (unsigned int j = 0; j < existingAnimalSpecies.size(); j++)
 		{
-			predationEventsOnOtherSpeciesFile
-					<< currentPredationEventsOnOtherSpecies->at(existingAnimalSpecies[j]->getId()) << "\t";
+			Output::print(predationEventsOnOtherSpeciesFile, "{}\t", currentPredationEventsOnOtherSpecies->at(existingAnimalSpecies[j]->getId()));
 		}
-		predationEventsOnOtherSpeciesFile << endl;
+		Output::print(predationEventsOnOtherSpeciesFile, "\n");
 	}
-
 }
 
 void World::printInteractionMatrices(ostream& encountersMatrixFile, ostream& predationsMatrixFile,
@@ -1177,7 +1221,7 @@ void World::printInteractionMatrices(ostream& encountersMatrixFile, ostream& pre
 		{
 			for (unsigned int x = 0; x < width; x++)
 			{
-				currentTerrainCell = terrain[z][y][x];
+				currentTerrainCell = getCell(z,y,x);
 				if(!currentTerrainCell->isObstacle())
 				{
 					currentTerrainCell->printInteractionMatrices(encountersMatrixFile, predationsMatrixFile, nodesMatrixFile, totalInitialPopulation);
@@ -1194,7 +1238,7 @@ void World::obtainInhabitableTerrainCells(vector<TerrainCell*> &inhabitableTerra
 		{
 			for (unsigned int x = 0; x < width; x++)
 			{
-				TerrainCell* currentTerrainCell = terrain[z][y][x];
+				TerrainCell* currentTerrainCell = getCell(z,y,x);
 				if(!currentTerrainCell->isObstacle())
 				{
 					inhabitableTerrainCells.push_back(currentTerrainCell);
@@ -1206,13 +1250,11 @@ void World::obtainInhabitableTerrainCells(vector<TerrainCell*> &inhabitableTerra
 
 void World::evolveWorld()
 {
-	initializeOutputFiles();
+	saveWaterSnapshot(outputFolder / fs::path("Snapshots"), "Water_initial", 0);
 
-	saveWaterSnapshot(outputDirectory / fs::path("Snapshots") / fs::path("Water_initial"), 0);
-
-	for (std::vector<Species *>::iterator fungiSpeciesIt = existingFungiSpecies.begin(); fungiSpeciesIt != existingFungiSpecies.end(); fungiSpeciesIt++)
+	for (auto resourceSpeciesIt = existingResourceSpecies.begin(); resourceSpeciesIt != existingResourceSpecies.end(); resourceSpeciesIt++)
 	{
-		saveFungusSpeciesSnapshot(outputDirectory / fs::path("Snapshots") / fs::path("Fungus_initial"), 0, *fungiSpeciesIt);
+		saveResourceSpeciesSnapshot(outputFolder / fs::path("Snapshots"), "Resource_initial", 0, *resourceSpeciesIt);
 	}
 
 	// Next is intentionally commented because it would give empty volumes (animals are unborn)
@@ -1221,23 +1263,23 @@ void World::evolveWorld()
 
 	 for (animIt = existingAnimalSpecies.begin(); animIt != existingAnimalSpecies.end(); animIt++)
 	 {
-	 saveAnimalSpeciesSnapshot(outputDirectory + "/Snapshots/" + "Animal_initial", 0, **animIt);
+	 saveAnimalSpeciesSnapshot(outputFolder + "/Snapshots/" + "Animal_initial", 0, **animIt);
 	 }
 	 */
 
 	vector<TerrainCell*> inhabitableTerrainCells;
 	obtainInhabitableTerrainCells(inhabitableTerrainCells);
 
-	ofstream timeSpentFile;
-	createOutputFile(timeSpentFile, outputDirectory, "time_spent", "txt");
-	if (!timeSpentFile.is_open())
+	FILE* timeSpentFile = nullptr;
+	createOutputFile(&timeSpentFile, outputFolder, "time_spent", "txt");
+	if (!isFileOpen(timeSpentFile))
 	{
-		cerr << "Error opening the file." << endl;
+		Output::cerr("Error opening the file.\n");
 	}
 
 	for (unsigned int timeStep = 0; timeStep < runDays*timeStepsPerDay; timeStep++)
 	{
-		std::cout << "Running on day " << timeStep << " out of " << runDays*timeStepsPerDay << std::endl;
+		Output::cout("Running on day {} out of {}\n", timeStep, runDays*timeStepsPerDay);
 
 		printAnimalsAlongCells(timeStep, 0);
 
@@ -1256,18 +1298,17 @@ void World::evolveWorld()
 
 		string pathBySimulationPointTuneTraits = "animals_each_day_growth";
 
-		ofstream tuneTraitsFile;
-		createOutputFile(tuneTraitsFile, outputDirectory / fs::path(pathBySimulationPointTuneTraits) / fs::path("animals_growth_day_"), "txt", timeStep, recordEach);
-		if (!tuneTraitsFile.is_open())
+		FILE* tuneTraitsFile = nullptr;
+		createOutputFile(&tuneTraitsFile, outputFolder / fs::path(pathBySimulationPointTuneTraits), "animals_growth_day_", "txt", timeStep, recordEach);
+		if (!isFileOpen(tuneTraitsFile))
 		{
-			cerr << "Error opening the file." << endl;
+			Output::cerr("Error opening the file.\n");
 		}
 		else
 		{
-			
-				tuneTraitsFile << "growth\tLinf\tid\tspecies\tstate\tcurrent_age\tinstar\tbody_size\tenergy_tank\ttankAtGrowth\tbody_mass\tmature\tmin_mass_for_death\tfinalJMinVB\tfinalJMaxVB\tvoracity_ini\texpectedDryMassFromMinVor\texpectedDryMassFromMaxVor\tmaxMassNextInstarPlasticity\tcurrentWetMass\tpreT_search\tpreT_speed\tpostT_search\tpostT_speed\tini_mass_instar\ttarget_next_mass\tminimum_met_loss\tcondition_search\tcondition_speed\tnon_condition_voracity\tcondition_voracity\tafter_encounters_voracity\tafter_encounters_search\tfinal_speed\tdeath_date" << endl;
-				cout << " - Activating animals and tuning traits ... " << endl << flush;
-				auto t0 = clock();
+			Output::print(tuneTraitsFile, "growth\tLinf\tid\tspecies\tstate\tcurrent_age\tinstar\tbody_size\tenergy_tank\ttankAtGrowth\tbody_mass\tmature\tmin_mass_for_death\tfinalJMinVB\tfinalJMaxVB\tvoracity_ini\texpectedDryMassFromMinVor\texpectedDryMassFromMaxVor\tmaxMassNextInstarPlasticity\tcurrentWetMass\tpreT_search\tpreT_speed\tpostT_search\tpostT_speed\tini_mass_instar\ttarget_next_mass\tminimum_met_loss\tcondition_search\tcondition_speed\tnon_condition_voracity\tcondition_voracity\tafter_encounters_voracity\tafter_encounters_search\tfinal_speed\tdeath_date\n");
+			Output::coutFlush(" - Activating animals and tuning traits ... \n");
+			auto t0 = clock();
 				
 		
 
@@ -1339,24 +1380,24 @@ void World::evolveWorld()
 				currentTerrainCell->updateTemperature(timeStep);
 				currentTerrainCell->updateRelativeHumidity(timeStep);
 				currentTerrainCell->activateAndResumeAnimals(timeStep, timeStepsPerDay);
-				currentTerrainCell->tuneTraits(timeStep, timeStepsPerDay, tuneTraitsFile);
+				currentTerrainCell->tuneTraits(timeStep, timeStepsPerDay, tuneTraitsFile, getSimulType(), &World::getCell);
 			}
 /*
 #endif
 */
 			auto t1 = clock();
-			cout << "Time: " << (double(t1-t0)/CLOCKS_PER_SEC) << " secs." << endl;
-			timeSpentFile << (double(t1-t0)/CLOCKS_PER_SEC) << "\t";
-			cout << "DONE" << endl << flush;
+			Output::cout("Time: {} secs.\n", double(t1-t0)/CLOCKS_PER_SEC);
+			Output::print(timeSpentFile, "{}\t", double(t1-t0)/CLOCKS_PER_SEC);
+			Output::coutFlush("DONE\n");
 
-			tuneTraitsFile.close();
+			fclose(tuneTraitsFile);
 		}
 
 //#####################################################################
 //#######################     GROWING FUNGI     #######################
 //#####################################################################
 
-		cout << " - Growing fungi ... " <<  endl << flush;
+		Output::coutFlush(" - Growing resource ... \n");
 		std::random_shuffle(inhabitableTerrainCells.begin(), inhabitableTerrainCells.end());
 		auto t0 = clock();
 
@@ -1371,14 +1412,14 @@ void World::evolveWorld()
 		//		for (unsigned int j = i*cellsPerTask; j < (i+1)*cellsPerTask; j++)
 		//		{
 		//			currentTerrainCell = inhabitableTerrainCells[j];
-		//			currentTerrainCell->growFungi();
+		//			currentTerrainCell->growResource();
 		//		}
 		//	});
 		//}
 		//taskGroup.wait();
 		//
-		GrowFungiRangerTask& growFungiRangerTask = *new(task::allocate_root()) GrowFungiRangerTask(width, length, depth, terrain);
-		task::spawn_root_and_wait(growFungiRangerTask);
+		GrowResourceRangerTask& growResourceRangerTask = *new(task::allocate_root()) GrowResourceRangerTask(width, length, depth, terrain);
+		task::spawn_root_and_wait(growResourceRangerTask);
 #elif _PTHREAD
 		//
 		//ThreadRangerArgument toDoArguments[PARTITIONS_PER_DIMENSION][PARTITIONS_PER_DIMENSION][PARTITIONS_PER_DIMENSION];
@@ -1409,7 +1450,7 @@ void World::evolveWorld()
 					toDoArguments[i][j][k].z0 = k*zSliceSize;
 					toDoArguments[i][j][k].z1 = (k!=PARTITIONS_PER_DIMENSION-1)?((k+1)*zSliceSize):depth;
 
-					errorCreatingThread = pthread_create(&workerThreads[i][j][k], NULL, &World::growFungiThreadMaker, static_cast<void*>(&toDoArguments[i][j][k]));
+					errorCreatingThread = pthread_create(&workerThreads[i][j][k], NULL, &World::growResourceThreadMaker, static_cast<void*>(&toDoArguments[i][j][k]));
 					if (errorCreatingThread){
 					 cout << "Error:unable to create thread," << errorCreatingThread << endl;
 					 exit(-1);
@@ -1433,47 +1474,48 @@ void World::evolveWorld()
 		for (unsigned int i = 0; i < inhabitableTerrainCells.size(); i++)
 		{
 			TerrainCell* currentTerrainCell = inhabitableTerrainCells[i];
-			currentTerrainCell->growFungi(timeStep, currentTerrainCell->getTheWorld()->getCompetitionAmongFungiSpecies(), currentTerrainCell->getMaximumFungiCapacity(), currentTerrainCell->getTheWorld()->existingFungiSpecies.size());
+			currentTerrainCell->growResource(timeStep, getCompetitionAmongResourceSpecies(), currentTerrainCell->getTotalMaximumResourceCapacity(), 
+			existingResourceSpecies.size(), getSimulType(), getDepth(), getLength(), getWidth(), &World::getCell, getCompetitionAmongResourceSpecies(), getMassRatio());
 		}
 /*
 #endif
 */
 		auto t1 = clock();
-		cout << "Time: " << (double(t1-t0)/CLOCKS_PER_SEC) << " secs." << endl;
-		timeSpentFile << (double(t1-t0)/CLOCKS_PER_SEC) << "\t";
-		cout << "DONE" << endl << flush;
+		Output::cout("Time: {} secs.\n", (double(t1-t0)/CLOCKS_PER_SEC));
+		Output::print(timeSpentFile, "{}\t", double(t1-t0)/CLOCKS_PER_SEC);
+		Output::coutFlush("DONE\n");
 		
 #ifndef _TEST
-		// After a fungus has grown, it can expand to other cells. In this case,
-		// when the new cell is processed, a wrong amount (in excess) of fungus would
+		// After a resource has grown, it can expand to other cells. In this case,
+		// when the new cell is processed, a wrong amount (in excess) of resource would
 		// be found. Therefore, new amounts are added to a temporary variable that
 		// must be processed upon completion of all cells processing
 
-		cout << " - Spreading fungi ... " << endl << flush;
+		Output::coutFlush(" - Spreading resource ... \n");
 
 		// TODO ROMAN All this can be done in parallel
 		t0 = clock();
 		/*
 		parallel_for(size_t(0), size_t(inhabitableTerrainCells.size()), size_t(1) , [=](size_t i)
 		{
-			inhabitableTerrainCells[i]->commitFungiSpread();
+			inhabitableTerrainCells[i]->commitResourceSpread();
 		});
 		*/
 		for (unsigned int i = 0; i < inhabitableTerrainCells.size(); i++)
 		{
 			//cout << "Cell: (" << inhabitableTerrainCells[i]->getX() << "," << inhabitableTerrainCells[i]->getY() << "," << inhabitableTerrainCells[i]->getZ() << ")" << endl;
-			inhabitableTerrainCells[i]->commitFungiSpread(); //OK			// Grows and spreads excess to neighbors
+			inhabitableTerrainCells[i]->commitResourceSpread(); //OK			// Grows and spreads excess to neighbors
 		}
 
 		t1 = clock();
-		cout << "Time: " << (double(t1-t0)/CLOCKS_PER_SEC) << " secs." << endl;
-		timeSpentFile << (double(t1-t0)/CLOCKS_PER_SEC) << "\t";
-		cout << "DONE" << endl << flush;
+		Output::cout("Time: {} secs.\n", (double(t1-t0)/CLOCKS_PER_SEC));
+		Output::print(timeSpentFile, "{}\t", double(t1-t0)/CLOCKS_PER_SEC);
+		Output::coutFlush("DONE\n");
 		
 		/*
 		cout << " - Applying humidity decay over time effect ... " << endl << flush;
 		// Moisture decays each day
-		//TODO Should moisture decay depending on the amount consumed by fungi?
+		//TODO Should moisture decay depending on the amount consumed by resource?
 		t0 = tick_count::now();
 
 		parallel_for(size_t(0), size_t(inhabitableTerrainCells.size()), size_t(1) , [=](size_t i)
@@ -1517,27 +1559,27 @@ void World::evolveWorld()
 
 		string pathBySimulationPoint = "animals_each_day_encounterProbabilities";
 
-		ofstream encounterProbabilitiesFile, predationProbabilitiesFile;
-		createOutputFile(encounterProbabilitiesFile, outputDirectory / fs::path(pathBySimulationPoint) / fs::path("animals_encounterProbabilities_day_"), "txt", timeStep, recordEach);
-		if (!encounterProbabilitiesFile.is_open())
+		FILE *encounterProbabilitiesFile, *predationProbabilitiesFile;
+		createOutputFile(&encounterProbabilitiesFile, outputFolder / fs::path(pathBySimulationPoint), "animals_encounterProbabilities_day_", "txt", timeStep, recordEach);
+		if (!isFileOpen(encounterProbabilitiesFile))
 		{
-			cerr << "Error opening the file." << endl;
+			Output::cerr("Error opening the file.\n");
 		}
 		else
 		{
 			pathBySimulationPoint = "animals_each_day_predationProbabilities";
 
-			createOutputFile(predationProbabilitiesFile, outputDirectory / fs::path(pathBySimulationPoint) / fs::path("animals_predationProbabilities_day_"), "txt", timeStep, recordEach);
-			if (!predationProbabilitiesFile.is_open())
+			createOutputFile(&predationProbabilitiesFile, outputFolder / fs::path(pathBySimulationPoint), "animals_predationProbabilities_day_", "txt", timeStep, recordEach);
+			if (!isFileOpen(predationProbabilitiesFile))
 			{
-				cerr << "Error opening the file." << endl;
+				Output::cerr("Error opening the file.\n");
 			}
 			else
 			{
-				encounterProbabilitiesFile << "idSearcher\tidSearched\tspeciesSearcher\tspeciesSearched\tsearchedIsPredator\tmassSearcher\tmassSearched\tprobRandomEncounter\tprobLogisticEncounter\tprobAttack\tsuccessfulEncounter" << endl; 
-				predationProbabilitiesFile << "idHunter\tidHunted\tspeciesHunter\tspeciesHunted\thuntedIsPredator\tmassHunter\tmassHunted\tprobRandomPredation\tprobLogisticPredation\tsuccessfulPredation" << endl;
+				Output::print(encounterProbabilitiesFile, "idSearcher\tidSearched\tspeciesSearcher\tspeciesSearched\tsearchedIsPredator\tmassSearcher\tmassSearched\tprobRandomEncounter\tprobLogisticEncounter\tprobAttack\tsuccessfulEncounter\n");
+				Output::print(predationProbabilitiesFile, "idHunter\tidHunted\tspeciesHunter\tspeciesHunted\thuntedIsPredator\tmassHunter\tmassHunted\tprobRandomPredation\tprobLogisticPredation\tsuccessfulPredation\n");
 
-				cout << " - Moving animals ... " << endl << flush;
+				Output::coutFlush(" - Moving animals ... \n");
 				std::random_shuffle(inhabitableTerrainCells.begin(), inhabitableTerrainCells.end());
 				t0 = clock();
 /*				
@@ -1613,58 +1655,59 @@ void World::evolveWorld()
 		    	float printBarEach = 0.05;
 		    	float currentPercentage;
 
-		    	cout << "0%|";
+		    	Output::cout("0%|");
 		    	for(currentPercentage = printBarEach; currentPercentage < 1.0; currentPercentage+=printBarEach)
 		    	{
-		    		cout << "  ";
+		    		Output::cout("  ");
 		    	}
-		    	cout << "|100%" << endl;
+		    	Output::cout("|100%\n");
 
 		    	currentPercentage = printBarEach;
-				cout << "   ";
+				Output::cout("   ");
 		    	for (unsigned int i = 0; i < inhabitableTerrainCells.size(); i++)
 				{
 					TerrainCell* currentTerrainCell = inhabitableTerrainCells[i];
-					currentTerrainCell->moveAnimals(timeStep, timeStepsPerDay, encounterProbabilitiesFile, predationProbabilitiesFile, edibilitiesFile, exitTimeThreshold);
+					currentTerrainCell->moveAnimals(timeStep, timeStepsPerDay, encounterProbabilitiesFile, predationProbabilitiesFile, getSaveEdibilitiesFile(), edibilitiesFile, exitTimeThreshold, &getCellByBearing, getDepth(), getLength(), getWidth(), &World::getCell, getPdfThreshold(), getMuForPDF(), getSigmaForPDF(), getPredationSpeedRatioAH(), getPredationHunterVoracityAH(), getPredationProbabilityDensityFunctionAH(), getPredationSpeedRatioSAW(), getPredationHunterVoracitySAW(), getPredationProbabilityDensityFunctionSAW(), getMaxSearchArea(), getEncounterHuntedVoracitySAW(), getEncounterHunterVoracitySAW(), getEncounterVoracitiesProductSAW(), getEncounterHunterSizeSAW(), getEncounterHuntedSizeSAW(), getEncounterProbabilityDensityFunctionSAW(), getEncounterHuntedVoracityAH(), getEncounterHunterVoracityAH(), getEncounterVoracitiesProductAH(), getEncounterHunterSizeAH(), getEncounterHuntedSizeAH(), getEncounterProbabilityDensityFunctionAH());
 					if(i >= currentPercentage * inhabitableTerrainCells.size())
 					{
-						cout << "==" << flush;
+						Output::coutFlush("==");
 						currentPercentage += printBarEach;
 					}
 				}
-				cout << endl;
+				Output::cout("\n");
 /*
 #endif
 */
 				t1 = clock();
-				cout << "Time: " << (double(t1-t0)/CLOCKS_PER_SEC) << " secs." << endl;
-				timeSpentFile << (double(t1-t0)/CLOCKS_PER_SEC) << "\t";
-				cout << "DONE" << endl << flush;
+				Output::cout("Time: {} secs.\n", (double(t1-t0)/CLOCKS_PER_SEC));
+				Output::print(timeSpentFile, "{}\t", double(t1-t0)/CLOCKS_PER_SEC);
+				Output::coutFlush("DONE\n");
 
-				encounterProbabilitiesFile.close();
-				predationProbabilitiesFile.close();
+				fclose(predationProbabilitiesFile);
 			}
+
+			fclose(encounterProbabilitiesFile);
 		}
 
 		#ifdef _DEBUG
-		cout << "Animals searched for by the same animal at least twice the same day: " << multipleSameSearchedAnimalToday << endl;
-		cout << "Animals encountered by the same animal at least twice the same day: " << multipleSameEncounteredAnimalToday << endl;
-		cout << "Animals hunted off by the same animal at least twice the same day: " << multipleSameHuntedAnimalToday << endl;
-		cout << "Animals predated by the same animal at least twice the same day: " << multipleSamePredatedAnimalToday << endl;
+		Output::cout("Animals searched for by the same animal at least twice the same day: {}\n", multipleSameSearchedAnimalToday);
+		Output::cout("Animals encountered by the same animal at least twice the same day: {}\n", multipleSameEncounteredAnimalToday);
+		Output::cout("Animals hunted off by the same animal at least twice the same day: {}\n", multipleSameHuntedAnimalToday);
+		Output::cout("Animals predated by the same animal at least twice the same day: {}\n", multipleSamePredatedAnimalToday);
 		#endif
 
 		string pathBySimulationPointVoracities = "animals_each_day_voracities";
 
-		ofstream voracitiesFile;
-		createOutputFile(voracitiesFile, outputDirectory / fs::path(pathBySimulationPointVoracities) / fs::path("animals_voracities_day_"), "txt", timeStep, recordEach);
-		if (!voracitiesFile.is_open())
+		FILE* voracitiesFile = nullptr;
+		createOutputFile(&voracitiesFile, outputFolder / fs::path(pathBySimulationPointVoracities), "animals_voracities_day_", "txt", timeStep, recordEach);
+		if (!isFileOpen(voracitiesFile))
 		{
-			cerr << "Error opening the file." << endl;
+			Output::cerr("Error opening the file.\n");
 		}
 		else
 		{
-			voracitiesFile << "id\tspecies\tstate\tcurrentAge\tinstar\tbody_size\tenergy_tank\tdryMass\tnextDinoMass\tmin_mass_for_death\tafter_encounters_voracity\tfood_mass\tdryMassAfterAssim\ttotalMetabolicDryMassLossAfterAssim\teatenToday\tsteps\tstepsAttempted\tafter_encounters_search\tsated\tpercentMoving\tpercentHandling\tvoracity_body_mass_ratio\tgender\tmated\teggDryMass\tK\tL\tpseudoK\tpseudoL\tfactorEggMass\teggDryMassAtBirth\tdeath_date\tageOfFirstMaturation\trep_count" << endl;
-			cout << " - Background, assimilating food and reproducing ... " << endl << flush;
+			Output::print(voracitiesFile, "id\tspecies\tstate\tcurrentAge\tinstar\tbody_size\tenergy_tank\tdryMass\tnextDinoMass\tmin_mass_for_death\tafter_encounters_voracity\tfood_mass\tdryMassAfterAssim\ttotalMetabolicDryMassLossAfterAssim\teatenToday\tsteps\tstepsAttempted\tafter_encounters_search\tsated\tpercentMoving\tpercentHandling\tvoracity_body_mass_ratio\tgender\tmated\teggDryMass\tK\tL\tpseudoK\tpseudoL\tfactorEggMass\teggDryMassAtBirth\tdeath_date\tageOfFirstMaturation\trep_count\n");
+			Output::coutFlush(" - Background, assimilating food and reproducing ... \n");
 			t0 = clock();
 
 /*
@@ -1714,22 +1757,22 @@ void World::evolveWorld()
 			for (unsigned int i = 0; i < inhabitableTerrainCells.size(); i++)
 			{
 				TerrainCell* currentTerrainCell = inhabitableTerrainCells[i];
-				currentTerrainCell->printAnimalsVoracities(timeStep, timeStepsPerDay, voracitiesFile);
-				currentTerrainCell->diePredatorsFromBackground(timeStep);
+				currentTerrainCell->printAnimalsVoracities(timeStep, timeStepsPerDay, voracitiesFile, getSimulType());
+				currentTerrainCell->diePredatorsFromBackground(timeStep, isGrowthAndReproTest());
 				currentTerrainCell->assimilateFoodMass(timeStep);
-				currentTerrainCell->metabolizeAnimals(timeStep, timeStepsPerDay);
+				currentTerrainCell->metabolizeAnimals(timeStep, timeStepsPerDay, getSimulType());
 				currentTerrainCell->growAnimals(timeStep, timeStepsPerDay);
-				currentTerrainCell->breedAnimals(timeStep, timeStepsPerDay, outputDirectory);
+				currentTerrainCell->breedAnimals(timeStep, timeStepsPerDay, outputFolder, getSaveAnimalConstitutiveTraits(), getConstitutiveTraitsFile());
 			}
 /*
 #endif
 */
 			t1 = clock();
-			cout << "Time: " << (double(t1-t0)/CLOCKS_PER_SEC) << " secs." << endl;
-			timeSpentFile << (double(t1-t0)/CLOCKS_PER_SEC) << "\t";
-			cout << "DONE" << endl << flush;
+			Output::cout("Time: {} secs.\n", (double(t1-t0)/CLOCKS_PER_SEC));
+			Output::print(timeSpentFile, "{}\t", double(t1-t0)/CLOCKS_PER_SEC);
+			Output::coutFlush("DONE\n");
 
-			voracitiesFile.close();
+			fclose(voracitiesFile);
 		}
 
 		/*
@@ -1744,28 +1787,28 @@ void World::evolveWorld()
 		cout << "DONE" << endl << flush;
 
 		*/
-		cout << " - Printing animals along cells ... " << endl << flush;
+		Output::coutFlush(" - Printing animals along cells ... \n");
 		t0 = clock();
 
 		printAnimalsAlongCells(timeStep, 1);
 
 		t1 = clock();
-		cout << "Time: " << (double(t1-t0)/CLOCKS_PER_SEC) << " secs." << endl;
-		timeSpentFile << (double(t1-t0)/CLOCKS_PER_SEC) << "\t";
-		cout << "DONE" << endl << flush;
+		Output::cout("Time: {} secs.\n", (double(t1-t0)/CLOCKS_PER_SEC));
+		Output::print(timeSpentFile, "{}\t", double(t1-t0)/CLOCKS_PER_SEC);
+		Output::coutFlush("DONE\n");
 
-		cout << " - Printing summary file ... " << endl << flush;
+		Output::coutFlush(" - Printing summary file ... \n");
 		t0 = clock();
 
 		//printDailySummary(file, day);
 		printExtendedDailySummary(extendedDailySummaryFile, timeStep);
 
 		t1 = clock();
-		cout << "Time: " << (double(t1-t0)/CLOCKS_PER_SEC) << " secs." << endl;
-		timeSpentFile << (double(t1-t0)/CLOCKS_PER_SEC) << "\t";
-		cout << "DONE" << endl << flush;
+		Output::cout("Time: {} secs.\n", (double(t1-t0)/CLOCKS_PER_SEC));
+		Output::print(timeSpentFile, "{}\t", double(t1-t0)/CLOCKS_PER_SEC);
+		Output::coutFlush("DONE\n");
 
-		cout << " - Purging dead animals ... " << endl << flush;
+		Output::coutFlush(" - Purging dead animals ... \n");
 		t0 = clock();
 
 		/* vector<Edible*> * cosa = NULL;
@@ -1804,13 +1847,13 @@ void World::evolveWorld()
  */ //end Dinosaur Debug
 		}
 		t1 = clock();
-		cout << "Time: " << (double(t1-t0)/CLOCKS_PER_SEC) << " secs." << endl;
-		timeSpentFile << (double(t1-t0)/CLOCKS_PER_SEC) << "\t" << endl;
-		cout << "DONE" << endl << flush;
+		Output::cout("Time: {} secs.\n", (double(t1-t0)/CLOCKS_PER_SEC));
+		Output::print(timeSpentFile, "{}\t\n", double(t1-t0)/CLOCKS_PER_SEC);
+		Output::coutFlush("DONE\n");
 
 
 		//ALWAYS print this genetics after purguing dead animals or before the whole day
-		if(saveGeneticsSummaries == true)
+		if(saveGeneticsSummaries)
 		{
 			//TODO FIX THIS INSIDE according to new Genome classes... (use debugging)
 			printGeneticsSummaries(timeStep);
@@ -1818,30 +1861,30 @@ void World::evolveWorld()
 
 		printCellAlongCells(timeStep);
 
-		ofstream predationEventsOnOtherSpeciesFile;
-		createOutputFile(predationEventsOnOtherSpeciesFile, outputDirectory / fs::path("Matrices"), predationEventsOnOtherSpeciesFilename, "txt");
-		if (!predationEventsOnOtherSpeciesFile.is_open())
+		FILE* predationEventsOnOtherSpeciesFile = nullptr;
+		createOutputFile(&predationEventsOnOtherSpeciesFile, outputFolder / fs::path("Matrices"), predationEventsOnOtherSpeciesFilename, "txt");
+		if (!isFileOpen(predationEventsOnOtherSpeciesFile))
 		{
-			cerr << "Error opening the file." << endl;
+			Output::cerr("Error opening the file.\n");
 		}
 		else
 		{
 			printPredationEventsOnOtherSpeciesMatrix(predationEventsOnOtherSpeciesFile);
-			predationEventsOnOtherSpeciesFile.close();
+			fclose(predationEventsOnOtherSpeciesFile);
 		}
 
 		if (saveIntermidiateVolumes && (((timeStep + 1) % saveIntermidiateVolumesPeriodicity) == 0))
 		{
-			saveWaterSnapshot(outputDirectory / fs::path("Snapshots") / fs::path("Water"), timeStep);
+			saveWaterSnapshot(outputFolder / fs::path("Snapshots"), "Water", timeStep);
 
-			for (std::vector<Species *>::iterator fungIt = existingFungiSpecies.begin(); fungIt != existingFungiSpecies.end(); fungIt++)
+			for (auto fungIt = existingResourceSpecies.begin(); fungIt != existingResourceSpecies.end(); fungIt++)
 			{
-				saveFungusSpeciesSnapshot(outputDirectory / fs::path("Snapshots") / fs::path("Fungus"), timeStep, *fungIt);
+				saveResourceSpeciesSnapshot(outputFolder / fs::path("Snapshots"), "Resource", timeStep, *fungIt);
 			}
 
-			for (std::vector<Species *>::iterator animIt = existingAnimalSpecies.begin(); animIt != existingAnimalSpecies.end(); animIt++)
+			for (auto animIt = existingAnimalSpecies.begin(); animIt != existingAnimalSpecies.end(); animIt++)
 			{
-				saveAnimalSpeciesSnapshot(outputDirectory / fs::path("Snapshots") / fs::path("Animal"), timeStep, *animIt);
+				saveAnimalSpeciesSnapshot(outputFolder / fs::path("Snapshots"), "Animal", timeStep, *animIt);
 			}
 		}
 		if(exitAtFirstExtinction){
@@ -1852,22 +1895,22 @@ void World::evolveWorld()
 		}
 	}
 
-	saveWaterSnapshot(outputDirectory / fs::path("Snapshots") / fs::path("Water_final"), runDays*timeStepsPerDay);
+	saveWaterSnapshot(outputFolder / fs::path("Snapshots"), "Water_final", runDays*timeStepsPerDay);
 
-	for (std::vector<Species *>::iterator fungiSpeciesIt = existingFungiSpecies.begin(); fungiSpeciesIt != existingFungiSpecies.end(); fungiSpeciesIt++)
+	for (auto resourceSpeciesIt = existingResourceSpecies.begin(); resourceSpeciesIt != existingResourceSpecies.end(); resourceSpeciesIt++)
 	{
-		saveFungusSpeciesSnapshot(outputDirectory / fs::path("Snapshots") / fs::path("Fungus_final"), runDays*timeStepsPerDay, *fungiSpeciesIt);
+		saveResourceSpeciesSnapshot(outputFolder / fs::path("Snapshots"), "Resource_final", runDays*timeStepsPerDay, *resourceSpeciesIt);
 	}
 
-	for (std::vector<Species *>::iterator animalSpeciesIt = existingAnimalSpecies.begin(); animalSpeciesIt != existingAnimalSpecies.end(); animalSpeciesIt++)
+	for(auto animalSpeciesIt = existingAnimalSpecies.begin(); animalSpeciesIt != existingAnimalSpecies.end(); animalSpeciesIt++)
 	{
-		saveAnimalSpeciesSnapshot(outputDirectory / fs::path("Snapshots") / fs::path("Animal_final"), runDays*timeStepsPerDay, *animalSpeciesIt);
+		saveAnimalSpeciesSnapshot(outputFolder / fs::path("Snapshots"), "Animal_final", runDays*timeStepsPerDay, *animalSpeciesIt);
 	}
 
 	/*
-	encountersMatrixFilename = outputDirectory + "/Matrices/" + encountersMatrixFilename;
-	predationsMatrixFilename = outputDirectory + "/Matrices/" + predationsMatrixFilename;
-	nodesMatrixFilename = outputDirectory + "/Matrices/" + nodesMatrixFilename;
+	encountersMatrixFilename = outputFolder + "/Matrices/" + encountersMatrixFilename;
+	predationsMatrixFilename = outputFolder + "/Matrices/" + predationsMatrixFilename;
+	nodesMatrixFilename = outputFolder + "/Matrices/" + nodesMatrixFilename;
 
 	ofstream encountersMatrixFile;
 	encountersMatrixFile.open(encountersMatrixFilename.c_str());
@@ -1916,10 +1959,21 @@ void World::evolveWorld()
 	cout << "============================================================" << endl;
 
 */
-	edibilitiesFile.close();
-	timeSpentFile.close();
-	dailySummaryFile.close();
-	extendedDailySummaryFile.close();
+	if(isFileOpen(edibilitiesFile)) {
+		fclose(edibilitiesFile);
+	}
+	if(isFileOpen(timeSpentFile)) {
+		fclose(timeSpentFile);
+	}
+	if(isFileOpen(constitutiveTraitsFile)) {
+		fclose(constitutiveTraitsFile);
+	}
+	if(isFileOpen(dailySummaryFile)) {
+		fclose(dailySummaryFile);
+	}
+	if(isFileOpen(extendedDailySummaryFile)) {
+		fclose(extendedDailySummaryFile);
+	}
 }
 
 void World::deleteExtinguishedReproducingAnimals()
@@ -1937,13 +1991,13 @@ void World::deleteExtinguishedReproducingAnimals()
 				{
 					if(existingAnimalSpecies[k]->isExtinguished() == false)
 					{
-						currentTerrainCell = terrain[z][y][x];
+						currentTerrainCell = getCell(z,y,x);
 						if(!currentTerrainCell->isObstacle())
 						{
-							animalPopulation[k] += currentTerrainCell->getLifeStagePopulation(Animal::LIFE_STAGES::ACTIVE, existingAnimalSpecies[k]);
-							animalPopulation[k] += currentTerrainCell->getLifeStagePopulation(Animal::LIFE_STAGES::UNBORN, existingAnimalSpecies[k]);
-							animalPopulation[k] += currentTerrainCell->getLifeStagePopulation(Animal::LIFE_STAGES::SATIATED, existingAnimalSpecies[k]);
-							animalPopulation[k] += currentTerrainCell->getLifeStagePopulation(Animal::LIFE_STAGES::HANDLING, existingAnimalSpecies[k]);
+							animalPopulation[k] += currentTerrainCell->getLifeStagePopulation(LifeStage::ACTIVE, existingAnimalSpecies[k]);
+							animalPopulation[k] += currentTerrainCell->getLifeStagePopulation(LifeStage::UNBORN, existingAnimalSpecies[k]);
+							animalPopulation[k] += currentTerrainCell->getLifeStagePopulation(LifeStage::SATIATED, existingAnimalSpecies[k]);
+							animalPopulation[k] += currentTerrainCell->getLifeStagePopulation(LifeStage::HANDLING, existingAnimalSpecies[k]);
 						}
 					}
 				}
@@ -1962,7 +2016,7 @@ void World::deleteExtinguishedReproducingAnimals()
 				{
 					for (unsigned int x = 0; x < width; x++)
 					{
-						currentTerrainCell = terrain[z][y][x];
+						currentTerrainCell = getCell(z,y,x);
 						if(!currentTerrainCell->isObstacle())
 						{
 							currentTerrainCell->deleteExtinguishedReproducingAnimals(existingAnimalSpecies[k]);
@@ -1982,7 +2036,7 @@ void World::deleteExtinguishedReproducingAnimals()
 bool World::isExtinguished()
 {
 	std::vector<double> animalPopulation(existingAnimalSpecies.size());
-	std::vector<double> fungusBiomass(existingFungiSpecies.size());
+	std::vector<double> resourceBiomass(existingResourceSpecies.size());
 
 	unsigned int i = 0;
 
@@ -1993,21 +2047,21 @@ bool World::isExtinguished()
 		{
 			for (unsigned int x = 0; x < width; x++)
 			{
-				currentTerrainCell = terrain[z][y][x];
+				currentTerrainCell = getCell(z,y,x);
 				if (!currentTerrainCell->isObstacle())
 				{
 					i = 0;
-					for (std::vector<Species *>::iterator fungiSpeciesIt = existingFungiSpecies.begin(); fungiSpeciesIt != existingFungiSpecies.end(); fungiSpeciesIt++)
+					for (auto resourceSpeciesIt = existingResourceSpecies.begin(); resourceSpeciesIt != existingResourceSpecies.end(); resourceSpeciesIt++)
 					{
-						fungusBiomass[i] += currentTerrainCell->getFungusBiomass(*fungiSpeciesIt);
+						resourceBiomass[i] += currentTerrainCell->getResourceBiomass(*resourceSpeciesIt);
 						i++;
 					}
 
 					i = 0;
-					for (std::vector<Species *>::iterator animalSpeciesIt = existingAnimalSpecies.begin(); animalSpeciesIt != existingAnimalSpecies.end(); animalSpeciesIt++)
+					for (auto animalSpeciesIt = existingAnimalSpecies.begin(); animalSpeciesIt != existingAnimalSpecies.end(); animalSpeciesIt++)
 					{
-						animalPopulation[i] += currentTerrainCell->getLifeStagePopulation(Animal::LIFE_STAGES::ACTIVE, *animalSpeciesIt);
-						animalPopulation[i] += currentTerrainCell->getLifeStagePopulation(Animal::LIFE_STAGES::UNBORN, *animalSpeciesIt);
+						animalPopulation[i] += currentTerrainCell->getLifeStagePopulation(LifeStage::ACTIVE, *animalSpeciesIt);
+						animalPopulation[i] += currentTerrainCell->getLifeStagePopulation(LifeStage::UNBORN, *animalSpeciesIt);
 						i++;
 					}
 				}
@@ -2015,9 +2069,9 @@ bool World::isExtinguished()
 		}
 	}
 
-	for (i = 0; i < fungusBiomass.size(); i++)
+	for (i = 0; i < resourceBiomass.size(); i++)
 	{
-		if (fungusBiomass[i] == 0)
+		if (resourceBiomass[i] == 0)
 		{
 			return true;
 		}
@@ -2038,7 +2092,7 @@ bool World::isExtinguished()
 /*
 void World::setHeatingCodeTemperatureCycle(string temperatureFilename)
 {
-	ifstream temperatureFile(inputDirectory + "/temperature/" + temperatureFilename);
+	ifstream temperatureFile(inputFolder + "/temperature/" + temperatureFilename);
 	if(!temperatureFile.good())
 	{
 		cerr <<"The file \"" << temperatureFilename << "\" does not exist.";
@@ -2062,36 +2116,35 @@ void World::restart(unsigned int newWidth, unsigned int newLength, unsigned int 
 	//initialize();
 }
 
-void World::initializeTerrainDimensions()
+void World::initializeTerrainDimensions(const json &moistureBasePatch)
 {
-	std::cout << "Initializing terrain voxels ... " << flush;
+	Output::coutFlush("Initializing terrain voxels ... ");
 	try
 	{
-		terrain.resize(depth); // Create depth
+		World::terrain.resize(depth); // Create depth
 
 		for (unsigned int z = 0; z < depth; ++z)
 		{
-			terrain[z].resize(length);
+			World::terrain[z].resize(length);
 
 			for (unsigned int y = 0; y < length; y++)
 			{
-				terrain[z][y].resize(width);
+				World::terrain[z][y].resize(width);
 
 				// Now data can be accesed this way:
 				// terrain[i][j][k] = 6.0;
 
 				for (unsigned int x = 0; x < width; x++)
 				{
-					terrain[z][y][x] = new TerrainCell(this, x, y, z, cellSize);
-					terrain[z][y][x]->updateTemperature(0);
-					terrain[z][y][x]->setRelativeHumidityOnRainEvent(0);
+					World::terrain[z][y][x] = new TerrainCell(x, y, z, cellSize, moistureBasePatch, &existingAnimalSpecies, &existingResourceSpecies);
+					getCell(z,y,x)->updateTemperature(0);
 				}
 
 			}
 		}
 	} catch (std::bad_alloc&) // Treat different exceptions
 	{
-		std::cout << "caught bad alloc exception, perhaps out of memory?, exiting.." << std::endl;
+		Output::cout("caught bad alloc exception, perhaps out of memory?, exiting..\n");
 		exit(-1);
 	} catch (const std::exception& x)
 	{
@@ -2101,20 +2154,20 @@ void World::initializeTerrainDimensions()
 		std::cerr << "unknown exception" << std::endl;
 	}
 
-	std::cout << "DONE" << std::endl;
+	Output::cout("DONE\n");
 }
 
 void World::readObstaclePatchesFromJSONFiles()
 {
-	cout << "Reading obstacle patches from JSON files ... " << endl;
+	Output::cout("Reading obstacle patches from JSON files ... \n");
 
-	fs::path obstacleDirectory = inputDirectory / obstacleDirectoryName;
+	fs::path obstacleFolder = inputFolder / obstacleFolderName;
 	fs::directory_iterator end_iter;
 
-	if (fs::exists(obstacleDirectory) && fs::is_directory(obstacleDirectory))
+	if (fs::exists(obstacleFolder) && fs::is_directory(obstacleFolder))
 	{
 		vector<fs::path> filePaths;
-		copy(fs::directory_iterator(obstacleDirectory), fs::directory_iterator(), back_inserter(filePaths));
+		copy(fs::directory_iterator(obstacleFolder), fs::directory_iterator(), back_inserter(filePaths));
 		sort(filePaths.begin(), filePaths.end());             // directory iteration is not ordered on some file systems, so we sort them
 		json ptMain;
 		for (vector<fs::path>::const_iterator it(filePaths.begin()); it != filePaths.end(); ++it)
@@ -2126,7 +2179,7 @@ void World::readObstaclePatchesFromJSONFiles()
 				ptMain.clear();
 
 				// Read configuration file
-				ptMain = readConfigFile(*it, fs::path(SCHEMA_FOLDER) / fs::path(OBSTACLE_SCHEMA));
+				ptMain = readConfigFile(*it, WeaverFolder / fs::path(SCHEMA_FOLDER) / fs::path(OBSTACLE_SCHEMA));
 
 				//string type = jsonTree->get_child("patch.type").data().c_str(); //type is useless for now
 				unsigned int widthStartPoint = ptMain["patch"]["xPos"];
@@ -2142,22 +2195,22 @@ void World::readObstaclePatchesFromJSONFiles()
 	}
 	else
 	{
-		cerr << "The specified path \"" + obstacleDirectory.string() + "\" does not exist or it is not a directory" << endl;
+		cerr << "The specified path \"" + obstacleFolder.string() + "\" does not exist or it is not a directory" << endl;
 		exit(-1);
 	}
 }
 
 void World::readMoisturePatchesFromJSONFiles()
 {
-	cout << "Reading moisture patches from JSON files ... " << endl;
+	Output::cout("Reading moisture patches from JSON files ... \n");
 	
-	fs::path moistureDirectory = inputDirectory / moistureDirectoryName;
+	fs::path moistureFolder = inputFolder / moistureFolderName;
 	fs::directory_iterator end_iter;
 
-	if (fs::exists(moistureDirectory) && fs::is_directory(moistureDirectory))
+	if (fs::exists(moistureFolder) && fs::is_directory(moistureFolder))
 	{
 		vector<fs::path> filePaths;
-		copy(fs::directory_iterator(moistureDirectory), fs::directory_iterator(), back_inserter(filePaths));
+		copy(fs::directory_iterator(moistureFolder), fs::directory_iterator(), back_inserter(filePaths));
 		sort(filePaths.begin(), filePaths.end());             // directory iteration is not ordered on some file systems, so we sort them
 		json ptMain;
 		for (vector<fs::path>::const_iterator it(filePaths.begin()); it != filePaths.end(); ++it)
@@ -2169,7 +2222,7 @@ void World::readMoisturePatchesFromJSONFiles()
 				ptMain.clear();
 
 				// Read configuration file
-				ptMain = readConfigFile(*it, fs::path(SCHEMA_FOLDER) / fs::path(MOISTURE_SCHEMA));
+				ptMain = readConfigFile(*it, WeaverFolder / fs::path(SCHEMA_FOLDER) / fs::path(MOISTURE_SCHEMA));
 
 				string type = ptMain["patch"]["type"];
 
@@ -2218,26 +2271,26 @@ void World::readMoisturePatchesFromJSONFiles()
 					float relativeHumidityDecayOverTime = ptMain["patch"]["relativeHumidityDecayOverTime"];
 					int timeStepsBetweenRainEvents = ptMain["patch"]["timeStepsBetweenRainEvents"];
 					int standardDeviationForRainEvent = ptMain["patch"]["standardDeviationForRainEvent"];
-					float maximumFungiCapacity = ptMain["patch"]["maximumFungiCapacity"];
+					float totalMaximumResourceCapacity = ptMain["patch"]["totalMaximumResourceCapacity"];
 					bool inEnemyFreeSpace = ptMain["patch"]["inEnemyFreeSpace"];
 					bool inCompetitorFreeSpace = ptMain["patch"]["inCompetitorFreeSpace"];
 
-					setSphericalWaterPatch(patchFilename, radius, x, y, z, useRelativeHumidityCycle, temperatureCycle, relativeHumidityCycle, useRelativeHumidityDecayOverTime, relativeHumidityOnRainEvent, relativeHumidityDecayOverTime, timeStepsBetweenRainEvents, standardDeviationForRainEvent, maximumFungiCapacity, inEnemyFreeSpace, inCompetitorFreeSpace);
+					setSphericalWaterPatch(patchFilename, radius, x, y, z, useRelativeHumidityCycle, temperatureCycle, relativeHumidityCycle, useRelativeHumidityDecayOverTime, relativeHumidityOnRainEvent, relativeHumidityDecayOverTime, timeStepsBetweenRainEvents, standardDeviationForRainEvent, totalMaximumResourceCapacity, inEnemyFreeSpace, inCompetitorFreeSpace);
 				}
 				else if(type == "cube")
 				{
 					// This creates a cube-like moisture patch, with center in patchCenter and dimensions
 					// in patchDimensions. 
-					Coordinate3D<int> patchCenter;
-					Coordinate3D<int> patchDimensions;
-
-					patchCenter.setX(ptMain["patch"]["center"]["x"]);
-					patchCenter.setY(ptMain["patch"]["center"]["y"]);
-					patchCenter.setZ(ptMain["patch"]["center"]["z"]);
-
-					patchDimensions.setX(ptMain["patch"]["dimensions"]["x"]);
-					patchDimensions.setY(ptMain["patch"]["dimensions"]["y"]);
-					patchDimensions.setZ(ptMain["patch"]["dimensions"]["z"]);
+					Coordinate3D<int> patchCenter(
+						ptMain["patch"]["center"]["x"], 
+						ptMain["patch"]["center"]["y"], 
+						ptMain["patch"]["center"]["z"]
+					);
+					Coordinate3D<int> patchDimensions(
+						ptMain["patch"]["dimensions"]["x"], 
+						ptMain["patch"]["dimensions"]["y"], 
+						ptMain["patch"]["dimensions"]["z"]
+					);
 
 					vector<float> temperatureCycle = vector<float>();
 					for( auto elem : ptMain["patch"]["temperatureCycle"])
@@ -2258,11 +2311,11 @@ void World::readMoisturePatchesFromJSONFiles()
 					float relativeHumidityDecayOverTime = ptMain["patch"]["relativeHumidityDecayOverTime"];
 					int timeStepsBetweenRainEvents = ptMain["patch"]["timeStepsBetweenRainEvents"];
 					int standardDeviationForRainEvent = ptMain["patch"]["standardDeviationForRainEvent"];
-					float maximumFungiCapacity = ptMain["patch"]["maximumFungiCapacity"];
+					float totalMaximumResourceCapacity = ptMain["patch"]["totalMaximumResourceCapacity"];
 					bool inEnemyFreeSpace = ptMain["patch"]["inEnemyFreeSpace"];
 					bool inCompetitorFreeSpace = ptMain["patch"]["inCompetitorFreeSpace"];
 
-					setCubicWaterPatch(patchFilename, patchCenter, patchDimensions, useRelativeHumidityCycle, temperatureCycle, relativeHumidityCycle, useRelativeHumidityDecayOverTime, relativeHumidityOnRainEvent, relativeHumidityDecayOverTime, timeStepsBetweenRainEvents, standardDeviationForRainEvent, maximumFungiCapacity, inEnemyFreeSpace, inCompetitorFreeSpace);
+					setCubicWaterPatch(patchFilename, patchCenter, patchDimensions, useRelativeHumidityCycle, temperatureCycle, relativeHumidityCycle, useRelativeHumidityDecayOverTime, relativeHumidityOnRainEvent, relativeHumidityDecayOverTime, timeStepsBetweenRainEvents, standardDeviationForRainEvent, totalMaximumResourceCapacity, inEnemyFreeSpace, inCompetitorFreeSpace);
 
 				}
 				/*
@@ -2284,14 +2337,14 @@ void World::readMoisturePatchesFromJSONFiles()
 	}
 	else
 	{
-		cerr << "The specified path \"" + moistureDirectory.string() + "\" does not exist or it is not a directory" << endl;
+		cerr << "The specified path \"" + moistureFolder.string() + "\" does not exist or it is not a directory" << endl;
 		exit(-1);
 	}
 }
 
 void World::eraseTerrain()
 {
-	for(auto cell2D : terrain) {
+	for(auto cell2D : World::terrain) {
 		for(auto cell1D : cell2D) {
 			for(auto cell : cell1D) {
 				delete cell;
@@ -2300,9 +2353,9 @@ void World::eraseTerrain()
 	}
 }
 
-bool World::getCompetitionAmongFungiSpecies()
+bool World::getCompetitionAmongResourceSpecies()
 {
-	return competitionAmongFungiSpecies;
+	return competitionAmongResourceSpecies;
 }
 
 int World::getWidth()
@@ -2320,7 +2373,7 @@ int World::getDepth()
 	return depth;
 }
 
-const vector<Species *> * World::getExistingAnimalSpecies()
+const vector<AnimalSpecies *> * World::getExistingAnimalSpecies()
 {
 	return &existingAnimalSpecies;
 }
@@ -2396,40 +2449,27 @@ void World::setCellSize(float newCellSize)
 	cellSize = newCellSize;
 }
 
-void World::setObstacleDirectoryName(fs::path newObstacleDirectoryName)
+void World::setObstacleFolderName(fs::path newObstacleFolderName)
 {
-	obstacleDirectoryName = newObstacleDirectoryName;
+	obstacleFolderName = newObstacleFolderName;
 }
 
-void World::setMoistureDirectoryName(fs::path newMoistureDirectoryName)
+void World::setMoistureFolderName(fs::path newMoistureFolderName)
 {
-	moistureDirectoryName = newMoistureDirectoryName;
+	moistureFolderName = newMoistureFolderName;
 }
 
-void World::setFungiDirectoryName(fs::path newFungiDirectoryName)
+void World::setResourceFolderName(fs::path newResourceFolderName)
 {
-	fungiDirectoryName = newFungiDirectoryName;
+	resourceFolderName = newResourceFolderName;
 }
 
-void World::setSpeciesDirectoryName(fs::path newSpeciesDirectoryName)
+void World::setSpeciesFolderName(fs::path newSpeciesFolderName)
 {
-	speciesDirectoryName = newSpeciesDirectoryName;
+	speciesFolderName = newSpeciesFolderName;
 }
 
 TerrainCell * World::getCell(unsigned int z, unsigned int y, unsigned int x)
-{
-// Check dimensions are correct and return NULL in case there is an error
-	if (terrain.size() <= z || terrain[z].size() <= y || terrain[z][y].size() <= x || z < 0 || y < 0 || x < 0)
-	{
-		return NULL;
-	}
-
-// Dimensions are correct
-	return terrain[z][y][x];
-}
-
-//this is a public version for InEnemyFreeSpace - so animals can access it
-TerrainCell * World::getCell2(unsigned int z, unsigned int y, unsigned int x)
 {
 // Check dimensions are correct and return NULL in case there is an error
 	if (terrain.size() <= z || terrain[z].size() <= y || terrain[z][y].size() <= x || z < 0 || y < 0 || x < 0)
@@ -2487,10 +2527,9 @@ TerrainCell * World::getCellByBearing(TerrainCell* position, TerrainCell* bestCe
 	return nextCellByBearing;
 }
 
-void World::setHomogeneousFungus(Species* species, double value)
+void World::setHomogeneousResource(ResourceSpecies* species, double value, double resourceMaximumCapacity)
 {
-	std::cout << "Initializing homogeneous fungus value for all cells (" << species->getScientificName() << ") ... \n"
-			<< std::endl;
+	Output::cout("Initializing homogeneous resource value for all cells ({}) ... \n\n", species->getScientificName());
 
 	// Initialize all cells with a minimum water content
 	TerrainCell* currentTerrainCell = NULL;
@@ -2502,28 +2541,28 @@ void World::setHomogeneousFungus(Species* species, double value)
 			{
 				for (unsigned int x = 0; x < width; x++)
 				{
-					currentTerrainCell = terrain[z][y][x];
+					currentTerrainCell = getCell(z,y,x);
 					if (!currentTerrainCell->isObstacle())
 					{
-						/*if(value > currentTerrainCell->getMaximumFungiCapacity())
+						/*if(value > currentTerrainCell->getTotalMaximumResourceCapacity())
 						{
 							std::cerr << "For the species '" << species->getScientificName() << "':" << std::endl;
-							std::cerr << "TerrainCell (" << x << "," << y << "," << z << " ): Fungus value must be lower than the cell maximumFungiCapacity. You entered " << value << " > " << currentTerrainCell->getMaximumFungiCapacity() << ". Exiting now" << std::endl;
+							std::cerr << "TerrainCell (" << x << "," << y << "," << z << " ): Resource value must be lower than the cell totalMaximumResourceCapacity. You entered " << value << " > " << currentTerrainCell->getTotalMaximumResourceCapacity() << ". Exiting now" << std::endl;
 							exit(-1);
 						}*/
-						Edible* aux = currentTerrainCell->getFungus(species);
+						Resource* aux = currentTerrainCell->getResource(species);
 
 						if (aux == NULL)
 						{
-							currentTerrainCell->addFungus(new Fungus(species, value, currentTerrainCell));
+							currentTerrainCell->addResource(new Resource(species, value, resourceMaximumCapacity, getCompetitionAmongResourceSpecies(), massRatio));
 							//TODO PROVISIONAL!!!!
-							currentTerrainCell->setAuxInitialFungiBiomass(value, species->getId());
+							currentTerrainCell->setAuxInitialResourceBiomass(value, species->getId());
 						}
 						else
 						{
 							aux->setBiomass(max(value, aux->calculateWetMass()));
 							//TODO PROVISIONAL!!!!
-							currentTerrainCell->setAuxInitialFungiBiomass(max(value, aux->calculateWetMass()), species->getId());
+							currentTerrainCell->setAuxInitialResourceBiomass(max(value, aux->calculateWetMass()), species->getId());
 						}
 					}
 				}
@@ -2533,68 +2572,64 @@ void World::setHomogeneousFungus(Species* species, double value)
 	else
 	{
 		std::cerr << "For the species '" << species->getScientificName() << "':" << std::endl;
-		std::cerr << "Fungus value must be 0 or positive. You entered " << value << ". Exiting now" << std::endl;
+		std::cerr << "Resource value must be 0 or positive. You entered " << value << ". Exiting now" << std::endl;
 		exit(-1);
 	}
-	cout << "DONE" << endl;
+	Output::cout("DONE\n");
 }
 
-void World::setGaussianFungusPatch(Species* species, unsigned int xpos, unsigned int ypos, unsigned int zpos,
-		unsigned int radius, float sigma, float amplitude)
+void World::setGaussianResourcePatch(ResourceSpecies* species, unsigned int xpos, unsigned int ypos, unsigned int zpos,
+		unsigned int radius, float sigma, float amplitude, double resourceMaximumCapacity)
 {
 	// Generate water patches
-	Coordinate3D<int> center;
+
+	// Generate random coordinates for the center of the patch
+	Coordinate3D<int> center(xpos, ypos, zpos);
 	IsotropicGaussian3D gauss;
 
-	cout << "Initializing Gaussian fungus patch (" << species->getScientificName() << ") ... \n" << endl;
+	Output::cout("Initializing Gaussian resource patch ({}) ...\n\n", species->getScientificName());
 
-	cout << " - Position (x,y,z) = " << xpos << "," << ypos << "," << zpos << " ... ";
-	cout << " - Parameters (Influence radius, Amplitude, Sigma) = " << radius << "," << amplitude << "," << sigma
-			<< "... ";
+	Output::cout(" - Position (x,y,z) = {},{},{} ... ", xpos, ypos, zpos);
+	Output::cout(" - Parameters (Influence radius, Amplitude, Sigma) = {},{},{} ... ", radius, amplitude, sigma);
 
 	gauss.setSigma(sigma);
 	gauss.setAmplitude(amplitude);
-	cout << "DONE" << endl;
+	Output::cout("DONE\n");
 
-	// Generate random coordinates for the center of the patch
-	center.setX(xpos);
-	center.setY(ypos);
-	center.setZ(zpos);
-
-	double fungusAsGauss;
+	double resourceAsGauss;
 
 	// Now iterate around the center to fill up with new water contents
 	TerrainCell* currentTerrainCell = NULL;
-	for (int x = (center.X() - (int) radius); x <= (center.X() + (int) radius); x++)
+	for (int x = (center.getX() - (int) radius); x <= (center.getX() + (int) radius); x++)
 	{
 		if (x >= 0 && x < (int) width) // Ckeck limits
 		{
-			for (int y = (center.Y() - (int) radius); y <= (center.Y() + (int) radius); y++)
+			for (int y = (center.getY() - (int) radius); y <= (center.getY() + (int) radius); y++)
 			{
 				if (y >= 0 && y < (int) length) // Ckeck limits
 				{
-					for (int z = (center.Z() - (int) radius); z <= (center.Z() + (int) radius); z++)
+					for (int z = (center.getZ() - (int) radius); z <= (center.getZ() + (int) radius); z++)
 					{
 						if (z >= 0 && z < (int) depth) // Ckeck limits
 						{
-							currentTerrainCell = terrain[z][y][x];
+							currentTerrainCell = getCell(z,y,x);
 							if (!currentTerrainCell->isObstacle())
 							{
-								fungusAsGauss = gauss.getValueAtDistance(center.X() - x, center.Y() - y, center.Z() - z); // Value obtained from Gaussian
+								resourceAsGauss = gauss.getValueAtDistance(center.getX() - x, center.getY() - y, center.getZ() - z); // Value obtained from Gaussian
 
-								Edible* aux = currentTerrainCell->getFungus(species);
+								Resource* aux = currentTerrainCell->getResource(species);
 
 								if (aux == NULL)
 								{
-									currentTerrainCell->addFungus(new Fungus(species, fungusAsGauss, currentTerrainCell));
+									currentTerrainCell->addResource(new Resource(species, resourceAsGauss, resourceMaximumCapacity, getCompetitionAmongResourceSpecies(), massRatio));
 									//TODO PROVISIONAL!!!!
-									currentTerrainCell->setAuxInitialFungiBiomass(fungusAsGauss, species->getId());
+									currentTerrainCell->setAuxInitialResourceBiomass(resourceAsGauss, species->getId());
 								}
 								else
 								{
-									aux->setBiomass(max(fungusAsGauss, aux->calculateWetMass()));
+									aux->setBiomass(max(resourceAsGauss, aux->calculateWetMass()));
 									//TODO PROVISIONAL!!!!
-									currentTerrainCell->setAuxInitialFungiBiomass(max(fungusAsGauss, aux->calculateWetMass()), species->getId());
+									currentTerrainCell->setAuxInitialResourceBiomass(max(resourceAsGauss, aux->calculateWetMass()), species->getId());
 								}
 							}
 						}
@@ -2605,69 +2640,67 @@ void World::setGaussianFungusPatch(Species* species, unsigned int xpos, unsigned
 	}
 }
 
-void World::setSphericalFungusPatch(Species* species, unsigned int xpos, unsigned int ypos, unsigned int zpos, unsigned int radius, double value)
+void World::setSphericalResourcePatch(ResourceSpecies* species, unsigned int xpos, unsigned int ypos, unsigned int zpos, unsigned int radius, double value, double resourceMaximumCapacity)
 {
 	if (value >= 0)
 	{
 		// Generate water patches
-		Coordinate3D<int> center;
-
-		cout << "Initializing spherical fungus patch (" << species->getScientificName() << ") ... " << endl;
-
-		cout << " - Position (x,y,z) = " << xpos << "," << ypos << "," << zpos << " ... ";
-		cout << " - Parameters (radius, value) = " << radius << "," << value << "... ";
 
 		// Generate coordinates for the center of the patch
-		center.setX((int) xpos);
-		center.setY((int) ypos);
-		center.setZ((int) zpos);
+		Coordinate3D<int> center(xpos, ypos, zpos);
 
+		Output::cout("Initializing spherical resource patch ({}) ... \n", species->getScientificName());
+
+		Output::cout(" - Position (x,y,z) = {},{},{} ... ", xpos, ypos, zpos);
+		Output::cout(" - Parameters (radius, value) = {},{} ... ", radius, value);
+
+		
 		// Now iterate around the center to fill up with new water contents
 		TerrainCell* currentTerrainCell = NULL;
-		for (int x = (center.X() - (int) radius); x <= (center.X() + (int) radius); x++)
+		for (int x = (center.getX() - (int) radius); x <= (center.getX() + (int) radius); x++)
 		{
 			if (x >= 0 && x < (int) width) // Ckeck limits
 			{
-				for (int y = (center.Y() - (int) radius); y <= (center.Y() + (int) radius); y++)
+				for (int y = (center.getY() - (int) radius); y <= (center.getY() + (int) radius); y++)
 				{
 					if (y >= 0 && y < (int) length) // Ckeck limits
 					{
-						for (int z = (center.Z() - (int) radius); z <= (center.Z() + (int) radius); z++)
+						for (int z = (center.getZ() - (int) radius); z <= (center.getZ() + (int) radius); z++)
 						{
 							if (z >= 0 && z < (int) depth) // Ckeck limits
 							{
-								currentTerrainCell = terrain[z][y][x];
+								currentTerrainCell = getCell(z,y,x);
 								if (!currentTerrainCell->isObstacle())
 								{
 
 
-									float distance = sqrt((center.X() - x) * (center.X() - x) + (center.Y() - y) * (center.Y() - y) + (center.Z() - z) * (center.Z() - z));
+									float distance = sqrt((center.getX() - x) * (center.getX() - x) + (center.getY() - y) * (center.getY() - y) + (center.getZ() - z) * (center.getZ() - z));
 
 									if (distance <= radius)
 									{
-										/*if(value > currentTerrainCell->getMaximumFungiCapacity())
+										/*if(value > currentTerrainCell->getTotalMaximumResourceCapacity())
 										{
 											std::cerr << "For the species '" << species->getScientificName() << "':" << std::endl;
-											std::cerr << "TerrainCell (" << x << "," << y << "," << z << " ): Fungus value must be lower than the cell maximumFungiCapacity. You entered " << value << " > " << currentTerrainCell->getMaximumFungiCapacity() << ". Exiting now" << std::endl;
+											std::cerr << "TerrainCell (" << x << "," << y << "," << z << " ): Resource value must be lower than the cell totalMaximumResourceCapacity. You entered " << value << " > " << currentTerrainCell->getTotalMaximumResourceCapacity() << ". Exiting now" << std::endl;
 											exit(-1);
 										}*/
 
-										Edible* aux = currentTerrainCell->getFungus(species);
+										Resource* aux = currentTerrainCell->getResource(species);
 
 										if (aux == NULL)
 										{
-											currentTerrainCell->addFungus(new Fungus(species, value, currentTerrainCell));
+											currentTerrainCell->addResource(new Resource(species, value, resourceMaximumCapacity, getCompetitionAmongResourceSpecies(), massRatio));
 
-											cout << "RECENTLY ADDED VALUE: " << currentTerrainCell->getTotalFungusBiomass() << endl;
+											Output::cout("RECENTLY ADDED VALUE: {}\n", currentTerrainCell->getTotalResourceBiomass());
 											//TODO PROVISIONAL!!!!
-											currentTerrainCell->setAuxInitialFungiBiomass(value, species->getId());
+											currentTerrainCell->setAuxInitialResourceBiomass(value, species->getId());
 																		
 										}
 										else
 										{
 											aux->setBiomass(max(value, aux->calculateWetMass()));
 											//TODO PROVISIONAL!!!!
-											currentTerrainCell->setAuxInitialFungiBiomass(max(value, aux->calculateWetMass()), species->getId());
+											currentTerrainCell->setAuxInitialResourceBiomass(max(value, aux->calculateWetMass()), species->getId());
 										
 										}
 
@@ -2698,20 +2731,20 @@ void World::setSphericalFungusPatch(Species* species, unsigned int xpos, unsigne
 	else
 	{
 		std::cerr << "For the species '" << species->getScientificName() << "':" << std::endl;
-		std::cerr << "Fungus value must be 0 or positive. You entered " << value << ". Exiting now" << std::endl;
+		std::cerr << "Resource value must be 0 or positive. You entered " << value << ". Exiting now" << std::endl;
 		exit(-1);
 	}
-	cout << "DONE" << endl << endl;
+	Output::cout("DONE\n\n");
 }
 
-void World::setCubicFungusPatch(Species* species, Coordinate3D<int> center, Coordinate3D<int> dimensions, double value)
+void World::setCubicResourcePatch(ResourceSpecies* species, Coordinate3D<int> center, Coordinate3D<int> dimensions, double value, double resourceMaximumCapacity)
 {	
 	if (value >= 0)
 	{
-		cout << "Initializing cubic fungus patch (" << species->getScientificName() << ") ... " << endl;
+		Output::cout("Initializing cubic resource patch ({}) ... \n", species->getScientificName());
 
-		cout << " - Position (x,y,z) = " << center.X() << "," << center.Y() << "," << center.Z() << " ... ";
-		cout << " - Parameters (dimensions, value) = " << dimensions.X() << "," << dimensions.Y() << "," << dimensions.Z() << "," << value << "... ";
+		Output::cout(" - Position (x,y,z) = {},{},{} ... ", center.getX(), center.getY(), center.getZ());
+		Output::cout(" - Parameters (dimensions, value) = {},{},{},{} ... ", dimensions.getX(), dimensions.getY(), dimensions.getZ(), value);
 
 		// Now iterate around the center to fill up with new water contents
 		TerrainCell* currentTerrainCell = NULL;
@@ -2719,12 +2752,12 @@ void World::setCubicFungusPatch(Species* species, Coordinate3D<int> center, Coor
 		// Defining limits of patch
 		int minx, maxx, miny, maxy, minz, maxz;
 
-		minx = ceil(center.X()-dimensions.X()/2.);
-		maxx = ceil(center.X()+dimensions.X()/2.) - 1;
-		miny = ceil(center.Y()-dimensions.Y()/2.);
-		maxy = ceil(center.Y()+dimensions.Y()/2.) - 1;
-		minz = ceil(center.Z()-dimensions.Z()/2.);
-		maxz = ceil(center.Z()+dimensions.Z()/2.) - 1;
+		minx = ceil(center.getX()-dimensions.getX()/2.);
+		maxx = ceil(center.getX()+dimensions.getX()/2.) - 1;
+		miny = ceil(center.getY()-dimensions.getY()/2.);
+		maxy = ceil(center.getY()+dimensions.getY()/2.) - 1;
+		minz = ceil(center.getZ()-dimensions.getZ()/2.);
+		maxz = ceil(center.getZ()+dimensions.getZ()/2.) - 1;
 
 		for (int x = minx; x <= maxx; x++)
 		{
@@ -2738,25 +2771,25 @@ void World::setCubicFungusPatch(Species* species, Coordinate3D<int> center, Coor
 						{
 							if (z >= 0 && z < (int) depth) // Ckeck limits
 							{
-								currentTerrainCell = terrain[z][y][x];
+								currentTerrainCell = getCell(z,y,x);
 								if (!currentTerrainCell->isObstacle())
 								{
-										Edible* aux = currentTerrainCell->getFungus(species);
+										Resource* aux = currentTerrainCell->getResource(species);
 
 										if (aux == NULL)
 										{
-											currentTerrainCell->addFungus(new Fungus(species, value, currentTerrainCell));
+											currentTerrainCell->addResource(new Resource(species, value, resourceMaximumCapacity, getCompetitionAmongResourceSpecies(), massRatio));
 
-											cout << "RECENTLY ADDED VALUE: " << currentTerrainCell->getTotalFungusBiomass() << endl;
+											Output::cout("RECENTLY ADDED VALUE: {}\n", currentTerrainCell->getTotalResourceBiomass());
 											//TODO PROVISIONAL!!!!
-											currentTerrainCell->setAuxInitialFungiBiomass(value, species->getId());
+											currentTerrainCell->setAuxInitialResourceBiomass(value, species->getId());
 																		
 										}
 										else
 										{
 											aux->setBiomass(max(value, aux->calculateWetMass()));
 											//TODO PROVISIONAL!!!!
-											currentTerrainCell->setAuxInitialFungiBiomass(max(value, aux->calculateWetMass()), species->getId());
+											currentTerrainCell->setAuxInitialResourceBiomass(max(value, aux->calculateWetMass()), species->getId());
 										
 										}
 
@@ -2773,19 +2806,18 @@ void World::setCubicFungusPatch(Species* species, Coordinate3D<int> center, Coor
 	else
 	{
 		std::cerr << "For the species '" << species->getScientificName() << "':" << std::endl;
-		std::cerr << "Fungus value must be 0 or positive. You entered " << value << ". Exiting now" << std::endl;
+		std::cerr << "Resource value must be 0 or positive. You entered " << value << ". Exiting now" << std::endl;
 		exit(-1);
 	}
-	cout << "DONE" << endl << endl;
+	Output::cout("DONE\n\n");
 }
 
-void World::setRandomGaussianFungusPatches(Species* species, unsigned int number, float radius, float newSigma, bool useRandomSigma, float newAmplitude, bool useRandomAmplitude)
+void World::setRandomGaussianResourcePatches(ResourceSpecies* species, unsigned int number, float radius, float newSigma, bool useRandomSigma, float newAmplitude, bool useRandomAmplitude, double resourceMaximumCapacity)
 {
 	// Generate water patches
-	Coordinate3D<int> center;
 	IsotropicGaussian3D gauss;
 
-	std::cout << "Initializing random Gaussian fungus patches (" << species->getScientificName() << ") ... \n" << std::endl;
+	Output::cout("Initializing random Gaussian resource patches ({}) ... \n\n", species->getScientificName());
 
 	float sigma, amplitude;
 
@@ -2809,52 +2841,54 @@ void World::setRandomGaussianFungusPatches(Species* species, unsigned int number
 			amplitude = newAmplitude;
 		}
 
-		std::cout << " - Creating random Gaussian shape with (Influence, Amplitude, Sigma) = " << radius << "," << amplitude << "," << sigma << "... ";
+		Output::cout(" - Creating random Gaussian shape with (Influence, Amplitude, Sigma) = {},{},{} ... ", radius, amplitude, sigma);
 		gauss.setSigma(sigma);
 		gauss.setAmplitude(amplitude);
 
 		// Generate random coordinates for the center of the patch
-		center.setX(Random::randomIntegerInRange(0, width - 1));
-		center.setY(Random::randomIntegerInRange(0, length - 1));
-		center.setZ(Random::randomIntegerInRange(0, depth - 1));
-		std::cout << " - Position (x,y,z) = " << center.X() << "," << center.Y() << "," << center.Z() << " ... ";
+		Coordinate3D<int> center(
+			Random::randomIntegerInRange(0, width - 1),
+			Random::randomIntegerInRange(0, length - 1),
+			Random::randomIntegerInRange(0, depth - 1)
+		);
+		Output::cout(" - Position (x,y,z) = {},{},{} ... ", center.getX(), center.getY(), center.getZ());
 
-		std::cout << "DONE" << std::endl;
+		Output::cout("DONE\n");
 
-		double fungusAsGauss;
+		double resourceAsGauss;
 
 		// Now iterate around the center to fill up with new water contents
 		TerrainCell* currentTerrainCell = NULL;
-		for (int x = (center.X() - (int) radius); x <= (center.X() + (int) radius); x++)
+		for (int x = (center.getX() - (int) radius); x <= (center.getX() + (int) radius); x++)
 		{
 			if (x >= 0 && x < (int) width) // Ckeck limits
 			{
-				for (int y = (center.Y() - (int) radius); y <= (center.Y() + (int) radius); y++)
+				for (int y = (center.getY() - (int) radius); y <= (center.getY() + (int) radius); y++)
 				{
 					if (y >= 0 && y < (int) length) // Ckeck limits
 					{
-						for (int z = (center.Z() - (int) radius); z <= (center.Z() + (int) radius); z++)
+						for (int z = (center.getZ() - (int) radius); z <= (center.getZ() + (int) radius); z++)
 						{
 							if (z >= 0 && z < (int) depth) // Ckeck limits
 							{
-								currentTerrainCell = terrain[z][y][x];
+								currentTerrainCell = getCell(z,y,x);
 								if (!currentTerrainCell->isObstacle())
 								{
-									fungusAsGauss = gauss.getValueAtDistance(center.X() - x, center.Y() - y, center.Z() - z); // Value obtained from Gaussian
+									resourceAsGauss = gauss.getValueAtDistance(center.getX() - x, center.getY() - y, center.getZ() - z); // Value obtained from Gaussian
 
-									Edible* aux = currentTerrainCell->getFungus(species);
+									Resource* aux = currentTerrainCell->getResource(species);
 
 									if (aux == NULL)
 									{
-										currentTerrainCell->addFungus(new Fungus(species, fungusAsGauss, currentTerrainCell));
+										currentTerrainCell->addResource(new Resource(species, resourceAsGauss, resourceMaximumCapacity, getCompetitionAmongResourceSpecies(), massRatio));
 										//TODO PROVISIONAL!!!!
-										currentTerrainCell->setAuxInitialFungiBiomass(fungusAsGauss, species->getId());
+										currentTerrainCell->setAuxInitialResourceBiomass(resourceAsGauss, species->getId());
 									}
 									else
 									{
-										aux->setBiomass(max(fungusAsGauss, aux->calculateWetMass()));
+										aux->setBiomass(max(resourceAsGauss, aux->calculateWetMass()));
 										//TODO PROVISIONAL!!!!
-										currentTerrainCell->setAuxInitialFungiBiomass(max(fungusAsGauss, aux->calculateWetMass()), species->getId());
+										currentTerrainCell->setAuxInitialResourceBiomass(max(resourceAsGauss, aux->calculateWetMass()), species->getId());
 									}
 								}
 							}
@@ -2868,7 +2902,7 @@ void World::setRandomGaussianFungusPatches(Species* species, unsigned int number
 
 void World::setHomogeneousWater(float value, float relativeHumidityDecayOverTime)
 {
-	std::cout << "Initializing homogeneous water (" << value << ") for all space ... ";
+	Output::cout("Initializing homogeneous water ({}) for all space ... ", value);
 	// Initialize all cells with a minimum water content
 
 	if (value >= 0)
@@ -2882,10 +2916,10 @@ void World::setHomogeneousWater(float value, float relativeHumidityDecayOverTime
 				{
 					for (unsigned int x = 0; x < width; x++)
 					{
-						currentTerrainCell = terrain[z][y][x];
+						currentTerrainCell = getCell(z,y,x);
 						if (!currentTerrainCell->isObstacle())
 						{
-							currentTerrainCell->setRelativeHumidityOnRainEvent(max(currentTerrainCell->getWater(), value));
+							currentTerrainCell->setRelativeHumidityOnRainEvent(value);
 						}
 					}
 				}
@@ -2897,8 +2931,7 @@ void World::setHomogeneousWater(float value, float relativeHumidityDecayOverTime
 					<< relativeHumidityDecayOverTime << " ... EXITING" << std::endl;
 			exit(-1);
 		}
-}
-
+	}
 	else
 	{
 		std::cerr << "You have entered a negative homogeneous water value (" << value
@@ -2906,15 +2939,15 @@ void World::setHomogeneousWater(float value, float relativeHumidityDecayOverTime
 		exit(0);
 	}
 
-	std::cout << "DONE" << std::endl;
+	Output::cout("DONE\n");
 }
 
 void World::setCubicObstaclePatch(string patchFilename, unsigned int depthStartPoint, unsigned int lengthStartPoint, unsigned int widthStartPoint, unsigned int patchDepth, unsigned int patchLength,
 		unsigned int patchWidth)
 {
-	cout << "Initializing cubic obstacle patch \"" << patchFilename << "\":" << endl;
-	cout << " - Position (x,y,z) = (" << widthStartPoint << "," << lengthStartPoint << "," << depthStartPoint << ")" << endl;
-	cout << " - Parameters (width, length, depth) = (" << patchWidth << "," << patchLength << "," << patchDepth << ") ... ";
+	Output::cout("Initializing cubic obstacle patch \"{}\":\n", patchFilename);
+	Output::cout(" - Position (x,y,z) = ({},{},{})\n", widthStartPoint, lengthStartPoint, depthStartPoint);
+	Output::cout(" - Parameters (width, length, depth) = ({},{},{}) ... ", patchWidth, patchLength, patchDepth);
 	try
 	{
 		for (unsigned int z = depthStartPoint; z < depthStartPoint + patchDepth; z++)
@@ -2929,13 +2962,13 @@ void World::setCubicObstaclePatch(string patchFilename, unsigned int depthStartP
 						{
 							if (x < width)
 							{
-								if (!terrain[z][y][x]->isObstacle())
+								if (!getCell(z,y,x)->isObstacle())
 								{
-									terrain[z][y][x]->setObstacle(true);
+									getCell(z,y,x)->setObstacle(true);
 								}
 								else
 								{
-									cout << "WARNING: The patch from file \"" << patchFilename << "\" overlaps with the previously declared obstacle" << endl;
+									Output::cout("WARNING: The patch from file \"{}\" overlaps with the previously declared obstacle\n", patchFilename);
 								}
 							}
 							else
@@ -2969,10 +3002,10 @@ void World::setCubicObstaclePatch(string patchFilename, unsigned int depthStartP
 	{
 		std::cerr << "unknown exception" << std::endl;
 	}
-	cout << "DONE" << endl;
+	Output::cout("DONE\n");
 }
 
-void World::setSphericalWaterPatch(string patchFilename, unsigned int radius, unsigned int xpos, unsigned int ypos, unsigned int zpos, bool useRelativeHumidityCycle, const vector<float>& temperatureCycle, const vector<float>& relativeHumidityCycle, bool useRelativeHumidityDecayOverTime, float relativeHumidityOnRainEvent, float relativeHumidityDecayOverTime, int timeStepsBetweenRainEvents, int standardDeviationForRainEvent, float maximumFungiCapacity, bool inEnemyFreeSpace, bool inCompetitorFreeSpace)
+void World::setSphericalWaterPatch(string patchFilename, unsigned int radius, unsigned int xpos, unsigned int ypos, unsigned int zpos, bool useRelativeHumidityCycle, const vector<float>& temperatureCycle, const vector<float>& relativeHumidityCycle, bool useRelativeHumidityDecayOverTime, float relativeHumidityOnRainEvent, float relativeHumidityDecayOverTime, int timeStepsBetweenRainEvents, int standardDeviationForRainEvent, float totalMaximumResourceCapacity, bool inEnemyFreeSpace, bool inCompetitorFreeSpace)
 {
 	if(useRelativeHumidityCycle != useRelativeHumidityDecayOverTime)
 	{
@@ -2981,53 +3014,49 @@ void World::setSphericalWaterPatch(string patchFilename, unsigned int radius, un
 			if(relativeHumidityDecayOverTime >= 0)
 			{
 				// Generate water patches
-				Coordinate3D<int> center;
-
-				std::cout << "Initializing spherical water patch \"" << patchFilename << "\":" << endl;
-				std::cout << " - Position (x,y,z) = (" << xpos << "," << ypos << "," << zpos << ")" << endl;
-				std::cout << " - Parameters (radius, value) = (" << radius << "," << relativeHumidityOnRainEvent << ") ... ";
+				Output::cout("Initializing spherical water patch \"{}\":\n", patchFilename);
+				Output::cout(" - Position (x,y,z) = ({},{},{})\n", xpos, ypos, zpos);
+				Output::cout(" - Parameters (radius, value) = ({},{}) ... ", radius, relativeHumidityOnRainEvent);
 
 				// Generate coordinates for the center of the patch
-				center.setX((int) xpos);
-				center.setY((int) ypos);
-				center.setZ((int) zpos);
+				Coordinate3D<int> center(xpos, ypos, zpos);
 
 				// Now iterate around the center to fill up with new water contents
 				TerrainCell* currentTerrainCell = NULL;
-				for (int x = (center.X() - (int) radius); x <= (center.X() + (int) radius); x++)
+				for (int x = (center.getX() - (int) radius); x <= (center.getX() + (int) radius); x++)
 				{
 					if (x >= 0 && x < (int) width) // Ckeck limits
 					{
-						for (int y = (center.Y() - (int) radius); y <= (center.Y() + (int) radius); y++)
+						for (int y = (center.getY() - (int) radius); y <= (center.getY() + (int) radius); y++)
 						{
 							if (y >= 0 && y < (int) length) // Ckeck limits
 							{
-								for (int z = (center.Z() - (int) radius); z <= (center.Z() + (int) radius); z++)
+								for (int z = (center.getZ() - (int) radius); z <= (center.getZ() + (int) radius); z++)
 								{
 									if (z >= 0 && z < (int) depth) // Ckeck limits
 									{
-										currentTerrainCell = terrain[z][y][x];
+										currentTerrainCell = getCell(z,y,x);
 										if (!currentTerrainCell->isObstacle())
 										{
-											float distance = sqrt((center.X() - x) * (center.X() - x) + (center.Y() - y) * (center.Y() - y) + (center.Z() - z) * (center.Z() - z));
+											float distance = sqrt((center.getX() - x) * (center.getX() - x) + (center.getY() - y) * (center.getY() - y) + (center.getZ() - z) * (center.getZ() - z));
 
 											if (distance <= radius)
 											{
 												currentTerrainCell->setTemperatureCycle(temperatureCycle);
 												currentTerrainCell->setRelativeHumidityCycle(relativeHumidityCycle);
-												currentTerrainCell->setRelativeHumidityOnRainEvent(max(currentTerrainCell->getWater(), relativeHumidityOnRainEvent));
+												currentTerrainCell->setRelativeHumidityOnRainEvent(relativeHumidityOnRainEvent);
 												currentTerrainCell->setRelativeHumidityDecayOverTime(relativeHumidityDecayOverTime);
 												currentTerrainCell->setTimeStepsBetweenRainEvents(timeStepsBetweenRainEvents);
 												currentTerrainCell->setStandardDeviationForRainEvent(standardDeviationForRainEvent);
-												currentTerrainCell->setMaximumCapacities(maximumFungiCapacity);
+												currentTerrainCell->setMaximumCapacities(totalMaximumResourceCapacity);
 												currentTerrainCell->setInEnemyFreeSpace(inEnemyFreeSpace);
 												currentTerrainCell->setInCompetitorFreeSpace(inCompetitorFreeSpace);
 												
 												/* cout << "before   " << endl;
 												cout << currentTerrainCell->isInPatch() << endl; */
 												
-												//arthro and for dinos - so fungi does not spread in cells that are supposed to be empty  
-												//if (distance-radius) >= 0){ //so edges are not used to spread fungi causing no error
+												//arthro and for dinos - so resource does not spread in cells that are supposed to be empty  
+												//if (distance-radius) >= 0){ //so edges are not used to spread resource causing no error
 											 	
 												
 												//cout << currentTerrainCell->isInPatch() <<endl;
@@ -3061,10 +3090,10 @@ void World::setSphericalWaterPatch(string patchFilename, unsigned int radius, un
 		cerr << "In patch " << patchFilename << ", you must use at least and maximum one humidity method (useRelativeHumidityCycle must be different from useRelativeHumidityDecayOverTime). Please correct it and re-run." << endl;
 		exit(-1);
 	}
-	cout << "DONE" << endl << endl;
+	Output::cout("DONE\n\n");
 }
 
-void World::setCubicWaterPatch(string patchFilename, Coordinate3D<int> center, Coordinate3D<int> dimensions,  bool useRelativeHumidityCycle, const vector<float>& temperatureCycle, const vector<float>& relativeHumidityCycle, bool useRelativeHumidityDecayOverTime, float relativeHumidityOnRainEvent, float relativeHumidityDecayOverTime, int timeStepsBetweenRainEvents, int standardDeviationForRainEvent, float maximumFungiCapacity, bool inEnemyFreeSpace, bool inCompetitorFreeSpace)
+void World::setCubicWaterPatch(string patchFilename, Coordinate3D<int> center, Coordinate3D<int> dimensions,  bool useRelativeHumidityCycle, const vector<float>& temperatureCycle, const vector<float>& relativeHumidityCycle, bool useRelativeHumidityDecayOverTime, float relativeHumidityOnRainEvent, float relativeHumidityDecayOverTime, int timeStepsBetweenRainEvents, int standardDeviationForRainEvent, float totalMaximumResourceCapacity, bool inEnemyFreeSpace, bool inCompetitorFreeSpace)
 {
 	if(useRelativeHumidityCycle != useRelativeHumidityDecayOverTime)
 	{
@@ -3073,21 +3102,19 @@ void World::setCubicWaterPatch(string patchFilename, Coordinate3D<int> center, C
 			if(relativeHumidityDecayOverTime >= 0)
 			{
 				// Generate water patches
-				Coordinate3D<int> center;
-
-				std::cout << "Initializing cubic water patch \"" << patchFilename << "\":" << endl;
-				std::cout << " - Center position (x,y,z) = (" << center.X() << "," << center.Y() << "," << center.Z() << ")" << endl;
-				std::cout << " - Dimensions (xdim, ydim, zdim, value) = (" << dimensions.X() << "," << dimensions.Y() << "," << dimensions.Z() << "," << relativeHumidityOnRainEvent << ") ... ";
+				Output::cout("Initializing cubic water patch \"{}\":\n", patchFilename);
+				Output::cout(" - Center position (x,y,z) = ({},{},{})\n", center.getX(), center.getY(), center.getZ());
+				Output::cout(" - Dimensions (xdim, ydim, zdim, value) = ({},{},{},{}) ... ", dimensions.getX(), dimensions.getY(), dimensions.getZ(), relativeHumidityOnRainEvent);
 
 				// Defining limits of patch
 				int minx, maxx, miny, maxy, minz, maxz;
 
-				minx = ceil(center.X()-dimensions.X()/2.);
-				maxx = ceil(center.X()+dimensions.X()/2.) - 1;
-				miny = ceil(center.Y()-dimensions.Y()/2.);
-				maxy = ceil(center.Y()+dimensions.Y()/2.) - 1;
-				minz = ceil(center.Z()-dimensions.Z()/2.);
-				maxz = ceil(center.Z()+dimensions.Z()/2.) - 1;
+				minx = ceil(center.getX()-dimensions.getX()/2.);
+				maxx = ceil(center.getX()+dimensions.getX()/2.) - 1;
+				miny = ceil(center.getY()-dimensions.getY()/2.);
+				maxy = ceil(center.getY()+dimensions.getY()/2.) - 1;
+				minz = ceil(center.getZ()-dimensions.getZ()/2.);
+				maxz = ceil(center.getZ()+dimensions.getZ()/2.) - 1;
 
 				// Now iterate around the center to fill up with new water contents
 				TerrainCell* currentTerrainCell = NULL;
@@ -3103,16 +3130,16 @@ void World::setCubicWaterPatch(string patchFilename, Coordinate3D<int> center, C
 								{
 									if (z >= 0 && z < (int) depth) // Ckeck limits
 									{
-										currentTerrainCell = terrain[z][y][x];
+										currentTerrainCell = getCell(z,y,x);
 										if (!currentTerrainCell->isObstacle())
 										{
 											currentTerrainCell->setTemperatureCycle(temperatureCycle);
 											currentTerrainCell->setRelativeHumidityCycle(relativeHumidityCycle);
-											currentTerrainCell->setRelativeHumidityOnRainEvent(max(currentTerrainCell->getWater(), relativeHumidityOnRainEvent));
+											currentTerrainCell->setRelativeHumidityOnRainEvent(relativeHumidityOnRainEvent);
 											currentTerrainCell->setRelativeHumidityDecayOverTime(relativeHumidityDecayOverTime);
 											currentTerrainCell->setTimeStepsBetweenRainEvents(timeStepsBetweenRainEvents);
 											currentTerrainCell->setStandardDeviationForRainEvent(standardDeviationForRainEvent);
-											currentTerrainCell->setMaximumCapacities(maximumFungiCapacity);
+											currentTerrainCell->setMaximumCapacities(totalMaximumResourceCapacity);
 											currentTerrainCell->setInEnemyFreeSpace(inEnemyFreeSpace);
 											currentTerrainCell->setInCompetitorFreeSpace(inCompetitorFreeSpace);											
 										}
@@ -3141,50 +3168,47 @@ void World::setCubicWaterPatch(string patchFilename, Coordinate3D<int> center, C
 		cerr << "In patch " << patchFilename << ", you must use at least and maximum one humidity method (useRelativeHumidityCycle must be different from useRelativeHumidityDecayOverTime). Please correct it and re-run." << endl;
 		exit(-1);
 	}
-	cout << "DONE" << endl << endl;
+	Output::cout("DONE\n\n");
 }
 
 void World::setGaussianWaterPatch(unsigned int xpos, unsigned int ypos, unsigned int zpos, unsigned int radius, float sigma, float amplitude)
 {
 	// Generate water patches
-	Coordinate3D<int> center;
 	IsotropicGaussian3D gauss;
 
-	cout << "Initializing Gaussian water patch ... \n" << endl;
+	Output::cout("Initializing Gaussian water patch ... \n\n");
 
-	cout << " - Position (x,y,z) = " << xpos << "," << ypos << "," << zpos << " ... ";
-	cout << " - Parameters (Influence radius, Amplitude, Sigma) = " << radius << "," << amplitude << "," << sigma << "... ";
+	Output::cout(" - Position (x,y,z) = {},{},{} ... ", xpos, ypos, zpos);
+	Output::cout(" - Parameters (Influence radius, Amplitude, Sigma) = {},{},{} ... ", radius, amplitude, sigma);
 
 	gauss.setSigma(sigma);
 	gauss.setAmplitude(amplitude);
-	cout << "DONE" << endl;
+	Output::cout("DONE\n");
 
 	// Generate random coordinates for the center of the patch
-	center.setX(xpos);
-	center.setY(ypos);
-	center.setZ(zpos);
+	Coordinate3D<int> center(xpos, ypos, zpos);
 
 	float waterAsGauss;
 
 	// Now iterate around the center to fill up with new water contents
 	TerrainCell* currentTerrainCell = NULL;
-	for (int x = (center.X() - (int) radius); x <= (center.X() + (int) radius); x++)
+	for (int x = (center.getX() - (int) radius); x <= (center.getX() + (int) radius); x++)
 	{
 		if (x >= 0 && x < (int) width) // Ckeck limits
 		{
-			for (int y = (center.Y() - (int) radius); y <= (center.Y() + (int) radius); y++)
+			for (int y = (center.getY() - (int) radius); y <= (center.getY() + (int) radius); y++)
 			{
 				if (y >= 0 && y < (int) length) // Ckeck limits
 				{
-					for (int z = (center.Z() - (int) radius); z <= (center.Z() + (int) radius); z++)
+					for (int z = (center.getZ() - (int) radius); z <= (center.getZ() + (int) radius); z++)
 					{
 						if (z >= 0 && z < (int) depth) // Ckeck limits
 						{
-							currentTerrainCell = terrain[z][y][x];
+							currentTerrainCell = getCell(z,y,x);
 							if (!currentTerrainCell->isObstacle())
 							{
-								waterAsGauss = gauss.getValueAtDistance(center.X() - x, center.Y() - y, center.Z() - z); // Value obtained from Gaussian
-								currentTerrainCell->setRelativeHumidityOnRainEvent(max(currentTerrainCell->getWater(), waterAsGauss));
+								waterAsGauss = gauss.getValueAtDistance(center.getX() - x, center.getY() - y, center.getZ() - z); // Value obtained from Gaussian
+								currentTerrainCell->setRelativeHumidityOnRainEvent(waterAsGauss);
 							}
 						}
 					}
@@ -3198,10 +3222,9 @@ void World::setRandomGaussianWaterPatches(unsigned int number, float radius, flo
 		float newAmplitude, bool useRandomAmplitude)
 {
 	// Generate water patches
-	Coordinate3D<int> center;
 	IsotropicGaussian3D gauss;
 
-	cout << "Initializing random Gaussian water patches ... \n" << endl;
+	Output::cout("Initializing random Gaussian water patches ... \n\n");
 
 	float sigma, amplitude;
 
@@ -3225,40 +3248,41 @@ void World::setRandomGaussianWaterPatches(unsigned int number, float radius, flo
 			amplitude = newAmplitude;
 		}
 
-		cout << " - Creating random Gaussian shape with (Influence, Amplitude, Sigma) = " << radius << ","
-				<< amplitude << "," << sigma << "... ";
+		Output::cout(" - Creating random Gaussian shape with (Influence, Amplitude, Sigma) = {},{},{} ... ", radius, amplitude, sigma);
 		gauss.setSigma(sigma);
 		gauss.setAmplitude(amplitude);
 
 		// Generate random coordinates for the center of the patch
-		center.setX(Random::randomIntegerInRange(0, width - 1));
-		center.setY(Random::randomIntegerInRange(0, length - 1));
-		center.setZ(Random::randomIntegerInRange(0, depth - 1));
-		cout << " - Position (x,y,z) = " << center.X() << "," << center.Y() << "," << center.Z() << " ... ";
+		Coordinate3D<int> center(
+			Random::randomIntegerInRange(0, width - 1),
+			Random::randomIntegerInRange(0, length - 1),
+			Random::randomIntegerInRange(0, depth - 1)
+		);
+		Output::cout(" - Position (x,y,z) = {},{},{} ... ", center.getX(), center.getY(), center.getZ());
 
-		cout << "DONE" << endl;
+		Output::cout("DONE\n");
 
 		float waterAsGauss;
 
 		// Now iterate around the center to fill up with new water contents
 		TerrainCell* currentTerrainCell = NULL;
-		for (int x = (center.X() - (int) radius); x <= (center.X() + (int) radius); x++)
+		for (int x = (center.getX() - (int) radius); x <= (center.getX() + (int) radius); x++)
 		{
 			if (x >= 0 && x < (int) width) // Ckeck limits
 			{
-				for (int y = (center.Y() - (int) radius); y <= (center.Y() + (int) radius); y++)
+				for (int y = (center.getY() - (int) radius); y <= (center.getY() + (int) radius); y++)
 				{
 					if (y >= 0 && y < (int) length) // Ckeck limits
 					{
-						for (int z = (center.Z() - (int) radius); z <= (center.Z() + (int) radius); z++)
+						for (int z = (center.getZ() - (int) radius); z <= (center.getZ() + (int) radius); z++)
 						{
 							if (z >= 0 && z < (int) depth) // Ckeck limits
 							{
-								currentTerrainCell = terrain[z][y][x];
+								currentTerrainCell = getCell(z,y,x);
 								if (!currentTerrainCell->isObstacle())
 								{
-									waterAsGauss = gauss.getValueAtDistance(center.X() - x, center.Y() - y, center.Z() - z); // Value obtained from Gaussian
-									currentTerrainCell->setRelativeHumidityOnRainEvent(max(currentTerrainCell->getWater(), waterAsGauss));
+									waterAsGauss = gauss.getValueAtDistance(center.getX() - x, center.getY() - y, center.getZ() - z); // Value obtained from Gaussian
+									currentTerrainCell->setRelativeHumidityOnRainEvent(waterAsGauss);
 								}
 							}
 						}
@@ -3269,16 +3293,34 @@ void World::setRandomGaussianWaterPatches(unsigned int number, float radius, flo
 	}
 }
 
-void World::calculateAttackStatistics(map<Species,vector<TerrainCell*>*> &mapSpeciesInhabitableTerrainCells)
+double World::getPdfThreshold() const
 {
-	cout << "Size of the Animal class: " << sizeof(Animal) << endl;
-	cout << "Size of the Genome class: " << sizeof(Genome) << endl;
-	cout << "Size of the TerrainCell class: " << sizeof(TerrainCell) << endl;
-	cout << "Creating heating code individuals... " << endl;
+	switch (getSimulType()) {
+		case SimulType::dinosaurs: {
+			return 0.0003; //dinosaurs
+			break;
+		}
+		case SimulType::arthropods: {
+			return 0.08; //arthropods
+			break;
+		}
+		default: {
+			throwLineInfoException("Default case");
+			break;
+		}
+	}
+}
+
+void World::calculateAttackStatistics(map<AnimalSpecies*,vector<TerrainCell*>*> &mapSpeciesInhabitableTerrainCells)
+{
+	Output::cout("Size of the Animal class: {}\n", sizeof(Animal));
+	Output::cout("Size of the Genome class: {}\n", sizeof(Genome));
+	Output::cout("Size of the TerrainCell class: {}\n", sizeof(TerrainCell));
+	Output::cout("Creating heating code individuals... \n");
 
 	vector<pair<Animal *, Instar> > animalAndInstarAtInitialization;
 
-	map<Species, vector<Edible*>*> * animalsPopulation = generateStatisticsPopulation(animalAndInstarAtInitialization, mapSpeciesInhabitableTerrainCells);
+	map<AnimalSpecies*, vector<Animal*>*> * animalsPopulation = generateStatisticsPopulation(animalAndInstarAtInitialization, mapSpeciesInhabitableTerrainCells);
 
 	//Calculating pseudoGrowthSd
 	for (auto animalAndInstarAtInitializationIt = animalAndInstarAtInitialization.begin(); animalAndInstarAtInitializationIt != animalAndInstarAtInitialization.end(); animalAndInstarAtInitializationIt++)
@@ -3286,7 +3328,7 @@ void World::calculateAttackStatistics(map<Species,vector<TerrainCell*>*> &mapSpe
 		(*animalAndInstarAtInitializationIt).first->sumPseudoGrowthSd();
 	}
 
-	for (vector<Species *>::iterator speciesIt = existingAnimalSpecies.begin(); speciesIt != existingAnimalSpecies.end(); speciesIt++)
+	for (auto speciesIt = existingAnimalSpecies.begin(); speciesIt != existingAnimalSpecies.end(); speciesIt++)
 	{
 		(*speciesIt)->calculatePseudoGrowthSd();
 	}
@@ -3299,67 +3341,68 @@ void World::calculateAttackStatistics(map<Species,vector<TerrainCell*>*> &mapSpe
 		//DONE ELIMINAR SPEED DEL ADJUST TRAITS YA QUE QUEDA INCLUIDO EN EL TUNETRAITS DE ABAJO
 		(*animalAndInstarAtInitializationIt).first->adjustTraits();
 		//DONE Forzar el crecimiento de forma DIARIA y utilizando growtcurves+tunetraits CADA DÍA para el ciclo de temperaturas
-		float temperatureOnMolting = (*animalAndInstarAtInitializationIt).first->forceMolting(timeStepsPerDay, -1, (*animalAndInstarAtInitializationIt).second);
-		ofstream noStream;
-		(*animalAndInstarAtInitializationIt).first->tuneTraits(-1, timeStepsPerDay, temperatureOnMolting, 100, noStream, false, true);
+		float temperatureOnMolting = (*animalAndInstarAtInitializationIt).first->forceMolting(timeStepsPerDay, -1, (*animalAndInstarAtInitializationIt).second, getSimulType(), &World::getCell);
+		(*animalAndInstarAtInitializationIt).first->tuneTraits(-1, timeStepsPerDay, temperatureOnMolting, 100, Output::nullFile, false, true, getSimulType(), &World::getCell);
 
 		updateMaxSearchArea((*animalAndInstarAtInitializationIt).first->getSearchArea());
 
 		//DONE tuneTraits tiene que ir AQUI y ADEMÁS con la temperatura final en la que mudaron CADA UNO DE ELLOS
 	}
-	cout << "A total of " << animalAndInstarAtInitialization.size() << " heating code individuals have been created." << endl;
+	Output::cout("A total of {} heating code individuals have been created.\n", animalAndInstarAtInitialization.size());
 
 	//Only for predators. The experiment is carried out for every predator species and its linked species, up until the specified numberOfCombinations.
 
 	//TODO MIRAR MEMORY LEAKS
 
-	cout << "Calculating attack statistics: " << endl;
-	for (vector<Species *>::iterator speciesIt = existingAnimalSpecies.begin(); speciesIt != existingAnimalSpecies.end(); speciesIt++)
+	Output::cout("Calculating attack statistics: \n");
+	for (auto speciesIt = existingAnimalSpecies.begin(); speciesIt != existingAnimalSpecies.end(); speciesIt++)
 	{
-		Species* currentAnimalSpecies = (*speciesIt);
-		vector<Species* >* currentEdibleAnimalSpecies = currentAnimalSpecies->getEdibleAnimalSpecies();
+		AnimalSpecies* currentAnimalSpecies = (*speciesIt);
+		const vector<AnimalSpecies* >* currentEdibleAnimalSpecies = currentAnimalSpecies->getEdibleAnimalSpecies();
 
 		if(!currentEdibleAnimalSpecies->empty())
 		{
-			cout << ">> Simulating " << numberOfCombinations << " attacks from the species \"" << currentAnimalSpecies->getScientificName() << "\"... " << endl;
-			vector<Edible* >* currentVectorOfPredators = (*animalsPopulation)[*currentAnimalSpecies];
+			Output::cout(">> Simulating {} attacks from the species \"{}\"... \n", numberOfCombinations, currentAnimalSpecies->getScientificName());
+			vector<Animal* >* currentVectorOfPredators = (*animalsPopulation)[currentAnimalSpecies];
 			
-			vector<Edible*> auxAttacks;
-			for (vector<Species *>::iterator innerSpeciesIt = currentEdibleAnimalSpecies->begin(); innerSpeciesIt != currentEdibleAnimalSpecies->end(); innerSpeciesIt++)
+			vector<Animal*> auxAttacks;
+			for (auto innerSpeciesIt = currentEdibleAnimalSpecies->begin(); innerSpeciesIt != currentEdibleAnimalSpecies->end(); innerSpeciesIt++)
 			{
-				vector<Edible*> * currentVectorOfEdibleAnimals = (*animalsPopulation)[*(*innerSpeciesIt)];
+				vector<Animal*> * currentVectorOfEdibleAnimals = (*animalsPopulation)[(*innerSpeciesIt)];
 				auxAttacks.insert(auxAttacks.end(), currentVectorOfEdibleAnimals->begin(), currentVectorOfEdibleAnimals->end());
 			}
 
 			float percentageForPrinting = 0.1;
 			float currentPercentageForPrinting = percentageForPrinting;
-			vector<pair<Edible*, Edible*>> vectorOfAttacks;
+			vector<pair<Animal*, Animal*>> vectorOfAttacks;
 			vectorOfAttacks.reserve(numberOfCombinations);
 			while(vectorOfAttacks.size() < numberOfCombinations)
 			{
-				Edible* hunterAnimal = currentVectorOfPredators->at(Random::randomIndex(currentVectorOfPredators->size()));
-				Edible* huntedAnimal = auxAttacks.at(Random::randomIndex(auxAttacks.size()));
+				Animal* hunterAnimal = currentVectorOfPredators->at(Random::randomIndex(currentVectorOfPredators->size()));
+				Animal* huntedAnimal = auxAttacks.at(Random::randomIndex(auxAttacks.size()));
 				//cout << "CAN EAT ANIMAL??? <" << huntedAnimal->getId() << " _ " << hunterAnimal->getId() << endl;
 				
 				double probabilityDensityFunction = exp(-0.5 * pow((log(hunterAnimal->calculateWetMass()/huntedAnimal->calculateWetMass()) - muForPDF) / sigmaForPDF, 2)) / (sigmaForPDF * sqrt(2*PI));
 				
-				if(probabilityDensityFunction >= 0.08){  //Dinosaurs but everything else might be - p=0.003 from Alamosaurus - Tytannsaurus in PDF_fix_in heating_code.xls
+				double pdfThreshold = getPdfThreshold(); //to avoid feeding on too small prey
+				
+				if(probabilityDensityFunction >= pdfThreshold){  //Dinosaurs but everything else might be - p=0.003 from Alamosaurus - Tytannsaurus in PDF_fix_in heating_code.xls
 					if(hunterAnimal->canEatEdible(huntedAnimal) && hunterAnimal != huntedAnimal)
 					{
 						//cout << "CAN EAT ANIMAL!!! <" << huntedAnimal->getId() << " _ " << hunterAnimal->getId() << endl;
-						pair<Edible*, Edible*> currentAttack = make_pair(hunterAnimal, huntedAnimal);
+						pair<Animal*, Animal*> currentAttack = make_pair(hunterAnimal, huntedAnimal);
 						if(find(vectorOfAttacks.begin(), vectorOfAttacks.end(), currentAttack) == vectorOfAttacks.end())
 						{
 							vectorOfAttacks.push_back(currentAttack);
 
 							//Computing the total mean values.
-							currentAnimalSpecies->sumStatisticMeans(hunterAnimal, huntedAnimal, muForPDF, sigmaForPDF);
-							currentAnimalSpecies->interactionRanges(hunterAnimal, huntedAnimal, muForPDF, sigmaForPDF);
+							currentAnimalSpecies->sumStatisticMeans(hunterAnimal->getCurrentBodySize(), hunterAnimal->getVoracity(), hunterAnimal->getSpeed(), hunterAnimal->calculateDryMass(), huntedAnimal->getCurrentBodySize(), huntedAnimal->getVoracity(), huntedAnimal->getSpeed(), huntedAnimal->calculateDryMass(), muForPDF, sigmaForPDF);
+							currentAnimalSpecies->interactionRanges(hunterAnimal->getCurrentBodySize(), hunterAnimal->getVoracity(), hunterAnimal->getSpeed(), hunterAnimal->calculateDryMass(), huntedAnimal->getCurrentBodySize(), huntedAnimal->getVoracity(), huntedAnimal->getSpeed(), huntedAnimal->calculateDryMass(), muForPDF, sigmaForPDF);
 						}
 					}
 					if(vectorOfAttacks.size() >= (numberOfCombinations-1)*currentPercentageForPrinting)
 					{
-						cout << ">>>> " << (int)(currentPercentageForPrinting*100) << "%... " << endl;
+						Output::cout(">>>> {}%... \n", (int)(currentPercentageForPrinting*100));
 						currentPercentageForPrinting += percentageForPrinting;
 					}
 				}
@@ -3371,14 +3414,16 @@ void World::calculateAttackStatistics(map<Species,vector<TerrainCell*>*> &mapSpe
 			for(unsigned int i = 0; i < vectorOfAttacks.size(); i++)
 			{
 				//Computing the total sd values.
-				Edible* hunterAnimal = vectorOfAttacks[i].first;
-				Edible* huntedAnimal = vectorOfAttacks[i].second;
+				Animal* hunterAnimal = vectorOfAttacks[i].first;
+				Animal* huntedAnimal = vectorOfAttacks[i].second;
 
 				double probabilityDensityFunction = exp(-0.5 * pow((log(hunterAnimal->calculateWetMass()/huntedAnimal->calculateWetMass()) - muForPDF) / sigmaForPDF, 2)) / (sigmaForPDF * sqrt(2*PI));
 				
-				if(probabilityDensityFunction >= 0.08){  //Dinosaurs but everything else might be - p=0.003 from Alamosaurus - Tytannsaurus in PDF_fix_in heating_code.xls
+				double pdfThreshold = getPdfThreshold();
+				
+				if(probabilityDensityFunction >= pdfThreshold){  //Dinosaurs but everything else might be - p=0.003 from Alamosaurus - Tytannsaurus in PDF_fix_in heating_code.xls
 
-				currentAnimalSpecies->sumStatisticSds(hunterAnimal, huntedAnimal, muForPDF, sigmaForPDF);
+				currentAnimalSpecies->sumStatisticSds(hunterAnimal->getCurrentBodySize(), hunterAnimal->getVoracity(), hunterAnimal->getSpeed(), hunterAnimal->calculateDryMass(), huntedAnimal->getCurrentBodySize(), huntedAnimal->getVoracity(), huntedAnimal->getSpeed(), huntedAnimal->calculateDryMass(), muForPDF, sigmaForPDF);
 
 				}
 
@@ -3393,8 +3438,9 @@ void World::calculateAttackStatistics(map<Species,vector<TerrainCell*>*> &mapSpe
 
 	eraseStatisticsPopulation(animalsPopulation);
 
-	Edible::resetIds();
-	cout << "Calculating attack statistics DONE" << endl;
+	Edible::resetIds(Resource::resourceCounter);
+	Animal::animalCounter = 0;
+	Output::cout("Calculating attack statistics DONE\n");
 }
 
 void World::updateMaxSearchArea(double currentAnimalMaxSearchArea)
@@ -3415,14 +3461,14 @@ void World::printActualEcosystemSize(const vector<TerrainCell*> &inhabitableTerr
 		/*
 		cout << "Calculating total initial population based on density per species ... " << endl;
 
-		double totalFungiWetBiomass = 0.0;
+		double totalResourceWetBiomass = 0.0;
 		//Initializing trophic level biomass based on Hatton et al 2015
 		for(vector<TerrainCell*>::const_iterator inhabitableTerrainCellsIt = inhabitableTerrainCells.cbegin(); inhabitableTerrainCellsIt != inhabitableTerrainCells.cend(); inhabitableTerrainCellsIt++)
 		{
-			totalFungiWetBiomass += (*inhabitableTerrainCellsIt)->getTotalFungusBiomass();
+			totalResourceWetBiomass += (*inhabitableTerrainCellsIt)->getTotalResourceBiomass();
 		}
 
-		double totalPreyWetBiomass = 0.08*pow(totalFungiWetBiomass,0.75);
+		double totalPreyWetBiomass = 0.08*pow(totalResourceWetBiomass,0.75);
 		double totalPredatorWetBiomass = 0.08*pow(totalPreyWetBiomass,0.75);
 
 		cout << " - Initial ecosystem size from power-law relation: " << (totalPreyWetBiomass + totalPredatorWetBiomass) << endl;
@@ -3436,7 +3482,7 @@ void World::printActualEcosystemSize(const vector<TerrainCell*> &inhabitableTerr
 		double totalPredatorWetBiomassDensity = 0.0;
 		for (vector<Species *>::iterator speciesIt = existingAnimalSpecies.begin(); speciesIt != existingAnimalSpecies.end(); speciesIt++)
 		{
-			if((*speciesIt)->canEatAnyFungusSpecies())
+			if((*speciesIt)->canEatAnyResourceSpecies())
 			{
 				totalPreyWetBiomassDensity += (*speciesIt)->getTotalInitialPopulation();
 			}
@@ -3448,7 +3494,7 @@ void World::printActualEcosystemSize(const vector<TerrainCell*> &inhabitableTerr
 
 		for (vector<Species *>::iterator speciesIt = existingAnimalSpecies.begin(); speciesIt != existingAnimalSpecies.end(); speciesIt++)
 		{
-			if((*speciesIt)->canEatAnyFungusSpecies())
+			if((*speciesIt)->canEatAnyResourceSpecies())
 			{
 				(*speciesIt)->scaleInitialPopulation(totalPreyWetBiomassDensity, totalPreyWetBiomass);
 				//InitialPopulation contains now the mass on each instar
@@ -3469,21 +3515,21 @@ void World::printActualEcosystemSize(const vector<TerrainCell*> &inhabitableTerr
 	}
 	else
 	{
-		for (vector<Species *>::iterator speciesIt = existingAnimalSpecies.begin(); speciesIt != existingAnimalSpecies.end(); speciesIt++)
+		for (auto speciesIt = existingAnimalSpecies.begin(); speciesIt != existingAnimalSpecies.end(); speciesIt++)
 		{
 			actualEcosystemSize += (*speciesIt)->getTotalInitialPopulation();
 		}
-		cout << " - Total initial ecosystem size from input: " << actualEcosystemSize << " individuals." << endl;
+		Output::cout(" - Total initial ecosystem size from input: {} individuals.\n", actualEcosystemSize);
 	}
 }
 
-void World::obtainSpeciesInhabitableTerrainCells(map<Species,vector<TerrainCell*>*> &mapSpeciesInhabitableTerrainCells, const vector<TerrainCell*> &inhabitableTerrainCells)
+void World::obtainSpeciesInhabitableTerrainCells(map<AnimalSpecies*,vector<TerrainCell*>*> &mapSpeciesInhabitableTerrainCells, const vector<TerrainCell*> &inhabitableTerrainCells)
 {
-	for (vector<Species *>::iterator speciesIt = existingAnimalSpecies.begin(); speciesIt != existingAnimalSpecies.end(); speciesIt++)
+	for (auto speciesIt = existingAnimalSpecies.begin(); speciesIt != existingAnimalSpecies.end(); speciesIt++)
 	{
-		Species* currentAnimalSpecies = *speciesIt;
+		AnimalSpecies* currentAnimalSpecies = *speciesIt;
 
-		vector<Species*> * involvedFungusSpecies = currentAnimalSpecies->getInvolvedFungusSpecies();
+		vector<ResourceSpecies*> * involvedResourceSpecies = currentAnimalSpecies->getInvolvedResourceSpecies();
 
 		vector<TerrainCell*>* speciesInhabitableTerrainCells = new vector<TerrainCell*>();
 
@@ -3494,9 +3540,9 @@ void World::obtainSpeciesInhabitableTerrainCells(map<Species,vector<TerrainCell*
 		{
 			currentTerrainCell = inhabitableTerrainCells[i];
 			cellHasBeenAdded = false;
-			for(unsigned int j = 0; j < involvedFungusSpecies->size() && !cellHasBeenAdded; j++)
+			for(unsigned int j = 0; j < involvedResourceSpecies->size() && !cellHasBeenAdded; j++)
 			{
-				if(currentTerrainCell->containsFungusSpecies(involvedFungusSpecies->at(j)))
+				if(currentTerrainCell->containsResourceSpecies(involvedResourceSpecies->at(j)))
 				{
 					speciesInhabitableTerrainCells->push_back(currentTerrainCell);
 					cellHasBeenAdded = true;
@@ -3504,26 +3550,26 @@ void World::obtainSpeciesInhabitableTerrainCells(map<Species,vector<TerrainCell*
 			}
 		}
 
-		mapSpeciesInhabitableTerrainCells[*currentAnimalSpecies] = speciesInhabitableTerrainCells;
+		mapSpeciesInhabitableTerrainCells[currentAnimalSpecies] = speciesInhabitableTerrainCells;
 
-		delete involvedFungusSpecies;
+		delete involvedResourceSpecies;
 	}
 }
 
-map<Species, vector<Edible*>*>* World::generateStatisticsPopulation(vector<pair<Animal *, Instar> > &animalAndInstarAtInitialization, map<Species,vector<TerrainCell*>*> &mapSpeciesInhabitableTerrainCells)
+map<AnimalSpecies*, vector<Animal*>*>* World::generateStatisticsPopulation(vector<pair<Animal *, Instar> > &animalAndInstarAtInitialization, map<AnimalSpecies*,vector<TerrainCell*>*> &mapSpeciesInhabitableTerrainCells)
 {
-	map<Species, vector<Edible*>*> * animalsPopulation = new map<Species, vector<Edible*>*>(); 
+	map<AnimalSpecies*, vector<Animal*>*> * animalsPopulation = new map<AnimalSpecies*, vector<Animal*>*>(); 
 
 	//TODO Separarlo TOTALMENTE del mundo de la simulación
-	for (vector<Species *>::iterator speciesIt = existingAnimalSpecies.begin(); speciesIt != existingAnimalSpecies.end(); speciesIt++)
+	for (auto speciesIt = existingAnimalSpecies.begin(); speciesIt != existingAnimalSpecies.end(); speciesIt++)
 	{
-		Species* currentAnimalSpecies = *speciesIt;
+		AnimalSpecies* currentAnimalSpecies = *speciesIt;
 
-		(*animalsPopulation)[*currentAnimalSpecies] = new vector<Edible*>();
+		(*animalsPopulation)[currentAnimalSpecies] = new vector<Animal*>();
 
 		//TODO AÑADIR que solamente haya un PORCENTAJE de individuos en cada instar (un vector solamente), a partir de un numero total (un total para simulacion, y otro total diferente para estadisticas)
 		vector<unsigned long>* initialPopulation = currentAnimalSpecies->getStatisticsInitialPopulation();
-		vector<TerrainCell*>* speciesInhabitableTerrainCells = mapSpeciesInhabitableTerrainCells[*currentAnimalSpecies];
+		vector<TerrainCell*>* speciesInhabitableTerrainCells = mapSpeciesInhabitableTerrainCells[currentAnimalSpecies];
 
 		float percentageForPrinting = 0.1;
 		float currentPercentageForPrinting = percentageForPrinting;
@@ -3547,8 +3593,8 @@ map<Species, vector<Edible*>*>* World::generateStatisticsPopulation(vector<pair<
 				randomCellIndex = Random::randomIndex(speciesInhabitableTerrainCells->size());
 				TerrainCell * newCell = (*speciesInhabitableTerrainCells)[randomCellIndex];
 
-				Animal * newAnimal = new Animal(currentAnimalSpecies->getChromosomesGenerator()->getNewGenome(), -1, newCell, 0, timeStepsPerDay, 0, 0, -1,
-						-1, currentAnimalSpecies, currentAnimalSpecies->getRandomGender(), currentAnimalSpecies->getDefaultHuntingMode());
+				Animal * newAnimal = new Animal(-1, newCell, 0, timeStepsPerDay, 0, 0, -1,
+						-1, currentAnimalSpecies, currentAnimalSpecies->getRandomGender());
 
 				newAnimal->updateLimits();
 				newAnimal->sumPseudoGrowthMean();
@@ -3557,11 +3603,11 @@ map<Species, vector<Edible*>*>* World::generateStatisticsPopulation(vector<pair<
 
 				animalAndInstarAtInitialization.push_back(make_pair(newAnimal, instar));
 
-				(*animalsPopulation)[*currentAnimalSpecies]->push_back(newAnimal);
+				(*animalsPopulation)[currentAnimalSpecies]->push_back(newAnimal);
 			}
 			if(instarAtInitialization-1 >= (actualPopulationInstarsSize-1)*currentPercentageForPrinting)
 			{
-				cout << ">>>> " << (int)(currentPercentageForPrinting*100) << "%... " << endl;
+				Output::cout(">>>> {}%... \n", (int)(currentPercentageForPrinting*100));
 				currentPercentageForPrinting += percentageForPrinting;
 			}
 		}
@@ -3571,11 +3617,11 @@ map<Species, vector<Edible*>*>* World::generateStatisticsPopulation(vector<pair<
 	return animalsPopulation;
 }
 
-void World::eraseStatisticsPopulation(map<Species, vector<Edible*>*> * animalsPopulation)
+void World::eraseStatisticsPopulation(map<AnimalSpecies*, vector<Animal*>*> * animalsPopulation)
 {
 	for(auto &[key, value] : *animalsPopulation)
 	{
-		for(Edible* currentAnimal : *value)
+		for(Animal* currentAnimal : *value)
 		{
 			TerrainCell* currentAnimalPosition = currentAnimal->getPosition();
 
@@ -3592,12 +3638,12 @@ void World::eraseStatisticsPopulation(map<Species, vector<Edible*>*> * animalsPo
 	delete animalsPopulation;
 }
 
-int World::generatePopulation(Species* currentAnimalSpecies, const vector<TerrainCell*> &speciesInhabitableTerrainCells, ofstream &constitutiveTraitsFile)
+int World::generatePopulation(AnimalSpecies* currentAnimalSpecies, const vector<TerrainCell*> &speciesInhabitableTerrainCells)
 {
 	int numberOfDiscardedIndividualsOutsideRestrictedRanges = 0;
 
-	cout << "Creating " << currentAnimalSpecies->getTotalInitialPopulation() << " individuals of the species \"" << currentAnimalSpecies->getScientificName() << "\"..." << endl;
-	cout << ">> Number of inhabitable cells (with involved fungus resources): " << speciesInhabitableTerrainCells.size() << endl;
+	Output::cout("Creating {} individuals of the species \"{}\"...\n", currentAnimalSpecies->getTotalInitialPopulation(), currentAnimalSpecies->getScientificName());
+	Output::cout(">> Number of inhabitable cells (with involved resources): {}\n", speciesInhabitableTerrainCells.size());
 
 	float percentageForPrinting = 0.1;
 	float currentPercentageForPrinting = percentageForPrinting;
@@ -3613,23 +3659,27 @@ int World::generatePopulation(Species* currentAnimalSpecies, const vector<Terrai
 			randomCellIndex = Random::randomIndex(speciesInhabitableTerrainCells.size());
 			TerrainCell * newCell = speciesInhabitableTerrainCells[randomCellIndex];
 
-			Animal * newAnimal = new Animal(currentAnimalSpecies->getChromosomesGenerator()->getNewGenome(), -1, newCell, 0, timeStepsPerDay, 0, 0, -1,
-					-1, currentAnimalSpecies, currentAnimalSpecies->getRandomGender(), currentAnimalSpecies->getDefaultHuntingMode(), true);
+			Animal * newAnimal = new Animal(-1, newCell, 0, timeStepsPerDay, 0, 0, -1,
+					-1, currentAnimalSpecies, currentAnimalSpecies->getRandomGender(), true);
 
 			pair<bool, bool> isInsideRestrictedRangesAndIsViableOffSpring = newAnimal->interpolateTraits();
 			while(!isInsideRestrictedRangesAndIsViableOffSpring.first)
 			{
 				numberOfDiscardedIndividualsOutsideRestrictedRanges++;
 				delete newAnimal;
-				newAnimal = new Animal(currentAnimalSpecies->getChromosomesGenerator()->getNewGenome(), -1, newCell, 0, timeStepsPerDay, 0, 0, -1,
-										-1, currentAnimalSpecies, currentAnimalSpecies->getRandomGender(), currentAnimalSpecies->getDefaultHuntingMode(), true);
+				newAnimal = new Animal(-1, newCell, 0, timeStepsPerDay, 0, 0, -1,
+										-1, currentAnimalSpecies, currentAnimalSpecies->getRandomGender(), true);
 				isInsideRestrictedRangesAndIsViableOffSpring = newAnimal->interpolateTraits();
 			}
 			// Indicate that the animal created is the final animal, and therefore assign a final ID to it.
 			newAnimal->doDefinitive();
 			//ALWAYS print the traits after interpolating and before adjusting
 			//newAnimal->printGenetics(geneticsFile);
-			newAnimal->printTraits(constitutiveTraitsFile);
+
+			if(saveAnimalConstitutiveTraits) {
+				newAnimal->printTraits(constitutiveTraitsFile);
+			}
+			
 			//DONE Adjust traits now includes the first CalculateGrowthCurves call. For every animal.
 			newAnimal->adjustTraits();
 			newAnimal->forceMolting2(timeStepsPerDay, -1, instar);
@@ -3638,7 +3688,7 @@ int World::generatePopulation(Species* currentAnimalSpecies, const vector<Terrai
 		}
 		if(instarAtInitialization-1 >= (currentAnimalSpecies->getInitialPopulation().size()-1)*currentPercentageForPrinting)
 		{
-			cout << ">> " << (int)(currentPercentageForPrinting*100) << "%... " << endl;
+			Output::cout(">> {}%... \n", (int)(currentPercentageForPrinting*100));
 			currentPercentageForPrinting += percentageForPrinting;
 		}
 	}
@@ -3653,120 +3703,111 @@ void World::initializeAnimals()
 
 	printActualEcosystemSize(inhabitableTerrainCells);
 
-	map<Species,vector<TerrainCell*>*> mapSpeciesInhabitableTerrainCells;
+	map<AnimalSpecies*,vector<TerrainCell*>*> mapSpeciesInhabitableTerrainCells;
 	obtainSpeciesInhabitableTerrainCells(mapSpeciesInhabitableTerrainCells, inhabitableTerrainCells);
 
 	calculateAttackStatistics(mapSpeciesInhabitableTerrainCells);
 
-	cout << "Giving life to animals... " << endl;
+	Output::cout("Giving life to animals... \n");
 
-	ofstream geneticsFile, constitutiveTraitsFile;
-	createOutputFile(geneticsFile, outputDirectory, "animal_genetics", "txt", ofstream::app);
-	if(!geneticsFile.is_open())
+	FILE* geneticsFile = nullptr;
+
+	createOutputFile(&geneticsFile, outputFolder, "animal_genetics", "txt");
+	if(!isFileOpen(geneticsFile))
 	{
-		cerr << "Error opening the file." << endl;
+		Output::cerr("Error opening the file.\n");
 	}
 	else
 	{
-		createOutputFile(constitutiveTraitsFile, outputDirectory, "animal_constitutive_traits", "txt", ofstream::app);
-		if(!constitutiveTraitsFile.is_open())
-		{
-			cerr << "Error opening the file." << endl;
-		}
-		else
-		{
-			geneticsFile << "id\tspecies\tg_numb_prt1\tg_numb_prt2\tID_prt1\tID_prt2\t" << endl;
-			constitutiveTraitsFile << "id\tspecies\tg_numb_prt1\tg_numb_prt2\tID_prt1\tID_prt2\t" << TraitConverter::printAvailableTraits() << endl;
+		Output::print(geneticsFile, "id\tspecies\tg_numb_prt1\tg_numb_prt2\tID_prt1\tID_prt2\t\n");
 
-			for (vector<Species *>::iterator speciesIt = existingAnimalSpecies.begin(); speciesIt != existingAnimalSpecies.end(); speciesIt++)
+		for (auto speciesIt = existingAnimalSpecies.begin(); speciesIt != existingAnimalSpecies.end(); speciesIt++)
+		{
+			AnimalSpecies* currentAnimalSpecies = *speciesIt;
+
+			vector<TerrainCell*>* speciesInhabitableTerrainCells = mapSpeciesInhabitableTerrainCells[currentAnimalSpecies];
+							
+			int numberOfDiscardedIndividualsOutsideRestrictedRanges = 0;
+
+			if(initIndividualsPerDensities)
 			{
-				Species* currentAnimalSpecies = *speciesIt;
+				// TODO Mario Initialize animals with initIndividualsPerDensities
+				/*
+				initialPopulation = currentAnimalSpecies->getInitialPopulation();
 
-				vector<TerrainCell*>* speciesInhabitableTerrainCells = mapSpeciesInhabitableTerrainCells[*currentAnimalSpecies];
-							 
-				int numberOfDiscardedIndividualsOutsideRestrictedRanges = 0;
-
-				if(initIndividualsPerDensities)
+				cout << "Creating " << currentAnimalSpecies->getTotalInitialPopulation() << " biomass worth of the species \"" << currentAnimalSpecies->getScientificName() << "\"..." << endl;
+				cout << ">> Number of inhabitable cells (with involved resources): " << speciesInhabitableTerrainCells->size() << endl;
+				float percentageForPrinting = 0.1;
+				float currentPercentageForPrinting = percentageForPrinting;
+				double leftOverFromTotalBiomassAtPreviousAges = 0.0;
+				for (unsigned int currentAgeStep = 0; currentAgeStep < initialPopulation->size(); ++currentAgeStep)
 				{
-					// TODO Mario Initialize animals with initIndividualsPerDensities
-					/*
-					initialPopulation = currentAnimalSpecies->getInitialPopulation();
-
-					cout << "Creating " << currentAnimalSpecies->getTotalInitialPopulation() << " biomass worth of the species \"" << currentAnimalSpecies->getScientificName() << "\"..." << endl;
-					cout << ">> Number of inhabitable cells (with involved fungus resources): " << speciesInhabitableTerrainCells->size() << endl;
-					float percentageForPrinting = 0.1;
-					float currentPercentageForPrinting = percentageForPrinting;
-					double leftOverFromTotalBiomassAtPreviousAges = 0.0;
-					for (unsigned int currentAgeStep = 0; currentAgeStep < initialPopulation->size(); ++currentAgeStep)
+					double ageAtInitialization = currentAgeStep * 1.0/timeStepsPerDay;
+					double totalBiomassAtThisAge = initialPopulation->at(currentAgeStep) + leftOverFromTotalBiomassAtPreviousAges;
+					double currentCreatedBiomassAtThisAge = 0.0;
+					bool reachedTotalBiomassAtThisAge = false;
+					while (!reachedTotalBiomassAtThisAge)
 					{
-						double ageAtInitialization = currentAgeStep * 1.0/timeStepsPerDay;
-						double totalBiomassAtThisAge = initialPopulation->at(currentAgeStep) + leftOverFromTotalBiomassAtPreviousAges;
-						double currentCreatedBiomassAtThisAge = 0.0;
-						bool reachedTotalBiomassAtThisAge = false;
-						while (!reachedTotalBiomassAtThisAge)
+						// Get a random index from this species inhabitable cells
+						randomCellIndex = randomIndex(speciesInhabitableTerrainCells->size());
+						TerrainCell * newCell = (*speciesInhabitableTerrainCells)[randomCellIndex];
+
+						Animal * newAnimal = new Animal(currentAnimalSpecies->getNewGenome(), -1, newCell, 0, timeStepsPerDay, 0, 0, -1,
+								-1, currentAnimalSpecies, currentAnimalSpecies->getRandomGender(), currentAnimalSpecies->getDefaultHuntingMode());
+
+						pair<bool, bool> isInsideRestrictedRangesAndIsViableOffSpring = newAnimal->interpolateTraits();
+						while(!isInsideRestrictedRangesAndIsViableOffSpring.first)
 						{
-							// Get a random index from this species inhabitable cells
-							randomCellIndex = randomIndex(speciesInhabitableTerrainCells->size());
-							TerrainCell * newCell = (*speciesInhabitableTerrainCells)[randomCellIndex];
-
-							Animal * newAnimal = new Animal(currentAnimalSpecies->getChromosomesGenerator()->getNewGenome(), -1, newCell, 0, timeStepsPerDay, 0, 0, -1,
-									-1, currentAnimalSpecies, currentAnimalSpecies->getRandomGender(), currentAnimalSpecies->getDefaultHuntingMode());
-
-							pair<bool, bool> isInsideRestrictedRangesAndIsViableOffSpring = newAnimal->interpolateTraits();
-							while(!isInsideRestrictedRangesAndIsViableOffSpring.first)
+							numberOfDiscardedIndividualsOutsideRestrictedRanges++;
+							delete newAnimal;
+							newAnimal = new Animal(currentAnimalSpecies->getNewGenome(), -1, newCell, 0, timeStepsPerDay, 0, 0, -1,
+													-1, currentAnimalSpecies, currentAnimalSpecies->getRandomGender(), currentAnimalSpecies->getDefaultHuntingMode());
+							isInsideRestrictedRangesAndIsViableOffSpring = newAnimal->interpolateTraits();
+						}
+						//ALWAYS print the traits after interpolating and before adjusting
+						//newAnimal->printGenetics(geneticsFile);
+						newAnimal->printTraits(constitutiveTraitsFile);
+						//DONE Adjust traits now includes the first CalculateGrowthCurves call. For every animal.
+						newAnimal->adjustTraits();
+						newAnimal->forceMolting(timeStepsPerDay, ageAtInitialization, -1);
+						double newAnimalWetMass = newAnimal->calculateWetMass();
+						if(currentCreatedBiomassAtThisAge + newAnimalWetMass <= totalBiomassAtThisAge)
+						{
+							currentCreatedBiomassAtThisAge += newAnimalWetMass;
+							newCell->addAnimal(newAnimal);
+						}
+						else
+						{
+							if(currentAgeStep != initialPopulation->size()-1)
 							{
-								numberOfDiscardedIndividualsOutsideRestrictedRanges++;
 								delete newAnimal;
-								newAnimal = new Animal(currentAnimalSpecies->getChromosomesGenerator()->getNewGenome(), -1, newCell, 0, timeStepsPerDay, 0, 0, -1,
-														-1, currentAnimalSpecies, currentAnimalSpecies->getRandomGender(), currentAnimalSpecies->getDefaultHuntingMode());
-								isInsideRestrictedRangesAndIsViableOffSpring = newAnimal->interpolateTraits();
 							}
-							//ALWAYS print the traits after interpolating and before adjusting
-							//newAnimal->printGenetics(geneticsFile);
-							newAnimal->printTraits(constitutiveTraitsFile);
-							//DONE Adjust traits now includes the first CalculateGrowthCurves call. For every animal.
-							newAnimal->adjustTraits();
-							newAnimal->forceMolting(timeStepsPerDay, ageAtInitialization, -1);
-							double newAnimalWetMass = newAnimal->calculateWetMass();
-							if(currentCreatedBiomassAtThisAge + newAnimalWetMass <= totalBiomassAtThisAge)
+							else
 							{
 								currentCreatedBiomassAtThisAge += newAnimalWetMass;
 								newCell->addAnimal(newAnimal);
 							}
-							else
-							{
-								if(currentAgeStep != initialPopulation->size()-1)
-								{
-									delete newAnimal;
-								}
-								else
-								{
-									currentCreatedBiomassAtThisAge += newAnimalWetMass;
-									newCell->addAnimal(newAnimal);
-								}
-								reachedTotalBiomassAtThisAge = true;
-								leftOverFromTotalBiomassAtPreviousAges = totalBiomassAtThisAge - currentCreatedBiomassAtThisAge;
-							}
-						}
-						if(currentAgeStep >= (initialPopulation->size()-1)*currentPercentageForPrinting)
-						{
-							cout << ">> " << (int)(currentPercentageForPrinting*100) << "%... " << endl;
-							currentPercentageForPrinting += percentageForPrinting;
+							reachedTotalBiomassAtThisAge = true;
+							leftOverFromTotalBiomassAtPreviousAges = totalBiomassAtThisAge - currentCreatedBiomassAtThisAge;
 						}
 					}
-					*/
+					if(currentAgeStep >= (initialPopulation->size()-1)*currentPercentageForPrinting)
+					{
+						cout << ">> " << (int)(currentPercentageForPrinting*100) << "%... " << endl;
+						currentPercentageForPrinting += percentageForPrinting;
+					}
 				}
-				else
-				{
-					numberOfDiscardedIndividualsOutsideRestrictedRanges = generatePopulation(currentAnimalSpecies, *speciesInhabitableTerrainCells, constitutiveTraitsFile);
-				}
-
-				cout << ">> A total of " << numberOfDiscardedIndividualsOutsideRestrictedRanges << " individuals have been discarded due to at least one trait value being outside restricted ranges. " << endl;
+				*/
+			}
+			else
+			{
+				numberOfDiscardedIndividualsOutsideRestrictedRanges = generatePopulation(currentAnimalSpecies, *speciesInhabitableTerrainCells);
 			}
 
-			geneticsFile.close();
-			constitutiveTraitsFile.close();
+			Output::cout(">> A total of {} individuals have been discarded due to at least one trait value being outside restricted ranges. \n", numberOfDiscardedIndividualsOutsideRestrictedRanges);
 		}
+
+		fclose(geneticsFile);
 	}
 
 	for(auto &[key,value] : mapSpeciesInhabitableTerrainCells)
@@ -3774,12 +3815,12 @@ void World::initializeAnimals()
 		delete value;
 	}
 
-	cout << "DONE" << endl;
+	Output::cout("DONE\n");
 }
 
 void World::readWaterFromVolume(string fileName)
 {
-	cout << "Reading water from volume " << fileName << "... ";
+	Output::cout("Reading water from volume {}... ", fileName);
 	fstream binf(fileName.c_str(), ios::binary | ios::in);
 
 	double value;
@@ -3790,7 +3831,7 @@ void World::readWaterFromVolume(string fileName)
 		{
 			for (unsigned int x = 0; x < width; x++)
 			{
-				currentTerrainCell = terrain[z][y][x];
+				currentTerrainCell = getCell(z,y,x);
 				if (!currentTerrainCell->isObstacle())
 				{
 					binf.read((char*) &value, sizeof(value));
@@ -3800,141 +3841,103 @@ void World::readWaterFromVolume(string fileName)
 		}
 	}
 
-	cout << "DONE" << endl;
+	Output::cout("DONE\n");
 	binf.close();
 }
 
-string World::translateLifeStage(unsigned int lifeStage)
+void World::initializeOutputFiles(json * jsonTree, fs::path inputFile)
 {
-	switch(lifeStage) {
-	case 0:
-		return "unborn";
-	case 1:
-		return "active";
-	case 2:
-		return "starved";
-	case 3:
-		return "predated";
-	case 4:
-		return "reproducing";
-	case 5:
-		return "pupa";
-	case 6:
-		return "satiated";
-	case 7:
-		return "handling";
-	case 8:
-		return "diapause";
-	case 9:
-		return "background";
-	case 10:
-		return "senesced";
- 	case 11:
-        return "shocked";
-	default:
-		return "not a lifestage";
-	}
-}
+	fs::create_directories(outputFolder / fs::path("config"));
 
-void World::initializeOutputFiles()
-{
-	//string command = string("cp ") + string("run_params.json ") + outputDirectory;
-	//system(command.c_str());
-	
+	// Copy simulation configuration
+	fs::copy(inputFolder, outputFolder / fs::path("config") / inputFolder.filename(), fs::copy_options::recursive);
+
 	// Copy simulation parameters into output directory
-	fs::path run_params_source_path = fs::path("run_params.json");
-	fs::path run_params_destination_path = outputDirectory / fs::path("run_params.json");
-	fs::copy_file(run_params_source_path, run_params_destination_path, fs::copy_options::overwrite_existing);
+	fs::copy_file(inputFile, outputFolder / fs::path("run_params.json"), fs::copy_options::overwrite_existing);
 
-	// Copy world parameters into output directory
-	fs::path world_params_source_path = inputDirectory / fs::path("world_params.json");
-	fs::path world_params_destination_path = outputDirectory / fs::path("world_params.json");
-	fs::copy_file(world_params_source_path, world_params_destination_path, fs::copy_options::overwrite_existing);
+	dailySummaryFile = nullptr;
+	
+	createOutputFile(&dailySummaryFile, outputFolder, "dailySummary", "txt");
 
-	fs::path dailySummariFilename = outputDirectory / fs::path("dailySummary.txt");
-	dailySummaryFile.open(dailySummariFilename);
-
-	if (!dailySummaryFile.is_open())
+	if (!isFileOpen(dailySummaryFile))
 	{
-		cerr << "Error opening the dailySummaryFile." << endl;
+		Output::cerr("Error opening the dailySummaryFile.\n");
 	}
 	else
 	{
-		dailySummaryFile
-				<< "DAY\tBIOMASS\tPREY_UNBORN\tPREY_ACTIVE\tPREY_STARVED\tPREY_PREDATED\tPREY_REPRODUCING\tPREY_SENESCED\tPREY_SHOCKED\tPREDATOR_UNBORN\tPREDATOR_ACTIVE\tPREDATOR_STARVED\tPREDATOR_PREDATED\tPREDATOR_REPRODUCING\tPREDATOR_BACKGROUND\tPREDATOR_SENESCED\tPREDATOR_SHOCKED"
-				<< endl;
+		Output::print(dailySummaryFile, "DAY\tBIOMASS\tPREY_UNBORN\tPREY_ACTIVE\tPREY_STARVED\tPREY_PREDATED\tPREY_REPRODUCING\tPREY_SENESCED\tPREY_SHOCKED\tPREDATOR_UNBORN\tPREDATOR_ACTIVE\tPREDATOR_STARVED\tPREDATOR_PREDATED\tPREDATOR_REPRODUCING\tPREDATOR_BACKGROUND\tPREDATOR_SENESCED\tPREDATOR_SHOCKED\n");
 	}
 
-	fs::path extendedDailySummaryFilename = outputDirectory / fs::path("extendedDailySummary.txt");
-	extendedDailySummaryFile.open(extendedDailySummaryFilename);
+	extendedDailySummaryFile = nullptr;
 
-	if (!extendedDailySummaryFile.is_open())
+	createOutputFile(&extendedDailySummaryFile, outputFolder, "extendedDailySummary", "txt");
+
+	if (!isFileOpen(extendedDailySummaryFile))
 	{
-		cerr << "Error opening the dailySummaryFile." << endl;
+		Output::cerr("Error opening the dailySummaryFile.\n");
 	}
 	else
 	{
-		extendedDailySummaryFile << "day" << "\t";
+		Output::print(extendedDailySummaryFile, "day\t");
 
-		for (vector<Species *>::iterator itFungiSpecies = existingFungiSpecies.begin(); itFungiSpecies != existingFungiSpecies.end(); itFungiSpecies++)
+		for (auto itResourceSpecies = existingResourceSpecies.begin(); itResourceSpecies != existingResourceSpecies.end(); itResourceSpecies++)
 		{
-			extendedDailySummaryFile << (*itFungiSpecies)->getScientificName() << "_biomass" << "\t";
+			Output::print(extendedDailySummaryFile, "{}_biomass\t", (*itResourceSpecies)->getScientificName());
 		}
 
-		for (vector<Species *>::iterator itSpecies = existingAnimalSpecies.begin(); itSpecies != existingAnimalSpecies.end(); itSpecies++)
+		for (auto itSpecies = existingAnimalSpecies.begin(); itSpecies != existingAnimalSpecies.end(); itSpecies++)
 		{
-			for (unsigned int lifeStage = 0; lifeStage <= Animal::LIFE_STAGES::SHOCKED; ++lifeStage)
+			for(const auto &lifeStage : LifeStage::getEnumValues())
 			{
-				extendedDailySummaryFile << (*itSpecies)->getScientificName() << "_" << translateLifeStage(lifeStage) << "\t";
+				Output::print(extendedDailySummaryFile, "{}_{}\t", (*itSpecies)->getScientificName(), LifeStage::to_string(lifeStage));
 			}
 		}
-		extendedDailySummaryFile << endl;
+		Output::print(extendedDailySummaryFile, "\n");
 	}
 
-	for (vector<Species *>::iterator itSpecies = existingAnimalSpecies.begin(); itSpecies != existingAnimalSpecies.end(); itSpecies++)
-	{
-		string scientificName = (*itSpecies)->getScientificName();
-		std::replace(scientificName.begin(), scientificName.end(), ' ', '_');
-		fs::path geneticsSummaryFilename = outputDirectory / fs::path("geneticsSummaries") / fs::path(scientificName + "_geneticsSummary.txt");
-		geneticsSummaryFile.open(geneticsSummaryFilename);
-		if (!geneticsSummaryFile.is_open())
+	if(saveGeneticsSummaries) {
+		fs::create_directories(outputFolder / fs::path("geneticsSummaries"));
+
+		geneticsSummaryFile.reserve(existingAnimalSpecies.size());
+
+		for (auto itSpecies = existingAnimalSpecies.begin(); itSpecies != existingAnimalSpecies.end(); itSpecies++)
 		{
-			cerr << "Error opening the file." << endl;
+			string scientificName = (*itSpecies)->getScientificName();
+			std::replace(scientificName.begin(), scientificName.end(), ' ', '_');
+
+			geneticsSummaryFile[*itSpecies] = nullptr;
+
+			createOutputFile(&geneticsSummaryFile[*itSpecies], outputFolder / fs::path("geneticsSummaries"), scientificName + "_geneticsSummary", "txt");
+
+			if (!isFileOpen(geneticsSummaryFile[*itSpecies]))
+			{
+				throwLineInfoException("Error opening the file '" + scientificName + "_geneticsSummary.txt'");
+			}
+
+			Output::print(geneticsSummaryFile[*itSpecies], "day\tpopulation\tenergy_cr1\tgrowth_cr1\tpheno_cr1\tbody_cr1\tassim_cr1\tvor_cr1\tspeed_cr1\tsearch_cr1\tmet_cr1\tactE_vor_cr1\tactE_spd_cr1\tactE_srch_cr1\te_met_cr1\tenergy_cr2\tgrowth_cr2\tpheno_cr2\tbody_cr2\tassim_cr2\tvor_cr2\tspeed_cr2\tsearch_cr2\tmet_cr2\tactE_vor_cr2\tactE_spd_cr2\tactE_srch_cr2\te_met_cr2\t\n");
 		}
-		else
+	}
+
+	edibilitiesFile = nullptr;
+
+	if(saveEdibilitiesFile)
+	{
+		createOutputFile(&edibilitiesFile, outputFolder, (*jsonTree)["simulation"]["edibilitiesFilename"], "txt");
+	
+		Output::print(edibilitiesFile, "timeStep\tsearcherId\tsearcherSpecies\tfoodMass\tpredatorId\tpredatorSpecies\tpredatorDryMass\tpredatedId\tpredatedSpecies\tpredatedDryMass\tencounterProbability\tpredationProbability\tpreference\texperience\tedibility\n");
+	}
+	
+	constitutiveTraitsFile = nullptr;
+
+	if(saveAnimalConstitutiveTraits) {
+		createOutputFile(&constitutiveTraitsFile, outputFolder, "animal_constitutive_traits", "txt");
+
+		if(!isFileOpen(constitutiveTraitsFile))
 		{
-			geneticsSummaryFile << "day" << "\t";
-			geneticsSummaryFile << "population\t";
-			geneticsSummaryFile << "energy_cr1\t";
-			geneticsSummaryFile << "growth_cr1\t";
-			geneticsSummaryFile << "pheno_cr1\t";
-			geneticsSummaryFile << "body_cr1\t";
-			geneticsSummaryFile << "assim_cr1\t";
-			geneticsSummaryFile << "vor_cr1\t";
-			geneticsSummaryFile << "speed_cr1\t";
-			geneticsSummaryFile << "search_cr1\t";
-			geneticsSummaryFile << "met_cr1\t";
-			geneticsSummaryFile << "actE_vor_cr1\t";
-			geneticsSummaryFile << "actE_spd_cr1\t";
-			geneticsSummaryFile << "actE_srch_cr1\t";
-			geneticsSummaryFile << "e_met_cr1\t";
-			geneticsSummaryFile << "energy_cr2\t";
-			geneticsSummaryFile << "growth_cr2\t";
-			geneticsSummaryFile << "pheno_cr2\t";
-			geneticsSummaryFile << "body_cr2\t";
-			geneticsSummaryFile << "assim_cr2\t";
-			geneticsSummaryFile << "vor_cr2\t";
-			geneticsSummaryFile << "speed_cr2\t";
-			geneticsSummaryFile << "search_cr2\t";
-			geneticsSummaryFile << "met_cr2\t";
-			geneticsSummaryFile << "actE_vor_cr2\t";
-			geneticsSummaryFile << "actE_spd_cr2\t";
-			geneticsSummaryFile << "actE_srch_cr2\t";
-			geneticsSummaryFile << "e_met_cr2\t";
-			geneticsSummaryFile << endl;
-			geneticsSummaryFile.close();
+			throwLineInfoException("Error opening the file 'animal_constitutive_traits.txt'");
 		}
 
+		Output::print(constitutiveTraitsFile, "id\tspecies\tg_numb_prt1\tg_numb_prt2\tID_prt1\tID_prt2\t{}\n", Trait::printAvailableTraits());
 	}
 }
 
@@ -3963,7 +3966,7 @@ void* World::activateAnimalsTask(unsigned int x0, unsigned int x1, unsigned int 
 		{
 			for (unsigned int x = x0; x < x1; x++)
 			{
-				currentTerrainCell = terrain[z][y][x];
+				currentTerrainCell = getCell(z,y,x);
 				if(!currentTerrainCell->isObstacle())
 				{
 					currentTerrainCell->activateAndResumeAnimals(day);
@@ -3975,7 +3978,7 @@ void* World::activateAnimalsTask(unsigned int x0, unsigned int x1, unsigned int 
 	return NULL;
 }
 
-void* World::growFungiThreadMaker(void* threadArgument)
+void* World::growResourceThreadMaker(void* threadArgument)
 {
 	struct ThreadRangerArgument* argument = static_cast<ThreadRangerArgument*>(threadArgument);
 	World* world = argument->world;
@@ -3985,11 +3988,11 @@ void* World::growFungiThreadMaker(void* threadArgument)
 	unsigned int y1 = argument->y1;
 	unsigned int z0 = argument->z0;
 	unsigned int z1 = argument->z1;
-	world->growFungiTask(x0, x1, y0, y1, z0, z1);
+	world->growResourceTask(x0, x1, y0, y1, z0, z1);
 	return NULL;
 }
 
-void* World::growFungiTask(unsigned int x0, unsigned int x1, unsigned int y0, unsigned int y1, unsigned int z0, unsigned int z1)
+void* World::growResourceTask(unsigned int x0, unsigned int x1, unsigned int y0, unsigned int y1, unsigned int z0, unsigned int z1)
 {
 	TerrainCell* currentTerrainCell = NULL;
 	for (unsigned int z = z0; z < z1; z++)
@@ -3998,10 +4001,10 @@ void* World::growFungiTask(unsigned int x0, unsigned int x1, unsigned int y0, un
 		{
 			for (unsigned int x = x0; x < x1; x++)
 			{
-				currentTerrainCell = terrain[z][y][x];
+				currentTerrainCell = getCell(z,y,x);
 				if(!currentTerrainCell->isObstacle())
 				{
-					currentTerrainCell->growFungi();
+					currentTerrainCell->growResource();
 				}
 			}
 		}
@@ -4033,7 +4036,7 @@ void* World::moveAnimalsTask(unsigned int x0, unsigned int x1, unsigned int y0, 
 		{
 			for (unsigned int x = x0; x < x1; x++)
 			{
-				currentTerrainCell = terrain[z][y][x];
+				currentTerrainCell = getCell(z,y,x);
 				if(!currentTerrainCell->isObstacle())
 				{
 					currentTerrainCell->moveAnimals(day, cout, cout);
@@ -4068,14 +4071,14 @@ void* World::assimilateTask(unsigned int x0, unsigned int x1, unsigned int y0, u
 		{
 			for (unsigned int x = x0; x < x1; x++)
 			{
-				currentTerrainCell = terrain[z][y][x];
+				currentTerrainCell = getCell(z,y,x);
 				if(!currentTerrainCell->isObstacle())
 				{
 					//currentTerrainCell->printAnimalsVoracities(voracitiesFile);
 					currentTerrainCell->diePredatorsFromBackground(day);
 					currentTerrainCell->assimilateFoodMass();
 					currentTerrainCell->growAnimals(day);
-					currentTerrainCell->breedAnimals(day, timeStepsPerDay, outputDirectory);
+					currentTerrainCell->breedAnimals(day, timeStepsPerDay, outputFolder);
 				}
 			}
 		}

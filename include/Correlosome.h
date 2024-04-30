@@ -3,26 +3,28 @@
 #define CORRELOSOME_H_
 
 #include <vector>
-#include "Allele.h"
 
+#include "Allele.h"
 
 
 class Correlosome
 {
 private:
-	std::vector<Allele*>* alleles;
+	std::vector<const Allele*> alleles;
+
 public:
-	Correlosome(std::vector<Allele*>* correlosomeAlleles);
-    Correlosome(const unsigned int& numberOfLociPerChromosome);
-    Correlosome(Correlosome* otherCorrelosome);
+	Correlosome(const unsigned int numberOfLociPerChromosome, const bool onlyReserve = true);
+    ~Correlosome();
 
-    virtual ~Correlosome();
+    // Getters
+    inline const Allele* const getAllele(const unsigned int lociPosition) const { return alleles.at(lociPosition); }
+    inline const size_t size() const { return alleles.size(); }
 
-    inline const std::vector<Allele*>* getAlleles() const { return alleles; }
-	void setAllele(const Allele* allele, int lociPosition);
-	Correlosome* clone();
-
-    friend std::ostream& operator<<(std::ostream& os, Correlosome& correlosome);
+    // Setters
+    inline void setAllele(const Allele* allele, const unsigned int lociPosition) { alleles.at(lociPosition) = allele; }
+    inline void pushAllele(const Allele* allele) { alleles.emplace_back(allele); } 
+    
+    friend std::ostream& operator<<(std::ostream& os, const Correlosome& correlosome);
 };
 
 

@@ -35,8 +35,8 @@ class LinuxTools(UnixTools):
     ## @brief LinuxTools class initializer
     #
     # @param config Project configuration
-    def __init__(self, config: Dict, working_directory: str, tool_script_name: str):
-        super().__init__(config, working_directory, tool_script_name, str(SO_TYPE.Linux))
+    def __init__(self, config: Dict, working_directory: str, tool_script_base_path: str, tool_script_name: str):
+        super().__init__(config, working_directory, tool_script_base_path, tool_script_name, str(SO_TYPE.Linux))
         ## Extension of the executable generated from the script
         self._executable_extension: str = "bin"
 
@@ -84,7 +84,7 @@ class LinuxTools(UnixTools):
 
         _, nproc = self.exec_command(["nproc"])
         self.exec_command(["./bootstrap", f"--parallel={nproc}"])
-        self.exec_command(["make", f"--jobs={nproc}"])
+        self.exec_command(["make", "-j8"])
         self.exec_command(["sudo", "make", "install"])
 
         self.chdir(actual_path)

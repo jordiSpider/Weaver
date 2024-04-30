@@ -8,37 +8,42 @@
 #ifndef GENOME_H_
 #define GENOME_H_
 
+#include "Locus.h"
 #include "Chromosome.h"
 #include "Correlosome.h"
-#include "ChromosomesGenerator.h"
-#include "AnimalSpecies.h"
 #include "Gamete.h"
+#include "Maths/Random.h"
+#include "LineInfoException.h"
 
-class Species;
 
 class Genome
 {
 private:
-	vector<pair<Chromosome*, Chromosome*> >* homologousChromosomes;
-	vector<pair<Correlosome*, Correlosome*> >* homologousCorrelosomes;
-	Species* mySpecies;
+	static constexpr unsigned int NUMBER_GAMETES_TO_GENERATE = 4;
+
+	std::vector<std::pair<Chromosome*, Chromosome*> > homologousChromosomes;
+	std::vector<std::pair<Correlosome*, Correlosome*> > homologousCorrelosomes;
+	const unsigned int numberOfLociPerChromosome;
+	const unsigned int numberOfChiasmasPerChromosome;
+	void createHomologousCorrelosomesFromChromosomes(const std::vector<int> &randomlyCreatedPositionsForChromosomes);
 
 public:
-	Genome(vector<pair<Chromosome*, Chromosome*> >* inheritedChromosomes, Species* mySpecies);
-	Genome(const Genome* otherGenome);
+	Genome(Gamete* const firstParentGamete, Gamete* const secondParentGamete, const std::vector<int> &randomlyCreatedPositionsForChromosomes, 
+		   const unsigned int& numberOfLociPerChromosome, const unsigned int& numberOfChiasmasPerChromosome);
+	Genome(const std::vector<Locus*> &loci, const std::vector<int> &randomlyCreatedPositionsForChromosomes, const int &numberOfChromosomes,
+		   const unsigned int& numberOfLociPerChromosome, const unsigned int& numberOfChiasmasPerChromosome);
+	Genome(const Genome& otherGenome, const std::vector<int> &randomlyCreatedPositionsForChromosomes);
 	virtual ~Genome();
 
 	//4 vectors (cells) of 20 chromosomes each. The animal will select one out of those 4 cells.
-	vector<Gamete*>* getGametesFromMeiosis();
-	Gamete * getRandomGameteFromMeiosis();
+	Gamete* getGametesFromMeiosis(const unsigned int &indexSelectedGamete);
+	inline Gamete * getRandomGameteFromMeiosis() { return getGametesFromMeiosis(Random::randomIndex(NUMBER_GAMETES_TO_GENERATE)); }
 	Gamete * cloneFirstGameteFromHaploid() const;
 	Gamete * cloneSecondGameteFromHaploid() const;
-	const vector<pair<Chromosome*, Chromosome*> >* getHomologousChromosomes() const;
-	Genome* clone() const;
-	const vector<pair<Correlosome*, Correlosome*> >* getHomologousCorrelosomes() const;
-	void createHomologousCorrelosomes();
+	inline const std::vector<std::pair<Chromosome*, Chromosome*> >& getHomologousChromosomes() const { return homologousChromosomes; }
+	inline const std::vector<std::pair<Correlosome*, Correlosome*> >& getHomologousCorrelosomes() const { return homologousCorrelosomes; }
 	void deleteHomologousCorrelosomes();
-	Species* getSpecies() const {	return mySpecies; }
+	inline Genome* clone(const std::vector<int> &randomlyCreatedPositionsForChromosomes) const { return new Genome(*this, randomlyCreatedPositionsForChromosomes); }
 };
 
 #endif /* GENOME_H_ */

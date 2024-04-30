@@ -10,57 +10,40 @@
 using namespace std;
 
 
-Chromosome::Chromosome(int numberOfLociPerChromosome)
+Chromosome::Chromosome(const unsigned int numberOfLociPerChromosome)
 {
-	alleles = new vector<Allele*>(numberOfLociPerChromosome);
+	alleles.reserve(numberOfLociPerChromosome);
 	//The vector is ready for the new chromosomeAlleles to be inserted one by one.
 	//This entire process will not create new Alleles, though.
 }
 
-Chromosome::Chromosome(const Chromosome* otherChromosome)
+Chromosome::Chromosome(const Chromosome &otherChromosome)
 {
-	alleles = new vector<Allele*>(otherChromosome->getAlleles()->size());
-	for(unsigned int i = 0; i < otherChromosome->getAlleles()->size(); i++)
+	this->alleles.reserve(otherChromosome.size());
+	for(unsigned int i = 0; i < otherChromosome.size(); i++)
 	{
-		alleles->at(i) = otherChromosome->getAlleles()->at(i)->clone();
+		this->pushAllele(otherChromosome.getAllele(i));
 	}
 }
 
 Chromosome::~Chromosome()
 {
-	for (auto it = alleles->begin(); it != alleles->end(); ++it)
-	{
-		delete (*it);
-	}
-	
-	alleles->clear();
-	delete alleles; //Dinosaurs - reversed in dinosurs
+	// Nothing to delete dynamically
 }
 
-void Chromosome::swapAlleles(const int& lociPosition, const Chromosome* otherChromosome, const int& otherLociPosition)
+void Chromosome::swapAlleles(const unsigned int lociPosition, Chromosome* const otherChromosome, const unsigned int otherLociPosition)
 {
-	Allele* alleleToSwap = this->alleles->at(lociPosition);
-	this->alleles->at(lociPosition) = otherChromosome->alleles->at(otherLociPosition);
-	otherChromosome->alleles->at(otherLociPosition) = alleleToSwap;
-}
-
-void Chromosome::setAllele(const Allele* allele, int lociPosition)
-{
-	delete this->alleles->at(lociPosition);
-	this->alleles->at(lociPosition) = allele->clone();
-}
-
-Chromosome* Chromosome::clone() const
-{
-	return new Chromosome(this);
+	const Allele* const alleleToSwap = this->getAllele(lociPosition);
+	this->setAllele(otherChromosome->getAllele(otherLociPosition), lociPosition);
+	otherChromosome->setAllele(alleleToSwap, otherLociPosition);
 }
 
 //TODO COMPROBAR QUE SE IMPRIMAN BIEN
-ostream& operator<<(ostream& os, Chromosome& chromosome)
+ostream& operator<<(ostream& os, const Chromosome &chromosome)
 {
-	for (unsigned i = 0; i < chromosome.alleles->size(); ++i)
+	for(unsigned int i = 0; i < chromosome.size(); ++i)
 	{
-		os << chromosome.alleles->at(i) << "\t";
+		os << chromosome.getAllele(i) << "\t";
 	}
 	return os;
 }

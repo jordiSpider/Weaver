@@ -17,7 +17,9 @@ static inline void rtrim(std::string &s) {
 }
 
 // trim from both ends (in place)
-static inline void trim(std::string &s) {
+static inline std::string trim(std::string s) {
     rtrim(s);
     ltrim(s);
+
+    return s;
 }

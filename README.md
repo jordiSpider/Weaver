@@ -66,20 +66,16 @@ The following requirements are necessary for the use of the tool script:
 ## Install
 
 > **Warning**  
-> All commands used in this section require administrator permissions.
+> Several commands used in this section require administrator privileges.
 
 > **Note**  
-> For users with little computer knowledge, a dependency installation tool has been developed. For more information go to [Install dependencies tool](#install-dependencies-tool) section.
+> A dependencies installation tool has been developed for users with limited computer skills. For more information, see the [Install dependencies tool](#install-dependencies-tool) section.
 
 <details><summary><h3>Linux</h3></summary>
 
-To perform a Weaver installation, you must follow the steps below:
+To perform a Weaver installation, you must complete the following steps:
 
-1. Open a terminal.
-
-    <details><summary>Example</summary>
-
-    </details>
+1. Open a terminal to the root of the project.
 
 2. Update the list of available packages in the repositories configured on the system.
 
@@ -98,7 +94,7 @@ To perform a Weaver installation, you must follow the steps below:
 
     ```
     sudo apt install make=4.3-4.1build1 -y
-    sudo apt install libssl-dev=3.0.2-0ubuntu1.7 -y
+    sudo apt install libssl-dev=3.0.2-0ubuntu1.8 -y
     sudo apt install python3=3.10.4-0ubuntu2 -y
     ```
 
@@ -112,7 +108,7 @@ To perform a Weaver installation, you must follow the steps below:
     cd cmake-3.25.0
     NUM_PROC=$(nproc)
     ./bootstrap --parallel=$NUM_PROC
-    make --jobs=$NUM_PROC
+    make -j8
     sudo make install
     ```
 
@@ -120,29 +116,26 @@ To perform a Weaver installation, you must follow the steps below:
 
 <details><summary><h3>Windows</h3></summary>
 
-> **Warning**  
-> All commands must be executed from the root directory of the project.
+To perform a Weaver installation, follow the steps below:
 
-To perform a Weaver installation, you must follow the steps below:
-
-1. Open a CMD terminal as administrator.
+1. Open a CMD terminal as an administrator.
 
 2. (Optional) Install PowerShell.
 
     > **Warning**  
-    > PowerShell installation requires system reboot.
+    > PowerShell installation requires system restart.
 
-    To install Chocolatey you need to have PowerShell v3+ installed. You can check your current version with the following command:  
+    To install Chocolatey, you must have PowerShell v3+ installed. You can check your current version by running the following command:  
 
     ```
     powershell.exe $PSVersionTable
     ```
 
-    If your current version is higher or equal to the required one you can continue with the installation, otherwise you should perform the following steps:  
+    If your current version is higher than or equal to the required version, you can continue with the installation, otherwise you should follow the steps below:  
 
-    1. Download the executable for installation. Click [HERE](https://download.microsoft.com/download/E/7/6/E76850B8-DA6E-4FF5-8CCE-A24FC513FD16/Windows6.1-KB2506143-x64.msu) to download.
+    1. Download the executable file for installation. Click [HERE](https://download.microsoft.com/download/E/7/6/E76850B8-DA6E-4FF5-8CCE-A24FC513FD16/Windows6.1-KB2506143-x64.msu) to download.
 
-    2. Start the installation by clicking on the downloaded executable.
+    2. Start the installation by clicking on the downloaded executable file.
 
 3. (Optional) Install .NET Framework.
 
@@ -152,35 +145,64 @@ To perform a Weaver installation, you must follow the steps below:
     powershell.exe reg query "HKLM\\SOFTWARE\\Microsoft\\NET Framework Setup\\NDP\\v4\\Full" /v Version
     ```
 
-    If your current version is higher or equal to the required one you can continue with the installation, otherwise you should perform the following steps:  
+    If your current version is higher than or equal to the required version, you can continue with the installation, otherwise you should follow the steps below:  
 
-    1. Download the executable for installation. Click [HERE](https://download.microsoft.com/download/B/A/4/BA4A7E71-2906-4B2D-A0E1-80CF16844F5F/dotNetFx45_Full_setup.exe) to download.
+    1. Download the executable file for installation. Click [HERE](https://download.microsoft.com/download/B/A/4/BA4A7E71-2906-4B2D-A0E1-80CF16844F5F/dotNetFx45_Full_setup.exe) to download.
 
-    2. Start the installation by clicking on the downloaded executable.
+    2. Start the installation by clicking on the downloaded executable file.
 
-4. Install Chocolatey.
+4. Install Python.
+
+    To install Weaver, you must have Python v3.7+ installed. You can check your current version with the following command:  
+
+    ```
+    python --version
+    ```
+
+    If your current version is higher than or equal to the required version, you can continue with the installation, otherwise you should follow the steps below:  
+
+    1. Download the executable file for installation. Click [HERE](https://www.python.org/ftp/python/3.7.0/python-3.7.0-amd64.exe) to download.
+
+    2. Start the installation by clicking on the downloaded executable file.
+
+    > **Warning**  
+    > You need to check the **'Add Python 3.7 to PATH'** option.
+
+5. Install Chocolatey.
 
     ```
     powershell.exe Set-ExecutionPolicy Bypass -Scope Process -Force; [System.Net.ServicePointManager]::SecurityProtocol = [System.Net.ServicePointManager]::SecurityProtocol -bor 3072; iex ((New-Object System.Net.WebClient).DownloadString('https://community.chocolatey.org/install.ps1'))
     ```
 
-5. Refresh the PATH environment variable.
+6. Refresh the PATH environment variable.
+
+    > **Warning**  
+    > This command must be executed from the root directory of the project.
 
     ```
-    scripts\project_tools\obtain_refresh_path_var.bat
+    RefreshEnv.bat
     ```
 
-6. Install MinGW.
+7. Install MinGW.
 
     ```
     choco install mingw --version 12.2.0 -y
-    del /Q hay_que_añadir_la_ruta_al_archivo_python
+    del /Q C:\ProgramData\chocolatey\bin\python.exe
     ```
 
-7. Install Cmake.
+8. Install Cmake.
 
     ```
     choco install cmake --version 3.25.1 -y --installargs 'ADD_CMAKE_TO_PATH=System'
+    ```
+
+9. Refresh the PATH environment variable.
+
+    > **Warning**  
+    > This command must be executed from the root directory of the project.
+
+    ```
+    RefreshEnv.bat
     ```
 
 </details>
@@ -189,9 +211,6 @@ To perform a Weaver installation, you must follow the steps below:
 
 > **Warning**  
 > All commands must be executed from the root directory of the project.
-
-> **Warning**  
-> In case you have installed a backup system such as Dropbox or OneDrive, check that the project is built in a folder with the necessary permissions.
 
 > **Note**  
 > For users with little computer knowledge, a build project tool has been developed. For more information go to [Build project tool](#build-project-tool) section.
@@ -325,6 +344,12 @@ We can also select the dependencies directly, indicating the name of the depende
 
 ```
 python scripts/tool.py -i build doc
+```
+
+Finally, update the PATH variable.
+
+```
+RefreshEnv.bat
 ```
 
 </details>

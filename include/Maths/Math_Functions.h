@@ -2,6 +2,7 @@
 #define MATH_FUNCTIONS_H_
 
 #include <vector>
+#include "Output.h"
 
 class Math_Functions
 {
