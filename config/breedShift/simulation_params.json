@@ -1,0 +1,25 @@
+{
+    "version": "23.11.05",
+    "simulation": {
+		"numberOfCombinations": 1000,
+        "exitAtFirstExtinction": false,
+        "growthAndReproTest": false,
+        "runDays": 50, 
+        "recordEach": 1,
+        "timeStepsPerDay": 1,
+        "initFromFixedSeed": {
+            "enabled": true,
+            "fixedSeedValue": 3
+        },
+        "saveAnimalConstitutiveTraits": false,
+        "saveGeneticsSummaries": false,
+        "saveIntermidiateVolumes": false,
+        "saveIntermidiateVolumesPeriodicity": 100000,
+        "encountersMatrixFilename": "encountersMatrix",
+        "predationsMatrixFilename": "predationsMatrix",
+        "nodesMatrixFilename": "nodesMatrix",
+        "predationEventsOnOtherSpeciesFilename": "predationOnSpecies",
+		"edibilitiesFilename": "edibilities",
+        "saveEdibilitiesFile": false
+    }
+}

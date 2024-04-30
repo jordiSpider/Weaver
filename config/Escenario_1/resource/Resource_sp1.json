@@ -1,0 +1,18 @@
+{
+    "version": "23.11.05",
+    "resource": {
+        "resourceType": "BasalResource",
+        "name": "Resource_sp1",
+        "conversionToWetMass": 5.0,
+        "cellMass": 0.000000062,
+        "minimumResource": 0,
+        "ACTIVATION_ENERGY": 0.68,
+        "NORMALIZATION_B": 25.98,
+        "minHR": 85,
+        "maxHR": 95,
+        "variableIntrinsicRateOfIncrease": true,
+        "maxRScale": 1.0,
+        "zeroResource": 8,
+        "minimumNumberOfEdibleSpores": 100000.0
+    }
+}

@@ -1,0 +1,30 @@
+{
+    "version": "23.11.05",
+    "patch": {
+        "resourceSpecies": "Resource_sp3",
+        "priority": 3,
+        "shape": {
+            "type": "Spherical",
+            "cubicParams": {
+                "bottomLeftCorner": null,
+                "topRightCorner": null
+            },
+            "sphericalParams": {
+                "center": [25.0, 10.0],
+                "radius": 5.0
+            },
+            "homogeneousParams": {
+
+            },
+            "gaussianParams": {
+
+            },
+            "randomGaussianParams": {
+
+            }
+        },
+        "initialBiomassDensity": 0.6,
+        "resourceMaximumCapacityDensity": 0.6,
+        "patchSpread": true
+    }
+}

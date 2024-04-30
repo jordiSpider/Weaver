@@ -1,0 +1,1390 @@
+{
+    "type": "object",
+    "properties": {
+        "version": {
+            "type": "string",
+            "required": true
+        },
+        "animal": {
+            "type": "object",
+            "properties": {
+                "debug": {
+                    "type": "object",
+                    "properties": {
+                        "surviveWithoutFood": {
+                            "type": "boolean",
+                            "required": true
+                        }
+                    },
+                    "additionalProperties": false,
+                    "required": true
+                },
+                "name": {
+                    "type": "string",
+                    "required": true
+                },
+                "defaultHuntingMode": {
+                    "type": "string",
+                    "enum": [
+                        "does_not_hunt",
+                        "sit_and_wait",
+                        "active_hunting"
+                    ],
+                    "required": true
+                },
+                "sexualType": {
+                    "type": "string",
+                    "enum": [
+                        "diploid",
+                        "haplodiploid",
+                        "asexual"
+                    ],
+                    "required": true
+                },
+                "forcePresenceAllResourcesInvolved": {
+                    "type": "boolean",
+                    "required": true
+                },
+                "preserveLeftovers": {
+                    "type": "boolean",
+                    "required": true
+                },
+                "growthCurve": {
+                    "type": "object",
+                    "properties": {
+                        "curveType": {
+                            "type": "string",
+                            "enum": ["VonBertalanffy", "Logistic", "Logistic3P", "Logistic4P", "Gompertz", "Exponential"],
+                            "required": true
+                        },
+                        "vonBertalanffyParams": {
+                            "type": "object",
+                            "properties": {
+                                "vonBertLdistanceMin": {
+                                    "type": "floater",
+                                    "required": true,
+                                    "nullProperty": true
+                                },
+                                "vonBertLdistanceMax": {
+                                    "type": "floater",
+                                    "required": true,
+                                    "nullProperty": true
+                                },
+                                "vonBertTime0": {
+                                    "type": "floater",
+                                    "required": true,
+                                    "nullProperty": true
+                                }
+                            },
+                            "additionalProperties": false,
+                            "required": true
+                        },
+                        "logisticParams": {
+                            "type": "object",
+                            "properties": {
+                                "logisticLdistanceMin": {
+                                    "type": "floater",
+                                    "required": true,
+                                    "nullProperty": true
+                                },
+                                "logisticLdistanceMax": {
+                                    "type": "floater",
+                                    "required": true,
+                                    "nullProperty": true
+                                }
+                            },
+                            "additionalProperties": false,
+                            "required": true
+                        },
+                        "logistic3P_Params": {
+                            "type": "object",
+                            "properties": {
+                                "logistic3pAsymptoticSize": {
+                                    "type": "floater",
+                                    "required": true,
+                                    "nullProperty": true
+                                }
+                            },
+                            "additionalProperties": false,
+                            "required": true
+                        },
+                        "logistic4P_Params": {
+                            "type": "object",
+                            "properties": {
+                                "logistic4pLeftAsymptote": {
+                                    "type": "floater",
+                                    "required": true,
+                                    "nullProperty": true
+                                },
+                                "logistic4pRightAsymptote": {
+                                    "type": "floater",
+                                    "required": true,
+                                    "nullProperty": true
+                                }
+                            },
+                            "additionalProperties": false,
+                            "required": true
+                        },
+                        "gompertzParams": {
+                            "type": "object",
+                            "properties": {
+                                "gompertzAsymptoticSize": {
+                                    "type": "floater",
+                                    "required": true,
+                                    "nullProperty": true
+                                },
+                                "gompertzValueTime0": {
+                                    "type": "floater",
+                                    "required": true,
+                                    "nullProperty": true
+                                }
+                            },
+                            "additionalProperties": false,
+                            "required": true
+                        },
+                        "exponentialParams": {
+                            "type": "object",
+                            "properties": {
+                                "exponentialA": {
+                                    "type": "floater",
+                                    "required": true,
+                                    "nullProperty": true
+                                }
+                            },
+                            "additionalProperties": false,
+                            "required": true
+                        }
+                    },
+                    "conditionals": [
+                        {
+                            "if": {
+                                "type": "equal",
+                                "lhs": {
+                                    "type": "property",
+                                    "value": [
+                                        "curveType"
+                                    ]
+                                },
+                                "rhs": {
+                                    "type": "constant",
+                                    "value": "VonBertalanffy"
+                                }
+                            },
+                            "then": [ 
+                                {
+                                    "dst": [
+                                        "vonBertalanffyParams"
+                                    ],
+                                    "remove": {
+                                        "nullProperty": [
+                                            "vonBertLdistanceMin",
+                                            "vonBertLdistanceMax",
+                                            "vonBertTime0"
+                                        ]
+                                    }
+                                }
+                            ]
+                        },
+                        {
+                            "if": {
+                                "type": "equal",
+                                "lhs": {
+                                    "type": "property",
+                                    "value": [
+                                        "curveType"
+                                    ]
+                                },
+                                "rhs": {
+                                    "type": "constant",
+                                    "value": "Logistic"
+                                }
+                            },
+                            "then": [ 
+                                {
+                                    "dst": [
+                                        "logisticParams"
+                                    ],
+                                    "remove": {
+                                        "nullProperty": [
+                                            "logisticLdistanceMin",
+                                            "logisticLdistanceMax"
+                                        ]
+                                    }
+                                }
+                            ]
+                        },
+                        {
+                            "if": {
+                                "type": "equal",
+                                "lhs": {
+                                    "type": "property",
+                                    "value": [
+                                        "curveType"
+                                    ]
+                                },
+                                "rhs": {
+                                    "type": "constant",
+                                    "value": "Logistic3P"
+                                }
+                            },
+                            "then": [ 
+                                {
+                                    "dst": [
+                                        "logistic3P_Params"
+                                    ],
+                                    "remove": {
+                                        "nullProperty": [
+                                            "logistic3pAsymptoticSize"
+                                        ]
+                                    }
+                                }
+                            ]
+                        },
+                        {
+                            "if": {
+                                "type": "equal",
+                                "lhs": {
+                                    "type": "property",
+                                    "value": [
+                                        "curveType"
+                                    ]
+                                },
+                                "rhs": {
+                                    "type": "constant",
+                                    "value": "Logistic4P"
+                                }
+                            },
+                            "then": [ 
+                                {
+                                    "dst": [
+                                        "logistic4P_Params"
+                                    ],
+                                    "remove": {
+                                        "nullProperty": [
+                                            "logistic4pLeftAsymptote",
+                                            "logistic4pRightAsymptote"
+                                        ]
+                                    }
+                                }
+                            ]
+                        },
+                        {
+                            "if": {
+                                "type": "equal",
+                                "lhs": {
+                                    "type": "property",
+                                    "value": [
+                                        "curveType"
+                                    ]
+                                },
+                                "rhs": {
+                                    "type": "constant",
+                                    "value": "Gompertz"
+                                }
+                            },
+                            "then": [ 
+                                {
+                                    "dst": [
+                                        "gompertzParams"
+                                    ],
+                                    "remove": {
+                                        "nullProperty": [
+                                            "gompertzAsymptoticSize",
+                                            "gompertzValueTime0"
+                                        ]
+                                    }
+                                }
+                            ]
+                        },
+                        {
+                            "if": {
+                                "type": "equal",
+                                "lhs": {
+                                    "type": "property",
+                                    "value": [
+                                        "curveType"
+                                    ]
+                                },
+                                "rhs": {
+                                    "type": "constant",
+                                    "value": "Exponential"
+                                }
+                            },
+                            "then": [ 
+                                {
+                                    "dst": [
+                                        "exponentialParams"
+                                    ],
+                                    "remove": {
+                                        "nullProperty": [
+                                            
+                                        ]
+                                    }
+                                }
+                            ]
+                        }
+                    ],
+                    "additionalProperties": false,
+                    "required": true
+                },
+                "sexRatio": {
+                    "type": "floater",
+                    "required": true
+                },
+                "size": {
+                    "type": "unsigned_integer",
+                    "required": true
+                },
+                "genetics": {
+                    "type": "object",
+                    "properties": {
+                        "numberOfLociPerTrait": {
+                            "type": "unsigned_integer",
+                            "required": true
+                        },
+                        "numberOfAllelesPerLocus": {
+                            "type": "unsigned_integer",
+                            "required": true
+                        },
+                        "numberOfChiasmasPerChromosome": {
+                            "type": "unsigned_integer",
+                            "required": true
+                        },
+                        "modules": {
+                            "type": "object",
+                            "properties": {
+                                "traitsPerModule": {
+                                    "type": "unsigned_integer",
+                                    "required": true
+                                },
+                                "correlationCoefficientRhoPerModule": {
+                                    "type": "array",
+                                    "items": {
+                                        "type": "floater"
+                                    },
+                                    "required": true
+                                }
+                            },
+                            "additionalProperties": false,
+                            "required": true
+                        },
+                        "traits": {
+                            "type": "object",
+                            "properties": {
+                                "definition": {
+                                    "type": "object",
+                                    "properties": {},
+                                    "patternProperties": {
+                                        "energy_tank|growth|pheno|factorEggMass|assim|voracity|speed|search_area|met_rate|actE_vor|actE_speed|actE_search|shock_resistance|actE_met|memoryDepth|perception_area|interaction_area": {
+                                            "type": "object",
+                                            "properties": {
+                                                "temperatureThreshold": {
+                                                    "type": "object",
+                                                    "properties": {
+                                                        "lower": {
+                                                            "type": "floater",
+                                                            "minimum": 0.0,
+                                                            "required": true
+                                                        },
+                                                        "upper": {
+                                                            "type": "floater",
+                                                            "minimum": 0.0,
+                                                            "required": true
+                                                        }
+                                                    },
+                                                    "additionalProperties": false,
+                                                    "required": true
+                                                },
+                                                "valueUpdateMethod": {
+                                                    "type": "object",
+                                                    "properties": {
+                                                        "type": {
+                                                            "type": "string",
+                                                            "enum": ["Fixed","Variable"],
+                                                            "required": true
+                                                        },
+                                                        "fixedParams": {
+                                                            "type": "object",
+                                                            "properties": {
+                                                                "value": {
+                                                                    "type": "floater",
+                                                                    "required": true,
+                                                                    "nullProperty": true
+                                                                }
+                                                            },
+                                                            "additionalProperties": false,
+                                                            "required": true
+                                                        },
+                                                        "variableParams": {
+                                                            "type": "object",
+                                                            "properties": {
+                                                                "limits": {
+                                                                    "type": "object",
+                                                                    "properties": {
+                                                                        "max": {
+                                                                            "type": "floater",
+                                                                            "required": true,
+                                                                            "nullProperty": true
+                                                                        },
+                                                                        "min": {
+                                                                            "type": "floater",
+                                                                            "required": true,
+                                                                            "nullProperty": true
+                                                                        }
+                                                                    },
+                                                                    "additionalProperties": false,
+                                                                    "required": true
+                                                                },
+                                                                "ranges": {
+                                                                    "type": "object",
+                                                                    "properties": {
+                                                                        "max": {
+                                                                            "type": "floater",
+                                                                            "required": true,
+                                                                            "nullProperty": true
+                                                                        },
+                                                                        "min": {
+                                                                            "type": "floater",
+                                                                            "required": true,
+                                                                            "nullProperty": true
+                                                                        }
+                                                                    },
+                                                                    "additionalProperties": false,
+                                                                    "required": true
+                                                                },
+                                                                "restrictValue": {
+                                                                    "type": "floater",
+                                                                    "required": true,
+                                                                    "nullProperty": true
+                                                                }
+                                                            },
+                                                            "additionalProperties": false,
+                                                            "required": true
+                                                        }
+                                                    },
+                                                    "conditionals": [
+                                                        {
+                                                            "if": {
+                                                                "type": "equal",
+                                                                "lhs": {
+                                                                    "type": "property",
+                                                                    "value": [
+                                                                        "type"
+                                                                    ]
+                                                                },
+                                                                "rhs": {
+                                                                    "type": "constant",
+                                                                    "value": "Fixed"
+                                                                }
+                                                            },
+                                                            "then": [ 
+                                                                {
+                                                                    "dst": [
+                                                                        "fixedParams"
+                                                                    ],
+                                                                    "remove": {
+                                                                        "nullProperty": [
+                                                                            "value"
+                                                                        ]
+                                                                    }
+                                                                }
+                                                            ]
+                                                        },
+                                                        {
+                                                            "if": {
+                                                                "type": "equal",
+                                                                "lhs": {
+                                                                    "type": "property",
+                                                                    "value": [
+                                                                        "type"
+                                                                    ]
+                                                                },
+                                                                "rhs": {
+                                                                    "type": "constant",
+                                                                    "value": "Variable"
+                                                                }
+                                                            },
+                                                            "then": [ 
+                                                                {
+                                                                    "dst": [
+                                                                        "variableParams", "limits"
+                                                                    ],
+                                                                    "remove": {
+                                                                        "nullProperty": [
+                                                                            "max", "min"
+                                                                        ]
+                                                                    }
+                                                                },
+                                                                {
+                                                                    "dst": [
+                                                                        "variableParams", "ranges"
+                                                                    ],
+                                                                    "remove": {
+                                                                        "nullProperty": [
+                                                                            "max", "min"
+                                                                        ]
+                                                                    }
+                                                                },
+                                                                {
+                                                                    "dst": [
+                                                                        "variableParams"
+                                                                    ],
+                                                                    "remove": {
+                                                                        "nullProperty": [
+                                                                            "restrictValue"
+                                                                        ]
+                                                                    }
+                                                                }
+                                                            ]
+                                                        }
+                                                    ],
+                                                    "additionalProperties": false,
+                                                    "required": true
+                                                }
+                                            },
+                                            "additionalProperties": false,
+                                            "required": true
+                                        }
+                                    },
+                                    "additionalProperties": false,
+                                    "required": true
+                                },
+                                "variableTraitsOrder": {
+                                    "type": "array",
+                                    "items": {
+                                        "type": "string",
+                                        "enum": ["energy_tank","growth","pheno","factorEggMass","assim","voracity","speed","search_area","met_rate","actE_vor","actE_speed","actE_search","shock_resistance","actE_met","memoryDepth","perception_area","interaction_area"]
+                                    },
+                                    "required": true
+                                }
+                            },
+                            "additionalProperties": false,
+                            "required": true
+                        }
+                    },
+                    "additionalProperties": false,
+                    "required": true
+                },
+                "modifyAlleles": {
+                    "type": "array",
+                    "items": {
+                        "type": "object",
+                        "properties": {
+                            "pAlleles": {
+                                "type": "floater",
+                                "required": true
+                            },
+                            "timesAlleles": {
+                                "type": "unsigned_integer",
+                                "required": true
+                            },
+                            "affectedLocus": {
+                                "type": "array",
+                                "items": {
+                                    "type": "floater"
+                                },
+                                "required": true
+                            },
+                            "affectedTraits": {
+                                "type": "array",
+                                "items": {
+                                    "type": "string"
+                                },
+                                "required": true
+                            }
+                        },
+                        "additionalProperties": false
+                    },
+                    "required": true
+                },
+                "experienceInfluencePerDay": {
+                    "type": "floater",
+                    "required": true
+                },
+                "numberOfSimulatedAttacks": {
+                    "type": "unsigned_integer",
+                    "required": true
+                },
+                "conversionToWetMass": {
+                    "type": "floater",
+                    "required": true
+                },
+                "coefficientForMassA": {
+                    "type": "floater",
+                    "required": true
+                },
+                "scaleForMassB": {
+                    "type": "floater",
+                    "required": true
+                },
+                "coefficientForMassAforMature": {
+                    "type": "floater",
+                    "required": true
+                },
+                "scaleForMassBforMature": {
+                    "type": "floater",
+                    "required": true
+                },
+                "forDensitiesGrowth": {
+                    "type": "floater",
+                    "required": true
+                },
+                "forDensitiesEggSize": {
+                    "type": "floater",
+                    "required": true
+                },
+                "forDensitiesA": {
+                    "type": "floater",
+                    "required": true
+                },
+                "forDensitiesB": {
+                    "type": "floater",
+                    "required": true
+                },
+                "indeterminateGrowth": {
+                    "type": "boolean",
+                    "required": true
+                },
+                "instarFirstReproduction": {
+                    "type": "unsigned_integer",
+                    "required": false
+                },
+                "instarsForNextReproduction": {
+                    "type": "unsigned_integer",
+                    "required": true
+                },
+                "femaleMaxReproductionEvents": {
+                    "type": "unsigned_integer",
+                    "required": true
+                },
+                "eggsPerBatch": {
+                    "type": "unsigned_integer",
+                    "required": true
+                },
+                "maleMaxReproductionEvents": {
+                    "type": "unsigned_integer",
+                    "required": true
+                },
+                "maleReproductionFactor": {
+                    "type": "floater",
+                    "required": true
+                },
+                "maleMobility": {
+                    "type": "unsigned_integer",
+                    "required": true
+                },
+                "decreaseOnTraitsDueToEncounters": {
+                    "type": "floater",
+                    "required": true
+                },
+                "probabilityDeathFromBackground": {
+                    "type": "floater",
+                    "required": true
+                },
+                "assignedForMolt": {
+                    "type": "floater",
+                    "required": true
+                },
+                "betaScaleTank": {
+                    "type": "floater",
+                    "required": true
+                },
+                "excessInvestInSize": {
+                    "type": "floater",
+                    "required": true
+                },
+                "maxEncountersT": {
+                    "type": "unsigned_integer",
+                    "required": true
+                },
+                "minRelativeHumidityThreshold": {
+                    "type": "unsigned_integer",
+                    "required": true
+                },
+                "pupaPeriodLength": {
+                    "type": "unsigned_integer",
+                    "required": true
+                },
+                "habitatShiftBeforeBreedingFactor": {
+                    "type": "floater",
+                    "required": true,
+                    "nullProperty": true
+                },
+                "habitatShiftBeforeBreeding": {
+                    "type": "boolean",
+                    "required": true
+                },
+                "habitatShiftAfterBreedingFactor": {
+                    "type": "floater",
+                    "required": true,
+                    "nullProperty": true
+                },
+                "habitatShiftAfterBreeding": {
+                    "type": "boolean",
+                    "required": true
+                },
+                "habitatShiftFactor": {
+                    "type": "floater",
+                    "required": true,
+                    "nullProperty": true
+                },
+                "habitatShift": {
+                    "type": "array",
+                    "items": {
+                        "type": "unsigned_integer",
+                        "minimum": 2
+                    },
+                    "itemsOrder": "increasing",
+                    "required": true
+                },
+                "cellSizePerInstar": {
+                    "type": "array",
+                    "items": {
+                        "type": "floater"
+                    },
+                    "itemsOrder": "increasing",
+                    "required": true
+                },
+                "individualsPerInstar": {
+                    "type": "array",
+                    "items": {
+                        "type": "unsigned_integer"
+                    },
+                    "required": true
+                },
+                "statisticsIndividualsPerInstar": {
+                    "type": "unsigned_integer",
+                    "minimum": 1,
+                    "required": true
+                },
+                "devTimeVector": {
+                    "type": "array",
+                    "items": {
+                        "type": "unsigned_integer"
+                    },
+                    "itemsOrder": "strictly_increasing",
+                    "required": true
+                },
+                "LinfKcorr": {
+                    "type": "floater",
+                    "required": true
+                },
+                "devTimeConstant": {
+                    "type": "floater",
+                    "required": true
+                },
+                "devInter": {
+                    "type": "floater",
+                    "required": true
+                },
+                "EdGrowth": {
+                    "type": "floater",
+                    "required": true
+                },
+                "EdVoracity": {
+                    "type": "floater",
+                    "required": true
+                },
+                "EdSearch": {
+                    "type": "floater",
+                    "required": true
+                },
+                "EdSpeed": {
+                    "type": "floater",
+                    "required": true
+                },
+                "fractSearchExtremeT": {
+                    "type": "floater",
+                    "required": true
+                },
+                "fractSpeedExtremeT": {
+                    "type": "floater",
+                    "required": true
+                },
+                "longevitySinceMaturation": {
+                    "type": "floater",
+                    "required": true
+                },
+                "reproTimeFactor": {
+                    "type": "floater",
+                    "required": true
+                },
+                "tempOptGrowth": {
+                    "type": "floater",
+                    "required": true
+                },
+                "tempOptVoracity": {
+                    "type": "floater",
+                    "required": true
+                },
+                "tempOptSearch": {
+                    "type": "floater",
+                    "required": true
+                },
+                "tempOptSpeed": {
+                    "type": "floater",
+                    "required": true
+                },
+                "tempFromLab": {
+                    "type": "floater",
+                    "required": true
+                },
+                "tempSizeRuleConstant": {
+                    "type": "floater",
+                    "required": true
+                },
+                "eggClutchFromEquation": {
+                    "type": "boolean",
+                    "required": true
+                },
+                "forClutchMassCoefficient": {
+                    "type": "floater",
+                    "required": true
+                },
+                "forClutchMassScale": {
+                    "type": "floater",
+                    "required": true
+                },
+                "forEggMassCoefficient": {
+                    "type": "floater",
+                    "required": true
+                },
+                "forEggMassScale": {
+                    "type": "floater",
+                    "required": true
+                },
+                "eggMassFromEquation": {
+                    "type": "boolean",
+                    "required": true
+                },
+                "eggDryMass": {
+                    "type": "floater",
+                    "required": true
+                },
+                "femaleWetMass": {
+                    "type": "floater",
+                    "required": true
+                },
+                "scaleForVoracity": {
+                    "type": "floater",
+                    "required": true
+                },
+                "scaleForSearchArea": {
+                    "type": "floater",
+                    "required": true
+                },
+                "scaleForSpeed": {
+                    "type": "floater",
+                    "required": true
+                },
+                "maxPlasticityKVonBertalanffy": {
+                    "type": "floater",
+                    "required": true
+                },
+                "minPlasticityKVonBertalanffy": {
+                    "type": "floater",
+                    "required": true
+                },
+                "maxPlasticityDueToConditionVor": {
+                    "type": "floater",
+                    "required": true
+                },
+                "minPlasticityDueToConditionVor": {
+                    "type": "floater",
+                    "required": true
+                },
+                "maxPlasticityDueToConditionSearch": {
+                    "type": "floater",
+                    "required": true
+                },
+                "minPlasticityDueToConditionSearch": {
+                    "type": "floater",
+                    "required": true
+                },
+                "maxPlasticityDueToConditionSpeed": {
+                    "type": "floater",
+                    "required": true
+                },
+                "minPlasticityDueToConditionSpeed": {
+                    "type": "floater",
+                    "required": true
+                },
+                "coefficientForNumberOfEvaluationsFromSearchArea": {
+                    "type": "floater",
+                    "required": true
+                },
+                "attackProbability": {
+                    "type": "floater",
+                    "required": true
+                },
+                "exposedAttackProbability": {
+                    "type": "floater",
+                    "required": true
+                },
+                "killProbability": {
+                    "type": "floater",
+                    "required": true
+                },
+                "optimalTemperatureModifier": {
+                    "type": "floater",
+                    "required": true
+                },
+                "daysWithoutFoodForMetabolicDownregulation": {
+                    "type": "floater",
+                    "required": true
+                },
+                "percentageMetabolicDownregulation": {
+                    "type": "floater",
+                    "required": true
+                },
+                "percentageCostForMetabolicDownregulationVoracity": {
+                    "type": "floater",
+                    "required": true
+                },
+                "percentageCostForMetabolicDownregulationSearchArea": {
+                    "type": "floater",
+                    "required": true
+                },
+                "percentageCostForMetabolicDownregulationSpeed": {
+                    "type": "floater",
+                    "required": true
+                },
+                "cellEvaluationBiomass": {
+                    "type": "floater",
+                    "required": true
+                },
+                "cellEvaluationRisk": {
+                    "type": "floater",
+                    "required": true
+                },
+                "cellEvaluationProConspecific": {
+                    "type": "floater",
+                    "required": true
+                },
+                "cellEvaluationAntiConspecific": {
+                    "type": "floater",
+                    "required": true
+                },
+                "conspecificWeighing": {
+                    "type": "floater",
+                    "required": true
+                },
+                "coefficientForHandlingTimeA": {
+                    "type": "floater",
+                    "required": true
+                },
+                "coefficientForHandlingTimeB": {
+                    "type": "floater",
+                    "required": true
+                },
+                "coefficientForHandlingTimeC": {
+                    "type": "floater",
+                    "required": true
+                }
+            },
+            "conditionals": [
+                {
+                    "if": {
+                        "type": "equal",
+                        "lhs": {
+                            "type": "property",
+                            "value": [
+                                "indeterminateGrowth"
+                            ]
+                        },
+                        "rhs": {
+                            "type": "constant",
+                            "value": true
+                        }
+                    },
+                    "then": [
+                        {
+                            "add": {
+                                "required": [
+                                    "instarFirstReproduction"
+                                ]
+                            }
+                        }
+                    ],
+                    "else": [
+                        {
+                            "add": {
+                                "warningConditions": [
+                                    {
+                                        "condition": {
+                                            "type": "property_exists",
+                                            "value": [
+                                                "instarFirstReproduction"
+                                            ]
+                                        },
+                                        "warning": "Item 'instarFirstReproduction' is not being used because 'indeterminateGrowth' is disabled"
+                                    }
+                                ],
+                                "additionalProperties": true
+                            }
+                        }
+                    ]
+                },
+                {
+                    "if": {
+                        "type": "greater_than",
+                        "lhs": {
+                            "type": "property_size",
+                            "value": [
+                                "habitatShift"
+                            ]
+                        },
+                        "rhs": {
+                            "type": "constant",
+                            "value": 0
+                        }
+                    },
+                    "then": [ 
+                        {
+                            "remove": {
+                                "nullProperty": [
+                                    "habitatShiftFactor"
+                                ]
+                            }
+                        }
+                    ]
+                },
+                {
+                    "if": {
+                        "type": "equal",
+                        "lhs": {
+                            "type": "property",
+                            "value": [
+                                "habitatShiftBeforeBreeding"
+                            ]
+                        },
+                        "rhs": {
+                            "type": "constant",
+                            "value": true
+                        }
+                    },
+                    "then": [ 
+                        {
+                            "remove": {
+                                "nullProperty": [
+                                    "habitatShiftBeforeBreedingFactor"
+                                ]
+                            }
+                        }
+                    ]
+                },
+                {
+                    "if": {
+                        "type": "equal",
+                        "lhs": {
+                            "type": "property",
+                            "value": [
+                                "habitatShiftAfterBreeding"
+                            ]
+                        },
+                        "rhs": {
+                            "type": "constant",
+                            "value": true
+                        }
+                    },
+                    "then": [ 
+                        {
+                            "remove": {
+                                "nullProperty": [
+                                    "habitatShiftAfterBreedingFactor"
+                                ]
+                            }
+                        }
+                    ]
+                }
+            ],
+            "requiredConditions": [
+                {
+                    "condition": {
+                        "type": "equal",
+                        "lhs": {
+                            "type": "property_size",
+                            "value": [
+                                "individualsPerInstar"
+                            ]
+                        },
+                        "rhs": {
+                            "type": "sum",
+                            "result_type": "unsigned_integer",
+                            "lhs": {
+                                "type": "property_size",
+                                "value": [
+                                    "devTimeVector"
+                                ]
+                            },
+                            "rhs": {
+                                "type": "constant",
+                                "value": 1
+                            }
+                        }
+                    },
+                    "error": "Item 'individualsPerInstar' must have an additional element to the item 'devTimeVector'"
+                },
+                {
+                    "condition": {
+                        "type": "equal",
+                        "lhs": {
+                            "type": "property_size",
+                            "value": [
+                                "individualsPerInstar"
+                            ]
+                        },
+                        "rhs": {
+                            "type": "property_size",
+                            "value": [
+                                "cellSizePerInstar"
+                            ]
+                        }
+                    },
+                    "error": "Item 'individualsPerInstar' and 'cellSizePerInstar' must have the same size"
+                },
+                {
+                    "condition": {
+                        "type": "greater_than",
+                        "lhs": {
+                            "type": "property",
+                            "value": [
+                                "instarFirstReproduction"
+                            ]
+                        },
+                        "rhs": {
+                            "type": "constant",
+                            "value": 1
+                        }
+                    },
+                    "error": "Item 'instarFirstReproduction' must be greater than 1"
+                },
+                {
+                    "condition": {
+                        "type": "greater_equal_than",
+                        "lhs": {
+                            "type": "multiply",
+                            "result_type": "floater",
+                            "lhs": {
+                                "type": "property_item",
+                                "value": [
+                                    "devTimeVector"
+                                ],
+                                "item": {
+                                    "type": "subtract",
+                                    "result_type": "unsigned_integer",
+                                    "lhs": {
+                                        "type": "property",
+                                        "value": [
+                                            "instarFirstReproduction"
+                                        ]
+                                    },
+                                    "rhs": {
+                                        "type": "constant",
+                                        "value": 2
+                                    }
+                                }
+                            },
+                            "rhs": {
+                                "type": "property",
+                                "value": [
+                                    "longevitySinceMaturation"
+                                ]
+                            }
+                        },
+                        "rhs": {
+                            "type": "property_item",
+                            "value": [
+                                "devTimeVector"
+                            ],
+                            "item": {
+                                "type": "subtract",
+                                "result_type": "unsigned_integer",
+                                "lhs": {
+                                    "type": "property_size",
+                                    "value": [
+                                        "devTimeVector"
+                                    ]
+                                },
+                                "rhs": {
+                                    "type": "constant",
+                                    "value": 1
+                                }
+                            }
+                        }
+                    },
+                    "error": "Item 'longevitySinceMaturation' must be rounded up to a higher value"
+                },
+                {
+                    "condition": {
+                        "type": "greater_equal_than",
+                        "lhs": {
+                            "type": "division",
+                            "result_type": "floater",
+                            "lhs": {
+                                "type": "subtract",
+                                "result_type": "floater",
+                                "lhs": {
+                                    "type": "multiply",
+                                    "result_type": "floater",
+                                    "lhs": {
+                                        "type": "property",
+                                        "value": [
+                                            "longevitySinceMaturation"
+                                        ]
+                                    },
+                                    "rhs": {
+                                        "type": "property_item",
+                                        "value": [
+                                            "devTimeVector"
+                                        ],
+                                        "item": {
+                                            "type": "subtract",
+                                            "result_type": "unsigned_integer",
+                                            "lhs": {
+                                                "type": "property",
+                                                "value": [
+                                                    "instarFirstReproduction"
+                                                ]
+                                            },
+                                            "rhs": {
+                                                "type": "constant",
+                                                "value": 2
+                                            }
+                                        }
+                                    }
+                                },
+                                "rhs": {
+                                    "type": "property_item",
+                                    "value": [
+                                        "devTimeVector"
+                                    ],
+                                    "item": {
+                                        "type": "subtract",
+                                        "result_type": "unsigned_integer",
+                                        "lhs": {
+                                            "type": "property",
+                                            "value": [
+                                                "instarFirstReproduction"
+                                            ]
+                                        },
+                                        "rhs": {
+                                            "type": "constant",
+                                            "value": 2
+                                        }
+                                    }
+                                }
+                            },
+                            "rhs": {
+                                "type": "property",
+                                "value": [
+                                    "femaleMaxReproductionEvents"
+                                ]
+                            }
+                        },
+                        "rhs": {
+                            "type": "constant",
+                            "value": 1.0
+                        }
+                    },
+                    "error": "Item 'longevitySinceMaturation' must be rounded up to a higher value due to female reproductive events"
+                }
+            ],
+            "additionalProperties": false,
+            "required": true
+        },
+        "ontogeneticLinks": {
+            "type": "object",
+            "properties": {
+                "animalLinks": {
+                    "type": "array",
+                    "items": {
+                        "type": "object",
+                        "properties": {
+                            "species": {
+                                "type": "string",
+                                "required": true
+                            },
+                            "links": {
+                                "type": "array",
+                                "items": {
+                                    "type": "object",
+                                    "properties": {
+                                        "preyInstar": {
+                                            "type": "array",
+                                            "items": {
+                                                "type": "unsigned_integer"
+                                            },
+                                            "required": true
+                                        },
+                                        "predatorInstar": {
+                                            "type": "array",
+                                            "items": {
+                                                "type": "unsigned_integer"
+                                            },
+                                            "required": true
+                                        },
+                                        "preference": {
+                                            "type": "floater",
+                                            "required": true
+                                        },
+                                        "profitability": {
+                                            "type": "floater",
+                                            "required": true
+                                        }
+                                    },
+                                    "additionalProperties": false
+                                },
+                                "required": true
+                            }
+                        },
+                        "additionalProperties": false
+                    },
+                    "required": true
+                },
+                "resourceLinks": {
+                    "type": "array",
+                    "items": {
+                        "type": "object",
+                        "properties": {
+                            "species": {
+                                "type": "string",
+                                "required": true
+                            },
+                            "links": {
+                                "type": "array",
+                                "items": {
+                                    "type": "object",
+                                    "properties": {
+                                        "predatorInstar": {
+                                            "type": "array",
+                                            "items": {
+                                                "type": "unsigned_integer"
+                                            },
+                                            "required": true
+                                        },
+                                        "preference": {
+                                            "type": "floater",
+                                            "required": true
+                                        },
+                                        "profitability": {
+                                            "type": "floater",
+                                            "required": true
+                                        }
+                                    },
+                                    "additionalProperties": false
+                                },
+                                "required": true
+                            }
+                        },
+                        "additionalProperties": false
+                    },
+                    "required": true
+                }
+            },
+            "additionalProperties": false,
+            "required": true
+        }
+    },
+    "additionalProperties": false
+}

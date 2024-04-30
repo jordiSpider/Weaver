@@ -1,0 +1,5 @@
+
+set(DOCS_DIRECTORY "${CMAKE_CURRENT_SOURCE_DIR}")
+set(SPHINX_BUILD_DIRECTORY "${DOCS_DIRECTORY}/build")
+
+add_subdirectory(source)

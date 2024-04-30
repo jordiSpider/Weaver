@@ -1,0 +1,30 @@
+{
+    "version": "23.11.05",
+    "patch": {
+        "resourceSpecies": "ferns",
+        "priority": 2,
+        "shape": {
+            "type": "Spherical",
+            "cubicParams": {
+                "bottomLeftCorner": null,
+                "topRightCorner": null
+            },
+            "sphericalParams": {
+                "center": [12.0, 12.0],
+                "radius": 12.0
+            },
+            "homogeneousParams": {
+
+            },
+            "gaussianParams": {
+
+            },
+            "randomGaussianParams": {
+
+            }
+        },
+        "initialBiomassDensity": 400000.0,
+        "resourceMaximumCapacityDensity": 400000.0,
+        "patchSpread": true
+    }
+}

@@ -1,0 +1,29 @@
+1. Activar las características (CMD como administrador)
+
+Dism.exe /online /enable-feature /featurename:VirtualMachinePlatform /all /norestart
+Dism.exe /online /enable-feature /featurename:Microsoft-Windows-Subsystem-Linux /all /norestart
+
+2. Actualizar WSL (CMD)
+
+wsl --update
+
+3. Instalar Ubuntu 22.04 (CMD)
+
+wsl --install Ubuntu-22.04
+
+4. Añadir usuario Ubuntu
+
+usuario: weaver
+contraseña: weaver
+
+5. Abrir terminal con el archivo openTerminal.bat
+
+    5.1 Solucionar problemas:
+
+    - Permisos:
+
+    Propiedades / Abajo del todo / Desbloquear
+
+6. Instalar paquetes
+
+python3 scripts/toolsLinux.py
