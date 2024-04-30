@@ -228,17 +228,13 @@ public:
     ExponentialCurveParams() : CurveParams() {}
     ~ExponentialCurveParams() {}
 
-    const double& getValueTime0() const;
-
-    void setValueTime0(const double &exponentialValueTime0);
-
 protected:
-    double exponentialValueTime0;
+
 };
 
 class ExponentialCurve: public Curve {
 private:
-    
+    const double exponentialA;
 
 public:
     ExponentialCurve(const std::unordered_map<std::string,nlohmann::json>& growthCurve);
@@ -246,6 +242,7 @@ public:
 
     CurveType::CurveTypeValue getType() const;
 
+    const double& getExponentialA() const;
     double getValue(const CurveParams &params) const;
 };
 

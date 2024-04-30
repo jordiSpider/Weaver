@@ -102,13 +102,6 @@ json::parser_callback_t check_duplicate_keys = [](int depth, json::parse_event_t
 	return true;
 };
 
-json readConfigFile1(fs::path configPath, fs::path WeaverFolder) {
-	string filename = configPath.filename().string();
-	fs::path schemaPath = WeaverFolder / fs::path(SCHEMA_FOLDER) / fs::path(filename.substr(0, filename.find(".")) + ".schema.json");
-
-	return readConfigFile(configPath, schemaPath);
-}
-
 json readConfigFile(fs::path configPath, fs::path schemaPath) {
 	// Read configuration file
 	ifstream configFile(configPath);

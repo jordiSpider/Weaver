@@ -7,6 +7,8 @@
 #define MOISTURE_SCHEMA "moisture.schema.json"
 #define OBSTACLE_SCHEMA "obstacle.schema.json"
 #define SPECIES_SCHEMA "species.schema.json"
+#define RUN_PARAMS_SCHEMA "run_params.schema.json"
+#define WORLD_PARAMS_SCHEMA "world_params.schema.json"
 
 #define CONFIG_FOLDER "config"
 #define RESULT_SIMULATION_FOLDER "result_simulation"

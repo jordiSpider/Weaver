@@ -92,6 +92,10 @@
                         "gompertzValueTime0": {
                             "type": "floater",
                             "required": true
+                        },
+                        "exponentialA": {
+                            "type": "floater",
+                            "required": true
                         }
                     },
                     "additionalProperties": false,

@@ -14,6 +14,9 @@ class Development(WindowsProjectVersion):
                 Package("mingw-w64-x86_64-gcc", PackageScheme.Basic, "11.2.0"),
                 Package("mingw-w64-x86_64-make", PackageScheme.Basic, "4.3"),
                 Package("mingw-w64-x86_64-cmake", PackageScheme.Basic, "3.25.1")
+
+                # Página donde buscar los paquetes de MSYS2:
+                # https://repo.msys2.org/mingw/mingw64/
             ]
         )
         cxx_libraries = Libraries(
@@ -22,6 +25,9 @@ class Development(WindowsProjectVersion):
                 "cxxopts",
                 "nlohmann-json",
                 "fmt"
+
+                # Página donde buscar las librerías C++ de vcpkg:
+                # https://vcpkg.io/en/packages.html
             ],
             "x64-mingw-static"
         )

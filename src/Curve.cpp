@@ -148,7 +148,7 @@ double LogisticCurve::getValue(const CurveParams &params) const
 
 
 Logistic3PCurve::Logistic3PCurve(const unordered_map<string,json>& growthCurve) 
-	: logistic3pAsymptoticSize(growthCurve.at("logistic3pAsymptoticSize")), logistic3pMidpointValue(logistic3pAsymptoticSize/2)
+	: Curve(), logistic3pAsymptoticSize(growthCurve.at("logistic3pAsymptoticSize")), logistic3pMidpointValue(logistic3pAsymptoticSize/2)
 {
 	
 }
@@ -176,7 +176,7 @@ double Logistic3PCurve::getValue(const CurveParams &params) const
 
 
 Logistic4PCurve::Logistic4PCurve(const unordered_map<string,json>& growthCurve) 
-	: logistic4pLeftAsymptote(growthCurve.at("logistic4pLeftAsymptote")), logistic4pRightAsymptote(growthCurve.at("logistic4pRightAsymptote")),
+	: Curve(), logistic4pLeftAsymptote(growthCurve.at("logistic4pLeftAsymptote")), logistic4pRightAsymptote(growthCurve.at("logistic4pRightAsymptote")),
 	  logistic4pAsymptoticSize(logistic4pLeftAsymptote+(logistic4pRightAsymptote-logistic4pLeftAsymptote)), 
 	  logistic4pMidpointValue(logistic4pLeftAsymptote+(logistic4pRightAsymptote-logistic4pLeftAsymptote)/2)
 {
@@ -216,7 +216,7 @@ double Logistic4PCurve::getValue(const CurveParams &params) const
 
 
 GompertzCurve::GompertzCurve(const unordered_map<string,json>& growthCurve) 
-	: gompertzAsymptoticSize(growthCurve.at("gompertzAsymptoticSize")), gompertzValueTime0(growthCurve.at("gompertzValueTime0"))
+	: Curve(), gompertzAsymptoticSize(growthCurve.at("gompertzAsymptoticSize")), gompertzValueTime0(growthCurve.at("gompertzValueTime0"))
 {
 	
 }
@@ -243,20 +243,15 @@ double GompertzCurve::getValue(const CurveParams &params) const
 }
 
 
-const double& ExponentialCurveParams::getValueTime0() const
-{
-	return exponentialValueTime0;
-}
-
-void ExponentialCurveParams::setValueTime0(const double &exponentialValueTime0)
-{
-	this->exponentialValueTime0 = exponentialValueTime0;
-}
-
 ExponentialCurve::ExponentialCurve(const unordered_map<string,json>& growthCurve) 
-	: Curve()
+	: Curve(), exponentialA(growthCurve.at("exponentialA"))
 {
 	
+}
+
+const double& ExponentialCurve::getExponentialA() const
+{
+	return exponentialA;
 }
 
 CurveType::CurveTypeValue ExponentialCurve::getType() const
@@ -267,5 +262,5 @@ CurveType::CurveTypeValue ExponentialCurve::getType() const
 double ExponentialCurve::getValue(const CurveParams &params) const
 {
 	const ExponentialCurveParams& castParams = static_cast<const ExponentialCurveParams&>(params);
-	return castParams.getValueTime0() * exp(castParams.getGrowthCoefficient() * castParams.getTime());
+	return getExponentialA() * exp(castParams.getGrowthCoefficient() * castParams.getTime());
 }

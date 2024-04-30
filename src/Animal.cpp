@@ -402,7 +402,6 @@ double Animal::getValueGrowthCurve(const double &age, const double &midpointValu
 			break;
 		}
 		case CurveType::Exponential: {
-			static_cast<ExponentialCurveParams* const>(growthCurveParams)->setValueTime0(lengthAtBirth);
 			break;
 		}
 		default: {
