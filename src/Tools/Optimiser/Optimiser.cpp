@@ -4,7 +4,7 @@
 
 using namespace std;
 using json = nlohmann::json;
-namespace fs = boost::filesystem;
+namespace fs = std::filesystem;
 
 
 fs::path Optimiser::initializeLog(fs::path outputFolder)

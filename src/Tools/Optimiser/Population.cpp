@@ -4,7 +4,7 @@
 
 using namespace std;
 using json = nlohmann::json;
-namespace fs = boost::filesystem;
+namespace fs = std::filesystem;
 
 
 void Population::combineRecursive(const vector<vector<json>>& input, vector<vector<json>>& output, unsigned int currentIndex, vector<json> currentCombination) {
@@ -74,10 +74,11 @@ Population::~Population()
 
 void Population::evaluateIndividual(fs::path& configPath, fs::path& resultFolder, unsigned int& burn_in)
 {
+    fs::path program(PROJECT_ROOT_PATH);
     #ifdef DEBUG
-    fs::path program = fs::canonical(fs::path("Weaver_d.out"));
+    program = program / "Weaver_d.out";
     #else
-    fs::path program = fs::canonical(fs::path("Weaver.out"));
+    program = program / "Weaver.out";
     #endif
 
     string arguments = "-I " + configPath.string() + " -O " + resultFolder.string() + " --optimization-burn-in " + to_string(burn_in) + " --silent";

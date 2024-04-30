@@ -3,7 +3,7 @@
 #include <vector>
 #include <string>
 #include <cxxopts.hpp>
-#include <boost/filesystem.hpp>
+#include <filesystem>
 #include <iostream>
 
 #include "Tools/Config/Config.h"
@@ -15,7 +15,7 @@
 
 using namespace std;
 using json = nlohmann::json;
-namespace fs = boost::filesystem;
+namespace fs = filesystem;
 
 int main(int argc, char ** argv)
 {
@@ -59,7 +59,7 @@ int main(int argc, char ** argv)
 	{
 		config_path = fs::canonical(config_path);
 	}
-	catch(const boost::filesystem::filesystem_error& e)
+	catch(const std::filesystem::filesystem_error& e)
 	{
 		throwLineInfoException("The config directory does not exist or is not a valid directory");
 	}

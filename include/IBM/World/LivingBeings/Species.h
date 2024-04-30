@@ -25,8 +25,11 @@
 #include "Misc/Types.h"
 
 
+
+
 class ResourceSpecies;
 class AnimalSpecies;
+
 
 class Species
 {
@@ -134,7 +137,5 @@ public:
     template <class Archive>
     void serialize(Archive &ar, const unsigned int version);
 };
-
-BOOST_SERIALIZATION_ASSUME_ABSTRACT(Species)
 
 #endif /* WEAVER_SPECIES_H_ */

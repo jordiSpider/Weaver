@@ -65,6 +65,4 @@ protected:
 	double getNewBiomass(const double &rateOfIncrease) const;
 };
 
-BOOST_SERIALIZATION_ASSUME_ABSTRACT(Resource)
-
 #endif /* RESOURCE_H_ */

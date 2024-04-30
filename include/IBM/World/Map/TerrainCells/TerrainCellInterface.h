@@ -10,7 +10,6 @@
 #include <boost/archive/binary_oarchive.hpp>
 #include <fstream>
 #include <ostream>
-#include <boost/filesystem.hpp>
 
 #include "IBM/World/Map/Points/PointMap.h"
 #include "Misc/Types.h"
@@ -156,11 +155,11 @@ public:
     virtual const ResourceInterface* const getResource(const unsigned int resourceSpeciesId) const=0; //?
     /** @} */
 
-    virtual void performAnimalsActions(int timeStep, std::ostream& voracitiesFile, boost::filesystem::path outputFolder, bool saveAnimalConstitutiveTraits, std::ofstream &constitutiveTraitsFile)=0;
+    virtual void performAnimalsActions(int timeStep, std::ostream& voracitiesFile, fs::path outputFolder, bool saveAnimalConstitutiveTraits, std::ofstream &constitutiveTraitsFile)=0;
 
     virtual void obtainInhabitableTerrainCells()=0;
 
-    virtual void breedAnimals(int timeStep, boost::filesystem::path outputDirectory, bool saveAnimalConstitutiveTraits, std::ofstream &constitutiveTraitsFile)=0;
+    virtual void breedAnimals(int timeStep, fs::path outputDirectory, bool saveAnimalConstitutiveTraits, std::ofstream &constitutiveTraitsFile)=0;
 
     virtual double turnEdibleIntoDryMassToBeEaten(EdibleInterface &targetAnimal, const double &targetDryMass, const Ring* const perceptionArea, int day, AnimalInterface* predatorEdible, double leftovers)=0;
 

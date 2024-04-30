@@ -3,7 +3,7 @@
 
 
 #include <unordered_map>
-#include <boost/filesystem.hpp>
+#include <filesystem>
 #include <string>
 #include <nlohmann/json.hpp>
 
@@ -19,10 +19,10 @@ private:
 
 public:
     JsonFile();
-    JsonFile(boost::filesystem::path json_file_path);
+    JsonFile(std::filesystem::path json_file_path);
     virtual ~JsonFile();
 
-    void save(boost::filesystem::path new_file_path);
+    void save(std::filesystem::path new_file_path);
     void refresh_version(VersionNumber new_version);
     nlohmann::json& getContent();
     VersionNumber& getVersion();

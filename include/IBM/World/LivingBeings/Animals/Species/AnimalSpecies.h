@@ -902,9 +902,13 @@ public:
 	inline void setPercentageCostForMetabolicDownregulationSearchArea(const float& percentageCostForMetabolicDownregulationSearchArea) { this->percentageCostForMetabolicDownregulationSearchArea = percentageCostForMetabolicDownregulationSearchArea; }
 	inline void setPercentageCostForMetabolicDownregulationSpeed(const float& percentageCostForMetabolicDownregulationSpeed) { this->percentageCostForMetabolicDownregulationSpeed = percentageCostForMetabolicDownregulationSpeed; }
 
+
 	inline void setForDensitiesA(const double& forDensitiesA) { this->forDensitiesA = forDensitiesA; }
 	inline void setForDensitiesB(const double& forDensitiesB) { this->forDensitiesB = forDensitiesB; }
 	void setEcosystemSize(double forDensitiesScale);
+
+
+
 
 	float getSexRatio() { return sexRatio; };
 	void setSexRatio(const float& sexRatio) { this->sexRatio = sexRatio; }
@@ -923,8 +927,17 @@ public:
 	void setDryProportionOfMass(double CONTROL_DRY_BODY_MASS);
 	inline void setProbabilityDeathFromBackground(const double& probabilityDeathFromBackground) { this->probabilityDeathFromBackground = probabilityDeathFromBackground; }
 
+
+
+
+
+
+
+
+
 	void setInitialPopulation(const std::vector<unsigned int>& initialPopulation);
 	inline void setStatisticsIndividualsPerInstar(const unsigned int& statisticsIndividualsPerInstar) { this->statisticsIndividualsPerInstar = statisticsIndividualsPerInstar; }
+
 
 	void setTraits(const std::unordered_map<std::string,nlohmann::json>& traitsInfo);
 	void resetLimits();
@@ -960,7 +973,5 @@ public:
     template <class Archive>
     void serialize(Archive &ar, const unsigned int version);
 };
-
-BOOST_SERIALIZATION_ASSUME_ABSTRACT(AnimalSpecies)
 
 #endif /* ANIMAL_SPECIES_H_ */

@@ -7,7 +7,7 @@
 #include <vector>
 #include <memory>
 #include <nlohmann/json.hpp>
-#include <boost/filesystem.hpp>
+#include <filesystem>
 #include <oneapi/tbb/global_control.h>
 #include <oneapi/tbb/parallel_for.h>
 #include <oneapi/tbb/task_group.h>
@@ -34,13 +34,13 @@ public:
     Population(std::vector<Individual*> individuals, const unsigned int generationNumber);
     virtual ~Population();
 
-    Individual evaluate(const std::vector<Parameter>& parameters, unsigned int numberOfCores, boost::filesystem::path baseConfigPath, boost::filesystem::path generationOutputFolder, boost::filesystem::path logFilePath, EvaluationFunctionType evaluationFunction, unsigned int burn_in, const Individual& bestIndividual, const bool maximiseFitness);
-    void updateLog(const boost::filesystem::path& logFilePath, std::vector<Parameter>& parameters) const;
+    Individual evaluate(const std::vector<Parameter>& parameters, unsigned int numberOfCores, std::filesystem::path baseConfigPath, std::filesystem::path generationOutputFolder, std::filesystem::path logFilePath, EvaluationFunctionType evaluationFunction, unsigned int burn_in, const Individual& bestIndividual, const bool maximiseFitness);
+    void updateLog(const std::filesystem::path& logFilePath, std::vector<Parameter>& parameters) const;
 
     const std::vector<Individual*>& getIndividuals() const;
     std::vector<Individual*>& getMutableIndividuals();
 
-    void evaluateIndividual(boost::filesystem::path& configPath, boost::filesystem::path& resultFolder, unsigned int& burn_in);
+    void evaluateIndividual(std::filesystem::path& configPath, std::filesystem::path& resultFolder, unsigned int& burn_in);
 };
 
 #endif /* POPULATION_H_ */

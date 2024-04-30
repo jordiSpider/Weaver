@@ -10,7 +10,6 @@
 #include <boost/archive/binary_oarchive.hpp>
 #include <fstream>
 #include <ostream>
-#include <boost/filesystem.hpp>
 
 #include "IBM/World/Map/Patches/Moisture/MoisturePatch.h"
 #include "IBM/World/LivingBeings/Resources/Species/ResourceSpecies.h"
@@ -29,7 +28,7 @@ public:
 	virtual ~WorldInterface();
 
     virtual void initializeAnimals()=0;
-    virtual void saveOptimizationResult(boost::filesystem::path resultFolder)=0;
+    virtual void saveOptimizationResult(fs::path resultFolder)=0;
     virtual void evolveWorld()=0;
     virtual double getMassRatio() const=0;
     virtual void addAppliedMoisture(MoisturePatch &moisturePatch)=0;
@@ -60,8 +59,5 @@ public:
     template <class Archive>
     void serialize(Archive &ar, const unsigned int version);
 };
-
-BOOST_SERIALIZATION_ASSUME_ABSTRACT(WorldInterface)
-
 
 #endif // WORLD_INTERFACE_H_

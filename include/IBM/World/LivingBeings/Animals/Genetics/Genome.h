@@ -12,15 +12,16 @@
 #include <boost/serialization/access.hpp>
 #include <boost/archive/binary_iarchive.hpp>
 #include <boost/archive/binary_oarchive.hpp>
+#include <fstream>
+#include <ostream>
 
-#include "IBM/World/LivingBeings/Animals/Genetics/Locus.h"
+#include "Locus.h"
 #include "Chromosome.h"
 #include "Correlosome.h"
 #include "Gamete.h"
 #include "IBM/Maths/Random.h"
 #include "Exceptions/LineInfoException.h"
 
-class Locus;
 
 /**
  * @class Genome
@@ -64,7 +65,7 @@ public:
      * @param numberOfLociPerChromosome The number of loci per chromosome.
      * @param numberOfChiasmasPerChromosome The number of chiasmas per chromosome.
      */
-	Genome(const std::vector<Locus*>& loci, const std::vector<int> &randomlyCreatedPositionsForChromosomes, const unsigned int &numberOfChromosomes,
+	Genome(const std::vector<Locus*> &loci, const std::vector<int> &randomlyCreatedPositionsForChromosomes, const unsigned int &numberOfChromosomes,
 		   const unsigned int& numberOfLociPerChromosome, const unsigned int& numberOfChiasmasPerChromosome);
 	
 	/**
@@ -138,8 +139,5 @@ public:
     template<class Archive>
     void serialize(Archive & ar, const unsigned int version);
 };
-
-BOOST_SERIALIZATION_ASSUME_ABSTRACT(Genome)
-
 
 #endif /* GENOME_H_ */

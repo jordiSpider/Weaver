@@ -24,7 +24,10 @@
 #include "IBM/World/LivingBeings/EdibleInterface.h"
 #include "Exceptions/LineInfoException.h"
 
+
+
 class TerrainCellInterface;
+
 
 class Edible : public EdibleInterface {
 private:
@@ -79,7 +82,6 @@ public:
     void serialize(Archive &ar, const unsigned int version);
 };
 
-BOOST_SERIALIZATION_ASSUME_ABSTRACT(Edible)
 
 std::ostream& operator<<(std::ostream& os, const Edible& edible);
 

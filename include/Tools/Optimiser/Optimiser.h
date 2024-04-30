@@ -4,7 +4,7 @@
 
 #include <iostream>
 #include <fstream>
-#include <boost/filesystem.hpp>
+#include <filesystem>
 #include <memory>
 #include <nlohmann/json.hpp>
 #include <string>
@@ -29,9 +29,9 @@
 
 
 
-// boost::filesystem::path createGenerationFolder(boost::filesystem::path outputFolder, unsigned int generationNumber);
+// fs::path createGenerationFolder(std::filesystem::path outputFolder, unsigned int generationNumber);
 
-// void runWeaverOptimiser(boost::filesystem::path baseConfigPath, boost::filesystem::path outputFolder,
+// void runWeaverOptimiser(std::filesystem::path baseConfigPath, std::filesystem::path outputFolder,
 //     unsigned int numCores, unsigned int maxNumberOfGenerations
 // );
 
@@ -40,20 +40,20 @@
 class Optimiser
 {
 private:
-    static boost::filesystem::path initializeLog(boost::filesystem::path outputFolder);
-    static boost::filesystem::path createGenerationFolder(boost::filesystem::path outputFolder, unsigned int generationNumber);
+    static std::filesystem::path initializeLog(std::filesystem::path outputFolder);
+    static std::filesystem::path createGenerationFolder(std::filesystem::path outputFolder, unsigned int generationNumber);
     static void printBestIndividual(const Individual& bestIndividual, std::vector<Parameter>& parameters);
     static bool achieveObjectiveFitness(const double& fitness, const double& fitnessObjective, bool maximiseFitness);
     static std::unique_ptr<std::vector<Individual*>> doSelectionOperator(SelectionOperatorType selectionOperator, const Population& population, const bool maximiseFitness);
     static std::unique_ptr<oneapi::tbb::concurrent_vector<std::unique_ptr<Individual>>> doCrossoverOperator(CrossoverOperatorType crossoverOperator, std::unique_ptr<std::vector<Individual*>>& parents, const bool maximiseFitness);
     static void doMutationOperator(const std::vector<Parameter>& parameters, MutationOperatorType mutationOperator, std::unique_ptr<oneapi::tbb::concurrent_vector<std::unique_ptr<Individual>>>& descendants);
     static std::unique_ptr<std::vector<Individual*>> doReplacementOperator(ReplacementOperatorType replacementOperator, Population& currentPopulation, oneapi::tbb::concurrent_vector<std::unique_ptr<Individual>>& descendants);
-    static void copyDirectory(const boost::filesystem::path& source, const boost::filesystem::path& destination);
-    static void saveBestIndividual(boost::filesystem::path logFilePath, const Individual& bestIndividual, const std::vector<Parameter>& parameters, boost::filesystem::path outputFolder);
+    static void copyDirectory(const std::filesystem::path& source, const std::filesystem::path& destination);
+    static void saveBestIndividual(std::filesystem::path logFilePath, const Individual& bestIndividual, const std::vector<Parameter>& parameters, std::filesystem::path outputFolder);
 
 public:
     static void runOptimiser(const nlohmann::json& run_params, const bool overwrite);
-    static void runOptimiser(boost::filesystem::path baseConfigPath, boost::filesystem::path outputFolder, unsigned int maxNumberOfGenerations, unsigned int numberOfCores, std::vector<Parameter>& parameters, unsigned int burn_in, bool maximiseFitness, std::string evaluationFunctionSelected, std::string selectionOperatorSelected, std::string crossoverOperatorSelected, std::string mutationOperatorSelected, std::string replacementOperatorSelected, const double& fitnessObjective, const bool overwrite);
+    static void runOptimiser(std::filesystem::path baseConfigPath, std::filesystem::path outputFolder, unsigned int maxNumberOfGenerations, unsigned int numberOfCores, std::vector<Parameter>& parameters, unsigned int burn_in, bool maximiseFitness, std::string evaluationFunctionSelected, std::string selectionOperatorSelected, std::string crossoverOperatorSelected, std::string mutationOperatorSelected, std::string replacementOperatorSelected, const double& fitnessObjective, const bool overwrite);
 
     // static void initOptimiser();
     // template<typename T>

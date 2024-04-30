@@ -122,6 +122,4 @@ public:
     void serialize(Archive &ar, const unsigned int version);
 };
 
-BOOST_SERIALIZATION_ASSUME_ABSTRACT(ExtendedMoisture)
-
 #endif /* EXTENDED_MOISTURE_H_ */

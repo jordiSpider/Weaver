@@ -6,7 +6,6 @@
 #include <nlohmann/json.hpp>
 #include <magic_enum.hpp>
 #include <cmath>
-#include <boost/filesystem.hpp>
 
 #include "IBM/World/Map/TerrainCells/TerrainCell.h"
 #include "IBM/World/Map/Points/PointMap.h"
@@ -111,7 +110,7 @@ public:
         const EdibleSearchParams &edibleSearchParams
     );
     void moveAnimals(int day, std::ostream& encounterProbabilitiesFile, std::ostream& predationProbabilitiesFile, bool saveEdibilitiesFile, std::ostream& edibilitiesFile, float exitTimeThreshold, double pdfThreshold, double muForPDF, double sigmaForPDF, double predationSpeedRatioAH, double predationHunterVoracityAH, double predationProbabilityDensityFunctionAH, double predationSpeedRatioSAW, double predationHunterVoracitySAW, double predationProbabilityDensityFunctionSAW, double maxSearchArea, double encounterHuntedVoracitySAW, double encounterHunterVoracitySAW, double encounterVoracitiesProductSAW, double encounterHunterSizeSAW, double encounterHuntedSizeSAW, double encounterProbabilityDensityFunctionSAW, double encounterHuntedVoracityAH, double encounterHunterVoracityAH, double encounterVoracitiesProductAH, double encounterHunterSizeAH, double encounterHuntedSizeAH, double encounterProbabilityDensityFunctionAH);
-    void performAnimalsActions(int timeStep, std::ostream& voracitiesFile, boost::filesystem::path outputFolder, bool saveAnimalConstitutiveTraits, std::ofstream &constitutiveTraitsFile);
+    void performAnimalsActions(int timeStep, std::ostream& voracitiesFile, fs::path outputFolder, bool saveAnimalConstitutiveTraits, std::ofstream &constitutiveTraitsFile);
 };
 
 #endif /* SPATIAL_TREE_H_ */

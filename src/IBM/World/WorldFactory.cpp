@@ -1,7 +1,6 @@
 #include "IBM/World/WorldFactory.h"
 
 using namespace std;
-namespace fs = boost::filesystem;
 
 
 
@@ -75,18 +74,18 @@ void WorldFactory::Type::serialize(Archive &ar, const unsigned int version) {
 
 
 
-unique_ptr<WorldInterface> WorldFactory::createInstance(json* jsonTree, json &worldConfig, fs::path outputFolder, fs::path configPath, int burnIn) {
+unique_ptr<WorldInterface> WorldFactory::createInstance(json* jsonTree, json &worldConfig, fs::path outputFolder, fs::path WeaverFolder, fs::path configPath, int burnIn) {
     switch(Type::stringToEnumValue(worldConfig["world"]["simulationType"])) {
         case Type::Arthropods: {
-            return make_unique<ArthropodsWorld>(jsonTree, worldConfig, outputFolder, configPath, burnIn);
+            return make_unique<ArthropodsWorld>(jsonTree, worldConfig, outputFolder, WeaverFolder, configPath, burnIn);
             break;
         }
         case Type::Dinosaurs: {
-            return make_unique<DinosaursWorld>(jsonTree, worldConfig, outputFolder, configPath, burnIn);
+            return make_unique<DinosaursWorld>(jsonTree, worldConfig, outputFolder, WeaverFolder, configPath, burnIn);
             break;
         }
 		case Type::Aquatic: {
-            return make_unique<AquaticWorld>(jsonTree, worldConfig, outputFolder, configPath, burnIn);
+            return make_unique<AquaticWorld>(jsonTree, worldConfig, outputFolder, WeaverFolder, configPath, burnIn);
             break;
         }
         default: {

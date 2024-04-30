@@ -1,6 +1,6 @@
 
 #include <cxxopts.hpp>
-#include <boost/filesystem.hpp>
+#include <filesystem>
 #include <nlohmann/json.hpp>
 
 #include "Tools/Optimiser/Optimiser.h"
@@ -50,7 +50,7 @@ int main(int argc, char ** argv)
 	{
 		run_params_path = fs::canonical(run_params_path);
 	}
-	catch(const boost::filesystem::filesystem_error& e)
+	catch(const std::filesystem::filesystem_error& e)
 	{
 		throwLineInfoException("The config directory does not exist or is not a valid directory");
 	}

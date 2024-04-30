@@ -8,25 +8,18 @@
 #include "Misc/SimulationConstants.h"
 #include "IBM/World/World.h"
 #include "Misc/Utilities.h"
-#include "Misc/SerializableSpecializations.h"
 #include "Misc/GlobalVariable.h"
 #include "IBM/World/LivingBeings/LifeStage.h"
 
 
 using namespace std;
 using json = nlohmann::json;
-namespace fs = boost::filesystem;
 
 
-World::World(json * jsonTree, json &worldConfig, 
-    fs::path outputFolder, 
-    fs::path configPath, 
-    int burnIn, 
-    const double &massRatio)
-	: currentMovePercentage(printBarEach), 
-        currentNumberOfTerrainCellsMoved(0), 
-        burnIn(burnIn), 
-        massRatio(massRatio)
+
+
+World::World(json * jsonTree, json &worldConfig, fs::path outputFolder, fs::path WeaverFolder, fs::path configPath, int burnIn, const double &massRatio)
+	: currentMovePercentage(printBarEach), currentNumberOfTerrainCellsMoved(0), burnIn(burnIn), WeaverFolder(WeaverFolder), massRatio(massRatio)
 {
 	inputFolder = configPath;
 
@@ -215,10 +208,8 @@ void World::readAnimalSpeciesFromJSONFiles()
 			{
 				ptMain.clear();
 
-				fs::path schemaFolder = fs::canonical(fs::path(SCHEMA_FOLDER));
-
 				// Read configuration file
-				ptMain = readConfigFile(*it, schemaFolder / fs::path(SPECIES_SCHEMA));
+				ptMain = readConfigFile(*it, WeaverFolder / fs::path(SCHEMA_FOLDER) / fs::path(SPECIES_SCHEMA));
 
 				cout << " - Animal scientific name: " << (string)ptMain["animal"]["name"] << endl;
 
@@ -349,10 +340,8 @@ void World::readResourceSpeciesFromJSONFiles()
 			{
 				ptMain.clear();
 
-				fs::path schemaFolder = fs::canonical(fs::path(SCHEMA_FOLDER));
-
 				// Read configuration file
-				ptMain = readConfigFile(*it, schemaFolder / fs::path(RESOURCE_SCHEMA));
+				ptMain = readConfigFile(*it, WeaverFolder / fs::path(SCHEMA_FOLDER) / fs::path(RESOURCE_SCHEMA));
 
 				cout << " - Resource scientific name: " << (string)ptMain["resource"]["name"] << endl << endl;
 
@@ -386,10 +375,8 @@ void World::readResourcePatchesFromJSONFiles()
 			{
 				string patchFilename = it->string();
 
-				fs::path schemaFolder = fs::canonical(fs::path(SCHEMA_FOLDER));
-
 				// Read configuration file
-				json ptMain = readConfigFile(*it, schemaFolder / fs::path(RESOURCE_PATCH_SCHEMA));
+				json ptMain = readConfigFile(*it, WeaverFolder / fs::path(SCHEMA_FOLDER) / fs::path(RESOURCE_PATCH_SCHEMA));
 
 				bool foundResourceSpecies = false;
 				unsigned int resourceSpeciesId;
@@ -1042,14 +1029,6 @@ void World::evolveWorld()
 		saveAnimalSpeciesSnapshot(outputFolder / fs::path("Snapshots"), "Animal_final", runDays*timeStepsPerDay, animalSpecies);
 	}
 
-        // create and open a character archive for output
-        std::ofstream ofs("serialization.txt");
-        boost::archive::text_oarchive oa(ofs);
-        
-        unsigned int projectVersion = projectVersionStringToNumber(PROJECT_VERSION);
-
-        this->serialize(oa, projectVersion);
-
 	/*
 	encountersMatrixFilename = outputFolder + "/Matrices/" + encountersMatrixFilename;
 	predationsMatrixFilename = outputFolder + "/Matrices/" + predationsMatrixFilename;
@@ -1312,10 +1291,8 @@ void World::readObstaclePatchesFromJSONFiles()
 
 				ptMain.clear();
 
-				fs::path schemaFolder = fs::canonical(fs::path(SCHEMA_FOLDER));
-
 				// Read configuration file
-				ptMain = readConfigFile(*it, schemaFolder / fs::path(OBSTACLE_PATCH_SCHEMA));
+				ptMain = readConfigFile(*it, WeaverFolder / fs::path(SCHEMA_FOLDER) / fs::path(OBSTACLE_PATCH_SCHEMA));
 
 				obstaclePatchesToAplly.push(ObstaclePatchFactory::createInstance(ptMain["patch"], patchFilename));
 			}
@@ -1360,10 +1337,8 @@ void World::readMoisturePatchesFromJSONFiles(const json &moistureBasePatchInfo)
 
 				ptMain.clear();
 
-				fs::path schemaFolder = fs::canonical(fs::path(SCHEMA_FOLDER));
-
 				// Read configuration file
-				ptMain = readConfigFile(*it, schemaFolder / fs::path(MOISTURE_PATCH_SCHEMA));
+				ptMain = readConfigFile(*it, WeaverFolder / fs::path(SCHEMA_FOLDER) / fs::path(MOISTURE_PATCH_SCHEMA));
 
 				moisturePatchesToAplly.push(MoisturePatchFactory::createInstance(ptMain["patch"], patchFilename));
 			}
@@ -2209,8 +2184,8 @@ void World::initializeOutputFiles(json * jsonTree)
 	// Copy simulation configuration
 	fs::copy(inputFolder, outputFolder / fs::path("config") / inputFolder.filename(), fs::copy_options::recursive);
 
-	dailySummaryFilename = outputFolder / fs::path("dailySummary.txt");
-	dailySummaryFile.open(dailySummaryFilename);
+	fs::path dailySummariFilename = outputFolder / fs::path("dailySummary.txt");
+	dailySummaryFile.open(dailySummariFilename);
 
 	if (!dailySummaryFile.is_open())
 	{
@@ -2223,7 +2198,7 @@ void World::initializeOutputFiles(json * jsonTree)
 				<< endl;
 	}
 
-	extendedDailySummaryFilename = outputFolder / fs::path("extendedDailySummary.txt");
+	fs::path extendedDailySummaryFilename = outputFolder / fs::path("extendedDailySummary.txt");
 	extendedDailySummaryFile.open(extendedDailySummaryFilename);
 
 	if (!extendedDailySummaryFile.is_open())
@@ -2346,6 +2321,8 @@ void World::serialize(Archive &ar, const unsigned int version) {
 	ar & existingAnimalSpeciesPointers;
 	ar & existingAnimalSpeciesConstPointers;
 
+	ar & WeaverFolder;
+
         ar & exitAtFirstExtinction;
 
 	#ifdef DEBUG
@@ -2371,9 +2348,8 @@ void World::serialize(Archive &ar, const unsigned int version) {
 	ar & nodesMatrixFilename;
 	ar & predationEventsOnOtherSpeciesFilename;
 
-        ar & dailySummaryFile;
-        ar & extendedDailySummaryFile;
-	        
+	ar & dailySummaryFile;
+	ar & extendedDailySummaryFile;
 	ar & edibilitiesFile;
 	ar & saveEdibilitiesFile;
 
@@ -2426,8 +2402,7 @@ void World::serialize(Archive &ar, const unsigned int version) {
 
 	ar & saveIntermidiateVolumes;
 	ar & saveIntermidiateVolumesPeriodicity;
-     
-        ar & worldMap; // "Voxels" contained in 3D terrain
 
+	ar & worldMap; // "Voxels" contained in 3D terrain
 	ar & heatingCodeTemperatureCycle;
 }

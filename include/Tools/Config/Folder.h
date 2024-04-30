@@ -5,7 +5,7 @@
 #include <iostream>
 #include <cstdlib>
 #include <fstream>
-#include <boost/filesystem.hpp>
+#include <filesystem>
 #include <unordered_map>
 #include <string>
 #include <memory>
@@ -25,11 +25,11 @@ private:
 
 public:
     Folder();
-    Folder(boost::filesystem::path folder_path);
+    Folder(std::filesystem::path folder_path);
     virtual ~Folder();
 
     unsigned int size();
-    void save(boost::filesystem::path new_root_folder_path);
+    void save(std::filesystem::path new_root_folder_path);
     void refresh_version(VersionNumber new_version);
     VersionNumber& getVersion();
     std::unordered_map<std::string, std::unique_ptr<Folder>>& getSubFolders();

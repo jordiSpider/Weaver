@@ -11,7 +11,6 @@
 #include <boost/archive/binary_oarchive.hpp>
 #include <fstream>
 #include <ostream>
-#include <boost/filesystem.hpp>
 
 #include "Exceptions/LineInfoException.h"
 #include "Misc/Types.h"
@@ -62,7 +61,7 @@ public:
     };
 
 
-	static std::unique_ptr<WorldInterface> createInstance(nlohmann::json* jsonTree, nlohmann::json &worldConfig, boost::filesystem::path outputFolder, boost::filesystem::path configPath, int burnIn);
+	static std::unique_ptr<WorldInterface> createInstance(nlohmann::json* jsonTree, nlohmann::json &worldConfig, fs::path outputFolder, fs::path WeaverFolder, fs::path configPath, int burnIn);
 
     /**
      * @brief Serialize the WorldFactory object.

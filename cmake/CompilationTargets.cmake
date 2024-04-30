@@ -63,7 +63,7 @@ foreach(target ${COMPILATION_TARGETS})
         # Generate library
 
         if(UNIX)
-            add_library(${target} STATIC ${${target}_files})
+            add_library(${target} SHARED ${${target}_files})
         elseif(WIN32)
             add_library(${target} STATIC ${${target}_files})
         endif()
@@ -105,6 +105,6 @@ foreach(target ${COMPILATION_TARGETS})
     target_link_libraries(
         ${target}
         PUBLIC
-        ${${target}_depen} ${${target}_external_depen}
+        ${${target}_depen}
     )
 endforeach()

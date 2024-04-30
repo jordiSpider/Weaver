@@ -45,9 +45,11 @@
 
 
 class TerrainCellInterface;
-class AnimalSpecies;
+
 
 class WorldInterface;
+
+
 
 //TODO Modify the bullet related to traits here.
 /**
@@ -481,7 +483,6 @@ protected:
 			bool temporary=false)=0;
 };
 
-BOOST_SERIALIZATION_ASSUME_ABSTRACT(Animal)
 
 std::ostream& operator<<(std::ostream& os, const Animal& animal);
 

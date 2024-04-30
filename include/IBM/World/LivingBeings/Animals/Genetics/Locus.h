@@ -10,16 +10,13 @@
 
 #include <vector>
 #include <boost/serialization/access.hpp>
-#include <boost/archive/text_oarchive.hpp>
-#include <boost/archive/text_iarchive.hpp>
-#include <boost/archive/binary_oarchive.hpp>
 #include <boost/archive/binary_iarchive.hpp>
+#include <boost/archive/binary_oarchive.hpp>
 #include <fstream>
 #include <ostream>
 
 #include "Allele.h"
 #include "IBM/Maths/Random.h"
-#include "Misc/SerializableSpecializations.h"
 
 
 /**
@@ -32,9 +29,9 @@ class Locus
 private:
 	std::vector<const Allele*> alleles; /**< Vector of alleles for this locus */
 
-public:
-     Locus();
+	friend class boost::serialization::access;
 
+public:
 	/**
      * @brief Constructor for Locus.
      * @param numberOfAlleles The number of alleles at this locus.
@@ -52,16 +49,14 @@ public:
      */
 	inline const Allele* const getAlleleRandomly() const { return alleles.at(Random::randomIndex(alleles.size())); };
 
-     const std::vector<const Allele*>& getAlleles() const;
-
 	/**
      * @brief Serialize the Locus object.
      * @tparam Archive The type of archive (binary_oarchive for saving, binary_iarchive for loading).
      * @param ar The archive to use.
      * @param version The version of the serialization format.
      */
-     template<class Archive>
-     void serialize(Archive & ar, const unsigned int version);
+    template<class Archive>
+    void serialize(Archive & ar, const unsigned int version);
 };
 
 #endif /* LOCI_H_ */

@@ -27,7 +27,6 @@ class Development(WindowsProjectVersion):
                 "fmt",
                 "boost-geometry",
                 "boost-serialization",
-                "boost-filesystem",
                 "tbb"
 
                 # Página donde buscar las librerías C++ de vcpkg:

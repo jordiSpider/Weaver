@@ -10,11 +10,6 @@
 using namespace std;
 
 
-Locus::Locus()
-{
-
-}
-
 Locus::Locus(const unsigned int &numberOfAlleles)
 {
 	//double alleleSlice = 1.0 / numberOfAlleles;
@@ -40,14 +35,7 @@ Locus::~Locus()
 	alleles.clear();
 }
 
-const std::vector<const Allele*>& Locus::getAlleles() const
-{
-	return alleles;
-}
-
-
 template<class Archive>
-void Locus::serialize(Archive & ar, const unsigned int version)
-{
+void Locus::serialize(Archive & ar, const unsigned int version) {
 	ar & alleles;
 }

@@ -9,10 +9,8 @@
 #define ALLELE_H_
 
 #include <boost/serialization/access.hpp>
-#include <boost/archive/text_oarchive.hpp>
-#include <boost/archive/text_iarchive.hpp>
-#include <boost/archive/binary_oarchive.hpp>
 #include <boost/archive/binary_iarchive.hpp>
+#include <boost/archive/binary_oarchive.hpp>
 #include <fstream>
 #include <ostream>
 
@@ -26,19 +24,18 @@ class Allele
 private:
 	static unsigned int alleleId; /**< Unique identificator for each allele in the genetic pool */
 
-	unsigned int id; /**< Id used for computational tasks */
-    double value; /**< Value for the allele */
-    unsigned int alphabeticOrder; /**< Alphabetic order used for ordering tasks */
+	const unsigned int id; /**< Id used for computational tasks */
+    const double value; /**< Value for the allele */
+    const unsigned int alphabeticOrder; /**< Alphabetic order used for ordering tasks */
 
+	friend class boost::serialization::access;
 public:
-    explicit Allele();
-
-    /**
+	/**
      * @brief Constructor for the Allele class.
      * @param value The numerical value of the allele.
      * @param alphabeticOrder The alphabetic order of the allele.
      */
-    explicit Allele(const double &value, const unsigned int alphabeticOrder);
+	explicit Allele(const double &value, const unsigned int alphabeticOrder);
 	
 	/**
      * @brief Destructor for the Allele class.
@@ -81,14 +78,5 @@ public:
     template<class Archive>
     void serialize(Archive & ar, const unsigned int version);
 };
-
-
-namespace boost {
-    namespace serialization {
-        template<class Archive>
-        void serialize(Archive &ar, Allele* &allelePtr, const unsigned int version);
-    }
-}
-
 
 #endif /* ALLELE_H_ */

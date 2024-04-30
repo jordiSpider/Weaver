@@ -3,7 +3,7 @@
 
 
 using namespace std;
-namespace fs = boost::filesystem;
+namespace fs = filesystem;
 using json = nlohmann::json;
 
 

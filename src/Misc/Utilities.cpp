@@ -3,7 +3,6 @@
 
 using namespace std;
 using json = nlohmann::json;
-namespace fs = boost::filesystem;
 
 
 string getResultFolderName(const string& baseName)
@@ -195,23 +194,4 @@ void saveConfigFile(fs::path configPath, json fileContent) {
         outputFile << fileContent.dump(4) << endl;
 		outputFile.close();
     }
-}
-
-unsigned int projectVersionStringToNumber(  std::string versionString){
-        unsigned int year, month, day;
-
-        std::istringstream stream(versionString);
-
-        std::getline(stream, versionString, '.');
-        year = std::stoi(versionString);
-
-        std::getline(stream, versionString, '.');
-        month = std::stoi(versionString);
-
-        std::getline(stream, versionString);
-        day = std::stoi(versionString);
-
-        unsigned int result = year * 10000 + month * 1000 + day;
-
-        return result;
 }

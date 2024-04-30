@@ -7,16 +7,14 @@
 //#define _CRTDBG_MAP_ALLOC
 
 
-#include <boost/filesystem.hpp>
+#include <filesystem>
 #include <cxxopts.hpp>
-#include <string>
 
 #include "IBM/IBM.h"
-#include "Misc/GlobalVariable.h"
 
 
 using namespace std;
-namespace fs = boost::filesystem;
+namespace fs = std::filesystem;
 
 
 
@@ -28,12 +26,10 @@ int main(int argc, char ** argv)
     options.add_options()
         ("I,inputConfig", "Input config path", cxxopts::value<fs::path>(inputConfigPath));
 
-	
 	fs::path outputFolder;
     options.add_options()
-        ("O,outputFolder", "Result output folder path", cxxopts::value<fs::path>(outputFolder)->default_value(string(RESULT_SIMULATION_FOLDER)));
+        ("O,outputFolder", "Result output folder path", cxxopts::value<fs::path>(outputFolder)->default_value((fs::path(PROJECT_ROOT_PATH) / RESULT_SIMULATION_FOLDER).string()));
 
-	
 	int burnIn;
 	options.add_options()
         ("optimization-burn-in", "Burn-in value", cxxopts::value<int>(burnIn)->default_value("-1"));

@@ -5,7 +5,6 @@
 #include "IBM/World/Map/MapInterface.h"
 
 using namespace std;
-namespace fs = boost::filesystem;
 
 
 

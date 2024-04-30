@@ -25,7 +25,6 @@ class Development(LinuxProjectVersion):
                 "fmt",
                 "boost-geometry",
                 "boost-serialization",
-                "boost-filesystem",
                 "tbb"
             ],
             "x64-linux"

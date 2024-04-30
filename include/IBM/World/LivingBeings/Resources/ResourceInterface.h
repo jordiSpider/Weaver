@@ -65,6 +65,4 @@ public:
 	const bool isFullCapacity() const;
 };
 
-BOOST_SERIALIZATION_ASSUME_ABSTRACT(ResourceInterface)
-
 #endif /* RESOURCE_INTERFACE_H_ */

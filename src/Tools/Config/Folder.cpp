@@ -3,7 +3,7 @@
 
 
 using namespace std;
-namespace fs = boost::filesystem;
+namespace fs = filesystem;
 
 
 Folder::Folder()
@@ -17,13 +17,13 @@ Folder::Folder(fs::path folder_path)
     {
         if(fs::is_directory(elem))
         {
-            subfolders[elem.path().filename().string()] = make_unique<Folder>(elem.path());
+            subfolders[elem.path().filename()] = make_unique<Folder>(elem.path());
         }
         else
         {
             if(elem.path().extension() == ".json")
             {
-                json_files[elem.path().filename().string()] = JsonFile(elem);
+                json_files[elem.path().filename()] = JsonFile(elem);
             }
         }
     }

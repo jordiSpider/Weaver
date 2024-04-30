@@ -56,8 +56,6 @@ while(TARGETS_PATHS)
             endif()
         endforeach()
 
-        list(REMOVE_DUPLICATES ${executableTarget}_depen)
-
         # Search for all external includes in the content
         string(REGEX MATCHALL ${EXTERNAL_INCLUDE_PATTERN} matches "${executableContent}")
         
@@ -68,11 +66,11 @@ while(TARGETS_PATHS)
             list(FIND EXTERNAL_CLASSES ${class} index)
             if(NOT index EQUAL -1)
                 string(REPLACE "/" ${PATH_SEP} refactorClass ${class})
-                list(APPEND ${executableTarget}_external_depen ${MAP_DEPEN_${refactorClass}})
+                list(APPEND ${executableTarget}_depen ${MAP_DEPEN_${refactorClass}})
             endif()
         endforeach()
 
-        list(REMOVE_DUPLICATES ${executableTarget}_external_depen)
+        list(REMOVE_DUPLICATES ${executableTarget}_depen)
     elseif(${file_path} MATCHES "\\.${INCLUDE_EXTENSION}$")
         string(REGEX MATCH ${TARGET_PATH} matchedPart "${file_path}")
         set(target ${CMAKE_MATCH_1})
@@ -111,10 +109,6 @@ while(TARGETS_PATHS)
                         endif()
                     endforeach()
 
-                    list(REMOVE_DUPLICATES ${refactorTarget}_depen)
-
-                    list(REMOVE_ITEM ${refactorTarget}_depen ${refactorTarget})
-
                     # Search for all external includes in the content
                     string(REGEX MATCHALL ${EXTERNAL_INCLUDE_PATTERN} matches "${elemContent}")
                     
@@ -125,11 +119,13 @@ while(TARGETS_PATHS)
                         list(FIND EXTERNAL_CLASSES ${class} index)
                         if(NOT index EQUAL -1)
                             string(REPLACE "/" ${PATH_SEP} refactorClass ${class})
-                            list(APPEND ${refactorTarget}_external_depen ${MAP_DEPEN_${refactorClass}})
+                            list(APPEND ${refactorTarget}_depen ${MAP_DEPEN_${refactorClass}})
                         endif()
                     endforeach()
 
-                    list(REMOVE_DUPLICATES ${refactorTarget}_external_depen)
+                    list(REMOVE_DUPLICATES ${refactorTarget}_depen)
+
+                    list(REMOVE_ITEM ${refactorTarget}_depen ${refactorTarget})
 
                     list(APPEND COMPILATION_TARGETS ${refactorTarget})
                 endif()

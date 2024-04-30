@@ -5,7 +5,6 @@
 #include <vector>
 #include <nlohmann/json.hpp>
 #include <cmath>
-#include <boost/filesystem.hpp>
 
 #include "IBM/World/Map/SpatialTree/TerrainCells/BranchTerrainCellInterface.h"
 #include "IBM/World/Map/SpatialTree/TerrainCells/SpatialTreeTerrainCell.h"
@@ -178,7 +177,7 @@ public:
     void saveResourceSpeciesSnapshot(std::ofstream &file, const ResourceSpecies* const &species) const override;
     void saveWaterSnapshot(std::ofstream &file) const override;
     void moveAnimals(int day, std::ostream& encounterProbabilitiesFile, std::ostream& predationProbabilitiesFile, bool saveEdibilitiesFile, std::ostream& edibilitiesFile, float exitTimeThreshold, double pdfThreshold, double muForPDF, double sigmaForPDF, double predationSpeedRatioAH, double predationHunterVoracityAH, double predationProbabilityDensityFunctionAH, double predationSpeedRatioSAW, double predationHunterVoracitySAW, double predationProbabilityDensityFunctionSAW, double maxSearchArea, double encounterHuntedVoracitySAW, double encounterHunterVoracitySAW, double encounterVoracitiesProductSAW, double encounterHunterSizeSAW, double encounterHuntedSizeSAW, double encounterProbabilityDensityFunctionSAW, double encounterHuntedVoracityAH, double encounterHunterVoracityAH, double encounterVoracitiesProductAH, double encounterHunterSizeAH, double encounterHuntedSizeAH, double encounterProbabilityDensityFunctionAH) override;
-    void performAnimalsActions(int timeStep, std::ostream& voracitiesFile, boost::filesystem::path outputFolder, bool saveAnimalConstitutiveTraits, std::ofstream &constitutiveTraitsFile);
+    void performAnimalsActions(int timeStep, std::ostream& voracitiesFile, fs::path outputFolder, bool saveAnimalConstitutiveTraits, std::ofstream &constitutiveTraitsFile);
 
     /**
      * @name Getters

@@ -12,7 +12,6 @@
 #include <boost/archive/binary_oarchive.hpp>
 #include <fstream>
 #include <ostream>
-#include <boost/filesystem.hpp>
 
 #include "IBM/World/Map/Points/PointMap.h"
 #include "IBM/World/LivingBeings/Animals/Animal.h"
@@ -412,13 +411,13 @@ public:
 
     /** @} */
 
-    void performAnimalsActions(int timeStep, std::ostream& voracitiesFile, boost::filesystem::path outputFolder, bool saveAnimalConstitutiveTraits, std::ofstream &constitutiveTraitsFile);
+    void performAnimalsActions(int timeStep, std::ostream& voracitiesFile, fs::path outputFolder, bool saveAnimalConstitutiveTraits, std::ofstream &constitutiveTraitsFile);
     virtual void obtainWorldAnimalsPopulation(std::vector<std::vector<unsigned int>> &worldAnimalsPopulation);
     virtual void obtainAnimalsPopulationAndGeneticsFrequencies(std::vector<std::vector<unsigned int>> &worldAnimalsPopulation, std::vector<std::vector<std::pair<std::vector<double>, std::vector<double>>>> &worldGeneticsFrequencies);
     virtual void saveAnimalSpeciesSnapshot(std::ofstream &file, const AnimalSpecies* const &species);
     virtual void saveResourceSpeciesSnapshot(std::ofstream &file, const ResourceSpecies* const &species) const;
     virtual void saveWaterSnapshot(std::ofstream &file) const;
-    void breedAnimals(int timeStep, boost::filesystem::path outputDirectory, bool saveAnimalConstitutiveTraits, std::ofstream &constitutiveTraitsFile);
+    void breedAnimals(int timeStep, fs::path outputDirectory, bool saveAnimalConstitutiveTraits, std::ofstream &constitutiveTraitsFile);
     void dieFromBackground(int day);
     void assimilateFoodMass(int timeStep);
     void metabolizeAnimals(int timeStep);

@@ -162,5 +162,5 @@ void Map::serialize(Archive &ar, const unsigned int version) {
     ar & numberOfCellsPerAxis;
     ar & worldInterface;
     ar & inhabitableTerrainCells;
-    ar & lifeStageSearchParams;
+    ar &  lifeStageSearchParams;
 }

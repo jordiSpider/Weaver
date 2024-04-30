@@ -3,12 +3,11 @@
 
 using namespace std;
 using json = nlohmann::json;
-namespace fs = boost::filesystem;
 
 
 
-DinosaursWorld::DinosaursWorld(json * jsonTree, json &worldConfig, fs::path outputFolder, fs::path configPath, int burnIn)
-    : World(jsonTree, worldConfig, outputFolder, configPath, burnIn, 1000.0)
+DinosaursWorld::DinosaursWorld(json * jsonTree, json &worldConfig, fs::path outputFolder, fs::path WeaverFolder, fs::path configPath, int burnIn)
+    : World(jsonTree, worldConfig, outputFolder, WeaverFolder, configPath, burnIn, 1000.0)
 {
 
 }

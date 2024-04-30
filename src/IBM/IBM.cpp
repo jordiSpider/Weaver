@@ -4,7 +4,7 @@
 
 using namespace std;
 using json = nlohmann::json;
-namespace fs = boost::filesystem;
+namespace fs = std::filesystem;
 
 
 void IBM::run(fs::path inputConfigPath, fs::path outputFolder, bool silentMode, int burnIn)
@@ -37,7 +37,7 @@ void IBM::run(fs::path inputConfigPath, fs::path outputFolder, bool silentMode, 
 	{
 		inputConfigPath = fs::canonical(inputConfigPath);
 	}
-	catch(const boost::filesystem::filesystem_error& e)
+	catch(const std::filesystem::filesystem_error& e)
 	{
 		throwLineInfoException("The input config directory does not exist or is not a valid directory");
 	}
@@ -47,19 +47,16 @@ void IBM::run(fs::path inputConfigPath, fs::path outputFolder, bool silentMode, 
 	{
 		outputFolder = fs::canonical(outputFolder);
 	}
-	catch(const boost::filesystem::filesystem_error& e)
+	catch(const std::filesystem::filesystem_error& e)
 	{
 		throwLineInfoException("The output directory does not exist or is not a valid directory");
 	}
 
 
-	fs::path schemaFolder = fs::canonical(fs::path(SCHEMA_FOLDER));
+    // Read configuration file
+	json simulationConfiguration = readConfigFile(inputConfigPath / "simulation_params.json", fs::path(PROJECT_ROOT_PATH) / fs::path(SCHEMA_FOLDER) / fs::path(SIMULATION_PARAMS_SCHEMA));
 
-
-	// Read configuration file
-	json simulationConfiguration = readConfigFile(inputConfigPath / "simulation_params.json", schemaFolder / fs::path(SIMULATION_PARAMS_SCHEMA));
-
-	fs::path resultFolder = obtainResultFolder(inputConfigPath.filename().string(), outputFolder);
+	fs::path resultFolder = obtainResultFolder(inputConfigPath.filename(), outputFolder);
 	fs::create_directories(resultFolder);
     
     if(simulationConfiguration["simulation"]["initFromFixedSeed"]["enabled"])
@@ -76,9 +73,9 @@ void IBM::run(fs::path inputConfigPath, fs::path outputFolder, bool silentMode, 
 	cout << "Reading configuration and initializing world..." << endl;
 	cout << "===============================================" << endl << endl;
 
-	json worldConfig = readConfigFile(inputConfigPath / fs::path("world_params.json"), schemaFolder / fs::path(WORLD_PARAMS_SCHEMA));
+	json worldConfig = readConfigFile(inputConfigPath / fs::path("world_params.json"), fs::path(PROJECT_ROOT_PATH) / fs::path(SCHEMA_FOLDER) / fs::path(WORLD_PARAMS_SCHEMA));
 
-	unique_ptr<WorldInterface> myWorld = WorldFactory::createInstance(&simulationConfiguration, worldConfig, resultFolder, inputConfigPath, burnIn);
+	unique_ptr<WorldInterface> myWorld = WorldFactory::createInstance(&simulationConfiguration, worldConfig, resultFolder, fs::path(PROJECT_ROOT_PATH), inputConfigPath, burnIn);
 
 	myWorld->initializeAnimals();
 

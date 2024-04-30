@@ -5,6 +5,8 @@ endif()
 
 list(APPEND CXX_FLAGS "-DPROJECT_VERSION=\"${PROJECT_VERSION}\"")
 
+list(APPEND CXX_FLAGS "-DPROJECT_ROOT_PATH=\"${PROJECT_SOURCE_DIR}\"")
+
 if(CHECK_MEMORY_LEAKS)
     list(APPEND CXX_FLAGS "-fsanitize=address")
     list(APPEND CXX_LINK_LIBRARY_FLAGS "-fsanitize=address")

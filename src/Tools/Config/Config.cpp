@@ -3,7 +3,7 @@
 
 
 using namespace std;
-namespace fs = boost::filesystem;
+namespace fs = filesystem;
 
 Config::Config(fs::path config_path)
     : root_folder(config_path), version(root_folder.getVersion())

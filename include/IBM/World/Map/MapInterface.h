@@ -9,7 +9,6 @@
 #include <boost/archive/binary_oarchive.hpp>
 #include <fstream>
 #include <ostream>
-#include <boost/filesystem.hpp>
 
 #include "IBM/World/Map/Points/PointMap.h"
 #include "IBM/World/LivingBeings/Animals/Animal.h"
@@ -99,7 +98,7 @@ public:
     virtual void saveResourceSpeciesSnapshot(std::ofstream &file, const ResourceSpecies* const &species) const=0;
     virtual void saveWaterSnapshot(std::ofstream &file) const=0;
     virtual void moveAnimals(int day, std::ostream& encounterProbabilitiesFile, std::ostream& predationProbabilitiesFile, bool saveEdibilitiesFile, std::ostream& edibilitiesFile, float exitTimeThreshold, double pdfThreshold, double muForPDF, double sigmaForPDF, double predationSpeedRatioAH, double predationHunterVoracityAH, double predationProbabilityDensityFunctionAH, double predationSpeedRatioSAW, double predationHunterVoracitySAW, double predationProbabilityDensityFunctionSAW, double maxSearchArea, double encounterHuntedVoracitySAW, double encounterHunterVoracitySAW, double encounterVoracitiesProductSAW, double encounterHunterSizeSAW, double encounterHuntedSizeSAW, double encounterProbabilityDensityFunctionSAW, double encounterHuntedVoracityAH, double encounterHunterVoracityAH, double encounterVoracitiesProductAH, double encounterHunterSizeAH, double encounterHuntedSizeAH, double encounterProbabilityDensityFunctionAH)=0;
-    virtual void performAnimalsActions(int timeStep, std::ostream& voracitiesFile, boost::filesystem::path outputFolder, bool saveAnimalConstitutiveTraits, std::ofstream &constitutiveTraitsFile)=0;
+    virtual void performAnimalsActions(int timeStep, std::ostream& voracitiesFile, fs::path outputFolder, bool saveAnimalConstitutiveTraits, std::ofstream &constitutiveTraitsFile)=0;
     virtual const unsigned int& getTotalNumberOfTerrainCells() const=0;
 
     /**
@@ -112,5 +111,4 @@ public:
     void serialize(Archive &ar, const unsigned int version);
 };
 
-BOOST_SERIALIZATION_ASSUME_ABSTRACT(MapInterface)
 #endif /* MAP_INTERFACE_H_ */

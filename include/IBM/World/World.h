@@ -23,7 +23,6 @@
 #include <boost/archive/binary_oarchive.hpp>
 #include <fstream>
 #include <ostream>
-#include <boost/filesystem.hpp>
 
 #include "IBM/World/WorldInterface.h"
 #include "IBM/Maths/GaussianDistribution.h"
@@ -44,12 +43,12 @@
 #include "IBM/World/LivingBeings/Animals/Species/AnimalSpecies.h"
 #include "Misc/Coordinate3D.h"
 #include "IBM/World/Map/Map.h"
-#include "Misc/FileStream.h"
 #include "Misc/Macros.h"
 #include "IBM/World/Map/SpatialTree/SpatialTree.h"
 #include "IBM/World/Map/TerrainCells/Moisture/ExtendedMoisture.h"
 
-BOOST_CLASS_EXPORTE(ExtendedMoisture)
+
+
 
 
 class World : public WorldInterface
@@ -113,13 +112,14 @@ public:
 	std::vector<AnimalSpecies*> existingAnimalSpeciesPointers;
 	std::vector<const AnimalSpecies*> existingAnimalSpeciesConstPointers;
 
-	
+	fs::path WeaverFolder;
+
 	// Constructors
 	// Recover from previously stored world
 	World(std::string filesNameRoot);
 
 	// Create a new, empty world
-        World(json * jsonTree, json &worldConfig, boost::filesystem::path outputFolder, boost::filesystem::path configPath, int burnIn, const double &massRatio);
+    World(json * jsonTree, json &worldConfig, fs::path outputFolder, fs::path WeaverFolder, fs::path configPath, int burnIn, const double &massRatio);
 	virtual ~World(); // Destructor
 
 	void calculateAttackStatistics(std::vector<InstarVector<std::vector<std::vector<TerrainCellInterface*>::iterator>>> &mapSpeciesInhabitableTerrainCells);
@@ -129,15 +129,15 @@ public:
 
 	void evolveWorld();
 
-	void saveOptimizationResult(boost::filesystem::path resultFolder);
+	void saveOptimizationResult(fs::path resultFolder);
 
 	void increaseMovePrintBar();
 
 	inline bool getSaveAnimalConstitutiveTraits() const { return saveAnimalConstitutiveTraits; }
 	inline bool getSaveEdibilitiesFile() const { return saveEdibilitiesFile; }
-	inline WeaverOFStream& getConstitutiveTraitsFile() { return constitutiveTraitsFile; }
+	inline std::ofstream& getConstitutiveTraitsFile() { return constitutiveTraitsFile; }
 
-	void setOutputFolder(boost::filesystem::path outputFolder);
+	void setOutputFolder(fs::path outputFolder);
 	void printPredationEventsOnOtherSpeciesMatrix(std::ostream& predationEventsOnOtherSpeciesFile);
 	//void printInteractionMatrices(std::ostream& encountersMatrixFile, std::ostream& predationsMatrixFile, std::ostream& nodesMatrixFile);
 
@@ -399,10 +399,10 @@ protected:
 	void setSigmaForPDF(float sigmaForPDF);
 	void setMuForPDF(float muForPDF);
 
-	void setObstacleFolderName(boost::filesystem::path newTerrainFolderName);
-	void setMoistureFolderName(boost::filesystem::path newMoistureFolderName);
-	void setResourceFolderName(boost::filesystem::path newResourceFolderName);
-	void setSpeciesFolderName(boost::filesystem::path newSpeciesFolderName);
+	void setObstacleFolderName(fs::path newTerrainFolderName);
+	void setMoistureFolderName(fs::path newMoistureFolderName);
+	void setResourceFolderName(fs::path newResourceFolderName);
+	void setSpeciesFolderName(fs::path newSpeciesFolderName);
 	void setPeriodLength(double seconds); // In seconds
 	// TODO Mario Initialize animals with initIndividualsPerDensities
 	/*
@@ -428,31 +428,28 @@ protected:
 	void printAnimalsVoracitiesAlongCells(int day);
 	std::ostream& printExtendedDailySummary(std::ostream& os, int day);
 	void printGeneticsSummaries(int day);
-	void saveAnimalSpeciesSnapshot(boost::filesystem::path filenameRoot, std::string filename, int day, AnimalSpecies* species);
-	void saveResourceSpeciesSnapshot(boost::filesystem::path filenameRoot, std::string filename, int day, ResourceSpecies* species);
-	void saveWaterSnapshot(boost::filesystem::path filenameRoot, std::string filename, int day);
+	void saveAnimalSpeciesSnapshot(fs::path filenameRoot, std::string filename, int day, AnimalSpecies* species);
+	void saveResourceSpeciesSnapshot(fs::path filenameRoot, std::string filename, int day, ResourceSpecies* species);
+	void saveWaterSnapshot(fs::path filenameRoot, std::string filename, int day);
 	//void deleteExtinguishedReproducingAnimals();
 	bool isExtinguished(int day);
 
-	boost::filesystem::path outputFolder;
-	boost::filesystem::path inputFolder;
+	fs::path outputFolder;
+	fs::path inputFolder;
 	std::string encountersMatrixFilename;
 	std::string predationsMatrixFilename;
 	std::string nodesMatrixFilename;
 	std::string predationEventsOnOtherSpeciesFilename;
 
-        boost::filesystem::path dailySummaryFilename;
-	boost::filesystem::path extendedDailySummaryFilename;
-
-	WeaverOFStream dailySummaryFile;
-	WeaverOFStream extendedDailySummaryFile;
-	WeaverOFStream edibilitiesFile;
+	std::ofstream dailySummaryFile;
+	std::ofstream extendedDailySummaryFile;
+	std::ofstream edibilitiesFile;
 	bool saveEdibilitiesFile;
 
-	boost::filesystem::path obstacleFolderName;
-	boost::filesystem::path moistureFolderName;
-	boost::filesystem::path resourceFolderName;
-	boost::filesystem::path speciesFolderName;
+	fs::path obstacleFolderName;
+	fs::path moistureFolderName;
+	fs::path resourceFolderName;
+	fs::path speciesFolderName;
 	bool initIndividualsPerDensities;
 	bool competitionAmongResourceSpecies;
 	float exitTimeThreshold;
@@ -491,10 +488,10 @@ protected:
 	float preysToPredatorsCapacityTransference;
 
 	bool saveAnimalConstitutiveTraits;
-	WeaverOFStream constitutiveTraitsFile;
+	std::ofstream constitutiveTraitsFile;
 
 	bool saveGeneticsSummaries;
-	std::vector<WeaverOFStream> geneticsSummaryFile;
+	std::vector<std::ofstream> geneticsSummaryFile;
 
 	bool saveIntermidiateVolumes;
 	unsigned int saveIntermidiateVolumesPeriodicity;
@@ -509,7 +506,6 @@ protected:
 	std::vector<float> heatingCodeTemperatureCycle;		
 };
 
-BOOST_SERIALIZATION_ASSUME_ABSTRACT(World)
 
 // Manage exceptions due to wrong sizes used for world creation
 class WorldSizeException

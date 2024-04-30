@@ -7,7 +7,6 @@
 #include <boost/archive/binary_oarchive.hpp>
 #include <fstream>
 #include <ostream>
-#include <boost/filesystem.hpp>
 
 #include "IBM/World/World.h"
 #include "IBM/Maths/MathFunctions.h"
@@ -19,7 +18,7 @@ private:
     friend class boost::serialization::access;
 
 public:
-    AquaticWorld(nlohmann::json * jsonTree, nlohmann::json &worldConfig, boost::filesystem::path outputFolder, boost::filesystem::path configPath, int burnIn);
+    AquaticWorld(nlohmann::json * jsonTree, nlohmann::json &worldConfig, fs::path outputFolder, fs::path WeaverFolder, fs::path configPath, int burnIn);
 	virtual ~AquaticWorld();
 
     double calculateNewBiomass(const double &biomass, const double &rateOfIncrease, const ResourceSpecies* const species) const;

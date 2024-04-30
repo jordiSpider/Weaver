@@ -1,6 +1,7 @@
 #ifndef ANIMAL_INTERFACE_H_
 #define ANIMAL_INTERFACE_H_
 
+
 #include <boost/serialization/access.hpp>
 #include <boost/archive/binary_iarchive.hpp>
 #include <boost/archive/binary_oarchive.hpp>
@@ -12,9 +13,9 @@
 #include "IBM/World/Map/Geometry/Geometry.h"
 #include "IBM/World/LivingBeings/LifeStage.h"
 
-class AnimalSpecies;
 
 class TerrainCellInterface;
+
 
 class AnimalInterface : public Edible
 {
@@ -91,7 +92,5 @@ public:
     template <class Archive>
     void serialize(Archive &ar, const unsigned int version);
 };
-
-BOOST_SERIALIZATION_ASSUME_ABSTRACT(AnimalInterface)
 
 #endif /* ANIMAL_INTERFACE_H_ */

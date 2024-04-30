@@ -1,7 +1,7 @@
 #ifndef GLOBAL_VARIABLES_H_
 #define GLOBAL_VARIABLES_H_
 
-#include <boost/filesystem.hpp>
+#include <filesystem>
 
 
 #define SCHEMA_FOLDER (filesystem::path("schema") / filesystem::path(PROJECT_VERSION)).string()

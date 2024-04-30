@@ -11,7 +11,7 @@
 #include <chrono>
 #include <ostream>
 #include <fstream>
-#include <boost/filesystem.hpp>
+#include <filesystem>
 #include <nlohmann/json.hpp>
 
 #ifdef USE_CPU_PROFILER
@@ -33,7 +33,7 @@
 class IBM
 {
 public:
-    static void run(boost::filesystem::path inputConfigPath, boost::filesystem::path outputFolder, bool silentMode, int burnIn);
+    static void run(std::filesystem::path inputConfigPath, std::filesystem::path outputFolder, bool silentMode, int burnIn);
 };
 
 #endif // IBM_H_

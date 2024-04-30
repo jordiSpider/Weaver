@@ -4,7 +4,7 @@
 
 #include <vector>
 #include <nlohmann/json.hpp>
-#include <boost/filesystem.hpp>
+#include <filesystem>
 #include <oneapi/tbb/parallel_for.h>
 #include <oneapi/tbb/task_group.h>
 
@@ -33,8 +33,8 @@ public:
     Individual(const std::vector<nlohmann::json>& parametersValue, const bool maximiseFitness);
     virtual ~Individual();
 
-    boost::filesystem::path createConfig(boost::filesystem::path baseConfigPath, boost::filesystem::path output_folder, const std::vector<Parameter>& parametersInfo, unsigned int index);
-    void setInfo(boost::filesystem::path newConfigPath, boost::filesystem::path newResultFolderPath, EvaluationFunctionType evaluationFunction);
+    std::filesystem::path createConfig(std::filesystem::path baseConfigPath, std::filesystem::path output_folder, const std::vector<Parameter>& parametersInfo, unsigned int index);
+    void setInfo(std::filesystem::path newConfigPath, std::filesystem::path newResultFolderPath, EvaluationFunctionType evaluationFunction);
     bool isBetterThan(const Individual& other, const bool maximiseFitness) const;
     void print(const std::string&& indentation, std::vector<Parameter>& parameters) const;
     void mutate(const std::vector<Parameter>& parameters, MutationOperatorType mutationOperator);
