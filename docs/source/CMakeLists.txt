@@ -203,7 +203,7 @@ if(BUILD_SPHINX_DOC OR BUILD_SPHINX_CONF OR UPDATE_SPHINX_LOCALE OR CLEAN_DOC)
                     if(SPHINX_QUIET_BUILD)
                         add_custom_target(
                             build_doc_${language}_quiet ALL
-                            COMMAND ${SPHINX_EXECUTABLE} -b html -j auto -q -D language='${language}' -D version='${VERSION}' -D html_baseurl='${SPHINX_OUTPUT_DIRECTORY}' ${SPHINX_SOURCE_DIRECTORY} ${LANGUAGE_OUTPUT_DIRECTORY}
+                            COMMAND ${SPHINX_EXECUTABLE} -b html -j 1 -q -D language='${language}' -D version='${VERSION}' -D html_baseurl='${SPHINX_OUTPUT_DIRECTORY}' ${SPHINX_SOURCE_DIRECTORY} ${LANGUAGE_OUTPUT_DIRECTORY}
                             DEPENDS build_doxygen_doc
                             WORKING_DIRECTORY ${PROJECT_SOURCE_DIR}
                             COMMENT "Generating documentation '${language}' with Sphinx in quiet mode"
@@ -211,7 +211,7 @@ if(BUILD_SPHINX_DOC OR BUILD_SPHINX_CONF OR UPDATE_SPHINX_LOCALE OR CLEAN_DOC)
                     else()
                         add_custom_target(
                             build_doc_${language} ALL
-                            COMMAND ${SPHINX_EXECUTABLE} -b html -j auto -D language='${language}' -D version='${VERSION}' -D html_baseurl='${SPHINX_OUTPUT_DIRECTORY}' ${SPHINX_SOURCE_DIRECTORY} ${LANGUAGE_OUTPUT_DIRECTORY}
+                            COMMAND ${SPHINX_EXECUTABLE} -b html -j 1 -D language='${language}' -D version='${VERSION}' -D html_baseurl='${SPHINX_OUTPUT_DIRECTORY}' ${SPHINX_SOURCE_DIRECTORY} ${LANGUAGE_OUTPUT_DIRECTORY}
                             DEPENDS build_doxygen_doc
                             WORKING_DIRECTORY ${PROJECT_SOURCE_DIR}
                             COMMENT "Generating documentation '${language}' with Sphinx"

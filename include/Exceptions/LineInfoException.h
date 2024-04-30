@@ -24,13 +24,13 @@ public:
      * @param line Line number where the exception occurred.
      */
     LineInfoException(const std::string& message, const char* file, int line);
-
+    
     /**
      * @brief Returns a C-style character string describing the exception.
      * @return A C-style character string describing the exception.
      */
-    virtual const char* what() const noexcept override;
-
+    virtual const char* what() const noexcept;
+    
     /**
      * @brief Adds a message prefix to the custom error message.
      * @param newMessage The message to add as a prefix.
@@ -52,4 +52,3 @@ public:
 #define throwLineInfoException(msg) throw LineInfoException(msg, __FILE__, __LINE__)
 
 #endif // LINE_INFO_EXCEPTION_H_
-

@@ -39,3 +39,10 @@ const double& OntogeneticLink::getProfitability() const
 {
     return profitability;
 }
+
+template<class Archive>
+void OntogeneticLink::serialize(Archive & ar, const unsigned int version) {
+    ar & edible;
+    ar & preference;
+    ar & profitability;
+}

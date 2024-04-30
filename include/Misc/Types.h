@@ -8,7 +8,6 @@
 #ifndef TYPES_H_
 #define TYPES_H_
 
-#include <filesystem>
 #include "Coordinate3D.h"
 #include <unordered_map>
 #include <string>
@@ -40,8 +39,6 @@ typedef Coordinate3D<double> dPoint3D;
 
 
 
-
-namespace fs = std::filesystem;
 
 
 typedef unsigned int date_type;

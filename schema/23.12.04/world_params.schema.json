@@ -1,0 +1,678 @@
+{
+    "type": "object",
+    "properties": {
+        "version": {
+            "type": "string",
+            "required": true
+        },
+        "world": {
+            "type": "object",
+            "properties": {
+                "simulationType": {
+                    "type": "string",
+                    "enum": ["Arthropods", "Dinosaurs"],
+                    "required": true
+                },
+                "mapConfig": {
+                    "type": "object",
+                    "properties": {
+                        "mapType": {
+                            "type": "string",
+                            "enum": [
+                                "SpatialTree"
+                            ],
+                            "required": true
+                        },
+                        "worldWideParams": {
+                            "type": "object",
+                            "properties": {
+                                "minCellSize": {
+                                    "type": "floater",
+                                    "minimum": 0.0,
+                                    "exclusiveMinimum": true,
+                                    "required": true
+                                },
+                                "numberOfCellsPerAxis": {
+                                    "type": "unsigned_integer",
+                                    "minimum": 1,
+                                    "required": true
+                                }
+                            },
+                            "additionalProperties": false,
+                            "required": true
+                        },
+                        "spatialTreeParams": {
+                            "type": "object",
+                            "properties": {
+                                
+                            },
+                            "additionalProperties": false,
+                            "required": true
+                        },
+                        "obstacleFolder": {
+                            "type": "string",
+                            "required": true
+                        },
+                        "moistureFolder": {
+                            "type": "string",
+                            "required": true
+                        },
+                        "moistureBasePatch": {
+                            "type": "object",
+                            "properties": {
+                                "temperatureCycle": {
+                                    "type": "array",
+                                    "items": {
+                                        "type": "floater"
+                                    },
+                                    "minItems": 1,
+                                    "required": true
+                                },
+                                "relativeHumidityUpdateMethod": {
+                                    "type": "object",
+                                    "properties": {
+                                        "updateMethodType": {
+                                            "type": "string",
+                                            "enum": [
+                                                "Cycle",
+                                                "RainEventAndDecayOverTime"
+                                            ],
+                                            "required": true
+                                        },
+                                        "cycleParams": {
+                                            "type": "object",
+                                            "properties": {
+                                                "relativeHumidityCycle": {
+                                                    "type": "array",
+                                                    "items": {
+                                                        "type": "floater"
+                                                    },
+                                                    "minItems": 1,
+                                                    "required": true,
+                                                    "nullProperty": true
+                                                }
+                                            },
+                                            "additionalProperties": false,
+                                            "required": true
+                                        },
+                                        "rainEventAndDecayOverTimeParams": {
+                                            "type": "object",
+                                            "properties": {
+                                                "relativeHumidityDecayOverTime": {
+                                                    "type": "floater",
+                                                    "minimum": 0.0,
+                                                    "required": true,
+                                                    "nullProperty": true
+                                                },
+                                                "relativeHumidityOnRainEvent": {
+                                                    "type": "floater",
+                                                    "minimum": 0.0,
+                                                    "required": true,
+                                                    "nullProperty": true
+                                                },
+                                                "timeStepsBetweenRainEvents": {
+                                                    "type": "unsigned_integer",
+                                                    "minimum": 1,
+                                                    "required": true,
+                                                    "nullProperty": true
+                                                },
+                                                "standardDeviationForRainEvent": {
+                                                    "type": "floater",
+                                                    "minimum": 0.0,
+                                                    "required": true,
+                                                    "nullProperty": true
+                                                }
+                                            },
+                                            "additionalProperties": false,
+                                            "required": true
+                                        }
+                                    },
+                                    "conditionals": [
+                                        {
+                                            "if": {
+                                                "type": "equal",
+                                                "lhs": {
+                                                    "type": "property",
+                                                    "value": [
+                                                        "updateMethodType"
+                                                    ]
+                                                },
+                                                "rhs": {
+                                                    "type": "constant",
+                                                    "value": "Cycle"
+                                                }
+                                            },
+                                            "then": [ 
+                                                {
+                                                    "dst": [
+                                                        "cycleParams"
+                                                    ],
+                                                    "remove": {
+                                                        "nullProperty": [
+                                                            "relativeHumidityCycle"
+                                                        ]
+                                                    }
+                                                }
+                                            ]
+                                        },
+                                        {
+                                            "if": {
+                                                "type": "equal",
+                                                "lhs": {
+                                                    "type": "property",
+                                                    "value": [
+                                                        "updateMethodType"
+                                                    ]
+                                                },
+                                                "rhs": {
+                                                    "type": "constant",
+                                                    "value": "RainEventAndDecayOverTime"
+                                                }
+                                            },
+                                            "then": [
+                                                {
+                                                    "dst": [
+                                                        "rainEventAndDecayOverTimeParams"
+                                                    ],
+                                                    "remove": {
+                                                        "nullProperty": [
+                                                            "relativeHumidityDecayOverTime",
+                                                            "relativeHumidityOnRainEvent",
+                                                            "timeStepsBetweenRainEvents",
+                                                            "standardDeviationForRainEvent"
+                                                        ]
+                                                    }
+                                                }
+                                            ]
+                                        }
+                                    ],
+                                    "additionalProperties": false,
+                                    "required": true
+                                },
+                                "maximumResourceCapacityDensity": {
+                                    "type": "floater",
+                                    "minimum": 0.0,
+                                    "required": true
+                                },
+                                "inEnemyFreeSpace": {
+                                    "type": "boolean",
+                                    "required": true
+                                },
+                                "inCompetitorFreeSpace": {
+                                    "type": "boolean",
+                                    "required": true
+                                }
+                            },
+                            "additionalProperties": false,
+                            "required": true
+                        },
+                        "resourceToPreysCapacityTransference": {
+                            "type": "floater",
+                            "required": true
+                        },
+                        "preysToPredatorsCapacityTransference": {
+                            "type": "floater",
+                            "required": true
+                        },
+                        "initRandomObstaclePatches": {
+                            "type": "object",
+                            "properties": {
+                                "enabled": {
+                                    "type": "boolean",
+                                    "required": true
+                                },
+                                "obstacleDensity": {
+                                    "type": "floater",
+                                    "required": true
+                                },
+                                "patchesWidth": {
+                                    "type": "unsigned_integer",
+                                    "required": true
+                                },
+                                "patchesLength": {
+                                    "type": "unsigned_integer",
+                                    "required": true
+                                },
+                                "patchesDepth": {
+                                    "type": "unsigned_integer",
+                                    "required": true
+                                }
+                            },
+                            "additionalProperties": false,
+                            "required": true
+                        },
+                        "nutrients": {
+                            "type": "object",
+                            "properties": {
+                                "minC": {
+                                    "type": "floater",
+                                    "required": true
+                                },
+                                "maxC": {
+                                    "type": "floater",
+                                    "required": true
+                                },
+                                "minN": {
+                                    "type": "floater",
+                                    "required": true
+                                },
+                                "maxN": {
+                                    "type": "floater",
+                                    "required": true
+                                },
+                                "minP": {
+                                    "type": "floater",
+                                    "required": true
+                                },
+                                "maxP": {
+                                    "type": "floater",
+                                    "required": true
+                                }
+                            },
+                            "additionalProperties": false,
+                            "required": true
+                        }
+                    },
+                    "additionalProperties": false,
+                    "required": true
+                },
+                "life": {
+                    "type": "object",
+                    "properties": {
+                        "resourceFolder": {
+                            "type": "string",
+                            "required": true
+                        },
+                        "speciesFolder": {
+                            "type": "string",
+                            "required": true
+                        },
+                        "competitionAmongResourceSpecies": {
+                            "type": "boolean",
+                            "required": true
+                        },
+                        "exitTimeThreshold": {
+                            "type": "unsigned_integer",
+                            "required": true
+                        },
+                        "minLogMassRatio": {
+                            "type": "floater",
+                            "required": true
+                        },
+                        "maxLogMassRatio": {
+                            "type": "floater",
+                            "required": true
+                        },
+                        "sigmaForPDF": {
+                            "type": "floater",
+                            "required": true
+                        },
+                        "muForPDF": {
+                            "type": "floater",
+                            "required": true
+                        },
+                        "encounterHuntedVoracitySAW": {
+                            "type": "floater",
+                            "required": true
+                        },
+                        "encounterHunterVoracitySAW": {
+                            "type": "floater",
+                            "required": true
+                        },
+                        "encounterVoracitiesProductSAW": {
+                            "type": "floater",
+                            "required": true
+                        },
+                        "encounterHunterSizeSAW": {
+                            "type": "floater",
+                            "required": true
+                        },
+                        "encounterHuntedSizeSAW": {
+                            "type": "floater",
+                            "required": true
+                        },
+                        "encounterProbabilityDensityFunctionSAW": {
+                            "type": "floater",
+                            "required": true
+                        },
+                        "encounterHuntedVoracityAH": {
+                            "type": "floater",
+                            "required": true
+                        },
+                        "encounterHunterVoracityAH": {
+                            "type": "floater",
+                            "required": true
+                        },
+                        "encounterVoracitiesProductAH": {
+                            "type": "floater",
+                            "required": true
+                        },
+                        "encounterHunterSizeAH": {
+                            "type": "floater",
+                            "required": true
+                        },
+                        "encounterHuntedSizeAH": {
+                            "type": "floater",
+                            "required": true
+                        },
+                        "encounterProbabilityDensityFunctionAH": {
+                            "type": "floater",
+                            "required": true
+                        },
+                        "predationSpeedRatioSAW": {
+                            "type": "floater",
+                            "required": true
+                        },
+                        "predationHunterVoracitySAW": {
+                            "type": "floater",
+                            "required": true
+                        },
+                        "predationProbabilityDensityFunctionSAW": {
+                            "type": "floater",
+                            "required": true
+                        },
+                        "predationSpeedRatioAH": {
+                            "type": "floater",
+                            "required": true
+                        },
+                        "predationHunterVoracityAH": {
+                            "type": "floater",
+                            "required": true
+                        },
+                        "predationProbabilityDensityFunctionAH": {
+                            "type": "floater",
+                            "required": true
+                        },
+                        "initIndividualsPerDensities": {
+                            "type": "object",
+                            "properties": {
+                                "enabled": {
+                                    "type": "boolean",
+                                    "required": true
+                                },
+                                "initialEcosystemSize": {
+                                    "type": "unsigned_integer",
+                                    "required": true
+                                }  
+                            },
+                            "additionalProperties": false,
+                            "required": true
+                        },
+                        "initFromRandomSpecies": {
+                            "type": "object",
+                            "properties": {
+                                "enabled": {
+                                    "type": "boolean",
+                                    "required": true
+                                },
+                                "numberOfPredatorSpecies": {
+                                    "type": "unsigned_integer",
+                                    "required": true
+                                },
+                                "numberOfPreySpecies": {
+                                    "type": "unsigned_integer",
+                                    "required": true
+                                },
+                                "numberOfResourceSpecies": {
+                                    "type": "unsigned_integer",
+                                    "required": true
+                                }
+                            },
+                            "additionalProperties": false,
+                            "required": true
+                        },
+                        "initFromRandomLinks": {
+                            "type": "object",
+                            "properties": {
+                                "enabled": {
+                                    "type": "boolean",
+                                    "required": true
+                                },
+                                "eraseCurrentExistingLinks": {
+                                    "type": "boolean",
+                                    "required": true
+                                },
+                                "predator-preyLinksDensity": {
+                                    "type": "floater",
+                                    "required": true
+                                },
+                                "resourcevore-resourceLinksDensity": {
+                                    "type": "floater",
+                                    "required": true
+                                },
+                                "intraguildPredation": {
+                                    "type": "object",
+                                    "properties": {
+                                        "enabled": {
+                                            "type": "boolean",
+                                            "required": true
+                                        },
+                                        "allowCannibalism": {
+                                            "type": "boolean",
+                                            "required": true
+                                        }
+                                    },
+                                    "additionalProperties": false,
+                                    "required": true
+                                }
+                            },
+                            "additionalProperties": false,
+                            "required": true
+                        }
+                    },
+                    "requiredConditions": [
+                        {
+                            "condition": {
+                                "type": "equal",
+                                "lhs": {
+                                    "type": "sum",
+                                    "result_type": "floater",
+                                    "lhs": {
+                                        "type": "property",
+                                        "value": [
+                                            "encounterHuntedVoracitySAW"
+                                        ]
+                                    },
+                                    "rhs": {
+                                        "type": "sum",
+                                        "result_type": "floater",
+                                        "lhs": {
+                                            "type": "property",
+                                            "value": [
+                                                "encounterHunterVoracitySAW"
+                                            ]
+                                        },
+                                        "rhs": {
+                                            "type": "sum",
+                                            "result_type": "floater",
+                                            "lhs": {
+                                                "type": "property",
+                                                "value": [
+                                                    "encounterVoracitiesProductSAW"
+                                                ]
+                                            },
+                                            "rhs": {
+                                                "type": "sum",
+                                                "result_type": "floater",
+                                                "lhs": {
+                                                    "type": "property",
+                                                    "value": [
+                                                        "encounterHunterSizeSAW"
+                                                    ]
+                                                },
+                                                "rhs": {
+                                                    "type": "sum",
+                                                    "result_type": "floater",
+                                                    "lhs": {
+                                                        "type": "property",
+                                                        "value": [
+                                                            "encounterHuntedSizeSAW"
+                                                        ]
+                                                    },
+                                                    "rhs": {
+                                                        "type": "property",
+                                                        "value": [
+                                                            "encounterProbabilityDensityFunctionSAW"
+                                                        ]
+                                                    }
+                                                }
+                                            }
+                                        }
+                                    }
+                                },
+                                "rhs": {
+                                    "type": "constant",
+                                    "value": 1.0
+                                }
+                            },
+                            "error": "The sum of the items 'encounterHuntedVoracitySAW', 'encounterHunterVoracitySAW', 'encounterVoracitiesProductSAW', 'encounterHunterSizeSAW', 'encounterHuntedSizeSAW' and 'encounterProbabilityDensityFunctionSAW' must be equal to 1.0"
+                        },
+                        {
+                            "condition": {
+                                "type": "equal",
+                                "lhs": {
+                                    "type": "sum",
+                                    "result_type": "floater",
+                                    "lhs": {
+                                        "type": "property",
+                                        "value": [
+                                            "encounterHuntedVoracityAH"
+                                        ]
+                                    },
+                                    "rhs": {
+                                        "type": "sum",
+                                        "result_type": "floater",
+                                        "lhs": {
+                                            "type": "property",
+                                            "value": [
+                                                "encounterHunterVoracityAH"
+                                            ]
+                                        },
+                                        "rhs": {
+                                            "type": "sum",
+                                            "result_type": "floater",
+                                            "lhs": {
+                                                "type": "property",
+                                                "value": [
+                                                    "encounterVoracitiesProductAH"
+                                                ]
+                                            },
+                                            "rhs": {
+                                                "type": "sum",
+                                                "result_type": "floater",
+                                                "lhs": {
+                                                    "type": "property",
+                                                    "value": [
+                                                        "encounterHunterSizeAH"
+                                                    ]
+                                                },
+                                                "rhs": {
+                                                    "type": "sum",
+                                                    "result_type": "floater",
+                                                    "lhs": {
+                                                        "type": "property",
+                                                        "value": [
+                                                            "encounterHuntedSizeAH"
+                                                        ]
+                                                    },
+                                                    "rhs": {
+                                                        "type": "property",
+                                                        "value": [
+                                                            "encounterProbabilityDensityFunctionAH"
+                                                        ]
+                                                    }
+                                                }
+                                            }
+                                        }
+                                    }
+                                },
+                                "rhs": {
+                                    "type": "constant",
+                                    "value": 1.0
+                                }
+                            },
+                            "error": "The sum of the items 'encounterHuntedVoracityAH', 'encounterHunterVoracityAH', 'encounterVoracitiesProductAH', 'encounterHunterSizeAH', 'encounterHuntedSizeAH' and 'encounterProbabilityDensityFunctionAH' must be equal to 1.0"
+                        },
+                        {
+                            "condition": {
+                                "type": "equal",
+                                "lhs": {
+                                    "type": "sum",
+                                    "result_type": "floater",
+                                    "lhs": {
+                                        "type": "property",
+                                        "value": [
+                                            "predationSpeedRatioSAW"
+                                        ]
+                                    },
+                                    "rhs": {
+                                        "type": "sum",
+                                        "result_type": "floater",
+                                        "lhs": {
+                                            "type": "property",
+                                            "value": [
+                                                "predationHunterVoracitySAW"
+                                            ]
+                                        },
+                                        "rhs": {
+                                            "type": "property",
+                                            "value": [
+                                                "predationProbabilityDensityFunctionSAW"
+                                            ]
+                                        }
+                                    }
+                                },
+                                "rhs": {
+                                    "type": "constant",
+                                    "value": 1.0
+                                }
+                            },
+                            "error": "The sum of the items 'predationSpeedRatioSAW', 'predationHunterVoracitySAW' and 'predationProbabilityDensityFunctionSAW' must be equal to 1.0"
+                        },
+                        {
+                            "condition": {
+                                "type": "equal",
+                                "lhs": {
+                                    "type": "sum",
+                                    "result_type": "floater",
+                                    "lhs": {
+                                        "type": "property",
+                                        "value": [
+                                            "predationSpeedRatioAH"
+                                        ]
+                                    },
+                                    "rhs": {
+                                        "type": "sum",
+                                        "result_type": "floater",
+                                        "lhs": {
+                                            "type": "property",
+                                            "value": [
+                                                "predationHunterVoracityAH"
+                                            ]
+                                        },
+                                        "rhs": {
+                                            "type": "property",
+                                            "value": [
+                                                "predationProbabilityDensityFunctionAH"
+                                            ]
+                                        }
+                                    }
+                                },
+                                "rhs": {
+                                    "type": "constant",
+                                    "value": 1.0
+                                }
+                            },
+                            "error": "The sum of the items 'predationSpeedRatioAH', 'predationHunterVoracityAH' and 'predationProbabilityDensityFunctionAH' must be equal to 1.0"
+                        }
+                    ],
+                    "additionalProperties": false,
+                    "required": true
+                }
+            },
+            "additionalProperties": false,
+            "required": true
+        }
+    },
+    "additionalProperties": false
+}

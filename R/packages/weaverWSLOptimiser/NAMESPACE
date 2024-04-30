@@ -1,0 +1,17 @@
+export(
+    setBaseConfigPath, 
+    setOutputFolder, 
+    setNumberOfCores, 
+    setMaxNumberOfGenerations,
+    setEvaluationFunctionSelected,
+    setSelectionOperatorSelected,
+    setCrossoverOperatorSelected,
+    setMutationOperatorSelected,
+    setReplacementOperatorSelected,
+    setFitnessObjective,
+    setMaximiseFitness,
+    setBurn_in,
+    addFixedParameter,
+    addRandomParameter,
+    run
+)

@@ -25,7 +25,10 @@ class Development(WindowsProjectVersion):
                 "cxxopts",
                 "nlohmann-json",
                 "fmt",
-                "boost-geometry"
+                "boost-geometry",
+                "boost-serialization",
+                "boost-filesystem",
+                "tbb"
 
                 # Página donde buscar las librerías C++ de vcpkg:
                 # https://vcpkg.io/en/packages.html

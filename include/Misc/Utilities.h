@@ -16,6 +16,7 @@
 #include <set>
 #include <string>
 #include <chrono>
+#include <boost/filesystem.hpp>
 
 #include "Types.h"
 #include "Exceptions/LineInfoException.h"
@@ -24,9 +25,11 @@
 
 
 std::string getResultFolderName(const std::string& baseName);
-fs::path obtainResultFolder(const std::string& baseName, fs::path outputFolder);
-std::string createOutputFile(std::ofstream &file, fs::path filenameRoot, std::string filename, std::string extension, std::ios_base::openmode openMode = std::ofstream::out);
-std::string createOutputFile(std::ofstream &file, fs::path filenameRoot, std::string filename, std::string extension, date_type timeStep, unsigned int recordEach, std::ios_base::openmode openMode = std::ofstream::out);
-nlohmann::json readConfigFile(fs::path configPath, fs::path schemaPath);
+boost::filesystem::path obtainResultFolder(const std::string& baseName, boost::filesystem::path outputFolder);
+std::string createOutputFile(std::ofstream &file, boost::filesystem::path filenameRoot, std::string filename, std::string extension, std::ios_base::openmode openMode = std::ofstream::out);
+std::string createOutputFile(std::ofstream &file, boost::filesystem::path filenameRoot, std::string filename, std::string extension, date_type timeStep, unsigned int recordEach, std::ios_base::openmode openMode = std::ofstream::out);
+nlohmann::json readConfigFile(boost::filesystem::path configPath);
+nlohmann::json readConfigFile(boost::filesystem::path configPath, boost::filesystem::path schemaPath);
+void saveConfigFile(boost::filesystem::path configPath, nlohmann::json fileContent);
 
 #endif // UTILITIES_H_
