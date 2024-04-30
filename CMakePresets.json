@@ -13,12 +13,9 @@
             "displayName": "Base configuration",
             "cacheVariables": {
                 "PRESET_NAME": "${presetName}",
+                "OS_NAME": "${hostSystemName}",
                 "CMAKE_C_COMPILER": "gcc",
-                "CMAKE_CXX_COMPILER": "g++",
-                "CMAKE_WINDOWS_EXPORT_ALL_SYMBOLS": "ON"
-            },
-            "environment": {
-                "BUILD_FOLDER": "cmake-build"
+                "CMAKE_CXX_COMPILER": "g++"
             }
         },
         {
@@ -83,15 +80,14 @@
             ],
             "hidden": true,
             "displayName": "Configuration for building on Linux",
-            "binaryDir": "${sourceDir}/$env{BUILD_FOLDER}/${presetName}",
+            "binaryDir": "${sourceDir}/cmake-build/${presetName}",
             "condition": {
                 "type": "equals",
                 "lhs": "${hostSystemName}",
                 "rhs": "Linux"
             },
             "cacheVariables": {
-                "CMAKE_EXECUTABLE_SUFFIX_CXX": ".out",
-                "CMAKE_SHARED_LIBRARY_SUFFIX_CXX": ".so"
+                "CMAKE_EXECUTABLE_SUFFIX_CXX": ".out"
             }
         },
         {
@@ -101,15 +97,14 @@
             ],
             "hidden": true,
             "displayName": "Configuration for building on Windows",
-            "binaryDir": "${sourceDir}\\$env{BUILD_FOLDER}\\${presetName}",
+            "binaryDir": "${sourceDir}\\cmake-build\\${presetName}",
             "condition": {
                 "type": "equals",
                 "lhs": "${hostSystemName}",
                 "rhs": "Windows"
             },
             "cacheVariables": {
-                "CMAKE_EXECUTABLE_SUFFIX_CXX": ".exe",
-                "CMAKE_SHARED_LIBRARY_SUFFIX_CXX": ".dll"
+                "CMAKE_EXECUTABLE_SUFFIX_CXX": ".exe"
             }
         },
         {
@@ -119,15 +114,14 @@
             ],
             "hidden": true,
             "displayName": "Configuration for building on MacOS",
-            "binaryDir": "${sourceDir}/$env{BUILD_FOLDER}/${presetName}",
+            "binaryDir": "${sourceDir}/cmake-build/${presetName}",
             "condition": {
                 "type": "equals",
                 "lhs": "${hostSystemName}",
                 "rhs": "Darwin"
             },
             "cacheVariables": {
-                "CMAKE_EXECUTABLE_SUFFIX_CXX": ".out",
-                "CMAKE_SHARED_LIBRARY_SUFFIX_CXX": ".so"
+                "CMAKE_EXECUTABLE_SUFFIX_CXX": ".out"
             }
         },
         {
@@ -185,26 +179,12 @@
             }
         },
         {
-            "name": "linux-cpuProfiler",
-            "displayName": "Configuration to generate CPU profiler of the project on Linux",
+            "name": "linux-show-memory",
+            "displayName": "Configuration to check the memory consumption of the project on Linux",
             "inherits": [
                 "Linux Debug",
                 "Unix Makefiles"
-            ],
-            "cacheVariables": {
-                "USE_CPU_PROFILER": true
-            }
-        },
-        {
-            "name": "linux-heapProfiler",
-            "displayName": "Configuration to generate Heap profiler of the project on Linux",
-            "inherits": [
-                "Linux Debug",
-                "Unix Makefiles"
-            ],
-            "cacheVariables": {
-                "USE_HEAP_PROFILER": true
-            }
+            ]
         },
         {
             "name": "windows-Makefile",
@@ -252,15 +232,8 @@
             ]
         },
         {
-            "name": "linux-cpuProfiler",
-            "configurePreset": "linux-cpuProfiler",
-            "inherits": [
-                "base"
-            ]
-        },
-        {
-            "name": "linux-heapProfiler",
-            "configurePreset": "linux-heapProfiler",
+            "name": "linux-show-memory",
+            "configurePreset": "linux-show-memory",
             "inherits": [
                 "base"
             ]
@@ -321,28 +294,15 @@
             ]
         },
         {
-            "name": "linux-cpuProfiler",
+            "name": "linux-show-memory",
             "steps": [
                 {
                     "type": "configure",
-                    "name": "linux-cpuProfiler"
+                    "name": "linux-show-memory"
                 },
                 {
                     "type": "build",
-                    "name": "linux-cpuProfiler"
-                }
-            ]
-        },
-        {
-            "name": "linux-heapProfiler",
-            "steps": [
-                {
-                    "type": "configure",
-                    "name": "linux-heapProfiler"
-                },
-                {
-                    "type": "build",
-                    "name": "linux-heapProfiler"
+                    "name": "linux-show-memory"
                 }
             ]
         },

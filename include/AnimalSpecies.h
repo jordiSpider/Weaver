@@ -9,136 +9,55 @@
 #define WEAVER_ANIMALSPECIES_H_
 
 #include <vector>
-#include <unordered_map>
 #include <iostream>
-#include <cfloat>
+#include <math.h>
+#include <float.h>
 #include <random>
 #include <cmath>
 #include <list>
 
+#include "ChromosomesGenerator.h"
 #include "Species.h"
-#include "ResourceSpecies.h"
-#include "Locus.h"
-#include "Correlosome.h"
-#include "Chromosome.h"
-#include "Genome.h"
+#include "FungusSpecies.h"
+#include "PlantSpecies.h"
+#include "Edible.h"
 #include "Types.h"
-#include "Trait.h"
 #include "nlohmann/json.h"
-#include "Curve.h"
-#include "Output.h"
-
 
 using namespace std;
 
 class ChromosomesGenerator;
 
-
-class SexualType {
-public:
-	enum SexualTypeValue
-	{
-		diploid, 
-		haplodiploid,
-		asexual
-	};
-
-	explicit SexualType(const std::string& typeStr);
-	~SexualType() {};
-
-	inline const SexualTypeValue& getValue() const { return value; }
-	inline operator int() const { return value; }
-	friend inline bool operator==(const SexualType& lhs, const SexualTypeValue& rhs) { return lhs.getValue() == rhs; }
-	friend inline bool operator==(const SexualTypeValue& lhs, const SexualType& rhs) { return lhs == rhs.getValue(); }
-
-private:
-	static const std::unordered_map<std::string_view, const SexualTypeValue> stringToEnum;
-	static const std::string enumValues;
-
-	inline static SexualTypeValue stringToEnumValue(const std::string &str) {
-		try
-		{
-			return stringToEnum.at(str);
-		}
-		catch(const std::out_of_range& e) 
-		{
-			throwLineInfoException(fmt::format("Unknown sexual type '{}'. Valid values are {}", str, printAvailableValues()));
-		}
-	}
-	inline static std::string_view printAvailableValues() { return enumValues; }
-	inline static std::string_view to_string(const SexualTypeValue& sexualType) { return magic_enum::enum_name(sexualType); }
-	static const std::unordered_map<std::string_view, const SexualTypeValue> generateMap();
-	inline static constexpr size_t size() { return magic_enum::enum_count<SexualTypeValue>(); }
-	static const std::string generateAvailableValues();
-
-	const SexualTypeValue value;
-};
-
-class HuntingMode {
-public:
-	enum HuntingModeValue
-	{
-		does_not_hunt, 
-		sit_and_wait,
-		active_hunting
-	};
-
-	explicit HuntingMode(const std::string& typeStr);
-	~HuntingMode() {};
-
-	inline const HuntingModeValue& getValue() const { return value; }
-	inline operator int() const { return value; }
-	friend inline bool operator!=(const HuntingMode& lhs, const HuntingModeValue& rhs) { return lhs.getValue() != rhs; }
-	friend inline bool operator!=(const HuntingModeValue& lhs, const HuntingMode& rhs) { return lhs != rhs.getValue(); }
-	friend inline bool operator==(const HuntingMode& lhs, const HuntingModeValue& rhs) { return lhs.getValue() == rhs; }
-	friend inline bool operator==(const HuntingModeValue& lhs, const HuntingMode& rhs) { return lhs == rhs.getValue(); }
-
-private:
-	static const std::unordered_map<std::string_view, const HuntingModeValue> stringToEnum;
-	static const std::string enumValues;
-
-	inline static HuntingModeValue stringToEnumValue(const std::string &str) {
-		try
-		{
-			return stringToEnum.at(str);
-		}
-		catch(const std::out_of_range& e) 
-		{
-			throwLineInfoException(fmt::format("Unknown sexual type '{}'. Valid values are {}", str, printAvailableValues()));
-		}
-	}
-	inline static std::string_view printAvailableValues() { return enumValues; }
-	inline static std::string_view to_string(const HuntingModeValue& huntingMode) { return magic_enum::enum_name(huntingMode); }
-	static const std::unordered_map<std::string_view, const HuntingModeValue> generateMap();
-	inline static constexpr size_t size() { return magic_enum::enum_count<HuntingModeValue>(); }
-	static const std::string generateAvailableValues();
-
-	const HuntingModeValue value;
-};
-
 class AnimalSpecies: public Species
 {
 private:
 	bool extinguished;
-	const HuntingMode defaultHuntingMode;
+	unsigned int defaultHuntingMode;
 
-	std::vector<AnimalSpecies *> edibleAnimalSpecies;
+	std::vector<Species *> edibleAnimalSpecies;
 	std::vector<Species *> ediblePlantSpecies;
-	std::vector<ResourceSpecies *> edibleResourceSpecies;
-	map<const Species* const, float> ediblePreferences;
+	std::vector<Species *> edibleFungusSpecies;
+	map<Species*, float> ediblePreferences;
 	map<Species*, float> edibleProfitabilities;
 
 	float experienceInfluencePerDay;
 
 	std::vector<int> predationEventsOnOtherSpecies;
 
-	Trait* traits[Trait::size()];
-	TraitType* fixedTraits;
-	size_t numberFixedTraits;
-	TraitType* variableTraits;
-	size_t numberVariableTraits;
+	unordered_map<Trait, double> fixedTraits;
+	unordered_map<Trait, unsigned int> variableTraitsOrder;
 
+	unordered_map<Trait, double> minTraitRanges;
+	unordered_map<Trait, double> maxTraitRanges;
 
+	unordered_map<Trait, double> minRestrictedRanges;
+	unordered_map<Trait, double> maxRestrictedRanges;
+
+	unordered_map<Trait, double> minTraitLimits;
+	unordered_map<Trait, double> maxTraitLimits;
+
+	unordered_map<Trait, double> minObservedPseudoValues;
+	unordered_map<Trait, double> maxObservedPseudoValues;
 
 	std::vector<double> initialPopulation;
 	std::vector<unsigned long> statisticsInitialPopulation;
@@ -151,6 +70,7 @@ private:
 	unsigned int numberOfChiasmasPerChromosome;
 	unsigned int numberOfLociPerChromosome;
 
+	std::vector<double> restrictPerTrait;
 	std::vector<double> rhoPerModule;
 	std::vector<double> rhoRangePerModule;
 	std::vector<double> weightPerLocus;
@@ -224,8 +144,11 @@ private:
 	vector<double> devTimeVector;
 	double vonBertLinf;
 	double vonBertKini;
+	double vonBertTime0;
 	double LinfKcorr;
 	double devTimeConstant;
+	double vonBertLdistanceMin;
+	double vonBertLdistanceMax;
 	double longevitySinceMaturation;
 	double reproTimeFactor;
 	double tempOptGrowth;
@@ -293,10 +216,9 @@ private:
 	bool indeterminateGrowth;
 	Instar instarFirstReproduction;
 	unsigned int instarsForNextReproduction;
-	const SexualType sexualType;
-	Curve* growthCurve;
+	int sexualType;
+	int growthType;
 	float sexRatio;
-	unsigned int size;
 	int femaleMaxReproductionEvents;
 	double eggsPerBatch;
 	int maleMaxReproductionEvents;
@@ -305,17 +227,14 @@ private:
 	double quitCellThreshold;
 	float decreaseOnTraitsDueToEncounters;
 	double probabilityDeathFromBackground;
-
-	bool preserveLeftovers;
-
-	vector<Locus*> loci;
-	//TODO This has room for efficiency improvements. We could just save the final calculations of the actual positions.
-	vector<int> randomlyCreatedPositionsForChromosomes;
 	
-	void setFixedTraits(const std::unordered_map<std::string,double>& fixedTraits);
-	void setVariableTraits(const unordered_map<string,double>& minTraitRanges, const unordered_map<string,double>& maxTraitRanges, 
-						   const unordered_map<string,double>& minTraitLimits, const unordered_map<string,double>& maxTraitLimits, 
-						   const vector<string>& order, const std::vector<double>& restrictPerTrait);
+	void setFixedTraits(const unordered_map<string,nlohmann::json>& fixedTraits);
+	void setTraitRanges(const unordered_map<string,double>& minTraitRanges, const unordered_map<string,double>& maxTraitRanges);
+	void setMinTraitRanges(const unordered_map<string,double>& minTraitRanges);
+	void setMaxTraitRanges(const unordered_map<string,double>& maxTraitRanges);
+	void setTraitLimits(const unordered_map<string,double>& minTraitLimits, const unordered_map<string,double>& maxTraitLimits);
+	void setMinTraitLimits(const unordered_map<string,double>& minTraitLimits);
+	void setMaxTraitLimits(const unordered_map<string,double>& maxTraitLimits);
 
 	inline void setForEggMassCoefficient(const double& forEggMassCoefficient) { this->forEggMassCoefficient = forEggMassCoefficient; }
 	inline void setForEggMassScale(const double& forEggMassScale) { this->forEggMassScale = forEggMassScale; }
@@ -329,62 +248,67 @@ public:
 		MALE, FEMALE, HERMAPHRODITE
 	};
 
-	
+	enum SEXUAL_TYPES
+	{
+		DIPLOID, HAPLODIPLOID, ASEXUAL
+	};
 
-	AnimalSpecies(const string& scientificName, const unsigned int& numberOfLoci, const unsigned int& numberOfAlleles, const std::vector<double>& restrictPerTrait, const std::vector<double>& rhoPerModule, const unsigned int& traitsPerModule, const unsigned int& numberOfChiasmasPerChromosome, const unordered_map<string,double>& fixedTraits, const unordered_map<string,double>& minTraitRanges, 
+	friend class Animal;
+	friend class ChromosomesGenerator;
+	ChromosomesGenerator * chromosomesGenerator;
+
+	AnimalSpecies(const string& scientificName, const unsigned int& numberOfLoci, const unsigned int& numberOfAlleles, const std::vector<double>& restrictPerTrait, const std::vector<double>& rhoPerModule, const unsigned int& traitsPerModule, const unsigned int& numberOfChromosomes, const unsigned int& numberOfChiasmasPerChromosome, const unordered_map<string,nlohmann::json>& fixedTraits, const unordered_map<string,double>& minTraitRanges, 
 							  const unordered_map<string,double>& maxTraitRanges, const unordered_map<string,double>& minTraitLimits, 
-							  const unordered_map<string,double>& maxTraitLimits, const vector<string>& order, const std::string& sexualType,
-							  const std::string& defaultHuntingMode, const unordered_map<string,nlohmann::json>& growthCurveParams, bool preserveLeftovers);
+							  const unordered_map<string,double>& maxTraitLimits, const vector<string>& order);
 	virtual ~AnimalSpecies();
 
-	bool getPreserveLeftovers() const { return preserveLeftovers; }
-
-  virtual size_t getNumberOfFixedTraits() const { return numberFixedTraits; }
-	virtual size_t getNumberOfVariableTraits() const { return numberVariableTraits; }
-	virtual unsigned int getNumberOfLociPerTrait() const { return numberOfLociPerTrait; };
+	inline virtual size_t getNumberOfTraits() const { return restrictPerTrait.size(); };
+	inline virtual size_t getNumberOfFixedTraits() const { return fixedTraits.size(); };
+	inline virtual size_t getNumberOfVariableTraits() const { return minTraitRanges.size(); };
+	virtual unsigned int getNumberOfLociPerTrait() { return numberOfLociPerTrait; };
 	virtual unsigned int getTraitsPerModule() const { return traitsPerModule; };
 	virtual unsigned int getNumberOfAllelesPerLocus() const { return numberOfAllelesPerLocus; };
 	virtual unsigned int getNumberOfChiasmasPerChromosome() const { return numberOfChiasmasPerChromosome; };
 	virtual unsigned int getNumberOfLociPerChromosome() const {	return numberOfLociPerChromosome; }
 	virtual unsigned int getNumberOfChromosomes() const { return numberOfChromosomes; };
-	virtual double getRhoRangePerModule(int moduleNumber) const { return rhoRangePerModule.at(moduleNumber); };
-	virtual double getRhoPerModule(int moduleNumber) const { return rhoPerModule.at(moduleNumber); };
-	inline virtual const double getValueFromNormalDistributionY() { return normalDistributionY(generatorY); };
-	virtual double getValueFromCholMat(int row, int column) const { return cholMat.at(row).at(column); };
-	inline const vector<Locus*>& getLoci() const { return loci; }
-	inline const vector<int>& getRandomlyCreatedPositionsForChromosomes() const { return randomlyCreatedPositionsForChromosomes; }
+	virtual ChromosomesGenerator* getChromosomesGenerator() { return chromosomesGenerator; };
+	virtual double getRhoRangePerModule(int moduleNumber) { return rhoRangePerModule[moduleNumber]; };
+	virtual double getRhoPerModule(int moduleNumber) { return rhoPerModule[moduleNumber]; };
+	virtual double getValueFromNormalDistributionY() { return normalDistributionY(generatorY); };
+	virtual double getValueFromCholMat(int row, int column) { return cholMat[row][column]; };
+	virtual double getVonBertLdistanceMin() { return vonBertLdistanceMin; };
+	virtual double getVonBertLdistanceMax() { return vonBertLdistanceMax; };
 
-	void initializeFixedTraits(double* const animalTraits) const;
-	inline const VariableTrait* const getVariableTrait(const TraitType& type) const { return static_cast<const VariableTrait* const>(traits[type]); }
-	virtual const TraitType* const getTypeVariableTraits() const;
-	inline virtual const unsigned int& getTraitOrder(const TraitType& type) const { return getVariableTrait(type)->getOrder(); }
+	inline virtual const unordered_map<Trait, double>& getFixedTraits() const { return fixedTraits; };
+	virtual vector<Trait> getVariableTraits() const;
+	inline virtual unsigned int getTraitOrder(const Trait& trait) const { return variableTraitsOrder.at(trait); };
 
-	inline virtual const double& getMinTraitRange(const TraitType& type) const { return getVariableTrait(type)->getMinTraitRange(); };
-	inline virtual const double& getMaxTraitRange(const TraitType& type) const { return getVariableTrait(type)->getMaxTraitRange(); };
-	inline virtual const double& getMinRestrictedRange(const TraitType& type) const { return getVariableTrait(type)->getMinRestrictedRange(); };
-	inline virtual const double& getMaxRestrictedRange(const TraitType& type) const { return getVariableTrait(type)->getMaxRestrictedRange(); };
-	inline virtual const double& getMinTraitLimit(const TraitType& type) const { return getVariableTrait(type)->getMinTraitLimit(); };
-	inline virtual const double& getMaxTraitLimit(const TraitType& type) const { return getVariableTrait(type)->getMaxTraitLimit(); };
-	inline virtual const double& getMinObservedPseudoValue(const TraitType& type) const { return getVariableTrait(type)->getMinObservedPseudoValue(); };
-	virtual void setMinObservedPseudoValue(const TraitType& type, const double& minObservedPseudoValue) { static_cast<VariableTrait*>(traits[type])->setMinObservedPseudoValue(minObservedPseudoValue); }
-	inline virtual const double& getMaxObservedPseudoValue(const TraitType& type) const { return getVariableTrait(type)->getMaxObservedPseudoValue(); };
-	virtual void setMaxObservedPseudoValue(const TraitType& type, const double& maxObservedPseudoValue) { static_cast<VariableTrait*>(traits[type])->setMaxObservedPseudoValue(maxObservedPseudoValue); }
+	inline virtual const double& getMinTraitRange(const Trait& trait) { return minTraitRanges[trait]; };
+	inline virtual const double& getMaxTraitRange(const Trait& trait) { return maxTraitRanges[trait]; };
+	inline virtual const double& getMinRestrictedRange(const Trait& trait) { return minRestrictedRanges[trait]; };
+	inline virtual const double& getMaxRestrictedRange(const Trait& trait) { return maxRestrictedRanges[trait]; };
+	inline virtual const double& getMinTraitLimit(const Trait& trait) { return minTraitLimits[trait]; };
+	inline virtual const double& getMaxTraitLimit(const Trait& trait) { return maxTraitLimits[trait]; };
+	inline virtual const double& getMinObservedPseudoValue(const Trait& trait) { return minObservedPseudoValues[trait]; };
+	virtual void setMinObservedPseudoValue(const Trait& trait, const double& minObservedPseudoValue) { minObservedPseudoValues[trait] = minObservedPseudoValue; };
+	inline virtual const double& getMaxObservedPseudoValue(const Trait& trait) { return maxObservedPseudoValues[trait]; };
+	virtual void setMaxObservedPseudoValue(const Trait& trait, const double& maxObservedPseudoValue) { maxObservedPseudoValues[trait] = maxObservedPseudoValue; };
 
 
-	virtual bool isMobile() const { return true; };
+	virtual bool isMobile() { return true; };
 	virtual void scaleInitialPopulation(double totalPopulationDensity, double initialEcosystemSize);
 	inline virtual const vector<double>& getInitialPopulation() const { return initialPopulation; };
 	virtual vector<unsigned long>* getStatisticsInitialPopulation() { return &statisticsInitialPopulation; };
 	virtual double getTotalInitialPopulation();
 	virtual unsigned long getTotalStatisticsInitialPopulation();
-	virtual bool isExtinguished() const { return extinguished; };
+	virtual bool isExtinguished() { return extinguished; };
 	virtual void setExtinguished(bool extinguished) { this->extinguished = extinguished; };
 	virtual vector<int>* getPredationEventsOnOtherSpecies();
-	virtual const HuntingMode& getDefaultHuntingMode() const { return defaultHuntingMode; };
+	virtual unsigned int getDefaultHuntingMode() { return defaultHuntingMode; };
 
-	virtual double getExcessInvestInSize() const { return excessInvestInSize; };
+	virtual double getExcessInvestInSize() { return excessInvestInSize; };
 	inline virtual void setExcessInvestInSize(const double& excessInvestInSize) { this->excessInvestInSize = excessInvestInSize; }
-	virtual bool hasIndeterminateGrowth() const { return indeterminateGrowth; };
+	virtual bool hasIndeterminateGrowth() { return indeterminateGrowth; };
 	inline virtual void setIndeterminateGrowth(const bool& indeterminateGrowth) { this->indeterminateGrowth = indeterminateGrowth; }
 	inline virtual const Instar& getInstarFirstReproduction() const { return instarFirstReproduction; };
 	inline virtual void setInstarFirstReproduction(const Instar& instarFirstReproduction) { this->instarFirstReproduction = instarFirstReproduction; }
@@ -392,9 +316,9 @@ public:
 	inline virtual void setInstarsForNextReproduction(const unsigned int& instarsForNextReproduction) { this->instarsForNextReproduction = instarsForNextReproduction; }
 	inline virtual const unsigned int& getNumberOfInstars() const { return numberOfInstars; };
 	inline virtual void setNumberOfInstars(const unsigned int& numberOfInstars) { this->numberOfInstars = numberOfInstars; };
-	virtual int getPupaPeriodLength() const { return pupaPeriodLength; };
+	virtual int getPupaPeriodLength() { return pupaPeriodLength; };
 	inline virtual void setPupaPeriodLength(const int& pupaPeriodLength) { this->pupaPeriodLength = pupaPeriodLength; }
-	virtual double getCoefficientForMassA() const {return coefficientForMassA;};
+	virtual double getCoefficientForMassA() {return coefficientForMassA;};
 /*	virtual double getCoefficientForMassA(int pupaPeriodLength, bool mature) { //int pupaPeriodLength, bool mature
 		if(pupaPeriodLength>2 && mature){
 		  return coefficientForMassAforMature;
@@ -403,8 +327,8 @@ public:
 		}
 	}*/
 	inline virtual void setCoefficientForMassA(const double& coefficientForMassA) { this->coefficientForMassA = coefficientForMassA; }
-	virtual double getScaleForMassB() const { return scaleForMassB; };
-	virtual double getEggDryMass() const { return eggDryMass; };
+	virtual double getScaleForMassB() { return scaleForMassB; };
+	virtual double getEggDryMass() { return eggDryMass; };
 
 /*	virtual double getScaleForMassB(int pupaPeriodLength, bool mature) {  //int pupaPeriodLength, bool mature
 			if(pupaPeriodLength>2 && mature){
@@ -416,119 +340,122 @@ public:
 
 	inline virtual void setScaleForMassB(const double& scaleForMassB) { this->scaleForMassB = scaleForMassB; }
 
-	virtual double getCoefficientForMassAforMature() const { return coefficientForMassAforMature; };
+	virtual double getCoefficientForMassAforMature() { return coefficientForMassAforMature; };
 	inline virtual void setCoefficientForMassAforMature(const double& coefficientForMassAforMature) { this->coefficientForMassAforMature = coefficientForMassAforMature; };
 
-	virtual double getScaleForMassBforMature() const { return scaleForMassBforMature; };
+	virtual double getScaleForMassBforMature() { return scaleForMassBforMature; };
 	inline virtual void setScaleForMassBforMature(const double& scaleForMassBforMature) { this->scaleForMassBforMature = scaleForMassBforMature; };
 
-	virtual double getAssignedForMolt() const { return assignedForMolt; };
-	virtual bool hasEggClutchFromEquation() const { return eggClutchFromEquation; };
+	virtual double getAssignedForMolt() { return assignedForMolt; };
+	virtual bool hasEggClutchFromEquation() { return eggClutchFromEquation; };
 	inline virtual void setEggClutchFromEquation(const bool& eggClutchFromEquation) { this->eggClutchFromEquation = eggClutchFromEquation; }
-	virtual double getForClutchMassCoefficient() const { return forClutchMassCoefficient; };
+	virtual double getForClutchMassCoefficient() { return forClutchMassCoefficient; };
 	inline virtual void setForClutchMassCoefficient(const double& forClutchMassCoefficient) { this->forClutchMassCoefficient = forClutchMassCoefficient; }
-	virtual double getForClutchMassScale() const { return forClutchMassScale; };
+	virtual double getForClutchMassScale() { return forClutchMassScale; };
 	inline virtual void setForClutchMassScale(const double& forClutchMassScale) { this->forClutchMassScale = forClutchMassScale; }
-	virtual double getMaleReproductionFactor() const { return maleReproductionFactor; };
+	virtual double getMaleReproductionFactor() { return maleReproductionFactor; };
 	inline virtual void setMaleReproductionFactor(const double& maleReproductionFactor) { this->maleReproductionFactor = maleReproductionFactor; }
-	virtual const SexualType& getSexualType() const { return sexualType; };
-	virtual const Curve* const getGrowthCurve() const { return growthCurve; }
-	virtual int getRandomGender() const;
-	virtual double getMinRelativeHumidityThreshold() const { return minRelativeHumidityThreshold; };
+	virtual int getSexualType() { return sexualType; };
+	virtual int getGrowthType() { return growthType; };
+	virtual void setSexualType(int sexualType) { this->sexualType = sexualType;	};
+	virtual void setGrowthType(int growthType) { this->growthType = growthType;	};
+	virtual int getRandomGender();
+	virtual double getMinRelativeHumidityThreshold() { return minRelativeHumidityThreshold; };
 	virtual void setMinRelativeHumidityThreshold(const double& minRelativeHumidityThreshold);
-	virtual float getDaysWithoutFoodForMetabolicDownregulation() const { return daysWithoutFoodForMetabolicDownregulation; };
+	virtual float getDaysWithoutFoodForMetabolicDownregulation() { return daysWithoutFoodForMetabolicDownregulation; };
 	inline virtual void setDaysWithoutFoodForMetabolicDownregulation(const float& daysWithoutFoodForMetabolicDownregulation) { this->daysWithoutFoodForMetabolicDownregulation = daysWithoutFoodForMetabolicDownregulation; }
-	virtual float getPercentageMetabolicDownregulation() const { return percentageMetabolicDownregulation; };
+	virtual float getPercentageMetabolicDownregulation() { return percentageMetabolicDownregulation; };
 	inline virtual void setPercentageMetabolicDownregulation(const float& percentageMetabolicDownregulation) { this->percentageMetabolicDownregulation = percentageMetabolicDownregulation; }
 
-	virtual bool canEatResourceSpecies(ResourceSpecies * species) const { return std::find(edibleResourceSpecies.begin(), edibleResourceSpecies.end(), species) != edibleResourceSpecies.end(); };
-	inline bool canEatAnimalSpecies(const AnimalSpecies* species) const { return std::find(edibleAnimalSpecies.begin(), edibleAnimalSpecies.end(), species) != edibleAnimalSpecies.end(); };
+	virtual bool canEatFungusSpecies(Species * species) { return std::find(edibleFungusSpecies.begin(), edibleFungusSpecies.end(), species) != edibleFungusSpecies.end(); };
+	virtual bool canEatAnimalSpecies(Species* species) { return std::find(edibleAnimalSpecies.begin(), edibleAnimalSpecies.end(), species) != edibleAnimalSpecies.end(); };
 	virtual bool canEatPlantSpecies(Species * newSpecies) {	return std::find(ediblePlantSpecies.begin(), ediblePlantSpecies.end(), newSpecies) != ediblePlantSpecies.end();	};
-	virtual const vector<ResourceSpecies*> * getEdibleResourceSpecies() const {return &edibleResourceSpecies;};
-	virtual void addEdibleResourceSpecies(ResourceSpecies* species);
-	inline const vector<AnimalSpecies*> * getEdibleAnimalSpecies() const {return &edibleAnimalSpecies;};
-	virtual void addEdibleAnimalSpecies(AnimalSpecies* species);
+	virtual vector<Species*> * getEdibleFungusSpecies() {return &edibleFungusSpecies;};
+	virtual void addEdibleFungusSpecies(Species* species);
+	virtual vector<Species*> * getEdibleAnimalSpecies() {return &edibleAnimalSpecies;};
+	virtual void addEdibleAnimalSpecies(Species* species);
 	virtual vector<Species*> * getEdiblePlantSpecies() { return &ediblePlantSpecies; };
 	virtual void addEdiblePlantSpecies(Species* species);
-	inline float getEdiblePreference(const Species* const species) const { return ediblePreferences.at(species); };
-	virtual void addEdiblePreference(const Species* const speciesToBeAdded, float ediblePreferenceToBeAdded);
-	inline float getEdibleProfitability(Species* species) const { return edibleProfitabilities.at(species); };
+	virtual float getEdiblePreference(Species* species) { return ediblePreferences[species]; };
+	virtual void addEdiblePreference(Species* speciesToBeAdded, float ediblePreferenceToBeAdded);
+	virtual float getEdibleProfitability(Species* species) { return edibleProfitabilities[species]; };
 	virtual void addEdibleProfitability(Species* speciesToBeAdded, float edibleProfitabilityToBeAdded);
 
-	virtual float getAttackProbability() const { return attackProbability; };
-	virtual float getExposedAttackProbability() const { return exposedAttackProbability; };
-	virtual float getKillProbability() const { return killProbability; };
-	virtual float getAttackAvoidingProbability() const { return Random::randomUniform(); };
-	virtual float getKillAvoidingProbability() const { return Random::randomUniform(); };
+	virtual float getAttackProbability() { return attackProbability; };
+	virtual float getExposedAttackProbability() { return exposedAttackProbability; };
+	virtual float getKillProbability() { return killProbability; };
+	virtual float getAttackAvoidingProbability() { return Random::randomUniform(); };
+	virtual float getKillAvoidingProbability() { return Random::randomUniform(); };
 
-	virtual float getCellEvaluationBiomass() const { return cellEvaluationBiomass; };
-	virtual float getCellEvaluationRisk() const { return cellEvaluationRisk; };
-	virtual float getCellEvaluationProConspecific() const { return cellEvaluationProConspecific; };
-	virtual float getCellEvaluationAntiConspecific() const { return cellEvaluationAntiConspecific; };
-	virtual float getConspecificWeighing() const { return conspecificWeighing; };
+	virtual float getCellEvaluationBiomass() { return cellEvaluationBiomass; };
+	virtual float getCellEvaluationRisk() { return cellEvaluationRisk; };
+	virtual float getCellEvaluationProConspecific() { return cellEvaluationProConspecific; };
+	virtual float getCellEvaluationAntiConspecific() { return cellEvaluationAntiConspecific; };
+	virtual float getConspecificWeighing() { return conspecificWeighing; };
 
-	virtual double getMaxPlasticityKVonBertalanffy() const { return maxPlasticityKVonBertalanffy; };
+	virtual double getMaxPlasticityKVonBertalanffy() { return maxPlasticityKVonBertalanffy; };
 	inline virtual void setMaxPlasticityKVonBertalanffy(const double& maxPlasticityKVonBertalanffy) { this->maxPlasticityKVonBertalanffy = maxPlasticityKVonBertalanffy; }
-	virtual double getMinPlasticityKVonBertalanffy() const { return minPlasticityKVonBertalanffy; };
+	virtual double getMinPlasticityKVonBertalanffy() { return minPlasticityKVonBertalanffy; };
 	inline virtual void setMinPlasticityKVonBertalanffy(const double& minPlasticityKVonBertalanffy) { this->minPlasticityKVonBertalanffy = minPlasticityKVonBertalanffy; }
-	virtual double getMaxPlasticityDueToConditionVor() const { return maxPlasticityDueToConditionVor; };
-	virtual double getMinPlasticityDueToConditionVor() const { return minPlasticityDueToConditionVor; };
-	virtual double getMaxPlasticityDueToConditionSearch() const { return maxPlasticityDueToConditionSearch; };
-	virtual double getMinPlasticityDueToConditionSearch() const { return minPlasticityDueToConditionSearch; };
-	virtual double getMaxPlasticityDueToConditionSpeed() const { return maxPlasticityDueToConditionSpeed; };
-	virtual double getMinPlasticityDueToConditionSpeed() const { return minPlasticityDueToConditionSpeed; };
+	virtual double getMaxPlasticityDueToConditionVor() { return maxPlasticityDueToConditionVor; };
+	virtual double getMinPlasticityDueToConditionVor() { return minPlasticityDueToConditionVor; };
+	virtual double getMaxPlasticityDueToConditionSearch() { return maxPlasticityDueToConditionSearch; };
+	virtual double getMinPlasticityDueToConditionSearch() { return minPlasticityDueToConditionSearch; };
+	virtual double getMaxPlasticityDueToConditionSpeed() { return maxPlasticityDueToConditionSpeed; };
+	virtual double getMinPlasticityDueToConditionSpeed() { return minPlasticityDueToConditionSpeed; };
 
-	virtual double getScaleForVoracity() const { return scaleForVoracity; };
+	virtual double getScaleForVoracity() { return scaleForVoracity; };
 	inline virtual void setScaleForVoracity(const double& scaleForVoracity) { this->scaleForVoracity = scaleForVoracity; }
-	virtual double getScaleForSearchArea() const { return scaleForSearchArea; };
+	virtual double getScaleForSearchArea() { return scaleForSearchArea; };
 	inline virtual void setScaleForSearchArea(const double& scaleForSearchArea) { this->scaleForSearchArea = scaleForSearchArea; }
-	virtual double getScaleForSpeed() const { return scaleForSpeed; };
+	virtual double getScaleForSpeed() { return scaleForSpeed; };
 	inline virtual void setScaleForSpeed(const double& scaleForSpeed) { this->scaleForSpeed = scaleForSpeed; }
-	virtual double getPseudoGrowthMean() const { return pseudoGrowthMean; };
+	virtual double getPseudoGrowthMean() { return pseudoGrowthMean; };
 	virtual void setPseudoGrowthMean(double pseudoGrowthMean) { this->pseudoGrowthMean = pseudoGrowthMean; };
-	virtual double getPseudoGrowthSd() const { return pseudoGrowthSd; };
+	virtual double getPseudoGrowthSd() { return pseudoGrowthSd; };
 	virtual void setPseudoGrowthSd(double pseudoGrowthSd) { this->pseudoGrowthSd = pseudoGrowthSd; };
-	virtual double getTempFromLab() const { return tempFromLab; };
-	virtual double getTempOptGrowth() const { return tempOptGrowth; };
-	virtual double getTempOptSearch() const { return tempOptSearch; };
-	virtual double getTempOptSpeed() const { return tempOptSpeed; };
-	virtual double getTempOptVoracity() const { return tempOptVoracity; };
-	virtual double getEdVoracity() const { return EdVoracity; };
-	virtual double getEdSearch() const { return EdSearch; };
-	virtual double getEdSpeed() const { return EdSpeed; };
-	virtual double getEdGrowth() const { return EdGrowth; };
-	virtual double getDevInter() const { return devInter; };
-	virtual double getFractSearchExtremeT() const { return fractSearchExtremeT; };
-	virtual double getFractSpeedExtremeT() const { return fractSpeedExtremeT; };
-	virtual double getMinVorExtremeT() const { return minVorExtremeT; };
-	virtual double getTempSizeRuleConstant() const { return tempSizeRuleConstant; };
+	virtual double getTempFromLab() { return tempFromLab; };
+	virtual double getTempOptGrowth() { return tempOptGrowth; };
+	virtual double getTempOptSearch() { return tempOptSearch; };
+	virtual double getTempOptSpeed() { return tempOptSpeed; };
+	virtual double getTempOptVoracity() { return tempOptVoracity; };
+	virtual double getEdVoracity() { return EdVoracity; };
+	virtual double getEdSearch() { return EdSearch; };
+	virtual double getEdSpeed() { return EdSpeed; };
+	virtual double getEdGrowth() { return EdGrowth; };
+	virtual double getDevInter() { return devInter; };
+	virtual double getFractSearchExtremeT() { return fractSearchExtremeT; };
+	virtual double getFractSpeedExtremeT() { return fractSpeedExtremeT; };
+	virtual double getMinVorExtremeT() { return minVorExtremeT; };
+	virtual double getTempSizeRuleConstant() { return tempSizeRuleConstant; };
 	inline virtual const double& getDevTime(Instar numberOfInstar) const { return devTimeVector[numberOfInstar.getValue()]; };
-	virtual double getDevTimeConstant() const { return devTimeConstant; };
-	virtual double getBetaScaleTank() const { return betaScaleTank; };
-	virtual float getDecreaseOnTraitsDueToEncounters() const { return decreaseOnTraitsDueToEncounters; };
-	virtual double getMaleMobility() const { return maleMobility; };
-	virtual double getQuitCellThreshold() const { return quitCellThreshold; };
-	virtual double getLongevitySinceMaturation() const { return longevitySinceMaturation; };
-	virtual double getReproTimeFactor() const { return reproTimeFactor; };
-	virtual float getPercentageCostForMetabolicDownregulationVoracity() const { return percentageCostForMetabolicDownregulationVoracity; };
-	virtual float getPercentageCostForMetabolicDownregulationSearchArea() const { return percentageCostForMetabolicDownregulationSearchArea; };
-	virtual float getPercentageCostForMetabolicDownregulationSpeed() const { return percentageCostForMetabolicDownregulationSpeed; };
-	virtual float getOptimalTemperatureModifier() const { return optimalTemperatureModifier; };
-	virtual double getMaxEncountersT() const { return maxEncountersT; };
+	virtual double getDevTimeConstant() { return devTimeConstant; };
+	virtual double getVonBertTime0() { return vonBertTime0; };
+	virtual double getBetaScaleTank() { return betaScaleTank; };
+	virtual float getDecreaseOnTraitsDueToEncounters() { return decreaseOnTraitsDueToEncounters; };
+	virtual double getMaleMobility() { return maleMobility; };
+	virtual double getQuitCellThreshold() { return quitCellThreshold; };
+	virtual double getLongevitySinceMaturation() { return longevitySinceMaturation; };
+	virtual double getReproTimeFactor() { return reproTimeFactor; };
+	virtual float getPercentageCostForMetabolicDownregulationVoracity() { return percentageCostForMetabolicDownregulationVoracity; };
+	virtual float getPercentageCostForMetabolicDownregulationSearchArea() { return percentageCostForMetabolicDownregulationSearchArea; };
+	virtual float getPercentageCostForMetabolicDownregulationSpeed() { return percentageCostForMetabolicDownregulationSpeed; };
+	virtual float getOptimalTemperatureModifier() { return optimalTemperatureModifier; };
+	virtual double getMaxEncountersT() { return maxEncountersT; };
 
- 	virtual double getMinSizeHunted() const { return minSizeHunted; };
-	virtual double getMaxSizeHunted() const { return maxSizeHunted; };
-	virtual double getMeanSizeHunted() const { return meanSizeHunted; };
+ 	virtual double getMinSizeHunted() { return minSizeHunted; };
+	virtual double getMaxSizeHunted() { return maxSizeHunted; };
+	virtual double getMeanSizeHunted() { return meanSizeHunted; };
 	
 	virtual void setMinSizeHunted(double minSizeHunted) {	this->minSizeHunted = minSizeHunted; };
 	virtual void setMaxSizeHunted(double maxSizeHunted) {	this->maxSizeHunted = maxSizeHunted; };
 	virtual void setMeanSizeHunted(double meanSizeHunted) {	this->meanSizeHunted = meanSizeHunted; };
-	virtual double getSdSizeHunted() const { return sdSizeHunted; };
+	virtual double getSdSizeHunted() { return sdSizeHunted; };
 	virtual void setSdSizeHunted(double sdSizeHunted) {	this->sdSizeHunted = sdSizeHunted; };
 	
-	virtual double getMinVorHunted() const { return minVorHunted; };
-	virtual double getMaxVorHunted() const { return maxVorHunted; };
-	virtual double getMeanVorHunted() const { return meanVorHunted; };
+	virtual double getMinVorHunted() { return minVorHunted; };
+	virtual double getMaxVorHunted() { return maxVorHunted; };
+	virtual double getMeanVorHunted() { return meanVorHunted; };
 	
 	virtual void setMinVorHunted(double minVorHunted) {	this->minVorHunted = minVorHunted; };
 	virtual void setMaxVorHunted(double maxVorHunted) {	this->maxVorHunted = maxVorHunted; };
@@ -536,91 +463,91 @@ public:
 	virtual double getSdVorHunted() { return sdVorHunted; };
 	virtual void setSdVorHunted(double sdVorHunted) {	this->sdVorHunted = sdVorHunted; };
 	
-	virtual double getMinSpeedHunted() const { return minSpeedHunted; };
-	virtual double getMaxSpeedHunted() const { return maxSpeedHunted; };
-	virtual double getMeanSpeedHunted() const { return meanSpeedHunted; };
+	virtual double getMinSpeedHunted() { return minSpeedHunted; };
+	virtual double getMaxSpeedHunted() { return maxSpeedHunted; };
+	virtual double getMeanSpeedHunted() { return meanSpeedHunted; };
 	
 	virtual void setMinSpeedHunted(double minSpeedHunted) {	this->minSpeedHunted = minSpeedHunted; };
 	virtual void setMaxSpeedHunted(double maxSpeedHunted) {	this->maxSpeedHunted = maxSpeedHunted; };
 	virtual void setMeanSpeedHunted(double meanSpeedHunted) { this->meanSpeedHunted = meanSpeedHunted; };
-	virtual double getSdSpeedHunted() const { return sdSpeedHunted; };
+	virtual double getSdSpeedHunted() { return sdSpeedHunted; };
 	virtual void setSdSpeedHunted(double sdSpeedHunted) { this->sdSpeedHunted = sdSpeedHunted; };
 
-	virtual double getMinSizeHunter() const { return minSizeHunter; };
+	virtual double getMinSizeHunter() { return minSizeHunter; };
 	virtual void setMinSizeHunter(double minSizeHunter) {	this->minSizeHunter = minSizeHunter; };
-	virtual double getMaxSizeHunter() const { return maxSizeHunter; };
+	virtual double getMaxSizeHunter() { return maxSizeHunter; };
 	virtual void setMaxSizeHunter(double maxSizeHunter) {	this->maxSizeHunter = maxSizeHunter; };
-	virtual double getMeanSizeHunter() const { return meanSizeHunter; };
+	virtual double getMeanSizeHunter() { return meanSizeHunter; };
 	virtual void setMeanSizeHunter(double meanSizeHunter) {	this->meanSizeHunter = meanSizeHunter; };
-	virtual double getSdSizeHunter() const{ return sdSizeHunter; };
+	virtual double getSdSizeHunter() { return sdSizeHunter; };
 	virtual void setSdSizeHunter(double sdSizeHunter) {	this->sdSizeHunter = sdSizeHunter; };
 
-	virtual double getMinVorHunter() const { return minVorHunter; };
+	virtual double getMinVorHunter() { return minVorHunter; };
 	virtual void setMinVorHunter(double minVorHunter) {	this->minVorHunter = minVorHunter; };
-	virtual double getMaxVorHunter() const { return maxVorHunter; };
+	virtual double getMaxVorHunter() { return maxVorHunter; };
 	virtual void setMaxVorHunter(double maxVorHunter) {	this->maxVorHunter = maxVorHunter; };
-	virtual double getMeanVorHunter() const { return meanVorHunter; };
+	virtual double getMeanVorHunter() { return meanVorHunter; };
 	virtual void setMeanVorHunter(double meanVorHunter) {	this->meanVorHunter = meanVorHunter; };
-	virtual double getSdVorHunter() const { return sdVorHunter; };
+	virtual double getSdVorHunter() { return sdVorHunter; };
 	virtual void setSdVorHunter(double sdVorHunter) {	this->sdVorHunter = sdVorHunter; };
 
-	virtual double getMinSpeedHunter() const { return minSpeedHunter; };
+	virtual double getMinSpeedHunter() { return minSpeedHunter; };
 	virtual void setMinSpeedHunter(double minSpeedHunter) { this->minSpeedHunter = minSpeedHunter; };
-	virtual double getMaxSpeedHunter() const { return maxSpeedHunter; };
+	virtual double getMaxSpeedHunter() { return maxSpeedHunter; };
 	virtual void setMaxSpeedHunter(double maxSpeedHunter) { this->maxSpeedHunter = maxSpeedHunter; };
-	virtual double getMeanSpeedHunter() const { return meanSpeedHunter; };
+	virtual double getMeanSpeedHunter() { return meanSpeedHunter; };
 	virtual void setMeanSpeedHunter(double meanSpeedHunter) { this->meanSpeedHunter = meanSpeedHunter; };
-	virtual double getSdSpeedHunter() const { return sdSpeedHunter; };
+	virtual double getSdSpeedHunter() { return sdSpeedHunter; };
 	virtual void setSdSpeedHunter(double sdSpeedHunter) { this->sdSpeedHunter = sdSpeedHunter; };
 
-	virtual double getMinSearchAreaHunter() const { return minSearchAreaHunter; };
+	virtual double getMinSearchAreaHunter() { return minSearchAreaHunter; };
 	virtual void setMinSearchAreaHunter(double minSearchAreaHunter) {	this->minSearchAreaHunter = minSearchAreaHunter; };
-	virtual double getMaxSearchAreaHunter() const { return maxSearchAreaHunter; };
+	virtual double getMaxSearchAreaHunter() { return maxSearchAreaHunter; };
 	virtual void setMaxSearchAreaHunter(double maxSearchAreaHunter) {	this->maxSearchAreaHunter = maxSearchAreaHunter; };
-	virtual double getMeanSearchAreaHunter() const { return meanSearchAreaHunter; };
+	virtual double getMeanSearchAreaHunter() { return meanSearchAreaHunter; };
 	virtual void setMeanSearchAreaHunter(double meanSearchAreaHunter) {	this->meanSearchAreaHunter = meanSearchAreaHunter; };
-	virtual double getSdSearchAreaHunter() const { return sdSearchAreaHunter; };
+	virtual double getSdSearchAreaHunter() { return sdSearchAreaHunter; };
 	virtual void setSdSearchAreaHunter(double sdSearchAreaHunter) {	this->sdSearchAreaHunter = sdSearchAreaHunter; };
 
-	virtual double getMinProbabilityDensityFunction() const { return minProbabilityDensityFunction; };
+	virtual double getMinProbabilityDensityFunction() { return minProbabilityDensityFunction; };
 	virtual void setMinProbabilityDensityFunction(double minProbabilityDensityFunction) {	this->minProbabilityDensityFunction = minProbabilityDensityFunction; };
-	virtual double getMaxProbabilityDensityFunction() const { return maxProbabilityDensityFunction; };
+	virtual double getMaxProbabilityDensityFunction() { return maxProbabilityDensityFunction; };
 	virtual void setMaxProbabilityDensityFunction(double maxProbabilityDensityFunction) {	this->maxProbabilityDensityFunction = maxProbabilityDensityFunction; };
-	virtual double getMeanProbabilityDensityFunction() const { return meanProbabilityDensityFunction; };
+	virtual double getMeanProbabilityDensityFunction() { return meanProbabilityDensityFunction; };
 	virtual void setMeanProbabilityDensityFunction(double meanProbabilityDensityFunction) {	this->meanProbabilityDensityFunction = meanProbabilityDensityFunction; };
-	virtual double getSdProbabilityDensityFunction() const { return sdProbabilityDensityFunction; };
+	virtual double getSdProbabilityDensityFunction() { return sdProbabilityDensityFunction; };
 	virtual void setSdProbabilityDensityFunction(double sdProbabilityDensityFunction) {	this->sdProbabilityDensityFunction = sdProbabilityDensityFunction; };
 
-	virtual double getMinVorXVor() const { return minVorXVor; };
+	virtual double getMinVorXVor() { return minVorXVor; };
 	virtual void setMinVorXVor(double minVorXVor) { this->minVorXVor = minVorXVor; };
-	virtual double getMaxVorXVor() const { return maxVorXVor; };
+	virtual double getMaxVorXVor() { return maxVorXVor; };
 	virtual void setMaxVorXVor(double maxVorXVor) { this->maxVorXVor = maxVorXVor; };
-	virtual double getMeanVorXVor() const { return meanVorXVor; };
+	virtual double getMeanVorXVor() { return meanVorXVor; };
 	virtual void setMeanVorXVor(double meanVorXVor) { this->meanVorXVor = meanVorXVor; };
-	virtual double getSdVorXVor() const { return sdVorXVor; };
+	virtual double getSdVorXVor() { return sdVorXVor; };
 	virtual void setSdVorXVor(double sdVorXVor) { this->sdVorXVor = sdVorXVor; };
 
-	virtual double getMinSpeedRatio() const { return minSpeedRatio; };
+	virtual double getMinSpeedRatio() { return minSpeedRatio; };
 	virtual void setMinSpeedRatio(double minSpeedRatio) {	this->minSpeedRatio = minSpeedRatio; };
-	virtual double getMaxSpeedRatio() const { return maxSpeedRatio; };
+	virtual double getMaxSpeedRatio() { return maxSpeedRatio; };
 	virtual void setMaxSpeedRatio(double maxSpeedRatio) {	this->maxSpeedRatio = maxSpeedRatio; };
-	virtual double getMeanSpeedRatio() const { return meanSpeedRatio; };
+	virtual double getMeanSpeedRatio() { return meanSpeedRatio; };
 	virtual void setMeanSpeedRatio(double meanSpeedRatio) {	this->meanSpeedRatio = meanSpeedRatio; };
-	virtual double getSdSpeedRatio() const { return sdSpeedRatio; };
+	virtual double getSdSpeedRatio() { return sdSpeedRatio; };
 	virtual void setSdSpeedRatio(double sdSpeedRatio) {	this->sdSpeedRatio = sdSpeedRatio; };
 
-	virtual double getMeanSizeRatio() const { return meanSizeRatio; };
+	virtual double getMeanSizeRatio() { return meanSizeRatio; };
 	virtual void setMeanSizeRatio(double meanSizeRatio) { this->meanSizeRatio = meanSizeRatio; };
-	virtual double getSdSizeRatio() const { return sdSizeRatio; };
+	virtual double getSdSizeRatio() { return sdSizeRatio; };
 	virtual void setSdSizeRatio(double sdSizeRatio) { this->sdSizeRatio = sdSizeRatio; };
 
-	virtual float getExperienceInfluencePerDay() const { return experienceInfluencePerDay; };
+	virtual float getExperienceInfluencePerDay() { return experienceInfluencePerDay; };
 	virtual void addPredationEventOnOtherSpecies(int predatedSpeciesId) { predationEventsOnOtherSpecies.at(predatedSpeciesId)++; };
 
-	virtual double getProbabilityDeathFromBackground() const { return probabilityDeathFromBackground; };
-	virtual double getFemaleMaxReproductionEvents() const { return femaleMaxReproductionEvents; };
-	virtual double getEggsPerBatch() const { return eggsPerBatch; };
-	virtual double getMaleMaxReproductionEvents() const { return maleMaxReproductionEvents; };
+	virtual double getProbabilityDeathFromBackground() { return probabilityDeathFromBackground; };
+	virtual double getFemaleMaxReproductionEvents() { return femaleMaxReproductionEvents; };
+	virtual double getEggsPerBatch() { return eggsPerBatch; };
+	virtual double getMaleMaxReproductionEvents() { return maleMaxReproductionEvents; };
 
 
 	virtual void setInitialPredationEventsOnOtherSpecies(unsigned int numberOfSpecies);
@@ -628,17 +555,18 @@ public:
 	virtual void calculatePseudoGrowthMean();
 	virtual void calculatePseudoGrowthSd();
 
-	virtual void sumStatisticMeans(double hunterAnimalBodySize, double hunterAnimalVoracity, double hunterAnimalSpeed, double hunterAnimalDryMass, double huntedAnimalBodySize, double huntedAnimalVoracity, double huntedAnimalSpeed, double huntedAnimalDryMass, double muForPDF, double sigmaForPDF);
-	virtual void interactionRanges(double hunterAnimalBodySize, double hunterAnimalVoracity, double hunterAnimalSpeed, double hunterAnimalDryMass, double huntedAnimalBodySize, double huntedAnimalVoracity, double huntedAnimalSpeed, double huntedAnimalDryMass, double muForPDF, double sigmaForPDF);
+	virtual void sumStatisticMeans(Edible* hunterAnimal, Edible* huntedAnimal, double muForPDF, double sigmaForPDF);
+	virtual void interactionRanges(Edible* hunterAnimal, Edible* huntedAnimal, double muForPDF, double sigmaForPDF);
 	virtual void computeStatisticMeans(unsigned int numberOfAttacks);
-	virtual void sumStatisticSds(double hunterAnimalBodySize, double hunterAnimalVoracity, double hunterAnimalSpeed, double hunterAnimalDryMass, double huntedAnimalBodySize, double huntedAnimalVoracity, double huntedAnimalSpeed, double huntedAnimalDryMass, double muForPDF, double sigmaForPDF);
+	virtual void sumStatisticSds(Edible* hunterAnimal, Edible* huntedAnimal, double muForPDF, double sigmaForPDF);
 	virtual void computeStatisticSds(unsigned int numberOfAttacks);
 
 	virtual void initWetBiomassDensitiesPerAge(float temperature, int timeStepsPerDay);
-	virtual bool canEatAnyResourceSpecies() { return !edibleResourceSpecies.empty(); };
+	virtual bool canEatAnyFungusSpecies() { return !edibleFungusSpecies.empty(); };
 	virtual bool canEatAnyAnimalSpecies() { return !edibleAnimalSpecies.empty(); };
-	virtual vector<ResourceSpecies*> * getInvolvedResourceSpecies();
+	virtual vector<Species*> * getInvolvedFungusSpecies();
 
+	void setDefaultHuntingMode(unsigned int huntingMode);
 	void setCorrelationCoeficientRHO(double newRho);
 	void setQ10phenology(double q10pheno);
 	void setQ10digestion(double q10digest);
@@ -729,8 +657,11 @@ public:
 	inline void setDevTimeVector(const vector<double>& devTimeVector){ this->devTimeVector = devTimeVector; }
 	void setVonBertLinf(double vonBertLinf);
 	void setVonBertKini(double vonBertKini);
+	inline void setVonBertTime0(const double& vonBertTime0) { this->vonBertTime0 = vonBertTime0; }
 	void setLinfKcorr(const double& LinfKcorr);
 	inline void setDevTimeConstant(const double& devTimeConstant) { this->devTimeConstant = devTimeConstant; }
+	inline void setVonBertLdistanceMin(const double& vonBertLdistanceMin) { this->vonBertLdistanceMin = vonBertLdistanceMin; }
+	inline void setVonBertLdistanceMax(const double& vonBertLdistanceMax) { this->vonBertLdistanceMax = vonBertLdistanceMax; }
 	inline void setLongevitySinceMaturation(const double& longevitySinceMaturation) { this->longevitySinceMaturation = longevitySinceMaturation; }
 	inline void setReproTimeFactor(const double& reproTimeFactor) { this->reproTimeFactor = reproTimeFactor; }
 	inline void setTempOptGrowth(const double& tempOptGrowth) { this->tempOptGrowth = tempOptGrowth; }
@@ -784,10 +715,7 @@ public:
 
 
 	float getSexRatio() { return sexRatio; };
-	void setSexRatio(const float& sexRatio) { this->sexRatio = sexRatio; }
-
-	unsigned int getSize() { return size; }
-	void setSize(const unsigned int size) { this->size = size; }
+	inline void setSexRatio(const float& sexRatio) { this->sexRatio = sexRatio; }
 
 	inline void setFemaleMaxReproductionEvents(const int& femaleMaxReproductionEvents) { this->femaleMaxReproductionEvents = femaleMaxReproductionEvents; }
 	void setEggsPerBatch(const double& eggsPerBatch) { this->eggsPerBatch = eggsPerBatch; }
@@ -812,18 +740,21 @@ public:
 	inline void setStatisticsInitialPopulation(const vector<unsigned long>& statisticsInitialPopulation) { this->statisticsInitialPopulation = statisticsInitialPopulation; }
 
 
-	void setTraits(const unordered_map<string,double>& fixedTraits, const unordered_map<string,double>& minTraitRanges, 
+	const double& getTrait(const Trait& trait) const;
+	void setVariableTraitsOrder(const vector<string>& order);
+	void setTraits(const unordered_map<string,nlohmann::json>& fixedTraits, const unordered_map<string,double>& minTraitRanges, 
 				   const unordered_map<string,double>& maxTraitRanges, const unordered_map<string,double>& minTraitLimits, 
-				   const unordered_map<string,double>& maxTraitLimits, const vector<string>& order, const std::vector<double>& restrictPerTrait);
+				   const unordered_map<string,double>& maxTraitLimits, const vector<string>& order);
 	void resetLimits();
 	void resetPseudoGrowthMean();
 	void resetPseudoGrowthSd();
+	void computeRestrictedTraits();
 
 
 
 
 
-	void fillInvolvedResourceSpecies(vector<ResourceSpecies*> * involvedResourceSpecies, vector<AnimalSpecies*> * alreadyCheckedAnimalSpecies, const vector<AnimalSpecies*> * involvedAnimalSpecies);
+	void fillInvolvedFungusSpecies(vector<Species*> * involvedFungusSpecies, vector<Species*> * alreadyCheckedAnimalSpecies, vector<Species*> * involvedAnimalSpecies);
 
 	virtual double getMaxPredationProbability();
 	void setMaxPredationProbability(double maxPredationProbability);

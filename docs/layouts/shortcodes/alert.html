@@ -1,0 +1,22 @@
+<div class="alert alert-{{ with .Get "context" }}{{.}}{{ else }}doks{{ end }} d-flex" role="alert">
+    <div class="flex-shrink-1 alert-icon">
+        {{ with .Get "icon" }} 
+            {{.}} 
+        {{ else }} 
+            {{ if eq (.Get "context") "info" }} 
+                <span>💡</span>
+            {{ else if eq (.Get "context") "success" }} 
+                <span>✅</span> 
+            {{ else if eq (.Get "context") "warning" }}
+                <span>🚨</span> 
+            {{ else if eq (.Get "context") "danger" }}
+                <span>🚫</span> 
+            {{ end }} 
+        {{ end }}
+    </div>
+    {{ with .Get "text"}}
+    <div class="w-100">{{ . | safeHTML }} </div>
+    {{ else }} {{ with .Inner}}
+    <div class="w-100"> {{ . | markdownify}}</div>
+    {{ else }} {{ errorf "No valid text variable or Inner content given"}} {{ end }} {{ end}}
+</div>

@@ -4,16 +4,17 @@
         "simulation": {
             "type": "object",
             "properties": {
+                "simulationType": {
+                    "type": "string",
+                    "enum": ["arthropods", "dinosaurs"],
+                    "required": true
+                },
                 "numberOfCombinations": {
                     "type": "unsigned_integer",
                     "minimum": 1,
                     "required": true
                 },
                 "exitAtFirstExtinction": {
-                    "type": "boolean",
-                    "required": true
-                },
-                "growthAndReproTest": {
                     "type": "boolean",
                     "required": true
                 },
@@ -31,7 +32,7 @@
                     "minimum": 1,
                     "required": true
                 },
-                "configFolder": {
+                "configDirectory": {
                     "type": "string",
                     "required": false
                 },
@@ -39,17 +40,13 @@
                     "type": "string",
                     "required": true
                 },
-                "resultFolder": {
+                "resultDirectory": {
                     "type": "string",
                     "required": false
                 },
                 "resultName": {
                     "type": "string",
                     "required": false
-                },
-                "saveAnimalConstitutiveTraits": {
-                    "type": "boolean",
-                    "required": true
                 },
                 "saveGeneticsSummaries": {
                     "type": "boolean",
@@ -81,10 +78,6 @@
                 },
                 "edibilitiesFilename": {
                     "type": "string",
-                    "required": true
-                },
-                "saveEdibilitiesFile": {
-                    "type": "boolean",
                     "required": true
                 },
                 "initFromFixedSeed": {
@@ -152,37 +145,42 @@
                         "enabled": {
                             "type": "boolean",
                             "required": true
-                        },
-                        "selectedChannel": {
-                            "type": "string",
-                            "enum": ["Terminal", "Log"],
-                            "required": true
                         }
                     },
+                    "conditionals": [
+                        {
+                            "if": {
+                                "type": "equal",
+                                "lhs": {
+                                    "type": "property",
+                                    "value": [
+                                        "enabled"
+                                    ]
+                                },
+                                "rhs": {
+                                    "type": "constant",
+                                    "value": true
+                                }
+                            },
+                            "then": [ 
+                                {
+                                    "add": {
+                                        "properties": { 
+                                            "selectedChannel": {
+                                                "type": "string",
+                                                "enum": ["terminal", "log"],
+                                                "required": true
+                                            }
+                                        }
+                                    }
+                                }
+                            ]
+                        }
+                    ],
                     "additionalProperties": false,
                     "required": true
                 }
             },
-            "warningConditions": [
-                {
-                    "condition": {
-                        "type": "greater_than",
-                        "lhs": {
-                            "type": "property",
-                            "value": [
-                                "recordEach"
-                            ]
-                        },
-                        "rhs": {
-                            "type": "property",
-                            "value": [
-                                "runDays"
-                            ]
-                        }
-                    },
-                    "warning": "Item 'recordEach' is greater than item 'runDays'"
-                }
-            ],
             "additionalProperties": false,
             "required": true
         }

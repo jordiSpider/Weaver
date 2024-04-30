@@ -9,26 +9,26 @@
 #define ALLELE_H_
 
 #include <ostream>
-
+using namespace std;
 
 class Allele
 {
 private:
-	static unsigned int alleleId;
-
-	const unsigned int id;
-	const double value;
-	const unsigned int alphabeticOrder;
+	int id;
+	float value;
+	float alphabeticOrder;
 public:
-	explicit Allele(const double &value, const unsigned int alphabeticOrder);
-	~Allele();
+	Allele(float value, float alphabeticOrder);
+	Allele(const Allele* otherAllele);
+	virtual ~Allele();
+	int getId() const;
+	float getValue() const;
+	float getAlphabeticOrder() const;
+	Allele* clone() const;
+	friend ostream& operator<<(ostream& os, Allele& chromosome);
 
-	// Getters
-	inline const unsigned int getId() const { return id; }
-	inline const double& getValue() const { return value; }
-	inline const unsigned int getAlphabeticOrder() const { return alphabeticOrder; }
-	
-	friend std::ostream& operator<<(std::ostream& os, const Allele& chromosome);
+private:
+	static int alleleId;
 };
 
 #endif /* ALLELE_H_ */

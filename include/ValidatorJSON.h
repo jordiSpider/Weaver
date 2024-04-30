@@ -12,192 +12,122 @@
 #include <stdexcept>
 #include "nlohmann/json.h"
 #include "LineInfoException.h"
-#include "Output.h"
 
-#include "magic_enum/magic_enum.h"
 
-#define FMT_HEADER_ONLY
-#include "fmt/core.h"
+
+
+class TypeElemJSONConverter {
+public:
+    enum TypeElemJSON {
+        Object,
+        Array,
+        String, 
+        Integer, 
+        Unsigned_Integer, 
+        Float, 
+        Boolean
+    };
+
+    inline static TypeElemJSON stringToEnumValue(const std::string &str) { return stringToEnum.at(str); }
+    static const std::string printValues();
+private:
+    static std::unordered_map<std::string, TypeElemJSON> stringToEnum;
+};
+
+
+#define PATTERN_ELEM "<pattern>"
+
+class OperatorsJSONConverter {
+public:
+    enum OperatorsJSON {
+        If,
+        Equal,
+        Not_Equal,
+        Less_Than, 
+        Greater_Than, 
+        Less_Equal_Than, 
+        Greater_Equal_Than, 
+        Not,
+        And,
+        Or,
+        Property,
+        Property_Item,
+        Property_Size,
+        Property_Exists,
+        Constant,
+        Subtract,
+        Sum,
+        Division,
+        Multiply,
+        Module
+    };
+
+    inline static OperatorsJSON stringToEnumValue(const std::string &str) { return stringToEnum.at(str); }
+    static const std::string printValues();
+private:
+    static std::unordered_map<std::string, OperatorsJSON> stringToEnum;
+};
+
+
+class ItemsOrderConverter {
+public:
+    enum ItemsOrder {
+        Increasing,
+        Strictly_Increasing,
+        Decreasing, 
+        Strictly_Decreasing
+    };
+
+    inline static ItemsOrder stringToEnumValue(const std::string &str) { return stringToEnum.at(str); }
+    static const std::string printValues();
+private:
+    static std::unordered_map<std::string, ItemsOrder> stringToEnum;
+};
+
+
+
+
+class RegexKey
+{
+private:
+    std::string regexValue;
+    std::regex pattern;
+public:
+    RegexKey(const std::string& regexValue);
+    bool operator==(const std::string &other) const;
+    inline std::string getRegexValue() const { return regexValue; }
+};
+
+
+class ListRegexKey
+{
+private:
+    std::list<RegexKey> listRegex;
+public:
+    ListRegexKey() {}
+    ListRegexKey(const nlohmann::json* list);
+    void findRegexKey(const std::string& key) const;
+};
+
+
+class MapRegexKey
+{
+private:
+    const nlohmann::json* schema;
+    std::list<RegexKey> listRegex;
+public:
+    MapRegexKey() {}
+    MapRegexKey(const nlohmann::json* schema);
+    const nlohmann::json& at(const std::string& key, std::string& regexKey) const;
+    const nlohmann::json& at(const std::string& key) const;
+};
+
+
 
 
 class ValidatorJSON
 {
 private:
-    class TypeElemJSON {
-    public:
-        enum TypeElemJSONValue {
-            object,
-            array,
-            string, 
-            integer, 
-            unsigned_integer, 
-            floater, 
-            boolean
-        };
-
-        inline static const TypeElemJSONValue stringToEnumValue(const std::string &str) { 
-            try
-			{
-				return stringToEnum.at(str);
-			}
-			catch(const std::out_of_range& e) 
-			{
-				throwLineInfoException(fmt::format("': Unknown elem type '{}'. Valid values are {}", str, printAvailableValues()));
-			}
-        }
-        inline static constexpr size_t size() { return magic_enum::enum_count<TypeElemJSONValue>(); }
-        inline static std::string_view printAvailableValues() { return enumValues; }
-
-    private:
-        static const std::unordered_map<std::string_view, const TypeElemJSONValue> stringToEnum;
-        static const std::string enumValues;
-
-        inline static std::string_view to_string(const TypeElemJSONValue& type) { return magic_enum::enum_name(type); }
-        static const std::unordered_map<std::string_view, const TypeElemJSONValue> generateMap();
-        static const std::string generateAvailableValues();  
-    };
-
-    class OperatorJSON {
-    public:
-        enum OperatorJSONType {
-            if_cond,
-            equal,
-            not_equal,
-            less_than, 
-            greater_than, 
-            less_equal_than, 
-            greater_equal_than, 
-            not_oper,
-            and_oper,
-            or_oper,
-            property,
-            property_item,
-            property_size,
-            property_exists,
-            constant,
-            subtract,
-            sum,
-            division,
-            multiply,
-            module
-        };
-
-        inline static const OperatorJSONType stringToEnumValue(const std::string &str) { 
-            try
-			{
-				return stringToEnum.at(str);
-			}
-			catch(const std::out_of_range& e) 
-			{
-				throwLineInfoException(fmt::format("': Unknown operator type '{}'. Valid values are {}", str, printAvailableValues()));
-			}
-        }
-        inline static constexpr size_t size() { return magic_enum::enum_count<OperatorJSONType>(); }
-        inline static std::string_view printAvailableValues() { return enumValues; }
-
-    private:
-        static const std::unordered_map<std::string_view, const OperatorJSONType> stringToEnum;
-        static const std::string enumValues;
-
-        inline static std::string_view to_string(const OperatorJSONType& type) { return magic_enum::enum_name(type); }
-        static const std::unordered_map<std::string_view, const OperatorJSONType> generateMap();
-        static const std::string generateAvailableValues();
-    };
-
-    class ItemsOrder {
-    public:
-        enum ItemsOrderType {
-            increasing,
-            strictly_increasing,
-            decreasing, 
-            strictly_decreasing
-        };
-
-        inline static const ItemsOrderType stringToEnumValue(const std::string &str) { 
-            try
-			{
-				return stringToEnum.at(str);
-			}
-			catch(const std::out_of_range& e) 
-			{
-				throwLineInfoException(fmt::format("': Unknown item order type '{}'. Valid values are {}", str, printAvailableValues()));
-			}
-        }
-        inline static constexpr size_t size() { return magic_enum::enum_count<ItemsOrderType>(); }
-    private:
-        static const std::unordered_map<std::string_view, const ItemsOrderType> stringToEnum;
-        static const std::string enumValues;
-
-        inline static std::string_view to_string(const ItemsOrderType& type) { return magic_enum::enum_name(type); }
-        static const std::unordered_map<std::string_view, const ItemsOrderType> generateMap();
-        inline static std::string_view printAvailableValues() { return enumValues; }
-        static const std::string generateAvailableValues();
-    };
-
-    class Environment {
-    public:
-        enum EnvironmentType {
-            schema,
-            config
-        };
-
-        inline static const EnvironmentType stringToEnumValue(const std::string &str) { 
-            try
-			{
-				return stringToEnum.at(str);
-			}
-			catch(const std::out_of_range& e) 
-			{
-				throwLineInfoException(fmt::format("': Unknown environment type '{}'. Valid values are {}", str, printAvailableValues()));
-			} 
-        }
-        inline static constexpr size_t size() { return magic_enum::enum_count<EnvironmentType>(); }
-    private:
-        static const std::unordered_map<std::string_view, const EnvironmentType> stringToEnum;
-        static const std::string enumValues;
-
-        inline static std::string_view to_string(const EnvironmentType& type) { return magic_enum::enum_name(type); }
-        static const std::unordered_map<std::string_view, const EnvironmentType> generateMap();
-        inline static std::string_view printAvailableValues() { return enumValues; }
-        static const std::string generateAvailableValues();
-    };
-
-    class RegexKey
-    {
-    private:
-        std::string regexValue;
-        std::regex pattern;
-    public:
-        RegexKey(const std::string& regexValue);
-        bool operator==(const std::string &other) const;
-        inline std::string getRegexValue() const { return regexValue; }
-    };
-
-
-    class ListRegexKey
-    {
-    private:
-        std::list<RegexKey> listRegex;
-    public:
-        ListRegexKey() {}
-        ListRegexKey(const nlohmann::json* list);
-        void findRegexKey(const std::string& key) const;
-    };
-
-
-    class MapRegexKey
-    {
-    private:
-        const nlohmann::json* schema;
-        std::list<RegexKey> listRegex;
-    public:
-        MapRegexKey() {}
-        MapRegexKey(const nlohmann::json* schema);
-        const nlohmann::json& at(const std::string& key, std::string& regexKey) const;
-        const nlohmann::json& at(const std::string& key) const;
-    };
-
-    static constexpr char PATTERN_ELEM[] = "<pattern>";
     static std::ofstream warningsFile;
 
     static bool isRequired(std::map<std::string, bool>& required, const std::string& property);
@@ -234,10 +164,7 @@ private:
     static const int solveModuleOperator(const nlohmann::json& config, const nlohmann::json& condition, const std::string patternElem = "");
     static const nlohmann::json* getProperty(const nlohmann::json& config, const nlohmann::json& listProperties, const std::string patternElem = "");
     static const nlohmann::json solveOperator(const nlohmann::json& config, const nlohmann::json& condition, const std::string patternElem = "");
-    static bool checkIf(const nlohmann::json& config, const nlohmann::json& condition, const std::string patternElem = "");
-    static void checkCondition(nlohmann::json& schema, const nlohmann::json& condition, const nlohmann::json& config, const std::string patternElem = "");
-    static nlohmann::json* moveToDestination(nlohmann::json* structure, const nlohmann::json dst, Environment::EnvironmentType environment);
-    static const nlohmann::json* moveToDestination(const nlohmann::json* structure, const nlohmann::json dst, Environment::EnvironmentType environment);
+    static bool checkCondition(const nlohmann::json& config, const nlohmann::json& condition, const std::string patternElem = "");
     static std::vector<std::string> generateRegexElems(const std::string& regex);
     static void addPatternProperties(nlohmann::json& schema, const nlohmann::json& patternProperties);
     static void removePatternProperties(std::map<std::string,nlohmann::json>& properties, const nlohmann::json& patternProperties);
@@ -254,7 +181,6 @@ private:
 public:
     static void validateJSON(const nlohmann::json& config, nlohmann::json& schema);
 };
-
 
 
 class ValidatorJSONException : public LineInfoException

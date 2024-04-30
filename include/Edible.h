@@ -9,106 +9,120 @@
 #define EDIBLE_H_
 
 #include <ostream>
-#include <string>
-
-#include "magic_enum/magic_enum.h"
-#include "Types.h"
-#include "Species.h"
-#include "LineInfoException.h"
 #include <list>
+#include "Types.h"
 
+class Species;
+class TerrainCell;
+class Genome;
 
-class TerrainCellInterface;
+using namespace std;
 
 class Edible {
 private:
-	static id_type edibleId;
-
 	id_type id;
-	std::string idStr;
+	static int edibleId;
 
 protected:
-	Species* const mySpecies;
-
-	explicit Edible(Species* const mySpecies, const bool temporary=false);
-	~Edible();
+	Species* mySpecies;
 
 public:
-	class LifeStage {
-	public:
-		enum LifeStageValue : unsigned int
-		{
-			UNBORN, 
-			ACTIVE, 
-			STARVED, 
-			PREDATED, 
-			REPRODUCING, 
-			PUPA, 
-			SATIATED, 
-			HANDLING, 
-			DIAPAUSE, 
-			BACKGROUND, 
-			SENESCED, 
-			SHOCKED
-		};
+	Edible(Species* mySpecies, bool temporary=false);
+	virtual ~Edible();
 
-		inline static constexpr size_t size() { return magic_enum::enum_count<LifeStageValue>(); }
-		inline static std::string_view to_string(const LifeStageValue& lifeStage) { return magic_enum::enum_name(lifeStage); }
-		inline static constexpr auto getEnumValues() { return magic_enum::enum_values<LifeStageValue>(); }
+	void doDefinitive() { id = edibleId++; };
 
-		LifeStage(const LifeStageValue value);
-		LifeStage(const LifeStage &other);
-
-		inline const LifeStageValue getValue() const { return value; }
-		inline operator int() const { return value; }
-		inline bool operator<(const LifeStage& other) const { return this->value < other.value; }
-		inline bool operator==(const LifeStage& other) const { return this->value == other.value; }
-		friend inline bool operator==(const LifeStage &lhs, const LifeStageValue rhs) { return lhs.value == rhs; }
-		friend inline bool operator==(const LifeStageValue lhs, const LifeStage &rhs) { return lhs == rhs.value; }
-
-		friend std::ostream& operator<<(std::ostream& os, const LifeStage lifeStage);
-
-	private:
-		LifeStageValue value;
+	id_type getId() const { return id; };
+	inline std::string getIdStr() { 
+		stringstream ss;
+		ss << std::setw(MAX_NUM_DIGITS_ID) << std::setfill('0') << id;
+		return ss.str();
 	};
+	static void resetIds() { Edible::edibleId = 0; };
+	void decrementIds() { Edible::edibleId--; };
+	Species* getSpecies() { return mySpecies; };
 
-	inline static void resetIds(id_type newValue) { edibleId = newValue; }
+	virtual double calculateDryMass()=0;
+	virtual double turnIntoDryMassToBeEaten(double predatorVoracity, float profitability, double leftovers)=0;
+	virtual double calculateWetMass()=0;
+	virtual double getVoracity() { return 0.0; };
+	virtual double getMassAtBirth() { return 0.0; };
+	virtual double getRemainingVoracity() { return 0.0; };
+	virtual double getAssim() { return 0.0; };
+	virtual double getCurrentBodySize() { return 0.0; };
+	virtual double getSpeed() { return 0.0; };
+	virtual int getHuntingMode() { return -1; };
+	virtual void incrementEncountersWithPredator(int predatorId) {};
+	virtual TerrainCell* getPosition()=0;
 
-	// Getters
-	inline const id_type getId() const { return id; }
-	inline std::string_view getIdStr() const { return idStr; }
-	inline virtual Species* const getSpecies() const { return mySpecies; }
+	virtual bool canEatEdible(Edible* edible) { return false; };
+	virtual double calculateEncounterProbability(Edible* edibleToBeEncountered) { return 0.0; };
+	virtual bool encounterEdible(Edible* searchedAnimal, float attackOrExposedProbability, int timeStep, ostream& encounterProbabilitiesFile, ostream& predationProbabilitiesFile) { return false; };
+	virtual double calculatePredationProbability(Edible* edibleToBePredated, bool retaliation) { return 0.0; };
+	virtual bool predateEdible(Edible* edibleToBePredated, int day, bool retaliation, ostream& encounterProbabilitiesFile, ostream& predationProbabilitiesFile) { return false; };
+	virtual double calculateEdibilityValue(Edible* edibleToBeEvaluated) { return 0.0; };
+	virtual double calculateEdibilityValueWithMass(Edible* edibleToBeEvaluated) { return 0.0; };
+	virtual float getMeanExperience(Species* species) { return 0.0; };
 
-	// Setters
-	inline void doDefinitive() { 
-		id = Edible::edibleId++;
-		generateIdStr();
-	};
-	inline void generateIdStr() { idStr = std::string(MAX_NUM_DIGITS_ID - std::to_string(id).length(), '0') + std::to_string(id); }
-	
-	friend std::ostream& operator<<(std::ostream& os, const Edible& edible);
+	virtual bool isSated() { return false; };
+	virtual bool isExhausted() { return false; };
 
-	// Abstract methods
-	virtual const double calculateDryMass() const=0;
-	virtual const double turnIntoDryMassToBeEaten(const double &predatorVoracity, const float &profitability, const double &leftovers) const=0;
-	virtual const double calculateWetMass()=0;
-	virtual const double getVoracity() const=0;
-	virtual const double getCurrentBodySize() const=0;
-	virtual const double getSpeed() const=0;
-	virtual const bool isHunting() const=0;
-	virtual void incrementEncountersWithPredator(const int &predatorId)=0;
-	virtual TerrainCellInterface* getPosition() { throwLineInfoException("Incorrect call"); }
-	virtual bool canEatEdible(Edible* edible, const std::list<Edible*> &ediblesHasTriedToPredate)=0;
-	virtual bool predateEdible(Edible* edibleToBePredated, int day, bool retaliation, std::list<Edible*> &ediblesHasTriedToPredate, std::ostream& encounterProbabilitiesFile, std::ostream& predationProbabilitiesFile, double muForPDF, double sigmaForPDF, double predationSpeedRatioAH, double predationHunterVoracityAH, double predationProbabilityDensityFunctionAH, double predationSpeedRatioSAW, double predationHunterVoracitySAW, double predationProbabilityDensityFunctionSAW, double maxSearchArea)=0;
-	virtual int getPredatedByID() const=0;
-	virtual void setNewLifeStage(const LifeStage newLifeStage)=0;
-	virtual void setNewLifeStage(const LifeStage newLifeStage, double dayOfDeath)=0;
-	virtual void setNewLifeStage(const LifeStage newLifeStage, double dayOfDeath, int predatorId)=0;
-	virtual bool isDepleted(double foodDemand)=0;
-	virtual double anyLeft()=0;
-	virtual void substractBiomass(double dryMassToBeSubstracted)=0;
+	virtual bool isMature() { return false; };
+	virtual bool isMated() { return false; };
+	virtual unsigned int getGender() { return 0; };
+
+	virtual unsigned int getLifeStage() { return 0; };
+	virtual void setNewLifeStage(unsigned int newLifeStage) {};
+	virtual void setNewLifeStage(unsigned int newLifeStage, double dayOfDeath) {};
+	virtual void setNewLifeStage(unsigned int newLifeStage, double dayOfDeath, int predatorId) {};
+	virtual double getDateOfDeath() { return -1.0; };
+	virtual void setDateOfDeath(double dayOfDeath) {};
+	virtual int getPredatedByID() { return -1; };
+	virtual void setPredatedByID(int predatorId) {};
+
+	virtual pair<bool, bool> interpolateTraits() { return make_pair(false, false); };
+	virtual void printTraits(ostream& traitsFile) {};
+	virtual void adjustTraits() {};
+	virtual void isReadyToBeBorn(int timeStep, int timeStepsPerDay) {};
+	virtual void isReadyToResumeFromPupaOrDecreasePupaTimer() {};
+	virtual void isReadyToResumeFromHandlingOrDecreaseHandlingTimer() {};
+	virtual void isReadyToResumeFromDiapauseOrIncreaseDiapauseTimeSteps(float relativeHumidity) {};
+	virtual void calculateGrowthCurves(float temperature, ostream& tuneTraitsFile, bool printGrowthData, double ageAtInitialization) {}; //Dinosaurs
+	virtual double getEggDryMassAtBirth() { return 0.0; };
+	virtual void tuneTraits(int timeStep, int timeStepsPerDay, float temperature, float relativeHumidity, ostream& tuneTraitsFile, bool printGrowthData, bool fromForceMolting1) {};
+	virtual TerrainCell* move(int timeStep, int timeStepsPerDay, ostream& encounterProbabilitiesFile, ostream& predationProbabilitiesFile, ostream& edibilitiesFile) { return NULL; };
+	virtual double calculatePredatoryRiskEdibilityValue(Edible* edibleToBeEvaluated) { return 0.0; };
+	virtual bool hasTriedToHunt(Edible* edibleToCheck) { return false; };
+	virtual void printVoracities(int timeStep, int timeStepsPerDay, ostream& voracitiesFile) {};
+	virtual void dieFromBackground(int timeStep) {};
+	virtual void assimilateFoodMass(int timeStep) {};
+	virtual void metabolize(int timeStep, int timeStepPerDay) {};
+	virtual void grow(int timeStep, int timeStepsPerDay) {};
+	virtual list<Edible*> * breed(int timeStep, int timeStepsPerDay, float temperature) { return NULL; };
+	virtual bool postBreeding(int timeStep, int timeStepsPerDay) { return false; };
+	virtual const Genome* getGenome() const { return NULL; };
+	virtual int getGenerationNumberFromMaleParent() const { return 0; };
+	virtual void setGenomeFromMatedMale(Edible* matedMale) {};
+	virtual void setPosition(TerrainCell* newPosition) {};
+	virtual void setDateEgg(double newDateEgg) {};
+	virtual void setMassAtBirth(double massAtBirth) {};
+	virtual list<int> * getEncounterEvents() { return NULL; };
+
+	virtual void increaseAge(int increase) {};
+
+	virtual void substractBiomass(double dryMassToBeSubstracted) {};
+	virtual bool isExtinct() { return false; };
+	virtual bool isDepleted(double foodDemand) { return false; };
+	virtual double anyLeft() { return 0.0; };
+	virtual void processExternalContributions() {};
+	virtual double grow(int timeStep) { return 0.0; }; //Dinosaur debugging , int timeStepsPerDay
+	virtual void setBiomass(double biomass) {};
+	virtual void addBiomass(float addedMass, bool competition, double maxCapacity, int size, double totBiomass) {};
+
+	friend ostream& operator<<(ostream& os, Edible& edible) { return edible.print(os); }
+	virtual ostream& print(ostream& os) { return os; };
 };
 
-typedef Edible::LifeStage LifeStage;
+
 
 #endif /* EDIBLE_H_ */

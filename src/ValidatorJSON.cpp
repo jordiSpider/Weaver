@@ -7,133 +7,97 @@ using namespace std;
 using json = nlohmann::json;
 
 
-const unordered_map<string_view, const ValidatorJSON::TypeElemJSON::TypeElemJSONValue> ValidatorJSON::TypeElemJSON::generateMap() 
+
+
+unordered_map<string, TypeElemJSONConverter::TypeElemJSON> TypeElemJSONConverter::stringToEnum = {
+    {"object", Object},
+    {"array", Array},
+    {"string", String},
+    {"integer", Integer},
+    {"unsigned_integer", Unsigned_Integer},
+    {"float", Float},
+    {"boolean", Boolean}
+};
+
+const string TypeElemJSONConverter::printValues()
 {
-	unordered_map<string_view, const TypeElemJSONValue> enumMap;
-
-	for(size_t i = 0; i < size(); i++) {
-		const TypeElemJSONValue type = static_cast<const TypeElemJSONValue>(i);
-		enumMap.insert({to_string(type), type});
-	}
-
-	return enumMap;
-}
-
-const unordered_map<string_view, const ValidatorJSON::TypeElemJSON::TypeElemJSONValue> ValidatorJSON::TypeElemJSON::stringToEnum = ValidatorJSON::TypeElemJSON::generateMap();
-
-const string ValidatorJSON::TypeElemJSON::generateAvailableValues()
-{
-	constexpr auto typeNames = magic_enum::enum_names<TypeElemJSONValue>();
-
-	auto values = fmt::format("{}", typeNames[0]);
-	for(size_t i = 1; i < typeNames.size(); i++) {
-		values += fmt::format(", {}", typeNames[i]);
-	}
-
-	return values;
-}
-
-const string ValidatorJSON::TypeElemJSON::enumValues = ValidatorJSON::TypeElemJSON::generateAvailableValues();
-
-
-const unordered_map<string_view, const ValidatorJSON::OperatorJSON::OperatorJSONType> ValidatorJSON::OperatorJSON::generateMap() 
-{
-	unordered_map<string_view, const OperatorJSONType> enumMap;
-
-	for(size_t i = 0; i < size(); i++) {
-		const OperatorJSONType type = static_cast<const OperatorJSONType>(i);
-		enumMap.insert({to_string(type), type});
-	}
-
-	return enumMap;
-}
-
-const unordered_map<string_view, const ValidatorJSON::OperatorJSON::OperatorJSONType> ValidatorJSON::OperatorJSON::stringToEnum = ValidatorJSON::OperatorJSON::generateMap();
-
-const string ValidatorJSON::OperatorJSON::generateAvailableValues()
-{
-	constexpr auto typeNames = magic_enum::enum_names<OperatorJSONType>();
-
-	auto values = fmt::format("{}", typeNames[0]);
-	for(size_t i = 1; i < typeNames.size(); i++) {
-		values += fmt::format(", {}", typeNames[i]);
+	string values = stringToEnum.cbegin()->first;
+	
+	for(auto it = ++stringToEnum.cbegin(); it != stringToEnum.cend(); it++)
+	{
+		values += ", " + it->first;
 	}
 
 	return values;
 }
 
-const string ValidatorJSON::OperatorJSON::enumValues = ValidatorJSON::OperatorJSON::generateAvailableValues();
 
+unordered_map<string, OperatorsJSONConverter::OperatorsJSON> OperatorsJSONConverter::stringToEnum = {
+	{"if", If},
+    {"equal", Equal},
+    {"not_equal", Not_Equal},
+    {"less_than", Less_Than},
+    {"greater_than", Greater_Than},
+    {"less_equal_than", Less_Equal_Than},
+    {"greater_equal_than", Greater_Equal_Than},
+    {"not", Not},
+    {"and", And},
+    {"or", Or},
+	{"property", Property},
+	{"property_item", Property_Item},
+	{"property_size", Property_Size},
+	{"property_exists", Property_Exists},
+    {"constant", Constant},
+    {"subtract", Subtract},
+    {"sum", Sum},
+	{"division", Division},
+	{"multiply", Multiply},
+	{"module", Module}
+};
 
-const unordered_map<string_view, const ValidatorJSON::ItemsOrder::ItemsOrderType> ValidatorJSON::ItemsOrder::generateMap() 
+const string OperatorsJSONConverter::printValues()
 {
-	unordered_map<string_view, const ItemsOrderType> enumMap;
-
-	for(size_t i = 0; i < size(); i++) {
-		const ItemsOrderType type = static_cast<const ItemsOrderType>(i);
-		enumMap.insert({to_string(type), type});
-	}
-
-	return enumMap;
-}
-
-const unordered_map<string_view, const ValidatorJSON::ItemsOrder::ItemsOrderType> ValidatorJSON::ItemsOrder::stringToEnum = ValidatorJSON::ItemsOrder::generateMap();
-
-const string ValidatorJSON::ItemsOrder::generateAvailableValues()
-{
-	constexpr auto typeNames = magic_enum::enum_names<ItemsOrderType>();
-
-	auto values = fmt::format("{}", typeNames[0]);
-	for(size_t i = 1; i < typeNames.size(); i++) {
-		values += fmt::format(", {}", typeNames[i]);
-	}
-
-	return values;
-}
-
-const string ValidatorJSON::ItemsOrder::enumValues = ValidatorJSON::ItemsOrder::generateAvailableValues();
-
-
-const unordered_map<string_view, const ValidatorJSON::Environment::EnvironmentType> ValidatorJSON::Environment::generateMap() 
-{
-	unordered_map<string_view, const EnvironmentType> enumMap;
-
-	for(size_t i = 0; i < size(); i++) {
-		const EnvironmentType type = static_cast<const EnvironmentType>(i);
-		enumMap.insert({to_string(type), type});
-	}
-
-	return enumMap;
-}
-
-const unordered_map<string_view, const ValidatorJSON::Environment::EnvironmentType> ValidatorJSON::Environment::stringToEnum = ValidatorJSON::Environment::generateMap();
-
-const string ValidatorJSON::Environment::generateAvailableValues()
-{
-	constexpr auto typeNames = magic_enum::enum_names<EnvironmentType>();
-
-	auto values = fmt::format("{}", typeNames[0]);
-	for(size_t i = 1; i < typeNames.size(); i++) {
-		values += fmt::format(", {}", typeNames[i]);
+	string values = stringToEnum.cbegin()->first;
+	
+	for(auto it = ++stringToEnum.cbegin(); it != stringToEnum.cend(); it++)
+	{
+		values += ", " + it->first;
 	}
 
 	return values;
 }
 
-const string ValidatorJSON::Environment::enumValues = ValidatorJSON::Environment::generateAvailableValues();
+unordered_map<string, ItemsOrderConverter::ItemsOrder> ItemsOrderConverter::stringToEnum = {
+    {"increasing", Increasing},
+    {"strictly_increasing", Strictly_Increasing},
+    {"decreasing", Decreasing},
+    {"strictly_decreasing", Strictly_Decreasing}
+}; 
+
+const string ItemsOrderConverter::printValues()
+{
+	string values = stringToEnum.cbegin()->first;
+	
+	for(auto it = ++stringToEnum.cbegin(); it != stringToEnum.cend(); it++)
+	{
+		values += ", " + it->first;
+	}
+
+	return values;
+}
 
 
-ValidatorJSON::RegexKey::RegexKey(const string& regexValue) {
+RegexKey::RegexKey(const string& regexValue) {
     this->regexValue = regexValue;
     this->pattern = regex(regexValue);
 }
 
-bool ValidatorJSON::RegexKey::operator==(const string &other) const { 
+bool RegexKey::operator==(const string &other) const { 
     return regex_match(other, pattern);
 }
 
 
-ValidatorJSON::ListRegexKey::ListRegexKey(const json* list) {
+ListRegexKey::ListRegexKey(const json* list) {
     for(size_t i = 0; i < list->size(); i++) {
 		try
 		{
@@ -151,7 +115,7 @@ ValidatorJSON::ListRegexKey::ListRegexKey(const json* list) {
     }
 }
 
-void ValidatorJSON::ListRegexKey::findRegexKey(const string& key) const {
+void ListRegexKey::findRegexKey(const string& key) const {
     auto it = find(listRegex.cbegin(), listRegex.cend(), key);
     if(it == listRegex.cend()) {
         throw out_of_range("");
@@ -159,7 +123,7 @@ void ValidatorJSON::ListRegexKey::findRegexKey(const string& key) const {
 }
 
 
-ValidatorJSON::MapRegexKey::MapRegexKey(const json* schema) {
+MapRegexKey::MapRegexKey(const json* schema) {
     this->schema = schema;
 
     for(const auto& [key, value] : schema->items()) {
@@ -167,7 +131,7 @@ ValidatorJSON::MapRegexKey::MapRegexKey(const json* schema) {
     }
 }
 
-const json& ValidatorJSON::MapRegexKey::at(const string& key, string& regexKey) const {
+const json& MapRegexKey::at(const string& key, string& regexKey) const {
     auto it = find(listRegex.cbegin(), listRegex.cend(), key);
     if(it == listRegex.cend()) {
         throw out_of_range("");
@@ -178,7 +142,7 @@ const json& ValidatorJSON::MapRegexKey::at(const string& key, string& regexKey) 
     return (*schema)[it->getRegexValue()];
 }
 
-const json& ValidatorJSON::MapRegexKey::at(const string& key) const {
+const json& MapRegexKey::at(const string& key) const {
     auto it = find(listRegex.cbegin(), listRegex.cend(), key);
     if(it == listRegex.cend()) {
         throw out_of_range("");
@@ -188,7 +152,6 @@ const json& ValidatorJSON::MapRegexKey::at(const string& key) const {
 }
 
 
-constexpr char ValidatorJSON::PATTERN_ELEM[];
 
 std::ofstream ValidatorJSON::warningsFile("warnings.txt");
 
@@ -349,139 +312,63 @@ void ValidatorJSON::removePatternRequired(map<string,json>& properties, const js
 	}
 }
 
-json* ValidatorJSON::moveToDestination(json* structure, const json dst, Environment::EnvironmentType environment)
-{
-	json* dstStructure = structure;
-	string dstName;
-
-	for(size_t i = 0; i < dst.size(); i++) {
-		try
-		{
-			if(!dst[i].is_string()) {
-				throwValidatorSchemaJSONException("': Not an element of type 'string'");
-			}
-
-			if(i == 0) {
-				dstName = dst[i];
-			}
-			else {
-				dstName += "." + (string)dst[i];
-			}
-
-			switch (environment) {
-				case Environment::schema: {
-					try
-					{
-						dstStructure = &(*dstStructure).at("properties").at(dst[i]);
-					}
-					catch(const json::out_of_range& e) 
-					{
-						throwValidatorSchemaJSONException("': Destination '" + dstName + "' does not exist in schema");
-					}
-					break;
-				}
-				case Environment::config: {
-					try
-					{
-						dstStructure = &(*dstStructure).at(dst[i]);
-					}
-					catch(const json::out_of_range& e) 
-					{
-						throwValidatorSchemaJSONException("': Destination '" + dstName + "' does not exist in config");
-					}
-					break;
-				}
-				default: {
-					throwValidatorSchemaJSONException(".environment': Default case");
-					break;
-				}
-			}
-		}
-		catch(ValidatorSchemaJSONException& e)
-		{
-			e.addPreMessage(".item_" + to_string(i));
-			throw;
-		}
-	}
-
-	return dstStructure;
-}
-
-const json* ValidatorJSON::moveToDestination(const json* structure, const json dst, Environment::EnvironmentType environment)
-{
-	const json* dstStructure = structure;
-	string dstName;
-
-	for(size_t i = 0; i < dst.size(); i++) {
-		try
-		{
-			if(!dst[i].is_string()) {
-				throwValidatorSchemaJSONException("': Not an element of type 'string'");
-			}
-
-			if(i == 0) {
-				dstName = dst[i];
-			}
-			else {
-				dstName += "." + (string)dst[i];
-			}
-
-			switch (environment) {
-				case Environment::schema: {
-					try
-					{
-						dstStructure = &(*dstStructure).at("properties").at(dst[i]);
-					}
-					catch(const json::out_of_range& e) 
-					{
-						throwValidatorSchemaJSONException("': Destination '" + dstName + "' does not exist in schema");
-					}
-					break;
-				}
-				case Environment::config: {
-					try
-					{
-						dstStructure = &(*dstStructure).at(dst[i]);
-					}
-					catch(const json::out_of_range& e) 
-					{
-						throwValidatorSchemaJSONException("': Destination '" + dstName + "' does not exist in config");
-					}
-					break;
-				}
-				default: {
-					throwValidatorSchemaJSONException(".environment': Default case");
-					break;
-				}
-			}
-		}
-		catch(ValidatorSchemaJSONException& e)
-		{
-			e.addPreMessage(".item_" + to_string(i));
-			throw;
-		}
-	}
-
-	return dstStructure;
-}
-
 void ValidatorJSON::doConditionBlock(json& schema, const json& block, const json& config, const string patternElem) {
 	json* dstShema = &schema;
 	const json* dstConfig = &config;
+	string dstName;
 
 	try
 	{
-		if(!block.at("dst").is_array()) {
-			throwValidatorSchemaJSONException("': Not an element of type 'array'");
-		}
+		try
+		{
+			if(!block.at("dst").is_array()) {
+				throwValidatorSchemaJSONException("': Not an element of type 'array'");
+			}
 
-		dstShema = moveToDestination(dstShema, block["dst"], Environment::schema);
-		dstConfig = moveToDestination(dstConfig, block["dst"], Environment::config);
-	}
-	catch(ValidatorSchemaJSONException& e)
-	{
-		e.addPreMessage(".dst");
-		throw;
+			for(size_t i = 0; i < block["dst"].size(); i++) {
+				try
+				{
+					if(!block["dst"][i].is_string()) {
+						throwValidatorSchemaJSONException("': Not an element of type 'string'");
+					}
+
+					if(i == 0) {
+						dstName = block["dst"][i];
+					}
+					else {
+						dstName += "." + (string)block["dst"][i];
+					}
+
+					try
+					{
+						dstShema = &(*dstShema).at("properties").at(block["dst"][i]);
+					}
+					catch(const json::out_of_range& e) 
+					{
+						throwValidatorSchemaJSONException("': Destination '" + dstName + "' does not exist in schema");
+					}
+
+					try
+					{
+						dstConfig = &(*dstConfig).at(block["dst"][i]);
+					}
+					catch(const json::out_of_range& e) 
+					{
+						throwValidatorSchemaJSONException("': Destination '" + dstName + "' does not exist in config");
+					}
+				}
+				catch(ValidatorSchemaJSONException& e)
+				{
+					e.addPreMessage(".item_" + to_string(i));
+					throw;
+				}
+			}
+		}
+		catch(ValidatorSchemaJSONException& e)
+		{
+			e.addPreMessage(".dst");
+			throw;
+		}
 	}
 	catch(const json::out_of_range& e) {}
 
@@ -522,93 +409,6 @@ void ValidatorJSON::doConditionBlock(json& schema, const json& block, const json
 	catch(const json::out_of_range& e) {}
 }
 
-void ValidatorJSON::checkCondition(json& schema, const json& condition, const json& config, const string patternElem)
-{
-	bool conditionResult;
-
-	try
-	{
-		if(!condition.at("if").is_object()) {
-			throwValidatorSchemaJSONException("': Not an element of type 'object'");
-		}
-
-		conditionResult = checkIf(config, condition["if"], patternElem);
-	}
-	catch(ValidatorSchemaJSONException& e)
-	{
-		e.addPreMessage(".if");
-		throw;
-	}
-	catch(const json::out_of_range& e) 
-	{
-		throwValidatorSchemaJSONException("': Property 'if' not defined");
-	}
-
-	if(conditionResult) {
-		try
-		{
-			if(!condition.at("then").is_array()) {
-				throwValidatorSchemaJSONException("': Not an element of type 'array'");
-			}
-
-			for(size_t j = 0; j < condition["then"].size(); j++) {
-				try
-				{
-					if(!condition["then"][j].is_object()) {
-						throwValidatorSchemaJSONException("': Not an element of type 'object'");
-					}
-
-					doConditionBlock(schema, condition["then"][j], config, patternElem);
-				}
-				catch(ValidatorSchemaJSONException& e)
-				{
-					e.addPreMessage(".item_" + to_string(j));
-					throw;
-				}
-			}
-		}
-		catch(ValidatorSchemaJSONException& e)
-		{
-			e.addPreMessage(".then");
-			throw;
-		}
-		catch(const json::out_of_range& e) 
-		{
-			throwValidatorSchemaJSONException("': Property 'then' not defined");
-		}
-	}
-	else {
-		try
-		{
-			if(!condition.at("else").is_array()) {
-				throwValidatorSchemaJSONException("': Not an element of type 'array'");
-			}
-
-			for(size_t j = 0; j < condition["else"].size(); j++) {
-				try
-				{
-					if(!condition["else"][j].is_object()) {
-						throwValidatorSchemaJSONException("': Not an element of type 'object'");
-					}
-
-					doConditionBlock(schema, condition["else"][j], config, patternElem);
-				}
-				catch(ValidatorSchemaJSONException& e)
-				{
-					e.addPreMessage(".item_" + to_string(j));
-					throw;
-				}
-			}
-		}
-		catch(ValidatorSchemaJSONException& e)
-		{
-			e.addPreMessage(".else");
-			throw;
-		}
-		catch(const json::out_of_range& e) {}
-	}
-}
-
 void ValidatorJSON::checkConditionals(json& schema, const json& conditionals, const json& config) {
 	for(size_t i = 0; i < conditionals.size(); i++) {
 		try
@@ -617,7 +417,89 @@ void ValidatorJSON::checkConditionals(json& schema, const json& conditionals, co
 				throwValidatorSchemaJSONException("': Not an element of type 'object'");
 			}
 			
-			checkCondition(schema, conditionals[i], config);
+			bool conditionResult;
+
+			try
+			{
+				if(!conditionals[i].at("if").is_object()) {
+					throwValidatorSchemaJSONException("': Not an element of type 'object'");
+				}
+
+				conditionResult = checkCondition(config, conditionals[i]["if"]);
+			}
+			catch(ValidatorSchemaJSONException& e)
+			{
+				e.addPreMessage(".if");
+				throw;
+			}
+			catch(const json::out_of_range& e) 
+			{
+				throwValidatorSchemaJSONException("': Property 'if' not defined");
+			}
+
+			if(conditionResult) {
+				try
+				{
+					if(!conditionals[i].at("then").is_array()) {
+						throwValidatorSchemaJSONException("': Not an element of type 'array'");
+					}
+
+					for(size_t j = 0; j < conditionals[i]["then"].size(); j++) {
+						try
+						{
+							if(!conditionals[i]["then"][j].is_object()) {
+								throwValidatorSchemaJSONException("': Not an element of type 'object'");
+							}
+
+							doConditionBlock(schema, conditionals[i]["then"][j], config);
+						}
+						catch(ValidatorSchemaJSONException& e)
+						{
+							e.addPreMessage(".item_" + to_string(j));
+							throw;
+						}
+					}
+				}
+				catch(ValidatorSchemaJSONException& e)
+				{
+					e.addPreMessage(".then");
+					throw;
+				}
+				catch(const json::out_of_range& e) 
+				{
+					throwValidatorSchemaJSONException("': Property 'then' not defined");
+				}
+			}
+			else {
+				try
+				{
+					if(!conditionals[i].at("else").is_array()) {
+						throwValidatorSchemaJSONException("': Not an element of type 'array'");
+					}
+
+					for(size_t j = 0; j < conditionals[i]["else"].size(); j++) {
+						try
+						{
+							if(!conditionals[i]["else"][j].is_object()) {
+								throwValidatorSchemaJSONException("': Not an element of type 'object'");
+							}
+
+							doConditionBlock(schema, conditionals[i]["else"][j], config);
+						}
+						catch(ValidatorSchemaJSONException& e)
+						{
+							e.addPreMessage(".item_" + to_string(j));
+							throw;
+						}
+					}
+				}
+				catch(ValidatorSchemaJSONException& e)
+				{
+					e.addPreMessage(".else");
+					throw;
+				}
+				catch(const json::out_of_range& e) {}
+			}
 		}
 		catch(ValidatorSchemaJSONException& e)
 		{
@@ -635,138 +517,118 @@ void ValidatorJSON::checkPatternConditionals(json& schema, const json& condition
 				throwValidatorSchemaJSONException("': Not an element of type 'object'");
 			}
 
-			bool definedEnvironment = false;
 			try
 			{
-				if(!conditionals[i].at("environment").is_string()) {
+				if(!conditionals[i].at("pattern").is_string()) {
 					throwValidatorSchemaJSONException("': Not an element of type 'string'");
 				}
-
-				definedEnvironment = true;
 			}
 			catch(ValidatorSchemaJSONException& e)
 			{
-				e.addPreMessage(".environment");
+				e.addPreMessage(".pattern");
 				throw;
 			}
-			catch(const json::out_of_range& e) {}
+			catch(const json::out_of_range& e) 
+			{
+				throwValidatorSchemaJSONException("': Property 'pattern' not defined");
+			}
 
-			vector<string> values;
+			RegexKey regexPattern(conditionals[i]["pattern"]);
 
-			if(definedEnvironment) {
-				const json* environment;
-
-				Environment::EnvironmentType environmentValue;
-				try
-				{
-					environmentValue = Environment::stringToEnumValue((string)conditionals[i]["environment"]);
-				
-					switch (environmentValue) {
-						case Environment::schema: {
-							environment = &schema;
-							break;
-						}
-						case Environment::config: {
-							environment = &config;
-							break;
-						}
-						default: {
-							throwValidatorSchemaJSONException("': Default case");
-							break;
-						}
-					}
-				}
-				catch(ValidatorSchemaJSONException& e) 
-				{
-					e.addPreMessage(".environment");
-					throw;
-				}
-				
-				try
-				{
-					if(!conditionals[i].at("dst").is_array()) {
-						throwValidatorSchemaJSONException("': Not an element of type 'array'");
-					}
-
-					environment = moveToDestination(environment, conditionals[i]["dst"], environmentValue);
-				}
-				catch(ValidatorSchemaJSONException& e)
-				{
-					e.addPreMessage(".dst");
-					throw;
-				}
-				catch(const json::out_of_range& e) {}
-				
-				try
-				{
-					if(!conditionals[i].at("pattern").is_string()) {
-						throwValidatorSchemaJSONException("': Not an element of type 'string'");
-					}
-				}
-				catch(ValidatorSchemaJSONException& e)
-				{
-					e.addPreMessage(".pattern");
-					throw;
-				}
-				catch(const json::out_of_range& e) 
-				{
-					throwValidatorSchemaJSONException("': Property 'pattern' not defined");
-				}
-
-				RegexKey regexPattern(conditionals[i]["pattern"]);
-
-				switch (environmentValue) {
-					case Environment::schema: {
-						environment = &(*environment)["properties"];
-						break;
-					}
-					default: {
-						break;
-					}
-				}
-
-				for(const auto& [key, value] : (map<string,json>)*environment) {
-					if(regexPattern == key) {
-						values.push_back(key);
-					}
+			try
+			{
+				if(!conditionals[i].at("if").is_object()) {
+					throwValidatorSchemaJSONException("': Not an element of type 'object'");
 				}
 			}
-			else {
-				try
-				{
-					if(!conditionals[i].at("enumValues").is_array()) {
-						throwValidatorSchemaJSONException("': Not an element of type 'array'");
-					}
+			catch(ValidatorSchemaJSONException& e)
+			{
+				e.addPreMessage(".if");
+				throw;
+			}
+			catch(const json::out_of_range& e) 
+			{
+				throwValidatorSchemaJSONException("': Property 'if' not defined");
+			}
 
-					for(size_t j = 0; j < conditionals[i]["enumValues"].size(); j++) {
+			for(const auto& [key, value] : (map<string,json>)schema["properties"]) {
+				if(regexPattern == key) {
+					bool conditionResult;
+
+					try
+					{
+						conditionResult = checkCondition(config, conditionals[i]["if"], key);
+					}
+					catch(ValidatorSchemaJSONException& e)
+					{
+						e.addPreMessage(".if");
+						throw;
+					}
+					
+					if(conditionResult) {
 						try
 						{
-							if(!conditionals[i]["enumValues"][j].is_string()) {
-								throwValidatorSchemaJSONException("': Not an element of type 'string'");
+							if(!conditionals[i].at("then").is_array()) {
+								throwValidatorSchemaJSONException("': Not an element of type 'array'");
+							}
+
+							for(size_t j = 0; j < conditionals[i]["then"].size(); j++) {
+								try
+								{
+									if(!conditionals[i]["then"][j].is_object()) {
+										throwValidatorSchemaJSONException("': Not an element of type 'object'");
+									}
+
+									doConditionBlock(schema, conditionals[i]["then"][j], config, key);
+								}
+								catch(ValidatorSchemaJSONException& e)
+								{
+									e.addPreMessage(".item_" + to_string(j));
+									throw;
+								}
 							}
 						}
 						catch(ValidatorSchemaJSONException& e)
 						{
-							e.addPreMessage(".item_" + to_string(j));
+							e.addPreMessage(".then");
 							throw;
 						}
+						catch(const json::out_of_range& e) 
+						{
+							throwValidatorSchemaJSONException("': Property 'then' not defined");
+						}
 					}
+					else {
+						try
+						{
+							if(!conditionals[i].at("else").is_array()) {
+								throwValidatorSchemaJSONException("': Not an element of type 'array'");
+							}
 
-					values = conditionals[i]["enumValues"];
+							for(size_t j = 0; j < conditionals[i]["else"].size(); j++) {
+								try
+								{
+									if(!conditionals[i]["else"][j].is_object()) {
+										throwValidatorSchemaJSONException("': Not an element of type 'object'");
+									}
+
+									doConditionBlock(schema, conditionals[i]["else"][j], config, key);
+								}
+								catch(ValidatorSchemaJSONException& e)
+								{
+									e.addPreMessage(".item_" + to_string(j));
+									throw;
+								}
+							}
+						}
+						catch(ValidatorSchemaJSONException& e)
+						{
+							e.addPreMessage(".else");
+							throw;
+						}
+						catch(const json::out_of_range& e) {}
+					}
 				}
-				catch(ValidatorSchemaJSONException& e)
-				{
-					e.addPreMessage(".enumValues");
-					throw;
-				}
-				catch(const json::out_of_range& e) 
-				{
-					throwValidatorSchemaJSONException("': Property 'enumValues' not defined");
-				}
-			}
-				
-			for(const auto& value : values) {
-				checkCondition(schema, conditionals[i], config, value);
 			}
 		}
 		catch(ValidatorSchemaJSONException& e)
@@ -1016,7 +878,7 @@ const json ValidatorJSON::solveIfOperator(const json& config, const json& condit
 			throwValidatorSchemaJSONException("': Not an element of type 'object'");
 		}
 
-		conditionResult = checkIf(config, condition["condition"], patternElem);
+		conditionResult = checkCondition(config, condition["condition"], patternElem);
 	}
 	catch(ValidatorSchemaJSONException& e)
 	{
@@ -1695,379 +1557,375 @@ const json ValidatorJSON::solveOperator(const json& config, const json& conditio
 	}
 	catch(const json::out_of_range& e) 
 	{
-		throwValidatorSchemaJSONException(fmt::format("': Property 'type' not defined. Valid values are {}", OperatorJSON::printAvailableValues()));
+		throwValidatorSchemaJSONException("': Property 'type' not defined. Valid values are " + OperatorsJSONConverter::printValues());
 	}
 	
-	OperatorJSON::OperatorJSONType type;
 	try
 	{
-		type = OperatorJSON::stringToEnumValue((string)condition["type"]);
-	}
-	catch(ValidatorSchemaJSONException& e) 
-	{
-		e.addPreMessage(".type");
-		throw;
-	}
+		switch (OperatorsJSONConverter::stringToEnumValue((string)condition["type"]))
+		{
+			case OperatorsJSONConverter::If: {
+				return solveIfOperator(config, condition, patternElem);
+				break;
+			}
+			case OperatorsJSONConverter::Equal: {
+				return solveEqualOperator(config, condition, patternElem);
+				break;
+			}
+			case OperatorsJSONConverter::Not_Equal: {
+				return solveNotEqualOperator(config, condition, patternElem);
+				break;
+			}
+			case OperatorsJSONConverter::Less_Than: {
+				return solveLessThanOperator(config, condition, patternElem);
+				break;
+			}
+			case OperatorsJSONConverter::Greater_Than: {
+				return solveGreaterThanOperator(config, condition, patternElem);
+				break;
+			}
+			case OperatorsJSONConverter::Less_Equal_Than: {
+				return solveLessEqualThanOperator(config, condition, patternElem);
+				break;
+			}
+			case OperatorsJSONConverter::Greater_Equal_Than: {
+				return solveGreaterEqualThanOperator(config, condition, patternElem);
+				break;
+			}
+			case OperatorsJSONConverter::Not: {
+				return solveNotOperator(config, condition, patternElem);
+				break;
+			}
+			case OperatorsJSONConverter::And: {
+				return solveAndOperator(config, condition, patternElem);
+				break;
+			}
+			case OperatorsJSONConverter::Or: {
+				return solveOrOperator(config, condition, patternElem);
+				break;
+			}
+			case OperatorsJSONConverter::Property: {
+				try
+				{
+					if(!condition.at("value").is_array()) {
+						throwValidatorSchemaJSONException("': Not an element of type 'array'");
+					}
 
-	switch (type)
-	{
-		case OperatorJSON::if_cond: {
-			return solveIfOperator(config, condition, patternElem);
-			break;
-		}
-		case OperatorJSON::equal: {
-			return solveEqualOperator(config, condition, patternElem);
-			break;
-		}
-		case OperatorJSON::not_equal: {
-			return solveNotEqualOperator(config, condition, patternElem);
-			break;
-		}
-		case OperatorJSON::less_than: {
-			return solveLessThanOperator(config, condition, patternElem);
-			break;
-		}
-		case OperatorJSON::greater_than: {
-			return solveGreaterThanOperator(config, condition, patternElem);
-			break;
-		}
-		case OperatorJSON::less_equal_than: {
-			return solveLessEqualThanOperator(config, condition, patternElem);
-			break;
-		}
-		case OperatorJSON::greater_equal_than: {
-			return solveGreaterEqualThanOperator(config, condition, patternElem);
-			break;
-		}
-		case OperatorJSON::not_oper: {
-			return solveNotOperator(config, condition, patternElem);
-			break;
-		}
-		case OperatorJSON::and_oper: {
-			return solveAndOperator(config, condition, patternElem);
-			break;
-		}
-		case OperatorJSON::or_oper: {
-			return solveOrOperator(config, condition, patternElem);
-			break;
-		}
-		case OperatorJSON::property: {
-			try
-			{
-				if(!condition.at("value").is_array()) {
-					throwValidatorSchemaJSONException("': Not an element of type 'array'");
+					return *getProperty(config, condition["value"], patternElem);
 				}
-
-				return *getProperty(config, condition["value"], patternElem);
-			}
-			catch(ValidatorSchemaJSONException& e)
-			{
-				e.addPreMessage(".value");
-				throw;
-			}
-			catch(const json::out_of_range& e) 
-			{
-				throwValidatorSchemaJSONException("': Property 'value' not defined");
-			}
-			break;
-		}
-		case OperatorJSON::property_item: {
-			unsigned int itemValue;
-			
-			try
-			{
-				if(condition.at("item").is_object()) {
-					itemValue = solveOperator(config, condition["item"]);
+				catch(ValidatorSchemaJSONException& e)
+				{
+					e.addPreMessage(".value");
+					throw;
 				}
-				else if(condition.at("item").is_number_unsigned()) {
-					itemValue = condition["item"];
+				catch(const json::out_of_range& e) 
+				{
+					throwValidatorSchemaJSONException("': Property 'value' not defined");
 				}
-				else {
-					throwValidatorSchemaJSONException("': Not an element of type 'object' or 'unsigned_integer'");
+				break;
+			}
+			case OperatorsJSONConverter::Property_Item: {
+				unsigned int itemValue;
+				
+				try
+				{
+					if(condition.at("item").is_object()) {
+						itemValue = solveOperator(config, condition["item"]);
+					}
+					else if(condition.at("item").is_number_unsigned()) {
+						itemValue = condition["item"];
+					}
+					else {
+						throwValidatorSchemaJSONException("': Not an element of type 'object' or 'unsigned_integer'");
+					}
 				}
-			}
-			catch(ValidatorSchemaJSONException& e)
-			{
-				e.addPreMessage(".item");
-				throw;
-			}
-			catch(const json::out_of_range& e) 
-			{
-				throwValidatorSchemaJSONException("': Property 'item' not defined");
-			}
-
-			try
-			{
-				if(!condition.at("value").is_array()) {
-					throwValidatorSchemaJSONException("': Not an element of type 'array'");
+				catch(ValidatorSchemaJSONException& e)
+				{
+					e.addPreMessage(".item");
+					throw;
 				}
-
-				return (*getProperty(config, condition["value"], patternElem))[itemValue];
-			}
-			catch(ValidatorSchemaJSONException& e)
-			{
-				e.addPreMessage(".value");
-				throw;
-			}
-			catch(const json::out_of_range& e) 
-			{
-				throwValidatorSchemaJSONException("': Property 'value' not defined");
-			}
-			break;
-		}
-		case OperatorJSON::property_size: {
-			try
-			{
-				if(!condition.at("value").is_array()) {
-					throwValidatorSchemaJSONException("': Not an element of type 'array'");
-				}
-
-				return getProperty(config, condition["value"], patternElem)->size();
-			}
-			catch(ValidatorSchemaJSONException& e)
-			{
-				e.addPreMessage(".value");
-				throw;
-			}
-			catch(const json::out_of_range& e) 
-			{
-				throwValidatorSchemaJSONException("': Property 'value' not defined");
-			}
-			break;
-		}
-		case OperatorJSON::property_exists: {
-			try
-			{
-				if(!condition.at("value").is_array()) {
-					throwValidatorSchemaJSONException("': Not an element of type 'array'");
+				catch(const json::out_of_range& e) 
+				{
+					throwValidatorSchemaJSONException("': Property 'item' not defined");
 				}
 
 				try
 				{
-					getProperty(config, condition["value"], patternElem);
-					return true;
+					if(!condition.at("value").is_array()) {
+						throwValidatorSchemaJSONException("': Not an element of type 'array'");
+					}
+
+					return (*getProperty(config, condition["value"], patternElem))[itemValue];
 				}
-				catch(const ValidatorConfigJSONException& e)
+				catch(ValidatorSchemaJSONException& e)
 				{
-					return false;
+					e.addPreMessage(".value");
+					throw;
 				}
+				catch(const json::out_of_range& e) 
+				{
+					throwValidatorSchemaJSONException("': Property 'value' not defined");
+				}
+				break;
 			}
-			catch(ValidatorSchemaJSONException& e)
-			{
-				e.addPreMessage(".value");
-				throw;
+			case OperatorsJSONConverter::Property_Size: {
+				try
+				{
+					if(!condition.at("value").is_array()) {
+						throwValidatorSchemaJSONException("': Not an element of type 'array'");
+					}
+
+					return getProperty(config, condition["value"], patternElem)->size();
+				}
+				catch(ValidatorSchemaJSONException& e)
+				{
+					e.addPreMessage(".value");
+					throw;
+				}
+				catch(const json::out_of_range& e) 
+				{
+					throwValidatorSchemaJSONException("': Property 'value' not defined");
+				}
+				break;
 			}
-			catch(const json::out_of_range& e) 
-			{
-				throwValidatorSchemaJSONException("': Property 'value' not defined");
+			case OperatorsJSONConverter::Property_Exists: {
+				try
+				{
+					if(!condition.at("value").is_array()) {
+						throwValidatorSchemaJSONException("': Not an element of type 'array'");
+					}
+
+					try
+					{
+						getProperty(config, condition["value"], patternElem);
+						return true;
+					}
+					catch(const ValidatorConfigJSONException& e)
+					{
+						return false;
+					}
+				}
+				catch(ValidatorSchemaJSONException& e)
+				{
+					e.addPreMessage(".value");
+					throw;
+				}
+				catch(const json::out_of_range& e) 
+				{
+					throwValidatorSchemaJSONException("': Property 'value' not defined");
+				}
+				break;
 			}
-			break;
-		}
-		case OperatorJSON::constant: {
-			try
-			{
-				if(condition.at("value").is_array() || condition.at("value").is_object()) {
-					throwValidatorSchemaJSONException("': Not an element of type 'boolean', 'integer', 'unsigned_integer', 'float' or 'string'");
+			case OperatorsJSONConverter::Constant: {
+				try
+				{
+					if(condition.at("value").is_array() || condition.at("value").is_object()) {
+						throwValidatorSchemaJSONException("': Not an element of type 'boolean', 'integer', 'unsigned_integer', 'float' or 'string'");
+					}
+
+					if(patternElem != "" && condition["value"] == PATTERN_ELEM) {
+						return patternElem;
+					}
+					else {
+						return condition["value"];
+					}
+				}
+				catch(ValidatorSchemaJSONException& e)
+				{
+					e.addPreMessage(".value");
+					throw;
+				}
+				catch(const json::out_of_range& e) 
+				{
+					throwValidatorSchemaJSONException("': Property 'value' not defined");
+				}
+				break;
+			}
+			case OperatorsJSONConverter::Subtract: {
+				try
+				{
+					if(!condition.at("result_type").is_string()) {
+						throwValidatorSchemaJSONException("': Not an element of type 'string'");
+					}
+				}
+				catch(ValidatorSchemaJSONException& e)
+				{
+					e.addPreMessage(".result_type");
+					throw;
+				}
+				catch(const json::out_of_range& e) 
+				{
+					throwValidatorSchemaJSONException("': Property 'result_type' not defined. Valid values are integer, unsigned_integer, float");
+				}
+				
+				try
+				{
+					switch (TypeElemJSONConverter::stringToEnumValue((string)condition["result_type"])) {
+						case TypeElemJSONConverter::Integer: {
+							return solveSubtractOperator<int>(config, condition, patternElem);
+							break;
+						}
+						case TypeElemJSONConverter::Unsigned_Integer: {
+							return solveSubtractOperator<unsigned int>(config, condition, patternElem);
+							break;
+						}
+						case TypeElemJSONConverter::Float: {
+							return solveSubtractOperator<float>(config, condition, patternElem);
+							break;
+						}
+						default: {
+							throwValidatorSchemaJSONException(".type': Default case");
+							break;
+						}
+					}
+				}
+				catch(const std::out_of_range& e) 
+				{
+					throwValidatorSchemaJSONException(".result_type': Unknown type '" + string(condition["result_type"]) + "'. Valid values are integer, unsigned_integer, float");
+				}
+				break;
+			}
+			case OperatorsJSONConverter::Sum: {
+				try
+				{
+					if(!condition.at("result_type").is_string()) {
+						throwValidatorSchemaJSONException("': Not an element of type 'string'");
+					}
+				}
+				catch(ValidatorSchemaJSONException& e)
+				{
+					e.addPreMessage(".result_type");
+					throw;
+				}
+				catch(const json::out_of_range& e) 
+				{
+					throwValidatorSchemaJSONException("': Property 'result_type' not defined. Valid values are integer, unsigned_integer, float");
 				}
 
-				if(patternElem != "" && condition["value"] == PATTERN_ELEM) {
-					return patternElem;
-				}
-				else {
-					return condition["value"];
-				}
-			}
-			catch(ValidatorSchemaJSONException& e)
-			{
-				e.addPreMessage(".value");
-				throw;
-			}
-			catch(const json::out_of_range& e) 
-			{
-				throwValidatorSchemaJSONException("': Property 'value' not defined");
-			}
-			break;
-		}
-		case OperatorJSON::subtract: {
-			try
-			{
-				if(!condition.at("result_type").is_string()) {
-					throwValidatorSchemaJSONException("': Not an element of type 'string'");
-				}
-			}
-			catch(ValidatorSchemaJSONException& e)
-			{
-				e.addPreMessage(".result_type");
-				throw;
-			}
-			catch(const json::out_of_range& e) 
-			{
-				throwValidatorSchemaJSONException("': Property 'result_type' not defined. Valid values are integer, unsigned_integer, float");
-			}
-			
-			try
-			{
-				switch (TypeElemJSON::stringToEnumValue((string)condition["result_type"])) {
-					case TypeElemJSON::integer: {
-						return solveSubtractOperator<int>(config, condition, patternElem);
-						break;
-					}
-					case TypeElemJSON::unsigned_integer: {
-						return solveSubtractOperator<unsigned int>(config, condition, patternElem);
-						break;
-					}
-					case TypeElemJSON::floater: {
-						return solveSubtractOperator<float>(config, condition, patternElem);
-						break;
-					}
-					default: {
-						throwValidatorSchemaJSONException(".type': Default case");
-						break;
+				try
+				{
+					switch (TypeElemJSONConverter::stringToEnumValue((string)condition["result_type"])) {
+						case TypeElemJSONConverter::Integer: {
+							return solveSumOperator<int>(config, condition, patternElem);
+							break;
+						}
+						case TypeElemJSONConverter::Unsigned_Integer: {
+							return solveSumOperator<unsigned int>(config, condition, patternElem);
+							break;
+						}
+						case TypeElemJSONConverter::Float: {
+							return solveSumOperator<float>(config, condition, patternElem);
+							break;
+						}
+						default: {
+							throwValidatorSchemaJSONException(".type': Default case");
+							break;
+						}
 					}
 				}
-			}
-			catch(const std::out_of_range& e) 
-			{
-				throwValidatorSchemaJSONException(".result_type': Unknown type '" + string(condition["result_type"]) + "'. Valid values are integer, unsigned_integer, float");
-			}
-			break;
-		}
-		case OperatorJSON::sum: {
-			try
-			{
-				if(!condition.at("result_type").is_string()) {
-					throwValidatorSchemaJSONException("': Not an element of type 'string'");
+				catch(const std::out_of_range& e) 
+				{
+					throwValidatorSchemaJSONException(".result_type': Unknown type '" + string(condition["result_type"]) + "'. Valid values are integer, unsigned_integer, float");
 				}
+				break;
 			}
-			catch(ValidatorSchemaJSONException& e)
-			{
-				e.addPreMessage(".result_type");
-				throw;
-			}
-			catch(const json::out_of_range& e) 
-			{
-				throwValidatorSchemaJSONException("': Property 'result_type' not defined. Valid values are integer, unsigned_integer, float");
-			}
+			case OperatorsJSONConverter::Division: {
+				try
+				{
+					if(!condition.at("result_type").is_string()) {
+						throwValidatorSchemaJSONException("': Not an element of type 'string'");
+					}
+				}
+				catch(ValidatorSchemaJSONException& e)
+				{
+					e.addPreMessage(".result_type");
+					throw;
+				}
+				catch(const json::out_of_range& e) 
+				{
+					throwValidatorSchemaJSONException("': Property 'result_type' not defined. Valid values are integer, float");
+				}
 
-			try
-			{
-				switch (TypeElemJSON::stringToEnumValue((string)condition["result_type"])) {
-					case TypeElemJSON::integer: {
-						return solveSumOperator<int>(config, condition, patternElem);
-						break;
-					}
-					case TypeElemJSON::unsigned_integer: {
-						return solveSumOperator<unsigned int>(config, condition, patternElem);
-						break;
-					}
-					case TypeElemJSON::floater: {
-						return solveSumOperator<float>(config, condition, patternElem);
-						break;
-					}
-					default: {
-						throwValidatorSchemaJSONException(".type': Default case");
-						break;
+				try
+				{
+					switch (TypeElemJSONConverter::stringToEnumValue((string)condition["result_type"])) {
+						case TypeElemJSONConverter::Integer: {
+							return solveDivisionOperator<int>(config, condition, patternElem);
+							break;
+						}
+						case TypeElemJSONConverter::Float: {
+							return solveDivisionOperator<float>(config, condition, patternElem);
+							break;
+						}
+						default: {
+							throwValidatorSchemaJSONException(".type': Default case");
+							break;
+						}
 					}
 				}
-			}
-			catch(const std::out_of_range& e) 
-			{
-				throwValidatorSchemaJSONException(".result_type': Unknown type '" + string(condition["result_type"]) + "'. Valid values are integer, unsigned_integer, float");
-			}
-			break;
-		}
-		case OperatorJSON::division: {
-			try
-			{
-				if(!condition.at("result_type").is_string()) {
-					throwValidatorSchemaJSONException("': Not an element of type 'string'");
+				catch(const std::out_of_range& e) 
+				{
+					throwValidatorSchemaJSONException(".result_type': Unknown type '" + string(condition["result_type"]) + "'. Valid values are integer, float");
 				}
+				break;
 			}
-			catch(ValidatorSchemaJSONException& e)
-			{
-				e.addPreMessage(".result_type");
-				throw;
-			}
-			catch(const json::out_of_range& e) 
-			{
-				throwValidatorSchemaJSONException("': Property 'result_type' not defined. Valid values are integer, float");
-			}
+			case OperatorsJSONConverter::Multiply: {
+				try
+				{
+					if(!condition.at("result_type").is_string()) {
+						throwValidatorSchemaJSONException("': Not an element of type 'string'");
+					}
+				}
+				catch(ValidatorSchemaJSONException& e)
+				{
+					e.addPreMessage(".result_type");
+					throw;
+				}
+				catch(const json::out_of_range& e) 
+				{
+					throwValidatorSchemaJSONException("': Property 'result_type' not defined. Valid values are integer, float");
+				}
 
-			try
-			{
-				switch (TypeElemJSON::stringToEnumValue((string)condition["result_type"])) {
-					case TypeElemJSON::integer: {
-						return solveDivisionOperator<int>(config, condition, patternElem);
-						break;
-					}
-					case TypeElemJSON::floater: {
-						return solveDivisionOperator<float>(config, condition, patternElem);
-						break;
-					}
-					default: {
-						throwValidatorSchemaJSONException(".type': Default case");
-						break;
-					}
-				}
-			}
-			catch(const std::out_of_range& e) 
-			{
-				throwValidatorSchemaJSONException(".result_type': Unknown type '" + string(condition["result_type"]) + "'. Valid values are integer, float");
-			}
-			break;
-		}
-		case OperatorJSON::multiply: {
-			try
-			{
-				if(!condition.at("result_type").is_string()) {
-					throwValidatorSchemaJSONException("': Not an element of type 'string'");
-				}
-			}
-			catch(ValidatorSchemaJSONException& e)
-			{
-				e.addPreMessage(".result_type");
-				throw;
-			}
-			catch(const json::out_of_range& e) 
-			{
-				throwValidatorSchemaJSONException("': Property 'result_type' not defined. Valid values are integer, float");
-			}
-
-			try
-			{
-				switch (TypeElemJSON::stringToEnumValue((string)condition["result_type"])) {
-					case TypeElemJSON::integer: {
-						return solveMultiplyOperator<int>(config, condition, patternElem);
-						break;
-					}
-					case TypeElemJSON::floater: {
-						return solveMultiplyOperator<float>(config, condition, patternElem);
-						break;
-					}
-					default: {
-						throwValidatorSchemaJSONException(".type': Default case");
-						break;
+				try
+				{
+					switch (TypeElemJSONConverter::stringToEnumValue((string)condition["result_type"])) {
+						case TypeElemJSONConverter::Integer: {
+							return solveMultiplyOperator<int>(config, condition, patternElem);
+							break;
+						}
+						case TypeElemJSONConverter::Float: {
+							return solveMultiplyOperator<float>(config, condition, patternElem);
+							break;
+						}
+						default: {
+							throwValidatorSchemaJSONException(".type': Default case");
+							break;
+						}
 					}
 				}
+				catch(const std::out_of_range& e) 
+				{
+					throwValidatorSchemaJSONException(".result_type': Unknown type '" + string(condition["result_type"]) + "'. Valid values are integer, float");
+				}
+				break;
 			}
-			catch(const std::out_of_range& e) 
-			{
-				throwValidatorSchemaJSONException(".result_type': Unknown type '" + string(condition["result_type"]) + "'. Valid values are integer, float");
+			case OperatorsJSONConverter::Module: {
+				return solveModuleOperator(config, condition, patternElem);
+				break;
 			}
-			break;
+			default: {
+				throwValidatorSchemaJSONException(".type': Default case");
+				break;
+			}
 		}
-		case OperatorJSON::module: {
-			return solveModuleOperator(config, condition, patternElem);
-			break;
-		}
-		default: {
-			throwValidatorSchemaJSONException(".type': Default case");
-			break;
-		}
+	}
+	catch(const std::out_of_range& e) 
+	{
+		throwValidatorSchemaJSONException(".type': Unknown type '" + string(condition["type"]) + "'. Valid values are " + OperatorsJSONConverter::printValues());
 	}
 }
 
-bool ValidatorJSON::checkIf(const json& config, const json& condition, const string patternElem) {
+bool ValidatorJSON::checkCondition(const json& config, const json& condition, const string patternElem) {
 	return solveOperator(config, condition, patternElem);
 }
 
@@ -2153,6 +2011,8 @@ void ValidatorJSON::removePatternProperties(map<string,json>& properties, const 
 }
 
 void ValidatorJSON::validateObject(const json& config, json& schema) {
+	bool definedProperties = false;
+	
 	try
 	{
 		if(!schema.at("patternProperties").is_object()) {
@@ -2160,6 +2020,8 @@ void ValidatorJSON::validateObject(const json& config, json& schema) {
 		}
 
 		addPatternProperties(schema, schema["patternProperties"]);
+
+		definedProperties = true;
 	}
 	catch(ValidatorSchemaJSONException& e)
 	{
@@ -2241,6 +2103,8 @@ void ValidatorJSON::validateObject(const json& config, json& schema) {
 			throwValidatorSchemaJSONException("': Not an element of type 'object'");
 		}
 
+		definedProperties = true;
+
 		for(const auto& [key, value] : (map<string, json>)schema["properties"]) {
 			try
 			{
@@ -2276,9 +2140,10 @@ void ValidatorJSON::validateObject(const json& config, json& schema) {
 		e.addPreMessage(".properties");
 		throw;
 	}
-	catch(const json::out_of_range& e) 
-	{
-		throwValidatorSchemaJSONException("': Property 'properties' not defined");
+	catch(const json::out_of_range& e) {}
+
+	if(!definedProperties) {
+		throwValidatorSchemaJSONException("': Not defined properties");
 	}
 
 	bool additionalProperties;
@@ -2346,7 +2211,7 @@ void ValidatorJSON::validateObject(const json& config, json& schema) {
 		}
 
 		for(const json &requiredCondition : schema["requiredConditions"]) {
-			if(!checkIf(config, requiredCondition["condition"])) {
+			if(!checkCondition(config, requiredCondition["condition"])) {
 				throwValidatorConfigJSONException("': " + string(requiredCondition["error"]));
 			}
 		}
@@ -2365,8 +2230,8 @@ void ValidatorJSON::validateObject(const json& config, json& schema) {
 		}
 
 		for(const json &warningCondition : schema["warningConditions"]) {
-			if(checkIf(config, warningCondition["condition"])) {
-				Output::cout("[WARNING] {}\n", (string)warningCondition["warning"]);
+			if(checkCondition(config, warningCondition["condition"])) {
+				cout << "[WARNING] " << (string)warningCondition["warning"] << endl;
 				warningsFile << "[WARNING] " << (string)warningCondition["warning"] << endl;
 			}
 		}
@@ -2414,6 +2279,8 @@ void ValidatorJSON::validateArray(const json& config, json& schema) {
 	}
 	catch(const json::out_of_range& e) {}
 
+	bool definedItems = false;
+
 	size_t numPrefixItems;
 	try
 	{
@@ -2422,6 +2289,8 @@ void ValidatorJSON::validateArray(const json& config, json& schema) {
 		}
 
 		numPrefixItems = schema["prefixItems"].size();
+
+		definedItems = true;
 	}
 	catch(ValidatorSchemaJSONException& e)
 	{
@@ -2441,6 +2310,8 @@ void ValidatorJSON::validateArray(const json& config, json& schema) {
 		}
 		
 		additionalItems = true;
+
+		definedItems = true;
 	}
 	catch(ValidatorSchemaJSONException& e)
 	{
@@ -2450,6 +2321,10 @@ void ValidatorJSON::validateArray(const json& config, json& schema) {
 	catch(const json::out_of_range& e) 
 	{
 		additionalItems = false;
+	}
+
+	if(!definedItems) {
+		throwValidatorSchemaJSONException("': Not defined items");
 	}
 
 	bool requiredAll;
@@ -2479,7 +2354,7 @@ void ValidatorJSON::validateArray(const json& config, json& schema) {
 		throwValidatorConfigJSONException("': Missing required items");
 	}
 
-	ItemsOrder::ItemsOrderType itemsOrder;
+	ItemsOrderConverter::ItemsOrder itemsOrder;
 	bool indicatedItemsOrder;
 	try
 	{
@@ -2487,13 +2362,17 @@ void ValidatorJSON::validateArray(const json& config, json& schema) {
 			throwValidatorSchemaJSONException("': Not an element of type 'string'");
 		}
 
-		itemsOrder = ItemsOrder::stringToEnumValue(string(schema["itemsOrder"]));
+		itemsOrder = ItemsOrderConverter::stringToEnumValue(string(schema["itemsOrder"]));
 		indicatedItemsOrder = true;
 	}
 	catch(ValidatorSchemaJSONException& e)
 	{
 		e.addPreMessage(".itemsOrder");
 		throw;
+	}
+	catch(const std::out_of_range& e) 
+	{
+		throwValidatorSchemaJSONException(".itemsOrder': Unknown type '" + string(schema["itemsOrder"]) + "'. Valid values are " + ItemsOrderConverter::printValues());
 	}
 	catch(const json::out_of_range& e) 
 	{
@@ -2535,37 +2414,37 @@ void ValidatorJSON::validateArray(const json& config, json& schema) {
 				e.addPreMessage(".item_" + to_string(i));
 				throw;
 			}
-		}
 
-		if(indicatedItemsOrder && i > 0) {
-			switch (itemsOrder)
-			{
-				case ItemsOrder::increasing: {
-					if(config[i-1] > config[i]) {
-						throwValidatorConfigJSONException("': Items not arranged in increasing order");
+			if(indicatedItemsOrder && i > numPrefixItems) {
+				switch (itemsOrder)
+				{
+					case ItemsOrderConverter::Increasing: {
+						if(config[i-1] > config[i]) {
+							throwValidatorConfigJSONException("': Items not arranged in increasing order");
+						}
+						break;
 					}
-					break;
-				}
-				case ItemsOrder::strictly_increasing: {
-					if(config[i-1] >= config[i]) {
-						throwValidatorConfigJSONException("': Items not arranged in strictly increasing order");
+					case ItemsOrderConverter::Strictly_Increasing: {
+						if(config[i-1] >= config[i]) {
+							throwValidatorConfigJSONException("': Items not arranged in strictly increasing order");
+						}
+						break;
 					}
-					break;
-				}
-				case ItemsOrder::decreasing: {
-					if(config[i-1] < config[i]) {
-						throwValidatorConfigJSONException("': Items not arranged in decreasing order");
+					case ItemsOrderConverter::Decreasing: {
+						if(config[i-1] < config[i]) {
+							throwValidatorConfigJSONException("': Items not arranged in decreasing order");
+						}
+						break;
 					}
-					break;
-				}
-				case ItemsOrder::strictly_decreasing: {
-					if(config[i-1] <= config[i]) {
-						throwValidatorConfigJSONException("': Items not arranged in strictly decreasing order");
+					case ItemsOrderConverter::Strictly_Decreasing: {
+						if(config[i-1] <= config[i]) {
+							throwValidatorConfigJSONException("': Items not arranged in strictly decreasing order");
+						}
+						break;
 					}
-					break;
-				}
-				default: {
-					break;
+					default: {
+						break;
+					}
 				}
 			}
 		}
@@ -2577,6 +2456,10 @@ void ValidatorJSON::validateString(const json& config, json& schema) {
 	{
 		if(!schema.at("enum").is_array()) {
 			throwValidatorSchemaJSONException("': Not an element of type 'array'");
+		}
+
+		if(schema["enum"].size() == 0) {
+			throwValidatorSchemaJSONException("': Must be an array with at least one element");
 		}
 
 		bool found = false;
@@ -2754,6 +2637,10 @@ void ValidatorJSON::validateIntegerNumber(const json& config, json& schema) {
 		if(!schema.at("multipleOf").is_number_integer()) {
 			throwValidatorSchemaJSONException("': Not an element of type 'integer'");
 		}
+
+		if(schema["multipleOf"] == 0) {
+			throwValidatorSchemaJSONException("': Must have a non-zero integer value");
+		}
 		
 		if((int)config % (int)schema["multipleOf"] != 0) {
 			throwValidatorConfigJSONException("': Value is not a multiple of " + to_string(schema["multipleOf"]));
@@ -2829,82 +2716,78 @@ void ValidatorJSON::validateElem(const json& config, json& schema) {
 	}
 	catch(const json::out_of_range& e)
 	{
-		throwValidatorSchemaJSONException(fmt::format("': Property 'type' not defined. Valid values are {}", ValidatorJSON::TypeElemJSON::printAvailableValues()));
+		throwValidatorSchemaJSONException("': Property 'type' not defined. Valid values are " + TypeElemJSONConverter::printValues());
 	}
 
-	TypeElemJSON::TypeElemJSONValue type;
 	try
 	{
-		type = TypeElemJSON::stringToEnumValue(string(schema["type"]));
+		switch (TypeElemJSONConverter::stringToEnumValue(string(schema["type"])))
+		{
+			case TypeElemJSONConverter::Object: {
+				if(!config.is_object()) {
+					throwValidatorConfigJSONException("': Not an element of type '" + string(schema["type"]) + "'");
+				}
+
+				validateObject(config, schema);
+				break;
+			}
+			case TypeElemJSONConverter::Array: {
+				if(!config.is_array()) {
+					throwValidatorConfigJSONException("': Not an element of type '" + string(schema["type"]) + "'");
+				}
+
+				validateArray(config, schema);
+				break;
+			}
+			case TypeElemJSONConverter::String: {
+				if(!config.is_string()) {
+					throwValidatorConfigJSONException("': Not an element of type '" + string(schema["type"]) + "'");
+				}
+
+				validateString(config, schema);
+				break;
+			}
+			case TypeElemJSONConverter::Integer: {
+				if(!config.is_number_integer()) {
+					throwValidatorConfigJSONException("': Not an element of type '" + string(schema["type"]) + "'");
+				}
+
+				validateInteger(config, schema);
+				break;
+			}
+			case TypeElemJSONConverter::Unsigned_Integer: {
+				if(!config.is_number_unsigned()) {
+					throwValidatorConfigJSONException("': Not an element of type '" + string(schema["type"]) + "'");
+				}
+
+				validateUnsignedInteger(config, schema);
+				break;
+			}
+			case TypeElemJSONConverter::Float: {
+				if(!config.is_number_float()) {
+					throwValidatorConfigJSONException("': Not an element of type '" + string(schema["type"]) + "'");
+				}
+
+				validateFloat(config, schema);
+				break;
+			}
+			case TypeElemJSONConverter::Boolean: {
+				if(!config.is_boolean()) {
+					throwValidatorConfigJSONException("': Not an element of type '" + string(schema["type"]) + "'");
+				}
+
+				validateBoolean(config, schema);
+				break;
+			}
+			default: {
+				throwValidatorSchemaJSONException(".type': Default case");
+				break;
+			}
+		}
 	}
-	catch(ValidatorSchemaJSONException& e) 
+	catch(const std::out_of_range& e) 
 	{
-		e.addPreMessage(".type");
-		throw;
-	}
-
-	switch (type)
-	{
-		case TypeElemJSON::object: {
-			if(!config.is_object() && !config.is_null()) {
-				throwValidatorConfigJSONException("': Not an element of type '" + string(schema["type"]) + "'");
-			}
-
-			validateObject(config, schema);
-			break;
-		}
-		case TypeElemJSON::array: {
-			if(!config.is_array() && !config.is_null()) {
-				throwValidatorConfigJSONException("': Not an element of type '" + string(schema["type"]) + "'");
-			}
-
-			validateArray(config, schema);
-			break;
-		}
-		case TypeElemJSON::string: {
-			if(!config.is_string() && !config.is_null()) {
-				throwValidatorConfigJSONException("': Not an element of type '" + string(schema["type"]) + "'");
-			}
-
-			validateString(config, schema);
-			break;
-		}
-		case TypeElemJSON::integer: {
-			if(!config.is_number_integer() && !config.is_null()) {
-				throwValidatorConfigJSONException("': Not an element of type '" + string(schema["type"]) + "'");
-			}
-
-			validateInteger(config, schema);
-			break;
-		}
-		case TypeElemJSON::unsigned_integer: {
-			if(!config.is_number_unsigned() && !config.is_null()) {
-				throwValidatorConfigJSONException("': Not an element of type '" + string(schema["type"]) + "'");
-			}
-
-			validateUnsignedInteger(config, schema);
-			break;
-		}
-		case TypeElemJSON::floater: {
-			if(!config.is_number_float() && !config.is_null()) {
-				throwValidatorConfigJSONException("': Not an element of type '" + string(schema["type"]) + "'");
-			}
-
-			validateFloat(config, schema);
-			break;
-		}
-		case TypeElemJSON::boolean: {
-			if(!config.is_boolean() && !config.is_null()) {
-				throwValidatorConfigJSONException("': Not an element of type '" + string(schema["type"]) + "'");
-			}
-
-			validateBoolean(config, schema);
-			break;
-		}
-		default: {
-			throwValidatorSchemaJSONException(".type': Default case");
-			break;
-		}
+		throwValidatorSchemaJSONException(".type': Unknown type '" + string(schema["type"]) + "'. Valid values are " + TypeElemJSONConverter::printValues());
 	}
 }
 

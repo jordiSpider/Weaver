@@ -11,27 +11,13 @@
 #include <iostream>
 #include <sys/time.h>
 #include <ctime>
-#include <chrono>
 #include <ostream>
 #include <fstream>
 #include "Maths/Random.h"
 #include "Maths/Parabola.h"
+#include "FungusSpecies.h"
 #include "SimulationConstants.h"
-#include "GlobalVariable.h"
 #include "Utilities.h"
-#include "CLI11/CLI11.h"
-#include "WorldInterface.h"
-#include "LineInfoException.h"
-#include "Output.h"
-#include <fmt/os.h>
-
-#ifdef USE_CPU_PROFILER
-	#include "gperftools/profiler.h"
-#endif
-
-#ifdef USE_HEAP_PROFILER
-	#include "gperftools/heap-profiler.h"
-#endif
 
 // Library nlohmann JSON
 #include "nlohmann/json.h"
@@ -85,61 +71,24 @@ int main(int argc, char ** argv)
 	task_scheduler_init init(TBB_NUM_THREADS);
 #endif
 */
-	auto start = std::chrono::high_resolution_clock::now();
-
-	#ifdef USE_CPU_PROFILER
-		ProfilerStart("./profiler/cpuProfiler.txt");
-	#endif
-	
-	#ifdef USE_HEAP_PROFILER
-		HeapProfilerStart("./profiler/heapProfiler");
-	#endif
-
-	CLI::App app{"Weaver description"};
-
-	fs::path inputFolder;
-    auto inputFolderOption = app.add_option("-I,--inputFolder", inputFolder, "Folder where to look for the input file")->required(false);
-	inputFolderOption->default_val(fs::current_path());
-
-    fs::path inputFile;
-    auto inputFileOption = app.add_option("-i,--inputFile", inputFile, "Input file defining the simulation")->required(false);
-	inputFileOption->default_val("run_params.json");
-
-	fs::path outputFolder;
-    auto outputFolderOption = app.add_option("-o,--outputFolder", outputFolder, "Output directory where the simulation results folder will be created")->required(false);
-	outputFolderOption->default_val(RESULT_SIMULATION_FOLDER);
-
-	try {
-		app.parse(argc, argv);
-	} catch (const CLI::ParseError &e) {
-		return app.exit(e);
-	}
-
-
-	fs::path WeaverFolder = std::filesystem::path(argv[0]).parent_path();
-	
-
 
 	//timestamp_t t0 = get_timestamp();
 
 	// Read configuration file
-	json configuration = readConfigFile1(inputFolder / inputFile, WeaverFolder);
+	json configuration = readConfigFile(fs::path("run_params.json"));
 
-	fs::path resultFolder = obtainResultFolder(configuration, outputFolder);
-	fs::create_directories(resultFolder);
+	fs::path outputDirectory = obtainOutputDirectory(configuration);
+	fs::create_directories(outputDirectory);
 
-	
+	ofstream logFile;
 	if(configuration["simulation"]["outputStream"]["enabled"])
 	{
-		Output::setOutputStream(resultFolder, configuration["simulation"]["outputStream"]["selectedChannel"]);
+		setOutputStream(logFile, outputDirectory, configuration["simulation"]["outputStream"]["selectedChannel"]);
 	}
 	else
 	{
-		FILE* nullFile = fopen("/dev/null", "w");
-		Output::setOutputStream(nullFile);
+		cout.setstate(std::ios_base::failbit);
 	}
-
-	Output::setErrorOutputStream(stderr);
 
 	if(configuration["simulation"]["initFromFixedSeed"]["enabled"])
 	{
@@ -151,54 +100,23 @@ int main(int argc, char ** argv)
 		Random::initRandomGenerator((unsigned)time(NULL));
 	}	
 
-	Output::cout("===============================================\n");
-	Output::cout("Reading configuration and initializing world...\n");
-	Output::cout("===============================================\n\n");
+	cout << "===============================================" << endl;
+	cout << "Reading configuration and initializing world..." << endl;
+	cout << "===============================================" << endl;
+	cout << endl;
 
-	string configFolder;
-	try
-	{
-		configFolder = configuration["simulation"].at("configFolder");
-	}
-	catch(const json::out_of_range& e)
-	{
-		configFolder = CONFIG_FOLDER;
-	}
-	string configName = configuration["simulation"]["configName"];
-	fs::path configPath = fs::path(configFolder) / fs::path(configName);
-
-	json worldConfig = readConfigFile1(configPath / fs::path("world_params.json"), WeaverFolder);
-
-	World * myWorld;
-
-	switch (WorldType::stringToEnumValue((string)worldConfig["world"]["worldType"])) {
-		case WorldType::Old: {
-			myWorld = new OldWorld(&configuration, worldConfig, inputFolder / inputFile, resultFolder, WeaverFolder, configPath);
-			break;
-		}
-		case WorldType::Matrix3D: {
-			myWorld = new Matrix3DWorld(&configuration, worldConfig, inputFolder / inputFile, resultFolder, WeaverFolder, configPath);
-			break;
-		}
-		default: {
-			throwValidatorSchemaJSONException("': Default case");
-			break;
-		}
-	}
+	World * myWorld = new World(&configuration, outputDirectory);
 
 	myWorld->initializeAnimals();
 
 
-	#ifdef USE_HEAP_PROFILER
-		HeapProfilerDump("prueba");
-	#endif
+	cout << "DONE" << endl;
 
-
-	Output::cout("DONE\n\n");
-
-	Output::cout("======================\n");
-	Output::cout("Running simulation ...\n");
-	Output::cout("======================\n\n");
+	cout << endl;
+	cout << "======================" << endl;
+	cout << "Running simulation ..." << endl;
+	cout << "======================" << endl;
+	cout << endl;
 
 	myWorld->evolveWorld();
 
@@ -244,7 +162,10 @@ int main(int argc, char ** argv)
 	volume->SetProperty(property);
 
 	// a renderer and render window
-	vtkSmartPointer<vtkRenderer> coutow> renderWindow = vtkSmartPointer<vtkRenderWindow>::New();
+	vtkSmartPointer<vtkRenderer> renderer = vtkSmartPointer<vtkRenderer>::New();
+	renderer->SetBackground(0.9, 0.9, 0.9);
+
+	vtkSmartPointer<vtkRenderWindow> renderWindow = vtkSmartPointer<vtkRenderWindow>::New();
 	renderWindow->SetSize(900, 600);
 	renderWindow->AddRenderer(renderer);
 
@@ -259,24 +180,9 @@ int main(int argc, char ** argv)
 	// begin mouse interaction
 	iren->Start();
 */
-	Output::cout("DONE\n");
+	cout << "DONE" << std::endl;
 
 	delete myWorld;
-
-	#ifdef USE_CPU_PROFILER
-		ProfilerStop();
-	#endif
-
-	#ifdef USE_HEAP_PROFILER
-		HeapProfilerStop();
-	#endif
-
-	auto end = std::chrono::high_resolution_clock::now();
-
-	std::chrono::duration<double> elapsed = end - start;
-
-	ofstream timeFile(resultFolder / fs::path("executionTime.txt"));
-	timeFile << elapsed.count() << " segs" << endl;
 
 	exit(0);
 }

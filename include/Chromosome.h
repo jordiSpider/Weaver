@@ -8,11 +8,10 @@
 #ifndef CHROMOSOME_H_
 #define CHROMOSOME_H_
 
+#include "Locus.h"
 #include "Allele.h"
-
 #include <vector>
 #include <ostream>
-
 
 /**
  * This is the specification for a chromosome. One chromosome just contains an
@@ -21,29 +20,24 @@
 class Chromosome
 {
 private:
-	std::vector<const Allele*> alleles;
+	std::vector<Allele*>* alleles;
 public:
 	/**
 	 * Constructs a chromosome with the specified alleles.
 	 * @param alleles the alleles of this Chromosome
 	 */
-	explicit Chromosome(const unsigned int numberOfLociPerChromosome);
-	explicit Chromosome(const Chromosome &otherChromosome);
-	inline Chromosome* clone() const { return new Chromosome(*this); }
+	Chromosome(int numberOfLociPerChromosome);
+	Chromosome(const Chromosome* otherChromosome);
+
 	/**
 	 * Destroys this Chromosome deleting its data.
 	 */
-	~Chromosome();
+	virtual ~Chromosome();
 
-	// Getters
-	inline const Allele* const getAllele(const unsigned int lociPosition) const { return alleles.at(lociPosition); }
-	inline const size_t size() const { return alleles.size(); }
-
-	// Setters
-	inline void setAllele(const Allele* const allele, const unsigned int lociPosition) { alleles.at(lociPosition) = allele; }
-	inline void pushAllele(const Allele* const allele) { alleles.emplace_back(allele); }
-	
-	void swapAlleles(const unsigned int lociPosition, Chromosome* const otherChromosome, const unsigned int otherLociPosition);
+	inline const std::vector<Allele*>* getAlleles() const { return alleles; }
+	void swapAlleles(const int& lociPosition, const Chromosome* otherChromosome, const int& otherLociPosition);
+	void setAllele(const Allele* allele, int lociPosition);
+	Chromosome* clone() const;
 
 	/**
 	 * Prints the specified Chromosome into the specified output stream.
@@ -51,7 +45,7 @@ public:
 	 * @param chromosome the Chromosome to be printed
 	 * @return the updated output stream
 	 */
-	friend std::ostream& operator<<(std::ostream& os, const Chromosome &chromosome);
+	friend std::ostream& operator<<(std::ostream& os, Chromosome& chromosome);
 };
 
 #endif /* CHROMOSOME_H_ */

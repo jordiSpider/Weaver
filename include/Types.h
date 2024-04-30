@@ -57,26 +57,24 @@ public:
     inline const unsigned int& getValue() const { return value; }
     inline void moveOnPreviousInstar() { value--; }
     inline void moveOnNextInstar() { value++; }
-    friend Instar operator+(const Instar& lhs, const int& rhs);
-    friend Instar operator+(const int& lhs, const Instar& rhs);
     friend bool operator<(const Instar& lhs, const Instar& rhs);
-    friend bool operator<(const Instar& lhs, const int& rhs);
-    friend bool operator<(const int& lhs, const Instar& rhs);
+    friend bool operator<(const Instar& lhs, const unsigned int& rhs);
+    friend bool operator<(const unsigned int& lhs, const Instar& rhs);
     friend bool operator<=(const Instar& lhs, const Instar& rhs);
-    friend bool operator<=(const Instar& lhs, const int& rhs);
-    friend bool operator<=(const int& lhs, const Instar& rhs);
+    friend bool operator<=(const Instar& lhs, const unsigned int& rhs);
+    friend bool operator<=(const unsigned int& lhs, const Instar& rhs);
     friend bool operator>(const Instar& lhs, const Instar& rhs);
-    friend bool operator>(const Instar& lhs, const int& rhs);
-    friend bool operator>(const int& lhs, const Instar& rhs);
+    friend bool operator>(const Instar& lhs, const unsigned int& rhs);
+    friend bool operator>(const unsigned int& lhs, const Instar& rhs);
     friend bool operator>=(const Instar& lhs, const Instar& rhs);
-    friend bool operator>=(const Instar& lhs, const int& rhs);
-    friend bool operator>=(const int& lhs, const Instar& rhs);
+    friend bool operator>=(const Instar& lhs, const unsigned int& rhs);
+    friend bool operator>=(const unsigned int& lhs, const Instar& rhs);
     friend bool operator==(const Instar& lhs, const Instar& rhs);
-    friend bool operator==(const Instar& lhs, const int& rhs);
-    friend bool operator==(const int& lhs, const Instar& rhs);
+    friend bool operator==(const Instar& lhs, const unsigned int& rhs);
+    friend bool operator==(const unsigned int& lhs, const Instar& rhs);
     friend bool operator!=(const Instar& lhs, const Instar& rhs);
-    friend bool operator!=(const Instar& lhs, const int& rhs);
-    friend bool operator!=(const int& lhs, const Instar& rhs);
+    friend bool operator!=(const Instar& lhs, const unsigned int& rhs);
+    friend bool operator!=(const unsigned int& lhs, const Instar& rhs);
     friend std::ostream& operator<<(std::ostream& os, const Instar& instar);
 };
 

@@ -65,23 +65,22 @@ def close_script():
 
 def main():
     # Read configuration file
-    with open(os.path.join(os.getcwd(), "scripts", "tools_config.json"), "r") as f:
+    with open(os.path.join(os.getcwd(), "project_config.json"), "r") as f:
         config = json.load(f)
 
     # Create an OS-dependent tool
     SO_name = platform.system()
 
     working_directory = os.getcwd()
-    tool_script_base_path = os.path.abspath(os.path.dirname(__file__))
     tool_script_name = os.path.splitext(os.path.basename(__file__))[0]
 
     global tools
     if(SO_name == str(SO_TYPE.Linux)):
-        tools = LinuxTools(config, working_directory, tool_script_base_path, tool_script_name)
+        tools = LinuxTools(config, working_directory, tool_script_name)
     elif(SO_name == str(SO_TYPE.Windows)):
-        tools = WindowsTools(config, working_directory, tool_script_base_path, tool_script_name)
+        tools = WindowsTools(config, working_directory, tool_script_name)
     elif(SO_name == str(SO_TYPE.Darwin)):
-        tools = DarwinTools(config, working_directory, tool_script_base_path, tool_script_name)
+        tools = DarwinTools(config, working_directory, tool_script_name)
 
     # Parse the input arguments
     try:

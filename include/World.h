@@ -10,24 +10,14 @@
 #include <ostream>
 #include <fstream>
 #include <string>
-#include <unordered_map>
-
-#include "WorldInterface.h"
-
+#include "FungusSpecies.h"
+#include "AnimalSpecies.h"
+#include "PlantSpecies.h"
 #include "Maths/GaussianDistribution.h"
 #include "Maths/Random.h"
-#include "Types.h"
-#include "TerrainCell.h"
 #include "Edible.h"
-#include "LineInfoException.h"
-#include "BasalResourceSpecies.h"
-#include "NoBasalResourceSpecies.h"
-#include "Resource.h"
-#include "SimulType.h"
-#include "Utilities.h"
-#include "AnimalSpecies.h"
-#include "Coordinate3D.h"
-#include "Patch.h"
+#include "Animal.h"
+#include "Types.h"
 
 #include <sys/time.h>
 #include <ctime>
@@ -41,17 +31,9 @@
 // Library nlohmann JSON
 #include "nlohmann/json.h"
 
-#include "magic_enum/magic_enum.h"
-
-#include "Output.h"
-
-#define FMT_HEADER_ONLY
-#include "fmt/core.h"
-
 using json = nlohmann::json;
 
-
-class ResourceSpecies;
+class TerrainCell;
 
 /*
 #ifdef _TBB
@@ -68,32 +50,186 @@ typedef std::vector<Terrain2D> Terrain3D;
 #endif
 */
 
-class World : public WorldInterface
+class World
 {
-public:
-	std::vector<ResourceSpecies*> existingResourceSpecies;
-	std::vector<AnimalSpecies*> existingAnimalSpecies;
+private:
+	
+	unsigned int runDays;
+	unsigned int recordEach;
+	unsigned int timeStepsPerDay;
+	unsigned int numberOfCombinations;
+	unsigned int simulType;
+	
 
-	fs::path WeaverFolder;
+	void obtainInhabitableTerrainCells(vector<TerrainCell*> &inhabitableTerrainCells);
+	void obtainSpeciesInhabitableTerrainCells(map<Species,vector<TerrainCell*>*> &mapSpeciesInhabitableTerrainCells, const vector<TerrainCell*> &inhabitableTerrainCells);
+	void printActualEcosystemSize(const vector<TerrainCell*> &inhabitableTerrainCells);
+
+	map<Species, vector<Edible*>*>* generateStatisticsPopulation(vector<pair<Animal *, Instar> > &animalAndInstarAtInitialization, map<Species,vector<TerrainCell*>*> &mapSpeciesInhabitableTerrainCells);
+	void eraseStatisticsPopulation(map<Species, vector<Edible*>*> * animalsPopulation);
+	int generatePopulation(Species* currentAnimalSpecies, const vector<TerrainCell*> &speciesInhabitableTerrainCells, ofstream &constitutiveTraitsFile);
+
+	// Creates the terrain cells based on dimensions specified on this object. This should be called
+	// right after constructor
+	void initializeTerrainDimensions();
+	void readObstaclePatchesFromJSONFiles();
+	void readMoisturePatchesFromJSONFiles();
+	void readAnimalSpeciesFromJSONFiles();
+	void readFungusSpeciesFromJSONFiles();
+	void initializeFungi();
+	// Setters. Be aware that setting this values after calling createTerrain will lead to undesired
+	// behavior and memory errors. This should always be used prior to create terrain
+	void setWidth(unsigned int newWidth);
+	void setLength(unsigned int newLength);
+	void setDepth(unsigned int newDepth);
+	void setInitialEcosystemSize(unsigned long newInitialEcosystemSize);
+	void setMaxLogMassRatio(float newMaxLogMassRatio);
+	void setExitTimeThreshold(float exitTimeThreshold);
+	void setMinLogMassRatio(float newMinLogMassRatio);
+	void setSigmaForPDF(float sigmaForPDF);
+	void setMuForPDF(float muForPDF);
+
+	void setCellSize(float newCellSize);
+	void setObstacleDirectoryName(fs::path newTerrainDirectoryName);
+	void setMoistureDirectoryName(fs::path newMoistureDirectoryName);
+	void setFungiDirectoryName(fs::path newFungiDirectoryName);
+	void setSpeciesDirectoryName(fs::path newSpeciesDirectoryName);
+	void setPeriodLength(double seconds); // In seconds
+	// TODO Mario Initialize animals with initIndividualsPerDensities
+	/*
+	void setHeatingCodeTemperatureCycle(string temperatureFilename); // Celsius
+	*/
+
+	void setFungiToPreysCapacityTransference(double fungiToPreysCapacityTransference);
+	void setPreysToPredatorsCapacityTransference(double preysToPredatorsCapacityTransference);
+
+	// Returns a pointer to the indicated cell
+	TerrainCell * getCell(unsigned int z, unsigned int y, unsigned int x);
+
+	void addFungusSpecies(FungusSpecies * newSpecies );
+	void addAnimalSpecies(AnimalSpecies * newSpecies );
+	void addPlantSpecies(PlantSpecies * newSpecies, unsigned int numberOfInitialPopulation);
+	Species * getFungusSpecies(string name);
+	Species * getAnimalSpecies(string name);
+
+	void printAnimalsAlongCells(int day, int simulationPoint);
+	void printCellAlongCells(int day);
+	void printAnimalsVoracitiesAlongCells(int day);
+	ostream& printDailySummary(ostream& os, int day);
+	ostream& printExtendedDailySummary(ostream& os, int day);
+	void printGeneticsSummaries(int day);
+	void saveAnimalSpeciesSnapshot(fs::path filenameRoot, int day, Species* species);
+	void saveFungusSpeciesSnapshot(fs::path filenameRoot, int day, Species* species);
+	void saveWaterSnapshot(fs::path filenameRoot, int day);
+	void deleteExtinguishedReproducingAnimals();
+	bool isExtinguished();
+	
+	void setHomogeneousFungus(Species* species, double value);
+	void setCubicFungusPatch(Species* species, Coordinate3D<int> center, Coordinate3D<int> dimensions, double value);
+	void setGaussianFungusPatch(Species* species, unsigned int xpos, unsigned int ypos, unsigned int zpos, unsigned int radius, float sigma, float amplitude);
+	void setSphericalFungusPatch(Species* species, unsigned int xpos, unsigned int ypos, unsigned int zpos, unsigned int radius, double value);
+	void setRandomGaussianFungusPatches(Species* species, unsigned int number, float radius, float newSigma, bool useRandomSigma, float newAmplitude, bool useRandomAmplitude);
+
+	void setHomogeneousWater(float value, float relativeHumidityDecayOverTime);
+	void setGaussianWaterPatch(unsigned int xpos, unsigned int ypos, unsigned int zpos, unsigned int radius, float sigma, float amplitude);
+	void setCubicWaterPatch(string patchFilename, Coordinate3D<int> center, Coordinate3D<int> dimensions,  bool useRelativeHumidityCycle, const vector<float>& temperatureCycle, const vector<float>& relativeHumidityCycle, bool useRelativeHumidityDecayOverTime, float relativeHumidityOnRainEvent, float relativeHumidityDecayOverTime, int timeStepsBetweenRainEvents, int standardDeviationForRainEvent, float maximumFungiCapacity, bool inEnemyFreeSpace, bool inCompetitorFreeSpace);
+	void setCubicObstaclePatch(string patchFilename, unsigned int depthStartPoint, unsigned int lengthStartPoint, unsigned int widthStartPoint, unsigned int patchDepth, unsigned int patchLength, unsigned int patchWidth);
+	void setSphericalWaterPatch(string patchFilename, unsigned int radius, unsigned int xpos, unsigned int ypos, unsigned int zpos, bool useRelativeHumidityCycle, const vector<float>& temperatureCycle, const vector<float>& relativeHumidityCycle, bool useRelativeHumidityDecayOverTime, float relativeHumidityDecayInitialValue, float relativeHumidityDecayOverTime, int timeStepsBetweenRainEvents, int standardDeviationForRainEvent, float maximumFungiCapacity, bool inEnemyFreeSpace, bool inCompetitorFreeSpace);
+	void setRandomGaussianWaterPatches(unsigned int number, float radius, float newSigma, bool useRandomSigma, float newAmplitude, bool useRandomAmplitude );
+
+protected:
+
+	friend class TerrainCell;
+
+	fs::path outputDirectory;
+	fs::path inputDirectory;
+	string encountersMatrixFilename;
+	string predationsMatrixFilename;
+	string nodesMatrixFilename;
+	string predationEventsOnOtherSpeciesFilename;
+
+	ofstream dailySummaryFile;
+	ofstream extendedDailySummaryFile;
+	ofstream geneticsSummaryFile;
+	ofstream edibilitiesFile;
+
+	unsigned int width; // Number of terrain cells
+	unsigned int length; // Number of terrain cells
+	unsigned int depth; // Number of terrain cells
+	float cellSize;
+	fs::path obstacleDirectoryName;
+	fs::path moistureDirectoryName;
+	fs::path fungiDirectoryName;
+	fs::path speciesDirectoryName;
+	bool initIndividualsPerDensities;
+	bool competitionAmongFungiSpecies;
+	float exitTimeThreshold;
+	unsigned long initialEcosystemSize;
+	float minLogMassRatio;
+	float maxLogMassRatio;
+	float sigmaForPDF;
+	float muForPDF;
+
+	float encounterHuntedVoracitySAW;
+	float encounterHunterVoracitySAW;
+	float encounterVoracitiesProductSAW;
+	float encounterHunterSizeSAW;
+	float encounterHuntedSizeSAW;
+	float encounterProbabilityDensityFunctionSAW;
+
+	float encounterHuntedVoracityAH;
+	float encounterHunterVoracityAH;
+	float encounterVoracitiesProductAH;
+	float encounterHunterSizeAH;
+	float encounterHuntedSizeAH;
+	float encounterProbabilityDensityFunctionAH;
+
+	float predationSpeedRatioSAW;
+	float predationHunterVoracitySAW;
+	float predationProbabilityDensityFunctionSAW;
+
+	float predationSpeedRatioAH;
+	float predationHunterVoracityAH;
+	float predationProbabilityDensityFunctionAH;
+
+	double maxSearchArea;
+	double minK;
+
+	float fungiToPreysCapacityTransference;
+	float preysToPredatorsCapacityTransference;
+
+	bool saveGeneticsSummaries;
+	bool saveIntermidiateVolumes;
+	unsigned int saveIntermidiateVolumesPeriodicity;
+
+	Terrain3D terrain; // "Voxels" contained in 3D terrain
+
+	/***
+	 * Stores species and the number of initial patches/individuals associated
+	 */
+
+	//double periodLength;
+	vector<float> heatingCodeTemperatureCycle;
+
+public:
+	vector<Species*> existingFungiSpecies;
+	vector<Species*> existingAnimalSpecies;
+	map<PlantSpecies *, unsigned int> existingPlantSpecies;
 
 	// Constructors
 	// Recover from previously stored world
 	World(std::string filesNameRoot);
 
 	// Create a new, empty world
-    World(json * jsonTree, json &worldConfig, fs::path inputFile, fs::path outputFolder, fs::path WeaverFolder, fs::path configPath);
+	World(json * jsonTree, fs::path outputDirectory);
 	~World(); // Destructor
 
-	void calculateAttackStatistics(std::map<AnimalSpecies*,std::vector<TerrainCell*>*> &mapSpeciesInhabitableTerrainCells);
+	void calculateAttackStatistics(map<Species,vector<TerrainCell*>*> &mapSpeciesInhabitableTerrainCells);
 	void updateMaxSearchArea(double currentAnimalMaxSearchArea);
 
 	void initializeAnimals();
 
-	virtual void evolveWorld();
-
-	inline bool getSaveAnimalConstitutiveTraits() const { return saveAnimalConstitutiveTraits; }
-	inline bool getSaveEdibilitiesFile() const { return saveEdibilitiesFile; }
-	inline std::ofstream& getConstitutiveTraitsFile() { return constitutiveTraitsFile; }
+	void evolveWorld();
 
 	// Removes all existing terrain cells and removes all terrain. This cannot be undone
 	void eraseTerrain();
@@ -101,22 +237,23 @@ public:
 	// Empties existing world, erases and recreates a new one with new dimensions
 	void restart(unsigned int newWidth, unsigned int newLength, unsigned int newDepth, float newCellSize);
 
-	void setOutputFolder(fs::path outputFolder);
-	void printPredationEventsOnOtherSpeciesMatrix(std::ostream& predationEventsOnOtherSpeciesFile);
-	void printInteractionMatrices(std::ostream& encountersMatrixFile, std::ostream& predationsMatrixFile, std::ostream& nodesMatrixFile);
+	void setOutputDirectory(fs::path outputDirectory);
+	void printPredationEventsOnOtherSpeciesMatrix(ostream& predationEventsOnOtherSpeciesFile);
+	void printInteractionMatrices(ostream& encountersMatrixFile, ostream& predationsMatrixFile, ostream& nodesMatrixFile);
 
 	// Getters
 	int getWidth();
 	int getLength();
 	int getDepth();
-	bool getCompetitionAmongResourceSpecies();
+	bool getCompetitionAmongFungiSpecies();
 	float getExitTimeThreshold();
+	TerrainCell * getCellByBearing(TerrainCell* position, TerrainCell* bestCell);
 	float getMinLogMassRatio() {return minLogMassRatio;};
 	float getMaxLogMassRatio() {return maxLogMassRatio;};
 	float getSigmaForPDF() {return sigmaForPDF;};
 	float getMuForPDF() {return muForPDF;};
 	double getMaxSearchArea() {return maxSearchArea;};
-	const std::vector<AnimalSpecies *> * getExistingAnimalSpecies();
+	const vector<Species *> * getExistingAnimalSpecies();
 	float getCellSize();
 	float getMinWater();
 	float getMaxWater();
@@ -125,18 +262,21 @@ public:
 	float getWaterPatchesAmplitude();
 	float getWaterPatchesSigma();
 	double getPeriodLength();
-	inline const SimulType& getSimulType() const { return simulType; }
-
-	inline bool isGrowthAndReproTest() const { return growthAndReproTest; }
+	unsigned int getSimulType() { return simulType;};
 
 	// Saves everything so simulation can be snapshoted and recovered later
 	void save(std::string filesNameRoot);
 
 	// Read water from stored volume
 	void readWaterFromVolume(std::string fileName);
-	void initializeOutputFiles(json * jsonTree, fs::path inputFile);
+	string translateLifeStage(unsigned int lifeStage);
+	void initializeOutputFiles();
+
+		// Returns a pointer to the indicated cell
+	TerrainCell * getCell2(unsigned int z, unsigned int y, unsigned int x);
 
 	bool exitAtFirstExtinction;
+	//string simulTypeString;
 	
 #ifdef _PTHREAD
 		struct ThreadRangerArgument
@@ -147,8 +287,8 @@ public:
 		};
 		static void* activateAnimalsThreadMaker(void* threadArgument);
 		void* activateAnimalsTask(unsigned int x0, unsigned int x1, unsigned int y0, unsigned int y1, unsigned int z0, unsigned int z1, int day);
-		static void* growResourceThreadMaker(void* threadArgument);
-		void* growResourceTask(unsigned int x0, unsigned int x1, unsigned int y0, unsigned int y1, unsigned int z0, unsigned int z1);
+		static void* growFungiThreadMaker(void* threadArgument);
+		void* growFungiTask(unsigned int x0, unsigned int x1, unsigned int y0, unsigned int y1, unsigned int z0, unsigned int z1);
 		static void* moveAnimalsThreadMaker(void* threadArgument);
 		void* moveAnimalsTask(unsigned int x0, unsigned int x1, unsigned int y0, unsigned int y1, unsigned int z0, unsigned int z1, int day);
 		static void* assimilateThreadMaker(void* threadArgument);
@@ -298,7 +438,7 @@ public:
 				predationProbabilityDensityFunctionSAW;
 	}
 
-	float getPredationSpeedRatioAH() const {
+	float getPredationSpeedRatioAh() const {
 		return predationSpeedRatioAH;
 	}
 
@@ -306,244 +446,17 @@ public:
 		predationSpeedRatioAH = predationSpeedRatioAh;
 	}
 
-	float getPredationSpeedRatioSAW() const {
+	float getPredationSpeedRatioSaw() const {
 		return predationSpeedRatioSAW;
-	}
-
-	double getMassRatio() const {
-		return massRatio;
 	}
 
 	void setPredationSpeedRatioSaw(float predationSpeedRatioSaw) {
 		predationSpeedRatioSAW = predationSpeedRatioSaw;
 	}
-	double getPdfThreshold() const;
 
-protected:
-	class ResourceType {
-	public:
-		enum ResourceTypeValue {
-			BasalResource, 
-			NoBasalResource
-		};
-
-		static ResourceTypeValue stringToEnumValue(const std::string &str);
-
-	private:
-		static const std::unordered_map<std::string_view, const ResourceTypeValue> stringToEnum;
-		static const std::string enumValues;
-
-		static std::string_view printAvailableValues();
-		static std::string_view to_string(const ResourceTypeValue& resourceType);
-		static const std::unordered_map<std::string_view, const ResourceTypeValue> generateMap();
-		static constexpr size_t size();
-		static const std::string generateAvailableValues();
-	};
-
-	unsigned int runDays;
-	unsigned int recordEach;
-	unsigned int timeStepsPerDay;
-	unsigned int numberOfCombinations;
-	SimulType simulType;
-	bool growthAndReproTest;
-	double massRatio;
-
-	void obtainInhabitableTerrainCells(std::vector<TerrainCell*> &inhabitableTerrainCells);
-	void obtainSpeciesInhabitableTerrainCells(std::map<AnimalSpecies*,std::vector<TerrainCell*>*> &mapSpeciesInhabitableTerrainCells, const std::vector<TerrainCell*> &inhabitableTerrainCells);
-	void printActualEcosystemSize(const std::vector<TerrainCell*> &inhabitableTerrainCells);
-
-	virtual std::map<AnimalSpecies*, std::vector<Animal*>*>* generateStatisticsPopulation(std::vector<std::pair<Animal *, Instar> > &animalAndInstarAtInitialization, std::map<AnimalSpecies*,std::vector<TerrainCell*>*> &mapSpeciesInhabitableTerrainCells)=0;
-	void eraseStatisticsPopulation(std::map<AnimalSpecies*, std::vector<Animal*>*> * animalsPopulation);
-	virtual int generatePopulation(AnimalSpecies* currentAnimalSpecies, const std::vector<TerrainCell*> &speciesInhabitableTerrainCells)=0;
-
-	// Creates the terrain cells based on dimensions specified on this object. This should be called
-	// right after constructor
-	void initializeTerrainDimensions(const nlohmann::json &moistureBasePatch);
-	void readObstaclePatchesFromJSONFiles();
-	void readMoisturePatchesFromJSONFiles();
-	void readAnimalSpeciesFromJSONFiles();
-	void readResourceSpeciesFromJSONFiles();
-	void initializeResource();
-	// Setters. Be aware that setting this values after calling createTerrain will lead to undesired
-	// behavior and memory errors. This should always be used prior to create terrain
-	void setWidth(unsigned int newWidth);
-	void setLength(unsigned int newLength);
-	void setDepth(unsigned int newDepth);
-	void setInitialEcosystemSize(unsigned long newInitialEcosystemSize);
-	void setMaxLogMassRatio(float newMaxLogMassRatio);
-	void setExitTimeThreshold(float exitTimeThreshold);
-	void setMinLogMassRatio(float newMinLogMassRatio);
-	void setSigmaForPDF(float sigmaForPDF);
-	void setMuForPDF(float muForPDF);
-
-	void setCellSize(float newCellSize);
-	void setObstacleFolderName(fs::path newTerrainFolderName);
-	void setMoistureFolderName(fs::path newMoistureFolderName);
-	void setResourceFolderName(fs::path newResourceFolderName);
-	void setSpeciesFolderName(fs::path newSpeciesFolderName);
-	void setPeriodLength(double seconds); // In seconds
-	// TODO Mario Initialize animals with initIndividualsPerDensities
-	/*
-	void setHeatingCodeTemperatureCycle(string temperatureFilename); // Celsius
-	*/
-
-	void setResourceToPreysCapacityTransference(double resourceToPreysCapacityTransference);
-	void setPreysToPredatorsCapacityTransference(double preysToPredatorsCapacityTransference);
-
-	// Returns a pointer to the indicated cell
-	TerrainCell* getCell(unsigned int z, unsigned int y, unsigned int x);
-
-	void addResourceSpecies(ResourceSpecies * newSpecies );
-	void addAnimalSpecies(AnimalSpecies * newSpecies );
-	ResourceSpecies * getResourceSpecies(std::string name);
-	AnimalSpecies * getAnimalSpecies(const std::string& name);
-
-	void printAnimalsAlongCells(int day, int simulationPoint);
-	void printCellAlongCells(int day);
-	void printAnimalsVoracitiesAlongCells(int day);
-	std::ostream& printDailySummary(std::ostream& os, int day);
-	std::ostream& printExtendedDailySummary(std::ostream& os, int day);
-	void printGeneticsSummaries(int day);
-	void saveAnimalSpeciesSnapshot(fs::path filenameRoot, std::string filename, int day, AnimalSpecies* species);
-	void saveResourceSpeciesSnapshot(fs::path filenameRoot, std::string filename, int day, ResourceSpecies* species);
-	void saveWaterSnapshot(fs::path filenameRoot, std::string filename, int day);
-	void deleteExtinguishedReproducingAnimals();
-	bool isExtinguished();
-
-	void setResourcePatch(const json &patch, ResourceSpecies* const resourceSpecie);
-	void setWaterPatch(const json &patch, const std::string &patchFilename);
-	
-	void setHomogeneousResource(ResourceSpecies* const species, double value, double resourceMaximumCapacity);
-	void setCubicResourcePatch(ResourceSpecies* const species, Coordinate3D<int> center, Coordinate3D<int> dimensions, double value, double resourceMaximumCapacity);
-	void setGaussianResourcePatch(ResourceSpecies* const species, unsigned int xpos, unsigned int ypos, unsigned int zpos, unsigned int radius, float sigma, float amplitude, double resourceMaximumCapacity);
-	void setSphericalResourcePatch(ResourceSpecies* const species, unsigned int xpos, unsigned int ypos, unsigned int zpos, unsigned int radius, double value, double resourceMaximumCapacity);
-	void setRandomGaussianResourcePatches(ResourceSpecies* const species, unsigned int number, float radius, float newSigma, bool useRandomSigma, float newAmplitude, bool useRandomAmplitude, double resourceMaximumCapacity);
-
-	void setHomogeneousWater(float value, float relativeHumidityDecayOverTime);
-	void setGaussianWaterPatch(unsigned int xpos, unsigned int ypos, unsigned int zpos, unsigned int radius, float sigma, float amplitude);
-	void setCubicWaterPatch(std::string patchFilename, Coordinate3D<int> center, Coordinate3D<int> dimensions,  bool useRelativeHumidityCycle, const std::vector<float>& relativeHumidityCycle, const std::vector<float>& temperatureCycle, bool useRelativeHumidityDecayOverTime, float relativeHumidityDecayOverTime, float relativeHumidityOnRainEvent, int timeStepsBetweenRainEvents, int standardDeviationForRainEvent, float maximumResourceCapacity, bool inEnemyFreeSpace, bool inCompetitorFreeSpace);
-	void setCubicObstaclePatch(std::string patchFilename, unsigned int depthStartPoint, unsigned int lengthStartPoint, unsigned int widthStartPoint, unsigned int patchDepth, unsigned int patchLength, unsigned int patchWidth);
-	void setSphericalWaterPatch(std::string patchFilename, unsigned int radius, unsigned int xpos, unsigned int ypos, unsigned int zpos, bool useRelativeHumidityCycle, const std::vector<float>& relativeHumidityCycle, const std::vector<float>& temperatureCycle, bool useRelativeHumidityDecayOverTime, float relativeHumidityDecayOverTime, float relativeHumidityDecayInitialValue, int timeStepsBetweenRainEvents, int standardDeviationForRainEvent, float maximumResourceCapacity, bool inEnemyFreeSpace, bool inCompetitorFreeSpace);
-	void setRandomGaussianWaterPatches(unsigned int number, float radius, float newSigma, bool useRandomSigma, float newAmplitude, bool useRandomAmplitude );
-
-	friend class TerrainCell;
-
-	fs::path outputFolder;
-	fs::path inputFolder;
-	std::string encountersMatrixFilename;
-	std::string predationsMatrixFilename;
-	std::string nodesMatrixFilename;
-	std::string predationEventsOnOtherSpeciesFilename;
-
-	ofstream dailySummaryFile;
-	ofstream extendedDailySummaryFile;
-	ofstream edibilitiesFile;
-	bool saveEdibilitiesFile;
-
-	unsigned int width; // Number of terrain cells
-	unsigned int length; // Number of terrain cells
-	unsigned int depth; // Number of terrain cells
-	float cellSize;
-	fs::path obstacleFolderName;
-	fs::path moistureFolderName;
-	fs::path resourceFolderName;
-	fs::path speciesFolderName;
-	bool initIndividualsPerDensities;
-	bool competitionAmongResourceSpecies;
-	float exitTimeThreshold;
-	unsigned long initialEcosystemSize;
-	float minLogMassRatio;
-	float maxLogMassRatio;
-	float sigmaForPDF;
-	float muForPDF;
-
-	float encounterHuntedVoracitySAW;
-	float encounterHunterVoracitySAW;
-	float encounterVoracitiesProductSAW;
-	float encounterHunterSizeSAW;
-	float encounterHuntedSizeSAW;
-	float encounterProbabilityDensityFunctionSAW;
-
-	float encounterHuntedVoracityAH;
-	float encounterHunterVoracityAH;
-	float encounterVoracitiesProductAH;
-	float encounterHunterSizeAH;
-	float encounterHuntedSizeAH;
-	float encounterProbabilityDensityFunctionAH;
-
-	float predationSpeedRatioSAW;
-	float predationHunterVoracitySAW;
-	float predationProbabilityDensityFunctionSAW;
-
-	float predationSpeedRatioAH;
-	float predationHunterVoracityAH;
-	float predationProbabilityDensityFunctionAH;
-
-	double maxSearchArea;
-	double minK;
-
-	float resourceToPreysCapacityTransference;
-	float preysToPredatorsCapacityTransference;
-
-	bool saveAnimalConstitutiveTraits;
-	std::ofstream constitutiveTraitsFile;
-
-	bool saveGeneticsSummaries;
-	std::unordered_map<AnimalSpecies*, std::ofstream> geneticsSummaryFile;
-
-	bool saveIntermidiateVolumes;
-	unsigned int saveIntermidiateVolumesPeriodicity;
-
-	Terrain3D terrain; // "Voxels" contained in 3D terrain
-
-	/***
-	 * Stores species and the number of initial patches/individuals associated
-	 */
-
-	//double periodLength;
-	std::vector<float> heatingCodeTemperatureCycle;		
-};
-
-class OldWorld : public World
-{
-public:
-	OldWorld(json * jsonTree, json &worldConfig, fs::path inputFile, fs::path outputFolder, fs::path WeaverFolder, fs::path configPath)
-		: World(jsonTree, worldConfig, inputFile, outputFolder, WeaverFolder, configPath)
-	{
 		
-	}
-	~OldWorld() {}
-
-	TerrainCellInterface * getCellByBearing(TerrainCellInterface* position, const TerrainCellInterface* const bestCell);
-	std::map<AnimalSpecies*, std::vector<Animal*>*>* generateStatisticsPopulation(std::vector<std::pair<Animal *, Instar> > &animalAndInstarAtInitialization, std::map<AnimalSpecies*,std::vector<TerrainCell*>*> &mapSpeciesInhabitableTerrainCells);
-	int generatePopulation(AnimalSpecies* currentAnimalSpecies, const std::vector<TerrainCell*> &speciesInhabitableTerrainCells);
-
-protected:
-
+			
 };
-
-class Matrix3DWorld : public World
-{
-public:
-	Matrix3DWorld(json * jsonTree, json &worldConfig, fs::path inputFile, fs::path outputFolder, fs::path WeaverFolder, fs::path configPath)
-		: World(jsonTree, worldConfig, inputFile, outputFolder, WeaverFolder, configPath)
-	{
-
-	}
-	~Matrix3DWorld() {}
-
-	TerrainCellInterface * getCellByBearing(TerrainCellInterface* position, const TerrainCellInterface* const bestCell);
-	std::map<AnimalSpecies*, std::vector<Animal*>*>* generateStatisticsPopulation(std::vector<std::pair<Animal *, Instar> > &animalAndInstarAtInitialization, std::map<AnimalSpecies*,std::vector<TerrainCell*>*> &mapSpeciesInhabitableTerrainCells);
-	int generatePopulation(AnimalSpecies* currentAnimalSpecies, const std::vector<TerrainCell*> &speciesInhabitableTerrainCells);
-	void evolveWorld();
-	void finishWorld();
-
-protected:
-	
-};
-
-
-
 
 // Manage exceptions due to wrong sizes used for world creation
 class WorldSizeException

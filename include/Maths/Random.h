@@ -30,7 +30,7 @@ public:
 	static int randomIntegerInRange(int min, int max);
 	static double randomUniform(double min, double max);
 	static double randomUniform();
-	static unsigned int randomIndex(const unsigned int &size);
+	static int randomIndex(int size);
 	static std::vector<int>* createIndicesVector(unsigned int size);
 	template<typename T>
 	static void shuffleList(std::list<T>** sourceListPtr);

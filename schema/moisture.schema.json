@@ -6,13 +6,41 @@
             "properties": {
                 "type": {
                     "type": "string",
-                    "enum": [
-                        "homogeneous",
-                        "gaussian",
-                        "spherical",
-                        "cubic",
-                        "randomGaussian"
-                    ],
+                    "required": true
+                },
+                "radius": {
+                    "type": "unsigned_integer",
+                    "required": true
+                },
+                "xPos": {
+                    "type": "unsigned_integer",
+                    "required": true
+                },
+                "yPos": {
+                    "type": "unsigned_integer",
+                    "required": true
+                },
+                "zPos": {
+                    "type": "unsigned_integer",
+                    "required": true
+                },
+                "maximumFungiCapacity": {
+                    "type": "float",
+                    "required": true
+                },
+                "inEnemyFreeSpace": {
+                    "type": "boolean",
+                    "required": true
+                },
+                "inCompetitorFreeSpace": {
+                    "type": "boolean",
+                    "required": true
+                },
+                "temperatureCycle": {
+                    "type": "array",
+                    "items": {
+                        "type": "unsigned_integer"
+                    },
                     "required": true
                 },
                 "useRelativeHumidityCycle": {
@@ -26,23 +54,16 @@
                     },
                     "required": true
                 },
-                "temperatureCycle": {
-                    "type": "array",
-                    "items": {
-                        "type": "unsigned_integer"
-                    },
-                    "required": true
-                },
                 "useRelativeHumidityDecayOverTime": {
                     "type": "boolean",
                     "required": true
                 },
-                "relativeHumidityDecayOverTime": {
-                    "type": "floater",
+                "relativeHumidityOnRainEvent": {
+                    "type": "float",
                     "required": true
                 },
-                "relativeHumidityOnRainEvent": {
-                    "type": "floater",
+                "relativeHumidityDecayOverTime": {
+                    "type": "float",
                     "required": true
                 },
                 "timeStepsBetweenRainEvents": {
@@ -50,199 +71,10 @@
                     "required": true
                 },
                 "standardDeviationForRainEvent": {
-                    "type": "floater",
-                    "required": true
-                },
-                "totalMaximumResourceCapacity": {
-                    "type": "floater",
-                    "required": true
-                },
-                "inEnemyFreeSpace": {
-                    "type": "boolean",
-                    "required": true
-                },
-                "inCompetitorFreeSpace": {
-                    "type": "boolean",
+                    "type": "float",
                     "required": true
                 }
             },
-            "conditionals": [
-                {
-                    "if": {
-                        "type": "equal",
-                        "lhs": {
-                            "type": "property",
-                            "value": [
-                                "type"
-                            ]
-                        },
-                        "rhs": {
-                            "type": "constant",
-                            "value": "homogeneous"
-                        }
-                    },
-                    "then": [ 
-                        {
-                            "add": {
-                                "properties": { 
-                                    "value": {
-                                        "type": "floater",
-                                        "required": true
-                                    }
-                                }
-                            }
-                        }
-                    ]
-                },
-                {
-                    "if": {
-                        "type": "equal",
-                        "lhs": {
-                            "type": "property",
-                            "value": [
-                                "type"
-                            ]
-                        },
-                        "rhs": {
-                            "type": "constant",
-                            "value": "gaussian"
-                        }
-                    },
-                    "then": [ 
-                        {
-                            "add": {
-                                "properties": { 
-                                    
-                                }
-                            }
-                        }
-                    ]
-                },
-                {
-                    "if": {
-                        "type": "equal",
-                        "lhs": {
-                            "type": "property",
-                            "value": [
-                                "type"
-                            ]
-                        },
-                        "rhs": {
-                            "type": "constant",
-                            "value": "spherical"
-                        }
-                    },
-                    "then": [ 
-                        {
-                            "add": {
-                                "properties": { 
-                                    "radius": {
-                                        "type": "unsigned_integer",
-                                        "required": true
-                                    },
-                                    "xPos": {
-                                        "type": "unsigned_integer",
-                                        "required": true
-                                    },
-                                    "yPos": {
-                                        "type": "unsigned_integer",
-                                        "required": true
-                                    },
-                                    "zPos": {
-                                        "type": "unsigned_integer",
-                                        "required": true
-                                    }
-                                }
-                            }
-                        }
-                    ]
-                },
-                {
-                    "if": {
-                        "type": "equal",
-                        "lhs": {
-                            "type": "property",
-                            "value": [
-                                "type"
-                            ]
-                        },
-                        "rhs": {
-                            "type": "constant",
-                            "value": "cubic"
-                        }
-                    },
-                    "then": [ 
-                        {
-                            "add": {
-                                "properties": { 
-                                    "center": {
-                                        "type": "object",
-                                        "properties": {
-                                            "x": {
-                                                "type": "integer",
-                                                "required": true
-                                            },
-                                            "y": {
-                                                "type": "integer",
-                                                "required": true
-                                            },
-                                            "z": {
-                                                "type": "integer",
-                                                "required": true
-                                            }
-                                        },
-                                        "additionalProperties": false,
-                                        "required": true
-                                    },
-                                    "dimensions": {
-                                        "type": "object",
-                                        "properties": {
-                                            "x": {
-                                                "type": "integer",
-                                                "required": true
-                                            },
-                                            "y": {
-                                                "type": "integer",
-                                                "required": true
-                                            },
-                                            "z": {
-                                                "type": "integer",
-                                                "required": true
-                                            }
-                                        },
-                                        "additionalProperties": false,
-                                        "required": true
-                                    }
-                                }
-                            }
-                        }
-                    ]
-                },
-                {
-                    "if": {
-                        "type": "equal",
-                        "lhs": {
-                            "type": "property",
-                            "value": [
-                                "type"
-                            ]
-                        },
-                        "rhs": {
-                            "type": "constant",
-                            "value": "randomGaussian"
-                        }
-                    },
-                    "then": [ 
-                        {
-                            "add": {
-                                "properties": { 
-                                    
-                                }
-                            }
-                        }
-                    ]
-                }
-            ],
             "additionalProperties": false,
             "required": true
         }

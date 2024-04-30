@@ -8,86 +8,20 @@
                     "type": "string",
                     "required": true
                 },
-                "defaultHuntingMode": {
+                "huntingMode": {
                     "type": "string",
-                    "enum": [
-                        "does_not_hunt",
-                        "sit_and_wait",
-                        "active_hunting"
-                    ],
                     "required": true
                 },
                 "sexualType": {
                     "type": "string",
-                    "enum": [
-                        "diploid",
-                        "haplodiploid",
-                        "asexual"
-                    ],
                     "required": true
                 },
-                "preserveLeftovers": {
-                    "type": "boolean",
-                    "required": true
-                },
-                "growthCurve": {
-                    "type": "object",
-                    "properties": {
-                        "type": {
-                            "type": "string",
-                            "enum": ["VonBertalanffy", "Logistic", "Logistic3P", "Logistic4P", "Gompertz", "Exponential"],
-                            "required": true
-                        },
-                        "vonBertLdistanceMin": {
-                            "type": "floater",
-                            "required": true
-                        },
-                        "vonBertLdistanceMax": {
-                            "type": "floater",
-                            "required": true
-                        },
-                        "vonBertTime0": {
-                            "type": "floater",
-                            "required": true
-                        },
-                        "logisticLdistanceMin": {
-                            "type": "floater",
-                            "required": true
-                        },
-                        "logisticLdistanceMax": {
-                            "type": "floater",
-                            "required": true
-                        },
-                        "logistic3pAsymptoticSize": {
-                            "type": "floater",
-                            "required": true
-                        },
-                        "logistic4pLeftAsymptote": {
-                            "type": "floater",
-                            "required": true
-                        },
-                        "logistic4pRightAsymptote": {
-                            "type": "floater",
-                            "required": true
-                        },
-                        "gompertzAsymptoticSize": {
-                            "type": "floater",
-                            "required": true
-                        },
-                        "gompertzValueTime0": {
-                            "type": "floater",
-                            "required": true
-                        }
-                    },
-                    "additionalProperties": false,
+                "growthType": {
+                    "type": "string",
                     "required": true
                 },
                 "sexRatio": {
-                    "type": "floater",
-                    "required": true
-                },
-                "size": {
-                    "type": "unsigned_integer",
+                    "type": "float",
                     "required": true
                 },
                 "genetics": {
@@ -109,6 +43,10 @@
                             "type": "unsigned_integer",
                             "required": true
                         },
+                        "numberOfChromosomes": {
+                            "type": "unsigned_integer",
+                            "required": true
+                        },
                         "numberOfChiasmasPerChromosome": {
                             "type": "unsigned_integer",
                             "required": true
@@ -116,14 +54,14 @@
                         "restrictPerTrait": {
                             "type": "array",
                             "items": {
-                                "type": "floater"
+                                "type": "float"
                             },
                             "required": true
                         },
                         "correlationCoefficientRhoPerModule": {
                             "type": "array",
                             "items": {
-                                "type": "floater"
+                                "type": "float"
                             },
                             "required": true
                         }
@@ -137,7 +75,7 @@
                         "type": "object",
                         "properties": {
                             "pAlleles": {
-                                "type": "floater",
+                                "type": "float",
                                 "required": true
                             },
                             "timesAlleles": {
@@ -147,7 +85,7 @@
                             "affectedLocus": {
                                 "type": "array",
                                 "items": {
-                                    "type": "floater"
+                                    "type": "float"
                                 },
                                 "required": true
                             },
@@ -173,40 +111,40 @@
                 "edibleAnimalPreferences": {
                     "type": "array",
                     "items": {
-                        "type": "floater"
+                        "type": "float"
                     },
                     "required": true
                 },
                 "edibleAnimalProfitability": {
                     "type": "array",
                     "items": {
-                        "type": "floater"
+                        "type": "float"
                     },
                     "required": true
                 },
-                "edibleResourceSpecies": {
+                "edibleFungusSpecies": {
                     "type": "array",
                     "items": {
                         "type": "string"
                     },
                     "required": true
                 },
-                "edibleResourcePreferences": {
+                "edibleFungusPreferences": {
                     "type": "array",
                     "items": {
-                        "type": "floater"
+                        "type": "float"
                     },
                     "required": true
                 },
-                "edibleResourceProfitability": {
+                "edibleFungusProfitability": {
                     "type": "array",
                     "items": {
-                        "type": "floater"
+                        "type": "float"
                     },
                     "required": true
                 },
                 "experienceInfluencePerDay": {
-                    "type": "floater",
+                    "type": "float",
                     "required": true
                 },
                 "numberOfSimulatedAttacks": {
@@ -214,39 +152,39 @@
                     "required": true
                 },
                 "conversionToWetMass": {
-                    "type": "floater",
+                    "type": "float",
                     "required": true
                 },
                 "coefficientForMassA": {
-                    "type": "floater",
+                    "type": "float",
                     "required": true
                 },
                 "scaleForMassB": {
-                    "type": "floater",
+                    "type": "float",
                     "required": true
                 },
                 "coefficientForMassAforMature": {
-                    "type": "floater",
+                    "type": "float",
                     "required": true
                 },
                 "scaleForMassBforMature": {
-                    "type": "floater",
+                    "type": "float",
                     "required": true
                 },
                 "forDensitiesGrowth": {
-                    "type": "floater",
+                    "type": "float",
                     "required": true
                 },
                 "forDensitiesEggSize": {
-                    "type": "floater",
+                    "type": "float",
                     "required": true
                 },
                 "forDensitiesA": {
-                    "type": "floater",
+                    "type": "float",
                     "required": true
                 },
                 "forDensitiesB": {
-                    "type": "floater",
+                    "type": "float",
                     "required": true
                 },
                 "indeterminateGrowth": {
@@ -272,156 +210,124 @@
                 "traits": {
                     "type": "object",
                     "properties": {
-                        "fixedTraits": {
+                        "energy_tank": {
+                            "type": "float",
+                            "required": true
+                        },
+                        "growth": {
+                            "type": "float",
+                            "required": true
+                        },
+                        "pheno": {
+                            "type": "float",
+                            "required": true
+                        },
+                        "factorEggMass": {
+                            "type": "float",
+                            "required": true
+                        },
+                        "assim": {
+                            "type": "float",
+                            "required": true
+                        },
+                        "voracity": {
+                            "type": "float",
+                            "required": true
+                        },
+                        "speed": {
+                            "type": "float",
+                            "required": true
+                        },
+                        "search_area": {
+                            "type": "float",
+                            "required": true
+                        },
+                        "met_rate": {
+                            "type": "float",
+                            "required": true
+                        },
+                        "actE_vor": {
+                            "type": "float",
+                            "required": true
+                        },
+                        "actE_speed": {
+                            "type": "float",
+                            "required": true
+                        },
+                        "actE_search": {
+                            "type": "float",
+                            "required": true
+                        },
+                        "actE_met": {
+                            "type": "float",
+                            "required": true
+                        },
+                        "minTraitsRanges": {
                             "type": "object",
                             "properties": {},
                             "additionalProperties": false,
                             "required": true
                         },
-                        "variableTraits": {
+                        "maxTraitsRanges": {
                             "type": "object",
-                            "properties": {
-                                "minTraitsRanges": {
-                                    "type": "object",
-                                    "properties": {},
-                                    "additionalProperties": false,
-                                    "required": true
-                                },
-                                "maxTraitsRanges": {
-                                    "type": "object",
-                                    "properties": {},
-                                    "additionalProperties": false,
-                                    "required": true
-                                },
-                                "minTraitLimits": {
-                                    "type": "object",
-                                    "properties": {},
-                                    "additionalProperties": false,
-                                    "required": true
-                                },
-                                "maxTraitLimits": {
-                                    "type": "object",
-                                    "properties": {},
-                                    "additionalProperties": false,
-                                    "required": true
-                                },
-                                "order": {
-                                    "type": "array",
-                                    "items": {
-                                        "type": "string"
-                                    },
-                                    "required": true
-                                }
-                            },
-                            "requiredConditions": [
-                                {
-                                    "condition": {
-                                        "type": "and_oper",
-                                        "values": [
-                                            {
-                                                "type": "equal",
-                                                "lhs": {
-                                                    "type": "property_size",
-                                                    "value": [
-                                                        "minTraitsRanges"
-                                                    ]
-                                                },
-                                                "rhs": {
-                                                    "type": "property_size",
-                                                    "value": [
-                                                        "maxTraitsRanges"
-                                                    ]
-                                                }
-                                            },
-                                            {
-                                                "type": "equal",
-                                                "lhs": {
-                                                    "type": "property_size",
-                                                    "value": [
-                                                        "minTraitsRanges"
-                                                    ]
-                                                },
-                                                "rhs": {
-                                                    "type": "property_size",
-                                                    "value": [
-                                                        "minTraitLimits"
-                                                    ]
-                                                }
-                                            },
-                                            {
-                                                "type": "equal",
-                                                "lhs": {
-                                                    "type": "property_size",
-                                                    "value": [
-                                                        "minTraitsRanges"
-                                                    ]
-                                                },
-                                                "rhs": {
-                                                    "type": "property_size",
-                                                    "value": [
-                                                        "maxTraitLimits"
-                                                    ]
-                                                }
-                                            },
-                                            {
-                                                "type": "equal",
-                                                "lhs": {
-                                                    "type": "property_size",
-                                                    "value": [
-                                                        "minTraitsRanges"
-                                                    ]
-                                                },
-                                                "rhs": {
-                                                    "type": "property_size",
-                                                    "value": [
-                                                        "order"
-                                                    ]
-                                                }
-                                            }
-                                        ]
-                                    },
-                                    "error": "Item 'minTraitsRanges', 'maxTraitsRanges', 'minTraitLimits', 'maxTraitLimits' and 'order' must have the same size"
-                                }
-                            ],
+                            "properties": {},
                             "additionalProperties": false,
                             "required": true
+                        },
+                        "minTraitLimits": {
+                            "type": "object",
+                            "properties": {},
+                            "additionalProperties": false,
+                            "required": true
+                        },
+                        "maxTraitLimits": {
+                            "type": "object",
+                            "properties": {},
+                            "additionalProperties": false,
+                            "required": true
+                        },
+                        "order": {
+                            "type": "array",
+                            "items": {
+                                "type": "string"
+                            },
+                            "required": true
+                        }
+                    },
+                    "patternProperties": {
+                        "dummy[1-9]|dummy1[0-2]": { 
+                            "type": "float",
+                            "required": false
                         }
                     },
                     "patternConditionals": [
                         {
-                            "enumValues": ["energy_tank","growth","pheno","factorEggMass","assim","voracity","speed","search_area","met_rate","actE_vor","actE_speed","actE_search","shock_resistance","actE_met","memoryDepth"],
+                            "pattern": "energy_tank|growth|pheno|factorEggMass|assim|voracity|speed|search_area|met_rate|actE_vor|actE_speed|actE_search|actE_met",
                             "if": {
-                                "type": "property_exists",
-                                "value": [
-                                    "fixedTraits",
-                                    "<pattern>"
-                                ]
-                            },
-                            "then": [
-                                {
-                                    "dst": [
-                                        "fixedTraits"
-                                    ],
-                                    "add": {
-                                        "properties": {
-                                            "<pattern>": {
-                                                "type": "floater",
-                                                "required": true
-                                            }
-                                        }
-                                    }
+                                "type": "not",
+                                "value": {
+                                    "type": "property_exists",
+                                    "value": [
+                                        "<pattern>"
+                                    ]
                                 }
-                            ],
-                            "else": [
+                            },
+                            "then": [ 
+                                {
+                                    "remove": {
+                                        "properties": [
+                                            "<pattern>"
+                                        ]
+                                    }
+                                },
                                 {
                                     "dst": [
-                                        "variableTraits",
                                         "minTraitsRanges"
                                     ],
                                     "add": {
                                         "properties": {
                                             "<pattern>": {
-                                                "type": "floater",
+                                                "type": "float",
                                                 "required": true
                                             }
                                         }
@@ -429,13 +335,12 @@
                                 },
                                 {
                                     "dst": [
-                                        "variableTraits",
                                         "maxTraitsRanges"
                                     ],
                                     "add": {
                                         "properties": {
                                             "<pattern>": {
-                                                "type": "floater",
+                                                "type": "float",
                                                 "required": true
                                             }
                                         }
@@ -443,13 +348,12 @@
                                 },
                                 {
                                     "dst": [
-                                        "variableTraits",
                                         "minTraitLimits"
                                     ],
                                     "add": {
                                         "properties": {
                                             "<pattern>": {
-                                                "type": "floater",
+                                                "type": "float",
                                                 "required": true
                                             }
                                         }
@@ -457,19 +361,172 @@
                                 },
                                 {
                                     "dst": [
-                                        "variableTraits",
                                         "maxTraitLimits"
                                     ],
                                     "add": {
                                         "properties": {
                                             "<pattern>": {
-                                                "type": "floater",
+                                                "type": "float",
                                                 "required": true
                                             }
                                         }
                                     }
                                 }
                             ]
+                        },
+                        {
+                            "pattern": "dummy[1-9]|dummy1[0-2]",
+                            "if": {
+                                "type": "not",
+                                "value": {
+                                    "type": "property_exists",
+                                    "value": [
+                                        "<pattern>"
+                                    ]
+                                }
+                            },
+                            "then": [ 
+                                {
+                                    "remove": {
+                                        "properties": [
+                                            "<pattern>"
+                                        ]
+                                    }
+                                },
+                                {
+                                    "dst": [
+                                        "minTraitsRanges"
+                                    ],
+                                    "add": {
+                                        "properties": {
+                                            "<pattern>": {
+                                                "type": "float",
+                                                "required": false
+                                            }
+                                        },
+                                        "additionalProperties": true
+                                    }
+                                },
+                                {
+                                    "dst": [
+                                        "maxTraitsRanges"
+                                    ],
+                                    "add": {
+                                        "properties": {
+                                            "<pattern>": {
+                                                "type": "float",
+                                                "required": false
+                                            }
+                                        },
+                                        "additionalProperties": true
+                                    }
+                                },
+                                {
+                                    "dst": [
+                                        "minTraitLimits"
+                                    ],
+                                    "add": {
+                                        "properties": {
+                                            "<pattern>": {
+                                                "type": "float",
+                                                "required": false
+                                            }
+                                        },
+                                        "additionalProperties": true
+                                    }
+                                },
+                                {
+                                    "dst": [
+                                        "maxTraitLimits"
+                                    ],
+                                    "add": {
+                                        "properties": {
+                                            "<pattern>": {
+                                                "type": "float",
+                                                "required": false
+                                            }
+                                        },
+                                        "additionalProperties": true
+                                    }
+                                }
+                            ],
+                            "else": [
+                                {
+                                    "add": {
+                                        "additionalProperties": true
+                                    }
+                                }
+                            ]
+                        }
+                    ],
+                    "requiredConditions": [
+                        {
+                            "condition": {
+                                "type": "and",
+                                "values": [
+                                    {
+                                        "type": "equal",
+                                        "lhs": {
+                                            "type": "property_size",
+                                            "value": [
+                                                "minTraitsRanges"
+                                            ]
+                                        },
+                                        "rhs": {
+                                            "type": "property_size",
+                                            "value": [
+                                                "maxTraitsRanges"
+                                            ]
+                                        }
+                                    },
+                                    {
+                                        "type": "equal",
+                                        "lhs": {
+                                            "type": "property_size",
+                                            "value": [
+                                                "minTraitsRanges"
+                                            ]
+                                        },
+                                        "rhs": {
+                                            "type": "property_size",
+                                            "value": [
+                                                "minTraitLimits"
+                                            ]
+                                        }
+                                    },
+                                    {
+                                        "type": "equal",
+                                        "lhs": {
+                                            "type": "property_size",
+                                            "value": [
+                                                "minTraitsRanges"
+                                            ]
+                                        },
+                                        "rhs": {
+                                            "type": "property_size",
+                                            "value": [
+                                                "maxTraitLimits"
+                                            ]
+                                        }
+                                    },
+                                    {
+                                        "type": "equal",
+                                        "lhs": {
+                                            "type": "property_size",
+                                            "value": [
+                                                "minTraitsRanges"
+                                            ]
+                                        },
+                                        "rhs": {
+                                            "type": "property_size",
+                                            "value": [
+                                                "order"
+                                            ]
+                                        }
+                                    }
+                                ]
+                            },
+                            "error": "Item 'minTraitsRanges', 'maxTraitsRanges', 'minTraitLimits', 'maxTraitLimits' and 'order' must have the same size"
                         }
                     ],
                     "additionalProperties": false,
@@ -480,11 +537,11 @@
                     "required": true
                 },
                 "maleReproductionFactor": {
-                    "type": "floater",
+                    "type": "float",
                     "required": true
                 },
                 "quitCellThreshold": {
-                    "type": "floater",
+                    "type": "float",
                     "required": true
                 },
                 "maleMobility": {
@@ -492,23 +549,23 @@
                     "required": true
                 },
                 "decreaseOnTraitsDueToEncounters": {
-                    "type": "floater",
+                    "type": "float",
                     "required": true
                 },
                 "probabilityDeathFromBackground": {
-                    "type": "floater",
+                    "type": "float",
                     "required": true
                 },
                 "assignedForMolt": {
-                    "type": "floater",
+                    "type": "float",
                     "required": true
                 },
                 "betaScaleTank": {
-                    "type": "floater",
+                    "type": "float",
                     "required": true
                 },
                 "excessInvestInSize": {
-                    "type": "floater",
+                    "type": "float",
                     "required": true
                 },
                 "maxEncountersT": {
@@ -545,76 +602,88 @@
                     "itemsOrder": "strictly_increasing",
                     "required": true
                 },
+                "vonBertTime0": {
+                    "type": "float",
+                    "required": true
+                },
                 "LinfKcorr": {
-                    "type": "floater",
+                    "type": "float",
                     "required": true
                 },
                 "devTimeConstant": {
-                    "type": "floater",
+                    "type": "float",
                     "required": true
                 },
                 "devInter": {
-                    "type": "floater",
+                    "type": "float",
                     "required": true
                 },
                 "EdGrowth": {
-                    "type": "floater",
+                    "type": "float",
                     "required": true
                 },
                 "EdVoracity": {
-                    "type": "floater",
+                    "type": "float",
                     "required": true
                 },
                 "EdSearch": {
-                    "type": "floater",
+                    "type": "float",
                     "required": true
                 },
                 "EdSpeed": {
-                    "type": "floater",
+                    "type": "float",
                     "required": true
                 },
                 "fractSearchExtremeT": {
-                    "type": "floater",
+                    "type": "float",
                     "required": true
                 },
                 "fractSpeedExtremeT": {
-                    "type": "floater",
+                    "type": "float",
                     "required": true
                 },
                 "minVorExtremeT": {
                     "type": "integer",
                     "required": true
                 },
+                "vonBertLdistanceMin": {
+                    "type": "float",
+                    "required": true
+                },
+                "vonBertLdistanceMax": {
+                    "type": "float",
+                    "required": true
+                },
                 "longevitySinceMaturation": {
-                    "type": "floater",
+                    "type": "float",
                     "required": true
                 },
                 "reproTimeFactor": {
-                    "type": "floater",
+                    "type": "float",
                     "required": true
                 },
                 "tempOptGrowth": {
-                    "type": "floater",
+                    "type": "float",
                     "required": true
                 },
                 "tempOptVoracity": {
-                    "type": "floater",
+                    "type": "float",
                     "required": true
                 },
                 "tempOptSearch": {
-                    "type": "floater",
+                    "type": "float",
                     "required": true
                 },
                 "tempOptSpeed": {
-                    "type": "floater",
+                    "type": "float",
                     "required": true
                 },
                 "tempFromLab": {
-                    "type": "floater",
+                    "type": "float",
                     "required": true
                 },
                 "tempSizeRuleConstant": {
-                    "type": "floater",
+                    "type": "float",
                     "required": true
                 },
                 "eggClutchFromEquation": {
@@ -622,19 +691,19 @@
                     "required": true
                 },
                 "forClutchMassCoefficient": {
-                    "type": "floater",
+                    "type": "float",
                     "required": true
                 },
                 "forClutchMassScale": {
-                    "type": "floater",
+                    "type": "float",
                     "required": true
                 },
                 "forEggMassCoefficient": {
-                    "type": "floater",
+                    "type": "float",
                     "required": true
                 },
                 "forEggMassScale": {
-                    "type": "floater",
+                    "type": "float",
                     "required": true
                 },
                 "eggMassFromEquation": {
@@ -642,127 +711,127 @@
                     "required": true
                 },
                 "eggDryMass": {
-                    "type": "floater",
+                    "type": "float",
                     "required": true
                 },
                 "femaleWetMass": {
-                    "type": "floater",
+                    "type": "float",
                     "required": true
                 },
                 "scaleForVoracity": {
-                    "type": "floater",
+                    "type": "float",
                     "required": true
                 },
                 "scaleForSearchArea": {
-                    "type": "floater",
+                    "type": "float",
                     "required": true
                 },
                 "scaleForSpeed": {
-                    "type": "floater",
+                    "type": "float",
                     "required": true
                 },
                 "maxPlasticityKVonBertalanffy": {
-                    "type": "floater",
+                    "type": "float",
                     "required": true
                 },
                 "minPlasticityKVonBertalanffy": {
-                    "type": "floater",
+                    "type": "float",
                     "required": true
                 },
                 "maxPlasticityDueToConditionVor": {
-                    "type": "floater",
+                    "type": "float",
                     "required": true
                 },
                 "minPlasticityDueToConditionVor": {
-                    "type": "floater",
+                    "type": "float",
                     "required": true
                 },
                 "maxPlasticityDueToConditionSearch": {
-                    "type": "floater",
+                    "type": "float",
                     "required": true
                 },
                 "minPlasticityDueToConditionSearch": {
-                    "type": "floater",
+                    "type": "float",
                     "required": true
                 },
                 "maxPlasticityDueToConditionSpeed": {
-                    "type": "floater",
+                    "type": "float",
                     "required": true
                 },
                 "minPlasticityDueToConditionSpeed": {
-                    "type": "floater",
+                    "type": "float",
                     "required": true
                 },
                 "coefficientForNumberOfEvaluationsFromSearchArea": {
-                    "type": "floater",
+                    "type": "float",
                     "required": true
                 },
                 "attackProbability": {
-                    "type": "floater",
+                    "type": "float",
                     "required": true
                 },
                 "exposedAttackProbability": {
-                    "type": "floater",
+                    "type": "float",
                     "required": true
                 },
                 "killProbability": {
-                    "type": "floater",
+                    "type": "float",
                     "required": true
                 },
                 "optimalTemperatureModifier": {
-                    "type": "floater",
+                    "type": "float",
                     "required": true
                 },
                 "daysWithoutFoodForMetabolicDownregulation": {
-                    "type": "floater",
+                    "type": "float",
                     "required": true
                 },
                 "percentageMetabolicDownregulation": {
-                    "type": "floater",
+                    "type": "float",
                     "required": true
                 },
                 "percentageCostForMetabolicDownregulationVoracity": {
-                    "type": "floater",
+                    "type": "float",
                     "required": true
                 },
                 "percentageCostForMetabolicDownregulationSearchArea": {
-                    "type": "floater",
+                    "type": "float",
                     "required": true
                 },
                 "percentageCostForMetabolicDownregulationSpeed": {
-                    "type": "floater",
+                    "type": "float",
                     "required": true
                 },
                 "cellEvaluationBiomass": {
-                    "type": "floater",
+                    "type": "float",
                     "required": true
                 },
                 "cellEvaluationRisk": {
-                    "type": "floater",
+                    "type": "float",
                     "required": true
                 },
                 "cellEvaluationProConspecific": {
-                    "type": "floater",
+                    "type": "float",
                     "required": true
                 },
                 "cellEvaluationAntiConspecific": {
-                    "type": "floater",
+                    "type": "float",
                     "required": true
                 },
                 "conspecificWeighing": {
-                    "type": "floater",
+                    "type": "float",
                     "required": true
                 },
                 "coefficientForHandlingTimeA": {
-                    "type": "floater",
+                    "type": "float",
                     "required": true
                 },
                 "coefficientForHandlingTimeB": {
-                    "type": "floater",
+                    "type": "float",
                     "required": true
                 },
                 "coefficientForHandlingTimeC": {
-                    "type": "floater",
+                    "type": "float",
                     "required": true
                 }
             },
@@ -781,7 +850,7 @@
                             "value": true
                         }
                     },
-                    "then": [
+                    "then": [ 
                         {
                             "add": {
                                 "required": [
@@ -790,7 +859,7 @@
                             }
                         }
                     ],
-                    "else": [
+                    "else": [ 
                         {
                             "add": {
                                 "warningConditions": [
@@ -862,17 +931,23 @@
                             "type": "sum",
                             "result_type": "unsigned_integer",
                             "lhs": {
-                                "type": "property_size",
-                                "value": [
-                                    "traits",
-                                    "fixedTraits"
-                                ]
+                                "type": "subtract",
+                                "result_type": "unsigned_integer",
+                                "lhs": {
+                                    "type": "property_size",
+                                    "value": [
+                                        "traits"
+                                    ]
+                                },
+                                "rhs": {
+                                    "type": "constant",
+                                    "value": 5
+                                }
                             },
                             "rhs": {
                                 "type": "property_size",
                                 "value": [
                                     "traits",
-                                    "variableTraits",
                                     "minTraitsRanges"
                                 ]
                             }
@@ -885,7 +960,7 @@
                             ]
                         }
                     },
-                    "error": "Item 'fixedTraits' plus item 'variableTraits' must have a size equal to the value of the item 'numberOfTraits'"
+                    "error": "Item 'traits' must have a size equal to the value of the item 'numberOfTraits'"
                 },
                 {
                     "condition": {
@@ -894,7 +969,6 @@
                             "type": "property_size",
                             "value": [
                                 "traits",
-                                "variableTraits",
                                 "minTraitsRanges"
                             ]
                         },
@@ -921,7 +995,6 @@
                                     "type": "property_size",
                                     "value": [
                                         "traits",
-                                        "variableTraits",
                                         "minTraitsRanges"
                                     ]
                                 },
@@ -934,7 +1007,7 @@
                                 }
                             },
                             "rhs": {
-                                "type": "if_cond",
+                                "type": "if",
                                 "condition": {
                                     "type": "equal",
                                     "lhs": {
@@ -943,7 +1016,6 @@
                                             "type": "property_size",
                                             "value": [
                                                 "traits",
-                                                "variableTraits",
                                                 "minTraitsRanges"
                                             ]
                                         },
@@ -982,26 +1054,10 @@
                 },
                 {
                     "condition": {
-                        "type": "greater_than",
-                        "lhs": {
-                            "type": "property",
-                            "value": [
-                                "instarFirstReproduction"
-                            ]
-                        },
-                        "rhs": {
-                            "type": "constant",
-                            "value": 1
-                        }
-                    },
-                    "error": "Item 'instarFirstReproduction' must be greater than 1"
-                },
-                {
-                    "condition": {
                         "type": "greater_equal_than",
                         "lhs": {
                             "type": "multiply",
-                            "result_type": "floater",
+                            "result_type": "float",
                             "lhs": {
                                 "type": "property_item",
                                 "value": [
@@ -1018,7 +1074,7 @@
                                     },
                                     "rhs": {
                                         "type": "constant",
-                                        "value": 2
+                                        "value": 1
                                     }
                                 }
                             },

@@ -41,7 +41,7 @@ class LogManager:
     # @pre backupCount >= 0
     # @pre maxBytes > 0
     # @note If backupCount value 0, the main log will be updated depending on its size
-    def __init__(self, basePath: str, filename: str, maxBytes: int, backupCount: int = 0):
+    def __init__(self, filename: str, maxBytes: int, backupCount: int = 0):
         if backupCount < 0:
             raise ValueError("The value of 'backupCount' must be positive")
         ## Maximum number of files that can be accumulated
@@ -51,7 +51,7 @@ class LogManager:
         ## Maximum number of bytes each log can take up
         self._maxBytes: int = maxBytes
         ## Main log name
-        self._filename: str = os.path.join(basePath, f'{filename}.log')
+        self._filename: str = f'{filename}.log'
 
         # Logging configuration
         # The "level" parameter indicates the minimum level of information captured by the log

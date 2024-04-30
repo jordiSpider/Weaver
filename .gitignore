@@ -219,9 +219,12 @@ cython_debug/
 #  option (not recommended) you can uncomment the following to ignore the entire idea folder.
 #.idea/
 
-### Doxygen
+### Hugo website
 
-Doxyfile
+docs/node_modules/*
+docs/public/*
+
+### Doxygen
 
 *~
 .*sw?
@@ -236,7 +239,7 @@ Doxyfile
 *.idb
 *.pdb
 
-*/doxygen_docs/*
+docs/doxygen/html/*
 /doxygen.tag
 /qtools_docs
 /warnings.log
@@ -250,6 +253,18 @@ tags
 /examples/html/*
 /examples/latex/*
 
-### Doxygen
+### Hugo
 
-profiler/*
+# Generated files by hugo
+/public/
+docs/resources/_gen/*
+/assets/jsconfig.json
+hugo_stats.json
+
+# Executable may be added to repository
+hugo.exe
+hugo.darwin
+hugo.linux
+
+# Temporary lock file while building
+/.hugo_build.lock

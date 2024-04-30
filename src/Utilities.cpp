@@ -6,6 +6,8 @@
 #include <regex>
 #include <sstream>
 #include "GlobalVariable.h"
+#include "ValidatorJSON.h"
+#include "LineInfoException.h"
 #include <stack>
 #include <set>
 
@@ -14,13 +16,18 @@ using namespace std;
 using json = nlohmann::json;
 
 
-string getResultFolderName(const string& resultFolder, const string& baseName)
+unordered_map<string, OutputStreamConverter::OutputStream> OutputStreamConverter::stringToEnum = {
+    {"terminal", Terminal},
+    {"log", Log}
+};
+
+string getResultFolderName(const string& resultDirectory, const string& baseName)
 {
 	vector<unsigned int> vectorIds;
     regex pattern("^" + baseName + "_([0-9]+)$");
 	regex folderIdPattern("([0-9]+)$");
 
-    for (const auto& entry : fs::directory_iterator(resultFolder)) {
+    for (const auto& entry : fs::directory_iterator(resultDirectory)) {
         if(entry.is_directory()) {
             string entryName = entry.path().filename().string();
             if(std::regex_match(entryName, pattern)) {
@@ -36,35 +43,71 @@ string getResultFolderName(const string& resultFolder, const string& baseName)
 	return baseName + "_" + to_string(vectorIds.empty() ? 0 : vectorIds.back() + 1);
 }
 
-fs::path obtainResultFolder(const json& configuration, fs::path outputFolder)
+fs::path obtainOutputDirectory(const json& configuration)
 {
-	if(!fs::is_directory(outputFolder)) 
+	string resultDirectory;
+	try
 	{
-		throwLineInfoException("The specified path \"" + outputFolder.string() + "\" does not exist or it is not a directory");
+		resultDirectory = configuration["simulation"].at("resultDirectory");
+	}
+	catch(const json::out_of_range& e)
+	{
+		resultDirectory = RESULT_SIMULATION_FOLDER;
 	}
 
-	return fs::path(outputFolder) / fs::path(getResultFolderName(outputFolder.string(), (string)configuration["simulation"]["configName"]));
+	string resultName;
+	try
+	{
+		resultName = configuration["simulation"].at("resultName");
+	}
+	catch(const json::out_of_range& e)
+	{
+		resultName = configuration["simulation"]["configName"];
+	}
+	
+	if(!fs::is_directory(resultDirectory)) 
+	{
+		throwLineInfoException("The specified path \"" + resultDirectory + "\" does not exist or it is not a directory");
+	}
+
+	return fs::path(resultDirectory) / fs::path(getResultFolderName(resultDirectory, resultName));
 }
 
-string createOutputFile(ofstream &file, fs::path filenameRoot, string filename, string extension, ios_base::openmode openMode) {
+string createOutputFile(ofstream &file, fs::path filenameRoot, string filename, string extension, ios_base::openmode) {
 	fs::path file_path = filenameRoot / fs::path(filename + "." + extension);
-    file.open(file_path, openMode);
+    file.open(file_path);
 
     return file_path.string();
 }
 
-string createOutputFile(ofstream &file, fs::path filenameRoot, string filename, string extension, date_type timeStep, unsigned int recordEach, ios_base::openmode openMode) {
-	string ss;
+string createOutputFile(ofstream &file, fs::path filenameRoot, string extension, date_type timeStep, unsigned int recordEach, ios_base::openmode) {
+	stringstream ss;
 	if((timeStep%recordEach==0) || timeStep==0){
-		ss = string(MAX_NUM_DIGITS_DAY - to_string(timeStep).length(), '0') + to_string(timeStep);
+		ss << std::setw(MAX_NUM_DIGITS_DAY) << std::setfill('0') << timeStep;
 	}else{
-		ss = "dummy_file";	
+		ss << "dummy_file";	
 	}
 
-    fs::path file_path = filenameRoot / fs::path(filename + ss + "." + extension);
-	file.open(file_path, openMode);
+    fs::path file_path = fs::path(filenameRoot.string() + ss.str() + "." + extension);
+	file.open(file_path);
 
     return file_path.string();
+}
+
+void setOutputStream(ofstream& logFile, const fs::path& outputDirectory, const string& outputStreamType)
+{
+	switch (OutputStreamConverter::stringToEnumValue(outputStreamType))
+	{
+		case OutputStreamConverter::Log: {
+			createOutputFile(logFile, outputDirectory, LOG_FILENAME, LOG_EXTENSION);
+        	cout.rdbuf(logFile.rdbuf());
+			break;
+		}
+		case OutputStreamConverter::Terminal: {
+			cout.rdbuf(cout.rdbuf());
+			break;
+		}
+	}
 }
 
 /*
@@ -102,9 +145,9 @@ json::parser_callback_t check_duplicate_keys = [](int depth, json::parse_event_t
 	return true;
 };
 
-json readConfigFile1(fs::path configPath, fs::path WeaverFolder) {
+json readConfigFile(fs::path configPath) {
 	string filename = configPath.filename().string();
-	fs::path schemaPath = WeaverFolder / fs::path(SCHEMA_FOLDER) / fs::path(filename.substr(0, filename.find(".")) + ".schema.json");
+	fs::path schemaPath = fs::path(SCHEMA_FOLDER) / fs::path(filename.substr(0, filename.find(".")) + ".schema.json");
 
 	return readConfigFile(configPath, schemaPath);
 }
@@ -128,7 +171,7 @@ json readConfigFile(fs::path configPath, fs::path schemaPath) {
 		}
 		catch (json::exception &e)
 		{
-			Output::cout("{}\n", e.what());
+			cout << e.what() << endl;
 		}
 
 		ifstream schemaFile(schemaPath);
@@ -146,7 +189,7 @@ json readConfigFile(fs::path configPath, fs::path schemaPath) {
 		}
 		catch (json::exception &e)
 		{
-			Output::cout("{}\n", e.what());
+			cout << e.what() << endl;
 		}
 
 		// Realizar la validación

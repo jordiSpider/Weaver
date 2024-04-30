@@ -4,90 +4,23 @@
         "world": {
             "type": "object",
             "properties": {
-                "worldType": {
-                    "type": "string",
-                    "enum": ["Old", "Matrix3D"],
-                    "required": true
-                },
-                "simulationType": {
-                    "type": "string",
-                    "enum": ["arthropods", "dinosaurs"],
-                    "required": true
-                },
                 "spaceConfiguration": {
                     "type": "object",
                     "properties": {
-                        "obstacleFolder": {
+                        "obstacleDirectory": {
                             "type": "string",
                             "required": true
                         },
-                        "moistureFolder": {
+                        "moistureDirectory": {
                             "type": "string",
                             "required": true
                         },
-                        "moistureBasePatch": {
-                            "type": "object",
-                            "properties": {
-                                "totalMaximumResourceCapacity": {
-                                    "type": "floater",
-                                    "required": true
-                                },
-                                "inEnemyFreeSpace": {
-                                    "type": "boolean",
-                                    "required": true
-                                },
-                                "inCompetitorFreeSpace": {
-                                    "type": "boolean",
-                                    "required": true
-                                },
-                                "temperatureCycle": {
-                                    "type": "array",
-                                    "items": {
-                                        "type": "unsigned_integer"
-                                    },
-                                    "required": true
-                                },
-                                "useRelativeHumidityCycle": {
-                                    "type": "boolean",
-                                    "required": true
-                                },
-                                "relativeHumidityCycle": {
-                                    "type": "array",
-                                    "items": {
-                                        "type": "unsigned_integer"
-                                    },
-                                    "required": true
-                                },
-                                "useRelativeHumidityDecayOverTime": {
-                                    "type": "boolean",
-                                    "required": true
-                                },
-                                "relativeHumidityOnRainEvent": {
-                                    "type": "floater",
-                                    "required": true
-                                },
-                                "relativeHumidityDecayOverTime": {
-                                    "type": "floater",
-                                    "required": true
-                                },
-                                "timeStepsBetweenRainEvents": {
-                                    "type": "unsigned_integer",
-                                    "required": true
-                                },
-                                "standardDeviationForRainEvent": {
-                                    "type": "floater",
-                                    "required": true
-                                }
-                            },
-                            "additionalProperties": false,
-                            "required": true
-                        },
-                        "resourceToPreysCapacityTransference": {
-                            "type": "floater",
+                        "fungiToPreysCapacityTransference": {
+                            "type": "float",
                             "required": true
                         },
                         "preysToPredatorsCapacityTransference": {
-                            "type": "floater",
+                            "type": "float",
                             "required": true
                         },
                         "dimensions": {
@@ -121,7 +54,7 @@
                                     "required": true
                                 },
                                 "obstacleDensity": {
-                                    "type": "floater",
+                                    "type": "float",
                                     "required": true
                                 },
                                 "patchesWidth": {
@@ -144,27 +77,27 @@
                             "type": "object",
                             "properties": {
                                 "minC": {
-                                    "type": "floater",
+                                    "type": "float",
                                     "required": true
                                 },
                                 "maxC": {
-                                    "type": "floater",
+                                    "type": "float",
                                     "required": true
                                 },
                                 "minN": {
-                                    "type": "floater",
+                                    "type": "float",
                                     "required": true
                                 },
                                 "maxN": {
-                                    "type": "floater",
+                                    "type": "float",
                                     "required": true
                                 },
                                 "minP": {
-                                    "type": "floater",
+                                    "type": "float",
                                     "required": true
                                 },
                                 "maxP": {
-                                    "type": "floater",
+                                    "type": "float",
                                     "required": true
                                 }
                             },
@@ -178,15 +111,15 @@
                 "life": {
                     "type": "object",
                     "properties": {
-                        "resourceFolder": {
+                        "fungiDirectory": {
                             "type": "string",
                             "required": true
                         },
-                        "speciesFolder": {
+                        "speciesDirectory": {
                             "type": "string",
                             "required": true
                         },
-                        "competitionAmongResourceSpecies": {
+                        "competitionAmongFungiSpecies": {
                             "type": "boolean",
                             "required": true
                         },
@@ -195,91 +128,91 @@
                             "required": true
                         },
                         "minLogMassRatio": {
-                            "type": "floater",
+                            "type": "float",
                             "required": true
                         },
                         "maxLogMassRatio": {
-                            "type": "floater",
+                            "type": "float",
                             "required": true
                         },
                         "sigmaForPDF": {
-                            "type": "floater",
+                            "type": "float",
                             "required": true
                         },
                         "muForPDF": {
-                            "type": "floater",
+                            "type": "float",
                             "required": true
                         },
                         "encounterHuntedVoracitySAW": {
-                            "type": "floater",
+                            "type": "float",
                             "required": true
                         },
                         "encounterHunterVoracitySAW": {
-                            "type": "floater",
+                            "type": "float",
                             "required": true
                         },
                         "encounterVoracitiesProductSAW": {
-                            "type": "floater",
+                            "type": "float",
                             "required": true
                         },
                         "encounterHunterSizeSAW": {
-                            "type": "floater",
+                            "type": "float",
                             "required": true
                         },
                         "encounterHuntedSizeSAW": {
-                            "type": "floater",
+                            "type": "float",
                             "required": true
                         },
                         "encounterProbabilityDensityFunctionSAW": {
-                            "type": "floater",
+                            "type": "float",
                             "required": true
                         },
                         "encounterHuntedVoracityAH": {
-                            "type": "floater",
+                            "type": "float",
                             "required": true
                         },
                         "encounterHunterVoracityAH": {
-                            "type": "floater",
+                            "type": "float",
                             "required": true
                         },
                         "encounterVoracitiesProductAH": {
-                            "type": "floater",
+                            "type": "float",
                             "required": true
                         },
                         "encounterHunterSizeAH": {
-                            "type": "floater",
+                            "type": "float",
                             "required": true
                         },
                         "encounterHuntedSizeAH": {
-                            "type": "floater",
+                            "type": "float",
                             "required": true
                         },
                         "encounterProbabilityDensityFunctionAH": {
-                            "type": "floater",
+                            "type": "float",
                             "required": true
                         },
                         "predationSpeedRatioSAW": {
-                            "type": "floater",
+                            "type": "float",
                             "required": true
                         },
                         "predationHunterVoracitySAW": {
-                            "type": "floater",
+                            "type": "float",
                             "required": true
                         },
                         "predationProbabilityDensityFunctionSAW": {
-                            "type": "floater",
+                            "type": "float",
                             "required": true
                         },
                         "predationSpeedRatioAH": {
-                            "type": "floater",
+                            "type": "float",
                             "required": true
                         },
                         "predationHunterVoracityAH": {
-                            "type": "floater",
+                            "type": "float",
                             "required": true
                         },
                         "predationProbabilityDensityFunctionAH": {
-                            "type": "floater",
+                            "type": "float",
                             "required": true
                         },
                         "initIndividualsPerDensities": {
@@ -312,7 +245,7 @@
                                     "type": "unsigned_integer",
                                     "required": true
                                 },
-                                "numberOfResourceSpecies": {
+                                "numberOfFungusSpecies": {
                                     "type": "unsigned_integer",
                                     "required": true
                                 }
@@ -332,11 +265,11 @@
                                     "required": true
                                 },
                                 "predator-preyLinksDensity": {
-                                    "type": "floater",
+                                    "type": "float",
                                     "required": true
                                 },
-                                "resourcevore-resourceLinksDensity": {
-                                    "type": "floater",
+                                "fungivore-fungusLinksDensity": {
+                                    "type": "float",
                                     "required": true
                                 },
                                 "intraguildPredation": {

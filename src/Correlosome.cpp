@@ -4,27 +4,56 @@
 using namespace std;
 
 
-Correlosome::Correlosome(const unsigned int numberOfLociPerChromosome, const bool onlyReserve)
+// Colocar un warning indicando que el vector que se le pasa se asigna directamente, sin realizar copia
+// Por lo tanto el vector que se le pase debe haver sido creado previamente, y ya la clase Correlosome
+// se encargará de destruirlo.
+Correlosome::Correlosome(vector<Allele*>* correlosomeAlleles)
 {
-	if(onlyReserve) {
-		alleles.reserve(numberOfLociPerChromosome);
-	}
-	else {
-		alleles.resize(numberOfLociPerChromosome);
+    this->alleles = correlosomeAlleles;
+}
+
+Correlosome::Correlosome(const unsigned int& numberOfLociPerChromosome)
+{
+	alleles = new vector<Allele*>(numberOfLociPerChromosome);
+}
+
+Correlosome::Correlosome(Correlosome* otherCorrelosome)
+{
+	this->alleles = new vector<Allele*>(otherCorrelosome->getAlleles()->size());
+	for(size_t i = 0; i < otherCorrelosome->getAlleles()->size(); i++)
+	{
+		this->alleles->at(i) = otherCorrelosome->getAlleles()->at(i)->clone();
 	}
 }
 
 Correlosome::~Correlosome()
 {
-	// Nothing to delete dynamically
+	for (auto it = alleles->begin(); it != alleles->end(); ++it)
+	{
+		delete (*it);
+	}
+	
+	alleles->clear();
+	delete alleles; //Dinosaurs - reversed in dinosurs
+}
+
+void Correlosome::setAllele(const Allele* allele, int lociPosition)
+{
+	delete this->alleles->at(lociPosition);
+	this->alleles->at(lociPosition) = allele->clone();
+}
+
+Correlosome* Correlosome::clone()
+{
+	return new Correlosome(this);
 }
 
 //TODO COMPROBAR QUE SE IMPRIMAN BIEN
-ostream& operator<<(ostream& os, const Correlosome& correlosome)
+ostream& operator<<(ostream& os, Correlosome& correlosome)
 {
-	for (size_t i = 0; i < correlosome.size(); ++i)
+	for (size_t i = 0; i < correlosome.alleles->size(); ++i)
 	{
-		os << correlosome.getAllele(i) << "\t";
+		os << correlosome.alleles->at(i) << "\t";
 	}
 	return os;
 }

@@ -2,7 +2,7 @@
 #define GLOBAL_VARIABLES_H_
 
 #define SCHEMA_FOLDER "schema"
-#define RESOURCE_SCHEMA "resource.schema.json"
+#define FUNGI_SCHEMA "fungi.schema.json"
 #define PATCH_SCHEMA "patch.schema.json"
 #define MOISTURE_SCHEMA "moisture.schema.json"
 #define OBSTACLE_SCHEMA "obstacle.schema.json"

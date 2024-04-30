@@ -97,6 +97,11 @@ void Gaussian1D::setAmplitude(float newValue)
 	amplitude = newValue;
 }
 
+void Gaussian1D::setCenter(float newCenter)
+{
+	center = newCenter;
+}
+
 double Gaussian1D::getValueAtDistance(float distance)
 {
 	if (precompute)
@@ -116,20 +121,26 @@ double Gaussian1D::getValueAtPoint(float point)
 
 /****** Isotropic 3D *******/
 
-IsotropicGaussian3D::IsotropicGaussian3D() : amplitude(1), center(0.0, 0.0, 0.0)
+IsotropicGaussian3D::IsotropicGaussian3D()
 {
+	amplitude = 1;
 	setSigma(1);
+	center = fPoint3D(0, 0, 0);
 }
 
-IsotropicGaussian3D::IsotropicGaussian3D(float newAmplitude, float newSigma, fPoint3D newCenter) : amplitude(newAmplitude), center(newCenter)
+IsotropicGaussian3D::IsotropicGaussian3D(float newAmplitude, float newSigma, fPoint3D newCenter)
 {
+	amplitude = newAmplitude;
 	setSigma(newSigma);
+	center = newCenter;
 }
 
 IsotropicGaussian3D::IsotropicGaussian3D(float newAmplitude, float newSigma, float newCenterX, float newCenterY,
-		float newCenterZ) : amplitude(newAmplitude), center(newCenterX, newCenterY, newCenterZ)
+		float newCenterZ)
 {
+	amplitude = newAmplitude;
 	setSigma(newSigma);
+	center = fPoint3D(newCenterX, newCenterY, newCenterZ);
 }
 
 IsotropicGaussian3D::~IsotropicGaussian3D()
@@ -149,6 +160,18 @@ void IsotropicGaussian3D::setSigma(float newValue)
 	inverseSquaredSigma = inverseSquaredSigma * inverseSquaredSigma;
 }
 
+void IsotropicGaussian3D::setCenter(float newCenterX, float newCenterY, float newCenterZ)
+{
+	center.setX(newCenterX);
+	center.setY(newCenterY);
+	center.setZ(newCenterZ);
+}
+
+void IsotropicGaussian3D::setCenter(fPoint3D newCenter)
+{
+	center = newCenter;
+}
+
 void IsotropicGaussian3D::setAmplitude(float newValue)
 {
 	amplitude = newValue;
@@ -163,37 +186,42 @@ double IsotropicGaussian3D::getValueAtDistance(float xDistance, float yDistance,
 
 double IsotropicGaussian3D::getValueAtDistance(fVector3D distance)
 {
-	return getValueAtDistance(distance.getX(), distance.getY(), distance.getZ());
+	return getValueAtDistance(distance.X(), distance.Y(), distance.Z());
 }
 
 double IsotropicGaussian3D::getValueAtPoint(float pointX, float pointY, float pointZ)
 {
-	return getValueAtDistance(pointX - center.getX(), pointY - center.getY(), pointZ - center.getZ());
+	return getValueAtDistance(pointX - center.X(), pointY - center.Y(), pointZ - center.Z());
 }
 
 double IsotropicGaussian3D::getValueAtPoint(fPoint3D point)
 {
-	return getValueAtDistance(point.getX() - center.getX(), point.getY() - center.getY(), point.getZ() - center.getZ());
+	return getValueAtDistance(point.X() - center.X(), point.Y() - center.Y(), point.Z() - center.Z());
 }
 
 /****** Anisotropic 3D *******/
 
-AnisotropicGaussian3D::AnisotropicGaussian3D() : amplitude(1), center(0.0, 0.0, 0.0)
+AnisotropicGaussian3D::AnisotropicGaussian3D()
 {
+	amplitude = 1;
 	setSigmas(1, 1, 1);
+	center = fPoint3D(0, 0, 0);
 }
 
 AnisotropicGaussian3D::AnisotropicGaussian3D(float newAmplitude, float newSigmaWidth, float newSigmaLength,
-		float newSigmadepth, fPoint3D newCenter) : amplitude(newAmplitude), center(newCenter)
+		float newSigmadepth, fPoint3D newCenter)
 {
+	amplitude = newAmplitude;
 	setSigmas(newSigmaWidth, newSigmaLength, newSigmadepth);
+	center = newCenter;
 }
 
 AnisotropicGaussian3D::AnisotropicGaussian3D(float newAmplitude, float newSigmaWidth, float newSigmaLength,
 		float newSigmadepth, float newCenterX, float newCenterY, float newCenterZ)
-	: amplitude(newAmplitude), center(newCenterX, newCenterY, newCenterZ)
 {
+	amplitude = newAmplitude;
 	setSigmas(newSigmaWidth, newSigmaLength, newSigmadepth);
+	center = fPoint3D(newCenterX, newCenterY, newCenterZ);
 }
 
 AnisotropicGaussian3D::~AnisotropicGaussian3D()
@@ -234,6 +262,18 @@ void AnisotropicGaussian3D::setSigmas(float newSigmaWidth, float newSigmaLength,
 	inverseSquaredSigmaDepth = inverseSquaredSigmaDepth * inverseSquaredSigmaDepth;
 }
 
+void AnisotropicGaussian3D::setCenter(float newCenterX, float newCenterY, float newCenterZ)
+{
+	center.setX(newCenterX);
+	center.setY(newCenterY);
+	center.setZ(newCenterZ);
+}
+
+void AnisotropicGaussian3D::setCenter(fPoint3D newCenter)
+{
+	center = newCenter;
+}
+
 fPoint3D AnisotropicGaussian3D::getCenter()
 {
 	return center;
@@ -262,15 +302,15 @@ double AnisotropicGaussian3D::getValueAtDistance(float xDistance, float yDistanc
 
 double AnisotropicGaussian3D::getValueAtDistance(fVector3D distance)
 {
-	return getValueAtDistance(distance.getX(), distance.getY(), distance.getZ());
+	return getValueAtDistance(distance.X(), distance.Y(), distance.Z());
 }
 
 double AnisotropicGaussian3D::getValueAtPoint(float pointX, float pointY, float pointZ)
 {
-	return getValueAtDistance(pointX - center.getX(), pointY - center.getY(), pointZ - center.getZ());
+	return getValueAtDistance(pointX - center.X(), pointY - center.Y(), pointZ - center.Z());
 }
 
 double AnisotropicGaussian3D::getValueAtPoint(fPoint3D point)
 {
-	return getValueAtDistance(point.getX() - center.getX(), point.getY() - center.getY(), point.getZ() - center.getZ());
+	return getValueAtDistance(point.X() - center.X(), point.Y() - center.Y(), point.Z() - center.Z());
 }

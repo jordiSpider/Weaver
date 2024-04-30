@@ -1,14 +1,11 @@
 #include "TerrainCell.h"
-#include "ResourceSpecies.h"
+#include "World.h"
+#include "Animal.h"
 #include "Maths/Random.h"
+#include "Edible.h"
 #include "Correlosome.h"
 #include <thread>
-#include <cmath>
 #include "Utilities.h"
-#include <algorithm>
-#include "LineInfoException.h"
-
-#include "magic_enum/magic_enum.h"
 
 /*
 #include "tbb/tbb.h"
@@ -16,54 +13,46 @@
 using namespace tbb;
 */
 using namespace std;
-using json = nlohmann::json;
 
-TerrainCell::TerrainCell(int x, int y, int z, float newSize, const json &moistureBasePatch, vector<AnimalSpecies*> *existingAnimalSpecies, vector<ResourceSpecies*> *existingResourceSpecies, WorldInterface* worldInterface)
-	: TerrainCellInterface(worldInterface), myCoordinates(x, y, z), existingAnimalSpecies(existingAnimalSpecies), existingResourceSpecies(existingResourceSpecies)
+TerrainCell::TerrainCell(World * newWorld, int x, int y, int z, float newSize)
 {
+	theWorld = newWorld;
+	myCoordinates.setX(x);
+	myCoordinates.setY(y);
+	myCoordinates.setZ(z);
 	setSize(newSize);
 	obstacle = false;
 	temperature = 0.0;
 	moisture = 0.0;
-	relativeHumidityOnRainEvent = 0.0;
 
 	timeStepsBetweenRainEvents = 1;
-	auxInitialResourceBiomass = 0.0;
-	auxInitialResourceSpeciesId = -1;
-	for(const auto &lifeStage : LifeStage::getEnumValues())
+	setRelativeHumidityOnRainEvent(0);
+	auxInitialFungiBiomass = 0.0;
+	auxInitialFungusSpeciesId = -1;
+	for (unsigned int i = Animal::LIFE_STAGES::UNBORN; i <= Animal::LIFE_STAGES::SHOCKED; ++i)
 	{
-		animals[lifeStage] = new map<AnimalSpecies*, vector<Animal*> *>();
-		for (auto speciesIt = existingAnimalSpecies->begin(); speciesIt != existingAnimalSpecies->end(); speciesIt++)
+		animals[i] = new map<Species*, vector<Edible*> *>();
+		for (vector<Species *>::iterator speciesIt = theWorld->existingAnimalSpecies.begin(); speciesIt != theWorld->existingAnimalSpecies.end(); speciesIt++)
 		{
-			(*animals[lifeStage])[*speciesIt] = new vector<Animal*>();
+			(*animals[i])[*speciesIt] = new vector<Edible*>();
 		}
 	}
-	animalsToMove = new vector<Animal*>();
-	animalsToReproduce = new vector<Animal*>();
-	animalsToMetabolizeAndGrowth = new vector<Animal*>();
-
-	setTemperatureCycle(moistureBasePatch["temperatureCycle"]);
-	setRelativeHumidityCycle(moistureBasePatch["relativeHumidityCycle"]);
-	setRelativeHumidityOnRainEvent(moistureBasePatch["relativeHumidityOnRainEvent"]);
-	setRelativeHumidityDecayOverTime(moistureBasePatch["relativeHumidityDecayOverTime"]);
-	setTimeStepsBetweenRainEvents(moistureBasePatch["timeStepsBetweenRainEvents"]);
-	setStandardDeviationForRainEvent(moistureBasePatch["standardDeviationForRainEvent"]);
-	setMaximumCapacities(moistureBasePatch["totalMaximumResourceCapacity"]);
-	setInEnemyFreeSpace(moistureBasePatch["inEnemyFreeSpace"]);
-	setInCompetitorFreeSpace(moistureBasePatch["inCompetitorFreeSpace"]);
+	animalsToMove = new vector<Edible*>();
+	animalsToReproduce = new vector<Edible*>();
+	animalsToMetabolizeAndGrowth = new vector<Edible*>();
 }
 
 TerrainCell::~TerrainCell()
 {
 	for(auto it = animals.begin(); it != animals.end(); it++)
 	{
-		map<AnimalSpecies* , vector<Animal*> *> * animalsInThisLifeStage = (*it).second;
+		map<Species* , vector<Edible*> *> * animalsInThisLifeStage = (*it).second;
 		for(auto lifeStageIt = animalsInThisLifeStage->begin(); lifeStageIt != animalsInThisLifeStage->end(); lifeStageIt++)
 		{
-			vector<Animal*> * animalsInThisSpecies = (*lifeStageIt).second;
-			for(auto &animal : *animalsInThisSpecies)
+			vector<Edible*> * animalsInThisSpecies = (*lifeStageIt).second;
+			for(auto animalsIt = animalsInThisSpecies->begin(); animalsIt != animalsInThisSpecies->end(); animalsIt++)
 			{
-				delete animal;
+				delete (*animalsIt);
 			}
 			animalsInThisSpecies->clear();
 			delete animalsInThisSpecies;
@@ -73,11 +62,11 @@ TerrainCell::~TerrainCell()
 	}
 	animals.clear();
 
-	for(auto it = resources.begin(); it != resources.end(); it++)
+	for(auto it = fungi.begin(); it != fungi.end(); it++)
 	{
 		delete (*it);
 	}
-	resources.clear();
+	fungi.clear();
 
 	for(auto it = cellsWithinDistance.begin(); it != cellsWithinDistance.end(); it++)
 	{
@@ -96,48 +85,34 @@ TerrainCell::~TerrainCell()
 	delete animalsToMetabolizeAndGrowth;
 }
 
-void TerrainCell::setAuxInitialResourceBiomass(float auxInitialResourceBiomass, int auxInitialResourceSpeciesId)
+void TerrainCell::setAuxInitialFungiBiomass(float auxInitialFungiBiomass, int auxInitialFungusSpeciesId)
 {
-	this->auxInitialResourceBiomass = auxInitialResourceBiomass;
-	this->auxInitialResourceSpeciesId = auxInitialResourceSpeciesId;
+	this->auxInitialFungiBiomass = auxInitialFungiBiomass;
+	this->auxInitialFungusSpeciesId = auxInitialFungusSpeciesId;
 }
 
-void TerrainCell::checkMaximumResourceCapacity()
+void TerrainCell::addFungus(Fungus* newFungus)
 {
-	double maximumResourceCapacity = 0.0;
-
-	for(auto resource : resources) {
-		maximumResourceCapacity += resource->getResourceMaximumCapacity();
-	}
-
-	if(maximumResourceCapacity > getTotalMaximumResourceCapacity()) {
-		throwLineInfoException("The maximum resource capacity has been exceeded");
-	}
+	newFungus->setPosition(this);
+	//newFungus->setBiomass(0);
+	fungi.push_back(newFungus);
 }
 
-void TerrainCell::addResource(Resource* newResource)
+void TerrainCell::deleteFungus(Edible* edible)
 {
-	//newResource->setBiomass(0);
-	resources.push_back(newResource);
-
-	checkMaximumResourceCapacity();
+	fungi.erase(std::remove(fungi.begin(), fungi.end(), edible), fungi.end());
 }
 
-void TerrainCell::deleteResource(Resource* edible)
+void TerrainCell::addAnimal(Edible* newAnimal)
 {
-	resources.erase(std::remove(resources.begin(), resources.end(), edible), resources.end());
-}
-
-void TerrainCell::addAnimal(Animal* newAnimal)
-{
-	vector<Animal* > * animalsVector = animals[newAnimal->getLifeStage()]->at(newAnimal->getSpecies());
+	vector<Edible* > * animalsVector = animals[newAnimal->getLifeStage()]->at(newAnimal->getSpecies());
 	animalsVector->push_back(newAnimal);
 }
 
-double TerrainCell::turnEdibleIntoDryMassToBeEaten(Edible* targetEdible, int day, Animal* predatorEdible, double leftovers)
+double TerrainCell::turnEdibleIntoDryMassToBeEaten(Edible* targetEdible, int day, Edible* predatorEdible, double leftovers)
 {
 	#ifdef _DEBUG
-	Output::coutFlush("{} predated {}\n", predatorId, targetEdible->getId());
+	cout << predatorId << " " << "predated " << targetEdible->getId() << endl << flush;
 	#endif
 
 	float targetEdibleProfitability = predatorEdible->getSpecies()->getEdibleProfitability(targetEdible->getSpecies());
@@ -149,7 +124,7 @@ double TerrainCell::turnEdibleIntoDryMassToBeEaten(Edible* targetEdible, int day
 
 	if(targetEdible->getSpecies()->isMobile())
 	{
-		targetEdible->setNewLifeStage(LifeStage::PREDATED, day, predatorEdible->getId());
+		targetEdible->setNewLifeStage(Animal::LIFE_STAGES::PREDATED, day, predatorEdible->getId());
 
 		animalsToMove->erase(std::remove(animalsToMove->begin(), animalsToMove->end(), targetEdible), animalsToMove->end());
 	}
@@ -157,7 +132,7 @@ double TerrainCell::turnEdibleIntoDryMassToBeEaten(Edible* targetEdible, int day
 	{
 		
 		//dryMassToBeEaten = targetEdible->turnIntoDryMassToBeEaten(predatorEdible->getRemainingVoracity(), targetEdibleProfitability + predatorEdible->getAssim());
-		//arthros and for dinos, very big bug in feeding on resource and updating ungi fixed
+		//arthros and for dinos, very big bug in feeding on fungi and updating ungi fixed
 		/* cout << "BEFOREEEEEEEEEE AND AFTEEEEEEEERRRRRRRRRRRRRRRRRR" << endl;
 		cout << targetEdible->calculateDryMass() << endl;
 		cout << dryMassToBeEaten << endl; */
@@ -168,33 +143,33 @@ double TerrainCell::turnEdibleIntoDryMassToBeEaten(Edible* targetEdible, int day
 
 	if(dryMassToBeEaten < 0)
 	{
-		Output::cout("Edible id: {} ({}) - The dry mass to be eaten after considering profitability resulted in a negative value.\n", predatorEdible->getId(), predatorEdible->getSpecies()->getScientificName());
+		cout << "Edible id: " << predatorEdible->getId() << " (" << predatorEdible->getSpecies()->getScientificName() << ") - The dry mass to be eaten after considering profitability resulted in a negative value." << endl;
 	}
 
 	return dryMassToBeEaten;
 }
 
-void TerrainCell::changeAnimalToSenesced(Animal* targetAnimal, int day)
+void TerrainCell::changeAnimalToSenesced(Edible* targetAnimal, int day)
 {
 	#ifdef _DEBUG
-	Output::coutFlush("{} predated {}\n", predatorId, targetAnimal->getId());
+	cout << predatorId << " " << "predated " << targetAnimal->getId() << endl << flush;
 	#endif
 
-	targetAnimal->setNewLifeStage(LifeStage::SENESCED, day);
+	targetAnimal->setNewLifeStage(Animal::LIFE_STAGES::SENESCED, day);
 
 	animalsToMove->erase(std::remove(animalsToMove->begin(), animalsToMove->end(), targetAnimal), animalsToMove->end());
 }
 
-void TerrainCell::eraseAnimal(Animal* oldEdible, const LifeStage &oldStage)
+void TerrainCell::eraseAnimal(Edible* oldEdible, int oldStage)
 {
-	vector<Animal*> * listOfAnimals = animals[oldStage]->at(oldEdible->getSpecies());
+	vector<Edible*> * listOfAnimals = animals[oldStage]->at(oldEdible->getSpecies());
 	listOfAnimals->erase(std::remove(listOfAnimals->begin(), listOfAnimals->end(), oldEdible), listOfAnimals->end());
 }
 
-void TerrainCell::setMaximumCapacities(float totalMaximumResourceCapacity)
+void TerrainCell::setMaximumCapacities(float maximumFungiCapacity)
 {
-	this->totalMaximumResourceCapacity = totalMaximumResourceCapacity;
-	maximumPreysCapacity = 0.08*pow(totalMaximumResourceCapacity,0.75);
+	this->maximumFungiCapacity = maximumFungiCapacity;
+	maximumPreysCapacity = 0.08*pow(maximumFungiCapacity,0.75);
 	maximumPredatorsCapacity  = 0.08*pow(maximumPreysCapacity,0.75);
 }
 
@@ -330,12 +305,16 @@ float TerrainCell::getWater()
 
 void TerrainCell::setRelativeHumidityOnRainEvent(float relativeHumidityOnRainEvent)
 {
-	if(relativeHumidityOnRainEvent < 0) {
-		throwLineInfoException("Water resource cannot be negative on a terrain cell");
+	if (relativeHumidityOnRainEvent >= 0)
+	{
+		this->moisture = relativeHumidityOnRainEvent;
+		this->relativeHumidityOnRainEvent = relativeHumidityOnRainEvent;
 	}
-
-	this->moisture = max(this->moisture, relativeHumidityOnRainEvent);
-	this->relativeHumidityOnRainEvent = max(this->relativeHumidityOnRainEvent, relativeHumidityOnRainEvent);
+	else
+	{
+		std::cerr << "Water resource cannot be negative on a terrain cell" << std::endl;
+		exit(-1);
+	}
 }
 
 void TerrainCell::setRelativeHumidityDecayOverTime(float relativeHumidityDecayOverTime)
@@ -407,30 +386,119 @@ void TerrainCell::printStoichiometry(bool includeWater)
 		min = this->P;
 
 	if (includeWater)
-		Output::cout("Cell Stoichiometry (Water:C:N:P): {:.{0}f}:{:.{0}f}:{:.{0}f}:{:.{0}f}\n", STOICHIOMETRY_PRECISION, this->moisture / min, this->C / min, this->N / min, this->P / min);
+		std::cout << std::fixed << std::setprecision(STOICHIOMETRY_PRECISION) << "Cell Stoichiometry (Water:C:N:P): "
+				<< this->moisture / min << ":" << this->C / min << ":" << this->N / min << ":" << this->P / min
+				<< std::endl;
 	else
-		Output::cout("Cell Stoichiometry (C:N:P): {:.{0}f}:{:.{0}f}:{:.{0}f}\n", STOICHIOMETRY_PRECISION, this->C / min, this->N / min, this->P / min);
+		std::cout << std::fixed << std::setprecision(STOICHIOMETRY_PRECISION) << "Cell Stoichiometry (C:N:P): "
+				<< this->C / min << ":" << this->N / min << ":" << this->P / min << std::endl;
 
 }
 
-std::vector<TerrainCellInterface *> * TerrainCell::getCellsAtDistance(int distance, double searchArea, bool isMobile, unsigned int worldDepth, unsigned int worldLength, unsigned int worldWidth)
+std::vector<TerrainCell *> * TerrainCell::getCellsAtDistance(int distance, double searchArea, bool isMobile)
 {
-	TerrainCellInterface* cellToBeAdded;
+	//TODO cellsWithinDistance vector might be useful in order to improve performance, although it uses so much memory
+	/*
+	map<unsigned int, std::vector<TerrainCell *> *>::iterator it;
+	TerrainCell* cellToBeAdded;
 
-	std::vector<TerrainCellInterface *> * newNeighbors = new std::vector<TerrainCellInterface *>();
+	it = cellsAtDistance.find(distance);
+
+	if (it == cellsAtDistance.end())
+	{
+		std::vector<TerrainCell *> * newNeighbors = new std::vector<TerrainCell *>();
+		if(distance == 1)
+		{
+			newNeighbors->push_back(this);
+		}
+
+		int myZ, myY, myX;
+		int worldDepth, worldLength, worldWidth;
+
+		myZ = myCoordinates.Z();
+		myY = myCoordinates.Y();
+		myX = myCoordinates.X();
+
+		worldDepth = theWorld->getDepth();
+		worldLength = theWorld->getLength();
+		worldWidth = theWorld->getWidth();
+
+		int minX = myX - min(distance, myX);
+		int maxX = myX + min(distance, (worldWidth-1)-myX);
+		int minY = myY - min(distance, myY);
+		int maxY = myY + min(distance, (worldLength-1)-myY);
+		int minZ = myZ - min(distance, myZ);
+		int maxZ = myZ + min(distance, (worldDepth-1)-myZ);
+
+		for (int z = minZ; z <= maxZ; z++)
+		{
+			if (z >= 0 && z < worldDepth)
+			{
+				for (int y = minY; y <= maxY; y++)
+				{
+					if (y >= 0 && y < worldLength)
+					{
+						for (int x = minX; x <= maxX; x++)
+						{
+							if (x >= 0 && x < worldWidth)
+							{
+									if (x == minX || y == minY || x == maxX || y == maxY || z == minZ || z == maxZ)
+									{
+										cellToBeAdded = theWorld->getCell(z, y, x);
+										if(cellToBeAdded != NULL && cellToBeAdded != this && !cellToBeAdded->isObstacle())
+										{
+											newNeighbors->push_back(cellToBeAdded);
+										}
+									}
+							}
+						}
+					}
+				}
+			}
+		}
+
+		cellsAtDistance[distance] = newNeighbors;
+	}
+
+	std::vector<TerrainCell *> * searchAreaNeighbors = new std::vector<TerrainCell *>();
+	std::vector<TerrainCell *>::iterator newNeighborsIt;
+	for(newNeighborsIt = cellsAtDistance[distance]->begin(); newNeighborsIt != cellsAtDistance[distance]->end(); newNeighborsIt++)
+	{
+		cellToBeAdded = (*newNeighborsIt);
+		double distanceToTheCellToBeAdded = getDistanceToCell(cellToBeAdded);
+		if(distanceToTheCellToBeAdded <= searchArea)
+		{
+			searchAreaNeighbors->push_back(cellToBeAdded);
+		}
+	}
+	return searchAreaNeighbors;
+	*/
+
+	TerrainCell* cellToBeAdded;
+
+	std::vector<TerrainCell *> * newNeighbors = new std::vector<TerrainCell *>();
+	if(distance == 1)
+	{
+		newNeighbors->push_back(this);
+	}
 
 	int myZ, myY, myX;
+	int worldDepth, worldLength, worldWidth;
 
-	myZ = myCoordinates.getZ();
-	myY = myCoordinates.getY();
-	myX = myCoordinates.getX();
+	myZ = myCoordinates.Z();
+	myY = myCoordinates.Y();
+	myX = myCoordinates.X();
+
+	worldDepth = theWorld->getDepth();
+	worldLength = theWorld->getLength();
+	worldWidth = theWorld->getWidth();
 
 	int minX = myX - min(distance, myX);
-	int maxX = myX + min(distance, (int)(worldWidth-1)-myX);
+	int maxX = myX + min(distance, (worldWidth-1)-myX);
 	int minY = myY - min(distance, myY);
-	int maxY = myY + min(distance, (int)(worldLength-1)-myY);
+	int maxY = myY + min(distance, (worldLength-1)-myY);
 	int minZ = myZ - min(distance, myZ);
-	int maxZ = myZ + min(distance, (int)(worldDepth-1)-myZ);
+	int maxZ = myZ + min(distance, (worldDepth-1)-myZ);
 
 /* 	if(myX == 48 && myY == 21){
 	cout << "the coordinates are    " << endl;
@@ -461,25 +529,24 @@ std::vector<TerrainCellInterface *> * TerrainCell::getCellsAtDistance(int distan
 					{
 						if (x >= 0 && x < worldWidth)
 						{
-							if (x == minX || y == minY || x == maxX || y == maxY || z == minZ || z == maxZ)
-							{
-								//arthro and for dinos
-								if(!isMobile && worldInterface->getCell(z, y, x)->isInPatch()){ //so resource spreads only within the original patches
+								if (x == minX || y == minY || x == maxX || y == maxY || z == minZ || z == maxZ)
+								{
+									//arthro and for dinos
+									if(!isMobile && theWorld->getCell(z, y, x)->isInPatch()){ //so fungus spreads only within the original patches
 									//TODO Jordi check: does this optimize animal search behavior?
-									cellToBeAdded = worldInterface->getCell(z, y, x);
+									cellToBeAdded = theWorld->getCell(z, y, x);
 									if(cellToBeAdded != NULL && cellToBeAdded != this && !cellToBeAdded->isObstacle())
 									{
 										newNeighbors->push_back(cellToBeAdded);
 									}
-								}
-								else{//isMobile, an animal
-									cellToBeAdded = worldInterface->getCell(z, y, x);
+									}else{//isMobile, an animal
+									cellToBeAdded = theWorld->getCell(z, y, x);
 									if(cellToBeAdded != NULL && cellToBeAdded != this && !cellToBeAdded->isObstacle())
 									{
 										newNeighbors->push_back(cellToBeAdded);
 									}	
-								}//arthro and for dinos
-							}
+									}//arthro and for dinos
+								}
 						}
 					}
 				}
@@ -487,8 +554,8 @@ std::vector<TerrainCellInterface *> * TerrainCell::getCellsAtDistance(int distan
 		}
 	}
 
-	std::vector<TerrainCellInterface *> * searchAreaNeighbors = new std::vector<TerrainCellInterface *>();
-	std::vector<TerrainCellInterface *>::iterator newNeighborsIt;
+	std::vector<TerrainCell *> * searchAreaNeighbors = new std::vector<TerrainCell *>();
+	std::vector<TerrainCell *>::iterator newNeighborsIt;
 	for(newNeighborsIt = newNeighbors->begin(); newNeighborsIt != newNeighbors->end(); newNeighborsIt++)
 	{
 		cellToBeAdded = (*newNeighborsIt);
@@ -504,7 +571,7 @@ std::vector<TerrainCellInterface *> * TerrainCell::getCellsAtDistance(int distan
 	return searchAreaNeighbors;
 }
 
-std::vector<TerrainCell *> * TerrainCell::getCellsWithinDistance(int maxDistance, double searchArea, unsigned int worldDepth, unsigned int worldLength, unsigned int worldWidth)
+std::vector<TerrainCell *> * TerrainCell::getCellsWithinDistance(int maxDistance, double searchArea)
 {
 	//TODO cellsWithinDistance vector might be useful in order to improve performance, although it uses so much memory
 	//map<unsigned int, std::vector<TerrainCell *> *>::iterator it = cellsWithinDistance.find(maxDistance);
@@ -513,17 +580,22 @@ std::vector<TerrainCell *> * TerrainCell::getCellsWithinDistance(int maxDistance
 	//{
 		std::vector<TerrainCell *> * newNeighbors = new std::vector<TerrainCell *>();
 		int myZ, myY, myX;
+		int worldDepth, worldLength, worldWidth;
 
-		myZ = myCoordinates.getZ();
-		myY = myCoordinates.getY();
-		myX = myCoordinates.getX();
+		myZ = myCoordinates.Z();
+		myY = myCoordinates.Y();
+		myX = myCoordinates.X();
+
+		worldDepth = theWorld->getDepth();
+		worldLength = theWorld->getLength();
+		worldWidth = theWorld->getWidth();
 
 		int minX = myX - min(maxDistance, myX);
-		int maxX = myX + min(maxDistance, (int)(worldWidth-1)-myX);
+		int maxX = myX + min(maxDistance, (worldWidth-1)-myX);
 		int minY = myY - min(maxDistance, myY);
-		int maxY = myY + min(maxDistance, (int)(worldLength-1)-myY);
+		int maxY = myY + min(maxDistance, (worldLength-1)-myY);
 		int minZ = myZ - min(maxDistance, myZ);
-		int maxZ = myZ + min(maxDistance, (int)(worldDepth-1)-myZ);
+		int maxZ = myZ + min(maxDistance, (worldDepth-1)-myZ);
 
 		TerrainCell* cellToBeAdded;
 		for (int z = minZ; z <= maxZ; z++)
@@ -538,7 +610,7 @@ std::vector<TerrainCell *> * TerrainCell::getCellsWithinDistance(int maxDistance
 						{
 							if (x >= 0 && x < worldWidth)
 							{
-								cellToBeAdded = worldInterface->getCell(z, y, x);
+								cellToBeAdded = theWorld->getCell(z, y, x);
 								if(cellToBeAdded != NULL && !cellToBeAdded->isObstacle())
 								{
 									double distanceToTheCellToBeAdded = getDistanceToCell(cellToBeAdded);
@@ -561,51 +633,57 @@ std::vector<TerrainCell *> * TerrainCell::getCellsWithinDistance(int maxDistance
 	return newNeighbors;
 }
 
-double TerrainCell::getDistanceToCell(TerrainCellInterface* targetCell)
+double TerrainCell::getDistanceToCell(TerrainCell* targetCell)
 {
 	return sqrt(pow(abs(getX() - targetCell->getX()) * size, 2) + pow(abs(getY() - targetCell->getY()) * size, 2) + pow(abs(getZ() - targetCell->getZ()) * size, 2));
 }
 
-void TerrainCell::dieFromBackground(int timeStep, bool growthAndReproTest)
+void TerrainCell::diePredatorsFromBackground(int timeStep)
 {
-	for(auto animalSpeciesIt = existingAnimalSpecies->begin(); animalSpeciesIt != existingAnimalSpecies->end(); animalSpeciesIt++)
+	for(vector<Species*>::iterator animalSpeciesIt = theWorld->existingAnimalSpecies.begin(); animalSpeciesIt != theWorld->existingAnimalSpecies.end(); animalSpeciesIt++)
 	{
-		AnimalSpecies* currentAnimalSpecies = *animalSpeciesIt;
+		Species* currentAnimalSpecies = *animalSpeciesIt;
+		vector<Edible*> activeAnimals = *(getAnimalsBySpecies(Animal::LIFE_STAGES::ACTIVE, currentAnimalSpecies));
 
-		auto activeAnimals = getAnimalsBySpecies(LifeStage::ACTIVE, currentAnimalSpecies);
-
-		for(auto &elem : activeAnimals) {
-			for(auto activeAnimalsIt = elem.first; activeAnimalsIt != elem.second; activeAnimalsIt++)
+		if(!currentAnimalSpecies->getEdibleAnimalSpecies()->empty())
+		{
+			for (vector<Edible*>::iterator activeAnimalsIt = activeAnimals.begin(); activeAnimalsIt != activeAnimals.end(); activeAnimalsIt++)
 			{
-				(*activeAnimalsIt)->dieFromBackground(timeStep, growthAndReproTest);
+				(*activeAnimalsIt)->dieFromBackground(timeStep);
 			}
 		}
 	}
 }
 
-void TerrainCell::breedAnimals(int timeStep, int timeStepsPerDay, fs::path outputDirectory, bool saveAnimalConstitutiveTraits, ofstream &constitutiveTraitsFile)
+void TerrainCell::breedAnimals(int timeStep, int timeStepsPerDay, fs::path outputDirectory)
 {
-	//shuffleList(&(animals[LifeStage::REPRODUCING]));
+	//shuffleList(&(animals[Animal::LIFE_STAGES::REPRODUCING]));
 
-	for (auto animalsToReproduceIt = animalsToReproduce->begin(); animalsToReproduceIt != animalsToReproduce->end(); animalsToReproduceIt++)
+	for (vector<Edible*>::iterator animalsToReproduceIt = animalsToReproduce->begin(); animalsToReproduceIt != animalsToReproduce->end(); animalsToReproduceIt++)
 	{
-		Animal* female = (*animalsToReproduceIt);
+		Edible* female = (*animalsToReproduceIt);
 
-		list<Animal*> * offSprings = female->breed(timeStep, timeStepsPerDay, temperature, saveAnimalConstitutiveTraits, constitutiveTraitsFile);
+		list<Edible*> * offSprings = female->breed(timeStep, timeStepsPerDay, temperature);
 
-		ofstream geneticsFile;
+		ofstream geneticsFile, constitutiveTraitsFile;
 		createOutputFile(geneticsFile, outputDirectory, "animal_genetics", "txt", ofstream::app);
 		if(!geneticsFile.is_open()) {
 			cerr << "Error opening the file." << endl;
 		} else {
-			for(auto offSpringsIt = offSprings->begin(); offSpringsIt != offSprings->end(); offSpringsIt++)
-			{
-				//(*offSpringsIt)->printGenetics(geneticsFile);
+			createOutputFile(constitutiveTraitsFile, outputDirectory, "animal_constitutive_traits", "txt", ofstream::app);
+			if(!constitutiveTraitsFile.is_open()) {
+				cerr << "Error opening the file." << endl;
+			} else {
+				for(list<Edible*>::iterator offSpringsIt = offSprings->begin(); offSpringsIt != offSprings->end(); offSpringsIt++)
+				{
+					//(*offSpringsIt)->printGenetics(geneticsFile);
+				}
+				geneticsFile.close();
+				constitutiveTraitsFile.close();
 			}
-			geneticsFile.close();
 		}
 
-		vector<Animal*> * unbornAnimals = animals.at(LifeStage::UNBORN)->at(female->getSpecies());
+		vector<Edible*> * unbornAnimals = getAnimalsBySpecies(Animal::LIFE_STAGES::UNBORN, female->getSpecies());
 		unbornAnimals->insert(unbornAnimals->end(), offSprings->begin(), offSprings->end());
 	
 		offSprings->clear();
@@ -614,18 +692,15 @@ void TerrainCell::breedAnimals(int timeStep, int timeStepsPerDay, fs::path outpu
 	animalsToReproduce->clear();
 }
 
-void TerrainCell::metabolizeAnimals(int timeStep, int timeStepPerDay, SimulType simulType)
+void TerrainCell::metabolizeAnimals(int timeStep, int timeStepPerDay)
 {
-	for(auto animalSpeciesIt = existingAnimalSpecies->begin(); animalSpeciesIt != existingAnimalSpecies->end(); animalSpeciesIt++)
+	for(vector<Species*>::iterator animalSpeciesIt = theWorld->existingAnimalSpecies.begin(); animalSpeciesIt != theWorld->existingAnimalSpecies.end(); animalSpeciesIt++)
 	{
-		AnimalSpecies* currentAnimalSpecies = *animalSpeciesIt;
-		auto activeAnimals = getAnimalsBySpecies(LifeStage::ACTIVE, currentAnimalSpecies);
-
-		for(auto &elem : activeAnimals) {
-			for(auto activeAnimalsIt = elem.first; activeAnimalsIt != elem.second; activeAnimalsIt++)
-			{
-				(*activeAnimalsIt)->metabolize(timeStep, timeStepPerDay, simulType);
-			}
+		Species* currentAnimalSpecies = *animalSpeciesIt;
+		vector<Edible*> * activeAnimals = getAnimalsBySpecies(Animal::LIFE_STAGES::ACTIVE, currentAnimalSpecies);
+		for (vector<Edible*>::iterator activeAnimalsIt = activeAnimals->begin(); activeAnimalsIt != activeAnimals->end(); activeAnimalsIt++)
+		{
+			(*activeAnimalsIt)->metabolize(timeStep, timeStepPerDay);
 		}
 	}
 
@@ -639,16 +714,13 @@ void TerrainCell::metabolizeAnimals(int timeStep, int timeStepPerDay, SimulType 
 
 void TerrainCell::growAnimals(int timeStep, int timeStepsPerDay)
 {
-	for(auto animalSpeciesIt = existingAnimalSpecies->begin(); animalSpeciesIt != existingAnimalSpecies->end(); animalSpeciesIt++)
+	for(vector<Species*>::iterator animalSpeciesIt = theWorld->existingAnimalSpecies.begin(); animalSpeciesIt != theWorld->existingAnimalSpecies.end(); animalSpeciesIt++)
 	{
-		AnimalSpecies* currentAnimalSpecies = *animalSpeciesIt;
-		auto activeAnimals = getAnimalsBySpecies(LifeStage::ACTIVE, currentAnimalSpecies);
-
-		for(auto &elem : activeAnimals) {
-			for(auto activeAnimalsIt = elem.first; activeAnimalsIt != elem.second; activeAnimalsIt++)
-			{
-				(*activeAnimalsIt)->grow(timeStep, timeStepsPerDay);
-			}
+		Species* currentAnimalSpecies = *animalSpeciesIt;
+		vector<Edible*> activeAnimals = *(getAnimalsBySpecies(Animal::LIFE_STAGES::ACTIVE, currentAnimalSpecies));
+		for (vector<Edible*>::iterator activeAnimalsIt = activeAnimals.begin(); activeAnimalsIt != activeAnimals.end(); activeAnimalsIt++)
+		{
+			(*activeAnimalsIt)->grow(timeStep, timeStepsPerDay);
 		}
 	}
 
@@ -670,100 +742,96 @@ void TerrainCell::growAnimals(int timeStep, int timeStepsPerDay)
 	*/
 	animalsToMetabolizeAndGrowth->clear();
 
-	for(auto animalSpeciesIt = existingAnimalSpecies->begin(); animalSpeciesIt != existingAnimalSpecies->end(); animalSpeciesIt++)
+	for(vector<Species*>::iterator animalSpeciesIt = theWorld->existingAnimalSpecies.begin(); animalSpeciesIt != theWorld->existingAnimalSpecies.end(); animalSpeciesIt++)
 	{
-		AnimalSpecies* currentAnimalSpecies = *animalSpeciesIt;
-		auto reproducingAnimals = getAnimalsBySpecies(LifeStage::REPRODUCING, currentAnimalSpecies);
+		Species* currentAnimalSpecies = *animalSpeciesIt;
+		vector<Edible*> * reproducingAnimals = getAnimalsBySpecies(Animal::LIFE_STAGES::REPRODUCING, currentAnimalSpecies);
 
-		for(auto &elem : reproducingAnimals) {
-			//Prepare the animals to be reproduced today
-			animalsToReproduce->insert(animalsToReproduce->end(), elem.first, elem.second);
-		}
+		//Prepare the animals to be reproduced today
+		animalsToReproduce->insert(animalsToReproduce->end(), reproducingAnimals->begin(), reproducingAnimals->end());
 	}
 }
 
-void TerrainCell::tuneTraits(int day, int timeStepsPerDay, ostream& tuneTraitsFile, SimulType simulType)
+void TerrainCell::tuneTraits(int day, int timeStepsPerDay, ostream& tuneTraitsFile)
 {
-	for(auto animalSpeciesIt = existingAnimalSpecies->begin(); animalSpeciesIt != existingAnimalSpecies->end(); animalSpeciesIt++)
+	for(vector<Species *>::iterator animalSpeciesIt = theWorld->existingAnimalSpecies.begin(); animalSpeciesIt != theWorld->existingAnimalSpecies.end(); animalSpeciesIt++)
 	{
-		AnimalSpecies* currentAnimalSpecies = *animalSpeciesIt;
-		
-		vector<Animal*> * tuneTraitsAnimals = new vector<Animal*>();
+		Species* currentAnimalSpecies = *animalSpeciesIt;
+		vector<Edible*> * activeAnimals = getAnimalsBySpecies(Animal::LIFE_STAGES::ACTIVE, currentAnimalSpecies);
+		vector<Edible*> * pupaAnimals = getAnimalsBySpecies(Animal::LIFE_STAGES::PUPA, currentAnimalSpecies);
+		vector<Edible*> * satiatedAnimals = getAnimalsBySpecies(Animal::LIFE_STAGES::SATIATED, currentAnimalSpecies);
+		vector<Edible*> * handlingAnimals = getAnimalsBySpecies(Animal::LIFE_STAGES::HANDLING, currentAnimalSpecies);
+		vector<Edible*> * diapauseAnimals = getAnimalsBySpecies(Animal::LIFE_STAGES::DIAPAUSE, currentAnimalSpecies);
+		vector<Edible*> * tuneTraitsAnimals = new vector<Edible*>();
+		tuneTraitsAnimals->insert(tuneTraitsAnimals->end(), activeAnimals->begin(), activeAnimals->end());
+		tuneTraitsAnimals->insert(tuneTraitsAnimals->end(), pupaAnimals->begin(), pupaAnimals->end());
+		tuneTraitsAnimals->insert(tuneTraitsAnimals->end(), satiatedAnimals->begin(), satiatedAnimals->end());
+		tuneTraitsAnimals->insert(tuneTraitsAnimals->end(), handlingAnimals->begin(), handlingAnimals->end());
+		tuneTraitsAnimals->insert(tuneTraitsAnimals->end(), diapauseAnimals->begin(), diapauseAnimals->end());
 
-		for(auto &lifeStage : {LifeStage::ACTIVE, LifeStage::PUPA, LifeStage::SATIATED, LifeStage::HANDLING, LifeStage::DIAPAUSE}) {
-			auto lifeStageAnimals = getAnimalsBySpecies(lifeStage, currentAnimalSpecies);
-			
-			for(auto &elem : lifeStageAnimals) {
-				//Prepare the animals to be reproduced today
-				tuneTraitsAnimals->insert(tuneTraitsAnimals->end(), elem.first, elem.second);
-			}
-		}
-
-		for (auto tuneTraitsAnimalsIt = tuneTraitsAnimals->begin(); tuneTraitsAnimalsIt != tuneTraitsAnimals->end(); tuneTraitsAnimalsIt++)
+		for (vector<Edible*>::iterator tuneTraitsAnimalsIt = tuneTraitsAnimals->begin(); tuneTraitsAnimalsIt != tuneTraitsAnimals->end(); tuneTraitsAnimalsIt++)
 		{
 			//Growth Curves calculus added here so it will be computed every step with the new temperature
 			(*tuneTraitsAnimalsIt)->calculateGrowthCurves(temperature, tuneTraitsFile, true, -1); //Dinosaurs
 			(*tuneTraitsAnimalsIt)->increaseAge(1);
-			(*tuneTraitsAnimalsIt)->tuneTraits(day, timeStepsPerDay, temperature, moisture, tuneTraitsFile, true, false, simulType);
+			(*tuneTraitsAnimalsIt)->tuneTraits(day, timeStepsPerDay, temperature, moisture, tuneTraitsFile, true, false);
 		}
 		delete tuneTraitsAnimals;
 
-		auto activeAnimals = getAnimalsBySpecies(LifeStage::ACTIVE, currentAnimalSpecies);
-
-		for(auto &elem : activeAnimals) {
-			//Prepare the animals to be moved today
-			animalsToMove->insert(animalsToMove->end(), elem.first, elem.second);
-		}
+		activeAnimals = getAnimalsBySpecies(Animal::LIFE_STAGES::ACTIVE, currentAnimalSpecies);
+		//Prepare the animals to be moved today
+		animalsToMove->insert(animalsToMove->end(), activeAnimals->begin(), activeAnimals->end());
+		//animalsToMove->insert(animalsToMove->end(), reproducingAnimals->begin(), reproducingAnimals->end());
 	}
 }
 
-void TerrainCell::commitResourceSpread()
+void TerrainCell::commitFungiSpread()
 {
 	//TODO Añadir las contribuciones de cada especie EN EL MISMO ORDEN
 	//que se añadieron los crecimientos en la celda ORIGEN.
-	//std::random_shuffle(resource.begin(), resource.end());
+	//std::random_shuffle(fungi.begin(), fungi.end());
 
-	vector<Resource*> markedForRemoval;
-	for (auto it = resources.begin(); it != resources.end(); it++)
+	vector<Edible*> markedForRemoval;
+	for (std::vector<Edible*>::iterator it = fungi.begin(); it != fungi.end(); it++)
 	{
-		(*it)->processExternalContributions(getTotalMaximumResourceCapacity(), getTotalResourceBiomass());
+		(*it)->processExternalContributions();
 		if ((*it)->isExtinct())
 		{
 			markedForRemoval.push_back((*it));
 		}
 	}
 
-	for (auto it = markedForRemoval.begin(); it != markedForRemoval.end(); it++)
+	for (std::vector<Edible*>::iterator it = markedForRemoval.begin(); it != markedForRemoval.end(); it++)
 	{
-		deleteResource((*it));
+		deleteFungus((*it));
 		delete(*it);
 	}
 }
 
-void TerrainCell::setResourceFromChemostatEffect(vector<ResourceSpecies *>* existingResourceSpecies, double increaseForChemostatEffect, bool competitionAmongResourceSpecies, double massRatio) {
+void TerrainCell::setFungiFromChemostatEffect(vector<Species *>* existingFungiSpecies, double increaseForChemostatEffect) {
 	if(moisture > 0)
 	{
 		//LO QUITAMOS PROVISIONALMENTE!
-		//double fractionPerSpecies = 1.0/(double)existingResourceSpecies->size();
-		for(auto it = existingResourceSpecies->begin(); it != existingResourceSpecies->end(); it++)
+		//double fractionPerSpecies = 1.0/(double)existingFungiSpecies->size();
+		for (std::vector<Species*>::iterator it = existingFungiSpecies->begin(); it != existingFungiSpecies->end(); it++)
 		{
-			Resource* currentResource = getResource(*it);
-			if(currentResource != NULL && (int)(*it)->getId() == auxInitialResourceSpeciesId)
+			Edible* currentFungus = getFungus(*it);
+			if(currentFungus != NULL && (int)(*it)->getId() == auxInitialFungusSpeciesId)
 			{
 				//TODO PROVISIONAL! CAMBIAR POR MOISTURE
-				currentResource->setBiomass(increaseForChemostatEffect*auxInitialResourceBiomass); // Adds biomass to this resource species living within this cell
+				currentFungus->setBiomass(increaseForChemostatEffect*auxInitialFungiBiomass); // Adds biomass to this fungus species living within this cell
 
 			}
-			else if((int)(*it)->getId() == auxInitialResourceSpeciesId)
+			else if((int)(*it)->getId() == auxInitialFungusSpeciesId)
 			{
 				//TODO PROVISIONAL! CAMBIAR POR MOISTURE
-				addResource(new Resource((*it), increaseForChemostatEffect*auxInitialResourceBiomass, 0.0, competitionAmongResourceSpecies, massRatio));
+				addFungus(new Fungus((*it), increaseForChemostatEffect*auxInitialFungiBiomass, this));
 			}
 		}
 	}
 }
 
-void TerrainCell::growResource(int timeStep, bool competition, double maxCapacity, int size, SimulType simulType, unsigned int worldDepth, unsigned int worldLength, unsigned int worldWidth, bool competitionAmongResourceSpecies, double massRatio)
+void TerrainCell::growFungi(int timeStep, bool competition, double maxCapacity, int size)
 {
 	//unsigned int myZ, myY, myX;
 	//unsigned int worldDepth, worldLength, worldWidth;
@@ -777,13 +845,13 @@ void TerrainCell::growResource(int timeStep, bool competition, double maxCapacit
 	//worldWidth = theWorld->getWidth();
 
 	// Grow in random order if more than one species exist
-	std::random_shuffle(resources.begin(), resources.end());
-	vector<Resource*> markedForRemoval;
-	for (auto it = resources.begin(); it != resources.end(); it++)
+	std::random_shuffle(fungi.begin(), fungi.end());
+	vector<Edible*> markedForRemoval;
+	for (std::vector<Edible *>::iterator it = fungi.begin(); it != fungi.end(); it++)
 	{
 
 		//cout << "wetMass:  " << (*it)->calculateWetMass() << endl;
-		double excess = (*it)->grow(timeStep, getTotalMaximumResourceCapacity(), getWater(), getTemperature(), getTotalResourceBiomass(), simulType); // Grows this resource species living within this cell
+		double excess = (*it)->grow(timeStep); // Grows this fungus species living within this cell
 		
 		/* if((*it)->calculateWetMass() > 2.5){
 		cout << "after excess 2:   " << endl;
@@ -809,33 +877,29 @@ void TerrainCell::growResource(int timeStep, bool competition, double maxCapacit
 			if (excess > 0) //spread only if excess > cell size - otherwise is not biologically possible
 			{              //(*it)->getSpecies()->getCellMass()                                  
 				bool isMobile = (*it)->getSpecies()->isMobile();
-				auto neighbors = getCellsAtDistance(1, DBL_MAX, isMobile, worldDepth, worldLength, worldWidth);
+				std::vector<TerrainCell *> * neighbors = getCellsAtDistance(1, DBL_MAX, isMobile);
 
-				ResourceSpecies* currentSpecies = (*it)->getSpecies();
-
-				double massPerNeighbor;
-				if(!neighbors->empty()) {
-					massPerNeighbor = excess / neighbors->size(); // Distribute equally across neighbors
-				}
+				Species* currentSpecies = (*it)->getSpecies();
+				double massPerNeighbor = excess / neighbors->size(); // Distribute equally across neighbors
 				
-				Resource* auxResource;
+				Edible* auxFungus;
 
-				for (auto neighborIt = neighbors->begin(); neighborIt != neighbors->end(); neighborIt++)
+				for (std::vector<TerrainCell *>::iterator neighborIt = neighbors->begin(); neighborIt != neighbors->end(); neighborIt++)
 				{
-					auxResource = (*neighborIt)->getResource(currentSpecies);
+					auxFungus = (*neighborIt)->getFungus(currentSpecies);
 
-					double totBiomass = (*neighborIt)->getTotalResourceBiomass();
+					double totBiomass = (*neighborIt)->getTotalFungusBiomass();
 
-					if (auxResource != NULL)
+					if (auxFungus != NULL)
 					{
-						auxResource->addBiomass(massPerNeighbor, competition, maxCapacity, size, totBiomass);
+						auxFungus->addBiomass(massPerNeighbor, competition, maxCapacity, size, totBiomass);
 					}
 					else
-					{   //spread to a cell where that resource species was extinct
-						if(static_cast<TerrainCell*>((*neighborIt))->isInPatch()){
-							static_cast<TerrainCell*>((*neighborIt))->addResource(new Resource(currentSpecies, massPerNeighbor, (*it)->getResourceMaximumCapacity(), competitionAmongResourceSpecies, massRatio)); //, massPerNeighbor, this
-							auxResource = (*neighborIt)->getResource(currentSpecies);
-							auxResource->addBiomass(massPerNeighbor, competition, maxCapacity, size, totBiomass);
+					{   //spread to a cell where that fungus species was extinct
+						if((*neighborIt)->isInPatch()){
+						(*neighborIt)->addFungus(new Fungus(currentSpecies, massPerNeighbor, this)); //, massPerNeighbor, this
+						auxFungus = (*neighborIt)->getFungus(currentSpecies);
+						auxFungus->addBiomass(massPerNeighbor, competition, maxCapacity, size, totBiomass);
 						}
 					
 					} 
@@ -854,27 +918,32 @@ void TerrainCell::growResource(int timeStep, bool competition, double maxCapacit
 
 	}
 
-	for (auto it = markedForRemoval.begin(); it != markedForRemoval.end(); it++)
+	for (std::vector<Edible *>::iterator it = markedForRemoval.begin(); it != markedForRemoval.end(); it++)
 	{
-		resources.erase(std::remove(resources.begin(), resources.end(), (*it)), resources.end());
+		fungi.erase(std::remove(fungi.begin(), fungi.end(), (*it)), fungi.end());
 		delete (*it);
 	}
+
+
+
+
+
 }
 
 /*
- * Returns, for each requested resource species, their stocks in this cell.
+ * Returns, for each requested fungus species, their stocks in this cell.
  * This is used to take decisions on preys movement but not taking into account the
  * potentially existing of predators on the cell.
  */
-map<Species *, double> * TerrainCell::getResourceStock(Animal* animalWhoIsEvaluating, bool discardZero)
+map<Species *, double> * TerrainCell::getFungiStock(Animal* animalWhoIsEvaluating, bool discardZero)
 {
-	const vector<ResourceSpecies *> * edibleResourceSpecies = animalWhoIsEvaluating->getSpecies()->getEdibleResourceSpecies();
+	vector<Species *> * edibleFungusSpecies = animalWhoIsEvaluating->getSpecies()->getEdibleFungusSpecies();
 	map<Species *, double> * result = new map<Species *, double> ();
 
 	float mass;
-	for (auto it = edibleResourceSpecies->begin(); it != edibleResourceSpecies->end(); it++)
+	for (vector<Species *>::iterator it = edibleFungusSpecies->begin(); it != edibleFungusSpecies->end(); it++)
 	{
-		mass = getResourceBiomass(*it);
+		mass = getFungusBiomass(*it);
 
 		if ((mass > 0) || (!discardZero))
 		{
@@ -886,28 +955,25 @@ map<Species *, double> * TerrainCell::getResourceStock(Animal* animalWhoIsEvalua
 }
 
 /*
- * Returns for each requested resource species, the ratio between their stocks and the number of
+ * Returns for each requested fungus species, the ratio between their stocks and the number of
  * predator in this cell. This is used to take decisions on preys movement.
  */
-map<Species *, double> * TerrainCell::getRateOfResourcePredators(Animal* animalWhoIsEvaluating, const list<Edible*> &ediblesHasTriedToPredate, bool discardZero)
+map<Species *, double> * TerrainCell::getRateOfFungiPredators(Animal* animalWhoIsEvaluating, bool discardZero)
 {
 	// TODO ROMAN A JORDI: Sigo sin ver esto claro (todos los ratios)
 	map<Species *, double> * result = new map<Species *, double> ();
 	unsigned int predatorsCounter = 1; // +1: Avoid division by zero
-	for(auto animalSpeciesIt = existingAnimalSpecies->begin(); animalSpeciesIt != existingAnimalSpecies->end(); animalSpeciesIt++)
+	for(vector<Species *>::iterator animalSpeciesIt = theWorld->existingAnimalSpecies.begin(); animalSpeciesIt != theWorld->existingAnimalSpecies.end(); animalSpeciesIt++)
 	{
-		AnimalSpecies* currentAnimalSpecies = *animalSpeciesIt;
+		Species* currentAnimalSpecies = *animalSpeciesIt;
 		if(currentAnimalSpecies->canEatAnimalSpecies(animalWhoIsEvaluating->getSpecies()))
 		{
-			auto activeAnimals = getAnimalsBySpecies(LifeStage::ACTIVE, currentAnimalSpecies);
-
-			for(auto &elem : activeAnimals) {
-				for (auto activeAnimalsIt = elem.first; activeAnimalsIt != elem.second; activeAnimalsIt++)
+			vector<Edible*> * activeAnimals = getAnimalsBySpecies(Animal::LIFE_STAGES::ACTIVE, currentAnimalSpecies);
+			for (vector<Edible*>::iterator activeAnimalsIt = activeAnimals->begin(); activeAnimalsIt != activeAnimals->end(); activeAnimalsIt++)
+			{
+				if ((*activeAnimalsIt)->canEatEdible(animalWhoIsEvaluating))
 				{
-					if ((*activeAnimalsIt)->canEatEdible(animalWhoIsEvaluating, ediblesHasTriedToPredate))
-					{
-						predatorsCounter++;
-					}
+					predatorsCounter++;
 				}
 			}
 		}
@@ -916,10 +982,10 @@ map<Species *, double> * TerrainCell::getRateOfResourcePredators(Animal* animalW
 	double inversePredatorsCounter = 1.0 / predatorsCounter; // Avoid dividing many times;
 
 	float mass;
-	const vector<ResourceSpecies *> * edibleResourceSpecies = animalWhoIsEvaluating->getSpecies()->getEdibleResourceSpecies();
-	for (auto it = edibleResourceSpecies->begin(); it != edibleResourceSpecies->end(); it++)
+	vector<Species *> * edibleFungusSpecies = animalWhoIsEvaluating->getSpecies()->getEdibleFungusSpecies();
+	for (vector<Species *>::iterator it = edibleFungusSpecies->begin(); it != edibleFungusSpecies->end(); it++)
 	{
-		mass = getResourceBiomass(*it);
+		mass = getFungusBiomass(*it);
 
 		if ((mass > 0) || (!discardZero))
 		{
@@ -932,77 +998,68 @@ map<Species *, double> * TerrainCell::getRateOfResourcePredators(Animal* animalW
 
 
 
-tuple<double, double, double> TerrainCell::getCellEvaluation(Animal* animalWhoIsEvaluating, const list<Edible*> &ediblesHasTriedToPredate, double muForPDF, double sigmaForPDF, double predationSpeedRatioAH, double predationHunterVoracityAH, double predationProbabilityDensityFunctionAH, double predationSpeedRatioSAW, double predationHunterVoracitySAW, double predationProbabilityDensityFunctionSAW, double encounterHuntedVoracitySAW, double encounterHunterVoracitySAW, double encounterVoracitiesProductSAW, double encounterHunterSizeSAW, double encounterHuntedSizeSAW, double encounterProbabilityDensityFunctionSAW, double encounterHuntedVoracityAH, double encounterHunterVoracityAH, double encounterVoracitiesProductAH, double encounterHunterSizeAH, double encounterHuntedSizeAH, double encounterProbabilityDensityFunctionAH)
+tuple<double, double, double> TerrainCell::getCellEvaluation(Edible* animalWhoIsEvaluating)
 {
-//arthros and for dinos to force searching for preferred food items be animals or resource, prompts mobility 
+//arthros and for dinos to force searching for preferred food items be animals or fungi, prompts mobility 
 	double preferenceThresholdForEvaluation = 0.0;//defaults to 0 but it is a parameter to include in run_params.json
 	
 	double totalPredatoryRiskEdibilityValue = 0.0;
 	double totalEdibilityValue = 0.0;
 	double totalConspecificBiomass = 0.0;
-	for(auto animalSpeciesIt = existingAnimalSpecies->begin(); animalSpeciesIt != existingAnimalSpecies->end(); animalSpeciesIt++)
+	for(vector<Species*>::iterator animalSpeciesIt = theWorld->existingAnimalSpecies.begin(); animalSpeciesIt != theWorld->existingAnimalSpecies.end(); animalSpeciesIt++)
 	{
-		AnimalSpecies* currentAnimalSpecies = *animalSpeciesIt;
+		Species* currentAnimalSpecies = *animalSpeciesIt;
 		if(currentAnimalSpecies->canEatAnimalSpecies(animalWhoIsEvaluating->getSpecies()))
 		{
-			auto activeAnimals = getAnimalsBySpecies(LifeStage::ACTIVE, currentAnimalSpecies);
-
-			for(auto &elem : activeAnimals) {
-				for (auto activeAnimalsIt = elem.first; activeAnimalsIt != elem.second; activeAnimalsIt++)
+			vector<Edible*> * activeAnimals = getAnimalsBySpecies(Animal::LIFE_STAGES::ACTIVE, currentAnimalSpecies);
+			for (vector<Edible*>::iterator activeAnimalsIt = activeAnimals->begin(); activeAnimalsIt != activeAnimals->end(); activeAnimalsIt++)
+			{
+				Edible* predatoryRiskAnimal = (*activeAnimalsIt);
+				if (predatoryRiskAnimal->canEatEdible(animalWhoIsEvaluating))
 				{
-					Animal* predatoryRiskAnimal = (*activeAnimalsIt);
-					if (predatoryRiskAnimal->canEatEdible(animalWhoIsEvaluating, ediblesHasTriedToPredate))
-					{
-						double predatoryRiskEdibilityValue = predatoryRiskAnimal->calculatePredatoryRiskEdibilityValue(animalWhoIsEvaluating, muForPDF, sigmaForPDF, predationSpeedRatioAH, predationHunterVoracityAH, predationProbabilityDensityFunctionAH, predationSpeedRatioSAW, predationHunterVoracitySAW, predationProbabilityDensityFunctionSAW, encounterHuntedVoracitySAW, encounterHunterVoracitySAW, encounterVoracitiesProductSAW, encounterHunterSizeSAW, encounterHuntedSizeSAW, encounterProbabilityDensityFunctionSAW, encounterHuntedVoracityAH, encounterHunterVoracityAH, encounterVoracitiesProductAH, encounterHunterSizeAH, encounterHuntedSizeAH, encounterProbabilityDensityFunctionAH);
-						totalPredatoryRiskEdibilityValue += predatoryRiskEdibilityValue;
-					}
+					double predatoryRiskEdibilityValue = predatoryRiskAnimal->calculatePredatoryRiskEdibilityValue(animalWhoIsEvaluating);
+					totalPredatoryRiskEdibilityValue += predatoryRiskEdibilityValue;
 				}
 			}
 		}
 		if(animalWhoIsEvaluating->getSpecies()->canEatAnimalSpecies(currentAnimalSpecies))
 		{
-			auto activeAnimals = getAnimalsBySpecies(LifeStage::ACTIVE, currentAnimalSpecies);
-
-			for(auto &elem : activeAnimals) {
-				for (auto activeAnimalsIt = elem.first; activeAnimalsIt != elem.second; activeAnimalsIt++)
+			vector<Edible*> * activeAnimals = getAnimalsBySpecies(Animal::LIFE_STAGES::ACTIVE, currentAnimalSpecies);
+			for (vector<Edible*>::iterator activeAnimalsIt = activeAnimals->begin(); activeAnimalsIt != activeAnimals->end(); activeAnimalsIt++)
+			{
+				Edible* edibleAnimal = (*activeAnimalsIt);
+				if (!animalWhoIsEvaluating->hasTriedToHunt(edibleAnimal))
 				{
-					Animal* edibleAnimal = (*activeAnimalsIt);
-					if (!animalWhoIsEvaluating->hasTriedToHunt(edibleAnimal, ediblesHasTriedToPredate))
-					{
-						
-						if(animalWhoIsEvaluating->getSpecies()->getEdiblePreference(edibleAnimal->getSpecies()) > preferenceThresholdForEvaluation){	
-							double edibilityValue = animalWhoIsEvaluating->calculateEdibilityValueWithMass(edibleAnimal, muForPDF, sigmaForPDF, predationSpeedRatioAH, predationHunterVoracityAH, predationProbabilityDensityFunctionAH, predationSpeedRatioSAW, predationHunterVoracitySAW, predationProbabilityDensityFunctionSAW, encounterHuntedVoracitySAW, encounterHunterVoracitySAW, encounterVoracitiesProductSAW, encounterHunterSizeSAW, encounterHuntedSizeSAW, encounterProbabilityDensityFunctionSAW, encounterHuntedVoracityAH, encounterHunterVoracityAH, encounterVoracitiesProductAH, encounterHunterSizeAH, encounterHuntedSizeAH, encounterProbabilityDensityFunctionAH);
-							totalEdibilityValue += edibilityValue;
-						}
 					
+					if(animalWhoIsEvaluating->getSpecies()->getEdiblePreference(edibleAnimal->getSpecies()) > preferenceThresholdForEvaluation){	
+					double edibilityValue = animalWhoIsEvaluating->calculateEdibilityValueWithMass(edibleAnimal);
+					totalEdibilityValue += edibilityValue;
 					}
+				
 				}
 			}
 		}
 		if(animalWhoIsEvaluating->getSpecies() == currentAnimalSpecies)
 		{
-			auto activeAnimals = getAnimalsBySpecies(LifeStage::ACTIVE, currentAnimalSpecies);
-
-			for(auto &elem : activeAnimals) {
-				for (auto activeAnimalsIt = elem.first; activeAnimalsIt != elem.second; activeAnimalsIt++)
-				{
-					Animal* conspecificAnimal = (*activeAnimalsIt);
-					totalConspecificBiomass += conspecificAnimal->calculateDryMass();
-				}
+			vector<Edible*> * activeAnimals = getAnimalsBySpecies(Animal::LIFE_STAGES::ACTIVE, currentAnimalSpecies);
+			for (vector<Edible*>::iterator activeAnimalsIt = activeAnimals->begin(); activeAnimalsIt != activeAnimals->end(); activeAnimalsIt++)
+			{
+				Edible* conspecificAnimal = (*activeAnimalsIt);
+				totalConspecificBiomass += conspecificAnimal->calculateDryMass();
 			}
 		}
 	}
 
-	const vector<ResourceSpecies *> * edibleResourceSpecies = animalWhoIsEvaluating->getSpecies()->getEdibleResourceSpecies();
-	for (auto it = edibleResourceSpecies->begin(); it != edibleResourceSpecies->end(); it++)
+	vector<Species *> * edibleFungusSpecies = animalWhoIsEvaluating->getSpecies()->getEdibleFungusSpecies();
+	for (vector<Species *>::iterator it = edibleFungusSpecies->begin(); it != edibleFungusSpecies->end(); it++)
 	{
-		ResourceSpecies* currentResourceSpecies = *it;
-		Edible* resource = getResource(currentResourceSpecies);
+		Species* currentFungusSpecies = *it;
+		Edible* fungus = getFungus(currentFungusSpecies);
 		//arthros to force search for preferred food
-			if(resource != NULL)
+			if(fungus != NULL)
 			{
-				if(animalWhoIsEvaluating->getSpecies()->getEdiblePreference(resource->getSpecies()) > preferenceThresholdForEvaluation){	
-					totalEdibilityValue += animalWhoIsEvaluating->calculateEdibilityValueWithMass(resource, muForPDF, sigmaForPDF, predationSpeedRatioAH, predationHunterVoracityAH, predationProbabilityDensityFunctionAH, predationSpeedRatioSAW, predationHunterVoracitySAW, predationProbabilityDensityFunctionSAW, encounterHuntedVoracitySAW, encounterHunterVoracitySAW, encounterVoracitiesProductSAW, encounterHunterSizeSAW, encounterHuntedSizeSAW, encounterProbabilityDensityFunctionSAW, encounterHuntedVoracityAH, encounterHunterVoracityAH, encounterVoracitiesProductAH, encounterHunterSizeAH, encounterHuntedSizeAH, encounterProbabilityDensityFunctionAH);
+				if(animalWhoIsEvaluating->getSpecies()->getEdiblePreference(fungus->getSpecies()) > preferenceThresholdForEvaluation){	
+					totalEdibilityValue += animalWhoIsEvaluating->calculateEdibilityValueWithMass(fungus);
 				}
 			}
 		
@@ -1013,19 +1070,19 @@ tuple<double, double, double> TerrainCell::getCellEvaluation(Animal* animalWhoIs
 
 unsigned int TerrainCell::getNumberOfMatureFemales(Animal* reproducingAnimal)
 {
-	vector<Animal*> * searchableAnimals = new vector<Animal*>();
+	vector<Edible*> * activeAnimals = getAnimalsBySpecies(Animal::LIFE_STAGES::ACTIVE, reproducingAnimal->getSpecies());
+	vector<Edible*> * satiatedAnimals = getAnimalsBySpecies(Animal::LIFE_STAGES::SATIATED, reproducingAnimal->getSpecies());
+	vector<Edible*> * handlingAnimals = getAnimalsBySpecies(Animal::LIFE_STAGES::HANDLING, reproducingAnimal->getSpecies());
+	vector<Edible*> * diapauseAnimals = getAnimalsBySpecies(Animal::LIFE_STAGES::DIAPAUSE, reproducingAnimal->getSpecies());
+	vector<Edible*> * searchableAnimals = new vector<Edible*>();
 
-	for(auto &lifeStage : {LifeStage::ACTIVE, LifeStage::SATIATED, LifeStage::HANDLING, LifeStage::DIAPAUSE}) {
-		auto lifeStageAnimals = getAnimalsBySpecies(lifeStage, reproducingAnimal->getSpecies());
-		
-		for(auto &elem : lifeStageAnimals) {
-			//Prepare the animals to be reproduced today
-			searchableAnimals->insert(searchableAnimals->end(), elem.first, elem.second);
-		}
-	}
+	searchableAnimals->insert(searchableAnimals->end(), activeAnimals->begin(), activeAnimals->end());
+	searchableAnimals->insert(searchableAnimals->end(), satiatedAnimals->begin(), satiatedAnimals->end());
+	searchableAnimals->insert(searchableAnimals->end(), handlingAnimals->begin(), handlingAnimals->end());
+	searchableAnimals->insert(searchableAnimals->end(), diapauseAnimals->begin(), diapauseAnimals->end());
 
 	unsigned int counter = 0;
-	for (auto searchableAnimalsIt = searchableAnimals->begin(); searchableAnimalsIt != searchableAnimals->end(); searchableAnimalsIt++)
+	for (vector<Edible*>::iterator searchableAnimalsIt = searchableAnimals->begin(); searchableAnimalsIt != searchableAnimals->end(); searchableAnimalsIt++)
 	{
 		if ((*searchableAnimalsIt)->getGender() == AnimalSpecies::GENDERS::FEMALE && (*searchableAnimalsIt)->isMature() && !(*searchableAnimalsIt)->isMated())
 		{
@@ -1036,24 +1093,29 @@ unsigned int TerrainCell::getNumberOfMatureFemales(Animal* reproducingAnimal)
 	return counter;
 }
 
-unsigned int TerrainCell::getNumberOfEdibleAnimals(Animal* animalWhoIsEvaluating, const list<Edible*> &ediblesHasTriedToPredate)
+vector<Edible*> * TerrainCell::getAnimalsBySpecies(unsigned int lifeStage, Species* species)
+{
+	
+	return animals.at(lifeStage)->at(species);
+		
+}
+
+
+unsigned int TerrainCell::getNumberOfEdibleAnimals(Animal* animalWhoIsEvaluating)
 {
 	unsigned int preysCounter = 0;
 
-	for(auto animalSpeciesIt = existingAnimalSpecies->begin(); animalSpeciesIt != existingAnimalSpecies->end(); animalSpeciesIt++)
+	for(vector<Species *>::iterator animalSpeciesIt = theWorld->existingAnimalSpecies.begin(); animalSpeciesIt != theWorld->existingAnimalSpecies.end(); animalSpeciesIt++)
 	{
-		AnimalSpecies* currentAnimalSpecies = *animalSpeciesIt;
+		Species* currentAnimalSpecies = *animalSpeciesIt;
 		if(animalWhoIsEvaluating->getSpecies()->canEatAnimalSpecies(currentAnimalSpecies))
 		{
-			auto activeAnimals = getAnimalsBySpecies(LifeStage::ACTIVE, currentAnimalSpecies);
-
-			for(auto &elem : activeAnimals) {
-				for (auto activeAnimalsIt = elem.first; activeAnimalsIt != elem.second; activeAnimalsIt++)
+			vector<Edible*> * activeAnimals = getAnimalsBySpecies(Animal::LIFE_STAGES::ACTIVE, currentAnimalSpecies);
+			for (vector<Edible*>::iterator activeAnimalsIt = activeAnimals->begin(); activeAnimalsIt != activeAnimals->end(); activeAnimalsIt++)
+			{
+				if (animalWhoIsEvaluating->canEatEdible((*activeAnimalsIt)))
 				{
-					if (animalWhoIsEvaluating->canEatEdible((Edible*)(*activeAnimalsIt), ediblesHasTriedToPredate))
-					{
-						preysCounter++;
-					}
+					preysCounter++;
 				}
 			}
 		}
@@ -1062,75 +1124,71 @@ unsigned int TerrainCell::getNumberOfEdibleAnimals(Animal* animalWhoIsEvaluating
 }
 
 void TerrainCell::printInteractionMatrices(ostream& encountersMatrixFile, ostream& predationsMatrixFile,
-		ostream& nodesMatrixFile, unsigned int totalInitialPopulation)
+		ostream& nodesMatrixFile, unsigned int totalInitialPopulation )
 {
 	unsigned int j;
-	for(const auto &lifeStage : LifeStage::getEnumValues())
+	for (unsigned int i = 0; i < animals.size(); ++i)
 	{
 		j = 0;
-		for(auto animalSpeciesIt = existingAnimalSpecies->begin(); animalSpeciesIt != existingAnimalSpecies->end(); animalSpeciesIt++)
+		for(vector<Species *>::iterator animalSpeciesIt = theWorld->existingAnimalSpecies.begin(); animalSpeciesIt != theWorld->existingAnimalSpecies.end(); animalSpeciesIt++)
 		{
-			AnimalSpecies* currentAnimalSpecies = *animalSpeciesIt;
-			auto activeAnimals = getAnimalsBySpecies(lifeStage, currentAnimalSpecies);
+			Species* currentAnimalSpecies = *animalSpeciesIt;
+			vector<Edible*> * activeAnimals = getAnimalsBySpecies(i, currentAnimalSpecies);
 
-			for(auto &elem : activeAnimals) {
-				for (auto activeAnimalsIt = elem.first; activeAnimalsIt != elem.second; activeAnimalsIt++)
+			for (vector<Edible*>::iterator activeAnimalsIt = activeAnimals->begin(); activeAnimalsIt != activeAnimals->end(); activeAnimalsIt++)
+			{
+				if(((unsigned int)((*activeAnimalsIt)->getId())) < totalInitialPopulation )
 				{
-					if(((unsigned int)((*activeAnimalsIt)->getId())) < totalInitialPopulation )
+					list<int> * encounterEvents = (*activeAnimalsIt)->getEncounterEvents();
+					int predatedByID = (*activeAnimalsIt)->getPredatedByID();
+
+					encountersMatrixFile << endl;
+					encountersMatrixFile << j;
+					string scientificName = string(currentAnimalSpecies->getScientificName());
+					scientificName.replace( scientificName.begin(), scientificName.end(), ' ', '_' );
+
+					nodesMatrixFile << "X" << (*activeAnimalsIt)->getId() << "\t" << scientificName << endl;
+
+					for (unsigned int k = 0; k < totalInitialPopulation ; k++)
 					{
-						list<int> * encounterEvents = (*activeAnimalsIt)->getEncounterEvents();
-						int predatedByID = (*activeAnimalsIt)->getPredatedByID();
-
-						encountersMatrixFile << endl;
-						encountersMatrixFile << j;
-						string scientificName = string(currentAnimalSpecies->getScientificName());
-						scientificName.replace( scientificName.begin(), scientificName.end(), ' ', '_' );
-
-						nodesMatrixFile << "X" << (*activeAnimalsIt)->getId() << "\t" << scientificName << endl;
-
-						for (unsigned int k = 0; k < totalInitialPopulation ; k++)
+						if( std::find(encounterEvents->begin(), encounterEvents->end(), k) != encounterEvents->end() )
 						{
-							if( std::find(encounterEvents->begin(), encounterEvents->end(), k) != encounterEvents->end() )
-							{
-								encountersMatrixFile << "\t" << 1;
-							}
-							else
-							{
-								encountersMatrixFile << "\t" << 0;
-							}
+							encountersMatrixFile << "\t" << 1;
+						}
+						else
+						{
+							encountersMatrixFile << "\t" << 0;
+						}
 
-							if( (unsigned int)predatedByID == k )
-							{
-								predationsMatrixFile << "\t" << 1;
-							}
-							else
-							{
-								predationsMatrixFile << "\t" << 0;
-							}
+						if( (unsigned int)predatedByID == k )
+						{
+							predationsMatrixFile << "\t" << 1;
+						}
+						else
+						{
+							predationsMatrixFile << "\t" << 0;
 						}
 					}
-					j++;
 				}
+				j++;
 			}
 		}
 	}
 }
 
-ostream& TerrainCell::printAnimalsVoracities(int timeStep, int timeStepsPerDay, ostream& os, SimulType simulType)
+ostream& TerrainCell::printAnimalsVoracities(int timeStep, int timeStepsPerDay, ostream& os)
 {
 	//for (unsigned int i = 0; i < animals.size(); ++i)
 	//{
-		for(auto animalSpeciesIt = existingAnimalSpecies->begin(); animalSpeciesIt != existingAnimalSpecies->end(); animalSpeciesIt++)
+		for(vector<Species *>::iterator animalSpeciesIt = theWorld->existingAnimalSpecies.begin(); animalSpeciesIt != theWorld->existingAnimalSpecies.end(); animalSpeciesIt++)
 		{
-			AnimalSpecies* currentAnimalSpecies = *animalSpeciesIt;
+			Species* currentAnimalSpecies = *animalSpeciesIt;
 			//activeAnimals = getAnimalsBySpecies(i, currentAnimalSpecies);
-			auto activeAnimals = getAnimalsBySpecies(LifeStage::ACTIVE, currentAnimalSpecies);
+			vector<Edible*> * activeAnimals = getAnimalsBySpecies(Animal::LIFE_STAGES::ACTIVE, currentAnimalSpecies);
 
-			for(auto &elem : activeAnimals) {
-				for (auto activeAnimalsIt = elem.first; activeAnimalsIt != elem.second; activeAnimalsIt++)
-				{
-					(*activeAnimalsIt)->printVoracities(timeStep, timeStepsPerDay, os, simulType);
-				}
+			for (vector<Edible*>::iterator activeAnimalsIt = activeAnimals->begin(); activeAnimalsIt != activeAnimals->end(); activeAnimalsIt++)
+			{
+				(*activeAnimalsIt)->printVoracities(timeStep, timeStepsPerDay, os);
 			}
 		}
 	//}
@@ -1139,18 +1197,16 @@ ostream& TerrainCell::printAnimalsVoracities(int timeStep, int timeStepsPerDay, 
 
 ostream& TerrainCell::printAnimals(ostream& os)
 {
-	for(const auto &lifeStage : LifeStage::getEnumValues())
+	for (unsigned int i = 0; i < animals.size(); ++i)
 	{
-		for(auto animalSpeciesIt = existingAnimalSpecies->begin(); animalSpeciesIt != existingAnimalSpecies->end(); animalSpeciesIt++)
+		for(vector<Species *>::iterator animalSpeciesIt = theWorld->existingAnimalSpecies.begin(); animalSpeciesIt != theWorld->existingAnimalSpecies.end(); animalSpeciesIt++)
 		{
-			AnimalSpecies* currentAnimalSpecies = *animalSpeciesIt;
-			auto activeAnimals = getAnimalsBySpecies(lifeStage, currentAnimalSpecies);
+			Species* currentAnimalSpecies = *animalSpeciesIt;
+			vector<Edible*> * activeAnimals = getAnimalsBySpecies(i, currentAnimalSpecies);
 
-			for(auto &elem : activeAnimals) {
-				for (auto activeAnimalsIt = elem.first; activeAnimalsIt != elem.second; activeAnimalsIt++)
-				{
-					os << *(*activeAnimalsIt) << endl;
-				}
+			for (vector<Edible*>::iterator activeAnimalsIt = activeAnimals->begin(); activeAnimalsIt != activeAnimals->end(); activeAnimalsIt++)
+			{
+				os << *(*activeAnimalsIt) << endl;
 			}
 		}
 	}
@@ -1163,22 +1219,19 @@ ostream& TerrainCell::printCell(ostream& os)
 	   << getY() << "\t"
 	   << getZ() << "\t";
 
-	for (auto itResourceSpecies = existingResourceSpecies->begin(); itResourceSpecies != existingResourceSpecies->end(); itResourceSpecies++)
+	for (vector<Species *>::iterator itFungiSpecies = theWorld->existingFungiSpecies.begin(); itFungiSpecies != theWorld->existingFungiSpecies.end(); itFungiSpecies++)
 	{
-		os << getResourceBiomass(*itResourceSpecies) << "\t";
+		os << getFungusBiomass(*itFungiSpecies) << "\t";
 	}
 
-	for(auto animalSpeciesIt = existingAnimalSpecies->begin(); animalSpeciesIt != existingAnimalSpecies->end(); animalSpeciesIt++)
+	for(vector<Species *>::iterator animalSpeciesIt = theWorld->existingAnimalSpecies.begin(); animalSpeciesIt != theWorld->existingAnimalSpecies.end(); animalSpeciesIt++)
 	{
 		int currentNumberOfAnimals = 0;
-		for(const auto &lifeStage : LifeStage::getEnumValues())
+		for (unsigned int i = 0; i < animals.size(); ++i)
 		{
-			AnimalSpecies* currentAnimalSpecies = *animalSpeciesIt;
-			auto activeAnimals = getAnimalsBySpecies(lifeStage, currentAnimalSpecies);
-
-			for(auto &elem : activeAnimals) {
-				currentNumberOfAnimals += (elem.second - elem.first);
-			}
+			Species* currentAnimalSpecies = *animalSpeciesIt;
+			vector<Edible*> * activeAnimals = getAnimalsBySpecies(i, currentAnimalSpecies);
+			currentNumberOfAnimals += activeAnimals->size();
 		}
 		os << currentNumberOfAnimals << "\t";
 	}
@@ -1186,63 +1239,37 @@ ostream& TerrainCell::printCell(ostream& os)
 	return os;
 }
 
-void TerrainCell::finishCell()
-{
-	for(auto it = animals.begin(); it != animals.end(); it++)
-	{
-		map<AnimalSpecies* , vector<Animal*> *> * animalsInThisLifeStage = (*it).second;
-		for(auto lifeStageIt = animalsInThisLifeStage->begin(); lifeStageIt != animalsInThisLifeStage->end(); lifeStageIt++)
-		{
-			vector<Animal*> * animalsInThisSpecies = (*lifeStageIt).second;
-			for(auto &animal : *animalsInThisSpecies)
-			{
-				MacroTerrainCell* macroCell = dynamic_cast<MacroTerrainCell*>(animal->getPosition());
-
-				if(macroCell != nullptr) {
-					macroCell->finishCell(animal, this);
-				}
-			}
-		}
-	}
-}
-
 void TerrainCell::activateAndResumeAnimals(int timeStep, int timeStepsPerDay)
 {
 	#ifdef _DEBUG
-	Output::coutFlush("what is happening: {}\n", theWorld->getExistingAnimalSpecies()->at(0)->getScientificName());
+	cout << "what is happening: " << theWorld->getExistingAnimalSpecies()->at(0)->getScientificName() << endl << flush;
 	#endif
 
-	for(auto animalSpeciesIt = existingAnimalSpecies->begin(); animalSpeciesIt != existingAnimalSpecies->end(); animalSpeciesIt++)
+	for(vector<Species *>::iterator animalSpeciesIt = theWorld->existingAnimalSpecies.begin(); animalSpeciesIt != theWorld->existingAnimalSpecies.end(); animalSpeciesIt++)
 	{
-		AnimalSpecies* currentAnimalSpecies = *animalSpeciesIt;
-		auto unbornAnimals = getAnimalsBySpecies(LifeStage::UNBORN, currentAnimalSpecies);
-		auto pupaAnimals = getAnimalsBySpecies(LifeStage::PUPA, currentAnimalSpecies);
-		auto handlingAnimals = getAnimalsBySpecies(LifeStage::HANDLING, currentAnimalSpecies);
-		auto diapauseAnimals = getAnimalsBySpecies(LifeStage::DIAPAUSE, currentAnimalSpecies);
+		Species* currentAnimalSpecies = *animalSpeciesIt;
+		vector<Edible*> unbornAnimals = *(getAnimalsBySpecies(Animal::LIFE_STAGES::UNBORN, currentAnimalSpecies));
+		vector<Edible*> pupaAnimals = *(getAnimalsBySpecies(Animal::LIFE_STAGES::PUPA, currentAnimalSpecies));
+		vector<Edible*> * handlingAnimals = getAnimalsBySpecies(Animal::LIFE_STAGES::HANDLING, currentAnimalSpecies);
+		vector<Edible*> diapauseAnimals = *(getAnimalsBySpecies(Animal::LIFE_STAGES::DIAPAUSE, currentAnimalSpecies));
 
 		#ifdef _DEBUG
-		Output::cout("but am I actually doing anything?: unborn/active: {}/{} -> ", unbornAnimals->size(), activeAnimals->size());
+		cout << "but am I actually doing anything?: unborn/active: " << unbornAnimals->size() << "/" << activeAnimals->size() << " -> " << flush;
 		#endif
 
-		for(auto &elem : diapauseAnimals) {
-			for (auto diapauseAnimalsIt = elem.first; diapauseAnimalsIt != elem.second; diapauseAnimalsIt++)
-			{
-				(*diapauseAnimalsIt)->isReadyToResumeFromDiapauseOrIncreaseDiapauseTimeSteps(moisture);
-			}
+		for (vector<Edible*>::iterator diapauseAnimalsIt = diapauseAnimals.begin(); diapauseAnimalsIt != diapauseAnimals.end(); diapauseAnimalsIt++)
+		{
+			(*diapauseAnimalsIt)->isReadyToResumeFromDiapauseOrIncreaseDiapauseTimeSteps(moisture);
 		}
 
-		for(auto &elem : unbornAnimals) {
-			for (auto unbornAnimalsIt = elem.first; unbornAnimalsIt != elem.second; unbornAnimalsIt++)
-			{
-				(*unbornAnimalsIt)->isReadyToBeBorn(timeStep, timeStepsPerDay);
-			}
+		for (vector<Edible*>::iterator unbornAnimalsIt = unbornAnimals.begin(); unbornAnimalsIt != unbornAnimals.end(); unbornAnimalsIt++)
+		{
+			(*unbornAnimalsIt)->isReadyToBeBorn(timeStep, timeStepsPerDay);
 		}
 
-		for(auto &elem : pupaAnimals) {
-			for (auto pupaAnimalsIt = elem.first; pupaAnimalsIt != elem.second; pupaAnimalsIt++)
-			{
-				(*pupaAnimalsIt)->isReadyToResumeFromPupaOrDecreasePupaTimer();
-			}
+		for (vector<Edible*>::iterator pupaAnimalsIt = pupaAnimals.begin(); pupaAnimalsIt != pupaAnimals.end(); pupaAnimalsIt++)
+		{
+			(*pupaAnimalsIt)->isReadyToResumeFromPupaOrDecreasePupaTimer();
 		}
 
 		/*
@@ -1260,16 +1287,16 @@ void TerrainCell::activateAndResumeAnimals(int timeStep, int timeStepsPerDay)
 		}
 		*/
 
-		auto activeAnimals = getAnimalsBySpecies(LifeStage::ACTIVE, currentAnimalSpecies);
+		vector<Edible*> * activeAnimals = getAnimalsBySpecies(Animal::LIFE_STAGES::ACTIVE, currentAnimalSpecies);
 
 		#ifdef _DEBUG
-		Output::coutFlush("{}/{}\n", unbornAnimals->size(), activeAnimals->size());
+		cout << unbornAnimals->size() << "/" << activeAnimals->size() << endl << flush;
 		#endif
 
 	}
 
 	#ifdef _DEBUG
-	Output::coutFlush("activation finished for terrain field {}\n", this);
+	cout << "activation finished for terrain field " << this << endl << flush;
 	#endif
 }
 
@@ -1315,9 +1342,9 @@ void TerrainCell::tuneTraitsThreaded(int day)
 }
 */
 
-Resource* TerrainCell::getResource(ResourceSpecies* species)
+Edible* TerrainCell::getFungus(Species* species)
 {
-	for (auto it = resources.begin(); it != resources.end(); it++)
+	for (std::vector<Edible *>::iterator it = fungi.begin(); it != fungi.end(); it++)
 	{
 		if ((*it)->getSpecies() == species)
 		{
@@ -1327,18 +1354,18 @@ Resource* TerrainCell::getResource(ResourceSpecies* species)
 	return NULL;
 }
 
-vector<vector<Resource *>*> TerrainCell::getResources()
+vector<Edible *>* TerrainCell::getFungi()
 {
-	return {&resources};
+	return &fungi;
 }
 
-float TerrainCell::getResourceBiomass(ResourceSpecies* species)
+float TerrainCell::getFungusBiomass(Species* species)
 {
-	Resource* resource = getResource(species);
+	Edible* fungus = getFungus(species);
 
-	if (resource != NULL)
+	if (fungus != NULL)
 	{
-		return resource->calculateWetMass();
+		return fungus->calculateWetMass();
 	}
 	else
 	{
@@ -1347,100 +1374,85 @@ float TerrainCell::getResourceBiomass(ResourceSpecies* species)
 }
 
 //TODO - generalize this independently of alphabetical order
-double TerrainCell::getTotalResourceBiomass()
+double TerrainCell::getTotalFungusBiomass()
 {
 	double mass = 0;
-	for (auto it = resources.begin(); it != (resources.end()); it++)
+	for (vector<Edible *>::iterator it = fungi.begin(); it != (fungi.end()); it++)
 	{
 		mass = mass + (*it)->calculateWetMass();
 	}
 	return mass;
 }
 
-unsigned int TerrainCell::getLifeStagePopulation(const LifeStage &stage, const HuntingMode::HuntingModeValue &huntingMode)
+unsigned int TerrainCell::getLifeStagePopulation(unsigned int stage, unsigned int huntingMode)
 {
 	unsigned int population = 0;
-	for(auto animalSpeciesIt = existingAnimalSpecies->begin(); animalSpeciesIt != existingAnimalSpecies->end(); animalSpeciesIt++)
+	for(vector<Species *>::iterator animalSpeciesIt = theWorld->existingAnimalSpecies.begin(); animalSpeciesIt != theWorld->existingAnimalSpecies.end(); animalSpeciesIt++)
 	{
-		AnimalSpecies* currentAnimalSpecies = *animalSpeciesIt;
+		Species* currentAnimalSpecies = *animalSpeciesIt;
 		if(currentAnimalSpecies->getDefaultHuntingMode() == huntingMode)
 		{
-			auto activeAnimals = getAnimalsBySpecies(stage, currentAnimalSpecies);
-
-			for(auto &elem : activeAnimals) {
-				population += (elem.second - elem.first);
+			vector<Edible*> * activeAnimals = getAnimalsBySpecies(stage, currentAnimalSpecies);
+			for (vector<Edible*>::iterator activeAnimalsIt = activeAnimals->begin(); activeAnimalsIt != activeAnimals->end(); activeAnimalsIt++)
+			{
+				population++;
 			}
 		}
 	}
 	return population;
 }
 
-unsigned int TerrainCell::getLifeStagePopulation(const LifeStage &stage, AnimalSpecies* species)
+unsigned int TerrainCell::getLifeStagePopulation(unsigned int stage, Species* species)
 {
-	auto activeAnimals = getAnimalsBySpecies(stage, species);
-
-	unsigned int population = 0;
-
-	for(auto &elem : activeAnimals) {
-		population += (elem.second - elem.first);
-	}
-
-	return population;
+	vector<Edible*> * activeAnimals = getAnimalsBySpecies(stage, species);
+	return activeAnimals->size();
 }
 
-void TerrainCell::updateWorldResourceBiomassAndAnimalsPopulation(map<ResourceSpecies*, double>* worldResourceBiomass, map<AnimalSpecies*, vector<unsigned int>* >* worldAnimalsPopulation)
+void TerrainCell::updateWorldFungiBiomassAndAnimalsPopulation(map<Species*, double>* worldFungiBiomass, map<Species*, vector<unsigned int>* >* worldAnimalsPopulation)
 {
-	for (auto itResource = resources.begin(); itResource != resources.end(); itResource++)
+	for (vector<Edible *>::iterator itFungi = fungi.begin(); itFungi != fungi.end(); itFungi++)
 	{
-		worldResourceBiomass->at((*itResource)->getSpecies()) += (*itResource)->calculateWetMass();
+		worldFungiBiomass->at((*itFungi)->getSpecies()) += (*itFungi)->calculateWetMass();
 	}
 
-	for(const auto &lifeStage : LifeStage::getEnumValues())
+	for (unsigned int lifeStage = 0; lifeStage < animals.size(); ++lifeStage)
 	{
-		for(auto animalSpeciesIt = existingAnimalSpecies->begin(); animalSpeciesIt != existingAnimalSpecies->end(); animalSpeciesIt++)
+		for(vector<Species *>::iterator animalSpeciesIt = theWorld->existingAnimalSpecies.begin(); animalSpeciesIt != theWorld->existingAnimalSpecies.end(); animalSpeciesIt++)
 		{
-			AnimalSpecies* currentAnimalSpecies = *animalSpeciesIt;
-			auto activeAnimals = getAnimalsBySpecies(lifeStage, currentAnimalSpecies);
-
-			unsigned int population = 0;
-
-			for(auto &elem : activeAnimals) {
-				population += (elem.second - elem.first);
-			}
-
-			worldAnimalsPopulation->at(currentAnimalSpecies)->at(magic_enum::enum_integer(lifeStage)) += population;
+			Species* currentAnimalSpecies = *animalSpeciesIt;
+			vector<Edible*> * activeAnimals = getAnimalsBySpecies(lifeStage, currentAnimalSpecies);
+			worldAnimalsPopulation->at(currentAnimalSpecies)->at(lifeStage) += activeAnimals->size();
 		}
 	}
 }
 
-void TerrainCell::updateAnimalsPopulationAndGeneticsFrequencies(map<AnimalSpecies*, vector<unsigned int>* >* worldAnimalsPopulation, map<AnimalSpecies*, vector<set<double>* >* >* worldGeneticsFrequencies)
+void TerrainCell::updateAnimalsPopulationAndGeneticsFrequencies(map<Species*, vector<unsigned int>* >* worldAnimalsPopulation, map<Species*, vector<set<double>* >* >* worldGeneticsFrequencies)
 {
 
-	for(const auto &lifeStage : LifeStage::getEnumValues())
+	const vector<Allele*>* currentChromosomeAlleles;
+	for (unsigned int lifeStage = 0; lifeStage < animals.size(); ++lifeStage)
 	{
-		for(auto animalSpeciesIt = existingAnimalSpecies->begin(); animalSpeciesIt != existingAnimalSpecies->end(); animalSpeciesIt++)
+		for(vector<Species *>::iterator animalSpeciesIt = theWorld->existingAnimalSpecies.begin(); animalSpeciesIt != theWorld->existingAnimalSpecies.end(); animalSpeciesIt++)
 		{
-			AnimalSpecies* currentAnimalSpecies = *animalSpeciesIt;
-			auto activeAnimals = getAnimalsBySpecies(lifeStage, currentAnimalSpecies);
+			Species* currentAnimalSpecies = *animalSpeciesIt;
+			vector<Edible*> * activeAnimals = getAnimalsBySpecies(lifeStage, currentAnimalSpecies);
 
-			worldAnimalsPopulation->at(currentAnimalSpecies)->at(magic_enum::enum_integer(lifeStage))++;
-
-			for(auto &elem : activeAnimals) {
-				for (auto activeAnimalsIt = elem.first; activeAnimalsIt != elem.second; activeAnimalsIt++)
+			worldAnimalsPopulation->at(currentAnimalSpecies)->at(lifeStage)++;
+			for (vector<Edible*>::iterator activeAnimalsIt = activeAnimals->begin(); activeAnimalsIt != activeAnimals->end(); activeAnimalsIt++)
+			{
+				const vector<pair<Correlosome*, Correlosome*> >* currentChromosomes = (*activeAnimalsIt)->getGenome()->getHomologousCorrelosomes();
+				for (unsigned int selectedTrait = 0; selectedTrait < currentAnimalSpecies->getNumberOfTraits(); ++selectedTrait)
 				{
-					auto currentCorrelosomes = (*activeAnimalsIt)->getGenome().getHomologousCorrelosomes();
-					for (unsigned int selectedTrait = 0; selectedTrait < currentAnimalSpecies->getNumberOfVariableTraits(); ++selectedTrait)
+					currentChromosomeAlleles = currentChromosomes->at(selectedTrait).first->getAlleles();
+					for (unsigned int selectedLoci = 0; selectedLoci < currentAnimalSpecies->getNumberOfLociPerTrait(); ++selectedLoci)
 					{
-						for (unsigned int selectedLoci = 0; selectedLoci < currentAnimalSpecies->getNumberOfLociPerTrait(); ++selectedLoci)
-						{
-							worldGeneticsFrequencies->at(currentAnimalSpecies)->at(selectedTrait*currentAnimalSpecies->getNumberOfLociPerTrait()+selectedLoci)->insert(currentCorrelosomes.at(selectedTrait).first->getAllele(selectedLoci)->getValue());
-						}
-						
-						for (unsigned int selectedLoci = 0; selectedLoci < currentAnimalSpecies->getNumberOfLociPerTrait(); ++selectedLoci)
-						{
-							//We multiply x2 because there are PAIRS of chromosomes. We store this data this way: T1_CR1, T2_CR1, T3_CR1.... T2_CR1, T2_CR2, ...
-							worldGeneticsFrequencies->at(currentAnimalSpecies)->at(currentAnimalSpecies->getNumberOfLociPerTrait()*currentAnimalSpecies->getNumberOfVariableTraits()+selectedTrait*currentAnimalSpecies->getNumberOfLociPerTrait()+selectedLoci)->insert(currentCorrelosomes.at(selectedTrait).second->getAllele(selectedLoci)->getValue());
-						}
+						worldGeneticsFrequencies->at(currentAnimalSpecies)->at(selectedTrait*currentAnimalSpecies->getNumberOfLociPerTrait()+selectedLoci)->insert(currentChromosomeAlleles->at(selectedLoci)->getValue());
+					}
+					currentChromosomeAlleles = currentChromosomes->at(selectedTrait).second->getAlleles();
+					for (unsigned int selectedLoci = 0; selectedLoci < currentAnimalSpecies->getNumberOfLociPerTrait(); ++selectedLoci)
+					{
+						//We multiply x2 because there are PAIRS of chromosomes. We store this data this way: T1_CR1, T2_CR1, T3_CR1.... T2_CR1, T2_CR2, ...
+						worldGeneticsFrequencies->at(currentAnimalSpecies)->at(currentAnimalSpecies->getNumberOfLociPerTrait()*currentAnimalSpecies->getNumberOfTraits()+selectedTrait*currentAnimalSpecies->getNumberOfLociPerTrait()+selectedLoci)->insert(currentChromosomeAlleles->at(selectedLoci)->getValue());
 					}
 				}
 			}
@@ -1467,7 +1479,7 @@ bool TerrainCell::exposeToPotentialPredators(Animal* exposedAnimal, int day, ost
 		currentAnimalSpecies = *animalSpeciesIt;
 		if(currentAnimalSpecies->canEatAnimalSpecies(exposedAnimal->getSpecies()))
 		{
-			activeAnimals = getAnimalsBySpecies(LifeStage::ACTIVE, currentAnimalSpecies);
+			activeAnimals = getAnimalsBySpecies(Animal::LIFE_STAGES::ACTIVE, currentAnimalSpecies);
 			//TODO Add an if sentence only for the PREDATORS, not for all species
 			for(animalsIt = activeAnimals->begin(); animalsIt != activeAnimals->end(); animalsIt++)
 			{
@@ -1515,25 +1527,29 @@ bool TerrainCell::exposeToPotentialPredators(Animal* exposedAnimal, int day, ost
 }
 */
 
+void TerrainCell::migrateAnimalTo(Animal* animalToMigrate, TerrainCell* newPosition)
+{
+	vector<Edible*> * lifestageAnimals = getAnimalsBySpecies(animalToMigrate->getLifeStage(), animalToMigrate->getSpecies());
+	lifestageAnimals->erase(std::remove(lifestageAnimals->begin(), lifestageAnimals->end(), animalToMigrate), lifestageAnimals->end());
+	newPosition->addAnimal(animalToMigrate);
+}
+
 void TerrainCell::assimilateFoodMass(int timeStep)
 {
-	for(auto animalSpeciesIt = existingAnimalSpecies->begin(); animalSpeciesIt != existingAnimalSpecies->end(); animalSpeciesIt++)
+	for(vector<Species*>::iterator animalSpeciesIt = theWorld->existingAnimalSpecies.begin(); animalSpeciesIt != theWorld->existingAnimalSpecies.end(); animalSpeciesIt++)
 	{
-		AnimalSpecies* currentAnimalSpecies = *animalSpeciesIt;
-		auto activeAnimals = getAnimalsBySpecies(LifeStage::ACTIVE, currentAnimalSpecies);
-
-		for(auto &elem : activeAnimals) {
-			for (auto activeAnimalsIt = elem.first; activeAnimalsIt != elem.second; activeAnimalsIt++)
-			{
-				(*activeAnimalsIt)->assimilateFoodMass(timeStep);
-			}
+		Species* currentAnimalSpecies = *animalSpeciesIt;
+		vector<Edible*> * activeAnimals = getAnimalsBySpecies(Animal::LIFE_STAGES::ACTIVE, currentAnimalSpecies);
+		for (vector<Edible*>::iterator activeAnimalsIt = activeAnimals->begin(); activeAnimalsIt != activeAnimals->end(); activeAnimalsIt++)
+		{
+			(*activeAnimalsIt)->assimilateFoodMass(timeStep);
 		}
 	}
 }
 
-void TerrainCell::moveAnimals(int timeStep, int timeStepsPerDay, ostream& encounterProbabilitiesFile, ostream& predationProbabilitiesFile, bool saveEdibilitiesFile, ostream& edibilitiesFile, float exitTimeThreshold, unsigned int worldDepth, unsigned int worldLength, unsigned int worldWidth, double pdfThreshold, double muForPDF, double sigmaForPDF, double predationSpeedRatioAH, double predationHunterVoracityAH, double predationProbabilityDensityFunctionAH, double predationSpeedRatioSAW, double predationHunterVoracitySAW, double predationProbabilityDensityFunctionSAW, double maxSearchArea, double encounterHuntedVoracitySAW, double encounterHunterVoracitySAW, double encounterVoracitiesProductSAW, double encounterHunterSizeSAW, double encounterHuntedSizeSAW, double encounterProbabilityDensityFunctionSAW, double encounterHuntedVoracityAH, double encounterHunterVoracityAH, double encounterVoracitiesProductAH, double encounterHunterSizeAH, double encounterHuntedSizeAH, double encounterProbabilityDensityFunctionAH)
+void TerrainCell::moveAnimals(int timeStep, int timeStepsPerDay, ostream& encounterProbabilitiesFile, ostream& predationProbabilitiesFile, ostream& edibilitiesFile, float exitTimeThreshold)
 {
-	Animal* currentAnimal;
+	Edible* currentAnimal;
 	int currentAnimalIndex;
 
 	//cout << "moving.. " << this << endl;
@@ -1562,7 +1578,7 @@ void TerrainCell::moveAnimals(int timeStep, int timeStepsPerDay, ostream& encoun
 
 		//TODO lo borramos de la lista de depredadores para que no pueda depredarse a sí mismo
 		//it = activeAnimals->erase(it);
-		currentAnimal->move(timeStep, timeStepsPerDay, encounterProbabilitiesFile, predationProbabilitiesFile, saveEdibilitiesFile, edibilitiesFile, worldDepth, worldLength, worldWidth, pdfThreshold, muForPDF, sigmaForPDF, existingAnimalSpecies, predationSpeedRatioAH, predationHunterVoracityAH, predationProbabilityDensityFunctionAH, predationSpeedRatioSAW, predationHunterVoracitySAW, predationProbabilityDensityFunctionSAW, maxSearchArea, encounterHuntedVoracitySAW, encounterHunterVoracitySAW, encounterVoracitiesProductSAW, encounterHunterSizeSAW, encounterHuntedSizeSAW, encounterProbabilityDensityFunctionSAW, encounterHuntedVoracityAH, encounterHunterVoracityAH, encounterVoracitiesProductAH, encounterHunterSizeAH, encounterHuntedSizeAH, encounterProbabilityDensityFunctionAH);
+		currentAnimal->move(timeStep, timeStepsPerDay, encounterProbabilitiesFile, predationProbabilitiesFile, edibilitiesFile);
 
 		#ifdef _DEBUG
 		if(currentMovingAnimalId != currentAnimal->getId())
@@ -1577,513 +1593,92 @@ void TerrainCell::moveAnimals(int timeStep, int timeStepsPerDay, ostream& encoun
 	}
 
 	if((double(t1-t0)/CLOCKS_PER_SEC) > exitTimeThreshold){
-		Output::cout("too many animals for too little food!!!\n");
+		cout << "too many animals for too little food!!!" << endl;
 		exit(-1);
 	}
 
-	for(auto animalSpeciesIt = existingAnimalSpecies->begin(); animalSpeciesIt != existingAnimalSpecies->end(); animalSpeciesIt++)
+	for(vector<Species*>::iterator animalSpeciesIt = theWorld->existingAnimalSpecies.begin(); animalSpeciesIt != theWorld->existingAnimalSpecies.end(); animalSpeciesIt++)
 	{
-		AnimalSpecies* currentAnimalSpecies = *animalSpeciesIt;
+		Species* currentAnimalSpecies = *animalSpeciesIt;
+		vector<Edible*> * activeAnimals = getAnimalsBySpecies(Animal::LIFE_STAGES::ACTIVE, currentAnimalSpecies);
+		vector<Edible*> * satiatedAnimals = getAnimalsBySpecies(Animal::LIFE_STAGES::SATIATED, currentAnimalSpecies);
+		vector<Edible*> * handlingAnimals = getAnimalsBySpecies(Animal::LIFE_STAGES::HANDLING, currentAnimalSpecies);
 
-		for(auto &lifeStage : {LifeStage::ACTIVE, LifeStage::SATIATED, LifeStage::HANDLING}) {
-			auto lifeStageAnimals = getAnimalsBySpecies(lifeStage, currentAnimalSpecies);
-			
-			for(auto &elem : lifeStageAnimals) {
-				//Prepare the animals to be reproduced today
-				animalsToMetabolizeAndGrowth->insert(animalsToMetabolizeAndGrowth->end(), elem.first, elem.second);
-			}
-		}
+		//Prepare the animals to metabolize and grow
+		animalsToMetabolizeAndGrowth->insert(animalsToMetabolizeAndGrowth->end(), activeAnimals->begin(), activeAnimals->end());
+		animalsToMetabolizeAndGrowth->insert(animalsToMetabolizeAndGrowth->end(), satiatedAnimals->begin(), satiatedAnimals->end());
+		animalsToMetabolizeAndGrowth->insert(animalsToMetabolizeAndGrowth->end(), handlingAnimals->begin(), handlingAnimals->end());
 	}
 
 	//cellsAtDistance.clear();
 }
 
-void TerrainCell::migrateAnimalTo(Animal* animalToMigrate, TerrainCellInterface* newPosition)
-{
-	eraseAnimal(animalToMigrate, animalToMigrate->getLifeStage());
-	newPosition->addAnimal(animalToMigrate);
-	animalToMigrate->setPosition(newPosition);
-}
-
 void TerrainCell::purgeDeadAnimals()
 {
-	for(auto animalSpeciesIt = existingAnimalSpecies->begin(); animalSpeciesIt != existingAnimalSpecies->end(); animalSpeciesIt++)
+	
+	for(vector<Species *>::iterator animalSpeciesIt = theWorld->existingAnimalSpecies.begin(); animalSpeciesIt != theWorld->existingAnimalSpecies.end(); animalSpeciesIt++)
 	{
-		AnimalSpecies* currentAnimalSpecies = *animalSpeciesIt;
+		Species* currentAnimalSpecies = *animalSpeciesIt;
 
-		for(auto &lifeStage : {LifeStage::STARVED, LifeStage::PREDATED, LifeStage::BACKGROUND, LifeStage::SENESCED, LifeStage::SHOCKED}) {
-			auto lifeStageAnimals = getAnimalsBySpecies(lifeStage, currentAnimalSpecies);
-			
-			for(auto &elem : lifeStageAnimals) {
-				for (auto it = elem.first; it != elem.second; it++)
-				{
-					MacroTerrainCell* macroCell = dynamic_cast<MacroTerrainCell*>((*it)->getPosition());
+		vector<Edible*> * starvedAnimals = getAnimalsBySpecies(Animal::LIFE_STAGES::STARVED, currentAnimalSpecies);
+		vector<Edible*> * predatedAnimals = getAnimalsBySpecies(Animal::LIFE_STAGES::PREDATED, currentAnimalSpecies);
+		vector<Edible*> * backgroundAnimals = getAnimalsBySpecies(Animal::LIFE_STAGES::BACKGROUND, currentAnimalSpecies);
+		vector<Edible*> * senescedAnimals = getAnimalsBySpecies(Animal::LIFE_STAGES::SENESCED, currentAnimalSpecies);
+		vector<Edible*> * shockedAnimals = getAnimalsBySpecies(Animal::LIFE_STAGES::SHOCKED, currentAnimalSpecies);
 
-					if(macroCell != nullptr) {
-						macroCell->purgeDeadAnimals((*it), this);
-					}
-
-					delete (*it);
-				}
-			}
-
-			animals.at(lifeStage)->at(currentAnimalSpecies)->clear();
+		for (vector<Edible*>::iterator it = starvedAnimals->begin(); it != starvedAnimals->end(); it++)
+		{
+			delete (*it);
 		}
+		starvedAnimals->clear(); //this turns the size of the vector to zero
+		
+		for (vector<Edible*>::iterator it = predatedAnimals->begin(); it != predatedAnimals->end(); it++)
+		{
+			delete (*it);
+		}
+		predatedAnimals->clear();
+
+	 	for (vector<Edible*>::iterator it = backgroundAnimals->begin(); it != backgroundAnimals->end(); it++)
+		{
+			delete (*it); //->getGenome()->getHomologousChromosomes());
+			//delete (*aGenome);
+			//delete (*it);
+		} 
+		backgroundAnimals->clear();
+		//free(backgroundAnimals);
+		
+
+		for (vector<Edible*>::iterator it = senescedAnimals->begin(); it != senescedAnimals->end(); it++)
+		{
+			delete (*it);
+		}
+		senescedAnimals->clear();
+
+		for (vector<Edible*>::iterator it = shockedAnimals->begin(); it != shockedAnimals->end(); it++)
+		{
+			delete (*it);
+		}
+		shockedAnimals->clear();
 	} 
 }
 
-void TerrainCell::deleteExtinguishedReproducingAnimals(AnimalSpecies* extinguishedAnimalSpecies)
+void TerrainCell::deleteExtinguishedReproducingAnimals(Species* extinguishedAnimalSpecies)
 {
-	for(auto animalSpeciesIt = existingAnimalSpecies->begin(); animalSpeciesIt != existingAnimalSpecies->end(); animalSpeciesIt++)
+	for(vector<Species *>::iterator animalSpeciesIt = theWorld->existingAnimalSpecies.begin(); animalSpeciesIt != theWorld->existingAnimalSpecies.end(); animalSpeciesIt++)
 	{
-		AnimalSpecies* currentAnimalSpecies = *animalSpeciesIt;
+		Species* currentAnimalSpecies = *animalSpeciesIt;
 		if(currentAnimalSpecies == extinguishedAnimalSpecies)
 		{
-			auto reproducingAnimals = getAnimalsBySpecies(LifeStage::REPRODUCING, currentAnimalSpecies);
-			
-			for(auto &elem : reproducingAnimals) {
-				for (auto reproducingAnimalsIt = elem.first; reproducingAnimalsIt != elem.second; reproducingAnimalsIt++)
-				{
-					Animal* deletedAnimal = (*reproducingAnimalsIt);
-					reproducingAnimalsIt = animals.at(LifeStage::REPRODUCING)->at(currentAnimalSpecies)->erase(reproducingAnimalsIt);
-					
-					MacroTerrainCell* macroCell = dynamic_cast<MacroTerrainCell*>(deletedAnimal->getPosition());
-
-					if(macroCell != nullptr) {
-						macroCell->eraseAnimal(deletedAnimal, deletedAnimal->getLifeStage(), this);
-					}
-
-					delete deletedAnimal;
-				}
+			vector<Edible*> * reproducingAnimals = getAnimalsBySpecies(Animal::LIFE_STAGES::REPRODUCING, currentAnimalSpecies);
+			for (vector<Edible*>::iterator reproducingAnimalsIt = reproducingAnimals->begin(); reproducingAnimalsIt != reproducingAnimals->end();)
+			{
+				Edible* deletedAnimal = (*reproducingAnimalsIt);
+				reproducingAnimalsIt = reproducingAnimals->erase(reproducingAnimalsIt);
+				delete deletedAnimal;
 			}
 		}
 	}
 }
-
-
-
-MacroTerrainCell::MacroTerrainCell(unsigned int minX, unsigned int minY, unsigned int minZ, unsigned int size, WorldInterface* worldInterface)
-	: TerrainCellInterface(worldInterface)
-{
-	area.resize(size);
-
-	for(size_t i = 0; i < size; i++) {
-		area[i].resize(size);
-
-		for(size_t j = 0; j < size; j++) {
-			area[i][j].resize(1);
-		}
-	}
-
-	for(unsigned int i = 0; i < size; i++) {
-		for(unsigned int j = 0; j < size; j++) {
-			unsigned int x = minX+i, y = minY+j, z = 0;
-
-			area[i][j][z] = worldInterface->getCell(z,y,x);
-		}
-	}
-}
-
-MacroTerrainCell::MacroTerrainCell(MacroTerrainCell &other)
-	: TerrainCellInterface(other.worldInterface)
-{
-	area.resize(other.area.size());
-
-	for(size_t i = 0; i < other.area.size(); i++) {
-		area[i].resize(other.area[i].size());
-
-		for(size_t j = 0; j < other.area[i].size(); j++) {
-			area[i][j].resize(1);
-		}
-	}
-
-	for(unsigned int x = 0; x < other.area.size(); x++) {
-		for(unsigned int y = 0; y < other.area[x].size(); y++) {
-			area[x][y][0] = other.area[x][y][0];
-		}
-	}
-}
-
-MacroTerrainCell::~MacroTerrainCell()
-{
-
-}
-
-bool MacroTerrainCell::isInEnemyFreeSpace()
-{
-	bool inEnemyFreeSpace = true;
-
-	for(unsigned int i = 0; i < area.size(); i++) {
-		for(unsigned int j = 0; j < area[i].size(); j++) {
-			inEnemyFreeSpace = inEnemyFreeSpace && area[i][j][0]->isInEnemyFreeSpace();
-		}
-	}
-
-	return inEnemyFreeSpace;
-}
-
-bool MacroTerrainCell::isInCompetitorFreeSpace() 
-{
-	bool inCompetitorFreeSpace = true;
-
-	for(unsigned int i = 0; i < area.size(); i++) {
-		for(unsigned int j = 0; j < area[i].size(); j++) {
-			inCompetitorFreeSpace = inCompetitorFreeSpace && area[i][j][0]->isInCompetitorFreeSpace();
-		}
-	}
-
-	return inCompetitorFreeSpace;
-}
-
-float MacroTerrainCell::getTemperature()
-{
-	double temperature = 0.0;
-
-	for(unsigned int i = 0; i < area.size(); i++) {
-		for(unsigned int j = 0; j < area[i].size(); j++) {
-			temperature += area[i][j][0]->getTemperature();
-		}
-	}
-
-	temperature /= (area.size()*2);
-
-	return temperature;
-}
-
-void MacroTerrainCell::eraseAnimal(Animal* oldEdible, const LifeStage &oldStage)
-{
-	for(unsigned int i = 0; i < area.size(); i++) {
-		for(unsigned int j = 0; j < area[i].size(); j++) {
-			area[i][j][0]->eraseAnimal(oldEdible, oldStage);
-		}
-	}
-}
-
-void MacroTerrainCell::eraseAnimal(Animal* oldEdible, const LifeStage &oldStage, TerrainCellInterface* cell)
-{
-	for(unsigned int i = 0; i < area.size(); i++) {
-		for(unsigned int j = 0; j < area[i].size(); j++) {
-			if(area[i][j][0] != cell) {
-				area[i][j][0]->eraseAnimal(oldEdible, oldStage);
-			}
-		}
-	}
-}
-
-void MacroTerrainCell::addAnimal(Animal* newAnimal)
-{
-	for(unsigned int i = 0; i < area.size(); i++) {
-		for(unsigned int j = 0; j < area[i].size(); j++) {
-			area[i][j][0]->addAnimal(newAnimal);
-		}
-	}
-}
-
-unsigned int MacroTerrainCell::getNumberOfMatureFemales(Animal* reproducingAnimal)
-{
-	unsigned int counter = 0;
-
-	for(unsigned int i = 0; i < area.size(); i++) {
-		for(unsigned int j = 0; j < area[i].size(); j++) {
-			counter += area[i][j][0]->getNumberOfMatureFemales(reproducingAnimal);
-		}
-	}
-
-	return counter;
-}
-
-tuple<double, double, double> MacroTerrainCell::getCellEvaluation(Animal* animalWhoIsEvaluating, const list<Edible*> &ediblesHasTriedToPredate, double muForPDF, double sigmaForPDF, double predationSpeedRatioAH, double predationHunterVoracityAH, double predationProbabilityDensityFunctionAH, double predationSpeedRatioSAW, double predationHunterVoracitySAW, double predationProbabilityDensityFunctionSAW, double encounterHuntedVoracitySAW, double encounterHunterVoracitySAW, double encounterVoracitiesProductSAW, double encounterHunterSizeSAW, double encounterHuntedSizeSAW, double encounterProbabilityDensityFunctionSAW, double encounterHuntedVoracityAH, double encounterHunterVoracityAH, double encounterVoracitiesProductAH, double encounterHunterSizeAH, double encounterHuntedSizeAH, double encounterProbabilityDensityFunctionAH)
-{
-	double totalPredatoryRiskEdibilityValue = 0.0;
-	double totalEdibilityValue = 0.0;
-	double totalConspecificBiomass = 0.0;
-
-	for(unsigned int i = 0; i < area.size(); i++) {
-		for(unsigned int j = 0; j < area[i].size(); j++) {
-			double edibilityValue, predatoryRiskEdibilityValue, conspecificBiomass;
-			tie(edibilityValue, predatoryRiskEdibilityValue, conspecificBiomass) = area[i][j][0]->getCellEvaluation(animalWhoIsEvaluating, ediblesHasTriedToPredate, muForPDF, sigmaForPDF, predationSpeedRatioAH, predationHunterVoracityAH, predationProbabilityDensityFunctionAH, predationSpeedRatioSAW, predationHunterVoracitySAW, predationProbabilityDensityFunctionSAW, encounterHuntedVoracitySAW, encounterHunterVoracitySAW, encounterVoracitiesProductSAW, encounterHunterSizeSAW, encounterHuntedSizeSAW, encounterProbabilityDensityFunctionSAW, encounterHuntedVoracityAH, encounterHunterVoracityAH, encounterVoracitiesProductAH, encounterHunterSizeAH, encounterHuntedSizeAH, encounterProbabilityDensityFunctionAH);
-		
-			totalEdibilityValue += edibilityValue;
-			totalPredatoryRiskEdibilityValue += predatoryRiskEdibilityValue;
-			totalConspecificBiomass += conspecificBiomass;
-		}
-	}
-
-	totalEdibilityValue /= (area.size()*2);
-	totalPredatoryRiskEdibilityValue /= (area.size()*2);
-	totalConspecificBiomass /= (area.size()*2);
-
-	return make_tuple(totalEdibilityValue, totalPredatoryRiskEdibilityValue, totalConspecificBiomass);
-}
-
-void MacroTerrainCell::changeAnimalToSenesced(Animal* targetAnimal, int day)
-{
-	for(unsigned int i = 0; i < area.size(); i++) {
-		for(unsigned int j = 0; j < area[i].size(); j++) {
-			area[i][j][0]->changeAnimalToSenesced(targetAnimal, day);
-		}
-	}
-}
-
-const vector<float> MacroTerrainCell::getTemperatureCycle() const
-{
-	vector<float> temperatureCycle(area[0][0][0]->getTemperatureCycle().size(), 0.0);
-
-	for(unsigned int i = 0; i < area.size(); i++) {
-		for(unsigned int j = 0; j < area[i].size(); j++) {
-			std::transform(temperatureCycle.begin(), temperatureCycle.end(), area[i][j][0]->getTemperatureCycle().begin(), temperatureCycle.begin(), std::plus<float>());
-		}
-	}
-
-	return temperatureCycle;
-}
-
-float MacroTerrainCell::getSize()
-{
-	return area.size()*area[0][0][0]->getSize();
-}
-
-vector<std::pair<std::vector<Animal *>::iterator, std::vector<Animal *>::iterator>> MacroTerrainCell::getAnimalsBySpecies(const LifeStage &lifeStage, AnimalSpecies* species)
-{
-	vector<pair<vector<Animal *>::iterator, vector<Animal *>::iterator>> animals;
-
-	for(unsigned int i = 0; i < area.size(); i++) {
-		for(unsigned int j = 0; j < area[i].size(); j++) {
-			auto cellAnimals = area[i][j][0]->getAnimalsBySpecies(lifeStage, species);
-			animals.insert(animals.end(), cellAnimals.begin(), cellAnimals.end());
-		}
-	}
-
-	return animals;
-}
-
-void MacroTerrainCell::purgeDeadAnimals(Animal* animal, TerrainCell* cell)
-{
-	eraseAnimal(animal, animal->getLifeStage(), cell);
-}
-
-vector<vector<Resource *>*> MacroTerrainCell::getResources()
-{
-	vector<vector<Resource *>*> resources;
-
-	for(unsigned int i = 0; i < area.size(); i++) {
-		for(unsigned int j = 0; j < area[i].size(); j++) {
-			auto resourcesCell = area[i][j][0]->getResources();
-
-			resources.insert(resources.end(), resourcesCell.begin(), resourcesCell.end());
-		}
-	}
-
-	return resources;
-}
-
-std::vector<TerrainCellInterface *> * MacroTerrainCell::getCellsAtDistance(int distance, double searchArea, bool isMobile, unsigned int worldDepth, unsigned int worldLength, unsigned int worldWidth)
-{
-	MacroTerrainCell* cellToBeAdded;
-
-	std::vector<TerrainCellInterface *> * newNeighbors = new std::vector<TerrainCellInterface *>();
-
-/* 	if(myX == 48 && myY == 21){
-	cout << "the coordinates are    " << endl;
-	cout << myX << endl;
-	cout << myY << endl;
-	cout << myZ << endl;
-	cout << minX << endl;
-	cout << maxX << endl;
-	cout << minY << endl;
-	cout << maxY << endl;
-	cout << minZ << endl;
-	cout << maxZ << endl;
-
-	minY = 21;
-
-	}  */
-	
-	for(int z = -distance ; z <= distance; z++) {
-		for(int y = -distance ; y <= distance; y++) {
-			for(int x = -distance ; x <= distance; x++) {
-				if(x != 0 || y != 0 || z != 0) {
-					int minX = area[0][0][0]->getX() + x*getSize();
-					minX = max(minX, 0);
-					minX = min(minX, (int)worldWidth-(int)getSize()-1);
-
-					int minY = area[0][0][0]->getY() + y*getSize();
-					minY = max(minY, 0);
-					minY = min(minY, (int)worldLength-(int)getSize()-1);
-
-					int minZ = 0;
-
-					cellToBeAdded = new MacroTerrainCell(minX, minY, minZ, getSize(), worldInterface);
-
-					if(!cellToBeAdded->isObstacle()) {
-						double distanceToTheCellToBeAdded = getDistanceToCell(cellToBeAdded);
-
-						if(distanceToTheCellToBeAdded <= searchArea)
-						{
-							newNeighbors->push_back(cellToBeAdded);
-						}
-						else {
-							delete cellToBeAdded;
-						}
-					}
-					else {
-						delete cellToBeAdded;
-					}
-				}
-			}
-		}
-	}
-
-	return newNeighbors;
-}
-
-bool MacroTerrainCell::isObstacle() const {
-	unsigned int obstableCount = 0;
-
-	for(unsigned int i = 0; i < area.size(); i++) {
-		for(unsigned int j = 0; j < area[i].size(); j++) {
-			if(area[i][j][0]->isObstacle()) {
-				obstableCount++;
-			}
-		}
-	}
-
-	if(static_cast<double>(obstableCount)/(area.size()*2) <= 0.3) {
-		return false;
-	}
-	else {
-		return true;
-	}
-}
-
-double MacroTerrainCell::getDistanceToCell(TerrainCellInterface* targetCell)
-{
-	return sqrt(pow(abs(getX() - targetCell->getX()) * getSize(), 2) + pow(abs(getY() - targetCell->getY()) * getSize(), 2) + pow(abs(getZ() - targetCell->getZ()) * getSize(), 2));
-}
-
-int MacroTerrainCell::getX() const
-{
-	return area[0][0][0]->getX();
-}
-
-int MacroTerrainCell::getY() const
-{
-	return area[0][0][0]->getY();
-}
-
-int MacroTerrainCell::getZ() const
-{
-	return area[0][0][0]->getZ();
-}
-
-void MacroTerrainCell::migrateAnimalTo(Animal* animalToMigrate, TerrainCellInterface* newPosition)
-{
-	eraseAnimal(animalToMigrate, animalToMigrate->getLifeStage());
-	newPosition->addAnimal(animalToMigrate);
-	delete reinterpret_cast<MacroTerrainCell*>(animalToMigrate->getPosition());
-	animalToMigrate->setPosition(newPosition);
-}
-
-double MacroTerrainCell::turnEdibleIntoDryMassToBeEaten(Edible* targetEdible, int day, Animal* predatorEdible, double leftovers)
-{
-	#ifdef _DEBUG
-	Output::coutFlush("{} predated {}\n", predatorId, targetEdible->getId());
-	#endif
-
-	float targetEdibleProfitability = predatorEdible->getSpecies()->getEdibleProfitability(targetEdible->getSpecies());
-
-	//double dryMassToBeEaten = 0;
-
-	double dryMassToBeEaten = targetEdible->turnIntoDryMassToBeEaten(predatorEdible->getRemainingVoracity(), targetEdibleProfitability + predatorEdible->getAssim(), leftovers);
-	
-
-	if(targetEdible->getSpecies()->isMobile())
-	{
-		targetEdible->setNewLifeStage(LifeStage::PREDATED, day, predatorEdible->getId());
-
-		for(unsigned int i = 0; i < area.size(); i++) {
-			for(unsigned int j = 0; j < area[i].size(); j++) {
-				auto animalsToMove = area[i][j][0]->getAnimalsToMove();
-
-				animalsToMove->erase(std::remove(animalsToMove->begin(), animalsToMove->end(), targetEdible), animalsToMove->end());
-			}
-		}
-	}
-	else
-	{
-		
-		//dryMassToBeEaten = targetEdible->turnIntoDryMassToBeEaten(predatorEdible->getRemainingVoracity(), targetEdibleProfitability + predatorEdible->getAssim());
-		//arthros and for dinos, very big bug in feeding on resource and updating ungi fixed
-		/* cout << "BEFOREEEEEEEEEE AND AFTEEEEEEEERRRRRRRRRRRRRRRRRR" << endl;
-		cout << targetEdible->calculateDryMass() << endl;
-		cout << dryMassToBeEaten << endl; */
-		targetEdible->substractBiomass(dryMassToBeEaten);
-		//cout << targetEdible->calculateDryMass() << endl;
-	
-	}
-
-	if(dryMassToBeEaten < 0)
-	{
-		Output::cout("Edible id: {} ({}) - The dry mass to be eaten after considering profitability resulted in a negative value.\n", predatorEdible->getId(), predatorEdible->getSpecies()->getScientificName());
-	}
-
-	return dryMassToBeEaten;
-}
-
-Resource* MacroTerrainCell::getResource(ResourceSpecies* species)
-{
-	Resource * resource;
-
-	for(unsigned int i = 0; i < area.size(); i++) {
-		for(unsigned int j = 0; j < area[i].size(); j++) {
-			resource = area[i][j][0]->getResource(species);
-
-			if(resource != NULL) {
-				return resource;
-			}
-		}
-	}
-
-	return NULL;
-}
-
-double MacroTerrainCell::getTotalResourceBiomass()
-{
-	double mass = 0;
-
-	for(unsigned int i = 0; i < area.size(); i++) {
-		for(unsigned int j = 0; j < area[i].size(); j++) {
-			mass += area[i][j][0]->getTotalResourceBiomass();
-		}
-	}
-
-	return mass;
-}
-
-void MacroTerrainCell::finishCell(Animal* animal, TerrainCell* cell)
-{
-	for(unsigned int i = 0; i < area.size(); i++) {
-		for(unsigned int j = 0; j < area[i].size(); j++) {
-			if(area[i][j][0] != cell) {
-				area[i][j][0]->eraseAnimal(animal, animal->getLifeStage());
-			}
-		}
-	}
-}
-
-bool operator==(const MacroTerrainCell& lhs, const MacroTerrainCell& rhs)
-{
-	if(lhs.area.size() == rhs.area.size()) {
-		if(lhs.area[0][0][0]->getX() == rhs.area[0][0][0]->getX() &&
-			lhs.area[0][0][0]->getY() == rhs.area[0][0][0]->getY() &&
-			lhs.area[0][0][0]->getZ() == rhs.area[0][0][0]->getZ()) {
-			return true;
-		}
-	}
-
-	return false;
-}
-
 
 /*
 //#ifdef _PTHREAD

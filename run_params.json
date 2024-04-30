@@ -1,10 +1,10 @@
 {
     "simulation": {
+		"simulationType": "arthropods",
 		"numberOfCombinations": 1000,
         "exitAtFirstExtinction": false,
-        "growthAndReproTest": false,
-        "runDays": 1000, 
-        "recordEach": 100,
+        "runDays": 100,
+        "recordEach": 1,
         "timeStepsPerDay": 1,
         "initFromFixedSeed": {
             "enabled": true,
@@ -12,10 +12,9 @@
         },
         "outputStream": {
             "enabled": true,
-            "selectedChannel": "Terminal"
+            "selectedChannel": "terminal"
         },
-        "configName": "base_dinos_Joan",
-        "saveAnimalConstitutiveTraits": false,
+        "configName": "base_arthropods_temp",
         "saveGeneticsSummaries": false,
         "saveIntermidiateVolumes": false,
         "saveIntermidiateVolumesPeriodicity": 100000,
@@ -23,7 +22,6 @@
         "predationsMatrixFilename": "predationsMatrix",
         "nodesMatrixFilename": "nodesMatrix",
         "predationEventsOnOtherSpeciesFilename": "predationOnSpecies",
-		"edibilitiesFilename": "edibilities",
-        "saveEdibilitiesFile": false
+		"edibilitiesFilename": "edibilities"
     }
 }

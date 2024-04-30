@@ -2,6 +2,18 @@ cmake_minimum_required(VERSION 3.25)
 project(Weaver VERSION 1.0.0)
 
 
+set(WINDOWS FALSE)
+set(LINUX FALSE)
+set(DARWIN FALSE)
+if(OS_NAME STREQUAL "Windows")
+	set(WINDOWS TRUE)
+elseif(OS_NAME STREQUAL "Linux")
+	set(LINUX TRUE)
+elseif(OS_NAME STREQUAL "Darwin")
+	set(DARWIN TRUE)
+endif()
+
+
 if(NOT CMAKE_BUILD_TYPE)
 	set(
 		CMAKE_BUILD_TYPE "Release" CACHE STRING
@@ -14,10 +26,13 @@ set(CMAKE_CXX_FLAGS "")
 set(CMAKE_CXX_FLAGS_RELEASE "")
 set(CMAKE_CXX_FLAGS_DEBUG "")
 
-if(WIN32)
+if(WINDOWS)
 	set(CXX_FLAGS "-Wall")
 	set(CXX_LINK_LIBRARY_FLAGS "-lm")
-elseif(UNIX)
+elseif(LINUX)
+	set(CXX_FLAGS "-Wall")
+	set(CXX_LINK_LIBRARY_FLAGS "-lm")
+elseif(DARWIN)
 	set(CXX_FLAGS "-Wall")
 	set(CXX_LINK_LIBRARY_FLAGS "-lm")
 endif()
@@ -26,21 +41,27 @@ if(CMAKE_BUILD_TYPE MATCHES "^[Rr]elease")
 	set(RELEASE_MODE ON)
 	set(DEBUG_MODE OFF)
 
-	if(WIN32)
-		list(APPEND CXX_FLAGS "-O0")
+	if(WINDOWS)
+		list(APPEND CXX_FLAGS "-O2")
 		list(APPEND CXX_LINK_LIBRARY_FLAGS "-static-libgcc;-static-libstdc++;-lwinpthread")
-	elseif(UNIX)
-		list(APPEND CXX_FLAGS "-O0")
+	elseif(LINUX)
+		list(APPEND CXX_FLAGS "-O2")
+		list(APPEND CXX_LINK_LIBRARY_FLAGS "")
+	elseif(DARWIN)
+		list(APPEND CXX_FLAGS "-O2")
 		list(APPEND CXX_LINK_LIBRARY_FLAGS "")
 	endif()
 elseif(CMAKE_BUILD_TYPE MATCHES "^[Dd]ebug")
 	set(RELEASE_MODE OFF)
 	set(DEBUG_MODE ON)
 
-	if(WIN32)
+	if(WINDOWS)
 		list(APPEND CXX_FLAGS "")
 		list(APPEND CXX_LINK_LIBRARY_FLAGS "")
-	elseif(UNIX)
+	elseif(LINUX)
+		list(APPEND CXX_FLAGS "-O0;-fno-omit-frame-pointer;-g")
+		list(APPEND CXX_LINK_LIBRARY_FLAGS "")
+	elseif(DARWIN)
 		list(APPEND CXX_FLAGS "-O0;-fno-omit-frame-pointer;-g")
 		list(APPEND CXX_LINK_LIBRARY_FLAGS "")
 	endif()
@@ -53,18 +74,18 @@ if(CHECK_MEMORY_LEAKS)
 	list(APPEND CXX_LINK_LIBRARY_FLAGS "-fsanitize=address")
 endif()
 
-if(USE_CPU_PROFILER)
-	list(APPEND CXX_FLAGS "-DUSE_CPU_PROFILER;-lprofiler")
-	list(APPEND CXX_LINK_LIBRARY_FLAGS "-lprofiler")
-endif()
 
-if(USE_HEAP_PROFILER)
-	list(APPEND CXX_FLAGS "-DUSE_HEAP_PROFILER;-ltcmalloc")
-	list(APPEND CXX_LINK_LIBRARY_FLAGS "-ltcmalloc")
-endif()
+# ========================================================
+# Dependencies
 
-set(PATH_SEP "_pathSep_")
-set(UNION "_and_")
+find_package(
+	Python3 3.7.0 
+	COMPONENTS Interpreter
+)
+
+if(NOT Python3_FOUND)
+	message(FATAL_ERROR "Python3 (3.7.0 or more) need to be installed to build the project")
+endif()
 
 # ========================================================
 # C++ version
@@ -99,9 +120,16 @@ set(INCLUDE_EXTENSION "h")
 set(RESULT_DIRECTORY "result_simulation")
 
 # ========================================================
-# Set folder for profiler's results
+# Set main file of the project
 
-set(PROFILER_DIRECTORY "profiler")
+set(MAIN_FILENAME "main")
+
+# ========================================================
+# Set source code files which aren't classes
+
+set(IGNORED_FILES
+    ${MAIN_FILENAME}
+)
 
 # ========================================================
 # Set folder for scripts
@@ -109,70 +137,11 @@ set(PROFILER_DIRECTORY "profiler")
 set(SCRIPTS_DIRECTORY "scripts")
 
 # ========================================================
-# Set folder for schemas
+# Set scripts to use in the build
 
-set(SCHEMA_DIRECTORY "schema")
-
-# ========================================================
-# Set number of available cores
-
-if(UNIX)
-	include(ProcessorCount)
-	ProcessorCount(NUMBER_OF_CORES)
-elseif(WIN32)
-	set(PROCESSOR_COUNT_COMMAND "WMIC CPU Get NumberOfCores")
-	execute_process(COMMAND powershell.exe "-Command" "${PROCESSOR_COUNT_COMMAND}"
-					OUTPUT_VARIABLE PROCESSOR_COUNT_OUTPUT)
-	string(REGEX MATCH "([0-9]+)" NUMBER_OF_CORES_MATCH "${PROCESSOR_COUNT_OUTPUT}")
-	set(NUMBER_OF_CORES "${CMAKE_MATCH_1}")
-endif()
-
-if (NUMBER_OF_CORES EQUAL 0)
-	message(WARNING "Unable to determine number of CPU cores. Setting CMAKE_BUILD_PARALLEL_LEVEL to 4.")
-	set(NUMBER_OF_CORES 4)
-endif()
-message(STATUS "Number of CPU cores: ${NUMBER_OF_CORES}")
-
-set(CMAKE_BUILD_PARALLEL_LEVEL "${NUMBER_OF_CORES}")
-
-# ========================================================
-# Set info of the targets
-
-include(cmake/Targets.cmake)
-
-# ========================================================
-# Clean files from old preset
-
-# Search all directories within BUILD_FOLDER
-file(GLOB DIRS_IN_BUILD_FOLDER "${PROJECT_SOURCE_DIR}/$ENV{BUILD_FOLDER}/*")
-
-# Filter out directories whose name does not match PRESET_NAME
-list(FILTER DIRS_IN_BUILD_FOLDER EXCLUDE REGEX "^${PROJECT_SOURCE_DIR}/$ENV{BUILD_FOLDER}/${PRESET_NAME}$")
-
-# Count number of directories obtained
-list(LENGTH DIRS_IN_BUILD_FOLDER NUM_DIRECTORIES)
-
-# If directories were found, run the target clean of the found preset and delete its cache.
-if(NUM_DIRECTORIES GREATER 0)
-	list(GET DIRS_IN_BUILD_FOLDER 0 DIR)
-	get_filename_component(PRESET ${DIR} NAME)
-
-	message(STATUS "Cleaning '${PRESET}' preset files")
-
-	# Remove old preset configuration
-	file(REMOVE_RECURSE ${PROJECT_SOURCE_DIR}/$ENV{BUILD_FOLDER}/${PRESET})
-
-	# Remove all libraries
-	file(REMOVE_RECURSE ${PROJECT_SOURCE_DIR}/lib)
-
-	# Remove executable
-	file(GLOB EXECUTABLES ${PROJECT_SOURCE_DIR}/*${CMAKE_EXECUTABLE_SUFFIX_CXX})
-	foreach(EXECUTABLE ${EXECUTABLES})
-		file(REMOVE ${EXECUTABLE})
-	endforeach()
-
-	message(STATUS "Cleaning '${PRESET}' preset files - done")
-endif()
+set(LIST_DIRECTORY_SCRIPT "${SCRIPTS_DIRECTORY}/build/listDirectory.py")
+set(LIST_LINK_LIBRARIES_SCRIPT "${SCRIPTS_DIRECTORY}/build/listLinkLibraries.py")
+set(REFACTOR_CLASS_SCRIPT "${SCRIPTS_DIRECTORY}/build/refactorClass.py")
 
 # ========================================================
 # Build steps
@@ -182,132 +151,72 @@ endif()
 
 file(MAKE_DIRECTORY "${PROJECT_SOURCE_DIR}/${RESULT_DIRECTORY}")
 
-if(USE_PROFILER)
-	# ===========================
-	# Create folder for profiler's results
+# ===========================
+# List the classes' names
+#
+# The name of a class is equal to the path of the class relative to the SRC_DIRECTORY folder
 
-	file(MAKE_DIRECTORY "${PROJECT_SOURCE_DIR}/${PROFILER_DIRECTORY}")
+execute_process(
+    COMMAND ${Python3_EXECUTABLE} "${PROJECT_SOURCE_DIR}/${LIST_DIRECTORY_SCRIPT}" "${PROJECT_SOURCE_DIR}/${SRC_DIRECTORY}" "${IGNORED_FILES}"
+    WORKING_DIRECTORY ${PROJECT_SOURCE_DIR} 
+    OUTPUT_VARIABLE CLASSES_NAMES
+)
+
+set(CLASSES_NAMES_CMAKE_PATH)
+foreach(class ${CLASSES_NAMES})
+	file(TO_CMAKE_PATH ${class} class)
+	list(APPEND CLASSES_NAMES_CMAKE_PATH ${class})
+endforeach()
+set(CLASSES_NAMES ${CLASSES_NAMES_CMAKE_PATH})
+
+# ===========================
+# Build subdirectory lib
+
+add_subdirectory(lib)
+
+# ===========================
+# Generate executable
+
+if(RELEASE_MODE)
+	set(EXECUTABLE_NAME ${PROJECT_NAME})
+elseif(DEBUG_MODE)
+	set(EXECUTABLE_NAME ${PROJECT_NAME}_debug)
 endif()
 
-# ===========================
-# Set library output folder
-
-set(CMAKE_LIBRARY_OUTPUT_DIRECTORY ${PROJECT_SOURCE_DIR}/lib)
-
-# ===========================
-# Create folder for libraries
-
-file(MAKE_DIRECTORY ${CMAKE_LIBRARY_OUTPUT_DIRECTORY})
+add_executable(
+	${EXECUTABLE_NAME} ${PROJECT_SOURCE_DIR}/${SRC_DIRECTORY}/${MAIN_FILENAME}.${SRC_EXTENSION}
+)
 
 # ===========================
-# Generate all targets
+# Set include directories for executable
 
-foreach(target ${TARGETS})
-	string(REPLACE "/" ${PATH_SEP} refactorTarget ${target})
-
-	if(target MATCHES ${EXECUTABLE_NAME})
-		# ===========================
-		# Generate executable
-
-		add_executable(
-			${EXECUTABLE_NAME} ${${refactorTarget}_files}
-		)
-	else()
-		# ===========================
-		# Generate library
-
-		if(UNIX)
-			add_library(${refactorTarget} SHARED ${${refactorTarget}_files})
-		elseif(WIN32)
-			add_library(${refactorTarget} STATIC ${${refactorTarget}_files})
-		endif()
-	endif()
-
-	# ===========================
-    # Set include directories for target
-
-    target_include_directories(${refactorTarget} PUBLIC "${PROJECT_SOURCE_DIR}/${INCLUDE_DIRECTORY}/")
-
-	# ===========================
-    # Set compile flags of target
-
-    target_compile_options(${refactorTarget} PRIVATE ${CXX_FLAGS})
-
-	if(target MATCHES ${EXECUTABLE_NAME})
-		# ===========================
-		# Set link flags of target
-
-		target_link_options(${refactorTarget} PRIVATE ${CXX_LINK_LIBRARY_FLAGS})
-	endif()
-
-	# ===========================
-    # Set post build commands of target
-
-    if(target MATCHES "Trait")
-		# Read Trait header file content
-
-		file(READ ${PROJECT_SOURCE_DIR}/${INCLUDE_DIRECTORY}/${target}.${INCLUDE_EXTENSION} content)
-
-		# Search for all Trait enum in the content
-
-		string(REGEX MATCHALL ${ENUM_TRAIT_PATTERN} matches "${content}")
-		
-		# Get the number of matches
-
-		list(LENGTH matches numMatches)
-
-		# If more than one match is found, you will get warned
-
-		if(numMatches GREATER 1)
-			message(FATAL_ERROR "Search for traits failed")
-		endif()
-
-		# Get the contents of the enumerated
-
-		string(REGEX REPLACE ${ENUM_TRAIT_PATTERN} "\\1" enumTraitValues "${matches}")
-
-		# Remove all white spaces from the content
-
-		string(REGEX REPLACE "[${WHITESPACE}]+" "" enumTraitValues ${enumTraitValues})
-
-		# Add double quotation marks at the beginning and end of each value
-
-		string(REPLACE "," ";" enumTraitValues ${enumTraitValues})
-		set(refactorEnumTraitValues)
-		foreach(element ${enumTraitValues})
-			string(CONCAT refactorElement "\"" ${element} "\"")
-			list(APPEND refactorEnumTraitValues ${refactorElement})
-		endforeach()
-		set(enumTraitValues ${refactorEnumTraitValues})
-		string(JOIN "," enumTraitValues ${enumTraitValues})
-
-		# Insert the value of the enumerated in the schema
-
-		configure_file(
-			${PROJECT_SOURCE_DIR}/${SCHEMA_DIRECTORY}/species.schema.json.in
-			${PROJECT_SOURCE_DIR}/${SCHEMA_DIRECTORY}/species.schema.json
-			@ONLY
-		)
-    endif()
-endforeach()
+target_include_directories(${EXECUTABLE_NAME} PUBLIC "${PROJECT_SOURCE_DIR}/${INCLUDE_DIRECTORY}/")
 
 # ===========================
-# Link all targets
+# List link libraries of executable
 
-foreach(target ${TARGETS})
-	string(REPLACE "/" ${PATH_SEP} refactorTarget ${target})
+execute_process(
+	COMMAND ${Python3_EXECUTABLE} "${PROJECT_SOURCE_DIR}/${LIST_LINK_LIBRARIES_SCRIPT}" "${PROJECT_SOURCE_DIR}/${SRC_DIRECTORY}/${MAIN_FILENAME}.${SRC_EXTENSION}" "${MAIN_FILENAME}" "${CLASSES_NAMES_CMAKE_PATH}"
+	WORKING_DIRECTORY ${PROJECT_SOURCE_DIR} 
+	OUTPUT_VARIABLE LINK_LIBRARIES
+)
 
-	# ===========================
-    # Link target with dependencies of the target 
+# ===========================
+# Link libraries with executable
 
-    target_link_libraries(
-        ${refactorTarget}
-        PRIVATE
-        ${${refactorTarget}_depen}
-    )
-endforeach()
+target_link_libraries(
+	${EXECUTABLE_NAME}
+	PRIVATE
+	${LINK_LIBRARIES}
+)
+
+# ===========================
+# Set compile and link flags of executable
+
+target_compile_options(${EXECUTABLE_NAME} PRIVATE ${CXX_FLAGS})
+target_link_options(${EXECUTABLE_NAME} PRIVATE ${CXX_LINK_LIBRARY_FLAGS})
 
 # ========================================================
 # Build doxygen documentation
 
-add_subdirectory(docs)
+add_subdirectory(docs/doxygen)
