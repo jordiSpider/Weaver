@@ -1,5 +1,4 @@
 {
-  "version": "23.11.05",
   "resource": {
     "resourceType": "NoBasalResource",
     "name": "alternative",
@@ -13,6 +12,7 @@
     "variableIntrinsicRateOfIncrease": false,
     "maxRScale": 1.01,
     "zeroResource": 8,
-    "minimumNumberOfEdibleSpores": 4.517634e+15 /*4*e+15	 e+12*/
+    "minimumNumberOfEdibleSpores": 4.517634e+15, /*4*e+15	 e+12*/
+    "patchesFolder": "alternative_patches"
   }
 }

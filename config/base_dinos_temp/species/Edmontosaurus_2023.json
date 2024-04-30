@@ -1,46 +1,28 @@
 {
-	"version": "23.11.05",
     "animal": {
-        "debug": {
-			"surviveWithoutFood": false
-		},
         "name": "Edmontosaurus_sp",
         "defaultHuntingMode": "does_not_hunt",
 		"sexualType": "diploid",
         "size": 1,
-		"forcePresenceAllResourcesInvolved": false,
         "preserveLeftovers": false,
 		"growthCurve": {
-            "curveType": "VonBertalanffy",
-			"vonBertalanffyParams": {
-                "vonBertTime0": -12.67,
-				"vonBertLdistanceMin": 0.00032433,
-				"vonBertLdistanceMax": 0.00035847
-            },
-            "logisticParams": {
-                "logisticLdistanceMin": null,
-                "logisticLdistanceMax": null
-            },
-            "logistic3P_Params": {
-                "logistic3pAsymptoticSize": null
-            },
-            "logistic4P_Params": {
-                "logistic4pLeftAsymptote": null,
-                "logistic4pRightAsymptote": null
-            },
-            "gompertzParams": {
-                "gompertzAsymptoticSize": null,
-                "gompertzValueTime0": null
-            },
-            "exponentialParams": {
-                "exponentialA": null
-            }
+            "type": "VonBertalanffy",
+            "vonBertTime0": -12.67,
+            "vonBertLdistanceMin": 0.00032433,
+            "vonBertLdistanceMax": 0.00035847,
+            "logisticLdistanceMin": null,
+            "logisticLdistanceMax": null,
+            "logistic3pAsymptoticSize": null,
+            "logistic4pLeftAsymptote": null,
+            "logistic4pRightAsymptote": null,
+            "gompertzAsymptoticSize": null,
+            "gompertzValueTime0": null
         },
 		"sexRatio": 0.5,
         "genetics": {
             "numberOfLociPerTrait": 20,
             "numberOfAllelesPerLocus": 100,
-            "numberOfTraits": 17,
+            "numberOfTraits": 15,
             "traitsPerModule": 3,
             "numberOfChiasmasPerChromosome": 2,
             "restrictPerTrait": [
@@ -81,6 +63,12 @@
 			"affectedTraits": ["energy_tank", "growth"]
 			}
 		],
+		"edibleAnimalSpecies": [],
+		"edibleAnimalPreferences": [],
+		"edibleAnimalProfitability": [],  
+		"edibleResourceSpecies": ["ferns"],
+		"edibleResourcePreferences": [0.99],
+		"edibleResourceProfitability": [0.001],
 		"experienceInfluencePerDay": 0.0, 
 		"numberOfSimulatedAttacks": 10000, 
 		"conversionToWetMass": 3.3333,
@@ -99,6 +87,7 @@
 		"eggsPerBatch": 20,
 		"maleMaxReproductionEvents": 24,
 		"maleReproductionFactor": 0.25,
+		"quitCellThreshold": 0.0,
 		"maleMobility": 1,
 		"decreaseOnTraitsDueToEncounters": 1.0,
 		"probabilityDeathFromBackground": 0.0,
@@ -109,9 +98,7 @@
 		"minRelativeHumidityThreshold": 20,
 		"traits": {
 			"fixedTraits": {
-				"memoryDepth": 5.0,
-                "perception_area": 1.4,
-				"interaction_area": 1.4
+				"memoryDepth": 5.0
 			},
 			"variableTraits": {
 				"minTraitsRanges": {
@@ -197,34 +184,6 @@
 			}
 		},
 		"pupaPeriodLength": 1,
-		"habitatShiftFactor": null,
-		"habitatShift": [],
-		"habitatShiftBeforeBreedingFactor": null,
-		"habitatShiftBeforeBreeding": false,
-		"habitatShiftAfterBreedingFactor": null,
-		"habitatShiftAfterBreeding": false,
-		"cellSizePerInstar": [
-			1.0,
-			1.0,
-			1.0,
-			1.0,
-			1.0,
-			1.0,
-			1.0,
-			1.0,
-			1.0,
-			1.0,
-			1.0,
-			1.0,
-			1.0,
-			1.0,
-			1.0,
-			1.0,
-			1.0,
-			1.0,
-			1.0,
-			1.0
-		],
 		"individualsPerInstar": [
 			
 			174,
@@ -249,7 +208,30 @@
 			930
 					
 			],
-		"statisticsIndividualsPerInstar": 1000,
+		"statisticsIndividualsPerInstar": [
+
+			1000,
+			1000,
+			1000,
+			1000,
+			1000,
+			1000,
+			1000,
+			1000,
+			1000,
+			1000,
+			1000,
+			1000,
+			1000,
+			1000,
+			1000,
+			1000,
+			1000,
+			1000,
+			1000,
+			1000
+				
+			],
 		"devTimeVector": [
 
 			371,
@@ -328,20 +310,5 @@
 		"coefficientForHandlingTimeA": 28.407,
 		"coefficientForHandlingTimeB": -0.664,
 		"coefficientForHandlingTimeC": -6.365
-	},
-	"ontogeneticLinks": {
-		"animalLinks": [],
-		"resourceLinks": [
-			{
-				"species": "ferns",
-				"links": [
-					{
-						"predatorInstar": [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20],
-						"preference": 0.4,
-						"profitability": 0.001
-					}
-				]
-			}
-		]
 	}
 }

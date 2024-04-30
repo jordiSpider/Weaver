@@ -1,17 +1,15 @@
 {
-	"version": "23.11.05",
     "world": {
-		"simulationType": "Dinosaurs",
-		"mapConfig": {
-			"mapType": "SpatialTree",
-			"worldWideParams": {
-				"minCellSize": 1.0,
-				"numberOfCellsPerAxis": 64
-			},
-			"spatialTreeParams": {
-				
-			},
+		"worldType": "Old",
+		"simulationType": "dinosaurs",
+        "spaceConfiguration": {
 			"obstacleFolder": "obstacle",
+			"dimensions": {
+				"width": 53,
+				"length": 53,
+				"depth": 1,
+				"cellSize": 1
+			},
 			"initRandomObstaclePatches": {
 				"enabled": false,
 				"obstacleDensity": 0.7, 	   		
@@ -21,28 +19,23 @@
 			},
 			"moistureFolder": "moisture",
 			"moistureBasePatch": {
-				"temperatureCycle": [
-					20.0,
-					20.0
-				],
-				"relativeHumidityUpdateMethod": {
-					"updateMethodType": "Cycle",
-					"cycleParams": {
-						"relativeHumidityCycle": [
-							25.0,
-							25.0
-						]
-					},
-					"rainEventAndDecayOverTimeParams": {
-						"relativeHumidityDecayOverTime": null,
-						"relativeHumidityOnRainEvent": null,
-						"timeStepsBetweenRainEvents": null,
-						"standardDeviationForRainEvent": null
-					}
-				},
-				"maximumResourceCapacityDensity": 0.0,
+				"totalMaximumResourceCapacity": 0.0,
 				"inEnemyFreeSpace": false,
-				"inCompetitorFreeSpace": false
+				"inCompetitorFreeSpace": false,
+				"temperatureCycle": [
+					20,
+					20
+				],
+				"useRelativeHumidityCycle": true,
+				"relativeHumidityCycle": [
+					25,
+					25
+				],
+				"useRelativeHumidityDecayOverTime": false,
+				"relativeHumidityOnRainEvent": 87.5,
+				"relativeHumidityDecayOverTime": 0.2,
+				"timeStepsBetweenRainEvents": 5,
+				"standardDeviationForRainEvent": 1.0
 			},
 			"nutrients": {
 				"minC": 0.0,
@@ -84,27 +77,27 @@
 				},
 				"resourcevore-resourceLinksDensity": 0.1
 			},
-			"encounterHuntedVoracitySAW": 0.04346,
-			"encounterHunterVoracitySAW": 0.4348,
-			"encounterVoracitiesProductSAW": 0.04347,
-			"encounterHunterSizeSAW": 0.4348,
-			"encounterHuntedSizeSAW": 0.04347,
+			"encounterHuntedVoracitySAW": 0.5,
+			"encounterHunterVoracitySAW": 5.0,
+			"encounterVoracitiesProductSAW": 0.5,
+			"encounterHunterSizeSAW": 5.0,
+			"encounterHuntedSizeSAW": 0.5,
 			"encounterProbabilityDensityFunctionSAW": 0.0,
 
-			"encounterHuntedVoracityAH": 0.17,
-			"encounterHunterVoracityAH": 0.17,
-			"encounterVoracitiesProductAH": 0.17,
-			"encounterHunterSizeAH": 0.17,
-			"encounterHuntedSizeAH": 0.16,
-			"encounterProbabilityDensityFunctionAH": 0.16,
+			"encounterHuntedVoracityAH": 1.0,
+			"encounterHunterVoracityAH": 1.0,
+			"encounterVoracitiesProductAH": 1.0,
+			"encounterHunterSizeAH": 1.0,
+			"encounterHuntedSizeAH": 1.0,
+			"encounterProbabilityDensityFunctionAH": 1.0,
 
 			"predationSpeedRatioSAW": 0.0,
-			"predationHunterVoracitySAW": 0.98,
-			"predationProbabilityDensityFunctionSAW": 0.02,
+			"predationHunterVoracitySAW": 5.0,
+			"predationProbabilityDensityFunctionSAW": 0.1,
 
-			"predationSpeedRatioAH": 0.34,
-			"predationHunterVoracityAH": 0.33,
-			"predationProbabilityDensityFunctionAH": 0.33
+			"predationSpeedRatioAH": 1.0,
+			"predationHunterVoracityAH": 1.0,
+			"predationProbabilityDensityFunctionAH": 1.0
 		}
 	}
 }

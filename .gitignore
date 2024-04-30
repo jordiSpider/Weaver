@@ -129,10 +129,7 @@ instance/
 .scrapy
 
 # Sphinx documentation
-docs/build
-docs/source/conf.py
-docs/source/versions.yaml
-.doctrees
+docs/_build/
 
 # PyBuilder
 .pybuilder/
@@ -224,8 +221,7 @@ cython_debug/
 
 ### Doxygen
 
-docs/source/doxygen/Doxyfile
-docs/source/doxygen/xml
+Doxyfile
 
 *~
 .*sw?
@@ -257,11 +253,3 @@ tags
 ### Doxygen
 
 profiler/*
-
-
-
-### R package
-
-Makevars
-
-R/packages/*.tar.gz

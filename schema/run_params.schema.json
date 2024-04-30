@@ -1,0 +1,191 @@
+{
+    "type": "object",
+    "properties": {
+        "simulation": {
+            "type": "object",
+            "properties": {
+                "numberOfCombinations": {
+                    "type": "unsigned_integer",
+                    "minimum": 1,
+                    "required": true
+                },
+                "exitAtFirstExtinction": {
+                    "type": "boolean",
+                    "required": true
+                },
+                "growthAndReproTest": {
+                    "type": "boolean",
+                    "required": true
+                },
+                "runDays": {
+                    "type": "unsigned_integer",
+                    "minimum": 1,
+                    "required": true
+                },
+                "recordEach": {
+                    "type": "unsigned_integer",
+                    "required": true
+                },
+                "timeStepsPerDay": {
+                    "type": "unsigned_integer",
+                    "minimum": 1,
+                    "required": true
+                },
+                "configFolder": {
+                    "type": "string",
+                    "required": false
+                },
+                "configName": {
+                    "type": "string",
+                    "required": true
+                },
+                "resultFolder": {
+                    "type": "string",
+                    "required": false
+                },
+                "resultName": {
+                    "type": "string",
+                    "required": false
+                },
+                "saveAnimalConstitutiveTraits": {
+                    "type": "boolean",
+                    "required": true
+                },
+                "saveGeneticsSummaries": {
+                    "type": "boolean",
+                    "required": true
+                },
+                "saveIntermidiateVolumes": {
+                    "type": "boolean",
+                    "required": true
+                },
+                "saveIntermidiateVolumesPeriodicity": {
+                    "type": "unsigned_integer",
+                    "required": true
+                },
+                "encountersMatrixFilename": {
+                    "type": "string",
+                    "required": true
+                },
+                "predationsMatrixFilename": {
+                    "type": "string",
+                    "required": true
+                },
+                "nodesMatrixFilename": {
+                    "type": "string",
+                    "required": true
+                },
+                "predationEventsOnOtherSpeciesFilename": {
+                    "type": "string",
+                    "required": true
+                },
+                "edibilitiesFilename": {
+                    "type": "string",
+                    "required": true
+                },
+                "saveEdibilitiesFile": {
+                    "type": "boolean",
+                    "required": true
+                },
+                "initFromFixedSeed": {
+                    "type": "object",
+                    "properties": {
+                        "enabled": {
+                            "type": "boolean",
+                            "required": true
+                        },
+                        "fixedSeedValue": {
+                            "type": "integer",
+                            "required": false
+                        }
+                    },
+                    "conditionals": [
+                        {
+                            "if": {
+                                "type": "equal",
+                                "lhs": {
+                                    "type": "property",
+                                    "value": [
+                                        "enabled"
+                                    ]
+                                },
+                                "rhs": {
+                                    "type": "constant",
+                                    "value": true
+                                }
+                            },
+                            "then": [ 
+                                {
+                                    "add": {
+                                        "required": [
+                                            "fixedSeedValue"
+                                        ]
+                                    }
+                                }
+                            ],
+                            "else": [ 
+                                {
+                                    "add": {
+                                        "warningConditions": [
+                                            {
+                                                "condition": {
+                                                    "type": "property_exists",
+                                                    "value": [
+                                                        "fixedSeedValue"
+                                                    ]
+                                                },
+                                                "warning": "Item 'fixedSeedValue' is not being used because 'initFromFixedSeed' is disabled"
+                                            }
+                                        ],
+                                        "additionalProperties": true
+                                    }
+                                }
+                            ]
+                        }
+                    ],
+                    "additionalProperties": false,
+                    "required": true
+                },
+                "outputStream": {
+                    "type": "object",
+                    "properties": {
+                        "enabled": {
+                            "type": "boolean",
+                            "required": true
+                        },
+                        "selectedChannel": {
+                            "type": "string",
+                            "enum": ["Terminal", "Log"],
+                            "required": true
+                        }
+                    },
+                    "additionalProperties": false,
+                    "required": true
+                }
+            },
+            "warningConditions": [
+                {
+                    "condition": {
+                        "type": "greater_than",
+                        "lhs": {
+                            "type": "property",
+                            "value": [
+                                "recordEach"
+                            ]
+                        },
+                        "rhs": {
+                            "type": "property",
+                            "value": [
+                                "runDays"
+                            ]
+                        }
+                    },
+                    "warning": "Item 'recordEach' is greater than item 'runDays'"
+                }
+            ],
+            "additionalProperties": false,
+            "required": true
+        }
+    },
+    "additionalProperties": false
+}

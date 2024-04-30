@@ -1,48 +1,26 @@
 {
-    "version": "23.11.05",
     "patch": {
-        "priority": 1,
-        "shape": {
-            "type": "Spherical",
-            "cubicParams": {
-                "bottomLeftCorner": null,
-                "topRightCorner": null
-            },
-            "sphericalParams": {
-                "center": [12.0, 12.0],
-                "radius": 1.0
-            },
-            "homogeneousParams": {
-    
-            },
-            "gaussianParams": {
-    
-            },
-            "randomGaussianParams": {
-    
-            }
-        },
-        "temperatureCycle": [
-            20.0,
-            20.0
-        ],
-        "relativeHumidityUpdateMethod": {
-            "updateMethodType": "Cycle",
-            "cycleParams": {
-                "relativeHumidityCycle": [
-                    90.0,
-                    90.0
-                ]
-            },
-            "rainEventAndDecayOverTimeParams": {
-                "relativeHumidityDecayOverTime": null,
-                "relativeHumidityOnRainEvent": null,
-                "timeStepsBetweenRainEvents": null,
-                "standardDeviationForRainEvent": null
-            }
-        },
-        "maximumResourceCapacityDensity": 150.02,
+        "type": "spherical",
+        "radius": 1,
+        "xPos": 12,
+        "yPos": 12,
+        "zPos": 0,
+        "totalMaximumResourceCapacity": 150.02,
         "inEnemyFreeSpace": false,
-        "inCompetitorFreeSpace": false
+        "inCompetitorFreeSpace": false,
+        "temperatureCycle": [
+            20,
+            20
+        ],
+        "useRelativeHumidityCycle": true,
+        "relativeHumidityCycle": [
+			90,
+			90
+        ],
+        "useRelativeHumidityDecayOverTime": false,
+        "relativeHumidityOnRainEvent": 87.5,
+        "relativeHumidityDecayOverTime": 0.2,
+        "timeStepsBetweenRainEvents": 5,
+        "standardDeviationForRainEvent": 1.0
     }
 }

@@ -1,5 +1,4 @@
 {
-    "version": "23.11.05",
     "resource": {
         "resourceType": "BasalResource",
         "name": "Resource_fast",
@@ -13,6 +12,7 @@
         "variableIntrinsicRateOfIncrease": true,
         "maxRScale": 8.0,
         "zeroResource": 8,
-        "minimumNumberOfEdibleSpores": 10000.0
+        "minimumNumberOfEdibleSpores": 10000.0,
+        "patchesFolder": "Resource_fast_patches"
     }
 }

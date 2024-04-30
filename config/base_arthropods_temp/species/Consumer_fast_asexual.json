@@ -1,46 +1,28 @@
 {
-    "version": "23.11.05",
     "animal": {
-        "debug": {
-			"surviveWithoutFood": false
-		},
         "name": "Consumer_fast_asexual",
         "defaultHuntingMode": "does_not_hunt",
         "sexualType": "asexual",
         "sexRatio": 1.0,
         "size": 1,
-		"forcePresenceAllResourcesInvolved": false,
         "preserveLeftovers": false,
         "growthCurve": {
-            "curveType": "VonBertalanffy",
-            "vonBertalanffyParams": {
-                "vonBertTime0": -12.0260,
-                "vonBertLdistanceMin": 0.974,
-                "vonBertLdistanceMax": 1.544
-            },
-            "logisticParams": {
-                "logisticLdistanceMin": null,
-                "logisticLdistanceMax": null
-            },
-            "logistic3P_Params": {
-                "logistic3pAsymptoticSize": null
-            },
-            "logistic4P_Params": {
-                "logistic4pLeftAsymptote": null,
-                "logistic4pRightAsymptote": null
-            },
-            "gompertzParams": {
-                "gompertzAsymptoticSize": null,
-                "gompertzValueTime0": null
-            },
-            "exponentialParams": {
-                "exponentialA": null
-            }
+            "type": "VonBertalanffy",
+            "vonBertTime0": -12.0260,
+            "vonBertLdistanceMin": 0.974,
+            "vonBertLdistanceMax": 1.544,
+            "logisticLdistanceMin": null,
+            "logisticLdistanceMax": null,
+            "logistic3pAsymptoticSize": null,
+            "logistic4pLeftAsymptote": null,
+            "logistic4pRightAsymptote": null,
+            "gompertzAsymptoticSize": null,
+            "gompertzValueTime0": null
         },
         "genetics": {
             "numberOfLociPerTrait": 20,
             "numberOfAllelesPerLocus": 10,
-            "numberOfTraits": 17,
+            "numberOfTraits": 15,
             "traitsPerModule": 3,
             "numberOfChiasmasPerChromosome": 2,
             "restrictPerTrait": [
@@ -80,6 +62,14 @@
                 "affectedTraits": ["energy_tank", "growth"]
             }
         ],
+        "edibleAnimalSpecies": [],
+        "edibleAnimalPreferences": [],
+        "edibleAnimalProfitability": [],
+        "edibleResourceSpecies": [
+            "Resource_fast"
+        ],
+        "edibleResourcePreferences": [0.99],
+        "edibleResourceProfitability": [0.05],
         "experienceInfluencePerDay": 0.99,
         "numberOfSimulatedAttacks": 10000,
         "conversionToWetMass": 3.2258,
@@ -98,6 +88,7 @@
         "eggsPerBatch": 20,
         "maleMaxReproductionEvents": 5,
         "maleReproductionFactor": 0.25,
+        "quitCellThreshold": 0.00025,
         "maleMobility": 1,
         "decreaseOnTraitsDueToEncounters": 1.0,
         "probabilityDeathFromBackground": 0.0,
@@ -108,9 +99,7 @@
         "minRelativeHumidityThreshold": 10,
         "traits": {
             "fixedTraits": {
-                "memoryDepth": 5.0,
-                "perception_area": 1.4,
-				"interaction_area": 1.4
+                "memoryDepth": 5.0
             },
             "variableTraits": {
                 "minTraitsRanges": {
@@ -196,24 +185,6 @@
             }
         },
         "pupaPeriodLength": 1,
-        "habitatShiftFactor": null,
-		"habitatShift": [],
-		"habitatShiftBeforeBreedingFactor": null,
-		"habitatShiftBeforeBreeding": false,
-		"habitatShiftAfterBreedingFactor": null,
-		"habitatShiftAfterBreeding": false,
-        "cellSizePerInstar": [
-			1.0,
-			1.0,
-			1.0,
-			1.0,
-			1.0,
-			1.0,
-			1.0,
-			1.0,
-			1.0,
-			1.0
-		],
         "individualsPerInstar": [
             100,
             100,
@@ -226,7 +197,18 @@
             100,
             100
         ],
-        "statisticsIndividualsPerInstar": 100,
+        "statisticsIndividualsPerInstar": [
+            100,
+            100,
+            100,
+            100,
+            100,
+            100,
+            100,
+            100,
+            100,
+            100
+        ],
         "devTimeVector": [
             7,
             14,
@@ -293,20 +275,5 @@
         "coefficientForHandlingTimeA": 28.407,
         "coefficientForHandlingTimeB": -0.664,
         "coefficientForHandlingTimeC": -6.365
-    },
-	"ontogeneticLinks": {
-		"animalLinks": [],
-		"resourceLinks": [
-			{
-				"species": "Resource_fast",
-				"links": [
-                    {
-                        "predatorInstar": [1, 2, 3, 4, 5, 6, 7, 8, 9, 10],
-                        "preference": 0.99,
-						"profitability": 0.05
-                    }
-                ]
-			}
-		]
-	}
+    }
 }

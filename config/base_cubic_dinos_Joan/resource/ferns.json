@@ -1,5 +1,4 @@
 {
-  "version": "23.11.05",
   "resource": {
     "resourceType": "BasalResource",
     "name": "ferns",
@@ -13,6 +12,7 @@
     "variableIntrinsicRateOfIncrease": false,
     "maxRScale": 1.1,
     "zeroResource": 8,
-    "minimumNumberOfEdibleSpores": 5.133674e+11
+    "minimumNumberOfEdibleSpores": 5.133674e+11,
+    "patchesFolder": "ferns_patches"
   }
 }
