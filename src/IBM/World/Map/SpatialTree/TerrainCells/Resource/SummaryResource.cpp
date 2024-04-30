@@ -1,8 +1,8 @@
 
 #include "IBM/World/Map/SpatialTree/TerrainCells/Resource/SummaryResource.h"
 #include "IBM/World/Map/SpatialTree/TerrainCells/BranchTerrainCellInterface.h"
-#include "IBM/World/World.h"
-#include "IBM/World/Map/Map.h"
+#include "IBM/World/WorldInterface.h"
+#include "IBM/World/Map/MapInterface.h"
 
 using namespace std;
 
@@ -10,10 +10,9 @@ using namespace std;
 
 SummaryResource::SummaryResource(const unsigned int resourceSpeciesId, BranchTerrainCellInterface* const summaryTerrainCell)
     : ResourceInterface(
-        generateId(),
-        summaryTerrainCell->getMap().getWorld()->getMutableExistingResourceSpecies()[resourceSpeciesId], 
+        summaryTerrainCell->getMapInterface().getWorldInterface()->getMutableExistingResourceSpecies()[resourceSpeciesId], 
         summaryTerrainCell, 
-        Instar(summaryTerrainCell->getMap().getWorld()->getExistingResourceSpecies()[resourceSpeciesId]->getNumberOfInstars()),
+        Instar(summaryTerrainCell->getMapInterface().getWorldInterface()->getExistingResourceSpecies()[resourceSpeciesId]->getNumberOfInstars()),
         0.0
       ),
       resourceSpeciesId(resourceSpeciesId),

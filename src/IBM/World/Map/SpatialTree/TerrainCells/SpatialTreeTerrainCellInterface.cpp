@@ -1,17 +1,17 @@
 
 
 #include "IBM/World/Map/SpatialTree/TerrainCells/SpatialTreeTerrainCellInterface.h"
-#include "IBM/World/Map/SpatialTree.h"
+#include "IBM/World/Map/SpatialTree/SpatialTreeInterface.h"
 
 using namespace std;
 
 
 
-SpatialTreeTerrainCellInterface::SpatialTreeTerrainCellInterface(PointSpatialTree* const &position, const Ring *const effectiveArea, const double &size, SpatialTree* const &map,
+SpatialTreeTerrainCellInterface::SpatialTreeTerrainCellInterface(PointSpatialTree* const &position, const Ring *const effectiveArea, const double &size, SpatialTreeInterface* const &mapInterface,
         LifeStageVector* const animals, const bool obstacle, const bool fullObstacle, 
         const int obstaclePatchPriority, MoistureInterface* const moistureInfo, const bool moistureSource, 
         const bool inMoisturePatch, const int moisturePatchPriority, const double &totalMaximumResourceCapacity)
-    : TerrainCell(position, effectiveArea, size, map, animals,
+    : TerrainCell(position, effectiveArea, size, mapInterface, animals,
         obstacle, fullObstacle, obstaclePatchPriority, moistureInfo, moistureSource, inMoisturePatch, moisturePatchPriority,
         totalMaximumResourceCapacity)
 {

@@ -17,7 +17,7 @@
 class RootTerrainCell : public BranchTerrainCell
 {
 public:
-    RootTerrainCell(SpatialTree* const map);
+    RootTerrainCell(SpatialTreeInterface* const mapInterface);
     virtual ~RootTerrainCell();
 
     const BranchTerrainCell* const getParent() const override;
@@ -65,7 +65,7 @@ public:
      * @{
      */
     std::unique_ptr<PartialCoverageAnimals> getMutableAnimalsUp(
-        std::function<bool(Animal&)> upChecker, const AnimalSearchParams &animalSearchParams
+        std::function<bool(AnimalInterface&)> upChecker, const AnimalSearchParams &animalSearchParams
     ) override;
     /** @} */
 

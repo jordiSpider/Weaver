@@ -7,8 +7,8 @@ using json = nlohmann::json;
 
 
 
-RootTerrainCell::RootTerrainCell(SpatialTree* const map)
-    : BranchTerrainCell(nullptr, new PointSpatialTree(), map)
+RootTerrainCell::RootTerrainCell(SpatialTreeInterface* const mapInterface)
+    : BranchTerrainCell(nullptr, new PointSpatialTree(), mapInterface)
 {
     
 }
@@ -36,7 +36,7 @@ unique_ptr<FullCoverageAnimals> RootTerrainCell::getMutableAnimalsUp(const Anima
 }
 
 unique_ptr<PartialCoverageAnimals> RootTerrainCell::getMutableAnimalsUp(
-        function<bool(Animal&)> upChecker, const AnimalSearchParams &animalSearchParams)
+        function<bool(AnimalInterface&)> upChecker, const AnimalSearchParams &animalSearchParams)
 {
     return make_unique<PartialCoverageAnimals>();
 }

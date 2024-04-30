@@ -27,10 +27,6 @@ public:
     inline void moveOnNextInstar() { value++; }
     friend Instar operator+(const Instar& lhs, const int& rhs);
     friend Instar operator+(const int& lhs, const Instar& rhs);
-    friend Instar operator-(const Instar& lhs, const int& rhs);
-    friend Instar operator-(const int& lhs, const Instar& rhs);
-    Instar& operator++();
-    Instar operator++(int);
     friend bool operator<(const Instar& lhs, const Instar& rhs);
     friend bool operator<(const Instar& lhs, const int& rhs);
     friend bool operator<(const int& lhs, const Instar& rhs);
@@ -50,7 +46,6 @@ public:
     friend bool operator!=(const Instar& lhs, const int& rhs);
     friend bool operator!=(const int& lhs, const Instar& rhs);
     friend std::ostream& operator<<(std::ostream& os, const Instar& instar);
-    explicit operator size_t() const;
 
     /**
      * @brief Serialize the Instar object.

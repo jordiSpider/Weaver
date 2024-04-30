@@ -25,13 +25,8 @@
 #include "Misc/Types.h"
 
 
-
-
 class ResourceSpecies;
 class AnimalSpecies;
-
-class World;
-
 
 class Species
 {
@@ -40,23 +35,20 @@ private:
 
 	const id_type id;
 	const std::string scientificName;
-	double conversionToWetMass;
+	float conversionToWetMass;
 
 	bool extinguished;
-
-	World* const world;
 
 	friend class boost::serialization::access;
 
 protected:
-	explicit Species(const std::string& scientificName, const double conversionToWetMass, const unsigned int numberOfInstars, World* const world);
+	explicit Species(const std::string& scientificName, const unsigned int numberOfInstars);
 	virtual ~Species();
 
 	InstarVector<bool> calculatedK_DensityPerInstar;
 	InstarVector<double> K_DensityPerInstar;
 	const unsigned int numberOfInstars;
 	const std::vector<Instar> instarsRange;
-	Instar lastInstar;
 
 	const double& getInstarK_Density(const Instar &instar) const;
 	std::vector<Instar> calculateInstarsRange();
@@ -103,8 +95,9 @@ public:
 
 	inline const id_type& getId() const { return id; };
 	inline const std::string& getScientificName() const { return scientificName; };
-	inline const double& getConversionToWetMass() const { return conversionToWetMass; }
+	inline const float& getConversionToWetMass() const { return conversionToWetMass; }
 	virtual double getCellMass() const { return 0; };
+	inline void setConversionToWetMass(const float& conversionToWetMass) { this->conversionToWetMass = conversionToWetMass; }
 	const double getInstarK_Value(const Instar &instar, const double &size) const;
 	void setInstarK_Density(const Instar &instar, const double &newK_Density);
 	double convertToWetMass(const double &dryMass) const;
@@ -114,14 +107,10 @@ public:
 	virtual void setExtinguished(bool extinguished) { this->extinguished = extinguished; };
 
 	const unsigned int& getNumberOfInstars() const;
-	const Instar& getLastInstar() const;
 	const std::vector<Instar>& getInstarsRange() const;
 
 	bool operator<(const Species& other) const;
 	bool operator==(const Species& other) const;
-
-	const World* const getWorld() const;
-	World* const getMutableWorld();
 
 	virtual bool isMobile() const=0;
 	virtual float getAttackProbability() const=0;
@@ -145,5 +134,7 @@ public:
     template <class Archive>
     void serialize(Archive &ar, const unsigned int version);
 };
+
+BOOST_SERIALIZATION_ASSUME_ABSTRACT(Species)
 
 #endif /* WEAVER_SPECIES_H_ */

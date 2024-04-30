@@ -14,8 +14,8 @@ const id_type& ResourceSpecies::getResourceSpeciesCounter()
 }
 
 
-ResourceSpecies::ResourceSpecies(const json &resourceSpeciesInfo, World* const world) :
-	Species(resourceSpeciesInfo["name"], resourceSpeciesInfo["conversionToWetMass"], 1, world), resourceSpeciesId(resourceSpeciesCounter++),
+ResourceSpecies::ResourceSpecies(const json &resourceSpeciesInfo) :
+	Species(resourceSpeciesInfo["name"], 1), resourceSpeciesId(resourceSpeciesCounter++),
 	cellMass(resourceSpeciesInfo["cellMass"]),
 	ACTIVATION_ENERGY(resourceSpeciesInfo["ACTIVATION_ENERGY"]),
 	NORMALIZATION_B(resourceSpeciesInfo["NORMALIZATION_B"]),
@@ -26,6 +26,8 @@ ResourceSpecies::ResourceSpecies(const json &resourceSpeciesInfo, World* const w
 	maxR = -1; // Will always have positive values
 
 	growingParabola = new Parabola();
+
+	this->setConversionToWetMass(resourceSpeciesInfo["conversionToWetMass"]);
 }
 
 ResourceSpecies::~ResourceSpecies()

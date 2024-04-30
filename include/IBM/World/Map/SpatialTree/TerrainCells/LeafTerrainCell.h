@@ -57,7 +57,7 @@ protected:
     /** @} */
 
 public:
-    LeafTerrainCell(BranchTerrainCellInterface* const parentTerrainCell, PointSpatialTree* const position, std::vector<ResourceInterface*>* const parentResources, const std::vector<int>* const parentResourcePatchPriority);
+    LeafTerrainCell(BranchTerrainCellInterface* const parentTerrainCell, PointSpatialTree* const position, const std::vector<const ResourceInterface*>* const parentResources, const std::vector<int>* const parentResourcePatchPriority);
     virtual ~LeafTerrainCell();
 
     SpatialTreeTerrainCellInterface* const getCell(const PointSpatialTree &cellPos);
@@ -84,11 +84,11 @@ public:
      * @{
      */
     EdiblesOnRadius getMutableEdiblesOnCellAndDown(
-        std::function<bool(Animal&)> downChecker, const Ring &effectiveArea,
+        std::function<bool(AnimalInterface&)> downChecker, const Ring &effectiveArea,
         const EdibleSearchParams &edibleSearchParams
     ) override;
     EdiblesOnRadius getMutableEdiblesDown(
-        std::function<bool(Animal&)> downChecker, const Ring &effectiveArea,
+        std::function<bool(AnimalInterface&)> downChecker, const Ring &effectiveArea,
         const EdibleSearchParams &edibleSearchParams
     );
     /** @} */

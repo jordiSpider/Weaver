@@ -20,7 +20,7 @@ public:
 	static const id_type& getResourceSpeciesCounter();
 
 
-	ResourceSpecies(const nlohmann::json &resourceSpeciesInfo, World* const world);
+	ResourceSpecies(const nlohmann::json &resourceSpeciesInfo);
 	virtual ~ResourceSpecies();
 
 	const id_type& getResourceSpeciesId() const;

@@ -44,11 +44,11 @@ protected:
     /** @} */
 
 public:
-    TemporalLeafTerrainCell(BranchTerrainCellInterface* const parentTerrainCell, PointSpatialTree* const position, std::vector<ResourceInterface*>* const parentResources, const std::vector<int>* const parentResourcePatchPriority);
+    TemporalLeafTerrainCell(BranchTerrainCellInterface* const parentTerrainCell, PointSpatialTree* const position, const std::vector<const ResourceInterface*>* const parentResources, const std::vector<int>* const parentResourcePatchPriority);
     virtual ~TemporalLeafTerrainCell();
 
-    void insertAnimal(Animal* const newAnimal) override;
-    std::tuple<bool, TerrainCellInterface*, TerrainCellInterface*, Animal*, unsigned int> randomInsertAnimal(const Instar &instar, AnimalSpecies* animalSpecies, const bool isStatistical) override;
+    void insertAnimal(AnimalInterface* const newAnimal) override;
+    std::tuple<bool, TerrainCellInterface*, TerrainCellInterface*> randomInsertAnimal(AnimalInterface* const newAnimal) override;
     void printCell(std::vector<std::pair<std::vector<double>, std::vector<unsigned int>>> &mapCellsInfo) override;
 };
 

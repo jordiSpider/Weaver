@@ -19,7 +19,7 @@
 
 #include "Allele.h"
 #include "IBM/Maths/Random.h"
-#include "Misc/SerializableVector.h"
+#include "Misc/SerializableSpecializations.h"
 
 
 /**
@@ -31,9 +31,6 @@ class Locus
 {
 private:
 	std::vector<const Allele*> alleles; /**< Vector of alleles for this locus */
-
-     double minAlleleValue;
-     double maxAlleleValue;
 
 public:
      Locus();
@@ -56,10 +53,6 @@ public:
 	inline const Allele* const getAlleleRandomly() const { return alleles.at(Random::randomIndex(alleles.size())); };
 
      const std::vector<const Allele*>& getAlleles() const;
-
-     const double& getMinAlleleValue() const;
-
-     const double& getMaxAlleleValue() const;
 
 	/**
      * @brief Serialize the Locus object.

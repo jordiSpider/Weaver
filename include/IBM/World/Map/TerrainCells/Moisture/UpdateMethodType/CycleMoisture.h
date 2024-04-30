@@ -22,9 +22,9 @@ protected:
     const std::vector<double> relativeHumidityCycle;
 
 
-    const double& getHumidityOnTimeStep(const unsigned int numberOfTimeSteps) const;
+    const double& getHumidityOnTimeStep(const unsigned int timeStep) const;
 
-    void refreshRelativeHumidity(const unsigned int numberOfTimeSteps);
+    void refreshRelativeHumidity(const unsigned int timeStep);
 
 public:
     CycleMoisture(const nlohmann::json &moistureInfo);

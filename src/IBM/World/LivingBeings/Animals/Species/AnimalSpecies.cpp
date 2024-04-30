@@ -6,11 +6,10 @@
  */
 
 #include "IBM/World/LivingBeings/Animals/Species/AnimalSpecies.h"
-
-#include "IBM/World/Map/SpatialTree.h"
+#include "IBM/World/Map/SpatialTree/SpatialTreeInterface.h"
 #include "IBM/World/Map/TerrainCells/EdibleSearchParams.h"
 #include "IBM/World/Map/TerrainCells/AnimalSearchParams.h"
-#include "IBM/World/World.h"
+#include "IBM/World/WorldInterface.h"
 
 
 using namespace std;
@@ -116,8 +115,8 @@ const id_type& AnimalSpecies::getAnimalSpeciesCounter()
 }
 
 
-AnimalSpecies::AnimalSpecies(const json &info, bool initIndividualsPerDensities, World* const world) 
-	: Species(info["name"], info["conversionToWetMass"], info["individualsPerInstar"].size(), world), 
+AnimalSpecies::AnimalSpecies(const json &info, bool initIndividualsPerDensities, WorldInterface* const worldInterface) 
+	: Species(info["name"], info["individualsPerInstar"].size()), 
 	  animalSpeciesId(animalSpeciesCounter++), 
 	  defaultHuntingMode(info["defaultHuntingMode"]), 
 	  edibleSpecies(getNumberOfInstars(), vector<unordered_map<Species*, vector<Instar>>>(Species::Type::size())),
@@ -125,27 +124,24 @@ AnimalSpecies::AnimalSpecies(const json &info, bool initIndividualsPerDensities,
 	  breedSearchParams(Gender::size()), 
 	  cellEvaluationSearchParams(getNumberOfInstars()), matureFemalesSearchParams(make_unique<EdibleSearchParams>()), 
 	  populationSearchParams(make_unique<AnimalSearchParams>()), lifeStageSearchParams(LifeStage::size()), 
-	  traits(EnumClass<Trait::Type>::size(), nullptr), numberOfLociPerTrait(info["genetics"]["numberOfLociPerTrait"]),
+	  traits(Trait::size(), nullptr), numberOfLociPerTrait(info["genetics"]["numberOfLociPerTrait"]),
 	  numberOfAllelesPerLocus(info["genetics"]["numberOfAllelesPerLocus"]), 
 	  traitsPerModule(info["genetics"]["modules"]["traitsPerModule"]),
 	  numberOfChiasmasPerChromosome(info["genetics"]["numberOfChiasmasPerChromosome"]),
-	  rhoPerModule(info["genetics"]["modules"]["correlationCoefficientRhoPerModule"]),
+	  rhoPerModule(info["genetics"]["modules"]["correlationCoefficientRhoPerModule"]), 
+	  tempOptGrowth(info["tempOptGrowth"]), tempOptSearch(info["tempOptSearch"]),
+	  tempOptVoracity(info["tempOptVoracity"]), tempOptSpeed(info["tempOptSpeed"]),
 	  tempFromLab(info["tempFromLab"]), maximumDryMassObserved(0.0),
+	  indeterminateGrowth(info["indeterminateGrowth"]),
+	  instarFirstReproduction((hasIndeterminateGrowth()) ? Instar(info["instarFirstReproduction"]) : Instar(info["individualsPerInstar"].size())), 
 	  sexualType(info["sexualType"]), involvedResourceSpecies(getNumberOfInstars()), 
 	  cellSizePerInstar(static_cast<vector<double>>(info["cellSizePerInstar"])), 
 	  forcePresenceAllResourcesInvolved(info["forcePresenceAllResourcesInvolved"]),
-	  preserveLeftovers(info["preserveLeftovers"]), newAAdult(info["newAAdult"]), newB(info["newB"])
-	  
+	  preserveLeftovers(info["preserveLeftovers"])
 {
-	this->rhoRangePerModule.reserve(rhoPerModule.size());
-	for(size_t i = 0; i < rhoPerModule.size(); ++i)
-	{
-		this->rhoRangePerModule.push_back(round((1.0 - fabs(rhoPerModule[i])) * numberOfLociPerTrait));
-	}
-
 	setTraits(info["genetics"]["traits"]);
 
-	// setHunterInteractionRanges();
+	this->numberOfChromosomes = getNumberOfVariableTraits();
 
 	if (numberOfChiasmasPerChromosome % 2 != 0 || numberOfChiasmasPerChromosome < 0)
 	{
@@ -154,34 +150,95 @@ AnimalSpecies::AnimalSpecies(const json &info, bool initIndividualsPerDensities,
 		exit(-1);
 	}
 
+	//TODO Hay alguna restricción más para el parametrizador? Cual es el máximo de numberOfChromosomes??
+	if ((getNumberOfVariableTraits()*numberOfLociPerTrait) % numberOfChromosomes == 0)
+	{
+		this->numberOfLociPerChromosome = (getNumberOfVariableTraits()*numberOfLociPerTrait) / numberOfChromosomes;
+	}
+	else
+	{
+		std::cerr << "For the species '" << getScientificName() << "':" << std::endl;
+		std::cerr << "numberOfTraits*numberOfLoci must be multiple of numberOfChromosomes. You entered " << getNumberOfVariableTraits() << "*" << numberOfLociPerTrait << " = " << getNumberOfVariableTraits()*numberOfLociPerTrait << " --> " << getNumberOfVariableTraits()*numberOfLociPerTrait << " % " << numberOfChromosomes << " = " << ((getNumberOfVariableTraits()*numberOfLociPerTrait) % numberOfChromosomes) << ". Exiting now" << std::endl;
+		exit(-1);
+	}
 
-	maxEncountersPerDay = 0;
+	this->rhoRangePerModule.reserve(rhoPerModule.size());
+	for(size_t i = 0; i < rhoPerModule.size(); ++i)
+	{
+		this->rhoRangePerModule.push_back(round((1.0 - fabs(rhoPerModule[i])) * numberOfLociPerTrait));
+	}
 
+	loci.reserve(numberOfLociPerTrait);
+	for (unsigned int i = 0; i < numberOfLociPerTrait; ++i)
+	{
+		loci.push_back(new Locus(getNumberOfAllelesPerLocus()));
+	}
+
+	randomlyCreatedPositionsForChromosomes.reserve(getNumberOfVariableTraits()*getNumberOfLociPerTrait());
+	for(unsigned int i = 0; i < getNumberOfVariableTraits()*getNumberOfLociPerTrait(); ++i)
+	{
+		randomlyCreatedPositionsForChromosomes.emplace_back(i);
+	}
+	random_shuffle(randomlyCreatedPositionsForChromosomes.begin(), randomlyCreatedPositionsForChromosomes.end());
+
+
+
+	normal_distribution<double> normalDistributionX (0.0,1.0);
+	normal_distribution<double> normalDistributionY (0.0,1.0);
+	pseudoGrowthMean = 0.0;
+	pseudoGrowthSd = 0.0;
 
 	//Constants for interactions
 	minSizeHunted = 10000000.000;
 	maxSizeHunted = 0;
+	meanSizeHunted = 0.0;
+	sdSizeHunted = 0.0;
 	minVorHunted = 10000000.000;
 	maxVorHunted = 0;
+	meanVorHunted = 0.0;
+	sdVorHunted = 0.0;
+	minSpeedHunted = 10000000.00;
+	maxSpeedHunted = 0.0;
+	meanSpeedHunted = 0.0;
+	sdSpeedHunted = 0.0;
 
 	minSizeHunter = 10000000.000;
 	maxSizeHunter = 0.0;
+	meanSizeHunter = 0.0;
+	sdSizeHunter = 0.0;
 	minVorHunter = 10000000.000;
 	maxVorHunter = 0.0;
+	meanVorHunter = 0.0;
+	sdVorHunter = 0.0;
+	minSpeedHunter = 10000000.000;
+	maxSpeedHunter = 0.0;
+	meanSpeedHunter = 0.0;
+	sdSpeedHunter = 0.0;
 	minSearchAreaHunter = 10000000.000;
 	maxSearchAreaHunter = 0.0;
+	meanSearchAreaHunter = 0.0;
+	sdSearchAreaHunter = 0.0;
 
 	minProbabilityDensityFunction = 10000000.000;
 	maxProbabilityDensityFunction = 0.0;
+	meanProbabilityDensityFunction = 0.0;
+	sdProbabilityDensityFunction = 0.0;
 	minVorXVor = 0.0;
 	maxVorXVor = 0.0;
+	meanVorXVor = 0.0;
+	sdVorXVor = 0.0;
 	minSpeedRatio = 0.0;
 	maxSpeedRatio = 0.0;
+	meanSpeedRatio = 0.0;
+	sdSpeedRatio = 0.0;
+	
+	meanSizeRatio = 0.0;
+	sdSizeRatio = 0.0;
 
 	maxPredationProbability = 0.0;
 	maxPredationIndividualWetMass = 0.0;
 
-	setInstarDevTimeVector(static_cast<vector<double>>(info["devTimeVector"]));
+	setDevTimeVector(info["devTimeVector"]);
 
 	//Added for new growth_curves
 	if(initIndividualsPerDensities == false)
@@ -193,6 +250,7 @@ AnimalSpecies::AnimalSpecies(const json &info, bool initIndividualsPerDensities,
 	setAssignedForMolt(info["assignedForMolt"]);
 	setBetaScaleTank(info["betaScaleTank"]);
 	setExcessInvestInSize(info["excessInvestInSize"]);
+	setPupaPeriodLength(info["pupaPeriodLength"]);
 	setHabitatShiftBeforeBreeding(info["habitatShiftBeforeBreeding"], info["habitatShiftBeforeBreedingFactor"]);
 	setHabitatShiftAfterBreeding(info["habitatShiftAfterBreeding"], info["habitatShiftAfterBreedingFactor"]);
 	setHabitatShift(info["habitatShift"], info["habitatShiftFactor"]);
@@ -200,24 +258,39 @@ AnimalSpecies::AnimalSpecies(const json &info, bool initIndividualsPerDensities,
 	setMaxEncountersT(info["maxEncountersT"]);
 
 	//Added for new growth_curves
+	setLinfKcorr(info["LinfKcorr"]);
+	setDevTimeConstant(info["devTimeConstant"]);
 	setLongevitySinceMaturation(info["longevitySinceMaturation"]);
 	setReproTimeFactor(info["reproTimeFactor"]);
+	setEdGrowth(info["EdGrowth"]);
+	setEdVoracity(info["EdVoracity"]);
+	setEdSearch(info["EdSearch"]);
+	setEdSpeed(info["EdSpeed"]);
 	setDevInter(info["devInter"]);
 	setFractSearchExtremeT(info["fractSearchExtremeT"]);
 	setFractSpeedExtremeT(info["fractSpeedExtremeT"]);
 
+	setTempSizeRuleConstant(info["tempSizeRuleConstant"]);
+
 	setExperienceInfluencePerDay(info["experienceInfluencePerDay"]);
 
-	setMassInfo(info["eggClutchFromEquation"], info["forClutchMassCoefficient"], info["forClutchMassScale"]);
+	setMassInfo(info["conversionToWetMass"], info["eggClutchFromEquation"],
+							info["forClutchMassCoefficient"], info["forClutchMassScale"],
+							info["forEggMassCoefficient"], info["forEggMassScale"],
+							info["eggDryMass"], info["femaleWetMass"], 
+							info["eggMassFromEquation"]);
 
 	setScaleForVoracity(info["scaleForVoracity"]);
 	setScaleForSearchArea(info["scaleForSearchArea"]);
 	setScaleForSpeed(info["scaleForSpeed"]);
 	setMaxPlasticityKVonBertalanffy(info["maxPlasticityKVonBertalanffy"]);
 	setMinPlasticityKVonBertalanffy(info["minPlasticityKVonBertalanffy"]);
-	setPlasticityDueToConditionVor(info["plasticityDueToConditionVor"]);
-	setPlasticityDueToConditionSearch(info["plasticityDueToConditionSearch"]);
-	setPlasticityDueToConditionSpeed(info["plasticityDueToConditionSpeed"]);
+	setMaxPlasticityDueToConditionVor(info["maxPlasticityDueToConditionVor"]);
+	setMinPlasticityDueToConditionVor(info["minPlasticityDueToConditionVor"]);
+	setMaxPlasticityDueToConditionSearch(info["maxPlasticityDueToConditionSearch"]);
+	setMinPlasticityDueToConditionSearch(info["minPlasticityDueToConditionSearch"]);
+	setMaxPlasticityDueToConditionSpeed(info["maxPlasticityDueToConditionSpeed"]);
+	setMinPlasticityDueToConditionSpeed(info["minPlasticityDueToConditionSpeed"]);
 
 	setAttackProbability(info["attackProbability"]);
 	setExposedAttackProbability(info["exposedAttackProbability"]);
@@ -254,36 +327,55 @@ AnimalSpecies::AnimalSpecies(const json &info, bool initIndividualsPerDensities,
 	setMaleMaxReproductionEvents(info["maleMaxReproductionEvents"]);
 	setMaleMobility(info["maleMobility"]);
 	setSurviveWithoutFood(info["debug"]["surviveWithoutFood"]);
-	setActivityUnderPredationRisk(info["activityUnderPredationRisk"]);
+	setDecreaseOnTraitsDueToEncounters(info["decreaseOnTraitsDueToEncounters"]);
 	setMaleReproductionFactor(info["maleReproductionFactor"]);
 	setProbabilityDeathFromBackground(info["probabilityDeathFromBackground"]);
 
-	setCapitalBreeding(info["capitalBreeding"]);
-
-
-	if(getNumberOfIndividualLevelTraits()/getTraitsPerModule() + (getNumberOfIndividualLevelTraits()%getTraitsPerModule() == 0) ? 0 : 1)
+	switch(CurveType::stringToEnumValue(info["growthCurve"].at("curveType")))
 	{
-		throwLineInfoException("Error: Item 'correlationCoefficientRhoPerModule' must have a size equal to the value of the arithmetic expression 'numberOfIndividualLevelTraits/traitsPerModule + (numberOfIndividualLevelTraits%traitsPerModule==0?0:1)'.");
+		case CurveType::VonBertalanffy:
+			growthCurve = new VonBertalanffyCurve(info["growthCurve"]["vonBertalanffyParams"]);
+			break;
+		case CurveType::Logistic:
+			growthCurve = new LogisticCurve(info["growthCurve"]["logisticParams"]);
+			break;
+		case CurveType::Logistic3P:
+			growthCurve = new Logistic3PCurve(info["growthCurve"]["logistic3P_Params"]);
+			break;
+		case CurveType::Logistic4P:
+			growthCurve = new Logistic4PCurve(info["growthCurve"]["logistic4P_Params"]);
+			break;
+		case CurveType::Gompertz:
+			growthCurve = new GompertzCurve(info["growthCurve"]["gompertzParams"]);
+			break;
+		case CurveType::Exponential:
+			growthCurve = new ExponentialCurve(info["growthCurve"]["exponentialParams"]);
+			break;
+		default:
+			throwLineInfoException("Default case");
+			break;
 	}
 
-	totFec = getFemaleMaxReproductionEvents() * getEggsPerBatch();
 
-	growthModule = new GrowthModule(this, info["growthModule"]);
+	if(getNumberOfVariableTraits()/getTraitsPerModule() + (getNumberOfVariableTraits()%getTraitsPerModule() == 0) ? 0 : 1)
+	{
+		throwLineInfoException("Error: Item 'correlationCoefficientRhoPerModule' must have a size equal to the value of the arithmetic expression 'numberOfVariableTraits/traitsPerModule + (numberOfVariableTraits%traitsPerModule==0?0:1)'.");
+	}
 }
 
 AnimalSpecies::~AnimalSpecies()
 {
-	for(auto& trait : traits)
-	{	
-		delete trait;
-	}
-
 	for(auto elem : loci) {
 		delete elem;
 	}
 	loci.clear();
 
-	delete growthModule;
+	delete growthCurve;
+
+	for(Trait* elem : traits)
+	{
+		delete elem;
+	}
 }
 
 const id_type& AnimalSpecies::getAnimalSpeciesId() const 
@@ -409,15 +501,15 @@ void AnimalSpecies::addEdibleLink(Species::Type::TypeValue speciesType, Species*
 	}
 }
 
-void AnimalSpecies::calculateCellDepthPerInstar(const Map* const map)
+void AnimalSpecies::calculateCellDepthPerInstar(const MapInterface* const mapInterface)
 {
 	cellDepthPerInstar.reserve(cellSizePerInstar.size());
 	
 	for(const double &cellSize : cellSizePerInstar)
 	{
-		unsigned int actualDepth = static_cast<const SpatialTree* const>(map)->getMapDepth()-1;
+		unsigned int actualDepth = static_cast<const SpatialTreeInterface* const>(mapInterface)->getMapDepth()-1;
 
-		while(cellSize > static_cast<const SpatialTree* const>(map)->getCellSize(actualDepth))
+		while(cellSize > static_cast<const SpatialTreeInterface* const>(mapInterface)->getCellSize(actualDepth))
 		{
 			actualDepth--;
 		}
@@ -453,7 +545,7 @@ const double& AnimalSpecies::getEdiblePreference(const id_type &preySpeciesId, c
 	return getEdibleOntogeneticLink(preySpeciesId, predator, prey).getPreference();
 }
 
-const double& AnimalSpecies::getEdibleProfitability(const id_type &preySpeciesId, const Instar &predator, const Instar &prey) const
+const double& AnimalSpecies::getEdibleProfitability(const id_type &preySpeciesId, const Instar &predator, const Instar &prey)
 {
 	return getEdibleOntogeneticLink(preySpeciesId, predator, prey).getProfitability();
 }
@@ -536,6 +628,11 @@ double AnimalSpecies::calculateInstarK_Density(const Instar &instar, vector<Inst
 void AnimalSpecies::updateMaximumDryMassObserved(double newMaximumDryMass)
 {
 	maximumDryMassObserved = (maximumDryMassObserved < newMaximumDryMass) ? newMaximumDryMass : maximumDryMassObserved;
+}
+
+const vector<Trait::Type>* const AnimalSpecies::getVariableTraits() const
+{
+	return &variableTraits;
 }
 
 void AnimalSpecies::setInitialPredationEventsOnOtherSpecies(unsigned int numberOfSpecies)
@@ -692,11 +789,11 @@ const bool AnimalSpecies::occursHabitatShiftAfterBreeding() const
 	return habitatShiftAfterBreeding;
 }
 
-void AnimalSpecies::obtainEdibleSearchParams(World* const world)
+void AnimalSpecies::obtainEdibleSearchParams(WorldInterface* const worldInterface)
 {
 	for(const Instar &instar : getInstarsRange())
 	{
-		for(const AnimalSpecies* const &otherAnimalSpecies : world->getExistingAnimalSpecies())
+		for(const AnimalSpecies* const &otherAnimalSpecies : worldInterface->getExistingAnimalSpecies())
 		{
 			for(const Instar &otherAnimalSpeciesInstar : otherAnimalSpecies->getInstarsRange())
 			{
@@ -726,7 +823,7 @@ void AnimalSpecies::obtainEdibleSearchParams(World* const world)
 				if(!searchableLifeStages.empty())
 				{
 					edibleSearchParams[instar].addAnimalSearchParams(
-						world, searchableLifeStages, {otherAnimalSpecies->getAnimalSpeciesId()},
+						worldInterface, searchableLifeStages, {otherAnimalSpecies->getAnimalSpeciesId()},
 						{otherAnimalSpeciesInstar}
 					);
 				}
@@ -747,12 +844,12 @@ const EdibleSearchParams& AnimalSpecies::getBreedSearchParams(const Gender::Gend
 	return breedSearchParams[gender];
 }
 
-void AnimalSpecies::obtainBreedSearchParams(World* const world)
+void AnimalSpecies::obtainBreedSearchParams(WorldInterface* const worldInterface)
 {
 	auto searchableLifeStages = {LifeStage::ACTIVE, LifeStage::SATIATED, LifeStage::HANDLING, LifeStage::DIAPAUSE};
 
 	// Get all the animals that can be mated
-	vector<Instar> searchableInstars(find(getInstarsRange().begin(), getInstarsRange().end(), getGrowthModule()->getInstarFirstReproduction()), getInstarsRange().end());
+	vector<Instar> searchableInstars(find(getInstarsRange().begin(), getInstarsRange().end(), getInstarFirstReproduction()), getInstarsRange().end());
 
 	vector<Gender::GenderValue> searchableGender;
 
@@ -775,55 +872,8 @@ void AnimalSpecies::obtainBreedSearchParams(World* const world)
 		}
 
 		breedSearchParams[gender].addAnimalSearchParams(
-			world, searchableLifeStages, {getAnimalSpeciesId()}, searchableInstars, searchableGender
+			worldInterface, searchableLifeStages, {getAnimalSpeciesId()}, searchableInstars, searchableGender
 		);
-	}
-}
-
-void AnimalSpecies::setEggsPerBatch(const json& info)
-{
-	eggsPerBatchFromEquation = info["eggsPerBatchFromEquation"];
-
-	if(eggsPerBatchFromEquation)
-	{
-		interceptForEggBatchFromEquation = info["equationParameters"]["interceptForEggBatchFromEquation"];
-		slopeForEggBatchFromEquation = info["equationParameters"]["slopeForEggBatchFromEquation"];
-	}
-	else
-	{
-		eggsPerBatch = info["value"];
-	}
-}
-
-const bool AnimalSpecies::getEggsPerBatchFromEquation() const
-{
-	return eggsPerBatchFromEquation;
-}
-
-const double& AnimalSpecies::getEggsPerBatch() const 
-{ 
-	return eggsPerBatch; 
-}
-
-const double& AnimalSpecies::getInterceptForEggBatchFromEquation() const
-{
-	return interceptForEggBatchFromEquation;
-}
-
-const double& AnimalSpecies::getSlopeForEggBatchFromEquation() const
-{
-	return slopeForEggBatchFromEquation;
-}
-
-double AnimalSpecies::calculateEggsPerBatch(const double& individualDryMass) const
-{
-	if(getEggsPerBatchFromEquation())
-	{
-		return getInterceptForEggBatchFromEquation() + getSlopeForEggBatchFromEquation()*convertToWetMass(individualDryMass);
-	}
-	else
-	{
-		return getEggsPerBatch();
 	}
 }
 
@@ -832,16 +882,16 @@ const EdibleSearchParams& AnimalSpecies::getCellEvaluationSearchParams(const Ins
     return cellEvaluationSearchParams[instar];
 }
 
-void AnimalSpecies::obtainCellEvaluationSearchParams(World* const world)
+void AnimalSpecies::obtainCellEvaluationSearchParams(WorldInterface* const worldInterface)
 {
 	for(const Instar &instar : getInstarsRange())
 	{
-		for(const AnimalSpecies* const &otherAnimalSpecies : world->getExistingAnimalSpecies())
+		for(const AnimalSpecies* const &otherAnimalSpecies : worldInterface->getExistingAnimalSpecies())
 		{
 			if(getAnimalSpeciesId() == otherAnimalSpecies->getAnimalSpeciesId())
 			{
 				cellEvaluationSearchParams[instar].addAnimalSearchParams(
-					world, {LifeStage::ACTIVE}, {otherAnimalSpecies->getAnimalSpeciesId()}
+					worldInterface, {LifeStage::ACTIVE}, {otherAnimalSpecies->getAnimalSpeciesId()}
 				);
 			}
 			else
@@ -858,7 +908,7 @@ void AnimalSpecies::obtainCellEvaluationSearchParams(World* const world)
 					if(isSpeciePrey || isSpeciePredator)
 					{
 						cellEvaluationSearchParams[instar].addAnimalSearchParams(
-							world, {LifeStage::ACTIVE}, {otherAnimalSpecies->getAnimalSpeciesId()},
+							worldInterface, {LifeStage::ACTIVE}, {otherAnimalSpecies->getAnimalSpeciesId()},
 							{otherAnimalSpeciesInstar}
 						);
 					}
@@ -880,10 +930,10 @@ const EdibleSearchParams& AnimalSpecies::getMatureFemalesSearchParams() const
 	return *matureFemalesSearchParams;
 }
 
-void AnimalSpecies::obtainMatureFemalesSearchParams(World* const world)
+void AnimalSpecies::obtainMatureFemalesSearchParams(WorldInterface* const worldInterface)
 {
 	matureFemalesSearchParams->addAnimalSearchParams(
-		world, {LifeStage::ACTIVE, LifeStage::SATIATED, LifeStage::HANDLING, LifeStage::DIAPAUSE},
+		worldInterface, {LifeStage::ACTIVE, LifeStage::SATIATED, LifeStage::HANDLING, LifeStage::DIAPAUSE},
 		{getAnimalSpeciesId()}, {}, {AnimalSpecies::Gender::FEMALE}
 	);
 }
@@ -893,9 +943,9 @@ const AnimalSearchParams& AnimalSpecies::getPopulationSearchParams() const
 	return *populationSearchParams;
 }
 
-void AnimalSpecies::obtainPopulationSearchParams(World* const world)
+void AnimalSpecies::obtainPopulationSearchParams(WorldInterface* const worldInterface)
 {
-	populationSearchParams->addSearchParams(world, LifeStage::getEnumValues(), {getAnimalSpeciesId()});
+	populationSearchParams->addSearchParams(worldInterface, LifeStage::getEnumValues(), {getAnimalSpeciesId()});
 }
 
 const AnimalSearchParams& AnimalSpecies::getLifeStageSearchParams(const LifeStage::LifeStageValue &lifeStage) const
@@ -903,11 +953,11 @@ const AnimalSearchParams& AnimalSpecies::getLifeStageSearchParams(const LifeStag
     return lifeStageSearchParams[lifeStage];
 }
 
-void AnimalSpecies::obtainLifeStageSearchParams(World* const world)
+void AnimalSpecies::obtainLifeStageSearchParams(WorldInterface* const worldInterface)
 {
     for(const auto &lifeStage : LifeStage::getEnumValues())
     {
-        lifeStageSearchParams[lifeStage].addSearchParams(world, {lifeStage}, {getAnimalSpeciesId()});
+        lifeStageSearchParams[lifeStage].addSearchParams(worldInterface, {lifeStage}, {getAnimalSpeciesId()});
     }
 }
 
@@ -919,40 +969,6 @@ const vector<ResourceSpecies*>& AnimalSpecies::getInstarInvolvedResourceSpecies(
 const vector<unordered_map<Species*, vector<Instar>>>& AnimalSpecies::getInstarEdibleSpecies(const Instar &instar) const
 {
 	return edibleSpecies[instar];
-}
-
-const double AnimalSpecies::calculateDryMass(const double& length, const bool mature) const
-{
-	if(mature)
-	{
-		return convertLengthToDryMass(length, getCoefficientForMassAforMature(), getScaleForMassBforMature());
-	}
-	else
-	{
-		return convertLengthToDryMass(length, getCoefficientForMassA(), getScaleForMassB());
-	}
-}
-
-const GrowthModule* const AnimalSpecies::getGrowthModule() const
-{
-	return growthModule;
-}
-
-GrowthModule* const AnimalSpecies::getMutableGrowthModule()
-{
-	return growthModule;
-}
-
-const double AnimalSpecies::calculateDryLength(const double& dryMass, const bool mature) const
-{
-	if(mature)
-	{
-		return convertDryMassToLength(dryMass, getCoefficientForMassAforMature(), getScaleForMassBforMature());
-	}
-	else
-	{
-		return convertDryMassToLength(dryMass, getCoefficientForMassA(), getScaleForMassB());
-	}
 }
 
 const unordered_map<Species*, vector<Instar>>& AnimalSpecies::getInstarEdibleAnimalSpecies(const Instar &instar) const
@@ -1017,6 +1033,21 @@ void AnimalSpecies::calculateMaxVorHunted(double maxVorHunted)
 
 }
 
+
+
+void AnimalSpecies::calculateMinSpeedHunted(double minSpeedHunted)
+{
+	this->minSpeedHunted = min(this->minSpeedHunted, minSpeedHunted);
+
+}
+
+void AnimalSpecies::calculateMaxSpeedHunted(double maxSpeedHunted)
+{
+	this->maxSpeedHunted = max(this->maxSpeedHunted, maxSpeedHunted);
+
+}
+
+
 void AnimalSpecies::calculateMinSizeHunter(double minSizeHunter)
 {
 	this->minSizeHunter = min(this->minSizeHunter, minSizeHunter);
@@ -1040,6 +1071,19 @@ void AnimalSpecies::calculateMaxVorHunter(double maxVorHunter)
 	this->maxVorHunter = max(this->maxVorHunter, maxVorHunter);
 
 }
+
+void AnimalSpecies::calculateMinSpeedHunter(double minSpeedHunter)
+{
+	this->minSpeedHunter = min(this->minSpeedHunter, minSpeedHunter);
+
+}
+
+void AnimalSpecies::calculateMaxSpeedHunter(double maxSpeedHunter)
+{
+	this->maxSpeedHunter = max(this->maxSpeedHunter, maxSpeedHunter);
+
+}
+
 
 void AnimalSpecies::calculateMinSearchAreaHunter(double minSearchAreaHunter)
 {
@@ -1090,45 +1134,229 @@ void AnimalSpecies::calculateMaxSpeedRatio(double maxSpeedRatio)
 
 }
 
-void AnimalSpecies::setCapitalBreeding(const json &info)
+void AnimalSpecies::sumMeanSizeHunted(double meanSizeHunted)
 {
-	capitalBreeding = info["enabled"];
-
-	if(capitalBreeding)
-	{
-		timeOfReproEventDuringCapitalBreeding = info["capitalBreedingParams"]["timeOfReproEventDuringCapitalBreeding"];
-		numberOfCapitalBreeds = info["capitalBreedingParams"]["numberOfCapitalBreeds"];
-	}
+	this->meanSizeHunted += meanSizeHunted;
 }
 
-const bool AnimalSpecies::hasCapitalBreeding() const
+void AnimalSpecies::sumMeanVorHunted(double meanVorHunted)
 {
-	return capitalBreeding;
+	this->meanVorHunted += meanVorHunted;
 }
 
-const double& AnimalSpecies::getNewAAdult() const
+void AnimalSpecies::sumSdSizeHunted(double sdSizeHunted)
 {
-	return newAAdult;
+	this->sdSizeHunted += pow(sdSizeHunted - meanSizeHunted, 2);
 }
 
-const double& AnimalSpecies::getNewB() const
+void AnimalSpecies::sumSdVorHunted(double sdVorHunted)
 {
-	return newB;
+	this->sdVorHunted += pow(sdVorHunted - meanVorHunted, 2);
 }
 
-const double& AnimalSpecies::getH_Enhancement() const
+void AnimalSpecies::sumMeanSpeedHunted(double meanSpeedHunted)
 {
-	return h_enhancement;
+	this->meanSpeedHunted += meanSpeedHunted;
 }
 
-const unsigned int AnimalSpecies::getTimeOfReproEventDuringCapitalBreeding() const
+void AnimalSpecies::sumSdSpeedHunted(double sdSpeedHunted)
 {
-	return timeOfReproEventDuringCapitalBreeding;
+	this->sdSpeedHunted += pow(sdSpeedHunted - meanSpeedHunted, 2);
 }
 
-const unsigned int AnimalSpecies::getNumberOfCapitalBreeds() const
+void AnimalSpecies::sumMeanSizeHunter(double meanSizeHunter)
 {
-	return numberOfCapitalBreeds;
+	this->meanSizeHunter += meanSizeHunter;
+}
+
+void AnimalSpecies::sumSdSizeHunter(double sdSizeHunter)
+{
+	this->sdSizeHunter += pow(sdSizeHunter - meanSizeHunter, 2);
+}
+
+void AnimalSpecies::sumMeanVorHunter(double meanVorHunter)
+{
+	this->meanVorHunter += meanVorHunter;
+}
+
+void AnimalSpecies::sumSdVorHunter(double sdVorHunter)
+{
+	this->sdVorHunter += pow(sdVorHunter - meanVorHunter, 2);
+}
+
+void AnimalSpecies::sumMeanSpeedHunter(double meanSpeedHunter)
+{
+	this->meanSpeedHunter += meanSpeedHunter;
+}
+
+void AnimalSpecies::sumSdSpeedHunter(double sdSpeedHunter)
+{
+	this->sdSpeedHunter += pow(sdSpeedHunter - meanSpeedHunter, 2);
+}
+
+void AnimalSpecies::sumMeanSearchAreaHunter(double meanSearchAreaHunter)
+{
+	this->meanSearchAreaHunter += meanSearchAreaHunter;
+}
+
+void AnimalSpecies::sumSdSearchAreaHunter(double sdSearchAreaHunter)
+{
+	this->sdSearchAreaHunter += pow(sdSearchAreaHunter - meanSearchAreaHunter, 2);
+}
+
+void AnimalSpecies::sumMeanProbabilityDensityFunction(double meanProbabilityDensityFunction)
+{
+	this->meanProbabilityDensityFunction += meanProbabilityDensityFunction;
+}
+
+void AnimalSpecies::sumSdProbabilityDensityFunction(double sdProbabilityDensityFunction)
+{
+	this->sdProbabilityDensityFunction += pow(sdProbabilityDensityFunction - meanProbabilityDensityFunction, 2);
+}
+
+void AnimalSpecies::sumMeanVorXVor(double meanVorXVor)
+{
+	this->meanVorXVor += meanVorXVor;
+}
+
+void AnimalSpecies::sumSdVorXVor(double sdVorXVor)
+{
+	this->sdVorXVor += pow(sdVorXVor - meanVorXVor, 2);
+}
+
+void AnimalSpecies::sumMeanSpeedRatio(double meanSpeedRatio)
+{
+
+	this->meanSpeedRatio += meanSpeedRatio;
+
+}
+
+void AnimalSpecies::sumSdSpeedRatio(double sdSpeedRatio)
+{
+	this->sdSpeedRatio += pow(sdSpeedRatio - meanSpeedRatio, 2);
+}
+
+void AnimalSpecies::sumMeanSizeRatio(double meanSizeRatio)
+{
+	this->meanSizeRatio += meanSizeRatio;
+}
+
+void AnimalSpecies::sumSdSizeRatio(double sdSizeRatio)
+{
+	this->sdSizeRatio += pow(sdSizeRatio - meanSizeRatio, 2);
+}
+
+void AnimalSpecies::calculateMeanSizeHunted(int population)
+{
+	this->meanSizeHunted = meanSizeHunted / population;
+}
+
+void AnimalSpecies::calculateSdSizeHunted(int population)
+{
+	this->sdSizeHunted = sqrt(sdSizeHunted / population);
+}
+
+void AnimalSpecies::calculateMeanVorHunted(int population)
+{
+	this->meanVorHunted = meanVorHunted / population;
+}
+
+void AnimalSpecies::calculateSdVorHunted(int population)
+{
+	this->sdVorHunted = sqrt(sdVorHunted / population);
+}
+
+void AnimalSpecies::calculateMeanSpeedHunted(int population)
+{
+	this->meanSpeedHunted = meanSpeedHunted / population;
+}
+
+void AnimalSpecies::calculateSdSpeedHunted(int population)
+{
+	this->sdSpeedHunted = sqrt(sdSpeedHunted / population);
+}
+
+void AnimalSpecies::calculateMeanSizeHunter(int population)
+{
+	this->meanSizeHunter = meanSizeHunter / population;
+}
+
+void AnimalSpecies::calculateSdSizeHunter(int population)
+{
+	this->sdSizeHunter = sqrt(sdSizeHunter / population);
+}
+
+void AnimalSpecies::calculateMeanVorHunter(int population)
+{
+	this->meanVorHunter = meanVorHunter / population;
+}
+
+void AnimalSpecies::calculateSdVorHunter(int population)
+{
+	this->sdVorHunter = sqrt(sdVorHunter / population);
+}
+
+void AnimalSpecies::calculateMeanSpeedHunter(int population)
+{
+	this->meanSpeedHunter = meanSpeedHunter / population;
+}
+
+void AnimalSpecies::calculateSdSpeedHunter(int population)
+{
+	this->sdSpeedHunter = sqrt(sdSpeedHunter / population);
+}
+
+void AnimalSpecies::calculateMeanSearchAreaHunter(int population)
+{
+	this->meanSearchAreaHunter = meanSearchAreaHunter / population;
+}
+
+void AnimalSpecies::calculateSdSearchAreaHunter(int population)
+{
+	this->sdSearchAreaHunter = sqrt(sdSearchAreaHunter / population);
+}
+
+void AnimalSpecies::calculateMeanProbabilityDensityFunction(int population)
+{
+	this->meanProbabilityDensityFunction = meanProbabilityDensityFunction / population;
+}
+
+void AnimalSpecies::calculateSdProbabilityDensityFunction(int population)
+{
+	this->sdProbabilityDensityFunction = sqrt(sdProbabilityDensityFunction / population);
+}
+
+void AnimalSpecies::calculateMeanVorXVor(int population)
+{
+	this->meanVorXVor = meanVorXVor / population;
+}
+
+void AnimalSpecies::calculateSdVorXVor(int population)
+{
+	this->sdVorXVor = sqrt(sdVorXVor / population);
+}
+
+void AnimalSpecies::calculateMeanSpeedRatio(int population)
+{
+	this->meanSpeedRatio = meanSpeedRatio / population;
+
+	cout << "mean" << meanSpeedRatio << endl;
+	cout << "pop" << population << endl;
+}
+
+void AnimalSpecies::calculateSdSpeedRatio(int population)
+{
+	this->sdSpeedRatio = sqrt(sdSpeedRatio / population);
+}
+
+void AnimalSpecies::calculateMeanSizeRatio(int population)
+{
+	this->meanSizeRatio = meanSizeRatio / population;
+}
+
+void AnimalSpecies::calculateSdSizeRatio(int population)
+{
+	this->sdSizeRatio = sqrt(sdSizeRatio / population);
 }
 
 void AnimalSpecies::setVonBertLinf(double vonBertLinf)
@@ -1141,56 +1369,111 @@ void AnimalSpecies::setVonBertKini(double vonBertKini)
 	this->vonBertKini = vonBertKini;
 }
 
-void AnimalSpecies::setPlasticityDueToConditionVor(const double& plasticityDueToConditionVor)
+void AnimalSpecies::setLinfKcorr(const double& LinfKcorr)
 {
-	if (plasticityDueToConditionVor > 0)
+	this->LinfKcorr = LinfKcorr;
+	cholMat = MathFunctions::cholesky(LinfKcorr);
+}
+
+void AnimalSpecies::setEggMassFromEquation(const bool& eggMassFromEquation)
+{
+	this->eggMassFromEquation = eggMassFromEquation;
+	if(eggMassFromEquation)
 	{
-		this->plasticityDueToConditionVor = plasticityDueToConditionVor;
+		eggDryMass = (forEggMassCoefficient * pow(femaleWetMass, forEggMassScale)) / getConversionToWetMass();
+	}
+}
+
+void AnimalSpecies::setMaxPlasticityDueToConditionVor(const double& maxPlasticityDueToConditionVor)
+{
+	if (maxPlasticityDueToConditionVor > 0)
+	{
+		this->maxPlasticityDueToConditionVor = maxPlasticityDueToConditionVor;
 	}
 	else
 	{
 		std::cerr << "For the species '" << getScientificName() << "':" << std::endl;
-		std::cerr << "plasticityDueToConditionVor must be a positive value. You entered " << plasticityDueToConditionVor << ". Exiting now" << std::endl;
+		std::cerr << "maxPlasticityDueToConditionVor must be a positive value. You entered " << maxPlasticityDueToConditionVor << ". Exiting now" << std::endl;
 		exit(-1);
 	}
 }
 
-void AnimalSpecies::setPlasticityDueToConditionSearch(const double& plasticityDueToConditionSearch)
+void AnimalSpecies::setMinPlasticityDueToConditionVor(const double& minPlasticityDueToConditionVor)
 {
-	if (plasticityDueToConditionSearch > 0)
+	if (minPlasticityDueToConditionVor > 0)
 	{
-		this->plasticityDueToConditionSearch = plasticityDueToConditionSearch;
+		this->minPlasticityDueToConditionVor = minPlasticityDueToConditionVor;
 	}
 	else
 	{
 		std::cerr << "For the species '" << getScientificName() << "':" << std::endl;
-		std::cerr << "plasticityDueToConditionSearch must be a positive value. You entered " << plasticityDueToConditionSearch << ". Exiting now" << std::endl;
+		std::cerr << "minPlasticityDueToConditionVor must be a positive value. You entered " << minPlasticityDueToConditionVor << ". Exiting now" << std::endl;
 		exit(-1);
 	}
 }
 
-void AnimalSpecies::setPlasticityDueToConditionSpeed(const double& plasticityDueToConditionSpeed)
+void AnimalSpecies::setMaxPlasticityDueToConditionSearch(const double& maxPlasticityDueToConditionSearch)
 {
-	if (plasticityDueToConditionSpeed > 0)
+	if (maxPlasticityDueToConditionSearch > 0)
 	{
-		this->plasticityDueToConditionSpeed = plasticityDueToConditionSpeed;
+		this->maxPlasticityDueToConditionSearch = maxPlasticityDueToConditionSearch;
 	}
 	else
 	{
 		std::cerr << "For the species '" << getScientificName() << "':" << std::endl;
-		std::cerr << "plasticityDueToConditionSpeed must be a positive value. You entered " << plasticityDueToConditionSpeed << ". Exiting now" << std::endl;
+		std::cerr << "maxPlasticityDueToConditionSearch must be a positive value. You entered " << maxPlasticityDueToConditionSearch << ". Exiting now" << std::endl;
 		exit(-1);
 	}
 }
 
-void AnimalSpecies::updateMaxEncountersPerDay(const unsigned int newMaxEncountersPerDay)
+void AnimalSpecies::setMinPlasticityDueToConditionSearch(const double& minPlasticityDueToConditionSearch)
 {
-	maxEncountersPerDay = max(maxEncountersPerDay, newMaxEncountersPerDay);
+	if (minPlasticityDueToConditionSearch > 0)
+	{
+		this->minPlasticityDueToConditionSearch = minPlasticityDueToConditionSearch;
+	}
+	else
+	{
+		std::cerr << "For the species '" << getScientificName() << "':" << std::endl;
+		std::cerr << "minPlasticityDueToConditionSearch must be a positive value. You entered " << minPlasticityDueToConditionSearch << ". Exiting now" << std::endl;
+		exit(-1);
+	}
 }
 
-const unsigned int AnimalSpecies::getMaxEncountersPerDay() const
+void AnimalSpecies::setMaxPlasticityDueToConditionSpeed(const double& maxPlasticityDueToConditionSpeed)
 {
-	return maxEncountersPerDay;
+	if (maxPlasticityDueToConditionSpeed > 0)
+	{
+		this->maxPlasticityDueToConditionSpeed = maxPlasticityDueToConditionSpeed;
+	}
+	else
+	{
+		std::cerr << "For the species '" << getScientificName() << "':" << std::endl;
+		std::cerr << "maxPlasticityDueToConditionSpeed must be a positive value. You entered " << maxPlasticityDueToConditionSpeed << ". Exiting now" << std::endl;
+		exit(-1);
+	}
+}
+
+void AnimalSpecies::setMinPlasticityDueToConditionSpeed(const double& minPlasticityDueToConditionSpeed)
+{
+	if (minPlasticityDueToConditionSpeed > 0)
+	{
+		this->minPlasticityDueToConditionSpeed = minPlasticityDueToConditionSpeed;
+	}
+	else
+	{
+		std::cerr << "For the species '" << getScientificName() << "':" << std::endl;
+		std::cerr << "minPlasticityDueToConditionSpeed must be a positive value. You entered " << minPlasticityDueToConditionSpeed << ". Exiting now" << std::endl;
+		exit(-1);
+	}
+}
+
+void AnimalSpecies::initializeFixedTraits(double* const animalTraits) const
+{
+	for(size_t i = 0; i < getNumberOfFixedTraits(); i++)
+	{
+		animalTraits[fixedTraits[i]] = static_cast<FixedTrait*>(traits[fixedTraits[i]])->getValue();
+	}
 }
 
 AnimalSpecies::Gender::GenderValue AnimalSpecies::getRandomGender() const
@@ -1217,20 +1500,27 @@ void AnimalSpecies::setExperienceInfluencePerDay(const float& experienceInfluenc
 	}
 }
 
-void AnimalSpecies::setMassInfo(const bool& eggClutchFromEquation, const double& forClutchMassCoefficient,
-					 			const double& forClutchMassScale)
+void AnimalSpecies::setMassInfo(const float& conversionToWetMass, const bool& eggClutchFromEquation, const double& forClutchMassCoefficient,
+					 			const double& forClutchMassScale, const double& forEggMassCoefficient, const double& forEggMassScale,
+					 			const double& eggDryMass, const double& femaleWetMass, const bool& eggMassFromEquation)
 {
+	setConversionToWetMass(conversionToWetMass);
 	setEggClutchFromEquation(eggClutchFromEquation);
 	setForClutchMassCoefficient(forClutchMassCoefficient);
 	setForClutchMassScale(forClutchMassScale);
+	setForEggMassCoefficient(forEggMassCoefficient);
+	setForEggMassScale(forEggMassScale);
+	setEggDryMass(eggDryMass);
+	setFemaleWetMass(femaleWetMass);
+	//This setEggMassFromEquation must be used AFTER setting these previous 5 values!!
+	setEggMassFromEquation(eggMassFromEquation);
 }
 
-/*
 void AnimalSpecies::initWetBiomassDensitiesPerAge(Temperature temperature, int timeStepsPerDay)
 {
 	//double tmax = 273 + tempFromLab;
 
-	double preGrowth = getMinTraitRange(Trait::Type::growth) + ((getMaxTraitRange(Trait::Type::growth) - getMinTraitRange(Trait::Type::growth))/2);
+	double preGrowth = getMinTraitRange(Trait::growth) + ((getMaxTraitRange(Trait::growth) - getMinTraitRange(Trait::growth))/2);
 
 	double thisAnimalTempSizeRuleConstant = tempSizeRuleConstant;
 	double degreesDifference = fabs(temperature.getTemperatureCelsius() - tempFromLab.getTemperatureCelsius());
@@ -1261,7 +1551,7 @@ void AnimalSpecies::initWetBiomassDensitiesPerAge(Temperature temperature, int t
 
 	//Here the TSR rule is improved by directly affecting asymptotic body mass, not length.
 	 //Here to calculate the new dev time we need to calculate the mass of the adult after TSR has been applied
-	double ageLastInstar = instarDevTimeVector.back();
+	double ageLastInstar = devTimeVector.back();
 
 	VonBertalanffyCurveParams params;
 	params.setAsymptoticSize(Linf);
@@ -1309,7 +1599,6 @@ void AnimalSpecies::initWetBiomassDensitiesPerAge(Temperature temperature, int t
 		initialPopulation.push_back(density);
 	}
 }
-*/
 
 void AnimalSpecies::scaleInitialPopulation(double totalPopulationDensity, double initialEcosystemSize)
 {
@@ -1336,93 +1625,148 @@ unsigned int AnimalSpecies::getTotalStatisticsInitialPopulation()
 	return getStatisticsIndividualsPerInstar() * getNumberOfInstars();
 }
 
-const double& AnimalSpecies::getBetaScaleTank() const 
-{ 
-	return betaScaleTank; 
+void AnimalSpecies::calculatePseudoGrowthMean()
+{
+	pseudoGrowthMean = pseudoGrowthMean / getTotalStatisticsInitialPopulation();
+	cout << getScientificName() << "_pseudoGrowthMean=" << pseudoGrowthMean << endl;
 }
 
-std::pair<double, double> AnimalSpecies::decomposeMassElements(const double &dryMass, const double &energyTankTraitValue) const
+void AnimalSpecies::calculatePseudoGrowthSd()
 {
-	double energyTank = energyTankTraitValue * pow(dryMass, getBetaScaleTank());
-	double bodySize = dryMass - energyTank;
-
-	return make_pair<>(energyTank, bodySize);
+	pseudoGrowthSd = sqrt(pseudoGrowthSd / getTotalStatisticsInitialPopulation());
+	cout << getScientificName() << "_pseudoGrowthSd=" << pseudoGrowthSd << endl;
 }
 
-std::pair<double, double> AnimalSpecies::decomposeMassElements(const double &dryMass, const double& investment, const double &energyTankTraitValue) const
+
+
+void AnimalSpecies::interactionRanges(double hunterAnimalBodySize, double hunterAnimalVoracity, double hunterAnimalSpeed, double hunterAnimalDryMass, double huntedAnimalBodySize, double huntedAnimalVoracity, double huntedAnimalSpeed, double huntedAnimalDryMass, double muForPDF, double sigmaForPDF)
 {
-	double energyTank = energyTankTraitValue * pow(dryMass, getBetaScaleTank());
-	double bodySize = dryMass - energyTank;
-
-	double excessInvestment = investment-dryMass;
-
-	double energyTankWithExcess = energyTank + excessInvestment*(1-getExcessInvestInSize());
-	double bodySizeWithExcess = bodySize + excessInvestment*getExcessInvestInSize();
-
-	return make_pair<>(energyTankWithExcess, bodySizeWithExcess);
-}
-
-// std::pair<double, double> AnimalSpecies::calculateHunterSizeRanges(const double& minDryMassHunter, const double& maxDryMassHunter) const
-// {
-// 	double tmpEnergyTank, minCurrentBodySizeHunter, maxCurrentBodySizeHunter;
-
-// 	tie(tmpEnergyTank, minCurrentBodySizeHunter) = decomposeMassElements(
-// 		minDryMassHunter, 
-// 		getTrait(Trait::Type::energy_tank).getElements().at(TraitDefinitionSection::Elements::TraitValue)->getMaxRestrictedRange()
-// 	);
-
-// 	tie(tmpEnergyTank, maxCurrentBodySizeHunter) = decomposeMassElements(
-// 		maxDryMassHunter, 
-// 		getTrait(Trait::Type::energy_tank).getElements().at(TraitDefinitionSection::Elements::TraitValue)->getMinRestrictedRange()
-// 	);
-
-// 	return make_pair<>(minCurrentBodySizeHunter, maxCurrentBodySizeHunter);
-// }
-
-// void AnimalSpecies::setHunterInteractionRanges()
-// {
+	calculateMinSizeHunted(huntedAnimalBodySize);
+	calculateMaxSizeHunted(huntedAnimalBodySize);
 	
-// }
-
-void AnimalSpecies::interactionRanges(AnimalInterface& predator, AnimalInterface& prey, double muForPDF, double sigmaForPDF)
-{
-	calculateMinSizeHunted(prey.getAnimalGrowth()->getCurrentBodySize());
-	calculateMaxSizeHunted(prey.getAnimalGrowth()->getCurrentBodySize());
+    calculateMinVorHunted(huntedAnimalVoracity);
+	calculateMaxVorHunted(huntedAnimalVoracity);
 	
-    calculateMinVorHunted(prey.getVoracity());
-	calculateMaxVorHunted(prey.getVoracity());
+	calculateMinSpeedHunted(huntedAnimalSpeed);
+	calculateMaxSpeedHunted(huntedAnimalSpeed);
 
-	calculateMinSizeHunter(predator.getAnimalGrowth()->getCurrentBodySize());
-	calculateMaxSizeHunter(predator.getAnimalGrowth()->getCurrentBodySize());
+	calculateMinSizeHunter(hunterAnimalBodySize);
+	calculateMaxSizeHunter(hunterAnimalBodySize);
 	
-    calculateMinVorHunter(predator.getVoracity());
-	calculateMaxVorHunter(predator.getVoracity());
+    calculateMinVorHunter(hunterAnimalVoracity);
+	calculateMaxVorHunter(hunterAnimalVoracity);
+	
+	calculateMinSpeedHunter(hunterAnimalSpeed);
+	calculateMaxSpeedHunter(hunterAnimalSpeed);
 
-	double probabilityDensityFunction = exp(-0.5 * pow((log(predator.calculateDryMass()/prey.calculateDryMass()) - muForPDF) / sigmaForPDF, 2)) / (sigmaForPDF * sqrt(2*PI));
+	double probabilityDensityFunction = exp(-0.5 * pow((log(hunterAnimalDryMass/huntedAnimalDryMass) - muForPDF) / sigmaForPDF, 2)) / (sigmaForPDF * sqrt(2*PI));
 	calculateMinProbabilityDensityFunction(probabilityDensityFunction);
 	calculateMaxProbabilityDensityFunction(probabilityDensityFunction);
 
-	calculateMinVorXVor(predator.getVoracity()*prey.getVoracity());
-	calculateMaxVorXVor(predator.getVoracity()*prey.getVoracity());
+	calculateMinVorXVor(hunterAnimalVoracity*huntedAnimalVoracity);
+	calculateMaxVorXVor(hunterAnimalVoracity*huntedAnimalVoracity);
 
 
 
-	if(prey.getSpeed()<0.001){
+	if(huntedAnimalSpeed<0.001){
 
-		calculateMinSpeedRatio(predator.getSpeed()/prey.getSpeed());
-		calculateMaxSpeedRatio(predator.getSpeed()/prey.getSpeed());
+		calculateMinSpeedRatio(hunterAnimalSpeed/huntedAnimalSpeed);
+		calculateMaxSpeedRatio(hunterAnimalSpeed/huntedAnimalSpeed);
 
 	}else{
 
-		calculateMinSpeedRatio(predator.getSpeed()/prey.getSpeed());
-		calculateMaxSpeedRatio(predator.getSpeed()/prey.getSpeed());
+		calculateMinSpeedRatio(hunterAnimalSpeed/huntedAnimalSpeed);
+		calculateMaxSpeedRatio(hunterAnimalSpeed/huntedAnimalSpeed);
 
 	}
+
+	sumMeanSizeRatio(hunterAnimalBodySize / huntedAnimalBodySize);
+}
+ 
+
+void AnimalSpecies::sumStatisticMeans(double hunterAnimalBodySize, double hunterAnimalVoracity, double hunterAnimalSpeed, double hunterAnimalDryMass, double huntedAnimalBodySize, double huntedAnimalVoracity, double huntedAnimalSpeed, double huntedAnimalDryMass, double muForPDF, double sigmaForPDF)
+{
+	sumMeanSizeHunted(huntedAnimalBodySize);
+	sumMeanVorHunted(huntedAnimalVoracity);
+	sumMeanSpeedHunted(huntedAnimalSpeed);
+	sumMeanSizeHunter(hunterAnimalBodySize);
+	sumMeanVorHunter(hunterAnimalVoracity);
+	sumMeanSpeedHunter(hunterAnimalSpeed);
+	double probabilityDensityFunction = exp(-0.5 * pow((log(hunterAnimalDryMass/huntedAnimalDryMass) - muForPDF) / sigmaForPDF, 2)) / (sigmaForPDF * sqrt(2*PI));
+	sumMeanProbabilityDensityFunction(probabilityDensityFunction);
+	sumMeanVorXVor(hunterAnimalVoracity * huntedAnimalVoracity);
+
+	//this is to avoid zeroes in the denominator
+	if(huntedAnimalSpeed<0.001){
+
+		sumMeanSpeedRatio(hunterAnimalSpeed / hunterAnimalSpeed);
+
+	}else{
+
+		sumMeanSpeedRatio(hunterAnimalSpeed / huntedAnimalSpeed);
+
+	}
+
+	//double test=hunterAnimal->getSpeed() / huntedAnimal->getSpeed();
+	//if(std::isnan(test)){
+	//if(huntedAnimal->getSpeed()<0.0000000001){
+	/*if(huntedAnimal->getId()==24600){
+		cout << "hunter vs hunted speed" << endl;
+		cout << hunterAnimal->getSpeed() << endl;
+		cout << "id: " << huntedAnimal->getId() << endl;
+		cout << huntedAnimal->getSpeed() << endl;
+		cout << "dry mass :"<< huntedAnimal->calculateDryMass() << endl;
+		cout << huntedAnimal->speed_ini << endl;
+		cout << huntedAnimal->getSpeed() << endl;
+		cout << "ZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZ" << endl;
+	}*/
+
+	sumMeanSizeRatio(hunterAnimalBodySize / huntedAnimalBodySize);
 }
 
-const double& AnimalSpecies::getTotFec() const
+void AnimalSpecies::computeStatisticMeans(unsigned int numberOfAttacks)
 {
-	return totFec;
+	calculateMeanSizeHunted(numberOfAttacks);
+	calculateMeanVorHunted(numberOfAttacks);
+	calculateMeanSpeedHunted(numberOfAttacks);
+	calculateMeanSizeHunter(numberOfAttacks);
+	calculateMeanVorHunter(numberOfAttacks);
+	calculateMeanSpeedHunter(numberOfAttacks);
+	calculateMeanSearchAreaHunter(numberOfAttacks);
+	calculateMeanProbabilityDensityFunction(numberOfAttacks);
+	calculateMeanVorXVor(numberOfAttacks);
+	calculateMeanSpeedRatio(numberOfAttacks);
+	calculateMeanSizeRatio(numberOfAttacks);
+}
+
+void AnimalSpecies::sumStatisticSds(double hunterAnimalBodySize, double hunterAnimalVoracity, double hunterAnimalSpeed, double hunterAnimalDryMass, double huntedAnimalBodySize, double huntedAnimalVoracity, double huntedAnimalSpeed, double huntedAnimalDryMass, double muForPDF, double sigmaForPDF)
+{
+	sumSdSizeHunted(huntedAnimalBodySize);
+	sumSdVorHunted(huntedAnimalVoracity);
+	sumSdSpeedHunted(huntedAnimalSpeed);
+	sumSdSizeHunter(hunterAnimalBodySize);
+	sumSdVorHunter(hunterAnimalVoracity);
+	sumSdSpeedHunter(hunterAnimalSpeed);
+	double probabilityDensityFunction = exp(-0.5 * pow((log(hunterAnimalDryMass/huntedAnimalDryMass) - muForPDF) / sigmaForPDF, 2)) / (sigmaForPDF * sqrt(2*PI));
+	sumSdProbabilityDensityFunction(probabilityDensityFunction);
+	sumSdVorXVor(hunterAnimalVoracity * huntedAnimalVoracity);
+	sumSdSpeedRatio(hunterAnimalSpeed / huntedAnimalSpeed);
+	sumSdSizeRatio(hunterAnimalBodySize / huntedAnimalBodySize);
+}
+
+void AnimalSpecies::computeStatisticSds(unsigned int numberOfAttacks)
+{
+	calculateSdSizeHunted(numberOfAttacks);
+	calculateSdVorHunted(numberOfAttacks);
+	calculateSdSpeedHunted(numberOfAttacks);
+	calculateSdSizeHunter(numberOfAttacks);
+	calculateSdVorHunter(numberOfAttacks);
+	calculateSdSpeedHunter(numberOfAttacks);
+	calculateSdSearchAreaHunter(numberOfAttacks);
+	calculateSdProbabilityDensityFunction(numberOfAttacks);
+	calculateSdVorXVor(numberOfAttacks);
+	calculateSdSpeedRatio(numberOfAttacks);
+	calculateSdSizeRatio(numberOfAttacks);
 }
 
 double AnimalSpecies::getMaxPredationProbability()
@@ -1445,165 +1789,56 @@ void AnimalSpecies::setMaxPredationIndividualWetMass(double maxPredationIndividu
 	this->maxPredationIndividualWetMass = maxPredationIndividualWetMass;
 }
 
-const std::vector<std::pair<Trait::Type, TraitDefinitionSection::Elements>>& AnimalSpecies::getIndividualLevelTraitElements() const
-{
-	return individualLevelTraitElements;
-}
-
-bool AnimalSpecies::isInsideRestrictedRanges(const CustomIndexedVector<Trait::Type, CustomIndexedVector<TraitDefinitionSection::Elements, double>>& baseTraitElementVector) const
-{
-	bool isInsideRestrictedRanges = true;
-
-	Trait::Type traitType;
-	TraitDefinitionSection::Elements elementType;
-
-	for(unsigned int i = 0; i < getIndividualLevelTraitElements().size() && isInsideRestrictedRanges; i++)
-	{
-		tie(traitType, elementType) = getIndividualLevelTraitElements().at(i);
-
-		isInsideRestrictedRanges = isInsideRestrictedRanges && static_cast<IndividualLevelTrait* const>(getTrait(traitType).getElements().at(elementType))->isInsideRestrictedRanges(baseTraitElementVector[traitType][elementType]);
-	}
-
-	return isInsideRestrictedRanges;
-}
-
-bool AnimalSpecies::checkInsideRestrictedRange() const
-{
-	const unsigned int numberOfTestIndividuals = 1000;
-
-	unsigned int numberOfIndividualsInsideRestrictedRange = 0;
-
-	CustomIndexedVector<Trait::Type, CustomIndexedVector<TraitDefinitionSection::Elements, double>> baseTraitElementVector(EnumClass<Trait::Type>::size());
-
-	for(const Trait::Type& traitType : EnumClass<Trait::Type>::getEnumValues())
-	{
-		baseTraitElementVector[traitType].resize(getTrait(traitType).getElements().size());
-	}
-
-
-	for(unsigned int i = 0; i < numberOfTestIndividuals; i++)
-	{
-		Genome genome(getLoci(), getRandomlyCreatedPositionsForChromosomes(), getNumberOfChromosomes(), 
-			getNumberOfLociPerChromosome(), getNumberOfChiasmasPerChromosome()
-		);
-
-		for(const Trait::Type& traitType : EnumClass<Trait::Type>::getEnumValues())
-		{
-			for(unsigned int i = 0; i < getTrait(traitType).getElements().size(); i++)
-			{
-				TraitDefinitionSection::Elements traitElement = static_cast<TraitDefinitionSection::Elements>(i);
-
-				baseTraitElementVector[traitType][traitElement] = getTrait(traitType).getElements().at(traitElement)->getValue(
-					genome, getTraitsPerModule(), getNumberOfLociPerTrait(), getRhoPerModuleVector(), getRhoRangePerModuleVector()
-				);
-			}
-		}
-
-		if(isInsideRestrictedRanges(baseTraitElementVector))
-		{
-			numberOfIndividualsInsideRestrictedRange++;
-		}
-	}
-
-
-	return (static_cast<double>(numberOfIndividualsInsideRestrictedRange)/static_cast<const double>(numberOfTestIndividuals) >= 0.02);
-}
-
 void AnimalSpecies::setTraits(const unordered_map<string,json>& traitsInfo)
 {
-	loci.reserve(getNumberOfLociPerTrait());
-	for (unsigned int i = 0; i < getNumberOfLociPerTrait(); ++i)
-	{
-		loci.push_back(new Locus(getNumberOfAllelesPerLocus()));
-	}
+	variableTraits.resize(traitsInfo.at("variableTraitsOrder").size());
 
+	for(const auto& [traitName, traitInfo] : traitsInfo.at("definition").items()) {
+		unique_ptr<Trait> newTrait = TraitFactory::createInstance(traitName, traitInfo, traitsInfo.at("variableTraitsOrder"));
 
-
-	individualLevelTraitElements.reserve(traitsInfo.at("individualLevelTraitsOrder").size());
-
-	for(const auto& [traitType, info] : traitsInfo.at("definition").items()) {
-		Trait* newTrait = new Trait(traitType, info, traitsInfo.at("individualLevelTraitsOrder"), getTempFromLab(), getLoci(), getTraitsPerModule(), getNumberOfLociPerTrait(), getRhoPerModuleVector(), getRhoRangePerModuleVector());
-
-		traits[newTrait->getType()] = newTrait;
-
-		for(unsigned int element = static_cast<unsigned int>(TraitDefinitionSection::Elements::TraitValue); element < traits[newTrait->getType()]->getElements().size(); element++)
+		switch(newTrait->getValueUpdateMethodType())
 		{
-			if(traits[newTrait->getType()]->getElements().at(static_cast<const TraitDefinitionSection::Elements>(element))->getType() == TraitDefinitionSection::Type::IndividualLevel)
-			{
-				individualLevelTraitElements.emplace_back(traits[newTrait->getType()]->getType(), static_cast<TraitDefinitionSection::Elements>(element));
+			case Trait::ValueUpdateMethod::MethodType::Fixed: {
+				fixedTraits.push_back(newTrait->getType());
+				break;
+			}
+			case Trait::ValueUpdateMethod::MethodType::Variable: {
+				variableTraits[static_cast<VariableTrait*>(newTrait.get())->getOrder()] = newTrait->getType();
+				break;
+			}
+			default: {
+				throwLineInfoException("Default case");
+				break;
 			}
 		}
 
-		if(traits[newTrait->getType()]->isThermallyDependent())
-		{
-			temperatureDependentTraits.push_back(traits[newTrait->getType()]->getType());
-		}
-	}
-
-
-	numberOfChromosomes = getNumberOfIndividualLevelTraits();
-
-
-	randomlyCreatedPositionsForChromosomes.reserve(getNumberOfIndividualLevelTraits()*getNumberOfLociPerTrait());
-	for(unsigned int i = 0; i < getNumberOfIndividualLevelTraits()*getNumberOfLociPerTrait(); ++i)
-	{
-		randomlyCreatedPositionsForChromosomes.emplace_back(i);
-	}
-	random_shuffle(randomlyCreatedPositionsForChromosomes.begin(), randomlyCreatedPositionsForChromosomes.end());
-
-
-	//TODO Hay alguna restricción más para el parametrizador? Cual es el máximo de numberOfChromosomes??
-	if ((getNumberOfIndividualLevelTraits()*numberOfLociPerTrait) % numberOfChromosomes == 0)
-	{
-		this->numberOfLociPerChromosome = (getNumberOfIndividualLevelTraits()*numberOfLociPerTrait) / numberOfChromosomes;
-	}
-	else
-	{
-		std::cerr << "For the species '" << getScientificName() << "':" << std::endl;
-		std::cerr << "numberOfTraits*numberOfLoci must be multiple of numberOfChromosomes. You entered " << getNumberOfIndividualLevelTraits() << "*" << numberOfLociPerTrait << " = " << getNumberOfIndividualLevelTraits()*numberOfLociPerTrait << " --> " << getNumberOfIndividualLevelTraits()*numberOfLociPerTrait << " % " << numberOfChromosomes << " = " << ((getNumberOfIndividualLevelTraits()*numberOfLociPerTrait) % numberOfChromosomes) << ". Exiting now" << std::endl;
-		exit(-1);
-	}
-
-
-
-	while(!checkInsideRestrictedRange())
-	{
-		for(auto& elem : loci)
-		{
-			delete elem;
-		}
-
-
-		for (unsigned int i = 0; i < getNumberOfLociPerTrait(); ++i)
-		{
-			loci[i] = new Locus(getNumberOfAllelesPerLocus());
-		}
-
-
-		
-		for(auto& [traitType, traitElement] : getIndividualLevelTraitElements())
-		{
-			static_cast<IndividualLevelTrait*>(getTrait(traitType).getElements().at(traitElement))->setPseudoValueLimits(
-				getLoci(), getTraitsPerModule(), getNumberOfLociPerTrait(), getRhoPerModuleVector(), 
-				getRhoRangePerModuleVector()
-			);
-		}
+		Trait* newTraitPtr = newTrait.release();
+		traits[newTraitPtr->getType()] = newTraitPtr;
 	}
 }
 
-const std::vector<Trait::Type>& AnimalSpecies::getTemperatureDependentTraits() const
+const Trait* const AnimalSpecies::getTrait(const Trait::Type name) const
 {
-	return temperatureDependentTraits;
+	return traits[name];
 }
 
-const Trait& AnimalSpecies::getTrait(const Trait::Type name) const
+void AnimalSpecies::resetLimits()
 {
-	return *traits[name];
+	for(size_t i = 0; i < getNumberOfVariableTraits(); i++)
+	{
+		setMinObservedPseudoValue(variableTraits[i], DBL_MAX);
+		setMaxObservedPseudoValue(variableTraits[i], NEG_DBL_MAX);
+	}
 }
 
-Trait& AnimalSpecies::getMutableTrait(const Trait::Type name)
+void AnimalSpecies::resetPseudoGrowthMean()
 {
-	return *traits[name];
+	pseudoGrowthMean = 0.0;
+}
+
+void AnimalSpecies::resetPseudoGrowthSd()
+{
+	pseudoGrowthSd = 0.0;
 }
 
 template <class Archive>
@@ -1629,6 +1864,8 @@ void AnimalSpecies::serialize(Archive &ar, const unsigned int version) {
     ar & experienceInfluencePerDay;
 	ar & predationEventsOnOtherSpecies;
     ar & traits;
+	ar & fixedTraits;
+	ar & variableTraits;
 
 	ar & numberOfLinksAsPredator;
 	ar & numberOfLinksAsPrey;
@@ -1651,28 +1888,56 @@ void AnimalSpecies::serialize(Archive &ar, const unsigned int version) {
 	ar & assignedForMolt;
 	ar & betaScaleTank;
 	ar & excessInvestInSize;
+	ar & pupaPeriodLength;
 	ar & minRelativeHumidityThreshold;
 
 	ar & maxEncountersT;
 
 	ar & minSizeHunted;
 	ar & maxSizeHunted;
+	ar & meanSizeHunted;
+	ar & sdSizeHunted;
 	ar & minVorHunted;
 	ar & maxVorHunted;
+	ar & meanVorHunted;
+	ar & sdVorHunted;
+	ar & minSpeedHunted;
+	ar & maxSpeedHunted;
+	ar & meanSpeedHunted;
+	ar & sdSpeedHunted;
 
 	ar & minSizeHunter;
 	ar & maxSizeHunter;
+	ar & meanSizeHunter;
+	ar & sdSizeHunter;
 	ar & minVorHunter;
 	ar & maxVorHunter;
+	ar & meanVorHunter;
+	ar & sdVorHunter;
+	ar & minSpeedHunter;
+	ar & maxSpeedHunter;
+	ar & meanSpeedHunter;
+	ar & sdSpeedHunter;
 	ar & minSearchAreaHunter;
 	ar & maxSearchAreaHunter;
+	ar & meanSearchAreaHunter;
+	ar & sdSearchAreaHunter;
 
-	ar & minProbabilityDensityFunction;
+        ar & minProbabilityDensityFunction;
 	ar & maxProbabilityDensityFunction;
+	ar & meanProbabilityDensityFunction;
+	ar & sdProbabilityDensityFunction;
 	ar & minVorXVor;
 	ar & maxVorXVor;
+	ar & meanVorXVor;
+	ar & sdVorXVor;
 	ar & minSpeedRatio;
 	ar & maxSpeedRatio;
+	ar & meanSpeedRatio;
+	ar & sdSpeedRatio;
+
+	ar & meanSizeRatio;
+	ar & sdSizeRatio;
 
 	ar & maxPredationProbability;
 	ar & maxPredationIndividualWetMass;
@@ -1683,28 +1948,47 @@ void AnimalSpecies::serialize(Archive &ar, const unsigned int version) {
 	ar & cellEvaluationAntiConspecific;
 	ar & conspecificWeighing;
 
-	ar & instarDevTimeVector;
+	ar & devTimeVector;
 	ar & vonBertLinf;
 	ar & vonBertKini;
+	ar & LinfKcorr;
+	ar & devTimeConstant;
 	ar & longevitySinceMaturation;
 	ar & reproTimeFactor;
+	ar & tempOptGrowth;
+	ar & tempOptSearch;
+	ar & tempOptVoracity;
+	ar & tempOptSpeed;
+	ar & EdGrowth;
+	ar & EdSearch;
+	ar & EdVoracity;
+	ar & EdSpeed;
 	ar & devInter;
 	ar & fractSearchExtremeT;
 	ar & fractSpeedExtremeT;
 	ar & tempFromLab;
+	ar & tempSizeRuleConstant;
 
 	ar & eggClutchFromEquation;
 	ar & forClutchMassCoefficient;
 	ar & forClutchMassScale;
+	ar & forEggMassCoefficient;
+	ar & forEggMassScale;
+	ar & eggMassFromEquation;
+	ar & eggDryMass;
+	ar & femaleWetMass;
 
 	ar & scaleForVoracity;
 	ar & scaleForSearchArea;
 	ar & scaleForSpeed;
 	ar & maxPlasticityKVonBertalanffy;
 	ar & minPlasticityKVonBertalanffy;
-	ar & plasticityDueToConditionVor;
-	ar & plasticityDueToConditionSearch;
-	ar & plasticityDueToConditionSpeed;
+	ar & maxPlasticityDueToConditionVor;
+	ar & minPlasticityDueToConditionVor;
+	ar & maxPlasticityDueToConditionSearch;
+	ar & minPlasticityDueToConditionSearch;
+	ar & maxPlasticityDueToConditionSpeed;
+	ar & minPlasticityDueToConditionSpeed;
 
 	ar & attackProbability;
 	ar & exposedAttackProbability;
@@ -1716,6 +2000,14 @@ void AnimalSpecies::serialize(Archive &ar, const unsigned int version) {
 	ar & percentageCostForMetabolicDownregulationSearchArea;
 	ar & percentageCostForMetabolicDownregulationSpeed;
 
+	ar & generatorX;
+	ar & generatorY;
+	ar & normalDistributionX;
+	ar & normalDistributionY;
+	ar & cholMat;
+	ar & pseudoGrowthMean;
+	ar & pseudoGrowthSd;
+
 	ar & coefficientForMassA;
 	ar & scaleForMassB;
 
@@ -1726,20 +2018,20 @@ void AnimalSpecies::serialize(Archive &ar, const unsigned int version) {
 
 	ar & forDensitiesA;
 	ar & forDensitiesB;
+	ar & indeterminateGrowth;
+	ar & instarFirstReproduction;
 	ar & instarsForNextReproduction;
 	ar & sexualType;
+	ar & growthCurve;
 	ar & sexRatio;
 	ar & size;
 	ar & femaleMaxReproductionEvents;
-	ar & eggsPerBatchFromEquation;
 	ar & eggsPerBatch;
-	ar & interceptForEggBatchFromEquation;
-	ar & slopeForEggBatchFromEquation;
 	ar & maleMaxReproductionEvents;
 	ar & maleReproductionFactor;
 	ar & maleMobility;
 	ar & surviveWithoutFood;
-	ar & activityUnderPredationRisk;
+	ar & decreaseOnTraitsDueToEncounters;
 	ar & probabilityDeathFromBackground;
 	ar & involvedResourceSpecies;
 

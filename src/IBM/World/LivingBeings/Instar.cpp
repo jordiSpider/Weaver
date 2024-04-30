@@ -32,35 +32,12 @@ Instar::~Instar()
 
 Instar operator+(const Instar& lhs, const int& rhs)
 {
-    return Instar(lhs.value + (unsigned int)rhs + 1);
+    return Instar(lhs.value + (unsigned int)rhs);
 }
 
 Instar operator+(const int& lhs, const Instar& rhs)
 {
-    return Instar((unsigned int)lhs + rhs.value + 1);
-}
-
-Instar& Instar::operator++()
-{
-    ++value;
-    return *this;
-}
-
-Instar Instar::operator++(int)
-{
-    Instar tmp(*this);
-    ++value;
-    return tmp;
-}
-
-Instar operator-(const Instar& lhs, const int& rhs)
-{
-    return Instar(lhs.value - (unsigned int)rhs + 1);
-}
-
-Instar operator-(const int& lhs, const Instar& rhs)
-{
-    return Instar((unsigned int)lhs - rhs.value + 1);
+    return Instar((unsigned int)lhs + rhs.value);
 }
 
 bool operator<(const Instar& lhs, const Instar& rhs)
@@ -157,11 +134,6 @@ ostream& operator<<(ostream& os, const Instar& instar)
 {
     os << (instar.value + 1);
     return os;
-}
-
-Instar::operator size_t() const 
-{
-    return static_cast<size_t>(value);
 }
 
 size_t hash<Instar>::operator()(const Instar& instar) const

@@ -2,9 +2,9 @@
 
 #include "IBM/World/Map/SpatialTree/TerrainCells/LeafTerrainCell.h"
 #include "IBM/World/Map/SpatialTree/TerrainCells/BranchTerrainCell.h"
-#include "IBM/World/Map/SpatialTree.h"
+#include "IBM/World/Map/SpatialTree/SpatialTreeInterface.h"
 #include "IBM/World/Map/TerrainCells/EdibleSearchParams.h"
-#include "IBM/World/World.h"
+#include "IBM/World/WorldInterface.h"
 
 
 using namespace std;
@@ -14,11 +14,11 @@ namespace bg = boost::geometry;
 
 
 
-LeafTerrainCell::LeafTerrainCell(BranchTerrainCellInterface* const parentTerrainCell, PointSpatialTree* const position, vector<ResourceInterface*>* const parentResources, const vector<int>* const parentResourcePatchPriority)
+LeafTerrainCell::LeafTerrainCell(BranchTerrainCellInterface* const parentTerrainCell, PointSpatialTree* const position, const vector<const ResourceInterface*>* const parentResources, const vector<int>* const parentResourcePatchPriority)
     : LeafTerrainCellInterface(parentTerrainCell, position, 
-        static_cast<const SpatialTree&>(parentTerrainCell->getMap()).getCellSize(position->getDepth()), 
-        &static_cast<SpatialTree&>(parentTerrainCell->getMutableMap()), 
-        makeDefaultAnimals(&parentTerrainCell->getMutableMap()), parentTerrainCell->isFullObstacle(), 
+        static_cast<const SpatialTreeInterface&>(parentTerrainCell->getMapInterface()).getCellSize(position->getDepth()), 
+        &static_cast<SpatialTreeInterface&>(parentTerrainCell->getMutableMapInterface()), 
+        makeDefaultAnimals(&parentTerrainCell->getMutableMapInterface()), parentTerrainCell->isFullObstacle(), 
         parentTerrainCell->isFullObstacle(), parentTerrainCell->getObstaclePatchPriority(), new NullMoisture(), false, false, -1, 0.0
       )
 {
@@ -44,10 +44,10 @@ LeafTerrainCell::LeafTerrainCell(BranchTerrainCellInterface* const parentTerrain
             if(parentResources->at(resource) != nullptr)
             {
                 unique_ptr<ResourceInterface> newResource = ResourceFactory::createInstance(
-                    parentResources->at(resource)->getMutableSpecies(), this, 
+                    parentResources->at(resource)->getSpecies(), this, 
                     parentResources->at(resource)->getBiomass() / static_cast<const double>(BranchTerrainCell::numberOfChildren), 
                     parentResources->at(resource)->getResourceMaximumCapacity() / static_cast<const double>(BranchTerrainCell::numberOfChildren), 
-                    getMap().getWorld()->getMassRatio(), parentResources->at(resource)->canSpread()
+                    getMapInterface().getWorldInterface()->getMassRatio(), parentResources->at(resource)->canSpread()
                 );
 
                 setResourceSourcePatch(newResource, parentResourcePatchPriority->at(resource));
@@ -79,7 +79,7 @@ unique_ptr<FullCoverageAnimals> LeafTerrainCell::getMutableAnimalsDown(const Ani
 }
 
 EdiblesOnRadius LeafTerrainCell::getMutableEdiblesOnCellAndDown(
-        function<bool(Animal&)> downChecker, const Ring &effectiveArea, const EdibleSearchParams &edibleSearchParams)
+        function<bool(AnimalInterface&)> downChecker, const Ring &effectiveArea, const EdibleSearchParams &edibleSearchParams)
 {
     unique_ptr<ResourcesOnRadius> searchableResources;
     auto searchablePartialCoverageAnimals = make_unique<PartialCoverageAnimals>();
@@ -132,7 +132,7 @@ unique_ptr<vector<pair<TerrainCellInterface*, pair<TerrainCellInterface::Terrain
             initialCoords[i] = getPosition().get(axis) * displacementPower(1, depthDifference);
         }
 
-        auto childPoints = static_cast<const SpatialTree &>(getMap()).generatePoints(displacementPower(1, depthDifference), initialCoords, searchDepth);
+        auto childPoints = static_cast<const SpatialTreeInterface &>(getMapInterface()).generatePoints(displacementPower(1, depthDifference), initialCoords, searchDepth);
 
         for(auto &point : *childPoints)
         {
@@ -172,7 +172,7 @@ unique_ptr<vector<pair<TerrainCellInterface*, pair<TerrainCellInterface::Terrain
 }
 
 EdiblesOnRadius LeafTerrainCell::getMutableEdiblesDown(
-        function<bool(Animal&)> downChecker, const Ring &effectiveArea, const EdibleSearchParams &edibleSearchParams)
+        function<bool(AnimalInterface&)> downChecker, const Ring &effectiveArea, const EdibleSearchParams &edibleSearchParams)
 {
     return make_pair(
         getResourcesBy(effectiveArea, edibleSearchParams.getResourceSearchParams()), 
@@ -287,15 +287,15 @@ void LeafTerrainCell::printCell(vector<pair<vector<double>, vector<unsigned int>
         unsigned int index = 0;
         for(unsigned int axis = 0; axis < DIMENSIONS; axis++)
         {
-            index += getPosition().getAxisValues().at(axis) * pow(getMap().getNumberOfCellsPerAxis(), axis);
+            index += getPosition().getAxisValues().at(axis) * pow(getMapInterface().getNumberOfCellsPerAxis(), axis);
         }
 
-        for(unsigned int i = 0; i < getMap().getWorld()->getExistingResourceSpecies().size(); i++)
+        for(unsigned int i = 0; i < getMapInterface().getWorldInterface()->getExistingResourceSpecies().size(); i++)
         {
             mapCellsInfo[index].first[i] += getBiomass(i);
         }
 
-        for(auto &animalSpecies : getMap().getWorld()->getExistingAnimalSpecies())
+        for(auto &animalSpecies : getMapInterface().getWorldInterface()->getExistingAnimalSpecies())
         {
             unsigned int currentNumberOfAnimals = 0;
 

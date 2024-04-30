@@ -170,9 +170,9 @@ void ExtendedMoisture::updateInfo()
     throwLineInfoException("Extended moisture is not updated");
 }
 
-const Temperature& ExtendedMoisture::getTemperatureOnTimeStep(const unsigned int numberOfTimeSteps) const
+const Temperature& ExtendedMoisture::getTemperatureOnTimeStep(const unsigned int timeStep) const
 {
-    return getTemperatureCycle().at(numberOfTimeSteps%getTemperatureCycle().size());
+    return getTemperatureCycle().at(timeStep%getTemperatureCycle().size());
 }
 
 const string ExtendedMoisture::showMoistureInfo() const
@@ -194,15 +194,15 @@ const string ExtendedMoisture::showMoistureInfo() const
 	);
 }
 
-void ExtendedMoisture::refreshValue(const unsigned int numberOfTimeSteps)
+void ExtendedMoisture::refreshValue(const unsigned int timeStep)
 {
-    refreshTemperature(numberOfTimeSteps);
-    refreshRelativeHumidity(numberOfTimeSteps);
+    refreshTemperature(timeStep);
+    refreshRelativeHumidity(timeStep);
 }
 
-void ExtendedMoisture::refreshTemperature(const unsigned int numberOfTimeSteps)
+void ExtendedMoisture::refreshTemperature(const unsigned int timeStep)
 {
-    setTemperature(getTemperatureOnTimeStep(numberOfTimeSteps));
+    setTemperature(getTemperatureOnTimeStep(timeStep));
 }
 
 const Temperature& ExtendedMoisture::getRandomTemperature() const

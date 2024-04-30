@@ -1,7 +1,7 @@
 
 
 #include "IBM/World/Map/SpatialTree/TerrainCells/SpatialTreeTerrainCell.h"
-#include "IBM/World/Map/SpatialTree.h"
+#include "IBM/World/Map/SpatialTree/SpatialTreeInterface.h"
 #include "IBM/World/Map/SpatialTree/TerrainCells/BranchTerrainCellInterface.h"
 #include "IBM/World/Map/TerrainCells/EdibleSearchParams.h"
 
@@ -9,15 +9,15 @@ using namespace std;
 
 
 
-const unsigned int SpatialTreeTerrainCell::numberOfChildren = std::pow(SpatialTree::numbreOfSubdivisions, DIMENSIONS);
+const unsigned int SpatialTreeTerrainCell::numberOfChildren = std::pow(SpatialTreeInterface::numbreOfSubdivisions, DIMENSIONS);
 
 
 SpatialTreeTerrainCell::SpatialTreeTerrainCell(BranchTerrainCellInterface* const parentTerrainCell, 
-        PointSpatialTree* const position, const Ring *const effectiveArea, const double &size, SpatialTree* const map,
+        PointSpatialTree* const position, const Ring *const effectiveArea, const double &size, SpatialTreeInterface* const mapInterface,
         LifeStageVector* const animals, 
         const bool obstacle, const bool fullObstacle, const int obstaclePatchPriority, MoistureInterface* const moistureInfo, 
         const bool moistureSource, const bool inMoisturePatch, const int moisturePatchPriority, const double &totalMaximumResourceCapacity)
-    : SpatialTreeTerrainCellInterface(position, effectiveArea, size, map,
+    : SpatialTreeTerrainCellInterface(position, effectiveArea, size, mapInterface,
         animals,
         obstacle, fullObstacle, obstaclePatchPriority, moistureInfo, moistureSource, inMoisturePatch, moisturePatchPriority, totalMaximumResourceCapacity
       ),
@@ -146,7 +146,7 @@ pair<bool, pair<TerrainCellInterface *, PointContinuous>> SpatialTreeTerrainCell
         }
 
         PointSpatialTree nextCellPosition(axisValues, getPosition().getDepth());
-        TerrainCellInterface* nextCell = static_cast<const SpatialTree &>(getMap()).getCell(nextCellPosition, this);
+        TerrainCellInterface* nextCell = static_cast<const SpatialTreeInterface &>(getMapInterface()).getCell(nextCellPosition, this);
 
         //Avoid obstacles using the least bearing difference path
         if(nextCell->isObstacle())
@@ -160,7 +160,7 @@ pair<bool, pair<TerrainCellInterface *, PointContinuous>> SpatialTreeTerrainCell
                 initialCoords[i] = getPosition().get(axis) - 1;
             }
 
-            auto neighboursPoints = static_cast<const SpatialTree &>(getMap()).generatePoints(3, getPosition(), initialCoords);
+            auto neighboursPoints = static_cast<const SpatialTreeInterface &>(getMapInterface()).generatePoints(3, getPosition(), initialCoords);
 
             unsigned int bestBearingDifference = calculateManhattanDistanceToPoint(targetNeighborToTravelTo.first) + 2;
             vector<pair<TerrainCellInterface*, PointSpatialTree>> surroundingTerrainCells;
@@ -169,7 +169,7 @@ pair<bool, pair<TerrainCellInterface *, PointContinuous>> SpatialTreeTerrainCell
             {
                 if(calculateManhattanDistanceToPoint(neighboursPoints->at(i)) == 1)
                 {
-                    auto neighbour = static_cast<const SpatialTree &>(getMap()).getCell(neighboursPoints->at(i), this);
+                    auto neighbour = static_cast<const SpatialTreeInterface &>(getMapInterface()).getCell(neighboursPoints->at(i), this);
                 
                     if(!neighbour->isObstacle())
                     {
@@ -225,27 +225,7 @@ pair<bool, pair<TerrainCellInterface *, PointContinuous>> SpatialTreeTerrainCell
     }
 }
 
-pair<AnimalNonStatistical*, unsigned int> SpatialTreeTerrainCell::createAnimal(const Instar &instar, AnimalSpecies* animalSpecies)
-{
-    unsigned int numberOfDiscardedIndividualsOutsideRestrictedRanges = 0;
-
-    AnimalNonStatistical* newAnimal = new SpatialTreeAnimal(0.0, instar, 0, 0, -1, -1, animalSpecies, this);
-
-    while(!animalSpecies->isInsideRestrictedRanges(newAnimal->getBaseTraitElementVector()))
-    {
-        numberOfDiscardedIndividualsOutsideRestrictedRanges++;
-
-        delete newAnimal;
-        newAnimal = new SpatialTreeAnimal(0.0, instar, 0, 0, -1, -1, animalSpecies, this);
-    }
-
-    // Indicate that the animal created is the final animal, and therefore assign a final ID to it.
-    newAnimal->doDefinitive();
-
-    return make_pair<>(newAnimal, numberOfDiscardedIndividualsOutsideRestrictedRanges);
-}
-
-void SpatialTreeTerrainCell::migrateAnimalTo(AnimalNonStatistical* animalToMigrate, TerrainCellInterface* newTerrainCell, const PointContinuous &newPosition)
+void SpatialTreeTerrainCell::migrateAnimalTo(AnimalInterface* animalToMigrate, TerrainCellInterface* newTerrainCell, const PointContinuous &newPosition)
 {
     eraseAnimal(animalToMigrate);
     animalToMigrate->setPosition(newPosition);
@@ -321,7 +301,7 @@ SearchableEdibles SpatialTreeTerrainCell::getMutableEdiblesOnAllCell(TerrainCell
         const PointContinuous &sourcePosition, const double &radius, const Ring &effectiveArea, 
         const EdibleSearchParams &edibleSearchParams)
 {
-    auto radiusChecker = [&sourcePosition, &radius](Animal& animal) {
+    auto radiusChecker = [&sourcePosition, &radius](AnimalInterface& animal) {
         return Geometry::calculateDistanceBetweenPoints(sourcePosition, animal.getPosition()) < radius;
     };
 
@@ -331,7 +311,7 @@ SearchableEdibles SpatialTreeTerrainCell::getMutableEdiblesOnAllCell(TerrainCell
 			break;
 		}
         case TerrainCellInterface::Sub_Terrain_Cell: {
-            auto downChecker = [&polygon = effectiveArea](Animal& animal) {
+            auto downChecker = [&polygon = effectiveArea](AnimalInterface& animal) {
                 return Geometry::withinPolygon(animal.getPosition(), polygon);
             };
 
@@ -390,7 +370,7 @@ SearchableEdibles SpatialTreeTerrainCell::getMutableEdiblesOnAllCell(const Edibl
 }
 
 SearchableEdibles SpatialTreeTerrainCell::getMutableEdiblesOnAllCell(
-        std::function<bool(Animal&)> upChecker, std::function<bool(Animal&)> downChecker, 
+        std::function<bool(AnimalInterface&)> upChecker, std::function<bool(AnimalInterface&)> downChecker, 
         const Ring &effectiveArea, const EdibleSearchParams &edibleSearchParams)
 {
     unique_ptr<ResourcesOnRadius> searchableResources;
@@ -432,7 +412,7 @@ SearchableEdibles SpatialTreeTerrainCell::getMutableEdiblesOnAllCell(
 }
 
 SearchableEdibles SpatialTreeTerrainCell::getMutableEdiblesOnAllCell(
-        std::function<bool(Animal&)> upChecker, const EdibleSearchParams &edibleSearchParams)
+        std::function<bool(AnimalInterface&)> upChecker, const EdibleSearchParams &edibleSearchParams)
 {
     unique_ptr<ResourcesOnRadius> searchableResources;
     unique_ptr<FullCoverageAnimals> searchableFullCoverageAnimals;
@@ -486,7 +466,7 @@ unique_ptr<FullCoverageAnimals> SpatialTreeTerrainCell::getMutableAnimalsUp(cons
 }
 
 unique_ptr<PartialCoverageAnimals> SpatialTreeTerrainCell::getMutableAnimalsUp(
-        function<bool(Animal&)> upChecker, const AnimalSearchParams &animalSearchParams)
+        function<bool(AnimalInterface&)> upChecker, const AnimalSearchParams &animalSearchParams)
 {
     auto searchableAnimals = getMutableParent()->getMutableAnimalsUp(upChecker, animalSearchParams);
 
@@ -518,7 +498,7 @@ EdiblesOnRadius SpatialTreeTerrainCell::getMutableEdiblesOnCellAndDown(const Edi
 }
 
 EdiblesOnRadius SpatialTreeTerrainCell::getMutableEdiblesOnCellAndDown(
-        function<bool(Animal&)> downChecker, const Ring &effectiveArea, const EdibleSearchParams &edibleSearchParams)
+        function<bool(AnimalInterface&)> downChecker, const Ring &effectiveArea, const EdibleSearchParams &edibleSearchParams)
 {
     unique_ptr<ResourcesOnRadius> searchableResources;
     unique_ptr<PartialCoverageAnimals> searchablePartialCoverageAnimals;

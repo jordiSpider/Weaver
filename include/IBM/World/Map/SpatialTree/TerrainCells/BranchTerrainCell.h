@@ -65,7 +65,7 @@ protected:
     std::vector<SpatialTreeTerrainCellInterface*> childrenTerrainCellPointers;
     std::vector<const SpatialTreeTerrainCellInterface*> childrenTerrainCellConstPointers;
 
-    void generateChildren(std::vector<ResourceInterface*>* const resources = nullptr, const std::vector<int>* const resourcePatchPriority = nullptr);
+    void generateChildren(const std::vector<const ResourceInterface*>* const resources = nullptr, const std::vector<int>* const resourcePatchPriority = nullptr);
 
     const unsigned int calculateChildPositionOnVector(const PointContinuous &childPos) const;
     const unsigned int calculateChildPositionOnVector(const PointSpatialTree &childPos) const;
@@ -124,9 +124,9 @@ protected:
 
 public:
     // Constructor with default moisture info
-    BranchTerrainCell(BranchTerrainCellInterface* const parentTerrainCell, PointSpatialTree* const position, SpatialTree* const map);
+    BranchTerrainCell(BranchTerrainCellInterface* const parentTerrainCell, PointSpatialTree* const position, SpatialTreeInterface* const mapInterface);
     // Constructor from a temporal leaf
-    BranchTerrainCell(TemporalLeafTerrainCell &leaf);
+    BranchTerrainCell(const TemporalLeafTerrainCell &leaf);
     virtual ~BranchTerrainCell();
 
     // Getter
@@ -137,9 +137,9 @@ public:
     const SpatialTreeTerrainCellInterface* const getChildTerrainCell(const PointSpatialTree &cellPos) const;
     SpatialTreeTerrainCellInterface* getMutableChildTerrainCell(const PointSpatialTree &cellPos);
 
-    void insertAnimal(Animal* const newAnimal) override;
-    std::tuple<TerrainCellInterface*, Animal*, unsigned int> randomInsertAnimalOnChild(const Instar &instar, AnimalSpecies* animalSpecies, TerrainCellInterface* child, const bool isStatistical);
-    std::tuple<bool, TerrainCellInterface*, TerrainCellInterface*, Animal*, unsigned int> randomInsertAnimal(const Instar &instar, AnimalSpecies* animalSpecies, const bool isStatistical) override;
+    void insertAnimal(AnimalInterface* const newAnimal) override;
+    TerrainCellInterface* randomInsertAnimalOnChild(AnimalInterface* const newAnimal, TerrainCellInterface* child);
+    std::tuple<bool, TerrainCellInterface*, TerrainCellInterface*> randomInsertAnimal(AnimalInterface* const newAnimal) override;
 
     void eraseAllAnimals();
     void purgeDeadAnimals();
@@ -157,8 +157,8 @@ public:
 
     void updateMoisture() override;
     void updateChildrenMoisture();
-    void update(const unsigned int numberOfTimeSteps, std::ostream& tuneTraitsFile) override;
-    void updateChildren(const unsigned int numberOfTimeSteps, std::ostream& tuneTraitsFile);
+    void update(const unsigned int timeStep, std::ostream& tuneTraitsFile) override;
+    void updateChildren(const unsigned int timeStep, std::ostream& tuneTraitsFile);
 
     std::unique_ptr<std::vector<unsigned int>> calculateChildrenPositions(const PointMap &sourcePosition) const;
     void calculateChildrenPositionsRecursively(std::unique_ptr<std::vector<unsigned int>> &childrenPositions, 
@@ -177,8 +177,8 @@ public:
     void saveAnimalSpeciesSnapshot(std::ofstream &file, const AnimalSpecies* const &species) override;
     void saveResourceSpeciesSnapshot(std::ofstream &file, const ResourceSpecies* const &species) const override;
     void saveWaterSnapshot(std::ofstream &file) const override;
-    void moveAnimals(const unsigned int numberOfTimeSteps, std::ostream& encounterProbabilitiesFile, std::ostream& predationProbabilitiesFile, bool saveEdibilitiesFile, std::ostream& edibilitiesFile, float exitTimeThreshold, double pdfThreshold, double muForPDF, double sigmaForPDF, double predationSpeedRatioAH, double predationHunterVoracityAH, double predationProbabilityDensityFunctionAH, double predationSpeedRatioSAW, double predationHunterVoracitySAW, double predationProbabilityDensityFunctionSAW, double maxSearchArea, double encounterHuntedVoracitySAW, double encounterHunterVoracitySAW, double encounterVoracitiesProductSAW, double encounterHunterSizeSAW, double encounterHuntedSizeSAW, double encounterProbabilityDensityFunctionSAW, double encounterHuntedVoracityAH, double encounterHunterVoracityAH, double encounterVoracitiesProductAH, double encounterHunterSizeAH, double encounterHuntedSizeAH, double encounterProbabilityDensityFunctionAH) override;
-    void performAnimalsActions(const unsigned int numberOfTimeSteps, std::ostream& voracitiesFile, boost::filesystem::path outputFolder, bool saveAnimalConstitutiveTraits, std::ofstream &constitutiveTraitsFile);
+    void moveAnimals(int day, std::ostream& encounterProbabilitiesFile, std::ostream& predationProbabilitiesFile, bool saveEdibilitiesFile, std::ostream& edibilitiesFile, float exitTimeThreshold, double pdfThreshold, double muForPDF, double sigmaForPDF, double predationSpeedRatioAH, double predationHunterVoracityAH, double predationProbabilityDensityFunctionAH, double predationSpeedRatioSAW, double predationHunterVoracitySAW, double predationProbabilityDensityFunctionSAW, double maxSearchArea, double encounterHuntedVoracitySAW, double encounterHunterVoracitySAW, double encounterVoracitiesProductSAW, double encounterHunterSizeSAW, double encounterHuntedSizeSAW, double encounterProbabilityDensityFunctionSAW, double encounterHuntedVoracityAH, double encounterHunterVoracityAH, double encounterVoracitiesProductAH, double encounterHunterSizeAH, double encounterHuntedSizeAH, double encounterProbabilityDensityFunctionAH) override;
+    void performAnimalsActions(int timeStep, std::ostream& voracitiesFile, boost::filesystem::path outputFolder, bool saveAnimalConstitutiveTraits, std::ofstream &constitutiveTraitsFile);
 
     /**
      * @name Getters
@@ -195,7 +195,7 @@ public:
      * @{
      */
     EdiblesOnRadius getMutableEdiblesDown(
-        std::function<bool(Animal&)> downChecker, const Ring &effectiveArea,
+        std::function<bool(AnimalInterface&)> downChecker, const Ring &effectiveArea,
         const EdibleSearchParams &edibleSearchParams
     );
     /** @} */

@@ -1,35 +1,16 @@
 
 #include "IBM/World/Map/Map.h"
-
-#include "IBM/World/World.h"
+#include "IBM/World/WorldInterface.h"
 #include "IBM/World/Map/TerrainCells/AnimalSearchParams.h"
-#include "IBM/World/Map/SpatialTree.h"
 
 using namespace std;
 using json = nlohmann::json;
 
 
 
-
-unique_ptr<Map> Map::createInstance(const json &mapInfo, World* const world)
-{
-	switch(EnumClass<Type>::stringToEnumValue(mapInfo["mapType"])) {
-		case Type::SpatialTree: {
-			return make_unique<SpatialTree>(mapInfo["worldWideParams"], mapInfo["spatialTreeParams"], world);
-			break;
-		}
-		default: {
-			throwLineInfoException("Default case");
-			break;
-		}
-	}
-}
-
-
-
-Map::Map(const json &mapConfig, World* const world)
+Map::Map(const json &mapConfig, WorldInterface* const worldInterface)
 	: minCellSize(mapConfig["minCellSize"]), numberOfCellsPerAxis(mapConfig["numberOfCellsPerAxis"]),
-      world(world), lifeStageSearchParams(LifeStage::size())
+      worldInterface(worldInterface), lifeStageSearchParams(LifeStage::size())
 {
     
 }
@@ -56,14 +37,14 @@ const unsigned int& Map::getNumberOfCellsPerAxis() const
     return numberOfCellsPerAxis;
 }
 
-const World* const Map::getWorld() const
+const WorldInterface* const Map::getWorldInterface() const
 {
-    return world;
+    return worldInterface;
 }
 
-World* const Map::getMutableWorld() const
+WorldInterface* const Map::getMutableWorldInterface() const
 {
-    return world;
+    return worldInterface;
 }
 
 const vector<TerrainCellInterface*>& Map::getInhabitableTerrainCells() const
@@ -85,7 +66,7 @@ void Map::obtainLifeStageSearchParams()
 {
     for(const auto &lifeStage : LifeStage::getEnumValues())
     {
-        lifeStageSearchParams[lifeStage].addSearchParams(getWorld(), {lifeStage});
+        lifeStageSearchParams[lifeStage].addSearchParams(getWorldInterface(), {lifeStage});
     }
 }
 
@@ -99,8 +80,8 @@ void Map::printCellAlongCells(ofstream &file)
     vector<pair<vector<double>, vector<unsigned int>>> mapCellsInfo(
         pow(getNumberOfCellsPerAxis(), DIMENSIONS),
         make_pair(
-            vector<double>(getWorld()->getExistingResourceSpecies().size(), 0.0),
-            vector<unsigned int>(getWorld()->getExistingAnimalSpecies().size(), 0)
+            vector<double>(getWorldInterface()->getExistingResourceSpecies().size(), 0.0),
+            vector<unsigned int>(getWorldInterface()->getExistingAnimalSpecies().size(), 0)
         )
     );
 
@@ -179,7 +160,7 @@ template <class Archive>
 void Map::serialize(Archive &ar, const unsigned int version) {
     ar & minCellSize;
     ar & numberOfCellsPerAxis;
-    ar & world;
+    ar & worldInterface;
     ar & inhabitableTerrainCells;
-    ar &  lifeStageSearchParams;
+    ar & lifeStageSearchParams;
 }

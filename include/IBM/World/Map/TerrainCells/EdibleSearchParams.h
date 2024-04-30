@@ -13,7 +13,7 @@
 #include "IBM/World/LivingBeings/LifeStage.h"
 
 
-class World;
+class WorldInterface;
 
 
 class EdibleSearchParams
@@ -30,7 +30,7 @@ public:
     virtual ~EdibleSearchParams();
 
     void addAnimalSearchParams(
-        const World* const world,
+        const WorldInterface* const worldInterface,
         const std::vector<LifeStage::LifeStageValue> &searchableLifeStages = LifeStage::getEnumValues(),
         const std::vector<id_type> &searchableAnimalSpecies = {},
         const std::vector<Instar> &searchableInstars = {},

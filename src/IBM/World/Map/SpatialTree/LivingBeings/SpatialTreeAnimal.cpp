@@ -1,24 +1,27 @@
 
 #include "IBM/World/Map/SpatialTree/LivingBeings/SpatialTreeAnimal.h"
-
+#include "IBM/World/Map/SpatialTree/LivingBeings/SpatialTreeAnimalFactory.h"
 #include "IBM/World/Map/TerrainCells/TerrainCellInterface.h"
+#include "IBM/World/Map/SpatialTree/SpatialTreeInterface.h"
 
 using namespace std;
 
 
 
 
-SpatialTreeAnimal::SpatialTreeAnimal(double timeStep, const Instar &instar, int g_numb_prt1,
-		int g_numb_prt2, int ID_prt1, int ID_prt2, AnimalSpecies* const mySpecies, TerrainCellInterface* terrainCellInterface) 
-	: AnimalNonStatistical(timeStep, instar, g_numb_prt1, g_numb_prt2, ID_prt1, ID_prt2, mySpecies, terrainCellInterface)
+SpatialTreeAnimal::SpatialTreeAnimal(double factorEggMassFromMom, double timeStep, const Instar &instar, int g_numb_prt1,
+		int g_numb_prt2, int ID_prt1, int ID_prt2, AnimalSpecies* const mySpecies, AnimalSpecies::Gender::GenderValue gender,
+		bool temporary) 
+	: Animal(factorEggMassFromMom, timeStep, instar, g_numb_prt1, g_numb_prt2, ID_prt1, ID_prt2, mySpecies, gender, temporary)
 {
 	
 }
 
 
 SpatialTreeAnimal::SpatialTreeAnimal(Gamete* const firstParentGamete, Gamete* const secondParentGamete, TerrainCellInterface* parentTerrainCellInterface, double factorEggMassFromMom, double timeStep, int g_numb_prt1,
-		int g_numb_prt2, int ID_prt1, int ID_prt2, AnimalSpecies* const mySpecies, AnimalSpecies::Gender::GenderValue gender) 
-	: AnimalNonStatistical(firstParentGamete, secondParentGamete, parentTerrainCellInterface, factorEggMassFromMom, timeStep, g_numb_prt1, g_numb_prt2, ID_prt1, ID_prt2, mySpecies, gender)
+		int g_numb_prt2, int ID_prt1, int ID_prt2, AnimalSpecies* const mySpecies, AnimalSpecies::Gender::GenderValue gender,
+		bool temporary) 
+	: Animal(firstParentGamete, secondParentGamete, parentTerrainCellInterface, factorEggMassFromMom, timeStep, g_numb_prt1, g_numb_prt2, ID_prt1, ID_prt2, mySpecies, gender, temporary)
 {
 	
 }
@@ -29,10 +32,11 @@ SpatialTreeAnimal::~SpatialTreeAnimal()
 
 }
 
-AnimalNonStatistical* SpatialTreeAnimal::createOffspring(Gamete* const firstParentGamete, Gamete* const secondParentGamete, TerrainCellInterface* parentTerrainCellInterface, double factorEggMassFromMom, double actualTime, int g_numb_prt1,
-			int g_numb_prt2, int ID_prt1, int ID_prt2, AnimalSpecies* const mySpecies, AnimalSpecies::Gender::GenderValue gender)
+AnimalInterface* SpatialTreeAnimal::createOffspring(Gamete* const firstParentGamete, Gamete* const secondParentGamete, TerrainCellInterface* parentTerrainCellInterface, double eggMassAtBirth, double timeStep, int g_numb_prt1,
+			int g_numb_prt2, int ID_prt1, int ID_prt2, AnimalSpecies* const mySpecies, AnimalSpecies::Gender::GenderValue gender,
+			bool temporary)
 {
-    return new SpatialTreeAnimal(firstParentGamete, secondParentGamete, parentTerrainCellInterface, factorEggMassFromMom, actualTime, g_numb_prt1, g_numb_prt2, ID_prt1, ID_prt2, mySpecies, gender);
+    return SpatialTreeAnimalFactory::createInstance(firstParentGamete, secondParentGamete, parentTerrainCellInterface, factorEggMassFromMom, timeStep, g_numb_prt1, g_numb_prt2, ID_prt1, ID_prt2, mySpecies, gender, temporary);
 }
 
 void SpatialTreeAnimal::searchTargetToTravelTo(const double &perceptionArea, const std::list<const EdibleInterface*> &ediblesHasTriedToPredate, double muForPDF, double sigmaForPDF, double predationSpeedRatioAH, double predationHunterVoracityAH, double predationProbabilityDensityFunctionAH, double predationSpeedRatioSAW, double predationHunterVoracitySAW, double predationProbabilityDensityFunctionSAW, double encounterHuntedVoracitySAW, double encounterHunterVoracitySAW, double encounterVoracitiesProductSAW, double encounterHunterSizeSAW, double encounterHuntedSizeSAW, double encounterProbabilityDensityFunctionSAW, double encounterHuntedVoracityAH, double encounterHunterVoracityAH, double encounterVoracitiesProductAH, double encounterHunterSizeAH, double encounterHuntedSizeAH, double encounterProbabilityDensityFunctionAH)
@@ -55,7 +59,7 @@ void SpatialTreeAnimal::searchTargetToTravelTo(const double &perceptionArea, con
 
         if(isMature() && gender == AnimalSpecies::Gender::MALE)
         {
-            if(neighbor.first->getNumberOfMatureFemales(getMutableSpecies()) == 0)
+            if(neighbor.first->getNumberOfMatureFemales(getSpecies()) == 0)
             {
                 availableCurrentTargetNeighbor = false;
             }
@@ -67,7 +71,7 @@ void SpatialTreeAnimal::searchTargetToTravelTo(const double &perceptionArea, con
             const EdibleInterface* neighborBestEdibility;
             tie(edibilityValue, predatoryRiskEdibilityValue, conspecificBiomass, neighborBestEdibility) = neighbor.first->getCellEvaluation(this, neighbor.second, ediblesHasTriedToPredate, muForPDF, sigmaForPDF, predationSpeedRatioAH, predationHunterVoracityAH, predationProbabilityDensityFunctionAH, predationSpeedRatioSAW, predationHunterVoracitySAW, predationProbabilityDensityFunctionSAW, encounterHuntedVoracitySAW, encounterHunterVoracitySAW, encounterVoracitiesProductSAW, encounterHunterSizeSAW, encounterHuntedSizeSAW, encounterProbabilityDensityFunctionSAW, encounterHuntedVoracityAH, encounterHunterVoracityAH, encounterVoracitiesProductAH, encounterHunterSizeAH, encounterHuntedSizeAH, encounterProbabilityDensityFunctionAH);
             
-            unique_ptr<TerrainCellEvaluation> currentEvaluation = make_unique<TerrainCellEvaluation>(getMutableSpecies(), neighborBestEdibility, 
+            unique_ptr<TerrainCellEvaluation> currentEvaluation = make_unique<TerrainCellEvaluation>(getSpecies(), neighborBestEdibility, 
                 make_pair(static_cast<unsigned int>(neighbor.second.first), move(neighbor.second.second)), neighbor.first->getPosition(), 
                 edibilityValue, predatoryRiskEdibilityValue, conspecificBiomass
             );
@@ -115,7 +119,7 @@ void SpatialTreeAnimal::searchTargetToTravelTo(const double &perceptionArea, con
     {
         if(bestEdibility->getSpecies()->isMobile())
         {
-            targetPoint = static_cast<const AnimalNonStatistical*>(bestEdibility)->getPosition();
+            targetPoint = static_cast<const AnimalInterface*>(bestEdibility)->getPosition();
         }
         else
         {

@@ -48,15 +48,15 @@ protected:
     void setInEnemyFreeSpace(const bool newInEnemyFreeSpace);
     void setInCompetitorFreeSpace(const bool newInCompetitorFreeSpace);
 
-    const Temperature& getTemperatureOnTimeStep(const unsigned int numberOfTimeSteps) const;
+    const Temperature& getTemperatureOnTimeStep(const unsigned int timeStep) const;
 
     void updateTemperature();
     void updateRelativeHumidity();
 
     std::vector<Temperature> obtainTemperatureCycle(const nlohmann::json &temperatureCycleValues);
 
-    void refreshTemperature(const unsigned int numberOfTimeSteps);
-    virtual void refreshRelativeHumidity(const unsigned int numberOfTimeSteps)=0;
+    void refreshTemperature(const unsigned int timeStep);
+    virtual void refreshRelativeHumidity(const unsigned int timeStep)=0;
 
 public:
     class Type {
@@ -108,7 +108,7 @@ public:
 
     virtual const std::string showMoistureInfo() const;
 
-    void refreshValue(const unsigned int numberOfTimeSteps);
+    void refreshValue(const unsigned int timeStep);
 
     void updateInfo();
 
@@ -121,5 +121,7 @@ public:
     template <class Archive>
     void serialize(Archive &ar, const unsigned int version);
 };
+
+BOOST_SERIALIZATION_ASSUME_ABSTRACT(ExtendedMoisture)
 
 #endif /* EXTENDED_MOISTURE_H_ */

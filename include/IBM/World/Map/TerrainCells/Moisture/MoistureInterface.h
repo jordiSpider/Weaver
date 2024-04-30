@@ -44,4 +44,6 @@ public:
     void serialize(Archive &ar, const unsigned int version);
 };
 
+BOOST_SERIALIZATION_ASSUME_ABSTRACT(MoistureInterface)
+
 #endif /* MOISTURE_INTERFACE_H_ */

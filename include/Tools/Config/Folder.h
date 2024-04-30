@@ -33,16 +33,7 @@ public:
     void refresh_version(VersionNumber new_version);
     VersionNumber& getVersion();
     std::unordered_map<std::string, std::unique_ptr<Folder>>& getSubFolders();
-    std::unique_ptr<Folder>& getSubFolder(const std::string& foldername);
     std::unordered_map<std::string, JsonFile>& getJsonFiles();
-    JsonFile& getFile(const std::string& filename);
-
-    void setFolder(const std::string& foldername, std::unique_ptr<Folder>& newFolder);
-    void removeFolder(const std::string& foldername);
-
-    void addFile(std::string &json_file);
-    void setFile(const std::string& filename, JsonFile& newFile);
-    void removeFile(const std::string& filename);
 };
 
 

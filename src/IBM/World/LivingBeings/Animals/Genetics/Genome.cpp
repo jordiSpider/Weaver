@@ -49,6 +49,7 @@ Genome::Genome(const vector<Locus*> &loci, const vector<int> &randomlyCreatedPos
 	int selectedTraitOnCorrelosome;
 	int selectedLociOnCorrelosome;
 	int linkedChromosome;
+	int linkedLociOnChromosome;
 	const Allele* selectedAllele;
 
 	//Here we select the Alelle we have to link, and we create in the chromosomes a pointer for each allele contained in the correlosomes.
@@ -62,6 +63,7 @@ Genome::Genome(const vector<Locus*> &loci, const vector<int> &randomlyCreatedPos
 		selectedLociOnCorrelosome = positionFromCorrelosomes%numberOfLociPerChromosome;
 
 		linkedChromosome = i/numberOfLociPerChromosome;
+		linkedLociOnChromosome = i%numberOfLociPerChromosome;
 
 		selectedAllele = homologousCorrelosomes.at(selectedTraitOnCorrelosome).first->getAllele(selectedLociOnCorrelosome);
 		homologousChromosomes.at(linkedChromosome).first->pushAllele(selectedAllele);

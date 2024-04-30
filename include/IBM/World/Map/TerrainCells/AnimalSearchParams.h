@@ -16,7 +16,7 @@
 #include "IBM/World/LivingBeings/LifeStage.h"
 
 
-class World;
+class WorldInterface;
 
 
 class AnimalSearchParams
@@ -30,12 +30,12 @@ protected:
     std::vector<std::vector<std::unordered_set<Instar>>> searchableInstars;
     std::vector<std::vector<InstarVector<std::unordered_set<AnimalSpecies::Gender::GenderValue>>>> searchableGenders;
 
-    void initializedParams(const World* const world);
+    void initializedParams(const WorldInterface* const worldInterface);
 
 public:
     AnimalSearchParams();
     AnimalSearchParams(
-        const World* const world,
+        const WorldInterface* const worldInterface,
         const std::vector<LifeStage::LifeStageValue> &newSearchableLifeStages,
         const std::vector<id_type> &newSearchableAnimalSpecies = {},
         const std::vector<Instar> &newSearchableInstars = {},
@@ -44,7 +44,7 @@ public:
     virtual ~AnimalSearchParams();
 
     void addSearchParams(
-        const World* const world,
+        const WorldInterface* const worldInterface,
         const std::vector<LifeStage::LifeStageValue> &newSearchableLifeStages = LifeStage::getEnumValues(),
         const std::vector<id_type> &newSearchableAnimalSpecies = {},
         const std::vector<Instar> &newSearchableInstars = {},
@@ -73,5 +73,7 @@ public:
     template <class Archive>
     void serialize(Archive &ar, const unsigned int version);
 };
+
+BOOST_SERIALIZATION_ASSUME_ABSTRACT(AnimalSearchParams)
 
 #endif /* ANIMAL_SEARCH_PARAMS_H_ */

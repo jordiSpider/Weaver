@@ -54,7 +54,7 @@ protected:
 	};
 
 public:
-	static std::unique_ptr<AnimalSpecies> createInstance(const nlohmann::json &animalSpeciesInfo, const bool initIndividualsPerDensities, World* const world);
+	static std::unique_ptr<AnimalSpecies> createInstance(const nlohmann::json &animalSpeciesInfo, const bool initIndividualsPerDensities, WorldInterface* const worldInterface);
 
 	/**
 	 * @brief Serialize the Trait object.

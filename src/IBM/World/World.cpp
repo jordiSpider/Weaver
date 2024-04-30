@@ -8,11 +8,9 @@
 #include "Misc/SimulationConstants.h"
 #include "IBM/World/World.h"
 #include "Misc/Utilities.h"
+#include "Misc/SerializableSpecializations.h"
 #include "Misc/GlobalVariable.h"
 #include "IBM/World/LivingBeings/LifeStage.h"
-#include "IBM/World/ArthropodsWorld.h"
-#include "IBM/World/DinosaursWorld.h"
-#include "IBM/World/AquaticWorld.h"
 
 
 using namespace std;
@@ -20,33 +18,15 @@ using json = nlohmann::json;
 namespace fs = boost::filesystem;
 
 
-
-
-unique_ptr<World> World::createInstance(json* jsonTree, json &worldConfig, fs::path outputFolder, fs::path configPath, int burnIn) {
-    switch(EnumClass<Type>::stringToEnumValue(worldConfig["world"]["simulationType"])) {
-        case Type::Arthropods: {
-            return make_unique<ArthropodsWorld>(jsonTree, worldConfig, outputFolder, configPath, burnIn);
-            break;
-        }
-        case Type::Dinosaurs: {
-            return make_unique<DinosaursWorld>(jsonTree, worldConfig, outputFolder, configPath, burnIn);
-            break;
-        }
-		case Type::Aquatic: {
-            return make_unique<AquaticWorld>(jsonTree, worldConfig, outputFolder, configPath, burnIn);
-            break;
-        }
-        default: {
-            throwLineInfoException("Default case");
-            break;
-        }
-    }
-}
-
-
-
-World::World(json * jsonTree, json &worldConfig, fs::path outputFolder, fs::path configPath, int burnIn, const double &massRatio)
-	: currentMovePercentage(printBarEach), currentNumberOfTerrainCellsMoved(0), burnIn(burnIn), massRatio(massRatio)
+World::World(json * jsonTree, json &worldConfig, 
+    fs::path outputFolder, 
+    fs::path configPath, 
+    int burnIn, 
+    const double &massRatio)
+	: currentMovePercentage(printBarEach), 
+        currentNumberOfTerrainCellsMoved(0), 
+        burnIn(burnIn), 
+        massRatio(massRatio)
 {
 	inputFolder = configPath;
 
@@ -58,8 +38,6 @@ World::World(json * jsonTree, json &worldConfig, fs::path outputFolder, fs::path
 	growthAndReproTest = (*jsonTree)["simulation"]["growthAndReproTest"];
 	//TODO tunetraits and metab every X STEPS
 	//TODO growth every X STEPS
-
-	numberOfTimeSteps = 0;
 
 	// Set output directory
 	setOutputFolder(outputFolder);
@@ -168,17 +146,17 @@ void World::calculateAnimalSpeciesK_Density() const
 
 void World::setOutputFolder(fs::path outputFolder)
 {
-	this->outputFolder = outputFolder;
+  this->outputFolder = outputFolder;
 
-	fs::create_directories(outputFolder / fs::path("Snapshots"));
-	fs::create_directories(outputFolder / fs::path("Matrices"));
-	fs::create_directories(outputFolder / fs::path("animals_each_day_start"));
-	fs::create_directories(outputFolder / fs::path("animals_each_day_end"));
-	fs::create_directories(outputFolder / fs::path("cells_each_day"));
-	fs::create_directories(outputFolder / fs::path("animals_each_day_growth"));
-	fs::create_directories(outputFolder / fs::path("animals_each_day_voracities"));
-	fs::create_directories(outputFolder / fs::path("animals_each_day_encounterProbabilities"));
-	fs::create_directories(outputFolder / fs::path("animals_each_day_predationProbabilities"));
+  fs::create_directories(outputFolder / fs::path("Snapshots"));
+  fs::create_directories(outputFolder / fs::path("Matrices"));
+  fs::create_directories(outputFolder / fs::path("animals_each_day_start"));
+  fs::create_directories(outputFolder / fs::path("animals_each_day_end"));
+  fs::create_directories(outputFolder / fs::path("cells_each_day"));
+  fs::create_directories(outputFolder / fs::path("animals_each_day_growth"));
+  fs::create_directories(outputFolder / fs::path("animals_each_day_voracities"));
+  fs::create_directories(outputFolder / fs::path("animals_each_day_encounterProbabilities"));
+  fs::create_directories(outputFolder / fs::path("animals_each_day_predationProbabilities"));
 }
 
 
@@ -378,7 +356,7 @@ void World::readResourceSpeciesFromJSONFiles()
 
 				cout << " - Resource scientific name: " << (string)ptMain["resource"]["name"] << endl << endl;
 
-				addResourceSpecies(ResourceSpeciesFactory::createInstance(ptMain["resource"], this));
+				addResourceSpecies(ResourceSpeciesFactory::createInstance(ptMain["resource"]));
 			}
 		}
 	}
@@ -522,9 +500,9 @@ AnimalSpecies * World::getAnimalSpecies(const string& name)
 }
 
 
-void World::printAnimalsAlongCells(const unsigned int numberOfTimeSteps, const int simulationPoint) const
+void World::printAnimalsAlongCells(const int day, const int simulationPoint) const
 {
-	if(((numberOfTimeSteps%recordEach)==0) | (numberOfTimeSteps==0))
+	if(((day%recordEach)==0) | (day==0))
 	{
 		string pathBySimulationPoint;
 		if (simulationPoint == 0)
@@ -538,7 +516,7 @@ void World::printAnimalsAlongCells(const unsigned int numberOfTimeSteps, const i
 		
 		ofstream file;
 
-		createOutputFile(file, outputFolder / fs::path(pathBySimulationPoint), "animals_day_", "txt", numberOfTimeSteps, recordEach);
+		createOutputFile(file, outputFolder / fs::path(pathBySimulationPoint), "animals_day_", "txt", day, recordEach);
 		if (!file.is_open())
 		{
 			throwLineInfoException("Error opening the file");
@@ -551,7 +529,7 @@ void World::printAnimalsAlongCells(const unsigned int numberOfTimeSteps, const i
 			file << magic_enum::enum_names<Axis>()[axis] << "\t";
 		}
 		
-		file << "state\tinstar\tpheno_ini\tdate_egg\tage_first_rep\treproCounter\tfecundity\tdate_death\tg_numb_prt1\tg_numb_prt2\tID_prt1\tID_prt2\tencounters_pred\tglobal_pred_encs\tdays_digest\tvor_ini\tsearch_ini\tspeed_ini\ttank_ini\tpheno_ini\tcurrentBodySize\tcurrentDryMass\t" << EnumClass<Trait::Type>::getHeader() << endl;
+		file << "state\tinstar\tpheno_ini\tdate_egg\tage_first_rep\trep_count\tfecundity\tdate_death\tg_numb_prt1\tg_numb_prt2\tID_prt1\tID_prt2\tencounters_pred\tglobal_pred_encs\tdays_digest\tvor_ini\tsearch_ini\tspeed_ini\ttank_ini\tpheno_ini\tcurrentBodySize\tcurrentDryMass\t" << Trait::printAvailableTraits() << endl;
 		
 		worldMap->printAnimalsAlongCells(file);
 
@@ -560,15 +538,15 @@ void World::printAnimalsAlongCells(const unsigned int numberOfTimeSteps, const i
 }
 
 
-void World::printCellAlongCells(const unsigned int numberOfTimeSteps) const
+void World::printCellAlongCells(const int day) const
 {
-	if(((numberOfTimeSteps%recordEach)==0) | (numberOfTimeSteps==0))
+	if(((day%recordEach)==0) | (day==0))
 	{
 		string pathBySimulationPoint = "cells_each_day";
 		
 		ofstream file;
 
-		createOutputFile(file, outputFolder / fs::path(pathBySimulationPoint), "cells_day_", "txt", numberOfTimeSteps, recordEach);
+		createOutputFile(file, outputFolder / fs::path(pathBySimulationPoint), "cells_day_", "txt", day, recordEach);
 		if (!file.is_open())
 		{
 			throwLineInfoException("Error opening the file");
@@ -595,14 +573,14 @@ void World::printCellAlongCells(const unsigned int numberOfTimeSteps) const
 }
 
 
-ostream& World::printExtendedDailySummary(ostream& os, const unsigned int numberOfTimeSteps)
+ostream& World::printExtendedDailySummary(ostream& os, int day)
 {
 	vector<double> worldResourceBiomass(getExistingResourceSpecies().size(), 0.0);
 	vector<vector<unsigned int>> worldAnimalsPopulation(getExistingAnimalSpecies().size(), vector<unsigned int>(LifeStage::size(), 0));
 
 	worldMap->obtainWorldResourceBiomassAndAnimalsPopulation(worldResourceBiomass, worldAnimalsPopulation);
 
-	os << numberOfTimeSteps << "\t";
+	os << day << "\t";
 
 	for(const auto &resourceBiomass : worldResourceBiomass)
 	{
@@ -623,27 +601,27 @@ ostream& World::printExtendedDailySummary(ostream& os, const unsigned int number
 }
 
 
-const double& World::getTimeStepsPerDay() const
+const unsigned int World::getTimeStepsPerDay() const
 {
 	return timeStepsPerDay;
 }
 
 
-void World::printGeneticsSummaries(const unsigned int numberOfTimeSteps)
+void World::printGeneticsSummaries(int day)
 {
 	vector<vector<unsigned int>> worldAnimalsPopulation(getExistingAnimalSpecies().size(), vector<unsigned int>(LifeStage::size(), 0));
 	vector<vector<pair<vector<double>, vector<double>>>> worldGeneticsFrequencies(getExistingAnimalSpecies().size());
 
 	for(const auto &animalSpecies : getExistingAnimalSpecies())
 	{
-		worldGeneticsFrequencies[animalSpecies->getAnimalSpeciesId()].resize(animalSpecies->getNumberOfIndividualLevelTraits());
+		worldGeneticsFrequencies[animalSpecies->getAnimalSpeciesId()].resize(animalSpecies->getNumberOfVariableTraits());
 	}
 
 	worldMap->obtainAnimalsPopulationAndGeneticsFrequencies(worldAnimalsPopulation, worldGeneticsFrequencies);
 
 	for(const auto &animalSpecies : getExistingAnimalSpecies())
 	{
-		geneticsSummaryFile[animalSpecies->getAnimalSpeciesId()] << numberOfTimeSteps << "\t";
+		geneticsSummaryFile[animalSpecies->getAnimalSpeciesId()] << day << "\t";
 
 		unsigned int population = 0;
 
@@ -654,9 +632,9 @@ void World::printGeneticsSummaries(const unsigned int numberOfTimeSteps)
 
 		geneticsSummaryFile[animalSpecies->getAnimalSpeciesId()] << population << "\t";
 
-		for(unsigned int individualLevelTrait = 0; individualLevelTrait < animalSpecies->getNumberOfIndividualLevelTraits(); individualLevelTrait++)
+		for(unsigned int variableTrait = 0; variableTrait < animalSpecies->getNumberOfVariableTraits(); variableTrait++)
 		{
-			const pair<vector<double>, vector<double>>* const traitValues = &worldGeneticsFrequencies[animalSpecies->getAnimalSpeciesId()][individualLevelTrait];
+			const pair<vector<double>, vector<double>>* const traitValues = &worldGeneticsFrequencies[animalSpecies->getAnimalSpeciesId()][variableTrait];
 			
 			geneticsSummaryFile[animalSpecies->getAnimalSpeciesId()] << accumulate(traitValues->first.begin(), traitValues->first.end(), 0.0) / traitValues->first.size() << "\t";
 			geneticsSummaryFile[animalSpecies->getAnimalSpeciesId()] << accumulate(traitValues->second.begin(), traitValues->second.end(), 0.0) / traitValues->second.size() << "\t";
@@ -667,7 +645,7 @@ void World::printGeneticsSummaries(const unsigned int numberOfTimeSteps)
 }
 
 
-void World::saveAnimalSpeciesSnapshot(fs::path filenameRoot, string filename, const unsigned int numberOfTimeSteps, AnimalSpecies* species)
+void World::saveAnimalSpeciesSnapshot(fs::path filenameRoot, string filename, int day, AnimalSpecies* species)
 {
 	if(species->getTotalInitialPopulation() > 0)
 	{
@@ -675,7 +653,7 @@ void World::saveAnimalSpeciesSnapshot(fs::path filenameRoot, string filename, co
 		std::replace(scientificName.begin(), scientificName.end(), ' ', '_');
 
 		ofstream file;
-		string fullPath = createOutputFile(file, filenameRoot, filename + "_" + scientificName + "_day_", "dat", numberOfTimeSteps, recordEach, ios::out | ios::binary);
+		string fullPath = createOutputFile(file, filenameRoot, filename + "_" + scientificName + "_day_", "dat", day, recordEach, ios::out | ios::binary);
 
 		cout << "Saving Animal as " << fullPath << "... ";
 
@@ -688,13 +666,13 @@ void World::saveAnimalSpeciesSnapshot(fs::path filenameRoot, string filename, co
 }
 
 
-void World::saveResourceSpeciesSnapshot(fs::path filenameRoot, string filename, const unsigned int numberOfTimeSteps, ResourceSpecies* species)
+void World::saveResourceSpeciesSnapshot(fs::path filenameRoot, string filename, int day, ResourceSpecies* species)
 {
 	string scientificName = species->getScientificName();
 	std::replace(scientificName.begin(), scientificName.end(), ' ', '_');
 
 	ofstream file;
-	string fullPath = createOutputFile(file, filenameRoot, filename + "_" + scientificName + "_day_", "dat", numberOfTimeSteps, recordEach, ios::out | ios::binary);
+	string fullPath = createOutputFile(file, filenameRoot, filename + "_" + scientificName + "_day_", "dat", day, recordEach, ios::out | ios::binary);
 
 	cout << "Saving Resource as " << fullPath << "... ";
 
@@ -706,10 +684,10 @@ void World::saveResourceSpeciesSnapshot(fs::path filenameRoot, string filename, 
 }
 
 
-void World::saveWaterSnapshot(fs::path filenameRoot, string filename, const unsigned int numberOfTimeSteps)
+void World::saveWaterSnapshot(fs::path filenameRoot, string filename, int day)
 {
 	ofstream file;
-	string fullPath = createOutputFile(file, filenameRoot, filename + "_day_", "dat", numberOfTimeSteps, recordEach, ios::out | ios::binary);
+	string fullPath = createOutputFile(file, filenameRoot, filename + "_day_", "dat", day, recordEach, ios::out | ios::binary);
 
 	cout << "Saving Water volume as " << fullPath << "... ";
 
@@ -787,18 +765,18 @@ void World::updateInitialMapMoisture()
 	worldMap->updateMoisture();
 }
 
-void World::updateMap(const unsigned int numberOfTimeSteps, ofstream &tuneTraitsFile)
+void World::updateMap(const unsigned int timeStep, ofstream &tuneTraitsFile)
 {
-	updateAllMoistureSource(numberOfTimeSteps);
-	worldMap->update(numberOfTimeSteps, tuneTraitsFile);
+	updateAllMoistureSource(timeStep);
+	worldMap->update(timeStep, tuneTraitsFile);
 }
 
 
-void World::updateAllMoistureSource(const unsigned int numberOfTimeSteps)
+void World::updateAllMoistureSource(const unsigned int timeStep)
 {
 	for(auto &elem : appliedMoisture)
 	{
-		elem->refreshValue(numberOfTimeSteps);
+		elem->refreshValue(timeStep);
 	}
 }
 
@@ -825,11 +803,6 @@ void World::saveOptimizationResult(fs::path resultFolder)
 	jsonFile.close();
 }
 
-const unsigned int World::getRunDays() const
-{
-	return runDays;
-}
-
 void World::evolveWorld()
 {
 	saveWaterSnapshot(outputFolder / fs::path("Snapshots"), "Water_initial", 0);
@@ -839,6 +812,16 @@ void World::evolveWorld()
 		saveResourceSpeciesSnapshot(outputFolder / fs::path("Snapshots"), "Resource_initial", 0, resourceSpecies.get());
 	}
 
+	// Next is intentionally commented because it would give empty volumes (animals are unborn)
+	/*
+	 std::vector<AnimalSpecies *>::iterator animIt;
+
+	 for (animIt = existingAnimalSpecies.begin(); animIt != existingAnimalSpecies.end(); animIt++)
+	 {
+	 saveAnimalSpeciesSnapshot(outputFolder + "/Snapshots/" + "Animal_initial", 0, **animIt);
+	 }
+	 */
+
 	ofstream timeSpentFile;
 	createOutputFile(timeSpentFile, outputFolder, "time_spent", "txt");
 	if (!timeSpentFile.is_open())
@@ -846,13 +829,11 @@ void World::evolveWorld()
 		cerr << "Error opening the file." << endl;
 	}
 
-	const unsigned int totalNumberOfTimeSteps = floor(getRunDays() / getTimeStepsPerDay());
-
-	while(numberOfTimeSteps < totalNumberOfTimeSteps)
+	for (unsigned int timeStep = 0; timeStep < runDays*timeStepsPerDay; timeStep++)
 	{
-		cout << "Running on timeStep " << numberOfTimeSteps << " out of " << totalNumberOfTimeSteps << endl;
+		cout << "Running on day " << timeStep << " out of " << runDays*timeStepsPerDay << endl;
 
-		printAnimalsAlongCells(numberOfTimeSteps, 0);
+		printAnimalsAlongCells(timeStep, 0);
 
 //#####################################################################
 //##########################  UPDATING MAP   ##########################
@@ -861,19 +842,19 @@ void World::evolveWorld()
 		string pathBySimulationPointTuneTraits = "animals_each_day_growth";
 
 		ofstream tuneTraitsFile;
-		createOutputFile(tuneTraitsFile, outputFolder / fs::path(pathBySimulationPointTuneTraits), "animals_growth_day_", "txt", numberOfTimeSteps, recordEach);
+		createOutputFile(tuneTraitsFile, outputFolder / fs::path(pathBySimulationPointTuneTraits), "animals_growth_day_", "txt", timeStep, recordEach);
 		if (!tuneTraitsFile.is_open())
 		{
 			throwLineInfoException("Error opening the file");
 		}
 		
 		
-		tuneTraitsFile << "growth\tLinf\tid\tspecies\tstate\tcurrent_age\tinstar\tbody_size\tenergy_tank\ttankAtGrowth\tbody_mass\tmature\tfinalJMinVB\tfinalJMaxVB\tvoracity_ini\texpectedDryMassFromMinVor\texpectedDryMassFromMaxVor\tmaxMassNextInstarPlasticity\tcurrentWetMass\tpreT_search\tpreT_speed\tpostT_search\tpostT_speed\tminimum_met_loss\tcondition_search\tcondition_speed\tcondition_voracity\tafter_encounters_voracity\tafter_encounters_search\tfinal_speed\tdeath_date\tmin_mass_for_death" << endl;
+		tuneTraitsFile << "growth\tLinf\tid\tspecies\tstate\tcurrent_age\tinstar\tbody_size\tenergy_tank\ttankAtGrowth\tbody_mass\tmature\tmin_mass_for_death\tfinalJMinVB\tfinalJMaxVB\tvoracity_ini\texpectedDryMassFromMinVor\texpectedDryMassFromMaxVor\tmaxMassNextInstarPlasticity\tcurrentWetMass\tpreT_search\tpreT_speed\tpostT_search\tpostT_speed\tini_mass_instar\ttarget_next_mass\tminimum_met_loss\tcondition_search\tcondition_speed\tnon_condition_voracity\tcondition_voracity\tafter_encounters_voracity\tafter_encounters_search\tfinal_speed\tdeath_date" << endl;
 		
 		cout << " - Updating map ... " << endl << flush;
 		
 		auto t0 = clock();
-		updateMap(numberOfTimeSteps, tuneTraitsFile);
+		updateMap(timeStep, tuneTraitsFile);
 		auto t1 = clock();
 
 		cout << "Time: " << (double(t1-t0)/CLOCKS_PER_SEC) << " secs." << endl;
@@ -891,7 +872,7 @@ void World::evolveWorld()
 
 		ofstream encounterProbabilitiesFile, predationProbabilitiesFile;
 
-		createOutputFile(encounterProbabilitiesFile, outputFolder / fs::path(pathBySimulationPoint), "animals_encounterProbabilities_day_", "txt", numberOfTimeSteps, recordEach);
+		createOutputFile(encounterProbabilitiesFile, outputFolder / fs::path(pathBySimulationPoint), "animals_encounterProbabilities_day_", "txt", timeStep, recordEach);
 		if (!encounterProbabilitiesFile.is_open())
 		{
 			throwLineInfoException("Error opening the file");
@@ -899,7 +880,7 @@ void World::evolveWorld()
 		
 		pathBySimulationPoint = "animals_each_day_predationProbabilities";
 
-		createOutputFile(predationProbabilitiesFile, outputFolder / fs::path(pathBySimulationPoint), "animals_predationProbabilities_day_", "txt", numberOfTimeSteps, recordEach);
+		createOutputFile(predationProbabilitiesFile, outputFolder / fs::path(pathBySimulationPoint), "animals_predationProbabilities_day_", "txt", timeStep, recordEach);
 		if (!predationProbabilitiesFile.is_open())
 		{
 			throwLineInfoException("Error opening the file");
@@ -919,7 +900,7 @@ void World::evolveWorld()
 		cout << "   ";
 
 		t0 = clock();
-		worldMap->moveAnimals(numberOfTimeSteps, encounterProbabilitiesFile, predationProbabilitiesFile, getSaveEdibilitiesFile(), edibilitiesFile, exitTimeThreshold, getPdfThreshold(), getMuForPDF(), getSigmaForPDF(), getPredationSpeedRatioAH(), getPredationHunterVoracityAH(), getPredationProbabilityDensityFunctionAH(), getPredationSpeedRatioSAW(), getPredationHunterVoracitySAW(), getPredationProbabilityDensityFunctionSAW(), getMaxSearchArea(), getEncounterHuntedVoracitySAW(), getEncounterHunterVoracitySAW(), getEncounterVoracitiesProductSAW(), getEncounterHunterSizeSAW(), getEncounterHuntedSizeSAW(), getEncounterProbabilityDensityFunctionSAW(), getEncounterHuntedVoracityAH(), getEncounterHunterVoracityAH(), getEncounterVoracitiesProductAH(), getEncounterHunterSizeAH(), getEncounterHuntedSizeAH(), getEncounterProbabilityDensityFunctionAH());
+		worldMap->moveAnimals(timeStep, encounterProbabilitiesFile, predationProbabilitiesFile, getSaveEdibilitiesFile(), edibilitiesFile, exitTimeThreshold, getPdfThreshold(), getMuForPDF(), getSigmaForPDF(), getPredationSpeedRatioAH(), getPredationHunterVoracityAH(), getPredationProbabilityDensityFunctionAH(), getPredationSpeedRatioSAW(), getPredationHunterVoracitySAW(), getPredationProbabilityDensityFunctionSAW(), getMaxSearchArea(), getEncounterHuntedVoracitySAW(), getEncounterHunterVoracitySAW(), getEncounterVoracitiesProductSAW(), getEncounterHunterSizeSAW(), getEncounterHuntedSizeSAW(), getEncounterProbabilityDensityFunctionSAW(), getEncounterHuntedVoracityAH(), getEncounterHunterVoracityAH(), getEncounterVoracitiesProductAH(), getEncounterHunterSizeAH(), getEncounterHuntedSizeAH(), getEncounterProbabilityDensityFunctionAH());
 		t1 = clock();
 
 		cout << endl;
@@ -939,18 +920,18 @@ void World::evolveWorld()
 		string pathBySimulationPointVoracities = "animals_each_day_voracities";
 
 		ofstream voracitiesFile;
-		createOutputFile(voracitiesFile, outputFolder / fs::path(pathBySimulationPointVoracities), "animals_voracities_day_", "txt", numberOfTimeSteps, recordEach);
+		createOutputFile(voracitiesFile, outputFolder / fs::path(pathBySimulationPointVoracities), "animals_voracities_day_", "txt", timeStep, recordEach);
 		if (!voracitiesFile.is_open())
 		{
 			throwLineInfoException("Error opening the file");
 		}
 		
-		voracitiesFile << "id\tspecies\tstate\tcurrentAge\tinstar\tbody_size\tenergy_tank\tdryMass\tnextDinoMass\tmin_mass_for_death\tafter_encounters_voracity\tfood_mass\tdryMassAfterAssim\ttotalMetabolicDryMassLossAfterAssim\teatenToday\tsteps\tstepsAttempted\tafter_encounters_search\tsated\tpercentMoving\tpercentHandling\tvoracity_body_mass_ratio\tgender\tmated\teggDryMass\tK\tfactorEggMass\tdeath_date\tageOfFirstMaturation\treproCounter" << endl;
+		voracitiesFile << "id\tspecies\tstate\tcurrentAge\tinstar\tbody_size\tenergy_tank\tdryMass\tnextDinoMass\tmin_mass_for_death\tafter_encounters_voracity\tfood_mass\tdryMassAfterAssim\ttotalMetabolicDryMassLossAfterAssim\teatenToday\tsteps\tstepsAttempted\tafter_encounters_search\tsated\tpercentMoving\tpercentHandling\tvoracity_body_mass_ratio\tgender\tmated\teggDryMass\tK\tL\tpseudoK\tpseudoL\tfactorEggMass\teggDryMassAtBirth\tdeath_date\tageOfFirstMaturation\trep_count" << endl;
 		
 		cout << " - Background, assimilating food and reproducing ... " << endl << flush;
 		
 		t0 = clock();
-		worldMap->performAnimalsActions(numberOfTimeSteps, voracitiesFile, outputFolder, getSaveAnimalConstitutiveTraits(), getConstitutiveTraitsFile());
+		worldMap->performAnimalsActions(timeStep, voracitiesFile, outputFolder, getSaveAnimalConstitutiveTraits(), getConstitutiveTraitsFile());
 		t1 = clock();
 
 		cout << "Time: " << (double(t1-t0)/CLOCKS_PER_SEC) << " secs." << endl;
@@ -967,7 +948,7 @@ void World::evolveWorld()
 		cout << " - Printing animals along cells ... " << endl << flush;
 
 		t0 = clock();
-		printAnimalsAlongCells(numberOfTimeSteps, 1);
+		printAnimalsAlongCells(timeStep, 1);
 		t1 = clock();
 
 		cout << "Time: " << (double(t1-t0)/CLOCKS_PER_SEC) << " secs." << endl;
@@ -982,7 +963,7 @@ void World::evolveWorld()
 		cout << " - Printing summary file ... " << endl << flush;
 
 		t0 = clock();
-		printExtendedDailySummary(extendedDailySummaryFile, numberOfTimeSteps);
+		printExtendedDailySummary(extendedDailySummaryFile, timeStep);
 		t1 = clock();
 
 		cout << "Time: " << (double(t1-t0)/CLOCKS_PER_SEC) << " secs." << endl;
@@ -1010,10 +991,10 @@ void World::evolveWorld()
 		if(saveGeneticsSummaries)
 		{
 			//TODO FIX THIS INSIDE according to new Genome classes... (use debugging)
-			printGeneticsSummaries(numberOfTimeSteps);
+			printGeneticsSummaries(timeStep);
 		}
 
-		printCellAlongCells(numberOfTimeSteps);
+		printCellAlongCells(timeStep);
 
 		ofstream predationEventsOnOtherSpeciesFile;
 		createOutputFile(predationEventsOnOtherSpeciesFile, outputFolder / fs::path("Matrices"), predationEventsOnOtherSpeciesFilename, "txt");
@@ -1025,43 +1006,49 @@ void World::evolveWorld()
 		printPredationEventsOnOtherSpeciesMatrix(predationEventsOnOtherSpeciesFile);
 		predationEventsOnOtherSpeciesFile.close();
 
-		if (saveIntermidiateVolumes && (((numberOfTimeSteps + 1) % saveIntermidiateVolumesPeriodicity) == 0))
+		if (saveIntermidiateVolumes && (((timeStep + 1) % saveIntermidiateVolumesPeriodicity) == 0))
 		{
-			saveWaterSnapshot(outputFolder / fs::path("Snapshots"), "Water", numberOfTimeSteps);
+			saveWaterSnapshot(outputFolder / fs::path("Snapshots"), "Water", timeStep);
 
 			for(auto &resourceSpecies : existingResourceSpecies)
 			{
-				saveResourceSpeciesSnapshot(outputFolder / fs::path("Snapshots"), "Resource", numberOfTimeSteps, resourceSpecies.get());
+				saveResourceSpeciesSnapshot(outputFolder / fs::path("Snapshots"), "Resource", timeStep, resourceSpecies.get());
 			}
 
 			for(AnimalSpecies* const animalSpecies : getMutableExistingAnimalSpecies())
 			{
-				saveAnimalSpeciesSnapshot(outputFolder / fs::path("Snapshots"), "Animal", numberOfTimeSteps, animalSpecies);
+				saveAnimalSpeciesSnapshot(outputFolder / fs::path("Snapshots"), "Animal", timeStep, animalSpecies);
 			}
 		}
 
-		bool extinctionStatus = isExtinguished(numberOfTimeSteps);
+		bool extinctionStatus = isExtinguished(timeStep);
 
 		if(exitAtFirstExtinction && extinctionStatus)
 		{
 			break;
 		}
-
-		numberOfTimeSteps += 1;
 	}
 
 
-	saveWaterSnapshot(outputFolder / fs::path("Snapshots"), "Water_final", numberOfTimeSteps);
+	saveWaterSnapshot(outputFolder / fs::path("Snapshots"), "Water_final", runDays*timeStepsPerDay);
 
 	for(auto &resourceSpecies : existingResourceSpecies)
 	{
-		saveResourceSpeciesSnapshot(outputFolder / fs::path("Snapshots"), "Resource_final", numberOfTimeSteps, resourceSpecies.get());
+		saveResourceSpeciesSnapshot(outputFolder / fs::path("Snapshots"), "Resource_final", runDays*timeStepsPerDay, resourceSpecies.get());
 	}
 
 	for(AnimalSpecies* const animalSpecies : getMutableExistingAnimalSpecies())
 	{
-		saveAnimalSpeciesSnapshot(outputFolder / fs::path("Snapshots"), "Animal_final", numberOfTimeSteps, animalSpecies);
+		saveAnimalSpeciesSnapshot(outputFolder / fs::path("Snapshots"), "Animal_final", runDays*timeStepsPerDay, animalSpecies);
 	}
+
+        // create and open a character archive for output
+        std::ofstream ofs("serialization.txt");
+        boost::archive::text_oarchive oa(ofs);
+        
+        unsigned int projectVersion = projectVersionStringToNumber(PROJECT_VERSION);
+
+        this->serialize(oa, projectVersion);
 
 	/*
 	encountersMatrixFilename = outputFolder + "/Matrices/" + encountersMatrixFilename;
@@ -1199,7 +1186,7 @@ void World::increaseMovePrintBar()
 	}
 }
 
-bool World::isExtinguished(const unsigned int numberOfTimeSteps)
+bool World::isExtinguished(int day)
 {
 	bool extinctionStatus = false; 
 
@@ -1210,7 +1197,7 @@ bool World::isExtinguished(const unsigned int numberOfTimeSteps)
 
 	for(ResourceSpecies* const resourceSpecies : getMutableExistingResourceSpecies())
 	{
-		if(static_cast<int>(numberOfTimeSteps) > getBurnIn())
+		if(day > getBurnIn())
 		{
 			speciesAmplitude[resourceSpecies->getId()].first = fmin(speciesAmplitude[resourceSpecies->getId()].first, worldResourceBiomass[resourceSpecies->getResourceSpeciesId()]);
 			speciesAmplitude[resourceSpecies->getId()].second = fmax(speciesAmplitude[resourceSpecies->getId()].second, worldResourceBiomass[resourceSpecies->getResourceSpeciesId()]);
@@ -1233,7 +1220,7 @@ bool World::isExtinguished(const unsigned int numberOfTimeSteps)
 		}
 
 
-		if(static_cast<int>(numberOfTimeSteps) > getBurnIn())
+		if(day > getBurnIn())
 		{
 			speciesAmplitude[animalSpecies->getId()].first = fmin(speciesAmplitude[animalSpecies->getId()].first, population);
 			speciesAmplitude[animalSpecies->getId()].second = fmax(speciesAmplitude[animalSpecies->getId()].second, population);
@@ -1271,7 +1258,7 @@ void World::initializeMap(const json &mapConfig)
 {
 	cout << "Initializing terrain voxels ... " << flush;
 
-	worldMap = Map::createInstance(mapConfig, this);
+	worldMap = MapFactory::createInstance(mapConfig, this);
 
 	for(AnimalSpecies* const animalSpecies : getMutableExistingAnimalSpecies())
 	{
@@ -1301,10 +1288,6 @@ void World::readPatchesFromJSONFiles(const json &moistureBasePatchInfo, const bo
 	readResourcePatchesFromJSONFiles();
 }
 
-const bool World::isDinosaurs() const
-{
-    return false;
-}
 
 void World::readObstaclePatchesFromJSONFiles()
 {
@@ -1806,11 +1789,11 @@ void World::setRandomGaussianWaterPatches(unsigned int number, float radius, flo
 }
 */
 
-pair<AnimalStatistical*, Instar> World::getRandomPredator(const unsigned int numberOfTotalPotentialPredators,
-		const InstarVector<vector<AnimalStatistical*>*> &potentialPredators) const
+pair<AnimalInterface*, Instar> World::getRandomPredator(const unsigned int numberOfTotalPotentialPredators,
+		const InstarVector<vector<AnimalInterface*>*> &potentialPredators) const
 {
 	unsigned int predatorIndex = Random::randomIndex(numberOfTotalPotentialPredators);
-	AnimalStatistical* predator;
+	AnimalInterface* predator;
 
 	bool foundPredator = false;
 
@@ -1839,12 +1822,12 @@ pair<AnimalStatistical*, Instar> World::getRandomPredator(const unsigned int num
 	return make_pair(predator, predatorInstar);
 }
 
-AnimalStatistical* World::getRandomPrey(const InstarVector<unsigned int> &numberOfPotentialPreysPerInstar,
+AnimalInterface* World::getRandomPrey(const InstarVector<unsigned int> &numberOfPotentialPreysPerInstar,
 		const Instar &predatorInstar, const AnimalSpecies* const predatorSpecies,
-		const vector<InstarVector<vector<AnimalStatistical*>>> &animalsPopulation) const
+		const vector<InstarVector<vector<AnimalInterface*>>> &animalsPopulation) const
 {
 	unsigned int preyIndex = Random::randomIndex(numberOfPotentialPreysPerInstar[predatorInstar]);
-	AnimalStatistical* prey;
+	AnimalInterface* prey;
 
 	bool foundPrey = false;
 
@@ -1880,11 +1863,51 @@ void World::calculateAttackStatistics(vector<InstarVector<vector<vector<TerrainC
 	cout << "Size of the TerrainCell class: " << sizeof(TerrainCell) << endl;
 	cout << "Creating heating code individuals... " << endl;
 
-	unique_ptr<vector<InstarVector<vector<AnimalStatistical*>>>> animalsPopulation;
+	unique_ptr<vector<InstarVector<vector<AnimalInterface*>>>> animalsPopulation;
 	unsigned int populationSize;
 
 	tie(animalsPopulation, populationSize) = worldMap->generateStatisticsPopulation(mapSpeciesInhabitableTerrainCells);
-	
+
+	//Calculating pseudoGrowthSd
+	for(auto &speciesPopulation : *animalsPopulation)
+	{
+		for(auto &instarPopulation : speciesPopulation)
+		{
+			for(auto &animal : instarPopulation)
+			{
+				animal->sumPseudoGrowthSd();
+			}
+		}
+	}
+
+	for(AnimalSpecies* const animalSpecies : getMutableExistingAnimalSpecies())
+	{
+		animalSpecies->calculatePseudoGrowthSd();
+	}
+
+	for(auto &speciesPopulation : *animalsPopulation)
+	{
+		for(auto &instarPopulation : speciesPopulation)
+		{
+			for(auto &animal : instarPopulation)
+			{
+				//TODO Ver en CUÁNTO cambian usando los 1.000.000 animales , probando el calentamiento 2 o 3 veces
+				animal->interpolateTraits();
+				//DONE Usar calculateGrowthCurves CADA DÍA , y no al nacer.
+				//DONE ELIMINAR SPEED DEL ADJUST TRAITS YA QUE QUEDA INCLUIDO EN EL TUNETRAITS DE ABAJO
+				animal->adjustTraits();
+				//DONE Forzar el crecimiento de forma DIARIA y utilizando growtcurves+tunetraits CADA DÍA para el ciclo de temperaturas
+				Temperature temperatureOnMolting = animal->forceMolting();
+				animal->setExperiencePerSpecies();
+				ofstream noStream;
+				animal->tuneTraits(-1, timeStepsPerDay, temperatureOnMolting, 100, noStream, false, true);
+
+				updateMaxSearchArea(animal->getSearchArea());
+
+				//DONE tuneTraits tiene que ir AQUI y ADEMÁS con la temperatura final en la que mudaron CADA UNO DE ELLOS
+			}
+		}
+	}
 	cout << "A total of " << populationSize << " heating code individuals have been created." << endl;
 
 	//Only for predators. The experiment is carried out for every predator species and its linked species, up until the specified numberOfCombinations.
@@ -1895,7 +1918,7 @@ void World::calculateAttackStatistics(vector<InstarVector<vector<vector<TerrainC
 		cout << ">> Simulating " << numberOfCombinations << " attacks from the species \"" << predatorAnimalSpecies->getScientificName() << "\"... " << endl;
 
 		unsigned int numberOfTotalPotentialPredators = 0;
-		InstarVector<vector<AnimalStatistical*>*> potentialPredators(predatorAnimalSpecies->getNumberOfInstars(), nullptr);
+		InstarVector<vector<AnimalInterface*>*> potentialPredators(predatorAnimalSpecies->getNumberOfInstars(), nullptr);
 
 		InstarVector<unsigned int> numberOfPotentialPreysPerInstar(predatorAnimalSpecies->getNumberOfInstars(), 0);
 
@@ -1921,16 +1944,16 @@ void World::calculateAttackStatistics(vector<InstarVector<vector<vector<TerrainC
 			float percentageForPrinting = 0.1;
 			float currentPercentageForPrinting = percentageForPrinting;
 
-			vector<pair<AnimalStatistical*, AnimalStatistical*>> vectorOfAttacks;
+			vector<pair<AnimalInterface*, AnimalInterface*>> vectorOfAttacks;
 			vectorOfAttacks.reserve(numberOfCombinations);
 
 			while(vectorOfAttacks.size() < numberOfCombinations)
 			{
 				Instar predatorInstar;
-				AnimalStatistical* predator;
+				AnimalInterface* predator;
 				tie(predator, predatorInstar) = getRandomPredator(numberOfTotalPotentialPredators, potentialPredators);
 				
-				AnimalStatistical* prey = getRandomPrey(numberOfPotentialPreysPerInstar, predatorInstar, predatorAnimalSpecies, *animalsPopulation);
+				AnimalInterface* prey = getRandomPrey(numberOfPotentialPreysPerInstar, predatorInstar, predatorAnimalSpecies, *animalsPopulation);
 				
 				
 				double probabilityDensityFunction = exp(-0.5 * pow((log(predator->calculateWetMass()/prey->calculateWetMass()) - muForPDF) / sigmaForPDF, 2)) / (sigmaForPDF * sqrt(2*PI));
@@ -1940,13 +1963,14 @@ void World::calculateAttackStatistics(vector<InstarVector<vector<vector<TerrainC
 				if(probabilityDensityFunction >= pdfThreshold){  //Dinosaurs but everything else might be - p=0.003 from Alamosaurus - Tytannsaurus in PDF_fix_in heating_code.xls
 					if(predator->canEatEdible(prey, list<const EdibleInterface *>(), prey->calculateDryMass()) && predator != prey)
 					{
-						pair<AnimalStatistical*, AnimalStatistical*> currentAttack = make_pair(predator, prey);
+						auto currentAttack = make_pair(predator, prey);
 						if(find(vectorOfAttacks.begin(), vectorOfAttacks.end(), currentAttack) == vectorOfAttacks.end())
 						{
 							vectorOfAttacks.push_back(currentAttack);
 
 							//Computing the total mean values.
-							predatorAnimalSpecies->interactionRanges(*predator, *prey, muForPDF, sigmaForPDF);
+							predatorAnimalSpecies->sumStatisticMeans(predator->getCurrentBodySize(), predator->getVoracity(), predator->getSpeed(), predator->calculateDryMass(), prey->getCurrentBodySize(), prey->getVoracity(), prey->getSpeed(), prey->calculateDryMass(), muForPDF, sigmaForPDF);
+							predatorAnimalSpecies->interactionRanges(predator->getCurrentBodySize(), predator->getVoracity(), predator->getSpeed(), predator->calculateDryMass(), prey->getCurrentBodySize(), prey->getVoracity(), prey->getSpeed(), prey->calculateDryMass(), muForPDF, sigmaForPDF);
 						}
 					}
 					
@@ -1957,30 +1981,34 @@ void World::calculateAttackStatistics(vector<InstarVector<vector<vector<TerrainC
 					}
 				}
 			}
+
+			//Computing the means
+			predatorAnimalSpecies->computeStatisticMeans(vectorOfAttacks.size());
+
+			for(unsigned int i = 0; i < vectorOfAttacks.size(); i++)
+			{
+				//Computing the total sd values.
+				auto predator = vectorOfAttacks[i].first;
+				auto prey = vectorOfAttacks[i].second;
+
+				//Dinosaurs but everything else might be - p=0.003 from Alamosaurus - Tytannsaurus in PDF_fix_in heating_code.xls
+				predatorAnimalSpecies->sumStatisticSds(predator->getCurrentBodySize(), predator->getVoracity(), predator->getSpeed(), predator->calculateDryMass(), prey->getCurrentBodySize(), prey->getVoracity(), prey->getSpeed(), prey->calculateDryMass(), muForPDF, sigmaForPDF);
+			}
+
+			//Computing the sds
+			predatorAnimalSpecies->computeStatisticSds(vectorOfAttacks.size());
 		}
 	}
 
 	worldMap->eraseStatisticsPopulation();
 
+	Edible::resetIds(Resource::resourceCounter);
+	Animal::animalCounter = 0;
 	cout << "Calculating attack statistics DONE" << endl;
 }
 
-const double World::Yodzis(const double& wetMass, const double& newA, const double& newB) const
-{
-	return newA*pow(wetMass, newB);
-}
 
-const double World::Garland1983(const double& wetMass) const
-{
-	return (152*pow(wetMass,0.738)) / 1000;
-}
-
-double World::calculateNewVoracity(const double &wetMass, const double &conversionToWetMass) const
-{
-	return calculateWetFood(wetMass)/conversionToWetMass;
-}
-
-void World::updateMaxSearchArea(const double& currentAnimalMaxSearchArea)
+void World::updateMaxSearchArea(double currentAnimalMaxSearchArea)
 {
 	if(currentAnimalMaxSearchArea > maxSearchArea)
 	{
@@ -2086,7 +2114,7 @@ void World::initializeAnimals()
 
 	for(AnimalSpecies* const animalSpecies : getMutableExistingAnimalSpecies())
 	{
-		unsigned int numberOfDiscardedIndividualsOutsideRestrictedRanges = 0;
+		int numberOfDiscardedIndividualsOutsideRestrictedRanges = 0;
 
 		if(initIndividualsPerDensities)
 		{
@@ -2116,17 +2144,20 @@ void World::initializeAnimals()
 					Animal * newAnimal = new Animal(currentAnimalSpecies->getNewGenome(), -1, newCell, 0, timeStepsPerDay, 0, 0, -1,
 							-1, currentAnimalSpecies, currentAnimalSpecies->getRandomGender(), currentAnimalSpecies->getDefaultHuntingMode());
 
-					while(!newAnimal->isInsideRestrictedRanges())
+					pair<bool, bool> isInsideRestrictedRangesAndIsViableOffSpring = newAnimal->interpolateTraits();
+					while(!isInsideRestrictedRangesAndIsViableOffSpring.first)
 					{
 						numberOfDiscardedIndividualsOutsideRestrictedRanges++;
 						delete newAnimal;
 						newAnimal = new Animal(currentAnimalSpecies->getNewGenome(), -1, newCell, 0, timeStepsPerDay, 0, 0, -1,
 												-1, currentAnimalSpecies, currentAnimalSpecies->getRandomGender(), currentAnimalSpecies->getDefaultHuntingMode());
+						isInsideRestrictedRangesAndIsViableOffSpring = newAnimal->interpolateTraits();
 					}
 					//ALWAYS print the traits after interpolating and before adjusting
 					//newAnimal->printGenetics(geneticsFile);
 					newAnimal->printTraits(constitutiveTraitsFile);
-					newAnimal->adjust();
+					//DONE Adjust traits now includes the first CalculateGrowthCurves call. For every animal.
+					newAnimal->adjustTraits();
 					newAnimal->forceMolting(timeStepsPerDay, ageAtInitialization, -1);
 					double newAnimalWetMass = newAnimal->calculateWetMass();
 					if(currentCreatedBiomassAtThisAge + newAnimalWetMass <= totalBiomassAtThisAge)
@@ -2178,8 +2209,8 @@ void World::initializeOutputFiles(json * jsonTree)
 	// Copy simulation configuration
 	fs::copy(inputFolder, outputFolder / fs::path("config") / inputFolder.filename(), fs::copy_options::recursive);
 
-	fs::path dailySummariFilename = outputFolder / fs::path("dailySummary.txt");
-	dailySummaryFile.open(dailySummariFilename);
+	dailySummaryFilename = outputFolder / fs::path("dailySummary.txt");
+	dailySummaryFile.open(dailySummaryFilename);
 
 	if (!dailySummaryFile.is_open())
 	{
@@ -2192,7 +2223,7 @@ void World::initializeOutputFiles(json * jsonTree)
 				<< endl;
 	}
 
-	fs::path extendedDailySummaryFilename = outputFolder / fs::path("extendedDailySummary.txt");
+	extendedDailySummaryFilename = outputFolder / fs::path("extendedDailySummary.txt");
 	extendedDailySummaryFile.open(extendedDailySummaryFilename);
 
 	if (!extendedDailySummaryFile.is_open())
@@ -2237,10 +2268,10 @@ void World::initializeOutputFiles(json * jsonTree)
 
 			geneticsSummaryFile[animalSpecies->getAnimalSpeciesId()] << "day" << "\t" << "population" << "\t";
 
-			for(const auto &[traitType, elementType] : animalSpecies->getIndividualLevelTraitElements())
+			for(const auto &variableTrait : *animalSpecies->getVariableTraits())
 			{
-				geneticsSummaryFile[animalSpecies->getAnimalSpeciesId()] << EnumClass<Trait::Type>::to_string(traitType) << "$" << EnumClass<TraitDefinitionSection::Elements>::to_string(elementType) << "_cr1" << "\t";
-				geneticsSummaryFile[animalSpecies->getAnimalSpeciesId()] << EnumClass<Trait::Type>::to_string(traitType) << "$" << EnumClass<TraitDefinitionSection::Elements>::to_string(elementType) << "_cr2" << "\t";
+				geneticsSummaryFile[animalSpecies->getAnimalSpeciesId()] << magic_enum::enum_name(variableTrait) << "_cr1" << "\t";
+				geneticsSummaryFile[animalSpecies->getAnimalSpeciesId()] << magic_enum::enum_name(variableTrait) << "_cr2" << "\t";
 			}
 
 			geneticsSummaryFile[animalSpecies->getAnimalSpeciesId()] << endl;
@@ -2278,7 +2309,7 @@ void World::initializeOutputFiles(json * jsonTree)
 			throwLineInfoException("Error opening the file 'animal_constitutive_traits.txt'");
 		}
 
-		constitutiveTraitsFile << "id\tspecies\tg_numb_prt1\tg_numb_prt2\tID_prt1\tID_prt2\t" << EnumClass<Trait::Type>::getHeader() << endl;
+		constitutiveTraitsFile << "id\tspecies\tg_numb_prt1\tg_numb_prt2\tID_prt1\tID_prt2\t" << Trait::printAvailableTraits() << endl;
 	}
 }
 
@@ -2340,8 +2371,9 @@ void World::serialize(Archive &ar, const unsigned int version) {
 	ar & nodesMatrixFilename;
 	ar & predationEventsOnOtherSpeciesFilename;
 
-	ar & dailySummaryFile;
-	ar & extendedDailySummaryFile;
+        ar & dailySummaryFile;
+        ar & extendedDailySummaryFile;
+	        
 	ar & edibilitiesFile;
 	ar & saveEdibilitiesFile;
 
@@ -2394,7 +2426,8 @@ void World::serialize(Archive &ar, const unsigned int version) {
 
 	ar & saveIntermidiateVolumes;
 	ar & saveIntermidiateVolumesPeriodicity;
+     
+        ar & worldMap; // "Voxels" contained in 3D terrain
 
-	ar & worldMap; // "Voxels" contained in 3D terrain
 	ar & heatingCodeTemperatureCycle;
 }

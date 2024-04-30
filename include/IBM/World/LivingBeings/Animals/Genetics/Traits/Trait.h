@@ -2,92 +2,177 @@
 #define TRAIT_H_
 
 #include <string>
-#include <vector>
+#include <unordered_map>
+#include <cfloat>
+#include <magic_enum.hpp>
 #include <nlohmann/json.hpp>
 #include <boost/serialization/access.hpp>
 #include <boost/archive/binary_iarchive.hpp>
 #include <boost/archive/binary_oarchive.hpp>
+#include <fstream>
+#include <ostream>
 
-#include "IBM/World/LivingBeings/Animals/Genetics/Traits/DefinitionSection/TraitDefinitionSection.h"
-#include "IBM/World/LivingBeings/Animals/Genetics/Traits/TemperatureSection/TempSizeRuleTraitTemperatureSection.h"
-#include "IBM/World/LivingBeings/Animals/Genetics/Traits/TemperatureSection/DellsTraitTemperatureSection.h"
-#include "Exceptions/LineInfoException.h"
-#include "Misc/EnumClass.h"
-#include "Misc/CustomIndexedVector.h"
 #include "IBM/Physics/Temperature.h"
-
-
-class AnimalSpecies;
+#include "Exceptions/LineInfoException.h"
+#include "Misc/Macros.h"
 
 
 /**
  * @class Trait
- * @brief Represents a trait, which can be species level or individual level.
+ * @brief Represents a trait, which can be fixed or variable.
  */
 class Trait {
+private:
+    friend class boost::serialization::access;
+
 public:
+    class ValueUpdateMethod {
+    public:
+        enum MethodType : unsigned int
+		{
+            Fixed,
+            Variable
+		};
+
+        static const MethodType stringToEnumValue(const std::string &str);
+        static constexpr size_t size();
+
+    private:
+        static const std::unordered_map<std::string_view, const MethodType> stringToEnum;
+        static const std::string enumValues;
+
+        static std::string_view to_string(const MethodType& type);
+        static const std::unordered_map<std::string_view, const MethodType> generateMap();
+        static const std::string generateAvailableValues();
+        static std::string_view printAvailableValues();
+    };
+
     /**
      * @enum Type
      * @brief Enumerates different trait types.
      */
-	enum class Type : unsigned int {
+	enum Type : unsigned int {
 		energy_tank,
 		growth,
-		eggDevTime, 
+		pheno, 
 		factorEggMass,
 		assim,
 		voracity,
 		speed,
 		search_area,
 		met_rate,
+		actE_vor,
+		actE_speed,
+		actE_search,
 		shock_resistance,
-        actE_met,
-		memoryDepth,
+		actE_met,
+        memoryDepth,
         perception_area,
-        interaction_area,
-        devTime,
-        lengthAtMaturation,
-        pupaPeriodLength,
-        timeAddedToMeetLastRepro
+        interaction_area
 	};
 
+    /**
+     * @brief Converts a string to the corresponding Type enum value.
+     * @param str The input string.
+     * @return The corresponding Type enum value.
+     * @throw LineInfoException if the string is unknown.
+     */
+	inline static const Type stringToEnumValue(const std::string &str) { 
+        try
+        {
+            return stringToEnum.at(str);
+        }
+        catch(const std::out_of_range& e) 
+        {
+            throwLineInfoException(fmt::format("Unknown trait type '{}'. Valid values are {}", str, printAvailableValues()));
+        }
+    }
 
-    Trait(
-        const std::string& traitType, const nlohmann::json& info, const std::vector<std::string>& individualLevelTraitsOrder, 
-        const Temperature& tempFromLab, const std::vector<Locus*> &loci, const unsigned int traitsPerModule, const unsigned int numberOfLociPerTrait, const std::vector<double>& rhoPerModule, const std::vector<unsigned int>& rhoRangePerModule
-    );
+    /**
+     * @brief Prints available trait types.
+     * @return A string containing available trait types.
+     */
+	inline static std::string_view printAvailableTraits() { return enumHeader; }
+	
+    /**
+     * @brief Gets the number of trait types.
+     * @return The number of trait types.
+     */
+    inline static constexpr size_t size() { return magic_enum::enum_count<Type>(); }
     
-    virtual ~Trait();
+    /**
+     * @brief Gets the type of the trait.
+     * @return The type of the trait.
+     */
+    inline const Type& getType() const { return type; }
 
-    const CustomIndexedVector<TraitDefinitionSection::Elements, TraitDefinitionSection*>& getElements() const;
-    CustomIndexedVector<TraitDefinitionSection::Elements, TraitDefinitionSection*>& getMutableElements();
+    /**
+     * @brief Constructor for Trait.
+     * @param typeStr The string representation of the trait type.
+     * @param traitInfo Trait info.
+     */
+    Trait(const std::string& typeStr, const nlohmann::json& traitInfo);
+    
+    /**
+     * @brief Virtual destructor for Trait.
+     */
+    virtual ~Trait() {};
 
-    const Type getType() const;
+    /**
+     * @brief Converts Type enum value to a string.
+     * @param trait The Type enum value.
+     * @return The string representation of the trait type.
+     */
+    inline static std::string_view to_string(const Type& traitName) { return magic_enum::enum_name(traitName); }
 
-    const bool isInverse() const;
+    const Temperature& getLowerThreshold() const;
+    const Temperature& getUpperThreshold() const;
 
-    const bool isThermallyDependent() const;
-
-    const TraitTemperatureSection& getTemperatureSection() const;
-    TraitTemperatureSection& getMutableTemperatureSection();
-
-    double applyTemperatureDependency(const Temperature& temperature, const CustomIndexedVector<TraitDefinitionSection::Elements, double>& traitElements,
-        const std::map<Temperature, std::pair<double, double>>& lowerTempSizeRuleConstantAccumulationVector, const double& lastLowerTempSizeRuleConstant, 
-        const std::map<Temperature, std::pair<double, double>>& upperTempSizeRuleConstantAccumulationVector, const double& lastUpperTempSizeRuleConstant,
-        const AnimalSpecies* const animalSpecies
-    ) const;
-
+    virtual ValueUpdateMethod::MethodType getValueUpdateMethodType() const=0;
 
 protected:
-    static CustomIndexedVector<Type, bool> inverseTraitVector;
+    const Type type;
 
+    const Temperature lowerThreshold;
+    const Temperature upperThreshold;
 
-    Type type;
+private:
+	static const std::unordered_map<std::string_view, const Type> stringToEnum;
+	static const std::string enumHeader;
+    static const std::string enumValues;
 
-    CustomIndexedVector<TraitDefinitionSection::Elements, TraitDefinitionSection*> traitElements;
+    /**
+     * @brief Generates a map of string to Type.
+     * @return The generated map.
+     */
+	static const std::unordered_map<std::string_view, const Type> generateMap();
+	
+    /**
+     * @brief Generates the header string for trait types.
+     * @return The generated header string.
+     */
+    static const std::string generateHeader(); 
+    
+    /**
+     * @brief Prints available trait values.
+     * @return A string containing available trait values.
+     */
+    inline static std::string_view printAvailableValues() { return enumValues; }
+    
+    /**
+     * @brief Generates a string of available trait values.
+     * @return The generated string.
+     */
+    static const std::string generateAvailableValues();  
 
-    bool thermallyDependent;
-    TraitTemperatureSection* temperatureSection;
+    /**
+     * @brief Serialize the Trait object.
+     * @tparam Archive The type of archive (binary_oarchive for saving, binary_iarchive for loading).
+     * @param ar The archive to use.
+     * @param version The version of the serialization format.
+     */
+    template <class Archive>
+    void serialize(Archive &ar, const unsigned int version);
 };
 
 

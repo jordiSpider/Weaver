@@ -17,14 +17,14 @@ EdibleSearchParams::~EdibleSearchParams()
 }
 
 void EdibleSearchParams::addAnimalSearchParams(
-        const World* const world,
+        const WorldInterface* const worldInterface,
         const vector<LifeStage::LifeStageValue> &searchableLifeStages,
         const vector<id_type> &searchableAnimalSpecies,
         const vector<Instar> &searchableInstars,
         const vector<AnimalSpecies::Gender::GenderValue> &searchableGenders)
 {
     animalSearchParams.addSearchParams(
-        world, searchableLifeStages, searchableAnimalSpecies, 
+        worldInterface, searchableLifeStages, searchableAnimalSpecies, 
         searchableInstars, searchableGenders
     );
 }

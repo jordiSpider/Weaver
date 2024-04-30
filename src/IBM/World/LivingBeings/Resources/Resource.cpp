@@ -1,7 +1,7 @@
 #include "IBM/World/LivingBeings/Resources/Resource.h"
 #include "IBM/World/Map/TerrainCells/TerrainCellInterface.h"
-#include "IBM/World/Map/Map.h"
-#include "IBM/World/World.h"
+#include "IBM/World/Map/MapInterface.h"
+#include "IBM/World/WorldInterface.h"
 
 using namespace std;
 
@@ -13,7 +13,7 @@ id_type Resource::resourceCounter = 0;
 
 Resource::Resource(ResourceSpecies* const mySpecies, TerrainCellInterface* terrainCellInterface, double biomass, double resourceMaximumCapacity, 
 	double massRatio, bool patchSpread) 
-	: ResourceInterface(generateId(), mySpecies, terrainCellInterface, Instar(mySpecies->getNumberOfInstars()), biomass),
+	: ResourceInterface(mySpecies, terrainCellInterface, Instar(mySpecies->getNumberOfInstars()), biomass),
 	  resourceMaximumCapacity(resourceMaximumCapacity), 
 	  massRatio(massRatio),
 	  patchSpread(patchSpread)
@@ -23,7 +23,7 @@ Resource::Resource(ResourceSpecies* const mySpecies, TerrainCellInterface* terra
 
 	resourceCounter++;
 
-	if(getTerrainCellInterface()->getMap().getWorld()->getCompetitionAmongResourceSpecies())
+	if(getTerrainCellInterface()->getMapInterface().getWorldInterface()->getCompetitionAmongResourceSpecies())
 	{
 		double totalResourceBiomass = 0.0;
 
@@ -51,9 +51,9 @@ Resource::Resource(ResourceSpecies* const mySpecies, TerrainCellInterface* terra
 	}
 }
 
-Resource::Resource(Resource &other, const double &biomass)
-	: Resource(other.getMutableSpecies(), other.getMutableTerrainCellInterface(), biomass, other.getResourceMaximumCapacity(), 
-		other.getTerrainCellInterface()->getMap().getWorld()->getMassRatio(), other.canSpread()
+Resource::Resource(const Resource &other, const double &biomass)
+	: Resource(other.getSpecies(), other.getMutableTerrainCellInterface(), biomass, other.getResourceMaximumCapacity(), 
+		other.getTerrainCellInterface()->getMapInterface().getWorldInterface()->getMassRatio(), other.canSpread()
 	  )
 {
 
@@ -110,15 +110,15 @@ return ((biomass / getSpecies()->getConversionToWetMass()) - foodDemand) < getSp
 
 double Resource::getNewBiomass(const double &rateOfIncrease) const
 {
-	const auto world = this->getTerrainCellInterface()->getMap().getWorld();
+	const auto worldInterface = this->getTerrainCellInterface()->getMapInterface().getWorldInterface();
 
-	double newBiomassPerDay = world->calculateNewBiomassPerDay(biomass, rateOfIncrease, getSpecies());
+	double newBiomass = worldInterface->calculateNewBiomass(biomass, rateOfIncrease, getSpecies());
 
 	//We add this biomass below, after checking the excess
 	/*double exBiomass = newBiomass;*/
-	double newBiomassPerTimeStep = newBiomassPerDay * world->getTimeStepsPerDay();
+	newBiomass = newBiomass / worldInterface->getTimeStepsPerDay();
 
-	return newBiomassPerTimeStep;
+	return newBiomass;
 }
 
 // Grows the resource within this cell and returns the new population
@@ -127,6 +127,7 @@ void Resource::update()
 {
 	double excess = 0.0;
 
+	double timeStepsPerDay = 1;  //Dinosaur debuging
 	//cout << "venga dame el dato ¿no?" << timeStep << endl;
 	/* if(timeStep >= 0){ //Dinosaur debuging
 		//exit(-1);
@@ -167,7 +168,7 @@ void Resource::update()
 		setBiomass(0.0);
 	}  
 	
-	if(!getTerrainCellInterface()->getMap().getWorld()->getCompetitionAmongResourceSpecies())
+	if(!getTerrainCellInterface()->getMapInterface().getWorldInterface()->getCompetitionAmongResourceSpecies())
 	{
 	
 		//the commented code below serves to set a target species of resource to have
@@ -190,7 +191,7 @@ void Resource::update()
 
 		if(getSpecies()->getVariableIntrinsicRateOfIncrease())
 		{
-			rateOfIncrease = getMutableSpecies()->getRateOfGrowth(getTerrainCellInterface()->getMoistureInfo()->getTemperature(), getTerrainCellInterface()->getMoistureInfo()->getMoisture(), massRatio);
+			rateOfIncrease = getSpecies()->getRateOfGrowth(getTerrainCellInterface()->getMoistureInfo()->getTemperature(), getTerrainCellInterface()->getMoistureInfo()->getMoisture(), massRatio);
 		}
 		else
 		{
@@ -204,7 +205,7 @@ void Resource::update()
 			rateOfIncrease = 0; 
 		}
 
-		if(getTerrainCellInterface()->getMap().getWorld()->getCompetitionAmongResourceSpecies() && rateOfIncrease > 0)
+		if(getTerrainCellInterface()->getMapInterface().getWorldInterface()->getCompetitionAmongResourceSpecies() && rateOfIncrease > 0)
 		{
 			newBiomass = getNewBiomass(rateOfIncrease);
 
@@ -345,7 +346,7 @@ double Resource::addBiomass(double addedMass)
 { 
 	double availableCapacity;
 
-	if(getTerrainCellInterface()->getMap().getWorld()->getCompetitionAmongResourceSpecies())
+	if(getTerrainCellInterface()->getMapInterface().getWorldInterface()->getCompetitionAmongResourceSpecies())
 	{
 		availableCapacity = getTerrainCellInterface()->getTotalMaximumResourceCapacity() - getTerrainCellInterface()->getTotalResourceBiomass();
 	}

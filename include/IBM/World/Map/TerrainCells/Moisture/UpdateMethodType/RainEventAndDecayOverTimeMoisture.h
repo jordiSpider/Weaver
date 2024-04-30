@@ -31,7 +31,7 @@ protected:
 
     bool isOnRainEvent(const unsigned int timeStep) const;
 
-    void refreshRelativeHumidity(const unsigned int numberOfTimeSteps);
+    void refreshRelativeHumidity(const unsigned int timeStep);
 
 public:
     RainEventAndDecayOverTimeMoisture(const nlohmann::json &moistureInfo);

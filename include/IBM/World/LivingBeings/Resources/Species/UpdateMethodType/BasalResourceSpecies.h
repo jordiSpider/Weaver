@@ -10,7 +10,7 @@
 class BasalResourceSpecies: public ResourceSpecies
 {
 public:
-	BasalResourceSpecies(const nlohmann::json &basalResourceSpeciesInfo, World* const world);
+	BasalResourceSpecies(const nlohmann::json &basalResourceSpeciesInfo);
 	~BasalResourceSpecies();
 
 private:

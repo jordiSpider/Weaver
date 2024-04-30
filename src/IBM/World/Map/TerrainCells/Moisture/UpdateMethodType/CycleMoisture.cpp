@@ -34,14 +34,14 @@ const vector<double>& CycleMoisture::getRelativeHumidityCycle() const
     return relativeHumidityCycle;
 }
 
-void CycleMoisture::refreshRelativeHumidity(const unsigned int numberOfTimeSteps)
+void CycleMoisture::refreshRelativeHumidity(const unsigned int timeStep)
 {
-    setMoisture(getHumidityOnTimeStep(numberOfTimeSteps));
+    setMoisture(getHumidityOnTimeStep(timeStep));
 }
 
-const double& CycleMoisture::getHumidityOnTimeStep(const unsigned int numberOfTimeSteps) const
+const double& CycleMoisture::getHumidityOnTimeStep(const unsigned int timeStep) const
 {
-    return getRelativeHumidityCycle().at(numberOfTimeSteps%getRelativeHumidityCycle().size());
+    return getRelativeHumidityCycle().at(timeStep%getRelativeHumidityCycle().size());
 }
 
 const string CycleMoisture::showMoistureInfo() const

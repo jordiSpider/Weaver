@@ -24,13 +24,11 @@
 #include "IBM/World/LivingBeings/Resources/ResourceFactory.h"
 #include "IBM/World/Map/TerrainCells/Moisture/NullMoisture.h"
 #include "IBM/World/Map/Geometry/Geometry.h"
-#include "IBM/World/LivingBeings/Animals/Genetics/Traits/DefinitionSection/IndividualLevelTrait.h"
 #include "Misc/Utilities.h"
 #include "IBM/World/Map/TerrainCells/AnimalSearchParams.h"
 #include "IBM/World/Map/TerrainCells/ResourceSearchParams.h"
 #include "IBM/World/LivingBeings/LifeStage.h"
 #include "IBM/World/Map/TerrainCells/TerrainCellInterface.h"
-#include "IBM/World/LivingBeings/Animals/AnimalNonStatistical.h"
 
 
 
@@ -44,17 +42,9 @@ protected:
     PointMap* const position;
     const std::unique_ptr<PointContinuous> center;
     const double size;
-    Map* const map;
+    MapInterface* const mapInterface;
     const Ring* const effectiveArea;
     bool copied;
-
-    #ifdef DEBUG
-        unsigned int updateLastTimeStep;
-    #endif
-
-    #ifdef DEBUG
-		void testUpdate();
-	#endif
 
     // Total maximum capacity to all resources
     double totalMaximumResourceCapacity;
@@ -62,24 +52,23 @@ protected:
     const bool isCopied() const;
 
     void applyFunctionToAnimals(
-        const std::vector<std::function<void(AnimalNonStatistical&)>> &functions, const AnimalSearchParams &animalSearchParams
+        const std::vector<std::function<void(AnimalInterface&)>> &functions, const AnimalSearchParams &animalSearchParams
     );
 
     void randomApplyFunctionToAnimals(
-        const std::vector<std::function<void(AnimalNonStatistical&)>> &functions, const AnimalSearchParams &animalSearchParams
+        const std::vector<std::function<void(AnimalInterface&)>> &functions, const AnimalSearchParams &animalSearchParams
     );
 
 
-    virtual void activateAndResumeAnimals(const unsigned int numberOfTimeSteps);
+    virtual void activateAndResumeAnimals(int timeStep);
 
-    virtual void tuneAnimals(const unsigned int numberOfTimeSteps, std::ostream& tuneTraitsFile);
+    virtual void tuneTraits(const unsigned int timeStep, std::ostream& tuneTraitsFile);
 
-    LifeStageVector* const makeDefaultAnimals(const Map* const &map);
+    LifeStageVector* const makeDefaultAnimals(const MapInterface* const &mapInterface);
 
     void setTotalMaximumResourceCapacity(const double &newTotalMaximumResourceCapacity);
 
     
-    virtual std::pair<AnimalNonStatistical*, unsigned int> createAnimal(const Instar &instar, AnimalSpecies* animalSpecies)=0;
     
 
     const std::unique_ptr<PointContinuous>& getCenter() const;
@@ -174,8 +163,8 @@ protected:
 
     /** @} */
 
-    std::tuple<double, double, double> evaluateAnimal(const AnimalNonStatistical &animalWhoIsEvaluating, 
-        const std::list<const EdibleInterface*> &ediblesHasTriedToPredate, const AnimalNonStatistical &animal,
+    std::tuple<double, double, double> evaluateAnimal(const AnimalInterface &animalWhoIsEvaluating, 
+        const std::list<const EdibleInterface*> &ediblesHasTriedToPredate, const AnimalInterface &animal,
         double preferenceThresholdForEvaluation, 
         double muForPDF, double sigmaForPDF, 
         double predationSpeedRatioAH, double predationHunterVoracityAH, 
@@ -187,7 +176,7 @@ protected:
         double encounterHuntedSizeAH, double encounterProbabilityDensityFunctionAH
     );
 
-    double evaluateResource(const AnimalNonStatistical &animalWhoIsEvaluating, 
+    double evaluateResource(const AnimalInterface &animalWhoIsEvaluating, 
         const std::list<const EdibleInterface*> &ediblesHasTriedToPredate, const ResourceInterface* resource,
         const double dryMass, double preferenceThresholdForEvaluation, 
         double muForPDF, double sigmaForPDF, 
@@ -203,7 +192,7 @@ protected:
     virtual void updateTotalMaximumResourceCapacity();
 
 public:
-    TerrainCell(PointMap* const &position, const Ring *const effectiveArea, const double &size, Map* const &map,
+    TerrainCell(PointMap* const &position, const Ring *const effectiveArea, const double &size, MapInterface* const &mapInterface,
         LifeStageVector* const animals, const bool obstacle, const bool fullObstacle, 
         const int obstaclePatchPriority, MoistureInterface* const moistureInfo, const bool moistureSource, 
         const bool inMoisturePatch, const int moisturePatchPriority, const double &totalMaximumResourceCapacity);
@@ -212,10 +201,10 @@ public:
     // Getter
     const PointMap& getPosition() const;
     PointMap& getMutablePosition() const;
-    virtual const Map& getMap() const;
-    virtual Map& getMutableMap() const;
-    const World* const getWorld() const;
-    World* const getMutableWorld() const;
+    virtual const MapInterface& getMapInterface() const;
+    virtual MapInterface& getMutableMapInterface() const;
+    const WorldInterface* const getWorldInterface() const;
+    WorldInterface* const getMutableWorldInterface() const;
     const double& getSize() const;
     const LifeStageVector& getAnimals() const;
     LifeStageVector& getMutableAnimals() const;
@@ -226,19 +215,19 @@ public:
 
     double spreadResource(const double &massToSpread, const unsigned int resourceSpeciesId);
     
-    double turnEdibleIntoDryMassToBeEaten(EdibleInterface &targetAnimal, const double &targetDryMass, const Ring* const perceptionArea, const unsigned int numberOfTimeSteps, AnimalNonStatistical* predatorEdible, double leftovers);
+    double turnEdibleIntoDryMassToBeEaten(EdibleInterface &targetAnimal, const double &targetDryMass, const Ring* const perceptionArea, int day, AnimalInterface* predatorEdible, double leftovers);
 
     const Ring* const makeEffectiveArea(PointMap* const position, const double size) const;
 
-    void changeAnimalToSenesced(Animal* targetAnimal, const unsigned int numberOfTimeSteps);
+    void changeAnimalToSenesced(AnimalInterface* targetAnimal, int day);
 
     const unsigned int calculateManhattanDistanceToPoint(const PointMap &point) const;
 
-    virtual void insertAnimal(Animal* const newAnimal);
-    virtual std::tuple<bool, TerrainCellInterface*, TerrainCellInterface*, Animal*, unsigned int> randomInsertAnimal(const Instar &instar, AnimalSpecies* animalSpecies, const bool isStatistical);
-    void addAnimal(const LifeStage &lifeStage, const unsigned int animalSpeciesId, const Instar &instar, const AnimalSpecies::Gender::GenderValue &gender, Animal* const newAnimal);
-    void eraseAnimal(Animal* const animalToRemove);
-    void eraseAnimal(const LifeStage &lifeStage, const unsigned int animalSpeciesId, const Instar &instar, const AnimalSpecies::Gender::GenderValue &gender, Animal* const animalToRemove);
+    virtual void insertAnimal(AnimalInterface* const newAnimal);
+    virtual std::tuple<bool, TerrainCellInterface*, TerrainCellInterface*> randomInsertAnimal(AnimalInterface* const newAnimal);
+    void addAnimal(const LifeStage &lifeStage, const unsigned int animalSpeciesId, const Instar &instar, const AnimalSpecies::Gender::GenderValue &gender, AnimalInterface* const newAnimal);
+    void eraseAnimal(AnimalInterface* const animalToRemove);
+    void eraseAnimal(const LifeStage &lifeStage, const unsigned int animalSpeciesId, const Instar &instar, const AnimalSpecies::Gender::GenderValue &gender, AnimalInterface* const animalToRemove);
     void eraseAllAnimals();
     void purgeDeadAnimals();
 
@@ -246,10 +235,10 @@ public:
 
     virtual void obtainInhabitableTerrainCells();
 
-    virtual void moveAnimals(const unsigned int numberOfTimeSteps, std::ostream& encounterProbabilitiesFile, std::ostream& predationProbabilitiesFile, bool saveEdibilitiesFile, std::ostream& edibilitiesFile, float exitTimeThreshold, double pdfThreshold, double muForPDF, double sigmaForPDF, double predationSpeedRatioAH, double predationHunterVoracityAH, double predationProbabilityDensityFunctionAH, double predationSpeedRatioSAW, double predationHunterVoracitySAW, double predationProbabilityDensityFunctionSAW, double maxSearchArea, double encounterHuntedVoracitySAW, double encounterHunterVoracitySAW, double encounterVoracitiesProductSAW, double encounterHunterSizeSAW, double encounterHuntedSizeSAW, double encounterProbabilityDensityFunctionSAW, double encounterHuntedVoracityAH, double encounterHunterVoracityAH, double encounterVoracitiesProductAH, double encounterHunterSizeAH, double encounterHuntedSizeAH, double encounterProbabilityDensityFunctionAH);
+    virtual void moveAnimals(int day, std::ostream& encounterProbabilitiesFile, std::ostream& predationProbabilitiesFile, bool saveEdibilitiesFile, std::ostream& edibilitiesFile, float exitTimeThreshold, double pdfThreshold, double muForPDF, double sigmaForPDF, double predationSpeedRatioAH, double predationHunterVoracityAH, double predationProbabilityDensityFunctionAH, double predationSpeedRatioSAW, double predationHunterVoracitySAW, double predationProbabilityDensityFunctionSAW, double maxSearchArea, double encounterHuntedVoracitySAW, double encounterHunterVoracitySAW, double encounterVoracitiesProductSAW, double encounterHunterSizeSAW, double encounterHuntedSizeSAW, double encounterProbabilityDensityFunctionSAW, double encounterHuntedVoracityAH, double encounterHunterVoracityAH, double encounterVoracitiesProductAH, double encounterHunterSizeAH, double encounterHuntedSizeAH, double encounterProbabilityDensityFunctionAH);
 
     virtual void updateMoisture();
-    virtual void update(const unsigned int numberOfTimeSteps, std::ostream& tuneTraitsFile);
+    virtual void update(const unsigned int timeStep, std::ostream& tuneTraitsFile);
 
     /**
      * @name Getters
@@ -275,7 +264,7 @@ public:
      * @{
      */
     std::pair<std::unique_ptr<ResourcesOnRadius>, std::unique_ptr<AnimalVector>> getMutableEdiblesBy(
-        std::function<bool(Animal&)> areaChecker, const Ring &effectiveArea, const EdibleSearchParams &edibleSearchParams
+        std::function<bool(AnimalInterface&)> areaChecker, const Ring &effectiveArea, const EdibleSearchParams &edibleSearchParams
     );
     /** @} */
 
@@ -313,7 +302,7 @@ public:
      * @{
      */
     std::unique_ptr<AnimalVector> getMutableAnimalsBy(
-        std::function<bool(Animal&)> areaChecker, const AnimalSearchParams &animalSearchParams
+        std::function<bool(AnimalInterface&)> areaChecker, const AnimalSearchParams &animalSearchParams
     );
     /** @} */
 
@@ -423,21 +412,21 @@ public:
 
     /** @} */
 
-    void performAnimalsActions(const unsigned int numberOfTimeSteps, std::ostream& voracitiesFile, boost::filesystem::path outputFolder, bool saveAnimalConstitutiveTraits, std::ofstream &constitutiveTraitsFile);
+    void performAnimalsActions(int timeStep, std::ostream& voracitiesFile, boost::filesystem::path outputFolder, bool saveAnimalConstitutiveTraits, std::ofstream &constitutiveTraitsFile);
     virtual void obtainWorldAnimalsPopulation(std::vector<std::vector<unsigned int>> &worldAnimalsPopulation);
     virtual void obtainAnimalsPopulationAndGeneticsFrequencies(std::vector<std::vector<unsigned int>> &worldAnimalsPopulation, std::vector<std::vector<std::pair<std::vector<double>, std::vector<double>>>> &worldGeneticsFrequencies);
     virtual void saveAnimalSpeciesSnapshot(std::ofstream &file, const AnimalSpecies* const &species);
     virtual void saveResourceSpeciesSnapshot(std::ofstream &file, const ResourceSpecies* const &species) const;
     virtual void saveWaterSnapshot(std::ofstream &file) const;
-    void breedAnimals(const unsigned int numberOfTimeSteps, boost::filesystem::path outputDirectory, bool saveAnimalConstitutiveTraits, std::ofstream &constitutiveTraitsFile);
-    void dieFromBackground(const unsigned int numberOfTimeSteps);
-    void assimilateFoodMass();
-    void metabolizeAnimals();
-    void growAnimals();
-    std::ostream& printAnimalsVoracities(std::ostream& os);
+    void breedAnimals(int timeStep, boost::filesystem::path outputDirectory, bool saveAnimalConstitutiveTraits, std::ofstream &constitutiveTraitsFile);
+    void dieFromBackground(int day);
+    void assimilateFoodMass(int timeStep);
+    void metabolizeAnimals(int timeStep);
+    void growAnimals(int timeStep);
+    std::ostream& printAnimalsVoracities(int timeStep, std::ostream& os);
     void setCopied(const bool newCopiedValue);
     unsigned int getNumberOfMatureFemales(AnimalSpecies *const animalSpecies);
-    std::tuple<double, double, double, const EdibleInterface*> getCellEvaluation(AnimalNonStatistical* animalWhoIsEvaluating, std::pair<TerrainCellInterface::TerrainCellCoverage, std::unique_ptr<Ring>> &evaluationArea, const std::list<const EdibleInterface*> &ediblesHasTriedToPredate, double muForPDF, double sigmaForPDF, double predationSpeedRatioAH, double predationHunterVoracityAH, double predationProbabilityDensityFunctionAH, double predationSpeedRatioSAW, double predationHunterVoracitySAW, double predationProbabilityDensityFunctionSAW, double encounterHuntedVoracitySAW, double encounterHunterVoracitySAW, double encounterVoracitiesProductSAW, double encounterHunterSizeSAW, double encounterHuntedSizeSAW, double encounterProbabilityDensityFunctionSAW, double encounterHuntedVoracityAH, double encounterHunterVoracityAH, double encounterVoracitiesProductAH, double encounterHunterSizeAH, double encounterHuntedSizeAH, double encounterProbabilityDensityFunctionAH);
+    std::tuple<double, double, double, const EdibleInterface*> getCellEvaluation(AnimalInterface* animalWhoIsEvaluating, std::pair<TerrainCellInterface::TerrainCellCoverage, std::unique_ptr<Ring>> &evaluationArea, const std::list<const EdibleInterface*> &ediblesHasTriedToPredate, double muForPDF, double sigmaForPDF, double predationSpeedRatioAH, double predationHunterVoracityAH, double predationProbabilityDensityFunctionAH, double predationSpeedRatioSAW, double predationHunterVoracitySAW, double predationProbabilityDensityFunctionSAW, double encounterHuntedVoracitySAW, double encounterHunterVoracitySAW, double encounterVoracitiesProductSAW, double encounterHunterSizeSAW, double encounterHuntedSizeSAW, double encounterProbabilityDensityFunctionSAW, double encounterHuntedVoracityAH, double encounterHunterVoracityAH, double encounterVoracitiesProductAH, double encounterHunterSizeAH, double encounterHuntedSizeAH, double encounterProbabilityDensityFunctionAH);
 
     /**
      * @brief Serialize the TerrainCell object.

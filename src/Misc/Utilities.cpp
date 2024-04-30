@@ -44,10 +44,10 @@ string createOutputFile(ofstream &file, fs::path filenameRoot, string filename, 
     return file_path.string();
 }
 
-string createOutputFile(ofstream &file, fs::path filenameRoot, string filename, string extension, const unsigned int numberOfTimeSteps, unsigned int recordEach, ios_base::openmode openMode) {
+string createOutputFile(ofstream &file, fs::path filenameRoot, string filename, string extension, date_type timeStep, unsigned int recordEach, ios_base::openmode openMode) {
 	string ss;
-	if((numberOfTimeSteps%recordEach==0) || numberOfTimeSteps==0){
-		ss = string(MAX_NUM_DIGITS_DAY - to_string(numberOfTimeSteps).length(), '0') + to_string(numberOfTimeSteps);
+	if((timeStep%recordEach==0) || timeStep==0){
+		ss = string(MAX_NUM_DIGITS_DAY - to_string(timeStep).length(), '0') + to_string(timeStep);
 	}else{
 		ss = "dummy_file";	
 	}
@@ -195,4 +195,23 @@ void saveConfigFile(fs::path configPath, json fileContent) {
         outputFile << fileContent.dump(4) << endl;
 		outputFile.close();
     }
+}
+
+unsigned int projectVersionStringToNumber(  std::string versionString){
+        unsigned int year, month, day;
+
+        std::istringstream stream(versionString);
+
+        std::getline(stream, versionString, '.');
+        year = std::stoi(versionString);
+
+        std::getline(stream, versionString, '.');
+        month = std::stoi(versionString);
+
+        std::getline(stream, versionString);
+        day = std::stoi(versionString);
+
+        unsigned int result = year * 10000 + month * 1000 + day;
+
+        return result;
 }

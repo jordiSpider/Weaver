@@ -24,41 +24,43 @@
 #include "IBM/World/LivingBeings/EdibleInterface.h"
 #include "Exceptions/LineInfoException.h"
 
-
-
 class TerrainCellInterface;
-
 
 class Edible : public EdibleInterface {
 private:
 	static id_type edibleId;
 
-protected:
-	static const id_type generateId();
-
-
 	id_type id;
 	std::string idStr;
 
+	friend class boost::serialization::access;
+
+protected:
 	Species* const mySpecies;
 
+	bool temporary;
 	Instar instar;
 
 	TerrainCellInterface* terrainCellInterface;
 
-	Edible(const id_type id, Species* const mySpecies, TerrainCellInterface* terrainCellInterface, const Instar &instar);
-	Edible(Species* const mySpecies, TerrainCellInterface* terrainCellInterface, const Instar &instar);
+	Edible(Species* const mySpecies, TerrainCellInterface* terrainCellInterface, const Instar &instar, const bool temporary);
 	~Edible();
 
 public:
+	static void resetIds(id_type newValue) { edibleId = newValue; }
+
 	// Getters
 	const id_type getId() const { return id; }
 	std::string_view getIdStr() const { return idStr; }
-	virtual const Species* const getSpecies() const;
-	virtual Species* const getMutableSpecies();
+	Species* const getSpecies() const;
 	const Instar& getInstar() const;
 
 	// Setters
+	void doDefinitive() { 
+		id = Edible::edibleId++;
+		generateIdStr();
+		temporary = false;
+	};
 	inline void generateIdStr() { idStr = std::string(MAX_NUM_DIGITS_ID - std::to_string(id).length(), '0') + std::to_string(id); }
 	virtual void setInstar(const Instar& newInstar);
 	
@@ -77,6 +79,7 @@ public:
     void serialize(Archive &ar, const unsigned int version);
 };
 
+BOOST_SERIALIZATION_ASSUME_ABSTRACT(Edible)
 
 std::ostream& operator<<(std::ostream& os, const Edible& edible);
 

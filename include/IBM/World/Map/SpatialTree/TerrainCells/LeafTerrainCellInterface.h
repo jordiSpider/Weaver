@@ -14,7 +14,7 @@ class LeafTerrainCellInterface : public SpatialTreeTerrainCell
 {
 public:
     LeafTerrainCellInterface(BranchTerrainCellInterface* const parentTerrainCell, PointSpatialTree* const position, const double &size, 
-        SpatialTree* const map, LifeStageVector* const animals, 
+        SpatialTreeInterface* const mapInterface, LifeStageVector* const animals, 
         const bool obstacle, const bool fullObstacle, 
         const int obstaclePatchPriority, MoistureInterface* const moistureInfo, const bool moistureSource, 
         const bool inMoisturePatch, const int moisturePatchPriority, const double &totalMaximumResourceCapacity);

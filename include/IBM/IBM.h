@@ -26,7 +26,8 @@
 #include "Misc/Utilities.h"
 #include "Misc/GlobalVariable.h"
 #include "IBM/Maths/Random.h"
-#include "IBM/World/World.h"
+#include "IBM/World/WorldFactory.h"
+#include "IBM/World/WorldInterface.h"
 
 
 class IBM

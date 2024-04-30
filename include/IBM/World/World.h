@@ -25,7 +25,7 @@
 #include <ostream>
 #include <boost/filesystem.hpp>
 
-
+#include "IBM/World/WorldInterface.h"
 #include "IBM/Maths/GaussianDistribution.h"
 #include "IBM/Maths/Random.h"
 #include "Misc/Types.h"
@@ -39,21 +39,20 @@
 #include "IBM/World/Map/Patches/Resource/ResourcePatchFactory.h"
 #include "IBM/World/Map/Patches/Obstacle/ObstaclePatchFactory.h"
 #include "IBM/World/Map/Patches/Moisture/MoisturePatchFactory.h"
+#include "IBM/World/Map/Factory/MapFactory.h"
 #include "Misc/Utilities.h"
 #include "IBM/World/LivingBeings/Animals/Species/AnimalSpecies.h"
 #include "Misc/Coordinate3D.h"
 #include "IBM/World/Map/Map.h"
+#include "Misc/FileStream.h"
 #include "Misc/Macros.h"
-#include "IBM/World/Map/SpatialTree.h"
+#include "IBM/World/Map/SpatialTree/SpatialTree.h"
 #include "IBM/World/Map/TerrainCells/Moisture/ExtendedMoisture.h"
-#include "Misc/EnumClass.h"
-#include "IBM/World/LivingBeings/Animals/AnimalNonStatistical.h"
+
+BOOST_CLASS_EXPORTE(ExtendedMoisture)
 
 
-
-
-
-class World
+class World : public WorldInterface
 {
 private:
 	const double printBarEach = 0.05;
@@ -89,13 +88,13 @@ private:
 	
     /** @} */
 
-	std::pair<AnimalStatistical*, Instar> getRandomPredator(
-		const unsigned int numberOfTotalPotentialPredators, const InstarVector<std::vector<AnimalStatistical*>*> &potentialPredators
+	std::pair<AnimalInterface*, Instar> getRandomPredator(
+		const unsigned int numberOfTotalPotentialPredators, const InstarVector<std::vector<AnimalInterface*>*> &potentialPredators
 	) const;
 
-	AnimalStatistical* getRandomPrey(
+	AnimalInterface* getRandomPrey(
 		const InstarVector<unsigned int> &numberOfPotentialPreysPerInstar, const Instar &predatorInstar, 
-		const AnimalSpecies* const predatorSpecies, const std::vector<InstarVector<std::vector<AnimalStatistical*>>> &animalsPopulation
+		const AnimalSpecies* const predatorSpecies, const std::vector<InstarVector<std::vector<AnimalInterface*>>> &animalsPopulation
 	) const;
 
 	const int getBurnIn() const;
@@ -104,17 +103,6 @@ protected:
 	void calculateTotalNumberOfOntogeneticLinks();
 
 public:
-	enum class Type : unsigned int
-	{
-		Arthropods,
-		Dinosaurs,
-		Aquatic
-	};
-
-
-	static std::unique_ptr<World> createInstance(nlohmann::json* jsonTree, nlohmann::json &worldConfig, boost::filesystem::path outputFolder, boost::filesystem::path configPath, int burnIn);
-	
-	
 	std::vector<const Species*> existingSpeciesConstPointers;
 
 	std::vector<std::unique_ptr<ResourceSpecies>> existingResourceSpecies;
@@ -131,11 +119,11 @@ public:
 	World(std::string filesNameRoot);
 
 	// Create a new, empty world
-    World(json * jsonTree, json &worldConfig, boost::filesystem::path outputFolder, boost::filesystem::path configPath, int burnIn, const double &massRatio);
+        World(json * jsonTree, json &worldConfig, boost::filesystem::path outputFolder, boost::filesystem::path configPath, int burnIn, const double &massRatio);
 	virtual ~World(); // Destructor
 
 	void calculateAttackStatistics(std::vector<InstarVector<std::vector<std::vector<TerrainCellInterface*>::iterator>>> &mapSpeciesInhabitableTerrainCells);
-	void updateMaxSearchArea(const double& currentAnimalMaxSearchArea);
+	void updateMaxSearchArea(double currentAnimalMaxSearchArea);
 
 	void initializeAnimals();
 
@@ -145,15 +133,9 @@ public:
 
 	void increaseMovePrintBar();
 
-	virtual const bool isDinosaurs() const;
-
-	virtual double calculateMaxMassPredicted(const double& dryMass, const double& wetMass, const double& conversionToWetMass, const unsigned int numberOfTimeSteps, const bool hasCapitalBreeding, const double& minTotalMetabolicDryMassLoss, const double& newAAdult, const double& newB) const=0;
-
-	virtual double calculatePostTSpeed(const double& speedValue, const double& wetMass, const double& scaleForSpeed) const=0;
-
 	inline bool getSaveAnimalConstitutiveTraits() const { return saveAnimalConstitutiveTraits; }
 	inline bool getSaveEdibilitiesFile() const { return saveEdibilitiesFile; }
-	inline std::ofstream& getConstitutiveTraitsFile() { return constitutiveTraitsFile; }
+	inline WeaverOFStream& getConstitutiveTraitsFile() { return constitutiveTraitsFile; }
 
 	void setOutputFolder(boost::filesystem::path outputFolder);
 	void printPredationEventsOnOtherSpeciesMatrix(std::ostream& predationEventsOnOtherSpeciesFile);
@@ -240,7 +222,7 @@ public:
 		this->encounterHuntedVoracitySAW = encounterHuntedVoracitySAW;
 	}
 
-	const double& getTimeStepsPerDay() const;
+	const unsigned int getTimeStepsPerDay() const;
 
 	float getEncounterHunterSizeAH() const {
 		return encounterHunterSizeAH;
@@ -300,11 +282,6 @@ public:
 
 	void setEncounterVoracitiesProductAH(float encounterVoracitiesRateAH) {
 		this->encounterVoracitiesProductAH = encounterVoracitiesRateAH;
-	}
-
-	const unsigned int getActualTimeStep() const 
-	{
-		return numberOfTimeSteps;
 	}
 
 	float getEncounterVoracitiesProductSAW() const {
@@ -372,10 +349,6 @@ public:
 	}
 	virtual const double getPdfThreshold() const=0;
 
-	virtual double calculateTotalMetabolicDryMassLossPerDay(const double &wetMass, const double &proportionOfTimeTheAnimalWasMoving, const AnimalNonStatistical* const animal) const=0;
-	virtual double calculateNewBiomassPerDay(const double &biomass, const double &rateOfIncrease, const ResourceSpecies* const species) const=0;
-    double calculateNewVoracity(const double &wetMass, const double &conversionToWetMass) const;
-
 	/**
      * @brief Serialize the World object.
      * @tparam Archive The type of archive (binary_oarchive for saving, binary_iarchive for loading).
@@ -388,19 +361,15 @@ public:
 protected:
 	unsigned int runDays;
 	unsigned int recordEach;
-	double timeStepsPerDay;
+	unsigned int timeStepsPerDay;
 	unsigned int numberOfCombinations;
 	bool growthAndReproTest;
 	double massRatio;
-
-	unsigned int numberOfTimeSteps;
 
 	std::vector<std::unique_ptr<ExtendedMoisture>> appliedMoisture;
 
 	
 	void addAppliedMoisture(MoisturePatch &moisturePatch);
-
-	const unsigned int getRunDays() const;
 
 	void applyResourcePatch(const ResourcePatch &resourcePatch);
 
@@ -408,14 +377,9 @@ protected:
 
 	void calculateAnimalSpeciesK_Density() const;
 
-	const double Yodzis(const double& wetMass, const double& newA = 0.1, const double& newB = 0.75) const;
-	const double Garland1983(const double& wetMass) const;
-
-	virtual const double calculateWetFood(const double& wetMass) const=0;
-
 	void updateInitialMapMoisture();
-	void updateMap(const unsigned int numberOfTimeSteps, std::ofstream& tuneTraitsFile);
-	void updateAllMoistureSource(const unsigned int numberOfTimeSteps);
+	void updateMap(const unsigned int timeStep, std::ofstream& tuneTraitsFile);
+	void updateAllMoistureSource(const unsigned int timeStep);
 
 	// Creates the terrain cells based on dimensions specified on this object. This should be called
 	// right after constructor
@@ -459,16 +423,16 @@ protected:
 
 	const bool getInitIndividualsPerDensities() const;
 
-	void printAnimalsAlongCells(const unsigned int numberOfTimeSteps, const int simulationPoint) const;
-	void printCellAlongCells(const unsigned int numberOfTimeSteps) const;
+	void printAnimalsAlongCells(const int day, const int simulationPoint) const;
+	void printCellAlongCells(const int day) const;
 	void printAnimalsVoracitiesAlongCells(int day);
-	std::ostream& printExtendedDailySummary(std::ostream& os, const unsigned int numberOfTimeSteps);
-	void printGeneticsSummaries(const unsigned int numberOfTimeSteps);
-	void saveAnimalSpeciesSnapshot(boost::filesystem::path filenameRoot, std::string filename, const unsigned int numberOfTimeSteps, AnimalSpecies* species);
-	void saveResourceSpeciesSnapshot(boost::filesystem::path filenameRoot, std::string filename, const unsigned int numberOfTimeSteps, ResourceSpecies* species);
-	void saveWaterSnapshot(boost::filesystem::path filenameRoot, std::string filename, const unsigned int numberOfTimeSteps);
+	std::ostream& printExtendedDailySummary(std::ostream& os, int day);
+	void printGeneticsSummaries(int day);
+	void saveAnimalSpeciesSnapshot(boost::filesystem::path filenameRoot, std::string filename, int day, AnimalSpecies* species);
+	void saveResourceSpeciesSnapshot(boost::filesystem::path filenameRoot, std::string filename, int day, ResourceSpecies* species);
+	void saveWaterSnapshot(boost::filesystem::path filenameRoot, std::string filename, int day);
 	//void deleteExtinguishedReproducingAnimals();
-	bool isExtinguished(const unsigned int numberOfTimeSteps);
+	bool isExtinguished(int day);
 
 	boost::filesystem::path outputFolder;
 	boost::filesystem::path inputFolder;
@@ -477,9 +441,12 @@ protected:
 	std::string nodesMatrixFilename;
 	std::string predationEventsOnOtherSpeciesFilename;
 
-	std::ofstream dailySummaryFile;
-	std::ofstream extendedDailySummaryFile;
-	std::ofstream edibilitiesFile;
+        boost::filesystem::path dailySummaryFilename;
+	boost::filesystem::path extendedDailySummaryFilename;
+
+	WeaverOFStream dailySummaryFile;
+	WeaverOFStream extendedDailySummaryFile;
+	WeaverOFStream edibilitiesFile;
 	bool saveEdibilitiesFile;
 
 	boost::filesystem::path obstacleFolderName;
@@ -524,10 +491,10 @@ protected:
 	float preysToPredatorsCapacityTransference;
 
 	bool saveAnimalConstitutiveTraits;
-	std::ofstream constitutiveTraitsFile;
+	WeaverOFStream constitutiveTraitsFile;
 
 	bool saveGeneticsSummaries;
-	std::vector<std::ofstream> geneticsSummaryFile;
+	std::vector<WeaverOFStream> geneticsSummaryFile;
 
 	bool saveIntermidiateVolumes;
 	unsigned int saveIntermidiateVolumesPeriodicity;
@@ -542,6 +509,7 @@ protected:
 	std::vector<float> heatingCodeTemperatureCycle;		
 };
 
+BOOST_SERIALIZATION_ASSUME_ABSTRACT(World)
 
 // Manage exceptions due to wrong sizes used for world creation
 class WorldSizeException

@@ -1,127 +1,137 @@
 #include "IBM/World/LivingBeings/Animals/Genetics/Traits/Trait.h"
 
-
 using namespace std;
 using json = nlohmann::json;
 
 
 
-CustomIndexedVector<Trait::Type, bool> Trait::inverseTraitVector({
-		false,	// energy_tank
-		false,	// growth
-		true,	// eggDevTime
-		false,	// factorEggMass
-		false,	// assim
-		false,	// voracity
-		false,	// speed
-		false,	// search_area
-		false,	// met_rate
-		false,	// shock_resistance
-		true,	// actE_met
-		false,	// memoryDepth
-		false,	// perception_area
-		false,	// interaction_area
-		true, 	// devTime
-		false, 	// lengthAtMaturation
-		true,	// pupaPeriodLength
-		true	// timeAddedToMeetLastRepro
-	}
-);
-
-
-Trait::Trait(const string& traitType, const json& info, const vector<string>& individualLevelTraitsOrder, 
-			 const Temperature& tempFromLab, const vector<Locus*> &loci, const unsigned int traitsPerModule, const unsigned int numberOfLociPerTrait, const vector<double>& rhoPerModule, const vector<unsigned int>& rhoRangePerModule)
-	: type(EnumClass<Type>::stringToEnumValue(traitType)),
-	  thermallyDependent((type == Trait::Type::energy_tank) ? false : static_cast<bool>(info["temperature"]["dependent"]))
-{
-	traitElements.push_back(TraitDefinitionSection::createInstance(traitType, info, individualLevelTraitsOrder, TraitDefinitionSection::Elements::TraitValue, loci, traitsPerModule, numberOfLociPerTrait, rhoPerModule, rhoRangePerModule).release());
-
-	if(isThermallyDependent())
+const typename Trait::ValueUpdateMethod::MethodType Trait::ValueUpdateMethod::stringToEnumValue(const string &str) { 
+	try
 	{
-		if(type == Trait::Type::lengthAtMaturation)
-		{
-			temperatureSection = new TempSizeRuleTraitTemperatureSection(info["temperature"], tempFromLab);
-		}
-		else
-		{
-			temperatureSection = new DellsTraitTemperatureSection(traitType, info["temperature"], individualLevelTraitsOrder, isInverse(), loci, traitsPerModule, numberOfLociPerTrait, rhoPerModule, rhoRangePerModule);
-
-			traitElements.resize(EnumClass<TraitDefinitionSection::Elements>::size(), nullptr);
-			traitElements[TraitDefinitionSection::Elements::ActivationEnergy] = static_cast<DellsTraitTemperatureSection*>(temperatureSection)->getActivationEnergy();
-			traitElements[TraitDefinitionSection::Elements::EnergyDecay] = static_cast<DellsTraitTemperatureSection*>(temperatureSection)->getEnergyDecay();
-			traitElements[TraitDefinitionSection::Elements::LowerThreshold] = static_cast<DellsTraitTemperatureSection*>(temperatureSection)->getLowerThreshold();
-			traitElements[TraitDefinitionSection::Elements::UpperThreshold] = static_cast<DellsTraitTemperatureSection*>(temperatureSection)->getUpperThreshold();
-			traitElements[TraitDefinitionSection::Elements::TemperatureOptimal] = static_cast<DellsTraitTemperatureSection*>(temperatureSection)->getTemperatureOptimal();
-		}
+		return stringToEnum.at(str);
 	}
-	else
+	catch(const out_of_range& e) 
 	{
-		temperatureSection = nullptr;
+		throwLineInfoException(fmt::format("Unknown form patch type '{}'. Valid values are {}", str, printAvailableValues()));
 	}
 }
 
-Trait::~Trait() 
-{
-	delete traitElements[TraitDefinitionSection::Elements::TraitValue];
 
-	if(isThermallyDependent())
-	{
-		delete temperatureSection;
-	}
-}
-
-const CustomIndexedVector<TraitDefinitionSection::Elements, TraitDefinitionSection*>& Trait::getElements() const
-{
-	return traitElements;
-}
-
-CustomIndexedVector<TraitDefinitionSection::Elements, TraitDefinitionSection*>& Trait::getMutableElements()
-{
-	return traitElements;
-}
-
-const Trait::Type Trait::getType() const 
+constexpr size_t Trait::ValueUpdateMethod::size() 
 { 
-	return type;
+	return magic_enum::enum_count<MethodType>(); 
 }
 
-const bool Trait::isInverse() const
-{
-	return inverseTraitVector[type];
+
+std::string_view Trait::ValueUpdateMethod::to_string(const MethodType& type) 
+{ 
+	return magic_enum::enum_name(type); 
 }
 
-const bool Trait::isThermallyDependent() const
-{
-	return thermallyDependent;
-}
 
-const TraitTemperatureSection& Trait::getTemperatureSection() const
+const unordered_map<string_view, const typename Trait::ValueUpdateMethod::MethodType> Trait::ValueUpdateMethod::generateMap() 
 {
-	return *temperatureSection;
-}
+	unordered_map<string_view, const MethodType> enumMap;
 
-TraitTemperatureSection& Trait::getMutableTemperatureSection()
-{
-	return *temperatureSection;
-}
-
-double Trait::applyTemperatureDependency(const Temperature& temperature, const CustomIndexedVector<TraitDefinitionSection::Elements, double>& traitElements,
-        const map<Temperature, pair<double, double>>& lowerTempSizeRuleConstantAccumulationVector, const double& lastLowerTempSizeRuleConstant, 
-        const map<Temperature, pair<double, double>>& upperTempSizeRuleConstantAccumulationVector, const double& lastUpperTempSizeRuleConstant,
-		const AnimalSpecies* const animalSpecies
-	) const
-{
-	double finalTraitValue = getTemperatureSection().applyTemperatureDependency(
-		temperature, traitElements, lowerTempSizeRuleConstantAccumulationVector, lastLowerTempSizeRuleConstant, 
-		upperTempSizeRuleConstantAccumulationVector, lastUpperTempSizeRuleConstant, animalSpecies
-	);
-
-	if(getType() == Trait::Type::voracity ||
-	   getType() == Trait::Type::search_area ||
-	   getType() == Trait::Type::speed)
-	{
-		finalTraitValue = fmax(finalTraitValue, 0.0);
+	for(size_t i = 0; i < size(); i++) {
+		const MethodType type = static_cast<const MethodType>(i);
+		enumMap.insert({to_string(type), type});
 	}
 
-	return finalTraitValue;
+	return enumMap;
 }
+
+
+const unordered_map<string_view, const typename Trait::ValueUpdateMethod::MethodType> Trait::ValueUpdateMethod::stringToEnum = Trait::ValueUpdateMethod::generateMap();
+
+
+const string Trait::ValueUpdateMethod::generateAvailableValues()
+{
+	constexpr auto typeNames = magic_enum::enum_names<MethodType>();
+
+	auto values = fmt::format("{}", typeNames[0]);
+	for(size_t i = 1; i < typeNames.size(); i++) {
+		values += fmt::format(", {}", typeNames[i]);
+	}
+
+	return values;
+}
+
+
+const string Trait::ValueUpdateMethod::enumValues = Trait::ValueUpdateMethod::generateAvailableValues();
+
+
+std::string_view Trait::ValueUpdateMethod::printAvailableValues() 
+{ 
+	return enumValues; 
+}
+
+
+
+Trait::Trait(const string& name, const json& traitInfo)
+	: type(stringToEnumValue(name)), lowerThreshold(traitInfo["temperatureThreshold"]["lower"]), 
+	  upperThreshold(traitInfo["temperatureThreshold"]["upper"])
+{
+
+}
+
+const unordered_map<string_view, const Trait::Type> Trait::generateMap() 
+{
+	unordered_map<string_view, const Type> enumMap;
+
+	for(size_t i = 0; i < size(); i++) {
+		const Type trait = static_cast<const Type>(i);
+		enumMap.insert({to_string(trait), trait});
+	}
+
+	return enumMap;
+}
+
+const unordered_map<string_view, const Trait::Type> Trait::stringToEnum = Trait::generateMap();
+
+const string Trait::generateHeader()
+{
+	constexpr auto traitNames = magic_enum::enum_names<Type>();
+
+	auto header = fmt::format("{}", traitNames[0]);
+	for(size_t i = 1; i < traitNames.size(); i++) {
+		header += fmt::format("\t{}", traitNames[i]);
+	}
+
+	return header;
+}
+
+const string Trait::enumHeader = Trait::generateHeader();
+
+const string Trait::generateAvailableValues()
+{
+	constexpr auto typeNames = magic_enum::enum_names<Type>();
+
+	auto values = fmt::format("{}", typeNames[0]);
+	for(size_t i = 1; i < typeNames.size(); i++) {
+		values += fmt::format(", {}", typeNames[i]);
+	}
+
+	return values;
+}
+
+const string Trait::enumValues = Trait::generateAvailableValues();
+
+
+const Temperature& Trait::getLowerThreshold() const
+{
+	return lowerThreshold;
+}
+
+const Temperature& Trait::getUpperThreshold() const
+{
+	return upperThreshold;
+}
+
+template <class Archive>
+void Trait::serialize(Archive &ar, const unsigned int version) {
+	ar & type; 
+	ar & stringToEnum;
+	ar & enumHeader;
+	ar & enumValues;
+} 

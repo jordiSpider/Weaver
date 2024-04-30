@@ -55,9 +55,9 @@ const double RainEventAndDecayOverTimeMoisture::getStandardDeviationForRainEvent
     return standardDeviationForRainEvent;
 }
 
-void RainEventAndDecayOverTimeMoisture::refreshRelativeHumidity(const unsigned int numberOfTimeSteps)
+void RainEventAndDecayOverTimeMoisture::refreshRelativeHumidity(const unsigned int timeStep)
 {
-    if(isOnRainEvent(numberOfTimeSteps))
+    if(isOnRainEvent(timeStep))
 	{
 		setMoisture(getRelativeHumidityOnRainEvent());
 	}

@@ -26,7 +26,7 @@ public:
 	static id_type resourceCounter;
 
 	Resource(ResourceSpecies* const mySpecies, TerrainCellInterface* terrainCellInterface, double biomass, double resourceMaximumCapacity, double massRatio, bool patchSpread);
-	Resource(Resource &other, const double &biomass);
+	Resource(const Resource &other, const double &biomass);
 	virtual ~Resource();
 
 	void setResourceMaximumCapacity(const double& resourceMaximumCapacity);
@@ -64,5 +64,7 @@ protected:
 
 	double getNewBiomass(const double &rateOfIncrease) const;
 };
+
+BOOST_SERIALIZATION_ASSUME_ABSTRACT(Resource)
 
 #endif /* RESOURCE_H_ */

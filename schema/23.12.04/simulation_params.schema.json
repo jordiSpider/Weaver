@@ -31,9 +31,8 @@
                     "required": true
                 },
                 "timeStepsPerDay": {
-                    "type": "floater",
-                    "exclusiveMinimum": true,
-                    "minimum": 0.0,
+                    "type": "unsigned_integer",
+                    "minimum": 1,
                     "required": true
                 },
                 "saveAnimalConstitutiveTraits": {

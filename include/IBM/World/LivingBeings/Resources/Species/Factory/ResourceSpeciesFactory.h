@@ -38,7 +38,7 @@ protected:
 	};
 
 public:
-	static std::unique_ptr<ResourceSpecies> createInstance(const nlohmann::json &resourceSpeciesInfo, World* const world);
+	static std::unique_ptr<ResourceSpecies> createInstance(const nlohmann::json &resourceSpeciesInfo);
 };
 
 #endif // RESOURCE_SPECIES_FACTORY_H_

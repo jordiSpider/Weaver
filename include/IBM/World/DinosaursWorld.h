@@ -18,21 +18,16 @@ class DinosaursWorld : public World {
 private:
     friend class boost::serialization::access;
 
-protected:
-    const double calculateWetFood(const double& wetMass) const;
-
 public:
     DinosaursWorld(nlohmann::json * jsonTree, nlohmann::json &worldConfig, boost::filesystem::path outputFolder, boost::filesystem::path configPath, int burnIn);
 	virtual ~DinosaursWorld();
 
-    double calculateNewBiomassPerDay(const double &biomass, const double &rateOfIncrease, const ResourceSpecies* const species) const;
-    double calculateTotalMetabolicDryMassLossPerDay(const double &wetMass, const double &proportionOfTimeTheAnimalWasMoving, const AnimalNonStatistical* const animal) const;
+    double calculateNewBiomass(const double &biomass, const double &rateOfIncrease, const ResourceSpecies* const species) const;
+    double calculateNewVoracity(const double &wetMass, const double &conversionToWetMass) const;
+    double calculateTotalMetabolicDryMassLoss(const double &wetMass, const double &proportionOfTimeTheAnimalWasMoving, const Animal* const animal) const;
     const bool isDinosaurs() const override;
     const double getPdfThreshold() const;
-    
-    double calculateMaxMassPredicted(const double& dryMass, const double& wetMass, const double& conversionToWetMass, const unsigned int numberOfTimeSteps, const bool hasCapitalBreeding, const double& minTotalMetabolicDryMassLoss, const double& newAAdult, const double& newB) const;
-
-    double calculatePostTSpeed(const double& speedValue, const double& wetMass, const double& scaleForSpeed) const;
+    double getPredictedSpeed(const AnimalInterface* const animal) const;
 
     /**
      * @brief Serialize the DinosaursWorld object.

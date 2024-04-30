@@ -34,4 +34,6 @@ struct TerrainCellEvaluation {
     void serialize(Archive &ar, const unsigned int version);
 };
 
+BOOST_SERIALIZATION_ASSUME_ABSTRACT(TerrainCellEvaluation)
+
 #endif // TERRAIN_CELL_EVALUATION_H_

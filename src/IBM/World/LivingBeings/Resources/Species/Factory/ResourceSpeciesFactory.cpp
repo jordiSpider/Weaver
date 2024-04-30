@@ -61,15 +61,15 @@ ResourceSpeciesFactory::Type::TypeValue ResourceSpeciesFactory::Type::stringToEn
 }
 
 
-unique_ptr<ResourceSpecies> ResourceSpeciesFactory::createInstance(const json &resourceSpeciesInfo, World* const world)
+unique_ptr<ResourceSpecies> ResourceSpeciesFactory::createInstance(const json &resourceSpeciesInfo)
 {
     switch(Type::stringToEnumValue(resourceSpeciesInfo["resourceType"])) {
         case Type::BasalResource: {
-            return make_unique<BasalResourceSpecies>(resourceSpeciesInfo, world);
+            return make_unique<BasalResourceSpecies>(resourceSpeciesInfo);
             break;
         }
         case Type::NoBasalResource: {
-            return make_unique<NoBasalResourceSpecies>(resourceSpeciesInfo, world);
+            return make_unique<NoBasalResourceSpecies>(resourceSpeciesInfo);
             break;
         }
         default: {

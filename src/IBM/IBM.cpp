@@ -36,11 +36,6 @@ void IBM::run(fs::path inputConfigPath, fs::path outputFolder, bool silentMode, 
 	try
 	{
 		inputConfigPath = fs::canonical(inputConfigPath);
-
-		// Para los casos donde hay una barra al final de la ruta
-		if(inputConfigPath.string().back() == fs::path::preferred_separator) {
-			inputConfigPath = inputConfigPath.parent_path();
-		}
 	}
 	catch(const boost::filesystem::filesystem_error& e)
 	{
@@ -83,7 +78,7 @@ void IBM::run(fs::path inputConfigPath, fs::path outputFolder, bool silentMode, 
 
 	json worldConfig = readConfigFile(inputConfigPath / fs::path("world_params.json"), schemaFolder / fs::path(WORLD_PARAMS_SCHEMA));
 
-	unique_ptr<World> myWorld = World::createInstance(&simulationConfiguration, worldConfig, resultFolder, inputConfigPath, burnIn);
+	unique_ptr<WorldInterface> myWorld = WorldFactory::createInstance(&simulationConfiguration, worldConfig, resultFolder, inputConfigPath, burnIn);
 
 	myWorld->initializeAnimals();
 

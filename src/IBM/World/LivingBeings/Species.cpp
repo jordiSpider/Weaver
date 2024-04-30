@@ -7,8 +7,6 @@
 
 #include "IBM/World/LivingBeings/Species.h"
 
-#include "IBM/World/World.h"
-
 using namespace std;
 
 
@@ -87,22 +85,12 @@ const id_type& Species::getSpeciesCounter()
 }
 
 
-Species::Species(const string& scientificName, const double conversionToWetMass, const unsigned int numberOfInstars, World* const world)
-	: id(speciesCounter++), scientificName(trim(scientificName)), conversionToWetMass(conversionToWetMass), extinguished(false),
-	  world(world), calculatedK_DensityPerInstar(numberOfInstars, false), K_DensityPerInstar(numberOfInstars, 0.0),
-	  numberOfInstars(numberOfInstars), instarsRange(calculateInstarsRange()), lastInstar(Instar(numberOfInstars))
+Species::Species(const string& scientificName, const unsigned int numberOfInstars)
+	: id(speciesCounter++), scientificName(trim(scientificName)), 
+	  calculatedK_DensityPerInstar(numberOfInstars, false), K_DensityPerInstar(numberOfInstars, 0.0),
+	  numberOfInstars(numberOfInstars), instarsRange(calculateInstarsRange())
 {
 	cout << "numberOfInstars: " << numberOfInstars << endl;
-}
-
-const World* const Species::getWorld() const
-{
-	return world;
-}
-
-World* const Species::getMutableWorld()
-{
-	return world;
 }
 
 Species::~Species()
@@ -135,11 +123,6 @@ vector<Instar> Species::calculateInstarsRange()
 	}
 
 	return calculatedRange;
-}
-
-const Instar& Species::getLastInstar() const
-{
-	return lastInstar;
 }
 
 const vector<Instar>& Species::getInstarsRange() const

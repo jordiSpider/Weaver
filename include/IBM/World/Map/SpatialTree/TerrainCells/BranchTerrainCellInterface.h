@@ -12,13 +12,13 @@ class BranchTerrainCellInterface : public SpatialTreeTerrainCell
 {
 public:
     BranchTerrainCellInterface(BranchTerrainCellInterface* const parentTerrainCell, PointSpatialTree* const position, const Ring *const effectiveArea, const double &size, 
-        SpatialTree* const map, LifeStageVector* const animals, 
+        SpatialTreeInterface* const mapInterface, LifeStageVector* const animals, 
         const bool obstacle, const bool fullObstacle, 
         const int obstaclePatchPriority, MoistureInterface* const moistureInfo, const bool moistureSource, 
         const bool inMoisturePatch, const int moisturePatchPriority, const double &totalMaximumResourceCapacity);
     virtual ~BranchTerrainCellInterface();
 
-    virtual std::tuple<TerrainCellInterface*, Animal*, unsigned int> randomInsertAnimalOnChild(const Instar &instar, AnimalSpecies* animalSpecies, TerrainCellInterface* child, const bool isStatistical)=0;
+    virtual TerrainCellInterface* randomInsertAnimalOnChild(AnimalInterface* const newAnimal, TerrainCellInterface* child)=0;
 
     virtual void substractBiomassUp(const unsigned int resourceSpeciesId, double dryMassToBeSubstracted)=0;
 

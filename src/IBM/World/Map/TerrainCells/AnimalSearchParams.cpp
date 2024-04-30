@@ -1,6 +1,6 @@
 
 #include "IBM/World/Map/TerrainCells/AnimalSearchParams.h"
-#include "IBM/World/World.h"
+#include "IBM/World/WorldInterface.h"
 
 using namespace std;
 
@@ -12,13 +12,13 @@ AnimalSearchParams::AnimalSearchParams()
 }
 
 AnimalSearchParams::AnimalSearchParams(
-        const World* const world,
+        const WorldInterface* const worldInterface,
         const vector<LifeStage::LifeStageValue> &newSearchableLifeStages,
         const vector<id_type> &newSearchableAnimalSpecies,
         const vector<Instar> &newSearchableInstars,
         const vector<AnimalSpecies::Gender::GenderValue> &newSearchableGenders)
 {
-    addSearchParams(world, newSearchableLifeStages, newSearchableAnimalSpecies, newSearchableInstars, newSearchableGenders);
+    addSearchParams(worldInterface, newSearchableLifeStages, newSearchableAnimalSpecies, newSearchableInstars, newSearchableGenders);
 }
 
 AnimalSearchParams::~AnimalSearchParams()
@@ -26,7 +26,7 @@ AnimalSearchParams::~AnimalSearchParams()
     
 }
 
-void AnimalSearchParams::initializedParams(const World* const world)
+void AnimalSearchParams::initializedParams(const WorldInterface* const worldInterface)
 {
     searchableAnimalSpecies.resize(LifeStage::size());
     searchableInstars.resize(LifeStage::size());
@@ -43,13 +43,13 @@ void AnimalSearchParams::initializedParams(const World* const world)
 
         for(unsigned int animalSpeciesId = 0; animalSpeciesId < AnimalSpecies::getAnimalSpeciesCounter(); animalSpeciesId++)
         {
-            searchableGenders[lifeStage][animalSpeciesId].resize(world->getExistingAnimalSpecies()[animalSpeciesId]->getNumberOfInstars());
+            searchableGenders[lifeStage][animalSpeciesId].resize(worldInterface->getExistingAnimalSpecies()[animalSpeciesId]->getNumberOfInstars());
         }
     }
 }
 
 void AnimalSearchParams::addSearchParams(
-        const World* const world,
+        const WorldInterface* const worldInterface,
         const vector<LifeStage::LifeStageValue> &newSearchableLifeStages,
         const vector<id_type> &newSearchableAnimalSpecies,
         const vector<Instar> &newSearchableInstars,
@@ -69,7 +69,7 @@ void AnimalSearchParams::addSearchParams(
 
     if(searchableAnimalSpecies.empty())
     {
-        initializedParams(world);
+        initializedParams(worldInterface);
     }
 
     // -------------------------------------------------
@@ -107,7 +107,7 @@ void AnimalSearchParams::addSearchParams(
 
             if(newSearchableInstars.empty())
             {
-                finalSearchableInstars = &world->getExistingAnimalSpecies()[animalSpeciesId]->getInstarsRange();
+                finalSearchableInstars = &worldInterface->getExistingAnimalSpecies()[animalSpeciesId]->getInstarsRange();
             }
             else
             {

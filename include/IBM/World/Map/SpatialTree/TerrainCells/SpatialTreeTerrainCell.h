@@ -10,7 +10,7 @@
 
 
 
-class SpatialTree;
+class SpatialTreeInterface;
 
 class BranchTerrainCellInterface;
 
@@ -19,10 +19,6 @@ class SpatialTreeTerrainCell : public SpatialTreeTerrainCellInterface
 {
 protected:
     BranchTerrainCellInterface* const parentTerrainCell;
-
-
-    std::pair<AnimalNonStatistical*, unsigned int> createAnimal(const Instar &instar, AnimalSpecies* animalSpecies);
-
 
     /**
      * @name Patches
@@ -66,7 +62,7 @@ public:
 
 
     SpatialTreeTerrainCell(BranchTerrainCellInterface* const parentTerrainCell, PointSpatialTree* const position, const Ring *const effectiveArea, const double &size, 
-        SpatialTree* const map, LifeStageVector* const animals, 
+        SpatialTreeInterface* const mapInterface, LifeStageVector* const animals, 
         const bool obstacle, const bool fullObstacle, 
         const int obstaclePatchPriority, MoistureInterface* const moistureInfo, const bool moistureSource, 
         const bool inMoisturePatch, const int moisturePatchPriority, const double &totalMaximumResourceCapacity);
@@ -77,7 +73,7 @@ public:
     std::pair<bool, std::pair<TerrainCellInterface*, PointContinuous>> getCellByBearing(
         const std::pair<PointMap, PointContinuous> &targetNeighborToTravelTo, const PointContinuous &animalPosition
     );
-    void migrateAnimalTo(AnimalNonStatistical* animalToMigrate, TerrainCellInterface* newTerrainCell, const PointContinuous &newPosition);
+    void migrateAnimalTo(AnimalInterface* animalToMigrate, TerrainCellInterface* newTerrainCell, const PointContinuous &newPosition);
 
     /**
      * @name Getters
@@ -119,7 +115,7 @@ public:
         const Ring &effectiveArea, const EdibleSearchParams &edibleSearchParams
     );
     virtual EdiblesOnRadius getMutableEdiblesOnCellAndDown(
-        std::function<bool(Animal&)> downChecker, const Ring &effectiveArea,
+        std::function<bool(AnimalInterface&)> downChecker, const Ring &effectiveArea,
         const EdibleSearchParams &edibleSearchParams
     );
 
@@ -128,7 +124,7 @@ public:
      * @{
      */
     SearchableEdibles getMutableEdiblesOnAllCell(
-        std::function<bool(Animal&)> upChecker, std::function<bool(Animal&)> downChecker, 
+        std::function<bool(AnimalInterface&)> upChecker, std::function<bool(AnimalInterface&)> downChecker, 
         const Ring &effectiveArea, const EdibleSearchParams &edibleSearchParams
     );
     /** @} */
@@ -138,7 +134,7 @@ public:
      * @{
      */
     SearchableEdibles getMutableEdiblesOnAllCell(
-        std::function<bool(Animal&)> upChecker, const EdibleSearchParams &edibleSearchParams
+        std::function<bool(AnimalInterface&)> upChecker, const EdibleSearchParams &edibleSearchParams
     );
     /** @} */
 
@@ -165,7 +161,7 @@ public:
      * @{
      */
     virtual std::unique_ptr<PartialCoverageAnimals> getMutableAnimalsUp(
-        std::function<bool(Animal&)> upChecker, const AnimalSearchParams &animalSearchParams
+        std::function<bool(AnimalInterface&)> upChecker, const AnimalSearchParams &animalSearchParams
     );
     /** @} */
 

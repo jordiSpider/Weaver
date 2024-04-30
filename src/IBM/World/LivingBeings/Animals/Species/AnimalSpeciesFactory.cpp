@@ -68,11 +68,11 @@ void AnimalSpeciesFactory::Type::serialize(Archive &ar, const unsigned int versi
 }
 
 
-unique_ptr<AnimalSpecies> AnimalSpeciesFactory::createInstance(const json &animalSpeciesInfo, const bool initIndividualsPerDensities, World* const world)
+unique_ptr<AnimalSpecies> AnimalSpeciesFactory::createInstance(const json &animalSpeciesInfo, const bool initIndividualsPerDensities, WorldInterface* const worldInterface)
 {
 	switch(Type::Default) {
         case Type::Default: {
-            return make_unique<AnimalSpecies>(animalSpeciesInfo, initIndividualsPerDensities, world);
+            return make_unique<AnimalSpecies>(animalSpeciesInfo, initIndividualsPerDensities, worldInterface);
             break;
         }
         default: {

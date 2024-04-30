@@ -12,21 +12,17 @@ using namespace std;
 
 
 
-id_type Edible::edibleId = 1;
+id_type Edible::edibleId = 0;
 
 
-Edible::Edible(const id_type id, Species* const mySpecies, TerrainCellInterface* terrainCellInterface, const Instar &instar) 
+Edible::Edible(Species* const mySpecies, TerrainCellInterface* terrainCellInterface, const Instar &instar, const bool temporary) 
 	: EdibleInterface(),
-	  id(id), mySpecies(mySpecies), instar(instar), terrainCellInterface(terrainCellInterface)
+	  mySpecies(mySpecies), temporary(temporary), instar(instar), terrainCellInterface(terrainCellInterface)
 {
-	generateIdStr();
-}
-
-Edible::Edible(Species* const mySpecies, TerrainCellInterface* terrainCellInterface, const Instar &instar) 
-	: EdibleInterface(),
-	  id(0), mySpecies(mySpecies), instar(instar), terrainCellInterface(terrainCellInterface)
-{
-	generateIdStr();
+	if(!temporary){
+		id = edibleId++;
+		generateIdStr();
+	}
 }
 
 
@@ -35,11 +31,6 @@ Edible::~Edible()
 	// TODO Auto-generated destructor stub
 }
 
-
-const id_type Edible::generateId()
-{
-	return Edible::edibleId++;
-}
 
 ostream& operator<<(ostream& os, const Edible& edible)
 {
@@ -55,12 +46,7 @@ const Instar& Edible::getInstar() const
 }
 
 
-const Species* const Edible::getSpecies() const 
-{ 
-	return mySpecies; 
-}
-
-Species* const Edible::getMutableSpecies() 
+Species* const Edible::getSpecies() const 
 { 
 	return mySpecies; 
 }
@@ -96,6 +82,7 @@ void Edible::serialize(Archive &ar, const unsigned int version) {
 	ar & id;
 	ar & idStr;
 	ar & mySpecies;
+	ar & temporary;
 	ar & instar;
 	ar & terrainCellInterface;
 	ar & edibleId;

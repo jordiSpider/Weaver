@@ -10,7 +10,7 @@
 #include "IBM/World/Map/SpatialTree/Points/PointSpatialTree.h"
 
 
-class SpatialTree;
+class SpatialTreeInterface;
 
 class BranchTerrainCellInterface;
 
@@ -42,7 +42,7 @@ protected:
 public:
     class TemporalLeaf2Branch : public std::exception {};
 
-    SpatialTreeTerrainCellInterface(PointSpatialTree* const &position, const Ring *const effectiveArea, const double &size, SpatialTree* const &map,
+    SpatialTreeTerrainCellInterface(PointSpatialTree* const &position, const Ring *const effectiveArea, const double &size, SpatialTreeInterface* const &mapInterface,
         LifeStageVector* const animals, const bool obstacle, const bool fullObstacle, 
         const int obstaclePatchPriority, MoistureInterface* const moistureInfo, const bool moistureSource, 
         const bool inMoisturePatch, const int moisturePatchPriority, const double &totalMaximumResourceCapacity);
@@ -86,11 +86,11 @@ public:
      * @{
      */
     virtual EdiblesOnRadius getMutableEdiblesOnCellAndDown(
-        std::function<bool(Animal&)> downChecker, const Ring &effectiveArea,
+        std::function<bool(AnimalInterface&)> downChecker, const Ring &effectiveArea,
         const EdibleSearchParams &edibleSearchParams
     )=0;
     virtual EdiblesOnRadius getMutableEdiblesDown(
-        std::function<bool(Animal&)> downChecker, const Ring &effectiveArea,
+        std::function<bool(AnimalInterface&)> downChecker, const Ring &effectiveArea,
         const EdibleSearchParams &edibleSearchParams
     )=0;
     /** @} */
@@ -115,7 +115,7 @@ public:
      * @{
      */
     virtual std::unique_ptr<PartialCoverageAnimals> getMutableAnimalsUp(
-        std::function<bool(Animal&)> upChecker, const AnimalSearchParams &animalSearchParams
+        std::function<bool(AnimalInterface&)> upChecker, const AnimalSearchParams &animalSearchParams
     )=0;
     /** @} */
 

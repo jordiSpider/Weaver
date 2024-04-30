@@ -1,14 +1,14 @@
 #include "IBM/World/LivingBeings/Resources/ResourceInterface.h"
 #include "IBM/World/Map/TerrainCells/TerrainCellInterface.h"
-#include "IBM/World/Map/SpatialTree.h"
-#include "IBM/World/World.h"
+#include "IBM/World/Map/SpatialTree/SpatialTree.h"
+#include "IBM/World/WorldInterface.h"
 
 using namespace std;
 
 
 
-ResourceInterface::ResourceInterface(const id_type id, Species* const mySpecies, TerrainCellInterface* terrainCellInterface, const Instar &instar, const double &biomass)
-    : Edible(id, mySpecies, terrainCellInterface, instar), biomass(biomass), fullCapacity(false)
+ResourceInterface::ResourceInterface(Species* const mySpecies, TerrainCellInterface* terrainCellInterface, const Instar &instar, const double &biomass)
+    : Edible(mySpecies, terrainCellInterface, instar, false), biomass(biomass), fullCapacity(false)
 {
 	
 }
@@ -18,14 +18,9 @@ ResourceInterface::~ResourceInterface()
 
 }
 
-const ResourceSpecies* const ResourceInterface::getSpecies() const 
+ResourceSpecies* const ResourceInterface::getSpecies() const 
 { 
-	return static_cast<const ResourceSpecies* const>(Edible::getSpecies()); 
-}
-
-ResourceSpecies* const ResourceInterface::getMutableSpecies() 
-{ 
-	return static_cast<ResourceSpecies* const>(Edible::getMutableSpecies()); 
+	return static_cast<ResourceSpecies* const>(Edible::getSpecies()); 
 }
 
 const double ResourceInterface::getSpeed() const 
@@ -34,6 +29,11 @@ const double ResourceInterface::getSpeed() const
 }
 
 const double ResourceInterface::getVoracity() const 
+{ 
+	return 0.0; 
+}
+
+const double ResourceInterface::getCurrentBodySize() const 
 { 
 	return 0.0; 
 }
@@ -88,7 +88,7 @@ void ResourceInterface::updateFullCapacityStatus()
 {
 	setFullCapacity(false);
 
-	if(getTerrainCellInterface()->getMap().getWorld()->getCompetitionAmongResourceSpecies())
+	if(getTerrainCellInterface()->getMapInterface().getWorldInterface()->getCompetitionAmongResourceSpecies())
 	{
 		for(auto &resource : getMutableTerrainCellInterface()->getMutableResources())
 		{
@@ -102,7 +102,7 @@ void ResourceInterface::updateFullCapacityStatus()
 		}
 	}
 
-	auto neighbours = getTerrainCellInterface()->getMutableMap().getResourceNeighbours(getMutableTerrainCellInterface(), getSpecies()->getResourceSpeciesId(), 1);
+	auto neighbours = getTerrainCellInterface()->getMutableMapInterface().getResourceNeighbours(getMutableTerrainCellInterface(), getSpecies()->getResourceSpeciesId(), 1);
 
 	for(auto &neighbour : *neighbours)
 	{
@@ -177,7 +177,7 @@ const double ResourceInterface::getInterpolatedDryMass(const unsigned int evalua
 		biomassToEvaluate = dryMass / static_cast<double>(displacementPower(1, DIMENSIONS * depthDifference));
 	}
 
-	return MathFunctions::linearInterpolate01(biomassToEvaluate, getSpecies()->getInstarK_Value(Instar(getSpecies()->getNumberOfInstars()), static_cast<const SpatialTree &>(getTerrainCellInterface()->getMap()).getCellSize(evaluationDepth)));
+	return MathFunctions::linearInterpolate01(biomassToEvaluate, getSpecies()->getInstarK_Value(Instar(getSpecies()->getNumberOfInstars()), static_cast<const SpatialTreeInterface &>(getTerrainCellInterface()->getMapInterface()).getCellSize(evaluationDepth)));
 }
 
 const double ResourceInterface::turnIntoDryMassToBeEaten(const double &predatorVoracity, const float &profitability, const double &leftovers) const 
@@ -191,13 +191,13 @@ void ResourceInterface::setNewLifeStage(const LifeStage newLifeStage)
 }
 
 
-void ResourceInterface::setNewLifeStage(const LifeStage newLifeStage, const unsigned int numberOfTimeSteps) 
+void ResourceInterface::setNewLifeStage(const LifeStage newLifeStage, double dayOfDeath) 
 {
 	throwLineInfoException("No implementation");
 }
 
 
-void ResourceInterface::setNewLifeStage(const LifeStage newLifeStage, const unsigned int numberOfTimeSteps, int predatorId) 
+void ResourceInterface::setNewLifeStage(const LifeStage newLifeStage, double dayOfDeath, int predatorId) 
 {
 	throwLineInfoException("No implementation");
 }
@@ -229,7 +229,7 @@ bool ResourceInterface::canEatEdible(const EdibleInterface* const &edible, const
 	return false; 
 }
 
-bool ResourceInterface::predateEdible(EdibleInterface &edibleToBePredated, const double &targetDryMass, const Ring* const perceptionArea, const unsigned int numberOfTimeSteps, bool retaliation, std::list<const EdibleInterface*> &ediblesHasTriedToPredate, ostream& encounterProbabilitiesFile, ostream& predationProbabilitiesFile, double muForPDF, double sigmaForPDF, double predationSpeedRatioAH, double predationHunterVoracityAH, double predationProbabilityDensityFunctionAH, double predationSpeedRatioSAW, double predationHunterVoracitySAW, double predationProbabilityDensityFunctionSAW, double maxSearchArea)
+bool ResourceInterface::predateEdible(EdibleInterface &edibleToBePredated, const double &targetDryMass, const Ring* const perceptionArea, int day, bool retaliation, std::list<const EdibleInterface*> &ediblesHasTriedToPredate, ostream& encounterProbabilitiesFile, ostream& predationProbabilitiesFile, double muForPDF, double sigmaForPDF, double predationSpeedRatioAH, double predationHunterVoracityAH, double predationProbabilityDensityFunctionAH, double predationSpeedRatioSAW, double predationHunterVoracitySAW, double predationProbabilityDensityFunctionSAW, double maxSearchArea)
 { 
 	return false; 
 }
