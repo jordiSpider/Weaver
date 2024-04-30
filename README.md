@@ -19,213 +19,187 @@ The full documentation of Weaver is hosted on Wiki.
   - [Table of Contents](#table-of-contents)
   - [Dependencies](#dependencies)
   - [Install](#install)
+    - [Linux](#linux)
+    - [Windows](#windows)
+    - [Windows Subsystem for Linux (WSL)](#windows-subsystem-for-linux-wsl)
   - [Build](#build)
   - [Usage](#usage)
-  - [Tool script](#tool-script)
-    - [Usage](#usage-1)
   - [Credits](#credits)
   - [License](#license)
 
 ## Dependencies
 
-In order to make use of Weaver simulations, the following dependencies are required:
+In order to make use of Weaver, the following dependencies are required:
 
 - The project is implemented in **C++17**, which requires the following compilers:
   - **GCC** v11.2.0+
   - **G++** v11.2.0+
+- The following dependencies are required to install the C++ libraries:
+  - **Vcpkg** v2023.04.15+
 - The following dependencies are required to build the project:
-  - **CMake** v3.25+
-  - **Python** v3.7+
+  - **Make** v4.3+
+  - **CMake** v3.25.1+
+- The following C++ libraries are required to build the project:
+  - **magic-enum** v0.8.1+
+  - **cxxopts** v3.0.0+
+  - **nlohmann\-json** v3.11.2+
+  - **fmt** v9.0.0+
 
 <details><summary><h3>Additional dependencies</h3></summary>
 
-> **Note**  
-> The dependencies described in this section are not necessary for basic use of Weaver.
+<h4>Linux</h4>
 
-<details><summary><h4>Documentation</h4></summary>
+- The following dependencies are required to install **Vcpkg**:
+  - **curl** v7.81.0+
+  - **zip** v3.0+
+  - **unzip** v6.0+
+  - **tar** v1.34+
+  - **pkg-config** v0.29.2+
+  - **git** v2.34.1+
 
-The following requirements are necessary for the building of the project documentation:
+<h4>Windows</h4>
 
-- **Doxygen** v1.9.1+
-- **Graphviz** v2.42.2+
+- The following dependencies are required to install package manager:
+  - **MSYS2** v2023.05.26+
+- The following dependencies are required to install **Vcpkg**:
+  - **git\-lfs** v3.3.0+
 
-</details>
-
-<details><summary><h4>Tool script</h4></summary>
-
-The following requirements are necessary for the use of the tool script:
-
-- **Python** v3.7+
-- **Pip** v21.0+
-- **Curses** v2.3.1+
-- **Pyinstaller** v5.7+
-
-</details>
 </details>
 
 ## Install
 
 > **Warning**  
-> Several commands used in this section require administrator privileges.
+> This section require administrator privileges.
 
-> **Note**  
-> A dependencies installation tool has been developed for users with limited computer skills. For more information, see the [Install dependencies tool](#install-dependencies-tool) section.
+> **Warning**  
+> If you are using the standalone version, you do not need to install anything. Except for the WSL version, where you will need to install WSL (from step 1 to step 6).
 
-<details><summary><h3>Linux</h3></summary>
+### Linux
 
 To perform a Weaver installation, you must complete the following steps:
 
-1. Open a terminal to the root of the project.
+1. Double-Click on **`openTerminal.out`**.
 
-2. Update the list of available packages in the repositories configured on the system.
+    ![Prueba](assets/videos/Install/Linux/openTerminal.gif)
 
-    ```
-    sudo apt update
-    ```
+2. Run **`tools.out`**.
 
-3. Install C++ compilers.
+    ![Prueba](assets/videos/Install/Linux/runTools.gif)
 
-    ```
-    sudo apt install gcc=4:11.2.0-1ubuntu1 -y
-    sudo apt install g++=4:11.2.0-1ubuntu1 -y
-    ```
+3. Selection of project version for installation.
 
-4. Install the pre-requisites for the Cmake installation.
+    ![Prueba](assets/videos/Install/Linux/selectProjectVersion.gif)
 
-    ```
-    sudo apt install make=4.3-4.1build1 -y
-    sudo apt install libssl-dev=3.0.2-0ubuntu1.8 -y
-    sudo apt install python3=3.10.4-0ubuntu2 -y
-    ```
+4. Enter your superuser password.
 
-5. Install Cmake.
+    > **Warning**  
+    > For security reasons, the password entry is not visible on the terminal.
 
-    ```
-    cd ~
-    wget https://cmake.org/files/v3.25/cmake-3.25.0.tar.gz
-    tar -xzvf cmake-3.25.0.tar.gz
-    rm -f cmake-3.25.0.tar.gz
-    cd cmake-3.25.0
-    NUM_PROC=$(nproc)
-    ./bootstrap --parallel=$NUM_PROC
-    make -j8
-    sudo make install
-    ```
+    ![Prueba](assets/videos/Install/Linux/enterPassword.gif)
 
-</details>
+5. Accepts or rejects the installation of the version dependency.
 
-<details><summary><h3>Windows</h3></summary>
+    ![Prueba](assets/videos/Install/Linux/acceptInstallDepen.gif)
+
+6. Installation of dependencies.
+
+    > **Warning**  
+    > This may take several minutes.
+
+7. Exit the programme.
+
+    ![Prueba](assets/videos/Install/Linux/selectAction.gif)
+
+### Windows
 
 To perform a Weaver installation, follow the steps below:
 
-1. Open a CMD terminal as an administrator.
+1. Run `tools.exe` as administrator.
 
-2. (Optional) Install PowerShell.
+    ![Prueba](assets/videos/Install/Windows/runTools.gif)
 
-    > **Warning**  
-    > PowerShell installation requires system restart.
+2. Selection of project version for installation.
 
-    To install Chocolatey, you must have PowerShell v3+ installed. You can check your current version by running the following command:  
+    ![Prueba](assets/videos/Install/Windows/selectProjectVersion.gif)
 
-    ```
-    powershell.exe $PSVersionTable
-    ```
+3. Accepts or rejects the installation of the version dependency.
 
-    If your current version is higher than or equal to the required version, you can continue with the installation, otherwise you should follow the steps below:  
+    ![Prueba](assets/videos/Install/Windows/acceptInstallDepen.gif)
 
-    1. Download the executable file for installation. Click [HERE](https://download.microsoft.com/download/E/7/6/E76850B8-DA6E-4FF5-8CCE-A24FC513FD16/Windows6.1-KB2506143-x64.msu) to download.
-
-    2. Start the installation by clicking on the downloaded executable file.
-
-3. (Optional) Install .NET Framework.
-
-    To install Chocolatey you need to have .NET Framework v4.5+ installed. You can check your current version with the following command:  
-
-    ```
-    powershell.exe reg query "HKLM\\SOFTWARE\\Microsoft\\NET Framework Setup\\NDP\\v4\\Full" /v Version
-    ```
-
-    If your current version is higher than or equal to the required version, you can continue with the installation, otherwise you should follow the steps below:  
-
-    1. Download the executable file for installation. Click [HERE](https://download.microsoft.com/download/B/A/4/BA4A7E71-2906-4B2D-A0E1-80CF16844F5F/dotNetFx45_Full_setup.exe) to download.
-
-    2. Start the installation by clicking on the downloaded executable file.
-
-4. Install Python.
-
-    To install Weaver, you must have Python v3.7+ installed. You can check your current version with the following command:  
-
-    ```
-    python --version
-    ```
-
-    If your current version is higher than or equal to the required version, you can continue with the installation, otherwise you should follow the steps below:  
-
-    1. Download the executable file for installation. Click [HERE](https://www.python.org/ftp/python/3.7.0/python-3.7.0-amd64.exe) to download.
-
-    2. Start the installation by clicking on the downloaded executable file.
+4. Installation of dependencies.
 
     > **Warning**  
-    > You need to check the **'Add Python 3.7 to PATH'** option.
+    > This may take several minutes.
 
-5. Install Chocolatey.
+5. Exit the programme.
 
-    ```
-    powershell.exe Set-ExecutionPolicy Bypass -Scope Process -Force; [System.Net.ServicePointManager]::SecurityProtocol = [System.Net.ServicePointManager]::SecurityProtocol -bor 3072; iex ((New-Object System.Net.WebClient).DownloadString('https://community.chocolatey.org/install.ps1'))
-    ```
+    ![Prueba](assets/videos/Install/Windows/selectAction.gif)
 
-6. Refresh the PATH environment variable.
+### Windows Subsystem for Linux (WSL)
 
-    > **Warning**  
-    > This command must be executed from the root directory of the project.
+To perform a Weaver installation, you must complete the following steps:
 
-    ```
-    RefreshEnv.bat
-    ```
+1. Run `installWSL.exe` as administrator.
 
-7. Install MinGW.
+    ![Prueba](assets/videos/Install/WSL/runInstallWSL.gif)
 
-    ```
-    choco install mingw --version 12.2.0 -y
-    del /Q C:\ProgramData\chocolatey\bin\python.exe
-    ```
+2. (Optional) Reboot system
 
-8. Install Cmake.
+    > **Note**  
+    > A restart is required when certain Windows features are enabled.
 
-    ```
-    choco install cmake --version 3.25.1 -y --installargs 'ADD_CMAKE_TO_PATH=System'
-    ```
+    ![Prueba](assets/videos/Install/WSL/rebootWindows.gif)
 
-9. Refresh the PATH environment variable.
+3. Run `installWSL.exe` as administrator again.
+
+    ![Prueba](assets/videos/Install/WSL/runInstallWSL.gif)
+
+4. Installation of WSL.
 
     > **Warning**  
-    > This command must be executed from the root directory of the project.
+    > This may take several minutes.
 
-    ```
-    RefreshEnv.bat
-    ```
+5. Enter your superuser password.
 
-</details>
+    > **Warning**  
+    > For security reasons, the password entry is not visible on the terminal.
+
+    > **Warning**  
+    > The password need not be the same as Windows.
+
+    ![Prueba](assets/videos/Install/WSL/enterPassword.gif)
+
+6. Exit the programme.
+
+    ![Prueba](assets/videos/Install/WSL/exitInstall.gif)
+
+7. Double-Click on **`openTerminal.exe`**.
+
+    ![Prueba](assets/videos/Install/WSL/openTerminal.gif)
+
+8. Runs from step 2 to the last step of [Linux installation](#linux).
 
 ## Build
-
-> **Warning**  
-> All commands must be executed from the root directory of the project.
-
-> **Note**  
-> For users with little computer knowledge, a build project tool has been developed. For more information go to [Build project tool](#build-project-tool) section.
 
 Cmake is used to automate the Weaver build process. Due to the use of Cmake, the build is cross-platform.
 
 To define the different build types for the project, a [`CMakePresets.json`](./CMakePresets.json) file has been created, where the characteristics of the different types are defined.
 
-To start the construction process, all you need to do is execute the following command:
+To start the construction process, you must complete the following steps:
+
+1. Double-Click on **`openTerminal.out`** or **`openTerminal.exe`**.
+
+![Prueba](assets/videos/Install/Linux/openTerminal.gif)
+
+2. Execute Weaver construction.
 
 ```
 cmake --workflow --preset <preset-name>
 ```
 
 Where `preset-name` is the name under which the preset workflow has been defined in the `workflowPresets` section of the file [`CMakePresets.json`](./CMakePresets.json).
+
+![Prueba](assets/videos/Build/buildWeaver.gif)
 
 If you do not know which `workflowPresets` are available, you can run the following command:
 
@@ -236,193 +210,51 @@ If you do not know which `workflowPresets` are available, you can run the follow
 cmake --list-presets
 ```
 
+![Prueba](assets/videos/Build/listPresets.gif)
+
 ## Usage
 
+The [`run_params.json`](./run_params.json) file is used to define the inputs and outputs of the programme. This file contains the following main parameters:
 
+- The inputs are defined by two parameters:
 
-## Tool script
+  - `configFolder`: Directory containing the input configuration folder
+  - `configName`: Input configuration folder name
 
-In order to facilitate the use of the Weaver project, a script has been created consisting of a series of tools. The file is called [`tools.py`](./scripts/tools.py) and is located inside the [`scripts`](./scripts/) folder.
+- The outputs are defined by two parameters:
 
-### Usage
+  - `resultFolder`: Directory containing the results folder
+  - `resultName`: Results folder name
 
-<details><summary><h4>Linux</h4></summary>
+Depending on the value of the command line parameters used to run the program, the location of the run_params.json file may vary.
 
-In case you have downloaded the version of the project that includes the tool script executable, you can make use of the tools by clicking on the `tools` executable located in the root directory of the project.
+If Weaver is run with the default parameters, the file must be at the same path level as the Weaver program.
 
-Otherwise, the script has been implemented using Python. Therefore you can make use of it by executing the following command:
 
-```
-python3 scripts/tool.py
-```
+<h3>Linux</h3>
 
-If the executable file is not available, you can generate it by running the following command:
+![Prueba](assets/videos/Usage/Linux/runWeaverDefault.gif)
 
-```
-python3 scripts/tool.py --gen_exe
-```
+<h3>Windows</h3>
 
-For more details on generating the executable, go to the [Generate executable tool](#generate-executable-tool) section.
+![Prueba](assets/videos/Usage/Windows/runWeaverDefault.gif)
 
-</details>
+Or
 
-<details><summary><h4>Windows</h4></summary>
+![Prueba](assets/videos/Usage/Windows/runWeaverDefaultDesktop.gif)
 
-In case you have downloaded the version of the project that includes the tool script executable, you can make use of the tools by clicking on the `tools` executable located in the root directory of the project.
+When Weaver is run by passing a value to one of the command line parameters, the file must be located at the path level specified by the command line parameters.
 
-Otherwise, the script has been implemented using Python. Therefore you can make use of it by executing the following command:
+The command line parameters are as follows:
 
-```
-python scripts\tool.py
-```
+- `-I`, `--inputFolder`: Directory containing the `run_params.json` file. 
+  - Default value: Directory containing the Weaver program
+- `-i`, `--inputFile`: Filename `run_params.json`
+  - Default value: `run_params.json`
+- `-o`, `--outputFolder`: Directory containing the results folder
+  - Default value: `result_simulation`
 
-If the executable file is not available, you can generate it by running the following command:
-
-```
-python scripts\tool.py --gen_exe
-```
-
-For more details on generating the executable, go to the [Generate executable tool](#generate-executable-tool) section.
-
-</details>
-
-<details><summary><h3>Install dependencies tool</h3></summary>
-
-<details><summary><h4>Linux</h4></summary>
-
-This tool is in charge of installing the project's dependencies. These dependencies are defined in the [`project_config.json`](./project_config.json) file. For more information on how to define a new dependency, go to the [documentation]().
-
-The dependency installation tool can be accessed in two ways. On the one hand by following the steps below:
-
-1. Start the script as described in the [Usage](#usage-1) section.
-
-2. Select the "Install dependencies" option in the action menu.
-
-// Imagen de como seleccionar la opción
-
-On the other hand, we can access it directly by using the `-i` or `--install_depen` argument.
-
-```
-python3 scripts/tool.py -i
-```
-
-Once we have accessed the dependencies installer, we can select the dependencies we want to install.
-
-// Imagen de como seleccionar las dependencias
-
-We can also select the dependencies directly, indicating the name of the dependencies separated by spaces, after the argument that indicates the selection of the action to install dependencies.
-
-```
-python3 scripts/tool.py -i build doc
-```
-
-</details>
-
-<details><summary><h4>Windows</h4></summary>
-
-This tool is in charge of installing the project's dependencies. These dependencies are defined in the [`project_config.json`](./project_config.json) file. For more information on how to define a new dependency, go to the [documentation]().
-
-The dependency installation tool can be accessed in two ways. On the one hand by following the steps below:
-
-1. Start the script as described in the [Usage](#usage-1) section.
-
-2. Select the "Install dependencies" option in the action menu.
-
-// Imagen de como seleccionar la opción
-
-On the other hand, we can access it directly by using the `-i` or `--install_depen` argument.
-
-```
-python scripts/tool.py -i
-```
-
-Once we have accessed the dependencies installer, we can select the dependencies we want to install.
-
-// Imagen de como seleccionar las dependencias
-
-We can also select the dependencies directly, indicating the name of the dependencies separated by spaces, after the argument that indicates the selection of the action to install dependencies.
-
-```
-python scripts/tool.py -i build doc
-```
-
-Finally, update the PATH variable.
-
-```
-RefreshEnv.bat
-```
-
-</details>
-
-</details>
-
-<details><summary><h3>Build project tool</h3></summary>
-
-<details><summary><h4>Linux</h4></summary>
-
-This tool is in charge of building the different configurations of the project. These configurations are defined in the [`CMakePresets.json`](./CMakePresets.json) file. For more information on how to define a new configuration, go to the [documentation]().
-
-The dependency installation tool can be accessed in two ways. On the one hand by following the steps below:
-
-1. Start the script as described in the [Usage](#usage-1) section.
-
-2. Select the "Build project" option in the action menu.
-
-// Imagen de como seleccionar la opción
-
-On the other hand, we can access it directly by using the `-b` or `--build` argument.
-
-```
-python3 scripts/tool.py -b
-```
-
-Once we have accessed the builder, we can select the configuration we want to build.
-
-// Imagen de como seleccionar la configuración
-
-We can also select the configuration directly, indicating the name of the configuration, after the argument indicating the selection of the action to build the project.
-
-```
-python3 scripts/tool.py -b linux-Makefile
-```
-
-</details>
-
-<details><summary><h4>Windows</h4></summary>
-
-This tool is in charge of building the different configurations of the project. These configurations are defined in the [`CMakePresets.json`](./CMakePresets.json) file. For more information on how to define a new configuration, go to the [documentation]().
-
-The dependency installation tool can be accessed in two ways. On the one hand by following the steps below:
-
-1. Start the script as described in the [Usage](#usage-1) section.
-
-2. Select the "Build project" option in the action menu.
-
-// Imagen de como seleccionar la opción
-
-On the other hand, we can access it directly by using the `-b` or `--build` argument.
-
-```
-python scripts/tool.py -b
-```
-
-Once we have accessed the builder, we can select the configuration we want to build.
-
-// Imagen de como seleccionar la configuración
-
-We can also select the configuration directly, indicating the name of the configuration, after the argument indicating the selection of the action to build the project.
-
-```
-python scripts/tool.py -b windows-Makefile
-```
-
-</details>
-
-</details>
-
-<details><summary><h3>Generate executable tool</h3></summary>
-
-</details>
+![Prueba](assets/videos/Usage/Linux/runWeaverParams.gif)
 
 ## Credits
 
@@ -430,8 +262,3 @@ python scripts/tool.py -b windows-Makefile
 ## License
 
 
-# Documentation
-
-## Input Parameters
-[Simulation (run) Parameters description](parameterDescription_simulation.md)
-[World Parameters description](parameterDescriptions_worldsParams.md)
