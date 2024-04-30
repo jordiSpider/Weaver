@@ -12,15 +12,13 @@
 #include <boost/serialization/access.hpp>
 #include <boost/archive/binary_iarchive.hpp>
 #include <boost/archive/binary_oarchive.hpp>
-#include <boost/serialization/vector.hpp>
-#include <boost/serialization/utility.hpp>
 #include <fstream>
 #include <ostream>
 
-#include "IBM/World/LivingBeings/Animals/Genetics/Locus.h"
-#include "IBM/World/LivingBeings/Animals/Genetics/Chromosome.h"
-#include "IBM/World/LivingBeings/Animals/Genetics/Correlosome.h"
-#include "IBM/World/LivingBeings/Animals/Genetics/Gamete.h"
+#include "Locus.h"
+#include "Chromosome.h"
+#include "Correlosome.h"
+#include "Gamete.h"
 #include "IBM/Maths/Random.h"
 #include "Exceptions/LineInfoException.h"
 
@@ -36,8 +34,8 @@ private:
 
 	std::vector<std::pair<Chromosome*, Chromosome*> > homologousChromosomes; /**< Vector of pairs of homologous chromosomes. */
 	std::vector<std::pair<Correlosome*, Correlosome*> > homologousCorrelosomes; /**< Vector of pairs of homologous correlosomes. */
-	unsigned int numberOfLociPerChromosome;
-	unsigned int numberOfChiasmasPerChromosome;
+	const unsigned int numberOfLociPerChromosome;
+	const unsigned int numberOfChiasmasPerChromosome;
 	
 	/**
 	* @brief Creates homologous correlosomes from homologous chromosomes.
@@ -48,7 +46,6 @@ private:
 	friend class boost::serialization::access;
 
 public:
-     Genome();
 	/**
      * @brief Constructor for the Genome class.
      * @param firstParentGamete Pointer to the first parent's gamete.
@@ -68,7 +65,7 @@ public:
      * @param numberOfLociPerChromosome The number of loci per chromosome.
      * @param numberOfChiasmasPerChromosome The number of chiasmas per chromosome.
      */
-	Genome(const std::vector<Locus> &loci, const std::vector<int> &randomlyCreatedPositionsForChromosomes, const unsigned int &numberOfChromosomes,
+	Genome(const std::vector<Locus*> &loci, const std::vector<int> &randomlyCreatedPositionsForChromosomes, const unsigned int &numberOfChromosomes,
 		   const unsigned int& numberOfLociPerChromosome, const unsigned int& numberOfChiasmasPerChromosome);
 	
 	/**
@@ -139,16 +136,8 @@ public:
      * @param ar The archive to use.
      * @param version The version of the serialization format.
      */
-     template<class Archive>
-     void serialize(Archive & ar, const unsigned int version, const std::vector<Locus> &loci);
+    template<class Archive>
+    void serialize(Archive & ar, const unsigned int version);
 };
-
-namespace boost {
-    namespace serialization {
-        template<class Archive>
-        void serialize(
-            Archive &ar, Genome* &genomePtr, const unsigned int version, const std::vector<Locus> &loci);
-    }
-}
 
 #endif /* GENOME_H_ */

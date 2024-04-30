@@ -19,15 +19,7 @@ Updater::Updater(string &&version)
 
 Updater::~Updater()
 {
-    for(Change* elem : changes)
-    {
-        delete elem;
-    }
-}
-
-void Updater::addChanges(vector<Change*> &&newChanges)
-{
-    changes.insert(changes.end(), newChanges.begin(), newChanges.end());
+    
 }
 
 const VersionNumber& Updater::getVersion() const
@@ -37,11 +29,6 @@ const VersionNumber& Updater::getVersion() const
 
 void Updater::update(Config &config)
 {
-    for(Change* &change : changes)
-    {
-        change->applyChange(config);
-    }
-
     config.refresh_version(getVersion());
 }
 

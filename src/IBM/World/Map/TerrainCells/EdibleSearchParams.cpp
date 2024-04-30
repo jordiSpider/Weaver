@@ -17,21 +17,21 @@ EdibleSearchParams::~EdibleSearchParams()
 }
 
 void EdibleSearchParams::addAnimalSearchParams(
-        const WorldInterface* const worldInterface,
-        const vector<LifeStage> &searchableLifeStages,
-        const vector<AnimalSpecies::AnimalID> &searchableAnimalSpecies,
+        const World* const world,
+        const vector<LifeStage::LifeStageValue> &searchableLifeStages,
+        const vector<id_type> &searchableAnimalSpecies,
         const vector<Instar> &searchableInstars,
-        const vector<AnimalSpecies::Gender> &searchableGenders)
+        const vector<AnimalSpecies::Gender::GenderValue> &searchableGenders)
 {
     animalSearchParams.addSearchParams(
-        worldInterface, searchableLifeStages, searchableAnimalSpecies, 
+        world, searchableLifeStages, searchableAnimalSpecies, 
         searchableInstars, searchableGenders
     );
 }
 
-void EdibleSearchParams::addResourceSearchParams(const WorldInterface* const worldInterface, const vector<ResourceSpecies::ResourceID> &searchableResourceSpecies)
+void EdibleSearchParams::addResourceSearchParams(const vector<id_type> &searchableResourceSpecies)
 {
-    resourceSearchParams.addSearchParams(worldInterface, searchableResourceSpecies);
+    resourceSearchParams.addSearchParams(searchableResourceSpecies);
 }
 
 const AnimalSearchParams& EdibleSearchParams::getAnimalSearchParams() const
@@ -48,27 +48,4 @@ template <class Archive>
 void EdibleSearchParams::serialize(Archive &ar, const unsigned int version) {
     ar & animalSearchParams;
     ar & resourceSearchParams;
-}
-
-
-namespace boost {
-    namespace serialization {
-        template<class Archive>
-        void serialize(Archive &ar, EdibleSearchParams* &edibleSearchParamsPtr, const unsigned int version) {
-            // Deserialization
-            if (Archive::is_loading::value) {
-				ar & *edibleSearchParamsPtr;
-            } // Serialization
-            else {
-                ar & *edibleSearchParamsPtr;
-            }
-        }
-
-		// Specialisation
-		template void serialize<boost::archive::text_iarchive>(boost::archive::text_iarchive&, EdibleSearchParams*&, const unsigned int);
-		template void serialize<boost::archive::text_oarchive>(boost::archive::text_oarchive&, EdibleSearchParams*&, const unsigned int);
-
-		template void serialize<boost::archive::binary_iarchive>(boost::archive::binary_iarchive&, EdibleSearchParams*&, const unsigned int);
-		template void serialize<boost::archive::binary_oarchive>(boost::archive::binary_oarchive&, EdibleSearchParams*&, const unsigned int);
-    }
 }

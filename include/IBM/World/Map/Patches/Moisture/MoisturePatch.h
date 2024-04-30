@@ -11,6 +11,7 @@
 
 #include "IBM/World/Map/Patches/Patch.h"
 #include "IBM/World/Map/TerrainCells/Moisture/ExtendedMoisture.h"
+#include "IBM/World/Map/TerrainCells/Moisture/Factory/MoistureFactory.h"
 #include "Exceptions/LineInfoException.h"
 
 
@@ -20,7 +21,7 @@ private:
     friend class boost::serialization::access;
 
 protected:
-    ExtendedMoisture* moistureInfo;
+    std::unique_ptr<ExtendedMoisture> moistureInfo;
 
     MoisturePatch(const nlohmann::json &moistureInfo, const FormPatch* const &form);
     MoisturePatch(const unsigned int priority, const nlohmann::json &moistureInfo, const FormPatch* const &form);
@@ -32,10 +33,8 @@ protected:
 public:
     virtual ~MoisturePatch();
     
-    const ExtendedMoisture* const& getMoistureInfo() const;
-    ExtendedMoisture* const& getMutableMoistureInfo();
-
-    void saveMoistureInfo(std::vector<ExtendedMoisture*>& appliedMoisture);
+    const std::unique_ptr<ExtendedMoisture>& getMoistureInfo() const;
+    std::unique_ptr<ExtendedMoisture>& getMutableMoistureInfo();
 
     /**
      * @brief Serialize the MoisturePatch object.

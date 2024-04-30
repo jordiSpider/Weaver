@@ -9,12 +9,6 @@
 
 #include "IBM/Physics/Temperature.h"
 
-
-class MapInterface;
-class TerrainCellInterface;
-class ExtendedMoisture;
-
-
 class MoistureInterface
 {
 private:
@@ -25,12 +19,6 @@ protected:
     virtual void updateRelativeHumidity()=0;
 
 public:
-    static std::unique_ptr<MoistureInterface> createInstance(
-        const MapInterface& mapInterface, TerrainCellInterface* const terrainCellInterface, 
-        const bool inMoisturePatch
-    );
-
-
     MoistureInterface();
     virtual ~MoistureInterface();
 
@@ -55,16 +43,5 @@ public:
     template <class Archive>
     void serialize(Archive &ar, const unsigned int version);
 };
-
-namespace boost {
-    namespace serialization {
-        template<class Archive>
-        void serialize(
-            Archive &ar, MoistureInterface* &moistureInterfacePtr, const unsigned int version, 
-            const MapInterface& mapInterface, TerrainCellInterface* const terrainCellInterface,
-            const bool moistureSource, const bool inMoisturePatch, std::vector<ExtendedMoisture*>& appliedMoisture
-        );
-    }
-}
 
 #endif /* MOISTURE_INTERFACE_H_ */

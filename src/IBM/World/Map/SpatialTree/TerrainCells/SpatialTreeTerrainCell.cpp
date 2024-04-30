@@ -1,7 +1,7 @@
 
 
 #include "IBM/World/Map/SpatialTree/TerrainCells/SpatialTreeTerrainCell.h"
-#include "IBM/World/Map/SpatialTreeInterface.h"
+#include "IBM/World/Map/SpatialTree.h"
 #include "IBM/World/Map/SpatialTree/TerrainCells/BranchTerrainCellInterface.h"
 #include "IBM/World/Map/TerrainCells/EdibleSearchParams.h"
 
@@ -9,21 +9,15 @@ using namespace std;
 
 
 
-const unsigned int SpatialTreeTerrainCell::numberOfChildren = std::pow(SpatialTreeInterface::numbreOfSubdivisions, DIMENSIONS);
+const unsigned int SpatialTreeTerrainCell::numberOfChildren = std::pow(SpatialTree::numbreOfSubdivisions, DIMENSIONS);
 
-
-SpatialTreeTerrainCell::SpatialTreeTerrainCell(BranchTerrainCellInterface* const parentTerrainCell, SpatialTreeInterface* const mapInterface)
-    : SpatialTreeTerrainCellInterface(mapInterface), parentTerrainCell(parentTerrainCell)
-{
-
-}
 
 SpatialTreeTerrainCell::SpatialTreeTerrainCell(BranchTerrainCellInterface* const parentTerrainCell, 
-        PointSpatialTree* const position, const Ring *const effectiveArea, const double &size, SpatialTreeInterface* const mapInterface,
+        PointSpatialTree* const position, const Ring *const effectiveArea, const double &size, SpatialTree* const map,
         LifeStageVector* const animals, 
         const bool obstacle, const bool fullObstacle, const int obstaclePatchPriority, MoistureInterface* const moistureInfo, 
         const bool moistureSource, const bool inMoisturePatch, const int moisturePatchPriority, const double &totalMaximumResourceCapacity)
-    : SpatialTreeTerrainCellInterface(position, effectiveArea, size, mapInterface,
+    : SpatialTreeTerrainCellInterface(position, effectiveArea, size, map,
         animals,
         obstacle, fullObstacle, obstaclePatchPriority, moistureInfo, moistureSource, inMoisturePatch, moisturePatchPriority, totalMaximumResourceCapacity
       ),
@@ -60,7 +54,7 @@ bool SpatialTreeTerrainCell::checkFullCoverageObstaclePatch(const ObstaclePatch 
 }
 
 
-pair<bool, bool> SpatialTreeTerrainCell::checkFullCoverageMoisturePatch(MoisturePatch &moisturePatch)
+pair<bool, bool> SpatialTreeTerrainCell::checkFullCoverageMoisturePatch(const MoisturePatch &moisturePatch)
 {
     if(canApplyMoisturePatch(moisturePatch))
     {
@@ -70,7 +64,7 @@ pair<bool, bool> SpatialTreeTerrainCell::checkFullCoverageMoisturePatch(Moisture
     return make_pair(false, false);
 }
 
-pair<bool, bool> SpatialTreeTerrainCell::applyFullCoverageMoisturePatch(MoisturePatch &moisturePatch)
+pair<bool, bool> SpatialTreeTerrainCell::applyFullCoverageMoisturePatch(const MoisturePatch &moisturePatch)
 {
     setMoistureSourcePatch(moisturePatch);
     return make_pair(true, true);
@@ -98,9 +92,9 @@ void SpatialTreeTerrainCell::applyMoistureSourcePatch()
 }
 
 
-void SpatialTreeTerrainCell::setSubdivisionMoisturePatch(MoisturePatch &moisturePatch)
+void SpatialTreeTerrainCell::setSubdivisionMoisturePatch(const MoisturePatch &moisturePatch)
 {
-    setSubdivisionMoisturePatch(moisturePatch.getMutableMoistureInfo(), moisturePatch.getPriority());
+    setSubdivisionMoisturePatch(moisturePatch.getMoistureInfo().get(), moisturePatch.getPriority());
 }
 
 void SpatialTreeTerrainCell::setSubdivisionMoisturePatch(ExtendedMoisture* const moistureInfo, const int moisturePathPriority)
@@ -152,7 +146,7 @@ pair<bool, pair<TerrainCellInterface *, PointContinuous>> SpatialTreeTerrainCell
         }
 
         PointSpatialTree nextCellPosition(axisValues, getPosition().getDepth());
-        TerrainCellInterface* nextCell = static_cast<const SpatialTreeInterface &>(getMapInterface()).getCell(nextCellPosition, this);
+        TerrainCellInterface* nextCell = static_cast<const SpatialTree &>(getMap()).getCell(nextCellPosition, this);
 
         //Avoid obstacles using the least bearing difference path
         if(nextCell->isObstacle())
@@ -166,7 +160,7 @@ pair<bool, pair<TerrainCellInterface *, PointContinuous>> SpatialTreeTerrainCell
                 initialCoords[i] = getPosition().get(axis) - 1;
             }
 
-            auto neighboursPoints = static_cast<const SpatialTreeInterface &>(getMapInterface()).generatePoints(3, getPosition(), initialCoords);
+            auto neighboursPoints = static_cast<const SpatialTree &>(getMap()).generatePoints(3, getPosition(), initialCoords);
 
             unsigned int bestBearingDifference = calculateManhattanDistanceToPoint(targetNeighborToTravelTo.first) + 2;
             vector<pair<TerrainCellInterface*, PointSpatialTree>> surroundingTerrainCells;
@@ -175,7 +169,7 @@ pair<bool, pair<TerrainCellInterface *, PointContinuous>> SpatialTreeTerrainCell
             {
                 if(calculateManhattanDistanceToPoint(neighboursPoints->at(i)) == 1)
                 {
-                    auto neighbour = static_cast<const SpatialTreeInterface &>(getMapInterface()).getCell(neighboursPoints->at(i), this);
+                    auto neighbour = static_cast<const SpatialTree &>(getMap()).getCell(neighboursPoints->at(i), this);
                 
                     if(!neighbour->isObstacle())
                     {
@@ -231,7 +225,27 @@ pair<bool, pair<TerrainCellInterface *, PointContinuous>> SpatialTreeTerrainCell
     }
 }
 
-void SpatialTreeTerrainCell::migrateAnimalTo(AnimalInterface* animalToMigrate, TerrainCellInterface* newTerrainCell, const PointContinuous &newPosition)
+pair<AnimalNonStatistical*, unsigned int> SpatialTreeTerrainCell::createAnimal(const Instar &instar, AnimalSpecies* animalSpecies)
+{
+    unsigned int numberOfDiscardedIndividualsOutsideRestrictedRanges = 0;
+
+    AnimalNonStatistical* newAnimal = new SpatialTreeAnimal(0.0, instar, 0, 0, -1, -1, animalSpecies, this);
+
+    while(!animalSpecies->isInsideRestrictedRanges(newAnimal->getBaseTraitElementVector()))
+    {
+        numberOfDiscardedIndividualsOutsideRestrictedRanges++;
+
+        delete newAnimal;
+        newAnimal = new SpatialTreeAnimal(0.0, instar, 0, 0, -1, -1, animalSpecies, this);
+    }
+
+    // Indicate that the animal created is the final animal, and therefore assign a final ID to it.
+    newAnimal->doDefinitive();
+
+    return make_pair<>(newAnimal, numberOfDiscardedIndividualsOutsideRestrictedRanges);
+}
+
+void SpatialTreeTerrainCell::migrateAnimalTo(AnimalNonStatistical* animalToMigrate, TerrainCellInterface* newTerrainCell, const PointContinuous &newPosition)
 {
     eraseAnimal(animalToMigrate);
     animalToMigrate->setPosition(newPosition);
@@ -307,7 +321,7 @@ SearchableEdibles SpatialTreeTerrainCell::getMutableEdiblesOnAllCell(TerrainCell
         const PointContinuous &sourcePosition, const double &radius, const Ring &effectiveArea, 
         const EdibleSearchParams &edibleSearchParams)
 {
-    auto radiusChecker = [&sourcePosition, &radius](AnimalInterface& animal) {
+    auto radiusChecker = [&sourcePosition, &radius](Animal& animal) {
         return Geometry::calculateDistanceBetweenPoints(sourcePosition, animal.getPosition()) < radius;
     };
 
@@ -317,7 +331,7 @@ SearchableEdibles SpatialTreeTerrainCell::getMutableEdiblesOnAllCell(TerrainCell
 			break;
 		}
         case TerrainCellInterface::Sub_Terrain_Cell: {
-            auto downChecker = [&polygon = effectiveArea](AnimalInterface& animal) {
+            auto downChecker = [&polygon = effectiveArea](Animal& animal) {
                 return Geometry::withinPolygon(animal.getPosition(), polygon);
             };
 
@@ -376,7 +390,7 @@ SearchableEdibles SpatialTreeTerrainCell::getMutableEdiblesOnAllCell(const Edibl
 }
 
 SearchableEdibles SpatialTreeTerrainCell::getMutableEdiblesOnAllCell(
-        std::function<bool(AnimalInterface&)> upChecker, std::function<bool(AnimalInterface&)> downChecker, 
+        std::function<bool(Animal&)> upChecker, std::function<bool(Animal&)> downChecker, 
         const Ring &effectiveArea, const EdibleSearchParams &edibleSearchParams)
 {
     unique_ptr<ResourcesOnRadius> searchableResources;
@@ -418,7 +432,7 @@ SearchableEdibles SpatialTreeTerrainCell::getMutableEdiblesOnAllCell(
 }
 
 SearchableEdibles SpatialTreeTerrainCell::getMutableEdiblesOnAllCell(
-        std::function<bool(AnimalInterface&)> upChecker, const EdibleSearchParams &edibleSearchParams)
+        std::function<bool(Animal&)> upChecker, const EdibleSearchParams &edibleSearchParams)
 {
     unique_ptr<ResourcesOnRadius> searchableResources;
     unique_ptr<FullCoverageAnimals> searchableFullCoverageAnimals;
@@ -472,7 +486,7 @@ unique_ptr<FullCoverageAnimals> SpatialTreeTerrainCell::getMutableAnimalsUp(cons
 }
 
 unique_ptr<PartialCoverageAnimals> SpatialTreeTerrainCell::getMutableAnimalsUp(
-        function<bool(AnimalInterface&)> upChecker, const AnimalSearchParams &animalSearchParams)
+        function<bool(Animal&)> upChecker, const AnimalSearchParams &animalSearchParams)
 {
     auto searchableAnimals = getMutableParent()->getMutableAnimalsUp(upChecker, animalSearchParams);
 
@@ -504,7 +518,7 @@ EdiblesOnRadius SpatialTreeTerrainCell::getMutableEdiblesOnCellAndDown(const Edi
 }
 
 EdiblesOnRadius SpatialTreeTerrainCell::getMutableEdiblesOnCellAndDown(
-        function<bool(AnimalInterface&)> downChecker, const Ring &effectiveArea, const EdibleSearchParams &edibleSearchParams)
+        function<bool(Animal&)> downChecker, const Ring &effectiveArea, const EdibleSearchParams &edibleSearchParams)
 {
     unique_ptr<ResourcesOnRadius> searchableResources;
     unique_ptr<PartialCoverageAnimals> searchablePartialCoverageAnimals;
@@ -521,16 +535,3 @@ EdiblesOnRadius SpatialTreeTerrainCell::getMutableEdiblesOnCellAndDown(
 
     return make_pair(move(searchableResources), make_pair(move(searchablePartialCoverageAnimals), move(searchableFullCoverageAnimals)));
 }
-
-template <class Archive>
-void SpatialTreeTerrainCell::serialize(Archive &ar, const unsigned int version, vector<ExtendedMoisture*>& appliedMoisture) 
-{
-    boost::serialization::base_object<SpatialTreeTerrainCellInterface>(*this).serialize(ar, version, appliedMoisture);
-}
-
-// Specialisation
-template void SpatialTreeTerrainCell::serialize<boost::archive::text_iarchive>(boost::archive::text_iarchive&, const unsigned int, vector<ExtendedMoisture*>&);
-template void SpatialTreeTerrainCell::serialize<boost::archive::text_oarchive>(boost::archive::text_oarchive&, const unsigned int, vector<ExtendedMoisture*>&);
-
-template void SpatialTreeTerrainCell::serialize<boost::archive::binary_iarchive>(boost::archive::binary_iarchive&, const unsigned int, vector<ExtendedMoisture*>&);
-template void SpatialTreeTerrainCell::serialize<boost::archive::binary_oarchive>(boost::archive::binary_oarchive&, const unsigned int, vector<ExtendedMoisture*>&);

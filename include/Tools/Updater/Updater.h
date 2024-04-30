@@ -7,7 +7,7 @@
 #include <memory>
 #include <nlohmann/json.hpp>
 
-#include "Tools/Updater/Change.h"
+#include "Tools/Config/Config.h"
 #include "Tools/Config/VersionNumber.h"
 
 
@@ -15,10 +15,6 @@ class Updater
 {
 private:
     VersionNumber version;
-    std::vector<Change*> changes;
-
-protected:
-    void addChanges(std::vector<Change*> &&newChanges);
 
 public:
     Updater();
@@ -27,7 +23,7 @@ public:
 
     const VersionNumber& getVersion() const;
 
-    void update(Config &config);
+    virtual void update(Config &config);
 
     bool operator<(const Updater& other) const;
 };

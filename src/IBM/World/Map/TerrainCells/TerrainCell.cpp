@@ -1,34 +1,31 @@
 
 #include "IBM/World/Map/TerrainCells/TerrainCell.h"
-#include "IBM/World/WorldInterface.h"
+#include "IBM/World/World.h"
 #include "IBM/World/Map/TerrainCells/EdibleSearchParams.h"
-#include "IBM/World/Map/MapInterface.h"
+#include "IBM/World/Map/Map.h"
 
 using namespace std;
 namespace fs = boost::filesystem;
 
 
 
-TerrainCell::TerrainCell(MapInterface* const mapInterface)
-    : TerrainCellInterface(), mapInterface(mapInterface)
-{
-
-}
-
-TerrainCell::TerrainCell(PointMap* const &position, const Ring *const effectiveArea, const double &size, MapInterface* const &mapInterface,
+TerrainCell::TerrainCell(PointMap* const &position, const Ring *const effectiveArea, const double &size, Map* const &map,
         LifeStageVector* const animals,
         const bool obstacle, const bool fullObstacle, const int obstaclePatchPriority, MoistureInterface* const moistureInfo, 
         const bool moistureSource, const bool inMoisturePatch, const int moisturePatchPriority, const double &totalMaximumResourceCapacity)
     : TerrainCellInterface(),
-      position(position), center(makeCenter(position, size).release()), size(size), mapInterface(mapInterface), effectiveArea(effectiveArea), 
+      position(position), center(makeCenter(position, size)), size(size), map(map), effectiveArea(effectiveArea), 
       copied(false), totalMaximumResourceCapacity(totalMaximumResourceCapacity),
       obstacle(obstacle), fullObstacle(fullObstacle), moistureInfo(moistureInfo), moistureSource(moistureSource), 
-      inMoisturePatch(inMoisturePatch), resources(getMapInterface().getWorldInterface()->getExistingResourceSpecies().size(), nullptr),
-      animals(animals), 
+      inMoisturePatch(inMoisturePatch), resources(ResourceSpecies::getResourceSpeciesCounter()),
+      resourcesPointers(ResourceSpecies::getResourceSpeciesCounter(), nullptr),
+      resourcesConstPointers(ResourceSpecies::getResourceSpeciesCounter(), nullptr), animals(animals), 
       obstaclePatchPriority(obstaclePatchPriority), 
-      moisturePatchPriority(moisturePatchPriority), resourcePatchPriority(getMapInterface().getWorldInterface()->getExistingResourceSpecies().size(), -1)
+      moisturePatchPriority(moisturePatchPriority), resourcePatchPriority(ResourceSpecies::getResourceSpeciesCounter(), -1)
 {
-    
+    #ifdef DEBUG
+        updateLastTimeStep = UINT_MAX;
+    #endif
 }
 
 
@@ -48,31 +45,21 @@ TerrainCell::~TerrainCell()
 
         delete effectiveArea;
     }
-
-    delete center;
-
-    for(auto& elem : resources)
-    {
-        if(elem != nullptr)
-        {
-            delete elem;
-        }
-    }
 }
 
-LifeStageVector* const TerrainCell::makeDefaultAnimals(const MapInterface* const &mapInterface)
+LifeStageVector* const TerrainCell::makeDefaultAnimals(const Map* const &map)
 {
-    auto defaultAnimals = new LifeStageVector(EnumClass<LifeStage>::size());
+    auto defaultAnimals = new LifeStageVector(LifeStage::size());
 
     for(auto &lifeStage : *defaultAnimals)
     {
-        lifeStage.resize(mapInterface->getWorldInterface()->getExistingAnimalSpecies().size());
-        for(unsigned int animalSpecies = 0; animalSpecies < mapInterface->getWorldInterface()->getExistingAnimalSpecies().size(); animalSpecies++)
+        lifeStage.resize(AnimalSpecies::getAnimalSpeciesCounter());
+        for(unsigned int animalSpecies = 0; animalSpecies < map->getWorld()->getExistingAnimalSpecies().size(); animalSpecies++)
         {
-            lifeStage[animalSpecies].resize(mapInterface->getWorldInterface()->getExistingAnimalSpecies().at(animalSpecies)->getNumberOfInstars());
+            lifeStage[animalSpecies].resize(map->getWorld()->getExistingAnimalSpecies().at(animalSpecies)->getNumberOfInstars());
             for(auto &instar : lifeStage[animalSpecies])
             {
-                instar.resize(EnumClass<AnimalSpecies::Gender>::size());
+                instar.resize(AnimalSpecies::Gender::size());
             }
         }
     }
@@ -120,25 +107,25 @@ PointMap& TerrainCell::getMutablePosition() const
     return *position;
 }
 
-const MapInterface& TerrainCell::getMapInterface() const
+const Map& TerrainCell::getMap() const
 {
-    return *mapInterface;
+    return *map;
 }
 
-MapInterface& TerrainCell::getMutableMapInterface() const
+Map& TerrainCell::getMutableMap() const
 {
-    return *mapInterface;
+    return *map;
 }
 
 
-const WorldInterface* const TerrainCell::getWorldInterface() const
+const World* const TerrainCell::getWorld() const
 {
-    return getMapInterface().getWorldInterface();
+    return getMap().getWorld();
 }
 
-WorldInterface* const TerrainCell::getMutableWorldInterface() const
+World* const TerrainCell::getMutableWorld() const
 {
-    return getMutableMapInterface().getMutableWorldInterface();
+    return getMutableMap().getMutableWorld();
 }
 
 const double& TerrainCell::getSize() const
@@ -208,14 +195,27 @@ bool TerrainCell::isObstacle() const {
 }
 
 
-void TerrainCell::insertAnimal(AnimalInterface* const newAnimal)
+void TerrainCell::insertAnimal(Animal* const newAnimal)
 {
     addAnimal(newAnimal->getLifeStage(), newAnimal->getSpecies()->getAnimalSpeciesId(), newAnimal->getInstar(), newAnimal->getGender(), newAnimal);
 }
 
 
-tuple<bool, TerrainCellInterface*, TerrainCellInterface*> TerrainCell::randomInsertAnimal(AnimalInterface* const newAnimal)
+tuple<bool, TerrainCellInterface*, TerrainCellInterface*, Animal*, unsigned int> TerrainCell::randomInsertAnimal(const Instar &instar, AnimalSpecies* animalSpecies, const bool isStatistical)
 {
+    Animal* newAnimal;
+    unsigned int numberOfDiscardedIndividualsOutsideRestrictedRanges;
+    
+    if(isStatistical)
+    {
+        newAnimal = new AnimalStatistical(instar, animalSpecies, this);
+    }
+    else
+    {
+        tie(newAnimal, numberOfDiscardedIndividualsOutsideRestrictedRanges) = createAnimal(instar, animalSpecies);
+    }
+    
+
     vector<double> axisValues(DIMENSIONS);
     
     for(unsigned int i = 0; i < DIMENSIONS; i++)
@@ -227,11 +227,11 @@ tuple<bool, TerrainCellInterface*, TerrainCellInterface*> TerrainCell::randomIns
     newAnimal->setPosition(axisValues);
     TerrainCell::insertAnimal(newAnimal);
 
-    return make_tuple(false, nullptr, nullptr);
+    return make_tuple(false, nullptr, nullptr, newAnimal, numberOfDiscardedIndividualsOutsideRestrictedRanges);
 }
 
 
-const PointContinuous* const& TerrainCell::getCenter() const
+const unique_ptr<PointContinuous>& TerrainCell::getCenter() const
 {
     return center;
 }
@@ -239,43 +239,43 @@ const PointContinuous* const& TerrainCell::getCenter() const
 
 unique_ptr<PointContinuous> TerrainCell::makeCenter(const PointMap* const &position, const double &size) const
 {
-    auto newCenter = make_unique<PointContinuous>();
+    auto center = make_unique<PointContinuous>();
 
     const double halfOfSize = size / 2.0;
 
     for(unsigned int i = 0; i < DIMENSIONS; i++)
     {
-        setPositionAxisValue(*newCenter, i, position->get(magic_enum::enum_cast<Axis>(i).value()) * size + halfOfSize);
+        setPositionAxisValue(*center, i, position->get(magic_enum::enum_cast<Axis>(i).value()) * size + halfOfSize);
     }
 
-    return newCenter;
+    return center;
 }
 
-void TerrainCell::addAnimal(const LifeStage &lifeStage, const unsigned int animalSpeciesId, const Instar &instar, const AnimalSpecies::Gender &gender, AnimalInterface* const newAnimal)
+void TerrainCell::addAnimal(const LifeStage &lifeStage, const unsigned int animalSpeciesId, const Instar &instar, const AnimalSpecies::Gender::GenderValue &gender, Animal* const newAnimal)
 {
-    animals->at(lifeStage)[animalSpeciesId][instar][gender].push_back(newAnimal);
+    animals->at(lifeStage.getValue())[animalSpeciesId][instar][gender].push_back(newAnimal);
 
     newAnimal->setTerrainCellInterface(this);
 }
 
-void TerrainCell::eraseAnimal(AnimalInterface* const animalToRemove)
+void TerrainCell::eraseAnimal(Animal* const animalToRemove)
 {
     eraseAnimal(animalToRemove->getLifeStage(), animalToRemove->getSpecies()->getAnimalSpeciesId(), animalToRemove->getInstar(), animalToRemove->getGender(), animalToRemove);
 }
 
-void TerrainCell::eraseAnimal(const LifeStage &lifeStage, const unsigned int animalSpeciesId, const Instar &instar, const AnimalSpecies::Gender &gender, AnimalInterface* const animalToRemove)
+void TerrainCell::eraseAnimal(const LifeStage &lifeStage, const unsigned int animalSpeciesId, const Instar &instar, const AnimalSpecies::Gender::GenderValue &gender, Animal* const animalToRemove)
 {
-    AnimalVector* vector = &animals->at(lifeStage)[animalSpeciesId][instar][gender];
+    AnimalVector* vector = &animals->at(lifeStage.getValue())[animalSpeciesId][instar][gender];
     vector->erase(std::remove(vector->begin(), vector->end(), animalToRemove), vector->end());
 }
 
-void TerrainCell::changeAnimalToSenesced(AnimalInterface* targetAnimal, int day)
+void TerrainCell::changeAnimalToSenesced(Animal* targetAnimal, const unsigned int numberOfTimeSteps)
 {
 	#ifdef DEBUG
 	//Output::coutFlush("{} predated {}\n", targetAnimal->getPredatedByID(), targetAnimal->getId());
 	#endif
 
-	targetAnimal->setNewLifeStage(LifeStage::SENESCED, day);
+	targetAnimal->setNewLifeStage(LifeStage::SENESCED, numberOfTimeSteps);
 }
 
 void TerrainCell::eraseAllAnimals()
@@ -312,22 +312,22 @@ const Ring* const TerrainCell::makeEffectiveArea(PointMap* const position, const
 
 vector<ResourceInterface*>& TerrainCell::getMutableResources()
 {
-    return resources;
+    return resourcesPointers;
 }
 
-const vector<ResourceInterface*>& TerrainCell::getResources() const
+const vector<const ResourceInterface*>& TerrainCell::getResources() const
 {
-    return resources;
+    return resourcesConstPointers;
 }
 
 ResourceInterface* const TerrainCell::getMutableResource(const unsigned int resourceSpeciesId)
 {
-    return resources[resourceSpeciesId];
+    return resourcesPointers[resourceSpeciesId];
 }
 
 const ResourceInterface* const TerrainCell::getResource(const unsigned int resourceSpeciesId) const
 {
-    return resources[resourceSpeciesId];
+    return resourcesConstPointers[resourceSpeciesId];
 }
 
 const double TerrainCell::getBiomass(const unsigned int resourceSpeciesId) const
@@ -347,8 +347,12 @@ void TerrainCell::updateMoisture()
     moistureInfo->update();
 }
 
-void TerrainCell::update(const unsigned int timeStep, ostream& tuneTraitsFile)
+void TerrainCell::update(const unsigned int numberOfTimeSteps, ostream& tuneTraitsFile)
 {
+    #ifdef DEBUG
+        testUpdate();
+    #endif
+
     moistureInfo->update();
     for(auto &resource : getMutableResources())
     {
@@ -360,14 +364,14 @@ void TerrainCell::update(const unsigned int timeStep, ostream& tuneTraitsFile)
             }
         }
     }
-    activateAndResumeAnimals(timeStep);
-    tuneTraits(timeStep, tuneTraitsFile);
+    activateAndResumeAnimals(numberOfTimeSteps);
+    tuneAnimals(numberOfTimeSteps, tuneTraitsFile);
 }
 
 
 double TerrainCell::spreadResource(const double &massToSpread, const unsigned int resourceSpeciesId)
 {
-    auto neighbours = this->getMutableMapInterface().getResourceNeighbours(this, resourceSpeciesId, 1);
+    auto neighbours = this->getMutableMap().getResourceNeighbours(this, resourceSpeciesId, 1);
 
     if(!neighbours->empty()) {
         double excess = 0.0;
@@ -425,7 +429,7 @@ double TerrainCell::getTotalResourceBiomass() const
 {
 	double mass = 0.0;
 
-    for(unsigned int i = 0; i < getMapInterface().getWorldInterface()->getExistingResourceSpecies().size(); i++)
+    for(unsigned int i = 0; i < getMap().getWorld()->getExistingResourceSpecies().size(); i++)
     {
         if(getResource(i) != nullptr)
         {
@@ -437,11 +441,11 @@ double TerrainCell::getTotalResourceBiomass() const
 }
 
 
-void TerrainCell::obtainInhabitableTerrainCells(vector<TerrainCellInterface*>& inhabitableTerrainCells)
+void TerrainCell::obtainInhabitableTerrainCells()
 {
     if(!isObstacle())
     {
-        inhabitableTerrainCells.push_back(this);
+        getMutableMap().addInhabitableTerrainCell(this);
     }
 }
 
@@ -452,65 +456,65 @@ const int TerrainCell::getResourcePatchPriority(const unsigned int resourceSpeci
 }
 
 
-void TerrainCell::activateAndResumeAnimals(int timeStep)
+void TerrainCell::activateAndResumeAnimals(const unsigned int numberOfTimeSteps)
 {
     // Unborn animals
 
     applyFunctionToAnimals(
         {
-            [timeStep](AnimalInterface& animal) { 
-                animal.isReadyToBeBorn(timeStep, animal.getTerrainCellInterface()->getMapInterface().getWorldInterface()->getTimeStepsPerDay());
+            [numberOfTimeSteps](AnimalNonStatistical& animal) { 
+                animal.isReadyToBeBorn(numberOfTimeSteps);
             }
         },
-        getMapInterface().getLifeStageSearchParams(LifeStage::UNBORN)
+        getMap().getLifeStageSearchParams(LifeStage::UNBORN)
     );
 
     // Diapause animals
 
     applyFunctionToAnimals(
         {
-            [](AnimalInterface& animal) { 
-                animal.isReadyToResumeFromDiapauseOrIncreaseDiapauseTimeSteps(animal.getTerrainCellInterface()->getMoistureInfo()->getMoisture());
+            [](AnimalNonStatistical& animal) { 
+                animal.getMutableAnimalGrowth()->isReadyToResumeFromDiapauseOrIncreaseDiapauseTimeSteps(animal.getTerrainCellInterface()->getMoistureInfo()->getMoisture());
             }
         },
-        getMapInterface().getLifeStageSearchParams(LifeStage::DIAPAUSE)
+        getMap().getLifeStageSearchParams(LifeStage::DIAPAUSE)
     );
 
     // Pupa animals
     applyFunctionToAnimals(
         {
-            [](AnimalInterface& animal) { 
-                animal.isReadyToResumeFromPupaOrDecreasePupaTimer();
+            [](AnimalNonStatistical& animal) { 
+                animal.getMutableAnimalGrowth()->isReadyToResumeFromPupaOrDecreasePupaTimer();
             }
         },
-        getMapInterface().getLifeStageSearchParams(LifeStage::PUPA)
+        getMap().getLifeStageSearchParams(LifeStage::PUPA)
     );
 
     // Handling animals
     /*
     applyFunctionToAnimals(
         {},
-        getMapInterface().getLifeStageSearchParams(LifeStage::HANDLING)
+        getMap().getLifeStageSearchParams(LifeStage::HANDLING)
     );
     */
 }
 
-void TerrainCell::applyFunctionToAnimals(const vector<function<void(AnimalInterface&)>> &functions,
+void TerrainCell::applyFunctionToAnimals(const vector<function<void(AnimalNonStatistical&)>> &functions,
         const AnimalSearchParams &animalSearchParams)
 {
-    for(const LifeStage& lifeStage : animalSearchParams.getSearchableLifeStages())
+    for(const LifeStage::LifeStageValue& lifeStage : animalSearchParams.getSearchableLifeStages())
     {
-        for(const AnimalSpecies::AnimalID& animalSpeciesId : animalSearchParams.getSearchableAnimalSpecies(lifeStage))
+        for(const id_type& animalSpeciesId : animalSearchParams.getSearchableAnimalSpecies(lifeStage))
         {
             for(const Instar& instar : animalSearchParams.getSearchableInstars(lifeStage, animalSpeciesId))
             {
-                for(const AnimalSpecies::Gender& gender : animalSearchParams.getSearchableGenders(lifeStage, animalSpeciesId, instar))
+                for(const AnimalSpecies::Gender::GenderValue& gender : animalSearchParams.getSearchableGenders(lifeStage, animalSpeciesId, instar))
                 {
                     for(auto &animal : animals->at(lifeStage).at(animalSpeciesId).at(instar).at(gender))
                     {
                         for(const auto &func : functions)
                         {
-                            func(*animal);
+                            func(*static_cast<AnimalNonStatistical*>(animal));
                         }
                     }
                 }
@@ -519,7 +523,19 @@ void TerrainCell::applyFunctionToAnimals(const vector<function<void(AnimalInterf
     }
 }
 
-void TerrainCell::randomApplyFunctionToAnimals(const vector<function<void(AnimalInterface&)>> &functions,
+#ifdef DEBUG
+    void TerrainCell::testUpdate()
+    {
+        if(updateLastTimeStep == getMap().getWorld()->getActualTimeStep())
+        {
+            throwLineInfoException("Terrain cell updated twice in the same time step.");
+        }
+
+        updateLastTimeStep = getMap().getWorld()->getActualTimeStep();
+    }
+#endif
+
+void TerrainCell::randomApplyFunctionToAnimals(const vector<function<void(AnimalNonStatistical&)>> &functions,
         const AnimalSearchParams &animalSearchParams)
 {
     auto randomIndexLifeStageVector = Random::createIndicesVector(animalSearchParams.getSearchableLifeStages().size());
@@ -528,7 +544,7 @@ void TerrainCell::randomApplyFunctionToAnimals(const vector<function<void(Animal
         auto lifeStageIt = animalSearchParams.getSearchableLifeStages().begin();
         advance(lifeStageIt, randomIndexLifeStage);
 
-        const LifeStage lifeStage = *lifeStageIt;
+        const LifeStage::LifeStageValue lifeStage = *lifeStageIt;
 
         auto randomIndexAnimalSpeciesIdVector = Random::createIndicesVector(animalSearchParams.getSearchableAnimalSpecies(lifeStage).size());
         for(const auto &randomIndexAnimalSpeciesId : *randomIndexAnimalSpeciesIdVector)
@@ -552,7 +568,7 @@ void TerrainCell::randomApplyFunctionToAnimals(const vector<function<void(Animal
                     auto genderIt = animalSearchParams.getSearchableGenders(lifeStage, animalSpeciesId, instar).begin();
                     advance(genderIt, randomIndexGender);
 
-                    const AnimalSpecies::Gender gender = *genderIt;
+                    const AnimalSpecies::Gender::GenderValue gender = *genderIt;
 
                     auto animalVector = &animals->at(lifeStage).at(animalSpeciesId).at(instar).at(gender);
 
@@ -572,7 +588,7 @@ void TerrainCell::randomApplyFunctionToAnimals(const vector<function<void(Animal
                         {
                             for(const auto &func : functions)
                             {
-                                func(*animalVector->at(randomIndexAnimalVector->at(i)));
+                                func(*static_cast<AnimalNonStatistical*>(animalVector->at(randomIndexAnimalVector->at(i))));
                             }
 
                             if(animalVector->size() != randomIndexAnimalVector->size())
@@ -588,12 +604,10 @@ void TerrainCell::randomApplyFunctionToAnimals(const vector<function<void(Animal
     }
 }
 
-void TerrainCell::tuneTraits(const unsigned int timeStep, ostream& tuneTraitsFile)
+void TerrainCell::tuneAnimals(const unsigned int numberOfTimeSteps, ostream& tuneTraitsFile)
 {
     for(auto &lifeStage : {LifeStage::ACTIVE, LifeStage::PUPA, LifeStage::SATIATED, LifeStage::HANDLING, LifeStage::DIAPAUSE}) {
-        auto lifeStageAnimals = animals->at(lifeStage);
-        
-        for(auto &animalSpeciesElem : lifeStageAnimals)
+        for(auto &animalSpeciesElem : animals->at(lifeStage))
         {
             for(auto &instarElem : animalSpeciesElem)
             {
@@ -601,10 +615,12 @@ void TerrainCell::tuneTraits(const unsigned int timeStep, ostream& tuneTraitsFil
                 {
                     for(auto &animalElem : genderElem)
                     {
-                        //Growth Curves calculus added here so it will be computed every step with the new temperature
-                        animalElem->calculateGrowthCurves(getMoistureInfo()->getTemperature(), tuneTraitsFile, true, -1); //Dinosaurs
-                        animalElem->increaseAge(1);
-                        animalElem->tuneTraits(timeStep, getWorldInterface()->getTimeStepsPerDay(), getMoistureInfo()->getTemperature(), getMoistureInfo()->getMoisture(), tuneTraitsFile, true, false);
+                        if(static_cast<AnimalNonStatistical*>(animalElem)->getUpdateLastTimeStep() != numberOfTimeSteps)
+                        {
+                            static_cast<AnimalNonStatistical*>(animalElem)->setUpdateLastTimeStep(numberOfTimeSteps);
+                            static_cast<AnimalNonStatistical*>(animalElem)->increaseAge(1);
+                            static_cast<AnimalNonStatistical*>(animalElem)->tune(getMoistureInfo()->getTemperature(), numberOfTimeSteps, getMoistureInfo()->getMoisture(), tuneTraitsFile, true);
+                        }
                     }
                 }
             }
@@ -636,17 +652,17 @@ void TerrainCell::purgeDeadAnimals()
 }
 
 
-void TerrainCell::moveAnimals(int timeStep, ostream& encounterProbabilitiesFile, ostream& predationProbabilitiesFile, bool saveEdibilitiesFile, ostream& edibilitiesFile, float exitTimeThreshold, double pdfThreshold, double muForPDF, double sigmaForPDF, double predationSpeedRatioAH, double predationHunterVoracityAH, double predationProbabilityDensityFunctionAH, double predationSpeedRatioSAW, double predationHunterVoracitySAW, double predationProbabilityDensityFunctionSAW, double maxSearchArea, double encounterHuntedVoracitySAW, double encounterHunterVoracitySAW, double encounterVoracitiesProductSAW, double encounterHunterSizeSAW, double encounterHuntedSizeSAW, double encounterProbabilityDensityFunctionSAW, double encounterHuntedVoracityAH, double encounterHunterVoracityAH, double encounterVoracitiesProductAH, double encounterHunterSizeAH, double encounterHuntedSizeAH, double encounterProbabilityDensityFunctionAH)
+void TerrainCell::moveAnimals(const unsigned int numberOfTimeSteps, ostream& encounterProbabilitiesFile, ostream& predationProbabilitiesFile, bool saveEdibilitiesFile, ostream& edibilitiesFile, float exitTimeThreshold, double pdfThreshold, double muForPDF, double sigmaForPDF, double predationSpeedRatioAH, double predationHunterVoracityAH, double predationProbabilityDensityFunctionAH, double predationSpeedRatioSAW, double predationHunterVoracitySAW, double predationProbabilityDensityFunctionSAW, double maxSearchArea, double encounterHuntedVoracitySAW, double encounterHunterVoracitySAW, double encounterVoracitiesProductSAW, double encounterHunterSizeSAW, double encounterHuntedSizeSAW, double encounterProbabilityDensityFunctionSAW, double encounterHuntedVoracityAH, double encounterHunterVoracityAH, double encounterVoracitiesProductAH, double encounterHunterSizeAH, double encounterHuntedSizeAH, double encounterProbabilityDensityFunctionAH)
 {
 	auto t0 = clock();
 
     randomApplyFunctionToAnimals(
         {
-            [timeStep, &encounterProbabilitiesFile, &predationProbabilitiesFile, saveEdibilitiesFile, &edibilitiesFile, pdfThreshold, muForPDF, sigmaForPDF, predationSpeedRatioAH, predationHunterVoracityAH, predationProbabilityDensityFunctionAH, predationSpeedRatioSAW, predationHunterVoracitySAW, predationProbabilityDensityFunctionSAW, maxSearchArea, encounterHuntedVoracitySAW, encounterHunterVoracitySAW, encounterVoracitiesProductSAW, encounterHunterSizeSAW, encounterHuntedSizeSAW, encounterProbabilityDensityFunctionSAW, encounterHuntedVoracityAH, encounterHunterVoracityAH, encounterVoracitiesProductAH, encounterHunterSizeAH, encounterHuntedSizeAH, encounterProbabilityDensityFunctionAH](AnimalInterface& animal) { 
-                animal.moveAnimal(timeStep, encounterProbabilitiesFile, predationProbabilitiesFile, saveEdibilitiesFile, edibilitiesFile, pdfThreshold, muForPDF, sigmaForPDF, predationSpeedRatioAH, predationHunterVoracityAH, predationProbabilityDensityFunctionAH, predationSpeedRatioSAW, predationHunterVoracitySAW, predationProbabilityDensityFunctionSAW, maxSearchArea, encounterHuntedVoracitySAW, encounterHunterVoracitySAW, encounterVoracitiesProductSAW, encounterHunterSizeSAW, encounterHuntedSizeSAW, encounterProbabilityDensityFunctionSAW, encounterHuntedVoracityAH, encounterHunterVoracityAH, encounterVoracitiesProductAH, encounterHunterSizeAH, encounterHuntedSizeAH, encounterProbabilityDensityFunctionAH);
+            [numberOfTimeSteps, &encounterProbabilitiesFile, &predationProbabilitiesFile, saveEdibilitiesFile, &edibilitiesFile, pdfThreshold, muForPDF, sigmaForPDF, predationSpeedRatioAH, predationHunterVoracityAH, predationProbabilityDensityFunctionAH, predationSpeedRatioSAW, predationHunterVoracitySAW, predationProbabilityDensityFunctionSAW, maxSearchArea, encounterHuntedVoracitySAW, encounterHunterVoracitySAW, encounterVoracitiesProductSAW, encounterHunterSizeSAW, encounterHuntedSizeSAW, encounterProbabilityDensityFunctionSAW, encounterHuntedVoracityAH, encounterHunterVoracityAH, encounterVoracitiesProductAH, encounterHunterSizeAH, encounterHuntedSizeAH, encounterProbabilityDensityFunctionAH](AnimalNonStatistical& animal) { 
+                animal.moveAnimal(numberOfTimeSteps, encounterProbabilitiesFile, predationProbabilitiesFile, saveEdibilitiesFile, edibilitiesFile, pdfThreshold, muForPDF, sigmaForPDF, predationSpeedRatioAH, predationHunterVoracityAH, predationProbabilityDensityFunctionAH, predationSpeedRatioSAW, predationHunterVoracitySAW, predationProbabilityDensityFunctionSAW, maxSearchArea, encounterHuntedVoracitySAW, encounterHunterVoracitySAW, encounterVoracitiesProductSAW, encounterHunterSizeSAW, encounterHuntedSizeSAW, encounterProbabilityDensityFunctionSAW, encounterHuntedVoracityAH, encounterHunterVoracityAH, encounterVoracitiesProductAH, encounterHunterSizeAH, encounterHuntedSizeAH, encounterProbabilityDensityFunctionAH);
             }
         },
-        getMapInterface().getLifeStageSearchParams(LifeStage::ACTIVE)
+        getMap().getLifeStageSearchParams(LifeStage::ACTIVE)
     );
 
     auto t1 = clock();
@@ -656,11 +672,11 @@ void TerrainCell::moveAnimals(int timeStep, ostream& encounterProbabilitiesFile,
         throwLineInfoException("too many animals for too little food!!!");
 	}
 
-    getMutableMapInterface().getMutableWorldInterface()->increaseMovePrintBar();
+    getMutableMap().getMutableWorld()->increaseMovePrintBar();
 }
 
-tuple<double, double, double> TerrainCell::evaluateAnimal(const AnimalInterface &animalWhoIsEvaluating, 
-        const list<const EdibleInterface*> &ediblesHasTriedToPredate, const AnimalInterface &animal,
+tuple<double, double, double> TerrainCell::evaluateAnimal(const AnimalNonStatistical &animalWhoIsEvaluating, 
+        const list<const EdibleInterface*> &ediblesHasTriedToPredate, const AnimalNonStatistical &animal,
         double preferenceThresholdForEvaluation, 
         double muForPDF, double sigmaForPDF, 
         double predationSpeedRatioAH, double predationHunterVoracityAH, 
@@ -695,7 +711,7 @@ tuple<double, double, double> TerrainCell::evaluateAnimal(const AnimalInterface 
     return make_tuple(predatoryRiskEdibilityValue, edibilityValue, conspecificBiomass);
 }
 
-double TerrainCell::evaluateResource(const AnimalInterface &animalWhoIsEvaluating, 
+double TerrainCell::evaluateResource(const AnimalNonStatistical &animalWhoIsEvaluating, 
         const list<const EdibleInterface*> &ediblesHasTriedToPredate, const ResourceInterface* resource,
         const double dryMass, double preferenceThresholdForEvaluation, 
         double muForPDF, double sigmaForPDF, 
@@ -719,7 +735,7 @@ double TerrainCell::evaluateResource(const AnimalInterface &animalWhoIsEvaluatin
     return edibilityValue;
 }
 
-tuple<double, double, double, const EdibleInterface*> TerrainCell::getCellEvaluation(AnimalInterface* animalWhoIsEvaluating, pair<TerrainCellInterface::TerrainCellCoverage, unique_ptr<Ring>> &evaluationArea, const list<const EdibleInterface*> &ediblesHasTriedToPredate, double muForPDF, double sigmaForPDF, double predationSpeedRatioAH, double predationHunterVoracityAH, double predationProbabilityDensityFunctionAH, double predationSpeedRatioSAW, double predationHunterVoracitySAW, double predationProbabilityDensityFunctionSAW, double encounterHuntedVoracitySAW, double encounterHunterVoracitySAW, double encounterVoracitiesProductSAW, double encounterHunterSizeSAW, double encounterHuntedSizeSAW, double encounterProbabilityDensityFunctionSAW, double encounterHuntedVoracityAH, double encounterHunterVoracityAH, double encounterVoracitiesProductAH, double encounterHunterSizeAH, double encounterHuntedSizeAH, double encounterProbabilityDensityFunctionAH)
+tuple<double, double, double, const EdibleInterface*> TerrainCell::getCellEvaluation(AnimalNonStatistical* animalWhoIsEvaluating, pair<TerrainCellInterface::TerrainCellCoverage, unique_ptr<Ring>> &evaluationArea, const list<const EdibleInterface*> &ediblesHasTriedToPredate, double muForPDF, double sigmaForPDF, double predationSpeedRatioAH, double predationHunterVoracityAH, double predationProbabilityDensityFunctionAH, double predationSpeedRatioSAW, double predationHunterVoracitySAW, double predationProbabilityDensityFunctionSAW, double encounterHuntedVoracitySAW, double encounterHunterVoracitySAW, double encounterVoracitiesProductSAW, double encounterHunterSizeSAW, double encounterHuntedSizeSAW, double encounterProbabilityDensityFunctionSAW, double encounterHuntedVoracityAH, double encounterHunterVoracityAH, double encounterVoracitiesProductAH, double encounterHunterSizeAH, double encounterHuntedSizeAH, double encounterProbabilityDensityFunctionAH)
 {
     //arthros and for dinos to force searching for preferred food items be animals or resource, prompts mobility 
 	double preferenceThresholdForEvaluation = 0.0;//defaults to 0 but it is a parameter to include in run_params.json
@@ -728,13 +744,13 @@ tuple<double, double, double, const EdibleInterface*> TerrainCell::getCellEvalua
 	double totalEdibilityValue = 0.0;
 	double totalConspecificBiomass = 0.0;
 
-    const AnimalInterface* bestAnimal = nullptr;
+    const Animal* bestAnimal = nullptr;
     double bestAnimalEdibilityValue = 0.0;
 
     const ResourceInterface* bestResource = nullptr;
     double bestResourceEdibilityValue = 0.0;
 
-    const std::vector<AnimalSpecies*>* existingAnimalSpecies = &getMapInterface().getWorldInterface()->getExistingAnimalSpecies();
+    const std::vector<const AnimalSpecies*>* existingAnimalSpecies = &getMap().getWorld()->getExistingAnimalSpecies();
 
     vector<vector<double>> animalSpeciesPredatoryRiskEdibilityValue(existingAnimalSpecies->size());
     vector<vector<double>> animalSpeciesEdibilityValue(existingAnimalSpecies->size());
@@ -750,7 +766,7 @@ tuple<double, double, double, const EdibleInterface*> TerrainCell::getCellEvalua
 
     animalSpeciesConspecificBiomass.resize(animalWhoIsEvaluating->getSpecies()->getNumberOfInstars(), 0.0);
 
-    resourceSpeciesEdibilityValue.resize(getMapInterface().getWorldInterface()->getExistingResourceSpecies().size(), 0.0);
+    resourceSpeciesEdibilityValue.resize(getMap().getWorld()->getExistingResourceSpecies().size(), 0.0);
 
     Instar instarCellEvaluation;
 
@@ -764,7 +780,7 @@ tuple<double, double, double, const EdibleInterface*> TerrainCell::getCellEvalua
     }
 
     SearchableEdibles searchableEdibles = getMutableEdiblesOnAllCell(evaluationArea.first, 
-        animalWhoIsEvaluating->getPosition(), animalWhoIsEvaluating->getTrait(Trait::Type::perception_area), 
+        animalWhoIsEvaluating->getPosition(), animalWhoIsEvaluating->getFinalTraitValue(Trait::Type::perception_area), 
         *evaluationArea.second, animalWhoIsEvaluating->getSpecies()->getCellEvaluationSearchParams(instarCellEvaluation)
     );
 
@@ -781,7 +797,7 @@ tuple<double, double, double, const EdibleInterface*> TerrainCell::getCellEvalua
 			for(auto &animal : *animalsVector)
 			{
                 double predatoryRiskEdibilityValue, edibilityValue, conspecificBiomass;
-                tie(predatoryRiskEdibilityValue, edibilityValue, conspecificBiomass) = evaluateAnimal(*animalWhoIsEvaluating, ediblesHasTriedToPredate, *animal, preferenceThresholdForEvaluation, muForPDF, sigmaForPDF, predationSpeedRatioAH, predationHunterVoracityAH, predationProbabilityDensityFunctionAH, predationSpeedRatioSAW, predationHunterVoracitySAW, predationProbabilityDensityFunctionSAW, encounterHuntedVoracitySAW, encounterHunterVoracitySAW, encounterVoracitiesProductSAW, encounterHunterSizeSAW, encounterHuntedSizeSAW, encounterProbabilityDensityFunctionSAW, encounterHuntedVoracityAH, encounterHunterVoracityAH, encounterVoracitiesProductAH, encounterHunterSizeAH, encounterHuntedSizeAH, encounterProbabilityDensityFunctionAH);
+                tie(predatoryRiskEdibilityValue, edibilityValue, conspecificBiomass) = evaluateAnimal(*animalWhoIsEvaluating, ediblesHasTriedToPredate, *static_cast<AnimalNonStatistical*>(animal), preferenceThresholdForEvaluation, muForPDF, sigmaForPDF, predationSpeedRatioAH, predationHunterVoracityAH, predationProbabilityDensityFunctionAH, predationSpeedRatioSAW, predationHunterVoracitySAW, predationProbabilityDensityFunctionSAW, encounterHuntedVoracitySAW, encounterHunterVoracitySAW, encounterVoracitiesProductSAW, encounterHunterSizeSAW, encounterHuntedSizeSAW, encounterProbabilityDensityFunctionSAW, encounterHuntedVoracityAH, encounterHunterVoracityAH, encounterVoracitiesProductAH, encounterHunterSizeAH, encounterHuntedSizeAH, encounterProbabilityDensityFunctionAH);
 
                 animalSpeciesPredatoryRiskEdibilityValue[animal->getSpecies()->getAnimalSpeciesId()][animal->getInstar().getValue()] += predatoryRiskEdibilityValue;
                 animalSpeciesEdibilityValue[animal->getSpecies()->getAnimalSpeciesId()][animal->getInstar().getValue()] += edibilityValue;
@@ -804,7 +820,7 @@ tuple<double, double, double, const EdibleInterface*> TerrainCell::getCellEvalua
 		for(auto &animal : *terrainCellAnimals)
 		{
             double predatoryRiskEdibilityValue, edibilityValue, conspecificBiomass;
-            tie(predatoryRiskEdibilityValue, edibilityValue, conspecificBiomass) = evaluateAnimal(*animalWhoIsEvaluating, ediblesHasTriedToPredate, *animal, preferenceThresholdForEvaluation, muForPDF, sigmaForPDF, predationSpeedRatioAH, predationHunterVoracityAH, predationProbabilityDensityFunctionAH, predationSpeedRatioSAW, predationHunterVoracitySAW, predationProbabilityDensityFunctionSAW, encounterHuntedVoracitySAW, encounterHunterVoracitySAW, encounterVoracitiesProductSAW, encounterHunterSizeSAW, encounterHuntedSizeSAW, encounterProbabilityDensityFunctionSAW, encounterHuntedVoracityAH, encounterHunterVoracityAH, encounterVoracitiesProductAH, encounterHunterSizeAH, encounterHuntedSizeAH, encounterProbabilityDensityFunctionAH);
+            tie(predatoryRiskEdibilityValue, edibilityValue, conspecificBiomass) = evaluateAnimal(*animalWhoIsEvaluating, ediblesHasTriedToPredate, *static_cast<AnimalNonStatistical*>(animal), preferenceThresholdForEvaluation, muForPDF, sigmaForPDF, predationSpeedRatioAH, predationHunterVoracityAH, predationProbabilityDensityFunctionAH, predationSpeedRatioSAW, predationHunterVoracitySAW, predationProbabilityDensityFunctionSAW, encounterHuntedVoracitySAW, encounterHunterVoracitySAW, encounterVoracitiesProductSAW, encounterHunterSizeSAW, encounterHuntedSizeSAW, encounterProbabilityDensityFunctionSAW, encounterHuntedVoracityAH, encounterHunterVoracityAH, encounterVoracitiesProductAH, encounterHunterSizeAH, encounterHuntedSizeAH, encounterProbabilityDensityFunctionAH);
 
             animalSpeciesPredatoryRiskEdibilityValue[animal->getSpecies()->getAnimalSpeciesId()][animal->getInstar().getValue()] += predatoryRiskEdibilityValue;
             animalSpeciesEdibilityValue[animal->getSpecies()->getAnimalSpeciesId()][animal->getInstar().getValue()] += edibilityValue;
@@ -901,18 +917,18 @@ tuple<double, double, double, const EdibleInterface*> TerrainCell::getCellEvalua
 	return make_tuple(totalEdibilityValue, totalPredatoryRiskEdibilityValue, totalConspecificBiomass, bestEdible);
 }
 
-unique_ptr<AnimalVector> TerrainCell::getMutableAnimalsBy(function<bool(AnimalInterface&)> areaChecker, 
+unique_ptr<AnimalVector> TerrainCell::getMutableAnimalsBy(function<bool(Animal&)> areaChecker, 
         const AnimalSearchParams &animalSearchParams)
 {
     auto searchableAnimals = make_unique<AnimalVector>();
 
-    for(const LifeStage& lifeStage : animalSearchParams.getSearchableLifeStages())
+    for(const LifeStage::LifeStageValue& lifeStage : animalSearchParams.getSearchableLifeStages())
     {
-        for(const AnimalSpecies::AnimalID& animalSpeciesId : animalSearchParams.getSearchableAnimalSpecies(lifeStage))
+        for(const id_type& animalSpeciesId : animalSearchParams.getSearchableAnimalSpecies(lifeStage))
         {
             for(const Instar& instar : animalSearchParams.getSearchableInstars(lifeStage, animalSpeciesId))
             {
-                for(const AnimalSpecies::Gender& gender : animalSearchParams.getSearchableGenders(lifeStage, animalSpeciesId, instar))
+                for(const AnimalSpecies::Gender::GenderValue& gender : animalSearchParams.getSearchableGenders(lifeStage, animalSpeciesId, instar))
                 {
                     for(auto &animal : animals->at(lifeStage).at(animalSpeciesId).at(instar).at(gender))
                     {
@@ -933,13 +949,13 @@ unique_ptr<vector<AnimalVector*>> TerrainCell::getMutableAnimalsBy(const AnimalS
 {
     auto searchableAnimals = make_unique<vector<AnimalVector*>>();
 
-    for(const LifeStage& lifeStage : animalSearchParams.getSearchableLifeStages())
+    for(const LifeStage::LifeStageValue& lifeStage : animalSearchParams.getSearchableLifeStages())
     {
-        for(const AnimalSpecies::AnimalID& animalSpeciesId : animalSearchParams.getSearchableAnimalSpecies(lifeStage))
+        for(const id_type& animalSpeciesId : animalSearchParams.getSearchableAnimalSpecies(lifeStage))
         {
             for(const Instar& instar : animalSearchParams.getSearchableInstars(lifeStage, animalSpeciesId))
             {
-                for(const AnimalSpecies::Gender& gender : animalSearchParams.getSearchableGenders(lifeStage, animalSpeciesId, instar))
+                for(const AnimalSpecies::Gender::GenderValue& gender : animalSearchParams.getSearchableGenders(lifeStage, animalSpeciesId, instar))
                 {
                     if(!animals->at(lifeStage).at(animalSpeciesId).at(instar).at(gender).empty())
                     {
@@ -963,9 +979,9 @@ unique_ptr<const vector<AnimalVector*>> TerrainCell::getAnimalsBy(const AnimalSe
 unique_ptr<vector<double>> TerrainCell::getRadiusResourcesBy(
         const double &percent, const ResourceSearchParams &resourceSearchParams)
 {
-    auto searchableResources = make_unique<vector<double>>(getMapInterface().getWorldInterface()->getExistingResourceSpecies().size(), 0.0);
+    auto searchableResources = make_unique<vector<double>>(ResourceSpecies::getResourceSpeciesCounter(), 0.0);
 
-    for(const ResourceSpecies::ResourceID& resourceSpeciesId : resourceSearchParams.getSearchParams())
+    for(const auto& resourceSpeciesId : resourceSearchParams.getSearchParams())
     {
         searchableResources->at(resourceSpeciesId) += getResource(resourceSpeciesId)->calculateDryMass() * percent;
     }
@@ -987,63 +1003,63 @@ const unsigned int TerrainCell::calculateManhattanDistanceToPoint(const PointMap
     return distance;
 }
 
-void TerrainCell::dieFromBackground(int day)
+void TerrainCell::dieFromBackground(const unsigned int numberOfTimeSteps)
 {
     applyFunctionToAnimals(
         {
-            [day](AnimalInterface& animal) { 
-                animal.dieFromBackground(day);
+            [numberOfTimeSteps](AnimalNonStatistical& animal) { 
+                animal.dieFromBackground(numberOfTimeSteps);
             }
         },
-        getMapInterface().getLifeStageSearchParams(LifeStage::ACTIVE)
+        getMap().getLifeStageSearchParams(LifeStage::ACTIVE)
     );
 }
 
-void TerrainCell::assimilateFoodMass(int timeStep)
+void TerrainCell::assimilateFoodMass()
 {
     applyFunctionToAnimals(
         {
-            [timeStep](AnimalInterface& animal) { 
-                animal.assimilateFoodMass(timeStep);
+            [](AnimalNonStatistical& animal) { 
+                animal.assimilateFoodMass();
             }
         },
-        getMapInterface().getLifeStageSearchParams(LifeStage::ACTIVE)
+        getMap().getLifeStageSearchParams(LifeStage::ACTIVE)
     );
 }
 
-void TerrainCell::metabolizeAnimals(int timeStep)
+void TerrainCell::metabolizeAnimals()
 {
     applyFunctionToAnimals(
         {
-            [timeStep](AnimalInterface& animal) { 
-                animal.metabolize(timeStep);
+            [](AnimalNonStatistical& animal) { 
+                animal.metabolize();
             }
         },
-        getMapInterface().getLifeStageSearchParams(LifeStage::ACTIVE)
+        getMap().getLifeStageSearchParams(LifeStage::ACTIVE)
     );
 }
 
-void TerrainCell::growAnimals(int timeStep)
+void TerrainCell::growAnimals()
 {
     applyFunctionToAnimals(
         {
-            [timeStep](AnimalInterface& animal) { 
-                animal.grow(timeStep);
+            [](AnimalNonStatistical& animal) { 
+                animal.getMutableAnimalGrowth()->grow();
             }
         },
-        getMapInterface().getLifeStageSearchParams(LifeStage::ACTIVE)
+        getMap().getLifeStageSearchParams(LifeStage::ACTIVE)
     );
 }
 
-ostream& TerrainCell::printAnimalsVoracities(int timeStep, ostream& os)
+ostream& TerrainCell::printAnimalsVoracities(ostream& os)
 {
     applyFunctionToAnimals(
         {
-            [timeStep, &os](AnimalInterface& animal) { 
-                animal.printVoracities(timeStep, os);
+            [&os](AnimalNonStatistical& animal) { 
+                animal.printVoracities(os);
             }
         },
-        getMapInterface().getLifeStageSearchParams(LifeStage::ACTIVE)
+        getMap().getLifeStageSearchParams(LifeStage::ACTIVE)
     );
     
 	return os;
@@ -1072,7 +1088,7 @@ void TerrainCell::printAnimals(ofstream &file) const
     }
 }
 
-double TerrainCell::turnEdibleIntoDryMassToBeEaten(EdibleInterface &targetEdible, const double &targetDryMass, const Ring* const perceptionArea, int day, AnimalInterface* predatorEdible, double leftovers)
+double TerrainCell::turnEdibleIntoDryMassToBeEaten(EdibleInterface &targetEdible, const double &targetDryMass, const Ring* const perceptionArea, const unsigned int numberOfTimeSteps, AnimalNonStatistical* predatorEdible, double leftovers)
 {
 	#ifdef DEBUG
 	//Output::coutFlush("{} predated {}\n", targetEdible.getPredatedByID(), targetEdible.getId());
@@ -1089,13 +1105,13 @@ double TerrainCell::turnEdibleIntoDryMassToBeEaten(EdibleInterface &targetEdible
 	{
         dryMassToBeEaten = targetDryMass;
 
-		targetEdible.setNewLifeStage(LifeStage::PREDATED, day, predatorEdible->getId());
+		targetEdible.setNewLifeStage(LifeStage::PREDATED, numberOfTimeSteps, predatorEdible->getId());
 	}
 	else
 	{
-        dryMassToBeEaten = targetEdible.turnIntoDryMassToBeEaten(predatorEdible->getRemainingVoracity(), targetEdibleProfitability + predatorEdible->getAssim(), leftovers);
+        dryMassToBeEaten = targetEdible.turnIntoDryMassToBeEaten(predatorEdible->getRemainingVoracity(), targetEdibleProfitability + predatorEdible->getFinalTraitValue(Trait::Type::assim), leftovers);
 		
-		//dryMassToBeEaten = targetEdible.turnIntoDryMassToBeEaten(predatorEdible->getRemainingVoracity(), targetEdibleProfitability + predatorEdible->getAssim());
+		//dryMassToBeEaten = targetEdible.turnIntoDryMassToBeEaten(predatorEdible->getRemainingVoracity(), targetEdibleProfitability + predatorEdible->getFinalTraitValue(Trait::Type::assim));
 		//arthros and for dinos, very big bug in feeding on resource and updating ungi fixed
 		/* cout << "BEFOREEEEEEEEEE AND AFTEEEEEEEERRRRRRRRRRRRRRRRRR" << endl;
 		cout << targetEdible.calculateDryMass() << endl;
@@ -1119,19 +1135,21 @@ SearchableAnimals TerrainCell::getAnimalsOnRadius(const PointContinuous &sourceP
     return getEdiblesOnRadius(sourcePosition, radius, animalSearchParams).second;
 }
 
-void TerrainCell::breedAnimals(int timeStep, fs::path outputDirectory, bool saveAnimalConstitutiveTraits, ofstream &constitutiveTraitsFile)
+void TerrainCell::breedAnimals(const unsigned int numberOfTimeSteps, fs::path outputDirectory, bool saveAnimalConstitutiveTraits, ofstream &constitutiveTraitsFile)
 {
-    auto animalsToReproduce = getMutableAnimalsBy(getMapInterface().getLifeStageSearchParams(LifeStage::REPRODUCING));
+    auto animalsToReproduce = getMutableAnimalsBy(getMap().getLifeStageSearchParams(LifeStage::REPRODUCING));
 
     for(auto &animalVector : *animalsToReproduce)
     {
         for(auto &female : *animalVector)
         {
-            if(female->isInBreedingZone())
-            {
-                auto offSprings = female->breed(timeStep, getMoistureInfo()->getTemperature(), saveAnimalConstitutiveTraits, constitutiveTraitsFile);
+            AnimalNonStatistical* femaleCast = static_cast<AnimalNonStatistical*>(female);
 
-                OutputFileStream geneticsFile;
+            if(femaleCast->isInBreedingZone())
+            {
+                auto offSprings = femaleCast->breed(numberOfTimeSteps, getMoistureInfo()->getTemperature(), saveAnimalConstitutiveTraits, constitutiveTraitsFile);
+
+                ofstream geneticsFile;
                 createOutputFile(geneticsFile, outputDirectory, "animal_genetics", "txt", ofstream::app);
                 if(!geneticsFile.is_open()) {
                     cerr << "Error opening the file." << endl;
@@ -1145,11 +1163,11 @@ void TerrainCell::breedAnimals(int timeStep, fs::path outputDirectory, bool save
 
                 for(auto &offSpring : *offSprings)
                 {
-                    offSpring->setPosition(female->getPosition());
+                    offSpring->setPosition(femaleCast->getPosition());
                     insertAnimal(offSpring);
                 }
 
-                female->setInBreedingZone(false);
+                femaleCast->setInBreedingZone(false);
             }
         }
     }
@@ -1184,7 +1202,7 @@ bool TerrainCell::canApplyMoisturePatch(const MoisturePatch &moisturePatch) cons
 }
 
 
-pair<bool, bool> TerrainCell::checkMoisturePatch(MoisturePatch &moisturePatch)
+pair<bool, bool> TerrainCell::checkMoisturePatch(const MoisturePatch &moisturePatch)
 {
     if(canApplyMoisturePatch(moisturePatch))
     {
@@ -1215,43 +1233,40 @@ bool TerrainCell::checkResourcePatch(const ResourcePatch &resourcePatch)
 
 void TerrainCell::setResourceSourcePatch(const ResourcePatch &resourcePatch)
 {
-    ResourceInterface* resource = ResourceInterface::createInstance(
+    auto resource = ResourceFactory::createInstance(
         resourcePatch.getSpecies(), this, resourcePatch.getInitialBiomassDensity() * pow(getSize(), DIMENSIONS), resourcePatch.getResourceMaximumCapacityDensity() * pow(getSize(), DIMENSIONS), 
-        this->getMapInterface().getWorldInterface()->getMassRatio(), 
+        this->getMap().getWorld()->getMassRatio(), 
         resourcePatch.getPatchSpread()
-    ).release();
+    );
 
     setResourceSourcePatch(resource, resourcePatch.getPriority());
 }
 
 
-void TerrainCell::setResourceSourcePatch(ResourceInterface* &newResource, const int newResourcePatchPriority)
+void TerrainCell::setResourceSourcePatch(unique_ptr<ResourceInterface> &newResource, const int newResourcePatchPriority)
 {
     setResourcePatch(newResource->getSpecies()->getResourceSpeciesId(), newResource, newResourcePatchPriority);
 }
 
 
-void TerrainCell::setResourcePatch(const unsigned int resourceSpeciesId, ResourceInterface* &newResource, const int newResourcePatchPriority)
+void TerrainCell::setResourcePatch(const unsigned int resourceSpeciesId, unique_ptr<ResourceInterface> &newResource, const int newResourcePatchPriority)
 {
     setResource(resourceSpeciesId, newResource);
     setResourcePatchPriority(resourceSpeciesId, newResourcePatchPriority);
 }
 
 
-void TerrainCell::setResource(const unsigned int resourceSpeciesId, ResourceInterface* &newResource)
+void TerrainCell::setResource(const unsigned int resourceSpeciesId, unique_ptr<ResourceInterface> &newResource)
 {
-    if(resources[resourceSpeciesId] != nullptr)
-    {
-        delete resources[resourceSpeciesId];
-    }
-
-    resources[resourceSpeciesId] = newResource;
+    resources[resourceSpeciesId] = move(newResource);
+    resourcesPointers[resourceSpeciesId] = resources[resourceSpeciesId].get();
+    resourcesConstPointers[resourceSpeciesId] = resources[resourceSpeciesId].get();
 }
 
 
-void TerrainCell::setMoistureSourcePatch(MoisturePatch &moisturePatch)
+void TerrainCell::setMoistureSourcePatch(const MoisturePatch &moisturePatch)
 {
-    setMoistureSourcePatch(moisturePatch.getMutableMoistureInfo(), moisturePatch.getPriority());
+    setMoistureSourcePatch(moisturePatch.getMoistureInfo().get(), moisturePatch.getPriority());
 }
 
 
@@ -1313,11 +1328,11 @@ bool TerrainCell::isInMoisturePatch() const
 }
 
 
-void TerrainCell::obtainWorldAnimalsPopulation(CustomIndexedVector<AnimalSpecies::AnimalID, CustomIndexedVector<LifeStage, unsigned int>> &worldAnimalsPopulation)
+void TerrainCell::obtainWorldAnimalsPopulation(vector<vector<unsigned int>> &worldAnimalsPopulation)
 {
     if(!isObstacle())
     {
-        for(const auto &animalSpecies : getWorldInterface()->getExistingAnimalSpecies())
+        for(const auto &animalSpecies : getWorld()->getExistingAnimalSpecies())
         {
             auto population = getAnimalsBy(animalSpecies->getPopulationSearchParams());
 
@@ -1330,11 +1345,11 @@ void TerrainCell::obtainWorldAnimalsPopulation(CustomIndexedVector<AnimalSpecies
 }
 
 
-void TerrainCell::obtainAnimalsPopulationAndGeneticsFrequencies(CustomIndexedVector<AnimalSpecies::AnimalID, CustomIndexedVector<LifeStage, unsigned int>> &worldAnimalsPopulation, vector<vector<pair<vector<double>, vector<double>>>> &worldGeneticsFrequencies)
+void TerrainCell::obtainAnimalsPopulationAndGeneticsFrequencies(vector<vector<unsigned int>> &worldAnimalsPopulation, vector<vector<pair<vector<double>, vector<double>>>> &worldGeneticsFrequencies)
 {
     if(!this->isObstacle())
     {
-        for(const auto &animalSpecies : getWorldInterface()->getExistingAnimalSpecies())
+        for(const auto &animalSpecies : getWorld()->getExistingAnimalSpecies())
         {
             auto population = getAnimalsBy(animalSpecies->getPopulationSearchParams());
 
@@ -1344,15 +1359,20 @@ void TerrainCell::obtainAnimalsPopulationAndGeneticsFrequencies(CustomIndexedVec
 
                 for(const auto &animal : *elem)
                 {
-                    for(unsigned int variableTraitPos = 0; variableTraitPos < animalSpecies->getNumberOfVariableTraits(); variableTraitPos++)
+                    Trait::Type traitType;
+                    TraitDefinitionSection::Elements elementType;
+
+                    for(unsigned int individualLevelTraitPos = 0; individualLevelTraitPos < animalSpecies->getNumberOfIndividualLevelTraits(); individualLevelTraitPos++)
                     {
-                        auto traitOrder = animalSpecies->getTraitOrder(animalSpecies->getVariableTraits()->at(variableTraitPos));
+                        tie(traitType, elementType) = animalSpecies->getIndividualLevelTraitElements().at(individualLevelTraitPos);
+
+                        unsigned int traitOrder = static_cast<IndividualLevelTrait*>(animalSpecies->getTrait(traitType).getElements().at(elementType))->getOrder();
                         auto homologousCorrelosome = &animal->getGenome().getHomologousCorrelosomes().at(traitOrder);
 
                         for(unsigned int selectedLoci = 0; selectedLoci < animalSpecies->getNumberOfLociPerTrait(); ++selectedLoci)
                         {
-                            worldGeneticsFrequencies[animalSpecies->getAnimalSpeciesId()][variableTraitPos].first.push_back(homologousCorrelosome->first->getAllele(selectedLoci)->getValue());
-                            worldGeneticsFrequencies[animalSpecies->getAnimalSpeciesId()][variableTraitPos].second.push_back(homologousCorrelosome->second->getAllele(selectedLoci)->getValue());
+                            worldGeneticsFrequencies[animalSpecies->getAnimalSpeciesId()][individualLevelTraitPos].first.push_back(homologousCorrelosome->first->getAllele(selectedLoci)->getValue());
+                            worldGeneticsFrequencies[animalSpecies->getAnimalSpeciesId()][individualLevelTraitPos].second.push_back(homologousCorrelosome->second->getAllele(selectedLoci)->getValue());
                         }
                     }
                 }
@@ -1428,7 +1448,7 @@ pair<unique_ptr<ResourcesOnRadius>, unique_ptr<vector<AnimalVector*>>> TerrainCe
 }
 
 pair<unique_ptr<ResourcesOnRadius>, unique_ptr<AnimalVector>> TerrainCell::getMutableEdiblesBy(
-        function<bool(AnimalInterface&)> areaChecker, const Ring &effectiveArea, const EdibleSearchParams &edibleSearchParams)
+        function<bool(Animal&)> areaChecker, const Ring &effectiveArea, const EdibleSearchParams &edibleSearchParams)
 {
     return make_pair(
         getResourcesBy(effectiveArea, edibleSearchParams.getResourceSearchParams()), 
@@ -1468,156 +1488,36 @@ unique_ptr<ResourcesOnRadius> TerrainCell::getResourcesBy(const Ring &effectiveA
     return resourcesOnCell;
 }
 
-void TerrainCell::performAnimalsActions(int timeStep, ostream& voracitiesFile, fs::path outputFolder, bool saveAnimalConstitutiveTraits, ofstream &constitutiveTraitsFile)
+void TerrainCell::performAnimalsActions(const unsigned int numberOfTimeSteps, ostream& voracitiesFile, fs::path outputFolder, bool saveAnimalConstitutiveTraits, ofstream &constitutiveTraitsFile)
 {
-    printAnimalsVoracities(timeStep, voracitiesFile);
-    dieFromBackground(timeStep);
-    assimilateFoodMass(timeStep);
-    metabolizeAnimals(timeStep);
-    growAnimals(timeStep);
-    breedAnimals(timeStep, outputFolder, saveAnimalConstitutiveTraits, constitutiveTraitsFile);
+    printAnimalsVoracities(voracitiesFile);
+    dieFromBackground(numberOfTimeSteps);
+    assimilateFoodMass();
+    metabolizeAnimals();
+    growAnimals();
+    breedAnimals(numberOfTimeSteps, outputFolder, saveAnimalConstitutiveTraits, constitutiveTraitsFile);
 }
 
 template <class Archive>
-void TerrainCell::serialize(Archive &ar, const unsigned int version, vector<ExtendedMoisture*>& appliedMoisture) {
-    ar & boost::serialization::base_object<TerrainCellInterface>(*this);
+void TerrainCell::serialize(Archive &ar, const unsigned int version) {
 
-    boost::serialization::serialize(ar, position, version, getMapInterface());
+    ar & position;
     ar & center;
     ar & size;
-    if (Archive::is_loading::value)
-	{
-		effectiveArea = makeEffectiveArea(position, size);
-	}
+    ar & map;
+    ar & effectiveArea;
     ar & copied;
     ar & totalMaximumResourceCapacity;
     ar & obstacle;
     ar & fullObstacle;
+    ar & moistureInfo;
     ar & moistureSource;
     ar & inMoisturePatch;
-    boost::serialization::serialize(ar, moistureInfo, version, getMapInterface(), this, moistureSource, inMoisturePatch, appliedMoisture);
-    
-    unsigned int numberOfResources;
-	if (Archive::is_loading::value)
-	{
-		ar & numberOfResources;
-		resources.resize(numberOfResources);
-	}
-	else
-	{
-		numberOfResources = resources.size();
-		ar & numberOfResources;
-	}
-
-	for(ResourceInterface*& newResource : resources)
-	{
-        bool isResourcePresent;
-        if (Archive::is_loading::value)
-        {
-            ar & isResourcePresent;
-        }
-        else
-        {
-            isResourcePresent = newResource != nullptr;
-            ar & isResourcePresent;
-        }
-
-        if(isResourcePresent)
-        {
-            boost::serialization::serialize(ar, newResource, version, getMapInterface(), this);
-        }
-		else
-        {
-            newResource = nullptr;
-        }
-	}
-    
-
-    unsigned int numberOfLifeStages;
-	if (Archive::is_loading::value)
-	{
-		ar & numberOfLifeStages;
-		animals = new LifeStageVector(numberOfLifeStages);
-	}
-	else
-	{
-		numberOfLifeStages = animals->size();
-		ar & numberOfLifeStages;
-	}
-
-    for(AnimalSpeciesVector& animalSpeciesVector : *animals)
-    {
-        unsigned int numberOfAnimalSpecies;
-        if (Archive::is_loading::value)
-        {
-            ar & numberOfAnimalSpecies;
-            animalSpeciesVector.resize(numberOfAnimalSpecies);
-        }
-        else
-        {
-            numberOfAnimalSpecies = animalSpeciesVector.size();
-            ar & numberOfAnimalSpecies;
-        }
-
-        for(InstarVector& instarVector : animalSpeciesVector)
-        {
-            unsigned int numberOfInstars;
-            if (Archive::is_loading::value)
-            {
-                ar & numberOfInstars;
-                instarVector.resize(numberOfInstars);
-            }
-            else
-            {
-                numberOfInstars = instarVector.size();
-                ar & numberOfInstars;
-            }
-
-            for(GenderVector& genderVector : instarVector)
-            {
-                unsigned int numberOfGenders;
-                if (Archive::is_loading::value)
-                {
-                    ar & numberOfGenders;
-                    genderVector.resize(numberOfGenders);
-                }
-                else
-                {
-                    numberOfGenders = genderVector.size();
-                    ar & numberOfGenders;
-                }
-
-                for(AnimalVector& animalVector : genderVector)
-                {
-                    unsigned int numberOfAnimals;
-                    if (Archive::is_loading::value)
-                    {
-                        ar & numberOfAnimals;
-                        animalVector.resize(numberOfAnimals);
-                    }
-                    else
-                    {
-                        numberOfAnimals = animalVector.size();
-                        ar & numberOfAnimals;
-                    }
-
-                    for(AnimalInterface*& newAnimal : animalVector)
-                    {
-                        boost::serialization::serialize(ar, newAnimal, version, getMapInterface(), this);
-                    }
-                }
-            }
-        }
-    }
-
+    ar & resources;
+    ar & resourcesPointers;
+    ar & resourcesConstPointers;
+    ar & animals; 
     ar & obstaclePatchPriority;
     ar & moisturePatchPriority;
     ar & resourcePatchPriority;
 }
-
-// Specialisation
-template void TerrainCell::serialize<boost::archive::text_iarchive>(boost::archive::text_iarchive&, const unsigned int, vector<ExtendedMoisture*>&);
-template void TerrainCell::serialize<boost::archive::text_oarchive>(boost::archive::text_oarchive&, const unsigned int, vector<ExtendedMoisture*>&);
-
-template void TerrainCell::serialize<boost::archive::binary_iarchive>(boost::archive::binary_iarchive&, const unsigned int, vector<ExtendedMoisture*>&);
-template void TerrainCell::serialize<boost::archive::binary_oarchive>(boost::archive::binary_oarchive&, const unsigned int, vector<ExtendedMoisture*>&);

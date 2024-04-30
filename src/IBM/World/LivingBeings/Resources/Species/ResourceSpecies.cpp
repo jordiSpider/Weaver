@@ -1,100 +1,21 @@
 #include "IBM/World/LivingBeings/Resources/Species/ResourceSpecies.h"
 #include "IBM/Maths/Constants.h"
 
-#include "IBM/World/LivingBeings/Resources/Species/BasalResourceSpecies.h"
-#include "IBM/World/LivingBeings/Resources/Species/NoBasalResourceSpecies.h"
-
 
 using namespace std;
 using json = nlohmann::json;
 
 
+unsigned int ResourceSpecies::resourceSpeciesCounter = 0;
 
-ResourceSpecies::ResourceID::ResourceID()
+const id_type& ResourceSpecies::getResourceSpeciesCounter()
 {
-
-}
-
-ResourceSpecies::ResourceID::ResourceID(const id_type& value)
-	: value(value)
-{
-
-}
-
-const id_type& ResourceSpecies::ResourceID::getValue() const
-{
-	return value;
-}
-
-ResourceSpecies::ResourceID::operator size_t() const {
-	return static_cast<size_t>(value);
-}
-
-size_t hash<ResourceSpecies::ResourceID>::operator()(const ResourceSpecies::ResourceID& resourceID) const
-{
-    return hash<unsigned int>{}(resourceID.getValue());
-}
-
-template <class Archive>
-void ResourceSpecies::ResourceID::serialize(Archive &ar, const unsigned int version) {
-	ar & value;
-}
-
-// Specialisation
-template void ResourceSpecies::ResourceID::serialize<boost::archive::text_iarchive>(boost::archive::text_iarchive&, const unsigned int);
-template void ResourceSpecies::ResourceID::serialize<boost::archive::text_oarchive>(boost::archive::text_oarchive&, const unsigned int);
-
-template void ResourceSpecies::ResourceID::serialize<boost::archive::binary_iarchive>(boost::archive::binary_iarchive&, const unsigned int);
-template void ResourceSpecies::ResourceID::serialize<boost::archive::binary_oarchive>(boost::archive::binary_oarchive&, const unsigned int);
-
-
-
-unique_ptr<ResourceSpecies> ResourceSpecies::createInstance(const ResourceSpecies::ID& speciesId, const ResourceSpecies::ResourceID& resourceSpeciesId, const json &resourceSpeciesInfo, WorldInterface* const worldInterface)
-{
-    switch(EnumClass<Type>::stringToEnumValue(resourceSpeciesInfo["resourceType"])) {
-        case Type::BasalResource: {
-            return make_unique<BasalResourceSpecies>(speciesId, resourceSpeciesId, resourceSpeciesInfo, worldInterface);
-            break;
-        }
-        case Type::NoBasalResource: {
-            return make_unique<NoBasalResourceSpecies>(speciesId, resourceSpeciesId, resourceSpeciesInfo, worldInterface);
-            break;
-        }
-        default: {
-            throwLineInfoException("Default case");
-            break;
-        }
-    }
-}
-
-unique_ptr<ResourceSpecies> ResourceSpecies::createInstance(const ResourceSpecies::Type& resourceSpeciesType, WorldInterface* const worldInterface)
-{
-    switch(resourceSpeciesType) {
-        case Type::BasalResource: {
-            return make_unique<BasalResourceSpecies>(worldInterface);
-            break;
-        }
-        case Type::NoBasalResource: {
-            return make_unique<NoBasalResourceSpecies>(worldInterface);
-            break;
-        }
-        default: {
-            throwLineInfoException("Default case");
-            break;
-        }
-    }
+	return resourceSpeciesCounter;
 }
 
 
-
-ResourceSpecies::ResourceSpecies(WorldInterface* const worldInterface)
-	: Species(worldInterface)
-{
-	
-}
-
-ResourceSpecies::ResourceSpecies(const ResourceSpecies::ID& speciesId, const ResourceSpecies::ResourceID& resourceSpeciesId, const json &resourceSpeciesInfo, WorldInterface* const worldInterface) :
-	Species(speciesId, resourceSpeciesInfo["name"], 1, worldInterface), resourceSpeciesId(resourceSpeciesId),
+ResourceSpecies::ResourceSpecies(const json &resourceSpeciesInfo, World* const world) :
+	Species(resourceSpeciesInfo["name"], resourceSpeciesInfo["conversionToWetMass"], 1, world), resourceSpeciesId(resourceSpeciesCounter++),
 	cellMass(resourceSpeciesInfo["cellMass"]),
 	ACTIVATION_ENERGY(resourceSpeciesInfo["ACTIVATION_ENERGY"]),
 	NORMALIZATION_B(resourceSpeciesInfo["NORMALIZATION_B"]),
@@ -104,15 +25,15 @@ ResourceSpecies::ResourceSpecies(const ResourceSpecies::ID& speciesId, const Res
 {
 	maxR = -1; // Will always have positive values
 
-	this->setConversionToWetMass(resourceSpeciesInfo["conversionToWetMass"]);
+	growingParabola = new Parabola();
 }
 
 ResourceSpecies::~ResourceSpecies()
 {
-	
+	delete growingParabola;
 }
 
-const ResourceSpecies::ResourceID& ResourceSpecies::getResourceSpeciesId() const
+const id_type& ResourceSpecies::getResourceSpeciesId() const
 {
 	return resourceSpeciesId;
 }
@@ -206,11 +127,11 @@ double ResourceSpecies::getRateOfGrowth(Temperature temperature, double moisture
 	
 	if (oldMaxR != maxR)
 	{
-		growingParabola.redefine(minHR, maxHR, maxR);
+		growingParabola->redefine(minHR, maxHR, maxR);
 	}
 
 	// An equation of the form aX^2+bX+c=Y (simplified to x(ax+b)+c=Y
-	return growingParabola.getValue(moisture);
+	return growingParabola->getValue(moisture);
 }
 
 double ResourceSpecies::getCellMass() const
@@ -219,84 +140,12 @@ double ResourceSpecies::getCellMass() const
 }
 
 double ResourceSpecies::calculateInstarK_Density(const Instar &instar, 
-		vector<CustomIndexedVector<Instar, bool>> &checkedAnimalSpecies, vector<CustomIndexedVector<Instar, bool>> &cannibalismAnimalSpecies)
+		vector<InstarVector<bool>> &checkedAnimalSpecies, vector<InstarVector<bool>> &cannibalismAnimalSpecies)
 {
 	return getInstarK_Density(Instar(getNumberOfInstars())) * 0.1;
 }
 
-void ResourceSpecies::generateInstarInvolvedResourceSpecies(const Instar &instar, vector<ResourceSpecies::ResourceID> &instarInvolvedResourceSpecies, vector<CustomIndexedVector<Instar, bool>> &alreadyCheckedSpecies)
+void ResourceSpecies::generateInstarInvolvedResourceSpecies(const Instar &instar, vector<ResourceSpecies*> &instarInvolvedResourceSpecies, vector<InstarVector<bool>> &alreadyCheckedSpecies)
 {
-	instarInvolvedResourceSpecies.push_back(getResourceSpeciesId());
-}
-
-template <class Archive>
-void ResourceSpecies::serialize(Archive &ar, const unsigned int version) {
-    ar & boost::serialization::base_object<Species>(*this);
-
-	ar & resourceSpeciesId;
-	ar & cellMass;
-
-	ar & ACTIVATION_ENERGY;
-	ar & NORMALIZATION_B;
-
-	ar & minHR;
-	ar & maxHR;
-
-	ar & maxR;
-	ar & maxRScale;
-	ar & variableIntrinsicRateOfIncrease;
-	ar & minimumEdibleBiomass;
-	ar & growingParabola;
-}
-
-// Specialisation
-template void ResourceSpecies::serialize<boost::archive::text_iarchive>(boost::archive::text_iarchive&, const unsigned int);
-template void ResourceSpecies::serialize<boost::archive::text_oarchive>(boost::archive::text_oarchive&, const unsigned int);
-
-template void ResourceSpecies::serialize<boost::archive::binary_iarchive>(boost::archive::binary_iarchive&, const unsigned int);
-template void ResourceSpecies::serialize<boost::archive::binary_oarchive>(boost::archive::binary_oarchive&, const unsigned int);
-
-
-
-namespace boost {
-    namespace serialization {
-		template <class Archive>
-        void serialize(Archive &ar, ResourceSpecies* &resourceSpeciesPtr, const unsigned int version, WorldInterface* const newWorldInterface) {
-            ResourceSpecies::Type resourceSpeciesType;
-            
-            // For loading
-            if(Archive::is_loading::value) 
-            {
-                ar & resourceSpeciesType;
-                resourceSpeciesPtr = ResourceSpecies::createInstance(resourceSpeciesType, newWorldInterface).release();
-            }
-            else
-            {
-                resourceSpeciesType = resourceSpeciesPtr->getResourceSpeciesType();
-                ar & resourceSpeciesType;
-            }
-
-            switch(resourceSpeciesType) {
-				case ResourceSpecies::Type::BasalResource: {
-					static_cast<BasalResourceSpecies*>(resourceSpeciesPtr)->serialize(ar, version);
-					break;
-				}
-				case ResourceSpecies::Type::NoBasalResource: {
-					static_cast<NoBasalResourceSpecies*>(resourceSpeciesPtr)->serialize(ar, version);
-					break;
-				}
-                default: {
-                    throwLineInfoException("Default case");
-                    break;
-                }
-            }
-        }
-
-		// Specialisation
-		template void serialize<boost::archive::text_iarchive>(boost::archive::text_iarchive&, ResourceSpecies*&, const unsigned int, WorldInterface* const);
-		template void serialize<boost::archive::text_oarchive>(boost::archive::text_oarchive&, ResourceSpecies*&, const unsigned int, WorldInterface* const);
-
-		template void serialize<boost::archive::binary_iarchive>(boost::archive::binary_iarchive&, ResourceSpecies*&, const unsigned int, WorldInterface* const);
-		template void serialize<boost::archive::binary_oarchive>(boost::archive::binary_oarchive&, ResourceSpecies*&, const unsigned int, WorldInterface* const);
-	}
+	instarInvolvedResourceSpecies.push_back(this);
 }

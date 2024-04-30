@@ -7,51 +7,102 @@
 
 #include "IBM/World/LivingBeings/Species.h"
 
-#include "IBM/World/WorldInterface.h"
+#include "IBM/World/World.h"
 
 using namespace std;
 
 
 
-Species::ID::ID()
-{
-
+const typename Species::Type::TypeValue Species::Type::stringToEnumValue(const string &str) { 
+	try
+	{
+		return stringToEnum.at(str);
+	}
+	catch(const out_of_range& e) 
+	{
+		throwLineInfoException("Unknown moisture type '" + str + "'. Valid values are " + string(printAvailableValues()));
+	}
 }
 
-Species::ID::ID(const id_type& value)
-	: value(value)
-{
 
+
+
+std::string_view Species::Type::to_string(const TypeValue& type) 
+{ 
+	return magic_enum::enum_name(type); 
 }
 
-const id_type& Species::ID::getValue() const
+
+const unordered_map<string_view, const typename Species::Type::TypeValue> Species::Type::generateMap() 
 {
-	return value;
+	unordered_map<string_view, const TypeValue> enumMap;
+
+	for(size_t i = 0; i < size(); i++) {
+		const TypeValue type = static_cast<const TypeValue>(i);
+		enumMap.insert({to_string(type), type});
+	}
+
+	return enumMap;
 }
 
-Species::ID::operator size_t() const {
-	return static_cast<size_t>(value);
+
+const unordered_map<string_view, const typename Species::Type::TypeValue> Species::Type::stringToEnum = Species::Type::generateMap();
+
+
+const string Species::Type::generateAvailableValues()
+{
+	constexpr auto typeNames = magic_enum::enum_names<TypeValue>();
+
+	string values(typeNames[0]);
+	for(size_t i = 1; i < typeNames.size(); i++) {
+		values += ", " + string(typeNames[i]);
+	}
+
+	return values;
+}
+
+
+const string Species::Type::enumValues = Species::Type::generateAvailableValues();
+
+
+std::string_view Species::Type::printAvailableValues() 
+{ 
+	return enumValues; 
 }
 
 template <class Archive>
-void Species::ID::serialize(Archive &ar, const unsigned int version) {
-	ar & value;
+void Species::Type::serialize(Archive &ar, const unsigned int version) {
+	ar & stringToEnum;
+	ar & enumValues;
 }
 
 
 
-Species::Species(WorldInterface* const worldInterface)
-	: worldInterface(worldInterface)
+
+unsigned int Species::speciesCounter = 0;
+
+const id_type& Species::getSpeciesCounter()
 {
-	
+	return speciesCounter;
 }
 
-Species::Species(const Species::ID& speciesId, const string& scientificName, const unsigned int numberOfInstars, WorldInterface* const worldInterface)
-	: id(speciesId), scientificName(trim(scientificName)), extinguished(false), 
-	  calculatedK_DensityPerInstar(numberOfInstars, false), K_DensityPerInstar(numberOfInstars, 0.0),
-	  numberOfInstars(numberOfInstars), instarsRange(calculateInstarsRange()), worldInterface(worldInterface)
+
+Species::Species(const string& scientificName, const double conversionToWetMass, const unsigned int numberOfInstars, World* const world)
+	: id(speciesCounter++), scientificName(trim(scientificName)), conversionToWetMass(conversionToWetMass), extinguished(false),
+	  world(world), calculatedK_DensityPerInstar(numberOfInstars, false), K_DensityPerInstar(numberOfInstars, 0.0),
+	  numberOfInstars(numberOfInstars), instarsRange(calculateInstarsRange()), lastInstar(Instar(numberOfInstars))
 {
 	cout << "numberOfInstars: " << numberOfInstars << endl;
+}
+
+const World* const Species::getWorld() const
+{
+	return world;
+}
+
+World* const Species::getMutableWorld()
+{
+	return world;
 }
 
 Species::~Species()
@@ -84,6 +135,11 @@ vector<Instar> Species::calculateInstarsRange()
 	}
 
 	return calculatedRange;
+}
+
+const Instar& Species::getLastInstar() const
+{
+	return lastInstar;
 }
 
 const vector<Instar>& Species::getInstarsRange() const
@@ -122,16 +178,6 @@ double Species::convertToDryMass(const double &wetMass) const
 	return wetMass / getConversionToWetMass();
 }
 
-const WorldInterface* const Species::getWorldInterface() const
-{
-	return worldInterface;
-}
-
-WorldInterface* const Species::getMutableWorldInterface()
-{
-	return worldInterface;
-}
-
 const unsigned int& Species::getNumberOfInstars() const 
 { 
 	return numberOfInstars; 
@@ -139,19 +185,12 @@ const unsigned int& Species::getNumberOfInstars() const
 
 template <class Archive>
 void Species::serialize(Archive &ar, const unsigned int version) {
+	ar & speciesCounter;
 	ar & id;
 	ar & scientificName;
 	ar & conversionToWetMass;
-	ar & extinguished;
 	ar & calculatedK_DensityPerInstar;
 	ar & K_DensityPerInstar;
 	ar & numberOfInstars;
 	ar & instarsRange;
 }
-
-// Specialisation
-template void Species::serialize<boost::archive::text_iarchive>(boost::archive::text_iarchive&, const unsigned int);
-template void Species::serialize<boost::archive::text_oarchive>(boost::archive::text_oarchive&, const unsigned int);
-
-template void Species::serialize<boost::archive::binary_iarchive>(boost::archive::binary_iarchive&, const unsigned int);
-template void Species::serialize<boost::archive::binary_oarchive>(boost::archive::binary_oarchive&, const unsigned int);

@@ -10,7 +10,7 @@
 #include <ostream>
 
 #include "IBM/World/LivingBeings/Animals/Species/AnimalSpecies.h"
-#include "IBM/World/Map/Points/PointSpatialTree.h"
+#include "IBM/World/Map/SpatialTree/Points/PointSpatialTree.h"
 #include "IBM/World/LivingBeings/EdibleInterface.h"
 #include "IBM/World/Map/Geometry/Geometry.h"
 

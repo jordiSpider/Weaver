@@ -15,16 +15,22 @@ Locus::Locus()
 
 }
 
-Locus::Locus(const unsigned int locusId, const unsigned int &numberOfAlleles)
+Locus::Locus(const unsigned int &numberOfAlleles)
 {
 	//double alleleSlice = 1.0 / numberOfAlleles;
 	//randomUniform(alleleSlice * i, alleleSlice * i + alleleSlice)
+
+	minAlleleValue = 1.0;
+	maxAlleleValue = 0.0;
 
 	//DONE alleleSlice is not worth using.
 	alleles.reserve(numberOfAlleles);
 	for (unsigned int i = 0; i < numberOfAlleles; ++i)
 	{
-		alleles.emplace_back(locusId*numberOfAlleles+i, i);
+		alleles.emplace_back(new Allele(Random::randomUniform(), i));
+
+		minAlleleValue = fmin(minAlleleValue, alleles.back()->getValue());
+		maxAlleleValue = fmax(maxAlleleValue, alleles.back()->getValue());
 	}
 	//Randomizing the orders here due to the alleleSlice restriction.
 	//If we just had ordered numbers, lower allele values would have lower orders and that is NOT what we want.
@@ -33,24 +39,30 @@ Locus::Locus(const unsigned int locusId, const unsigned int &numberOfAlleles)
 
 Locus::~Locus()
 {
-	
+	for (auto it = alleles.begin() ; it != alleles.end(); ++it)
+	{
+	   delete (*it);
+	}
+	alleles.clear();
 }
 
-const std::vector<Allele>& Locus::getAlleles() const
+const std::vector<const Allele*>& Locus::getAlleles() const
 {
 	return alleles;
 }
 
+const double& Locus::getMinAlleleValue() const
+{
+	return minAlleleValue;
+}
+
+const double& Locus::getMaxAlleleValue() const
+{
+	return maxAlleleValue;
+}
 
 template<class Archive>
 void Locus::serialize(Archive & ar, const unsigned int version)
 {
 	ar & alleles;
 }
-
-// Specialisation
-template void Locus::serialize<boost::archive::text_iarchive>(boost::archive::text_iarchive&, const unsigned int);
-template void Locus::serialize<boost::archive::text_oarchive>(boost::archive::text_oarchive&, const unsigned int);
-
-template void Locus::serialize<boost::archive::binary_iarchive>(boost::archive::binary_iarchive&, const unsigned int);
-template void Locus::serialize<boost::archive::binary_oarchive>(boost::archive::binary_oarchive&, const unsigned int);

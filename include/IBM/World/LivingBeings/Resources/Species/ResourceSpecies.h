@@ -6,55 +6,24 @@
 #include <string>
 #include <magic_enum.hpp>
 #include <nlohmann/json.hpp>
-#include <boost/archive/text_oarchive.hpp>
-#include <boost/archive/text_iarchive.hpp>
-#include <boost/archive/binary_oarchive.hpp>
-#include <boost/archive/binary_iarchive.hpp>
 
 #include "IBM/Maths/Parabola.h"
 #include "IBM/World/LivingBeings/Species.h"
 #include "Exceptions/LineInfoException.h"
 #include "IBM/Physics/Temperature.h"
 #include "Misc/Macros.h"
-#include "Misc/CustomIndexedVector.h"
-#include "Misc/EnumClass.h"
 
 
 class ResourceSpecies: public Species
 {
 public:
-	enum class Type {
-		BasalResource, 
-		NoBasalResource
-	};
-
-	class ResourceID
-	{
-	public:
-		ResourceID();
-		ResourceID(const id_type& value);
-
-		const id_type& getValue() const;
-		operator size_t() const;
-
-		template <class Archive>
-    	void serialize(Archive &ar, const unsigned int version);
-
-	private:
-		id_type value;
-	};
-	
-
-	static std::unique_ptr<ResourceSpecies> createInstance(const ResourceSpecies::ID& speciesId, const ResourceSpecies::ResourceID& resourceSpeciesId, const nlohmann::json &resourceSpeciesInfo, WorldInterface* const worldInterface);
-	static std::unique_ptr<ResourceSpecies> createInstance(const Type& resourceSpeciesType, WorldInterface* const worldInterface);
+	static const id_type& getResourceSpeciesCounter();
 
 
-	ResourceSpecies(WorldInterface* const worldInterface);
-	ResourceSpecies(const ResourceSpecies::ID& speciesId, const ResourceSpecies::ResourceID& resourceSpeciesId, const nlohmann::json &resourceSpeciesInfo, WorldInterface* const worldInterface);
+	ResourceSpecies(const nlohmann::json &resourceSpeciesInfo, World* const world);
 	virtual ~ResourceSpecies();
 
-	const ResourceID& getResourceSpeciesId() const;
-	virtual const Type getResourceSpeciesType() const=0;
+	const id_type& getResourceSpeciesId() const;
 
 	double getCellMass() const;
 	bool getVariableIntrinsicRateOfIncrease() const;
@@ -74,18 +43,17 @@ public:
 	virtual float getKillAvoidingProbability() const;
 	void updateK_Density(const double &resourceMaximumCapacityDensity);
 	void generateInstarInvolvedResourceSpecies(
-		const Instar &instar, std::vector<ResourceSpecies::ResourceID> &instarInvolvedResourceSpecies, 
-		std::vector<CustomIndexedVector<Instar, bool>> &alreadyCheckedSpecies
+		const Instar &instar, std::vector<ResourceSpecies*> &instarInvolvedResourceSpecies, 
+		std::vector<InstarVector<bool>> &alreadyCheckedSpecies
 	);
-	double calculateInstarK_Density(const Instar &instar, std::vector<CustomIndexedVector<Instar, bool>> &checkedAnimalSpecies, 
-		std::vector<CustomIndexedVector<Instar, bool>> &cannibalismAnimalSpecies
+	double calculateInstarK_Density(const Instar &instar, std::vector<InstarVector<bool>> &checkedAnimalSpecies, 
+		std::vector<InstarVector<bool>> &cannibalismAnimalSpecies
 	);
-
-	template <class Archive>
-    void serialize(Archive &ar, const unsigned int version);
 
 private:
-	ResourceID resourceSpeciesId;
+	static id_type resourceSpeciesCounter;
+
+	const id_type resourceSpeciesId;
 	double cellMass;
 
 	double ACTIVATION_ENERGY;
@@ -100,30 +68,7 @@ private:
 	double maxRScale;
 	bool variableIntrinsicRateOfIncrease;
 	double minimumEdibleBiomass;
-	Parabola growingParabola;
-};
-
-
-namespace boost {
-    namespace serialization {
-		/**
-         * @brief Serialize a ResourceSpecies pointer.
-         *
-         * This function handles the serialization and deserialization of a ResourceSpecies pointer.
-         *
-         * @tparam Archive The type of archive (binary_oarchive for saving, binary_iarchive for loading).
-         * @param ar The archive to use.
-         * @param resourceSpeciesPtr The ResourceSpecies pointer to serialize or deserialize.
-         * @param version The version of the serialization format.
-         */
-		template <class Archive>
-        void serialize(Archive &ar, ResourceSpecies* &resourceSpeciesPtr, const unsigned int version, WorldInterface* const newWorldInterface);
-	}
-}
-
-template <>
-struct std::hash<ResourceSpecies::ResourceID> {
-	std::size_t operator()(const ResourceSpecies::ResourceID& resourceID) const;
+	Parabola * growingParabola;
 };
 
 #endif /* WEAVER_RESOURCESPECIES_H_ */

@@ -120,7 +120,7 @@ bool ResourceSpore::release(const double xw, const double yw, const double ws)
     finalY = std::max(finalY, 0.0);
 
     // Returns true if the spore lands in the world and false otherwise. 
-    //return this->terrainCell->worldInterface->isWithinWorldLimits(0, finalY, finalX);
+    //return this->terrainCell->world->isWithinWorldLimits(0, finalY, finalX);
     return true;
 }
 

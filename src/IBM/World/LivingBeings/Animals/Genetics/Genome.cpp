@@ -10,11 +10,6 @@
 using namespace std;
 
 
-Genome::Genome()
-{
-	
-}
-
 Genome::Genome(Gamete* const firstParentGamete, Gamete* const secondParentGamete, const vector<int> &randomlyCreatedPositionsForChromosomes, 
 		   	   const unsigned int& numberOfLociPerChromosome, const unsigned int& numberOfChiasmasPerChromosome) 
 	: numberOfLociPerChromosome(numberOfLociPerChromosome), numberOfChiasmasPerChromosome(numberOfChiasmasPerChromosome)
@@ -28,7 +23,7 @@ Genome::Genome(Gamete* const firstParentGamete, Gamete* const secondParentGamete
 	createHomologousCorrelosomesFromChromosomes(randomlyCreatedPositionsForChromosomes);
 }
 
-Genome::Genome(const vector<Locus> &loci, const vector<int> &randomlyCreatedPositionsForChromosomes, const unsigned int &numberOfChromosomes, 
+Genome::Genome(const vector<Locus*> &loci, const vector<int> &randomlyCreatedPositionsForChromosomes, const unsigned int &numberOfChromosomes, 
 		   	   const unsigned int& numberOfLociPerChromosome, const unsigned int& numberOfChiasmasPerChromosome) 
 	: numberOfLociPerChromosome(numberOfLociPerChromosome), numberOfChiasmasPerChromosome(numberOfChiasmasPerChromosome)
 {
@@ -39,8 +34,8 @@ Genome::Genome(const vector<Locus> &loci, const vector<int> &randomlyCreatedPosi
 
 		for (auto it = loci.begin(); it < loci.end(); it++)
 		{
-			homologousCorrelosomes.at(i).first->pushAllele(it->getAlleleRandomly());
-			homologousCorrelosomes.at(i).second->pushAllele(it->getAlleleRandomly());
+			homologousCorrelosomes.at(i).first->pushAllele((*it)->getAlleleRandomly());
+			homologousCorrelosomes.at(i).second->pushAllele((*it)->getAlleleRandomly());
 		}
 	}
 
@@ -54,7 +49,6 @@ Genome::Genome(const vector<Locus> &loci, const vector<int> &randomlyCreatedPosi
 	int selectedTraitOnCorrelosome;
 	int selectedLociOnCorrelosome;
 	int linkedChromosome;
-	int linkedLociOnChromosome;
 	const Allele* selectedAllele;
 
 	//Here we select the Alelle we have to link, and we create in the chromosomes a pointer for each allele contained in the correlosomes.
@@ -68,7 +62,6 @@ Genome::Genome(const vector<Locus> &loci, const vector<int> &randomlyCreatedPosi
 		selectedLociOnCorrelosome = positionFromCorrelosomes%numberOfLociPerChromosome;
 
 		linkedChromosome = i/numberOfLociPerChromosome;
-		linkedLociOnChromosome = i%numberOfLociPerChromosome;
 
 		selectedAllele = homologousCorrelosomes.at(selectedTraitOnCorrelosome).first->getAllele(selectedLociOnCorrelosome);
 		homologousChromosomes.at(linkedChromosome).first->pushAllele(selectedAllele);
@@ -266,54 +259,9 @@ void Genome::deleteHomologousCorrelosomes()
 }
 
 template<class Archive>
-void Genome::serialize(Archive & ar, const unsigned int version, const vector<Locus> &loci) {
-	unsigned int numberOfChromosomes;
-	if(Archive::is_loading::value) 
-	{
-		ar & numberOfChromosomes;
-		homologousChromosomes.resize(numberOfChromosomes);
-	}
-	else
-	{
-		numberOfChromosomes = homologousChromosomes.size();
-		ar & numberOfChromosomes;
-	}
-
-	for(unsigned int i = 0; i < numberOfChromosomes; i++)
-	{
-		boost::serialization::serialize(ar, homologousChromosomes[i].first, version, loci);
-		boost::serialization::serialize(ar, homologousChromosomes[i].second, version, loci);
-	}
-	
+void Genome::serialize(Archive & ar, const unsigned int version) {
+	ar & homologousChromosomes;
+	ar & homologousCorrelosomes;
 	ar & numberOfLociPerChromosome;
 	ar & numberOfChiasmasPerChromosome;
-}
-
-// Specialisation
-template void Genome::serialize<boost::archive::text_iarchive>(boost::archive::text_iarchive&, const unsigned int, const vector<Locus> &);
-template void Genome::serialize<boost::archive::text_oarchive>(boost::archive::text_oarchive&, const unsigned int, const vector<Locus> &);
-
-template void Genome::serialize<boost::archive::binary_iarchive>(boost::archive::binary_iarchive&, const unsigned int, const vector<Locus> &);
-template void Genome::serialize<boost::archive::binary_oarchive>(boost::archive::binary_oarchive&, const unsigned int, const vector<Locus> &);
-
-
-namespace boost {
-    namespace serialization {
-        template<class Archive>
-        void serialize(Archive &ar, Genome* &genomePtr, const unsigned int version, const vector<Locus> &loci) {
-			if(Archive::is_loading::value) 
-			{
-				genomePtr = new Genome();
-			}
-
-			genomePtr->serialize(ar, version, loci);
-        }
-
-        // Specialisation
-        template void serialize<boost::archive::text_iarchive>(boost::archive::text_iarchive&, Genome*&, const unsigned int, const vector<Locus> &);
-        template void serialize<boost::archive::text_oarchive>(boost::archive::text_oarchive&, Genome*&, const unsigned int, const vector<Locus> &);
-
-        template void serialize<boost::archive::binary_iarchive>(boost::archive::binary_iarchive&, Genome*&, const unsigned int, const vector<Locus> &);
-        template void serialize<boost::archive::binary_oarchive>(boost::archive::binary_oarchive&, Genome*&, const unsigned int, const vector<Locus> &);
-    }
 }

@@ -8,16 +8,14 @@
 #ifndef CHROMOSOME_H_
 #define CHROMOSOME_H_
 
+#include "Allele.h"
+
 #include <boost/serialization/access.hpp>
 #include <boost/archive/binary_iarchive.hpp>
 #include <boost/archive/binary_oarchive.hpp>
-#include <boost/serialization/vector.hpp>
 #include <fstream>
 #include <vector>
 #include <ostream>
-
-#include "IBM/World/LivingBeings/Animals/Genetics/Allele.h"
-#include "IBM/World/LivingBeings/Animals/Genetics/Locus.h"
 
 
 /**
@@ -33,7 +31,6 @@ private:
 	friend class boost::serialization::access;
 
 public:
-	explicit Chromosome();
 	/**
 	 * Constructs a chromosome with the specified alleles.
 	 * @param alleles the alleles of this Chromosome
@@ -71,14 +68,7 @@ public:
      * @param version The version of the serialization format.
      */
     template<class Archive>
-    void serialize(Archive & ar, const unsigned int version, const std::vector<Locus> &loci);
+    void serialize(Archive & ar, const unsigned int version);
 };
-
-namespace boost {
-    namespace serialization {
-        template<class Archive>
-        void serialize(Archive &ar, Chromosome* &chromosomePtr, const unsigned int version, const std::vector<Locus> &loci);
-    }
-}
 
 #endif /* CHROMOSOME_H_ */

@@ -7,40 +7,26 @@
 
 #include "IBM/World/LivingBeings/Edible.h"
 
-#include "IBM/World/Map/TerrainCells/TerrainCellInterface.h"
-#include "IBM/World/Map/MapInterface.h"
-#include "IBM/World/WorldInterface.h"
-
 using namespace std;
 
 
 
 
+id_type Edible::edibleId = 1;
 
-Edible::Edible(TerrainCellInterface* terrainCellInterface)
-	: EdibleInterface(), terrainCellInterface(terrainCellInterface)
+
+Edible::Edible(const id_type id, Species* const mySpecies, TerrainCellInterface* terrainCellInterface, const Instar &instar) 
+	: EdibleInterface(),
+	  id(id), mySpecies(mySpecies), instar(instar), terrainCellInterface(terrainCellInterface)
 {
-
+	generateIdStr();
 }
 
-Edible::Edible(Species* const mySpecies, const Instar &instar, const bool temporary) 
+Edible::Edible(Species* const mySpecies, TerrainCellInterface* terrainCellInterface, const Instar &instar) 
 	: EdibleInterface(),
-	  mySpecies(mySpecies), temporary(temporary), instar(instar), terrainCellInterface(nullptr)
+	  id(0), mySpecies(mySpecies), instar(instar), terrainCellInterface(terrainCellInterface)
 {
-	if(!temporary){
-		id = mySpecies->getMutableWorldInterface()->generateEdibleId();
-		generateIdStr();
-	}
-}
-
-Edible::Edible(Species* const mySpecies, TerrainCellInterface* terrainCellInterface, const Instar &instar, const bool temporary) 
-	: EdibleInterface(),
-	  mySpecies(mySpecies), temporary(temporary), instar(instar), terrainCellInterface(terrainCellInterface)
-{
-	if(!temporary){
-		id = mySpecies->getMutableWorldInterface()->generateEdibleId();
-		generateIdStr();
-	}
+	generateIdStr();
 }
 
 
@@ -50,6 +36,11 @@ Edible::~Edible()
 }
 
 
+const id_type Edible::generateId()
+{
+	return Edible::edibleId++;
+}
+
 ostream& operator<<(ostream& os, const Edible& edible)
 {
 	os << edible.getIdStr() << "\t";
@@ -57,12 +48,6 @@ ostream& operator<<(ostream& os, const Edible& edible)
 	return os;
 }
 
-void Edible::doDefinitive() 
-{ 
-	id = getSpecies()->getMutableWorldInterface()->generateEdibleId();
-	generateIdStr();
-	temporary = false;
-}
 
 const Instar& Edible::getInstar() const 
 { 
@@ -70,7 +55,12 @@ const Instar& Edible::getInstar() const
 }
 
 
-Species* const Edible::getSpecies() const 
+const Species* const Edible::getSpecies() const 
+{ 
+	return mySpecies; 
+}
+
+Species* const Edible::getMutableSpecies() 
 { 
 	return mySpecies; 
 }
@@ -102,30 +92,11 @@ void Edible::setInstar(const Instar& newInstar)
 
 template <class Archive>
 void Edible::serialize(Archive &ar, const unsigned int version) {
-	ar & boost::serialization::base_object<EdibleInterface>(*this);
-	
+	ar & edibleId; 
 	ar & id;
 	ar & idStr;
-
-	Species::ID speciesID;
-	if (Archive::is_loading::value)
-	{
-		ar & speciesID;
-		mySpecies = terrainCellInterface->getMutableMapInterface().getMutableWorldInterface()->getMutableExistingSpecies().at(speciesID.getValue());
-	}
-	else
-	{
-		speciesID = mySpecies->getId();
-		ar & speciesID;
-	}
-
-	ar & temporary;
+	ar & mySpecies;
 	ar & instar;
+	ar & terrainCellInterface;
+	ar & edibleId;
 }
-
-// Specialisation
-template void Edible::serialize<boost::archive::text_iarchive>(boost::archive::text_iarchive&, const unsigned int);
-template void Edible::serialize<boost::archive::text_oarchive>(boost::archive::text_oarchive&, const unsigned int);
-
-template void Edible::serialize<boost::archive::binary_iarchive>(boost::archive::binary_iarchive&, const unsigned int);
-template void Edible::serialize<boost::archive::binary_oarchive>(boost::archive::binary_oarchive&, const unsigned int);

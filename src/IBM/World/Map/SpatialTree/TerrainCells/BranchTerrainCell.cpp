@@ -1,10 +1,9 @@
 
 
 #include "IBM/World/Map/SpatialTree/TerrainCells/BranchTerrainCell.h"
-
-#include "IBM/World/Map/SpatialTreeInterface.h"
+#include "IBM/World/Map/SpatialTree.h"
 #include "IBM/World/Map/TerrainCells/EdibleSearchParams.h"
-#include "IBM/World/WorldInterface.h"
+#include "IBM/World/World.h"
 
 
 using namespace std;
@@ -14,20 +13,14 @@ namespace fs = boost::filesystem;
 
 
 
-BranchTerrainCell::BranchTerrainCell(BranchTerrainCellInterface* const parentTerrainCell, SpatialTreeInterface* const mapInterface)
-    : BranchTerrainCellInterface(parentTerrainCell, mapInterface)
-{
-
-}
-
-BranchTerrainCell::BranchTerrainCell(BranchTerrainCellInterface* const parentTerrainCell, PointSpatialTree* const position, SpatialTreeInterface* const mapInterface)
+BranchTerrainCell::BranchTerrainCell(BranchTerrainCellInterface* const parentTerrainCell, PointSpatialTree* const position, SpatialTree* const map)
     : BranchTerrainCellInterface(
-        parentTerrainCell, position, makeEffectiveArea(position, mapInterface->getCellSize(position->getDepth())), mapInterface->getCellSize(position->getDepth()), 
-        mapInterface, makeDefaultAnimals(mapInterface), false, false, -1,
+        parentTerrainCell, position, makeEffectiveArea(position, map->getCellSize(position->getDepth())), map->getCellSize(position->getDepth()), 
+        map, makeDefaultAnimals(map), false, false, -1,
         new SummaryMoisture(this), false, false, -1, 0.0
       ),
       maximumMoisturePatchPriority(-1),
-      maximumResourcePatchPriority(getMapInterface().getWorldInterface()->getExistingResourceSpecies().size(), -1)
+      maximumResourcePatchPriority(ResourceSpecies::getResourceSpeciesCounter(), -1)
 {
     generateChildren();
 
@@ -38,18 +31,18 @@ BranchTerrainCell::BranchTerrainCell(BranchTerrainCellInterface* const parentTer
 }
 
 
-BranchTerrainCell::BranchTerrainCell(const TemporalLeafTerrainCell &leaf)
+BranchTerrainCell::BranchTerrainCell(TemporalLeafTerrainCell &leaf)
     : BranchTerrainCellInterface(
         leaf.getMutableParent(), &leaf.getMutablePosition(), &leaf.getEffectiveArea(), leaf.getSize(), 
-        &static_cast<SpatialTreeInterface&>(leaf.getMutableMapInterface()), &leaf.getMutableAnimals(),
+        &static_cast<SpatialTree&>(leaf.getMutableMap()), &leaf.getMutableAnimals(),
         leaf.isObstacle(), leaf.isFullObstacle(),
         leaf.getObstaclePatchPriority(), leaf.getMutableMoistureInfo(), leaf.isMoistureSource(), leaf.isInMoisturePatch(),
         leaf.getMoisturePatchPriority(), leaf.getTotalMaximumResourceCapacity()
       ),
       maximumMoisturePatchPriority(leaf.getMoisturePatchPriority()),
-      maximumResourcePatchPriority(getMapInterface().getWorldInterface()->getExistingResourceSpecies().size(), -1)
+      maximumResourcePatchPriority(ResourceSpecies::getResourceSpeciesCounter(), -1)
 {
-    generateChildren(&leaf.getResources(), &leaf.getResourcePatchPriority());
+    generateChildren(&leaf.getMutableResources(), &leaf.getResourcePatchPriority());
 
     for(unsigned int i = 0; i < getResources().size(); i++)
     {
@@ -60,29 +53,28 @@ BranchTerrainCell::BranchTerrainCell(const TemporalLeafTerrainCell &leaf)
 
 BranchTerrainCell::~BranchTerrainCell()
 {
-    for(auto& elem : childrenTerrainCells)
-    {
-        delete elem;
-    }
+    
 }
 
 
-void BranchTerrainCell::generateChildren(const vector<ResourceInterface*>* const resources, const vector<int>* const resourcePatchPriority)
+void BranchTerrainCell::generateChildren(vector<ResourceInterface*>* const resources, const vector<int>* const resourcePatchPriority)
 {
-    unsigned int parentX = getPosition().get(Axis::X) * SpatialTreeInterface::numbreOfSubdivisions;
-    unsigned int parentY = getPosition().get(Axis::Y) * SpatialTreeInterface::numbreOfSubdivisions;
+    unsigned int parentX = getPosition().get(Axis::X) * SpatialTree::numbreOfSubdivisions;
+    unsigned int parentY = getPosition().get(Axis::Y) * SpatialTree::numbreOfSubdivisions;
     #if DIMENSIONS == 3
-    unsigned int parentZ = getPosition().get(Axis::Z) * SpatialTreeInterface::numbreOfSubdivisions;
+    unsigned int parentZ = getPosition().get(Axis::Z) * SpatialTree::numbreOfSubdivisions;
     #endif
 
     childrenTerrainCells.reserve(numberOfChildren);
+    childrenTerrainCellPointers.reserve(numberOfChildren);
+    childrenTerrainCellConstPointers.reserve(numberOfChildren);
     #if DIMENSIONS == 3
-    for(unsigned int Z = 0; Z < SpatialTreeInterface::numbreOfSubdivisions; Z++)
+    for(unsigned int Z = 0; Z < SpatialTree::numbreOfSubdivisions; Z++)
     {
     #endif
-        for(unsigned int Y = 0; Y < SpatialTreeInterface::numbreOfSubdivisions; Y++)
+        for(unsigned int Y = 0; Y < SpatialTree::numbreOfSubdivisions; Y++)
         {
-            for(unsigned int X = 0; X < SpatialTreeInterface::numbreOfSubdivisions; X++)
+            for(unsigned int X = 0; X < SpatialTree::numbreOfSubdivisions; X++)
             {
                 #if DIMENSIONS == 2
                 vector<unsigned int> axisValues = {parentX + X, parentY + Y};
@@ -91,14 +83,17 @@ void BranchTerrainCell::generateChildren(const vector<ResourceInterface*>* const
                 #endif
                 PointSpatialTree* childPosition = new PointSpatialTree(axisValues, getPosition().getDepth() + 1);
                 
-                if(childPosition->getDepth() == static_cast<const SpatialTreeInterface&>(getMapInterface()).getMapDepth()-1)
+                if(childPosition->getDepth() == static_cast<const SpatialTree&>(getMap()).getMapDepth()-1)
                 {
-                    childrenTerrainCells.push_back(new LeafTerrainCell(this, childPosition, resources, resourcePatchPriority));
+                    childrenTerrainCells.push_back(move(make_unique<LeafTerrainCell>(this, childPosition, resources, resourcePatchPriority)));
                 }
                 else
                 {
-                    childrenTerrainCells.push_back(new TemporalLeafTerrainCell(this, childPosition, resources, resourcePatchPriority));
+                    childrenTerrainCells.push_back(move(make_unique<TemporalLeafTerrainCell>(this, childPosition, resources, resourcePatchPriority)));
                 }
+
+                childrenTerrainCellPointers.push_back(childrenTerrainCells.back().get());
+                childrenTerrainCellConstPointers.push_back(childrenTerrainCells.back().get());
             }
         }
     #if DIMENSIONS == 3
@@ -107,14 +102,14 @@ void BranchTerrainCell::generateChildren(const vector<ResourceInterface*>* const
 }
 
 
-const vector<SpatialTreeTerrainCellInterface*>& BranchTerrainCell::getChildrenTerrainCells() const
+const vector<const SpatialTreeTerrainCellInterface*>& BranchTerrainCell::getChildrenTerrainCells() const
 {
-    return childrenTerrainCells;
+    return childrenTerrainCellConstPointers;
 }
 
 vector<SpatialTreeTerrainCellInterface*>& BranchTerrainCell::getMutableChildrenTerrainCells()
 {
-    return childrenTerrainCells;
+    return childrenTerrainCellPointers;
 }
 
 const SpatialTreeTerrainCellInterface* const BranchTerrainCell::getChildTerrainCell(const unsigned int childIndex) const
@@ -129,9 +124,9 @@ SpatialTreeTerrainCellInterface* BranchTerrainCell::getMutableChildTerrainCell(c
 
 const unsigned int BranchTerrainCell::calculateChildPositionOnVector(const PointContinuous &childPos) const
 {
-    unsigned int depth = static_cast<const SpatialTreeInterface &>(getMapInterface()).getMapDepth()-1;
+    unsigned int depth = static_cast<const SpatialTree &>(getMap()).getMapDepth()-1;
 
-    return calculateChildPositionOnVector(PointSpatialTree(static_cast<const SpatialTreeInterface &>(getMapInterface()).obtainPointMap(childPos, depth).getAxisValues(), depth));
+    return calculateChildPositionOnVector(PointSpatialTree(static_cast<const SpatialTree &>(getMap()).obtainPointMap(childPos, depth).getAxisValues(), depth));
 }
 
 const unsigned int BranchTerrainCell::calculateChildPositionOnVector(const PointSpatialTree &childPos) const
@@ -143,7 +138,7 @@ const unsigned int BranchTerrainCell::calculateChildPositionOnVector(const Point
     for(unsigned int i = 0; i < DIMENSIONS; i++)
     {
         Axis axis = magic_enum::enum_cast<Axis>(i).value();
-        posOnVector += ((childPos.get(axis) / displacementPower(1, depthDifference-1)) % SpatialTreeInterface::numbreOfSubdivisions) * displacementPower(1, i);
+        posOnVector += ((childPos.get(axis) / displacementPower(1, depthDifference-1)) % SpatialTree::numbreOfSubdivisions) * displacementPower(1, i);
     }
 
     return posOnVector;
@@ -170,9 +165,9 @@ SpatialTreeTerrainCellInterface* const BranchTerrainCell::getCell(const PointSpa
 
 bool BranchTerrainCell::isChild(const PointContinuous &childPos) const
 {
-    unsigned int depth = static_cast<const SpatialTreeInterface &>(getMapInterface()).getMapDepth()-1;
+    unsigned int depth = static_cast<const SpatialTree &>(getMap()).getMapDepth()-1;
 
-    return isChild(PointSpatialTree(static_cast<const SpatialTreeInterface &>(getMapInterface()).obtainPointMap(childPos, depth).getAxisValues(), depth));
+    return isChild(PointSpatialTree(static_cast<const SpatialTree &>(getMap()).obtainPointMap(childPos, depth).getAxisValues(), depth));
 }
 
 bool BranchTerrainCell::isChild(const PointSpatialTree &childPos) const
@@ -226,7 +221,7 @@ SpatialTreeTerrainCellInterface* BranchTerrainCell::getMutableChildTerrainCell(c
 }
 
 
-void BranchTerrainCell::insertAnimal(AnimalInterface* const newAnimal)
+void BranchTerrainCell::insertAnimal(Animal* const newAnimal)
 {
     if(getPosition().getDepth() == newAnimal->getCellDepthOnActualInstar())
     {
@@ -267,34 +262,34 @@ void BranchTerrainCell::insertAnimal(AnimalInterface* const newAnimal)
             auto newChildTerrainCell = convertTemporalLeaf2Branch(childIndex);
             newChildTerrainCell->insertAnimal(newAnimal);
 
-            setChildTerrainCell(childIndex, newChildTerrainCell.release());
+            setChildTerrainCell(childIndex, newChildTerrainCell);
         }
     }
 }
 
-TerrainCellInterface* BranchTerrainCell::randomInsertAnimalOnChild(AnimalInterface* const newAnimal, TerrainCellInterface* child)
+tuple<TerrainCellInterface*, Animal*, unsigned int> BranchTerrainCell::randomInsertAnimalOnChild(const Instar &instar, AnimalSpecies* animalSpecies, TerrainCellInterface* child, const bool isStatistical)
 {
     for(unsigned int i = 0; i < getChildrenTerrainCells().size(); i++)
     {
         if(getMutableChildTerrainCell(i) == child)
         {
             auto newChildTerrainCell = convertTemporalLeaf2Branch(i);
-            newChildTerrainCell->randomInsertAnimal(newAnimal);
+            auto result = newChildTerrainCell->randomInsertAnimal(instar, animalSpecies, isStatistical);
 
-            setChildTerrainCell(i, newChildTerrainCell.release());
+            setChildTerrainCell(i, newChildTerrainCell);
 
-            return getMutableChildTerrainCell(i);
+            return make_tuple<>(getMutableChildTerrainCell(i), get<3>(result), get<4>(result));
         }
     }
 
     throwLineInfoException("The cell is not a child of the branch");
 }
 
-tuple<bool, TerrainCellInterface*, TerrainCellInterface*> BranchTerrainCell::randomInsertAnimal(AnimalInterface* const newAnimal)
+tuple<bool, TerrainCellInterface*, TerrainCellInterface*, Animal*, unsigned int> BranchTerrainCell::randomInsertAnimal(const Instar &instar, AnimalSpecies* animalSpecies, const bool isStatistical)
 {
-    if(getPosition().getDepth() == newAnimal->getCellDepthOnActualInstar())
+    if(getPosition().getDepth() == animalSpecies->getCellDepthPerInstar()[instar])
     {
-        return TerrainCell::randomInsertAnimal(newAnimal);
+        return TerrainCell::randomInsertAnimal(instar, animalSpecies, isStatistical);
     }
     else
     {
@@ -306,17 +301,17 @@ tuple<bool, TerrainCellInterface*, TerrainCellInterface*> BranchTerrainCell::ran
             {
                 try
                 {
-                    return getMutableChildTerrainCell(randomIndexVector->at(i))->randomInsertAnimal(newAnimal);
+                    return getMutableChildTerrainCell(randomIndexVector->at(i))->randomInsertAnimal(instar, animalSpecies, isStatistical);
                 }
                 catch(SpatialTreeTerrainCell::TemporalLeaf2Branch &e)
                 {
                     auto newChildTerrainCell = convertTemporalLeaf2Branch(randomIndexVector->at(i));
-                    newChildTerrainCell->randomInsertAnimal(newAnimal);
+                    auto result = newChildTerrainCell->randomInsertAnimal(instar, animalSpecies, isStatistical);
 
                     auto oldTerrainCell = getMutableChildTerrainCell(randomIndexVector->at(i));
-                    setChildTerrainCell(randomIndexVector->at(i), newChildTerrainCell.release());
+                    setChildTerrainCell(randomIndexVector->at(i), newChildTerrainCell);
 
-                    return make_tuple(true, oldTerrainCell, getMutableChildTerrainCell(randomIndexVector->at(i)));
+                    return make_tuple(true, oldTerrainCell, getMutableChildTerrainCell(randomIndexVector->at(i)), get<3>(result), get<4>(result));
                 }
             }
         }
@@ -326,7 +321,7 @@ tuple<bool, TerrainCellInterface*, TerrainCellInterface*> BranchTerrainCell::ran
         #endif
     }
 
-    return make_tuple(false, nullptr, nullptr);
+    return make_tuple(false, nullptr, nullptr, nullptr, 0);
 }
 
 void BranchTerrainCell::updateMoisture()
@@ -347,14 +342,14 @@ void BranchTerrainCell::updateChildrenMoisture()
     }
 }
 
-void BranchTerrainCell::update(const unsigned int timeStep, ostream& tuneTraitsFile)
+void BranchTerrainCell::update(const unsigned int numberOfTimeSteps, ostream& tuneTraitsFile)
 {
-    updateChildren(timeStep, tuneTraitsFile);
+    updateChildren(numberOfTimeSteps, tuneTraitsFile);
 
-    TerrainCell::update(timeStep, tuneTraitsFile);
+    TerrainCell::update(numberOfTimeSteps, tuneTraitsFile);
 }
 
-void BranchTerrainCell::updateChildren(const unsigned int timeStep, ostream& tuneTraitsFile)
+void BranchTerrainCell::updateChildren(const unsigned int numberOfTimeSteps, ostream& tuneTraitsFile)
 {
     // Create a random vector of indices
     auto indexVector = Random::createIndicesVector(getChildrenTerrainCells().size());
@@ -362,7 +357,7 @@ void BranchTerrainCell::updateChildren(const unsigned int timeStep, ostream& tun
     // Random children updates
     for(const auto &index : *indexVector)
     {
-        getMutableChildTerrainCell(index)->update(timeStep, tuneTraitsFile);
+        getMutableChildTerrainCell(index)->update(numberOfTimeSteps, tuneTraitsFile);
     }
 }
 
@@ -422,7 +417,7 @@ void BranchTerrainCell::calculateChildrenPositionsRecursively(unique_ptr<vector<
         }
         else
         {
-            for(unsigned int i = 0; i < SpatialTreeInterface::numbreOfSubdivisions; i++)
+            for(unsigned int i = 0; i < SpatialTree::numbreOfSubdivisions; i++)
             {
                 calculateChildrenPositionsRecursively(
                     childrenPositions, contactAxis, bottomContactSide, 
@@ -463,7 +458,7 @@ unique_ptr<vector<unsigned int>> BranchTerrainCell::calculateChildrenPositions(c
 }
 
 
-pair<bool, bool> BranchTerrainCell::applyMoisturePatch(MoisturePatch &moisturePatch)
+pair<bool, bool> BranchTerrainCell::applyMoisturePatch(const MoisturePatch &moisturePatch)
 {
     auto coverage = moisturePatch.checkCoverage(getEffectiveArea());
 
@@ -500,7 +495,7 @@ void BranchTerrainCell::updateTotalMaximumResourceCapacity()
     setTotalMaximumResourceCapacity(sumTotalMaximumResourceCapacity);
 }
 
-void BranchTerrainCell::setMoistureSourcePatch(MoisturePatch &moisturePatch)
+void BranchTerrainCell::setMoistureSourcePatch(const MoisturePatch &moisturePatch)
 {
     for(auto &child : getMutableChildrenTerrainCells())
     {
@@ -515,12 +510,12 @@ void BranchTerrainCell::setMoistureSourcePatch(MoistureInterface* const &newMois
     setMoisturePatch(newMoistureInfo, newMoisturePatchPriority, newMoisturePatchPriority, true, true);
 }
 
-void BranchTerrainCell::setResourceSourcePatch(ResourceInterface* &newResource, const int newResourcePatchPriority)
+void BranchTerrainCell::setResourceSourcePatch(unique_ptr<ResourceInterface> &newResource, const int newResourcePatchPriority)
 {
     setResourcePatch(newResource->getSpecies()->getResourceSpeciesId(), newResource, newResourcePatchPriority, newResourcePatchPriority);
 }
 
-void BranchTerrainCell::setSubdivisionMoisturePatch(MoisturePatch &moisturePatch)
+void BranchTerrainCell::setSubdivisionMoisturePatch(const MoisturePatch &moisturePatch)
 {
     for(auto &child : getMutableChildrenTerrainCells())
     {
@@ -531,7 +526,7 @@ void BranchTerrainCell::setSubdivisionMoisturePatch(MoisturePatch &moisturePatch
 }
 
 
-pair<bool, bool> BranchTerrainCell::applyPartialCoverageMoisturePatch(MoisturePatch &moisturePatch)
+pair<bool, bool> BranchTerrainCell::applyPartialCoverageMoisturePatch(const MoisturePatch &moisturePatch)
 {
     bool isFullApplied = true, isApplied = false;
     
@@ -550,7 +545,7 @@ pair<bool, bool> BranchTerrainCell::applyPartialCoverageMoisturePatch(MoisturePa
 
             if(isChildApplied)
             {
-                setChildTerrainCell(i, newChildTerrainCell.release());
+                setChildTerrainCell(i, newChildTerrainCell);
             }
         }
 
@@ -644,13 +639,14 @@ void BranchTerrainCell::setMoisturePatch(MoistureInterface* const &newMoistureIn
 }
 
 
-void BranchTerrainCell::setChildTerrainCell(const unsigned int childIndex, BranchTerrainCell* newChild)
+void BranchTerrainCell::setChildTerrainCell(const unsigned int childIndex, unique_ptr<BranchTerrainCell> &newChild)
 {
     newChild->setCopied(false);
     childrenTerrainCells[childIndex]->setCopied(true);
-    delete childrenTerrainCells[childIndex];
     
-    childrenTerrainCells[childIndex] = newChild;
+    childrenTerrainCells[childIndex] = move(newChild);
+    childrenTerrainCellPointers[childIndex] = childrenTerrainCells[childIndex].get();
+    childrenTerrainCellConstPointers[childIndex] = childrenTerrainCells[childIndex].get();
 
     static_cast<BranchTerrainCell*>(getMutableChildTerrainCell(childIndex))->refreshAnimalPosition();
 }
@@ -743,7 +739,7 @@ void BranchTerrainCell::setSummaryResourcePatch(const unsigned int resourceSpeci
         }
     }
 
-    ResourceInterface* newResource = new SummaryResource(resourceSpeciesId, this);
+    unique_ptr<ResourceInterface> newResource = make_unique<SummaryResource>(resourceSpeciesId, this);
     setResourcePatch(resourceSpeciesId, newResource, minResourcePatchPriority, maxResourcePatchPriority);
 }
 
@@ -753,13 +749,13 @@ void BranchTerrainCell::setMaximumResourcePatchPriority(const unsigned int resou
 }
 
 
-void BranchTerrainCell::setResourcePatch(const unsigned int resourceSpeciesId, ResourceInterface* &newResource, const int newResourcePatchPriority)
+void BranchTerrainCell::setResourcePatch(const unsigned int resourceSpeciesId, unique_ptr<ResourceInterface> &newResource, const int newResourcePatchPriority)
 {
     throwLineInfoException("This method cannot be used with this class");
 }
 
 
-void BranchTerrainCell::setResourcePatch(const unsigned int resourceSpeciesId, ResourceInterface* &newResource, const int newResourcePatchPriority, const int newMaximumResourcePatchPriority)
+void BranchTerrainCell::setResourcePatch(const unsigned int resourceSpeciesId, unique_ptr<ResourceInterface> &newResource, const int newResourcePatchPriority, const int newMaximumResourcePatchPriority)
 {
     TerrainCell::setResourcePatch(resourceSpeciesId, newResource, newResourcePatchPriority);
     setMaximumResourcePatchPriority(resourceSpeciesId, newMaximumResourcePatchPriority);
@@ -785,7 +781,7 @@ bool BranchTerrainCell::applyPartialCoverageResourcePatch(const ResourcePatch &r
 
             if(isChildApplied)
             {
-                setChildTerrainCell(i, newChildTerrainCell.release());
+                setChildTerrainCell(i, newChildTerrainCell);
             }
         }
 
@@ -852,7 +848,7 @@ bool BranchTerrainCell::applyPartialCoverageObstaclePatch(const ObstaclePatch &o
 
             if(isChildApplied)
             {
-                setChildTerrainCell(i, newChildTerrainCell.release());
+                setChildTerrainCell(i, newChildTerrainCell);
             }
         }
 
@@ -874,15 +870,15 @@ bool BranchTerrainCell::applyPartialCoverageObstaclePatch(const ObstaclePatch &o
 }
 
 
-void BranchTerrainCell::obtainInhabitableTerrainCells(vector<TerrainCellInterface*>& inhabitableTerrainCells)
+void BranchTerrainCell::obtainInhabitableTerrainCells()
 {
     if(!isFullObstacle())
     {
-        TerrainCell::obtainInhabitableTerrainCells(inhabitableTerrainCells);
+        TerrainCell::obtainInhabitableTerrainCells();
 
         for(auto &child : getMutableChildrenTerrainCells())
         {
-            child->obtainInhabitableTerrainCells(inhabitableTerrainCells);
+            child->obtainInhabitableTerrainCells();
         }
     }
 }
@@ -939,7 +935,7 @@ unique_ptr<FullCoverageAnimals> BranchTerrainCell::getMutableAnimalsDown(const A
 }
 
 EdiblesOnRadius BranchTerrainCell::getMutableEdiblesDown(
-        function<bool(AnimalInterface&)> downChecker, const Ring &effectiveArea,
+        function<bool(Animal&)> downChecker, const Ring &effectiveArea,
         const EdibleSearchParams &edibleSearchParams)
 {
     auto searchableResources = make_unique<ResourcesOnRadius>(edibleSearchParams.getResourceSearchParams().getSearchParams().size(), 0.0);
@@ -1079,7 +1075,7 @@ void BranchTerrainCell::printCell(vector<pair<vector<double>, vector<unsigned in
             child->printCell(mapCellsInfo);
         }
 
-        for(auto &animalSpecies : getMapInterface().getWorldInterface()->getExistingAnimalSpecies())
+        for(auto &animalSpecies : getMap().getWorld()->getExistingAnimalSpecies())
         {
             auto population = getAnimalsBy(animalSpecies->getPopulationSearchParams());
 
@@ -1087,14 +1083,14 @@ void BranchTerrainCell::printCell(vector<pair<vector<double>, vector<unsigned in
             {
                 for(const auto &animal : *elem)
                 {
-                    PointMap animalPosOnLeaf = getMapInterface().obtainPointMap(
-                        animal->getPosition(), static_cast<const SpatialTreeInterface &>(getMapInterface()).getMapDepth()-1
+                    PointMap animalPosOnLeaf = getMap().obtainPointMap(
+                        animal->getPosition(), static_cast<const SpatialTree &>(getMap()).getMapDepth()-1
                     );
 
                     unsigned int index = 0;
                     for(unsigned int axis = 0; axis < DIMENSIONS; axis++)
                     {
-                        index += animalPosOnLeaf.getAxisValues().at(axis) * pow(getMapInterface().getNumberOfCellsPerAxis(), axis);
+                        index += animalPosOnLeaf.getAxisValues().at(axis) * pow(getMap().getNumberOfCellsPerAxis(), axis);
                     }
 
                     mapCellsInfo[index].second[animalSpecies->getAnimalSpeciesId()] += 1;
@@ -1105,7 +1101,7 @@ void BranchTerrainCell::printCell(vector<pair<vector<double>, vector<unsigned in
 }
 
 
-void BranchTerrainCell::obtainWorldAnimalsPopulation(CustomIndexedVector<AnimalSpecies::AnimalID, CustomIndexedVector<LifeStage, unsigned int>> &worldAnimalsPopulation)
+void BranchTerrainCell::obtainWorldAnimalsPopulation(vector<vector<unsigned int>> &worldAnimalsPopulation)
 {
     if(!isFullObstacle())
     {
@@ -1119,7 +1115,7 @@ void BranchTerrainCell::obtainWorldAnimalsPopulation(CustomIndexedVector<AnimalS
 }
 
 
-void BranchTerrainCell::obtainAnimalsPopulationAndGeneticsFrequencies(CustomIndexedVector<AnimalSpecies::AnimalID, CustomIndexedVector<LifeStage, unsigned int>> &worldAnimalsPopulation, vector<vector<pair<vector<double>, vector<double>>>> &worldGeneticsFrequencies)
+void BranchTerrainCell::obtainAnimalsPopulationAndGeneticsFrequencies(vector<vector<unsigned int>> &worldAnimalsPopulation, vector<vector<pair<vector<double>, vector<double>>>> &worldGeneticsFrequencies)
 {
     if(!isFullObstacle())
     {
@@ -1168,7 +1164,7 @@ void BranchTerrainCell::saveWaterSnapshot(ofstream &file) const
     }
 }
 
-void BranchTerrainCell::moveAnimals(int timeStep, ostream& encounterProbabilitiesFile, ostream& predationProbabilitiesFile, bool saveEdibilitiesFile, ostream& edibilitiesFile, float exitTimeThreshold, double pdfThreshold, double muForPDF, double sigmaForPDF, double predationSpeedRatioAH, double predationHunterVoracityAH, double predationProbabilityDensityFunctionAH, double predationSpeedRatioSAW, double predationHunterVoracitySAW, double predationProbabilityDensityFunctionSAW, double maxSearchArea, double encounterHuntedVoracitySAW, double encounterHunterVoracitySAW, double encounterVoracitiesProductSAW, double encounterHunterSizeSAW, double encounterHuntedSizeSAW, double encounterProbabilityDensityFunctionSAW, double encounterHuntedVoracityAH, double encounterHunterVoracityAH, double encounterVoracitiesProductAH, double encounterHunterSizeAH, double encounterHuntedSizeAH, double encounterProbabilityDensityFunctionAH)
+void BranchTerrainCell::moveAnimals(const unsigned int numberOfTimeSteps, ostream& encounterProbabilitiesFile, ostream& predationProbabilitiesFile, bool saveEdibilitiesFile, ostream& edibilitiesFile, float exitTimeThreshold, double pdfThreshold, double muForPDF, double sigmaForPDF, double predationSpeedRatioAH, double predationHunterVoracityAH, double predationProbabilityDensityFunctionAH, double predationSpeedRatioSAW, double predationHunterVoracitySAW, double predationProbabilityDensityFunctionSAW, double maxSearchArea, double encounterHuntedVoracitySAW, double encounterHunterVoracitySAW, double encounterVoracitiesProductSAW, double encounterHunterSizeSAW, double encounterHuntedSizeSAW, double encounterProbabilityDensityFunctionSAW, double encounterHuntedVoracityAH, double encounterHunterVoracityAH, double encounterVoracitiesProductAH, double encounterHunterSizeAH, double encounterHuntedSizeAH, double encounterProbabilityDensityFunctionAH)
 {
     auto indexVector = Random::createIndicesVector(getChildrenTerrainCells().size() + 1);
 
@@ -1176,16 +1172,16 @@ void BranchTerrainCell::moveAnimals(int timeStep, ostream& encounterProbabilitie
     {
         if(index == getChildrenTerrainCells().size())
         {
-            TerrainCell::moveAnimals(timeStep, encounterProbabilitiesFile, predationProbabilitiesFile, saveEdibilitiesFile, edibilitiesFile, exitTimeThreshold, pdfThreshold, muForPDF, sigmaForPDF, predationSpeedRatioAH, predationHunterVoracityAH, predationProbabilityDensityFunctionAH, predationSpeedRatioSAW, predationHunterVoracitySAW, predationProbabilityDensityFunctionSAW, maxSearchArea, encounterHuntedVoracitySAW, encounterHunterVoracitySAW, encounterVoracitiesProductSAW, encounterHunterSizeSAW, encounterHuntedSizeSAW, encounterProbabilityDensityFunctionSAW, encounterHuntedVoracityAH, encounterHunterVoracityAH, encounterVoracitiesProductAH, encounterHunterSizeAH, encounterHuntedSizeAH, encounterProbabilityDensityFunctionAH);
+            TerrainCell::moveAnimals(numberOfTimeSteps, encounterProbabilitiesFile, predationProbabilitiesFile, saveEdibilitiesFile, edibilitiesFile, exitTimeThreshold, pdfThreshold, muForPDF, sigmaForPDF, predationSpeedRatioAH, predationHunterVoracityAH, predationProbabilityDensityFunctionAH, predationSpeedRatioSAW, predationHunterVoracitySAW, predationProbabilityDensityFunctionSAW, maxSearchArea, encounterHuntedVoracitySAW, encounterHunterVoracitySAW, encounterVoracitiesProductSAW, encounterHunterSizeSAW, encounterHuntedSizeSAW, encounterProbabilityDensityFunctionSAW, encounterHuntedVoracityAH, encounterHunterVoracityAH, encounterVoracitiesProductAH, encounterHunterSizeAH, encounterHuntedSizeAH, encounterProbabilityDensityFunctionAH);
         }
         else
         {
-            getMutableChildTerrainCell(index)->moveAnimals(timeStep, encounterProbabilitiesFile, predationProbabilitiesFile, saveEdibilitiesFile, edibilitiesFile, exitTimeThreshold, pdfThreshold, muForPDF, sigmaForPDF, predationSpeedRatioAH, predationHunterVoracityAH, predationProbabilityDensityFunctionAH, predationSpeedRatioSAW, predationHunterVoracitySAW, predationProbabilityDensityFunctionSAW, maxSearchArea, encounterHuntedVoracitySAW, encounterHunterVoracitySAW, encounterVoracitiesProductSAW, encounterHunterSizeSAW, encounterHuntedSizeSAW, encounterProbabilityDensityFunctionSAW, encounterHuntedVoracityAH, encounterHunterVoracityAH, encounterVoracitiesProductAH, encounterHunterSizeAH, encounterHuntedSizeAH, encounterProbabilityDensityFunctionAH);
+            getMutableChildTerrainCell(index)->moveAnimals(numberOfTimeSteps, encounterProbabilitiesFile, predationProbabilitiesFile, saveEdibilitiesFile, edibilitiesFile, exitTimeThreshold, pdfThreshold, muForPDF, sigmaForPDF, predationSpeedRatioAH, predationHunterVoracityAH, predationProbabilityDensityFunctionAH, predationSpeedRatioSAW, predationHunterVoracitySAW, predationProbabilityDensityFunctionSAW, maxSearchArea, encounterHuntedVoracitySAW, encounterHunterVoracitySAW, encounterVoracitiesProductSAW, encounterHunterSizeSAW, encounterHuntedSizeSAW, encounterProbabilityDensityFunctionSAW, encounterHuntedVoracityAH, encounterHunterVoracityAH, encounterVoracitiesProductAH, encounterHunterSizeAH, encounterHuntedSizeAH, encounterProbabilityDensityFunctionAH);
         }
     }
 }
 
-void BranchTerrainCell::performAnimalsActions(int timeStep, ostream& voracitiesFile, fs::path outputFolder, bool saveAnimalConstitutiveTraits, ofstream &constitutiveTraitsFile)
+void BranchTerrainCell::performAnimalsActions(const unsigned int numberOfTimeSteps, ostream& voracitiesFile, fs::path outputFolder, bool saveAnimalConstitutiveTraits, ofstream &constitutiveTraitsFile)
 {
     auto indexVector = Random::createIndicesVector(getChildrenTerrainCells().size() + 1);
 
@@ -1193,46 +1189,11 @@ void BranchTerrainCell::performAnimalsActions(int timeStep, ostream& voracitiesF
     {
         if(index == getChildrenTerrainCells().size())
         {
-            TerrainCell::performAnimalsActions(timeStep, voracitiesFile, outputFolder, saveAnimalConstitutiveTraits, constitutiveTraitsFile);
+            TerrainCell::performAnimalsActions(numberOfTimeSteps, voracitiesFile, outputFolder, saveAnimalConstitutiveTraits, constitutiveTraitsFile);
         }
         else
         {
-            getMutableChildTerrainCell(index)->performAnimalsActions(timeStep, voracitiesFile, outputFolder, saveAnimalConstitutiveTraits, constitutiveTraitsFile);
+            getMutableChildTerrainCell(index)->performAnimalsActions(numberOfTimeSteps, voracitiesFile, outputFolder, saveAnimalConstitutiveTraits, constitutiveTraitsFile);
         }
     }
 }
-
-template <class Archive>
-void BranchTerrainCell::serialize(Archive &ar, const unsigned int version, vector<ExtendedMoisture*>& appliedMoisture) 
-{
-    boost::serialization::base_object<BranchTerrainCellInterface>(*this).serialize(ar, version, appliedMoisture);
-
-    unsigned int numberOfChildrenTerrainCells;
-	if (Archive::is_loading::value)
-	{
-		ar & numberOfChildrenTerrainCells;
-		childrenTerrainCells.resize(numberOfChildrenTerrainCells);
-	}
-	else
-	{
-		numberOfChildrenTerrainCells = childrenTerrainCells.size();
-		ar & numberOfChildrenTerrainCells;
-	}
-
-    SpatialTreeInterface* spatialTreeInterface = static_cast<SpatialTreeInterface*>(&getMutableMapInterface());
-
-    for(SpatialTreeTerrainCellInterface*& newChildrenTerrainCell : childrenTerrainCells)
-	{
-		boost::serialization::serialize(ar, newChildrenTerrainCell, version, this, spatialTreeInterface, appliedMoisture);
-	}
-
-    ar & maximumMoisturePatchPriority;
-    ar & maximumResourcePatchPriority;
-}
-
-// Specialisation
-template void BranchTerrainCell::serialize<boost::archive::text_iarchive>(boost::archive::text_iarchive&, const unsigned int, vector<ExtendedMoisture*>&);
-template void BranchTerrainCell::serialize<boost::archive::text_oarchive>(boost::archive::text_oarchive&, const unsigned int, vector<ExtendedMoisture*>&);
-
-template void BranchTerrainCell::serialize<boost::archive::binary_iarchive>(boost::archive::binary_iarchive&, const unsigned int, vector<ExtendedMoisture*>&);
-template void BranchTerrainCell::serialize<boost::archive::binary_oarchive>(boost::archive::binary_oarchive&, const unsigned int, vector<ExtendedMoisture*>&);

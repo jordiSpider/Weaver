@@ -28,3 +28,8 @@ ostream& operator<<(ostream& os, const Correlosome& correlosome)
 	}
 	return os;
 }
+
+template<class Archive>
+void Correlosome::serialize(Archive & ar, const unsigned int version) {
+	ar & alleles;
+}

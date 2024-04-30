@@ -6,19 +6,15 @@
 #include <nlohmann/json.hpp>
 #include <cmath>
 #include <boost/filesystem.hpp>
-#include <boost/archive/text_oarchive.hpp>
-#include <boost/archive/text_iarchive.hpp>
-#include <boost/archive/binary_oarchive.hpp>
-#include <boost/archive/binary_iarchive.hpp>
 
 #include "IBM/World/Map/SpatialTree/TerrainCells/BranchTerrainCellInterface.h"
 #include "IBM/World/Map/SpatialTree/TerrainCells/SpatialTreeTerrainCell.h"
 #include "IBM/World/Map/SpatialTree/TerrainCells/TemporalLeafTerrainCell.h"
-#include "IBM/World/Map/Points/PointSpatialTree.h"
-#include "IBM/World/Map/TerrainCells/Moisture/SummaryMoisture.h"
-#include "IBM/World/LivingBeings/Resources/SummaryResource.h"
+#include "IBM/World/Map/SpatialTree/Points/PointSpatialTree.h"
+#include "IBM/World/Map/SpatialTree/TerrainCells/Moisture/SummaryMoisture.h"
+#include "IBM/World/Map/SpatialTree/TerrainCells/Resource/SummaryResource.h"
 #include "IBM/World/Map/TerrainCells/Moisture/ExtendedMoisture.h"
-#include "IBM/World/Map/TerrainCells/Moisture/CycleMoisture.h"
+#include "IBM/World/Map/TerrainCells/Moisture/UpdateMethodType/CycleMoisture.h"
 #include "IBM/World/Map/Points/Axis.h"
 #include "IBM/Maths/OptimisedOperators.h"
 #include "IBM/World/Map/Geometry/Coverage.h"
@@ -33,7 +29,7 @@ private:
      * @name Setters
      * @{
      */
-    void setChildTerrainCell(const unsigned int childIndex, BranchTerrainCell* newChild);
+    void setChildTerrainCell(const unsigned int childIndex, std::unique_ptr<BranchTerrainCell> &newChild);
     /** @} */
 
     /**
@@ -65,9 +61,11 @@ private:
     /** @} */
 
 protected:
-    std::vector<SpatialTreeTerrainCellInterface*> childrenTerrainCells;
+    std::vector<std::unique_ptr<SpatialTreeTerrainCellInterface>> childrenTerrainCells;
+    std::vector<SpatialTreeTerrainCellInterface*> childrenTerrainCellPointers;
+    std::vector<const SpatialTreeTerrainCellInterface*> childrenTerrainCellConstPointers;
 
-    void generateChildren(const std::vector<ResourceInterface*>* const resources = nullptr, const std::vector<int>* const resourcePatchPriority = nullptr);
+    void generateChildren(std::vector<ResourceInterface*>* const resources = nullptr, const std::vector<int>* const resourcePatchPriority = nullptr);
 
     const unsigned int calculateChildPositionOnVector(const PointContinuous &childPos) const;
     const unsigned int calculateChildPositionOnVector(const PointSpatialTree &childPos) const;
@@ -92,12 +90,12 @@ protected:
      */
     int maximumMoisturePatchPriority;
 
-    std::pair<bool, bool> applyMoisturePatch(MoisturePatch &moisturePatch); //?
-    std::pair<bool, bool> applyPartialCoverageMoisturePatch(MoisturePatch &moisturePatch); //?
+    std::pair<bool, bool> applyMoisturePatch(const MoisturePatch &moisturePatch); //?
+    std::pair<bool, bool> applyPartialCoverageMoisturePatch(const MoisturePatch &moisturePatch); //?
     const int getMaximumMoisturePatchPriority() const; //?
     void setSummaryMoisturePatch(); //?
     void setMaximumMoisturePatchPriority(const int newMaximumMoisturePatchPriority); //?
-    void setMoistureSourcePatch(MoisturePatch &moisturePatch) override;
+    void setMoistureSourcePatch(const MoisturePatch &moisturePatch) override;
     void setMoistureSourcePatch(MoistureInterface* const &newMoistureInfo, const int newMoisturePatchPriority);
     void setMoisturePatch(MoistureInterface* const &newMoistureInfo, const int newMoisturePatchPriority, const bool newMoistureSourceValue, const bool newInMoisturePatchValue) override; //?
     void setMoisturePatch(MoistureInterface* const &newMoistureInfo, const int newMoisturePatchPriority, const int newMaximumMoisturePatchPriority, const bool newMoistureSourceValue, const bool newInMoisturePatchValue); //?
@@ -115,9 +113,9 @@ protected:
     void setSummaryResourcePatch(const unsigned int resourceSpeciesId); //?
     const int getMaximumResourcePatchPriority(const unsigned int resourceSpeciesId) const; //?
     void setMaximumResourcePatchPriority(const unsigned int resourceSpeciesId, const int newMaximumResourcePatchPriority); //?
-    void setResourceSourcePatch(ResourceInterface* &newResource, const int newResourcePatchPriority);
-    void setResourcePatch(const unsigned int resourceSpeciesId, ResourceInterface* &newResource, const int newResourcePatchPriority) override; //?
-    void setResourcePatch(const unsigned int resourceSpeciesId, ResourceInterface* &newResource, const int newResourcePatchPriority, const int newMaximumResourcePatchPriority); //?
+    void setResourceSourcePatch(std::unique_ptr<ResourceInterface> &newResource, const int newResourcePatchPriority);
+    void setResourcePatch(const unsigned int resourceSpeciesId, std::unique_ptr<ResourceInterface> &newResource, const int newResourcePatchPriority) override; //?
+    void setResourcePatch(const unsigned int resourceSpeciesId, std::unique_ptr<ResourceInterface> &newResource, const int newResourcePatchPriority, const int newMaximumResourcePatchPriority); //?
     /** @} */
 
     /** @} */
@@ -125,24 +123,23 @@ protected:
     void updateTotalMaximumResourceCapacity() override;
 
 public:
-    BranchTerrainCell(BranchTerrainCellInterface* const parentTerrainCell, SpatialTreeInterface* const mapInterface);
     // Constructor with default moisture info
-    BranchTerrainCell(BranchTerrainCellInterface* const parentTerrainCell, PointSpatialTree* const position, SpatialTreeInterface* const mapInterface);
+    BranchTerrainCell(BranchTerrainCellInterface* const parentTerrainCell, PointSpatialTree* const position, SpatialTree* const map);
     // Constructor from a temporal leaf
-    BranchTerrainCell(const TemporalLeafTerrainCell &leaf);
+    BranchTerrainCell(TemporalLeafTerrainCell &leaf);
     virtual ~BranchTerrainCell();
 
     // Getter
-    const std::vector<SpatialTreeTerrainCellInterface*>& getChildrenTerrainCells() const;
+    const std::vector<const SpatialTreeTerrainCellInterface*>& getChildrenTerrainCells() const;
     std::vector<SpatialTreeTerrainCellInterface*>& getMutableChildrenTerrainCells();
     const SpatialTreeTerrainCellInterface* const getChildTerrainCell(const unsigned int childIndex) const;
     SpatialTreeTerrainCellInterface* getMutableChildTerrainCell(const unsigned int childIndex);
     const SpatialTreeTerrainCellInterface* const getChildTerrainCell(const PointSpatialTree &cellPos) const;
     SpatialTreeTerrainCellInterface* getMutableChildTerrainCell(const PointSpatialTree &cellPos);
 
-    void insertAnimal(AnimalInterface* const newAnimal) override;
-    TerrainCellInterface* randomInsertAnimalOnChild(AnimalInterface* const newAnimal, TerrainCellInterface* child);
-    std::tuple<bool, TerrainCellInterface*, TerrainCellInterface*> randomInsertAnimal(AnimalInterface* const newAnimal) override;
+    void insertAnimal(Animal* const newAnimal) override;
+    std::tuple<TerrainCellInterface*, Animal*, unsigned int> randomInsertAnimalOnChild(const Instar &instar, AnimalSpecies* animalSpecies, TerrainCellInterface* child, const bool isStatistical);
+    std::tuple<bool, TerrainCellInterface*, TerrainCellInterface*, Animal*, unsigned int> randomInsertAnimal(const Instar &instar, AnimalSpecies* animalSpecies, const bool isStatistical) override;
 
     void eraseAllAnimals();
     void purgeDeadAnimals();
@@ -160,28 +157,28 @@ public:
 
     void updateMoisture() override;
     void updateChildrenMoisture();
-    void update(const unsigned int timeStep, std::ostream& tuneTraitsFile) override;
-    void updateChildren(const unsigned int timeStep, std::ostream& tuneTraitsFile);
+    void update(const unsigned int numberOfTimeSteps, std::ostream& tuneTraitsFile) override;
+    void updateChildren(const unsigned int numberOfTimeSteps, std::ostream& tuneTraitsFile);
 
     std::unique_ptr<std::vector<unsigned int>> calculateChildrenPositions(const PointMap &sourcePosition) const;
     void calculateChildrenPositionsRecursively(std::unique_ptr<std::vector<unsigned int>> &childrenPositions, 
                                    const unsigned int contactAxis, const bool bottomContactSide, const unsigned int currentCombination, 
                                    const unsigned int indexVector) const;
 
-    void obtainInhabitableTerrainCells(std::vector<TerrainCellInterface*>& inhabitableTerrainCells) override;
+    void obtainInhabitableTerrainCells() override;
 
     SpatialTreeTerrainCellInterface* const getCell(const PointSpatialTree &cellPos);
 
     void printAnimals(std::ofstream &file) const;
     void printCell(std::vector<std::pair<std::vector<double>, std::vector<unsigned int>>> &mapCellsInfo);
 
-    void obtainWorldAnimalsPopulation(CustomIndexedVector<AnimalSpecies::AnimalID, CustomIndexedVector<LifeStage, unsigned int>> &worldAnimalsPopulation) override;
-    void obtainAnimalsPopulationAndGeneticsFrequencies(CustomIndexedVector<AnimalSpecies::AnimalID, CustomIndexedVector<LifeStage, unsigned int>> &worldAnimalsPopulation, std::vector<std::vector<std::pair<std::vector<double>, std::vector<double>>>> &worldGeneticsFrequencies) override;
+    void obtainWorldAnimalsPopulation(std::vector<std::vector<unsigned int>> &worldAnimalsPopulation) override;
+    void obtainAnimalsPopulationAndGeneticsFrequencies(std::vector<std::vector<unsigned int>> &worldAnimalsPopulation, std::vector<std::vector<std::pair<std::vector<double>, std::vector<double>>>> &worldGeneticsFrequencies) override;
     void saveAnimalSpeciesSnapshot(std::ofstream &file, const AnimalSpecies* const &species) override;
     void saveResourceSpeciesSnapshot(std::ofstream &file, const ResourceSpecies* const &species) const override;
     void saveWaterSnapshot(std::ofstream &file) const override;
-    void moveAnimals(int day, std::ostream& encounterProbabilitiesFile, std::ostream& predationProbabilitiesFile, bool saveEdibilitiesFile, std::ostream& edibilitiesFile, float exitTimeThreshold, double pdfThreshold, double muForPDF, double sigmaForPDF, double predationSpeedRatioAH, double predationHunterVoracityAH, double predationProbabilityDensityFunctionAH, double predationSpeedRatioSAW, double predationHunterVoracitySAW, double predationProbabilityDensityFunctionSAW, double maxSearchArea, double encounterHuntedVoracitySAW, double encounterHunterVoracitySAW, double encounterVoracitiesProductSAW, double encounterHunterSizeSAW, double encounterHuntedSizeSAW, double encounterProbabilityDensityFunctionSAW, double encounterHuntedVoracityAH, double encounterHunterVoracityAH, double encounterVoracitiesProductAH, double encounterHunterSizeAH, double encounterHuntedSizeAH, double encounterProbabilityDensityFunctionAH) override;
-    void performAnimalsActions(int timeStep, std::ostream& voracitiesFile, boost::filesystem::path outputFolder, bool saveAnimalConstitutiveTraits, std::ofstream &constitutiveTraitsFile);
+    void moveAnimals(const unsigned int numberOfTimeSteps, std::ostream& encounterProbabilitiesFile, std::ostream& predationProbabilitiesFile, bool saveEdibilitiesFile, std::ostream& edibilitiesFile, float exitTimeThreshold, double pdfThreshold, double muForPDF, double sigmaForPDF, double predationSpeedRatioAH, double predationHunterVoracityAH, double predationProbabilityDensityFunctionAH, double predationSpeedRatioSAW, double predationHunterVoracitySAW, double predationProbabilityDensityFunctionSAW, double maxSearchArea, double encounterHuntedVoracitySAW, double encounterHunterVoracitySAW, double encounterVoracitiesProductSAW, double encounterHunterSizeSAW, double encounterHuntedSizeSAW, double encounterProbabilityDensityFunctionSAW, double encounterHuntedVoracityAH, double encounterHunterVoracityAH, double encounterVoracitiesProductAH, double encounterHunterSizeAH, double encounterHuntedSizeAH, double encounterProbabilityDensityFunctionAH) override;
+    void performAnimalsActions(const unsigned int numberOfTimeSteps, std::ostream& voracitiesFile, boost::filesystem::path outputFolder, bool saveAnimalConstitutiveTraits, std::ofstream &constitutiveTraitsFile);
 
     /**
      * @name Getters
@@ -198,7 +195,7 @@ public:
      * @{
      */
     EdiblesOnRadius getMutableEdiblesDown(
-        std::function<bool(AnimalInterface&)> downChecker, const Ring &effectiveArea,
+        std::function<bool(Animal&)> downChecker, const Ring &effectiveArea,
         const EdibleSearchParams &edibleSearchParams
     );
     /** @} */
@@ -230,14 +227,10 @@ public:
      * @name Moisture patches
      * @{
      */
-    void setSubdivisionMoisturePatch(MoisturePatch &moisturePatch) override; //?
+    void setSubdivisionMoisturePatch(const MoisturePatch &moisturePatch) override; //?
     /** @} */
 
     /** @} */
-
-
-    template <class Archive>
-    void serialize(Archive &ar, const unsigned int version, std::vector<ExtendedMoisture*>& appliedMoisture);
 };
 
 #endif /* BRANCH_TERRAINCELL_H_ */

@@ -18,17 +18,22 @@ class AquaticWorld : public World {
 private:
     friend class boost::serialization::access;
 
+protected:
+    const double multiplierForFieldMetabolicRate = 3.0;
+
+    const double calculateWetFood(const double& wetMass) const;
+
 public:
     AquaticWorld(nlohmann::json * jsonTree, nlohmann::json &worldConfig, boost::filesystem::path outputFolder, boost::filesystem::path configPath, int burnIn);
-	AquaticWorld();
-    virtual ~AquaticWorld();
+	virtual ~AquaticWorld();
 
-    double calculateNewBiomass(const double &biomass, const double &rateOfIncrease, const ResourceSpecies* const species) const;
-    double calculateNewVoracity(const double &wetMass, const double &conversionToWetMass) const;
-    double calculateTotalMetabolicDryMassLoss(const double &wetMass, const double &proportionOfTimeTheAnimalWasMoving, const Animal* const animal) const;
+    double calculateNewBiomassPerDay(const double &biomass, const double &rateOfIncrease, const ResourceSpecies* const species) const;
+    double calculateTotalMetabolicDryMassLossPerDay(const double &wetMass, const double &proportionOfTimeTheAnimalWasMoving, const AnimalNonStatistical* const animal) const;
     const double getPdfThreshold() const;
-    double getPredictedSpeed(const AnimalInterface* const animal) const;
-    const Type getWorldType() const;
+    
+    double calculateMaxMassPredicted(const double& dryMass, const double& wetMass, const double& conversionToWetMass, const unsigned int numberOfTimeSteps, const bool hasCapitalBreeding, const double& minTotalMetabolicDryMassLoss, const double& newAAdult, const double& newB) const;
+
+    double calculatePostTSpeed(const double& speedValue, const double& wetMass, const double& scaleForSpeed) const;
 
     /**
      * @brief Serialize the AquaticWorld object.

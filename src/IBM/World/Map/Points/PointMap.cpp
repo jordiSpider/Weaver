@@ -1,26 +1,8 @@
 
 #include "IBM/World/Map/Points/PointMap.h"
 
-#include "IBM/World/Map/Points/PointSpatialTree.h"
-#include "IBM/World/Map/MapInterface.h"
-
 using namespace std;
 
-
-
-unique_ptr<PointMap> PointMap::createInstance(const MapInterface& mapInterface)
-{
-	switch(mapInterface.getMapType()) {
-		case MapInterface::Type::SpatialTree: {
-			return make_unique<PointSpatialTree>();
-			break;
-		}
-		default: {
-			throwLineInfoException("Default case");
-			break;
-		}
-	}
-}
 
 
 PointMap::PointMap()
@@ -116,48 +98,4 @@ bool PointMap::operator==(const PointMap& other) const
 bool PointMap::operator!=(const PointMap& other) const
 {
     return !(*this==other);
-}
-
-template <class Archive>
-void PointMap::serialize(Archive &ar, const unsigned int version) {
-    ar & axisValues;
-}
-
-// Specialisation
-template void PointMap::serialize<boost::archive::text_iarchive>(boost::archive::text_iarchive&, const unsigned int);
-template void PointMap::serialize<boost::archive::text_oarchive>(boost::archive::text_oarchive&, const unsigned int);
-
-template void PointMap::serialize<boost::archive::binary_iarchive>(boost::archive::binary_iarchive&, const unsigned int);
-template void PointMap::serialize<boost::archive::binary_oarchive>(boost::archive::binary_oarchive&, const unsigned int);
-
-
-namespace boost {
-    namespace serialization {
-        template<class Archive>
-        void serialize(Archive &ar, PointMap* &pointMapPtr, const unsigned int version, const MapInterface& mapInterface) {
-            // For loading
-            if(Archive::is_loading::value) 
-            {
-                pointMapPtr = PointMap::createInstance(mapInterface).release();
-            }
-
-            switch(mapInterface.getMapType()) {
-                case MapInterface::Type::SpatialTree: {
-                    static_cast<PointSpatialTree*>(pointMapPtr)->serialize(ar, version);
-                    break;
-                }
-                default: {
-                    throwLineInfoException("Default case");
-                    break;
-                }
-            }
-        }
-
-        // Specialisation
-        template void serialize<boost::archive::text_iarchive>(boost::archive::text_iarchive&, PointMap*&, const unsigned int, const MapInterface&);
-        template void serialize<boost::archive::text_oarchive>(boost::archive::text_oarchive&, PointMap*&, const unsigned int, const MapInterface&);
-
-        template void serialize<boost::archive::binary_iarchive>(boost::archive::binary_iarchive&, PointMap*&, const unsigned int, const MapInterface&);
-        template void serialize<boost::archive::binary_oarchive>(boost::archive::binary_oarchive&, PointMap*&, const unsigned int, const MapInterface&);
-    }
 }

@@ -46,10 +46,3 @@ void OntogeneticLink::serialize(Archive & ar, const unsigned int version) {
     ar & preference;
     ar & profitability;
 }
-
-// Specialisation
-template void OntogeneticLink::serialize<boost::archive::text_iarchive>(boost::archive::text_iarchive&, const unsigned int);
-template void OntogeneticLink::serialize<boost::archive::text_oarchive>(boost::archive::text_oarchive&, const unsigned int);
-
-template void OntogeneticLink::serialize<boost::archive::binary_iarchive>(boost::archive::binary_iarchive&, const unsigned int);
-template void OntogeneticLink::serialize<boost::archive::binary_oarchive>(boost::archive::binary_oarchive&, const unsigned int);

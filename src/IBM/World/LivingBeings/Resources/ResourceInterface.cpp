@@ -1,70 +1,14 @@
 #include "IBM/World/LivingBeings/Resources/ResourceInterface.h"
-
 #include "IBM/World/Map/TerrainCells/TerrainCellInterface.h"
 #include "IBM/World/Map/SpatialTree.h"
-#include "IBM/World/WorldInterface.h"
-#include "IBM/World/LivingBeings/Resources/Resource.h"
+#include "IBM/World/World.h"
 
 using namespace std;
 
 
 
-unique_ptr<ResourceInterface> ResourceInterface::createInstance(ResourceSpecies* const mySpecies, 
-		TerrainCellInterface* terrainCellInterface, double biomass, double resourceMaximumCapacity, 
-		double massRatio, bool patchSpread)
-{
-    switch(Type::Default) {
-        case Type::Default: {
-            return make_unique<Resource>(mySpecies, terrainCellInterface, biomass, resourceMaximumCapacity, 
-				massRatio, patchSpread
-			);
-            break;
-        }
-        default: {
-            throwLineInfoException("Default case");
-            break;
-        }
-    }
-}
-
-unique_ptr<ResourceInterface> ResourceInterface::createInstance(
-    const MapInterface& mapInterface, TerrainCellInterface* const terrainCellInterface)
-{
-    switch(mapInterface.getMapType()) {
-		case MapInterface::Type::SpatialTree: {
-            switch(static_cast<SpatialTreeTerrainCellInterface* const>(terrainCellInterface)->getSpatialTreeTerrainCellType()) {
-                case SpatialTreeTerrainCellInterface::Type::Branch: {
-                    return make_unique<SummaryResource>(static_cast<BranchTerrainCellInterface* const>(terrainCellInterface));
-                    break;
-                }
-                case SpatialTreeTerrainCellInterface::Type::Leaf:
-                case SpatialTreeTerrainCellInterface::Type::TemporalLeaf: {
-                    return make_unique<Resource>(terrainCellInterface);
-                    break;
-                }
-                default: {
-                    throwLineInfoException("Default case");
-                    break;
-                }
-            }
-			break;
-		}
-		default: {
-			throwLineInfoException("Default case");
-			break;
-		}
-	}
-}
-
-
-ResourceInterface::ResourceInterface(TerrainCellInterface* terrainCellInterface)
-    : Edible(terrainCellInterface)
-{
-
-}
-
-ResourceInterface::ResourceInterface(Species* const mySpecies, TerrainCellInterface* terrainCellInterface, const Instar &instar, const double &biomass)
-    : Edible(mySpecies, terrainCellInterface, instar, false), biomass(biomass), fullCapacity(false)
+ResourceInterface::ResourceInterface(const id_type id, Species* const mySpecies, TerrainCellInterface* terrainCellInterface, const Instar &instar, const double &biomass)
+    : Edible(id, mySpecies, terrainCellInterface, instar), biomass(biomass), fullCapacity(false)
 {
 	
 }
@@ -74,9 +18,14 @@ ResourceInterface::~ResourceInterface()
 
 }
 
-ResourceSpecies* const ResourceInterface::getSpecies() const 
+const ResourceSpecies* const ResourceInterface::getSpecies() const 
 { 
-	return static_cast<ResourceSpecies* const>(Edible::getSpecies()); 
+	return static_cast<const ResourceSpecies* const>(Edible::getSpecies()); 
+}
+
+ResourceSpecies* const ResourceInterface::getMutableSpecies() 
+{ 
+	return static_cast<ResourceSpecies* const>(Edible::getMutableSpecies()); 
 }
 
 const double ResourceInterface::getSpeed() const 
@@ -85,11 +34,6 @@ const double ResourceInterface::getSpeed() const
 }
 
 const double ResourceInterface::getVoracity() const 
-{ 
-	return 0.0; 
-}
-
-const double ResourceInterface::getCurrentBodySize() const 
 { 
 	return 0.0; 
 }
@@ -144,7 +88,7 @@ void ResourceInterface::updateFullCapacityStatus()
 {
 	setFullCapacity(false);
 
-	if(getTerrainCellInterface()->getMapInterface().getWorldInterface()->getCompetitionAmongResourceSpecies())
+	if(getTerrainCellInterface()->getMap().getWorld()->getCompetitionAmongResourceSpecies())
 	{
 		for(auto &resource : getMutableTerrainCellInterface()->getMutableResources())
 		{
@@ -158,7 +102,7 @@ void ResourceInterface::updateFullCapacityStatus()
 		}
 	}
 
-	auto neighbours = getTerrainCellInterface()->getMutableMapInterface().getResourceNeighbours(getMutableTerrainCellInterface(), getSpecies()->getResourceSpeciesId(), 1);
+	auto neighbours = getTerrainCellInterface()->getMutableMap().getResourceNeighbours(getMutableTerrainCellInterface(), getSpecies()->getResourceSpeciesId(), 1);
 
 	for(auto &neighbour : *neighbours)
 	{
@@ -233,7 +177,7 @@ const double ResourceInterface::getInterpolatedDryMass(const unsigned int evalua
 		biomassToEvaluate = dryMass / static_cast<double>(displacementPower(1, DIMENSIONS * depthDifference));
 	}
 
-	return MathFunctions::linearInterpolate01(biomassToEvaluate, getSpecies()->getInstarK_Value(Instar(getSpecies()->getNumberOfInstars()), static_cast<const SpatialTreeInterface &>(getTerrainCellInterface()->getMapInterface()).getCellSize(evaluationDepth)));
+	return MathFunctions::linearInterpolate01(biomassToEvaluate, getSpecies()->getInstarK_Value(Instar(getSpecies()->getNumberOfInstars()), static_cast<const SpatialTree &>(getTerrainCellInterface()->getMap()).getCellSize(evaluationDepth)));
 }
 
 const double ResourceInterface::turnIntoDryMassToBeEaten(const double &predatorVoracity, const float &profitability, const double &leftovers) const 
@@ -247,13 +191,13 @@ void ResourceInterface::setNewLifeStage(const LifeStage newLifeStage)
 }
 
 
-void ResourceInterface::setNewLifeStage(const LifeStage newLifeStage, double dayOfDeath) 
+void ResourceInterface::setNewLifeStage(const LifeStage newLifeStage, const unsigned int numberOfTimeSteps) 
 {
 	throwLineInfoException("No implementation");
 }
 
 
-void ResourceInterface::setNewLifeStage(const LifeStage newLifeStage, double dayOfDeath, int predatorId) 
+void ResourceInterface::setNewLifeStage(const LifeStage newLifeStage, const unsigned int numberOfTimeSteps, int predatorId) 
 {
 	throwLineInfoException("No implementation");
 }
@@ -285,7 +229,7 @@ bool ResourceInterface::canEatEdible(const EdibleInterface* const &edible, const
 	return false; 
 }
 
-bool ResourceInterface::predateEdible(EdibleInterface &edibleToBePredated, const double &targetDryMass, const Ring* const perceptionArea, int day, bool retaliation, std::list<const EdibleInterface*> &ediblesHasTriedToPredate, ostream& encounterProbabilitiesFile, ostream& predationProbabilitiesFile, double muForPDF, double sigmaForPDF, double predationSpeedRatioAH, double predationHunterVoracityAH, double predationProbabilityDensityFunctionAH, double predationSpeedRatioSAW, double predationHunterVoracitySAW, double predationProbabilityDensityFunctionSAW, double maxSearchArea)
+bool ResourceInterface::predateEdible(EdibleInterface &edibleToBePredated, const double &targetDryMass, const Ring* const perceptionArea, const unsigned int numberOfTimeSteps, bool retaliation, std::list<const EdibleInterface*> &ediblesHasTriedToPredate, ostream& encounterProbabilitiesFile, ostream& predationProbabilitiesFile, double muForPDF, double sigmaForPDF, double predationSpeedRatioAH, double predationHunterVoracityAH, double predationProbabilityDensityFunctionAH, double predationSpeedRatioSAW, double predationHunterVoracitySAW, double predationProbabilityDensityFunctionSAW, double maxSearchArea)
 { 
 	return false; 
 }
@@ -314,67 +258,4 @@ bool ResourceInterface::isDepleted(double foodDemand, const double &dryMass) con
 void ResourceInterface::removeBiomass()
 {
 	setBiomass(0.0);
-}
-
-template <class Archive>
-void ResourceInterface::serialize(Archive &ar, const unsigned int version) {
-    ar & boost::serialization::base_object<Edible>(*this);
-    
-    ar & biomass;
-	ar & fullCapacity;
-}
-
-// Specialisation
-template void ResourceInterface::serialize<boost::archive::text_iarchive>(boost::archive::text_iarchive&, const unsigned int);
-template void ResourceInterface::serialize<boost::archive::text_oarchive>(boost::archive::text_oarchive&, const unsigned int);
-
-template void ResourceInterface::serialize<boost::archive::binary_iarchive>(boost::archive::binary_iarchive&, const unsigned int);
-template void ResourceInterface::serialize<boost::archive::binary_oarchive>(boost::archive::binary_oarchive&, const unsigned int);
-
-
-namespace boost {
-    namespace serialization {
-        template<class Archive>
-        void serialize(Archive &ar, ResourceInterface* &resourceInterfacePtr, const unsigned int version, 
-                const MapInterface& mapInterface, TerrainCellInterface* const terrainCellInterface) {
-            
-            // For loading
-			if(Archive::is_loading::value) 
-			{
-				resourceInterfacePtr = ResourceInterface::createInstance(mapInterface, terrainCellInterface).release();
-			}
-
-			switch(mapInterface.getMapType()) {
-				case MapInterface::Type::SpatialTree: {
-					switch(static_cast<SpatialTreeTerrainCellInterface* const>(terrainCellInterface)->getSpatialTreeTerrainCellType()) {
-						case SpatialTreeTerrainCellInterface::Type::Branch: {
-							static_cast<SummaryResource*>(resourceInterfacePtr)->serialize(ar, version);
-							break;
-						}
-						case SpatialTreeTerrainCellInterface::Type::Leaf:
-						case SpatialTreeTerrainCellInterface::Type::TemporalLeaf: {
-							static_cast<Resource*>(resourceInterfacePtr)->serialize(ar, version);
-							break;
-						}
-						default: {
-							throwLineInfoException("Default case");
-							break;
-						}
-					}
-					break;
-				}
-				default: {
-					throwLineInfoException("Default case");
-					break;
-				}
-			}
-        }
-
-        // Specialisation
-        template void serialize<boost::archive::text_iarchive>(boost::archive::text_iarchive&, ResourceInterface*&, const unsigned int, const MapInterface&, TerrainCellInterface* const);
-        template void serialize<boost::archive::text_oarchive>(boost::archive::text_oarchive&, ResourceInterface*&, const unsigned int, const MapInterface&, TerrainCellInterface* const);
-
-        template void serialize<boost::archive::binary_iarchive>(boost::archive::binary_iarchive&, ResourceInterface*&, const unsigned int, const MapInterface&, TerrainCellInterface* const);
-        template void serialize<boost::archive::binary_oarchive>(boost::archive::binary_oarchive&, ResourceInterface*&, const unsigned int, const MapInterface&, TerrainCellInterface* const);
-    }
 }

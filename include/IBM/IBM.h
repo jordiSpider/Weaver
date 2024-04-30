@@ -26,14 +26,13 @@
 #include "Misc/Utilities.h"
 #include "Misc/GlobalVariable.h"
 #include "IBM/Maths/Random.h"
-#include "IBM/World/WorldInterface.h"
+#include "IBM/World/World.h"
 
 
 class IBM
 {
 public:
     static void run(boost::filesystem::path inputConfigPath, boost::filesystem::path outputFolder, bool silentMode, int burnIn);
-	static void run(boost::filesystem::path checkpoint, bool isBinaryCheckpoint, bool silentMode);
 };
 
 #endif // IBM_H_

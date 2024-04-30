@@ -1,14 +1,8 @@
 #ifndef POINT_CONTINUOUS_H_
 #define POINT_CONTINUOUS_H_
 
-#include <vector>
 #include <boost/geometry/geometries/point.hpp>
 #include <boost/geometry/core/cs.hpp>
-#include <boost/archive/text_oarchive.hpp>
-#include <boost/archive/text_iarchive.hpp>
-#include <boost/archive/binary_oarchive.hpp>
-#include <boost/archive/binary_iarchive.hpp>
-#include <boost/serialization/vector.hpp>
 
 #include "Exceptions/LineInfoException.h"
 
@@ -96,18 +90,6 @@ constexpr void setPositionAxisValue(PointContinuous& position, const unsigned in
     #else
         throwLineInfoException("Invalid DIMENSIONS value");
     #endif
-}
-
-
-
-namespace boost {
-    namespace serialization {
-        template<class Archive>
-        void serialize(Archive &ar, PointContinuous &pointContinuous, const unsigned int version);
-
-        template<class Archive>
-        void serialize(Archive &ar, PointContinuous* &pointContinuousPtr, const unsigned int version);
-    }
 }
 
 #endif /* POINT_CONTINUOUS_H_ */

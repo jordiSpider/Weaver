@@ -36,6 +36,11 @@ void IBM::run(fs::path inputConfigPath, fs::path outputFolder, bool silentMode, 
 	try
 	{
 		inputConfigPath = fs::canonical(inputConfigPath);
+
+		// Para los casos donde hay una barra al final de la ruta
+		if(inputConfigPath.string().back() == fs::path::preferred_separator) {
+			inputConfigPath = inputConfigPath.parent_path();
+		}
 	}
 	catch(const boost::filesystem::filesystem_error& e)
 	{
@@ -78,7 +83,7 @@ void IBM::run(fs::path inputConfigPath, fs::path outputFolder, bool silentMode, 
 
 	json worldConfig = readConfigFile(inputConfigPath / fs::path("world_params.json"), schemaFolder / fs::path(WORLD_PARAMS_SCHEMA));
 
-	unique_ptr<WorldInterface> myWorld = WorldInterface::createInstance(&simulationConfiguration, worldConfig, resultFolder, inputConfigPath, burnIn);
+	unique_ptr<World> myWorld = World::createInstance(&simulationConfiguration, worldConfig, resultFolder, inputConfigPath, burnIn);
 
 	myWorld->initializeAnimals();
 
@@ -121,99 +126,4 @@ void IBM::run(fs::path inputConfigPath, fs::path outputFolder, bool silentMode, 
 	{
 		cout.rdbuf(backing);
 	}
-}
-
-void IBM::run(fs::path checkpoint, bool isBinaryCheckpoint, bool silentMode)
-{
-	#ifdef USE_CPU_PROFILER
-		ProfilerStart("./profiler/cpuProfiler.txt");
-	#endif
-	
-	#ifdef USE_HEAP_PROFILER
-		HeapProfilerStart("./profiler/heapProfiler");
-	#endif
-
-    auto start = std::chrono::high_resolution_clock::now();
-
-    #ifdef UNIX
-	ofstream nullFile("/dev/null"); 
-	#endif
-	#ifdef WINDOWS
-	ofstream nullFile("NUL");
-	#endif
-
-	streambuf* backing = nullptr;
-	if(silentMode)
-	{
-		backing = cout.rdbuf(nullFile.rdbuf());
-	}
-
-	// Convert checkpoint relative path to absolute path
-	try
-	{
-		checkpoint = fs::canonical(checkpoint);
-	}
-	catch(const boost::filesystem::filesystem_error& e)
-	{
-		throwLineInfoException("The checkpoint file does not exist or is not a valid file");
-	}
-
-	cout << "========================================" << endl;
-	cout << "Reading checkpoint and resuming world..." << endl;
-	cout << "========================================" << endl << endl;
-
-	WorldInterface* myWorld;
-	unsigned int projectVersion = projectVersionStringToNumber(PROJECT_VERSION);
-
-	if(isBinaryCheckpoint)
-	{
-		InputFileStream ifs(checkpoint);
-		boost::archive::binary_iarchive ia(ifs);
-		boost::serialization::serialize(ia, myWorld, projectVersion);
-		ifs.close();
-	}
-	else
-	{
-		InputFileStream ifs(checkpoint);
-		boost::archive::text_iarchive ia(ifs);
-		boost::serialization::serialize(ia, myWorld, projectVersion);
-		ifs.close();
-	}
-
-	#ifdef USE_HEAP_PROFILER
-		HeapProfilerDump("prueba");
-	#endif
-
-
-	cout << "DONE" << endl << endl;
-
-	cout << "======================" << endl;
-	cout << "Running simulation ..." << endl;
-	cout << "======================" << endl << endl;
-
-	myWorld->evolveWorld(true);
-
-	cout << "DONE" << endl;
-
-	#ifdef USE_CPU_PROFILER
-		ProfilerStop();
-	#endif
-
-	#ifdef USE_HEAP_PROFILER
-		HeapProfilerStop();
-	#endif
-
-	auto end = std::chrono::high_resolution_clock::now();
-
-	std::chrono::duration<double> elapsed = end - start;
-
-	ofstream timeFile(myWorld->getOutputFolder() / fs::path("executionTime.txt"));
-	timeFile << elapsed.count() << " segs" << endl;
-
-	if(silentMode)
-	{
-		cout.rdbuf(backing);
-	}
-
-	delete myWorld;
 }

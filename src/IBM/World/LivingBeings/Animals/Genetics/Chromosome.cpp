@@ -10,11 +10,6 @@
 using namespace std;
 
 
-Chromosome::Chromosome()
-{
-
-}
-
 Chromosome::Chromosome(const unsigned int numberOfLociPerChromosome)
 {
 	alleles.reserve(numberOfLociPerChromosome);
@@ -54,53 +49,6 @@ ostream& operator<<(ostream& os, const Chromosome &chromosome)
 }
 
 template<class Archive>
-void Chromosome::serialize(Archive & ar, const unsigned int version, const vector<Locus> &loci) {
-	unsigned int numberOfAlleles;
-	if(Archive::is_loading::value) 
-	{
-		ar & numberOfAlleles;
-		alleles.resize(numberOfAlleles);
-	}
-	else
-	{
-		numberOfAlleles = alleles.size();
-		ar & numberOfAlleles;
-	}
-
-	for(unsigned int i = 0; i < numberOfAlleles; i++)
-	{
-		unsigned int alleleAlphabeticOrder;
-		if(Archive::is_loading::value) 
-		{
-			ar & alleleAlphabeticOrder;
-			alleles[i] = &loci[i].getAlleles().at(alleleAlphabeticOrder);
-		}
-		else
-		{
-			alleleAlphabeticOrder = alleles[i]->getAlphabeticOrder();
-			ar & alleleAlphabeticOrder;
-		}
-	}
-}
-
-
-namespace boost {
-    namespace serialization {
-        template<class Archive>
-        void serialize(Archive &ar, Chromosome* &chromosomePtr, const unsigned int version, const vector<Locus> &loci) {
-			if(Archive::is_loading::value) 
-			{
-				chromosomePtr = new Chromosome();
-			}
-
-			chromosomePtr->serialize(ar, version, loci);
-        }
-
-        // Specialisation
-        template void serialize<boost::archive::text_iarchive>(boost::archive::text_iarchive&, Chromosome*&, const unsigned int, const vector<Locus> &);
-        template void serialize<boost::archive::text_oarchive>(boost::archive::text_oarchive&, Chromosome*&, const unsigned int, const vector<Locus> &);
-
-        template void serialize<boost::archive::binary_iarchive>(boost::archive::binary_iarchive&, Chromosome*&, const unsigned int, const vector<Locus> &);
-        template void serialize<boost::archive::binary_oarchive>(boost::archive::binary_oarchive&, Chromosome*&, const unsigned int, const vector<Locus> &);
-    }
+void Chromosome::serialize(Archive & ar, const unsigned int version) {
+	ar & alleles;
 }

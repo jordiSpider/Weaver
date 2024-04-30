@@ -7,8 +7,6 @@
 #include <boost/serialization/access.hpp>
 #include <boost/archive/binary_iarchive.hpp>
 #include <boost/archive/binary_oarchive.hpp>
-#include <boost/serialization/vector.hpp>
-#include <boost/serialization/unordered_set.hpp>
 #include <fstream>
 #include <ostream>
 
@@ -16,11 +14,9 @@
 #include "IBM/World/LivingBeings/Edible.h"
 #include "IBM/World/LivingBeings/Animals/Species/AnimalSpecies.h"
 #include "IBM/World/LivingBeings/LifeStage.h"
-#include "Misc/CustomIndexedVector.h"
-#include "Misc/EnumClass.h"
 
 
-class WorldInterface;
+class World;
 
 
 class AnimalSearchParams
@@ -29,43 +25,43 @@ private:
     friend class boost::serialization::access;
 
 protected:
-    std::unordered_set<LifeStage> searchableLifeStages;
-    CustomIndexedVector<LifeStage, std::unordered_set<AnimalSpecies::AnimalID>> searchableAnimalSpecies;
-    CustomIndexedVector<LifeStage, std::vector<std::unordered_set<Instar>>> searchableInstars;
-    CustomIndexedVector<LifeStage, std::vector<CustomIndexedVector<Instar, std::unordered_set<AnimalSpecies::Gender>>>> searchableGenders;
+    std::unordered_set<LifeStage::LifeStageValue> searchableLifeStages;
+    std::vector<std::unordered_set<id_type>> searchableAnimalSpecies;
+    std::vector<std::vector<std::unordered_set<Instar>>> searchableInstars;
+    std::vector<std::vector<InstarVector<std::unordered_set<AnimalSpecies::Gender::GenderValue>>>> searchableGenders;
 
-    void initializedParams(const WorldInterface* const worldInterface);
+    void initializedParams(const World* const world);
 
 public:
     AnimalSearchParams();
     AnimalSearchParams(
-        const WorldInterface* const worldInterface,
-        const std::vector<LifeStage> &newSearchableLifeStages,
-        const std::vector<AnimalSpecies::AnimalID> &newSearchableAnimalSpecies = {},
+        const World* const world,
+        const std::vector<LifeStage::LifeStageValue> &newSearchableLifeStages,
+        const std::vector<id_type> &newSearchableAnimalSpecies = {},
         const std::vector<Instar> &newSearchableInstars = {},
-        const std::vector<AnimalSpecies::Gender> &newSearchableGenders = EnumClass<AnimalSpecies::Gender>::getEnumValues()
+        const std::vector<AnimalSpecies::Gender::GenderValue> &newSearchableGenders = AnimalSpecies::Gender::getEnumValues()
     );
     virtual ~AnimalSearchParams();
 
     void addSearchParams(
-        const WorldInterface* const worldInterface,
-        const std::vector<LifeStage> &newSearchableLifeStages = EnumClass<LifeStage>::getEnumValues(),
-        const std::vector<AnimalSpecies::AnimalID> &newSearchableAnimalSpecies = {},
+        const World* const world,
+        const std::vector<LifeStage::LifeStageValue> &newSearchableLifeStages = LifeStage::getEnumValues(),
+        const std::vector<id_type> &newSearchableAnimalSpecies = {},
         const std::vector<Instar> &newSearchableInstars = {},
-        const std::vector<AnimalSpecies::Gender> &newSearchableGenders = EnumClass<AnimalSpecies::Gender>::getEnumValues()
+        const std::vector<AnimalSpecies::Gender::GenderValue> &newSearchableGenders = AnimalSpecies::Gender::getEnumValues()
     );
 
-    const std::unordered_set<LifeStage>& getSearchableLifeStages() const;
-    const std::unordered_set<AnimalSpecies::AnimalID>& getSearchableAnimalSpecies(
-        const LifeStage &lifeStage
+    const std::unordered_set<LifeStage::LifeStageValue>& getSearchableLifeStages() const;
+    const std::unordered_set<id_type>& getSearchableAnimalSpecies(
+        const LifeStage::LifeStageValue &lifeStage
     ) const;
     const std::unordered_set<Instar>& getSearchableInstars(
-        const LifeStage &lifeStage,
-        const AnimalSpecies::AnimalID &animalSpeciesId
+        const LifeStage::LifeStageValue &lifeStage,
+        const id_type &animalSpeciesId
     ) const;
-    const std::unordered_set<AnimalSpecies::Gender>& getSearchableGenders(
-        const LifeStage &lifeStage,
-        const AnimalSpecies::AnimalID &animalSpeciesId, const Instar &instar
+    const std::unordered_set<AnimalSpecies::Gender::GenderValue>& getSearchableGenders(
+        const LifeStage::LifeStageValue &lifeStage,
+        const id_type &animalSpeciesId, const Instar &instar
     ) const;
 
     /**
@@ -77,12 +73,5 @@ public:
     template <class Archive>
     void serialize(Archive &ar, const unsigned int version);
 };
-
-namespace boost {
-    namespace serialization {
-        template<class Archive>
-        void serialize(Archive &ar, AnimalSearchParams* &animalSearchParamsPtr, const unsigned int version);
-    }
-}
 
 #endif /* ANIMAL_SEARCH_PARAMS_H_ */

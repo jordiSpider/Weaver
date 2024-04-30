@@ -1,6 +1,6 @@
 
 #include "IBM/World/Map/TerrainCells/AnimalSearchParams.h"
-#include "IBM/World/WorldInterface.h"
+#include "IBM/World/World.h"
 
 using namespace std;
 
@@ -12,13 +12,13 @@ AnimalSearchParams::AnimalSearchParams()
 }
 
 AnimalSearchParams::AnimalSearchParams(
-        const WorldInterface* const worldInterface,
-        const vector<LifeStage> &newSearchableLifeStages,
-        const vector<AnimalSpecies::AnimalID> &newSearchableAnimalSpecies,
+        const World* const world,
+        const vector<LifeStage::LifeStageValue> &newSearchableLifeStages,
+        const vector<id_type> &newSearchableAnimalSpecies,
         const vector<Instar> &newSearchableInstars,
-        const vector<AnimalSpecies::Gender> &newSearchableGenders)
+        const vector<AnimalSpecies::Gender::GenderValue> &newSearchableGenders)
 {
-    addSearchParams(worldInterface, newSearchableLifeStages, newSearchableAnimalSpecies, newSearchableInstars, newSearchableGenders);
+    addSearchParams(world, newSearchableLifeStages, newSearchableAnimalSpecies, newSearchableInstars, newSearchableGenders);
 }
 
 AnimalSearchParams::~AnimalSearchParams()
@@ -26,34 +26,34 @@ AnimalSearchParams::~AnimalSearchParams()
     
 }
 
-void AnimalSearchParams::initializedParams(const WorldInterface* const worldInterface)
+void AnimalSearchParams::initializedParams(const World* const world)
 {
-    searchableAnimalSpecies.resize(EnumClass<LifeStage>::size());
-    searchableInstars.resize(EnumClass<LifeStage>::size());
-    searchableGenders.resize(EnumClass<LifeStage>::size());
+    searchableAnimalSpecies.resize(LifeStage::size());
+    searchableInstars.resize(LifeStage::size());
+    searchableGenders.resize(LifeStage::size());
 
     // -------------------------------------------------
 
-    for(const LifeStage& lifeStage : EnumClass<LifeStage>::getEnumValues())
+    for(unsigned int lifeStage = 0; lifeStage < LifeStage::size(); lifeStage++)
     {
-        searchableInstars[lifeStage].resize(worldInterface->getExistingAnimalSpecies().size());
-        searchableGenders[lifeStage].resize(worldInterface->getExistingAnimalSpecies().size());
+        searchableInstars[lifeStage].resize(AnimalSpecies::getAnimalSpeciesCounter());
+        searchableGenders[lifeStage].resize(AnimalSpecies::getAnimalSpeciesCounter());
     
         // -------------------------------------------------
 
-        for(unsigned int animalSpeciesId = 0; animalSpeciesId < worldInterface->getExistingAnimalSpecies().size(); animalSpeciesId++)
+        for(unsigned int animalSpeciesId = 0; animalSpeciesId < AnimalSpecies::getAnimalSpeciesCounter(); animalSpeciesId++)
         {
-            searchableGenders[lifeStage][animalSpeciesId].resize(worldInterface->getExistingAnimalSpecies()[animalSpeciesId]->getNumberOfInstars());
+            searchableGenders[lifeStage][animalSpeciesId].resize(world->getExistingAnimalSpecies()[animalSpeciesId]->getNumberOfInstars());
         }
     }
 }
 
 void AnimalSearchParams::addSearchParams(
-        const WorldInterface* const worldInterface,
-        const vector<LifeStage> &newSearchableLifeStages,
-        const vector<AnimalSpecies::AnimalID> &newSearchableAnimalSpecies,
+        const World* const world,
+        const vector<LifeStage::LifeStageValue> &newSearchableLifeStages,
+        const vector<id_type> &newSearchableAnimalSpecies,
         const vector<Instar> &newSearchableInstars,
-        const vector<AnimalSpecies::Gender> &newSearchableGenders)
+        const vector<AnimalSpecies::Gender::GenderValue> &newSearchableGenders)
 {
     #ifdef DEBUG
     if(newSearchableLifeStages.empty())
@@ -69,17 +69,17 @@ void AnimalSearchParams::addSearchParams(
 
     if(searchableAnimalSpecies.empty())
     {
-        initializedParams(worldInterface);
+        initializedParams(world);
     }
 
     // -------------------------------------------------
 
-    const vector<AnimalSpecies::AnimalID>* finalSearchableAnimalSpecies;
-    vector<AnimalSpecies::AnimalID> allSearchableAnimalSpecies;
+    const vector<id_type>* finalSearchableAnimalSpecies;
+    vector<id_type> allSearchableAnimalSpecies;
 
     if(newSearchableAnimalSpecies.empty())
     {
-        for(unsigned int animalSpeciesId = 0; animalSpeciesId < worldInterface->getExistingAnimalSpecies().size(); animalSpeciesId++)
+        for(unsigned int animalSpeciesId = 0; animalSpeciesId < AnimalSpecies::getAnimalSpeciesCounter(); animalSpeciesId++)
         {
             allSearchableAnimalSpecies.push_back(animalSpeciesId);
         }
@@ -93,11 +93,11 @@ void AnimalSearchParams::addSearchParams(
 
     // -------------------------------------------------
 
-    for(const LifeStage &lifeStage : newSearchableLifeStages)
+    for(const LifeStage::LifeStageValue &lifeStage : newSearchableLifeStages)
     {
         searchableLifeStages.insert(lifeStage);
 
-        for(const AnimalSpecies::AnimalID &animalSpeciesId : *finalSearchableAnimalSpecies)
+        for(const id_type &animalSpeciesId : *finalSearchableAnimalSpecies)
         {
             searchableAnimalSpecies[lifeStage].insert(animalSpeciesId);
 
@@ -107,7 +107,7 @@ void AnimalSearchParams::addSearchParams(
 
             if(newSearchableInstars.empty())
             {
-                finalSearchableInstars = &worldInterface->getExistingAnimalSpecies()[animalSpeciesId]->getInstarsRange();
+                finalSearchableInstars = &world->getExistingAnimalSpecies()[animalSpeciesId]->getInstarsRange();
             }
             else
             {
@@ -129,29 +129,29 @@ void AnimalSearchParams::addSearchParams(
     }
 }
 
-const unordered_set<LifeStage>& AnimalSearchParams::getSearchableLifeStages() const
+const unordered_set<LifeStage::LifeStageValue>& AnimalSearchParams::getSearchableLifeStages() const
 {
     return searchableLifeStages;
 }
 
-const unordered_set<AnimalSpecies::AnimalID>& AnimalSearchParams::getSearchableAnimalSpecies(
-        const LifeStage &lifeStage
+const unordered_set<id_type>& AnimalSearchParams::getSearchableAnimalSpecies(
+        const LifeStage::LifeStageValue &lifeStage
     ) const
 {
     return searchableAnimalSpecies[lifeStage];
 }
 
 const unordered_set<Instar>& AnimalSearchParams::getSearchableInstars(
-        const LifeStage &lifeStage,
-        const AnimalSpecies::AnimalID &animalSpeciesId
+        const LifeStage::LifeStageValue &lifeStage,
+        const id_type &animalSpeciesId
     ) const
 {
     return searchableInstars[lifeStage][animalSpeciesId];
 }
 
-const unordered_set<AnimalSpecies::Gender>& AnimalSearchParams::getSearchableGenders(
-        const LifeStage &lifeStage,
-        const AnimalSpecies::AnimalID &animalSpeciesId, const Instar &instar
+const unordered_set<AnimalSpecies::Gender::GenderValue>& AnimalSearchParams::getSearchableGenders(
+        const LifeStage::LifeStageValue &lifeStage,
+        const id_type &animalSpeciesId, const Instar &instar
     ) const
 {
     return searchableGenders[lifeStage][animalSpeciesId][instar];
@@ -163,27 +163,4 @@ void AnimalSearchParams::serialize(Archive &ar, const unsigned int version) {
     ar & searchableAnimalSpecies;
     ar & searchableInstars;
     ar & searchableGenders;
-}
-
-
-namespace boost {
-    namespace serialization {
-        template<class Archive>
-        void serialize(Archive &ar, AnimalSearchParams* &animalSearchParamsPtr, const unsigned int version) {
-            // Deserialization
-            if (Archive::is_loading::value) {
-				ar & *animalSearchParamsPtr;
-            } // Serialization
-            else {
-                ar & *animalSearchParamsPtr;
-            }
-        }
-
-		// Specialisation
-		template void serialize<boost::archive::text_iarchive>(boost::archive::text_iarchive&, AnimalSearchParams*&, const unsigned int);
-		template void serialize<boost::archive::text_oarchive>(boost::archive::text_oarchive&, AnimalSearchParams*&, const unsigned int);
-
-		template void serialize<boost::archive::binary_iarchive>(boost::archive::binary_iarchive&, AnimalSearchParams*&, const unsigned int);
-		template void serialize<boost::archive::binary_oarchive>(boost::archive::binary_oarchive&, AnimalSearchParams*&, const unsigned int);
-    }
 }

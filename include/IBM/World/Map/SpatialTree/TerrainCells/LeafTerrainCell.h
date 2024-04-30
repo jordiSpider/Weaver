@@ -5,13 +5,9 @@
 #include <vector>
 #include <nlohmann/json.hpp>
 #include <cmath>
-#include <boost/archive/text_oarchive.hpp>
-#include <boost/archive/text_iarchive.hpp>
-#include <boost/archive/binary_oarchive.hpp>
-#include <boost/archive/binary_iarchive.hpp>
 
 #include "IBM/World/Map/SpatialTree/TerrainCells/LeafTerrainCellInterface.h"
-#include "IBM/World/Map/Points/PointSpatialTree.h"
+#include "IBM/World/Map/SpatialTree/Points/PointSpatialTree.h"
 #include "Misc/Types.h"
 #include "IBM/World/Map/Geometry/Coverage.h"
 #include "IBM/World/Map/TerrainCells/Moisture/NullMoisture.h"
@@ -43,8 +39,8 @@ protected:
      * @name Moisture patches
      * @{
      */
-    virtual std::pair<bool, bool> applyMoisturePatch(MoisturePatch &moisturePatch); //?
-    std::pair<bool, bool> applyPartialCoverageMoisturePatch(MoisturePatch &moisturePatch); //?
+    virtual std::pair<bool, bool> applyMoisturePatch(const MoisturePatch &moisturePatch); //?
+    std::pair<bool, bool> applyPartialCoverageMoisturePatch(const MoisturePatch &moisturePatch); //?
     const int getMaximumMoisturePatchPriority() const; //?
     /** @} */
 
@@ -61,8 +57,7 @@ protected:
     /** @} */
 
 public:
-    LeafTerrainCell(BranchTerrainCellInterface* const parentTerrainCell, SpatialTreeInterface* const mapInterface);
-    LeafTerrainCell(BranchTerrainCellInterface* const parentTerrainCell, PointSpatialTree* const position, const std::vector<ResourceInterface*>* const parentResources, const std::vector<int>* const parentResourcePatchPriority);
+    LeafTerrainCell(BranchTerrainCellInterface* const parentTerrainCell, PointSpatialTree* const position, std::vector<ResourceInterface*>* const parentResources, const std::vector<int>* const parentResourcePatchPriority);
     virtual ~LeafTerrainCell();
 
     SpatialTreeTerrainCellInterface* const getCell(const PointSpatialTree &cellPos);
@@ -89,11 +84,11 @@ public:
      * @{
      */
     EdiblesOnRadius getMutableEdiblesOnCellAndDown(
-        std::function<bool(AnimalInterface&)> downChecker, const Ring &effectiveArea,
+        std::function<bool(Animal&)> downChecker, const Ring &effectiveArea,
         const EdibleSearchParams &edibleSearchParams
     ) override;
     EdiblesOnRadius getMutableEdiblesDown(
-        std::function<bool(AnimalInterface&)> downChecker, const Ring &effectiveArea,
+        std::function<bool(Animal&)> downChecker, const Ring &effectiveArea,
         const EdibleSearchParams &edibleSearchParams
     );
     /** @} */
@@ -126,9 +121,6 @@ public:
     
     const bool isLeaf() const;
     virtual void printCell(std::vector<std::pair<std::vector<double>, std::vector<unsigned int>>> &mapCellsInfo);
-
-    template <class Archive>
-    void serialize(Archive &ar, const unsigned int version, std::vector<ExtendedMoisture*>& appliedMoisture);
 };
 
 #endif /* LEAF_TERRAINCELL_H_ */

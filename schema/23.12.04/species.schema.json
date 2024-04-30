@@ -41,6 +41,18 @@
                     ],
                     "required": true
                 },
+                "newAAdult": {
+                    "type": "floater",
+                    "required": true
+                },
+                "newB": {
+                    "type": "floater",
+                    "required": true
+                },
+                "h_enhancement": {
+                    "type": "floater",
+                    "required": true
+                },
                 "forcePresenceAllResourcesInvolved": {
                     "type": "boolean",
                     "required": true
@@ -49,104 +61,27 @@
                     "type": "boolean",
                     "required": true
                 },
-                "growthCurve": {
+                "sexRatio": {
+                    "type": "floater",
+                    "required": true
+                },
+                "capitalBreeding": {
                     "type": "object",
                     "properties": {
-                        "curveType": {
-                            "type": "string",
-                            "enum": ["VonBertalanffy", "Logistic", "Logistic3P", "Logistic4P", "Gompertz", "Exponential"],
+                        "enabled": {
+                            "type": "boolean",
                             "required": true
                         },
-                        "vonBertalanffyParams": {
+                        "capitalBreedingParams": {
                             "type": "object",
                             "properties": {
-                                "vonBertLdistanceMin": {
-                                    "type": "floater",
+                                "timeOfReproEventDuringCapitalBreeding": {
+                                    "type": "unsigned_integer",
                                     "required": true,
                                     "nullProperty": true
                                 },
-                                "vonBertLdistanceMax": {
-                                    "type": "floater",
-                                    "required": true,
-                                    "nullProperty": true
-                                },
-                                "vonBertTime0": {
-                                    "type": "floater",
-                                    "required": true,
-                                    "nullProperty": true
-                                }
-                            },
-                            "additionalProperties": false,
-                            "required": true
-                        },
-                        "logisticParams": {
-                            "type": "object",
-                            "properties": {
-                                "logisticLdistanceMin": {
-                                    "type": "floater",
-                                    "required": true,
-                                    "nullProperty": true
-                                },
-                                "logisticLdistanceMax": {
-                                    "type": "floater",
-                                    "required": true,
-                                    "nullProperty": true
-                                }
-                            },
-                            "additionalProperties": false,
-                            "required": true
-                        },
-                        "logistic3P_Params": {
-                            "type": "object",
-                            "properties": {
-                                "logistic3pAsymptoticSize": {
-                                    "type": "floater",
-                                    "required": true,
-                                    "nullProperty": true
-                                }
-                            },
-                            "additionalProperties": false,
-                            "required": true
-                        },
-                        "logistic4P_Params": {
-                            "type": "object",
-                            "properties": {
-                                "logistic4pLeftAsymptote": {
-                                    "type": "floater",
-                                    "required": true,
-                                    "nullProperty": true
-                                },
-                                "logistic4pRightAsymptote": {
-                                    "type": "floater",
-                                    "required": true,
-                                    "nullProperty": true
-                                }
-                            },
-                            "additionalProperties": false,
-                            "required": true
-                        },
-                        "gompertzParams": {
-                            "type": "object",
-                            "properties": {
-                                "gompertzAsymptoticSize": {
-                                    "type": "floater",
-                                    "required": true,
-                                    "nullProperty": true
-                                },
-                                "gompertzValueTime0": {
-                                    "type": "floater",
-                                    "required": true,
-                                    "nullProperty": true
-                                }
-                            },
-                            "additionalProperties": false,
-                            "required": true
-                        },
-                        "exponentialParams": {
-                            "type": "object",
-                            "properties": {
-                                "exponentialA": {
-                                    "type": "floater",
+                                "numberOfCapitalBreeds": {
+                                    "type": "unsigned_integer",
                                     "required": true,
                                     "nullProperty": true
                                 }
@@ -158,166 +93,20 @@
                     "conditionals": [
                         {
                             "if": {
-                                "type": "equal",
-                                "lhs": {
-                                    "type": "property",
-                                    "value": [
-                                        "curveType"
-                                    ]
-                                },
-                                "rhs": {
-                                    "type": "constant",
-                                    "value": "VonBertalanffy"
-                                }
+                                "type": "property",
+                                "value": [
+                                    "enabled"
+                                ]
                             },
-                            "then": [ 
+                            "then": [
                                 {
                                     "dst": [
-                                        "vonBertalanffyParams"
+                                        "capitalBreedingParams"
                                     ],
                                     "remove": {
                                         "nullProperty": [
-                                            "vonBertLdistanceMin",
-                                            "vonBertLdistanceMax",
-                                            "vonBertTime0"
-                                        ]
-                                    }
-                                }
-                            ]
-                        },
-                        {
-                            "if": {
-                                "type": "equal",
-                                "lhs": {
-                                    "type": "property",
-                                    "value": [
-                                        "curveType"
-                                    ]
-                                },
-                                "rhs": {
-                                    "type": "constant",
-                                    "value": "Logistic"
-                                }
-                            },
-                            "then": [ 
-                                {
-                                    "dst": [
-                                        "logisticParams"
-                                    ],
-                                    "remove": {
-                                        "nullProperty": [
-                                            "logisticLdistanceMin",
-                                            "logisticLdistanceMax"
-                                        ]
-                                    }
-                                }
-                            ]
-                        },
-                        {
-                            "if": {
-                                "type": "equal",
-                                "lhs": {
-                                    "type": "property",
-                                    "value": [
-                                        "curveType"
-                                    ]
-                                },
-                                "rhs": {
-                                    "type": "constant",
-                                    "value": "Logistic3P"
-                                }
-                            },
-                            "then": [ 
-                                {
-                                    "dst": [
-                                        "logistic3P_Params"
-                                    ],
-                                    "remove": {
-                                        "nullProperty": [
-                                            "logistic3pAsymptoticSize"
-                                        ]
-                                    }
-                                }
-                            ]
-                        },
-                        {
-                            "if": {
-                                "type": "equal",
-                                "lhs": {
-                                    "type": "property",
-                                    "value": [
-                                        "curveType"
-                                    ]
-                                },
-                                "rhs": {
-                                    "type": "constant",
-                                    "value": "Logistic4P"
-                                }
-                            },
-                            "then": [ 
-                                {
-                                    "dst": [
-                                        "logistic4P_Params"
-                                    ],
-                                    "remove": {
-                                        "nullProperty": [
-                                            "logistic4pLeftAsymptote",
-                                            "logistic4pRightAsymptote"
-                                        ]
-                                    }
-                                }
-                            ]
-                        },
-                        {
-                            "if": {
-                                "type": "equal",
-                                "lhs": {
-                                    "type": "property",
-                                    "value": [
-                                        "curveType"
-                                    ]
-                                },
-                                "rhs": {
-                                    "type": "constant",
-                                    "value": "Gompertz"
-                                }
-                            },
-                            "then": [ 
-                                {
-                                    "dst": [
-                                        "gompertzParams"
-                                    ],
-                                    "remove": {
-                                        "nullProperty": [
-                                            "gompertzAsymptoticSize",
-                                            "gompertzValueTime0"
-                                        ]
-                                    }
-                                }
-                            ]
-                        },
-                        {
-                            "if": {
-                                "type": "equal",
-                                "lhs": {
-                                    "type": "property",
-                                    "value": [
-                                        "curveType"
-                                    ]
-                                },
-                                "rhs": {
-                                    "type": "constant",
-                                    "value": "Exponential"
-                                }
-                            },
-                            "then": [ 
-                                {
-                                    "dst": [
-                                        "exponentialParams"
-                                    ],
-                                    "remove": {
-                                        "nullProperty": [
-                                            
+                                            "timeOfReproEventDuringCapitalBreeding",
+                                            "numberOfCapitalBreeds"
                                         ]
                                     }
                                 }
@@ -325,10 +114,6 @@
                         }
                     ],
                     "additionalProperties": false,
-                    "required": true
-                },
-                "sexRatio": {
-                    "type": "floater",
                     "required": true
                 },
                 "size": {
@@ -375,38 +160,57 @@
                                     "type": "object",
                                     "properties": {},
                                     "patternProperties": {
-                                        "energy_tank|growth|pheno|factorEggMass|assim|voracity|speed|search_area|met_rate|actE_vor|actE_speed|actE_search|shock_resistance|actE_met|memoryDepth|perception_area|interaction_area": {
+                                        "energy_tank|growth|eggDevTime|factorEggMass|assim|voracity|speed|search_area|met_rate|shock_resistance|actE_met|memoryDepth|perception_area|interaction_area|devTime|lengthAtMaturation|pupaPeriodLength|timeAddedToMeetLastRepro": {
                                             "type": "object",
                                             "properties": {
-                                                "temperatureThreshold": {
+                                                "definitionType": {
+                                                    "type": "string",
+                                                    "enum": ["SpeciesLevel","IndividualLevel"],
+                                                    "required": true
+                                                },
+                                                "speciesLevelParams": {
                                                     "type": "object",
                                                     "properties": {
-                                                        "lower": {
+                                                        "value": {
                                                             "type": "floater",
-                                                            "minimum": 0.0,
-                                                            "required": true
-                                                        },
-                                                        "upper": {
-                                                            "type": "floater",
-                                                            "minimum": 0.0,
-                                                            "required": true
+                                                            "required": true,
+                                                            "nullProperty": true
                                                         }
                                                     },
                                                     "additionalProperties": false,
                                                     "required": true
                                                 },
-                                                "valueUpdateMethod": {
+                                                "individualLevelParams": {
                                                     "type": "object",
                                                     "properties": {
-                                                        "type": {
-                                                            "type": "string",
-                                                            "enum": ["Fixed","Variable"],
-                                                            "required": true
-                                                        },
-                                                        "fixedParams": {
+                                                        "limits": {
                                                             "type": "object",
                                                             "properties": {
-                                                                "value": {
+                                                                "max": {
+                                                                    "type": "floater",
+                                                                    "minimum": 0.0,
+                                                                    "required": true,
+                                                                    "nullProperty": true
+                                                                },
+                                                                "min": {
+                                                                    "type": "floater",
+                                                                    "minimum": 0.0,
+                                                                    "required": true,
+                                                                    "nullProperty": true
+                                                                }
+                                                            },
+                                                            "additionalProperties": false,
+                                                            "required": true
+                                                        },
+                                                        "ranges": {
+                                                            "type": "object",
+                                                            "properties": {
+                                                                "max": {
+                                                                    "type": "floater",
+                                                                    "required": true,
+                                                                    "nullProperty": true
+                                                                },
+                                                                "min": {
                                                                     "type": "floater",
                                                                     "required": true,
                                                                     "nullProperty": true
@@ -415,149 +219,1289 @@
                                                             "additionalProperties": false,
                                                             "required": true
                                                         },
-                                                        "variableParams": {
-                                                            "type": "object",
-                                                            "properties": {
-                                                                "limits": {
-                                                                    "type": "object",
-                                                                    "properties": {
-                                                                        "max": {
-                                                                            "type": "floater",
-                                                                            "required": true,
-                                                                            "nullProperty": true
-                                                                        },
-                                                                        "min": {
-                                                                            "type": "floater",
-                                                                            "required": true,
-                                                                            "nullProperty": true
-                                                                        }
-                                                                    },
-                                                                    "additionalProperties": false,
-                                                                    "required": true
-                                                                },
-                                                                "ranges": {
-                                                                    "type": "object",
-                                                                    "properties": {
-                                                                        "max": {
-                                                                            "type": "floater",
-                                                                            "required": true,
-                                                                            "nullProperty": true
-                                                                        },
-                                                                        "min": {
-                                                                            "type": "floater",
-                                                                            "required": true,
-                                                                            "nullProperty": true
-                                                                        }
-                                                                    },
-                                                                    "additionalProperties": false,
-                                                                    "required": true
-                                                                },
-                                                                "restrictValue": {
-                                                                    "type": "floater",
-                                                                    "required": true,
-                                                                    "nullProperty": true
-                                                                }
-                                                            },
-                                                            "additionalProperties": false,
-                                                            "required": true
+                                                        "restrictValue": {
+                                                            "type": "floater",
+                                                            "minimum": 0.0,
+                                                            "maximum": 1.0,
+                                                            "required": true,
+                                                            "nullProperty": true
                                                         }
                                                     },
-                                                    "conditionals": [
-                                                        {
-                                                            "if": {
-                                                                "type": "equal",
-                                                                "lhs": {
-                                                                    "type": "property",
-                                                                    "value": [
-                                                                        "type"
-                                                                    ]
-                                                                },
-                                                                "rhs": {
-                                                                    "type": "constant",
-                                                                    "value": "Fixed"
-                                                                }
-                                                            },
-                                                            "then": [ 
-                                                                {
-                                                                    "dst": [
-                                                                        "fixedParams"
-                                                                    ],
-                                                                    "remove": {
-                                                                        "nullProperty": [
-                                                                            "value"
-                                                                        ]
-                                                                    }
-                                                                }
-                                                            ]
-                                                        },
-                                                        {
-                                                            "if": {
-                                                                "type": "equal",
-                                                                "lhs": {
-                                                                    "type": "property",
-                                                                    "value": [
-                                                                        "type"
-                                                                    ]
-                                                                },
-                                                                "rhs": {
-                                                                    "type": "constant",
-                                                                    "value": "Variable"
-                                                                }
-                                                            },
-                                                            "then": [ 
-                                                                {
-                                                                    "dst": [
-                                                                        "variableParams", "limits"
-                                                                    ],
-                                                                    "remove": {
-                                                                        "nullProperty": [
-                                                                            "max", "min"
-                                                                        ]
-                                                                    }
-                                                                },
-                                                                {
-                                                                    "dst": [
-                                                                        "variableParams", "ranges"
-                                                                    ],
-                                                                    "remove": {
-                                                                        "nullProperty": [
-                                                                            "max", "min"
-                                                                        ]
-                                                                    }
-                                                                },
-                                                                {
-                                                                    "dst": [
-                                                                        "variableParams"
-                                                                    ],
-                                                                    "remove": {
-                                                                        "nullProperty": [
-                                                                            "restrictValue"
-                                                                        ]
-                                                                    }
-                                                                }
-                                                            ]
-                                                        }
-                                                    ],
                                                     "additionalProperties": false,
                                                     "required": true
                                                 }
                                             },
+                                            "conditionals": [
+                                                {
+                                                    "if": {
+                                                        "type": "equal",
+                                                        "lhs": {
+                                                            "type": "property",
+                                                            "value": [
+                                                                "definitionType"
+                                                            ]
+                                                        },
+                                                        "rhs": {
+                                                            "type": "constant",
+                                                            "value": "SpeciesLevel"
+                                                        }
+                                                    },
+                                                    "then": [ 
+                                                        {
+                                                            "dst": [
+                                                                "speciesLevelParams"
+                                                            ],
+                                                            "remove": {
+                                                                "nullProperty": [
+                                                                    "value"
+                                                                ]
+                                                            }
+                                                        }
+                                                    ]
+                                                },
+                                                {
+                                                    "if": {
+                                                        "type": "equal",
+                                                        "lhs": {
+                                                            "type": "property",
+                                                            "value": [
+                                                                "definitionType"
+                                                            ]
+                                                        },
+                                                        "rhs": {
+                                                            "type": "constant",
+                                                            "value": "IndividualLevel"
+                                                        }
+                                                    },
+                                                    "then": [ 
+                                                        {
+                                                            "dst": [
+                                                                "individualLevelParams", "limits"
+                                                            ],
+                                                            "remove": {
+                                                                "nullProperty": [
+                                                                    "max", "min"
+                                                                ]
+                                                            }
+                                                        },
+                                                        {
+                                                            "dst": [
+                                                                "individualLevelParams", "ranges"
+                                                            ],
+                                                            "remove": {
+                                                                "nullProperty": [
+                                                                    "max", "min"
+                                                                ]
+                                                            }
+                                                        },
+                                                        {
+                                                            "dst": [
+                                                                "individualLevelParams"
+                                                            ],
+                                                            "remove": {
+                                                                "nullProperty": [
+                                                                    "restrictValue"
+                                                                ]
+                                                            }
+                                                        }
+                                                    ]
+                                                }
+                                            ],
                                             "additionalProperties": false,
                                             "required": true
                                         }
                                     },
+                                    "patternConditionals": [
+                                        {
+                                            "enumValues": [
+                                                "growth","eggDevTime","factorEggMass","assim","voracity", "speed","search_area",
+                                                "met_rate","shock_resistance","actE_met","memoryDepth", "perception_area",
+                                                "interaction_area","devTime", "pupaPeriodLength", "timeAddedToMeetLastRepro"
+                                            ],
+                                            "if": {
+                                                "type": "constant",
+                                                "value": true
+                                            },
+                                            "then": [ 
+                                                {
+                                                    "dst": [
+                                                        "<pattern>"
+                                                    ],
+                                                    "add": {
+                                                        "properties": {
+                                                            "temperature": {
+                                                                "type": "object",
+                                                                "properties": {
+                                                                    "dependent": {
+                                                                        "type": "boolean",
+                                                                        "required": true
+                                                                    },
+                                                                    "threshold": {
+                                                                        "type": "object",
+                                                                        "properties": {
+                                                                            "lower": {
+                                                                                "type": "object",
+                                                                                "properties": {
+                                                                                    "definitionType": {
+                                                                                        "type": "string",
+                                                                                        "enum": ["SpeciesLevel","IndividualLevel"],
+                                                                                        "required": true,
+                                                                                        "nullProperty": true
+                                                                                    },
+                                                                                    "speciesLevelParams": {
+                                                                                        "type": "object",
+                                                                                        "properties": {
+                                                                                            "value": {
+                                                                                                "type": "floater",
+                                                                                                "minimum": 0.0,
+                                                                                                "required": true,
+                                                                                                "nullProperty": true
+                                                                                            }
+                                                                                        },
+                                                                                        "additionalProperties": false,
+                                                                                        "required": true
+                                                                                    },
+                                                                                    "individualLevelParams": {
+                                                                                        "type": "object",
+                                                                                        "properties": {
+                                                                                            "limits": {
+                                                                                                "type": "object",
+                                                                                                "properties": {
+                                                                                                    "max": {
+                                                                                                        "type": "floater",
+                                                                                                        "minimum": 0.0,
+                                                                                                        "required": true,
+                                                                                                        "nullProperty": true
+                                                                                                    },
+                                                                                                    "min": {
+                                                                                                        "type": "floater",
+                                                                                                        "minimum": 0.0,
+                                                                                                        "required": true,
+                                                                                                        "nullProperty": true
+                                                                                                    }
+                                                                                                },
+                                                                                                "additionalProperties": false,
+                                                                                                "required": true
+                                                                                            },
+                                                                                            "ranges": {
+                                                                                                "type": "object",
+                                                                                                "properties": {
+                                                                                                    "max": {
+                                                                                                        "type": "floater",
+                                                                                                        "required": true,
+                                                                                                        "nullProperty": true
+                                                                                                    },
+                                                                                                    "min": {
+                                                                                                        "type": "floater",
+                                                                                                        "minimum": 0.0,
+                                                                                                        "required": true,
+                                                                                                        "nullProperty": true
+                                                                                                    }
+                                                                                                },
+                                                                                                "additionalProperties": false,
+                                                                                                "required": true
+                                                                                            },
+                                                                                            "restrictValue": {
+                                                                                                "type": "floater",
+                                                                                                "minimum": 0.0,
+                                                                                                "maximum": 1.0,
+                                                                                                "required": true,
+                                                                                                "nullProperty": true
+                                                                                            }
+                                                                                        },
+                                                                                        "additionalProperties": false,
+                                                                                        "required": true
+                                                                                    }
+                                                                                },
+                                                                                "additionalProperties": false,
+                                                                                "required": true
+                                                                            },
+                                                                            "upper": {
+                                                                                "type": "object",
+                                                                                "properties": {
+                                                                                    "definitionType": {
+                                                                                        "type": "string",
+                                                                                        "enum": ["SpeciesLevel","IndividualLevel"],
+                                                                                        "required": true,
+                                                                                        "nullProperty": true
+                                                                                    },
+                                                                                    "speciesLevelParams": {
+                                                                                        "type": "object",
+                                                                                        "properties": {
+                                                                                            "value": {
+                                                                                                "type": "floater",
+                                                                                                "minimum": 0.0,
+                                                                                                "required": true,
+                                                                                                "nullProperty": true
+                                                                                            }
+                                                                                        },
+                                                                                        "additionalProperties": false,
+                                                                                        "required": true
+                                                                                    },
+                                                                                    "individualLevelParams": {
+                                                                                        "type": "object",
+                                                                                        "properties": {
+                                                                                            "limits": {
+                                                                                                "type": "object",
+                                                                                                "properties": {
+                                                                                                    "max": {
+                                                                                                        "type": "floater",
+                                                                                                        "minimum": 0.0,
+                                                                                                        "required": true,
+                                                                                                        "nullProperty": true
+                                                                                                    },
+                                                                                                    "min": {
+                                                                                                        "type": "floater",
+                                                                                                        "minimum": 0.0,
+                                                                                                        "required": true,
+                                                                                                        "nullProperty": true
+                                                                                                    }
+                                                                                                },
+                                                                                                "additionalProperties": false,
+                                                                                                "required": true
+                                                                                            },
+                                                                                            "ranges": {
+                                                                                                "type": "object",
+                                                                                                "properties": {
+                                                                                                    "max": {
+                                                                                                        "type": "floater",
+                                                                                                        "minimum": 0.0,
+                                                                                                        "required": true,
+                                                                                                        "nullProperty": true
+                                                                                                    },
+                                                                                                    "min": {
+                                                                                                        "type": "floater",
+                                                                                                        "minimum": 0.0,
+                                                                                                        "required": true,
+                                                                                                        "nullProperty": true
+                                                                                                    }
+                                                                                                },
+                                                                                                "additionalProperties": false,
+                                                                                                "required": true
+                                                                                            },
+                                                                                            "restrictValue": {
+                                                                                                "type": "floater",
+                                                                                                "minimum": 0.0,
+                                                                                                "maximum": 1.0,
+                                                                                                "required": true,
+                                                                                                "nullProperty": true
+                                                                                            }
+                                                                                        },
+                                                                                        "additionalProperties": false,
+                                                                                        "required": true
+                                                                                    }
+                                                                                },
+                                                                                "additionalProperties": false,
+                                                                                "required": true
+                                                                            }
+                                                                        },
+                                                                        "additionalProperties": false,
+                                                                        "required": true
+                                                                    },
+                                                                    "activationEnergy": {
+                                                                        "type": "object",
+                                                                        "properties": {
+                                                                            "definitionType": {
+                                                                                "type": "string",
+                                                                                "enum": ["SpeciesLevel","IndividualLevel"],
+                                                                                "required": true,
+                                                                                "nullProperty": true
+                                                                            },
+                                                                            "speciesLevelParams": {
+                                                                                "type": "object",
+                                                                                "properties": {
+                                                                                    "value": {
+                                                                                        "type": "floater",
+                                                                                        "required": true,
+                                                                                        "nullProperty": true
+                                                                                    }
+                                                                                },
+                                                                                "additionalProperties": false,
+                                                                                "required": true
+                                                                            },
+                                                                            "individualLevelParams": {
+                                                                                "type": "object",
+                                                                                "properties": {
+                                                                                    "limits": {
+                                                                                        "type": "object",
+                                                                                        "properties": {
+                                                                                            "max": {
+                                                                                                "type": "floater",
+                                                                                                "minimum": 0.0,
+                                                                                                "required": true,
+                                                                                                "nullProperty": true
+                                                                                            },
+                                                                                            "min": {
+                                                                                                "type": "floater",
+                                                                                                "minimum": 0.0,
+                                                                                                "required": true,
+                                                                                                "nullProperty": true
+                                                                                            }
+                                                                                        },
+                                                                                        "additionalProperties": false,
+                                                                                        "required": true
+                                                                                    },
+                                                                                    "ranges": {
+                                                                                        "type": "object",
+                                                                                        "properties": {
+                                                                                            "max": {
+                                                                                                "type": "floater",
+                                                                                                "required": true,
+                                                                                                "nullProperty": true
+                                                                                            },
+                                                                                            "min": {
+                                                                                                "type": "floater",
+                                                                                                "required": true,
+                                                                                                "nullProperty": true
+                                                                                            }
+                                                                                        },
+                                                                                        "additionalProperties": false,
+                                                                                        "required": true
+                                                                                    },
+                                                                                    "restrictValue": {
+                                                                                        "type": "floater",
+                                                                                        "minimum": 0.0,
+                                                                                        "maximum": 1.0,
+                                                                                        "required": true,
+                                                                                        "nullProperty": true
+                                                                                    }
+                                                                                },
+                                                                                "additionalProperties": false,
+                                                                                "required": true
+                                                                            }
+                                                                        },
+                                                                        "additionalProperties": false,
+                                                                        "required": true
+                                                                    },
+                                                                    "energyDecay": {
+                                                                        "type": "object",
+                                                                        "properties": {
+                                                                            "definitionType": {
+                                                                                "type": "string",
+                                                                                "enum": ["SpeciesLevel","IndividualLevel"],
+                                                                                "required": true,
+                                                                                "nullProperty": true
+                                                                            },
+                                                                            "speciesLevelParams": {
+                                                                                "type": "object",
+                                                                                "properties": {
+                                                                                    "value": {
+                                                                                        "type": "floater",
+                                                                                        "required": true,
+                                                                                        "nullProperty": true
+                                                                                    }
+                                                                                },
+                                                                                "additionalProperties": false,
+                                                                                "required": true
+                                                                            },
+                                                                            "individualLevelParams": {
+                                                                                "type": "object",
+                                                                                "properties": {
+                                                                                    "limits": {
+                                                                                        "type": "object",
+                                                                                        "properties": {
+                                                                                            "max": {
+                                                                                                "type": "floater",
+                                                                                                "minimum": 0.0,
+                                                                                                "required": true,
+                                                                                                "nullProperty": true
+                                                                                            },
+                                                                                            "min": {
+                                                                                                "type": "floater",
+                                                                                                "minimum": 0.0,
+                                                                                                "required": true,
+                                                                                                "nullProperty": true
+                                                                                            }
+                                                                                        },
+                                                                                        "additionalProperties": false,
+                                                                                        "required": true
+                                                                                    },
+                                                                                    "ranges": {
+                                                                                        "type": "object",
+                                                                                        "properties": {
+                                                                                            "max": {
+                                                                                                "type": "floater",
+                                                                                                "required": true,
+                                                                                                "nullProperty": true
+                                                                                            },
+                                                                                            "min": {
+                                                                                                "type": "floater",
+                                                                                                "required": true,
+                                                                                                "nullProperty": true
+                                                                                            }
+                                                                                        },
+                                                                                        "additionalProperties": false,
+                                                                                        "required": true
+                                                                                    },
+                                                                                    "restrictValue": {
+                                                                                        "type": "floater",
+                                                                                        "minimum": 0.0,
+                                                                                        "maximum": 1.0,
+                                                                                        "required": true,
+                                                                                        "nullProperty": true
+                                                                                    }
+                                                                                },
+                                                                                "additionalProperties": false,
+                                                                                "required": true
+                                                                            }
+                                                                        },
+                                                                        "additionalProperties": false,
+                                                                        "required": true
+                                                                    },
+                                                                    "temperatureOptimal": {
+                                                                        "type": "object",
+                                                                        "properties": {
+                                                                            "definitionType": {
+                                                                                "type": "string",
+                                                                                "enum": ["SpeciesLevel","IndividualLevel"],
+                                                                                "required": true,
+                                                                                "nullProperty": true
+                                                                            },
+                                                                            "speciesLevelParams": {
+                                                                                "type": "object",
+                                                                                "properties": {
+                                                                                    "value": {
+                                                                                        "type": "floater",
+                                                                                        "required": true,
+                                                                                        "nullProperty": true
+                                                                                    }
+                                                                                },
+                                                                                "additionalProperties": false,
+                                                                                "required": true
+                                                                            },
+                                                                            "individualLevelParams": {
+                                                                                "type": "object",
+                                                                                "properties": {
+                                                                                    "limits": {
+                                                                                        "type": "object",
+                                                                                        "properties": {
+                                                                                            "max": {
+                                                                                                "type": "floater",
+                                                                                                "minimum": 0.0,
+                                                                                                "required": true,
+                                                                                                "nullProperty": true
+                                                                                            },
+                                                                                            "min": {
+                                                                                                "type": "floater",
+                                                                                                "minimum": 0.0,
+                                                                                                "required": true,
+                                                                                                "nullProperty": true
+                                                                                            }
+                                                                                        },
+                                                                                        "additionalProperties": false,
+                                                                                        "required": true
+                                                                                    },
+                                                                                    "ranges": {
+                                                                                        "type": "object",
+                                                                                        "properties": {
+                                                                                            "max": {
+                                                                                                "type": "floater",
+                                                                                                "required": true,
+                                                                                                "nullProperty": true
+                                                                                            },
+                                                                                            "min": {
+                                                                                                "type": "floater",
+                                                                                                "required": true,
+                                                                                                "nullProperty": true
+                                                                                            }
+                                                                                        },
+                                                                                        "additionalProperties": false,
+                                                                                        "required": true
+                                                                                    },
+                                                                                    "restrictValue": {
+                                                                                        "type": "floater",
+                                                                                        "minimum": 0.0,
+                                                                                        "maximum": 1.0,
+                                                                                        "required": true,
+                                                                                        "nullProperty": true
+                                                                                    }
+                                                                                },
+                                                                                "additionalProperties": false,
+                                                                                "required": true
+                                                                            }
+                                                                        },
+                                                                        "additionalProperties": false,
+                                                                        "required": true
+                                                                    }
+                                                                },
+                                                                "conditionals": [
+                                                                    {
+                                                                        "if": {
+                                                                            "type": "property",
+                                                                            "value": [
+                                                                                "dependent"
+                                                                            ]
+                                                                        },
+                                                                        "then": [ 
+                                                                            {
+                                                                                "dst": [
+                                                                                    "threshold",
+                                                                                    "lower"
+                                                                                ],
+                                                                                "remove": {
+                                                                                    "nullProperty": [
+                                                                                        "definitionType"
+                                                                                    ]
+                                                                                },
+                                                                                "add": {
+                                                                                    "conditionals": [
+                                                                                        {
+                                                                                            "if": {
+                                                                                                "type": "equal",
+                                                                                                "lhs": {
+                                                                                                    "type": "property",
+                                                                                                    "value": [
+                                                                                                        "definitionType"
+                                                                                                    ]
+                                                                                                },
+                                                                                                "rhs": {
+                                                                                                    "type": "constant",
+                                                                                                    "value": "SpeciesLevel"
+                                                                                                }
+                                                                                            },
+                                                                                            "then": [ 
+                                                                                                {
+                                                                                                    "dst": [
+                                                                                                        "speciesLevelParams"
+                                                                                                    ],
+                                                                                                    "remove": {
+                                                                                                        "nullProperty": [
+                                                                                                            "value"
+                                                                                                        ]
+                                                                                                    }
+                                                                                                }
+                                                                                            ]
+                                                                                        },
+                                                                                        {
+                                                                                            "if": {
+                                                                                                "type": "equal",
+                                                                                                "lhs": {
+                                                                                                    "type": "property",
+                                                                                                    "value": [
+                                                                                                        "definitionType"
+                                                                                                    ]
+                                                                                                },
+                                                                                                "rhs": {
+                                                                                                    "type": "constant",
+                                                                                                    "value": "IndividualLevel"
+                                                                                                }
+                                                                                            },
+                                                                                            "then": [ 
+                                                                                                {
+                                                                                                    "dst": [
+                                                                                                        "individualLevelParams", "limits"
+                                                                                                    ],
+                                                                                                    "remove": {
+                                                                                                        "nullProperty": [
+                                                                                                            "max", "min"
+                                                                                                        ]
+                                                                                                    }
+                                                                                                },
+                                                                                                {
+                                                                                                    "dst": [
+                                                                                                        "individualLevelParams", "ranges"
+                                                                                                    ],
+                                                                                                    "remove": {
+                                                                                                        "nullProperty": [
+                                                                                                            "max", "min"
+                                                                                                        ]
+                                                                                                    }
+                                                                                                },
+                                                                                                {
+                                                                                                    "dst": [
+                                                                                                        "individualLevelParams"
+                                                                                                    ],
+                                                                                                    "remove": {
+                                                                                                        "nullProperty": [
+                                                                                                            "restrictValue"
+                                                                                                        ]
+                                                                                                    },
+                                                                                                    "add": {
+                                                                                                        "requiredConditions": [
+                                                                                                            {
+                                                                                                                "condition": {
+                                                                                                                    "type": "greater_equal_than",
+                                                                                                                    "lhs": {
+                                                                                                                        "type": "multiply",
+                                                                                                                        "result_type": "floater",
+                                                                                                                        "lhs": {
+                                                                                                                            "type": "subtract",
+                                                                                                                            "result_type": "floater",
+                                                                                                                            "lhs": {
+                                                                                                                                "type": "property",
+                                                                                                                                "value": [
+                                                                                                                                    "ranges",
+                                                                                                                                    "max"
+                                                                                                                                ]
+                                                                                                                            },
+                                                                                                                            "rhs": {
+                                                                                                                                "type": "property",
+                                                                                                                                "value": [
+                                                                                                                                    "ranges",
+                                                                                                                                    "min"
+                                                                                                                                ]
+                                                                                                                            }
+                                                                                                                        },
+                                                                                                                        "rhs": {
+                                                                                                                            "type": "property",
+                                                                                                                            "value": [
+                                                                                                                                "limits",
+                                                                                                                                "min"
+                                                                                                                            ]
+                                                                                                                        }
+                                                                                                                    },
+                                                                                                                    "rhs": {
+                                                                                                                        "type": "constant",
+                                                                                                                        "value": 0.0
+                                                                                                                    }
+                                                                                                                },
+                                                                                                                "error": "The percentage of the lower threshold minimum limit must be lower because the final value exceeds the value 0.0"
+                                                                                                            }
+                                                                                                        ]
+                                                                                                    }
+                                                                                                }
+                                                                                            ]
+                                                                                        }
+                                                                                    ]
+                                                                                }
+                                                                            },
+                                                                            {
+                                                                                "dst": [
+                                                                                    "threshold",
+                                                                                    "upper"
+                                                                                ],
+                                                                                "remove": {
+                                                                                    "nullProperty": [
+                                                                                        "definitionType"
+                                                                                    ]
+                                                                                },
+                                                                                "add": {
+                                                                                    "conditionals": [
+                                                                                        {
+                                                                                            "if": {
+                                                                                                "type": "equal",
+                                                                                                "lhs": {
+                                                                                                    "type": "property",
+                                                                                                    "value": [
+                                                                                                        "definitionType"
+                                                                                                    ]
+                                                                                                },
+                                                                                                "rhs": {
+                                                                                                    "type": "constant",
+                                                                                                    "value": "SpeciesLevel"
+                                                                                                }
+                                                                                            },
+                                                                                            "then": [ 
+                                                                                                {
+                                                                                                    "dst": [
+                                                                                                        "speciesLevelParams"
+                                                                                                    ],
+                                                                                                    "remove": {
+                                                                                                        "nullProperty": [
+                                                                                                            "value"
+                                                                                                        ]
+                                                                                                    }
+                                                                                                }
+                                                                                            ]
+                                                                                        },
+                                                                                        {
+                                                                                            "if": {
+                                                                                                "type": "equal",
+                                                                                                "lhs": {
+                                                                                                    "type": "property",
+                                                                                                    "value": [
+                                                                                                        "definitionType"
+                                                                                                    ]
+                                                                                                },
+                                                                                                "rhs": {
+                                                                                                    "type": "constant",
+                                                                                                    "value": "IndividualLevel"
+                                                                                                }
+                                                                                            },
+                                                                                            "then": [ 
+                                                                                                {
+                                                                                                    "dst": [
+                                                                                                        "individualLevelParams", "limits"
+                                                                                                    ],
+                                                                                                    "remove": {
+                                                                                                        "nullProperty": [
+                                                                                                            "max", "min"
+                                                                                                        ]
+                                                                                                    }
+                                                                                                },
+                                                                                                {
+                                                                                                    "dst": [
+                                                                                                        "individualLevelParams", "ranges"
+                                                                                                    ],
+                                                                                                    "remove": {
+                                                                                                        "nullProperty": [
+                                                                                                            "max", "min"
+                                                                                                        ]
+                                                                                                    }
+                                                                                                },
+                                                                                                {
+                                                                                                    "dst": [
+                                                                                                        "individualLevelParams"
+                                                                                                    ],
+                                                                                                    "remove": {
+                                                                                                        "nullProperty": [
+                                                                                                            "restrictValue"
+                                                                                                        ]
+                                                                                                    },
+                                                                                                    "add": {
+                                                                                                        "requiredConditions": [
+                                                                                                            {
+                                                                                                                "condition": {
+                                                                                                                    "type": "greater_equal_than",
+                                                                                                                    "lhs": {
+                                                                                                                        "type": "multiply",
+                                                                                                                        "result_type": "floater",
+                                                                                                                        "lhs": {
+                                                                                                                            "type": "subtract",
+                                                                                                                            "result_type": "floater",
+                                                                                                                            "lhs": {
+                                                                                                                                "type": "property",
+                                                                                                                                "value": [
+                                                                                                                                    "ranges",
+                                                                                                                                    "max"
+                                                                                                                                ]
+                                                                                                                            },
+                                                                                                                            "rhs": {
+                                                                                                                                "type": "property",
+                                                                                                                                "value": [
+                                                                                                                                    "ranges",
+                                                                                                                                    "min"
+                                                                                                                                ]
+                                                                                                                            }
+                                                                                                                        },
+                                                                                                                        "rhs": {
+                                                                                                                            "type": "property",
+                                                                                                                            "value": [
+                                                                                                                                "limits",
+                                                                                                                                "min"
+                                                                                                                            ]
+                                                                                                                        }
+                                                                                                                    },
+                                                                                                                    "rhs": {
+                                                                                                                        "type": "constant",
+                                                                                                                        "value": 0.0
+                                                                                                                    }
+                                                                                                                },
+                                                                                                                "error": "The percentage of the upper threshold minimum limit must be lower because the final value exceeds the value 0.0"
+                                                                                                            }
+                                                                                                        ]
+                                                                                                    }
+                                                                                                }
+                                                                                            ]
+                                                                                        }
+                                                                                    ]
+                                                                                }
+                                                                            },
+                                                                            {
+                                                                                "dst": [
+                                                                                    "activationEnergy"
+                                                                                ],
+                                                                                "remove": {
+                                                                                    "nullProperty": [
+                                                                                        "definitionType"
+                                                                                    ]
+                                                                                },
+                                                                                "add": {
+                                                                                    "conditionals": [
+                                                                                        {
+                                                                                            "if": {
+                                                                                                "type": "equal",
+                                                                                                "lhs": {
+                                                                                                    "type": "property",
+                                                                                                    "value": [
+                                                                                                        "definitionType"
+                                                                                                    ]
+                                                                                                },
+                                                                                                "rhs": {
+                                                                                                    "type": "constant",
+                                                                                                    "value": "SpeciesLevel"
+                                                                                                }
+                                                                                            },
+                                                                                            "then": [ 
+                                                                                                {
+                                                                                                    "dst": [
+                                                                                                        "speciesLevelParams"
+                                                                                                    ],
+                                                                                                    "remove": {
+                                                                                                        "nullProperty": [
+                                                                                                            "value"
+                                                                                                        ]
+                                                                                                    }
+                                                                                                }
+                                                                                            ]
+                                                                                        },
+                                                                                        {
+                                                                                            "if": {
+                                                                                                "type": "equal",
+                                                                                                "lhs": {
+                                                                                                    "type": "property",
+                                                                                                    "value": [
+                                                                                                        "definitionType"
+                                                                                                    ]
+                                                                                                },
+                                                                                                "rhs": {
+                                                                                                    "type": "constant",
+                                                                                                    "value": "IndividualLevel"
+                                                                                                }
+                                                                                            },
+                                                                                            "then": [ 
+                                                                                                {
+                                                                                                    "dst": [
+                                                                                                        "individualLevelParams", "limits"
+                                                                                                    ],
+                                                                                                    "remove": {
+                                                                                                        "nullProperty": [
+                                                                                                            "max", "min"
+                                                                                                        ]
+                                                                                                    }
+                                                                                                },
+                                                                                                {
+                                                                                                    "dst": [
+                                                                                                        "individualLevelParams", "ranges"
+                                                                                                    ],
+                                                                                                    "remove": {
+                                                                                                        "nullProperty": [
+                                                                                                            "max", "min"
+                                                                                                        ]
+                                                                                                    }
+                                                                                                },
+                                                                                                {
+                                                                                                    "dst": [
+                                                                                                        "individualLevelParams"
+                                                                                                    ],
+                                                                                                    "remove": {
+                                                                                                        "nullProperty": [
+                                                                                                            "restrictValue"
+                                                                                                        ]
+                                                                                                    }
+                                                                                                }
+                                                                                            ]
+                                                                                        }
+                                                                                    ]
+                                                                                }
+                                                                            },
+                                                                            {
+                                                                                "dst": [
+                                                                                    "energyDecay"
+                                                                                ],
+                                                                                "remove": {
+                                                                                    "nullProperty": [
+                                                                                        "definitionType"
+                                                                                    ]
+                                                                                },
+                                                                                "add": {
+                                                                                    "conditionals": [
+                                                                                        {
+                                                                                            "if": {
+                                                                                                "type": "equal",
+                                                                                                "lhs": {
+                                                                                                    "type": "property",
+                                                                                                    "value": [
+                                                                                                        "definitionType"
+                                                                                                    ]
+                                                                                                },
+                                                                                                "rhs": {
+                                                                                                    "type": "constant",
+                                                                                                    "value": "SpeciesLevel"
+                                                                                                }
+                                                                                            },
+                                                                                            "then": [ 
+                                                                                                {
+                                                                                                    "dst": [
+                                                                                                        "speciesLevelParams"
+                                                                                                    ],
+                                                                                                    "remove": {
+                                                                                                        "nullProperty": [
+                                                                                                            "value"
+                                                                                                        ]
+                                                                                                    }
+                                                                                                }
+                                                                                            ]
+                                                                                        },
+                                                                                        {
+                                                                                            "if": {
+                                                                                                "type": "equal",
+                                                                                                "lhs": {
+                                                                                                    "type": "property",
+                                                                                                    "value": [
+                                                                                                        "definitionType"
+                                                                                                    ]
+                                                                                                },
+                                                                                                "rhs": {
+                                                                                                    "type": "constant",
+                                                                                                    "value": "IndividualLevel"
+                                                                                                }
+                                                                                            },
+                                                                                            "then": [ 
+                                                                                                {
+                                                                                                    "dst": [
+                                                                                                        "individualLevelParams", "limits"
+                                                                                                    ],
+                                                                                                    "remove": {
+                                                                                                        "nullProperty": [
+                                                                                                            "max", "min"
+                                                                                                        ]
+                                                                                                    }
+                                                                                                },
+                                                                                                {
+                                                                                                    "dst": [
+                                                                                                        "individualLevelParams", "ranges"
+                                                                                                    ],
+                                                                                                    "remove": {
+                                                                                                        "nullProperty": [
+                                                                                                            "max", "min"
+                                                                                                        ]
+                                                                                                    }
+                                                                                                },
+                                                                                                {
+                                                                                                    "dst": [
+                                                                                                        "individualLevelParams"
+                                                                                                    ],
+                                                                                                    "remove": {
+                                                                                                        "nullProperty": [
+                                                                                                            "restrictValue"
+                                                                                                        ]
+                                                                                                    }
+                                                                                                }
+                                                                                            ]
+                                                                                        }
+                                                                                    ]
+                                                                                }
+                                                                            },
+                                                                            {
+                                                                                "dst": [
+                                                                                    "temperatureOptimal"
+                                                                                ],
+                                                                                "remove": {
+                                                                                    "nullProperty": [
+                                                                                        "definitionType"
+                                                                                    ]
+                                                                                },
+                                                                                "add": {
+                                                                                    "conditionals": [
+                                                                                        {
+                                                                                            "if": {
+                                                                                                "type": "equal",
+                                                                                                "lhs": {
+                                                                                                    "type": "property",
+                                                                                                    "value": [
+                                                                                                        "definitionType"
+                                                                                                    ]
+                                                                                                },
+                                                                                                "rhs": {
+                                                                                                    "type": "constant",
+                                                                                                    "value": "SpeciesLevel"
+                                                                                                }
+                                                                                            },
+                                                                                            "then": [ 
+                                                                                                {
+                                                                                                    "dst": [
+                                                                                                        "speciesLevelParams"
+                                                                                                    ],
+                                                                                                    "remove": {
+                                                                                                        "nullProperty": [
+                                                                                                            "value"
+                                                                                                        ]
+                                                                                                    }
+                                                                                                }
+                                                                                            ]
+                                                                                        },
+                                                                                        {
+                                                                                            "if": {
+                                                                                                "type": "equal",
+                                                                                                "lhs": {
+                                                                                                    "type": "property",
+                                                                                                    "value": [
+                                                                                                        "definitionType"
+                                                                                                    ]
+                                                                                                },
+                                                                                                "rhs": {
+                                                                                                    "type": "constant",
+                                                                                                    "value": "IndividualLevel"
+                                                                                                }
+                                                                                            },
+                                                                                            "then": [ 
+                                                                                                {
+                                                                                                    "dst": [
+                                                                                                        "individualLevelParams", "limits"
+                                                                                                    ],
+                                                                                                    "remove": {
+                                                                                                        "nullProperty": [
+                                                                                                            "max", "min"
+                                                                                                        ]
+                                                                                                    }
+                                                                                                },
+                                                                                                {
+                                                                                                    "dst": [
+                                                                                                        "individualLevelParams", "ranges"
+                                                                                                    ],
+                                                                                                    "remove": {
+                                                                                                        "nullProperty": [
+                                                                                                            "max", "min"
+                                                                                                        ]
+                                                                                                    }
+                                                                                                },
+                                                                                                {
+                                                                                                    "dst": [
+                                                                                                        "individualLevelParams"
+                                                                                                    ],
+                                                                                                    "remove": {
+                                                                                                        "nullProperty": [
+                                                                                                            "restrictValue"
+                                                                                                        ]
+                                                                                                    }
+                                                                                                }
+                                                                                            ]
+                                                                                        }
+                                                                                    ]
+                                                                                }
+                                                                            }
+                                                                        ]
+                                                                    }
+                                                                ],
+                                                                "additionalProperties": false,
+                                                                "required": true
+                                                            }
+                                                        }
+                                                    }
+                                                }
+                                            ]
+                                        },
+                                        {
+                                            "enumValues": [
+                                                "lengthAtMaturation"
+                                            ],
+                                            "if": {
+                                                "type": "constant",
+                                                "value": true
+                                            },
+                                            "then": [ 
+                                                {
+                                                    "dst": [
+                                                        "<pattern>"
+                                                    ],
+                                                    "add": {
+                                                        "properties": {
+                                                            "temperature": {
+                                                                "type": "object",
+                                                                "properties": {
+                                                                    "dependent": {
+                                                                        "type": "boolean",
+                                                                        "required": true
+                                                                    },
+                                                                    "tempSizeRuleVector": {
+                                                                        "type": "array",
+                                                                        "items": {
+                                                                            "type": "object",
+                                                                            "properties": {
+                                                                                "temperature": {
+                                                                                    "type": "floater",
+                                                                                    "exclusiveMinimum": true,
+                                                                                    "minimum": 0.0
+                                                                                },
+                                                                                "dryMass": {
+                                                                                    "type": "floater",
+                                                                                    "exclusiveMinimum": true,
+                                                                                    "minimum": 0.0
+                                                                                }
+                                                                            },
+                                                                            "additionalProperties": false
+                                                                        },
+                                                                        "minItems": 1,
+                                                                        "required": true,
+                                                                        "nullProperty": true
+                                                                    }
+                                                                },
+                                                                "conditionals": [
+                                                                    {
+                                                                        "if": {
+                                                                            "type": "property",
+                                                                            "value": [
+                                                                                "dependent"
+                                                                            ]
+                                                                        },
+                                                                        "then": [ 
+                                                                            {
+                                                                                "remove": {
+                                                                                    "nullProperty": [
+                                                                                        "tempSizeRuleVector"
+                                                                                    ]
+                                                                                }
+                                                                            }
+                                                                        ]
+                                                                    }
+                                                                ],
+                                                                "additionalProperties": false,
+                                                                "required": true
+                                                            }
+                                                        }
+                                                    }
+                                                }
+                                            ]
+                                        }
+                                    ],
                                     "additionalProperties": false,
                                     "required": true
                                 },
-                                "variableTraitsOrder": {
+                                "individualLevelTraitsOrder": {
                                     "type": "array",
                                     "items": {
-                                        "type": "string",
-                                        "enum": ["energy_tank","growth","pheno","factorEggMass","assim","voracity","speed","search_area","met_rate","actE_vor","actE_speed","actE_search","shock_resistance","actE_met","memoryDepth","perception_area","interaction_area"]
+                                        "type": "string"
                                     },
                                     "required": true
                                 }
                             },
+                            "additionalProperties": false,
+                            "required": true
+                        }
+                    },
+                    "additionalProperties": false,
+                    "required": true
+                },
+                "growthModule": {
+                    "type": "object",
+                    "properties": {
+                        "femaleWetMass": {
+                            "type": "floater",
+                            "required": true
+                        },
+                        "eggMass": {
+                            "type": "object",
+                            "properties": {
+                                "eggMassFromEquation": {
+                                    "type": "boolean",
+                                    "required": true
+                                },
+                                "value": {
+                                    "type": "floater",
+                                    "required": true,
+                                    "nullProperty": true
+                                },
+                                "equationParameters": {
+                                    "type": "object",
+                                    "properties": {
+                                        "coefficient": {
+                                            "type": "floater",
+                                            "required": true,
+                                            "nullProperty": true
+                                        },
+                                        "scale": {
+                                            "type": "floater",
+                                            "required": true,
+                                            "nullProperty": true
+                                        }
+                                    },
+                                    "additionalProperties": false,
+                                    "required": true
+                                }
+                            },
+                            "conditionals": [
+                                {
+                                    "if": {
+                                        "type": "property",
+                                        "value": [
+                                            "eggMassFromEquation"
+                                        ]
+                                    },
+                                    "then": [ 
+                                        {
+                                            "dst": [
+                                                "equationParameters"
+                                            ],
+                                            "remove": {
+                                                "nullProperty": [
+                                                    "coefficient",
+                                                    "scale"
+                                                ]
+                                            }
+                                        }
+                                    ],
+                                    "else": [
+                                        {
+                                            "remove": {
+                                                "nullProperty": [
+                                                    "value"
+                                                ]
+                                            }
+                                        }
+                                    ]
+                                }
+                            ],
+                            "additionalProperties": false,
+                            "required": true
+                        },
+                        "growthModel": {
+                            "type": "string",
+                            "enum": ["VonBertalanffy", "Logistic", "Exponential"],
+                            "required": true
+                        },
+                        "indeterminateGrowth": {
+                            "type": "object",
+                            "properties": {
+                                "enabled": {
+                                    "type": "boolean",
+                                    "required": true
+                                },
+                                "indeterminateGrowthParams": {
+                                    "type": "object",
+                                    "properties": {
+                                        "instarFirstReproduction": {
+                                            "type": "unsigned_integer",
+                                            "required": true,
+                                            "nullProperty": true
+                                        }
+                                    },
+                                    "additionalProperties": false,
+                                    "required": true
+                                }
+                            },
+                            "conditionals": [
+                                {
+                                    "if": {
+                                        "type": "property",
+                                        "value": [
+                                            "enabled"
+                                        ]
+                                    },
+                                    "then": [
+                                        {
+                                            "dst": [
+                                                "indeterminateGrowthParams"
+                                            ],
+                                            "remove": {
+                                                "nullProperty": [
+                                                    "instarFirstReproduction"
+                                                ]
+                                            },
+                                            "add": {
+                                                "requiredConditions": [
+                                                    {
+                                                        "condition": {
+                                                            "type": "greater_than",
+                                                            "lhs": {
+                                                                "type": "property",
+                                                                "value": [
+                                                                    "instarFirstReproduction"
+                                                                ]
+                                                            },
+                                                            "rhs": {
+                                                                "type": "constant",
+                                                                "value": 1
+                                                            }
+                                                        },
+                                                        "error": "Item 'instarFirstReproduction' must be greater than 1"
+                                                    }
+                                                ]
+                                            }
+                                        }
+                                    ]
+                                }
+                            ],
                             "additionalProperties": false,
                             "required": true
                         }
@@ -641,14 +1585,6 @@
                     "type": "floater",
                     "required": true
                 },
-                "indeterminateGrowth": {
-                    "type": "boolean",
-                    "required": true
-                },
-                "instarFirstReproduction": {
-                    "type": "unsigned_integer",
-                    "required": false
-                },
                 "instarsForNextReproduction": {
                     "type": "unsigned_integer",
                     "required": true
@@ -658,7 +1594,68 @@
                     "required": true
                 },
                 "eggsPerBatch": {
-                    "type": "unsigned_integer",
+                    "type": "object",
+                    "properties": {
+                        "eggsPerBatchFromEquation": {
+                            "type": "boolean",
+                            "required": true
+                        },
+                        "value": {
+                            "type": "unsigned_integer",
+                            "required": true,
+                            "nullProperty": true
+                        },
+                        "equationParameters": {
+                            "type": "object",
+                            "properties": {
+                                "interceptForEggBatchFromEquation": {
+                                    "type": "floater",
+                                    "required": true,
+                                    "nullProperty": true
+                                },
+                                "slopeForEggBatchFromEquation": {
+                                    "type": "floater",
+                                    "required": true,
+                                    "nullProperty": true
+                                }
+                            },
+                            "additionalProperties": false,
+                            "required": true
+                        }
+                    },
+                    "conditionals": [
+                        {
+                            "if": {
+                                "type": "property",
+                                "value": [
+                                    "eggsPerBatchFromEquation"
+                                ]
+                            },
+                            "then": [ 
+                                {
+                                    "dst": [
+                                        "equationParameters"
+                                    ],
+                                    "remove": {
+                                        "nullProperty": [
+                                            "coefficient",
+                                            "scale"
+                                        ]
+                                    }
+                                }
+                            ],
+                            "else": [
+                                {
+                                    "remove": {
+                                        "nullProperty": [
+                                            "value"
+                                        ]
+                                    }
+                                }
+                            ]
+                        }
+                    ],
+                    "additionalProperties": false,
                     "required": true
                 },
                 "maleMaxReproductionEvents": {
@@ -673,7 +1670,7 @@
                     "type": "unsigned_integer",
                     "required": true
                 },
-                "decreaseOnTraitsDueToEncounters": {
+                "activityUnderPredationRisk": {
                     "type": "floater",
                     "required": true
                 },
@@ -698,10 +1695,6 @@
                     "required": true
                 },
                 "minRelativeHumidityThreshold": {
-                    "type": "unsigned_integer",
-                    "required": true
-                },
-                "pupaPeriodLength": {
                     "type": "unsigned_integer",
                     "required": true
                 },
@@ -765,31 +1758,7 @@
                     "itemsOrder": "strictly_increasing",
                     "required": true
                 },
-                "LinfKcorr": {
-                    "type": "floater",
-                    "required": true
-                },
-                "devTimeConstant": {
-                    "type": "floater",
-                    "required": true
-                },
                 "devInter": {
-                    "type": "floater",
-                    "required": true
-                },
-                "EdGrowth": {
-                    "type": "floater",
-                    "required": true
-                },
-                "EdVoracity": {
-                    "type": "floater",
-                    "required": true
-                },
-                "EdSearch": {
-                    "type": "floater",
-                    "required": true
-                },
-                "EdSpeed": {
                     "type": "floater",
                     "required": true
                 },
@@ -809,27 +1778,7 @@
                     "type": "floater",
                     "required": true
                 },
-                "tempOptGrowth": {
-                    "type": "floater",
-                    "required": true
-                },
-                "tempOptVoracity": {
-                    "type": "floater",
-                    "required": true
-                },
-                "tempOptSearch": {
-                    "type": "floater",
-                    "required": true
-                },
-                "tempOptSpeed": {
-                    "type": "floater",
-                    "required": true
-                },
                 "tempFromLab": {
-                    "type": "floater",
-                    "required": true
-                },
-                "tempSizeRuleConstant": {
                     "type": "floater",
                     "required": true
                 },
@@ -842,26 +1791,6 @@
                     "required": true
                 },
                 "forClutchMassScale": {
-                    "type": "floater",
-                    "required": true
-                },
-                "forEggMassCoefficient": {
-                    "type": "floater",
-                    "required": true
-                },
-                "forEggMassScale": {
-                    "type": "floater",
-                    "required": true
-                },
-                "eggMassFromEquation": {
-                    "type": "boolean",
-                    "required": true
-                },
-                "eggDryMass": {
-                    "type": "floater",
-                    "required": true
-                },
-                "femaleWetMass": {
                     "type": "floater",
                     "required": true
                 },
@@ -885,27 +1814,15 @@
                     "type": "floater",
                     "required": true
                 },
-                "maxPlasticityDueToConditionVor": {
+                "plasticityDueToConditionVor": {
                     "type": "floater",
                     "required": true
                 },
-                "minPlasticityDueToConditionVor": {
+                "plasticityDueToConditionSearch": {
                     "type": "floater",
                     "required": true
                 },
-                "maxPlasticityDueToConditionSearch": {
-                    "type": "floater",
-                    "required": true
-                },
-                "minPlasticityDueToConditionSearch": {
-                    "type": "floater",
-                    "required": true
-                },
-                "maxPlasticityDueToConditionSpeed": {
-                    "type": "floater",
-                    "required": true
-                },
-                "minPlasticityDueToConditionSpeed": {
+                "plasticityDueToConditionSpeed": {
                     "type": "floater",
                     "required": true
                 },
@@ -983,48 +1900,6 @@
                 }
             },
             "conditionals": [
-                {
-                    "if": {
-                        "type": "equal",
-                        "lhs": {
-                            "type": "property",
-                            "value": [
-                                "indeterminateGrowth"
-                            ]
-                        },
-                        "rhs": {
-                            "type": "constant",
-                            "value": true
-                        }
-                    },
-                    "then": [
-                        {
-                            "add": {
-                                "required": [
-                                    "instarFirstReproduction"
-                                ]
-                            }
-                        }
-                    ],
-                    "else": [
-                        {
-                            "add": {
-                                "warningConditions": [
-                                    {
-                                        "condition": {
-                                            "type": "property_exists",
-                                            "value": [
-                                                "instarFirstReproduction"
-                                            ]
-                                        },
-                                        "warning": "Item 'instarFirstReproduction' is not being used because 'indeterminateGrowth' is disabled"
-                                    }
-                                ],
-                                "additionalProperties": true
-                            }
-                        }
-                    ]
-                },
                 {
                     "if": {
                         "type": "greater_than",
@@ -1145,27 +2020,51 @@
                 },
                 {
                     "condition": {
-                        "type": "greater_than",
-                        "lhs": {
+                        "type": "if_cond",
+                        "condition": {
                             "type": "property",
                             "value": [
-                                "instarFirstReproduction"
+                                "growthModule",
+                                "indeterminateGrowth",
+                                "enabled"
                             ]
                         },
-                        "rhs": {
-                            "type": "constant",
-                            "value": 1
-                        }
-                    },
-                    "error": "Item 'instarFirstReproduction' must be greater than 1"
-                },
-                {
-                    "condition": {
-                        "type": "greater_equal_than",
-                        "lhs": {
-                            "type": "multiply",
-                            "result_type": "floater",
+                        "then": {
+                            "type": "greater_equal_than",
                             "lhs": {
+                                "type": "multiply",
+                                "result_type": "floater",
+                                "lhs": {
+                                    "type": "property_item",
+                                    "value": [
+                                        "devTimeVector"
+                                    ],
+                                    "item": {
+                                        "type": "subtract",
+                                        "result_type": "unsigned_integer",
+                                        "lhs": {
+                                            "type": "property",
+                                            "value": [
+                                                "growthModule",
+                                                "indeterminateGrowth",
+                                                "indeterminateGrowthParams",
+                                                "instarFirstReproduction"
+                                            ]
+                                        },
+                                        "rhs": {
+                                            "type": "constant",
+                                            "value": 2
+                                        }
+                                    }
+                                },
+                                "rhs": {
+                                    "type": "property",
+                                    "value": [
+                                        "longevitySinceMaturation"
+                                    ]
+                                }
+                            },
+                            "rhs": {
                                 "type": "property_item",
                                 "value": [
                                     "devTimeVector"
@@ -1174,64 +2073,76 @@
                                     "type": "subtract",
                                     "result_type": "unsigned_integer",
                                     "lhs": {
-                                        "type": "property",
+                                        "type": "property_size",
                                         "value": [
-                                            "instarFirstReproduction"
+                                            "devTimeVector"
                                         ]
                                     },
                                     "rhs": {
                                         "type": "constant",
-                                        "value": 2
+                                        "value": 1
                                     }
                                 }
-                            },
-                            "rhs": {
-                                "type": "property",
-                                "value": [
-                                    "longevitySinceMaturation"
-                                ]
                             }
                         },
-                        "rhs": {
-                            "type": "property_item",
-                            "value": [
-                                "devTimeVector"
-                            ],
-                            "item": {
-                                "type": "subtract",
-                                "result_type": "unsigned_integer",
-                                "lhs": {
-                                    "type": "property_size",
-                                    "value": [
-                                        "devTimeVector"
-                                    ]
-                                },
-                                "rhs": {
-                                    "type": "constant",
-                                    "value": 1
-                                }
-                            }
+                        "else": {
+                            "type": "constant",
+                            "value": true
                         }
                     },
                     "error": "Item 'longevitySinceMaturation' must be rounded up to a higher value"
                 },
                 {
                     "condition": {
-                        "type": "greater_equal_than",
-                        "lhs": {
-                            "type": "division",
-                            "result_type": "floater",
+                        "type": "if_cond",
+                        "condition": {
+                            "type": "property",
+                            "value": [
+                                "growthModule",
+                                "indeterminateGrowth",
+                                "enabled"
+                            ]
+                        },
+                        "then": {
+                            "type": "greater_equal_than",
                             "lhs": {
-                                "type": "subtract",
+                                "type": "division",
                                 "result_type": "floater",
                                 "lhs": {
-                                    "type": "multiply",
+                                    "type": "subtract",
                                     "result_type": "floater",
                                     "lhs": {
-                                        "type": "property",
-                                        "value": [
-                                            "longevitySinceMaturation"
-                                        ]
+                                        "type": "multiply",
+                                        "result_type": "floater",
+                                        "lhs": {
+                                            "type": "property",
+                                            "value": [
+                                                "longevitySinceMaturation"
+                                            ]
+                                        },
+                                        "rhs": {
+                                            "type": "property_item",
+                                            "value": [
+                                                "devTimeVector"
+                                            ],
+                                            "item": {
+                                                "type": "subtract",
+                                                "result_type": "unsigned_integer",
+                                                "lhs": {
+                                                    "type": "property",
+                                                    "value": [
+                                                        "growthModule",
+                                                        "indeterminateGrowth",
+                                                        "indeterminateGrowthParams",
+                                                        "instarFirstReproduction"
+                                                    ]
+                                                },
+                                                "rhs": {
+                                                    "type": "constant",
+                                                    "value": 2
+                                                }
+                                            }
+                                        }
                                     },
                                     "rhs": {
                                         "type": "property_item",
@@ -1244,6 +2155,9 @@
                                             "lhs": {
                                                 "type": "property",
                                                 "value": [
+                                                    "growthModule",
+                                                    "indeterminateGrowth",
+                                                    "indeterminateGrowthParams",
                                                     "instarFirstReproduction"
                                                 ]
                                             },
@@ -1255,36 +2169,20 @@
                                     }
                                 },
                                 "rhs": {
-                                    "type": "property_item",
+                                    "type": "property",
                                     "value": [
-                                        "devTimeVector"
-                                    ],
-                                    "item": {
-                                        "type": "subtract",
-                                        "result_type": "unsigned_integer",
-                                        "lhs": {
-                                            "type": "property",
-                                            "value": [
-                                                "instarFirstReproduction"
-                                            ]
-                                        },
-                                        "rhs": {
-                                            "type": "constant",
-                                            "value": 2
-                                        }
-                                    }
+                                        "femaleMaxReproductionEvents"
+                                    ]
                                 }
                             },
                             "rhs": {
-                                "type": "property",
-                                "value": [
-                                    "femaleMaxReproductionEvents"
-                                ]
+                                "type": "constant",
+                                "value": 1.0
                             }
                         },
-                        "rhs": {
+                        "else": {
                             "type": "constant",
-                            "value": 1.0
+                            "value": true
                         }
                     },
                     "error": "Item 'longevitySinceMaturation' must be rounded up to a higher value due to female reproductive events"

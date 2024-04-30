@@ -74,7 +74,7 @@ public:
         #ifdef DEBUG
         if(static_cast<size_t>(index) >= data.size())
         {
-            throw std::out_of_range("The value of the instar is greater than the size of the vector");
+            throw std::out_of_range("The value of the index is greater than the size of the vector");
         }
         #endif
 
@@ -85,7 +85,7 @@ public:
     {
         if(static_cast<size_t>(index) >= data.size())
         {
-            throw std::out_of_range("The value of the instar is greater than the size of the vector");
+            throw std::out_of_range("The value of the index is greater than the size of the vector");
         }
 
         return data.at(static_cast<size_t>(index));
@@ -95,7 +95,7 @@ public:
     {
         if(static_cast<size_t>(index) >= data.size())
         {
-            throw std::out_of_range("The value of the instar is greater than the size of the vector");
+            throw std::out_of_range("The value of the index is greater than the size of the vector");
         }
 
         return data.at(static_cast<size_t>(index));
@@ -104,6 +104,20 @@ public:
     void push_back(const ContentType &val)
     {
         data.push_back(val);
+    }
+
+    template<typename... Args>
+    void emplace_back(Args&&... args)
+    {
+        data.emplace_back(std::forward<Args>(args)...);
+    }
+
+    typename std::vector<ContentType>::reference back() {
+        return data.back();
+    }
+
+    typename std::vector<ContentType>::const_reference back() const {
+        return data.back();
     }
 
     typename std::vector<ContentType>::iterator begin() noexcept {
@@ -131,12 +145,6 @@ public:
         return data.cend();
     }
 
-    /**
-     * @brief Serialize the InstarVector object.
-     * @tparam Archive The type of archive (binary_oarchive for saving, binary_iarchive for loading).
-     * @param ar The archive to use.
-     * @param version The version of the serialization format.
-     */
     template <class Archive>
     void serialize(Archive &ar, const unsigned int version) {
         ar & data;
@@ -176,6 +184,12 @@ public:
 
     }
 
+    CustomIndexedVector(const std::vector<bool> &values)
+        : data(values)
+    {
+        
+    }
+
     void resize(const unsigned int n)
     {
         data.resize(n);
@@ -206,7 +220,7 @@ public:
         #ifdef DEBUG
         if(static_cast<size_t>(index) >= data.size())
         {
-            throw std::out_of_range("The value of the instar is greater than the size of the vector");
+            throw std::out_of_range("The value of the index is greater than the size of the vector");
         }
         #endif
 
@@ -217,7 +231,7 @@ public:
         #ifdef DEBUG
         if(static_cast<size_t>(index) >= data.size())
         {
-            throw std::out_of_range("The value of the instar is greater than the size of the vector");
+            throw std::out_of_range("The value of the index is greater than the size of the vector");
         }
         #endif
 
@@ -228,7 +242,7 @@ public:
     {
         if(static_cast<size_t>(index) >= data.size())
         {
-            throw std::out_of_range("The value of the instar is greater than the size of the vector");
+            throw std::out_of_range("The value of the index is greater than the size of the vector");
         }
 
         return data.at(static_cast<size_t>(index));
@@ -238,10 +252,18 @@ public:
     {
         if(static_cast<size_t>(index) >= data.size())
         {
-            throw std::out_of_range("The value of the instar is greater than the size of the vector");
+            throw std::out_of_range("The value of the index is greater than the size of the vector");
         }
 
         return data.at(static_cast<size_t>(index));
+    }
+
+    typename std::vector<bool>::reference back() {
+        return data.back();
+    }
+
+    typename std::vector<bool>::const_reference back() const {
+        return data.back();
     }
 
     typename std::vector<bool>::iterator begin() noexcept {

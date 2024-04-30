@@ -129,12 +129,49 @@ unordered_map<string, unique_ptr<Folder>>& Folder::getSubFolders()
     return subfolders;
 }
 
+unique_ptr<Folder>& Folder::getSubFolder(const string& foldername)
+{
+    return getSubFolders()[foldername];
+}
+
 unordered_map<string, JsonFile>& Folder::getJsonFiles()
 {
     return json_files;
 }
 
+JsonFile& Folder::getFile(const string& filename)
+{
+    return getJsonFiles()[filename];
+}
+
 VersionNumber& Folder::getVersion()
 {
     return version;
+}
+
+
+void Folder::setFolder(const string& foldername, unique_ptr<Folder>& newFolder)
+{
+    getSubFolders()[foldername] = move(newFolder);
+}
+
+void Folder::removeFolder(const string& foldername)
+{
+    getSubFolders().erase(foldername);
+}
+
+
+void Folder::addFile(string &json_file)
+{
+    getJsonFiles()[json_file] = JsonFile();
+}
+
+void Folder::setFile(const string& filename, JsonFile& newFile)
+{
+    getJsonFiles()[filename] = newFile;
+}
+
+void Folder::removeFile(const string& filename)
+{
+    getJsonFiles().erase(filename);
 }

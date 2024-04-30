@@ -26,62 +26,14 @@
                     "minimum": 1,
                     "required": true
                 },
-                "checkpoints": {
-                    "type": "object",
-                    "properties": {
-                        "enabled": {
-                            "type": "boolean",
-                            "required": true
-                        },
-                        "recordEach": {
-                            "type": "unsigned_integer",
-                            "minimum": 1,
-                            "required": true,
-                            "nullProperty": true
-                        },
-                        "binaryEnabled": {
-                            "type": "boolean",
-                            "required": true,
-                            "nullProperty": true
-                        }
-                    },
-                    "conditionals": [
-                        {
-                            "if": {
-                                "type": "equal",
-                                "lhs": {
-                                    "type": "property",
-                                    "value": [
-                                        "enabled"
-                                    ]
-                                },
-                                "rhs": {
-                                    "type": "constant",
-                                    "value": true
-                                }
-                            },
-                            "then": [ 
-                                {
-                                    "remove": {
-                                        "nullProperty": [
-                                            "recordEach",
-                                            "binaryEnabled"
-                                        ]
-                                    }
-                                }
-                            ]
-                        }
-                    ],
-                    "additionalProperties": false,
-                    "required": true
-                },
                 "recordEach": {
                     "type": "unsigned_integer",
                     "required": true
                 },
                 "timeStepsPerDay": {
-                    "type": "unsigned_integer",
-                    "minimum": 1,
+                    "type": "floater",
+                    "exclusiveMinimum": true,
+                    "minimum": 0.0,
                     "required": true
                 },
                 "saveAnimalConstitutiveTraits": {

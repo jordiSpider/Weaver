@@ -6,13 +6,13 @@
 
 #include "IBM/World/LivingBeings/Resources/Species/ResourceSpecies.h"
 #include "IBM/World/LivingBeings/Edible.h"
-#include "IBM/World/Map/Points/PointSpatialTree.h"
+#include "IBM/World/Map/SpatialTree/Points/PointSpatialTree.h"
 #include "IBM/World/LivingBeings/LifeStage.h"
 #include "Exceptions/LineInfoException.h"
 
 
 class TerrainCellInterface;
-class SpatialTreeInterface;
+class SpatialTree;
 
 
 class ResourceInterface : public Edible
@@ -22,28 +22,13 @@ protected:
 	bool fullCapacity;
 
 public:
-	enum class Type {
-		Default
-	};
-
-	static std::unique_ptr<ResourceInterface> createInstance(ResourceSpecies* const mySpecies, 
-		TerrainCellInterface* terrainCellInterface, double biomass, double resourceMaximumCapacity, 
-		double massRatio, bool patchSpread
-	);
-
-	static std::unique_ptr<ResourceInterface> createInstance(const MapInterface& mapInterface, 
-		TerrainCellInterface* const terrainCellInterface
-	);
-
-
-	ResourceInterface(TerrainCellInterface* terrainCellInterface);
-	ResourceInterface(Species* const mySpecies, TerrainCellInterface* terrainCellInterface, const Instar &instar, const double &biomass);
+	ResourceInterface(const id_type id, Species* const mySpecies, TerrainCellInterface* terrainCellInterface, const Instar &instar, const double &biomass);
 	virtual ~ResourceInterface();
 
-	ResourceSpecies* const getSpecies() const;
+	const ResourceSpecies* const getSpecies() const;
+	ResourceSpecies* const getMutableSpecies();
 	const double getSpeed() const;
 	const double getVoracity() const;
-	const double getCurrentBodySize() const;
 	int getPredatedByID() const;
 	void incrementEncountersWithPredator(const int &predatorId);
 	const bool isHunting() const;
@@ -51,8 +36,8 @@ public:
 	const double getInterpolatedDryMass(const unsigned int evaluationDepth, const double &dryMass) const;
 	const double turnIntoDryMassToBeEaten(const double &predatorVoracity, const float &profitability, const double &leftovers) const;
 	void setNewLifeStage(const LifeStage newLifeStage);
-	void setNewLifeStage(const LifeStage newLifeStage, double dayOfDeath);
-	void setNewLifeStage(const LifeStage newLifeStage, double dayOfDeath, int predatorId);
+	void setNewLifeStage(const LifeStage newLifeStage, const unsigned int numberOfTimeSteps);
+	void setNewLifeStage(const LifeStage newLifeStage, const unsigned int numberOfTimeSteps, int predatorId);
 	virtual double substractBiomass(double dryMassToBeSubstracted);
 	double substractBiomass(double dryMassToBeSubstracted, const double &minimumDryMass);
 	virtual double substractBiomass(double dryMassToBeSubstracted, const Ring* const perceptionArea);
@@ -63,7 +48,7 @@ public:
 	const double calculateWetMass() const;
 	const double calculateWetMass(const double &dryMass) const;
 	bool canEatEdible(const EdibleInterface* const &edible, const std::list<const EdibleInterface*> &ediblesHasTriedToPredate, const double &dryMass) const;
-	bool predateEdible(EdibleInterface &edibleToBePredated, const double &targetDryMass, const Ring* const perceptionArea, int day, bool retaliation, std::list<const EdibleInterface*> &ediblesHasTriedToPredate, std::ostream& encounterProbabilitiesFile, std::ostream& predationProbabilitiesFile, double muForPDF, double sigmaForPDF, double predationSpeedRatioAH, double predationHunterVoracityAH, double predationProbabilityDensityFunctionAH, double predationSpeedRatioSAW, double predationHunterVoracitySAW, double predationProbabilityDensityFunctionSAW, double maxSearchArea);
+	bool predateEdible(EdibleInterface &edibleToBePredated, const double &targetDryMass, const Ring* const perceptionArea, const unsigned int numberOfTimeSteps, bool retaliation, std::list<const EdibleInterface*> &ediblesHasTriedToPredate, std::ostream& encounterProbabilitiesFile, std::ostream& predationProbabilitiesFile, double muForPDF, double sigmaForPDF, double predationSpeedRatioAH, double predationHunterVoracityAH, double predationProbabilityDensityFunctionAH, double predationSpeedRatioSAW, double predationHunterVoracitySAW, double predationProbabilityDensityFunctionSAW, double maxSearchArea);
 
 	bool isDepleted(double foodDemand, const double &dryMass) const;
 
@@ -78,20 +63,6 @@ public:
 	virtual void setFullCapacity(const bool newFullCapacityValue, const std::unique_ptr<std::vector<unsigned int>> &childrenPositions)=0;
 	void setFullCapacity(const bool newFullCapacityValue);
 	const bool isFullCapacity() const;
-
-	template <class Archive>
-    void serialize(Archive &ar, const unsigned int version);
 };
-
-
-namespace boost {
-    namespace serialization {
-        template<class Archive>
-        void serialize(
-            Archive &ar, ResourceInterface* &resourceInterfacePtr, const unsigned int version, 
-            const MapInterface& mapInterface, TerrainCellInterface* const terrainCellInterface
-        );
-    }
-}
 
 #endif /* RESOURCE_INTERFACE_H_ */

@@ -1,140 +1,127 @@
 #include "IBM/World/LivingBeings/Animals/Genetics/Traits/Trait.h"
 
-#include "IBM/World/LivingBeings/Animals/Genetics/Traits/VariableTrait.h"
-#include "IBM/World/LivingBeings/Animals/Genetics/Traits/FixedTrait.h"
 
 using namespace std;
 using json = nlohmann::json;
 
 
 
+CustomIndexedVector<Trait::Type, bool> Trait::inverseTraitVector({
+		false,	// energy_tank
+		false,	// growth
+		true,	// eggDevTime
+		false,	// factorEggMass
+		false,	// assim
+		false,	// voracity
+		false,	// speed
+		false,	// search_area
+		false,	// met_rate
+		false,	// shock_resistance
+		true,	// actE_met
+		false,	// memoryDepth
+		false,	// perception_area
+		false,	// interaction_area
+		true, 	// devTime
+		false, 	// lengthAtMaturation
+		true,	// pupaPeriodLength
+		true	// timeAddedToMeetLastRepro
+	}
+);
 
-unique_ptr<Trait> Trait::createInstance(const string& traitName, const json& traitInfo, const vector<string>& variableTraitsOrder) {
-    switch(EnumClass<Trait::ValueUpdateMethod>::stringToEnumValue(traitInfo["valueUpdateMethod"]["type"])) {
-        case Trait::ValueUpdateMethod::Fixed: {
-            std::vector<std::string>::const_iterator traitPos = find(variableTraitsOrder.cbegin(), variableTraitsOrder.cend(), traitName);
 
-            if(traitPos != variableTraitsOrder.cend())
-            {
-                throwLineInfoException("Error: Trait '" + traitName + "' is fixed and must not have a defined order.");
-            }
-
-            return make_unique<FixedTrait>(traitName, traitInfo);
-            break;
-        }
-        case Trait::ValueUpdateMethod::Variable: {
-            std::vector<std::string>::const_iterator traitPos = find(variableTraitsOrder.cbegin(), variableTraitsOrder.cend(), traitName);
-
-            if(traitPos == variableTraitsOrder.cend())
-            {
-                throwLineInfoException("Error: Trait '" + traitName + "' has no defined order.");
-            }
-
-            return make_unique<VariableTrait>(traitName, traitInfo, distance(variableTraitsOrder.cbegin(), traitPos));
-            break;
-        }
-        default: {
-            throwLineInfoException("Default case");
-            break;
-        }
-    }
-}
-
-unique_ptr<Trait> Trait::createInstance(const Trait::ValueUpdateMethod &traitValueUpdateMethod)
+Trait::Trait(const string& traitType, const json& info, const vector<string>& individualLevelTraitsOrder, 
+			 const Temperature& tempFromLab, const vector<Locus*> &loci, const unsigned int traitsPerModule, const unsigned int numberOfLociPerTrait, const vector<double>& rhoPerModule, const vector<unsigned int>& rhoRangePerModule)
+	: type(EnumClass<Type>::stringToEnumValue(traitType)),
+	  thermallyDependent((type == Trait::Type::energy_tank) ? false : static_cast<bool>(info["temperature"]["dependent"]))
 {
-	switch(traitValueUpdateMethod) {
-        case Trait::ValueUpdateMethod::Fixed: {
-            return make_unique<FixedTrait>();
-            break;
-        }
-        case Trait::ValueUpdateMethod::Variable: {
-            return make_unique<VariableTrait>();
-            break;
-        }
-        default: {
-            throwLineInfoException("Default case");
-            break;
-        }
-    }
+	traitElements.push_back(TraitDefinitionSection::createInstance(traitType, info, individualLevelTraitsOrder, TraitDefinitionSection::Elements::TraitValue, loci, traitsPerModule, numberOfLociPerTrait, rhoPerModule, rhoRangePerModule).release());
+
+	if(isThermallyDependent())
+	{
+		if(type == Trait::Type::lengthAtMaturation)
+		{
+			temperatureSection = new TempSizeRuleTraitTemperatureSection(info["temperature"], tempFromLab);
+		}
+		else
+		{
+			temperatureSection = new DellsTraitTemperatureSection(traitType, info["temperature"], individualLevelTraitsOrder, isInverse(), loci, traitsPerModule, numberOfLociPerTrait, rhoPerModule, rhoRangePerModule);
+
+			traitElements.resize(EnumClass<TraitDefinitionSection::Elements>::size(), nullptr);
+			traitElements[TraitDefinitionSection::Elements::ActivationEnergy] = static_cast<DellsTraitTemperatureSection*>(temperatureSection)->getActivationEnergy();
+			traitElements[TraitDefinitionSection::Elements::EnergyDecay] = static_cast<DellsTraitTemperatureSection*>(temperatureSection)->getEnergyDecay();
+			traitElements[TraitDefinitionSection::Elements::LowerThreshold] = static_cast<DellsTraitTemperatureSection*>(temperatureSection)->getLowerThreshold();
+			traitElements[TraitDefinitionSection::Elements::UpperThreshold] = static_cast<DellsTraitTemperatureSection*>(temperatureSection)->getUpperThreshold();
+			traitElements[TraitDefinitionSection::Elements::TemperatureOptimal] = static_cast<DellsTraitTemperatureSection*>(temperatureSection)->getTemperatureOptimal();
+		}
+	}
+	else
+	{
+		temperatureSection = nullptr;
+	}
 }
 
-
-Trait::Trait()
+Trait::~Trait() 
 {
+	delete traitElements[TraitDefinitionSection::Elements::TraitValue];
 
+	if(isThermallyDependent())
+	{
+		delete temperatureSection;
+	}
 }
 
-Trait::Trait(const string& name, const json& traitInfo)
-	: type(EnumClass<Type>::stringToEnumValue(name)), lowerThreshold(traitInfo["temperatureThreshold"]["lower"]), 
-	  upperThreshold(traitInfo["temperatureThreshold"]["upper"])
+const CustomIndexedVector<TraitDefinitionSection::Elements, TraitDefinitionSection*>& Trait::getElements() const
 {
-
+	return traitElements;
 }
 
-const Temperature& Trait::getLowerThreshold() const
+CustomIndexedVector<TraitDefinitionSection::Elements, TraitDefinitionSection*>& Trait::getMutableElements()
 {
-	return lowerThreshold;
+	return traitElements;
 }
 
-const Temperature& Trait::getUpperThreshold() const
+const Trait::Type Trait::getType() const 
+{ 
+	return type;
+}
+
+const bool Trait::isInverse() const
 {
-	return upperThreshold;
+	return inverseTraitVector[type];
 }
 
-template <class Archive>
-void Trait::serialize(Archive &ar, const unsigned int version) {
-	ar & type;
-	ar & lowerThreshold;
-    ar & upperThreshold;
-} 
+const bool Trait::isThermallyDependent() const
+{
+	return thermallyDependent;
+}
 
-// Specialisation
-template void Trait::serialize<boost::archive::text_iarchive>(boost::archive::text_iarchive&, const unsigned int);
-template void Trait::serialize<boost::archive::text_oarchive>(boost::archive::text_oarchive&, const unsigned int);
+const TraitTemperatureSection& Trait::getTemperatureSection() const
+{
+	return *temperatureSection;
+}
 
-template void Trait::serialize<boost::archive::binary_iarchive>(boost::archive::binary_iarchive&, const unsigned int);
-template void Trait::serialize<boost::archive::binary_oarchive>(boost::archive::binary_oarchive&, const unsigned int);
+TraitTemperatureSection& Trait::getMutableTemperatureSection()
+{
+	return *temperatureSection;
+}
 
+double Trait::applyTemperatureDependency(const Temperature& temperature, const CustomIndexedVector<TraitDefinitionSection::Elements, double>& traitElements,
+        const map<Temperature, pair<double, double>>& lowerTempSizeRuleConstantAccumulationVector, const double& lastLowerTempSizeRuleConstant, 
+        const map<Temperature, pair<double, double>>& upperTempSizeRuleConstantAccumulationVector, const double& lastUpperTempSizeRuleConstant,
+		const AnimalSpecies* const animalSpecies
+	) const
+{
+	double finalTraitValue = getTemperatureSection().applyTemperatureDependency(
+		temperature, traitElements, lowerTempSizeRuleConstantAccumulationVector, lastLowerTempSizeRuleConstant, 
+		upperTempSizeRuleConstantAccumulationVector, lastUpperTempSizeRuleConstant, animalSpecies
+	);
 
-namespace boost {
-    namespace serialization {
-        template<class Archive>
-        void serialize(Archive &ar, Trait* &traitPtr, const unsigned int version) {
-            Trait::ValueUpdateMethod traitValueUpdateMethod;
-            
-            // For loading
-            if(Archive::is_loading::value) 
-            {
-                ar & traitValueUpdateMethod;
-                traitPtr = Trait::createInstance(traitValueUpdateMethod).release();
-            }
-            else
-            {
-                traitValueUpdateMethod = traitPtr->getValueUpdateMethodType();
-                ar & traitValueUpdateMethod;
-            }
+	if(getType() == Trait::Type::voracity ||
+	   getType() == Trait::Type::search_area ||
+	   getType() == Trait::Type::speed)
+	{
+		finalTraitValue = fmax(finalTraitValue, 0.0);
+	}
 
-            switch(traitValueUpdateMethod) {
-				case Trait::ValueUpdateMethod::Fixed: {
-					static_cast<FixedTrait*>(traitPtr)->serialize(ar, version);
-					break;
-				}
-				case Trait::ValueUpdateMethod::Variable: {
-					static_cast<VariableTrait*>(traitPtr)->serialize(ar, version);
-					break;
-				}
-                default: {
-                    throwLineInfoException("Default case");
-                    break;
-                }
-            }
-        }
-
-        // Specialisation
-        template void serialize<boost::archive::text_iarchive>(boost::archive::text_iarchive&, Trait*&, const unsigned int);
-        template void serialize<boost::archive::text_oarchive>(boost::archive::text_oarchive&, Trait*&, const unsigned int);
-
-        template void serialize<boost::archive::binary_iarchive>(boost::archive::binary_iarchive&, Trait*&, const unsigned int);
-        template void serialize<boost::archive::binary_oarchive>(boost::archive::binary_oarchive&, Trait*&, const unsigned int);
-    }
+	return finalTraitValue;
 }

@@ -33,13 +33,6 @@ int main(int argc, char ** argv)
     options.add_options()
         ("O,outputFolder", "Result output folder path", cxxopts::value<fs::path>(outputFolder)->default_value(string(RESULT_SIMULATION_FOLDER)));
 
-	fs::path textCheckpoint;
-    options.add_options()
-        ("textCheckpoint", "Text checkpoint path", cxxopts::value<fs::path>(textCheckpoint));
-
-	fs::path binaryCheckpoint;
-    options.add_options()
-        ("binaryCheckpoint", "Binary checkpoint path", cxxopts::value<fs::path>(binaryCheckpoint));
 	
 	int burnIn;
 	options.add_options()
@@ -61,7 +54,7 @@ int main(int argc, char ** argv)
 		return 0;
 	}
 
-	if(!result.count("inputConfig") && !result.count("textCheckpoint") && !result.count("binaryCheckpoint"))
+	if(!result.count("inputConfig"))
 	{
 		cerr << "Error: Required arguments are missing." << endl;
 		cerr << "Try 'Weaver --help' for more information." << endl;
@@ -88,27 +81,7 @@ int main(int argc, char ** argv)
 	}
 
 
-	if(result.count("textCheckpoint") || result.count("binaryCheckpoint"))
-	{
-		if(result.count("textCheckpoint") && result.count("binaryCheckpoint"))
-		{
-			throwLineInfoException("It is not possible to use two types of checkpoint at the same time.");
-		}
-
-		if(result.count("binaryCheckpoint"))
-		{
-			IBM::run(binaryCheckpoint, true, silentMode);
-		}
-		else
-		{
-			IBM::run(textCheckpoint, false, silentMode);
-		}
-		
-	}
-	else
-	{
-		IBM::run(inputConfigPath, outputFolder, silentMode, burnIn);
-	}
+	IBM::run(inputConfigPath, outputFolder, silentMode, burnIn);
 	
 	return 0;
 }

@@ -6,13 +6,9 @@
 #include <nlohmann/json.hpp>
 #include <cmath>
 #include <memory>
-#include <boost/archive/text_oarchive.hpp>
-#include <boost/archive/text_iarchive.hpp>
-#include <boost/archive/binary_oarchive.hpp>
-#include <boost/archive/binary_iarchive.hpp>
 
 #include "IBM/World/Map/SpatialTree/TerrainCells/BranchTerrainCell.h"
-#include "IBM/World/Map/Points/PointSpatialTree.h"
+#include "IBM/World/Map/SpatialTree/Points/PointSpatialTree.h"
 #include "IBM/World/LivingBeings/Animals/Animal.h"
 #include "Exceptions/LineInfoException.h"
 
@@ -21,14 +17,13 @@
 class RootTerrainCell : public BranchTerrainCell
 {
 public:
-    RootTerrainCell(SpatialTreeInterface* const mapInterface);
-    RootTerrainCell(PointSpatialTree* const position, SpatialTreeInterface* const mapInterface);
+    RootTerrainCell(SpatialTree* const map);
     virtual ~RootTerrainCell();
 
     const BranchTerrainCell* const getParent() const override;
     BranchTerrainCell* const getMutableParent() const override;
 
-    void obtainWorldResourceBiomassAndAnimalsPopulation(std::vector<double> &worldResourceBiomass, CustomIndexedVector<AnimalSpecies::AnimalID, CustomIndexedVector<LifeStage, unsigned int>> &worldAnimalsPopulation);
+    void obtainWorldResourceBiomassAndAnimalsPopulation(std::vector<double> &worldResourceBiomass, std::vector<std::vector<unsigned int>> &worldAnimalsPopulation);
 
     void substractBiomassUp(const unsigned int resourceSpeciesId, double dryMassToBeSubstracted) override;
 
@@ -70,7 +65,7 @@ public:
      * @{
      */
     std::unique_ptr<PartialCoverageAnimals> getMutableAnimalsUp(
-        std::function<bool(AnimalInterface&)> upChecker, const AnimalSearchParams &animalSearchParams
+        std::function<bool(Animal&)> upChecker, const AnimalSearchParams &animalSearchParams
     ) override;
     /** @} */
 
@@ -81,17 +76,6 @@ public:
     std::unique_ptr<std::vector<std::pair<TerrainCellInterface*, std::pair<TerrainCellInterface::TerrainCellCoverage, std::unique_ptr<Ring>>>>> getNeighboursCellsOnRadius(
         const Ring &radiusArea, const unsigned int searchDepth
     ) override;
-
-
-    template <class Archive>
-    void serialize(Archive &ar, const unsigned int version, std::vector<ExtendedMoisture*>& appliedMoisture);
 };
-
-namespace boost {
-    namespace serialization {
-        template<class Archive>
-        void serialize(Archive &ar, RootTerrainCell* &rootTerrainCellPtr, const unsigned int version, SpatialTreeInterface* const newMapInterface, std::vector<ExtendedMoisture*>& appliedMoisture);
-    }
-}
 
 #endif /* ROOT_TERRAINCELL_H_ */

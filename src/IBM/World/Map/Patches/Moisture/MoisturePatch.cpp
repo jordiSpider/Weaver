@@ -7,41 +7,32 @@ using json = nlohmann::json;
 
 MoisturePatch::MoisturePatch(const json &moistureInfo, const FormPatch* const &form)
     : Patch(moistureInfo["priority"], form),
-	  moistureInfo(ExtendedMoisture::createInstance(moistureInfo).release())
+	  moistureInfo(MoistureFactory::createInstance(moistureInfo))
 {
     
 }
 
 MoisturePatch::MoisturePatch(const unsigned int priority, const json &moistureInfo, const FormPatch* const &form)
     : Patch(priority, form),
-	  moistureInfo(ExtendedMoisture::createInstance(moistureInfo).release())
+	  moistureInfo(MoistureFactory::createInstance(moistureInfo))
 {
     
 }
 
 MoisturePatch::~MoisturePatch()
 {
-	if(moistureInfo != nullptr)
-	{
-		delete moistureInfo;
-	}
+	
 }
 
 
-const ExtendedMoisture* const& MoisturePatch::getMoistureInfo() const
+const unique_ptr<ExtendedMoisture>& MoisturePatch::getMoistureInfo() const
 {
 	return moistureInfo;
 }
 
-ExtendedMoisture* const& MoisturePatch::getMutableMoistureInfo()
+unique_ptr<ExtendedMoisture>& MoisturePatch::getMutableMoistureInfo()
 {
 	return moistureInfo;
-}
-
-void MoisturePatch::saveMoistureInfo(std::vector<ExtendedMoisture*>& appliedMoisture)
-{
-	appliedMoisture.push_back(moistureInfo);
-	moistureInfo = nullptr;
 }
 
 const string MoisturePatch::getContentType() const

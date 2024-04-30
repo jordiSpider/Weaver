@@ -32,6 +32,15 @@ public:
     inline void pushAllele(const Allele* allele) { alleles.emplace_back(allele); } 
     
     friend std::ostream& operator<<(std::ostream& os, const Correlosome& correlosome);
+
+    /**
+     * @brief Serialize the object.
+     * @tparam Archive The type of archive (binary_oarchive for saving, binary_iarchive for loading).
+     * @param ar The archive to use.
+     * @param version The version of the serialization format.
+     */
+    template<class Archive>
+    void serialize(Archive & ar, const unsigned int version);
 };
 
 

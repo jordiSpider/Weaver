@@ -237,8 +237,8 @@ private:
     static const nlohmann::json solveOperator(const nlohmann::json& config, const nlohmann::json& condition, const std::string patternElem = "");
     static bool checkIf(const nlohmann::json& config, const nlohmann::json& condition, const std::string patternElem = "");
     static void checkCondition(nlohmann::json& schema, const nlohmann::json& condition, const nlohmann::json& config, const std::string patternElem = "");
-    static nlohmann::json* moveToDestination(nlohmann::json* structure, const nlohmann::json dst, Environment::EnvironmentType environment);
-    static const nlohmann::json* moveToDestination(const nlohmann::json* structure, const nlohmann::json dst, Environment::EnvironmentType environment);
+    static nlohmann::json* moveToDestination(nlohmann::json* structure, const nlohmann::json dst, Environment::EnvironmentType environment, const std::string patternElem = "");
+    static const nlohmann::json* moveToDestination(const nlohmann::json* structure, const nlohmann::json dst, Environment::EnvironmentType environment, const std::string patternElem = "");
     static std::vector<std::string> generateRegexElems(const std::string& regex);
     static void addPatternProperties(nlohmann::json& schema, const nlohmann::json& patternProperties);
     static void removePatternProperties(std::map<std::string,nlohmann::json>& properties, const nlohmann::json& patternProperties);

@@ -395,7 +395,7 @@ void ValidatorJSON::removePatternRequired(map<string,json>& properties, const js
 	}
 }
 
-json* ValidatorJSON::moveToDestination(json* structure, const json dst, Environment::EnvironmentType environment)
+json* ValidatorJSON::moveToDestination(json* structure, const json dst, Environment::EnvironmentType environment, const string patternElem)
 {
 	json* dstStructure = structure;
 	string dstName;
@@ -407,18 +407,28 @@ json* ValidatorJSON::moveToDestination(json* structure, const json dst, Environm
 				throwValidatorSchemaJSONException("': Not an element of type 'string'");
 			}
 
-			if(i == 0) {
-				dstName = dst[i];
+
+			string dstIter;
+			if(patternElem != "" && dst[i] == PATTERN_ELEM) {
+				dstIter = patternElem;
 			}
 			else {
-				dstName += "." + (string)dst[i];
+				dstIter = dst[i];
+			}
+
+
+			if(i == 0) {
+				dstName = dstIter;
+			}
+			else {
+				dstName += "." + dstIter;
 			}
 
 			switch (environment) {
 				case Environment::schema: {
 					try
 					{
-						dstStructure = &(*dstStructure).at("properties").at(dst[i]);
+						dstStructure = &(*dstStructure).at("properties").at(dstIter);
 					}
 					catch(const json::out_of_range& e) 
 					{
@@ -429,7 +439,7 @@ json* ValidatorJSON::moveToDestination(json* structure, const json dst, Environm
 				case Environment::config: {
 					try
 					{
-						dstStructure = &(*dstStructure).at(dst[i]);
+						dstStructure = &(*dstStructure).at(dstIter);
 					}
 					catch(const json::out_of_range& e) 
 					{
@@ -453,7 +463,7 @@ json* ValidatorJSON::moveToDestination(json* structure, const json dst, Environm
 	return dstStructure;
 }
 
-const json* ValidatorJSON::moveToDestination(const json* structure, const json dst, Environment::EnvironmentType environment)
+const json* ValidatorJSON::moveToDestination(const json* structure, const json dst, Environment::EnvironmentType environment, const string patternElem)
 {
 	const json* dstStructure = structure;
 	string dstName;
@@ -465,18 +475,28 @@ const json* ValidatorJSON::moveToDestination(const json* structure, const json d
 				throwValidatorSchemaJSONException("': Not an element of type 'string'");
 			}
 
-			if(i == 0) {
-				dstName = dst[i];
+
+			string dstIter;
+			if(patternElem != "" && dst[i] == PATTERN_ELEM) {
+				dstIter = patternElem;
 			}
 			else {
-				dstName += "." + (string)dst[i];
+				dstIter = dst[i];
+			}
+
+
+			if(i == 0) {
+				dstName = dstIter;
+			}
+			else {
+				dstName += "." + dstIter;
 			}
 
 			switch (environment) {
 				case Environment::schema: {
 					try
 					{
-						dstStructure = &(*dstStructure).at("properties").at(dst[i]);
+						dstStructure = &(*dstStructure).at("properties").at(dstIter);
 					}
 					catch(const json::out_of_range& e) 
 					{
@@ -487,7 +507,7 @@ const json* ValidatorJSON::moveToDestination(const json* structure, const json d
 				case Environment::config: {
 					try
 					{
-						dstStructure = &(*dstStructure).at(dst[i]);
+						dstStructure = &(*dstStructure).at(dstIter);
 					}
 					catch(const json::out_of_range& e) 
 					{
@@ -521,8 +541,8 @@ void ValidatorJSON::doConditionBlock(json& schema, const json& block, const json
 			throwValidatorSchemaJSONException("': Not an element of type 'array'");
 		}
 
-		dstShema = moveToDestination(dstShema, block["dst"], Environment::schema);
-		dstConfig = moveToDestination(dstConfig, block["dst"], Environment::config);
+		dstShema = moveToDestination(dstShema, block["dst"], Environment::schema, patternElem);
+		dstConfig = moveToDestination(dstConfig, block["dst"], Environment::config, patternElem);
 	}
 	catch(ValidatorSchemaJSONException& e)
 	{

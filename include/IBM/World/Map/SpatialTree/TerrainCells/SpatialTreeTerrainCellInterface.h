@@ -4,17 +4,13 @@
 
 #include <vector>
 #include <exception>
-#include <boost/archive/text_oarchive.hpp>
-#include <boost/archive/text_iarchive.hpp>
-#include <boost/archive/binary_oarchive.hpp>
-#include <boost/archive/binary_iarchive.hpp>
 
 #include "IBM/World/Map/TerrainCells/TerrainCell.h"
 #include "IBM/World/LivingBeings/Animals/Animal.h"
-#include "IBM/World/Map/Points/PointSpatialTree.h"
+#include "IBM/World/Map/SpatialTree/Points/PointSpatialTree.h"
 
 
-class SpatialTreeInterface;
+class SpatialTree;
 
 class BranchTerrainCellInterface;
 
@@ -31,7 +27,7 @@ protected:
      * @name Moisture patches
      * @{
      */
-    virtual std::pair<bool, bool> applyPartialCoverageMoisturePatch(MoisturePatch &moisturePatch)=0; //?
+    virtual std::pair<bool, bool> applyPartialCoverageMoisturePatch(const MoisturePatch &moisturePatch)=0; //?
     /** @} */
 
     /**
@@ -44,21 +40,9 @@ protected:
     /** @} */
 
 public:
-    enum class Type : unsigned int
-    {
-        Leaf,
-        TemporalLeaf,
-        Branch
-    };
-
-
-    static std::unique_ptr<SpatialTreeTerrainCellInterface> createInstance(const Type &spatialTreeTerrainCellType, BranchTerrainCellInterface* const parentTerrainCell, SpatialTreeInterface* const mapInterface);
-
-
     class TemporalLeaf2Branch : public std::exception {};
 
-    SpatialTreeTerrainCellInterface(SpatialTreeInterface* const mapInterface);
-    SpatialTreeTerrainCellInterface(PointSpatialTree* const &position, const Ring *const effectiveArea, const double &size, SpatialTreeInterface* const &mapInterface,
+    SpatialTreeTerrainCellInterface(PointSpatialTree* const &position, const Ring *const effectiveArea, const double &size, SpatialTree* const &map,
         LifeStageVector* const animals, const bool obstacle, const bool fullObstacle, 
         const int obstaclePatchPriority, MoistureInterface* const moistureInfo, const bool moistureSource, 
         const bool inMoisturePatch, const int moisturePatchPriority, const double &totalMaximumResourceCapacity);
@@ -72,8 +56,6 @@ public:
     PointSpatialTree& getMutablePosition() const;
 
     virtual bool isChild(const PointSpatialTree &childPos) const=0;
-
-    virtual const Type getSpatialTreeTerrainCellType() const=0;
 
     virtual const bool isLeaf() const=0;
 
@@ -104,11 +86,11 @@ public:
      * @{
      */
     virtual EdiblesOnRadius getMutableEdiblesOnCellAndDown(
-        std::function<bool(AnimalInterface&)> downChecker, const Ring &effectiveArea,
+        std::function<bool(Animal&)> downChecker, const Ring &effectiveArea,
         const EdibleSearchParams &edibleSearchParams
     )=0;
     virtual EdiblesOnRadius getMutableEdiblesDown(
-        std::function<bool(AnimalInterface&)> downChecker, const Ring &effectiveArea,
+        std::function<bool(Animal&)> downChecker, const Ring &effectiveArea,
         const EdibleSearchParams &edibleSearchParams
     )=0;
     /** @} */
@@ -133,7 +115,7 @@ public:
      * @{
      */
     virtual std::unique_ptr<PartialCoverageAnimals> getMutableAnimalsUp(
-        std::function<bool(AnimalInterface&)> upChecker, const AnimalSearchParams &animalSearchParams
+        std::function<bool(Animal&)> upChecker, const AnimalSearchParams &animalSearchParams
     )=0;
     /** @} */
 
@@ -157,10 +139,10 @@ public:
      * @name Moisture patches
      * @{
      */
-    virtual std::pair<bool, bool> checkFullCoverageMoisturePatch(MoisturePatch &moisturePatch)=0; //?
+    virtual std::pair<bool, bool> checkFullCoverageMoisturePatch(const MoisturePatch &moisturePatch)=0; //?
     virtual const int getMaximumMoisturePatchPriority() const=0; //?
     virtual void checkMoistureSourcePatch(const int moisturePathPriority)=0; //?
-    virtual void setSubdivisionMoisturePatch(MoisturePatch &moisturePatch)=0;
+    virtual void setSubdivisionMoisturePatch(const MoisturePatch &moisturePatch)=0;
     /** @} */
 
     /**
@@ -172,19 +154,6 @@ public:
     /** @} */
 
     /** @} */
-
-
-    template <class Archive>
-    void serialize(Archive &ar, const unsigned int version, std::vector<ExtendedMoisture*>& appliedMoisture);
 };
-
-
-namespace boost {
-    namespace serialization {
-        template<class Archive>
-        void serialize(Archive &ar, SpatialTreeTerrainCellInterface* &spatialTreeTerrainCellInterfacePtr, const unsigned int version, BranchTerrainCellInterface* const parentTerrainCell, SpatialTreeInterface* const mapInterface, std::vector<ExtendedMoisture*>& appliedMoisture);
-    }
-}
-
 
 #endif /* SPATIAL_TREE_TERRAINCELL_INTERFACE_H_ */

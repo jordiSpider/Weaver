@@ -1,29 +1,48 @@
 
 #include "IBM/World/Map/Map.h"
-#include "IBM/World/WorldInterface.h"
+
+#include "IBM/World/World.h"
 #include "IBM/World/Map/TerrainCells/AnimalSearchParams.h"
+#include "IBM/World/Map/SpatialTree.h"
 
 using namespace std;
 using json = nlohmann::json;
 
 
 
-Map::Map(const json &mapConfig, WorldInterface* const worldInterface)
+
+unique_ptr<Map> Map::createInstance(const json &mapInfo, World* const world)
+{
+	switch(EnumClass<Type>::stringToEnumValue(mapInfo["mapType"])) {
+		case Type::SpatialTree: {
+			return make_unique<SpatialTree>(mapInfo["worldWideParams"], mapInfo["spatialTreeParams"], world);
+			break;
+		}
+		default: {
+			throwLineInfoException("Default case");
+			break;
+		}
+	}
+}
+
+
+
+Map::Map(const json &mapConfig, World* const world)
 	: minCellSize(mapConfig["minCellSize"]), numberOfCellsPerAxis(mapConfig["numberOfCellsPerAxis"]),
-      worldInterface(worldInterface), lifeStageSearchParams(EnumClass<LifeStage>::size())
+      world(world), lifeStageSearchParams(LifeStage::size())
 {
     
 }
 
-Map::Map(WorldInterface* const worldInterface)
-    : worldInterface(worldInterface)
-{
-
-}
 
 Map::~Map()
 {
 
+}
+
+void Map::addInhabitableTerrainCell(TerrainCellInterface* newInhabitableTerrainCell)
+{
+    inhabitableTerrainCells.push_back(newInhabitableTerrainCell);
 }
 
 
@@ -37,25 +56,40 @@ const unsigned int& Map::getNumberOfCellsPerAxis() const
     return numberOfCellsPerAxis;
 }
 
-const WorldInterface* const Map::getWorldInterface() const
+const World* const Map::getWorld() const
 {
-    return worldInterface;
+    return world;
 }
 
-WorldInterface* const Map::getMutableWorldInterface() const
+World* const Map::getMutableWorld() const
 {
-    return worldInterface;
+    return world;
+}
+
+const vector<TerrainCellInterface*>& Map::getInhabitableTerrainCells() const
+{
+    return inhabitableTerrainCells;
+}
+
+vector<TerrainCellInterface*>& Map::getMutableInhabitableTerrainCells()
+{
+    return inhabitableTerrainCells;
+}
+
+TerrainCellInterface*& Map::getMutableInhabitableTerrainCell(const unsigned int index)
+{
+    return inhabitableTerrainCells[index];
 }
 
 void Map::obtainLifeStageSearchParams()
 {
-    for(const LifeStage &lifeStage : EnumClass<LifeStage>::getEnumValues())
+    for(const auto &lifeStage : LifeStage::getEnumValues())
     {
-        lifeStageSearchParams[lifeStage].addSearchParams(getWorldInterface(), {lifeStage});
+        lifeStageSearchParams[lifeStage].addSearchParams(getWorld(), {lifeStage});
     }
 }
 
-const AnimalSearchParams& Map::getLifeStageSearchParams(const LifeStage &lifeStage) const
+const AnimalSearchParams& Map::getLifeStageSearchParams(const LifeStage::LifeStageValue &lifeStage) const
 {
     return lifeStageSearchParams[lifeStage];
 }
@@ -65,8 +99,8 @@ void Map::printCellAlongCells(ofstream &file)
     vector<pair<vector<double>, vector<unsigned int>>> mapCellsInfo(
         pow(getNumberOfCellsPerAxis(), DIMENSIONS),
         make_pair(
-            vector<double>(getWorldInterface()->getExistingResourceSpecies().size(), 0.0),
-            vector<unsigned int>(getWorldInterface()->getExistingAnimalSpecies().size(), 0)
+            vector<double>(getWorld()->getExistingResourceSpecies().size(), 0.0),
+            vector<unsigned int>(getWorld()->getExistingAnimalSpecies().size(), 0)
         )
     );
 
@@ -124,11 +158,11 @@ bool Map::isSpeciesInhabitableTerrainCell(const AnimalSpecies &animalSpecies, co
         {
             if(animalSpecies.getForcePresenceAllResourcesInvolved())
             {
-                containsResources = containsResources && potentialInhabitableTerrainCell->resourceIsPresent(involvedResourceSpecies);
+                containsResources = containsResources && potentialInhabitableTerrainCell->resourceIsPresent(involvedResourceSpecies->getResourceSpeciesId());
             }
             else
             {
-                containsResources = containsResources || potentialInhabitableTerrainCell->resourceIsPresent(involvedResourceSpecies);
+                containsResources = containsResources || potentialInhabitableTerrainCell->resourceIsPresent(involvedResourceSpecies->getResourceSpeciesId());
             }
         }
 
@@ -143,17 +177,9 @@ bool Map::isSpeciesInhabitableTerrainCell(const AnimalSpecies &animalSpecies, co
 
 template <class Archive>
 void Map::serialize(Archive &ar, const unsigned int version) {
-    ar & boost::serialization::base_object<MapInterface>(*this);
-
     ar & minCellSize;
     ar & numberOfCellsPerAxis;
-    ar & lifeStageSearchParams;
+    ar & world;
+    ar & inhabitableTerrainCells;
+    ar &  lifeStageSearchParams;
 }
-
-
-// Specialisation
-template void Map::serialize<boost::archive::text_iarchive>(boost::archive::text_iarchive&, const unsigned int);
-template void Map::serialize<boost::archive::text_oarchive>(boost::archive::text_oarchive&, const unsigned int);
-
-template void Map::serialize<boost::archive::binary_iarchive>(boost::archive::binary_iarchive&, const unsigned int);
-template void Map::serialize<boost::archive::binary_oarchive>(boost::archive::binary_oarchive&, const unsigned int);

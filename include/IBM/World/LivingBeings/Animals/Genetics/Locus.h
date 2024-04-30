@@ -14,12 +14,12 @@
 #include <boost/archive/text_iarchive.hpp>
 #include <boost/archive/binary_oarchive.hpp>
 #include <boost/archive/binary_iarchive.hpp>
-#include <boost/serialization/vector.hpp>
 #include <fstream>
 #include <ostream>
 
 #include "Allele.h"
 #include "IBM/Maths/Random.h"
+#include "Misc/SerializableVector.h"
 
 
 /**
@@ -30,7 +30,10 @@
 class Locus
 {
 private:
-	std::vector<Allele> alleles; /**< Vector of alleles for this locus */
+	std::vector<const Allele*> alleles; /**< Vector of alleles for this locus */
+
+     double minAlleleValue;
+     double maxAlleleValue;
 
 public:
      Locus();
@@ -39,7 +42,7 @@ public:
      * @brief Constructor for Locus.
      * @param numberOfAlleles The number of alleles at this locus.
      */
-	Locus(const unsigned int locusId, const unsigned int &numberOfAlleles);
+	Locus(const unsigned int &numberOfAlleles);
 
 	/**
      * @brief Destructor for Locus.
@@ -50,9 +53,13 @@ public:
      * @brief Get a random allele from the locus.
      * @return A pointer to a randomly chosen allele.
      */
-	inline const Allele* const getAlleleRandomly() const { return &alleles.at(Random::randomIndex(alleles.size())); };
+	inline const Allele* const getAlleleRandomly() const { return alleles.at(Random::randomIndex(alleles.size())); };
 
-     const std::vector<Allele>& getAlleles() const;
+     const std::vector<const Allele*>& getAlleles() const;
+
+     const double& getMinAlleleValue() const;
+
+     const double& getMaxAlleleValue() const;
 
 	/**
      * @brief Serialize the Locus object.

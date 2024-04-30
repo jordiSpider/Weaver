@@ -16,7 +16,6 @@
 #include "Exceptions/LineInfoException.h"
 #include "IBM/Maths/Random.h"
 #include "Misc/Macros.h"
-#include "Misc/EnumClass.h"
 
 
 class ExtendedMoisture : public MoistureInterface
@@ -37,10 +36,10 @@ protected:
     double moisture;
 
     // Maximum capacity to all resources per spatial unit
-    double maximumResourceCapacityDensity;
+    const double maximumResourceCapacityDensity;
 
     // Temperature time series
-    std::vector<Temperature> temperatureCycle;
+    const std::vector<Temperature> temperatureCycle;
 
 
     // Setters
@@ -49,29 +48,49 @@ protected:
     void setInEnemyFreeSpace(const bool newInEnemyFreeSpace);
     void setInCompetitorFreeSpace(const bool newInCompetitorFreeSpace);
 
-    const Temperature& getTemperatureOnTimeStep(const unsigned int timeStep) const;
+    const Temperature& getTemperatureOnTimeStep(const unsigned int numberOfTimeSteps) const;
 
     void updateTemperature();
     void updateRelativeHumidity();
 
     std::vector<Temperature> obtainTemperatureCycle(const nlohmann::json &temperatureCycleValues);
 
-    void refreshTemperature(const unsigned int timeStep);
-    virtual void refreshRelativeHumidity(const unsigned int timeStep)=0;
+    void refreshTemperature(const unsigned int numberOfTimeSteps);
+    virtual void refreshRelativeHumidity(const unsigned int numberOfTimeSteps)=0;
 
 public:
-    enum class Type : unsigned int
-    {
-        Cycle,
-        RainEventAndDecayOverTime
+    class Type {
+    public:
+        enum TypeValue : unsigned int
+		{
+            Cycle,
+            RainEventAndDecayOverTime
+		};
+
+        static const TypeValue stringToEnumValue(const std::string &str);
+        static constexpr size_t size();
+
+        /**
+         * @brief Serialize the ExtendedMoisture object.
+         * @tparam Archive The type of archive (binary_oarchive for saving, binary_iarchive for loading).
+         * @param ar The archive to use.
+         * @param version The version of the serialization format.
+         */
+        template <class Archive>
+        void serialize(Archive &ar, const unsigned int version);
+
+    private:
+        static const std::unordered_map<std::string_view, const TypeValue> stringToEnum;
+        static const std::string enumValues;
+
+        friend class boost::serialization::access;
+
+        static std::string_view to_string(const TypeValue& type);
+        static const std::unordered_map<std::string_view, const TypeValue> generateMap();
+        static const std::string generateAvailableValues();
+        static std::string_view printAvailableValues();
     };
 
-
-    static std::unique_ptr<ExtendedMoisture> createInstance(const nlohmann::json &moistureInfo);
-    static std::unique_ptr<ExtendedMoisture> createInstance(const Type &extendedMoistureType);
-
-
-    ExtendedMoisture();
     ExtendedMoisture(const nlohmann::json &moistureInfo);
     ExtendedMoisture(const ExtendedMoisture& other);
     virtual ~ExtendedMoisture();
@@ -87,11 +106,9 @@ public:
     const Temperature& getRandomTemperature() const;
     const double& getMaximumResourceCapacityDensity() const;
 
-    virtual const Type getExtendedMoistureType() const=0;
-
     virtual const std::string showMoistureInfo() const;
 
-    void refreshValue(const unsigned int timeStep);
+    void refreshValue(const unsigned int numberOfTimeSteps);
 
     void updateInfo();
 
@@ -104,24 +121,5 @@ public:
     template <class Archive>
     void serialize(Archive &ar, const unsigned int version);
 };
-
-
-namespace boost {
-    namespace serialization {
-        /**
-         * @brief Serialize a ExtendedMoisture pointer.
-         *
-         * This function handles the serialization and deserialization of a ExtendedMoisture pointer.
-         *
-         * @tparam Archive The type of archive (binary_oarchive for saving, binary_iarchive for loading).
-         * @param ar The archive to use.
-         * @param extendedMoisturePtr The ExtendedMoisture pointer to serialize or deserialize.
-         * @param version The version of the serialization format.
-         */
-        template <class Archive>
-        void serialize(Archive &ar, ExtendedMoisture* &extendedMoisturePtr, const unsigned int version, std::vector<ExtendedMoisture*>& appliedMoisture);
-    }
-}
-
 
 #endif /* EXTENDED_MOISTURE_H_ */

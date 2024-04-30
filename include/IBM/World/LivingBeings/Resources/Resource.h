@@ -23,9 +23,10 @@
 class Resource : public ResourceInterface
 {
 public:
-	Resource(TerrainCellInterface* terrainCellInterface);
+	static id_type resourceCounter;
+
 	Resource(ResourceSpecies* const mySpecies, TerrainCellInterface* terrainCellInterface, double biomass, double resourceMaximumCapacity, double massRatio, bool patchSpread);
-	Resource(const Resource &other, const double &biomass);
+	Resource(Resource &other, const double &biomass);
 	virtual ~Resource();
 
 	void setResourceMaximumCapacity(const double& resourceMaximumCapacity);
@@ -50,9 +51,6 @@ public:
 
 	bool canSpread() const;
 
-	template <class Archive>
-    void serialize(Archive &ar, const unsigned int version);
-
 protected:
 	// This is to avoid reprocessing the same resource on the same day
 	bool newlyAdded;
@@ -60,9 +58,9 @@ protected:
 
 	double resourceMaximumCapacity;
 
-	double massRatio;
+	const double massRatio;
 
-	bool patchSpread;
+	const bool patchSpread;
 
 	double getNewBiomass(const double &rateOfIncrease) const;
 };

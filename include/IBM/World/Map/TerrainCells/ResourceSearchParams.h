@@ -5,20 +5,16 @@
 #include <vector>
 #include <unordered_set>
 #include <boost/serialization/access.hpp>
-#include <boost/archive/text_oarchive.hpp>
-#include <boost/archive/text_iarchive.hpp>
 #include <boost/archive/binary_iarchive.hpp>
 #include <boost/archive/binary_oarchive.hpp>
-#include <boost/serialization/unordered_set.hpp>
 #include <fstream>
 #include <ostream>
 
 #include "IBM/World/LivingBeings/Resources/Species/ResourceSpecies.h"
-#include "IBM/World/WorldInterface.h"
 
 
 
-typedef std::unordered_set<ResourceSpecies::ResourceID> SearchableResourceSpecies;
+typedef std::unordered_set<id_type> SearchableResourceSpecies;
 
 
 
@@ -34,7 +30,7 @@ public:
     ResourceSearchParams();
     virtual ~ResourceSearchParams();
 
-    void addSearchParams(const WorldInterface* const worldInterface, const std::vector<ResourceSpecies::ResourceID> &searchableResourceSpecies = {});
+    void addSearchParams(const std::vector<id_type> &searchableResourceSpecies = {});
 
     const SearchableResourceSpecies& getSearchParams() const;
 

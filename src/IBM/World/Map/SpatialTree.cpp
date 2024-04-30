@@ -1,6 +1,6 @@
 
 #include "IBM/World/Map/SpatialTree.h"
-#include "IBM/World/WorldInterface.h"
+#include "IBM/World/World.h"
 
 using namespace std;
 using json = nlohmann::json;
@@ -8,24 +8,19 @@ namespace fs = boost::filesystem;
 
 
 
-SpatialTree::SpatialTree(const json &mapConfig, const json &spatialTreeConfig, WorldInterface* const worldInterface)
-    : SpatialTreeInterface(mapConfig, worldInterface), mapDepth(calculateMapDepth()), 
+SpatialTree::SpatialTree(const json &mapConfig, const json &spatialTreeConfig, World* const world)
+    : Map(mapConfig, world), mapDepth(calculateMapDepth()), 
       cellSizes(calculateCellSizes()),
       axisSizes(calculateAxisSizes()), totalNumberOfTerrainCells(calculateTotalNumberOfTerrainCells()), 
-      rootTerrainCell(new RootTerrainCell(new PointSpatialTree(), this))
+      rootTerrainCell(make_unique<RootTerrainCell>(this))
 {
     
 }
 
-SpatialTree::SpatialTree(WorldInterface* const worldInterface)
-    : SpatialTreeInterface(worldInterface)
-{
-
-}
 
 SpatialTree::~SpatialTree()
 {
-    delete rootTerrainCell;
+    
 }
 
 
@@ -37,7 +32,7 @@ const unsigned int SpatialTree::calculateMapDepth() const
 
 double SpatialTree::logMap(const double &value) const
 {
-    return log(value) / log(SpatialTreeInterface::numbreOfSubdivisions);
+    return log(value) / log(SpatialTree::numbreOfSubdivisions);
 }
 
 
@@ -45,7 +40,7 @@ vector<double> SpatialTree::calculateCellSizes() const
 {
     vector<double> cellSizes;
 
-    for(unsigned int cellsPerAxis = getNumberOfCellsPerAxis(); cellsPerAxis > 1; cellsPerAxis /= SpatialTreeInterface::numbreOfSubdivisions)
+    for(unsigned int cellsPerAxis = getNumberOfCellsPerAxis(); cellsPerAxis > 1; cellsPerAxis /= SpatialTree::numbreOfSubdivisions)
     {
         cellSizes.push_back(getMinCellSize() * static_cast<double>(cellsPerAxis));
     }
@@ -71,7 +66,7 @@ vector<unsigned int> SpatialTree::calculateAxisSizes() const
 {
     vector<unsigned int> axisSizes;
 
-    for(unsigned int cellsPerAxis = 1; cellsPerAxis <= getNumberOfCellsPerAxis(); cellsPerAxis *= SpatialTreeInterface::numbreOfSubdivisions)
+    for(unsigned int cellsPerAxis = 1; cellsPerAxis <= getNumberOfCellsPerAxis(); cellsPerAxis *= SpatialTree::numbreOfSubdivisions)
     {
         axisSizes.push_back(cellsPerAxis);
     }
@@ -91,11 +86,6 @@ unsigned int SpatialTree::calculateTotalNumberOfTerrainCells() const
     return totalNumberOfTerrainCells;
 }
 
-const SpatialTree::Type SpatialTree::getMapType() const
-{
-    return SpatialTree::Type::SpatialTree;
-}
-
 const unsigned int& SpatialTree::getTotalNumberOfTerrainCells() const
 {
     return totalNumberOfTerrainCells;
@@ -103,7 +93,7 @@ const unsigned int& SpatialTree::getTotalNumberOfTerrainCells() const
 
 SpatialTreeTerrainCellInterface* const SpatialTree::getCell(const PointMap &cellPos) const
 {
-    return getCell(static_cast<const PointSpatialTree &>(cellPos), rootTerrainCell);
+    return getCell(static_cast<const PointSpatialTree &>(cellPos), rootTerrainCell.get());
 }
 
 SpatialTreeTerrainCellInterface* const SpatialTree::getCell(const PointSpatialTree &dstPos, SpatialTreeTerrainCellInterface* const &srcCell) const
@@ -146,9 +136,9 @@ void SpatialTree::updateMoisture()
     rootTerrainCell->updateMoisture();
 }
 
-void SpatialTree::update(const unsigned int timeStep, ofstream &tuneTraitsFile)
+void SpatialTree::update(const unsigned int numberOfTimeSteps, ofstream &tuneTraitsFile)
 {
-    rootTerrainCell->update(timeStep, tuneTraitsFile);
+    rootTerrainCell->update(numberOfTimeSteps, tuneTraitsFile);
 }
 
 
@@ -158,7 +148,7 @@ void SpatialTree::applyObstaclePatch(const unique_ptr<const ObstaclePatch> &obst
 }
 
 
-bool SpatialTree::applyMoisturePatch(MoisturePatch &moisturePatch)
+bool SpatialTree::applyMoisturePatch(const MoisturePatch &moisturePatch)
 {
     return rootTerrainCell->checkMoisturePatch(moisturePatch).second;
 }
@@ -303,21 +293,17 @@ unique_ptr<vector<PointSpatialTree>> SpatialTree::generatePoints(const unsigned 
     return generatePointsRecursively(sideLength, currentCoords, 0, depth, initialCoords);
 }
 
-unique_ptr<vector<TerrainCellInterface*>> SpatialTree::obtainInhabitableTerrainCells() const
+void SpatialTree::obtainInhabitableTerrainCells()
 {
-    unique_ptr<vector<TerrainCellInterface*>> inhabitableTerrainCells = make_unique<vector<TerrainCellInterface*>>();
-
-    rootTerrainCell->obtainInhabitableTerrainCells(*inhabitableTerrainCells);
-
-    return inhabitableTerrainCells;
+    rootTerrainCell->obtainInhabitableTerrainCells();
 }
 
-pair<unique_ptr<vector<vector<vector<TerrainCellInterface *>::iterator>>>, unique_ptr<vector<vector<vector<TerrainCellInterface *>::iterator>>>> SpatialTree::obtainLeafAndBranchInhabitableTerrainCells(std::vector<TerrainCellInterface*>& inhabitableTerrainCells)
+pair<unique_ptr<vector<vector<vector<TerrainCellInterface *>::iterator>>>, unique_ptr<vector<vector<vector<TerrainCellInterface *>::iterator>>>> SpatialTree::obtainLeafAndBranchInhabitableTerrainCells()
 {
     auto leafInhabitableTerrainCells = make_unique<vector<vector<vector<TerrainCellInterface *>::iterator>>>(getMapDepth());
     auto branchInhabitableTerrainCells = make_unique<vector<vector<vector<TerrainCellInterface *>::iterator>>>(getMapDepth());
 
-    for(auto inhabitableTerrainCell = inhabitableTerrainCells.begin(); inhabitableTerrainCell != inhabitableTerrainCells.end(); ++inhabitableTerrainCell)
+    for(auto inhabitableTerrainCell = getMutableInhabitableTerrainCells().begin(); inhabitableTerrainCell != getMutableInhabitableTerrainCells().end(); ++inhabitableTerrainCell)
     {
         if(static_cast<SpatialTreeTerrainCellInterface*>((*inhabitableTerrainCell))->isLeaf())
         {
@@ -334,15 +320,15 @@ pair<unique_ptr<vector<vector<vector<TerrainCellInterface *>::iterator>>>, uniqu
 
 
 
-unique_ptr<vector<CustomIndexedVector<Instar, vector<vector<TerrainCellInterface*>::iterator>>>> SpatialTree::obtainSpeciesInhabitableTerrainCells(vector<TerrainCellInterface*>& inhabitableTerrainCells)
+unique_ptr<vector<InstarVector<vector<vector<TerrainCellInterface*>::iterator>>>> SpatialTree::obtainSpeciesInhabitableTerrainCells()
 {
     unique_ptr<vector<vector<vector<TerrainCellInterface *>::iterator>>> leafInhabitableTerrainCells, branchInhabitableTerrainCells;
 
-    tie(leafInhabitableTerrainCells, branchInhabitableTerrainCells) = obtainLeafAndBranchInhabitableTerrainCells(inhabitableTerrainCells);
+    tie(leafInhabitableTerrainCells, branchInhabitableTerrainCells) = obtainLeafAndBranchInhabitableTerrainCells();
 
-    auto mapSpeciesInhabitableTerrainCells = make_unique<vector<CustomIndexedVector<Instar, vector<vector<TerrainCellInterface*>::iterator>>>>(getMutableWorldInterface()->getExistingAnimalSpecies().size());
+    auto mapSpeciesInhabitableTerrainCells = make_unique<vector<InstarVector<vector<vector<TerrainCellInterface*>::iterator>>>>(getMutableWorld()->getExistingAnimalSpecies().size());
 
-    for(const auto &animalSpecies : getMutableWorldInterface()->getMutableExistingAnimalSpecies())
+    for(const auto &animalSpecies : getMutableWorld()->getMutableExistingAnimalSpecies())
     {
         (*mapSpeciesInhabitableTerrainCells)[animalSpecies->getAnimalSpeciesId()].resize(animalSpecies->getNumberOfInstars());
 
@@ -381,71 +367,58 @@ void SpatialTree::obtainMapCellsInfo(vector<pair<vector<double>, vector<unsigned
     rootTerrainCell->printCell(mapCellsInfo);
 }
 
-const unsigned int SpatialTree::calculateAnimalDepth(const AnimalInterface* const newAnimal)
-{
-    const double numberOfMinCells = newAnimal->getCurrentLength() / getMinCellSize();
 
-    if(numberOfMinCells < 1.0)
-    {
-        return getMapDepth() - 1;
-    }
-    else
-    {
-        return getMapDepth() - ceil(logMap(numberOfMinCells)) - 1;
-    }
-}
-
-
-pair<unique_ptr<vector<CustomIndexedVector<Instar, vector<AnimalInterface*>>>>, unsigned int> SpatialTree::generateStatisticsPopulation(vector<CustomIndexedVector<Instar, vector<vector<TerrainCellInterface*>::iterator>>> &mapSpeciesInhabitableTerrainCells)
+pair<unique_ptr<vector<InstarVector<vector<AnimalStatistical*>>>>, unsigned int> SpatialTree::generateStatisticsPopulation(vector<InstarVector<vector<vector<TerrainCellInterface*>::iterator>>> &mapSpeciesInhabitableTerrainCells)
 {
     unsigned int populationSize = 0;
-    auto animalsPopulation = make_unique<vector<CustomIndexedVector<Instar, vector<AnimalInterface*>>>>(getWorldInterface()->getExistingAnimalSpecies().size()); 
+    auto animalsPopulation = make_unique<vector<InstarVector<vector<AnimalStatistical*>>>>(getWorld()->getExistingAnimalSpecies().size()); 
 
-	for(auto &animalSpecies : getMutableWorldInterface()->getMutableExistingAnimalSpecies())
+	for(auto &animalSpecies : getMutableWorld()->getMutableExistingAnimalSpecies())
     {
         animalsPopulation->at(animalSpecies->getAnimalSpeciesId()).resize(animalSpecies->getNumberOfInstars());
 
 		float percentageForPrinting = 0.1;
 		float currentPercentageForPrinting = percentageForPrinting;
 
-		unsigned int randomCellIndex;
-
-        for(const Instar &instar : animalSpecies->getInstarsRange())
+		for(const Instar &instar : animalSpecies->getInstarsRange())
 		{
 			for(unsigned long individual = 0; individual < animalSpecies->getStatisticsIndividualsPerInstar(); individual++)
 			{
-				AnimalInterface* newAnimal = SpatialTreeAnimal::createInstance(-1.0, 0.0, instar, 0, 0, -1,
-						-1, animalSpecies, animalSpecies->getRandomGender()).release();
+				AnimalStatistical* newAnimal;
 
                 // Get a random index from this species inhabitable cells
-                randomCellIndex = Random::randomIndex(mapSpeciesInhabitableTerrainCells[animalSpecies->getAnimalSpeciesId()][newAnimal->getInstar()].size());
+                unsigned int randomCellIndex = Random::randomIndex(mapSpeciesInhabitableTerrainCells[animalSpecies->getAnimalSpeciesId()][instar].size());
                 
                 try
                 {
-                    auto newTerrainCell = (*mapSpeciesInhabitableTerrainCells[animalSpecies->getAnimalSpeciesId()][newAnimal->getInstar()][randomCellIndex])->randomInsertAnimal(newAnimal);
+                    auto newTerrainCell = (*mapSpeciesInhabitableTerrainCells[animalSpecies->getAnimalSpeciesId()][instar][randomCellIndex])->randomInsertAnimal(instar, animalSpecies, true);
                 
                     if(get<0>(newTerrainCell))
                     {
                         bool found = false;
-                        for(unsigned int i = 0; i < mapSpeciesInhabitableTerrainCells[animalSpecies->getAnimalSpeciesId()][newAnimal->getInstar()].size() && !found; i++)
+                        for(unsigned int i = 0; i < mapSpeciesInhabitableTerrainCells[animalSpecies->getAnimalSpeciesId()][instar].size() && !found; i++)
                         {
-                            if((*mapSpeciesInhabitableTerrainCells[animalSpecies->getAnimalSpeciesId()][newAnimal->getInstar()][i]) == get<1>(newTerrainCell))
+                            if((*mapSpeciesInhabitableTerrainCells[animalSpecies->getAnimalSpeciesId()][instar][i]) == get<1>(newTerrainCell))
                             {
-                                (*mapSpeciesInhabitableTerrainCells[animalSpecies->getAnimalSpeciesId()][newAnimal->getInstar()][i]) = get<2>(newTerrainCell);
+                                (*mapSpeciesInhabitableTerrainCells[animalSpecies->getAnimalSpeciesId()][instar][i]) = get<2>(newTerrainCell);
                                 found = true;
                             }
                         }
                     }
+
+                    newAnimal = static_cast<AnimalStatistical*>(get<3>(newTerrainCell));
                 }
                 catch(SpatialTreeTerrainCell::TemporalLeaf2Branch &e)
                 {
-                    (*mapSpeciesInhabitableTerrainCells[animalSpecies->getAnimalSpeciesId()][newAnimal->getInstar()][randomCellIndex]) = static_cast<SpatialTreeTerrainCellInterface*>((*mapSpeciesInhabitableTerrainCells[animalSpecies->getAnimalSpeciesId()][newAnimal->getInstar()][randomCellIndex]))->getMutableParent()->randomInsertAnimalOnChild(
-                        newAnimal, (*mapSpeciesInhabitableTerrainCells[animalSpecies->getAnimalSpeciesId()][newAnimal->getInstar()][randomCellIndex])
+                    auto result = static_cast<SpatialTreeTerrainCellInterface*>((*mapSpeciesInhabitableTerrainCells[animalSpecies->getAnimalSpeciesId()][instar][randomCellIndex]))->getMutableParent()->randomInsertAnimalOnChild(
+                        instar, animalSpecies, (*mapSpeciesInhabitableTerrainCells[animalSpecies->getAnimalSpeciesId()][instar][randomCellIndex]), true
                     );
+
+                    (*mapSpeciesInhabitableTerrainCells[animalSpecies->getAnimalSpeciesId()][instar][randomCellIndex]) = get<0>(result);
+
+                    newAnimal = static_cast<AnimalStatistical*>(get<1>(result));
                 }
 
-				newAnimal->updateLimits();
-				newAnimal->sumPseudoGrowthMean();
 
 				animalsPopulation->at(animalSpecies->getAnimalSpeciesId()).at(instar).push_back(newAnimal);
                 populationSize++;
@@ -457,8 +430,6 @@ pair<unique_ptr<vector<CustomIndexedVector<Instar, vector<AnimalInterface*>>>>, 
 				currentPercentageForPrinting += percentageForPrinting;
 			}
 		}
-
-		animalSpecies->calculatePseudoGrowthMean();
 	}
 
     return make_pair(move(animalsPopulation), populationSize);
@@ -484,9 +455,9 @@ const unsigned int SpatialTree::getMapDepth() const
     return mapDepth;
 }
 
-const int SpatialTree::generatePopulation(AnimalSpecies* currentAnimalSpecies, const CustomIndexedVector<Instar, vector<vector<TerrainCellInterface*>::iterator>> &speciesInhabitableTerrainCells)
+const unsigned int SpatialTree::generatePopulation(AnimalSpecies* currentAnimalSpecies, const InstarVector<vector<vector<TerrainCellInterface*>::iterator>> &speciesInhabitableTerrainCells)
 {
-    int numberOfDiscardedIndividualsOutsideRestrictedRanges = 0;
+    unsigned int numberOfDiscardedIndividualsOutsideRestrictedRanges = 0;
 
 	cout << "Creating " << currentAnimalSpecies->getTotalInitialPopulation() << " individuals of the species \"" << currentAnimalSpecies->getScientificName() << "\"..." << endl;
 	//cout << ">> Number of inhabitable cells (with involved resources): " << speciesInhabitableTerrainCells.size() << endl;
@@ -500,30 +471,14 @@ const int SpatialTree::generatePopulation(AnimalSpecies* currentAnimalSpecies, c
 	{
 		for (unsigned long individual = 0; individual < currentAnimalSpecies->getInitialPopulation().at(instar); individual++)
 		{
-            unique_ptr<AnimalInterface> newAnimal = SpatialTreeAnimal::createInstance(-1.0, 0.0, instar, 0, 0, -1, -1, currentAnimalSpecies, currentAnimalSpecies->getRandomGender(), true);
-
-            pair<bool, bool> isInsideRestrictedRangesAndIsViableOffSpring = newAnimal->interpolateTraits();
-
-			while(!isInsideRestrictedRangesAndIsViableOffSpring.first)
-			{
-				numberOfDiscardedIndividualsOutsideRestrictedRanges++;
-
-				newAnimal = SpatialTreeAnimal::createInstance(-1.0, 0.0, instar, 0, 0, -1, -1, currentAnimalSpecies, currentAnimalSpecies->getRandomGender(), true);
-                
-				isInsideRestrictedRangesAndIsViableOffSpring = newAnimal->interpolateTraits();
-			}
-
-			// Indicate that the animal created is the final animal, and therefore assign a final ID to it.
-			newAnimal->doDefinitive();
-
-            AnimalInterface* newAnimalPtr = newAnimal.release();
+            AnimalNonStatistical* newAnimal;
 
             // Get a random index from this species inhabitable cells
             randomCellIndex = Random::randomIndex(speciesInhabitableTerrainCells[instar].size());
 
             try
             {
-                auto newTerrainCell = (*speciesInhabitableTerrainCells[instar][randomCellIndex])->randomInsertAnimal(newAnimalPtr);
+                auto newTerrainCell = (*speciesInhabitableTerrainCells[instar][randomCellIndex])->randomInsertAnimal(instar, currentAnimalSpecies, false);
 
                 if(get<0>(newTerrainCell))
                 {
@@ -537,25 +492,34 @@ const int SpatialTree::generatePopulation(AnimalSpecies* currentAnimalSpecies, c
                         }
                     }
                 }
+
+                newAnimal = static_cast<AnimalNonStatistical*>(get<3>(newTerrainCell));
+
+                numberOfDiscardedIndividualsOutsideRestrictedRanges += get<4>(newTerrainCell);
             }
             catch(SpatialTreeTerrainCell::TemporalLeaf2Branch &e)
             {
-                (*speciesInhabitableTerrainCells[instar][randomCellIndex]) = static_cast<SpatialTreeTerrainCellInterface*>((*speciesInhabitableTerrainCells[instar][randomCellIndex]))->getMutableParent()->randomInsertAnimalOnChild(
-                    newAnimalPtr, (*speciesInhabitableTerrainCells[instar][randomCellIndex])
+                auto result = static_cast<SpatialTreeTerrainCellInterface*>((*speciesInhabitableTerrainCells[instar][randomCellIndex]))->getMutableParent()->randomInsertAnimalOnChild(
+                    instar, currentAnimalSpecies, (*speciesInhabitableTerrainCells[instar][randomCellIndex]), false
                 );
+
+                (*speciesInhabitableTerrainCells[instar][randomCellIndex]) = get<0>(result);
+
+                newAnimal = static_cast<AnimalNonStatistical*>(get<1>(result));
+
+                numberOfDiscardedIndividualsOutsideRestrictedRanges += get<2>(result);
             }
 
             //ALWAYS print the traits after interpolating and before adjusting
 			//newAnimal->printGenetics(geneticsFile);
 
-			if(getWorldInterface()->getSaveAnimalConstitutiveTraits()) {
-				newAnimal->printTraits(getMutableWorldInterface()->getConstitutiveTraitsFile());
+			if(getWorld()->getSaveAnimalConstitutiveTraits()) {
+				newAnimal->printTraits(getMutableWorld()->getConstitutiveTraitsFile());
 			}
 			
-			//DONE Adjust traits now includes the first CalculateGrowthCurves call. For every animal.
-			newAnimalPtr->adjustTraits();
-			newAnimalPtr->forceMolting2();
-			newAnimalPtr->setExperiencePerSpecies();
+            newAnimal->getMutableAnimalGrowth()->calculateGrowthCurves();
+			newAnimal->getMutableAnimalGrowth()->forceMolting();
+			newAnimal->setExperiencePerSpecies();
 		}
 
 		if(instar.getValue() >= (currentAnimalSpecies->getInitialPopulation().size()-1)*currentPercentageForPrinting)
@@ -600,13 +564,13 @@ string SpatialTree::getMapPositionHeader() const
 }
 
 
-void SpatialTree::obtainWorldResourceBiomassAndAnimalsPopulation(vector<double> &worldResourceBiomass, CustomIndexedVector<AnimalSpecies::AnimalID, CustomIndexedVector<LifeStage, unsigned int>> &worldAnimalsPopulation) const
+void SpatialTree::obtainWorldResourceBiomassAndAnimalsPopulation(vector<double> &worldResourceBiomass, vector<vector<unsigned int>> &worldAnimalsPopulation) const
 {
     rootTerrainCell->obtainWorldResourceBiomassAndAnimalsPopulation(worldResourceBiomass, worldAnimalsPopulation);
 }
 
 
-void SpatialTree::obtainAnimalsPopulationAndGeneticsFrequencies(CustomIndexedVector<AnimalSpecies::AnimalID, CustomIndexedVector<LifeStage, unsigned int>> &worldAnimalsPopulation, vector<vector<pair<vector<double>, vector<double>>>> &worldGeneticsFrequencies) const
+void SpatialTree::obtainAnimalsPopulationAndGeneticsFrequencies(vector<vector<unsigned int>> &worldAnimalsPopulation, vector<vector<pair<vector<double>, vector<double>>>> &worldGeneticsFrequencies) const
 {
     rootTerrainCell->obtainAnimalsPopulationAndGeneticsFrequencies(worldAnimalsPopulation, worldGeneticsFrequencies);
 }
@@ -636,30 +600,12 @@ SearchableEdibles SpatialTree::getEdiblesOnRadius(
     return sourceTerrainCell->getEdiblesOnRadius(sourcePosition, radius, edibleSearchParams);
 }
 
-void SpatialTree::moveAnimals(int timeStep, ostream& encounterProbabilitiesFile, ostream& predationProbabilitiesFile, bool saveEdibilitiesFile, ostream& edibilitiesFile, float exitTimeThreshold, double pdfThreshold, double muForPDF, double sigmaForPDF, double predationSpeedRatioAH, double predationHunterVoracityAH, double predationProbabilityDensityFunctionAH, double predationSpeedRatioSAW, double predationHunterVoracitySAW, double predationProbabilityDensityFunctionSAW, double maxSearchArea, double encounterHuntedVoracitySAW, double encounterHunterVoracitySAW, double encounterVoracitiesProductSAW, double encounterHunterSizeSAW, double encounterHuntedSizeSAW, double encounterProbabilityDensityFunctionSAW, double encounterHuntedVoracityAH, double encounterHunterVoracityAH, double encounterVoracitiesProductAH, double encounterHunterSizeAH, double encounterHuntedSizeAH, double encounterProbabilityDensityFunctionAH)
+void SpatialTree::moveAnimals(const unsigned int numberOfTimeSteps, ostream& encounterProbabilitiesFile, ostream& predationProbabilitiesFile, bool saveEdibilitiesFile, ostream& edibilitiesFile, float exitTimeThreshold, double pdfThreshold, double muForPDF, double sigmaForPDF, double predationSpeedRatioAH, double predationHunterVoracityAH, double predationProbabilityDensityFunctionAH, double predationSpeedRatioSAW, double predationHunterVoracitySAW, double predationProbabilityDensityFunctionSAW, double maxSearchArea, double encounterHuntedVoracitySAW, double encounterHunterVoracitySAW, double encounterVoracitiesProductSAW, double encounterHunterSizeSAW, double encounterHuntedSizeSAW, double encounterProbabilityDensityFunctionSAW, double encounterHuntedVoracityAH, double encounterHunterVoracityAH, double encounterVoracitiesProductAH, double encounterHunterSizeAH, double encounterHuntedSizeAH, double encounterProbabilityDensityFunctionAH)
 {
-    rootTerrainCell->moveAnimals(timeStep, encounterProbabilitiesFile, predationProbabilitiesFile, saveEdibilitiesFile, edibilitiesFile, exitTimeThreshold, pdfThreshold, muForPDF, sigmaForPDF, predationSpeedRatioAH, predationHunterVoracityAH, predationProbabilityDensityFunctionAH, predationSpeedRatioSAW, predationHunterVoracitySAW, predationProbabilityDensityFunctionSAW, maxSearchArea, encounterHuntedVoracitySAW, encounterHunterVoracitySAW, encounterVoracitiesProductSAW, encounterHunterSizeSAW, encounterHuntedSizeSAW, encounterProbabilityDensityFunctionSAW, encounterHuntedVoracityAH, encounterHunterVoracityAH, encounterVoracitiesProductAH, encounterHunterSizeAH, encounterHuntedSizeAH, encounterProbabilityDensityFunctionAH);
+    rootTerrainCell->moveAnimals(numberOfTimeSteps, encounterProbabilitiesFile, predationProbabilitiesFile, saveEdibilitiesFile, edibilitiesFile, exitTimeThreshold, pdfThreshold, muForPDF, sigmaForPDF, predationSpeedRatioAH, predationHunterVoracityAH, predationProbabilityDensityFunctionAH, predationSpeedRatioSAW, predationHunterVoracitySAW, predationProbabilityDensityFunctionSAW, maxSearchArea, encounterHuntedVoracitySAW, encounterHunterVoracitySAW, encounterVoracitiesProductSAW, encounterHunterSizeSAW, encounterHuntedSizeSAW, encounterProbabilityDensityFunctionSAW, encounterHuntedVoracityAH, encounterHunterVoracityAH, encounterVoracitiesProductAH, encounterHunterSizeAH, encounterHuntedSizeAH, encounterProbabilityDensityFunctionAH);
 }
 
-void SpatialTree::performAnimalsActions(int timeStep, ostream& voracitiesFile, fs::path outputFolder, bool saveAnimalConstitutiveTraits, ofstream &constitutiveTraitsFile)
+void SpatialTree::performAnimalsActions(const unsigned int numberOfTimeSteps, ostream& voracitiesFile, fs::path outputFolder, bool saveAnimalConstitutiveTraits, ofstream &constitutiveTraitsFile)
 {
-    rootTerrainCell->performAnimalsActions(timeStep, voracitiesFile, outputFolder, saveAnimalConstitutiveTraits, constitutiveTraitsFile);
+    rootTerrainCell->performAnimalsActions(numberOfTimeSteps, voracitiesFile, outputFolder, saveAnimalConstitutiveTraits, constitutiveTraitsFile);
 }
-
-template <class Archive>
-void SpatialTree::serialize(Archive &ar, const unsigned int version, vector<ExtendedMoisture*>& appliedMoisture) {
-    ar & boost::serialization::base_object<SpatialTreeInterface>(*this);
-
-    ar & mapDepth;
-    ar & cellSizes;
-    ar & axisSizes;
-    ar & totalNumberOfTerrainCells;
-    boost::serialization::serialize(ar, rootTerrainCell, version, this, appliedMoisture);
-}
-
-// Specialisation
-template void SpatialTree::serialize<boost::archive::text_iarchive>(boost::archive::text_iarchive&, const unsigned int, vector<ExtendedMoisture*>&);
-template void SpatialTree::serialize<boost::archive::text_oarchive>(boost::archive::text_oarchive&, const unsigned int, vector<ExtendedMoisture*>&);
-
-template void SpatialTree::serialize<boost::archive::binary_iarchive>(boost::archive::binary_iarchive&, const unsigned int, vector<ExtendedMoisture*>&);
-template void SpatialTree::serialize<boost::archive::binary_oarchive>(boost::archive::binary_oarchive&, const unsigned int, vector<ExtendedMoisture*>&);

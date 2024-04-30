@@ -11,10 +11,9 @@
 #include "IBM/World/Map/TerrainCells/AnimalSearchParams.h"
 #include "IBM/World/Map/TerrainCells/ResourceSearchParams.h"
 #include "IBM/World/LivingBeings/LifeStage.h"
-#include "Misc/EnumClass.h"
 
 
-class WorldInterface;
+class World;
 
 
 class EdibleSearchParams
@@ -31,13 +30,13 @@ public:
     virtual ~EdibleSearchParams();
 
     void addAnimalSearchParams(
-        const WorldInterface* const worldInterface,
-        const std::vector<LifeStage> &searchableLifeStages = EnumClass<LifeStage>::getEnumValues(),
-        const std::vector<AnimalSpecies::AnimalID> &searchableAnimalSpecies = {},
+        const World* const world,
+        const std::vector<LifeStage::LifeStageValue> &searchableLifeStages = LifeStage::getEnumValues(),
+        const std::vector<id_type> &searchableAnimalSpecies = {},
         const std::vector<Instar> &searchableInstars = {},
-        const std::vector<AnimalSpecies::Gender> &searchableGenders = EnumClass<AnimalSpecies::Gender>::getEnumValues()
+        const std::vector<AnimalSpecies::Gender::GenderValue> &searchableGenders = AnimalSpecies::Gender::getEnumValues()
     );
-    void addResourceSearchParams(const WorldInterface* const worldInterface, const std::vector<ResourceSpecies::ResourceID> &searchableResourceSpecies = {});
+    void addResourceSearchParams(const std::vector<id_type> &searchableResourceSpecies = {});
 
     const AnimalSearchParams& getAnimalSearchParams() const;
     const ResourceSearchParams& getResourceSearchParams() const;
@@ -51,14 +50,5 @@ public:
     template <class Archive>
     void serialize(Archive &ar, const unsigned int version);
 };
-
-
-namespace boost {
-    namespace serialization {
-        template<class Archive>
-        void serialize(Archive &ar, EdibleSearchParams* &edibleSearchParamsPtr, const unsigned int version);
-    }
-}
-
 
 #endif /* EDIBLE_SEARCH_PARAMS_H_ */

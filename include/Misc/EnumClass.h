@@ -16,12 +16,12 @@ public:
     static const T stringToEnumValue(const std::string &str);
     static constexpr size_t size();
 	static const std::vector<T> getEnumValues();
-	static std::string_view to_string(const T& type);
+	static std::string to_string(const T& type);
 	static const std::string getHeader();
 	static const std::string printValues();
 
 private:
-    static const std::unordered_map<std::string_view, const T> generateMap();
+    static const std::unordered_map<std::string, const T> generateMap();
 };
 
 
@@ -45,9 +45,9 @@ const std::vector<T> EnumClass<T>::getEnumValues()
 }
 
 template <typename T>
-std::string_view EnumClass<T>::to_string(const T& type) 
+std::string EnumClass<T>::to_string(const T& type) 
 { 
-	return magic_enum::enum_name(type); 
+	return std::string(magic_enum::enum_name(type)); 
 }
 
 template <typename T>
@@ -77,9 +77,9 @@ const std::string EnumClass<T>::printValues()
 }
 
 template <typename T>
-const std::unordered_map<std::string_view, const T> EnumClass<T>::generateMap() 
+const std::unordered_map<std::string, const T> EnumClass<T>::generateMap() 
 {
-	std::unordered_map<std::string_view, const T> enumMap;
+	std::unordered_map<std::string, const T> enumMap;
 
 	for(size_t i = 0; i < EnumClass<T>::size(); i++) {
 		const T type = static_cast<const T>(i);
@@ -91,7 +91,7 @@ const std::unordered_map<std::string_view, const T> EnumClass<T>::generateMap()
 
 template <typename T>
 const T EnumClass<T>::stringToEnumValue(const std::string &str) { 
-	const std::unordered_map<std::string_view, const T> stringToEnum = EnumClass<T>::generateMap();
+	const std::unordered_map<std::string, const T> stringToEnum = EnumClass<T>::generateMap();
     
     try
 	{
@@ -99,7 +99,7 @@ const T EnumClass<T>::stringToEnumValue(const std::string &str) {
 	}
 	catch(const std::out_of_range& e) 
 	{
-		throwLineInfoException(fmt::format("Unknown moisture type '{}'. Valid values are {}", str, EnumClass<T>::printValues()));
+		throwLineInfoException(fmt::format("Unknown enum type '{}'. Valid values are {}", str, EnumClass<T>::printValues()));
 	}
 }
 

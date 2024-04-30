@@ -1,56 +1,70 @@
 
 #include "IBM/World/Map/TerrainCells/Moisture/ExtendedMoisture.h"
 
-#include "IBM/World/Map/TerrainCells/Moisture/CycleMoisture.h"
-#include "IBM/World/Map/TerrainCells/Moisture/RainEventAndDecayOverTimeMoisture.h"
-
 using namespace std;
 using json = nlohmann::json;
 
 
-
-unique_ptr<ExtendedMoisture> ExtendedMoisture::createInstance(const json &moistureInfo)
-{
-    switch(EnumClass<ExtendedMoisture::Type>::stringToEnumValue(moistureInfo["relativeHumidityUpdateMethod"]["updateMethodType"])) {
-		case ExtendedMoisture::Type::Cycle: {
-			return make_unique<CycleMoisture>(moistureInfo);
-			break;
-		}
-        case ExtendedMoisture::Type::RainEventAndDecayOverTime: {
-			return make_unique<RainEventAndDecayOverTimeMoisture>(moistureInfo);
-			break;
-		}
-		default: {
-			throwLineInfoException("Default case");
-			break;
-		}
+const ExtendedMoisture::Type::TypeValue ExtendedMoisture::Type::stringToEnumValue(const string &str) { 
+	try
+	{
+		return stringToEnum.at(str);
+	}
+	catch(const out_of_range& e) 
+	{
+		throwLineInfoException(fmt::format("Unknown moisture type '{}'. Valid values are {}", str, printAvailableValues()));
 	}
 }
 
-unique_ptr<ExtendedMoisture> ExtendedMoisture::createInstance(const ExtendedMoisture::Type &extendedMoistureType)
+constexpr size_t ExtendedMoisture::Type::size() 
+{ 
+	return magic_enum::enum_count<TypeValue>(); 
+}
+
+std::string_view ExtendedMoisture::Type::to_string(const TypeValue& type) 
+{ 
+	return magic_enum::enum_name(type); 
+}
+
+const unordered_map<string_view, const ExtendedMoisture::Type::TypeValue> ExtendedMoisture::Type::generateMap() 
 {
-    switch(extendedMoistureType) {
-		case ExtendedMoisture::Type::Cycle: {
-			return make_unique<CycleMoisture>();
-			break;
-		}
-        case ExtendedMoisture::Type::RainEventAndDecayOverTime: {
-			return make_unique<RainEventAndDecayOverTimeMoisture>();
-			break;
-		}
-		default: {
-			throwLineInfoException("Default case");
-			break;
-		}
+	unordered_map<string_view, const TypeValue> enumMap;
+
+	for(size_t i = 0; i < size(); i++) {
+		const TypeValue type = static_cast<const TypeValue>(i);
+		enumMap.insert({to_string(type), type});
 	}
+
+	return enumMap;
 }
 
+const unordered_map<string_view, const ExtendedMoisture::Type::TypeValue> ExtendedMoisture::Type::stringToEnum = ExtendedMoisture::Type::generateMap();
 
-ExtendedMoisture::ExtendedMoisture()
-    : MoistureInterface()
+const string ExtendedMoisture::Type::generateAvailableValues()
 {
+	constexpr auto typeNames = magic_enum::enum_names<TypeValue>();
 
+	auto values = fmt::format("{}", typeNames[0]);
+	for(size_t i = 1; i < typeNames.size(); i++) {
+		values += fmt::format(", {}", typeNames[i]);
+	}
+
+	return values;
 }
+
+const string ExtendedMoisture::Type::enumValues = ExtendedMoisture::Type::generateAvailableValues();
+
+std::string_view ExtendedMoisture::Type::printAvailableValues() 
+{ 
+	return enumValues; 
+}
+
+template <class Archive>
+void ExtendedMoisture::Type::serialize(Archive &ar, const unsigned int version) {
+    ar & stringToEnum;
+    ar & enumValues;
+}
+
 
 ExtendedMoisture::ExtendedMoisture(const json &moistureInfo)
     : MoistureInterface(),
@@ -156,9 +170,9 @@ void ExtendedMoisture::updateInfo()
     throwLineInfoException("Extended moisture is not updated");
 }
 
-const Temperature& ExtendedMoisture::getTemperatureOnTimeStep(const unsigned int timeStep) const
+const Temperature& ExtendedMoisture::getTemperatureOnTimeStep(const unsigned int numberOfTimeSteps) const
 {
-    return getTemperatureCycle().at(timeStep%getTemperatureCycle().size());
+    return getTemperatureCycle().at(numberOfTimeSteps%getTemperatureCycle().size());
 }
 
 const string ExtendedMoisture::showMoistureInfo() const
@@ -180,15 +194,15 @@ const string ExtendedMoisture::showMoistureInfo() const
 	);
 }
 
-void ExtendedMoisture::refreshValue(const unsigned int timeStep)
+void ExtendedMoisture::refreshValue(const unsigned int numberOfTimeSteps)
 {
-    refreshTemperature(timeStep);
-    refreshRelativeHumidity(timeStep);
+    refreshTemperature(numberOfTimeSteps);
+    refreshRelativeHumidity(numberOfTimeSteps);
 }
 
-void ExtendedMoisture::refreshTemperature(const unsigned int timeStep)
+void ExtendedMoisture::refreshTemperature(const unsigned int numberOfTimeSteps)
 {
-    setTemperature(getTemperatureOnTimeStep(timeStep));
+    setTemperature(getTemperatureOnTimeStep(numberOfTimeSteps));
 }
 
 const Temperature& ExtendedMoisture::getRandomTemperature() const
@@ -198,66 +212,10 @@ const Temperature& ExtendedMoisture::getRandomTemperature() const
 
 template <class Archive>
 void ExtendedMoisture::serialize(Archive &ar, const unsigned int version) {
-    ar & boost::serialization::base_object<MoistureInterface>(*this);
-
     ar & inEnemyFreeSpace;
     ar & inCompetitorFreeSpace;
     ar & temperature;
     ar & moisture;
     ar & maximumResourceCapacityDensity;
     ar & temperatureCycle;
-}
-
-// Specialisation
-template void ExtendedMoisture::serialize<boost::archive::text_iarchive>(boost::archive::text_iarchive&, const unsigned int);
-template void ExtendedMoisture::serialize<boost::archive::text_oarchive>(boost::archive::text_oarchive&, const unsigned int);
-
-template void ExtendedMoisture::serialize<boost::archive::binary_iarchive>(boost::archive::binary_iarchive&, const unsigned int);
-template void ExtendedMoisture::serialize<boost::archive::binary_oarchive>(boost::archive::binary_oarchive&, const unsigned int);
-
-
-
-namespace boost {
-    namespace serialization {
-        template <class Archive>
-        void serialize(Archive &ar, ExtendedMoisture* &extendedMoisturePtr, const unsigned int version, vector<ExtendedMoisture*>& appliedMoisture) {
-            ExtendedMoisture::Type extendedMoistureType;
-            
-            // For loading
-            if(Archive::is_loading::value) 
-            {
-                ar & extendedMoistureType;
-                extendedMoisturePtr = ExtendedMoisture::createInstance(extendedMoistureType).release();
-
-                appliedMoisture.push_back(extendedMoisturePtr);
-            }
-            else
-            {
-                extendedMoistureType = extendedMoisturePtr->getExtendedMoistureType();
-                ar & extendedMoistureType;
-            }
-
-            switch(extendedMoistureType) {
-                case ExtendedMoisture::Type::Cycle: {
-                    static_cast<CycleMoisture*>(extendedMoisturePtr)->serialize(ar, version);
-                    break;
-                }
-                case ExtendedMoisture::Type::RainEventAndDecayOverTime: {
-                    static_cast<RainEventAndDecayOverTimeMoisture*>(extendedMoisturePtr)->serialize(ar, version);
-                    break;
-                }
-                default: {
-                    throwLineInfoException("Default case");
-                    break;
-                }
-            }
-        }
-
-        // Specialisation
-        template void serialize<boost::archive::text_iarchive>(boost::archive::text_iarchive&, ExtendedMoisture*&, const unsigned int, vector<ExtendedMoisture*>&);
-        template void serialize<boost::archive::text_oarchive>(boost::archive::text_oarchive&, ExtendedMoisture*&, const unsigned int, vector<ExtendedMoisture*>&);
-
-        template void serialize<boost::archive::binary_iarchive>(boost::archive::binary_iarchive&, ExtendedMoisture*&, const unsigned int, vector<ExtendedMoisture*>&);
-        template void serialize<boost::archive::binary_oarchive>(boost::archive::binary_oarchive&, ExtendedMoisture*&, const unsigned int, vector<ExtendedMoisture*>&);
-    }
 }

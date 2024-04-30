@@ -15,16 +15,16 @@ ResourceSearchParams::~ResourceSearchParams()
     
 }
 
-void ResourceSearchParams::addSearchParams(const WorldInterface* const worldInterface, const vector<ResourceSpecies::ResourceID> &searchableResourceSpecies)
+void ResourceSearchParams::addSearchParams(const vector<id_type> &searchableResourceSpecies)
 {
     // -------------------------------------------------
 
-    const vector<ResourceSpecies::ResourceID>* finalSearchableResourceSpecies;
-    vector<ResourceSpecies::ResourceID> allSearchableResourceSpecies;
+    const vector<id_type>* finalSearchableResourceSpecies;
+    vector<id_type> allSearchableResourceSpecies;
 
     if(searchableResourceSpecies.empty())
     {
-        for(unsigned int resourceSpeciesId = 0; resourceSpeciesId < worldInterface->getExistingResourceSpecies().size(); resourceSpeciesId++)
+        for(unsigned int resourceSpeciesId = 0; resourceSpeciesId < ResourceSpecies::getResourceSpeciesCounter(); resourceSpeciesId++)
         {
             allSearchableResourceSpecies.push_back(resourceSpeciesId);
         }
@@ -53,10 +53,3 @@ template <class Archive>
 void ResourceSearchParams::serialize(Archive &ar, const unsigned int version) {
     ar & searchParams;
 }
-
-// Specialisation
-template void ResourceSearchParams::serialize<boost::archive::text_iarchive>(boost::archive::text_iarchive&, const unsigned int);
-template void ResourceSearchParams::serialize<boost::archive::text_oarchive>(boost::archive::text_oarchive&, const unsigned int);
-
-template void ResourceSearchParams::serialize<boost::archive::binary_iarchive>(boost::archive::binary_iarchive&, const unsigned int);
-template void ResourceSearchParams::serialize<boost::archive::binary_oarchive>(boost::archive::binary_oarchive&, const unsigned int);

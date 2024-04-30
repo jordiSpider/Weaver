@@ -16,8 +16,6 @@
 #include <fstream>
 #include <ostream>
 
-#include "IBM/Maths/Random.h"
-
 
 /**
  * @class Allele
@@ -26,6 +24,8 @@
 class Allele
 {
 private:
+	static unsigned int alleleId; /**< Unique identificator for each allele in the genetic pool */
+
 	unsigned int id; /**< Id used for computational tasks */
     double value; /**< Value for the allele */
     unsigned int alphabeticOrder; /**< Alphabetic order used for ordering tasks */
@@ -35,10 +35,10 @@ public:
 
     /**
      * @brief Constructor for the Allele class.
-     * @param alleleId 
+     * @param value The numerical value of the allele.
      * @param alphabeticOrder The alphabetic order of the allele.
      */
-    explicit Allele(const unsigned int alleleId, const unsigned int alphabeticOrder);
+    explicit Allele(const double &value, const unsigned int alphabeticOrder);
 	
 	/**
      * @brief Destructor for the Allele class.
@@ -81,6 +81,14 @@ public:
     template<class Archive>
     void serialize(Archive & ar, const unsigned int version);
 };
+
+
+namespace boost {
+    namespace serialization {
+        template<class Archive>
+        void serialize(Archive &ar, Allele* &allelePtr, const unsigned int version);
+    }
+}
 
 
 #endif /* ALLELE_H_ */

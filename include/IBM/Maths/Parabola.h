@@ -7,13 +7,6 @@
 #ifndef PARABOLA_H_
 #define PARABOLA_H_
 
-
-#include <boost/archive/text_oarchive.hpp>
-#include <boost/archive/text_iarchive.hpp>
-#include <boost/archive/binary_oarchive.hpp>
-#include <boost/archive/binary_iarchive.hpp>
-
-
 /**
  * @class Parabola
  * @brief Represents a parabola of the form y = ax^2 + bx + c.
@@ -92,9 +85,6 @@ public:
 	* @param c The new value for the coefficient c.
 	*/
 	void setC(double c);
-
-	template <class Archive>
-    void serialize(Archive &ar, const unsigned int version);
 };
 
 #endif /* PARABOLA_H_ */

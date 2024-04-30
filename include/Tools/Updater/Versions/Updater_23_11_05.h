@@ -5,6 +5,7 @@
 #include <nlohmann/json.hpp>
 
 #include "Tools/Updater/Updater.h"
+#include "Tools/Config/Config.h"
 
 
 class Updater_23_11_05 : public Updater
@@ -12,6 +13,8 @@ class Updater_23_11_05 : public Updater
 public:
     Updater_23_11_05();
     virtual ~Updater_23_11_05();
+
+    void update(Config &config);
 };
 
 

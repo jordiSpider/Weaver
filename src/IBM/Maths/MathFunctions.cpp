@@ -18,16 +18,13 @@ using namespace std;
 
 double MathFunctions::johnsonLewis(Temperature temperature, Temperature Topt, double ED, double activationEnergy) 
 {
-	double result;
-	double newActivationEnergy = activationEnergy; //Serán las energias de activación de search, vor, speed
 	double c = 1;
-	double k = BOLTZMANN;
 
 	//TODO 270 por qué coge ese valor a veces?
 
-	result = c*exp(-newActivationEnergy/(k*temperature.getTemperatureKelvin()))/(1+exp((-1/(k*temperature.getTemperatureKelvin()))*(ED-((ED/Topt.getTemperatureKelvin())+(k*log(newActivationEnergy/(ED-newActivationEnergy))))*temperature.getTemperatureKelvin())));
+	double result = c*exp(-activationEnergy/(BOLTZMANN*temperature.getTemperatureKelvin()))/(1+exp((-1/(BOLTZMANN*temperature.getTemperatureKelvin()))*(ED-((ED/Topt.getTemperatureKelvin())+(BOLTZMANN*log(activationEnergy/(ED-activationEnergy))))*temperature.getTemperatureKelvin())));
 
-	if(::isnan(newActivationEnergy))
+	if(::isnan(activationEnergy))
 	{
 		cout << "ACTIVATION ENERGY NAN - CHECK IF ED>E" << endl;
 	}
@@ -36,13 +33,11 @@ double MathFunctions::johnsonLewis(Temperature temperature, Temperature Topt, do
 	{
 		cout << "ACTIVATION ENERGY NAN - CHECK IF ED>E" << endl;
 	}
-	
-	result=result*1000000000000;
 
 	return result;
 }
 
-double MathFunctions::useJohnsonLewis(Temperature newT, double activationEnergy, Temperature lowerThreshold, Temperature upperThreshold, Temperature Topt, double Ed, double trait) 
+double MathFunctions::useJohnsonLewis(const Temperature& newT, const double& activationEnergy, const Temperature& lowerThreshold, const Temperature& upperThreshold, const Temperature& Topt, const double& Ed, const double& traitAtTopt) 
 {
 	double dellsNewT = johnsonLewis(newT, Topt, Ed, activationEnergy);
 
@@ -53,12 +48,12 @@ double MathFunctions::useJohnsonLewis(Temperature newT, double activationEnergy,
     if(newT > Topt)
 	{
 	    double dellsMinT = johnsonLewis(upperThreshold, Topt, Ed, activationEnergy);
-		postDell = linearInterpolate(dellsNewT, dellsMinT, dellsMaxT, 0, trait);
+		postDell = linearInterpolate(dellsNewT, dellsMinT, dellsMaxT, 0, traitAtTopt);
 	}
 	else
 	{
 		double dellsMinT = johnsonLewis(lowerThreshold, Topt, Ed, activationEnergy);
-		postDell = linearInterpolate(dellsNewT, dellsMinT, dellsMaxT, 0, trait);
+		postDell = linearInterpolate(dellsNewT, dellsMinT, dellsMaxT, 0, traitAtTopt);
 	}
 
 	return postDell;
@@ -67,9 +62,11 @@ double MathFunctions::useJohnsonLewis(Temperature newT, double activationEnergy,
 double MathFunctions::linearInterpolate(double x, double min_x, double max_x, double min_y, double max_y)
 {
 	double result = 0.0;
+
 	if(max_x != min_x) {
 		result = min_y + ( (x - min_x) * ((max_y - min_y)/(max_x - min_x)) );
 	}
+
 	return result;
 }
 
@@ -83,19 +80,37 @@ double MathFunctions::linearInterpolate01(double x, double max_x)
 	return x / max_x;
 }
 
+double MathFunctions::linearExtrapolation(double x, double min_x, double max_x, double interpolationResult)
+{
+	double max_y = 0.0;
+
+	if(max_x != min_x) {
+		max_y = interpolationResult*(-max_x + min_x)/(min_x - x);
+	}
+	
+	return max_y;
+}
+
+
 /**
  * Cholesky decomposition of matrix A
  */
-vector<vector<double> > MathFunctions::cholesky(double LinfKcorr)
+vector<vector<double> > MathFunctions::cholesky(const vector<double>& sigmaValues)
 {
-	vector<vector<double>> preCholMat(2, vector<double>(2));
-	preCholMat[0][0] = 1;
-	preCholMat[0][1] = LinfKcorr;
-	preCholMat[1][0] = LinfKcorr;
-	preCholMat[1][1] = 1;
+	vector<vector<double>> preCholMat(sigmaValues.size(), vector<double>(sigmaValues.size(), 0.0));
+	
+	for(unsigned int i = 0; i < sigmaValues.size(); i++)
+	{
+		preCholMat[i][i] = 1.0;
 
-	//cout << "preChol = " << preCholMat[0][0] << " - " << preCholMat[0][1] << " - " << preCholMat[1][0] << " - " << preCholMat[1][1] << endl;
-
+		for(unsigned int j = i+1; j < sigmaValues.size(); j++)
+		{
+			preCholMat[i][j] = sigmaValues[j+i-1];
+			preCholMat[j][i] = sigmaValues[j+i-1];
+		}
+	}
+	
+	
 	int n = preCholMat.size();
 	double sum1 = 0.0;
 	double sum2 = 0.0;

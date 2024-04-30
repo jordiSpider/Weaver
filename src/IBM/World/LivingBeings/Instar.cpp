@@ -30,14 +30,37 @@ Instar::~Instar()
 
 }
 
-Instar operator+(const Instar& lhs, const unsigned int& rhs)
+Instar operator+(const Instar& lhs, const int& rhs)
 {
-    return Instar(lhs.value + rhs);
+    return Instar(lhs.value + (unsigned int)rhs + 1);
 }
 
-Instar operator+(const unsigned int& lhs, const Instar& rhs)
+Instar operator+(const int& lhs, const Instar& rhs)
 {
-    return Instar(lhs + rhs.value);
+    return Instar((unsigned int)lhs + rhs.value + 1);
+}
+
+Instar& Instar::operator++()
+{
+    ++value;
+    return *this;
+}
+
+Instar Instar::operator++(int)
+{
+    Instar tmp(*this);
+    ++value;
+    return tmp;
+}
+
+Instar operator-(const Instar& lhs, const int& rhs)
+{
+    return Instar(lhs.value - (unsigned int)rhs + 1);
+}
+
+Instar operator-(const int& lhs, const Instar& rhs)
+{
+    return Instar((unsigned int)lhs - rhs.value + 1);
 }
 
 bool operator<(const Instar& lhs, const Instar& rhs)
@@ -45,9 +68,29 @@ bool operator<(const Instar& lhs, const Instar& rhs)
     return lhs.value < rhs.value;
 }
 
+bool operator<(const Instar& lhs, const int& rhs)
+{
+    return (lhs.value+1) < (unsigned int)rhs;
+}
+
+bool operator<(const int& lhs, const Instar& rhs)
+{
+    return (unsigned int)lhs < (rhs.value+1);
+}
+
 bool operator<=(const Instar& lhs, const Instar& rhs)
 {
     return lhs.value <= rhs.value;
+}
+
+bool operator<=(const Instar& lhs, const int& rhs)
+{
+    return (lhs.value+1) <= (unsigned int)rhs;
+}
+
+bool operator<=(const int& lhs, const Instar& rhs)
+{
+    return (unsigned int)lhs <= (rhs.value+1);
 }
 
 bool operator>(const Instar& lhs, const Instar& rhs)
@@ -55,9 +98,29 @@ bool operator>(const Instar& lhs, const Instar& rhs)
     return lhs.value > rhs.value;
 }
 
+bool operator>(const Instar& lhs, const int& rhs)
+{
+    return (lhs.value+1) > (unsigned int)rhs;
+}
+
+bool operator>(const int& lhs, const Instar& rhs)
+{
+    return (unsigned int)lhs > (rhs.value+1);
+}
+
 bool operator>=(const Instar& lhs, const Instar& rhs)
 {
     return lhs.value >= rhs.value;
+}
+
+bool operator>=(const Instar& lhs, const int& rhs)
+{
+    return (lhs.value+1) >= (unsigned int)rhs;
+}
+
+bool operator>=(const int& lhs, const Instar& rhs)
+{
+    return (unsigned int)lhs >= (rhs.value+1);
 }
 
 bool operator==(const Instar& lhs, const Instar& rhs)
@@ -65,9 +128,29 @@ bool operator==(const Instar& lhs, const Instar& rhs)
     return lhs.value == rhs.value;
 }
 
+bool operator==(const Instar& lhs, const int& rhs)
+{
+    return (lhs.value+1) == (unsigned int)rhs;
+}
+
+bool operator==(const int& lhs, const Instar& rhs)
+{
+    return (unsigned int)lhs == (rhs.value+1);
+}
+
 bool operator!=(const Instar& lhs, const Instar& rhs)
 {
     return lhs.value != rhs.value;
+}
+
+bool operator!=(const Instar& lhs, const int& rhs)
+{
+    return (lhs.value+1) != (unsigned int)rhs;
+}
+
+bool operator!=(const int& lhs, const Instar& rhs)
+{
+    return (unsigned int)lhs != (rhs.value+1);
 }
 
 ostream& operator<<(ostream& os, const Instar& instar)
@@ -76,7 +159,8 @@ ostream& operator<<(ostream& os, const Instar& instar)
     return os;
 }
 
-Instar::operator size_t() const {
+Instar::operator size_t() const 
+{
     return static_cast<size_t>(value);
 }
 
@@ -89,10 +173,3 @@ template <class Archive>
 void Instar::serialize(Archive &ar, const unsigned int version) {
     ar & value;
 }
-
-// Specialisation
-template void Instar::serialize<boost::archive::text_iarchive>(boost::archive::text_iarchive&, const unsigned int);
-template void Instar::serialize<boost::archive::text_oarchive>(boost::archive::text_oarchive&, const unsigned int);
-
-template void Instar::serialize<boost::archive::binary_iarchive>(boost::archive::binary_iarchive&, const unsigned int);
-template void Instar::serialize<boost::archive::binary_oarchive>(boost::archive::binary_oarchive&, const unsigned int);

@@ -18,7 +18,7 @@
 #include "Exceptions/LineInfoException.h"
 
 
-class AnimalInterface;
+class Animal;
 
 class ResourceInterface;
 
@@ -41,10 +41,9 @@ typedef Coordinate3D<double> dPoint3D;
 
 
 
-typedef unsigned int date_type;
 
 // Sumo más uno porque la función devuelve el número de dígitos restando el bit del signo
-#define MAX_NUM_DIGITS_DAY (std::numeric_limits<date_type>::digits10 + 1)
+#define MAX_NUM_DIGITS_DAY (std::numeric_limits<unsigned int>::digits10 + 1)
 
 
 typedef unsigned int id_type;
