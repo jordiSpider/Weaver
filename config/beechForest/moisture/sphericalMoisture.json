@@ -1,0 +1,39 @@
+{
+    "patch": {
+        "type": "sphere",
+        "radius": 1,
+        "xPos": 1,
+        "yPos": 1,
+        "zPos": 1,
+        "maximumFungiCapacity": 150.02,
+        "inEnemyFreeSpace": false,
+        "inCompetitorFreeSpace": false,
+        "temperatureCycle": [
+            20,
+            20
+        ],
+        "useRelativeHumidityCycle": true,
+        "relativeHumidityCycle": [
+            85,
+            86,
+            87,
+            88,
+            89,
+            90,
+            91,
+            92,
+            91,
+            90,
+            89,
+            88,
+            87,
+            86
+
+        ],
+        "useRelativeHumidityDecayOverTime": false,
+        "relativeHumidityOnRainEvent": 87.5,
+        "relativeHumidityDecayOverTime": 0.2,
+        "timeStepsBetweenRainEvents": 5,
+        "standardDeviationForRainEvent": 1
+    }
+}

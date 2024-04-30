@@ -1,0 +1,104 @@
+{
+    "world": {
+		"worldType": "Old",
+		"simulationType": "arthropods",
+        "spaceConfiguration": {
+			"obstacleFolder": "obstacle",
+			"dimensions": {
+				"width": 25,
+				"length": 25,
+				"depth": 1,
+				"cellSize": 1
+			},
+			"initRandomObstaclePatches": {
+				"enabled": false,
+				"obstacleDensity": 0.7, 	   		
+				"patchesWidth": 5,
+				"patchesLength": 1,
+				"patchesDepth": 1
+			},
+			"moistureFolder": "moisture",
+			"moistureBasePatch": {
+				"totalMaximumResourceCapacity": 150.01,
+				"inEnemyFreeSpace": false,
+				"inCompetitorFreeSpace": false,
+				"temperatureCycle": [
+					20,
+					20
+				],
+				"useRelativeHumidityCycle": true,
+				"relativeHumidityCycle": [
+					25,
+					25
+				],
+				"useRelativeHumidityDecayOverTime": false,
+				"relativeHumidityOnRainEvent": 87.5,
+				"relativeHumidityDecayOverTime": 0.2,
+				"timeStepsBetweenRainEvents": 5,
+				"standardDeviationForRainEvent": 1.0
+			},
+			"nutrients": {
+				"minC": 0.0,
+				"maxC": 23.0,
+				"minN": 0.0,
+				"maxN": 23.0,
+				"minP": 0.0,
+				"maxP": 23.0
+			},
+			"resourceToPreysCapacityTransference": 0.1,
+			"preysToPredatorsCapacityTransference": 0.1
+		},
+		"life": {
+			"resourceFolder": "resource",
+			"speciesFolder": "species",
+			"initIndividualsPerDensities": {
+				"enabled": false,
+				"initialEcosystemSize": 20000 
+			},
+			"competitionAmongResourceSpecies": false,
+			"exitTimeThreshold": 120,
+			"minLogMassRatio": -6.0,
+			"maxLogMassRatio": 6.0,
+			"sigmaForPDF": 2.34,
+			"muForPDF": 1.44,
+			"initFromRandomSpecies": {
+				"enabled": true,
+				"numberOfPredatorSpecies": 1, 
+				"numberOfPreySpecies": 1,
+				"numberOfResourceSpecies": 1
+			},
+			"initFromRandomLinks": {
+				"enabled": true,
+				"eraseCurrentExistingLinks": true,
+				"predator-preyLinksDensity": 0.2,
+				"intraguildPredation": {
+					"enabled": true,
+					"allowCannibalism": false
+				},
+				"resourcevore-resourceLinksDensity": 0.1
+			},
+			"encounterHuntedVoracitySAW": 0.04346,
+			"encounterHunterVoracitySAW": 0.4348,
+			"encounterVoracitiesProductSAW": 0.04347,
+			"encounterHunterSizeSAW": 0.4348,
+			"encounterHuntedSizeSAW": 0.04347,
+			"encounterProbabilityDensityFunctionSAW": 0.0,
+
+			"encounterHuntedVoracityAH": 0.17,
+			"encounterHunterVoracityAH": 0.17,
+			"encounterVoracitiesProductAH": 0.17,
+			"encounterHunterSizeAH": 0.17,
+			"encounterHuntedSizeAH": 0.16,
+			"encounterProbabilityDensityFunctionAH": 0.16,
+
+			"predationSpeedRatioSAW": 0.0,
+			"predationHunterVoracitySAW": 0.98,
+			"predationProbabilityDensityFunctionSAW": 0.02,
+
+			"predationSpeedRatioAH": 0.34,
+			"predationHunterVoracityAH": 0.33,
+			"predationProbabilityDensityFunctionAH": 0.33
+		}
+	}
+}
+

@@ -1,0 +1,297 @@
+{
+    "type": "object",
+    "properties": {
+        "patch": {
+            "type": "object",
+            "properties": {
+                "type": {
+                    "type": "string",
+                    "enum": [
+                        "homogeneous",
+                        "gaussian",
+                        "spherical",
+                        "cubic",
+                        "randomGaussian"
+                    ],
+                    "required": true
+                },
+                "resourceMaximumCapacity": {
+                    "type": "floater",
+                    "required": true
+                },
+                "patchSpread": {
+                    "type": "boolean",
+                    "required": true
+                }
+            },
+            "conditionals": [
+                {
+                    "if": {
+                        "type": "equal",
+                        "lhs": {
+                            "type": "property",
+                            "value": [
+                                "type"
+                            ]
+                        },
+                        "rhs": {
+                            "type": "constant",
+                            "value": "homogeneous"
+                        }
+                    },
+                    "then": [ 
+                        {
+                            "add": {
+                                "properties": { 
+                                    "value": {
+                                        "type": "floater",
+                                        "required": true
+                                    }
+                                }
+                            }
+                        }
+                    ]
+                },
+                {
+                    "if": {
+                        "type": "equal",
+                        "lhs": {
+                            "type": "property",
+                            "value": [
+                                "type"
+                            ]
+                        },
+                        "rhs": {
+                            "type": "constant",
+                            "value": "gaussian"
+                        }
+                    },
+                    "then": [ 
+                        {
+                            "add": {
+                                "properties": { 
+                                    "radius": {
+                                        "type": "unsigned_integer",
+                                        "required": true
+                                    },
+                                    "xPos": {
+                                        "type": "unsigned_integer",
+                                        "required": true
+                                    },
+                                    "yPos": {
+                                        "type": "unsigned_integer",
+                                        "required": true
+                                    },
+                                    "zPos": {
+                                        "type": "unsigned_integer",
+                                        "required": true
+                                    },
+                                    "sigma": {
+                                        "type": "floater",
+                                        "required": true
+                                    },
+                                    "amplitude": {
+                                        "type": "floater",
+                                        "required": true
+                                    }
+                                }
+                            }
+                        }
+                    ]
+                },
+                {
+                    "if": {
+                        "type": "equal",
+                        "lhs": {
+                            "type": "property",
+                            "value": [
+                                "type"
+                            ]
+                        },
+                        "rhs": {
+                            "type": "constant",
+                            "value": "spherical"
+                        }
+                    },
+                    "then": [ 
+                        {
+                            "add": {
+                                "properties": { 
+                                    "radius": {
+                                        "type": "unsigned_integer",
+                                        "required": true
+                                    },
+                                    "xPos": {
+                                        "type": "unsigned_integer",
+                                        "required": true
+                                    },
+                                    "yPos": {
+                                        "type": "unsigned_integer",
+                                        "required": true
+                                    },
+                                    "zPos": {
+                                        "type": "unsigned_integer",
+                                        "required": true
+                                    },
+                                    "value": {
+                                        "type": "floater",
+                                        "required": true
+                                    }
+                                }
+                            }
+                        }
+                    ]
+                },
+                {
+                    "if": {
+                        "type": "equal",
+                        "lhs": {
+                            "type": "property",
+                            "value": [
+                                "type"
+                            ]
+                        },
+                        "rhs": {
+                            "type": "constant",
+                            "value": "cubic"
+                        }
+                    },
+                    "then": [ 
+                        {
+                            "add": {
+                                "properties": { 
+                                    "center": {
+                                        "type": "object",
+                                        "properties": {
+                                            "x": {
+                                                "type": "integer",
+                                                "required": true
+                                            },
+                                            "y": {
+                                                "type": "integer",
+                                                "required": true
+                                            },
+                                            "z": {
+                                                "type": "integer",
+                                                "required": true
+                                            }
+                                        },
+                                        "additionalProperties": false,
+                                        "required": true
+                                    },
+                                    "dimensions": {
+                                        "type": "object",
+                                        "properties": {
+                                            "x": {
+                                                "type": "integer",
+                                                "required": true
+                                            },
+                                            "y": {
+                                                "type": "integer",
+                                                "required": true
+                                            },
+                                            "z": {
+                                                "type": "integer",
+                                                "required": true
+                                            }
+                                        },
+                                        "additionalProperties": false,
+                                        "required": true
+                                    },
+                                    "value": {
+                                        "type": "floater",
+                                        "required": true
+                                    }
+                                }
+                            }
+                        }
+                    ]
+                },
+                {
+                    "if": {
+                        "type": "equal",
+                        "lhs": {
+                            "type": "property",
+                            "value": [
+                                "type"
+                            ]
+                        },
+                        "rhs": {
+                            "type": "constant",
+                            "value": "randomGaussian"
+                        }
+                    },
+                    "then": [ 
+                        {
+                            "add": {
+                                "properties": { 
+                                    "useRandomAmplitude": {
+                                        "type": "boolean",
+                                        "required": true
+                                    },
+                                    "useRandomSigma": {
+                                        "type": "boolean",
+                                        "required": true
+                                    },
+                                    "numberOfPatches": {
+                                        "type": "unsigned_integer",
+                                        "required": true
+                                    },
+                                    "patchesRadius": {
+                                        "type": "unsigned_integer",
+                                        "required": true
+                                    },
+                                    "maxSigma": {
+                                        "type": "floater",
+                                        "required": true
+                                    },
+                                    "maxAmplitude": {
+                                        "type": "floater",
+                                        "required": true
+                                    }
+                                }
+                            }
+                        }
+                    ]
+                },
+                {
+                    "if": {
+                        "type": "property_exists",
+                        "value": [
+                            "value"
+                        ]
+                    },
+                    "then": [ 
+                        {
+                            "add": {
+                                "requiredConditions": [
+                                    {
+                                        "condition": {
+                                            "type": "less_equal_than",
+                                            "lhs": {
+                                                "type": "property",
+                                                "value": [
+                                                    "value"
+                                                ]
+                                            },
+                                            "rhs": {
+                                                "type": "property",
+                                                "value": [
+                                                    "resourceMaximumCapacity"
+                                                ]
+                                            }
+                                        },
+                                        "error": "Item 'value' must be less than or equal to item 'resourceMaximumCapacity'"
+                                    }
+                                ]
+                            }
+                        }
+                    ]
+                }
+            ],
+            "additionalProperties": false,
+            "required": true
+        }
+    },
+    "additionalProperties": false
+}

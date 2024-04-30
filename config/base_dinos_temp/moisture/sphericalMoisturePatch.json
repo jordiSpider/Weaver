@@ -1,0 +1,26 @@
+{
+  "patch": {
+    "type": "spherical",
+    "radius": 25,
+    "xPos": 26,
+    "yPos": 26,
+    "zPos": 0,
+	  "totalMaximumResourceCapacity": 8196.0,
+    "inEnemyFreeSpace": false, 
+	  "inCompetitorFreeSpace": false,
+    "temperatureCycle": [
+      21,
+      21
+    ],
+    "useRelativeHumidityCycle": true,
+    "relativeHumidityCycle": [
+      70,
+      70
+    ],
+    "useRelativeHumidityDecayOverTime": false,
+    "relativeHumidityOnRainEvent": 87.5,
+    "relativeHumidityDecayOverTime": 0.2,
+    "timeStepsBetweenRainEvents": 5,
+    "standardDeviationForRainEvent": 1.0
+  }
+}

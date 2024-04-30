@@ -1,0 +1,372 @@
+{
+    "version": 6,
+    "cmakeMinimumRequired": {
+        "major": 3,
+        "minor": 25,
+        "patch": 0
+    },
+    "configurePresets": 
+    [
+        {
+            "name": "base",
+            "hidden": true,
+            "displayName": "Base configuration",
+            "toolchainFile": "$env{VCPKG_ROOT}/scripts/buildsystems/vcpkg.cmake",
+            "cacheVariables": {
+                "PRESET_NAME": "${presetName}",
+                "CMAKE_C_COMPILER": "gcc",
+                "CMAKE_CXX_COMPILER": "g++",
+                "CMAKE_WINDOWS_EXPORT_ALL_SYMBOLS": "ON"
+            },
+            "environment": {
+                "BUILD_FOLDER": "cmake-build"
+            }
+        },
+        {
+            "name": "Doxygen",
+            "inherits": [
+                "base"
+            ],
+            "hidden": true,
+            "displayName": "Configuration to generate documentation",
+            "cacheVariables": {
+                "BUILD_DOC": true,
+                "BUILD_DOC_VERBOSE": "NO",
+                "GENERATE_HTML": "YES",
+                "GENERATE_LATEX": "NO"
+            }
+        },
+        {
+            "name": "Unix Makefiles",
+            "inherits": [
+                "base"
+            ],
+            "hidden": true,
+            "displayName": "Configuration to generate a Unix Makefile",
+            "generator": "Unix Makefiles"
+        },
+        {
+            "name": "Release",
+            "inherits": [
+                "base"
+            ],
+            "hidden": true,
+            "displayName": "Configuration to build Release version",
+            "cacheVariables": {
+                "CMAKE_BUILD_TYPE": "Release"
+            }
+        },
+        {
+            "name": "Debug",
+            "inherits": [
+                "base"
+            ],
+            "hidden": true,
+            "displayName": "Configuration to build Debug version",
+            "cacheVariables": {
+                "CMAKE_BUILD_TYPE": "Debug",
+                "CMAKE_DEBUG_POSTFIX": "_d"
+            }
+        },
+        {
+            "name": "Linux",
+            "inherits": [
+                "base"
+            ],
+            "hidden": true,
+            "displayName": "Configuration for building on Linux",
+            "binaryDir": "${sourceDir}/$env{BUILD_FOLDER}/${presetName}",
+            "condition": {
+                "type": "equals",
+                "lhs": "${hostSystemName}",
+                "rhs": "Linux"
+            },
+            "cacheVariables": {
+                "CMAKE_EXECUTABLE_SUFFIX_CXX": ".out",
+                "CMAKE_SHARED_LIBRARY_SUFFIX_CXX": ".so"
+            }
+        },
+        {
+            "name": "Windows",
+            "inherits": [
+                "base"
+            ],
+            "hidden": true,
+            "displayName": "Configuration for building on Windows",
+            "binaryDir": "${sourceDir}\\$env{BUILD_FOLDER}\\${presetName}",
+            "condition": {
+                "type": "equals",
+                "lhs": "${hostSystemName}",
+                "rhs": "Windows"
+            },
+            "cacheVariables": {
+                "CMAKE_EXECUTABLE_SUFFIX_CXX": ".exe",
+                "CMAKE_SHARED_LIBRARY_SUFFIX_CXX": ".dll",
+                "VCPKG_TARGET_TRIPLET": "x64-mingw-static",
+                "VCPKG_HOST_TRIPLET": "x64-mingw-static",
+                "CMAKE_PREFIX_PATH": "$env{MSYS2_ROOT}/mingw64",
+                "CMAKE_MAKE_PROGRAM": "$env{MSYS2_ROOT}/mingw64/bin/mingw32-make.exe"
+            }
+        },
+        {
+            "name": "Darwin",
+            "inherits": [
+                "base"
+            ],
+            "hidden": true,
+            "displayName": "Configuration for building on MacOS",
+            "binaryDir": "${sourceDir}/$env{BUILD_FOLDER}/${presetName}",
+            "condition": {
+                "type": "equals",
+                "lhs": "${hostSystemName}",
+                "rhs": "Darwin"
+            },
+            "cacheVariables": {
+                "CMAKE_EXECUTABLE_SUFFIX_CXX": ".out",
+                "CMAKE_SHARED_LIBRARY_SUFFIX_CXX": ".so"
+            }
+        },
+        {
+            "name": "Linux Release",
+            "inherits": [
+                "Linux",
+                "Release"
+            ],
+            "hidden": true,
+            "displayName": "Configuration to build Release version on Linux"
+        },
+        {
+            "name": "Linux Debug",
+            "inherits": [
+                "Linux",
+                "Debug"
+            ],
+            "hidden": true,
+            "displayName": "Configuration to build Debug version on Linux"
+        },
+        {
+            "name": "Windows Release",
+            "inherits": [
+                "Windows",
+                "Release"
+            ],
+            "hidden": true,
+            "displayName": "Configuration to build Release version on Windows"
+        },
+        {
+            "name": "linux-Makefile",
+            "displayName": "Configuration to build Release version on Linux using a Makefile",
+            "inherits": [
+                "Linux Release",
+                "Unix Makefiles"
+            ]
+        },
+        {
+            "name": "linux-Makefile-With-doc",
+            "displayName": "Configuration to build Release version together with the documentation on Linux using a Makefile",
+            "inherits": [
+                "linux-Makefile",
+                "Doxygen"
+            ]
+        },
+        {
+            "name": "linux-Makefile-debug",
+            "displayName": "Configuration to build Debug version on Linux using a Makefile",
+            "inherits": [
+                "Linux Debug",
+                "Unix Makefiles"
+            ],
+            "cacheVariables": {
+                "CHECK_MEMORY_LEAKS": true
+            }
+        },
+        {
+            "name": "linux-cpuProfiler",
+            "displayName": "Configuration to generate CPU profiler of the project on Linux",
+            "inherits": [
+                "Linux Debug",
+                "Unix Makefiles"
+            ],
+            "cacheVariables": {
+                "USE_CPU_PROFILER": true
+            }
+        },
+        {
+            "name": "linux-heapProfiler",
+            "displayName": "Configuration to generate Heap profiler of the project on Linux",
+            "inherits": [
+                "Linux Debug",
+                "Unix Makefiles"
+            ],
+            "cacheVariables": {
+                "USE_HEAP_PROFILER": true
+            }
+        },
+        {
+            "name": "windows-Makefile",
+            "displayName": "Configuration to build Release version on Windows using a Makefile",
+            "inherits": [
+                "Windows Release",
+                "Unix Makefiles"
+            ]
+        },
+        {
+            "name": "windows-Makefile-With-doc",
+            "displayName": "Configuration to build Release version together with the documentation on Windows using a Makefile",
+            "inherits": [
+                "windows-Makefile",
+                "Doxygen"
+            ]
+        }
+    ],
+    "buildPresets": 
+    [
+        {
+            "name": "base",
+            "hidden": true,
+            "cleanFirst": false
+        },
+        {
+            "name": "linux-Makefile",
+            "configurePreset": "linux-Makefile",
+            "inherits": [
+                "base"
+            ]
+        },
+        {
+            "name": "linux-Makefile-With-doc",
+            "configurePreset": "linux-Makefile-With-doc",
+            "inherits": [
+                "base"
+            ]
+        },
+        {
+            "name": "linux-Makefile-debug",
+            "configurePreset": "linux-Makefile-debug",
+            "inherits": [
+                "base"
+            ]
+        },
+        {
+            "name": "linux-cpuProfiler",
+            "configurePreset": "linux-cpuProfiler",
+            "inherits": [
+                "base"
+            ]
+        },
+        {
+            "name": "linux-heapProfiler",
+            "configurePreset": "linux-heapProfiler",
+            "inherits": [
+                "base"
+            ]
+        },
+        {
+            "name": "windows-Makefile",
+            "configurePreset": "windows-Makefile",
+            "inherits": [
+                "base"
+            ]
+        },
+        {
+            "name": "windows-Makefile-With-doc",
+            "configurePreset": "windows-Makefile-With-doc",
+            "inherits": [
+                "base"
+            ]
+        }
+    ],
+    "workflowPresets": [
+        {
+            "name": "linux-Makefile",
+            "steps": [
+                {
+                    "type": "configure",
+                    "name": "linux-Makefile"
+                },
+                {
+                    "type": "build",
+                    "name": "linux-Makefile"
+                }
+            ]
+        },
+        {
+            "name": "linux-Makefile-With-doc",
+            "steps": [
+                {
+                    "type": "configure",
+                    "name": "linux-Makefile-With-doc"
+                },
+                {
+                    "type": "build",
+                    "name": "linux-Makefile-With-doc"
+                }
+            ]
+        },
+        {
+            "name": "linux-Makefile-debug",
+            "steps": [
+                {
+                    "type": "configure",
+                    "name": "linux-Makefile-debug"
+                },
+                {
+                    "type": "build",
+                    "name": "linux-Makefile-debug"
+                }
+            ]
+        },
+        {
+            "name": "linux-cpuProfiler",
+            "steps": [
+                {
+                    "type": "configure",
+                    "name": "linux-cpuProfiler"
+                },
+                {
+                    "type": "build",
+                    "name": "linux-cpuProfiler"
+                }
+            ]
+        },
+        {
+            "name": "linux-heapProfiler",
+            "steps": [
+                {
+                    "type": "configure",
+                    "name": "linux-heapProfiler"
+                },
+                {
+                    "type": "build",
+                    "name": "linux-heapProfiler"
+                }
+            ]
+        },
+        {
+            "name": "windows-Makefile",
+            "steps": [
+                {
+                    "type": "configure",
+                    "name": "windows-Makefile"
+                },
+                {
+                    "type": "build",
+                    "name": "windows-Makefile"
+                }
+            ]
+        },
+        {
+            "name": "windows-Makefile-With-doc",
+            "steps": [
+                {
+                    "type": "configure",
+                    "name": "windows-Makefile-With-doc"
+                },
+                {
+                    "type": "build",
+                    "name": "windows-Makefile-With-doc"
+                }
+            ]
+        }
+    ]
+}
