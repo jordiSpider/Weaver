@@ -2,7 +2,7 @@
 #define OUTPUT_H
 
 #include "LineInfoException.h"
-#include <magic_enum.hpp>
+#include "magic_enum/magic_enum.h"
 #include "Types.h"
 #define FMT_HEADER_ONLY
 #include <fmt/core.h>

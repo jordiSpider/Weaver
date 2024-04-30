@@ -6,8 +6,6 @@ set(WORD "A-Za-z0-9_")
 
 set(INCLUDE_PATTERN "#include[${WHITESPACE}]+\"([${WORD}/]+)\.h\"")
 
-set(EXTERNAL_INCLUDE_PATTERN "#include[${WHITESPACE}]+<([${WORD}/]+)\.(h|hpp)>")
-
 set(TRAIT "[${WORD}]+")
 
 set(LINE_BREAK "[${WHITESPACE}]+")

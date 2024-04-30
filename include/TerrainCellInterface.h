@@ -42,18 +42,6 @@ public:
 	virtual double getTotalResourceBiomass()=0;
 };
 
-struct TerrainCellEvaluation {
-    TerrainCellInterface* cell;
-    double value;
-
-    TerrainCellEvaluation();
-    TerrainCellEvaluation(AnimalSpecies* animalSpecies, TerrainCellInterface* cell, const double &edibilityValue, const double &predatoryRiskEdibilityValue, const double &conspecificBiomass);
-
-	bool operator==(const TerrainCellEvaluation& other) const;
-    bool operator<(const TerrainCellEvaluation& other) const;
-    bool operator>(const TerrainCellEvaluation& other) const;
-};
-
 
 
 #endif // TERRAIN_CELL_INTERFACE_HPP_

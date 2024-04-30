@@ -1,9 +1,5 @@
 {
     "animal": {
-        "debug": {
-			"forceQuitCell": true,
-            "surviveWithoutFood": false
-		},
         "name": "Tyrannosaurus_sp",
         "defaultHuntingMode": "active_hunting",
 		"sexualType": "diploid",
@@ -20,8 +16,7 @@
             "logistic4pLeftAsymptote": null,
             "logistic4pRightAsymptote": null,
             "gompertzAsymptoticSize": null,
-            "gompertzValueTime0": null,
-            "exponentialA": null
+            "gompertzValueTime0": null
         },
 		"sexRatio": 0.5,
         "genetics": {
@@ -68,6 +63,12 @@
 			"affectedTraits": ["energy_tank", "growth"]
 			}
 		],
+		"edibleAnimalSpecies": ["Edmontosaurus_sp"],/*["Edmontosaurus_sp"],*/
+		"edibleAnimalPreferences": [0.1],  /*[0.59],*/
+		"edibleAnimalProfitability": [0.0],/*[0.0],  */
+		"edibleResourceSpecies": ["alternative"],/*"alternative"*/
+		"edibleResourcePreferences":   [0.89],/*0.4*/
+		"edibleResourceProfitability": [0.0],/*0.0*/
 		"experienceInfluencePerDay": 0.00, 
 		"numberOfSimulatedAttacks": 10000, 
 		"conversionToWetMass": 3.3333,
@@ -86,6 +87,7 @@
 		"eggsPerBatch": 20,
 		"maleMaxReproductionEvents": 7,
 		"maleReproductionFactor": 0.25,
+		"quitCellThreshold": 0.0,
 		"maleMobility": 1,
 		"decreaseOnTraitsDueToEncounters": 1.0,
 		"probabilityDeathFromBackground": 0.0005,/*0.006*/
@@ -351,31 +353,5 @@
 		"coefficientForHandlingTimeA": 28.407,
 		"coefficientForHandlingTimeB": -0.664,
 		"coefficientForHandlingTimeC": -6.365
-	},
-	"ontogeneticLinks": {
-		"animalLinks": [
-			{
-				"species": "Edmontosaurus_sp",
-				"globalPreference": 0.1,
-				"defaultOntogeneticValue": {
-					"edible": true,
-					"preference": 0.1,
-					"profitability": 0.0
-				},
-				"ontogeneticValues": []
-			}
-		],
-		"resourceLinks": [
-			{
-				"species": "alternative",
-				"globalPreference": 0.89,
-				"defaultOntogeneticValue": {
-					"edible": true,
-					"preference": 0.89,
-					"profitability": 0.0
-				},
-				"ontogeneticValues": []
-			}
-		]
 	}
 }

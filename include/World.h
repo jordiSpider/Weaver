@@ -39,14 +39,14 @@
 */
 
 // Library nlohmann JSON
-#include <nlohmann/json.hpp>
+#include "nlohmann/json.h"
 
-#include <magic_enum.hpp>
+#include "magic_enum/magic_enum.h"
 
 #include "Output.h"
 
 #define FMT_HEADER_ONLY
-#include <fmt/core.h>
+#include "fmt/core.h"
 
 using json = nlohmann::json;
 
@@ -116,7 +116,6 @@ public:
 	float getSigmaForPDF() {return sigmaForPDF;};
 	float getMuForPDF() {return muForPDF;};
 	double getMaxSearchArea() {return maxSearchArea;};
-	const std::vector<ResourceSpecies *> * getExistingResourceSpecies();
 	const std::vector<AnimalSpecies *> * getExistingAnimalSpecies();
 	float getCellSize();
 	float getMinWater();
@@ -315,8 +314,6 @@ public:
 		return massRatio;
 	}
 
-	const double& getMaximumTemperature() const;
-
 	void setPredationSpeedRatioSaw(float predationSpeedRatioSaw) {
 		predationSpeedRatioSAW = predationSpeedRatioSaw;
 	}
@@ -355,8 +352,6 @@ protected:
 	void obtainSpeciesInhabitableTerrainCells(std::map<AnimalSpecies*,std::vector<TerrainCell*>*> &mapSpeciesInhabitableTerrainCells, const std::vector<TerrainCell*> &inhabitableTerrainCells);
 	void printActualEcosystemSize(const std::vector<TerrainCell*> &inhabitableTerrainCells);
 
-	void calculateAnimalSpeciesK_Value() const;
-
 	virtual std::map<AnimalSpecies*, std::vector<Animal*>*>* generateStatisticsPopulation(std::vector<std::pair<Animal *, Instar> > &animalAndInstarAtInitialization, std::map<AnimalSpecies*,std::vector<TerrainCell*>*> &mapSpeciesInhabitableTerrainCells)=0;
 	void eraseStatisticsPopulation(std::map<AnimalSpecies*, std::vector<Animal*>*> * animalsPopulation);
 	virtual int generatePopulation(AnimalSpecies* currentAnimalSpecies, const std::vector<TerrainCell*> &speciesInhabitableTerrainCells)=0;
@@ -381,8 +376,6 @@ protected:
 	void setSigmaForPDF(float sigmaForPDF);
 	void setMuForPDF(float muForPDF);
 
-	void setMaximumTemperature(const double &newValue);
-
 	void setCellSize(float newCellSize);
 	void setObstacleFolderName(fs::path newTerrainFolderName);
 	void setMoistureFolderName(fs::path newMoistureFolderName);
@@ -401,12 +394,9 @@ protected:
 	TerrainCell* getCell(unsigned int z, unsigned int y, unsigned int x);
 
 	void addResourceSpecies(ResourceSpecies * newSpecies );
-	AnimalSpecies* addAnimalSpecies(const json &animalSpeciesInfo);
+	void addAnimalSpecies(AnimalSpecies * newSpecies );
 	ResourceSpecies * getResourceSpecies(std::string name);
 	AnimalSpecies * getAnimalSpecies(const std::string& name);
-	void addResourceSpeciesOntogeneticLinks(AnimalSpecies* const predatorSpecies, const json &resourceLinks);
-	void addAnimalSpeciesOntogeneticLinks(AnimalSpecies* const predatorSpecies, const json &animalLinks);
-	void addOntogeneticLinks(const map<AnimalSpecies*, json> &ontogeneticLinks);
 
 	void printAnimalsAlongCells(int day, int simulationPoint);
 	void printCellAlongCells(int day);
@@ -423,11 +413,11 @@ protected:
 	void setResourcePatch(const json &patch, ResourceSpecies* const resourceSpecie);
 	void setWaterPatch(const json &patch, const std::string &patchFilename);
 	
-	void setHomogeneousResource(ResourceSpecies* const species, double value, double resourceMaximumCapacity, bool patchSpread);
-	void setCubicResourcePatch(ResourceSpecies* const species, Coordinate3D<int> center, Coordinate3D<int> dimensions, double value, double resourceMaximumCapacity, bool patchSpread);
-	void setGaussianResourcePatch(ResourceSpecies* const species, unsigned int xpos, unsigned int ypos, unsigned int zpos, unsigned int radius, float sigma, float amplitude, double resourceMaximumCapacity, bool patchSpread);
-	void setSphericalResourcePatch(ResourceSpecies* const species, unsigned int xpos, unsigned int ypos, unsigned int zpos, unsigned int radius, double value, double resourceMaximumCapacity, bool patchSpread);
-	void setRandomGaussianResourcePatches(ResourceSpecies* const species, unsigned int number, float radius, float newSigma, bool useRandomSigma, float newAmplitude, bool useRandomAmplitude, double resourceMaximumCapacity, bool patchSpread);
+	void setHomogeneousResource(ResourceSpecies* const species, double value, double resourceMaximumCapacity);
+	void setCubicResourcePatch(ResourceSpecies* const species, Coordinate3D<int> center, Coordinate3D<int> dimensions, double value, double resourceMaximumCapacity);
+	void setGaussianResourcePatch(ResourceSpecies* const species, unsigned int xpos, unsigned int ypos, unsigned int zpos, unsigned int radius, float sigma, float amplitude, double resourceMaximumCapacity);
+	void setSphericalResourcePatch(ResourceSpecies* const species, unsigned int xpos, unsigned int ypos, unsigned int zpos, unsigned int radius, double value, double resourceMaximumCapacity);
+	void setRandomGaussianResourcePatches(ResourceSpecies* const species, unsigned int number, float radius, float newSigma, bool useRandomSigma, float newAmplitude, bool useRandomAmplitude, double resourceMaximumCapacity);
 
 	void setHomogeneousWater(float value, float relativeHumidityDecayOverTime);
 	void setGaussianWaterPatch(unsigned int xpos, unsigned int ypos, unsigned int zpos, unsigned int radius, float sigma, float amplitude);
@@ -449,8 +439,6 @@ protected:
 	ofstream extendedDailySummaryFile;
 	ofstream edibilitiesFile;
 	bool saveEdibilitiesFile;
-
-	double maximumTemperature;
 
 	unsigned int width; // Number of terrain cells
 	unsigned int length; // Number of terrain cells

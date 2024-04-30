@@ -76,34 +76,31 @@ const string HuntingMode::generateAvailableValues()
 const string HuntingMode::enumValues = HuntingMode::generateAvailableValues();
 
 
-unsigned int AnimalSpecies::animalSpeciesCounter = 0;
-
-const id_type& AnimalSpecies::getAnimalSpeciesCounter()
-{
-	return animalSpeciesCounter;
-}
-
-
-AnimalSpecies::AnimalSpecies(const json &info, bool initIndividualsPerDensities) 
-	: Species(info["name"]), animalSpeciesId(animalSpeciesCounter++), extinguished(false), numberOfLociPerTrait(info["genetics"]["numberOfLociPerTrait"]),
-	  numberOfAllelesPerLocus(info["genetics"]["numberOfAllelesPerLocus"]), 
-	  rhoPerModule(info["genetics"]["correlationCoefficientRhoPerModule"]), traitsPerModule(info["genetics"]["traitsPerModule"]),
-	  numberOfChiasmasPerChromosome(info["genetics"]["numberOfChiasmasPerChromosome"]), 
-	  sexualType(info["sexualType"]), defaultHuntingMode(info["defaultHuntingMode"]), preserveLeftovers(info["preserveLeftovers"]), 
-	  maximumDryMassObserved(0.0)
+AnimalSpecies::AnimalSpecies(const string& scientificName, const unsigned int& numberOfLociPerTrait, const unsigned int& numberOfAllelesPerLocus, const std::vector<double>& restrictPerTrait, const std::vector<double>& rhoPerModule, const unsigned int& traitsPerModule, const unsigned int& numberOfChiasmasPerChromosome, const unordered_map<string,double>& fixedTraits, const unordered_map<string,double>& minTraitRanges, 
+							  const unordered_map<string,double>& maxTraitRanges, const unordered_map<string,double>& minTraitLimits, 
+							  const unordered_map<string,double>& maxTraitLimits, const vector<string>& order, const string& sexualType,
+							  const string& defaultHuntingMode, const unordered_map<string,json>& growthCurveParams, bool preserveLeftovers) :
+	Species(scientificName), sexualType(sexualType), defaultHuntingMode(defaultHuntingMode), preserveLeftovers(preserveLeftovers)
 {
 	setTraits(
-		info["traits"]["fixedTraits"], info["traits"]["variableTraits"]["minTraitsRanges"], 
-		info["traits"]["variableTraits"]["maxTraitsRanges"], info["traits"]["variableTraits"]["minTraitLimits"], 
-		info["traits"]["variableTraits"]["maxTraitLimits"], info["traits"]["variableTraits"]["order"], 
-		info["genetics"]["restrictPerTrait"]
+		fixedTraits, minTraitRanges, maxTraitRanges,
+		minTraitLimits, maxTraitLimits, order, restrictPerTrait
 	);
+
+	extinguished = false;
+	this->numberOfLociPerTrait = numberOfLociPerTrait;
+	this->numberOfAllelesPerLocus = numberOfAllelesPerLocus;
+	this->traitsPerModule = traitsPerModule;
 
 	this->numberOfChromosomes = getNumberOfVariableTraits();
 
-	if (numberOfChiasmasPerChromosome % 2 != 0 || numberOfChiasmasPerChromosome < 0)
+	if (numberOfChiasmasPerChromosome % 2 == 0 && numberOfChiasmasPerChromosome >= 0)
 	{
-		std::cerr << "For the species '" << getScientificName() << "':" << std::endl;
+		this->numberOfChiasmasPerChromosome = numberOfChiasmasPerChromosome;
+	}
+	else
+	{
+		std::cerr << "For the species '" << scientificName << "':" << std::endl;
 		std::cerr << "numberOfChiasmasPerChromosome must be multiple of 2. You entered " << numberOfChiasmasPerChromosome << " = " << numberOfChiasmasPerChromosome << ". Exiting now" << std::endl;
 		exit(-1);
 	}
@@ -115,10 +112,12 @@ AnimalSpecies::AnimalSpecies(const json &info, bool initIndividualsPerDensities)
 	}
 	else
 	{
-		std::cerr << "For the species '" << getScientificName() << "':" << std::endl;
+		std::cerr << "For the species '" << scientificName << "':" << std::endl;
 		std::cerr << "numberOfTraits*numberOfLoci must be multiple of numberOfChromosomes. You entered " << getNumberOfVariableTraits() << "*" << numberOfLociPerTrait << " = " << getNumberOfVariableTraits()*numberOfLociPerTrait << " --> " << getNumberOfVariableTraits()*numberOfLociPerTrait << " % " << numberOfChromosomes << " = " << ((getNumberOfVariableTraits()*numberOfLociPerTrait) % numberOfChromosomes) << ". Exiting now" << std::endl;
 		exit(-1);
 	}
+
+	this->rhoPerModule = rhoPerModule;
 
 	this->rhoRangePerModule.reserve(rhoPerModule.size());
 	for(size_t i = 0; i < rhoPerModule.size(); ++i)
@@ -196,133 +195,25 @@ AnimalSpecies::AnimalSpecies(const json &info, bool initIndividualsPerDensities)
 	maxPredationProbability = 0.0;
 	maxPredationIndividualWetMass = 0.0;
 
-	setDevTimeVector(info["devTimeVector"]);
-
-	//Added for new growth_curves
-	if(initIndividualsPerDensities == false)
-	{
-		setInitialPopulation(info["individualsPerInstar"]);
-	}
-	setStatisticsInitialPopulation(info["statisticsIndividualsPerInstar"]);
-
-	unsigned int numberOfInstars = getInitialPopulation().size();
-	Output::cout("numberOfInstars: {}\n", numberOfInstars);
-
-	setAssignedForMolt(info["assignedForMolt"]);
-	setBetaScaleTank(info["betaScaleTank"]);
-	setExcessInvestInSize(info["excessInvestInSize"]);
-	setNumberOfInstars(numberOfInstars);
-	setPupaPeriodLength(info["pupaPeriodLength"]);
-	setMinRelativeHumidityThreshold(info["minRelativeHumidityThreshold"]);
-	setMaxEncountersT(info["maxEncountersT"]);
-
-	//Added for new growth_curves
-	setLinfKcorr(info["LinfKcorr"]);
-	setDevTimeConstant(info["devTimeConstant"]);
-	setLongevitySinceMaturation(info["longevitySinceMaturation"]);
-	setReproTimeFactor(info["reproTimeFactor"]);
-	setTempOptGrowth(info["tempOptGrowth"]);
-	setTempOptVoracity(info["tempOptVoracity"]);
-	setTempOptSearch(info["tempOptSearch"]);
-	setTempOptSpeed(info["tempOptSpeed"]);
-	setEdGrowth(info["EdGrowth"]);
-	setEdVoracity(info["EdVoracity"]);
-	setEdSearch(info["EdSearch"]);
-	setEdSpeed(info["EdSpeed"]);
-	setDevInter(info["devInter"]);
-	setFractSearchExtremeT(info["fractSearchExtremeT"]);
-	setFractSpeedExtremeT(info["fractSpeedExtremeT"]);
-	setMinVorExtremeT(info["minVorExtremeT"]);
-
-	setTempFromLab(info["tempFromLab"]);
-	setTempSizeRuleConstant(info["tempSizeRuleConstant"]);
-
-	setExperienceInfluencePerDay(info["experienceInfluencePerDay"]);
-
-	setMassInfo(info["conversionToWetMass"], info["eggClutchFromEquation"],
-							info["forClutchMassCoefficient"], info["forClutchMassScale"],
-							info["forEggMassCoefficient"], info["forEggMassScale"],
-							info["eggDryMass"], info["femaleWetMass"], 
-							info["eggMassFromEquation"]);
-
-	setScaleForVoracity(info["scaleForVoracity"]);
-	setScaleForSearchArea(info["scaleForSearchArea"]);
-	setScaleForSpeed(info["scaleForSpeed"]);
-	setMaxPlasticityKVonBertalanffy(info["maxPlasticityKVonBertalanffy"]);
-	setMinPlasticityKVonBertalanffy(info["minPlasticityKVonBertalanffy"]);
-	setMaxPlasticityDueToConditionVor(info["maxPlasticityDueToConditionVor"]);
-	setMinPlasticityDueToConditionVor(info["minPlasticityDueToConditionVor"]);
-	setMaxPlasticityDueToConditionSearch(info["maxPlasticityDueToConditionSearch"]);
-	setMinPlasticityDueToConditionSearch(info["minPlasticityDueToConditionSearch"]);
-	setMaxPlasticityDueToConditionSpeed(info["maxPlasticityDueToConditionSpeed"]);
-	setMinPlasticityDueToConditionSpeed(info["minPlasticityDueToConditionSpeed"]);
-
-	setAttackProbability(info["attackProbability"]);
-	setExposedAttackProbability(info["exposedAttackProbability"]);
-	setKillProbability(info["killProbability"]);
-	setOptimalTemperatureModifier(info["optimalTemperatureModifier"]);
-
-	setDaysWithoutFoodForMetabolicDownregulation(info["daysWithoutFoodForMetabolicDownregulation"]);
-	setPercentageMetabolicDownregulation(info["percentageMetabolicDownregulation"]);
-	setPercentageCostForMetabolicDownregulationVoracity(info["percentageCostForMetabolicDownregulationVoracity"]);
-	setPercentageCostForMetabolicDownregulationSearchArea(info["percentageCostForMetabolicDownregulationSearchArea"]);
-	setPercentageCostForMetabolicDownregulationSpeed(info["percentageCostForMetabolicDownregulationSpeed"]);
-
-	setCellEvaluationBiomass(info["cellEvaluationBiomass"]);
-	setCellEvaluationRisk(info["cellEvaluationRisk"]);
-	setCellEvaluationProConspecific(info["cellEvaluationProConspecific"]);
-	setCellEvaluationAntiConspecific(info["cellEvaluationAntiConspecific"]);
-	setConspecificWeighing(info["conspecificWeighing"]);
-
-	setCoefficientForMassA(info["coefficientForMassA"]);
-	setScaleForMassB(info["scaleForMassB"]);
-
-	setCoefficientForMassAforMature(info["coefficientForMassAforMature"]);
-	setScaleForMassBforMature(info["scaleForMassBforMature"]);
-
-	setForDensitiesA(info["forDensitiesA"]);
-	setForDensitiesB(info["forDensitiesB"]);
-
-	setIndeterminateGrowth(info["indeterminateGrowth"]);
-	if(info["indeterminateGrowth"]) {
-		setInstarFirstReproduction(Instar(info["instarFirstReproduction"]));
-	}
-	else {
-		setInstarFirstReproduction(Instar(info["individualsPerInstar"].size()));
-	}
-	setInstarsForNextReproduction(info["instarsForNextReproduction"]);
-
-	setSexRatio(info["sexRatio"]);
-	setSize(info["size"]);
-	setFemaleMaxReproductionEvents(info["femaleMaxReproductionEvents"]);
-	setEggsPerBatch(info["eggsPerBatch"]);
-	setMaleMaxReproductionEvents(info["maleMaxReproductionEvents"]);
-	setMaleMobility(info["maleMobility"]);
-	setForceQuitCell(info["debug"]["forceQuitCell"]);
-	setSurviveWithoutFood(info["debug"]["surviveWithoutFood"]);
-	setDecreaseOnTraitsDueToEncounters(info["decreaseOnTraitsDueToEncounters"]);
-	setMaleReproductionFactor(info["maleReproductionFactor"]);
-	setProbabilityDeathFromBackground(info["probabilityDeathFromBackground"]);
-
-	switch(CurveType::stringToEnumValue(info["growthCurve"].at("type")))
+	switch(CurveType::stringToEnumValue(growthCurveParams.at("type")))
 	{
 		case CurveType::VonBertalanffy:
-			growthCurve = new VonBertalanffyCurve(info["growthCurve"]);
+			growthCurve = new VonBertalanffyCurve(growthCurveParams);
 			break;
 		case CurveType::Logistic:
-			growthCurve = new LogisticCurve(info["growthCurve"]);
+			growthCurve = new LogisticCurve(growthCurveParams);
 			break;
 		case CurveType::Logistic3P:
-			growthCurve = new Logistic3PCurve(info["growthCurve"]);
+			growthCurve = new Logistic3PCurve(growthCurveParams);
 			break;
 		case CurveType::Logistic4P:
-			growthCurve = new Logistic4PCurve(info["growthCurve"]);
+			growthCurve = new Logistic4PCurve(growthCurveParams);
 			break;
 		case CurveType::Gompertz:
-			growthCurve = new GompertzCurve(info["growthCurve"]);
+			growthCurve = new GompertzCurve(growthCurveParams);
 			break;
 		case CurveType::Exponential:
-			growthCurve = new ExponentialCurve(info["growthCurve"]);
+			growthCurve = new ExponentialCurve(growthCurveParams);
 			break;
 		default:
 			throwLineInfoException("Default case");
@@ -376,218 +267,73 @@ AnimalSpecies::~AnimalSpecies()
 	delete[] variableTraits;
 }
 
-const id_type& AnimalSpecies::getAnimalSpeciesId() const 
-{ 
-	return animalSpeciesId; 
-}
-
-void AnimalSpecies::initEdibleOntogeneticLink()
+void AnimalSpecies::addEdibleResourceSpecies(ResourceSpecies* species)
 {
-	edibleOntogeneticLink.resize(Species::getSpeciesCounter());
-	for(auto &elem : edibleOntogeneticLink)
+	if (std::find(edibleResourceSpecies.begin(), edibleResourceSpecies.end(), species) != edibleResourceSpecies.end())
 	{
-		elem.resize(getNumberOfInstars());
-	}
-}
-
-const OntogeneticLink& AnimalSpecies::getEdibleOntogeneticLink(const id_type &preySpeciesId, const Instar &predator, const Instar &prey) const
-{
-	return edibleOntogeneticLink.at(preySpeciesId).at(predator.getValue()).at(prey.getValue());
-}
-
-void AnimalSpecies::setEdibleOntogeneticLink(const id_type &preySpeciesId, const Instar &predator, const Instar &prey, const json &linkInfo)
-{
-	edibleOntogeneticLink[preySpeciesId][predator.getValue()][prey.getValue()] = OntogeneticLink(linkInfo);
-}
-
-void AnimalSpecies::addEdibleOntogeneticLink(Species* newSpecies, const json& ontogeneticLink)
-{
-	json defaultOntogeneticValue = ontogeneticLink["defaultOntogeneticValue"];
-
-	if(!ontogeneticLink["globalPreference"].is_null())
-	{
-		defaultOntogeneticValue["preference"] = static_cast<double>(ontogeneticLink["globalPreference"]) / (newSpecies->getNumberOfInstars() * getNumberOfInstars());
-	}
-
-	for(auto &row : edibleOntogeneticLink[newSpecies->getId()])
-	{
-		row.resize(newSpecies->getNumberOfInstars(), OntogeneticLink(defaultOntogeneticValue));
-	}
-	
-
-	vector<vector<bool>> changedLinks;
-	changedLinks.resize(getNumberOfInstars());
-	for(auto &row : changedLinks)
-	{
-		row.resize(newSpecies->getNumberOfInstars());
-	}
-
-
-	for(const auto &link : ontogeneticLink["ontogeneticValues"])
-	{
-		for(const auto &predatorInstar : link["predatorInstar"])
-		{
-			Instar predator(predatorInstar);
-
-			if(predator > getNumberOfInstars())
-			{
-				throwLineInfoException("");
-			}
-
-
-			vector<unsigned int> preyInstarList;
-			try
-			{
-				preyInstarList = static_cast<vector<unsigned int>>(link.at("preyInstar"));
-			}
-			catch(const out_of_range& e)
-			{
-				preyInstarList = {newSpecies->getNumberOfInstars()};
-			}
-			
-			for(const auto &preyInstar : preyInstarList)
-			{
-				Instar prey(preyInstar);
-
-				if(prey > newSpecies->getNumberOfInstars())
-				{
-					throwLineInfoException("");
-				}
-
-				
-
-				if(changedLinks[predator.getValue()][prey.getValue()])
-				{
-					throwLineInfoException("");
-				}
-
-				changedLinks[predator.getValue()][prey.getValue()] = true;
-
-
-				setEdibleOntogeneticLink(newSpecies->getId(), predator, prey, link);
-			}
-		}
-	}
-}
-
-void AnimalSpecies::addEdibleResourceSpecies(ResourceSpecies* newSpecies, const json& ontogeneticLink)
-{
-	Output::cout(" - Resource: {}\n", newSpecies->getScientificName());
-
-
-	if (std::find(edibleResourceSpecies.begin(), edibleResourceSpecies.end(), newSpecies) != edibleResourceSpecies.end())
-	{
-		throwLineInfoException("Trying to add an edible resource species twice, please contact developers");
+		std::cerr << "Trying to add an edible resource species twice, please contact developers." << std::endl;
+		exit(-1);
 	}
 	else
 	{
-		edibleResourceSpecies.push_back(newSpecies);
+		edibleResourceSpecies.push_back(species);
 	}
-
-
-	addEdibleOntogeneticLink(newSpecies, ontogeneticLink);
 }
 
-void AnimalSpecies::addEdibleAnimalSpecies(AnimalSpecies* newSpecies, const json& ontogeneticLink)
+void AnimalSpecies::addEdibleAnimalSpecies(AnimalSpecies* species)
 {
-	Output::cout(" - Animal: {}\n", newSpecies->getScientificName());
-
-
-	if (std::find(edibleAnimalSpecies.begin(), edibleAnimalSpecies.end(), newSpecies) != edibleAnimalSpecies.end())
+	if (std::find(edibleAnimalSpecies.begin(), edibleAnimalSpecies.end(), species) != edibleAnimalSpecies.end())
 	{
-		throwLineInfoException("Trying to add an edible animal species twice, please contact developers");
+		throwLineInfoException("Trying to add an edible animal species twice, please contact developers.");
 	}
 	else
 	{
-		edibleAnimalSpecies.push_back(newSpecies);
+		edibleAnimalSpecies.push_back(species);
 	}
-
-
-	addEdibleOntogeneticLink(newSpecies, ontogeneticLink);
 }
 
-double AnimalSpecies::getEdiblePreference(const id_type &preySpeciesId, const Instar &predator)
+void AnimalSpecies::addEdiblePlantSpecies(Species* species)
 {
-	double preference = 0.0;
-
-	for(const auto &elem : edibleOntogeneticLink[preySpeciesId][predator.getValue()])
+	if (std::find(ediblePlantSpecies.begin(), ediblePlantSpecies.end(), species) != ediblePlantSpecies.end())
 	{
-		preference += elem.preference;
+		std::cerr << "Trying to add an edible plant species twice, please contact developers." << std::endl;
+		exit(-1);
 	}
-
-	return preference;
-}
-
-const double& AnimalSpecies::getEdiblePreference(const id_type &preySpeciesId, const Instar &predator, const Instar &prey)
-{
-	return getEdibleOntogeneticLink(preySpeciesId, predator, prey).preference;
-}
-
-const double& AnimalSpecies::getEdibleProfitability(const id_type &preySpeciesId, const Instar &predator, const Instar &prey)
-{
-	return getEdibleOntogeneticLink(preySpeciesId, predator, prey).profitability;
-}
-
-bool AnimalSpecies::canEatEdible(const id_type &preySpeciesId, const Instar &predator, const Instar &prey)
-{
-	try
+	else
 	{
-		return getEdibleOntogeneticLink(preySpeciesId, predator, prey).edible;
+		ediblePlantSpecies.push_back(species);
 	}
-	catch(const out_of_range& e)
+}
+
+void AnimalSpecies::addEdiblePreference(const Species* const speciesToBeAdded, float ediblePreferenceToBeAdded)
+{
+	if(ediblePreferenceToBeAdded > 0.0 && ediblePreferenceToBeAdded < 1.0)
 	{
-		return false;
+		ediblePreferences[speciesToBeAdded] = ediblePreferenceToBeAdded;
 	}
-}
-
-const double& AnimalSpecies::getMaximumDryMassObserved() const
-{
-	return maximumDryMassObserved;
-}
-
-void AnimalSpecies::calculateK_Value()
-{
-	if(getK_Value() < 0.0) {
-		double new_resource_K_Value = 0.0;
-		double new_animal_K_Value = 0.0;
-		
-		for(auto &elem : edibleResourceSpecies) {
-			new_resource_K_Value += elem->getK_Value() * 0.1;
-		}
-
-		// Indicates the existence or not of cannivalism
-		bool canivalism = false;
-
-		// Calculate the K of animal species without taking into account cannibalism.
-		for(auto &elem : edibleAnimalSpecies) {
-			// If the species itself is among its prey
-			if(elem == this) {
-				canivalism = true;
-			}
-			else {
-				elem->calculateK_Value();
-				new_animal_K_Value += elem->getK_Value() * 0.1;
-			}
-		}
-
-		// If canivalism exists
-		if(canivalism) {
-			// Calculate K by adding cannibalism
-			new_animal_K_Value += new_animal_K_Value * 0.1;
-		}
-
-		setK_Value(new_resource_K_Value + new_animal_K_Value);
+	else
+	{
+		std::cerr << "For the species '" << getScientificName() << "':" << std::endl;
+		std::cerr << "ediblePreference must be in the range (0.0 - 1.0). You entered " << ediblePreferenceToBeAdded << ". Exiting now" << std::endl;
+		exit(-1);
 	}
-}
-
-void AnimalSpecies::updateMaximumDryMassObserved(double newMaximumDryMass)
-{
-	maximumDryMassObserved = (maximumDryMassObserved < newMaximumDryMass) ? newMaximumDryMass : maximumDryMassObserved;
 }
 
 const TraitType* const AnimalSpecies::getTypeVariableTraits() const
 {
 	return variableTraits;
+}
+
+void AnimalSpecies::addEdibleProfitability(Species* speciesToBeAdded, float edibleProfitabilityToBeAdded)
+{
+	if(edibleProfitabilityToBeAdded + getMinTraitLimit(Trait::assim) > 0.0 && edibleProfitabilityToBeAdded + getMinTraitLimit(Trait::assim) < 1.0)
+	{
+		edibleProfitabilities[speciesToBeAdded] = edibleProfitabilityToBeAdded;
+	}
+	else
+	{
+		throwLineInfoException("For the species '" + getScientificName() + "':\nedibleProfitability + assimMinTraitLimit must be in the range (0.0 - 1.0). You entered " + to_string(edibleProfitabilityToBeAdded + getMinTraitLimit(Trait::assim)));
+	}
 }
 
 void AnimalSpecies::setInitialPredationEventsOnOtherSpecies(unsigned int numberOfSpecies)
@@ -1499,7 +1245,7 @@ void AnimalSpecies::resetLimits()
 	for(size_t i = 0; i < getNumberOfVariableTraits(); i++)
 	{
 		setMinObservedPseudoValue(variableTraits[i], DBL_MAX);
-		setMaxObservedPseudoValue(variableTraits[i], NEG_DBL_MAX);
+		setMaxObservedPseudoValue(variableTraits[i], DBL_MIN);
 	}
 }
 

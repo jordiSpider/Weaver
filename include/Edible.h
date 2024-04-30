@@ -11,10 +11,9 @@
 #include <ostream>
 #include <string>
 
-#include <magic_enum.hpp>
+#include "magic_enum/magic_enum.h"
 #include "Types.h"
 #include "Species.h"
-#include "Types.h"
 #include "LineInfoException.h"
 #include <list>
 
@@ -30,9 +29,6 @@ private:
 
 protected:
 	Species* const mySpecies;
-
-	bool temporary;
-	Instar instar;
 
 	explicit Edible(Species* const mySpecies, const bool temporary=false);
 	~Edible();
@@ -87,17 +83,13 @@ public:
 	inline void doDefinitive() { 
 		id = Edible::edibleId++;
 		generateIdStr();
-		temporary = false;
 	};
 	inline void generateIdStr() { idStr = std::string(MAX_NUM_DIGITS_ID - std::to_string(id).length(), '0') + std::to_string(id); }
 	
-	const Instar& getInstar() const;
-
 	friend std::ostream& operator<<(std::ostream& os, const Edible& edible);
 
 	// Abstract methods
 	virtual const double calculateDryMass() const=0;
-	virtual const double getInterpolatedDryMass() const=0;
 	virtual const double turnIntoDryMassToBeEaten(const double &predatorVoracity, const float &profitability, const double &leftovers) const=0;
 	virtual const double calculateWetMass()=0;
 	virtual const double getVoracity() const=0;

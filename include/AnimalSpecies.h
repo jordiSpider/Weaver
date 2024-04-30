@@ -24,13 +24,10 @@
 #include "Genome.h"
 #include "Types.h"
 #include "Trait.h"
-#include <nlohmann/json.hpp>
+#include "nlohmann/json.h"
 #include "Curve.h"
 #include "Output.h"
-#include "OntogeneticLink.h"
 
-
-using json = nlohmann::json;
 
 using namespace std;
 
@@ -122,15 +119,14 @@ private:
 class AnimalSpecies: public Species
 {
 private:
-	static id_type animalSpeciesCounter;
-
-	const id_type animalSpeciesId;
 	bool extinguished;
 	const HuntingMode defaultHuntingMode;
 
 	std::vector<AnimalSpecies *> edibleAnimalSpecies;
+	std::vector<Species *> ediblePlantSpecies;
 	std::vector<ResourceSpecies *> edibleResourceSpecies;
-	std::vector<std::vector<std::vector<OntogeneticLink>>> edibleOntogeneticLink;
+	map<const Species* const, float> ediblePreferences;
+	map<Species*, float> edibleProfitabilities;
 
 	float experienceInfluencePerDay;
 
@@ -162,6 +158,7 @@ private:
 	double assignedForMolt;
 	double betaScaleTank;
 	double excessInvestInSize;
+	unsigned int numberOfInstars;
 	int pupaPeriodLength;
 	double minRelativeHumidityThreshold;
 
@@ -288,8 +285,6 @@ private:
 	double coefficientForMassA;
 	double scaleForMassB;
 
-	double maximumDryMassObserved;
-
 	double coefficientForMassAforMature;
 	double scaleForMassBforMature;
 
@@ -307,8 +302,7 @@ private:
 	int maleMaxReproductionEvents;
 	double maleReproductionFactor;
 	double maleMobility;
-	bool forceQuitCell;
-	bool surviveWithoutFood;
+	double quitCellThreshold;
 	float decreaseOnTraitsDueToEncounters;
 	double probabilityDeathFromBackground;
 
@@ -335,37 +329,17 @@ public:
 		MALE, FEMALE, HERMAPHRODITE
 	};
 
-	static const id_type& getAnimalSpeciesCounter();
+	
 
-
-	AnimalSpecies(const json &info, bool initIndividualsPerDensities);
+	AnimalSpecies(const string& scientificName, const unsigned int& numberOfLoci, const unsigned int& numberOfAlleles, const std::vector<double>& restrictPerTrait, const std::vector<double>& rhoPerModule, const unsigned int& traitsPerModule, const unsigned int& numberOfChiasmasPerChromosome, const unordered_map<string,double>& fixedTraits, const unordered_map<string,double>& minTraitRanges, 
+							  const unordered_map<string,double>& maxTraitRanges, const unordered_map<string,double>& minTraitLimits, 
+							  const unordered_map<string,double>& maxTraitLimits, const vector<string>& order, const std::string& sexualType,
+							  const std::string& defaultHuntingMode, const unordered_map<string,nlohmann::json>& growthCurveParams, bool preserveLeftovers);
 	virtual ~AnimalSpecies();
 
 	bool getPreserveLeftovers() const { return preserveLeftovers; }
 
-	const id_type& getAnimalSpeciesId() const;
-
-	void initEdibleOntogeneticLink();
-
-	const OntogeneticLink& getEdibleOntogeneticLink(const id_type &preySpeciesId, const Instar &predator, const Instar &prey) const;
-
-	void setEdibleOntogeneticLink(const id_type &preySpeciesId, const Instar &predator, const Instar &prey, const json &linkInfo);
-
-	void addEdibleOntogeneticLink(Species* newSpecies, const json& ontogeneticLink);
-
-	virtual void addEdibleResourceSpecies(ResourceSpecies* newSpecies, const nlohmann::json& ontogeneticLink);
-	virtual void addEdibleAnimalSpecies(AnimalSpecies* newSpecies, const nlohmann::json& ontogeneticLink);
-
-	double getEdiblePreference(const id_type &preySpeciesId, const Instar &predator);
-	const double& getEdiblePreference(const id_type &preySpeciesId, const Instar &predator, const Instar &prey);
-	const double& getEdibleProfitability(const id_type &preySpeciesId, const Instar &predator, const Instar &prey);
-
-	bool canEatEdible(const id_type &preySpeciesId, const Instar &predator, const Instar &prey);
-
-	const double& getMaximumDryMassObserved() const;
-	void calculateK_Value();
-	void updateMaximumDryMassObserved(double newMaximumDryMass);
-  	virtual size_t getNumberOfFixedTraits() const { return numberFixedTraits; }
+  virtual size_t getNumberOfFixedTraits() const { return numberFixedTraits; }
 	virtual size_t getNumberOfVariableTraits() const { return numberVariableTraits; }
 	virtual unsigned int getNumberOfLociPerTrait() const { return numberOfLociPerTrait; };
 	virtual unsigned int getTraitsPerModule() const { return traitsPerModule; };
@@ -416,6 +390,8 @@ public:
 	inline virtual void setInstarFirstReproduction(const Instar& instarFirstReproduction) { this->instarFirstReproduction = instarFirstReproduction; }
 	inline virtual const unsigned int& getInstarsForNextReproduction() const { return instarsForNextReproduction; };
 	inline virtual void setInstarsForNextReproduction(const unsigned int& instarsForNextReproduction) { this->instarsForNextReproduction = instarsForNextReproduction; }
+	inline virtual const unsigned int& getNumberOfInstars() const { return numberOfInstars; };
+	inline virtual void setNumberOfInstars(const unsigned int& numberOfInstars) { this->numberOfInstars = numberOfInstars; };
 	virtual int getPupaPeriodLength() const { return pupaPeriodLength; };
 	inline virtual void setPupaPeriodLength(const int& pupaPeriodLength) { this->pupaPeriodLength = pupaPeriodLength; }
 	virtual double getCoefficientForMassA() const {return coefficientForMassA;};
@@ -467,8 +443,17 @@ public:
 
 	virtual bool canEatResourceSpecies(ResourceSpecies * species) const { return std::find(edibleResourceSpecies.begin(), edibleResourceSpecies.end(), species) != edibleResourceSpecies.end(); };
 	inline bool canEatAnimalSpecies(const AnimalSpecies* species) const { return std::find(edibleAnimalSpecies.begin(), edibleAnimalSpecies.end(), species) != edibleAnimalSpecies.end(); };
+	virtual bool canEatPlantSpecies(Species * newSpecies) {	return std::find(ediblePlantSpecies.begin(), ediblePlantSpecies.end(), newSpecies) != ediblePlantSpecies.end();	};
 	virtual const vector<ResourceSpecies*> * getEdibleResourceSpecies() const {return &edibleResourceSpecies;};
+	virtual void addEdibleResourceSpecies(ResourceSpecies* species);
 	inline const vector<AnimalSpecies*> * getEdibleAnimalSpecies() const {return &edibleAnimalSpecies;};
+	virtual void addEdibleAnimalSpecies(AnimalSpecies* species);
+	virtual vector<Species*> * getEdiblePlantSpecies() { return &ediblePlantSpecies; };
+	virtual void addEdiblePlantSpecies(Species* species);
+	inline float getEdiblePreference(const Species* const species) const { return ediblePreferences.at(species); };
+	virtual void addEdiblePreference(const Species* const speciesToBeAdded, float ediblePreferenceToBeAdded);
+	inline float getEdibleProfitability(Species* species) const { return edibleProfitabilities.at(species); };
+	virtual void addEdibleProfitability(Species* speciesToBeAdded, float edibleProfitabilityToBeAdded);
 
 	virtual float getAttackProbability() const { return attackProbability; };
 	virtual float getExposedAttackProbability() const { return exposedAttackProbability; };
@@ -522,8 +507,7 @@ public:
 	virtual double getBetaScaleTank() const { return betaScaleTank; };
 	virtual float getDecreaseOnTraitsDueToEncounters() const { return decreaseOnTraitsDueToEncounters; };
 	virtual double getMaleMobility() const { return maleMobility; };
-	virtual bool isForceQuitCell() const { return forceQuitCell; };
-	virtual bool isSurviveWithoutFood() const { return surviveWithoutFood; };
+	virtual double getQuitCellThreshold() const { return quitCellThreshold; };
 	virtual double getLongevitySinceMaturation() const { return longevitySinceMaturation; };
 	virtual double getReproTimeFactor() const { return reproTimeFactor; };
 	virtual float getPercentageCostForMetabolicDownregulationVoracity() const { return percentageCostForMetabolicDownregulationVoracity; };
@@ -811,8 +795,7 @@ public:
 
 	void setExperienceInfluencePerDay(const float& daysToRememberAbundancesExperienced);
 	inline void setMaleMobility(const double& maleMobility) { this->maleMobility = maleMobility; }
-	inline void setForceQuitCell(const bool forceQuitCell) { this->forceQuitCell = forceQuitCell; }
-	inline void setSurviveWithoutFood(const bool surviveWithoutFood) { this->surviveWithoutFood = surviveWithoutFood; }
+	inline void setQuitCellThreshold(const double& quitCellThreshold) { this->quitCellThreshold = quitCellThreshold; }
 	inline void setDecreaseOnTraitsDueToEncounters(const float& decreaseOnTraitsDueToEncounters) { this->decreaseOnTraitsDueToEncounters = decreaseOnTraitsDueToEncounters; }
 	void setDryProportionOfMass(double CONTROL_DRY_BODY_MASS);
 	inline void setProbabilityDeathFromBackground(const double& probabilityDeathFromBackground) { this->probabilityDeathFromBackground = probabilityDeathFromBackground; }

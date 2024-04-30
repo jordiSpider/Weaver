@@ -100,16 +100,6 @@ double Math_Functions::linearInterpolate(double x, double min_x, double max_x, d
 	return result;
 }
 
-double Math_Functions::linearInterpolate01(double x, double min_x, double max_x)
-{
-	return linearInterpolate(x, min_x, max_x, 0, 1);
-}
-
-double Math_Functions::linearInterpolate01(double x, double max_x)
-{
-	return x / max_x;
-}
-
 /**
  * Cholesky decomposition of matrix A
  */

@@ -1867,7 +1867,7 @@ const json ValidatorJSON::solveOperator(const json& config, const json& conditio
 			try
 			{
 				if(condition.at("value").is_array() || condition.at("value").is_object()) {
-					throwValidatorSchemaJSONException("': Not an element of type 'boolean', 'integer', 'unsigned_integer', 'float', 'string' or 'null'");
+					throwValidatorSchemaJSONException("': Not an element of type 'boolean', 'integer', 'unsigned_integer', 'float' or 'string'");
 				}
 
 				if(patternElem != "" && condition["value"] == PATTERN_ELEM) {

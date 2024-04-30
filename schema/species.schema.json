@@ -4,21 +4,6 @@
         "animal": {
             "type": "object",
             "properties": {
-                "debug": {
-                    "type": "object",
-                    "properties": {
-                        "forceQuitCell": {
-                            "type": "boolean",
-                            "required": true
-                        },
-                        "surviveWithoutFood": {
-                            "type": "boolean",
-                            "required": true
-                        }
-                    },
-                    "additionalProperties": false,
-                    "required": true
-                },
                 "name": {
                     "type": "string",
                     "required": true
@@ -90,10 +75,6 @@
                             "required": true
                         },
                         "gompertzValueTime0": {
-                            "type": "floater",
-                            "required": true
-                        },
-                        "exponentialA": {
                             "type": "floater",
                             "required": true
                         }
@@ -179,6 +160,48 @@
                             }
                         },
                         "additionalProperties": false
+                    },
+                    "required": true
+                },
+                "edibleAnimalSpecies": {
+                    "type": "array",
+                    "items": {
+                        "type": "string"
+                    },
+                    "required": true
+                },
+                "edibleAnimalPreferences": {
+                    "type": "array",
+                    "items": {
+                        "type": "floater"
+                    },
+                    "required": true
+                },
+                "edibleAnimalProfitability": {
+                    "type": "array",
+                    "items": {
+                        "type": "floater"
+                    },
+                    "required": true
+                },
+                "edibleResourceSpecies": {
+                    "type": "array",
+                    "items": {
+                        "type": "string"
+                    },
+                    "required": true
+                },
+                "edibleResourcePreferences": {
+                    "type": "array",
+                    "items": {
+                        "type": "floater"
+                    },
+                    "required": true
+                },
+                "edibleResourceProfitability": {
+                    "type": "array",
+                    "items": {
+                        "type": "floater"
                     },
                     "required": true
                 },
@@ -457,6 +480,10 @@
                     "required": true
                 },
                 "maleReproductionFactor": {
+                    "type": "floater",
+                    "required": true
+                },
+                "quitCellThreshold": {
                     "type": "floater",
                     "required": true
                 },
@@ -1026,188 +1053,6 @@
                     "error": "Item 'longevitySinceMaturation' must be rounded up to a higher value"
                 }
             ],
-            "additionalProperties": false,
-            "required": true
-        },
-        "ontogeneticLinks": {
-            "type": "object",
-            "properties": {
-                "animalLinks": {
-                    "type": "array",
-                    "items": {
-                        "type": "object",
-                        "properties": {
-                            "species": {
-                                "type": "string",
-                                "required": true
-                            },
-                            "globalPreference": {
-                                "type": "floater",
-                                "required": true
-                            },
-                            "defaultOntogeneticValue": {
-                                "type": "object",
-                                "properties": {
-                                    "edible": {
-                                        "type": "boolean",
-                                        "required": true
-                                    },
-                                    "preference": {
-                                        "type": "floater",
-                                        "required": true
-                                    },
-                                    "profitability": {
-                                        "type": "floater",
-                                        "required": true
-                                    }
-                                },
-                                "additionalProperties": false,
-                                "required": true
-                            },
-                            "ontogeneticValues": {
-                                "type": "array",
-                                "items": {
-                                    "type": "object",
-                                    "properties": {
-                                        "preyInstar": {
-                                            "type": "array",
-                                            "items": {
-                                                "type": "unsigned_integer"
-                                            },
-                                            "required": true
-                                        },
-                                        "predatorInstar": {
-                                            "type": "array",
-                                            "items": {
-                                                "type": "unsigned_integer"
-                                            },
-                                            "required": true
-                                        },
-                                        "edible": {
-                                            "type": "boolean",
-                                            "required": true
-                                        },
-                                        "preference": {
-                                            "type": "floater",
-                                            "required": true
-                                        },
-                                        "profitability": {
-                                            "type": "floater",
-                                            "required": true
-                                        }
-                                    },
-                                    "additionalProperties": false
-                                },
-                                "required": true
-                            }
-                        },
-                        "warningConditions": [
-                            {
-                                "condition": {
-                                    "type": "not_equal",
-                                    "lhs": {
-                                        "type": "property",
-                                        "value": [
-                                            "globalPreference"
-                                        ]
-                                    },
-                                    "rhs": {
-                                        "type": "constant",
-                                        "value": null
-                                    }
-                                },
-                                "warning": "Item 'defaultOntogeneticValue.preference' is not being used because 'globalPreference' is defined"
-                            }
-                        ],
-                        "additionalProperties": false
-                    },
-                    "required": true
-                },
-                "resourceLinks": {
-                    "type": "array",
-                    "items": {
-                        "type": "object",
-                        "properties": {
-                            "species": {
-                                "type": "string",
-                                "required": true
-                            },
-                            "globalPreference": {
-                                "type": "floater",
-                                "required": true
-                            },
-                            "defaultOntogeneticValue": {
-                                "type": "object",
-                                "properties": {
-                                    "edible": {
-                                        "type": "boolean",
-                                        "required": true
-                                    },
-                                    "preference": {
-                                        "type": "floater",
-                                        "required": true
-                                    },
-                                    "profitability": {
-                                        "type": "floater",
-                                        "required": true
-                                    }
-                                },
-                                "additionalProperties": false,
-                                "required": true
-                            },
-                            "ontogeneticValues": {
-                                "type": "array",
-                                "items": {
-                                    "type": "object",
-                                    "properties": {
-                                        "predatorInstar": {
-                                            "type": "array",
-                                            "items": {
-                                                "type": "unsigned_integer"
-                                            },
-                                            "required": true
-                                        },
-                                        "edible": {
-                                            "type": "boolean",
-                                            "required": true
-                                        },
-                                        "preference": {
-                                            "type": "floater",
-                                            "required": true
-                                        },
-                                        "profitability": {
-                                            "type": "floater",
-                                            "required": true
-                                        }
-                                    },
-                                    "additionalProperties": false
-                                },
-                                "required": true
-                            }
-                        },
-                        "warningConditions": [
-                            {
-                                "condition": {
-                                    "type": "not_equal",
-                                    "lhs": {
-                                        "type": "property",
-                                        "value": [
-                                            "globalPreference"
-                                        ]
-                                    },
-                                    "rhs": {
-                                        "type": "constant",
-                                        "value": null
-                                    }
-                                },
-                                "warning": "Item 'defaultOntogeneticValue.preference' is not being used because 'globalPreference' is defined"
-                            }
-                        ],
-                        "additionalProperties": false
-                    },
-                    "required": true
-                }
-            },
             "additionalProperties": false,
             "required": true
         }

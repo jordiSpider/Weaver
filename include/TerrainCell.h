@@ -17,9 +17,8 @@
 #include "Output.h"
 #include "WorldInterface.h"
 #include "TerrainCellInterface.h"
-#include <magic_enum.hpp>
 
-#include <nlohmann/json.hpp>
+#include "nlohmann/json.h"
 
 
 using namespace std;

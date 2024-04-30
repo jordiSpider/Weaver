@@ -15,7 +15,6 @@
 #include <list>
 #include <vector>
 #include <random>
-#include "LineInfoException.h"
 #include "Maths/Constants.h"
 
 class Random

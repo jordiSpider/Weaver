@@ -8,23 +8,18 @@
 #include <unordered_map>
 #include <string>
 
-#include <magic_enum.hpp>
+#include "magic_enum/magic_enum.h"
 
 #define FMT_HEADER_ONLY
-#include <fmt/core.h>
+#include "fmt/core.h"
 
 
 
 class ResourceSpecies: public Species
 {
 public:
-	static const id_type& getResourceSpeciesCounter();
-
-
 	ResourceSpecies(const std::string& scientificName, const double& ACTIVATION_ENERGY, const double& NORMALIZATION_B, const std::string& patchesFolderName);
 	virtual ~ResourceSpecies();
-
-	const id_type& getResourceSpeciesId() const;
 
 	double getCellMass() const;
 	bool getVariableIntrinsicRateOfIncrease() const;
@@ -43,12 +38,8 @@ public:
 	virtual float getKillProbability() const;
 	virtual float getAttackAvoidingProbability() const;
 	virtual float getKillAvoidingProbability() const;
-	void updateK_Value(const double &resourceMaximumCapacity);
 
 private:
-	static id_type resourceSpeciesCounter;
-
-	const id_type resourceSpeciesId;
 	std::string patchesFolderName;
 	double cellMass;
 

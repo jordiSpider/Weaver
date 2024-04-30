@@ -19,10 +19,11 @@
 #include "SimulationConstants.h"
 #include "GlobalVariable.h"
 #include "Utilities.h"
-#include <cxxopts.hpp>
+#include "CLI11/CLI11.h"
 #include "WorldInterface.h"
 #include "LineInfoException.h"
 #include "Output.h"
+#include <fmt/os.h>
 
 #ifdef USE_CPU_PROFILER
 	#include "gperftools/profiler.h"
@@ -33,7 +34,7 @@
 #endif
 
 // Library nlohmann JSON
-#include <nlohmann/json.hpp>
+#include "nlohmann/json.h"
 
 
 //#include <crtdbg.h>
@@ -94,65 +95,43 @@ int main(int argc, char ** argv)
 		HeapProfilerStart("./profiler/heapProfiler");
 	#endif
 
-	cxxopts::Options options("Weaver", "Weaver description");
+	CLI::App app{"Weaver description"};
 
 	fs::path inputFolder;
-    options.add_options()
-        ("I,inputFolder", "Location of the input file folder", cxxopts::value<fs::path>(inputFolder)->default_value(fs::current_path().string()));
+    auto inputFolderOption = app.add_option("-I,--inputFolder", inputFolder, "Folder where to look for the input file")->required(false);
+	inputFolderOption->default_val(fs::current_path());
 
     fs::path inputFile;
-    options.add_options()
-        ("i,inputFile", "Simulation input file definition", cxxopts::value<fs::path>(inputFile)->default_value("run_params.json"));
+    auto inputFileOption = app.add_option("-i,--inputFile", inputFile, "Input file defining the simulation")->required(false);
+	inputFileOption->default_val("run_params.json");
 
-    fs::path outputFolder;
-    options.add_options()
-        ("o,outputFolder", "Directory where the simulation results will be stored", cxxopts::value<fs::path>(outputFolder)->default_value(RESULT_SIMULATION_FOLDER));
+	fs::path outputFolder;
+    auto outputFolderOption = app.add_option("-o,--outputFolder", outputFolder, "Output directory where the simulation results folder will be created")->required(false);
+	outputFolderOption->default_val(RESULT_SIMULATION_FOLDER);
 
-	auto result = options.parse(argc, argv);
-
-	// Convert input folder relative path to absolute path
-	try
-	{
-		inputFolder = fs::canonical(inputFolder);
-	}
-	catch(const std::filesystem::filesystem_error& e)
-	{
-		throwLineInfoException("The input directory does not exist or is not a valid directory");
+	try {
+		app.parse(argc, argv);
+	} catch (const CLI::ParseError &e) {
+		return app.exit(e);
 	}
 
-	// Convert output folder relative path to absolute path
-	try
-	{
-		outputFolder = fs::canonical(outputFolder);
-	}
-	catch(const std::filesystem::filesystem_error& e)
-	{
-		throwLineInfoException("The output directory does not exist or is not a valid directory");
-	}
 
-	// Directory that contains the executable
 	fs::path WeaverFolder = std::filesystem::path(argv[0]).parent_path();
-
-
-	if(!fs::exists(inputFolder / inputFile))
-	{
-        throwLineInfoException("The input file does not exist or is not a valid file");
-    }
 	
 
 
 	//timestamp_t t0 = get_timestamp();
 
 	// Read configuration file
-	json mainConfiguration = readConfigFile(inputFolder / inputFile, WeaverFolder / fs::path(SCHEMA_FOLDER) / fs::path(RUN_PARAMS_SCHEMA));
+	json configuration = readConfigFile1(inputFolder / inputFile, WeaverFolder);
 
-	fs::path resultFolder = obtainResultFolder(mainConfiguration, outputFolder);
+	fs::path resultFolder = obtainResultFolder(configuration, outputFolder);
 	fs::create_directories(resultFolder);
 
 	
-	if(mainConfiguration["simulation"]["outputStream"]["enabled"])
+	if(configuration["simulation"]["outputStream"]["enabled"])
 	{
-		Output::setOutputStream(resultFolder, mainConfiguration["simulation"]["outputStream"]["selectedChannel"]);
+		Output::setOutputStream(resultFolder, configuration["simulation"]["outputStream"]["selectedChannel"]);
 	}
 	else
 	{
@@ -162,9 +141,9 @@ int main(int argc, char ** argv)
 
 	Output::setErrorOutputStream(stderr);
 
-	if(mainConfiguration["simulation"]["initFromFixedSeed"]["enabled"])
+	if(configuration["simulation"]["initFromFixedSeed"]["enabled"])
 	{
-		unsigned int fixedSeedValue = mainConfiguration["simulation"]["initFromFixedSeed"]["fixedSeedValue"];
+		unsigned int fixedSeedValue = configuration["simulation"]["initFromFixedSeed"]["fixedSeedValue"];
 		Random::initRandomGenerator(fixedSeedValue);
 	}
 	else
@@ -179,26 +158,26 @@ int main(int argc, char ** argv)
 	string configFolder;
 	try
 	{
-		configFolder = mainConfiguration["simulation"].at("configFolder");
+		configFolder = configuration["simulation"].at("configFolder");
 	}
 	catch(const json::out_of_range& e)
 	{
 		configFolder = CONFIG_FOLDER;
 	}
-	string configName = mainConfiguration["simulation"]["configName"];
-	fs::path configPath = inputFolder / fs::path(configFolder) / fs::path(configName);
+	string configName = configuration["simulation"]["configName"];
+	fs::path configPath = fs::path(configFolder) / fs::path(configName);
 
-	json worldConfig = readConfigFile(configPath / fs::path("world_params.json"), WeaverFolder / fs::path(SCHEMA_FOLDER) / fs::path(WORLD_PARAMS_SCHEMA));
+	json worldConfig = readConfigFile1(configPath / fs::path("world_params.json"), WeaverFolder);
 
 	World * myWorld;
 
 	switch (WorldType::stringToEnumValue((string)worldConfig["world"]["worldType"])) {
 		case WorldType::Old: {
-			myWorld = new OldWorld(&mainConfiguration, worldConfig, inputFolder / inputFile, resultFolder, WeaverFolder, configPath);
+			myWorld = new OldWorld(&configuration, worldConfig, inputFolder / inputFile, resultFolder, WeaverFolder, configPath);
 			break;
 		}
 		case WorldType::Matrix3D: {
-			myWorld = new Matrix3DWorld(&mainConfiguration, worldConfig, inputFolder / inputFile, resultFolder, WeaverFolder, configPath);
+			myWorld = new Matrix3DWorld(&configuration, worldConfig, inputFolder / inputFile, resultFolder, WeaverFolder, configPath);
 			break;
 		}
 		default: {
@@ -223,6 +202,63 @@ int main(int argc, char ** argv)
 
 	myWorld->evolveWorld();
 
+	//timestamp_t t1 = get_timestamp();
+	//double secs = (t1 - t0) / 1000000.0L;
+	//cout << "Time: " << secs << " secs." << endl;
+
+	/*myWorld->eraseTerrain();
+
+	vtkImageReader *imgReader = vtkImageReader::New();
+	imgReader->SetFileDimensionality(3);
+	imgReader->SetDataScalarType(VTK_FLOAT);
+	imgReader->SetFileName("water.bin");
+	imgReader->SetNumberOfScalarComponents(1);
+	imgReader->SetDataExtent(0, myWorld->getLength() - 1, 0, myWorld->getWidth() - 1, 0, myWorld->getDepth() - 1);
+
+	//Create a mapper
+	vtkSmartPointer<vtkFixedPointVolumeRayCastMapper> mapper_conc =
+			vtkSmartPointer<vtkFixedPointVolumeRayCastMapper>::New();
+	mapper_conc->SetInput(imgReader->GetOutput());
+
+	//create volume
+	vtkSmartPointer<vtkVolume> volume = vtkSmartPointer<vtkVolume>::New();
+
+	//let it be semitransparent for all data
+	vtkPiecewiseFunction *oTFun = vtkPiecewiseFunction::New();
+	oTFun->AddPoint(0., 0.);
+	oTFun->AddPoint(100., 0.5);
+
+	//color transfer function -- blue for empty and red for high concentration
+	vtkColorTransferFunction *cTFun = vtkColorTransferFunction::New();
+	cTFun->AddRGBPoint(0.0, 0.0, 0.0, 0.01);
+	cTFun->AddRGBPoint(100.0, 0.0, 0.0, 1.0);
+
+	//set volume property
+	vtkVolumeProperty *property = vtkVolumeProperty::New();
+	property->SetScalarOpacity(oTFun);
+	property->SetColor(cTFun);
+	property->SetInterpolationTypeToLinear();
+	property->SetScalarOpacityUnitDistance(2.0);
+
+	volume->SetMapper(mapper_conc);
+	volume->SetProperty(property);
+
+	// a renderer and render window
+	vtkSmartPointer<vtkRenderer> coutow> renderWindow = vtkSmartPointer<vtkRenderWindow>::New();
+	renderWindow->SetSize(900, 600);
+	renderWindow->AddRenderer(renderer);
+
+	// add the volume to renderer
+	renderer->AddVolume(volume);
+
+	// an interactor
+	vtkRenderWindowInteractor *iren = vtkRenderWindowInteractor::New();
+	iren->SetRenderWindow(renderWindow);
+
+	renderWindow->Render();
+	// begin mouse interaction
+	iren->Start();
+*/
 	Output::cout("DONE\n");
 
 	delete myWorld;

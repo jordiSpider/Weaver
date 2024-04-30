@@ -7,16 +7,13 @@ id_type Resource::resourceCounter = 0;
 
 
 Resource::Resource(ResourceSpecies* const mySpecies, float biomass, double resourceMaximumCapacity, 
-	bool competitionAmongResourceSpecies, double massRatio, bool patchSpread) 
-	: Edible(mySpecies), competitionAmongResourceSpecies(competitionAmongResourceSpecies), massRatio(massRatio),
-	  patchSpread(patchSpread)
+	bool competitionAmongResourceSpecies, double massRatio) 
+	: Edible(mySpecies), competitionAmongResourceSpecies(competitionAmongResourceSpecies), massRatio(massRatio)
 {
 	this->biomass = biomass;
 	newBiomass = 0;
 	newlyAdded = false;
 	setResourceMaximumCapacity(resourceMaximumCapacity);
-
-	instar = Instar(mySpecies->getNumberOfInstars());
 
 	Resource::resourceCounter++;
 }
@@ -78,10 +75,6 @@ void Resource::setNewLifeStage(const LifeStage newLifeStage, double dayOfDeath, 
 
 }
 
-bool Resource::canSpread() const {
-	return patchSpread;
-}
-
 void Resource::setResourceMaximumCapacity(const double& resourceMaximumCapacity) 
 { 
 	this->resourceMaximumCapacity = resourceMaximumCapacity; 
@@ -95,11 +88,6 @@ double Resource::getResourceMaximumCapacity() const
 const double Resource::calculateDryMass() const 
 { 
 	return biomass / getSpecies()->getConversionToWetMass(); 
-}
-
-const double Resource::getInterpolatedDryMass() const
-{
-	return Math_Functions::linearInterpolate01(getSpecies()->convertToDryMass(biomass), getSpecies()->getK_Value());
 }
 																								
 const double Resource::turnIntoDryMassToBeEaten(const double &predatorVoracity, const float &profitability, const double &leftovers) const 

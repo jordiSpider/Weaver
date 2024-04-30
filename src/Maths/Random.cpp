@@ -102,10 +102,6 @@ double Random::randomUniform() {
  * @return one random index within the range [0,size).
  */
 unsigned int Random::randomIndex(const unsigned int &size) {
-	if(size <= 0) {
-		throwLineInfoException("'size' must be greater than 0");
-	}
-
 	std::uniform_int_distribution<int> dist(0, size - 1);
 	return dist(rng);
 }

@@ -27,7 +27,7 @@
 #include "AnimalSpecies.h"
 #include "SimulType.h"
 #include "Output.h"
-#include "WorldInterface.h"
+  #include "WorldInterface.h"
 
 
 class TerrainCellInterface;
@@ -89,11 +89,8 @@ public:
 
 	inline AnimalSpecies* const getSpecies() const override { return static_cast<AnimalSpecies* const>(mySpecies); }
 	inline const double calculateDryMass() const { return getCurrentBodySize() + getTrait(Trait::energy_tank); }
-	void setDryMass(const double &newDryMass);
-	void setDryMass(const double &newEnergyTank, const double &newCurrentBodySize);
-	const double getInterpolatedDryMass() const; 
 	inline const double turnIntoDryMassToBeEaten(const double &predatorVoracity, const float &profitability, const double &leftovers) const { return calculateDryMass(); }
-	inline const double calculateWetMass() { return getSpecies()->convertToWetMass(calculateDryMass()); }
+	inline const double calculateWetMass() { return getSpecies()->getConversionToWetMass() * calculateDryMass(); }
 	inline const double getVoracity() const { return getTrait(Trait::voracity); }
 	inline virtual const double& getMassAtBirth() const { return massAtBirth; }
 	inline virtual const double getRemainingVoracity() const { return max(getTrait(Trait::voracity) - foodMass, 0.0); }
@@ -102,9 +99,8 @@ public:
 	inline virtual const double getSpeed() const { return getTrait(Trait::speed); }
 	inline const HuntingMode& getHuntingMode() const { return huntingMode; }
 	inline virtual const bool isHunting() const { return getHuntingMode() != HuntingMode::does_not_hunt; }
+	inline virtual const Instar& getInstar() const { return instar; }
 	virtual void incrementEncountersWithPredator(const int &predatorId);
-
-	void setExperiencePerSpecies();
 
 	inline const double& getAgeInInstar(const Instar& instar) const { return finalDevTimeVector[instar.getValue()-1]; }
 	inline const double& getAgeFirstReproduction() const { return getAgeInInstar(getSpecies()->getInstarFirstReproduction()); }
@@ -194,13 +190,13 @@ public:
 	 */
 	bool isActive();
 
-	double getInterpolatedHuntedVoracity(double huntedVoracity);
-	double getInterpolatedHunterVoracity();
-	double getInterpolatedVoracityProduct(double hunterVoracity);
-	double getInterpolatedHuntedBodySize(double huntedBodySize);
-	double getInterpolatedHunterBodySize();
-	double getInterpolatedPDF(double probabilityDensityFunction);
-	double getInterpolatedSpeedRatio(double hunterSpd);
+	double getNormalizedHuntedVoracity(double huntedVoracity);
+	double getNormalizedHunterVoracity();
+	double getNormalizedVoracityProduct(double hunterVoracity);
+	double getNormalizedHuntedBodySize(double huntedBodySize);
+	double getNormalizedHunterBodySize();
+	double getNormalizedPDF(double probabilityDensityFunction);
+	double getNormalizedSpeedRatio(double hunterSpd);
 
 	friend double getLog_mass_ratio(Animal* hunter, Animal* hunted);
 
@@ -357,6 +353,7 @@ protected:
 	//int totalEncountersWithPredators;
 	bool mature;
 	bool sated;
+	Instar instar;
 	int pupaTimer;
 	double handlingTimer;
 	double timeStepMaximumHandlingTimer;

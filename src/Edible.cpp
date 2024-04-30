@@ -5,6 +5,7 @@
  *      Author: gabi
  */
 
+#include "magic_enum/magic_enum.h"
 #include "Edible.h"
 
 using namespace std;
@@ -23,7 +24,7 @@ ostream& operator<<(ostream& os, const LifeStage lifeStage)
 
 id_type Edible::edibleId = 0;
 
-Edible::Edible(Species* const mySpecies, const bool temporary) : mySpecies(mySpecies), temporary(temporary)
+Edible::Edible(Species* const mySpecies, const bool temporary) : mySpecies(mySpecies)
 {
 	if(!temporary){
 		id = edibleId++;
@@ -41,9 +42,4 @@ ostream& operator<<(ostream& os, const Edible& edible)
 	os << edible.getIdStr() << "\t";
 
 	return os;
-}
-
-const Instar& Edible::getInstar() const 
-{ 
-	return instar; 
 }

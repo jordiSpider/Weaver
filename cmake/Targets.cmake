@@ -1,7 +1,5 @@
 include(cmake/Regex.cmake)
 
-include(cmake/ExternalLibraries.cmake)
-
 # ===========================
 # Set libraries consisting of several classes
 
@@ -173,19 +171,6 @@ foreach(target ${TARGETS})
             string(REGEX REPLACE ${INCLUDE_PATTERN} "\\1" class "${match}")
             
             list(FIND CLASSES ${class} index)
-            if(NOT index EQUAL -1)
-                string(REPLACE "/" ${PATH_SEP} refactorClass ${class})
-                list(APPEND dependenciesClass ${refactorClass})
-            endif()
-        endforeach()
-
-
-        string(REGEX MATCHALL ${EXTERNAL_INCLUDE_PATTERN} matches "${content}")
-        
-        foreach(match ${matches})
-            string(REGEX REPLACE ${EXTERNAL_INCLUDE_PATTERN} "\\1" class "${match}")
-            
-            list(FIND EXTERNAL_CLASSES ${class} index)
             if(NOT index EQUAL -1)
                 string(REPLACE "/" ${PATH_SEP} refactorClass ${class})
                 list(APPEND dependenciesClass ${refactorClass})

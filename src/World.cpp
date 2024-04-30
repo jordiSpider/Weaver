@@ -14,6 +14,35 @@ using namespace std;
 using namespace tbb;
 */
 
+SimulType::SimulType(const string& typeStr) : value(stringToEnumValue(typeStr)) {};
+
+const unordered_map<string_view, const SimulType::SimulTypeValue> SimulType::generateMap() 
+{
+	unordered_map<string_view, const SimulType::SimulTypeValue> enumMap;
+
+	for(size_t i = 0; i < size(); i++) {
+		const SimulType::SimulTypeValue simulType = static_cast<const SimulType::SimulTypeValue>(i);
+		enumMap.insert({to_string(simulType), simulType});
+	}
+
+	return enumMap;
+}
+
+const unordered_map<string_view, const SimulType::SimulTypeValue> SimulType::stringToEnum = SimulType::generateMap();
+
+const string SimulType::generateAvailableValues()
+{
+	constexpr auto typeNames = magic_enum::enum_names<SimulTypeValue>();
+
+	auto values = fmt::format("{}", typeNames[0]);
+	for(size_t i = 1; i < typeNames.size(); i++) {
+		values += fmt::format(", {}", typeNames[i]);
+	}
+
+	return values;
+}
+
+const string SimulType::enumValues = SimulType::generateAvailableValues();
 
 
 constexpr size_t World::ResourceType::size() 
@@ -72,7 +101,7 @@ World::ResourceType::ResourceTypeValue World::ResourceType::stringToEnumValue(co
 }
 
 
-World::World(json * jsonTree, json &worldConfig, fs::path inputFile, fs::path outputFolder, fs::path WeaverFolder, fs::path configPath) : WeaverFolder(WeaverFolder), maximumTemperature(NEG_DBL_MAX)
+World::World(json * jsonTree, json &worldConfig, fs::path inputFile, fs::path outputFolder, fs::path WeaverFolder, fs::path configPath) : WeaverFolder(WeaverFolder)
 {
 	inputFolder = configPath;
 
@@ -170,8 +199,6 @@ World::World(json * jsonTree, json &worldConfig, fs::path inputFile, fs::path ou
 	initializeResource();
 	//initializeAnimals();
 
-	calculateAnimalSpeciesK_Value();
-
 	encountersMatrixFilename = (*jsonTree)["simulation"]["encountersMatrixFilename"];
 	predationsMatrixFilename = (*jsonTree)["simulation"]["predationsMatrixFilename"];
 	nodesMatrixFilename = (*jsonTree)["simulation"]["nodesMatrixFilename"];
@@ -194,13 +221,6 @@ World::World(json * jsonTree, json &worldConfig, fs::path inputFile, fs::path ou
 	}
 
 	initializeOutputFiles(jsonTree, inputFile);
-}
-
-void World::calculateAnimalSpeciesK_Value() const
-{
-	for(auto &elem : existingAnimalSpecies) {
-		elem->calculateK_Value();
-	}
 }
 
 void World::setOutputFolder(fs::path outputFolder)
@@ -271,9 +291,6 @@ void World::readAnimalSpeciesFromJSONFiles()
 		copy(fs::directory_iterator(speciesFolder), fs::directory_iterator(), back_inserter(filePaths));
 		sort(filePaths.begin(), filePaths.end());             // directory iteration is not ordered on some file systems, so we sort them
 		json ptMain;
-
-		map<AnimalSpecies*, json> ontogeneticLinks;
-
 		for (vector<fs::path>::const_iterator it(filePaths.begin()); it != filePaths.end(); ++it)
 		{
 			if (it->extension() == ".json")
@@ -285,17 +302,216 @@ void World::readAnimalSpeciesFromJSONFiles()
 
 				Output::cout(" - Animal scientific name: {}\n", (string)ptMain["animal"]["name"]);
 
-				AnimalSpecies* newSpecies = addAnimalSpecies(ptMain["animal"]);
+				AnimalSpecies* newSpecies = new AnimalSpecies(
+					ptMain["animal"]["name"], ptMain["animal"]["genetics"]["numberOfLociPerTrait"], 
+					ptMain["animal"]["genetics"]["numberOfAllelesPerLocus"], ptMain["animal"]["genetics"]["restrictPerTrait"], 
+					ptMain["animal"]["genetics"]["correlationCoefficientRhoPerModule"], ptMain["animal"]["genetics"]["traitsPerModule"], 
+					ptMain["animal"]["genetics"]["numberOfChiasmasPerChromosome"], ptMain["animal"]["traits"]["fixedTraits"], ptMain["animal"]["traits"]["variableTraits"]["minTraitsRanges"], 
+					ptMain["animal"]["traits"]["variableTraits"]["maxTraitsRanges"], ptMain["animal"]["traits"]["variableTraits"]["minTraitLimits"], 
+					ptMain["animal"]["traits"]["variableTraits"]["maxTraitLimits"], ptMain["animal"]["traits"]["variableTraits"]["order"], ptMain["animal"]["sexualType"],
+					ptMain["animal"]["defaultHuntingMode"], ptMain["animal"]["growthCurve"], ptMain["animal"]["preserveLeftovers"]
+				);
+				
 
-				ontogeneticLinks[newSpecies] = ptMain["ontogeneticLinks"];
+				//Added for new growth_curves
+				if(initIndividualsPerDensities == false)
+				{
+					newSpecies->setInitialPopulation(ptMain["animal"]["individualsPerInstar"]);
+				}
+				newSpecies->setStatisticsInitialPopulation(ptMain["animal"]["statisticsIndividualsPerInstar"]);
+
+				unsigned int numberOfInstars = newSpecies->getInitialPopulation().size();
+				Output::cout("numberOfInstars: {}\n", numberOfInstars);
+
+				newSpecies->setAssignedForMolt(ptMain["animal"]["assignedForMolt"]);
+				newSpecies->setBetaScaleTank(ptMain["animal"]["betaScaleTank"]);
+				newSpecies->setExcessInvestInSize(ptMain["animal"]["excessInvestInSize"]);
+				newSpecies->setNumberOfInstars(numberOfInstars);
+				newSpecies->setPupaPeriodLength(ptMain["animal"]["pupaPeriodLength"]);
+				newSpecies->setMinRelativeHumidityThreshold(ptMain["animal"]["minRelativeHumidityThreshold"]);
+				newSpecies->setMaxEncountersT(ptMain["animal"]["maxEncountersT"]);
+
+				//Added for new growth_curves
+				newSpecies->setDevTimeVector(ptMain["animal"]["devTimeVector"]);
+				newSpecies->setLinfKcorr(ptMain["animal"]["LinfKcorr"]);
+				newSpecies->setDevTimeConstant(ptMain["animal"]["devTimeConstant"]);
+				newSpecies->setLongevitySinceMaturation(ptMain["animal"]["longevitySinceMaturation"]);
+				newSpecies->setReproTimeFactor(ptMain["animal"]["reproTimeFactor"]);
+				newSpecies->setTempOptGrowth(ptMain["animal"]["tempOptGrowth"]);
+				newSpecies->setTempOptVoracity(ptMain["animal"]["tempOptVoracity"]);
+				newSpecies->setTempOptSearch(ptMain["animal"]["tempOptSearch"]);
+				newSpecies->setTempOptSpeed(ptMain["animal"]["tempOptSpeed"]);
+				newSpecies->setEdGrowth(ptMain["animal"]["EdGrowth"]);
+				newSpecies->setEdVoracity(ptMain["animal"]["EdVoracity"]);
+				newSpecies->setEdSearch(ptMain["animal"]["EdSearch"]);
+				newSpecies->setEdSpeed(ptMain["animal"]["EdSpeed"]);
+				newSpecies->setDevInter(ptMain["animal"]["devInter"]);
+				newSpecies->setFractSearchExtremeT(ptMain["animal"]["fractSearchExtremeT"]);
+				newSpecies->setFractSpeedExtremeT(ptMain["animal"]["fractSpeedExtremeT"]);
+				newSpecies->setMinVorExtremeT(ptMain["animal"]["minVorExtremeT"]);
+
+				newSpecies->setTempFromLab(ptMain["animal"]["tempFromLab"]);
+				newSpecies->setTempSizeRuleConstant(ptMain["animal"]["tempSizeRuleConstant"]);
+
+				newSpecies->setExperienceInfluencePerDay(ptMain["animal"]["experienceInfluencePerDay"]);
+
+				newSpecies->setMassInfo(ptMain["animal"]["conversionToWetMass"], ptMain["animal"]["eggClutchFromEquation"],
+										ptMain["animal"]["forClutchMassCoefficient"], ptMain["animal"]["forClutchMassScale"],
+										ptMain["animal"]["forEggMassCoefficient"], ptMain["animal"]["forEggMassScale"],
+										ptMain["animal"]["eggDryMass"], ptMain["animal"]["femaleWetMass"], 
+										ptMain["animal"]["eggMassFromEquation"]);
+
+				newSpecies->setScaleForVoracity(ptMain["animal"]["scaleForVoracity"]);
+				newSpecies->setScaleForSearchArea(ptMain["animal"]["scaleForSearchArea"]);
+				newSpecies->setScaleForSpeed(ptMain["animal"]["scaleForSpeed"]);
+				newSpecies->setMaxPlasticityKVonBertalanffy(ptMain["animal"]["maxPlasticityKVonBertalanffy"]);
+				newSpecies->setMinPlasticityKVonBertalanffy(ptMain["animal"]["minPlasticityKVonBertalanffy"]);
+				newSpecies->setMaxPlasticityDueToConditionVor(ptMain["animal"]["maxPlasticityDueToConditionVor"]);
+				newSpecies->setMinPlasticityDueToConditionVor(ptMain["animal"]["minPlasticityDueToConditionVor"]);
+				newSpecies->setMaxPlasticityDueToConditionSearch(ptMain["animal"]["maxPlasticityDueToConditionSearch"]);
+				newSpecies->setMinPlasticityDueToConditionSearch(ptMain["animal"]["minPlasticityDueToConditionSearch"]);
+				newSpecies->setMaxPlasticityDueToConditionSpeed(ptMain["animal"]["maxPlasticityDueToConditionSpeed"]);
+				newSpecies->setMinPlasticityDueToConditionSpeed(ptMain["animal"]["minPlasticityDueToConditionSpeed"]);
+
+				newSpecies->setAttackProbability(ptMain["animal"]["attackProbability"]);
+				newSpecies->setExposedAttackProbability(ptMain["animal"]["exposedAttackProbability"]);
+				newSpecies->setKillProbability(ptMain["animal"]["killProbability"]);
+				newSpecies->setOptimalTemperatureModifier(ptMain["animal"]["optimalTemperatureModifier"]);
+
+				newSpecies->setDaysWithoutFoodForMetabolicDownregulation(ptMain["animal"]["daysWithoutFoodForMetabolicDownregulation"]);
+				newSpecies->setPercentageMetabolicDownregulation(ptMain["animal"]["percentageMetabolicDownregulation"]);
+				newSpecies->setPercentageCostForMetabolicDownregulationVoracity(ptMain["animal"]["percentageCostForMetabolicDownregulationVoracity"]);
+				newSpecies->setPercentageCostForMetabolicDownregulationSearchArea(ptMain["animal"]["percentageCostForMetabolicDownregulationSearchArea"]);
+				newSpecies->setPercentageCostForMetabolicDownregulationSpeed(ptMain["animal"]["percentageCostForMetabolicDownregulationSpeed"]);
+
+				newSpecies->setCellEvaluationBiomass(ptMain["animal"]["cellEvaluationBiomass"]);
+				newSpecies->setCellEvaluationRisk(ptMain["animal"]["cellEvaluationRisk"]);
+				newSpecies->setCellEvaluationProConspecific(ptMain["animal"]["cellEvaluationProConspecific"]);
+				newSpecies->setCellEvaluationAntiConspecific(ptMain["animal"]["cellEvaluationAntiConspecific"]);
+				newSpecies->setConspecificWeighing(ptMain["animal"]["conspecificWeighing"]);
+
+				newSpecies->setCoefficientForMassA(ptMain["animal"]["coefficientForMassA"]);
+				newSpecies->setScaleForMassB(ptMain["animal"]["scaleForMassB"]);
+
+				newSpecies->setCoefficientForMassAforMature(ptMain["animal"]["coefficientForMassAforMature"]);
+				newSpecies->setScaleForMassBforMature(ptMain["animal"]["scaleForMassBforMature"]);
+
+				newSpecies->setForDensitiesA(ptMain["animal"]["forDensitiesA"]);
+				newSpecies->setForDensitiesB(ptMain["animal"]["forDensitiesB"]);
+
+				newSpecies->setIndeterminateGrowth(ptMain["animal"]["indeterminateGrowth"]);
+				if(ptMain["animal"]["indeterminateGrowth"]) {
+					newSpecies->setInstarFirstReproduction(Instar(ptMain["animal"]["instarFirstReproduction"]));
+				}
+				else {
+					newSpecies->setInstarFirstReproduction(Instar(ptMain["animal"]["individualsPerInstar"].size()));
+				}
+				newSpecies->setInstarsForNextReproduction(ptMain["animal"]["instarsForNextReproduction"]);
+
+				newSpecies->setSexRatio(ptMain["animal"]["sexRatio"]);
+				newSpecies->setSize(ptMain["animal"]["size"]);
+				newSpecies->setFemaleMaxReproductionEvents(ptMain["animal"]["femaleMaxReproductionEvents"]);
+				newSpecies->setEggsPerBatch(ptMain["animal"]["eggsPerBatch"]);
+				newSpecies->setMaleMaxReproductionEvents(ptMain["animal"]["maleMaxReproductionEvents"]);
+				newSpecies->setMaleMobility(ptMain["animal"]["maleMobility"]);
+				newSpecies->setQuitCellThreshold(ptMain["animal"]["quitCellThreshold"]);
+				newSpecies->setDecreaseOnTraitsDueToEncounters(ptMain["animal"]["decreaseOnTraitsDueToEncounters"]);
+				newSpecies->setMaleReproductionFactor(ptMain["animal"]["maleReproductionFactor"]);
+				newSpecies->setProbabilityDeathFromBackground(ptMain["animal"]["probabilityDeathFromBackground"]);
+
+				addAnimalSpecies(newSpecies);
 			}
 		}
 
 		Output::cout("DONE\n\n");
 		Output::cout("Assigning links between species from JSON files edible species information ... \n");
 
+		//Who eats whom
+		for (vector<fs::path>::const_iterator it(filePaths.begin()); it != filePaths.end(); ++it)
+		{
+			if (it->extension() == ".json")
+			{
+				ptMain.clear();
 
-		addOntogeneticLinks(ontogeneticLinks);
+				// Read configuration file
+				ptMain = readConfigFile(*it, WeaverFolder / fs::path(SCHEMA_FOLDER) / fs::path(SPECIES_SCHEMA));
+
+				string scientificName = ptMain["animal"]["name"];
+				Output::cout("Animal species {} eats: \n", scientificName);
+
+				for( auto elem : ptMain["animal"]["edibleResourceSpecies"])
+				{
+					string speciesToBeAddedName = elem;
+					ResourceSpecies* resourceSpeciesToBeAdded = getResourceSpecies(speciesToBeAddedName);
+					if (resourceSpeciesToBeAdded == NULL)
+					{
+						cerr << "Trying to add an edible resource species that does not exist. Please check the species name or contact developers." << endl;
+						exit(-1);
+					}
+					Output::cout(" - Resource: {}\n", speciesToBeAddedName);
+					getAnimalSpecies(scientificName)->addEdibleResourceSpecies(resourceSpeciesToBeAdded);
+				}
+
+				int i = 0;
+				for( auto elem : ptMain["animal"]["edibleResourcePreferences"])
+				{
+					float edibleResourcePreferenceToBeAdded = elem;
+					Species* resourceSpeciesToBeAdded = getAnimalSpecies(scientificName)->getEdibleResourceSpecies()->at(i);
+
+					Output::cout(" - Resource: {} -> Preference: {}\n", resourceSpeciesToBeAdded->getScientificName(), edibleResourcePreferenceToBeAdded);
+					getAnimalSpecies(scientificName)->addEdiblePreference(resourceSpeciesToBeAdded, edibleResourcePreferenceToBeAdded);
+					++i;
+				}
+
+				i = 0;
+				for( auto elem : ptMain["animal"]["edibleResourceProfitability"])
+				{
+					float edibleResourceProfitabilityToBeAdded = elem;
+					Species* resourceSpeciesToBeAdded = getAnimalSpecies(scientificName)->getEdibleResourceSpecies()->at(i);
+
+					Output::cout(" - Resource: {} -> Profitability: {}\n", resourceSpeciesToBeAdded->getScientificName(), edibleResourceProfitabilityToBeAdded);
+					getAnimalSpecies(scientificName)->addEdibleProfitability(resourceSpeciesToBeAdded, edibleResourceProfitabilityToBeAdded);
+					++i;
+				}
+
+				for( auto elem : ptMain["animal"]["edibleAnimalSpecies"])
+				{
+					string speciesToBeAddedName = elem;
+					AnimalSpecies* animalSpeciesToBeAdded = getAnimalSpecies(speciesToBeAddedName);
+					if (animalSpeciesToBeAdded == NULL)
+					{
+						cerr << "Trying to add an edible animal species that does not exist. Please check the species name or contact developers." << endl;
+						exit(-1);
+					}
+					Output::cout(" - Animal: {}\n", speciesToBeAddedName);
+					getAnimalSpecies(scientificName)->addEdibleAnimalSpecies(animalSpeciesToBeAdded);
+				}
+
+				i = 0;
+				for( auto elem : ptMain["animal"]["edibleAnimalPreferences"])
+				{
+					float edibleAnimalPreferenceToBeAdded = elem;
+					AnimalSpecies* animalSpeciesToBeAdded = getAnimalSpecies(scientificName)->getEdibleAnimalSpecies()->at(i);
+
+					Output::cout(" - Animal: {} -> Preference: {}\n", animalSpeciesToBeAdded->getScientificName(), edibleAnimalPreferenceToBeAdded);
+					getAnimalSpecies(scientificName)->addEdiblePreference(animalSpeciesToBeAdded, edibleAnimalPreferenceToBeAdded);
+					++i;
+				}
+
+				i = 0;
+				for( auto elem : ptMain["animal"]["edibleAnimalProfitability"])
+				{
+					float edibleAnimalProfitabilityToBeAdded = elem;
+					AnimalSpecies* animalSpeciesToBeAdded = getAnimalSpecies(scientificName)->getEdibleAnimalSpecies()->at(i);
+
+					Output::cout(" - Animal: {} -> Profitability: {}\n", animalSpeciesToBeAdded->getScientificName(), edibleAnimalProfitabilityToBeAdded);
+					getAnimalSpecies(scientificName)->addEdibleProfitability(animalSpeciesToBeAdded, edibleAnimalProfitabilityToBeAdded);
+					++i;
+				}
+
+				Output::cout("\n");
+			}
+		}
 	}
 	else
 	{
@@ -310,54 +526,6 @@ void World::readAnimalSpeciesFromJSONFiles()
 		(*speciesIt)->setInitialPredationEventsOnOtherSpecies(existingAnimalSpecies.size() + existingResourceSpecies.size());
 	}
 
-}
-
-void World::addResourceSpeciesOntogeneticLinks(AnimalSpecies* const predatorSpecies, const json &resourceLinks)
-{
-	for(const auto &elem : resourceLinks)
-	{
-		string speciesToBeAddedName = elem["species"];
-
-		ResourceSpecies* resourceSpeciesToBeAdded = getResourceSpecies(speciesToBeAddedName);
-
-		if(resourceSpeciesToBeAdded == NULL) {
-			throwLineInfoException("\"" + speciesToBeAddedName + "\" doesn't exist. Please check the resource species name or contact developers");
-		}
-
-		Output::cout(" - Resource: {}\n", speciesToBeAddedName);
-		predatorSpecies->addEdibleResourceSpecies(resourceSpeciesToBeAdded, elem);
-	}
-}
-
-void World::addAnimalSpeciesOntogeneticLinks(AnimalSpecies* const predatorSpecies, const json &animalLinks)
-{
-	for(const auto &elem : animalLinks)
-	{
-		string speciesToBeAddedName = elem["species"];
-
-		AnimalSpecies* animalSpeciesToBeAdded = getAnimalSpecies(speciesToBeAddedName);
-
-		if(animalSpeciesToBeAdded == NULL) {
-			throwLineInfoException("\"" + speciesToBeAddedName + "\" doesn't exist. Please check the animal species name or contact developers");
-		}
-
-		Output::cout(" - Animal: {}\n", speciesToBeAddedName);
-		predatorSpecies->addEdibleAnimalSpecies(animalSpeciesToBeAdded, elem);
-	}
-}
-
-void World::addOntogeneticLinks(const map<AnimalSpecies*, json> &ontogeneticLinks)
-{
-	for(const auto &elem : ontogeneticLinks) 
-	{
-		Output::cout("Animal species {} eats: \n", elem.first->getScientificName());
-
-		elem.first->initEdibleOntogeneticLink();
-
-		addResourceSpeciesOntogeneticLinks(elem.first, elem.second["resourceLinks"]);
-
-		addAnimalSpeciesOntogeneticLinks(elem.first, elem.second["animalLinks"]);
-	}
 }
 
 void World::readResourceSpeciesFromJSONFiles()
@@ -423,30 +591,23 @@ void World::readResourceSpeciesFromJSONFiles()
 
 void World::setResourcePatch(const json &patch, ResourceSpecies* const resourceSpecie)
 {
-	// Update the total maximum capacity of the resource
-	resourceSpecie->updateK_Value(patch["resourceMaximumCapacity"]);
-
 	switch(Patch::stringToEnumValue(patch["type"])) {
 		case Patch::homogeneous: {
-			setHomogeneousResource(
-				resourceSpecie, patch["value"], patch["resourceMaximumCapacity"],
-				patch["patchSpread"]
-			);
+			setHomogeneousResource(resourceSpecie, patch["value"], patch["resourceMaximumCapacity"]);
 			break;
 		}
 		case Patch::gaussian: {
 			setGaussianResourcePatch(
 				resourceSpecie, patch["xPos"], patch["yPos"], patch["zPos"], 
 				patch["radius"], patch["sigma"], patch["amplitude"], 
-				patch["resourceMaximumCapacity"], patch["patchSpread"]
+				patch["resourceMaximumCapacity"]
 			);
 			break;
 		}
 		case Patch::spherical: {
 			setSphericalResourcePatch(
 				resourceSpecie, patch["xPos"], patch["yPos"], patch["zPos"], 
-				patch["radius"], patch["value"], patch["resourceMaximumCapacity"],
-				patch["patchSpread"]
+				patch["radius"], patch["value"], patch["resourceMaximumCapacity"]
 			);
 			break;
 		}
@@ -464,7 +625,7 @@ void World::setResourcePatch(const json &patch, ResourceSpecies* const resourceS
 
 			setCubicResourcePatch(
 				resourceSpecie, patchCenter, patchDimensions, patch["value"], 
-				patch["resourceMaximumCapacity"], patch["patchSpread"]
+				patch["resourceMaximumCapacity"]
 			);
 			break;
 		}
@@ -472,8 +633,7 @@ void World::setResourcePatch(const json &patch, ResourceSpecies* const resourceS
 			setRandomGaussianResourcePatches(
 				resourceSpecie, patch["numberOfPatches"], patch["patchesRadius"], 
 				patch["maxSigma"], patch["useRandomSigma"], patch["maxAmplitude"], 
-				patch["useRandomAmplitude"], patch["resourceMaximumCapacity"],
-				patch["patchSpread"]
+				patch["useRandomAmplitude"], patch["resourceMaximumCapacity"]
 			);
 			break;
 		}
@@ -538,10 +698,8 @@ void World::addResourceSpecies(ResourceSpecies * newSpecies)
 	}
 }
 
-AnimalSpecies* World::addAnimalSpecies(const json &animalSpeciesInfo)
+void World::addAnimalSpecies(AnimalSpecies * newSpecies)
 {
-	AnimalSpecies* newSpecies = new AnimalSpecies(animalSpeciesInfo, initIndividualsPerDensities);
-
 	if (std::find(existingAnimalSpecies.begin(), existingAnimalSpecies.end(), newSpecies)
 			== existingAnimalSpecies.end())
 	{
@@ -551,8 +709,6 @@ AnimalSpecies* World::addAnimalSpecies(const json &animalSpeciesInfo)
 	{
 		throwLineInfoException("Error, the " + newSpecies->getScientificName() + " was already added to this world");
 	}
-
-	return newSpecies;
 }
 
 ResourceSpecies * World::getResourceSpecies(string name)
@@ -1978,18 +2134,6 @@ void World::initializeTerrainDimensions(const json &moistureBasePatch)
 	Output::cout("DONE\n");
 }
 
-void World::setMaximumTemperature(const double &newValue)
-{
-	if(maximumTemperature < newValue) {
-		maximumTemperature = newValue;
-	}
-}
-
-const double& World::getMaximumTemperature() const
-{
-	return maximumTemperature;
-}
-
 void World::readObstaclePatchesFromJSONFiles()
 {
 	Output::cout("Reading obstacle patches from JSON files ... \n");
@@ -2157,11 +2301,6 @@ int World::getDepth()
 	return depth;
 }
 
-const std::vector<ResourceSpecies *> * World::getExistingResourceSpecies()
-{
-	return &existingResourceSpecies;
-}
-
 const vector<AnimalSpecies *> * World::getExistingAnimalSpecies()
 {
 	return &existingAnimalSpecies;
@@ -2275,7 +2414,7 @@ bool surroundingTerrainCellCompare(const std::pair<double, TerrainCell*>& firstE
   return firstElem.first < secondElem.first;
 }
 
-void World::setHomogeneousResource(ResourceSpecies* const species, double value, double resourceMaximumCapacity, bool patchSpread)
+void World::setHomogeneousResource(ResourceSpecies* const species, double value, double resourceMaximumCapacity)
 {
 	Output::cout("Initializing homogeneous resource value for all cells ({}) ... \n\n", species->getScientificName());
 
@@ -2302,7 +2441,7 @@ void World::setHomogeneousResource(ResourceSpecies* const species, double value,
 
 						if (aux == NULL)
 						{
-							currentTerrainCell->addResource(new Resource(species, value, resourceMaximumCapacity, getCompetitionAmongResourceSpecies(), massRatio, patchSpread));
+							currentTerrainCell->addResource(new Resource(species, value, resourceMaximumCapacity, getCompetitionAmongResourceSpecies(), massRatio));
 							//TODO PROVISIONAL!!!!
 							currentTerrainCell->setAuxInitialResourceBiomass(value, species->getId());
 						}
@@ -2327,7 +2466,7 @@ void World::setHomogeneousResource(ResourceSpecies* const species, double value,
 }
 
 void World::setGaussianResourcePatch(ResourceSpecies* species, unsigned int xpos, unsigned int ypos, unsigned int zpos,
-		unsigned int radius, float sigma, float amplitude, double resourceMaximumCapacity, bool patchSpread)
+		unsigned int radius, float sigma, float amplitude, double resourceMaximumCapacity)
 {
 	// Generate water patches
 
@@ -2369,7 +2508,7 @@ void World::setGaussianResourcePatch(ResourceSpecies* species, unsigned int xpos
 
 								if (aux == NULL)
 								{
-									currentTerrainCell->addResource(new Resource(species, resourceAsGauss, resourceMaximumCapacity, getCompetitionAmongResourceSpecies(), massRatio, patchSpread));
+									currentTerrainCell->addResource(new Resource(species, resourceAsGauss, resourceMaximumCapacity, getCompetitionAmongResourceSpecies(), massRatio));
 									//TODO PROVISIONAL!!!!
 									currentTerrainCell->setAuxInitialResourceBiomass(resourceAsGauss, species->getId());
 								}
@@ -2388,7 +2527,7 @@ void World::setGaussianResourcePatch(ResourceSpecies* species, unsigned int xpos
 	}
 }
 
-void World::setSphericalResourcePatch(ResourceSpecies* species, unsigned int xpos, unsigned int ypos, unsigned int zpos, unsigned int radius, double value, double resourceMaximumCapacity, bool patchSpread)
+void World::setSphericalResourcePatch(ResourceSpecies* species, unsigned int xpos, unsigned int ypos, unsigned int zpos, unsigned int radius, double value, double resourceMaximumCapacity)
 {
 	if (value >= 0)
 	{
@@ -2437,7 +2576,7 @@ void World::setSphericalResourcePatch(ResourceSpecies* species, unsigned int xpo
 
 										if (aux == NULL)
 										{
-											currentTerrainCell->addResource(new Resource(species, value, resourceMaximumCapacity, getCompetitionAmongResourceSpecies(), massRatio, patchSpread));
+											currentTerrainCell->addResource(new Resource(species, value, resourceMaximumCapacity, getCompetitionAmongResourceSpecies(), massRatio));
 
 											Output::cout("RECENTLY ADDED VALUE: {}\n", currentTerrainCell->getTotalResourceBiomass());
 											//TODO PROVISIONAL!!!!
@@ -2485,9 +2624,9 @@ void World::setSphericalResourcePatch(ResourceSpecies* species, unsigned int xpo
 	Output::cout("DONE\n\n");
 }
 
-void World::setCubicResourcePatch(ResourceSpecies* species, Coordinate3D<int> center, Coordinate3D<int> dimensions, double value, double resourceMaximumCapacity, bool patchSpread)
+void World::setCubicResourcePatch(ResourceSpecies* species, Coordinate3D<int> center, Coordinate3D<int> dimensions, double value, double resourceMaximumCapacity)
 {	
-	if (value >= 0.0)
+	if (value >= 0)
 	{
 		Output::cout("Initializing cubic resource patch ({}) ... \n", species->getScientificName());
 
@@ -2526,7 +2665,7 @@ void World::setCubicResourcePatch(ResourceSpecies* species, Coordinate3D<int> ce
 
 										if (aux == NULL)
 										{
-											currentTerrainCell->addResource(new Resource(species, value, resourceMaximumCapacity, getCompetitionAmongResourceSpecies(), massRatio, patchSpread));
+											currentTerrainCell->addResource(new Resource(species, value, resourceMaximumCapacity, getCompetitionAmongResourceSpecies(), massRatio));
 
 											Output::cout("RECENTLY ADDED VALUE: {}\n", currentTerrainCell->getTotalResourceBiomass());
 											//TODO PROVISIONAL!!!!
@@ -2538,7 +2677,6 @@ void World::setCubicResourcePatch(ResourceSpecies* species, Coordinate3D<int> ce
 											aux->setBiomass(max(value, aux->calculateWetMass()));
 											//TODO PROVISIONAL!!!!
 											currentTerrainCell->setAuxInitialResourceBiomass(max(value, aux->calculateWetMass()), species->getId());
-											aux->setResourceMaximumCapacity(resourceMaximumCapacity);
 										
 										}
 
@@ -2561,7 +2699,7 @@ void World::setCubicResourcePatch(ResourceSpecies* species, Coordinate3D<int> ce
 	Output::cout("DONE\n\n");
 }
 
-void World::setRandomGaussianResourcePatches(ResourceSpecies* species, unsigned int number, float radius, float newSigma, bool useRandomSigma, float newAmplitude, bool useRandomAmplitude, double resourceMaximumCapacity, bool patchSpread)
+void World::setRandomGaussianResourcePatches(ResourceSpecies* species, unsigned int number, float radius, float newSigma, bool useRandomSigma, float newAmplitude, bool useRandomAmplitude, double resourceMaximumCapacity)
 {
 	// Generate water patches
 	IsotropicGaussian3D gauss;
@@ -2629,7 +2767,7 @@ void World::setRandomGaussianResourcePatches(ResourceSpecies* species, unsigned 
 
 									if (aux == NULL)
 									{
-										currentTerrainCell->addResource(new Resource(species, resourceAsGauss, resourceMaximumCapacity, getCompetitionAmongResourceSpecies(), massRatio, patchSpread));
+										currentTerrainCell->addResource(new Resource(species, resourceAsGauss, resourceMaximumCapacity, getCompetitionAmongResourceSpecies(), massRatio));
 										//TODO PROVISIONAL!!!!
 										currentTerrainCell->setAuxInitialResourceBiomass(resourceAsGauss, species->getId());
 									}
@@ -2791,8 +2929,6 @@ void World::setSphericalWaterPatch(string patchFilename, unsigned int radius, un
 
 											if (distance <= radius)
 											{
-												setMaximumTemperature(*max_element(temperatureCycle.begin(), temperatureCycle.end()));
-
 												currentTerrainCell->setTemperatureCycle(temperatureCycle);
 												if(useRelativeHumidityCycle) {
 													currentTerrainCell->setRelativeHumidityCycle(relativeHumidityCycle);
@@ -2888,8 +3024,6 @@ void World::setCubicWaterPatch(string patchFilename, Coordinate3D<int> center, C
 										currentTerrainCell = getCell(z,y,x);
 										if (!currentTerrainCell->isObstacle())
 										{
-											setMaximumTemperature(*max_element(temperatureCycle.begin(), temperatureCycle.end()));
-
 											currentTerrainCell->setTemperatureCycle(temperatureCycle);
 											if(useRelativeHumidityCycle) {
 												currentTerrainCell->setRelativeHumidityCycle(relativeHumidityCycle);
@@ -3103,7 +3237,6 @@ void World::calculateAttackStatistics(map<AnimalSpecies*,vector<TerrainCell*>*> 
 		(*animalAndInstarAtInitializationIt).first->adjustTraits();
 		//DONE Forzar el crecimiento de forma DIARIA y utilizando growtcurves+tunetraits CADA DÍA para el ciclo de temperaturas
 		float temperatureOnMolting = (*animalAndInstarAtInitializationIt).first->forceMolting(timeStepsPerDay, -1, (*animalAndInstarAtInitializationIt).second, getSimulType());
-		(*animalAndInstarAtInitializationIt).first->setExperiencePerSpecies();
 		ofstream noStream;
 		(*animalAndInstarAtInitializationIt).first->tuneTraits(-1, timeStepsPerDay, temperatureOnMolting, 100, noStream, false, true, getSimulType());
 
@@ -3163,7 +3296,6 @@ void World::calculateAttackStatistics(map<AnimalSpecies*,vector<TerrainCell*>*> 
 							currentAnimalSpecies->interactionRanges(hunterAnimal->getCurrentBodySize(), hunterAnimal->getVoracity(), hunterAnimal->getSpeed(), hunterAnimal->calculateDryMass(), huntedAnimal->getCurrentBodySize(), huntedAnimal->getVoracity(), huntedAnimal->getSpeed(), huntedAnimal->calculateDryMass(), muForPDF, sigmaForPDF);
 						}
 					}
-					
 					if(vectorOfAttacks.size() >= (numberOfCombinations-1)*currentPercentageForPrinting)
 					{
 						Output::cout(">>>> {}%... \n", (int)(currentPercentageForPrinting*100));
@@ -3478,7 +3610,6 @@ void World::initializeAnimals()
 		delete value;
 	}
 
-
 	Output::cout("DONE\n");
 }
 
@@ -3785,7 +3916,6 @@ int OldWorld::generatePopulation(AnimalSpecies* currentAnimalSpecies, const vect
 			//DONE Adjust traits now includes the first CalculateGrowthCurves call. For every animal.
 			newAnimal->adjustTraits();
 			newAnimal->forceMolting2(timeStepsPerDay, -1, instar);
-			newAnimal->setExperiencePerSpecies();
 			//exit(-1);
 			newCell->addAnimal(newAnimal);
 		}
@@ -4086,7 +4216,6 @@ int Matrix3DWorld::generatePopulation(AnimalSpecies* currentAnimalSpecies, const
 			//DONE Adjust traits now includes the first CalculateGrowthCurves call. For every animal.
 			newAnimal->adjustTraits();
 			newAnimal->forceMolting2(timeStepsPerDay, -1, instar);
-			newAnimal->setExperiencePerSpecies();
 			//exit(-1);
 			animalCell->addAnimal(newAnimal);
 		}

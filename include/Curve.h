@@ -1,15 +1,15 @@
 #ifndef CURVE_H_
 #define CURVE_H_
 
-#include <nlohmann/json.hpp>
+#include "nlohmann/json.h"
 #include <string>
 #include "LineInfoException.h"
 #include <unordered_map>
 
-#include <magic_enum.hpp>
+#include "magic_enum/magic_enum.h"
 
 #define FMT_HEADER_ONLY
-#include <fmt/core.h>
+#include "fmt/core.h"
 
 
 class CurveParams {
@@ -228,13 +228,17 @@ public:
     ExponentialCurveParams() : CurveParams() {}
     ~ExponentialCurveParams() {}
 
-protected:
+    const double& getValueTime0() const;
 
+    void setValueTime0(const double &exponentialValueTime0);
+
+protected:
+    double exponentialValueTime0;
 };
 
 class ExponentialCurve: public Curve {
 private:
-    const double exponentialA;
+    
 
 public:
     ExponentialCurve(const std::unordered_map<std::string,nlohmann::json>& growthCurve);
@@ -242,7 +246,6 @@ public:
 
     CurveType::CurveTypeValue getType() const;
 
-    const double& getExponentialA() const;
     double getValue(const CurveParams &params) const;
 };
 

@@ -11,7 +11,6 @@
             "name": "base",
             "hidden": true,
             "displayName": "Base configuration",
-            "toolchainFile": "$env{VCPKG_ROOT}/scripts/buildsystems/vcpkg.cmake",
             "cacheVariables": {
                 "PRESET_NAME": "${presetName}",
                 "CMAKE_C_COMPILER": "gcc",
@@ -44,6 +43,15 @@
             "hidden": true,
             "displayName": "Configuration to generate a Unix Makefile",
             "generator": "Unix Makefiles"
+        },
+        {
+            "name": "MinGW Makefiles",
+            "inherits": [
+                "base"
+            ],
+            "hidden": true,
+            "displayName": "Configuration to generate a MinGW Makefile",
+            "generator": "MinGW Makefiles"
         },
         {
             "name": "Release",
@@ -101,11 +109,7 @@
             },
             "cacheVariables": {
                 "CMAKE_EXECUTABLE_SUFFIX_CXX": ".exe",
-                "CMAKE_SHARED_LIBRARY_SUFFIX_CXX": ".dll",
-                "VCPKG_TARGET_TRIPLET": "x64-mingw-static",
-                "VCPKG_HOST_TRIPLET": "x64-mingw-static",
-                "CMAKE_PREFIX_PATH": "$env{MSYS2_ROOT}/mingw64",
-                "CMAKE_MAKE_PROGRAM": "$env{MSYS2_ROOT}/mingw64/bin/mingw32-make.exe"
+                "CMAKE_SHARED_LIBRARY_SUFFIX_CXX": ".dll"
             }
         },
         {
@@ -151,7 +155,7 @@
                 "Release"
             ],
             "hidden": true,
-            "displayName": "Configuration to build Release version on Windows"
+            "displayName": "Configuration to build Release version on Windows "
         },
         {
             "name": "linux-Makefile",
@@ -207,7 +211,7 @@
             "displayName": "Configuration to build Release version on Windows using a Makefile",
             "inherits": [
                 "Windows Release",
-                "Unix Makefiles"
+                "MinGW Makefiles"
             ]
         },
         {

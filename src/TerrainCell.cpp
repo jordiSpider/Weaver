@@ -8,6 +8,8 @@
 #include <algorithm>
 #include "LineInfoException.h"
 
+#include "magic_enum/magic_enum.h"
+
 /*
 #include "tbb/tbb.h"
 
@@ -138,7 +140,7 @@ double TerrainCell::turnEdibleIntoDryMassToBeEaten(Edible* targetEdible, int day
 	Output::coutFlush("{} predated {}\n", predatorId, targetEdible->getId());
 	#endif
 
-	float targetEdibleProfitability = predatorEdible->getSpecies()->getEdibleProfitability(targetEdible->getSpecies()->getId(), predatorEdible->getInstar(), targetEdible->getInstar());
+	float targetEdibleProfitability = predatorEdible->getSpecies()->getEdibleProfitability(targetEdible->getSpecies());
 
 	//double dryMassToBeEaten = 0;
 
@@ -755,7 +757,7 @@ void TerrainCell::setResourceFromChemostatEffect(vector<ResourceSpecies *>* exis
 			else if((int)(*it)->getId() == auxInitialResourceSpeciesId)
 			{
 				//TODO PROVISIONAL! CAMBIAR POR MOISTURE
-				addResource(new Resource((*it), increaseForChemostatEffect*auxInitialResourceBiomass, 0.0, competitionAmongResourceSpecies, massRatio, currentResource->canSpread()));
+				addResource(new Resource((*it), increaseForChemostatEffect*auxInitialResourceBiomass, 0.0, competitionAmongResourceSpecies, massRatio));
 			}
 		}
 	}
@@ -803,54 +805,53 @@ void TerrainCell::growResource(int timeStep, bool competition, double maxCapacit
 			markedForRemoval.push_back((*it));
 			//cout << "Are we here?????????????????????????????????????????????????????" << endl;
 		}
+			//> 100000000 to stop spreading functionality until further debugging
+			if (excess > 0) //spread only if excess > cell size - otherwise is not biologically possible
+			{              //(*it)->getSpecies()->getCellMass()                                  
+				bool isMobile = (*it)->getSpecies()->isMobile();
+				auto neighbors = getCellsAtDistance(1, DBL_MAX, isMobile, worldDepth, worldLength, worldWidth);
 
+				ResourceSpecies* currentSpecies = (*it)->getSpecies();
 
-		//> 100000000 to stop spreading functionality until further debugging
-		if((*it)->canSpread() && excess > 0) //spread only if excess > cell size - otherwise is not biologically possible
-		{              //(*it)->getSpecies()->getCellMass()                                  
-			bool isMobile = (*it)->getSpecies()->isMobile();
-			auto neighbors = getCellsAtDistance(1, DBL_MAX, isMobile, worldDepth, worldLength, worldWidth);
-
-			ResourceSpecies* currentSpecies = (*it)->getSpecies();
-
-			double massPerNeighbor;
-			if(!neighbors->empty()) {
-				massPerNeighbor = excess / neighbors->size(); // Distribute equally across neighbors
-			}
-			
-			Resource* auxResource;
-
-			for (auto neighborIt = neighbors->begin(); neighborIt != neighbors->end(); neighborIt++)
-			{
-				auxResource = (*neighborIt)->getResource(currentSpecies);
-
-				double totBiomass = (*neighborIt)->getTotalResourceBiomass();
-
-				if (auxResource != NULL)
-				{
-					auxResource->addBiomass(massPerNeighbor, competition, maxCapacity, size, totBiomass);
+				double massPerNeighbor;
+				if(!neighbors->empty()) {
+					massPerNeighbor = excess / neighbors->size(); // Distribute equally across neighbors
 				}
-				else
-				{   //spread to a cell where that resource species was extinct
-					if(static_cast<TerrainCell*>((*neighborIt))->isInPatch()){
-						static_cast<TerrainCell*>((*neighborIt))->addResource(new Resource(currentSpecies, massPerNeighbor, (*it)->getResourceMaximumCapacity(), competitionAmongResourceSpecies, massRatio, (*it)->canSpread())); //, massPerNeighbor, this
-						auxResource = (*neighborIt)->getResource(currentSpecies);
+				
+				Resource* auxResource;
+
+				for (auto neighborIt = neighbors->begin(); neighborIt != neighbors->end(); neighborIt++)
+				{
+					auxResource = (*neighborIt)->getResource(currentSpecies);
+
+					double totBiomass = (*neighborIt)->getTotalResourceBiomass();
+
+					if (auxResource != NULL)
+					{
 						auxResource->addBiomass(massPerNeighbor, competition, maxCapacity, size, totBiomass);
 					}
-				
-				} 
-			}
+					else
+					{   //spread to a cell where that resource species was extinct
+						if(static_cast<TerrainCell*>((*neighborIt))->isInPatch()){
+							static_cast<TerrainCell*>((*neighborIt))->addResource(new Resource(currentSpecies, massPerNeighbor, (*it)->getResourceMaximumCapacity(), competitionAmongResourceSpecies, massRatio)); //, massPerNeighbor, this
+							auxResource = (*neighborIt)->getResource(currentSpecies);
+							auxResource->addBiomass(massPerNeighbor, competition, maxCapacity, size, totBiomass);
+						}
+					
+					} 
+				}
 
 			//Jordi attempt to free memory, it does not work
 			/* for (std::vector<TerrainCell *>::iterator neighborIt = neighbors->begin(); neighborIt != neighbors->end(); neighborIt++)
-			{
+		    {
 		
-			delete (*neighborIt); 
+		    delete (*neighborIt); 
 			
-			}*/ 
-			neighbors->clear();
-			delete neighbors; 
-		}
+		    }*/ 
+		    neighbors->clear();
+		    delete neighbors; 
+			}
+
 	}
 
 	for (auto it = markedForRemoval.begin(); it != markedForRemoval.end(); it++)
@@ -936,22 +937,15 @@ tuple<double, double, double> TerrainCell::getCellEvaluation(Animal* animalWhoIs
 //arthros and for dinos to force searching for preferred food items be animals or resource, prompts mobility 
 	double preferenceThresholdForEvaluation = 0.0;//defaults to 0 but it is a parameter to include in run_params.json
 	
-	unsigned int predatorAnimalSpecies = 0;
-
 	double totalPredatoryRiskEdibilityValue = 0.0;
 	double totalEdibilityValue = 0.0;
 	double totalConspecificBiomass = 0.0;
 	for(auto animalSpeciesIt = existingAnimalSpecies->begin(); animalSpeciesIt != existingAnimalSpecies->end(); animalSpeciesIt++)
 	{
 		AnimalSpecies* currentAnimalSpecies = *animalSpeciesIt;
-
 		if(currentAnimalSpecies->canEatAnimalSpecies(animalWhoIsEvaluating->getSpecies()))
 		{
-			predatorAnimalSpecies++;
-
 			auto activeAnimals = getAnimalsBySpecies(LifeStage::ACTIVE, currentAnimalSpecies);
-
-			double predatoryRiskEdibilityValue = 0.0;
 
 			for(auto &elem : activeAnimals) {
 				for (auto activeAnimalsIt = elem.first; activeAnimalsIt != elem.second; activeAnimalsIt++)
@@ -959,61 +953,43 @@ tuple<double, double, double> TerrainCell::getCellEvaluation(Animal* animalWhoIs
 					Animal* predatoryRiskAnimal = (*activeAnimalsIt);
 					if (predatoryRiskAnimal->canEatEdible(animalWhoIsEvaluating, ediblesHasTriedToPredate))
 					{
-						predatoryRiskEdibilityValue += predatoryRiskAnimal->calculatePredatoryRiskEdibilityValue(animalWhoIsEvaluating, muForPDF, sigmaForPDF, predationSpeedRatioAH, predationHunterVoracityAH, predationProbabilityDensityFunctionAH, predationSpeedRatioSAW, predationHunterVoracitySAW, predationProbabilityDensityFunctionSAW, encounterHuntedVoracitySAW, encounterHunterVoracitySAW, encounterVoracitiesProductSAW, encounterHunterSizeSAW, encounterHuntedSizeSAW, encounterProbabilityDensityFunctionSAW, encounterHuntedVoracityAH, encounterHunterVoracityAH, encounterVoracitiesProductAH, encounterHunterSizeAH, encounterHuntedSizeAH, encounterProbabilityDensityFunctionAH);
+						double predatoryRiskEdibilityValue = predatoryRiskAnimal->calculatePredatoryRiskEdibilityValue(animalWhoIsEvaluating, muForPDF, sigmaForPDF, predationSpeedRatioAH, predationHunterVoracityAH, predationProbabilityDensityFunctionAH, predationSpeedRatioSAW, predationHunterVoracitySAW, predationProbabilityDensityFunctionSAW, encounterHuntedVoracitySAW, encounterHunterVoracitySAW, encounterVoracitiesProductSAW, encounterHunterSizeSAW, encounterHuntedSizeSAW, encounterProbabilityDensityFunctionSAW, encounterHuntedVoracityAH, encounterHunterVoracityAH, encounterVoracitiesProductAH, encounterHunterSizeAH, encounterHuntedSizeAH, encounterProbabilityDensityFunctionAH);
+						totalPredatoryRiskEdibilityValue += predatoryRiskEdibilityValue;
 					}
 				}
 			}
-
-			double maximumPredatoryRiskEdibilityValue = currentAnimalSpecies->getK_Value() / (animalWhoIsEvaluating->calculateDryMass() * exp(1.0));
-
-			totalPredatoryRiskEdibilityValue += Math_Functions::linearInterpolate01(predatoryRiskEdibilityValue, maximumPredatoryRiskEdibilityValue);
 		}
-
 		if(animalWhoIsEvaluating->getSpecies()->canEatAnimalSpecies(currentAnimalSpecies))
 		{
 			auto activeAnimals = getAnimalsBySpecies(LifeStage::ACTIVE, currentAnimalSpecies);
-
-			double edibilityValue = 0.0;
 
 			for(auto &elem : activeAnimals) {
 				for (auto activeAnimalsIt = elem.first; activeAnimalsIt != elem.second; activeAnimalsIt++)
 				{
 					Animal* edibleAnimal = (*activeAnimalsIt);
-					if (animalWhoIsEvaluating->canEatEdible(edibleAnimal, ediblesHasTriedToPredate))
+					if (!animalWhoIsEvaluating->hasTriedToHunt(edibleAnimal, ediblesHasTriedToPredate))
 					{
-						if (!animalWhoIsEvaluating->hasTriedToHunt(edibleAnimal, ediblesHasTriedToPredate))
-						{
-							if(animalWhoIsEvaluating->getSpecies()->getEdiblePreference(edibleAnimal->getSpecies()->getId(), animalWhoIsEvaluating->getInstar(), edibleAnimal->getInstar()) > preferenceThresholdForEvaluation){	
-								edibilityValue += animalWhoIsEvaluating->calculateEdibilityValueWithMass(edibleAnimal, muForPDF, sigmaForPDF, predationSpeedRatioAH, predationHunterVoracityAH, predationProbabilityDensityFunctionAH, predationSpeedRatioSAW, predationHunterVoracitySAW, predationProbabilityDensityFunctionSAW, encounterHuntedVoracitySAW, encounterHunterVoracitySAW, encounterVoracitiesProductSAW, encounterHunterSizeSAW, encounterHuntedSizeSAW, encounterProbabilityDensityFunctionSAW, encounterHuntedVoracityAH, encounterHunterVoracityAH, encounterVoracitiesProductAH, encounterHunterSizeAH, encounterHuntedSizeAH, encounterProbabilityDensityFunctionAH);
-							}
 						
+						if(animalWhoIsEvaluating->getSpecies()->getEdiblePreference(edibleAnimal->getSpecies()) > preferenceThresholdForEvaluation){	
+							double edibilityValue = animalWhoIsEvaluating->calculateEdibilityValueWithMass(edibleAnimal, muForPDF, sigmaForPDF, predationSpeedRatioAH, predationHunterVoracityAH, predationProbabilityDensityFunctionAH, predationSpeedRatioSAW, predationHunterVoracitySAW, predationProbabilityDensityFunctionSAW, encounterHuntedVoracitySAW, encounterHunterVoracitySAW, encounterVoracitiesProductSAW, encounterHunterSizeSAW, encounterHuntedSizeSAW, encounterProbabilityDensityFunctionSAW, encounterHuntedVoracityAH, encounterHunterVoracityAH, encounterVoracitiesProductAH, encounterHunterSizeAH, encounterHuntedSizeAH, encounterProbabilityDensityFunctionAH);
+							totalEdibilityValue += edibilityValue;
 						}
+					
 					}
 				}
 			}
-
-			double maximumEdibilityValue = currentAnimalSpecies->getK_Value() / currentAnimalSpecies->getMaximumDryMassObserved();
-
-			totalEdibilityValue += Math_Functions::linearInterpolate01(edibilityValue, maximumEdibilityValue);
 		}
-
 		if(animalWhoIsEvaluating->getSpecies() == currentAnimalSpecies)
 		{
 			auto activeAnimals = getAnimalsBySpecies(LifeStage::ACTIVE, currentAnimalSpecies);
-
-			double conspecificBiomass = 0.0;
 
 			for(auto &elem : activeAnimals) {
 				for (auto activeAnimalsIt = elem.first; activeAnimalsIt != elem.second; activeAnimalsIt++)
 				{
 					Animal* conspecificAnimal = (*activeAnimalsIt);
-					conspecificBiomass += conspecificAnimal->getInterpolatedDryMass();
+					totalConspecificBiomass += conspecificAnimal->calculateDryMass();
 				}
 			}
-
-			double maximumConspecificBiomass = currentAnimalSpecies->getK_Value() / currentAnimalSpecies->getMaximumDryMassObserved();
-
-			totalConspecificBiomass += Math_Functions::linearInterpolate01(conspecificBiomass, maximumConspecificBiomass);
 		}
 	}
 
@@ -1021,18 +997,15 @@ tuple<double, double, double> TerrainCell::getCellEvaluation(Animal* animalWhoIs
 	for (auto it = edibleResourceSpecies->begin(); it != edibleResourceSpecies->end(); it++)
 	{
 		ResourceSpecies* currentResourceSpecies = *it;
-		Resource* resource = getResource(currentResourceSpecies);
-
+		Edible* resource = getResource(currentResourceSpecies);
 		//arthros to force search for preferred food
-		if(resource != NULL)
-		{
-			if(animalWhoIsEvaluating->canEatEdible(resource, ediblesHasTriedToPredate))
+			if(resource != NULL)
 			{
-				if(animalWhoIsEvaluating->getSpecies()->getEdiblePreference(resource->getSpecies()->getId(), animalWhoIsEvaluating->getInstar(), resource->getInstar()) > preferenceThresholdForEvaluation){	
+				if(animalWhoIsEvaluating->getSpecies()->getEdiblePreference(resource->getSpecies()) > preferenceThresholdForEvaluation){	
 					totalEdibilityValue += animalWhoIsEvaluating->calculateEdibilityValueWithMass(resource, muForPDF, sigmaForPDF, predationSpeedRatioAH, predationHunterVoracityAH, predationProbabilityDensityFunctionAH, predationSpeedRatioSAW, predationHunterVoracitySAW, predationProbabilityDensityFunctionSAW, encounterHuntedVoracitySAW, encounterHunterVoracitySAW, encounterVoracitiesProductSAW, encounterHunterSizeSAW, encounterHuntedSizeSAW, encounterProbabilityDensityFunctionSAW, encounterHuntedVoracityAH, encounterHunterVoracityAH, encounterVoracitiesProductAH, encounterHunterSizeAH, encounterHuntedSizeAH, encounterProbabilityDensityFunctionAH);
 				}
 			}
-		}
+		
 	}
 
 	return make_tuple(totalEdibilityValue, totalPredatoryRiskEdibilityValue, totalConspecificBiomass);
@@ -2017,7 +1990,7 @@ double MacroTerrainCell::turnEdibleIntoDryMassToBeEaten(Edible* targetEdible, in
 	Output::coutFlush("{} predated {}\n", predatorId, targetEdible->getId());
 	#endif
 
-	float targetEdibleProfitability = predatorEdible->getSpecies()->getEdibleProfitability(targetEdible->getSpecies()->getId(), predatorEdible->getInstar(), targetEdible->getInstar());
+	float targetEdibleProfitability = predatorEdible->getSpecies()->getEdibleProfitability(targetEdible->getSpecies());
 
 	//double dryMassToBeEaten = 0;
 

@@ -5,23 +5,13 @@
 using namespace std;
 
 
-unsigned int ResourceSpecies::resourceSpeciesCounter = 0;
-
-const id_type& ResourceSpecies::getResourceSpeciesCounter()
-{
-	return resourceSpeciesCounter;
-}
-
-
 ResourceSpecies::ResourceSpecies(const std::string& newScientificName, const double& ACTIVATION_ENERGY, const double& NORMALIZATION_B, const string& patchesFolderName) :
-	Species(newScientificName), resourceSpeciesId(resourceSpeciesCounter++)
+	Species(newScientificName)
 {
 	this->patchesFolderName = patchesFolderName;
 	maxR = -1; // Will always have positive values
 	this->ACTIVATION_ENERGY = ACTIVATION_ENERGY;
 	this->NORMALIZATION_B = NORMALIZATION_B;
-
-	setNumberOfInstars(1);
 
 	growingParabola = new Parabola();
 }
@@ -34,13 +24,6 @@ ResourceSpecies::~ResourceSpecies()
 bool ResourceSpecies::getVariableIntrinsicRateOfIncrease() const 
 { 
 	return variableIntrinsicRateOfIncrease; 
-}
-
-void ResourceSpecies::updateK_Value(const double &resourceMaximumCapacity)
-{
-	double newK_Value = convertToDryMass(resourceMaximumCapacity);
-
-	setK_Value((K_Value < newK_Value) ? newK_Value : K_Value);
 }
 
 double ResourceSpecies::getMaxRScale() const 

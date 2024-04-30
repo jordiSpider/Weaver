@@ -22,7 +22,7 @@ Animal::Animal(double factorEggMassFromMom, TerrainCellInterface* position, doub
 		WorldInterface* worldInterface, bool temporary) 
 	: Edible(mySpecies, temporary), genome(getSpecies()->getLoci(), getSpecies()->getRandomlyCreatedPositionsForChromosomes(), getSpecies()->getNumberOfChromosomes(), 
 	  getSpecies()->getNumberOfLociPerChromosome(), getSpecies()->getNumberOfChiasmasPerChromosome()), huntingMode(getSpecies()->getDefaultHuntingMode()),
-	  lifeStage(LifeStage::ACTIVE), worldInterface(worldInterface), variableTraits(getSpecies()->getTypeVariableTraits())
+	  lifeStage(LifeStage::UNBORN), worldInterface(worldInterface), variableTraits(getSpecies()->getTypeVariableTraits())
 {
 	if(!temporary) {
 		Animal::animalCounter++;
@@ -59,6 +59,17 @@ void Animal::setOtherAttributes(double eggMassAtBirth, TerrainCellInterface* pos
 	this->gender = gender;
 	this->predatedByID = -1;
 	this->setMassAtBirth(getSpecies()->getEggDryMass());
+
+	for(auto it = getSpecies()->getEdibleResourceSpecies()->begin(); it != getSpecies()->getEdibleResourceSpecies()->end(); it++)
+	{
+		biomassExperiencedPerSpecies[(*it)] = getSpecies()->getEdiblePreference((Species*)(*it));
+		meanExperiencesPerSpecies[(*it)] = getSpecies()->getEdiblePreference((Species*)(*it));
+	}
+	for(auto it = getSpecies()->getEdibleAnimalSpecies()->begin(); it != getSpecies()->getEdibleAnimalSpecies()->end(); it++)
+	{
+		biomassExperiencedPerSpecies[(*it)] = getSpecies()->getEdiblePreference((Species*)(*it));
+		meanExperiencesPerSpecies[(*it)] = getSpecies()->getEdiblePreference((Species*)(*it));
+	}
 
 	getSpecies()->initializeFixedTraits(traits);
 
@@ -355,8 +366,9 @@ void Animal::adjustTraits()
 	//OLD assim_ini = traits[Trait::assim];
 
     //Dinosaurs fixed part ini - dummy initialization, it changes in calculateGrowthCurves() or in forceMolting() and forceMolting2()
-	setDryMass(getSpecies()->getEggDryMass());
-
+	setTrait(Trait::energy_tank, tank_ini*pow(getSpecies()->getEggDryMass(),getSpecies()->getBetaScaleTank()));
+	
+	currentBodySize = getSpecies()->getEggDryMass()-getTrait(Trait::energy_tank);
 	//cout << traits[Trait::energy_tank] << endl;
 	//Dinosaurs fixed part end
 	
@@ -402,6 +414,7 @@ double Animal::getValueGrowthCurve(const double &age, const double &midpointValu
 			break;
 		}
 		case CurveType::Exponential: {
+			static_cast<ExponentialCurveParams* const>(growthCurveParams)->setValueTime0(lengthAtBirth);
 			break;
 		}
 		default: {
@@ -532,11 +545,8 @@ void Animal::tuneTraits(int timeStep, int timeStepsPerDay, float temperature, fl
  	if(simulType == SimulType::dinosaurs && instar < getSpecies()->getNumberOfInstars()){
 		if(calculateDryMass() > dinoMassPredicted){	
 			double dinoTankPredicted = tank_ini*pow(calculateDryMass(),getSpecies()->getBetaScaleTank());
-			
-			setDryMass(
-				getSpecies()->getAssignedForMolt()*dinoTankPredicted,
-				getSpecies()->getAssignedForMolt()*(calculateDryMass() - dinoTankPredicted)
-			);
+			currentBodySize = getSpecies()->getAssignedForMolt()*(calculateDryMass() - dinoTankPredicted);
+			setTrait(Trait::energy_tank, getSpecies()->getAssignedForMolt()*dinoTankPredicted);
 		}
 	 }
 	//end dinos2023
@@ -1094,14 +1104,8 @@ void Animal::tuneTraits(int timeStep, int timeStepsPerDay, float temperature, fl
 	//traits[Trait::energy_tank] < 0
 	if(getTrait(Trait::energy_tank) < 0) //Dinosaurs calculateDryMass() < minMassAtCurrentAge
 	{
-		if(getSpecies()->isSurviveWithoutFood()) {
-			setTrait(Trait::energy_tank,0.1);
-		}
-		else {
-			setNewLifeStage(LifeStage::STARVED, timeStep);
-		}
+		setNewLifeStage(LifeStage::STARVED, timeStep);
 	}
-	
 	/*else if(minMassAtCurrentAge >= finalJMaxVB+calculateDryMass())//Jordi note: I do not follow why this sentence //Gabi: prevents from crashing when the limits are reverted (due to disadjudments in the curve values)
 	{
 		//cout << "For species " << getSpecies()->getScientificName() << ": maxKplasticityForVonBertalanfy and minKplasticityForVonBertalanfy are not set correctly. Modify these values and re-run..." << endl;
@@ -1421,10 +1425,9 @@ void Animal::grow(int timeStep, int timeStepsPerDay)
 			cout << next_tank << endl;  */
 			//exit(-1);
 		
-			setDryMass(
-				next_tank + excessInvestment*(1-getSpecies()->getExcessInvestInSize()),
-				next_size + excessInvestment*getSpecies()->getExcessInvestInSize()
-			);
+
+	 		currentBodySize = next_size + excessInvestment*getSpecies()->getExcessInvestInSize();
+			setTrait(Trait::energy_tank, next_tank + excessInvestment*(1-getSpecies()->getExcessInvestInSize()));
 			
 			tankAtGrowth = getTrait(Trait::energy_tank);
 
@@ -2065,48 +2068,49 @@ void Animal::isReadyToResumeFromDiapauseOrIncreaseDiapauseTimeSteps(float relati
 	}
 }
 
-double Animal::getInterpolatedHuntedVoracity(double huntedVoracity)
+double Animal::getNormalizedHuntedVoracity(double huntedVoracity)
 {
-	return Math_Functions::linearInterpolate01(huntedVoracity,getSpecies()->getMinVorHunted(),getSpecies()->getMaxVorHunted()); 
+	return Math_Functions::linearInterpolate(huntedVoracity,getSpecies()->getMinVorHunted(),getSpecies()->getMaxVorHunted(),0,1); 
 	//return ((huntedVoracity - getSpecies()->getMeanVorHunted()) / getSpecies()->getSdVoracityHunted());
 }
 
-double Animal::getInterpolatedHunterVoracity()
+double Animal::getNormalizedHunterVoracity()
 {
-	return Math_Functions::linearInterpolate01(getTrait(Trait::voracity),getSpecies()->getMinVorHunter(),getSpecies()->getMaxVorHunter()); 
+	return Math_Functions::linearInterpolate(getTrait(Trait::voracity),getSpecies()->getMinVorHunter(),getSpecies()->getMaxVorHunter(),0,1); 
 	//return ((traits[Trait::voracity] - getSpecies()->getMeanVoracityHunter()) / getSpecies()->getSdVoracityHunter());
 }
 
-double Animal::getInterpolatedVoracityProduct(double huntedVoracity)
+double Animal::getNormalizedVoracityProduct(double huntedVoracity)
 {
-	return Math_Functions::linearInterpolate01(getTrait(Trait::voracity)* huntedVoracity,getSpecies()->getMinVorXVor(),getSpecies()->getMaxVorXVor()); 
+	
+	return Math_Functions::linearInterpolate(getTrait(Trait::voracity)* huntedVoracity,getSpecies()->getMinVorXVor(),getSpecies()->getMaxVorXVor(),0,1); 
 	/*return ((traits[Trait::voracity] * huntedVoracity - getSpecies()->getMeanVoracityXVoracity())
 			/ getSpecies()->getSdVoracityXVoracity());*/
 }
 
-double Animal::getInterpolatedHuntedBodySize(double huntedBodySize)
+double Animal::getNormalizedHuntedBodySize(double huntedBodySize)
 {
-	return Math_Functions::linearInterpolate01(huntedBodySize,getSpecies()->getMinSizeHunted(),getSpecies()->getMaxSizeHunted()); 
+	return Math_Functions::linearInterpolate(huntedBodySize,getSpecies()->getMinSizeHunted(),getSpecies()->getMaxSizeHunted(),0,1); 
 	//return ((huntedBodySize - getSpecies()->getMeanSizeHunted()) / getSpecies()->getSdSizeHunted());
 }
 
-double Animal::getInterpolatedHunterBodySize()
+double Animal::getNormalizedHunterBodySize()
 {
-	return Math_Functions::linearInterpolate01(currentBodySize,getSpecies()->getMinSizeHunter(),getSpecies()->getMaxSizeHunter()); 
+	return Math_Functions::linearInterpolate(currentBodySize,getSpecies()->getMinSizeHunter(),getSpecies()->getMaxSizeHunter(),0,1); 
 	//return ((currentBodySize - getSpecies()->getMeanSizeHunter()) / getSpecies()->getSdSizeHunter());
 }
 
-double Animal::getInterpolatedPDF(double probabilityDensityFunction)
+double Animal::getNormalizedPDF(double probabilityDensityFunction)
 {
-	return Math_Functions::linearInterpolate01(probabilityDensityFunction,getSpecies()->getMinProbabilityDensityFunction(),getSpecies()->getMaxProbabilityDensityFunction());
+	return Math_Functions::linearInterpolate(probabilityDensityFunction,getSpecies()->getMinProbabilityDensityFunction(),getSpecies()->getMaxProbabilityDensityFunction(),0,1);
 	/*return ((probabilityDensityFunction - getSpecies()->getMeanProbabilityDensityFunction())
 			/ getSpecies()->getSdProbabilityDensityFunction());*/
 }
 
-double Animal::getInterpolatedSpeedRatio(double huntedSpeed)
+double Animal::getNormalizedSpeedRatio(double huntedSpeed)
 {
 
-	return Math_Functions::linearInterpolate01(getTrait(Trait::speed)/huntedSpeed,getSpecies()->getMinSpeedRatio(),getSpecies()->getMaxSpeedRatio());
+	return Math_Functions::linearInterpolate(getTrait(Trait::speed)/huntedSpeed,getSpecies()->getMinSpeedRatio(),getSpecies()->getMaxSpeedRatio(),0,1);
 	/*return (((traits[Trait::speed] / huntedSpeed) - getSpecies()->getMeanSpeedRatio())
 			/ getSpecies()->getSdSpeedRatio());*/
 
@@ -2661,7 +2665,8 @@ void Animal::calculateGrowthCurves(float temperature, ostream& tuneTraitsFile, b
 		eggDryMassAtBirth = min(eggDryMassAtBirth, maxMassAtCurrentAge);
 		eggDryMassAtBirth = max(eggDryMassAtBirth, minMassAtCurrentAge);
 
-		setDryMass(eggDryMassAtBirth);
+		setTrait(Trait::energy_tank, tank_ini * pow(eggDryMassAtBirth, getSpecies()->getBetaScaleTank()));
+		currentBodySize = eggDryMassAtBirth - getTrait(Trait::energy_tank);
 	}
 
 
@@ -2873,7 +2878,8 @@ exit(-1);
 
 		expectedMassAtCurrentAge = expectedMassAtCurrentAge + expectedMassAtCurrentAge*thisAnimalTempSizeRuleConstant*degreesDifference;
 
-		setDryMass(expectedMassAtCurrentAge);
+		setTrait(Trait::energy_tank, tank_ini * pow(expectedMassAtCurrentAge, getSpecies()->getBetaScaleTank()));
+		currentBodySize = expectedMassAtCurrentAge - getTrait(Trait::energy_tank);
 
 		//to force initialization in juveniles 
 		//to force initialization in juveniles - arthro - the values are dummy and won't be used unitl updated 
@@ -2897,7 +2903,8 @@ exit(-1);
 
 		expectedMassAtCurrentAge = expectedMassAtCurrentAge + expectedMassAtCurrentAge*thisAnimalTempSizeRuleConstant*degreesDifference;
 
-		setDryMass(expectedMassAtCurrentAge);
+		setTrait(Trait::energy_tank, tank_ini * pow(expectedMassAtCurrentAge, getSpecies()->getBetaScaleTank()));
+		currentBodySize = expectedMassAtCurrentAge - getTrait(Trait::energy_tank);
 
 
 		//TODO ADD HERE ADJUSTMENTS FOR ENERGY TANK WHEN FORCING ADULTS!!
@@ -3010,22 +3017,6 @@ exit(-1);
 	return temperatureCycleTemperature;
 }
 
-
-void Animal::setDryMass(const double &newDryMass)
-{
-	setTrait(Trait::energy_tank, tank_ini * pow(newDryMass, getSpecies()->getBetaScaleTank()));
-	currentBodySize = newDryMass - getTrait(Trait::energy_tank);
-
-	getSpecies()->updateMaximumDryMassObserved(newDryMass);
-}
-
-void Animal::setDryMass(const double &newEnergyTank, const double &newCurrentBodySize)
-{
-	setTrait(Trait::energy_tank, newEnergyTank);
-	currentBodySize = newCurrentBodySize;
-
-	getSpecies()->updateMaximumDryMassObserved(calculateDryMass());
-}
 
 
 //The function below is to grow the animals that need to be at a certain instar at the beginning of the simulation
@@ -3211,7 +3202,8 @@ exit(-1);
 
 		expectedMassAtCurrentAge = expectedMassAtCurrentAge + expectedMassAtCurrentAge*thisAnimalTempSizeRuleConstant*degreesDifference;
 
-		setDryMass(expectedMassAtCurrentAge);
+		setTrait(Trait::energy_tank, tank_ini * pow(expectedMassAtCurrentAge, getSpecies()->getBetaScaleTank()));
+		currentBodySize = expectedMassAtCurrentAge - getTrait(Trait::energy_tank);
 
 		//to force initialization in juveniles - arthro - the values are dummy and won't be used unitl updated 
 		double daysForPseudoTargetReproduction;
@@ -3233,7 +3225,8 @@ exit(-1);
 
 		expectedMassAtCurrentAge = expectedMassAtCurrentAge + expectedMassAtCurrentAge*thisAnimalTempSizeRuleConstant*degreesDifference;
 
-		setDryMass(expectedMassAtCurrentAge);
+		setTrait(Trait::energy_tank, tank_ini * pow(expectedMassAtCurrentAge, getSpecies()->getBetaScaleTank()));
+		currentBodySize = expectedMassAtCurrentAge - getTrait(Trait::energy_tank);
 
 
 		//TODO ADD HERE ADJUSTMENTS FOR ENERGY TANK WHEN FORCING ADULTS!!
@@ -3428,14 +3421,16 @@ TerrainCellInterface* Animal::move(int timeStep, int timeStepsPerDay, ostream& e
 
 			//Mature MALES will move now even when they are sated
 
-
-			if(getSpecies()->isForceQuitCell()) {
-				if(getTrait(Trait::search_area) < getPosition()->getSize()) {
-					setTrait(Trait::search_area, 1.1*getPosition()->getSize());
-				}
+			// If the animal has enough energy to move
+			if(calculateDryMass() > getSpecies()->getQuitCellThreshold())
+			{
+				canMove = true;
 			}
-
-			if(getTrait(Trait::search_area) >= getPosition()->getSize()) {
+			else if(stepsAttempted < 1) // If you do not have enough energy but have not yet made an attempt (step) to move
+			{
+				double addSearchArea = Random::randomUniform(0.5, 1.0); //arthro - revise for dinos - very small animals can double their search area so they quite the 10 mm cells
+				setTrait(Trait::search_area, getTrait(Trait::search_area) + addSearchArea*getTrait(Trait::search_area));
+				//cout << "whe are here" << endl;
 				canMove = true;
 			}
 
@@ -3807,7 +3802,7 @@ bool Animal::searchAnimalsAndResourceToEat(int timeStep, int timeStepsPerDay, do
 		<< (*ediblesIt).second.second->calculateDryMass() << "\t"
 		<< (*ediblesIt).second.first->calculateEncounterProbability((*ediblesIt).second.second, muForPDF, sigmaForPDF, encounterHuntedVoracitySAW, encounterHunterVoracitySAW, encounterVoracitiesProductSAW, encounterHunterSizeSAW, encounterHuntedSizeSAW, encounterProbabilityDensityFunctionSAW, encounterHuntedVoracityAH, encounterHunterVoracityAH, encounterVoracitiesProductAH, encounterHunterSizeAH, encounterHuntedSizeAH, encounterProbabilityDensityFunctionAH) << "\t"
 		<< (*ediblesIt).second.first->calculatePredationProbability((*ediblesIt).second.second, false, muForPDF, sigmaForPDF, predationSpeedRatioAH, predationHunterVoracityAH, predationProbabilityDensityFunctionAH, predationSpeedRatioSAW, predationHunterVoracitySAW, predationProbabilityDensityFunctionSAW) << "\t"
-		<< (*ediblesIt).second.first->getSpecies()->getEdiblePreference((*ediblesIt).second.second->getSpecies()->getId(), (*ediblesIt).second.first->getInstar(), (*ediblesIt).second.second->getInstar()) << "\t"
+		<< (*ediblesIt).second.first->getSpecies()->getEdiblePreference((*ediblesIt).second.second->getSpecies()) << "\t"
 		<< (*ediblesIt).second.first->getMeanExperience((*ediblesIt).second.second->getSpecies()) << "\t"
 		<< (*ediblesIt).first << endl;
 	}
@@ -4039,7 +4034,6 @@ list<Animal*> * Animal::breedAsexually( int objectiveEggsNumber,int timeStep, in
 		{
 			offspring->push_back(newOffspring);
 			newOffspring->doDefinitive();
-			newOffspring->setExperiencePerSpecies();
 		}
 		else // non-viable offspring -> kill it
 		{
@@ -4176,7 +4170,6 @@ list<Animal*> * Animal::breedSexually( int objectiveEggsNumber,int timeStep, int
 		{
 			offspring->push_back(newOffspring);
 			newOffspring->doDefinitive();
-			newOffspring->setExperiencePerSpecies();
 		}
 		else // non-viable offspring -> kill it
 		{
@@ -4236,6 +4229,14 @@ list<Animal*> * Animal::breed(int timeStep, int timeStepsPerDay, float temperatu
 	return offspring;
 }
 
+bool cellCompare(const std::pair<double, TerrainCellInterface*>& firstElem, const std::pair<double, TerrainCellInterface*>& secondElem) {
+  return firstElem.first > secondElem.first;
+}
+
+bool cellEqual(const std::pair<double, TerrainCellInterface*>& firstElem, const std::pair<double, TerrainCellInterface*>& secondElem) {
+  return firstElem.first > secondElem.first;
+}
+
 TerrainCellInterface* Animal::searchTargetToTravelTo(bool &hasEvaluatedTheWholeWorld, std::list<TerrainCellInterface *> &cellsTrackedToday, const std::list<Edible*> &ediblesHasTriedToPredate, unsigned int worldDepth, unsigned int worldLength, unsigned int worldWidth, double muForPDF, double sigmaForPDF, double predationSpeedRatioAH, double predationHunterVoracityAH, double predationProbabilityDensityFunctionAH, double predationSpeedRatioSAW, double predationHunterVoracitySAW, double predationProbabilityDensityFunctionSAW, double encounterHuntedVoracitySAW, double encounterHunterVoracitySAW, double encounterVoracitiesProductSAW, double encounterHunterSizeSAW, double encounterHuntedSizeSAW, double encounterProbabilityDensityFunctionSAW, double encounterHuntedVoracityAH, double encounterHunterVoracityAH, double encounterVoracitiesProductAH, double encounterHunterSizeAH, double encounterHuntedSizeAH, double encounterProbabilityDensityFunctionAH)
 {
 	TerrainCellInterface* targetNeighborToTravelTo = position;
@@ -4264,52 +4265,133 @@ TerrainCellInterface* Animal::searchTargetToTravelTo(bool &hasEvaluatedTheWholeW
 			}
 			///////////////////////////////////////
 
+			double closestNeighborDistance = DBL_MAX;
 
-			vector<TerrainCellEvaluation> bestEvaluations;
-			bestEvaluations.push_back(TerrainCellEvaluation());
-
+			//neighbors here DOES NOT include the animal's current position
+			vector<TerrainCellInterface*>* possibleTargetNeighbors = new vector<TerrainCellInterface*>();
 			for (vector<TerrainCellInterface*>::iterator neighborsIt = neighbors->begin(); neighborsIt != neighbors->end(); neighborsIt++)
 			{
 				TerrainCellInterface* currentTargetNeighbor = (*neighborsIt);
-
-				bool availableCurrentTargetNeighbor = true;
-
+				bool resourceAvailableOnCurrentTargetNeighbor = false;
 				if (isMature() && gender == AnimalSpecies::GENDERS::MALE)
 				{
-					if(currentTargetNeighbor->getNumberOfMatureFemales(this) == 0)
+					if(currentTargetNeighbor->getNumberOfMatureFemales(this) > 0)
 					{
-						availableCurrentTargetNeighbor = false;
+						resourceAvailableOnCurrentTargetNeighbor = true;
 					}
 				}
-
-				if(availableCurrentTargetNeighbor)
+				else
 				{
 					double edibilityValue, predatoryRiskEdibilityValue, conspecificBiomass;
 					tie(edibilityValue, predatoryRiskEdibilityValue, conspecificBiomass) = currentTargetNeighbor->getCellEvaluation(this, ediblesHasTriedToPredate, muForPDF, sigmaForPDF, predationSpeedRatioAH, predationHunterVoracityAH, predationProbabilityDensityFunctionAH, predationSpeedRatioSAW, predationHunterVoracitySAW, predationProbabilityDensityFunctionSAW, encounterHuntedVoracitySAW, encounterHunterVoracitySAW, encounterVoracitiesProductSAW, encounterHunterSizeSAW, encounterHuntedSizeSAW, encounterProbabilityDensityFunctionSAW, encounterHuntedVoracityAH, encounterHunterVoracityAH, encounterVoracitiesProductAH, encounterHunterSizeAH, encounterHuntedSizeAH, encounterProbabilityDensityFunctionAH);
-					
-					TerrainCellEvaluation currentEvaluation(getSpecies(), currentTargetNeighbor, edibilityValue, predatoryRiskEdibilityValue, conspecificBiomass);
-
-					if(bestEvaluations.front() == currentEvaluation) {
-						bestEvaluations.push_back(currentEvaluation);
+					if((edibilityValue + conspecificBiomass) > 0.0)
+					{
+						resourceAvailableOnCurrentTargetNeighbor = true;
 					}
-					else if(bestEvaluations.front() < currentEvaluation) {
-						bestEvaluations.clear();
+				}
 
-						bestEvaluations.push_back(currentEvaluation);
+				if(resourceAvailableOnCurrentTargetNeighbor)
+				{
+					possibleTargetNeighbors->push_back(currentTargetNeighbor);
+					double distanceToCurrentNeighbor = position->getDistanceToCell(currentTargetNeighbor);
+					if (distanceToCurrentNeighbor < closestNeighborDistance && distanceToCurrentNeighbor > 0)
+					{
+						closestNeighborDistance = distanceToCurrentNeighbor;
+						//targetNeighborToTravelTo = (*neighborsIt);
 					}
 				}
 			}
 
-			if(bestEvaluations.front().cell != nullptr)
+			//cout << getSpecies()->getScientificName() << "#" << id << ": position = " << position->getX() << "-" << position->getY() << "-" << position->getZ() << "; neighbors size = " << neighbors->size() << "; possibleTargetNeighbors size = " << possibleTargetNeighbors->size() << endl << flush;
+
+			double bestCellEvaluation = DBL_MIN;
+			//neighbors here DOES include the animal's current position
+			vector<pair<double, TerrainCellInterface*>> neighborsByEdibilityEvaluation;
+			vector<pair<double, TerrainCellInterface*>> neighborsByPredatoryRiskEdibilityEvaluation;
+			vector<pair<double, TerrainCellInterface*>> neighborsByConspecificEvaluation;
+			for (vector<TerrainCellInterface*>::iterator neighborsIt = possibleTargetNeighbors->begin(); neighborsIt != possibleTargetNeighbors->end(); neighborsIt++)
 			{
-				if(bestEvaluations.size() > 1) {
-					targetNeighborToTravelTo = bestEvaluations[Random::randomIndex(bestEvaluations.size())].cell;
+				TerrainCellInterface* currentTargetNeighbor = (*neighborsIt);
+				double distanceToCurrentNeighbor = position->getDistanceToCell(currentTargetNeighbor);
+				if (distanceToCurrentNeighbor == closestNeighborDistance || distanceToCurrentNeighbor == 0)
+				{
+					double edibilityValue, predatoryRiskEdibilityValue, conspecificBiomass;
+					tie(edibilityValue, predatoryRiskEdibilityValue, conspecificBiomass) = currentTargetNeighbor->getCellEvaluation(this, ediblesHasTriedToPredate, muForPDF, sigmaForPDF, predationSpeedRatioAH, predationHunterVoracityAH, predationProbabilityDensityFunctionAH, predationSpeedRatioSAW, predationHunterVoracitySAW, predationProbabilityDensityFunctionSAW, encounterHuntedVoracitySAW, encounterHunterVoracitySAW, encounterVoracitiesProductSAW, encounterHunterSizeSAW, encounterHuntedSizeSAW, encounterProbabilityDensityFunctionSAW, encounterHuntedVoracityAH, encounterHunterVoracityAH, encounterVoracitiesProductAH, encounterHunterSizeAH, encounterHuntedSizeAH, encounterProbabilityDensityFunctionAH);
+					neighborsByEdibilityEvaluation.push_back(make_pair(edibilityValue, currentTargetNeighbor));
+					neighborsByPredatoryRiskEdibilityEvaluation.push_back(make_pair(predatoryRiskEdibilityValue, currentTargetNeighbor));
+					neighborsByConspecificEvaluation.push_back(make_pair(conspecificBiomass, currentTargetNeighbor));
 				}
-				else {
-					targetNeighborToTravelTo = bestEvaluations.front().cell;
+			}
+
+
+			// Sorting the elements by edibility and conspecific evaluations
+			std::sort(neighborsByEdibilityEvaluation.begin(), neighborsByEdibilityEvaluation.end(), cellCompare);
+			std::sort(neighborsByPredatoryRiskEdibilityEvaluation.begin(), neighborsByPredatoryRiskEdibilityEvaluation.end(), cellCompare);
+			std::sort(neighborsByConspecificEvaluation.begin(), neighborsByConspecificEvaluation.end(), cellCompare);
+
+			vector<pair<double, TerrainCellInterface*>> neighborsByWeighedEvaluation;
+			for (vector<pair<double, TerrainCellInterface*>>::iterator edibilityIt = neighborsByEdibilityEvaluation.begin(); edibilityIt != neighborsByEdibilityEvaluation.end(); edibilityIt++)
+			{
+				TerrainCellInterface* currentTargetNeighbor = (*edibilityIt).second;
+				// Normalize values to compare in the same unit. We use the min and max of all the considered terrain cells
+				double cellEdibilityEvaluation = Math_Functions::linearInterpolate((*edibilityIt).first,
+																	neighborsByEdibilityEvaluation.back().first,
+																	neighborsByEdibilityEvaluation.front().first,
+																	0.0,
+																	1.0);
+				double cellPredatoryRiskEdibilityEvaluation = 0.0;
+				for (vector<pair<double, TerrainCellInterface*>>::iterator predatoryRiskEdibilityIt = neighborsByPredatoryRiskEdibilityEvaluation.begin(); predatoryRiskEdibilityIt != neighborsByPredatoryRiskEdibilityEvaluation.end(); predatoryRiskEdibilityIt++)
+				{
+					if(currentTargetNeighbor == (*predatoryRiskEdibilityIt).second)
+					{
+						// Normalize values to compare in the same unit. We use the min and max of all the considered terrain cells
+						cellPredatoryRiskEdibilityEvaluation = Math_Functions::linearInterpolate((*predatoryRiskEdibilityIt).first,
+																				neighborsByPredatoryRiskEdibilityEvaluation.back().first,
+																				neighborsByPredatoryRiskEdibilityEvaluation.front().first,
+																				0.0,
+																				1.0);
+					}
 				}
+
+				double cellConspecificEvaluation = 0.0;
+				for (vector<pair<double, TerrainCellInterface*>>::iterator conspecificIt = neighborsByConspecificEvaluation.begin(); conspecificIt != neighborsByConspecificEvaluation.end(); conspecificIt++)
+				{
+					if(currentTargetNeighbor == (*conspecificIt).second)
+					{
+						// Normalize values to compare in the same unit. We use the min and max of all the considered terrain cells
+						cellConspecificEvaluation = Math_Functions::linearInterpolate((*conspecificIt).first,
+																		neighborsByConspecificEvaluation.back().first,
+																		neighborsByConspecificEvaluation.front().first,
+																		0.0,
+																		1.0);
+					}
+				}
+
+				double cellEdibilityAndRiskEvaluation = getSpecies()->getCellEvaluationBiomass() * cellEdibilityEvaluation
+										- getSpecies()->getCellEvaluationRisk() * cellPredatoryRiskEdibilityEvaluation;
+
+				double cellConspecificAndAntiEvaluation = getSpecies()->getCellEvaluationProConspecific() * cellConspecificEvaluation
+										- getSpecies()->getCellEvaluationAntiConspecific() * pow(cellConspecificEvaluation,2);
+
+				double weighedEdibility = cellEdibilityAndRiskEvaluation * (1.0 - getSpecies()->getConspecificWeighing());
+				double weighedConspecific = cellConspecificAndAntiEvaluation * getSpecies()->getConspecificWeighing();
+				double weighedEvaluation = (weighedEdibility + weighedConspecific);
+				neighborsByWeighedEvaluation.push_back(make_pair(weighedEvaluation, currentTargetNeighbor));
+			}
+			neighborsByEdibilityEvaluation.clear();
+			neighborsByConspecificEvaluation.clear();
+
+			int size = neighborsByWeighedEvaluation.size();
+			std::sort(neighborsByWeighedEvaluation.begin(), neighborsByWeighedEvaluation.end(), cellCompare);
+			if(!neighborsByWeighedEvaluation.empty())
+			{
+				targetNeighborToTravelTo = neighborsByWeighedEvaluation.front().second;
 				neighbors->erase(std::remove(neighbors->begin(), neighbors->end(), targetNeighborToTravelTo), neighbors->end());
 			}
+			neighborsByWeighedEvaluation.clear();
+
+			possibleTargetNeighbors->clear();
+			delete possibleTargetNeighbors;
 
 			MacroTerrainCell* macroCell = dynamic_cast<MacroTerrainCell*>(getPosition());
 
@@ -4525,18 +4607,18 @@ double Animal::calculatePredationProbability(Edible* edibleAnimal, bool retaliat
 	double predationProbability = 1;
 	if(edibleAnimal->getSpecies()->isMobile())
 	{
-		double interpolatedHunterVoracity = getInterpolatedHunterVoracity();
+		double normalizedHunterVoracity = getNormalizedHunterVoracity();
 
-		double interpolatedSpeedRatio;
+		double normalizedSpeedRatio;
 
 		if(edibleAnimal->getSpeed()>0.0){
-		  interpolatedSpeedRatio = getInterpolatedSpeedRatio(edibleAnimal->getSpeed());
+		  normalizedSpeedRatio = getNormalizedSpeedRatio(edibleAnimal->getSpeed());
 	    }else{//this is to circunvent NANs - the ratio is made 1
-	      interpolatedSpeedRatio = getInterpolatedSpeedRatio(getTrait(Trait::speed));
+	      normalizedSpeedRatio = getNormalizedSpeedRatio(getTrait(Trait::speed));
 	    }
 
 		double probabilityDensityFunction = exp(-0.5 * pow((log(calculateWetMass()/edibleAnimal->calculateWetMass()) - muForPDF) / sigmaForPDF, 2)) / (sigmaForPDF * sqrt(2*PI));
-		double interpolatedPDF = getInterpolatedPDF(probabilityDensityFunction);
+		double normalizedPDF = getNormalizedPDF(probabilityDensityFunction);
 
 /* 		if(getSpecies()->getScientificName()=="Tyrannosaurus_sp"){
 			cout << probabilityDensityFunction << endl;
@@ -4548,17 +4630,17 @@ double Animal::calculatePredationProbability(Edible* edibleAnimal, bool retaliat
 		if (getHuntingMode() == HuntingMode::active_hunting || retaliation)
 		{
 			predationProbability = 
-					(predationSpeedRatioAH * interpolatedSpeedRatio +
-					predationHunterVoracityAH * interpolatedHunterVoracity +
-					predationProbabilityDensityFunctionAH * interpolatedPDF)/3;
+					(predationSpeedRatioAH * normalizedSpeedRatio +
+					predationHunterVoracityAH * normalizedHunterVoracity +
+					predationProbabilityDensityFunctionAH * normalizedPDF)/3;
 
 		}
 		else if (getHuntingMode() == HuntingMode::sit_and_wait)
 		{
 			predationProbability = 
-					(predationSpeedRatioSAW * interpolatedSpeedRatio + //##spd_ratio does not matter anymore
-					predationHunterVoracitySAW * interpolatedHunterVoracity +
-					predationProbabilityDensityFunctionSAW * interpolatedPDF)/3;
+					(predationSpeedRatioSAW * normalizedSpeedRatio + //##spd_ratio does not matter anymore
+					predationHunterVoracitySAW * normalizedHunterVoracity +
+					predationProbabilityDensityFunctionSAW * normalizedPDF)/3;
 		}
 	}
 
@@ -4633,7 +4715,7 @@ bool Animal::predateEdible(Edible* edibleToBePredated, int timeStep, bool retali
 		eatenToday++;
 		huntWasSuccessful = true;
 
-		edibleToBePredatedProfitability = getSpecies()->getEdibleProfitability(edibleToBePredated->getSpecies()->getId(), getInstar(), edibleToBePredated->getInstar());
+		edibleToBePredatedProfitability = getSpecies()->getEdibleProfitability(edibleToBePredated->getSpecies());
 
 		//arthro and for dinos
 	    double forNotToDepleteResource = getTrait(Trait::voracity)/(edibleToBePredatedProfitability+getTrait(Trait::assim));
@@ -4686,31 +4768,6 @@ bool Animal::predateEdible(Edible* edibleToBePredated, int timeStep, bool retali
 
 
 	return huntWasSuccessful;
-}
-
-void Animal::setExperiencePerSpecies()
-{
-	/*
-		Se debe llamar a esta función después de cada forceMolting o después de la 
-		creación de los animales en el breed. Ya que debe estar definido el atributo "instar"
-		para fijar la experiencia de cada especie
-	*/
-
-	for(auto it = getSpecies()->getEdibleResourceSpecies()->begin(); it != getSpecies()->getEdibleResourceSpecies()->end(); it++)
-	{
-		double preference = getSpecies()->getEdiblePreference((*it)->getId(), getInstar());
-		
-		biomassExperiencedPerSpecies[(*it)] = preference;
-		meanExperiencesPerSpecies[(*it)] = preference;
-	}
-
-	for(auto it = getSpecies()->getEdibleAnimalSpecies()->begin(); it != getSpecies()->getEdibleAnimalSpecies()->end(); it++)
-	{
-		double preference = getSpecies()->getEdiblePreference((*it)->getId(), getInstar());
-
-		biomassExperiencedPerSpecies[(*it)] = preference;
-		meanExperiencesPerSpecies[(*it)] = preference;
-	}
 }
 
 void Animal::updateBiomassExperiencedPerSpecies(int timeStepsPerDay)
@@ -4868,16 +4925,11 @@ void Animal::assimilateLastHuntedAnimalAndComputeHandlingTime()
 	}
 }
 
-const double Animal::getInterpolatedDryMass() const
-{
-	return Math_Functions::linearInterpolate01(calculateDryMass(), getSpecies()->getMaximumDryMassObserved());
-}
-
 double Animal::calculatePredatoryRiskEdibilityValue(Edible* edibleToBeEvaluated, double muForPDF, double sigmaForPDF, double predationSpeedRatioAH, double predationHunterVoracityAH, double predationProbabilityDensityFunctionAH, double predationSpeedRatioSAW, double predationHunterVoracitySAW, double predationProbabilityDensityFunctionSAW, double encounterHuntedVoracitySAW, double encounterHunterVoracitySAW, double encounterVoracitiesProductSAW, double encounterHunterSizeSAW, double encounterHuntedSizeSAW, double encounterProbabilityDensityFunctionSAW, double encounterHuntedVoracityAH, double encounterHunterVoracityAH, double encounterVoracitiesProductAH, double encounterHunterSizeAH, double encounterHuntedSizeAH, double encounterProbabilityDensityFunctionAH)
 {
 	double edibilityValue = (calculateEncounterProbability(edibleToBeEvaluated, muForPDF, sigmaForPDF, encounterHuntedVoracitySAW, encounterHunterVoracitySAW, encounterVoracitiesProductSAW, encounterHunterSizeSAW, encounterHuntedSizeSAW, encounterProbabilityDensityFunctionSAW, encounterHuntedVoracityAH, encounterHunterVoracityAH, encounterVoracitiesProductAH, encounterHunterSizeAH, encounterHuntedSizeAH, encounterProbabilityDensityFunctionAH)
 			+ calculatePredationProbability(edibleToBeEvaluated, false, muForPDF, sigmaForPDF, predationSpeedRatioAH, predationHunterVoracityAH, predationProbabilityDensityFunctionAH, predationSpeedRatioSAW, predationHunterVoracitySAW, predationProbabilityDensityFunctionSAW)
-			+ getSpecies()->getEdiblePreference(edibleToBeEvaluated->getSpecies()->getId(), getInstar(), edibleToBeEvaluated->getInstar())
+			+ getSpecies()->getEdiblePreference(edibleToBeEvaluated->getSpecies())
 			+ getMeanExperience(edibleToBeEvaluated->getSpecies()))/4;
 
 	return edibilityValue;
@@ -4887,7 +4939,7 @@ double Animal::calculateEdibilityValue(Edible* edibleToBeEvaluated, double muFor
 {
 	double edibilityValue = (calculateEncounterProbability(edibleToBeEvaluated, muForPDF, sigmaForPDF, encounterHuntedVoracitySAW, encounterHunterVoracitySAW, encounterVoracitiesProductSAW, encounterHunterSizeSAW, encounterHuntedSizeSAW, encounterProbabilityDensityFunctionSAW, encounterHuntedVoracityAH, encounterHunterVoracityAH, encounterVoracitiesProductAH, encounterHunterSizeAH, encounterHuntedSizeAH, encounterProbabilityDensityFunctionAH)
 			+ calculatePredationProbability(edibleToBeEvaluated, false, muForPDF, sigmaForPDF, predationSpeedRatioAH, predationHunterVoracityAH, predationProbabilityDensityFunctionAH, predationSpeedRatioSAW, predationHunterVoracitySAW, predationProbabilityDensityFunctionSAW)
-			+ getSpecies()->getEdiblePreference(edibleToBeEvaluated->getSpecies()->getId(), getInstar(), edibleToBeEvaluated->getInstar())
+			+ getSpecies()->getEdiblePreference(edibleToBeEvaluated->getSpecies())
 			+ getMeanExperience(edibleToBeEvaluated->getSpecies()))/4;
 
 	return edibilityValue;
@@ -4895,10 +4947,10 @@ double Animal::calculateEdibilityValue(Edible* edibleToBeEvaluated, double muFor
 
 double Animal::calculateEdibilityValueWithMass(Edible* edibleToBeEvaluated, double muForPDF, double sigmaForPDF, double predationSpeedRatioAH, double predationHunterVoracityAH, double predationProbabilityDensityFunctionAH, double predationSpeedRatioSAW, double predationHunterVoracitySAW, double predationProbabilityDensityFunctionSAW, double encounterHuntedVoracitySAW, double encounterHunterVoracitySAW, double encounterVoracitiesProductSAW, double encounterHunterSizeSAW, double encounterHuntedSizeSAW, double encounterProbabilityDensityFunctionSAW, double encounterHuntedVoracityAH, double encounterHunterVoracityAH, double encounterVoracitiesProductAH, double encounterHunterSizeAH, double encounterHuntedSizeAH, double encounterProbabilityDensityFunctionAH)
 {
-	double edibilityValue = edibleToBeEvaluated->getInterpolatedDryMass()
+	double edibilityValue = edibleToBeEvaluated->calculateDryMass()
 			* ((calculateEncounterProbability(edibleToBeEvaluated, muForPDF, sigmaForPDF, encounterHuntedVoracitySAW, encounterHunterVoracitySAW, encounterVoracitiesProductSAW, encounterHunterSizeSAW, encounterHuntedSizeSAW, encounterProbabilityDensityFunctionSAW, encounterHuntedVoracityAH, encounterHunterVoracityAH, encounterVoracitiesProductAH, encounterHunterSizeAH, encounterHuntedSizeAH, encounterProbabilityDensityFunctionAH)
 			+ calculatePredationProbability(edibleToBeEvaluated, false, muForPDF, sigmaForPDF, predationSpeedRatioAH, predationHunterVoracityAH, predationProbabilityDensityFunctionAH, predationSpeedRatioSAW, predationHunterVoracitySAW, predationProbabilityDensityFunctionSAW)
-			+ getSpecies()->getEdiblePreference(edibleToBeEvaluated->getSpecies()->getId(), getInstar(), edibleToBeEvaluated->getInstar())
+			+ getSpecies()->getEdiblePreference(edibleToBeEvaluated->getSpecies())
 			+ getMeanExperience(edibleToBeEvaluated->getSpecies()))/4);
 
 	return edibilityValue;
@@ -4909,35 +4961,35 @@ double Animal::calculateEncounterProbability(Edible* edibleToBeEncountered, doub
 	double encounterProbability = 1.0;
 	if(edibleToBeEncountered->getSpecies()->isMobile())
 	{
-		double interpolatedHuntedVoracity = getInterpolatedHuntedVoracity(edibleToBeEncountered->getVoracity());
-		double interpolatedHunterVoracity = getInterpolatedHunterVoracity();
-		double interpolatedVoracityProduct = getInterpolatedVoracityProduct(edibleToBeEncountered->getVoracity());
+		double normalizedHuntedVoracity = getNormalizedHuntedVoracity(edibleToBeEncountered->getVoracity());
+		double normalizedHunterVoracity = getNormalizedHunterVoracity();
+		double normalizedVoracityProduct = getNormalizedVoracityProduct(edibleToBeEncountered->getVoracity());
 
-		double interpolatedHuntedBodySize = getInterpolatedHuntedBodySize(edibleToBeEncountered->getCurrentBodySize());
-		double interpolatedHunterBodySize = getInterpolatedHunterBodySize();
+		double normalizedHuntedBodySize = getNormalizedHuntedBodySize(edibleToBeEncountered->getCurrentBodySize());
+		double normalizedHunterBodySize = getNormalizedHunterBodySize();
 
 		double probabilityDensityFunction = exp(-0.5 * pow((log(calculateWetMass()/edibleToBeEncountered->calculateWetMass()) - muForPDF) / sigmaForPDF, 2)) / (sigmaForPDF * sqrt(2*PI));
-		double interpolatedPDF = getInterpolatedPDF(probabilityDensityFunction);
+		double normalizedPDF = getNormalizedPDF(probabilityDensityFunction);
 
 		switch (getHuntingMode()) {
 			case HuntingMode::sit_and_wait: {
 				encounterProbability = 
-					(encounterHuntedVoracitySAW * interpolatedHuntedVoracity +
-					encounterHunterVoracitySAW * interpolatedHunterVoracity +
-					encounterVoracitiesProductSAW * interpolatedVoracityProduct +
-					encounterHunterSizeSAW * interpolatedHunterBodySize +
-					encounterHuntedSizeSAW * interpolatedHuntedBodySize +
-					encounterProbabilityDensityFunctionSAW * interpolatedPDF)/6;
+					(encounterHuntedVoracitySAW * normalizedHuntedVoracity +
+					encounterHunterVoracitySAW * normalizedHunterVoracity +
+					encounterVoracitiesProductSAW * normalizedVoracityProduct +
+					encounterHunterSizeSAW * normalizedHunterBodySize +
+					encounterHuntedSizeSAW * normalizedHuntedBodySize +
+					encounterProbabilityDensityFunctionSAW * normalizedPDF)/6;
 				break;
 			}
 			case HuntingMode::active_hunting: {
 				encounterProbability = 
-					(encounterHuntedVoracityAH * interpolatedHuntedVoracity +
-					encounterHunterVoracityAH * interpolatedHunterVoracity +
-					encounterVoracitiesProductAH * interpolatedVoracityProduct +
-					encounterHunterSizeAH * interpolatedHunterBodySize +
-					encounterHuntedSizeAH * interpolatedHuntedBodySize +
-					encounterProbabilityDensityFunctionAH * interpolatedPDF)/6;
+					(encounterHuntedVoracityAH * normalizedHuntedVoracity +
+					encounterHunterVoracityAH * normalizedHunterVoracity +
+					encounterVoracitiesProductAH * normalizedVoracityProduct +
+					encounterHunterSizeAH * normalizedHunterBodySize +
+					encounterHuntedSizeAH * normalizedHuntedBodySize +
+					encounterProbabilityDensityFunctionAH * normalizedPDF)/6;
 				break;
 			}
 			case HuntingMode::does_not_hunt: {
@@ -5008,7 +5060,7 @@ bool Animal::encounterEdible(Edible* edibleToBeEncountered, float attackOrExpose
 
 bool Animal::canEatEdible(Edible* edibleToCheck, const list<Edible*> &ediblesHasTriedToPredate)
 {
-	if(getSpecies()->canEatEdible(edibleToCheck->getSpecies()->getId(), getInstar(), edibleToCheck->getInstar()))
+	if(getSpecies()->canEatAnimalSpecies((AnimalSpecies*)edibleToCheck->getSpecies()) || getSpecies()->canEatResourceSpecies((ResourceSpecies*)edibleToCheck->getSpecies()))
 	{
 		//double log_mass_ratio = getLog_mass_ratio(this, edibleToCheck);
 		//cout << "LMR -> " << log_mass_ratio << endl;
@@ -5031,7 +5083,7 @@ bool Animal::canEatEdible(Edible* edibleToCheck, const list<Edible*> &ediblesHas
 
 		//this was incorrect in Gabi's version, he used just resource biomass vs min spore parameter
 		//now considering everything the animal takes what is left by if available by decresing its voracity value
-		double forNotToDepleteResource = getTrait(Trait::voracity)/(getSpecies()->getEdibleProfitability(edibleToCheck->getSpecies()->getId(), getInstar(), edibleToCheck->getInstar())+getTrait(Trait::assim));
+		double forNotToDepleteResource = getTrait(Trait::voracity)/(getSpecies()->getEdibleProfitability(edibleToCheck->getSpecies())+getTrait(Trait::assim));
 
 		//this to to feed on what is left if he entire voracity cannot be satisfied
 		//Warning: this prevents this animal to fulfill entirely its original voracity (voracity shrinks) with and alternative
@@ -5043,7 +5095,7 @@ bool Animal::canEatEdible(Edible* edibleToCheck, const list<Edible*> &ediblesHas
 		bool newVor = false;
 		if(edibleToCheck->isDepleted(forNotToDepleteResource))
 		{
-			if(edibleToCheck->anyLeft()*(getSpecies()->getEdibleProfitability(edibleToCheck->getSpecies()->getId(), getInstar(), edibleToCheck->getInstar())+getTrait(Trait::assim))>0){
+			if(edibleToCheck->anyLeft()*(getSpecies()->getEdibleProfitability(edibleToCheck->getSpecies())+getTrait(Trait::assim))>0){
 				newVor = true;
 			}
 		}

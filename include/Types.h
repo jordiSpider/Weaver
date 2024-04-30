@@ -12,9 +12,8 @@
 #include "Coordinate3D.h"
 #include <unordered_map>
 #include <string>
-#include <nlohmann/json.hpp>
+#include "nlohmann/json.h"
 #include <ostream>
-#include <cfloat>
 
 // Geometric
 typedef Coordinate3D<float> fVector3D;	// 'f' stands for float
@@ -46,8 +45,6 @@ typedef unsigned int id_type;
 // Sumo más uno porque la función devuelve el número de dígitos restando el bit del signo
 #define MAX_NUM_DIGITS_ID (std::numeric_limits<id_type>::digits10 + 1)
 
-
-#define NEG_DBL_MAX (-1 * DBL_MAX)
 
 
 class Instar {

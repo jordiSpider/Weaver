@@ -6,10 +6,10 @@
 #include <unordered_map>
 #include "LineInfoException.h"
 
-#include <magic_enum.hpp>
+#include "magic_enum/magic_enum.h"
 
 #define FMT_HEADER_ONLY
-#include <fmt/core.h>
+#include "fmt/core.h"
 
 
 class TerrainCell;

@@ -1,9 +1,5 @@
 {
     "animal": {
-        "debug": {
-			"forceQuitCell": true,
-            "surviveWithoutFood": false
-		},
         "name": "Consumer_fast_asexual",
         "defaultHuntingMode": "does_not_hunt",
         "sexualType": "asexual",
@@ -21,8 +17,7 @@
             "logistic4pLeftAsymptote": null,
             "logistic4pRightAsymptote": null,
             "gompertzAsymptoticSize": null,
-            "gompertzValueTime0": null,
-            "exponentialA": null
+            "gompertzValueTime0": null
         },
         "genetics": {
             "numberOfLociPerTrait": 20,
@@ -67,6 +62,14 @@
                 "affectedTraits": ["energy_tank", "growth"]
             }
         ],
+        "edibleAnimalSpecies": [],
+        "edibleAnimalPreferences": [],
+        "edibleAnimalProfitability": [],
+        "edibleResourceSpecies": [
+            "Resource_fast"
+        ],
+        "edibleResourcePreferences": [0.99],
+        "edibleResourceProfitability": [0.05],
         "experienceInfluencePerDay": 0.99,
         "numberOfSimulatedAttacks": 10000,
         "conversionToWetMass": 3.2258,
@@ -85,6 +88,7 @@
         "eggsPerBatch": 20,
         "maleMaxReproductionEvents": 5,
         "maleReproductionFactor": 0.25,
+        "quitCellThreshold": 0.00025,
         "maleMobility": 1,
         "decreaseOnTraitsDueToEncounters": 1.0,
         "probabilityDeathFromBackground": 0.0,
@@ -271,20 +275,5 @@
         "coefficientForHandlingTimeA": 28.407,
         "coefficientForHandlingTimeB": -0.664,
         "coefficientForHandlingTimeC": -6.365
-    },
-	"ontogeneticLinks": {
-		"animalLinks": [],
-		"resourceLinks": [
-			{
-				"species": "Resource_fast",
-				"globalPreference": 0.99,
-				"defaultOntogeneticValue": {
-					"edible": true,
-					"preference": 0.99,
-					"profitability": 0.05
-				},
-				"ontogeneticValues": []
-			}
-		]
-	}
+    }
 }

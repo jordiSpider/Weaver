@@ -28,8 +28,7 @@ if(CMAKE_BUILD_TYPE MATCHES "^[Rr]elease")
 
 	if(WIN32)
 		list(APPEND CXX_FLAGS "-O0")
-		# Any libraries placed after "-static" will be linked statically
-		list(APPEND CXX_LINK_LIBRARY_FLAGS "-static-libgcc;-static-libstdc++;-static;-lwinpthread")
+		list(APPEND CXX_LINK_LIBRARY_FLAGS "-static-libgcc;-static-libstdc++;-lwinpthread")
 	elseif(UNIX)
 		list(APPEND CXX_FLAGS "-O0")
 		list(APPEND CXX_LINK_LIBRARY_FLAGS "")
@@ -303,7 +302,7 @@ foreach(target ${TARGETS})
 
     target_link_libraries(
         ${refactorTarget}
-        PUBLIC
+        PRIVATE
         ${${refactorTarget}_depen}
     )
 endforeach()

@@ -11,8 +11,6 @@
 #include "SimulType.h"
 #include "ResourceSpecies.h"
 #include "Output.h"
-#include "Types.h"
-#include "Maths/Math_Functions.h"
 
 #include <float.h>
 #include <iostream>
@@ -25,7 +23,7 @@ class Resource: public Edible
 public:
 	static id_type resourceCounter;
 
-	Resource(ResourceSpecies* const mySpecies, float biomass, double resourceMaximumCapacity, bool competitionAmongResourceSpecies, double massRatio, bool patchSpread);
+	Resource(ResourceSpecies* const mySpecies, float biomass, double resourceMaximumCapacity, bool competitionAmongResourceSpecies, double massRatio);
 	virtual ~Resource();
 
 	ResourceSpecies* const getSpecies() const override;
@@ -48,8 +46,7 @@ public:
 	double getResourceMaximumCapacity() const;
 	
 
-	const double calculateDryMass() const; 
-	const double getInterpolatedDryMass() const;  
+	const double calculateDryMass() const;   
 																									
 	const double turnIntoDryMassToBeEaten(const double &predatorVoracity, const float &profitability, const double &leftovers) const;
 	const double calculateWetMass();
@@ -75,8 +72,6 @@ public:
 	// Set this resource population to 0
 	void erradicate();
 
-	bool canSpread() const;
-
 protected:
 	double biomass;
 	// This is to avoid reprocessing the same resource on the same day
@@ -88,8 +83,6 @@ protected:
 	const bool competitionAmongResourceSpecies;
 
 	const double massRatio;
-
-	const bool patchSpread;
 
 	double getNewBiomass(const double &rateOfIncrease, const double &timeStepsPerDay, SimulType simulType) const;
 };
