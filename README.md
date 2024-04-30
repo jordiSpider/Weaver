@@ -430,3 +430,8 @@ python scripts/tool.py -b windows-Makefile
 ## License
 
 
+# Documentation
+
+## Input Parameters
+[Simulation (run) Parameters description](parameterDescription_simulation.md)
+[World Parameters description](parameterDescriptions_worldsParams.md)

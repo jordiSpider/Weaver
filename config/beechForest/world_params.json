@@ -1,0 +1,83 @@
+{
+    "world": {
+        "spaceConfiguration": {
+			"obstacleDirectory": "obstacle",
+			"dimensions": {
+				"width": 25,
+				"length": 25,
+				"depth": 1,
+				"cellSize": 1
+			},
+			"initRandomObstaclePatches": {
+				"enabled": false,
+				"obstacleDensity": 0.7, 	   		
+				"patchesWidth": 5,
+				"patchesLength": 1,
+				"patchesDepth": 1
+			},
+			"moistureDirectory": "moisture",
+			"nutrients": {
+				"minC": 0,
+				"maxC": 23,
+				"minN": 0,
+				"maxN": 23,
+				"minP": 0,
+				"maxP": 23
+			},
+			"fungiToPreysCapacityTransference": 0.1,
+			"preysToPredatorsCapacityTransference": 0.1
+		},
+		"life": {
+			"fungiDirectory": "fungi",
+			"speciesDirectory": "species",
+			"initIndividualsPerDensities": {
+				"enabled": false,
+				"initialEcosystemSize": 20000 
+			},
+			"competitionAmongFungiSpecies": false,
+			"exitTimeThreshold": 120,
+			"minLogMassRatio": -6,
+			"maxLogMassRatio": 6,
+			"sigmaForPDF": 2.54,
+			"muForPDF": 8.65,
+			"initFromRandomSpecies": {
+				"enabled": true,
+				"numberOfPredatorSpecies": 1, 
+				"numberOfPreySpecies": 1,
+				"numberOfFungusSpecies": 1
+			},
+			"initFromRandomLinks": {
+				"enabled": true,
+				"eraseCurrentExistingLinks": true,
+				"predator-preyLinksDensity": 0.2,
+				"intraguildPredation": {
+					"enabled": true,
+					"allowCannibalism": false
+				},
+				"fungivore-fungusLinksDensity": 0.1
+			},
+			"encounterHuntedVoracitySAW": 0.5,
+			"encounterHunterVoracitySAW": 5,
+			"encounterVoracitiesProductSAW": 0.5,
+			"encounterHunterSizeSAW": 5,
+			"encounterHuntedSizeSAW": 0.5,
+			"encounterProbabilityDensityFunctionSAW": 0,
+
+			"encounterHuntedVoracityAH": 1,
+			"encounterHunterVoracityAH": 1,
+			"encounterVoracitiesProductAH": 1,
+			"encounterHunterSizeAH": 1,
+			"encounterHuntedSizeAH": 1,
+			"encounterProbabilityDensityFunctionAH": 1,
+
+			"predationSpeedRatioSAW": 0,
+			"predationHunterVoracitySAW": 5,
+			"predationProbabilityDensityFunctionSAW": 0.1,
+
+			"predationSpeedRatioAH": 1,
+			"predationHunterVoracityAH": 1,
+			"predationProbabilityDensityFunctionAH": 1
+		}
+	}
+}
+

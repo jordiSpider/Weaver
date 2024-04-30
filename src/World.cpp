@@ -3429,37 +3429,19 @@ void World::obtainSpeciesInhabitableTerrainCells(map<AnimalSpecies*,vector<Terra
 
 		vector<TerrainCell*>* speciesInhabitableTerrainCells = new vector<TerrainCell*>();
 
-		bool containsResources, meetsInEnemyFreeSpace, meetsInCompetitorFreeSpace;
+		bool cellHasBeenAdded;
 
 		TerrainCell* currentTerrainCell = NULL;
 		for (unsigned int i = 0; i < inhabitableTerrainCells.size(); i++)
 		{
 			currentTerrainCell = inhabitableTerrainCells[i];
-			
-			meetsInEnemyFreeSpace = true;
-			meetsInCompetitorFreeSpace = true;
-
-			if(currentTerrainCell->isInEnemyFreeSpace() && currentAnimalSpecies->getDefaultHuntingMode() != HuntingMode::does_not_hunt) {
-				meetsInEnemyFreeSpace = false;
-			}
-
-			if(currentTerrainCell->isInCompetitorFreeSpace() && currentAnimalSpecies->getDefaultHuntingMode() == HuntingMode::does_not_hunt) {
-				meetsInCompetitorFreeSpace = false;
-			}
-			
-			if(meetsInEnemyFreeSpace && meetsInCompetitorFreeSpace) {
-				containsResources = false;
-
-				for(unsigned int j = 0; j < involvedResourceSpecies->size() && !containsResources; j++)
+			cellHasBeenAdded = false;
+			for(unsigned int j = 0; j < involvedResourceSpecies->size() && !cellHasBeenAdded; j++)
+			{
+				if(currentTerrainCell->containsResourceSpecies(involvedResourceSpecies->at(j)))
 				{
-					if(currentTerrainCell->containsResourceSpecies(involvedResourceSpecies->at(j)))
-					{
-						containsResources = true;
-					}
-				}
-
-				if(containsResources) {
 					speciesInhabitableTerrainCells->push_back(currentTerrainCell);
+					cellHasBeenAdded = true;
 				}
 			}
 		}

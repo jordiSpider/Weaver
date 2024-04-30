@@ -1135,6 +1135,16 @@ void Animal::tuneTraits(int timeStep, int timeStepsPerDay, float temperature, fl
 	//arthros and dinos to create patches of enemy free space - kill all predators in designated patches for initialization
 
 	//create patches with predator (enemy) free space at initialization
+	if(position->isInEnemyFreeSpace() && timeStep == 0 && this->getHuntingMode() != HuntingMode::does_not_hunt)
+	{	
+		setNewLifeStage(LifeStage::BACKGROUND, timeStep);
+	}
+	
+	//create patches with consumer competitor free space at initialization
+	if(position->isInCompetitorFreeSpace() && timeStep == 0 && this->getHuntingMode() == HuntingMode::does_not_hunt)
+	{	
+		setNewLifeStage(LifeStage::BACKGROUND, timeStep);
+	}
 	
 	//background mortality
 	//if(getId() != 0){
