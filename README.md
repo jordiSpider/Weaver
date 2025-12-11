@@ -1,7 +1,7 @@
 
 # Weaver
 
-![Deploy release status](https://github.com/Mario-Carmona/Weaver/actions/workflows/deploy-release.yml/badge.svg)
+![Deploy release status](https://github.com/jordiSpider/Weaver/actions/workflows/deploy-release.yml/badge.svg)
 ![License](https://img.shields.io/badge/license-MIT-green)
 ![C++](https://img.shields.io/badge/C++17-blue)
 ![Platform](https://img.shields.io/badge/platform-Windows%20%7C%20Linux-lightgrey)
@@ -40,7 +40,7 @@ Among the new simulation functionalities, we can highlight: a) The code has been
 
 Finally, the code has been optimized using a “building blocks” philosophy [^6], making most individual algorithms easily portable to other platforms. This simulation platform will be made Open Source and include a User Manual, hopefully by the end of 2026.
 
-This research has been possible thanks to grants Weaver - CGL2014-61314-EXP; ENGIWEB - CGL2015-66192-R (Spanish Ministry of Economy and Competitiveness), SPILL-ISLAND – PID2019-103863RB-I00 (funded by MCIN/AEI /10.13039/501100011033, the Spanish Research Agency) and SIMULPEST – TED2021-129653B-I00 (funded by MCIN/AEI /10.13039/501100011033 Spanish Research Agency, and European Union NextGenerationEU/PRTR).
+This research has been possible thanks to grants Weaver - CGL2014-61314-EXP; ENGIWEB - CGL2015-66192-R (Spanish Ministry of Economy and Competitiveness), SPILL-ISLAND – PID2019-103863RB-I00 (funded by MCIN/AEI /10.13039/501100011033, the Spanish Research Agency) and SIMULPEST – TED2021-129653B-I00 (funded by MCIN/AEI /10.13039/501100011033 Spanish Research Agency, and European Union NextGenerationEU/PRTR), Investigo program - Junta de Andalucía - PRTR - NextGenerationEU.
 
 ---
 
@@ -51,8 +51,8 @@ This research has been possible thanks to grants Weaver - CGL2014-61314-EXP; ENG
 If you only want to **run the program**, follow these simple steps:
 
 1. Download the latest release
-  You can find precompiled installers for all supported operating systems in the [Releases](https://github.com/Mario-Carmona/Weaver/releases) section.
-  Simply download the installer for your platform and follow the [Instructions](https://mario-carmona.github.io/Weaver/user_guide/installation.html).
+  You can find precompiled installers for all supported operating systems in the [Releases](https://github.com/jordiSpider/Weaver/releases) section.
+  Simply download the installer for your platform and follow the [Instructions](https://jordiSpider.github.io/Weaver/user_guide/installation.html).
 
 1. Run the program
   Once installed, launch the program from the Start Menu, Applications folder, or terminal. You can run Weaver in GUI or CLI mode:
@@ -66,23 +66,23 @@ Weaver-Non-GUI.exe -I path/to/config -O path/to/output_folder
 ```
 
 3. Configuration
-  Some functionality may require configuration files or runtime parameters. Refer to the [User Guide](https://mario-carmona.github.io/Weaver/user_guide/usage.html) section in the online documentation for detailed usage instructions.
+  Some functionality may require configuration files or runtime parameters. Refer to the [User Guide](https://jordiSpider.github.io/Weaver/user_guide/usage.html) section in the online documentation for detailed usage instructions.
 
 ### 🧠 For Developers
 
-If you want to contribute to the project or build it from source, please refer to the [Developer Guide](https://mario-carmona.github.io/Weaver/developer_guide/build_system.html).
+If you want to contribute to the project or build it from source, please refer to the [Developer Guide](https://jordiSpider.github.io/Weaver/developer_guide/build_system.html).
 
 ---
 
 ## 📘 Documentation
 
-For detailed information, please refer to the [Documentation](https://mario-carmona.github.io/Weaver/) section. It includes user guides, developer references, and API documentation.
+For detailed information, please refer to the [Documentation](https://jordiSpider.github.io/Weaver/) section. It includes user guides, developer references, and API documentation.
 
 ---
 
 ## 🤝 Contributing
 
-Developers are welcome to contribute new features or improvements. See [Contribution](https://mario-carmona.github.io/Weaver/developer_guide/contribution.html) section for more details.
+Developers are welcome to contribute new features or improvements. See [Contribution](https://jordiSpider.github.io/Weaver/developer_guide/contribution.html) section for more details.
 
 ---
 
