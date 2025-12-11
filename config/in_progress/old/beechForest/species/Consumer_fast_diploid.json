@@ -1,0 +1,312 @@
+{
+    "version": "23.11.05",
+    "animal": {
+        "debug": {
+			"surviveWithoutFood": false
+		},
+        "name": "Consumer_fast_diploid",
+        "defaultHuntingMode": "does_not_hunt",
+        "sexualType": "diploid",
+        "sexRatio": 0.5,
+        "size": 1,
+        "forcePresenceAllResourcesInvolved": false,
+        "preserveLeftovers": false,
+        "growthCurve": {
+            "curveType": "VonBertalanffy",
+            "vonBertalanffyParams": {
+                "vonBertTime0": -12.0260,
+                "vonBertLdistanceMin": 0.974,
+                "vonBertLdistanceMax": 1.544
+            },
+            "logisticParams": {
+                "logisticLdistanceMin": null,
+                "logisticLdistanceMax": null
+            },
+            "logistic3P_Params": {
+                "logistic3pAsymptoticSize": null
+            },
+            "logistic4P_Params": {
+                "logistic4pLeftAsymptote": null,
+                "logistic4pRightAsymptote": null
+            },
+            "gompertzParams": {
+                "gompertzAsymptoticSize": null,
+                "gompertzValueTime0": null
+            },
+            "exponentialParams": {
+                "exponentialA": null
+            }
+        },
+        "genetics": {
+            "numberOfLociPerTrait": 20,
+            "numberOfAllelesPerLocus": 10,
+            "numberOfTraits": 17,
+            "traitsPerModule": 3,
+            "numberOfChiasmasPerChromosome": 2,
+            "restrictPerTrait": [
+                0.01,
+                0.01,
+                0.01,
+                0.01,
+                0.01,
+                0.01,
+                0.01,
+                0.01,
+                0.01,
+                0.01,
+                0.01,
+                0.01,
+                0.01,
+                0.01
+            ],
+            "correlationCoefficientRhoPerModule": [
+                0.1,
+                0.1,
+                0.1,
+                0.1,
+                0.1
+            ]
+        },
+        "modifyAlleles": [{
+                "pAlleles": 0.9,
+                "timesAlleles": 30,
+                "affectedLocus": [0.3, 0.6, 0.9],
+                "affectedTraits": ["energy_tank", "growth"]
+            },
+            {
+                "pAlleles": 0.7,
+                "timesAlleles": 30,
+                "affectedLocus": [0.3, 0.6, 0.9],
+                "affectedTraits": ["energy_tank", "growth"]
+            }
+        ],
+        "experienceInfluencePerDay": 0.99,
+        "numberOfSimulatedAttacks": 10000,
+        "conversionToWetMass": 3.2258,
+        "coefficientForMassA": 0.0076,
+        "scaleForMassB": 3.3020,
+        "coefficientForMassAforMature": 0.0076,
+        "scaleForMassBforMature": 3.3020,
+        "forDensitiesGrowth": 1.4,
+        "forDensitiesEggSize": 0.005,
+        "forDensitiesA": 74.8,
+        "forDensitiesB": -0.75,
+        "indeterminateGrowth": true,
+        "instarFirstReproduction": 5,
+        "instarsForNextReproduction": 2,
+        "femaleMaxReproductionEvents": 5,
+        "eggsPerBatch": 2,
+        "maleMaxReproductionEvents": 5,
+        "maleReproductionFactor": 0.25,
+        "maleMobility": 1,
+        "decreaseOnTraitsDueToEncounters": 1.0,
+        "probabilityDeathFromBackground": 0.0,
+        "assignedForMolt": 0.9,
+        "betaScaleTank": 1.01,
+        "excessInvestInSize": 0.5,
+        "maxEncountersT": 30,
+        "minRelativeHumidityThreshold": 10,
+        "traits": {
+            "fixedTraits": {
+                "memoryDepth": 5.0,
+                "perception_area": 1.4,
+				"interaction_area": 1.4
+            },
+            "variableTraits": {
+                "minTraitsRanges": {
+                    "energy_tank": 0.32,
+                    "growth": 0.01509,
+                    "pheno": 2.0,
+                    "factorEggMass": -0.05,
+                    "assim": 0.4,
+                    "voracity": 0.98,
+                    "speed": 130.0,
+                    "search_area": 9.0,
+                    "met_rate": 0.7489,
+                    "actE_vor": 0.66,
+                    "actE_speed": 0.66,
+                    "actE_search": 0.66,
+                    "shock_resistance": 400.0,
+                    "actE_met": 0.6474
+                },
+                "maxTraitsRanges": {
+                    "energy_tank": 0.360,
+                    "growth": 0.02123,
+                    "pheno": 3.0,
+                    "factorEggMass": 0.05,
+                    "assim": 0.6,
+                    "voracity": 1.0,
+                    "speed": 910.0,
+                    "search_area": 11.0,
+                    "met_rate": 0.7689,
+                    "actE_vor": 0.67,
+                    "actE_speed": 0.67,
+                    "actE_search": 0.67,
+                    "shock_resistance": 410.0,
+                    "actE_met": 0.6674
+                },
+                "minTraitLimits": {
+                    "energy_tank": 0.25,
+                    "growth": 0.000010,
+                    "pheno": 1.0,
+                    "factorEggMass": -0.1,
+                    "assim": 0.05,
+                    "voracity": 0.01,
+                    "speed": 0.5,
+                    "search_area": 1.0,
+                    "met_rate": 0.2,
+                    "actE_vor": 0.2,
+                    "actE_speed": 0.2,
+                    "actE_search": 0.2,
+                    "shock_resistance": 300.0,
+                    "actE_met": 0.2
+                },
+                "maxTraitLimits": {
+                    "energy_tank": 0.4,
+                    "growth": 0.2,
+                    "pheno": 10.0,
+                    "factorEggMass": 0.1,
+                    "assim": 0.8,
+                    "voracity": 6.0,
+                    "speed": 1500.0,
+                    "search_area": 50.0,
+                    "met_rate": 0.85,
+                    "actE_vor": 0.8,
+                    "actE_speed": 0.8,
+                    "actE_search": 0.8,
+                    "shock_resistance": 450.0,
+                    "actE_met": 1.0
+                },
+                "order": [
+                    "energy_tank",
+                    "growth",
+                    "pheno",
+                    "factorEggMass",
+                    "assim",
+                    "voracity",
+                    "speed",
+                    "search_area",
+                    "met_rate",
+                    "actE_vor",
+                    "actE_speed",
+                    "actE_search",
+                    "shock_resistance",
+                    "actE_met"
+                ]
+            }
+        },
+        "pupaPeriodLength": 1,
+        "habitatShiftFactor": null,
+		"habitatShift": [],
+		"habitatShiftBeforeBreedingFactor": null,
+		"habitatShiftBeforeBreeding": false,
+		"habitatShiftAfterBreedingFactor": null,
+		"habitatShiftAfterBreeding": false,
+        "cellSizePerInstar": [
+			1.0,
+			1.0,
+			1.0,
+			1.0,
+			1.0,
+			1.0,
+			1.0,
+			1.0,
+			1.0,
+			1.0
+		],
+        "individualsPerInstar": [
+            100,
+            100,
+            100,
+            100,
+            100,
+            100,
+            100,
+            100,
+            100,
+            100
+        ],
+        "statisticsIndividualsPerInstar": 100,
+        "devTimeVector": [
+            7,
+            14,
+            21,
+            28,
+            35,
+            42,
+            49,
+            56,
+            63
+        ],
+        "LinfKcorr": 0.5,
+        "devTimeConstant": 0.2,
+        "devInter": 8.8938,
+        "EdGrowth": 1.66,
+        "EdVoracity": 1.66,
+        "EdSearch": 1.66,
+        "EdSpeed": 1.66,
+        "fractSearchExtremeT": 0.99,
+        "fractSpeedExtremeT": 0.99,
+        "minVorExtremeT": -1,
+        "longevitySinceMaturation": 4.25,
+        "reproTimeFactor": 0.1071,
+        "tempOptGrowth": 35.0,
+        "tempOptVoracity": 25.0,
+        "tempOptSearch": 25.0,
+        "tempOptSpeed": 25.0,
+        "tempFromLab": 20.0,
+        "tempSizeRuleConstant": 0.01,
+        "eggClutchFromEquation": false,
+        "forClutchMassCoefficient": 0.492,
+        "forClutchMassScale": 0.960,
+        "forEggMassCoefficient": 0.046,
+        "forEggMassScale": 0.478,
+        "eggMassFromEquation": false,
+        "eggDryMass": 0.00009,
+        "femaleWetMass": 0.020,
+        "scaleForVoracity": 0.75,
+        "scaleForSearchArea": 0.25,
+        "scaleForSpeed": 0.25,
+        "maxPlasticityKVonBertalanffy": 0.25,
+        "minPlasticityKVonBertalanffy": 0.3,
+        "maxPlasticityDueToConditionVor": 0.05,
+        "minPlasticityDueToConditionVor": 0.05,
+        "maxPlasticityDueToConditionSearch": 0.05,
+        "minPlasticityDueToConditionSearch": 0.05,
+        "maxPlasticityDueToConditionSpeed": 0.05,
+        "minPlasticityDueToConditionSpeed": 0.05,
+        "coefficientForNumberOfEvaluationsFromSearchArea": 0.1,
+        "attackProbability": 0.0,
+        "exposedAttackProbability": 0.001,
+        "killProbability": 0.0,
+        "optimalTemperatureModifier": 4.89,
+        "daysWithoutFoodForMetabolicDownregulation": 2.0,
+        "percentageMetabolicDownregulation": 0.0,
+        "percentageCostForMetabolicDownregulationVoracity": 0.0,
+        "percentageCostForMetabolicDownregulationSearchArea": 0.0,
+        "percentageCostForMetabolicDownregulationSpeed": 0.0,
+        "cellEvaluationBiomass": 1.0,
+        "cellEvaluationRisk": 0.0,
+        "cellEvaluationProConspecific": 0.0,
+        "cellEvaluationAntiConspecific": 0.0,
+        "conspecificWeighing": 0.0,
+        "coefficientForHandlingTimeA": 28.407,
+        "coefficientForHandlingTimeB": -0.664,
+        "coefficientForHandlingTimeC": -6.365
+    },
+	"ontogeneticLinks": {
+		"animalLinks": [],
+		"resourceLinks": [
+			{
+				"species": "Resource_fast",
+				"links": [
+                    {
+                        "predatorInstar": [1, 2, 3, 4, 5, 6, 7, 8, 9, 10],
+                        "preference": 0.99,
+						"profitability": 0.05
+                    }
+                ]
+			}
+		]
+	}
+}

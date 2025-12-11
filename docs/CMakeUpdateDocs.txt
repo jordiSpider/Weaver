@@ -1,0 +1,38 @@
+# ============================================================
+# 🔄 Update Existing Documentation
+# ------------------------------------------------------------
+# This script updates the currently deployed documentation
+# based on the last Git tag.
+#
+# Steps performed:
+#   1. Determine the latest Git tag.
+#   2. Set the latest documentation version.
+#   3. Gather all versions and languages.
+#   4. Build the updated Sphinx documentation.
+# ============================================================
+
+
+# ------------------------------------------------------------
+# 🏷️ Get the last Git tag
+# ------------------------------------------------------------
+execute_process(
+    COMMAND git describe --tags --abbrev=0
+    WORKING_DIRECTORY ${CMAKE_SOURCE_DIR}
+    OUTPUT_VARIABLE GIT_LAST_TAG
+    OUTPUT_STRIP_TRAILING_WHITESPACE
+)
+
+# Remove leading "v" if present
+string(REGEX REPLACE "^v" "" LATEST_VERSION "${GIT_LAST_TAG}")
+
+
+# ------------------------------------------------------------
+# 🌐 Gather all documentation versions and languages
+# ------------------------------------------------------------
+include(${DOCS_DIR}/CMakeGetAllVersionsAndLanguages.txt)
+
+
+# ------------------------------------------------------------
+# 📚 Build the Sphinx documentation
+# ------------------------------------------------------------
+include(${DOCS_DIR}/CMakeBuildDocs.txt)

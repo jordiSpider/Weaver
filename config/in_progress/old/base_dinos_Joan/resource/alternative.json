@@ -1,0 +1,18 @@
+{
+  "version": "23.11.05",
+  "resource": {
+    "resourceType": "NoBasalResource",
+    "name": "alternative",
+    "conversionToWetMass": 3.333,
+    "cellMass": 3.5E-12,
+    "minimumResource": 0,
+    "ACTIVATION_ENERGY": 0.68,
+    "NORMALIZATION_B": 25.98,
+    "minHR": 65,
+    "maxHR": 75,
+    "variableIntrinsicRateOfIncrease": false,
+    "maxRScale": 1.01,
+    "zeroResource": 8,
+    "minimumNumberOfEdibleSpores": 4.517634e+15  /*4*e+15	 e+12*/
+  }
+}

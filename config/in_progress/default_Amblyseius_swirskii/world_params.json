@@ -1,0 +1,70 @@
+{
+    "version": "23.12.04",
+    "world": {
+        "life": {
+            "competitionAmongResourceSpecies": false,
+            "encounterHuntedSizeAH": 1.0,
+            "encounterHuntedSizeSAW": 1.0,
+            "encounterHuntedVoracityAH": 1.0,
+            "encounterHuntedVoracitySAW": 1.0,
+            "encounterHunterSizeAH": 1.0,
+            "encounterHunterSizeSAW": 1.0,
+            "encounterHunterVoracityAH": 1.0,
+            "encounterHunterVoracitySAW": 1.0,
+            "encounterProbabilityDensityFunctionAH": 1.0,
+            "encounterProbabilityDensityFunctionSAW": 1.0,
+            "encounterVoracitiesProductAH": 1.0,
+            "encounterVoracitiesProductSAW": 1.0,
+            "exitTimeThreshold": 100000,
+            "muForPDF": 1.44,
+            "predationHunterVoracityAH": 1.0,
+            "predationHunterVoracitySAW": 1.0,
+            "predationProbabilityDensityFunctionAH": 1.0,
+            "predationProbabilityDensityFunctionSAW": 1.0,
+            "predationSpeedRatioAH": 1.0,
+            "predationSpeedRatioSAW": 1.0,
+            "sigmaForPDF": 2.34
+        },
+        "mapConfig": {
+            "mapType": "SpatialTree",
+            "moistureBasePatch": {
+                "inCompetitorFreeSpace": false,
+                "inEnemyFreeSpace": false,
+                "maximumResourceCapacityDensity": 1.51e+10,
+                "relativeHumidityUpdateMethod": {
+                    "cycleParams": {
+                        "relativeHumidityCycle": [
+                            90.0,
+                            90.0
+                        ]
+                    },
+                    "rainEventAndDecayOverTimeParams": {
+                        "relativeHumidityDecayOverTime": null,
+                        "relativeHumidityOnRainEvent": null,
+                        "standardDeviationForRainEvent": null,
+                        "timeStepsBetweenRainEvents": null
+                    },
+                    "updateMethodType": "Cycle"
+                },
+                "temperatureCycle": [
+                    20.0,
+                    20.0
+                ]
+            },
+            "nutrients": {
+                "maxC": 23.0,
+                "maxN": 23.0,
+                "maxP": 23.0,
+                "minC": 0.0,
+                "minN": 0.0,
+                "minP": 0.0
+            },
+            "spatialTreeParams": {},
+            "worldWideParams": {
+                "minCellSize": 1.0,
+                "numberOfCellsPerAxis": 2
+            }
+        },
+        "simulationType": "Arthropods"
+    }
+}

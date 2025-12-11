@@ -1,0 +1,72 @@
+# ============================================================
+# 🌍 Build Documentation Locale (Translations)
+# ------------------------------------------------------------
+# This script generates and updates translated documentation
+# for all supported languages using Sphinx and sphinx-intl.
+#
+# Steps performed:
+#   1. Define the latest version.
+#   2. Gather all versions and languages.
+#   3. Configure Sphinx conf.py.
+#   4. Clean previous locale build folders.
+#   5. Extract translatable texts from documentation.
+#   6. Update language-specific translation files.
+# ============================================================
+
+
+# ------------------------------------------------------------
+# 🌟 Define the "latest" version for localization builds
+# ------------------------------------------------------------
+set(LATEST_VERSION "latest")
+
+
+# ------------------------------------------------------------
+# 🌐 Gather all documentation versions and languages
+# ------------------------------------------------------------
+include(${DOCS_DIR}/CMakeGetAllVersionsAndLanguages.txt)
+
+
+# ------------------------------------------------------------
+# 📄 Configure Sphinx
+# ------------------------------------------------------------
+include(${DOCS_DIR}/CMakeConfigureSphinxConf.txt)
+
+
+# ------------------------------------------------------------
+# 🧹 Clean previous locale builds
+# ------------------------------------------------------------
+add_custom_target(clean-docs-locale ALL 
+    COMMAND ${CMAKE_COMMAND} -E rm -rf "${SPHINX_BUILD_DIR}"
+    COMMAND ${CMAKE_COMMAND} -E rm -rf "${SPHINX_SOURCE_DIR}/${LATEST_VERSION}/gettext"
+    COMMENT "Cleaning Sphinx build locale folders..."
+)
+
+
+# ------------------------------------------------------------
+# 📝 Extract translatable text from documentation
+# ------------------------------------------------------------
+set(GETTEXT_DIR "${SPHINX_SOURCE_DIR}/${LATEST_VERSION}/gettext")
+
+add_custom_target(get-all-text-doc ALL
+    COMMAND python -m sphinx -c ${SPHINX_SOURCE_DIR}/latest -b gettext -d ${SPHINX_BUILD_DIR}/gettext ${SPHINX_SOURCE_DIR}/${LATEST_VERSION} ${GETTEXT_DIR}
+    WORKING_DIRECTORY ${SPHINX_SOURCE_DIR}/latest
+    COMMENT "Extracting all translatable texts from the documentation"
+)
+
+# Ensure cleaning happens before extracting texts
+add_dependencies(get-all-text-doc clean-docs-locale)
+
+
+# ------------------------------------------------------------
+# 🌐 Update translation files for all languages
+# ------------------------------------------------------------
+foreach(language IN LISTS ALL_LANGUAGES)
+    add_custom_target(update-language-${language} ALL
+        COMMAND python -m sphinx_intl -c ${SPHINX_CONF_OUTPUT} update -p ${GETTEXT_DIR} -l ${language}
+        WORKING_DIRECTORY ${SPHINX_SOURCE_DIR}/latest
+        COMMENT "Updating translation texts for language '${language}'"
+    )
+
+    # Ensure gettext extraction is done before updating translations
+    add_dependencies(update-language-${language} get-all-text-doc)
+endforeach()

@@ -1,0 +1,30 @@
+{
+    "version": "23.11.05",
+    "patch": {
+        "resourceSpecies": "Resource_slow",
+        "priority": 4,
+        "shape": {
+            "type": "Spherical",
+            "cubicParams": {
+                "bottomLeftCorner": null,
+                "topRightCorner": null
+            },
+            "sphericalParams": {
+                "center": [1.0, 1.0],
+                "radius": 1.0
+            },
+            "homogeneousParams": {
+
+            },
+            "gaussianParams": {
+
+            },
+            "randomGaussianParams": {
+
+            }
+        },
+        "initialBiomassDensity": 1.0,
+        "resourceMaximumCapacityDensity": 1.0,
+        "patchSpread": true
+    }
+}

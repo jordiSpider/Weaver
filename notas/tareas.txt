@@ -1,0 +1,269 @@
+
+#########################
+####                 ####
+####     Tareas      ####
+####                 ####
+#########################
+
+
+*********************************************************************************************
+*
+* %%%%%%%%%%%%%%%
+* %%           %%
+* %%   World   %%
+* %%           %%
+* %%%%%%%%%%%%%%%
+*
+* 1. World Relative Humidity -> Animal Diapause
+*
+*  Description: Comprobar si un animal al entrar a una zona con cierta humedad relativa entra
+*  en Diapause y si al volver la humedad relativa de esa zona a nivel aceptable el animal 
+*  sale de la Diapause.
+*
+* $$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
+*
+* 2. World 3D
+*
+*  Description: Comprobar que el programa funciona activando el 3D.
+*
+* $$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
+*
+* 3. Obstacles
+*
+*  Description: Implementar el cálculo de rutas para llegar a un destino teniendo obstáculos
+*  de por medio, y comprobar que el animal tiene en cuenta los obstáculos a la hora de
+*  moverse y de calcular las rutas de movimiento.
+*
+* $$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
+*
+* 4. Patches with distribution
+*
+*  Description: Implementar patches que utilicen una distribución para generar los valores
+*  como puede ser una distribución normal o gaussiana.
+*
+* $$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
+*
+* 5. Compression Factor
+*
+*  Description: Implementar un parámetro del JSON del World que indique el factor de 
+*  compresión del mismo. Este factor de compresión hará más pequeño el mundo definido. Por
+*  ejemplo, si tengo un mundo de 64mm X 64mm con celdas de 1mm por lo tanto tengo un mundo de 
+*  64X64 celdas con 7 niveles de profundidad en el octree; si aplico un factor del 50% en
+*  obtengo un mundo del mismo tamaño, pero con celdas del doble de tamaño 2mm, y el mundo
+*  tiene un total de 32X32 celdas con 6 niveles de profundidad. El factor de compresión se
+*  le aplica al tamaño de la celda unidad, lo cuál modificará de forma inderecta el resto
+*  de funcionalidades como la búsqueda de celdas. Se busca tener un beneficio en tiempos
+*  de computación en mapas muy grandes donde los animales están de forma agregada en puntos 
+*  muy lejanos.
+*
+* $$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
+*
+* %%%%%%%%%%%%%%%%%
+* %%             %%
+* %%   Animals   %%
+* %%             %%
+* %%%%%%%%%%%%%%%%%
+*
+* 1. Handling time
+*
+*  Description: Comprobar el correcto funcionamiento de esta funcionalidad.
+*
+* $$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
+*
+* 2. Re-test statistical model (Jordi)
+*
+*  Description: Jordi tiene que definir la funciones finales que se utilizarán en Weaver,
+*  para sustituir la población estadística actual por un simple cálculo de los límites.
+*
+* $$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
+*
+* 3. Patch choice equations: predation risk, edibility value, conspecific
+*
+*  Description: Comprobar el correcto funcionamiento de esta funcionalidad.
+*
+* $$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
+*
+* 4. poreUsePerInstar
+*
+*  Description: Implementar el cambio de celda como tenía pensado en un principio, cuando un
+*  animal no cabe en la celda en la que está pasa a un nivel superior. De esta forma en el 
+*  JSON se puede eliminar el parámetro "poreUsePerInstar", ya que se calcula de forma
+*  automática.
+*
+* $$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
+*
+* 5. Usar ancho en lugar de largo para el poreUse
+*
+*  Description: Implementar una curva para calcular la anchura del animal. Tener en cuenta
+*  esta anchura para determinar si un animal cabe en una celda o no, y en caso de no caber
+*  pasar al animal a una celda superior.
+*
+* $$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
+*
+* 6. Met downregulation -> trait
+*
+*  Description: Poner como trait esta funcionalidad, preguntar a Jordi que parámetros del
+*  JSON intervienen en esta funcionalidad.
+*
+* $$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
+*
+* 7. Nuevo trait -> perceptionMissMatch
+*
+*  Description: Este nuevo trait representa el camuflaje de un animal. El rango de valores
+*  del trait es de [0,1]. Si este trait tiene un valor de 0.2, quiero decir que el animal
+*  es capaz de camuflar el 20% de su cuerpo y por tanto el animal que está examinado el mundo
+*  sólo es capaz de ver el 80% de su masa. Lo que se tiene que hacer es calcular la masa 
+*  camuflada y restarla de la masa del animal. Se resta y no se multiplica directamente porque
+*  posteriormente se sumara el resultado del trait del siguiente punto, que hace lo contrario
+*  contraresta el camuflaje del depredador.
+*
+* $$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
+*
+* 8. Nuevo trait -> Trait opuesto al perceptionMissMatch
+*
+*  Description: Este trait tiene también un valor entre 0 y 1, y hace lo contrario a 
+*  perceptionMissMatch, suma a la evaluación la masa del animal examinado por este nuevo 
+*  trait. 
+*
+* $$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
+*
+* 9. Sit and Wait
+*
+*  Description: Para implementar esta forma de cazar se debe hacer lo siguiente: el destino
+*  al que se mueve el animal se elige de forma aleatoria dentro de su área de percepcion sin
+*  tener que evaluar todo lo que está dentro de su área de percepción; cuando llega a su
+*  destino su área de interacción aumenta en cierto grado simulando por ejemplo la red de 
+*  una araña; mientras realiza los steps su área de interacción será la normal sin realizar 
+*  el aumento; el camuflaje aumenta cuando llega al destino y es el normal mientras realiza
+*  los steps. 
+*
+* $$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
+*
+* 10. Modelizar esperas en la caza
+*
+*  Description: Se puede modelar con el Marginal Value Theorem o con el Giving-Up Time Model 
+*  de Sih. Mirar con Jordi para detallarlo más.
+*
+* $$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
+*
+* 11. Añadir que cuando las evaluaciones de celda son iguales, elegir la más cercana
+*
+*  Description: Añadir que cuando las evaluaciones de celda son iguales, elegir la más cercana.
+*
+* $$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
+*
+* 12. Mejor ajuste timeOfReproEvent
+*
+*  Description: En el cálculo del timeOfReproEvent hay que tener en cuenta que la 
+*  reproducción no es instantánea en Weaver, debido a que el breed se produce en el siguiente
+*  timeStep del timeStep donde se pasa a estado Reproducting. Provisionalmente se restan
+*  2 timeSteps por evento reproductivo al tiempo total para las reproducciones. Hay que 
+*  realizar el ajuste tanto en el cálculo del timeOfReproEvent de la sección Growth del 
+*  animal como en el forceMolting. Para mejorar el cálculo se debería analizar cuantos
+*  timeSteps se consumen por breed.
+*
+* $$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
+*
+* 13. Añadir que en los traits se puedan definir modulos de temperatura diferentes por instar
+*
+*  Description: Implementar que en el JSON se puedan definir TPC (curvas de temperatura)
+*  diferentes en cada instar.
+*
+* $$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
+*
+* 14. Comprobar que la temperatura afecta al timeOfReproEvent
+*
+*  Description: Tengo la duda de que se actualice la Longevity
+*
+* $$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
+*
+* 15. Metamorfosis
+*
+*  Description: Para saber la longitud de los adultos cuando hay metamorfosis y variabilidad 
+*  en Lmin y Lmax (que son las longitudes de las larvas antes de pupa), tendremos que usar 
+*  esta ecuación que asume una perfecta relación lineal entre la longitud del juvenil y del 
+*  adulto, sencillamente usando el rango. Eso se tendrá que hacer siempre que 
+*  coefficientForMassA != coefficientForMasAForMature | scaleForMassB != scaleForMasAForMature, 
+*  que sería la condición para decir que tienen metamorfosis y por tanto pupan de verdad...
+*
+*  O sea hay que añadir al ecuación lengthAdult = a + lengthJuvenile*b, donde a y b vendrán 
+*  dados por Json. interceptForMetamorphosisToAdult, slopeForMetamorphosisToAdult. Es posible 
+*  que haya datos para algunos bichos y poder hacer una al·lometria real tipo L=a*L^b, pero 
+*  ese dato serà muy, muy escaso.. de momento lo dejamos así.
+*
+* $$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
+*
+* 16. Condición "withoutDestinations"
+*
+*  Description: He tenido que añadir una nueva condición al while del 
+*  movimiento ("withoutDestinations"). La cual se activa cuando era un macho adulto que 
+*  está sated y que no pare de encontrar como destino la posición de otro animal, y como 
+*  esta sated no puuede matarlo y por lo tanto está en un bucle infinito anclado al punto 
+*  donde se encuentra el animal, porque ese animal es el que mayor edibilityValue tiene y 
+*  no puede desaparecer al no matarlo.
+*
+*  Habría que hacer que los machos adultos buscarán a las hembras y al encontrarla si 
+*  todavía tiene search_area que acabe el movimiento.
+*
+* $$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
+*
+* 17. Mismo valor min y max parámetros optimizador
+*
+*  Description: Implementar la posibilidad de poner el mismo valor en min y max en los 
+*  parámetros del optimizador. Es decir, poder fijar valores fijos para ciertos parámetros. 
+*  Ahora mismo no se puede porque durante la mutación se queda en bucle infinito buscando 
+*  nuevos valores en un rango de amplitud 0.
+*
+* $$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
+*
+* 18. Mejorar la automatización del Optimizador
+*
+*  Description: Con las salidas del optimizador se usa un randomForest para obtener 
+*  información sobre los parámetros y relanzar el optimizador con estos datos. Usando la 
+*  info para cambiar los rangos de los parámetros o usar distintos parámetros dentro 
+*  de un conjunto de parámetros. Digamos sería el siguiente ciclo:
+*  
+*  Parámetros -> GA -> randomForest -> Parámetros -> GA -> .......
+*
+* $$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
+*
+* 19. Paquete R Weaver
+*
+*  Description: Mirar como elaborar un paquete en R, que tenga el código C++ y los 
+*  script de R.
+*
+* $$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
+*
+* 20. Preferences y profitability como traits
+*
+*  Description: Mirar como implementar los traits para que podamos meter las preferencias 
+*  y las profitabilitis como traits, ya que son vectores de flotantes.
+*
+*********************************************************************************************
+
+
+
+
+
+
+
+
+/*****************************************************/
+
+- Hay que poner el mismo timeAddedToMeetLastRepro tanto en el script como en Weaver
+
+- Hay que definir el uso de "eggsPerBatchFromEquation" en el script
+
+- Hay que gestionar de forma adecuada el timeAddedToMeetLastRepro, mirar como se utiliza en el checkSpecies y en Weaver C++
+
+
+/*****************************************************/
+
+
+
+
+
+
+
+
+

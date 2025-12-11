@@ -1,0 +1,18 @@
+{
+    "resource": {
+        "growthModule": {
+            "cellMass": 6.2e-08,
+            "conversionToWetMass": 5.0
+        },
+        "maxRH": 100,
+        "minRH": 100,
+        "minimumNumberOfEdibleSpores": 10000.0,
+        "minimumResource": 0,
+        "name": "Resource_fast",
+        "rMaxScale": 8.0,
+        "resourceType": "BasalResource",
+        "variableIntrinsicRateOfIncrease": true,
+        "zeroResource": 8
+    },
+    "version": "23.12.04"
+}

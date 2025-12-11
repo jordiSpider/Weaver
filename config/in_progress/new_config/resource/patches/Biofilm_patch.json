@@ -1,0 +1,59 @@
+{
+    "patch": {
+        "resourceSpecies": "Biofilm",
+        "priority": 1,
+        "source": {
+            "resourceMaximumCapacityDensity": 1.090052e-05,
+            "edibleFractionOfMaxCarryingCapacity": 0.99,
+            "patchSpread": false,
+            "growthDynamics": {
+                "dynamicsType": "GrowthRate",
+                "cycleParams": {
+                    "cycle": null
+                },
+                "pulseParams": {
+                    "daysBetweenPulsesRange": {
+                        "min": null,
+                        "max": null
+                    },
+                    "pulsePeakValueRange": {
+                        "min": null,
+                        "max": null
+                    },
+                    "decay": {
+                        "decayType": "NonDecay",
+                        "linealDecayParams": {
+                            "decayOverTime": null
+                        }
+                    }
+                },
+                "growthRateParams": {
+                    "initialValue": 1.090051e-05,
+                    "rMaxScale": 20,
+                    "variableIntrinsicRateOfIncrease": false,
+                    "temperature": {
+                        "activationEnergy": null,
+                        "energyDecay": null,
+                        "temperatureOptimal": null,
+                        "temperatureRef": null
+                    }
+                }
+            }
+        },
+        "shape": {
+            "cubicParams": {
+                "bottomLeftCorner": [0.0, 0.0],
+                "topRightCorner": [1000.0, 1000.0]
+            },
+            "gaussianParams": {},
+            "homogeneousParams": {},
+            "randomGaussianParams": {},
+            "sphericalParams": {
+                "center": null,
+                "radius": null
+            },
+            "type": "Cubic"
+        }
+    },
+    "version": "2023.12.04"
+}

@@ -1,0 +1,25 @@
+{
+    "patch": {
+        "initialBiomassDensity": 1.5e+8,
+        "patchSpread": false,
+        "priority": 1,
+        "resourceMaximumCapacityDensity": 1.51e+8,
+        "edibleFractionOfMaxCarryingCapacity": 0.99,
+        "resourceSpecies": "Biofilm",
+        "shape": {
+            "cubicParams": {
+                "bottomLeftCorner": [0.0, 0.0],
+                "topRightCorner": [1000.0, 1000.0]
+            },
+            "gaussianParams": {},
+            "homogeneousParams": {},
+            "randomGaussianParams": {},
+            "sphericalParams": {
+                "center": null,
+                "radius": null
+            },
+            "type": "Cubic"
+        }
+    },
+    "version": "23.12.04"
+}

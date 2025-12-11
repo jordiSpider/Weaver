@@ -1,0 +1,2652 @@
+{
+    "animal": {
+        "activityUnderPredationRisk": 1.0,
+        "attackProbability": 0.0,
+        "cellEvaluationAntiConspecific": 0.0,
+        "cellEvaluationBiomass": 1.0,
+        "cellEvaluationProConspecific": 0.0,
+        "cellEvaluationRisk": 0.0,
+        "cellSizePerInstar": [
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0
+        ],
+        "activatedHandling": false,
+        "coefficientForHandlingTimeA": 28.407,
+        "coefficientForHandlingTimeB": -0.664,
+        "coefficientForHandlingTimeC": -6.365,
+        "coefficientForNumberOfEvaluationsFromSearchArea": 0.1,
+        "conspecificWeighing": 0.0,
+        "conversionToWetMass": 3.2258,
+        "daysWithoutFoodForMetabolicDownregulation": 2.0,
+        "debug": {
+            "surviveWithoutFood": false
+        },
+        "defaultHuntingMode": "does_not_hunt",
+        "devInter": 8.7511,
+        "eggClutchFromEquation": false,
+        "experienceInfluencePerDay": 0.99,
+        "exposedAttackProbability": 0.001,
+        "femaleMaxReproductionEvents": 30,
+        "forClutchMassCoefficient": 0.492,
+        "forClutchMassScale": 0.96,
+        "forDensitiesA": 74.8,
+        "forDensitiesB": -0.75,
+        "forDensitiesEggSize": 0.005,
+        "forDensitiesGrowth": 1.4,
+        "forcePresenceAllResourcesInvolved": false,
+        "fractSearchExtremeT": 0.99,
+        "fractSpeedExtremeT": 0.99,
+        "genetics": {
+            "modules": {
+                "correlationCoefficientRhoPerModule": [
+                    0.1,
+                    0.1,
+                    0.1,
+                    0.1,
+                    0.1
+                ],
+                "traitsPerModule": 3
+            },
+            "numberOfAllelesPerLocus": 10,
+            "numberOfChiasmasPerChromosome": 2,
+            "numberOfLociPerTrait": 20,
+            "traits": {
+                "definition": {
+                    "actE_met": {
+                        "definitionType": "IndividualLevel",
+                        "individualLevelParams": {
+                            "limits": {
+                                "max": 0.1419500000000007,
+                                "min": 0.24805000000000116
+                            },
+                            "ranges": {
+                                "max": 0.7161,
+                                "min": 0.6961
+                            },
+                            "restrictValue": 0.01
+                        },
+                        "speciesLevelParams": {
+                            "value": null
+                        },
+                        "temperature": {
+                            "activationEnergy": {
+                                "definitionType": "SpeciesLevel",
+                                "individualLevelParams": {
+                                    "limits": {
+                                        "max": null,
+                                        "min": null
+                                    },
+                                    "ranges": {
+                                        "max": null,
+                                        "min": null
+                                    },
+                                    "restrictValue": null
+                                },
+                                "speciesLevelParams": {
+                                    "value": null
+                                }
+                            },
+                            "dependent": false,
+                            "energyDecay": {
+                                "definitionType": "SpeciesLevel",
+                                "individualLevelParams": {
+                                    "limits": {
+                                        "max": null,
+                                        "min": null
+                                    },
+                                    "ranges": {
+                                        "max": null,
+                                        "min": null
+                                    },
+                                    "restrictValue": null
+                                },
+                                "speciesLevelParams": {
+                                    "value": null
+                                }
+                            },
+                            "temperatureOptimal": {
+                                "definitionType": "SpeciesLevel",
+                                "individualLevelParams": {
+                                    "limits": {
+                                        "max": null,
+                                        "min": null
+                                    },
+                                    "ranges": {
+                                        "max": null,
+                                        "min": null
+                                    },
+                                    "restrictValue": null
+                                },
+                                "speciesLevelParams": {
+                                    "value": null
+                                }
+                            },
+                            "temperatureRef": {
+                                "definitionType": "SpeciesLevel",
+                                "individualLevelParams": {
+                                    "limits": {
+                                        "max": null,
+                                        "min": null
+                                    },
+                                    "ranges": {
+                                        "max": null,
+                                        "min": null
+                                    },
+                                    "restrictValue": null
+                                },
+                                "speciesLevelParams": {
+                                    "value": 20.0
+                                }
+                            },
+                            "threshold": {
+                                "lower": {
+                                    "definitionType": "SpeciesLevel",
+                                    "individualLevelParams": {
+                                        "limits": {
+                                            "max": null,
+                                            "min": null
+                                        },
+                                        "ranges": {
+                                            "max": null,
+                                            "min": null
+                                        },
+                                        "restrictValue": null
+                                    },
+                                    "speciesLevelParams": {
+                                        "value": null
+                                    }
+                                },
+                                "upper": {
+                                    "definitionType": "SpeciesLevel",
+                                    "individualLevelParams": {
+                                        "limits": {
+                                            "max": null,
+                                            "min": null
+                                        },
+                                        "ranges": {
+                                            "max": null,
+                                            "min": null
+                                        },
+                                        "restrictValue": null
+                                    },
+                                    "speciesLevelParams": {
+                                        "value": null
+                                    }
+                                }
+                            },
+                            "traitAtTempRef": {
+                                "definitionType": "SpeciesLevel",
+                                "individualLevelParams": {
+                                    "limits": {
+                                        "max": null,
+                                        "min": null
+                                    },
+                                    "ranges": {
+                                        "max": null,
+                                        "min": null
+                                    },
+                                    "restrictValue": null
+                                },
+                                "speciesLevelParams": {
+                                    "value": null
+                                }
+                            }
+                        }
+                    },
+                    "assim": {
+                        "definitionType": "IndividualLevel",
+                        "individualLevelParams": {
+                            "limits": {
+                                "max": 0.1449999999999999,
+                                "min": 0.21999999999999983
+                            },
+                            "ranges": {
+                                "max": 0.51,
+                                "min": 0.49
+                            },
+                            "restrictValue": 0.01
+                        },
+                        "speciesLevelParams": {
+                            "value": null
+                        },
+                        "temperature": {
+                            "activationEnergy": {
+                                "definitionType": "SpeciesLevel",
+                                "individualLevelParams": {
+                                    "limits": {
+                                        "max": null,
+                                        "min": null
+                                    },
+                                    "ranges": {
+                                        "max": null,
+                                        "min": null
+                                    },
+                                    "restrictValue": null
+                                },
+                                "speciesLevelParams": {
+                                    "value": null
+                                }
+                            },
+                            "dependent": false,
+                            "energyDecay": {
+                                "definitionType": "SpeciesLevel",
+                                "individualLevelParams": {
+                                    "limits": {
+                                        "max": null,
+                                        "min": null
+                                    },
+                                    "ranges": {
+                                        "max": null,
+                                        "min": null
+                                    },
+                                    "restrictValue": null
+                                },
+                                "speciesLevelParams": {
+                                    "value": null
+                                }
+                            },
+                            "temperatureOptimal": {
+                                "definitionType": "SpeciesLevel",
+                                "individualLevelParams": {
+                                    "limits": {
+                                        "max": null,
+                                        "min": null
+                                    },
+                                    "ranges": {
+                                        "max": null,
+                                        "min": null
+                                    },
+                                    "restrictValue": null
+                                },
+                                "speciesLevelParams": {
+                                    "value": null
+                                }
+                            },
+                            "temperatureRef": {
+                                "definitionType": "SpeciesLevel",
+                                "individualLevelParams": {
+                                    "limits": {
+                                        "max": null,
+                                        "min": null
+                                    },
+                                    "ranges": {
+                                        "max": null,
+                                        "min": null
+                                    },
+                                    "restrictValue": null
+                                },
+                                "speciesLevelParams": {
+                                    "value": 20.0
+                                }
+                            },
+                            "threshold": {
+                                "lower": {
+                                    "definitionType": "SpeciesLevel",
+                                    "individualLevelParams": {
+                                        "limits": {
+                                            "max": null,
+                                            "min": null
+                                        },
+                                        "ranges": {
+                                            "max": null,
+                                            "min": null
+                                        },
+                                        "restrictValue": null
+                                    },
+                                    "speciesLevelParams": {
+                                        "value": null
+                                    }
+                                },
+                                "upper": {
+                                    "definitionType": "SpeciesLevel",
+                                    "individualLevelParams": {
+                                        "limits": {
+                                            "max": null,
+                                            "min": null
+                                        },
+                                        "ranges": {
+                                            "max": null,
+                                            "min": null
+                                        },
+                                        "restrictValue": null
+                                    },
+                                    "speciesLevelParams": {
+                                        "value": null
+                                    }
+                                }
+                            },
+                            "traitAtTempRef": {
+                                "definitionType": "SpeciesLevel",
+                                "individualLevelParams": {
+                                    "limits": {
+                                        "max": null,
+                                        "min": null
+                                    },
+                                    "ranges": {
+                                        "max": null,
+                                        "min": null
+                                    },
+                                    "restrictValue": null
+                                },
+                                "speciesLevelParams": {
+                                    "value": null
+                                }
+                            }
+                        }
+                    },
+                    "devTime": {
+                        "definitionType": "SpeciesLevel",
+                        "individualLevelParams": {
+                            "limits": {
+                                "max": null,
+                                "min": null
+                            },
+                            "ranges": {
+                                "max": null,
+                                "min": null
+                            },
+                            "restrictValue": null
+                        },
+                        "speciesLevelParams": {
+                            "value": 80
+                        },
+                        "temperature": {
+                            "activationEnergy": {
+                                "definitionType": "SpeciesLevel",
+                                "individualLevelParams": {
+                                    "limits": {
+                                        "max": null,
+                                        "min": null
+                                    },
+                                    "ranges": {
+                                        "max": null,
+                                        "min": null
+                                    },
+                                    "restrictValue": null
+                                },
+                                "speciesLevelParams": {
+                                    "value": null
+                                }
+                            },
+                            "dependent": false,
+                            "energyDecay": {
+                                "definitionType": "SpeciesLevel",
+                                "individualLevelParams": {
+                                    "limits": {
+                                        "max": null,
+                                        "min": null
+                                    },
+                                    "ranges": {
+                                        "max": null,
+                                        "min": null
+                                    },
+                                    "restrictValue": null
+                                },
+                                "speciesLevelParams": {
+                                    "value": null
+                                }
+                            },
+                            "temperatureOptimal": {
+                                "definitionType": "SpeciesLevel",
+                                "individualLevelParams": {
+                                    "limits": {
+                                        "max": null,
+                                        "min": null
+                                    },
+                                    "ranges": {
+                                        "max": null,
+                                        "min": null
+                                    },
+                                    "restrictValue": null
+                                },
+                                "speciesLevelParams": {
+                                    "value": null
+                                }
+                            },
+                            "temperatureRef": {
+                                "definitionType": "SpeciesLevel",
+                                "individualLevelParams": {
+                                    "limits": {
+                                        "max": null,
+                                        "min": null
+                                    },
+                                    "ranges": {
+                                        "max": null,
+                                        "min": null
+                                    },
+                                    "restrictValue": null
+                                },
+                                "speciesLevelParams": {
+                                    "value": 20.0
+                                }
+                            },
+                            "threshold": {
+                                "lower": {
+                                    "definitionType": "SpeciesLevel",
+                                    "individualLevelParams": {
+                                        "limits": {
+                                            "max": null,
+                                            "min": null
+                                        },
+                                        "ranges": {
+                                            "max": null,
+                                            "min": null
+                                        },
+                                        "restrictValue": null
+                                    },
+                                    "speciesLevelParams": {
+                                        "value": null
+                                    }
+                                },
+                                "upper": {
+                                    "definitionType": "SpeciesLevel",
+                                    "individualLevelParams": {
+                                        "limits": {
+                                            "max": null,
+                                            "min": null
+                                        },
+                                        "ranges": {
+                                            "max": null,
+                                            "min": null
+                                        },
+                                        "restrictValue": null
+                                    },
+                                    "speciesLevelParams": {
+                                        "value": null
+                                    }
+                                }
+                            },
+                            "traitAtTempRef": {
+                                "definitionType": "SpeciesLevel",
+                                "individualLevelParams": {
+                                    "limits": {
+                                        "max": null,
+                                        "min": null
+                                    },
+                                    "ranges": {
+                                        "max": null,
+                                        "min": null
+                                    },
+                                    "restrictValue": null
+                                },
+                                "speciesLevelParams": {
+                                    "value": null
+                                }
+                            }
+                        }
+                    },
+                    "eggDevTime": {
+                        "definitionType": "IndividualLevel",
+                        "individualLevelParams": {
+                            "limits": {
+                                "max": 0.07,
+                                "min": 0.01
+                            },
+                            "ranges": {
+                                "max": 3.0,
+                                "min": 2.0
+                            },
+                            "restrictValue": 0.01
+                        },
+                        "speciesLevelParams": {
+                            "value": null
+                        },
+                        "temperature": {
+                            "activationEnergy": {
+                                "definitionType": "SpeciesLevel",
+                                "individualLevelParams": {
+                                    "limits": {
+                                        "max": null,
+                                        "min": null
+                                    },
+                                    "ranges": {
+                                        "max": null,
+                                        "min": null
+                                    },
+                                    "restrictValue": null
+                                },
+                                "speciesLevelParams": {
+                                    "value": null
+                                }
+                            },
+                            "dependent": false,
+                            "energyDecay": {
+                                "definitionType": "SpeciesLevel",
+                                "individualLevelParams": {
+                                    "limits": {
+                                        "max": null,
+                                        "min": null
+                                    },
+                                    "ranges": {
+                                        "max": null,
+                                        "min": null
+                                    },
+                                    "restrictValue": null
+                                },
+                                "speciesLevelParams": {
+                                    "value": null
+                                }
+                            },
+                            "temperatureOptimal": {
+                                "definitionType": "SpeciesLevel",
+                                "individualLevelParams": {
+                                    "limits": {
+                                        "max": null,
+                                        "min": null
+                                    },
+                                    "ranges": {
+                                        "max": null,
+                                        "min": null
+                                    },
+                                    "restrictValue": null
+                                },
+                                "speciesLevelParams": {
+                                    "value": null
+                                }
+                            },
+                            "temperatureRef": {
+                                "definitionType": "SpeciesLevel",
+                                "individualLevelParams": {
+                                    "limits": {
+                                        "max": null,
+                                        "min": null
+                                    },
+                                    "ranges": {
+                                        "max": null,
+                                        "min": null
+                                    },
+                                    "restrictValue": null
+                                },
+                                "speciesLevelParams": {
+                                    "value": 20.0
+                                }
+                            },
+                            "threshold": {
+                                "lower": {
+                                    "definitionType": "SpeciesLevel",
+                                    "individualLevelParams": {
+                                        "limits": {
+                                            "max": null,
+                                            "min": null
+                                        },
+                                        "ranges": {
+                                            "max": null,
+                                            "min": null
+                                        },
+                                        "restrictValue": null
+                                    },
+                                    "speciesLevelParams": {
+                                        "value": null
+                                    }
+                                },
+                                "upper": {
+                                    "definitionType": "SpeciesLevel",
+                                    "individualLevelParams": {
+                                        "limits": {
+                                            "max": null,
+                                            "min": null
+                                        },
+                                        "ranges": {
+                                            "max": null,
+                                            "min": null
+                                        },
+                                        "restrictValue": null
+                                    },
+                                    "speciesLevelParams": {
+                                        "value": null
+                                    }
+                                }
+                            },
+                            "traitAtTempRef": {
+                                "definitionType": "SpeciesLevel",
+                                "individualLevelParams": {
+                                    "limits": {
+                                        "max": null,
+                                        "min": null
+                                    },
+                                    "ranges": {
+                                        "max": null,
+                                        "min": null
+                                    },
+                                    "restrictValue": null
+                                },
+                                "speciesLevelParams": {
+                                    "value": null
+                                }
+                            }
+                        }
+                    },
+                    "energy_tank": {
+                        "definitionType": "IndividualLevel",
+                        "individualLevelParams": {
+                            "limits": {
+                                "max": 0.010000000000000014,
+                                "min": 0.017500000000000012
+                            },
+                            "ranges": {
+                                "max": 0.36,
+                                "min": 0.32
+                            },
+                            "restrictValue": 0.01
+                        },
+                        "speciesLevelParams": {
+                            "value": null
+                        }
+                    },
+                    "factorEggMass": {
+                        "definitionType": "IndividualLevel",
+                        "individualLevelParams": {
+                            "limits": {
+                                "max": 0.005,
+                                "min": 0.005
+                            },
+                            "ranges": {
+                                "max": 0.05,
+                                "min": -0.05
+                            },
+                            "restrictValue": 0.01
+                        },
+                        "speciesLevelParams": {
+                            "value": null
+                        },
+                        "temperature": {
+                            "activationEnergy": {
+                                "definitionType": "SpeciesLevel",
+                                "individualLevelParams": {
+                                    "limits": {
+                                        "max": null,
+                                        "min": null
+                                    },
+                                    "ranges": {
+                                        "max": null,
+                                        "min": null
+                                    },
+                                    "restrictValue": null
+                                },
+                                "speciesLevelParams": {
+                                    "value": null
+                                }
+                            },
+                            "dependent": false,
+                            "energyDecay": {
+                                "definitionType": "SpeciesLevel",
+                                "individualLevelParams": {
+                                    "limits": {
+                                        "max": null,
+                                        "min": null
+                                    },
+                                    "ranges": {
+                                        "max": null,
+                                        "min": null
+                                    },
+                                    "restrictValue": null
+                                },
+                                "speciesLevelParams": {
+                                    "value": null
+                                }
+                            },
+                            "temperatureOptimal": {
+                                "definitionType": "SpeciesLevel",
+                                "individualLevelParams": {
+                                    "limits": {
+                                        "max": null,
+                                        "min": null
+                                    },
+                                    "ranges": {
+                                        "max": null,
+                                        "min": null
+                                    },
+                                    "restrictValue": null
+                                },
+                                "speciesLevelParams": {
+                                    "value": null
+                                }
+                            },
+                            "temperatureRef": {
+                                "definitionType": "SpeciesLevel",
+                                "individualLevelParams": {
+                                    "limits": {
+                                        "max": null,
+                                        "min": null
+                                    },
+                                    "ranges": {
+                                        "max": null,
+                                        "min": null
+                                    },
+                                    "restrictValue": null
+                                },
+                                "speciesLevelParams": {
+                                    "value": 20.0
+                                }
+                            },
+                            "threshold": {
+                                "lower": {
+                                    "definitionType": "SpeciesLevel",
+                                    "individualLevelParams": {
+                                        "limits": {
+                                            "max": null,
+                                            "min": null
+                                        },
+                                        "ranges": {
+                                            "max": null,
+                                            "min": null
+                                        },
+                                        "restrictValue": null
+                                    },
+                                    "speciesLevelParams": {
+                                        "value": null
+                                    }
+                                },
+                                "upper": {
+                                    "definitionType": "SpeciesLevel",
+                                    "individualLevelParams": {
+                                        "limits": {
+                                            "max": null,
+                                            "min": null
+                                        },
+                                        "ranges": {
+                                            "max": null,
+                                            "min": null
+                                        },
+                                        "restrictValue": null
+                                    },
+                                    "speciesLevelParams": {
+                                        "value": null
+                                    }
+                                }
+                            },
+                            "traitAtTempRef": {
+                                "definitionType": "SpeciesLevel",
+                                "individualLevelParams": {
+                                    "limits": {
+                                        "max": null,
+                                        "min": null
+                                    },
+                                    "ranges": {
+                                        "max": null,
+                                        "min": null
+                                    },
+                                    "restrictValue": null
+                                },
+                                "speciesLevelParams": {
+                                    "value": null
+                                }
+                            }
+                        }
+                    },
+                    "growth": {
+                        "definitionType": "IndividualLevel",
+                        "individualLevelParams": {
+                            "limits": {
+                                "max": 0.34999999999967,
+                                "min": 0.137499999999997
+                            },
+                            "ranges": {
+                                "max": 0.0046,
+                                "min": 0.00456
+                            },
+                            "restrictValue": 0.01
+                        },
+                        "speciesLevelParams": {
+                            "value": null
+                        },
+                        "temperature": {
+                            "activationEnergy": {
+                                "definitionType": "SpeciesLevel",
+                                "individualLevelParams": {
+                                    "limits": {
+                                        "max": null,
+                                        "min": null
+                                    },
+                                    "ranges": {
+                                        "max": null,
+                                        "min": null
+                                    },
+                                    "restrictValue": null
+                                },
+                                "speciesLevelParams": {
+                                    "value": 0.67
+                                }
+                            },
+                            "dependent": true,
+                            "energyDecay": {
+                                "definitionType": "SpeciesLevel",
+                                "individualLevelParams": {
+                                    "limits": {
+                                        "max": null,
+                                        "min": null
+                                    },
+                                    "ranges": {
+                                        "max": null,
+                                        "min": null
+                                    },
+                                    "restrictValue": null
+                                },
+                                "speciesLevelParams": {
+                                    "value": 1.66
+                                }
+                            },
+                            "temperatureOptimal": {
+                                "definitionType": "SpeciesLevel",
+                                "individualLevelParams": {
+                                    "limits": {
+                                        "max": null,
+                                        "min": null
+                                    },
+                                    "ranges": {
+                                        "max": null,
+                                        "min": null
+                                    },
+                                    "restrictValue": null
+                                },
+                                "speciesLevelParams": {
+                                    "value": 35.0
+                                }
+                            },
+                            "temperatureRef": {
+                                "definitionType": "SpeciesLevel",
+                                "individualLevelParams": {
+                                    "limits": {
+                                        "max": null,
+                                        "min": null
+                                    },
+                                    "ranges": {
+                                        "max": null,
+                                        "min": null
+                                    },
+                                    "restrictValue": null
+                                },
+                                "speciesLevelParams": {
+                                    "value": 20.0
+                                }
+                            },
+                            "threshold": {
+                                "lower": {
+                                    "definitionType": "SpeciesLevel",
+                                    "individualLevelParams": {
+                                        "limits": {
+                                            "max": null,
+                                            "min": null
+                                        },
+                                        "ranges": {
+                                            "max": null,
+                                            "min": null
+                                        },
+                                        "restrictValue": null
+                                    },
+                                    "speciesLevelParams": {
+                                        "value": 1.0
+                                    }
+                                },
+                                "upper": {
+                                    "definitionType": "SpeciesLevel",
+                                    "individualLevelParams": {
+                                        "limits": {
+                                            "max": null,
+                                            "min": null
+                                        },
+                                        "ranges": {
+                                            "max": null,
+                                            "min": null
+                                        },
+                                        "restrictValue": null
+                                    },
+                                    "speciesLevelParams": {
+                                        "value": 35.0
+                                    }
+                                }
+                            },
+                            "traitAtTempRef": {
+                                "definitionType": "SpeciesLevel",
+                                "individualLevelParams": {
+                                    "limits": {
+                                        "max": null,
+                                        "min": null
+                                    },
+                                    "ranges": {
+                                        "max": null,
+                                        "min": null
+                                    },
+                                    "restrictValue": null
+                                },
+                                "speciesLevelParams": {
+                                    "value": 0.0046
+                                }
+                            }
+                        }
+                    },
+                    "interaction_area": {
+                        "definitionType": "SpeciesLevel",
+                        "individualLevelParams": {
+                            "limits": {
+                                "max": null,
+                                "min": null
+                            },
+                            "ranges": {
+                                "max": null,
+                                "min": null
+                            },
+                            "restrictValue": null
+                        },
+                        "speciesLevelParams": {
+                            "value": 1.4
+                        },
+                        "temperature": {
+                            "activationEnergy": {
+                                "definitionType": "SpeciesLevel",
+                                "individualLevelParams": {
+                                    "limits": {
+                                        "max": null,
+                                        "min": null
+                                    },
+                                    "ranges": {
+                                        "max": null,
+                                        "min": null
+                                    },
+                                    "restrictValue": null
+                                },
+                                "speciesLevelParams": {
+                                    "value": null
+                                }
+                            },
+                            "dependent": false,
+                            "energyDecay": {
+                                "definitionType": "SpeciesLevel",
+                                "individualLevelParams": {
+                                    "limits": {
+                                        "max": null,
+                                        "min": null
+                                    },
+                                    "ranges": {
+                                        "max": null,
+                                        "min": null
+                                    },
+                                    "restrictValue": null
+                                },
+                                "speciesLevelParams": {
+                                    "value": null
+                                }
+                            },
+                            "temperatureOptimal": {
+                                "definitionType": "SpeciesLevel",
+                                "individualLevelParams": {
+                                    "limits": {
+                                        "max": null,
+                                        "min": null
+                                    },
+                                    "ranges": {
+                                        "max": null,
+                                        "min": null
+                                    },
+                                    "restrictValue": null
+                                },
+                                "speciesLevelParams": {
+                                    "value": null
+                                }
+                            },
+                            "temperatureRef": {
+                                "definitionType": "SpeciesLevel",
+                                "individualLevelParams": {
+                                    "limits": {
+                                        "max": null,
+                                        "min": null
+                                    },
+                                    "ranges": {
+                                        "max": null,
+                                        "min": null
+                                    },
+                                    "restrictValue": null
+                                },
+                                "speciesLevelParams": {
+                                    "value": 20.0
+                                }
+                            },
+                            "threshold": {
+                                "lower": {
+                                    "definitionType": "SpeciesLevel",
+                                    "individualLevelParams": {
+                                        "limits": {
+                                            "max": null,
+                                            "min": null
+                                        },
+                                        "ranges": {
+                                            "max": null,
+                                            "min": null
+                                        },
+                                        "restrictValue": null
+                                    },
+                                    "speciesLevelParams": {
+                                        "value": null
+                                    }
+                                },
+                                "upper": {
+                                    "definitionType": "SpeciesLevel",
+                                    "individualLevelParams": {
+                                        "limits": {
+                                            "max": null,
+                                            "min": null
+                                        },
+                                        "ranges": {
+                                            "max": null,
+                                            "min": null
+                                        },
+                                        "restrictValue": null
+                                    },
+                                    "speciesLevelParams": {
+                                        "value": null
+                                    }
+                                }
+                            },
+                            "traitAtTempRef": {
+                                "definitionType": "SpeciesLevel",
+                                "individualLevelParams": {
+                                    "limits": {
+                                        "max": null,
+                                        "min": null
+                                    },
+                                    "ranges": {
+                                        "max": null,
+                                        "min": null
+                                    },
+                                    "restrictValue": null
+                                },
+                                "speciesLevelParams": {
+                                    "value": null
+                                }
+                            }
+                        }
+                    },
+                    "lengthAtMaturation": {
+                        "definitionType": "SpeciesLevel",
+                        "individualLevelParams": {
+                            "limits": {
+                                "max": null,
+                                "min": null
+                            },
+                            "ranges": {
+                                "max": null,
+                                "min": null
+                            },
+                            "restrictValue": null
+                        },
+                        "speciesLevelParams": {
+                            "value": 5.0
+                        },
+                        "temperature": {
+                            "dependent": false,
+                            "tempSizeRuleVector": null
+                        }
+                    },
+                    "memoryDepth": {
+                        "definitionType": "SpeciesLevel",
+                        "individualLevelParams": {
+                            "limits": {
+                                "max": null,
+                                "min": null
+                            },
+                            "ranges": {
+                                "max": null,
+                                "min": null
+                            },
+                            "restrictValue": null
+                        },
+                        "speciesLevelParams": {
+                            "value": 5.0
+                        },
+                        "temperature": {
+                            "activationEnergy": {
+                                "definitionType": "SpeciesLevel",
+                                "individualLevelParams": {
+                                    "limits": {
+                                        "max": null,
+                                        "min": null
+                                    },
+                                    "ranges": {
+                                        "max": null,
+                                        "min": null
+                                    },
+                                    "restrictValue": null
+                                },
+                                "speciesLevelParams": {
+                                    "value": null
+                                }
+                            },
+                            "dependent": false,
+                            "energyDecay": {
+                                "definitionType": "SpeciesLevel",
+                                "individualLevelParams": {
+                                    "limits": {
+                                        "max": null,
+                                        "min": null
+                                    },
+                                    "ranges": {
+                                        "max": null,
+                                        "min": null
+                                    },
+                                    "restrictValue": null
+                                },
+                                "speciesLevelParams": {
+                                    "value": null
+                                }
+                            },
+                            "temperatureOptimal": {
+                                "definitionType": "SpeciesLevel",
+                                "individualLevelParams": {
+                                    "limits": {
+                                        "max": null,
+                                        "min": null
+                                    },
+                                    "ranges": {
+                                        "max": null,
+                                        "min": null
+                                    },
+                                    "restrictValue": null
+                                },
+                                "speciesLevelParams": {
+                                    "value": null
+                                }
+                            },
+                            "temperatureRef": {
+                                "definitionType": "SpeciesLevel",
+                                "individualLevelParams": {
+                                    "limits": {
+                                        "max": null,
+                                        "min": null
+                                    },
+                                    "ranges": {
+                                        "max": null,
+                                        "min": null
+                                    },
+                                    "restrictValue": null
+                                },
+                                "speciesLevelParams": {
+                                    "value": 20.0
+                                }
+                            },
+                            "threshold": {
+                                "lower": {
+                                    "definitionType": "SpeciesLevel",
+                                    "individualLevelParams": {
+                                        "limits": {
+                                            "max": null,
+                                            "min": null
+                                        },
+                                        "ranges": {
+                                            "max": null,
+                                            "min": null
+                                        },
+                                        "restrictValue": null
+                                    },
+                                    "speciesLevelParams": {
+                                        "value": null
+                                    }
+                                },
+                                "upper": {
+                                    "definitionType": "SpeciesLevel",
+                                    "individualLevelParams": {
+                                        "limits": {
+                                            "max": null,
+                                            "min": null
+                                        },
+                                        "ranges": {
+                                            "max": null,
+                                            "min": null
+                                        },
+                                        "restrictValue": null
+                                    },
+                                    "speciesLevelParams": {
+                                        "value": null
+                                    }
+                                }
+                            },
+                            "traitAtTempRef": {
+                                "definitionType": "SpeciesLevel",
+                                "individualLevelParams": {
+                                    "limits": {
+                                        "max": null,
+                                        "min": null
+                                    },
+                                    "ranges": {
+                                        "max": null,
+                                        "min": null
+                                    },
+                                    "restrictValue": null
+                                },
+                                "speciesLevelParams": {
+                                    "value": null
+                                }
+                            }
+                        }
+                    },
+                    "met_rate": {
+                        "definitionType": "IndividualLevel",
+                        "individualLevelParams": {
+                            "limits": {
+                                "max": 0.0802999999999999,
+                                "min": 0.23469999999999977
+                            },
+                            "ranges": {
+                                "max": 0.6894,
+                                "min": 0.6694
+                            },
+                            "restrictValue": 0.01
+                        },
+                        "speciesLevelParams": {
+                            "value": null
+                        },
+                        "temperature": {
+                            "activationEnergy": {
+                                "definitionType": "SpeciesLevel",
+                                "individualLevelParams": {
+                                    "limits": {
+                                        "max": null,
+                                        "min": null
+                                    },
+                                    "ranges": {
+                                        "max": null,
+                                        "min": null
+                                    },
+                                    "restrictValue": null
+                                },
+                                "speciesLevelParams": {
+                                    "value": null
+                                }
+                            },
+                            "dependent": false,
+                            "energyDecay": {
+                                "definitionType": "SpeciesLevel",
+                                "individualLevelParams": {
+                                    "limits": {
+                                        "max": null,
+                                        "min": null
+                                    },
+                                    "ranges": {
+                                        "max": null,
+                                        "min": null
+                                    },
+                                    "restrictValue": null
+                                },
+                                "speciesLevelParams": {
+                                    "value": null
+                                }
+                            },
+                            "temperatureOptimal": {
+                                "definitionType": "SpeciesLevel",
+                                "individualLevelParams": {
+                                    "limits": {
+                                        "max": null,
+                                        "min": null
+                                    },
+                                    "ranges": {
+                                        "max": null,
+                                        "min": null
+                                    },
+                                    "restrictValue": null
+                                },
+                                "speciesLevelParams": {
+                                    "value": null
+                                }
+                            },
+                            "temperatureRef": {
+                                "definitionType": "SpeciesLevel",
+                                "individualLevelParams": {
+                                    "limits": {
+                                        "max": null,
+                                        "min": null
+                                    },
+                                    "ranges": {
+                                        "max": null,
+                                        "min": null
+                                    },
+                                    "restrictValue": null
+                                },
+                                "speciesLevelParams": {
+                                    "value": 20.0
+                                }
+                            },
+                            "threshold": {
+                                "lower": {
+                                    "definitionType": "SpeciesLevel",
+                                    "individualLevelParams": {
+                                        "limits": {
+                                            "max": null,
+                                            "min": null
+                                        },
+                                        "ranges": {
+                                            "max": null,
+                                            "min": null
+                                        },
+                                        "restrictValue": null
+                                    },
+                                    "speciesLevelParams": {
+                                        "value": null
+                                    }
+                                },
+                                "upper": {
+                                    "definitionType": "SpeciesLevel",
+                                    "individualLevelParams": {
+                                        "limits": {
+                                            "max": null,
+                                            "min": null
+                                        },
+                                        "ranges": {
+                                            "max": null,
+                                            "min": null
+                                        },
+                                        "restrictValue": null
+                                    },
+                                    "speciesLevelParams": {
+                                        "value": null
+                                    }
+                                }
+                            },
+                            "traitAtTempRef": {
+                                "definitionType": "SpeciesLevel",
+                                "individualLevelParams": {
+                                    "limits": {
+                                        "max": null,
+                                        "min": null
+                                    },
+                                    "ranges": {
+                                        "max": null,
+                                        "min": null
+                                    },
+                                    "restrictValue": null
+                                },
+                                "speciesLevelParams": {
+                                    "value": null
+                                }
+                            }
+                        }
+                    },
+                    "perception_area": {
+                        "definitionType": "SpeciesLevel",
+                        "individualLevelParams": {
+                            "limits": {
+                                "max": null,
+                                "min": null
+                            },
+                            "ranges": {
+                                "max": null,
+                                "min": null
+                            },
+                            "restrictValue": null
+                        },
+                        "speciesLevelParams": {
+                            "value": 1.4
+                        },
+                        "temperature": {
+                            "activationEnergy": {
+                                "definitionType": "SpeciesLevel",
+                                "individualLevelParams": {
+                                    "limits": {
+                                        "max": null,
+                                        "min": null
+                                    },
+                                    "ranges": {
+                                        "max": null,
+                                        "min": null
+                                    },
+                                    "restrictValue": null
+                                },
+                                "speciesLevelParams": {
+                                    "value": null
+                                }
+                            },
+                            "dependent": false,
+                            "energyDecay": {
+                                "definitionType": "SpeciesLevel",
+                                "individualLevelParams": {
+                                    "limits": {
+                                        "max": null,
+                                        "min": null
+                                    },
+                                    "ranges": {
+                                        "max": null,
+                                        "min": null
+                                    },
+                                    "restrictValue": null
+                                },
+                                "speciesLevelParams": {
+                                    "value": null
+                                }
+                            },
+                            "temperatureOptimal": {
+                                "definitionType": "SpeciesLevel",
+                                "individualLevelParams": {
+                                    "limits": {
+                                        "max": null,
+                                        "min": null
+                                    },
+                                    "ranges": {
+                                        "max": null,
+                                        "min": null
+                                    },
+                                    "restrictValue": null
+                                },
+                                "speciesLevelParams": {
+                                    "value": null
+                                }
+                            },
+                            "temperatureRef": {
+                                "definitionType": "SpeciesLevel",
+                                "individualLevelParams": {
+                                    "limits": {
+                                        "max": null,
+                                        "min": null
+                                    },
+                                    "ranges": {
+                                        "max": null,
+                                        "min": null
+                                    },
+                                    "restrictValue": null
+                                },
+                                "speciesLevelParams": {
+                                    "value": 20.0
+                                }
+                            },
+                            "threshold": {
+                                "lower": {
+                                    "definitionType": "SpeciesLevel",
+                                    "individualLevelParams": {
+                                        "limits": {
+                                            "max": null,
+                                            "min": null
+                                        },
+                                        "ranges": {
+                                            "max": null,
+                                            "min": null
+                                        },
+                                        "restrictValue": null
+                                    },
+                                    "speciesLevelParams": {
+                                        "value": null
+                                    }
+                                },
+                                "upper": {
+                                    "definitionType": "SpeciesLevel",
+                                    "individualLevelParams": {
+                                        "limits": {
+                                            "max": null,
+                                            "min": null
+                                        },
+                                        "ranges": {
+                                            "max": null,
+                                            "min": null
+                                        },
+                                        "restrictValue": null
+                                    },
+                                    "speciesLevelParams": {
+                                        "value": null
+                                    }
+                                }
+                            },
+                            "traitAtTempRef": {
+                                "definitionType": "SpeciesLevel",
+                                "individualLevelParams": {
+                                    "limits": {
+                                        "max": null,
+                                        "min": null
+                                    },
+                                    "ranges": {
+                                        "max": null,
+                                        "min": null
+                                    },
+                                    "restrictValue": null
+                                },
+                                "speciesLevelParams": {
+                                    "value": null
+                                }
+                            }
+                        }
+                    },
+                    "pupaPeriodTime": {
+                        "definitionType": "SpeciesLevel",
+                        "individualLevelParams": {
+                            "limits": {
+                                "max": null,
+                                "min": null
+                            },
+                            "ranges": {
+                                "max": null,
+                                "min": null
+                            },
+                            "restrictValue": null
+                        },
+                        "speciesLevelParams": {
+                            "value": 1
+                        },
+                        "temperature": {
+                            "activationEnergy": {
+                                "definitionType": "SpeciesLevel",
+                                "individualLevelParams": {
+                                    "limits": {
+                                        "max": null,
+                                        "min": null
+                                    },
+                                    "ranges": {
+                                        "max": null,
+                                        "min": null
+                                    },
+                                    "restrictValue": null
+                                },
+                                "speciesLevelParams": {
+                                    "value": null
+                                }
+                            },
+                            "dependent": false,
+                            "energyDecay": {
+                                "definitionType": "SpeciesLevel",
+                                "individualLevelParams": {
+                                    "limits": {
+                                        "max": null,
+                                        "min": null
+                                    },
+                                    "ranges": {
+                                        "max": null,
+                                        "min": null
+                                    },
+                                    "restrictValue": null
+                                },
+                                "speciesLevelParams": {
+                                    "value": null
+                                }
+                            },
+                            "temperatureOptimal": {
+                                "definitionType": "SpeciesLevel",
+                                "individualLevelParams": {
+                                    "limits": {
+                                        "max": null,
+                                        "min": null
+                                    },
+                                    "ranges": {
+                                        "max": null,
+                                        "min": null
+                                    },
+                                    "restrictValue": null
+                                },
+                                "speciesLevelParams": {
+                                    "value": null
+                                }
+                            },
+                            "temperatureRef": {
+                                "definitionType": "SpeciesLevel",
+                                "individualLevelParams": {
+                                    "limits": {
+                                        "max": null,
+                                        "min": null
+                                    },
+                                    "ranges": {
+                                        "max": null,
+                                        "min": null
+                                    },
+                                    "restrictValue": null
+                                },
+                                "speciesLevelParams": {
+                                    "value": 20.0
+                                }
+                            },
+                            "threshold": {
+                                "lower": {
+                                    "definitionType": "SpeciesLevel",
+                                    "individualLevelParams": {
+                                        "limits": {
+                                            "max": null,
+                                            "min": null
+                                        },
+                                        "ranges": {
+                                            "max": null,
+                                            "min": null
+                                        },
+                                        "restrictValue": null
+                                    },
+                                    "speciesLevelParams": {
+                                        "value": null
+                                    }
+                                },
+                                "upper": {
+                                    "definitionType": "SpeciesLevel",
+                                    "individualLevelParams": {
+                                        "limits": {
+                                            "max": null,
+                                            "min": null
+                                        },
+                                        "ranges": {
+                                            "max": null,
+                                            "min": null
+                                        },
+                                        "restrictValue": null
+                                    },
+                                    "speciesLevelParams": {
+                                        "value": null
+                                    }
+                                }
+                            },
+                            "traitAtTempRef": {
+                                "definitionType": "SpeciesLevel",
+                                "individualLevelParams": {
+                                    "limits": {
+                                        "max": null,
+                                        "min": null
+                                    },
+                                    "ranges": {
+                                        "max": null,
+                                        "min": null
+                                    },
+                                    "restrictValue": null
+                                },
+                                "speciesLevelParams": {
+                                    "value": null
+                                }
+                            }
+                        }
+                    },
+                    "search_area": {
+                        "definitionType": "IndividualLevel",
+                        "individualLevelParams": {
+                            "limits": {
+                                "max": 0.195,
+                                "min": 0.04
+                            },
+                            "ranges": {
+                                "max": 11.0,
+                                "min": 9.0
+                            },
+                            "restrictValue": 0.01
+                        },
+                        "speciesLevelParams": {
+                            "value": null
+                        },
+                        "temperature": {
+                            "activationEnergy": {
+                                "definitionType": "SpeciesLevel",
+                                "individualLevelParams": {
+                                    "limits": {
+                                        "max": null,
+                                        "min": null
+                                    },
+                                    "ranges": {
+                                        "max": null,
+                                        "min": null
+                                    },
+                                    "restrictValue": null
+                                },
+                                "speciesLevelParams": {
+                                    "value": 0.665
+                                }
+                            },
+                            "dependent": true,
+                            "energyDecay": {
+                                "definitionType": "SpeciesLevel",
+                                "individualLevelParams": {
+                                    "limits": {
+                                        "max": null,
+                                        "min": null
+                                    },
+                                    "ranges": {
+                                        "max": null,
+                                        "min": null
+                                    },
+                                    "restrictValue": null
+                                },
+                                "speciesLevelParams": {
+                                    "value": 1.66
+                                }
+                            },
+                            "temperatureOptimal": {
+                                "definitionType": "SpeciesLevel",
+                                "individualLevelParams": {
+                                    "limits": {
+                                        "max": null,
+                                        "min": null
+                                    },
+                                    "ranges": {
+                                        "max": null,
+                                        "min": null
+                                    },
+                                    "restrictValue": null
+                                },
+                                "speciesLevelParams": {
+                                    "value": 25.0
+                                }
+                            },
+                            "temperatureRef": {
+                                "definitionType": "SpeciesLevel",
+                                "individualLevelParams": {
+                                    "limits": {
+                                        "max": null,
+                                        "min": null
+                                    },
+                                    "ranges": {
+                                        "max": null,
+                                        "min": null
+                                    },
+                                    "restrictValue": null
+                                },
+                                "speciesLevelParams": {
+                                    "value": 20.0
+                                }
+                            },
+                            "threshold": {
+                                "lower": {
+                                    "definitionType": "SpeciesLevel",
+                                    "individualLevelParams": {
+                                        "limits": {
+                                            "max": null,
+                                            "min": null
+                                        },
+                                        "ranges": {
+                                            "max": null,
+                                            "min": null
+                                        },
+                                        "restrictValue": null
+                                    },
+                                    "speciesLevelParams": {
+                                        "value": 1.0
+                                    }
+                                },
+                                "upper": {
+                                    "definitionType": "SpeciesLevel",
+                                    "individualLevelParams": {
+                                        "limits": {
+                                            "max": null,
+                                            "min": null
+                                        },
+                                        "ranges": {
+                                            "max": null,
+                                            "min": null
+                                        },
+                                        "restrictValue": null
+                                    },
+                                    "speciesLevelParams": {
+                                        "value": 35.0
+                                    }
+                                }
+                            },
+                            "traitAtTempRef": {
+                                "definitionType": "SpeciesLevel",
+                                "individualLevelParams": {
+                                    "limits": {
+                                        "max": null,
+                                        "min": null
+                                    },
+                                    "ranges": {
+                                        "max": null,
+                                        "min": null
+                                    },
+                                    "restrictValue": null
+                                },
+                                "speciesLevelParams": {
+                                    "value": 11.0
+                                }
+                            }
+                        }
+                    },
+                    "shock_resistance": {
+                        "definitionType": "IndividualLevel",
+                        "individualLevelParams": {
+                            "limits": {
+                                "max": 0.04,
+                                "min": 0.1
+                            },
+                            "ranges": {
+                                "max": 410.0,
+                                "min": 400.0
+                            },
+                            "restrictValue": 0.01
+                        },
+                        "speciesLevelParams": {
+                            "value": null
+                        },
+                        "temperature": {
+                            "activationEnergy": {
+                                "definitionType": "SpeciesLevel",
+                                "individualLevelParams": {
+                                    "limits": {
+                                        "max": null,
+                                        "min": null
+                                    },
+                                    "ranges": {
+                                        "max": null,
+                                        "min": null
+                                    },
+                                    "restrictValue": null
+                                },
+                                "speciesLevelParams": {
+                                    "value": null
+                                }
+                            },
+                            "dependent": false,
+                            "energyDecay": {
+                                "definitionType": "SpeciesLevel",
+                                "individualLevelParams": {
+                                    "limits": {
+                                        "max": null,
+                                        "min": null
+                                    },
+                                    "ranges": {
+                                        "max": null,
+                                        "min": null
+                                    },
+                                    "restrictValue": null
+                                },
+                                "speciesLevelParams": {
+                                    "value": null
+                                }
+                            },
+                            "temperatureOptimal": {
+                                "definitionType": "SpeciesLevel",
+                                "individualLevelParams": {
+                                    "limits": {
+                                        "max": null,
+                                        "min": null
+                                    },
+                                    "ranges": {
+                                        "max": null,
+                                        "min": null
+                                    },
+                                    "restrictValue": null
+                                },
+                                "speciesLevelParams": {
+                                    "value": null
+                                }
+                            },
+                            "temperatureRef": {
+                                "definitionType": "SpeciesLevel",
+                                "individualLevelParams": {
+                                    "limits": {
+                                        "max": null,
+                                        "min": null
+                                    },
+                                    "ranges": {
+                                        "max": null,
+                                        "min": null
+                                    },
+                                    "restrictValue": null
+                                },
+                                "speciesLevelParams": {
+                                    "value": 20.0
+                                }
+                            },
+                            "threshold": {
+                                "lower": {
+                                    "definitionType": "SpeciesLevel",
+                                    "individualLevelParams": {
+                                        "limits": {
+                                            "max": null,
+                                            "min": null
+                                        },
+                                        "ranges": {
+                                            "max": null,
+                                            "min": null
+                                        },
+                                        "restrictValue": null
+                                    },
+                                    "speciesLevelParams": {
+                                        "value": null
+                                    }
+                                },
+                                "upper": {
+                                    "definitionType": "SpeciesLevel",
+                                    "individualLevelParams": {
+                                        "limits": {
+                                            "max": null,
+                                            "min": null
+                                        },
+                                        "ranges": {
+                                            "max": null,
+                                            "min": null
+                                        },
+                                        "restrictValue": null
+                                    },
+                                    "speciesLevelParams": {
+                                        "value": null
+                                    }
+                                }
+                            },
+                            "traitAtTempRef": {
+                                "definitionType": "SpeciesLevel",
+                                "individualLevelParams": {
+                                    "limits": {
+                                        "max": null,
+                                        "min": null
+                                    },
+                                    "ranges": {
+                                        "max": null,
+                                        "min": null
+                                    },
+                                    "restrictValue": null
+                                },
+                                "speciesLevelParams": {
+                                    "value": null
+                                }
+                            }
+                        }
+                    },
+                    "speed": {
+                        "definitionType": "IndividualLevel",
+                        "individualLevelParams": {
+                            "limits": {
+                                "max": 0.07,
+                                "min": 0.007500000000000003
+                            },
+                            "ranges": {
+                                "max": 1.2,
+                                "min": 0.8
+                            },
+                            "restrictValue": 0.01
+                        },
+                        "speciesLevelParams": {
+                            "value": null
+                        },
+                        "temperature": {
+                            "activationEnergy": {
+                                "definitionType": "SpeciesLevel",
+                                "individualLevelParams": {
+                                    "limits": {
+                                        "max": null,
+                                        "min": null
+                                    },
+                                    "ranges": {
+                                        "max": null,
+                                        "min": null
+                                    },
+                                    "restrictValue": null
+                                },
+                                "speciesLevelParams": {
+                                    "value": 0.665
+                                }
+                            },
+                            "dependent": true,
+                            "energyDecay": {
+                                "definitionType": "SpeciesLevel",
+                                "individualLevelParams": {
+                                    "limits": {
+                                        "max": null,
+                                        "min": null
+                                    },
+                                    "ranges": {
+                                        "max": null,
+                                        "min": null
+                                    },
+                                    "restrictValue": null
+                                },
+                                "speciesLevelParams": {
+                                    "value": 1.66
+                                }
+                            },
+                            "temperatureOptimal": {
+                                "definitionType": "SpeciesLevel",
+                                "individualLevelParams": {
+                                    "limits": {
+                                        "max": null,
+                                        "min": null
+                                    },
+                                    "ranges": {
+                                        "max": null,
+                                        "min": null
+                                    },
+                                    "restrictValue": null
+                                },
+                                "speciesLevelParams": {
+                                    "value": 25.0
+                                }
+                            },
+                            "temperatureRef": {
+                                "definitionType": "SpeciesLevel",
+                                "individualLevelParams": {
+                                    "limits": {
+                                        "max": null,
+                                        "min": null
+                                    },
+                                    "ranges": {
+                                        "max": null,
+                                        "min": null
+                                    },
+                                    "restrictValue": null
+                                },
+                                "speciesLevelParams": {
+                                    "value": 20.0
+                                }
+                            },
+                            "threshold": {
+                                "lower": {
+                                    "definitionType": "SpeciesLevel",
+                                    "individualLevelParams": {
+                                        "limits": {
+                                            "max": null,
+                                            "min": null
+                                        },
+                                        "ranges": {
+                                            "max": null,
+                                            "min": null
+                                        },
+                                        "restrictValue": null
+                                    },
+                                    "speciesLevelParams": {
+                                        "value": 1.0
+                                    }
+                                },
+                                "upper": {
+                                    "definitionType": "SpeciesLevel",
+                                    "individualLevelParams": {
+                                        "limits": {
+                                            "max": null,
+                                            "min": null
+                                        },
+                                        "ranges": {
+                                            "max": null,
+                                            "min": null
+                                        },
+                                        "restrictValue": null
+                                    },
+                                    "speciesLevelParams": {
+                                        "value": 35.0
+                                    }
+                                }
+                            },
+                            "traitAtTempRef": {
+                                "definitionType": "SpeciesLevel",
+                                "individualLevelParams": {
+                                    "limits": {
+                                        "max": null,
+                                        "min": null
+                                    },
+                                    "ranges": {
+                                        "max": null,
+                                        "min": null
+                                    },
+                                    "restrictValue": null
+                                },
+                                "speciesLevelParams": {
+                                    "value": 1.2
+                                }
+                            }
+                        }
+                    },
+                    "timeAddedToMeetLastRepro": {
+                        "definitionType": "SpeciesLevel",
+                        "individualLevelParams": {
+                            "limits": {
+                                "max": null,
+                                "min": null
+                            },
+                            "ranges": {
+                                "max": null,
+                                "min": null
+                            },
+                            "restrictValue": null
+                        },
+                        "speciesLevelParams": {
+                            "value": 1
+                        },
+                        "temperature": {
+                            "activationEnergy": {
+                                "definitionType": "SpeciesLevel",
+                                "individualLevelParams": {
+                                    "limits": {
+                                        "max": null,
+                                        "min": null
+                                    },
+                                    "ranges": {
+                                        "max": null,
+                                        "min": null
+                                    },
+                                    "restrictValue": null
+                                },
+                                "speciesLevelParams": {
+                                    "value": null
+                                }
+                            },
+                            "dependent": false,
+                            "energyDecay": {
+                                "definitionType": "SpeciesLevel",
+                                "individualLevelParams": {
+                                    "limits": {
+                                        "max": null,
+                                        "min": null
+                                    },
+                                    "ranges": {
+                                        "max": null,
+                                        "min": null
+                                    },
+                                    "restrictValue": null
+                                },
+                                "speciesLevelParams": {
+                                    "value": null
+                                }
+                            },
+                            "temperatureOptimal": {
+                                "definitionType": "SpeciesLevel",
+                                "individualLevelParams": {
+                                    "limits": {
+                                        "max": null,
+                                        "min": null
+                                    },
+                                    "ranges": {
+                                        "max": null,
+                                        "min": null
+                                    },
+                                    "restrictValue": null
+                                },
+                                "speciesLevelParams": {
+                                    "value": null
+                                }
+                            },
+                            "temperatureRef": {
+                                "definitionType": "SpeciesLevel",
+                                "individualLevelParams": {
+                                    "limits": {
+                                        "max": null,
+                                        "min": null
+                                    },
+                                    "ranges": {
+                                        "max": null,
+                                        "min": null
+                                    },
+                                    "restrictValue": null
+                                },
+                                "speciesLevelParams": {
+                                    "value": 20.0
+                                }
+                            },
+                            "threshold": {
+                                "lower": {
+                                    "definitionType": "SpeciesLevel",
+                                    "individualLevelParams": {
+                                        "limits": {
+                                            "max": null,
+                                            "min": null
+                                        },
+                                        "ranges": {
+                                            "max": null,
+                                            "min": null
+                                        },
+                                        "restrictValue": null
+                                    },
+                                    "speciesLevelParams": {
+                                        "value": null
+                                    }
+                                },
+                                "upper": {
+                                    "definitionType": "SpeciesLevel",
+                                    "individualLevelParams": {
+                                        "limits": {
+                                            "max": null,
+                                            "min": null
+                                        },
+                                        "ranges": {
+                                            "max": null,
+                                            "min": null
+                                        },
+                                        "restrictValue": null
+                                    },
+                                    "speciesLevelParams": {
+                                        "value": null
+                                    }
+                                }
+                            },
+                            "traitAtTempRef": {
+                                "definitionType": "SpeciesLevel",
+                                "individualLevelParams": {
+                                    "limits": {
+                                        "max": null,
+                                        "min": null
+                                    },
+                                    "ranges": {
+                                        "max": null,
+                                        "min": null
+                                    },
+                                    "restrictValue": null
+                                },
+                                "speciesLevelParams": {
+                                    "value": null
+                                }
+                            }
+                        }
+                    },
+                    "longevitySinceMaturation": {
+                        "definitionType": "SpeciesLevel",
+                        "individualLevelParams": {
+                            "limits": {
+                                "max": null,
+                                "min": null
+                            },
+                            "ranges": {
+                                "max": null,
+                                "min": null
+                            },
+                            "restrictValue": null
+                        },
+                        "speciesLevelParams": {
+                            "value": 1.5
+                        },
+                        "temperature": {
+                            "activationEnergy": {
+                                "definitionType": "SpeciesLevel",
+                                "individualLevelParams": {
+                                    "limits": {
+                                        "max": null,
+                                        "min": null
+                                    },
+                                    "ranges": {
+                                        "max": null,
+                                        "min": null
+                                    },
+                                    "restrictValue": null
+                                },
+                                "speciesLevelParams": {
+                                    "value": null
+                                }
+                            },
+                            "dependent": false,
+                            "energyDecay": {
+                                "definitionType": "SpeciesLevel",
+                                "individualLevelParams": {
+                                    "limits": {
+                                        "max": null,
+                                        "min": null
+                                    },
+                                    "ranges": {
+                                        "max": null,
+                                        "min": null
+                                    },
+                                    "restrictValue": null
+                                },
+                                "speciesLevelParams": {
+                                    "value": null
+                                }
+                            },
+                            "temperatureOptimal": {
+                                "definitionType": "SpeciesLevel",
+                                "individualLevelParams": {
+                                    "limits": {
+                                        "max": null,
+                                        "min": null
+                                    },
+                                    "ranges": {
+                                        "max": null,
+                                        "min": null
+                                    },
+                                    "restrictValue": null
+                                },
+                                "speciesLevelParams": {
+                                    "value": null
+                                }
+                            },
+                            "temperatureRef": {
+                                "definitionType": "SpeciesLevel",
+                                "individualLevelParams": {
+                                    "limits": {
+                                        "max": null,
+                                        "min": null
+                                    },
+                                    "ranges": {
+                                        "max": null,
+                                        "min": null
+                                    },
+                                    "restrictValue": null
+                                },
+                                "speciesLevelParams": {
+                                    "value": null
+                                }
+                            },
+                            "threshold": {
+                                "lower": {
+                                    "definitionType": "SpeciesLevel",
+                                    "individualLevelParams": {
+                                        "limits": {
+                                            "max": null,
+                                            "min": null
+                                        },
+                                        "ranges": {
+                                            "max": null,
+                                            "min": null
+                                        },
+                                        "restrictValue": null
+                                    },
+                                    "speciesLevelParams": {
+                                        "value": null
+                                    }
+                                },
+                                "upper": {
+                                    "definitionType": "SpeciesLevel",
+                                    "individualLevelParams": {
+                                        "limits": {
+                                            "max": null,
+                                            "min": null
+                                        },
+                                        "ranges": {
+                                            "max": null,
+                                            "min": null
+                                        },
+                                        "restrictValue": null
+                                    },
+                                    "speciesLevelParams": {
+                                        "value": null
+                                    }
+                                }
+                            },
+                            "traitAtTempRef": {
+                                "definitionType": "SpeciesLevel",
+                                "individualLevelParams": {
+                                    "limits": {
+                                        "max": null,
+                                        "min": null
+                                    },
+                                    "ranges": {
+                                        "max": null,
+                                        "min": null
+                                    },
+                                    "restrictValue": null
+                                },
+                                "speciesLevelParams": {
+                                    "value": null
+                                }
+                            }
+                        }
+                    },
+                    "voracity": {
+                        "definitionType": "IndividualLevel",
+                        "individualLevelParams": {
+                            "limits": {
+                                "max": 0.01,
+                                "min": 0.1
+                            },
+                            "ranges": {
+                                "max": 5.5,
+                                "min": 5.0
+                            },
+                            "restrictValue": 0.01
+                        },
+                        "speciesLevelParams": {
+                            "value": null
+                        },
+                        "temperature": {
+                            "activationEnergy": {
+                                "definitionType": "SpeciesLevel",
+                                "individualLevelParams": {
+                                    "limits": {
+                                        "max": null,
+                                        "min": null
+                                    },
+                                    "ranges": {
+                                        "max": null,
+                                        "min": null
+                                    },
+                                    "restrictValue": null
+                                },
+                                "speciesLevelParams": {
+                                    "value": 0.665
+                                }
+                            },
+                            "dependent": true,
+                            "energyDecay": {
+                                "definitionType": "SpeciesLevel",
+                                "individualLevelParams": {
+                                    "limits": {
+                                        "max": null,
+                                        "min": null
+                                    },
+                                    "ranges": {
+                                        "max": null,
+                                        "min": null
+                                    },
+                                    "restrictValue": null
+                                },
+                                "speciesLevelParams": {
+                                    "value": 1.66
+                                }
+                            },
+                            "temperatureOptimal": {
+                                "definitionType": "SpeciesLevel",
+                                "individualLevelParams": {
+                                    "limits": {
+                                        "max": null,
+                                        "min": null
+                                    },
+                                    "ranges": {
+                                        "max": null,
+                                        "min": null
+                                    },
+                                    "restrictValue": null
+                                },
+                                "speciesLevelParams": {
+                                    "value": 25.0
+                                }
+                            },
+                            "temperatureRef": {
+                                "definitionType": "SpeciesLevel",
+                                "individualLevelParams": {
+                                    "limits": {
+                                        "max": null,
+                                        "min": null
+                                    },
+                                    "ranges": {
+                                        "max": null,
+                                        "min": null
+                                    },
+                                    "restrictValue": null
+                                },
+                                "speciesLevelParams": {
+                                    "value": 20.0
+                                }
+                            },
+                            "threshold": {
+                                "lower": {
+                                    "definitionType": "SpeciesLevel",
+                                    "individualLevelParams": {
+                                        "limits": {
+                                            "max": null,
+                                            "min": null
+                                        },
+                                        "ranges": {
+                                            "max": null,
+                                            "min": null
+                                        },
+                                        "restrictValue": null
+                                    },
+                                    "speciesLevelParams": {
+                                        "value": 1.0
+                                    }
+                                },
+                                "upper": {
+                                    "definitionType": "SpeciesLevel",
+                                    "individualLevelParams": {
+                                        "limits": {
+                                            "max": null,
+                                            "min": null
+                                        },
+                                        "ranges": {
+                                            "max": null,
+                                            "min": null
+                                        },
+                                        "restrictValue": null
+                                    },
+                                    "speciesLevelParams": {
+                                        "value": 35.0
+                                    }
+                                }
+                            },
+                            "traitAtTempRef": {
+                                "definitionType": "SpeciesLevel",
+                                "individualLevelParams": {
+                                    "limits": {
+                                        "max": null,
+                                        "min": null
+                                    },
+                                    "ranges": {
+                                        "max": null,
+                                        "min": null
+                                    },
+                                    "restrictValue": null
+                                },
+                                "speciesLevelParams": {
+                                    "value": 5.5
+                                }
+                            }
+                        }
+                    }
+                },
+                "individualLevelTraitsOrder": [
+                    "energy_tank$TraitValue",
+                    "growth$TraitValue",
+                    "eggDevTime$TraitValue",
+                    "factorEggMass$TraitValue",
+                    "assim$TraitValue",
+                    "voracity$TraitValue",
+                    "speed$TraitValue",
+                    "search_area$TraitValue",
+                    "met_rate$TraitValue",
+                    "shock_resistance$TraitValue",
+                    "actE_met$TraitValue"
+                ]
+            }
+        },
+        "growthModule": {
+            "assignedForMolt": 0.9,
+            "betaScaleTank": 1.01,
+            "capitalBreeding": {
+                "capitalBreedingParams": {
+                    "numberOfCapitalBreeds": null,
+                    "timeOfReproEventDuringCapitalBreeding": null
+                },
+                "enabled": false
+            },
+            "coefficientForMassA": 0.021,
+            "coefficientForMassAforMature": 0.021,
+            "devTimeVector": [
+                11,
+                31,
+                51,
+                74
+            ],
+            "eggDryMass": {
+                "eggMassFromEquation": false,
+                "equationParameters": {
+                    "coefficient": 0.046,
+                    "scale": 0.478
+                },
+                "value": 0.00229
+            },
+            "eggsPerBatch": {
+                "eggsPerBatchFromEquation": false,
+                "equationParameters": {
+                    "interceptForEggBatchFromEquation": null,
+                    "slopeForEggBatchFromEquation": null
+                },
+                "value": 2
+            },
+            "moltingAgeThreshold": 0.0,
+            "excessInvestInSize": 0.5,
+            "femaleWetMass": 0.07,
+            "growthModel": "VonBertalanffy",
+            "habitatShift": [],
+            "habitatShiftFactor": null,
+            "indeterminateGrowth": {
+                "enabled": false,
+                "indeterminateGrowthParams": {
+                    "instarFirstReproduction": null
+                }
+            },
+            "maxPlasticityKVonBertalanffy": 0.25,
+            "minPlasticityKVonBertalanffy": 0.3,
+            "scaleForMassB": 2.6468,
+            "scaleForMassBforMature": 2.6468
+        },
+        "h_enhancement": 0.0,
+        "habitatShiftAfterBreeding": false,
+        "habitatShiftAfterBreedingFactor": null,
+        "habitatShiftBeforeBreeding": false,
+        "habitatShiftBeforeBreedingFactor": null,
+        "individualsPerInstar": [
+            200,
+            200,
+            200,
+            200,
+            200
+        ],
+        "instarsForNextReproduction": 1,
+        "killProbability": 0.0,
+        "maleMaxReproductionEvents": 8,
+        "maleMobility": 1,
+        "maleReproductionFactor": 0.25,
+        "maxEncountersT": 30,
+        "minRelativeHumidityThreshold": 10,
+        "modifyAlleles": [
+            {
+                "affectedLocus": [
+                    0.3,
+                    0.6,
+                    0.9
+                ],
+                "affectedTraits": [
+                    "energy_tank",
+                    "growth"
+                ],
+                "pAlleles": 0.9,
+                "timesAlleles": 30
+            },
+            {
+                "affectedLocus": [
+                    0.3,
+                    0.6,
+                    0.9
+                ],
+                "affectedTraits": [
+                    "energy_tank",
+                    "growth"
+                ],
+                "pAlleles": 0.7,
+                "timesAlleles": 30
+            }
+        ],
+        "name": "Consumer_slow",
+        "newAAdult": 0.15,
+        "newB": 0.75,
+        "numberOfSimulatedAttacks": 10000,
+        "optimalTemperatureModifier": 4.89,
+        "percentageCostForMetabolicDownregulationSearchArea": 0.5,
+        "percentageCostForMetabolicDownregulationSpeed": 0.5,
+        "percentageCostForMetabolicDownregulationVoracity": 0.5,
+        "percentageMetabolicDownregulation": 0.0,
+        "plasticityDueToConditionSearch": 0.05,
+        "plasticityDueToConditionSpeed": 0.05,
+        "preserveLeftovers": false,
+        "probabilityDeathFromBackground": 0.0,
+        "reproTimeFactor": 0.0135,
+        "scaleForSearchArea": 0.25,
+        "scaleForSpeed": 0.25,
+        "scaleForVoracity": 0.75,
+        "sexRatio": 0.7,
+        "sexualType": "haplodiploid",
+        "size": 1,
+        "statisticsIndividualsPerInstar": 1000,
+        "tempFromLab": 20.0
+    },
+    "ontogeneticLinks": {
+        "animalLinks": [],
+        "resourceLinks": [
+            {
+                "links": [
+                    {
+                        "predatorInstar": [
+                            1,
+                            2,
+                            3,
+                            4,
+                            5
+                        ],
+                        "preference": 0.99,
+                        "profitability": 0.05
+                    }
+                ],
+                "species": "Resource_slow"
+            }
+        ]
+    },
+    "version": "23.12.04"
+}

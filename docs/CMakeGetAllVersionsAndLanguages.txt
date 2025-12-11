@@ -1,0 +1,59 @@
+# ============================================================
+# 🌐 Gather All Documentation Versions and Languages
+# ------------------------------------------------------------
+# This script identifies all available documentation versions
+# and all languages for the Sphinx documentation.
+#
+# It populates the following variables:
+#   - ALL_VERSIONS : List of all version directories.
+#   - ALL_LANGUAGES: List of all languages across versions.
+# ============================================================
+
+
+# ------------------------------------------------------------
+# 🗂️ Collect all version directories
+# ------------------------------------------------------------
+# Start with the latest version, then append any directories
+# matching the YYYY.MM.DD pattern.
+set(ALL_VERSIONS "${LATEST_VERSION}")
+
+file(GLOB version_dirs 
+    LIST_DIRECTORIES true 
+    RELATIVE "${SPHINX_SOURCE_DIR}"
+    "${SPHINX_SOURCE_DIR}/*"
+)
+
+foreach(version IN LISTS version_dirs)
+    if(version MATCHES "^[0-9][0-9][0-9][0-9]\.[0-9][0-9]\.[0-9][0-9]$")
+        list(APPEND ALL_VERSIONS "${version}")
+    endif()
+endforeach()
+
+# Remove duplicate versions, just in case
+list(REMOVE_DUPLICATES ALL_VERSIONS)
+
+
+# ------------------------------------------------------------
+# 🌍 Collect all languages for each version
+# ------------------------------------------------------------
+set(LATEST_VERSION_SOURCE_DIR "${SPHINX_SOURCE_DIR}/${LATEST_VERSION}")
+
+# Start with the default language
+set(ALL_LANGUAGES "${DEFAULT_LANGUAGE}")
+
+# Add languages present in the 'latest' version
+file(GLOB latest_languages RELATIVE "${LATEST_VERSION_SOURCE_DIR}/locale" "${LATEST_VERSION_SOURCE_DIR}/locale/*")
+if(latest_languages)
+    list(APPEND ALL_LANGUAGES "${latest_languages}")
+endif()
+
+# Add languages for all other versions
+foreach(version ${ALL_VERSIONS})
+    file(GLOB version_languages RELATIVE "${SPHINX_SOURCE_DIR}/${version}/locale" "${SPHINX_SOURCE_DIR}/${version}/locale/*")
+    if(version_languages)
+        list(APPEND ALL_LANGUAGES "${version_languages}")
+    endif()
+endforeach()
+
+# Remove duplicate languages
+list(REMOVE_DUPLICATES ALL_LANGUAGES)

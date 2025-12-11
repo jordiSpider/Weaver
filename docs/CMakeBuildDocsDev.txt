@@ -1,0 +1,42 @@
+# ============================================================
+# 🛠️ Build Development Documentation (Sphinx + Doxygen)
+# ------------------------------------------------------------
+# This script sets up and builds the development version of
+# the documentation.
+#
+# Steps performed:
+#   1. Define the latest version.
+#   2. Gather all versions and languages.
+#   3. Configure and generate Doxygen documentation.
+#   4. Build the Sphinx documentation.
+# ============================================================
+
+
+# ------------------------------------------------------------
+# 🌟 Define the "latest" version for development builds
+# ------------------------------------------------------------
+set(LATEST_VERSION "latest")
+
+
+# ------------------------------------------------------------
+# 🌐 Gather all available documentation versions and languages
+# ------------------------------------------------------------
+include(${DOCS_DIR}/CMakeGetAllVersionsAndLanguages.txt)
+
+
+# ------------------------------------------------------------
+# 📄 Configure Doxygen
+# ------------------------------------------------------------
+# Set the project version for Doxygen
+set(DOXYFILE_PROJECT_VERSION "${CMAKE_PROJECT_VERSION}")
+
+include(${DOCS_DIR}/CMakeDoxygen.txt)
+
+
+# ------------------------------------------------------------
+# 📚 Build the Sphinx documentation
+# ------------------------------------------------------------
+include(${DOCS_DIR}/CMakeBuildDocs.txt)
+
+# Ensure that Doxygen builds before Sphinx documentation
+add_dependencies(build-docs build-doxygen)

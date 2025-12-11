@@ -1,0 +1,65 @@
+{
+    "version": "2023.12.04",
+    "landscape": {
+        "life": {
+            "competitionAmongResourceSpecies": false,
+            "exitTimeThreshold": 100000,
+            "pdfThreshold": 0.0,
+            "multiplierForFieldMetabolicRate": 3.0
+        },
+        "mapConfig": {
+            "mapType": "SpatialTree",
+            "moistureBasePatch": {
+                "temperatureDynamics": {
+                    "cycle": [
+                        10.0,
+                        10.0
+                    ]
+                },
+                "relativeHumidityDynamics": {
+                    "dynamicsType": "Cycle",
+                    "cycleParams": {
+                        "cycle": [
+                            100.0,
+                            100.0
+                        ]
+                    },
+                    "pulseParams": {
+                        "daysBetweenPulsesRange": {
+                            "min": null,
+                            "max": null
+                        },
+                        "pulsePeakValueRange": {
+                            "min": null,
+                            "max": null
+                        },
+                        "decay": {
+                            "decayType": "NonDecay",
+                            "linealDecayParams": {
+                                "decayOverTime": null
+                            }
+                        }
+                    }
+                },
+                "maximumResourceCapacityDensity": 0.0,
+                "inEnemyFreeSpace": false,
+                "inCompetitorFreeSpace": false
+            },
+            "nutrients": {
+                "maxC": 23.0,
+                "maxN": 23.0,
+                "maxP": 23.0,
+                "minC": 0.0,
+                "minN": 0.0,
+                "minP": 0.0
+            },
+            "spatialTreeParams": {},
+            "landscapeWideParams": {
+                "minCellSize": 50.0,
+                "numberOfCellsAxisX": 25,
+                "numberOfCellsAxisY": 20
+            }
+        },
+        "simulationType": "Aquatic"
+    }
+}

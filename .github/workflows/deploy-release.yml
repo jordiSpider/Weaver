@@ -1,0 +1,254 @@
+# ==========================================================
+# Workflow: Deploy release
+# ----------------------------------------------------------
+# This workflow automates building, packaging, and releasing
+# the project executables for Windows (GUI and non-GUI),
+# creates a draft GitHub release with the generated installers,
+# and deploys the latest documentation to GitHub Pages.
+# It also merges the updated documentation back into the develop branch.
+# ==========================================================
+
+name: Deploy release
+
+# 🧭 This workflow builds and packages the Windows releases,
+# creates a GitHub draft release, and deploys the latest documentation.
+on:
+  # Manual trigger from the GitHub Actions interface
+  workflow_dispatch:
+
+jobs:
+  # ======================================================
+  # 1️⃣ Build Windows executables (GUI and non-GUI)
+  # ======================================================
+  build-windows:
+    runs-on: windows-latest
+    defaults:
+      run:
+        shell: powershell
+
+    strategy:
+      matrix:
+        # 🧱 Build both GUI and non-GUI release presets
+        preset: [windows-gui-release, windows-non-gui-release]
+      fail-fast: true
+    
+    steps:
+      # 🔹 Clone the full repository, including submodules and commit history
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          ref: main
+          submodules: recursive
+          fetch-depth: 0          # Full clone required for vcpkg to work properly
+
+      # 🧰 Install NSIS (used to create Windows installers)
+      - name: Install NSIS
+        run: choco install nsis -y
+      
+      # ♻️ Restore cached vcpkg dependencies to speed up builds
+      - name: Restore cached vcpkg
+        id: cache-primes-restore
+        uses: actions/cache/restore@v4
+        with:
+          path: vcpkg_installed
+          key: ${{ runner.os }}-vcpkg-${{ hashFiles('vcpkg.json') }}
+
+      # 🔨 Configure and build the project using CMake workflow presets
+      - name: Configure and build
+        run: cmake --workflow --preset ${{ matrix.preset }}
+
+      # 💾 Save updated vcpkg cache for next runs
+      - name: Save vcpkg
+        id: cache-primes-save
+        uses: actions/cache/save@v4
+        with:
+          path: vcpkg_installed
+          key: ${{ runner.os }}-vcpkg-${{ hashFiles('vcpkg.json') }}
+
+      # 📦 Package the build output into an installer using CPack
+      - name: Package
+        run: |
+          cd build/${{ matrix.preset }}
+          cpack
+
+      # ☁️ Upload the generated installer as an artifact
+      - name: Upload installer
+        uses: actions/upload-artifact@v4
+        with:
+          name: ${{ matrix.preset }}-installer
+          path: |
+            installer/${{ matrix.preset }}/*.exe
+
+  # ======================================================
+  # 1️⃣ Build Linux executables (GUI and non-GUI)
+  # ======================================================
+  build-linux:
+    runs-on: ubuntu-latest
+
+    strategy:
+      matrix:
+        # 🧱 Build both GUI and non-GUI release presets
+        preset: [linux-gui-release, linux-non-gui-release]
+      fail-fast: true
+    
+    steps:
+      # 🔹 Clone the full repository, including submodules and commit history
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          ref: main
+          submodules: recursive
+          fetch-depth: 0          # Full clone required for vcpkg to work properly
+      
+      # ♻️ Restore cached vcpkg dependencies to speed up builds
+      - name: Restore cached vcpkg
+        id: cache-primes-restore
+        uses: actions/cache/restore@v4
+        with:
+          path: vcpkg_installed
+          key: ${{ runner.os }}-vcpkg-${{ hashFiles('vcpkg.json') }}
+
+      # 🛠️ Install required development packages for building GUI applications
+      - name: Install dependencies
+        run: |
+          sudo apt update
+          sudo apt install -y g++ cmake make curl pkg-config libx11-dev libxft-dev libxcursor-dev
+
+      # 🔨 Configure and build the project using CMake workflow presets
+      - name: Configure and build
+        run: cmake --workflow --preset ${{ matrix.preset }}
+
+      # 💾 Save updated vcpkg cache for next runs
+      - name: Save vcpkg
+        id: cache-primes-save
+        uses: actions/cache/save@v4
+        with:
+          path: vcpkg_installed
+          key: ${{ runner.os }}-vcpkg-${{ hashFiles('vcpkg.json') }}
+
+      # 📦 Package the build output into an installer using CPack
+      - name: Package
+        run: |
+          cd build/${{ matrix.preset }}
+          cpack
+
+      # ☁️ Upload the generated installer as an artifact
+      - name: Upload installer
+        uses: actions/upload-artifact@v4
+        with:
+          name: ${{ matrix.preset }}-installer
+          path: |
+            installer/${{ matrix.preset }}/*.tar.gz
+
+  # ======================================================
+  # 2️⃣ Create GitHub Release and attach installers
+  # ======================================================
+  release:
+    # 🚀 Run only after the Windows builds complete
+    needs: [build-windows, build-linux]
+    runs-on: ubuntu-latest
+    steps:
+      # 🔹 Checkout repository again to prepare for tagging and release
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          ref: main
+          fetch-depth: 0
+
+      # ⬇️ Download all installer artifacts from previous job
+      - name: Download installers
+        uses: actions/download-artifact@v4
+        with:
+          path: ./artifacts
+
+      # 🧑‍💻 Configure a Git user for tagging and pushing
+      - name: Setup git user
+        run: |
+          git config user.name "github-actions"
+          git config user.email "github-actions@github.com"
+
+      # 🏷️ Create a unique tag based on the current date (e.g., v2025.10.30)
+      - name: Create unique tag based on date
+        id: tag
+        run: |
+          VERSION=$(date +'%Y.%m.%d')
+          TAG="v${VERSION}"
+          if git ls-remote --tags origin "$TAG" | grep -q "$TAG"; then
+              echo "❌ Error: The tag '$TAG' already exists." >&2
+              exit 1
+          fi
+          echo "TAG=$TAG" >> $GITHUB_ENV
+      
+      # 🧾 Create a draft GitHub release and attach installer files
+      - name: Create GitHub Release
+        uses: softprops/action-gh-release@v2
+        with:
+          files: |
+            ./artifacts/**/*.exe
+            ./artifacts/**/*.tar.gz
+          draft: true
+          tag_name: ${{ env.TAG }}
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+  # ======================================================
+  # 3️⃣ Build and Deploy Documentation
+  # ======================================================
+  deploy-docs:
+    needs: release
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    steps:
+      # 🔹 Checkout code from the main branch
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          ref: main
+          fetch-depth: 0
+
+      # 📘 Install Doxygen and Graphviz (for API documentation)
+      - name: Install Doxygen and Graphviz
+        run: |
+          sudo apt update
+          sudo apt install -y doxygen graphviz
+
+      # 📚 Install Sphinx (for user/developer documentation)
+      - name: Install Sphinx
+        run: pip install sphinx sphinx-rtd-theme sphinx-intl
+
+      # 🧱 Build documentation via the CMake "deploy-docs" workflow preset
+      - name: Configure and build project docs
+        run: cmake --workflow deploy-docs
+
+      # 🌐 Deploy generated HTML documentation to GitHub Pages
+      - name: Deploy to GitHub Pages
+        uses: peaceiris/actions-gh-pages@v4
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_branch: gh-pages
+          publish_dir: ./docs/build/html
+          destination_dir: .
+          user_name: 'github-actions[bot]'
+          user_email: 'github-actions[bot]@users.noreply.github.com'
+
+      # ⚙️ Configure Git to allow committing updated documentation source files
+      - name: Configurar Git
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+
+      # 💾 Commit and push new documentation source files
+      - name: Commit and push new docs source files
+        run: |
+          git add "docs/source/"
+          git commit -m "Added new docs source files in 'docs/source/' [skip ci]"
+          git push origin HEAD:${{ github.ref_name }}
+
+      # 🔄 Merge main into develop to synchronize updated documentation
+      - name: Merge main into develop
+        run: |
+          git fetch origin develop
+          git checkout develop
+          git merge origin/main --no-edit || echo "⚠️ Merge conflict, manual resolution required."
+          git push origin develop || echo "No push performed (possibly conflicts)."

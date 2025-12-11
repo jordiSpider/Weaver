@@ -1,0 +1,315 @@
+{
+    "type": "object",
+    "properties": {
+        "version": {
+            "type": "string"
+        },
+        "landscape": {
+            "type": "object",
+            "properties": {
+                "simulationType": {
+                    "type": "string",
+                    "enum": ["Arthropods", "Dinosaurs", "Aquatic"]
+                },
+                "mapConfig": {
+                    "type": "object",
+                    "properties": {
+                        "mapType": {
+                            "type": "string",
+                            "enum": [
+                                "SpatialTree"
+                            ]
+                        },
+                        "landscapeWideParams": {
+                            "type": "object",
+                            "properties": {
+                                "minCellSize": {
+                                    "type": "number",
+                                    "minimum": 0.0,
+                                    "exclusiveMinimum": true
+                                },
+                                "numberOfCellsAxisX": {
+                                    "type": "integer",
+                                    "minimum": 2
+                                },
+                                "numberOfCellsAxisY": {
+                                    "type": "integer",
+                                    "minimum": 2
+                                }
+                            }
+                        },
+                        "spatialTreeParams": {
+                            "type": "object",
+                            "properties": {
+                                
+                            }
+                        },
+                        "moistureBasePatch": {
+                            "type": "object",
+                            "properties": {
+                                "temperatureDynamics": {
+                                    "type": "object",
+                                    "properties": {
+                                        "cycle": {
+                                            "type": "array",
+                                            "items": {
+                                                "type": "number"
+                                            },
+                                            "minItems": 1
+                                        }
+                                    }
+                                },
+                                "relativeHumidityDynamics": {
+                                    "type": "object",
+                                    "properties": {
+                                        "dynamicsType": {
+                                            "type": "string",
+                                            "enum": [
+                                                "Cycle",
+                                                "Pulse"
+                                            ]
+                                        },
+                                        "cycleParams": {
+                                            "type": "object",
+                                            "properties": {
+                                                "cycle": {
+                                                    "type": "array",
+                                                    "items": {
+                                                        "type": "number",
+                                                        "minimum": 0.0,
+                                                        "maximum": 100.0
+                                                    },
+                                                    "minItems": 1,
+                                                    "nullProperty": true
+                                                }
+                                            }
+                                        },
+                                        "pulseParams": {
+                                            "type": "object",
+                                            "properties": {
+                                                "daysBetweenPulsesRange": {
+                                                    "type": "object",
+                                                    "properties": {
+                                                        "min": {
+                                                            "type": "number",
+                                                            "minimum": 0.0,
+                                                            "exclusiveMinimum": true,
+                                                            "nullProperty": true
+                                                        },
+                                                        "max": {
+                                                            "type": "number",
+                                                            "minimum": 0.0,
+                                                            "exclusiveMinimum": true,
+                                                            "nullProperty": true
+                                                        }
+                                                    }
+                                                },
+                                                "pulsePeakValueRange": {
+                                                    "type": "object",
+                                                    "properties": {
+                                                        "min": {
+                                                            "type": "number",
+                                                            "minimum": 0.0,
+                                                            "maximum": 100.0,
+                                                            "nullProperty": true
+                                                        },
+                                                        "max": {
+                                                            "type": "number",
+                                                            "minimum": 0.0,
+                                                            "maximum": 100.0,
+                                                            "nullProperty": true
+                                                        }
+                                                    }
+                                                },
+                                                "decay": {
+                                                    "type": "object",
+                                                    "properties": {
+                                                        "decayType": {
+                                                            "type": "string",
+                                                            "enum": [
+                                                                "NonDecay",
+                                                                "Lineal"
+                                                            ]
+                                                        },
+                                                        "linealDecayParams": {
+                                                            "type": "object",
+                                                            "properties": {
+                                                                "decayOverTime": {
+                                                                    "type": "number",
+                                                                    "minimum": 0.0,
+                                                                    "nullProperty": true
+                                                                }
+                                                            }
+                                                        }
+                                                    },
+                                                    "conditionals": [
+                                                        {
+                                                            "condition": {
+                                                                "operatorType": "comparison",
+                                                                "comparisonType": "equal",
+                                                                "lhs": {
+                                                                    "operatorType": "property",
+                                                                    "propertyElement": "value",
+                                                                    "relativePath": [
+                                                                        "decayType"
+                                                                    ]
+                                                                },
+                                                                "rhs": {
+                                                                    "operatorType": "constant",
+                                                                    "value": "Lineal"
+                                                                }
+                                                            },
+                                                            "then": [ 
+                                                                {
+                                                                    "workingPath": [
+                                                                        "linealDecayParams"
+                                                                    ],
+                                                                    "remove": {
+                                                                        "nullProperty": [
+                                                                            "decayOverTime"
+                                                                        ]
+                                                                    }
+                                                                }
+                                                            ]
+                                                        }
+                                                    ]
+                                                }
+                                            }
+                                        }
+                                    },
+                                    "conditionals": [
+                                        {
+                                            "condition": {
+                                                "operatorType": "comparison",
+                                                "comparisonType": "equal",
+                                                "lhs": {
+                                                    "operatorType": "property",
+                                                    "propertyElement": "value",
+                                                    "relativePath": [
+                                                        "dynamicsType"
+                                                    ]
+                                                },
+                                                "rhs": {
+                                                    "operatorType": "constant",
+                                                    "value": "Cycle"
+                                                }
+                                            },
+                                            "then": [ 
+                                                {
+                                                    "workingPath": [
+                                                        "cycleParams"
+                                                    ],
+                                                    "remove": {
+                                                        "nullProperty": [
+                                                            "cycle"
+                                                        ]
+                                                    }
+                                                }
+                                            ]
+                                        },
+                                        {
+                                            "condition": {
+                                                "operatorType": "comparison",
+                                                "comparisonType": "equal",
+                                                "lhs": {
+                                                    "operatorType": "property",
+                                                    "propertyElement": "value",
+                                                    "relativePath": [
+                                                        "dynamicsType"
+                                                    ]
+                                                },
+                                                "rhs": {
+                                                    "operatorType": "constant",
+                                                    "value": "Pulse"
+                                                }
+                                            },
+                                            "then": [
+                                                {
+                                                    "workingPath": [
+                                                        "pulseParams",
+                                                        "daysBetweenPulsesRange"
+                                                    ],
+                                                    "remove": {
+                                                        "nullProperty": [
+                                                            "min",
+                                                            "max"
+                                                        ]
+                                                    }
+                                                },
+                                                {
+                                                    "workingPath": [
+                                                        "pulseParams",
+                                                        "pulsePeakValueRange"
+                                                    ],
+                                                    "remove": {
+                                                        "nullProperty": [
+                                                            "min",
+                                                            "max"
+                                                        ]
+                                                    }
+                                                }
+                                            ]
+                                        }
+                                    ]
+                                },
+                                "maximumResourceCapacityDensity": {
+                                    "type": "number",
+                                    "minimum": 0.0
+                                },
+                                "inEnemyFreeSpace": {
+                                    "type": "boolean"
+                                },
+                                "inCompetitorFreeSpace": {
+                                    "type": "boolean"
+                                }
+                            }
+                        },
+                        "nutrients": {
+                            "type": "object",
+                            "properties": {
+                                "minC": {
+                                    "type": "number"
+                                },
+                                "maxC": {
+                                    "type": "number"
+                                },
+                                "minN": {
+                                    "type": "number"
+                                },
+                                "maxN": {
+                                    "type": "number"
+                                },
+                                "minP": {
+                                    "type": "number"
+                                },
+                                "maxP": {
+                                    "type": "number"
+                                }
+                            }
+                        }
+                    }
+                },
+                "life": {
+                    "type": "object",
+                    "properties": {
+                        "competitionAmongResourceSpecies": {
+                            "type": "boolean"
+                        },
+                        "exitTimeThreshold": {
+                            "type": "integer",
+                            "minimum": 0
+                        },
+                        "pdfThreshold": {
+                            "type": "number",
+                            "minimum": 0.0,
+                            "maximum": 1.0
+                        },
+                        "multiplierForFieldMetabolicRate": {
+                            "type": "number"
+                        }
+                    }
+                }
+            }
+        }
+    }
+}

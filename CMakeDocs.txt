@@ -1,0 +1,86 @@
+# ============================================================
+# 📚 Documentation build configuration (Sphinx + Doxygen)
+# ------------------------------------------------------------
+# This file configures the documentation build system for the
+# Weaver project. It ensures that Sphinx is properly installed
+# and meets the minimum version requirements, defines relevant
+# documentation paths, and includes the appropriate build
+# configuration file depending on the documentation build mode.
+# ============================================================
+
+
+# ------------------------------------------------------------
+# 🧪 Check for Sphinx installation via Python
+# ------------------------------------------------------------
+# This command verifies that Sphinx is available and meets
+# the required minimum version. If not installed or outdated,
+# the build process stops with an error.
+execute_process(
+    COMMAND python -m sphinx --version
+    RESULT_VARIABLE EXIT_CODE
+    OUTPUT_VARIABLE CURRENT_SPHINX_VERSION
+    OUTPUT_STRIP_TRAILING_WHITESPACE
+)
+
+if(EXIT_CODE EQUAL 0)
+    # Extract semantic version (e.g., 7.3.7) from command output
+    string(REGEX MATCH "([0-9]+\\.[0-9]+\\.[0-9]+)" VERSION_MATCH "${CURRENT_SPHINX_VERSION}")
+    set(CURRENT_SPHINX_VERSION ${CMAKE_MATCH_1})
+
+    # Compare installed Sphinx version against the required version
+    if(CURRENT_SPHINX_VERSION VERSION_LESS SPHINX_VERSION)
+        message(FATAL_ERROR "Sphinx (v${SPHINX_VERSION}+) is required, found version ${CURRENT_SPHINX_VERSION}")
+    else()
+        message(STATUS "Found Sphinx version ${CURRENT_SPHINX_VERSION} (minimum required is ${SPHINX_VERSION})")
+    endif()
+else()
+    # Abort if Sphinx is not installed
+    message(FATAL_ERROR "Sphinx (v${SPHINX_VERSION}+) needs to be installed. Install it using 'pip install sphinx'.")
+endif()
+
+
+# ------------------------------------------------------------
+# 📁 Define documentation directory structure
+# ------------------------------------------------------------
+# The following variables define paths for the documentation
+# source, build, and output directories. These paths are derived
+# from user-defined variables provided in CMake presets.
+set(DOCS_DIR "${CMAKE_SOURCE_DIR}/${DOCS_DIR_NAME}")
+
+set(SPHINX_BUILD_DIR "${DOCS_DIR}/${SPHINX_BUILD_DIR_NAME}")
+set(SPHINX_SOURCE_DIR "${DOCS_DIR}/${SPHINX_SOURCE_DIR_NAME}")
+
+# The final HTML output directory for the generated documentation
+set(SPHINX_DOCS_OUTPUT_DIR "${SPHINX_BUILD_DIR}/html")
+
+
+# ============================================================
+# ⚙️ Include documentation build mode configuration
+# ============================================================
+# Selects and includes the proper documentation build script
+# depending on the DOCS_BUILD_TYPE variable defined externally.
+# ------------------------------------------------------------
+# - Deploy-docs        → Deploys documentation to GitHub Pages
+# - Build-docs-dev     → Builds documentation for local testing
+# - Update-docs        → Updates existing published documentation
+# - Build-docs-locale  → Builds translations (gettext / locale)
+# ------------------------------------------------------------
+# Any unrecognized DOCS_BUILD_TYPE will terminate the build
+# with a fatal error.
+# ============================================================
+
+if(DOCS_BUILD_TYPE STREQUAL "Deploy-docs")
+    include(${DOCS_DIR}/CMakeDeployDocs.txt)
+
+elseif(DOCS_BUILD_TYPE STREQUAL "Build-docs-dev")
+    include(${DOCS_DIR}/CMakeBuildDocsDev.txt)
+
+elseif(DOCS_BUILD_TYPE STREQUAL "Update-docs")
+    include(${DOCS_DIR}/CMakeUpdateDocs.txt)
+
+elseif(DOCS_BUILD_TYPE STREQUAL "Build-docs-locale")
+    include(${DOCS_DIR}/CMakeBuildDocsLocale.txt)
+    
+else()
+    message(FATAL_ERROR "Unknown DOCS_BUILD_TYPE: ${DOCS_BUILD_TYPE}")
+endif()

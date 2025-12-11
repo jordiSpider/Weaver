@@ -1,0 +1,105 @@
+{
+    "version": "23.12.04",
+    "world": {
+        "life": {
+            "competitionAmongResourceSpecies": false,
+            "encounterHuntedSizeAH": 0.16,
+            "encounterHuntedSizeSAW": 0.04347,
+            "encounterHuntedVoracityAH": 0.17,
+            "encounterHuntedVoracitySAW": 0.04346,
+            "encounterHunterSizeAH": 0.17,
+            "encounterHunterSizeSAW": 0.4348,
+            "encounterHunterVoracityAH": 0.17,
+            "encounterHunterVoracitySAW": 0.4348,
+            "encounterProbabilityDensityFunctionAH": 0.16,
+            "encounterProbabilityDensityFunctionSAW": 0.0,
+            "encounterVoracitiesProductAH": 0.17,
+            "encounterVoracitiesProductSAW": 0.04347,
+            "exitTimeThreshold": 120,
+            "initFromRandomLinks": {
+                "enabled": true,
+                "eraseCurrentExistingLinks": true,
+                "intraguildPredation": {
+                    "allowCannibalism": false,
+                    "enabled": true
+                },
+                "predator-preyLinksDensity": 0.2,
+                "resourcevore-resourceLinksDensity": 0.1
+            },
+            "initFromRandomSpecies": {
+                "enabled": true,
+                "numberOfPredatorSpecies": 1,
+                "numberOfPreySpecies": 1,
+                "numberOfResourceSpecies": 1
+            },
+            "initIndividualsPerDensities": {
+                "enabled": false,
+                "initialEcosystemSize": 20000
+            },
+            "maxLogMassRatio": 6.0,
+            "minLogMassRatio": -6.0,
+            "muForPDF": 1.44,
+            "predationHunterVoracityAH": 0.33,
+            "predationHunterVoracitySAW": 0.98,
+            "predationProbabilityDensityFunctionAH": 0.33,
+            "predationProbabilityDensityFunctionSAW": 0.02,
+            "predationSpeedRatioAH": 0.34,
+            "predationSpeedRatioSAW": 0.0,
+            "resourceFolder": "resource",
+            "sigmaForPDF": 2.34,
+            "speciesFolder": "species"
+        },
+        "mapConfig": {
+            "initRandomObstaclePatches": {
+                "enabled": false,
+                "obstacleDensity": 0.7,
+                "patchesDepth": 1,
+                "patchesLength": 1,
+                "patchesWidth": 5
+            },
+            "mapType": "SpatialTree",
+            "moistureBasePatch": {
+                "inCompetitorFreeSpace": false,
+                "inEnemyFreeSpace": false,
+                "maximumResourceCapacityDensity": 150.01,
+                "relativeHumidityUpdateMethod": {
+                    "cycleParams": {
+                        "relativeHumidityCycle": [
+                            25.0,
+                            25.0
+                        ]
+                    },
+                    "rainEventAndDecayOverTimeParams": {
+                        "relativeHumidityDecayOverTime": null,
+                        "relativeHumidityOnRainEvent": null,
+                        "standardDeviationForRainEvent": null,
+                        "timeStepsBetweenRainEvents": null
+                    },
+                    "updateMethodType": "Cycle"
+                },
+                "temperatureCycle": [
+                    20.0,
+                    20.0
+                ]
+            },
+            "moistureFolder": "moisture",
+            "nutrients": {
+                "maxC": 23.0,
+                "maxN": 23.0,
+                "maxP": 23.0,
+                "minC": 0.0,
+                "minN": 0.0,
+                "minP": 0.0
+            },
+            "obstacleFolder": "obstacle",
+            "preysToPredatorsCapacityTransference": 0.1,
+            "resourceToPreysCapacityTransference": 0.1,
+            "spatialTreeParams": {},
+            "worldWideParams": {
+                "minCellSize": 1.0,
+                "numberOfCellsPerAxis": 32
+            }
+        },
+        "simulationType": "Arthropods"
+    }
+}

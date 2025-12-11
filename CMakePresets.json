@@ -1,0 +1,379 @@
+{
+    "version": 6,
+    "cmakeMinimumRequired": {
+        "major": 3,
+        "minor": 25,
+        "patch": 0
+    },
+    "configurePresets": 
+    [
+        {
+            "name": "common",
+            "hidden": true,
+            "description": "Base preset defining common cache variables shared by all builds.",
+            "binaryDir": "${sourceDir}/build/${presetName}",
+            "cacheVariables": {
+                "CMAKE_CXX_STANDARD": "17",
+                "CMAKE_CXX_STANDARD_REQUIRED": "ON",
+                "CMAKE_EXPORT_COMPILE_COMMANDS": "ON",
+                "INCLUDE_DIR_NAME": "include",
+                "REPO_URL": "https://github.com/Mario-Carmona/Weaver",
+                "AUTHOR": "EEZA"
+            }
+        },
+        {
+            "name": "executables",
+            "hidden": true,
+            "inherits": ["common"],
+            "description": "Defines settings for building project executables.",
+            "cacheVariables": {
+                "PROJECT_BUILD_TYPE": "Executables",
+                "SCHEMA_VERSION": "2025.12.11",
+                "SERIALIZATION_VERSION": "2025.12.11",
+                "SRC_DIR_NAME": "src",
+                "EXECUTABLE_DIR_NAME": "bin",
+                "SCHEMA_DIR_NAME": "schema",
+                "CONFIG_DIR_NAME": "config"
+            }
+        },
+        {
+            "name": "windows",
+            "hidden": true,
+            "inherits": ["executables"],
+            "description": "Windows-specific preset using Visual Studio 2022 and static vcpkg triplets.",
+            "condition": {
+                "type": "equals",
+                "lhs": "${hostSystemName}",
+                "rhs": "Windows"
+            },
+            "generator": "Visual Studio 17 2022",
+            "cacheVariables": {
+                "CMAKE_TOOLCHAIN_FILE": "${sourceDir}/external/vcpkg/scripts/buildsystems/vcpkg.cmake",
+                "VCPKG_INSTALLED_DIR": "${sourceDir}/vcpkg_installed",
+                "VCPKG_TARGET_TRIPLET": "x64-windows-static",
+                "VCPKG_HOST_TRIPLET": "x64-windows-static",
+                "CPACK_NSIS_MUI_ICON": "${sourceDir}/icons/icon.ico",
+                "CPACK_NSIS_MUI_UNIICON": "${sourceDir}/icons/uninstall_icon.ico"
+            }
+        },
+        {
+            "name": "linux",
+            "hidden": true,
+            "inherits": ["executables"],
+            "description": "Linux-specific preset using Makefiles and static vcpkg triplets.",
+            "condition": {
+                "type": "equals",
+                "lhs": "${hostSystemName}",
+                "rhs": "Linux"
+            },
+            "generator": "Unix Makefiles",
+            "cacheVariables": {
+                "CMAKE_TOOLCHAIN_FILE": "${sourceDir}/external/vcpkg/scripts/buildsystems/vcpkg.cmake",
+                "VCPKG_INSTALLED_DIR": "${sourceDir}/vcpkg_installed",
+                "VCPKG_TARGET_TRIPLET": "x64-linux",
+                "VCPKG_HOST_TRIPLET": "x64-linux",
+                "CMAKE_MAKE_PROGRAM": "make",
+                "CMAKE_CXX_COMPILER": "g++"
+            }
+        },
+        {
+            "name": "gui",
+            "hidden": true,
+            "inherits": ["executables"],
+            "description": "Enables GUI mode in the project.",
+            "cacheVariables": {
+                "GUI": "ON"
+            }
+        },
+        {
+            "name": "non-gui",
+            "hidden": true,
+            "inherits": ["executables"],
+            "description": "Disables GUI mode in the project.",
+            "cacheVariables": {
+                "GUI": "OFF"
+            }
+        },
+        {
+            "name": "debug",
+            "hidden": true,
+            "inherits": ["executables"],
+            "description": "Preset for Debug builds (includes debug symbols).",
+            "cacheVariables": {
+                "CMAKE_BUILD_TYPE": "Debug"
+            }
+        },
+        {
+            "name": "release",
+            "hidden": true,
+            "inherits": ["executables"],
+            "description": "Preset for Release builds (optimized for performance).",
+            "cacheVariables": {
+                "CMAKE_BUILD_TYPE": "Release",
+                "CPACK_PACKAGE_CONTACT": "miemail@ejemplo.com",
+                "CPACK_PACKAGE_DIRECTORY": "${sourceDir}/installer/${presetName}"
+            }
+        },
+        {
+            "name": "windows-gui-debug",
+            "inherits": ["windows", "gui", "debug"],
+            "description": "Windows GUI Debug configuration."
+        },
+        {
+            "name": "windows-gui-release",
+            "inherits": ["windows", "gui", "release"],
+            "description": "Windows GUI Release configuration."
+        },
+        {
+            "name": "windows-non-gui-debug",
+            "inherits": ["windows", "non-gui", "debug"],
+            "description": "Windows Non-GUI Debug configuration."
+        },
+        {
+            "name": "windows-non-gui-release",
+            "inherits": ["windows", "non-gui", "release"],
+            "description": "Windows Non-GUI Release configuration."
+        },
+        {
+            "name": "linux-gui-debug",
+            "inherits": ["linux", "gui", "debug"],
+            "description": "Linux GUI Debug configuration."
+        },
+        {
+            "name": "linux-gui-release",
+            "inherits": ["linux", "gui", "release"],
+            "description": "Linux GUI Release configuration."
+        },
+        {
+            "name": "linux-non-gui-debug",
+            "inherits": ["linux", "non-gui", "debug"],
+            "description": "Linux Non-GUI Debug configuration."
+        },
+        {
+            "name": "linux-non-gui-release",
+            "inherits": ["linux", "non-gui", "release"],
+            "description": "Linux Non-GUI Release configuration."
+        },
+        {
+            "name": "docs",
+            "hidden": true,
+            "inherits": ["common"],
+            "description": "Base preset for building project documentation with Sphinx and Doxygen.",
+            "cacheVariables": {
+                "PROJECT_BUILD_TYPE": "Docs",
+                "SPHINX_VERSION": "8.1.3",
+                "DOXYGEN_VERSION": "1.9.8",
+                "DOCS_DIR_NAME": "docs",
+                "SPHINX_BUILD_DIR_NAME": "build",
+                "SPHINX_SOURCE_DIR_NAME": "source",
+                "API_DIR_NAME": "api",
+                "DEFAULT_LANGUAGE": "en"
+            }
+        },
+        {
+            "name": "deploy-docs",
+            "inherits": ["docs"],
+            "description": "Builds and deploys the final documentation to GitHub Pages.",
+            "cacheVariables": {
+                "DOCS_BUILD_TYPE": "Deploy-docs"
+            }
+        },
+        {
+            "name": "build-docs-dev",
+            "inherits": ["docs"],
+            "description": "Builds documentation for development purposes (without deployment).",
+            "cacheVariables": {
+                "DOCS_BUILD_TYPE": "Build-docs-dev"
+            }
+        },
+        {
+            "name": "update-docs",
+            "inherits": ["docs"],
+            "description": "Updates the existing documentation deployment with new content.",
+            "cacheVariables": {
+                "DOCS_BUILD_TYPE": "Update-docs"
+            }
+        },
+        {
+            "name": "build-docs-locale",
+            "inherits": ["docs"],
+            "description": "Builds documentation for translation (locale generation).",
+            "cacheVariables": {
+                "DOCS_BUILD_TYPE": "Build-docs-locale",
+                "LANGUAGES_TO_TRANSLATE": "en"
+            }
+        }
+    ],
+    "buildPresets": [
+        {
+            "name": "windows-gui-debug",
+            "configurePreset": "windows-gui-debug",
+            "description": "Build the Windows GUI Debug configuration.",
+            "configuration": "Debug"
+        },
+        {
+            "name": "windows-gui-release",
+            "configurePreset": "windows-gui-release",
+            "description": "Build the Windows GUI Release configuration.",
+            "configuration": "Release"
+        },
+        {
+            "name": "windows-non-gui-debug",
+            "configurePreset": "windows-non-gui-debug",
+            "description": "Build the Windows Non-GUI Debug configuration.",
+            "configuration": "Debug"
+        },
+        {
+            "name": "windows-non-gui-release",
+            "configurePreset": "windows-non-gui-release",
+            "description": "Build the Windows Non-GUI Release configuration.",
+            "configuration": "Release"
+        },
+        {
+            "name": "linux-gui-debug",
+            "configurePreset": "linux-gui-debug",
+            "description": "Build the Linux GUI Debug configuration.",
+            "configuration": "Debug"
+        },
+        {
+            "name": "linux-gui-release",
+            "configurePreset": "linux-gui-release",
+            "description": "Build the Linux GUI Release configuration.",
+            "configuration": "Release"
+        },
+        {
+            "name": "linux-non-gui-debug",
+            "configurePreset": "linux-non-gui-debug",
+            "description": "Build the Linux Non-GUI Debug configuration.",
+            "configuration": "Debug"
+        },
+        {
+            "name": "linux-non-gui-release",
+            "configurePreset": "linux-non-gui-release",
+            "description": "Build the Linux Non-GUI Release configuration.",
+            "configuration": "Release"
+        },
+        {
+            "name": "deploy-docs",
+            "configurePreset": "deploy-docs",
+            "description": "Build and deploy project documentation.",
+            "configuration": "Release"
+        },
+        {
+            "name": "build-docs-dev",
+            "configurePreset": "build-docs-dev",
+            "description": "Build documentation in development mode.",
+            "configuration": "Release"
+        },
+        {
+            "name": "update-docs",
+            "configurePreset": "update-docs",
+            "description": "Update existing documentation deployment.",
+            "configuration": "Release"
+        },
+        {
+            "name": "build-docs-locale",
+            "configurePreset": "build-docs-locale",
+            "description": "Build locale files for documentation translations.",
+            "configuration": "Release"
+        }
+    ],
+    "workflowPresets": [
+        {
+            "name": "windows-non-gui-debug",
+            "description": "Workflow to configure and build the Windows Non-GUI Debug target.",
+            "steps": [
+                { "type": "configure", "name": "windows-non-gui-debug" },
+                { "type": "build", "name": "windows-non-gui-debug" }
+            ]
+        },
+        {
+            "name": "windows-non-gui-release",
+            "description": "Workflow to configure and build the Windows Non-GUI Release target.",
+            "steps": [
+                { "type": "configure", "name": "windows-non-gui-release" },
+                { "type": "build", "name": "windows-non-gui-release" }
+            ]
+        },
+        {
+            "name": "windows-gui-debug",
+            "description": "Workflow to configure and build the Windows GUI Debug target.",
+            "steps": [
+                { "type": "configure", "name": "windows-gui-debug" },
+                { "type": "build", "name": "windows-gui-debug" }
+            ]
+        },
+        {
+            "name": "windows-gui-release",
+            "description": "Workflow to configure and build the Windows GUI Release target.",
+            "steps": [
+                { "type": "configure", "name": "windows-gui-release" },
+                { "type": "build", "name": "windows-gui-release" }
+            ]
+        },
+        {
+            "name": "linux-non-gui-debug",
+            "description": "Workflow to configure and build the Linux Non-GUI Debug target.",
+            "steps": [
+                { "type": "configure", "name": "linux-non-gui-debug" },
+                { "type": "build", "name": "linux-non-gui-debug" }
+            ]
+        },
+        {
+            "name": "linux-non-gui-release",
+            "description": "Workflow to configure and build the Linux Non-GUI Release target.",
+            "steps": [
+                { "type": "configure", "name": "linux-non-gui-release" },
+                { "type": "build", "name": "linux-non-gui-release" }
+            ]
+        },
+        {
+            "name": "linux-gui-debug",
+            "description": "Workflow to configure and build the Linux GUI Debug target.",
+            "steps": [
+                { "type": "configure", "name": "linux-gui-debug" },
+                { "type": "build", "name": "linux-gui-debug" }
+            ]
+        },
+        {
+            "name": "linux-gui-release",
+            "description": "Workflow to configure and build the Linux GUI Release target.",
+            "steps": [
+                { "type": "configure", "name": "linux-gui-release" },
+                { "type": "build", "name": "linux-gui-release" }
+            ]
+        },
+        {
+            "name": "deploy-docs",
+            "description": "Workflow to configure and deploy the documentation build.",
+            "steps": [
+                { "type": "configure", "name": "deploy-docs" },
+                { "type": "build", "name": "deploy-docs" }
+            ]
+        },
+        {
+            "name": "build-docs-dev",
+            "description": "Workflow to configure and build the development documentation.",
+            "steps": [
+                { "type": "configure", "name": "build-docs-dev" },
+                { "type": "build", "name": "build-docs-dev" }
+            ]
+        },
+        {
+            "name": "update-docs",
+            "description": "Workflow to configure and build the documentation update.",
+            "steps": [
+                { "type": "configure", "name": "update-docs" },
+                { "type": "build", "name": "update-docs" }
+            ]
+        },
+        {
+            "name": "build-docs-locale",
+            "description": "Workflow to configure and build the localized documentation.",
+            "steps": [
+                { "type": "configure", "name": "build-docs-locale" },
+                { "type": "build", "name": "build-docs-locale" }
+            ]
+        }
+    ]
+}
