@@ -40,7 +40,7 @@ Among the new simulation functionalities, we can highlight: a) The code has been
 
 Finally, the code has been optimized using a “building blocks” philosophy [^6], making most individual algorithms easily portable to other platforms. This simulation platform will be made Open Source and include a User Manual, hopefully by the end of 2026.
 
-This research has been possible thanks to grants Weaver - CGL2014-61314-EXP; ENGIWEB - CGL2015-66192-R (Spanish Ministry of Economy and Competitiveness), SPILL-ISLAND – PID2019-103863RB-I00 (funded by MCIN/AEI /10.13039/501100011033, the Spanish Research Agency) and SIMULPEST – TED2021-129653B-I00 (funded by MCIN/AEI /10.13039/501100011033 Spanish Research Agency, and European Union NextGenerationEU/PRTR), Investigo program - Junta de Andalucía - PRTR - NextGenerationEU.
+This research has been possible thanks to grants: Weaver - CGL2014-61314-EXP; ENGIWEB - CGL2015-66192-R (Spanish Ministry of Economy and Competitiveness), SPILL-ISLAND – PID2019-103863RB-I00 (funded by MCIN/AEI /10.13039/501100011033, the Spanish Research Agency) and SIMULPEST – TED2021-129653B-I00 (funded by MCIN/AEI /10.13039/501100011033 Spanish Research Agency, and European Union NextGenerationEU/PRTR), Investigo program - Junta de Andalucía - PRTR - NextGenerationEU.
 
 ---
 
