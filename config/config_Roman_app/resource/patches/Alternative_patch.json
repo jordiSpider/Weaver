@@ -1,0 +1,59 @@
+{
+    "patch": {
+        "resourceSpecies": "Alternative",
+        "priority": 1,
+        "source": {
+            "resourceMaximumCapacityDensity": 2.236935522115368e-06,
+            "edibleFractionOfMaxCarryingCapacity": 0.99,
+            "patchSpread": false,
+            "growthDynamics": {
+                "dynamicsType": "GrowthRate",
+                "cycleParams": {
+                    "cycle": null
+                },
+                "pulseParams": {
+                    "daysBetweenPulsesRange": {
+                        "min": null,
+                        "max": null
+                    },
+                    "pulsePeakValueRange": {
+                        "min": null,
+                        "max": null
+                    },
+                    "decay": {
+                        "decayType": "NonDecay",
+                        "linealDecayParams": {
+                            "decayOverTime": null
+                        }
+                    }
+                },
+                "growthRateParams": {
+                    "initialValue": 2.236935522115368e-06,
+                    "rMaxScale": 4.0541897510411218,
+                    "variableIntrinsicRateOfIncrease": false,
+                    "temperature": {
+                        "activationEnergy": 0.926875107406761,
+                        "energyDecay": 5.0634623491188,
+                        "temperatureOptimal": 18.0382542662839,
+                        "temperatureRef": 10
+                    }
+                }
+            }
+        },
+        "shape": {
+            "cubicParams": {
+                "bottomLeftCorner": [0.0, 0.0],
+                "topRightCorner": [1000.0, 1000.0]
+            },
+            "gaussianParams": {},
+            "homogeneousParams": {},
+            "randomGaussianParams": {},
+            "sphericalParams": {
+                "center": null,
+                "radius": null
+            },
+            "type": "Cubic"
+        }
+    },
+    "version": "2025.12.11"
+}

@@ -1,0 +1,22 @@
+{
+  "resource": {
+    "growthModule": {
+      "cellMass": 6.2e-08,
+      "conversionToWetMass": 5
+    },
+    "maxRH": 101,
+    "minRH": 99,
+    "name": "Alternative",
+    "resourceType": "BasalResource",
+    "rMaxScale": 20,
+    "temperature": {
+      "activationEnergy": 0.926875107406761,
+      "energyDecay": 5.0634623491188,
+      "temperatureOptimal": 18.0382542662839,
+      "temperatureRef": 10
+    },
+    "variableIntrinsicRateOfIncrease": false,
+    "zeroResource": 8
+  },
+  "version": "23.12.04"
+}

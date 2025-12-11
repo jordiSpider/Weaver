@@ -1,0 +1,1461 @@
+# @@@@ species: isoperla_grammatica
+
+if (!"app" %in% ls()) {
+	rm(list=ls(all=TRUE))
+	
+	script_path <- dirname(sys.frame(1)$ofile)
+}
+
+parametrisation_path <- sub("(.*/parametrisation)/.*", "\\1", script_path)
+
+
+source(file.path(parametrisation_path, "utilities", "codes", "functions", "growth_curve_modelfitting", "gcmGAT.r"))
+source(file.path(parametrisation_path, "utilities", "codes", "functions", "calculateIndividualsPerInstarIsoperla.r"))
+source(file.path(parametrisation_path, "utilities", "codes", "functions", "TPCs", "calculatePawarTPC.r"))
+
+
+
+set.seed(123)
+
+
+# setwd(dirname(sys.frame(1)$ofile))
+
+
+
+# Option to avoid plotting 
+# options(allow_plotting = FALSE)
+
+# Start reading ID_ISOGRA_tempFromLab data frame	
+ID_ISOGRA_tempFromLab<-data.frame(
+			Variable = "tempFromLab", 
+			DOI1 = "10.1007_978-94-009-2397-3_6",
+			Category1 = "Article",
+			DataTreatment = "Data table taken from the article. To calculate the 
+      temperature we performed an average with all the temperatures described"
+)
+# End reading ID_ISOGRA_tempFromLab data frame
+
+temp_table<-read.table(file.path(script_path, "Size_abundance_Isoperla_SN.txt"), header=TRUE)
+
+tempFromLab<-as.numeric(mean(temp_table$Temp_C))
+tempFromLab #@tempFromLab=9.444022
+
+# Start reading ID_ISOGRA_eggDryMassFromEquation data frame	
+ID_ISOGRA_eggDryMassFromEquation<-data.frame(
+			Variable = "eggDryMassFromEquation", 
+			DOI1 = NA,
+			Category1 = NA,
+			DataTreatment = "Common knowledge"
+)
+# End reading ID_ISOGRA_eggDryMassFromEquation data frame
+
+eggDryMassFromEquation<-FALSE
+eggDryMassFromEquation #@eggDryMassFromEquation=FALSE
+
+
+# Start reading ID_ISOGRA_sexRatio data frame		  
+ID_ISOGRA_sexRatio <-data.frame(
+			Variable = "sexRatio", 
+			DOI1 = "1130-4251",                          
+			Category1 = "Book",
+			DataTreatment = "Any of the species studied show a sex ratio value far from 1:1"
+)
+# End reading ID_ISOGRA_sexRatio data frame		  
+
+sexRatio<-0.5
+sexRatio #@sexRatio=0.5
+
+# Start reading ID_ISOGRA_conversionToWetMass data frame	
+ID_ISOGRA_conversionToWetMass<-data.frame(
+			Variable = "conversionToWetMass", 
+			DOI1 = "EFC_2015_unpublishedWeightsProtonemura.fake",
+			Category1 = "Article",
+			DataTreatment = "We made the mean from all the individuals taken from field for dry and wet mass/nand then we made the ratio of both means." 
+)
+# End reading ID_ISOGRA_conversionToWetMass data frame		  
+
+##"conversionToWetMass":
+##Protonemura - Encarni unpublished
+
+weight_protonemura<-read.table(file.path(script_path, "wetMass_vs_dryMass_protonemura.csv"),sep=",",header=TRUE)
+wetMass <- with(weight_protonemura,mean(wetMass_in_g)) ##in g live weight mean from all the individuals
+dryMass <- with(weight_protonemura,mean(dryMass_in_g)) ##in g live weight mean from all the individuals
+
+
+conversionToWetMass <- wetMass/dryMass
+conversionToWetMass #@conversionToWetMass=4.31405
+
+
+# Start reading ID_ISOGRA_eggsPerBatch data frame	
+ID_ISOGRA_eggsPerBatch<-data.frame(
+			Variable = "eggsPerBatch", 
+			DOI = "TIERFIG_1130-4251_1999.fake.ris",
+			Category1 = "Article",
+			DataTreatment = "Taken from the article"
+)
+# End reading ID_ISOGRA_eggsPerBatch data frame
+
+eggsPerBatch<-23
+eggsPerBatch #@eggsPerBatch=23
+
+
+# Start reading ID_ISOGRA_femaleMaxReproductionEvents data frame	
+ID_ISOGRA_femaleMaxReproductionEvents<-data.frame(
+			Variable = "femaleMaxReproductionEvents", 
+			DOI = "TIERFIG_1130-4251_1999.fake",
+			Category = "Article",
+			DataTreatment = "Taken from the article"
+)
+# End reading ID_ISOGRA_femaleMaxReproductionEvents data frame
+
+femaleMaxReproductionEvents<- 4
+femaleMaxReproductionEvents<-round(femaleMaxReproductionEvents)
+femaleMaxReproductionEvents #@femaleMaxReproductionEvents=4
+
+# Start reading ID_ISOGRA_fieldDensity data frame
+ID_ISOGRA_fieldDensity<-data.frame(
+			Variable = "fieldDensity", 
+			DOI1 = NA,
+			Category1 = NA, 
+			DataTreatment = "extracted from json in the folder"
+)
+# End of ID_ISOGRA_fieldDensity data frame
+
+fieldDensity=73  ##inds/sq_meter
+fieldDensity=fieldDensity/1e+6 ##inds/sq_mm
+
+# Start reading ID_ISOGRA_ageVector data frame	
+ID_ISOGRA_ageVector<-data.frame(
+			Variable = "ageVector", 
+			DOI1 = "10.1111_j.1365-2427.2009.02176.x",
+			Category1 = "Article",
+			DataTreatment = "We took the times directly from text"
+)
+# End reading ID_ISOGRA_ageVector data frame
+
+data_for_gcurve<-read.csv(file.path(script_path, "data_for_growth_curve_isoperla.csv"), sep=",", header=TRUE)
+
+
+##Need to shorten time from 365 to 270 to remove time as imago
+plot(data_for_gcurve$age,data_for_gcurve$length)
+preagevector<-seq(0,270,length.out=nrow(data_for_gcurve))
+
+agevector_data<-preagevector[-1]
+agevector_data
+agevector_data<-round(agevector_data,2)
+agevector_data<-c(agevector_data)
+ageVector<-agevector_data
+
+ageVector #@ageVector= c(20.77, 41.54, 62.31, 83.08, 103.85, 124.62, 145.38, 166.15, 186.92, 207.69, 228.46, 249.23, 270.00)
+
+
+# Start reading ID_ISOGRA_instarFirstReproduction data frame	
+ID_ISOGRA_instarFirstReproduction<-data.frame(
+			Variable = "instarFirstReproduction", 
+			DOI1 = "10.1111_j.1365-2427.2009.02176.x",
+			Category1 = "Article",
+			DataTreatment = "The number of moults until the female emergence" 
+)
+# End reading ID_ISOGRA_instarFirstReproduction data frame
+
+instarFirstReproduction<-length(ageVector)+1
+instarFirstReproduction #@instarFirstReproduction=14
+
+# Start reading ID_ISOGRA_coefficientForMassA data frame	
+ID_ISOGRA_coefficientForMassA<-data.frame(
+			Variable = "coefficientForMassA", 
+			DOI = "10.2307_1468447",
+			Category = "Article",
+			DataTreatment = "Taken from the article" 
+)
+# End reading ID_ISOGRA_coefficientForMassA data frame		  
+
+coefficientForMassA<-0.0076
+coefficientForMassA #@coefficientForMassA=0.0076
+
+# Start reading ID_ISOGRA_scaleForMassB data frame	
+ID_ISOGRA_scaleForMassB<-data.frame(
+			Variable = "scaleForMassB", 
+			DOI = "10.2307_1468447",
+			Category = "Article",
+			DataTreatment = "Taken from the article" 
+)
+# End reading ID_ISOGRA_scaleForMassB data frame		  
+
+scaleForMassB<-2.601 
+scaleForMassB #@scaleForMassB=2.601
+
+ 
+# Start reading ID_ISOGRA_coefficientForMassAforMature data frame	
+# Encarni: se decidir aplicar mismo que para larva
+ID_ISOGRA_coefficientForMassAforMature<-data.frame(
+			Variable = "coefficientForMassA", 
+			DOI = "10.2307_1468447",
+			Category = "Article",
+			DataTreatment = "Taken from the article" 
+)
+# End reading ID_ISOGRA_coefficientForMassAforMature data frame		  
+
+coefficientForMassAforMature<-0.0076
+coefficientForMassAforMature #@coefficientForMassAforMature=0.0076
+
+# Start reading ID_ISOGRA_scaleForMassBforMature data frame	
+# Encarni: se decidi� aplicar mismo que para larva
+ID_ISOGRA_scaleForMassBforMature<-data.frame(
+			Variable = "scaleForMassBforMature", 
+			DOI = "10.2307_1468447",
+			Category = "Article",
+			DataTreatment = "Taken from the article" 
+)
+# End reading ID_ISOGRA_scaleForMassBforMature data frame		  
+
+scaleForMassBforMature<-2.601 
+scaleForMassBforMature #@scaleForMassBforMature=2.601
+
+
+
+
+
+##############################################################################
+##############################################################################
+##############################################################################
+
+
+# Data described as in DataTreatment
+data_all_models <- read.table(file.path(script_path, "data_all_models.txt"), header = TRUE, sep = "")
+
+
+##############################################################################
+##############################################################################
+
+
+# Fit the model using the converted data
+model_scope_radius_min <- glm(Mass ~ log(ScopeRadiusMin), family = gaussian(link = "log"), data = data_all_models)
+model_scope_radius_max <- glm(Mass ~ log(ScopeRadiusMax), family = gaussian(link = "log"), data = data_all_models)
+
+# Extract updated model coefficients
+coeffMassForScopeRadiusMin <- exp(coef(model_scope_radius_min)[1])  # Intercept transformed back to original scale
+scaleMassForScopeRadiusMin <- coef(model_scope_radius_min)[2]       # Slope
+
+coeffMassForScopeRadiusMax <- exp(coef(model_scope_radius_max)[1])  # Intercept transformed back to original scale
+scaleMassForScopeRadiusMax <- coef(model_scope_radius_max)[2]       # Slope
+
+if(is.na(scaleMassForScopeRadiusMin)) {
+	coeffMassForScopeRadiusMin <- mean(data_all_models$ScopeRadiusMin)
+	coeffMassForScopeRadiusMin #@coeffMassForScopeRadiusMin=
+
+	scaleMassForScopeRadiusMin <- 0.0 
+	scaleMassForScopeRadiusMin #@scaleMassForScopeRadiusMin=
+} else {
+	coeffMassForScopeRadiusMin <- as.vector(t(coeffMassForScopeRadiusMin))
+	coeffMassForScopeRadiusMin #@coeffMassForScopeRadiusMin=
+
+	scaleMassForScopeRadiusMin <- as.vector(t(scaleMassForScopeRadiusMin))
+	scaleMassForScopeRadiusMin <- round(as.numeric(scaleMassForScopeRadiusMin),4) 
+	scaleMassForScopeRadiusMin #@scaleMassForScopeRadiusMin=
+}
+
+if(is.na(scaleMassForScopeRadiusMax)) {
+	coeffMassForScopeRadiusMax <- mean(data_all_models$ScopeRadiusMax)
+	coeffMassForScopeRadiusMax #@coeffMassForScopeRadiusMax=
+
+	scaleMassForScopeRadiusMax <- 0.0 
+	scaleMassForScopeRadiusMax #@scaleMassForScopeRadiusMax=
+} else {
+	coeffMassForScopeRadiusMax <- as.vector(t(coeffMassForScopeRadiusMax))
+	coeffMassForScopeRadiusMax #@coeffMassForScopeRadiusMax=
+
+	scaleMassForScopeRadiusMax <- as.vector(t(scaleMassForScopeRadiusMax))
+	scaleMassForScopeRadiusMax <- round(as.numeric(scaleMassForScopeRadiusMax),4) 
+	scaleMassForScopeRadiusMax #@scaleMassForScopeRadiusMax=
+}
+
+##############################################################################
+##############################################################################
+
+
+# Fit the model using the converted data
+model_interaction_radius_min <- glm(Mass ~ log(InteractionRadiusMin), family = gaussian(link = "log"), data = data_all_models)
+model_interaction_radius_max <- glm(Mass ~ log(InteractionRadiusMax), family = gaussian(link = "log"), data = data_all_models)
+
+# Extract updated model coefficients
+coeffMassForInteractionRadiusMin <- exp(coef(model_interaction_radius_min)[1])  # Intercept transformed back to original scale
+scaleMassForInteractionRadiusMin <- coef(model_interaction_radius_min)[2]       # Slope
+
+coeffMassForInteractionRadiusMax <- exp(coef(model_interaction_radius_max)[1])  # Intercept transformed back to original scale
+scaleMassForInteractionRadiusMax <- coef(model_interaction_radius_max)[2]       # Slope
+
+if(is.na(scaleMassForInteractionRadiusMin)) {
+	coeffMassForInteractionRadiusMin <- mean(data_all_models$InteractionRadiusMin)
+	coeffMassForInteractionRadiusMin #@coeffMassForInteractionRadiusMin=
+
+	scaleMassForInteractionRadiusMin <- 0.0
+	scaleMassForInteractionRadiusMin #@scaleMassForInteractionRadiusMin=
+} else {
+	coeffMassForInteractionRadiusMin <- as.vector(t(coeffMassForInteractionRadiusMin))
+	coeffMassForInteractionRadiusMin #@coeffMassForInteractionRadiusMin=
+
+	scaleMassForInteractionRadiusMin <- as.vector(t(scaleMassForInteractionRadiusMin))
+	scaleMassForInteractionRadiusMin <- round(as.numeric(scaleMassForInteractionRadiusMin),4) 
+	scaleMassForInteractionRadiusMin #@scaleMassForInteractionRadiusMin=
+}
+
+if(is.na(scaleMassForInteractionRadiusMax)) {
+	coeffMassForInteractionRadiusMax <- mean(data_all_models$InteractionRadiusMax)
+	coeffMassForInteractionRadiusMax #@coeffMassForInteractionRadiusMax=
+
+	scaleMassForInteractionRadiusMax <- 0.0
+	scaleMassForInteractionRadiusMax #@scaleMassForInteractionRadiusMax=
+} else {
+	coeffMassForInteractionRadiusMax <- as.vector(t(coeffMassForInteractionRadiusMax))
+	coeffMassForInteractionRadiusMax #@coeffMassForInteractionRadiusMax=
+
+	scaleMassForInteractionRadiusMax <- as.vector(t(scaleMassForInteractionRadiusMax))
+	scaleMassForInteractionRadiusMax <- round(as.numeric(scaleMassForInteractionRadiusMax),4) 
+	scaleMassForInteractionRadiusMax #@scaleMassForInteractionRadiusMax=
+}
+
+
+##############################################################################
+##############################################################################
+
+
+# Fit the model using the converted data
+model_search_radius_min <- glm(Mass ~ log(SearchRadiusMin), family = gaussian(link = "log"), data = data_all_models)
+model_search_radius_max <- glm(Mass ~ log(SearchRadiusMax), family = gaussian(link = "log"), data = data_all_models)
+
+# Extract updated model coefficients
+coeffMassForSearchRadiusMin <- exp(coef(model_search_radius_min)[1])  # Intercept transformed back to original scale
+scaleMassForSearchRadiusMin <- coef(model_search_radius_min)[2]       # Slope
+
+coeffMassForSearchRadiusMax <- exp(coef(model_search_radius_max)[1])  # Intercept transformed back to original scale
+scaleMassForSearchRadiusMax <- coef(model_search_radius_max)[2]       # Slope
+
+if(is.na(scaleMassForSearchRadiusMin)) {
+	coeffMassForSearchRadiusMin <- mean(data_all_models$SearchRadiusMin)
+	coeffMassForSearchRadiusMin #@coeffMassForSearchRadiusMin=
+
+	scaleMassForSearchRadiusMin <- 0.0
+	scaleMassForSearchRadiusMin #@scaleMassForSearchRadiusMin=
+} else {
+	coeffMassForSearchRadiusMin <- as.vector(t(coeffMassForSearchRadiusMin))
+	coeffMassForSearchRadiusMin #@coeffMassForSearchRadiusMin=
+
+	scaleMassForSearchRadiusMin <- as.vector(t(scaleMassForSearchRadiusMin))
+	scaleMassForSearchRadiusMin <- round(as.numeric(scaleMassForSearchRadiusMin),4) 
+	scaleMassForSearchRadiusMin #@scaleMassForSearchRadiusMin=
+}
+
+if(is.na(scaleMassForSearchRadiusMax)) {
+	coeffMassForSearchRadiusMax <- mean(data_all_models$SearchRadiusMax)
+	coeffMassForSearchRadiusMax #@coeffMassForSearchRadiusMax=
+
+	scaleMassForSearchRadiusMax <- 0.0
+	scaleMassForSearchRadiusMax #@scaleMassForSearchRadiusMax=
+} else {
+	coeffMassForSearchRadiusMax <- as.vector(t(coeffMassForSearchRadiusMax))
+	coeffMassForSearchRadiusMax #@coeffMassForSearchRadiusMax=
+
+	scaleMassForSearchRadiusMax <- as.vector(t(scaleMassForSearchRadiusMax))
+	scaleMassForSearchRadiusMax <- round(as.numeric(scaleMassForSearchRadiusMax),4) 
+	scaleMassForSearchRadiusMax #@scaleMassForSearchRadiusMax=
+}
+
+
+##############################################################################
+##############################################################################
+
+
+# Fit the model using the converted data
+model_speed_min <- glm(Mass ~ log(SpeedMin), family = gaussian(link = "log"), data = data_all_models)
+model_speed_max <- glm(Mass ~ log(SpeedMax), family = gaussian(link = "log"), data = data_all_models)
+
+# Extract updated model coefficients
+coeffMassForSpeedMin <- exp(coef(model_speed_min)[1])  # Intercept transformed back to original scale
+scaleMassForSpeedMin <- coef(model_speed_min)[2]       # Slope
+
+coeffMassForSpeedMax <- exp(coef(model_speed_max)[1])  # Intercept transformed back to original scale
+scaleMassForSpeedMax <- coef(model_speed_max)[2]       # Slope
+
+if(is.na(scaleMassForSpeedMin)) {
+	coeffMassForSpeedMin <- mean(data_all_models$SpeedMin)
+	coeffMassForSpeedMin #@coeffMassForSpeedMin=
+
+	scaleMassForSpeedMin <- 0.0
+	scaleMassForSpeedMin #@scaleMassForSpeedMin=
+} else {
+	coeffMassForSpeedMin <- as.vector(t(coeffMassForSpeedMin))
+	coeffMassForSpeedMin #@coeffMassForSpeedMin=
+
+	scaleMassForSpeedMin <- as.vector(t(scaleMassForSpeedMin))
+	scaleMassForSpeedMin <- round(as.numeric(scaleMassForSpeedMin),4) 
+	scaleMassForSpeedMin #@scaleMassForSpeedMin=
+}
+
+if(is.na(scaleMassForSpeedMax)) {
+	coeffMassForSpeedMax <- mean(data_all_models$SpeedMax)
+	coeffMassForSpeedMax #@coeffMassForSpeedMax=
+
+	scaleMassForSpeedMax <- 0.0
+	scaleMassForSpeedMax #@scaleMassForSpeedMax=
+} else {
+	coeffMassForSpeedMax <- as.vector(t(coeffMassForSpeedMax))
+	coeffMassForSpeedMax #@coeffMassForSpeedMax=
+
+	scaleMassForSpeedMax <- as.vector(t(scaleMassForSpeedMax))
+	scaleMassForSpeedMax <- round(as.numeric(scaleMassForSpeedMax),4) 
+	scaleMassForSpeedMax #@scaleMassForSpeedMax=
+}
+
+
+##############################################################################
+##############################################################################
+##############################################################################
+
+
+
+
+
+
+
+# Start reading ID_ISOGRA_curveType data frame	
+ID_ISOGRA_curveType<-data.frame(
+			Variable = "curveType", 
+			DOI= "10.1111_j.1365-2427.2009.02176.x",
+			Category = "Article",
+			DataTreatment = "Taken from the article"
+)
+
+# End reading ID_ISOGRA_curveType data frame
+
+#########   OJO!!! Error in nls(models[[best_loocv_model_name]]$formula, data = data, start = models[[best_loocv_model_name]]$start,  : 
+#########  step factor 7.45058e-09 reduced below 'minFactor' of 1e-08
+#########  SE DEJA SOLO EL CRITERIO AIC
+
+colnames(data_for_gcurve)[2]<-"age"
+# In data_for_gcurve, we change the age vector to the agevector_data in order to perform a trasposition of the intercept
+# due to the need of removing the imago phase 
+data_for_gcurve$age<-preagevector
+
+data_for_gcurve
+
+
+# Comparing logistic and exponential they seem to adjust the same because there is not a 
+# fast change (inflexion point) 
+
+
+isoperla_data <- list()
+
+isoperla_data[[as.character(tempFromLab)]] = data_for_gcurve
+
+
+fitted <- gcmGAT(isoperla_data, x = "age", y = "length", use_app = TRUE)
+
+
+best_model<-fitted[[as.character(tempFromLab)]]$best_model
+
+curveType<-fitted[[as.character(tempFromLab)]]$best_model_name
+curveType #@curveType="Exponential"
+
+
+if (isTRUE(getOption("allow_plotting"))) {
+predicted_values <- predict(best_model, newdata = data.frame(age = seq(0, max(isoperla_data[[as.character(tempFromLab)]]$age+1), by = 0.01)))
+plot(seq(0, max(isoperla_data[[as.character(tempFromLab)]]$age+1), by = 0.01), predicted_values, type = "l", xlab = "age", ylab = "Length", main = "Predicted Line")
+points(isoperla_data[[as.character(tempFromLab)]]$age, isoperla_data[[as.character(tempFromLab)]]$length, col = "red", pch = 16)
+legend("bottomright", legend = c("Predicted Line", "Real Spots"), col = c("black", "red"), pch = c(NA, 16), lty = c(1, NA))
+}else {
+  cat("Plotting is disabled.\n")
+}
+
+
+# Start reading ID_ISOGRA_lengthAtBirth data frame	
+ID_ISOGRA_lengthAtBirth<-data.frame(
+			Variable = "lengthAtBirth", 
+			DOI1= "10.1111_j.1365-2427.2009.02176.x",
+			Category1 = "Article",
+			DataTreatment = "Taken from the intercept of the growth curve in ID_ISOGRA_curveType"
+)
+# End reading ID_ISOGRA_lengthAtBirth data frame
+
+lengthAtBirth=predict(fitted[[as.character(tempFromLab)]]$best_model, newdata = data.frame(age = 0))
+lengthAtBirth #@lengthAtBirth=1.097235
+
+# Start reading ID_ISOGRA_eggDryMass data frame	
+ID_ISOGRA_eggDryMass<-data.frame(
+			Variable = "eggDryMass", 
+			DOI1= "10.1111_j.1365-2427.2009.02176.x",
+			Category1 = "Article",
+			DataTreatment = "transformed from lengthAtBirth with coefficientForMassA and scaleForMassB"
+)
+# End reading ID_ISOGRA_eggDryMass data frame
+
+eggDryMass<-coefficientForMassA*lengthAtBirth^(scaleForMassB)
+eggDryMass #@eggDryMass=0.009674603
+
+
+# Start reading ID_ISOGRA_femaleWetMass data frame	
+ID_ISOGRA_femaleWetMass<-data.frame(
+			Variable = "femaleWetMass", 
+			DOI1= "10.1111_j.1365-2427.2009.02176.x",
+			Category1 = "Article",
+			DataTreatment = "Tramsformed from the max value of the growth curve in ID_ISOGRA_curveType"
+)
+# End reading ID_ISOGRA_femaleWetMass data frame
+
+female_predicted_length <- predict(best_model, newdata = data.frame(age = max(isoperla_data[[as.character(tempFromLab)]]$age)))
+femaledrymass<-coefficientForMassA*female_predicted_length^scaleForMassB
+femaleWetMass<-femaledrymass*conversionToWetMass
+femaleWetMass #@femaleWetMass= 26.04929
+
+# Start reading ID_ISOGRA_lMin data frame	
+ID_ISOGRA_lMin<-data.frame(
+			Variable = "lMin", 
+			DOI1= "10.1111_j.1365-2427.2009.02176.x",
+			Category1 = "Article",
+			DataTreatment = "Taken from Suppl. Material"
+)
+# End reading ID_ISOGRA_lMin data frame
+
+lMin<-11.55
+lMin #@lMin=11.55
+
+
+# Start reading ID_ISOGRA_lMax data frame	
+ID_ISOGRA_lMax<-data.frame(
+			Variable = "lMax", 
+			DOI1= "10.1111_j.1365-2427.2009.02176.x",
+			Category1 = "Article",
+			DataTreatment = "Taken from Suppl. Material"
+)
+# End reading ID_ISOGRA_lMax data frame
+
+lMax<-14.45
+lMax #@lMin=14.45
+
+
+
+# Start reading ID_ISOGRA_growth data frame	
+ID_ISOGRA_growth<-data.frame(
+			Variable = "growth", 
+			DOI1= "10.1111_j.1365-2427.2009.02176.x",
+			Category1 = "Article",
+			DataTreatment = "Taken from the k value of the growth curve"
+)
+# End reading ID_ISOGRA_growth data frame
+
+growth<-fitted[[as.character(tempFromLab)]]$growth
+growth #@growth=0.00912906
+
+
+# Start reading ID_ISOGRA_pupaPeriodTime  data frame	
+ID_ISOGRA_pupaPeriodTime <-data.frame(
+			Variable = "pupaPeriodTime ", 
+			DOI1 = NA,
+			Category1 = NA,
+			DataTreatment = "Common knowledge"
+)
+# End reading ID_ISOGRA_pupaPeriodTime  data frame
+
+# Female pupa period time (time between emergency and egg-laying)
+pupaPeriodTime <- 10
+pupaPeriodTime  #@pupaPeriodTime= 10
+
+
+# Start reading ID_ISOGRA_longevitySinceMaturation data frame	
+ID_ISOGRA_longevitySinceMaturation<-data.frame(
+			Variable = "longevitySinceMaturation", 
+			DOI1 = "10.1007_BF00344884",
+			Category1 = "Article",
+			DataTreatment = "We estimated the different periods based on the fig 1 of the text. We didn't take diapause into account"
+)
+# End reading ID_ISOGRA_longevitySinceMaturation data frame
+
+juvenile_period<-270
+time_to_adult<-juvenile_period
+ageOfFirstMaturation<-sum(time_to_adult + pupaPeriodTime ) 
+ageLayingEggs<-49
+
+longevitySinceMaturation <- (ageOfFirstMaturation + ageLayingEggs)/ageOfFirstMaturation
+longevitySinceMaturation #@longevitySinceMaturation= 1.928571
+
+
+# Start reading ID_ISOGRA_assiM data frame	
+ID_ISOGRA_assiM<-data.frame(
+			Variable = "assiM", 
+			DOI1 = "",
+			Category1 = "Article",
+			DataTreatment = ""
+)
+# End reading ID_ISOGRA_assiM data frame
+
+# In the references is cited that the range is 85-95%. We set the value to 90% (average)
+
+assiM<-0.9
+assiM #@assiM=0.9
+
+
+# Start reading ID_ISOGRA_adultProbabilityDeathFromBackground data frame	
+ID_ISOGRA_adultProbabilityDeathFromBackground<-data.frame(
+			Variable = "adultProbabilityDeathFromBackground", 
+			DOI1 = NA,
+			Category1 = NA,
+			DataTreatment = NA
+)
+# End reading ID_ISOGRA_adultProbabilityDeathFromBackground data frame
+
+totalAdultProbability <- 0.5
+timeStepsPerDay <- 0.5
+
+adultProbabilityDeathFromBackground<- (totalAdultProbability / ageLayingEggs) * timeStepsPerDay
+adultProbabilityDeathFromBackground #@adultProbabilityDeathFromBackground=0.0051
+
+
+# Start reading ID_ISOGRA_nonAdultProbabilityDeathFromBackground data frame	
+ID_ISOGRA_adultProbabilityDeathFromBackground<-data.frame(
+			Variable = "nonAdultProbabilityDeathFromBackground", 
+			DOI1 = NA,
+			Category1 = NA,
+			DataTreatment = NA
+)
+# End reading ID_ISOGRA_nonAdultProbabilityDeathFromBackground data frame
+
+totalNonAdultProbability <- 0.5
+timeStepsPerDay <- 0.5
+
+nonAdultProbabilityDeathFromBackground<- (totalNonAdultProbability / time_to_adult) * timeStepsPerDay
+nonAdultProbabilityDeathFromBackground #@nonAdultProbabilityDeathFromBackground=0.0009
+
+
+#@TODO: Check the literature for assiM and pupaPeriodTime
+
+
+
+# SECTION 2: In this section there are included all the parameters for WEAVER. 
+# Some of them are directly inputed from the parametric values obtained in the previous section.
+# The rest of the parameters are taken from the literature or there are set up by 
+# programming criteria or by the user (this preferences must be understood before changing).
+
+# =====================
+# GENERAL PARAMETERS
+# =====================
+
+json.activatedHandling = FALSE  # If TRUE, predator handling time is considered for the simulation
+json.activityUnderPredationRisk = 1.0  # Fraction of normal activity maintained under predation risk
+json.poreUsePerInstar = c(1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0)  # Pore use for each developmental instar
+json.coefficientForHandlingTimeA = 28.407  # Coefficient 'A' for handling time equation
+json.coefficientForHandlingTimeB = -0.664  # Coefficient 'B' for handling time equation
+json.coefficientForHandlingTimeC = -6.365  # Coefficient 'C' for handling time equation
+json.conversionToWetMass = c(
+	conversionToWetMass, conversionToWetMass, conversionToWetMass,
+	conversionToWetMass, conversionToWetMass, conversionToWetMass,
+	conversionToWetMass, conversionToWetMass, conversionToWetMass,
+	conversionToWetMass, conversionToWetMass, conversionToWetMass,
+	conversionToWetMass, conversionToWetMass
+)  # Factor to convert from dry mass (or another measure) to wet mass
+json.daysWithoutFoodForMetabolicDownregulation = 2.0  # Days without food before metabolic downregulation
+json.debug.surviveWithoutFood = FALSE  # Debug flag to allow survival without food if TRUE
+json.debug.forcePresenceAllResourcesInvolved = FALSE  # If TRUE, forces all resource types to be present in a simulation
+json.defaultHuntingMode = "grazer"  # Default hunting mode if no other is specified
+json.femaleMaxReproductionEvents = femaleMaxReproductionEvents  # Maximum number of reproduction events for a female
+json.forDensitiesA = 74.8  # Parameter 'A' for population density functions
+json.forDensitiesB = -0.75  # Parameter 'B' for population density functions
+json.forDensitiesEggSize = 0.005  # Egg size used in some density-related calculations
+json.forDensitiesGrowth = 1.4  # Growth rate factor in density-related calculations
+
+# =====================
+# GENETICS PARAMETERS
+# =====================
+
+json.genetics.modules.correlationCoefficientRhoPerModule = c(0.1, 0.1)  # Correlation coefficients between traits in each genetic module
+json.genetics.modules.traitsPerModule = 3  # Number of traits per genetic module
+json.genetics.numberOfAllelesPerLocus = 10  # How many alleles exist at each locus
+json.genetics.numberOfChiasmasPerChromosome = 2  # Number of chiasmas (crossover points) in meiosis per chromosome
+json.genetics.numberOfLociPerTrait = 20  # Number of loci affecting each trait
+
+# These parameters alter allele frequencies or values in the population over time.
+
+json.genetics.modifyAlleles = list(
+	list(
+		affectedLocus = list(
+			0.29999999999999999,
+			0.59999999999999998,
+			0.90000000000000002
+		),
+		affectedTraits = list(
+			list(
+				trait = "base$energy_tank",
+				element = "value"
+			)
+		),
+		affectedAlleles = 0.9,
+		timesAlleles = 30
+	),
+	list(
+		affectedLocus = list(
+			0.29999999999999999,
+			0.59999999999999998,
+			0.90000000000000002
+		),
+		affectedTraits = list(
+			list(
+				trait = "base$energy_tank",
+				element = "value"
+			)
+		),
+		affectedAlleles = 0.7,
+		timesAlleles = 30
+	)
+)
+
+# =====================
+# TRAITS PARAMETERS
+# =====================
+# The "individualLevelParams" typically means these values can vary among individuals.
+# The "speciesLevelParams" typically means a constant value for the entire species.
+
+
+
+cricotopus_spx.growth.activationEnergy = 0.926875107406761
+cricotopus_spx.growth.energyDecay = 5.0634623491188
+cricotopus_spx.growth.temperatureOptimal = 18.0382542662839
+
+
+## base - actE_met // Literature in: Ehnes et al. 2011 Ecology Letters (Mesostigmata, soil fauna)
+json.traits.base.actE_met.limits.max = 0.0  # Upper limit on individual variation
+json.traits.base.actE_met.limits.min = 0.0  # Lower limit on individual variation
+json.traits.base.actE_met.ranges.max = 0.379  # Upper range boundary for sampling initial trait values
+json.traits.base.actE_met.ranges.min = 0.379  # Lower range boundary for sampling initial trait values
+json.traits.base.actE_met.restrictValue = 0.01  # Precision or incremental step for this trait
+
+json.traits.base.actE_met.temperature.dependent = FALSE
+json.traits.base.actE_met.temperature.activationEnergy = 0.0
+json.traits.base.actE_met.temperature.energyDecay = 0.0
+json.traits.base.actE_met.temperature.temperatureOptimal = 0.0
+json.traits.base.actE_met.temperature.temperatureRef = 0.0
+
+## base - assim // Literature in: Taken from Pergamasus longicornis in Bowman 2019
+json.traits.base.assim.limits.max = 0.0  # Upper limit on assimilation rate
+json.traits.base.assim.limits.min = 0.0  # Lower limit on assimilation rate
+json.traits.base.assim.ranges.max = assiM  # Upper range boundary for sampling assimilation
+json.traits.base.assim.ranges.min = assiM  # Lower range boundary for sampling assimilation
+json.traits.base.assim.restrictValue = 0.0  # Precision or incremental step
+
+json.traits.base.assim.temperature.dependent = FALSE
+json.traits.base.assim.temperature.activationEnergy = 0.0
+json.traits.base.assim.temperature.energyDecay = 0.0
+json.traits.base.assim.temperature.temperatureOptimal = 0.0
+json.traits.base.assim.temperature.temperatureRef = 0.0
+
+## base - devTime
+# If the user does not want genetic variation, introduce the last value 
+# of ageVector for both ranges (min and max). In case of having data 
+# from literature you can modify these values. 
+
+devTimeAtTopt = calculateTraitAtTopt(
+	trait_name = "base.devTime",
+	traitAtTempRef = ageVector[[length(ageVector)]],  
+	Topt = cricotopus_spx.growth.temperatureOptimal,  
+	ED = cricotopus_spx.growth.energyDecay,  
+	E = cricotopus_spx.growth.activationEnergy, 
+	Tref = tempFromLab
+)
+
+json.traits.base.devTime.limits.max = 0.0  # If set NULL, there is no variation over the maximum range.
+json.traits.base.devTime.limits.min = 0.0  # If set NULL, there is no variation over the minimum range.
+json.traits.base.devTime.ranges.max = devTimeAtTopt  # If max and min = max(ageVector), no genetic variation
+json.traits.base.devTime.ranges.min = devTimeAtTopt  # If max and min = max(ageVector), no genetic variation
+json.traits.base.devTime.restrictValue = 0.0  # If NULL, No increment restriction will be applied
+
+json.traits.base.devTime.temperature.dependent = TRUE
+json.traits.base.devTime.temperature.activationEnergy = cricotopus_spx.growth.activationEnergy
+json.traits.base.devTime.temperature.energyDecay = cricotopus_spx.growth.energyDecay
+json.traits.base.devTime.temperature.temperatureOptimal = cricotopus_spx.growth.temperatureOptimal
+json.traits.base.devTime.temperature.temperatureRef = tempFromLab
+
+## base - eggDevTime
+json.traits.base.eggDevTime.limits.max = 0.0  # Max for individual egg development time
+json.traits.base.eggDevTime.limits.min = 0.0  # Min for individual egg development time
+json.traits.base.eggDevTime.ranges.max = 36.0  # Upper boundary for sampling
+json.traits.base.eggDevTime.ranges.min = 36.0  # Lower boundary for sampling
+json.traits.base.eggDevTime.restrictValue = 0.0  # Increment step
+
+json.traits.base.eggDevTime.temperature.dependent = FALSE
+json.traits.base.eggDevTime.temperature.activationEnergy = 0.0
+json.traits.base.eggDevTime.temperature.energyDecay = 0.0
+json.traits.base.eggDevTime.temperature.temperatureOptimal = 0.0
+json.traits.base.eggDevTime.temperature.temperatureRef = 0.0
+
+## base - energy_tank
+json.traits.base.energy_tank.limits.max = 0.010000000000000014  # Maximum capacity for the "energy tank"
+json.traits.base.energy_tank.limits.min = 0.017500000000000012  # Minimum capacity
+json.traits.base.energy_tank.ranges.max = 0.36  # Upper boundary for sampling
+json.traits.base.energy_tank.ranges.min = 0.32  # Lower boundary for sampling
+json.traits.base.energy_tank.restrictValue = 0.01  # Increment step
+
+## base - factorEggMass
+json.traits.base.factorEggMass.limits.max = 0.495 
+json.traits.base.factorEggMass.limits.min = 0.495
+json.traits.base.factorEggMass.ranges.max = 0.001
+json.traits.base.factorEggMass.ranges.min = -0.001
+json.traits.base.factorEggMass.restrictValue = 0.01  
+
+json.traits.base.factorEggMass.temperature.dependent = FALSE
+json.traits.base.factorEggMass.temperature.activationEnergy = 0.0
+json.traits.base.factorEggMass.temperature.energyDecay = 0.0
+json.traits.base.factorEggMass.temperature.temperatureOptimal = 0.0
+json.traits.base.factorEggMass.temperature.temperatureRef = 0.0
+
+## base - dummy
+json.traits.base.dummy.limits.max = 0.0 
+json.traits.base.dummy.limits.min = 0.0
+json.traits.base.dummy.ranges.max = 1.0
+json.traits.base.dummy.ranges.min = 0.0
+json.traits.base.dummy.restrictValue = 0.0 
+
+json.traits.base.dummy.temperature.dependent = FALSE
+json.traits.base.dummy.temperature.activationEnergy = 0.0
+json.traits.base.dummy.temperature.energyDecay = 0.0
+json.traits.base.dummy.temperature.temperatureOptimal = 0.0
+json.traits.base.dummy.temperature.temperatureRef = 0.0
+
+## base - growth
+
+growthAtTopt = calculateTraitAtTopt(
+	trait_name = "base.growth",
+	traitAtTempRef = growth,  
+	Topt = cricotopus_spx.growth.temperatureOptimal,  
+	ED = cricotopus_spx.growth.energyDecay,  
+	E = cricotopus_spx.growth.activationEnergy, 
+	Tref = tempFromLab
+)
+
+json.traits.base.growth.limits.max = 0.0  # Maximum growth rate limit (0 means no constraint or zero?)
+json.traits.base.growth.limits.min = 0.0  # Minimum growth rate limit
+json.traits.base.growth.ranges.max = growthAtTopt  # Upper boundary for sampling growth rate
+json.traits.base.growth.ranges.min = growthAtTopt  # Lower boundary for sampling growth rate
+json.traits.base.growth.restrictValue = 0.01  # Increment step
+
+json.traits.base.growth.temperature.dependent = TRUE
+json.traits.base.growth.temperature.activationEnergy = cricotopus_spx.growth.activationEnergy
+json.traits.base.growth.temperature.energyDecay = cricotopus_spx.growth.energyDecay
+json.traits.base.growth.temperature.temperatureOptimal = cricotopus_spx.growth.temperatureOptimal
+json.traits.base.growth.temperature.temperatureRef = tempFromLab
+
+## base - coeffMassForScopeRadius
+json.traits.base.coeffMassForScopeRadius.limits.max = 0.0  
+json.traits.base.coeffMassForScopeRadius.limits.min = 0.0 
+json.traits.base.coeffMassForScopeRadius.ranges.max = coeffMassForScopeRadiusMax 
+json.traits.base.coeffMassForScopeRadius.ranges.min = coeffMassForScopeRadiusMin
+json.traits.base.coeffMassForScopeRadius.restrictValue = 0.0  
+
+json.traits.base.coeffMassForScopeRadius.temperature.dependent = FALSE
+json.traits.base.coeffMassForScopeRadius.temperature.activationEnergy = 0.0
+json.traits.base.coeffMassForScopeRadius.temperature.energyDecay = 0.0
+json.traits.base.coeffMassForScopeRadius.temperature.temperatureOptimal = 0.0
+json.traits.base.coeffMassForScopeRadius.temperature.temperatureRef = 0.0
+
+## base - scaleMassForScopeRadius
+json.traits.base.scaleMassForScopeRadius.limits.max = 0.0  
+json.traits.base.scaleMassForScopeRadius.limits.min = 0.0 
+json.traits.base.scaleMassForScopeRadius.ranges.max = scaleMassForScopeRadiusMax 
+json.traits.base.scaleMassForScopeRadius.ranges.min = scaleMassForScopeRadiusMin
+json.traits.base.scaleMassForScopeRadius.restrictValue = 0.0  
+
+json.traits.base.scaleMassForScopeRadius.temperature.dependent = FALSE
+json.traits.base.scaleMassForScopeRadius.temperature.activationEnergy = 0.0
+json.traits.base.scaleMassForScopeRadius.temperature.energyDecay = 0.0
+json.traits.base.scaleMassForScopeRadius.temperature.temperatureOptimal = 0.0
+json.traits.base.scaleMassForScopeRadius.temperature.temperatureRef = 0.0
+
+## base - coeffMassForInteractionRadius
+json.traits.base.coeffMassForInteractionRadius.limits.max = 0.0  
+json.traits.base.coeffMassForInteractionRadius.limits.min = 0.0 
+json.traits.base.coeffMassForInteractionRadius.ranges.max = coeffMassForInteractionRadiusMax 
+json.traits.base.coeffMassForInteractionRadius.ranges.min = coeffMassForInteractionRadiusMin
+json.traits.base.coeffMassForInteractionRadius.restrictValue = 0.0  
+
+json.traits.base.coeffMassForInteractionRadius.temperature.dependent = FALSE
+json.traits.base.coeffMassForInteractionRadius.temperature.activationEnergy = 0.0
+json.traits.base.coeffMassForInteractionRadius.temperature.energyDecay = 0.0
+json.traits.base.coeffMassForInteractionRadius.temperature.temperatureOptimal = 0.0
+json.traits.base.coeffMassForInteractionRadius.temperature.temperatureRef = 0.0
+
+## base - scaleMassForInteractionRadius
+json.traits.base.scaleMassForInteractionRadius.limits.max = 0.0  
+json.traits.base.scaleMassForInteractionRadius.limits.min = 0.0 
+json.traits.base.scaleMassForInteractionRadius.ranges.max = scaleMassForInteractionRadiusMax 
+json.traits.base.scaleMassForInteractionRadius.ranges.min = scaleMassForInteractionRadiusMin
+json.traits.base.scaleMassForInteractionRadius.restrictValue = 0.0  
+
+json.traits.base.scaleMassForInteractionRadius.temperature.dependent = FALSE
+json.traits.base.scaleMassForInteractionRadius.temperature.activationEnergy = 0.0
+json.traits.base.scaleMassForInteractionRadius.temperature.energyDecay = 0.0
+json.traits.base.scaleMassForInteractionRadius.temperature.temperatureOptimal = 0.0
+json.traits.base.scaleMassForInteractionRadius.temperature.temperatureRef = 0.0
+
+## base - coeffMassForSearchRadius
+json.traits.base.coeffMassForSearchRadius.limits.max = 0.0  
+json.traits.base.coeffMassForSearchRadius.limits.min = 0.0 
+json.traits.base.coeffMassForSearchRadius.ranges.max = coeffMassForSearchRadiusMax 
+json.traits.base.coeffMassForSearchRadius.ranges.min = coeffMassForSearchRadiusMin
+json.traits.base.coeffMassForSearchRadius.restrictValue = 0.0  
+
+json.traits.base.coeffMassForSearchRadius.temperature.dependent = TRUE
+json.traits.base.coeffMassForSearchRadius.temperature.activationEnergy = cricotopus_spx.growth.activationEnergy
+json.traits.base.coeffMassForSearchRadius.temperature.energyDecay = cricotopus_spx.growth.energyDecay
+json.traits.base.coeffMassForSearchRadius.temperature.temperatureOptimal = cricotopus_spx.growth.temperatureOptimal
+json.traits.base.coeffMassForSearchRadius.temperature.temperatureRef = tempFromLab
+
+## base - scaleMassForSearchRadius
+json.traits.base.scaleMassForSearchRadius.limits.max = 0.0  
+json.traits.base.scaleMassForSearchRadius.limits.min = 0.0 
+json.traits.base.scaleMassForSearchRadius.ranges.max = scaleMassForSearchRadiusMax 
+json.traits.base.scaleMassForSearchRadius.ranges.min = scaleMassForSearchRadiusMin
+json.traits.base.scaleMassForSearchRadius.restrictValue = 0.0  
+
+json.traits.base.scaleMassForSearchRadius.temperature.dependent = FALSE
+json.traits.base.scaleMassForSearchRadius.temperature.activationEnergy = 0.0
+json.traits.base.scaleMassForSearchRadius.temperature.energyDecay = 0.0
+json.traits.base.scaleMassForSearchRadius.temperature.temperatureOptimal = 0.0
+json.traits.base.scaleMassForSearchRadius.temperature.temperatureRef = 0.0
+
+## base - coeffMassForSpeed
+json.traits.base.coeffMassForSpeed.limits.max = 0.0  
+json.traits.base.coeffMassForSpeed.limits.min = 0.0 
+json.traits.base.coeffMassForSpeed.ranges.max = coeffMassForSpeedMax 
+json.traits.base.coeffMassForSpeed.ranges.min = coeffMassForSpeedMin
+json.traits.base.coeffMassForSpeed.restrictValue = 0.0  
+
+json.traits.base.coeffMassForSpeed.temperature.dependent = TRUE
+json.traits.base.coeffMassForSpeed.temperature.activationEnergy = cricotopus_spx.growth.activationEnergy
+json.traits.base.coeffMassForSpeed.temperature.energyDecay = cricotopus_spx.growth.energyDecay
+json.traits.base.coeffMassForSpeed.temperature.temperatureOptimal = cricotopus_spx.growth.temperatureOptimal
+json.traits.base.coeffMassForSpeed.temperature.temperatureRef = tempFromLab
+
+## base - scaleMassForSpeed
+json.traits.base.scaleMassForSpeed.limits.max = 0.0  
+json.traits.base.scaleMassForSpeed.limits.min = 0.0 
+json.traits.base.scaleMassForSpeed.ranges.max = scaleMassForSpeedMax 
+json.traits.base.scaleMassForSpeed.ranges.min = scaleMassForSpeedMin
+json.traits.base.scaleMassForSpeed.restrictValue = 0.0  
+
+json.traits.base.scaleMassForSpeed.temperature.dependent = FALSE
+json.traits.base.scaleMassForSpeed.temperature.activationEnergy = 0.0
+json.traits.base.scaleMassForSpeed.temperature.energyDecay = 0.0
+json.traits.base.scaleMassForSpeed.temperature.temperatureOptimal = 0.0
+json.traits.base.scaleMassForSpeed.temperature.temperatureRef = 0.0
+
+## base - lengthAtMaturation
+json.traits.base.lengthAtMaturation.limits.max = 0.0  # Maximum length limit (0 could mean no constraint)
+json.traits.base.lengthAtMaturation.limits.min = 0.0  # Minimum length limit
+json.traits.base.lengthAtMaturation.ranges.max = lMax  # Upper boundary for sampling length
+json.traits.base.lengthAtMaturation.ranges.min = lMin  # Lower boundary for sampling length
+json.traits.base.lengthAtMaturation.restrictValue = 0.0  # Increment step
+
+json.traits.base.lengthAtMaturation.temperature.dependent = FALSE
+json.traits.base.lengthAtMaturation.temperature.tempSizeRuleVector = list()
+
+## base - longevitySinceMaturation
+json.traits.base.longevitySinceMaturation.limits.max = 0.0  
+json.traits.base.longevitySinceMaturation.limits.min = 0.0 
+json.traits.base.longevitySinceMaturation.ranges.max = longevitySinceMaturation 
+json.traits.base.longevitySinceMaturation.ranges.min = longevitySinceMaturation
+json.traits.base.longevitySinceMaturation.restrictValue = 0.01  
+
+json.traits.base.longevitySinceMaturation.temperature.dependent = FALSE
+json.traits.base.longevitySinceMaturation.temperature.activationEnergy = 0.0
+json.traits.base.longevitySinceMaturation.temperature.energyDecay = 0.0
+json.traits.base.longevitySinceMaturation.temperature.temperatureOptimal = 0.0
+json.traits.base.longevitySinceMaturation.temperature.temperatureRef = 0.0
+
+## base - memoryDepth
+json.traits.base.memoryDepth.limits.max = 0.0  
+json.traits.base.memoryDepth.limits.min = 0.0 
+json.traits.base.memoryDepth.ranges.max = 5.0 
+json.traits.base.memoryDepth.ranges.min = 5.0
+json.traits.base.memoryDepth.restrictValue = 0.01
+
+json.traits.base.memoryDepth.temperature.dependent = FALSE
+json.traits.base.memoryDepth.temperature.activationEnergy = 0.0
+json.traits.base.memoryDepth.temperature.energyDecay = 0.0
+json.traits.base.memoryDepth.temperature.temperatureOptimal = 0.0
+json.traits.base.memoryDepth.temperature.temperatureRef = 0.0
+
+## base - met_rate
+json.traits.base.met_rate.limits.max = 0.07474999999999991 
+json.traits.base.met_rate.limits.min = 0.24024999999999977
+json.traits.base.met_rate.ranges.max = 0.7005 
+json.traits.base.met_rate.ranges.min = 0.6805
+json.traits.base.met_rate.restrictValue = 0.01 
+
+json.traits.base.met_rate.temperature.dependent = FALSE
+json.traits.base.met_rate.temperature.activationEnergy = 0.0
+json.traits.base.met_rate.temperature.energyDecay = 0.0
+json.traits.base.met_rate.temperature.temperatureOptimal = 0.0
+json.traits.base.met_rate.temperature.temperatureRef = 0.0
+
+## base - pupaPeriodTime
+json.traits.base.pupaPeriodTime.limits.max = 0.0
+json.traits.base.pupaPeriodTime.limits.min = 0.0
+json.traits.base.pupaPeriodTime.ranges.max = pupaPeriodTime 
+json.traits.base.pupaPeriodTime.ranges.min = pupaPeriodTime
+json.traits.base.pupaPeriodTime.restrictValue = 0.0 
+
+json.traits.base.pupaPeriodTime.temperature.dependent = FALSE
+json.traits.base.pupaPeriodTime.temperature.activationEnergy = 0.0
+json.traits.base.pupaPeriodTime.temperature.energyDecay = 0.0
+json.traits.base.pupaPeriodTime.temperature.temperatureOptimal = 0.0
+json.traits.base.pupaPeriodTime.temperature.temperatureRef = 0.0
+
+## base - shock_resistance
+json.traits.base.shock_resistance.limits.max = 0.04  # Maximum limit for shock resistance
+json.traits.base.shock_resistance.limits.min = 0.1   # Minimum limit for shock resistance
+json.traits.base.shock_resistance.ranges.max = 410.0 # Upper boundary for sampling shock resistance
+json.traits.base.shock_resistance.ranges.min = 400.0 # Lower boundary for sampling shock resistance
+json.traits.base.shock_resistance.restrictValue = 0.01  # Increment step
+
+json.traits.base.shock_resistance.temperature.dependent = FALSE
+json.traits.base.shock_resistance.temperature.activationEnergy = 0.0
+json.traits.base.shock_resistance.temperature.energyDecay = 0.0
+json.traits.base.shock_resistance.temperature.temperatureOptimal = 0.0
+json.traits.base.shock_resistance.temperature.temperatureRef = 0.0
+
+## base - voracityProportion
+json.traits.base.voracityProportion.limits.max = 0.0
+json.traits.base.voracityProportion.limits.min = 0.0
+json.traits.base.voracityProportion.ranges.max = 1.0
+json.traits.base.voracityProportion.ranges.min = 1.0
+json.traits.base.voracityProportion.restrictValue = 0.0
+
+json.traits.base.voracityProportion.temperature.dependent = TRUE
+json.traits.base.voracityProportion.temperature.activationEnergy = cricotopus_spx.growth.activationEnergy
+json.traits.base.voracityProportion.temperature.energyDecay = cricotopus_spx.growth.energyDecay
+json.traits.base.voracityProportion.temperature.temperatureOptimal = cricotopus_spx.growth.temperatureOptimal
+json.traits.base.voracityProportion.temperature.temperatureRef = tempFromLab
+
+## base - eggFertility
+json.traits.base.eggFertility.limits.max = 0.0 
+json.traits.base.eggFertility.limits.min = 0.0 
+json.traits.base.eggFertility.ranges.max = 1.0 
+json.traits.base.eggFertility.ranges.min = 1.0 
+json.traits.base.eggFertility.restrictValue = 0.0 
+
+json.traits.base.eggFertility.temperature.dependent = FALSE
+json.traits.base.eggFertility.temperature.activationEnergy = 0.0
+json.traits.base.eggFertility.temperature.energyDecay = 0.0
+json.traits.base.eggFertility.temperature.temperatureOptimal = 0.0
+json.traits.base.eggFertility.temperature.temperatureRef = 0.0
+
+## decisions - escapeProbabilityWeight - Pvelocity
+json.traits.decisions.escapeProbabilityWeight.Pvelocity.limits.max = 0.0 
+json.traits.decisions.escapeProbabilityWeight.Pvelocity.limits.min = 0.0 
+json.traits.decisions.escapeProbabilityWeight.Pvelocity.ranges.max = 0.33 
+json.traits.decisions.escapeProbabilityWeight.Pvelocity.ranges.min = 0.33 
+json.traits.decisions.escapeProbabilityWeight.Pvelocity.restrictValue = 0.0
+
+json.traits.decisions.escapeProbabilityWeight.Pvelocity.temperature.dependent = FALSE
+json.traits.decisions.escapeProbabilityWeight.Pvelocity.temperature.activationEnergy = 0.0
+json.traits.decisions.escapeProbabilityWeight.Pvelocity.temperature.energyDecay = 0.0
+json.traits.decisions.escapeProbabilityWeight.Pvelocity.temperature.temperatureOptimal = 0.0
+json.traits.decisions.escapeProbabilityWeight.Pvelocity.temperature.temperatureRef = 0.0
+
+## decisions - escapeProbabilityWeight - PattackDistance
+json.traits.decisions.escapeProbabilityWeight.PattackDistance.limits.max = 0.0 
+json.traits.decisions.escapeProbabilityWeight.PattackDistance.limits.min = 0.0 
+json.traits.decisions.escapeProbabilityWeight.PattackDistance.ranges.max = 0.33 
+json.traits.decisions.escapeProbabilityWeight.PattackDistance.ranges.min = 0.33 
+json.traits.decisions.escapeProbabilityWeight.PattackDistance.restrictValue = 0.0
+
+json.traits.decisions.escapeProbabilityWeight.PattackDistance.temperature.dependent = FALSE
+json.traits.decisions.escapeProbabilityWeight.PattackDistance.temperature.activationEnergy = 0.0
+json.traits.decisions.escapeProbabilityWeight.PattackDistance.temperature.energyDecay = 0.0
+json.traits.decisions.escapeProbabilityWeight.PattackDistance.temperature.temperatureOptimal = 0.0
+json.traits.decisions.escapeProbabilityWeight.PattackDistance.temperature.temperatureRef = 0.0
+
+## decisions - predationProbabilityWeight - Preach
+json.traits.decisions.predationProbabilityWeight.Preach.limits.max = 0.0 
+json.traits.decisions.predationProbabilityWeight.Preach.limits.min = 0.0 
+json.traits.decisions.predationProbabilityWeight.Preach.ranges.max = 0.25 
+json.traits.decisions.predationProbabilityWeight.Preach.ranges.min = 0.25 
+json.traits.decisions.predationProbabilityWeight.Preach.restrictValue = 0.0
+
+json.traits.decisions.predationProbabilityWeight.Preach.temperature.dependent = FALSE
+json.traits.decisions.predationProbabilityWeight.Preach.temperature.activationEnergy = 0.0
+json.traits.decisions.predationProbabilityWeight.Preach.temperature.energyDecay = 0.0
+json.traits.decisions.predationProbabilityWeight.Preach.temperature.temperatureOptimal = 0.0
+json.traits.decisions.predationProbabilityWeight.Preach.temperature.temperatureRef = 0.0
+
+## decisions - predationProbabilityWeight - Ppdf
+json.traits.decisions.predationProbabilityWeight.Ppdf.limits.max = 0.0 
+json.traits.decisions.predationProbabilityWeight.Ppdf.limits.min = 0.0 
+json.traits.decisions.predationProbabilityWeight.Ppdf.ranges.max = 0.25 
+json.traits.decisions.predationProbabilityWeight.Ppdf.ranges.min = 0.25 
+json.traits.decisions.predationProbabilityWeight.Ppdf.restrictValue = 0.0
+
+json.traits.decisions.predationProbabilityWeight.Ppdf.temperature.dependent = FALSE
+json.traits.decisions.predationProbabilityWeight.Ppdf.temperature.activationEnergy = 0.0
+json.traits.decisions.predationProbabilityWeight.Ppdf.temperature.energyDecay = 0.0
+json.traits.decisions.predationProbabilityWeight.Ppdf.temperature.temperatureOptimal = 0.0
+json.traits.decisions.predationProbabilityWeight.Ppdf.temperature.temperatureRef = 0.0
+
+## decisions - predationProbabilityWeight - PvorPred
+json.traits.decisions.predationProbabilityWeight.PvorPred.limits.max = 0.0 
+json.traits.decisions.predationProbabilityWeight.PvorPred.limits.min = 0.0 
+json.traits.decisions.predationProbabilityWeight.PvorPred.ranges.max = 0.25 
+json.traits.decisions.predationProbabilityWeight.PvorPred.ranges.min = 0.25 
+json.traits.decisions.predationProbabilityWeight.PvorPred.restrictValue = 0.0
+
+json.traits.decisions.predationProbabilityWeight.PvorPred.temperature.dependent = FALSE
+json.traits.decisions.predationProbabilityWeight.PvorPred.temperature.activationEnergy = 0.0
+json.traits.decisions.predationProbabilityWeight.PvorPred.temperature.energyDecay = 0.0
+json.traits.decisions.predationProbabilityWeight.PvorPred.temperature.temperatureOptimal = 0.0
+json.traits.decisions.predationProbabilityWeight.PvorPred.temperature.temperatureRef = 0.0
+
+## decisions - edibilityValueWeight - Pp
+json.traits.decisions.edibilityValueWeight.Pp.limits.max = 0.0 
+json.traits.decisions.edibilityValueWeight.Pp.limits.min = 0.0 
+json.traits.decisions.edibilityValueWeight.Pp.ranges.max = 0.5 
+json.traits.decisions.edibilityValueWeight.Pp.ranges.min = 0.5 
+json.traits.decisions.edibilityValueWeight.Pp.restrictValue = 0.0
+
+json.traits.decisions.edibilityValueWeight.Pp.temperature.dependent = FALSE
+json.traits.decisions.edibilityValueWeight.Pp.temperature.activationEnergy = 0.0
+json.traits.decisions.edibilityValueWeight.Pp.temperature.energyDecay = 0.0
+json.traits.decisions.edibilityValueWeight.Pp.temperature.temperatureOptimal = 0.0
+json.traits.decisions.edibilityValueWeight.Pp.temperature.temperatureRef = 0.0
+
+## decisions - preferences - experienceInfluenceWithEdibles
+json.traits.decisions.preferences.experienceInfluenceWithEdibles.limits.max = 0.0 
+json.traits.decisions.preferences.experienceInfluenceWithEdibles.limits.min = 0.0 
+json.traits.decisions.preferences.experienceInfluenceWithEdibles.ranges.max = 0.99 
+json.traits.decisions.preferences.experienceInfluenceWithEdibles.ranges.min = 0.99 
+json.traits.decisions.preferences.experienceInfluenceWithEdibles.restrictValue = 0.0
+
+json.traits.decisions.preferences.experienceInfluenceWithEdibles.temperature.dependent = FALSE
+json.traits.decisions.preferences.experienceInfluenceWithEdibles.temperature.activationEnergy = 0.0
+json.traits.decisions.preferences.experienceInfluenceWithEdibles.temperature.energyDecay = 0.0
+json.traits.decisions.preferences.experienceInfluenceWithEdibles.temperature.temperatureOptimal = 0.0
+json.traits.decisions.preferences.experienceInfluenceWithEdibles.temperature.temperatureRef = 0.0
+
+## probabilityDensityFunction - muForPDF
+json.traits.probabilityDensityFunction.muForPDF.limits.max = 0.0 
+json.traits.probabilityDensityFunction.muForPDF.limits.min = 0.0 
+json.traits.probabilityDensityFunction.muForPDF.ranges.max = 1.44
+json.traits.probabilityDensityFunction.muForPDF.ranges.min = 1.44
+json.traits.probabilityDensityFunction.muForPDF.restrictValue = 0.0
+
+json.traits.probabilityDensityFunction.muForPDF.temperature.dependent = FALSE
+json.traits.probabilityDensityFunction.muForPDF.temperature.activationEnergy = 0.0
+json.traits.probabilityDensityFunction.muForPDF.temperature.energyDecay = 0.0
+json.traits.probabilityDensityFunction.muForPDF.temperature.temperatureOptimal = 0.0
+json.traits.probabilityDensityFunction.muForPDF.temperature.temperatureRef = 0.0
+
+## probabilityDensityFunction - sigmaForPDF
+json.traits.probabilityDensityFunction.sigmaForPDF.limits.max = 0.0 
+json.traits.probabilityDensityFunction.sigmaForPDF.limits.min = 0.0 
+json.traits.probabilityDensityFunction.sigmaForPDF.ranges.max = 2.34
+json.traits.probabilityDensityFunction.sigmaForPDF.ranges.min = 2.34
+json.traits.probabilityDensityFunction.sigmaForPDF.restrictValue = 0.0
+
+json.traits.probabilityDensityFunction.sigmaForPDF.temperature.dependent = FALSE
+json.traits.probabilityDensityFunction.sigmaForPDF.temperature.activationEnergy = 0.0
+json.traits.probabilityDensityFunction.sigmaForPDF.temperature.energyDecay = 0.0
+json.traits.probabilityDensityFunction.sigmaForPDF.temperature.temperatureOptimal = 0.0
+json.traits.probabilityDensityFunction.sigmaForPDF.temperature.temperatureRef = 0.0
+
+## cellValue - cellEvaluationBiomass
+json.traits.cellValue.cellEvaluationBiomass.limits.max = 0.0 
+json.traits.cellValue.cellEvaluationBiomass.limits.min = 0.0 
+json.traits.cellValue.cellEvaluationBiomass.ranges.max = 1.0 
+json.traits.cellValue.cellEvaluationBiomass.ranges.min = 1.0 
+json.traits.cellValue.cellEvaluationBiomass.restrictValue = 0.0
+
+json.traits.cellValue.cellEvaluationBiomass.temperature.dependent = FALSE
+json.traits.cellValue.cellEvaluationBiomass.temperature.activationEnergy = 0.0
+json.traits.cellValue.cellEvaluationBiomass.temperature.energyDecay = 0.0
+json.traits.cellValue.cellEvaluationBiomass.temperature.temperatureOptimal = 0.0
+json.traits.cellValue.cellEvaluationBiomass.temperature.temperatureRef = 0.0
+
+## cellValue - cellEvaluationProConspecific
+json.traits.cellValue.cellEvaluationProConspecific.limits.max = 0.0 
+json.traits.cellValue.cellEvaluationProConspecific.limits.min = 0.0 
+json.traits.cellValue.cellEvaluationProConspecific.ranges.max = 0.0 
+json.traits.cellValue.cellEvaluationProConspecific.ranges.min = 0.0 
+json.traits.cellValue.cellEvaluationProConspecific.restrictValue = 0.0
+
+json.traits.cellValue.cellEvaluationProConspecific.temperature.dependent = FALSE
+json.traits.cellValue.cellEvaluationProConspecific.temperature.activationEnergy = 0.0
+json.traits.cellValue.cellEvaluationProConspecific.temperature.energyDecay = 0.0
+json.traits.cellValue.cellEvaluationProConspecific.temperature.temperatureOptimal = 0.0
+json.traits.cellValue.cellEvaluationProConspecific.temperature.temperatureRef = 0.0
+
+## cellValue - conspecificWeight
+json.traits.cellValue.conspecificWeight.limits.max = 0.0 
+json.traits.cellValue.conspecificWeight.limits.min = 0.0 
+json.traits.cellValue.conspecificWeight.ranges.max = 0.0 
+json.traits.cellValue.conspecificWeight.ranges.min = 0.0 
+json.traits.cellValue.conspecificWeight.restrictValue = 0.0
+
+json.traits.cellValue.conspecificWeight.temperature.dependent = FALSE
+json.traits.cellValue.conspecificWeight.temperature.activationEnergy = 0.0
+json.traits.cellValue.conspecificWeight.temperature.energyDecay = 0.0
+json.traits.cellValue.conspecificWeight.temperature.temperatureOptimal = 0.0
+json.traits.cellValue.conspecificWeight.temperature.temperatureRef = 0.0
+
+# =====================
+# TRAITS ORDER
+# =====================
+# This defines the order in which individual-level traits are processed or stored.
+
+json.traits.individualLevelTraitsOrder = list(
+	list(
+		trait = "base$energy_tank",
+		element = "value"
+	),
+	list(
+		trait = "base$factorEggMass",
+		element = "value"
+	),
+	list(
+		trait = "base$met_rate",
+		element = "value"
+	),
+	list(
+		trait = "base$shock_resistance",
+		element = "value"
+	),
+	list(
+		trait = "base$lengthAtMaturation",
+		element = "value"
+	),
+	list(
+		trait = "base$dummy",
+		element = "value"
+	)
+)
+
+# =====================
+# GROWTH MODULE PARAMETERS
+# =====================
+
+json.growthModule.assignedForMolt = 0.99  # Fraction of resources allocated to molting
+json.growthModule.betaScaleTank = 1.01  # Scaling factor for the energy tank in the growth module
+json.growthModule.capitalBreeding.enabled = TRUE  # If TRUE, uses stored resources for reproduction
+json.growthModule.capitalBreeding.capitalBreedingParams.numberOfCapitalBreeds = 1
+json.growthModule.capitalBreeding.capitalBreedingParams.timeOfReproEventDuringCapitalBreeding = 0.0
+json.growthModule.coefficientForMassA = coefficientForMassA  # Coefficient A in mass-growth equations
+json.growthModule.coefficientForMassAforMature = coefficientForMassAforMature  # Same, but used post-maturation
+json.growthModule.ageVector = ageVector # Taken from Section 1, already parametrised
+json.growthModule.eggDryMass.eggDryMassFromEquation = eggDryMassFromEquation  # If TRUE, egg mass is calculated from an equation
+json.growthModule.eggDryMass.equationParameters.coefficient = 0.0  # Coefficient for egg dry mass equation
+json.growthModule.eggDryMass.equationParameters.scale = 0.0  # Scale parameter for egg dry mass equation
+json.growthModule.eggDryMass.value = eggDryMass  # Default fixed egg dry mass if not from equation
+json.growthModule.eggsPerBatch.eggsPerBatchFromEquation = FALSE  # If TRUE, eggs per batch is from an equation
+json.growthModule.eggsPerBatch.equationParameters.interceptForEggBatchFromEquation = 0.0
+json.growthModule.eggsPerBatch.equationParameters.slopeForEggBatchFromEquation = 0.0
+json.growthModule.eggsPerBatch.value = eggsPerBatch  # Fixed number of eggs per batch
+json.growthModule.excessInvestInSize = 0.5  # Fraction of surplus resources invested in growth rather than reproduction
+json.growthModule.femaleWetMass = femaleWetMass  # Typical female wet mass
+json.growthModule.growthModel.defaultAtTempFromLab.model = curveType  # Growth model used (taken from SECTION 1)
+json.growthModule.growthModel.defaultAtTempFromLab.A = ifelse(curveType %in% c("Logistic4P") , fitted[[as.character(tempFromLab)]]$A, 0.0)
+json.growthModule.growthModel.temperature.dependent = FALSE
+json.growthModule.growthModel.temperature.growthModelThermalChanges = list()
+json.growthModule.habitatShift = list(length(ageVector) + 1)
+json.growthModule.habitatShiftFactor = 1e+6
+json.growthModule.instarFirstReproduction = instarFirstReproduction
+json.growthModule.maxPlasticityKVonBertalanffy = 0.25  # Max plasticity for growth rate K in Von Bertalanffy model
+json.growthModule.minPlasticityKVonBertalanffy = 0.3   # Min plasticity for growth rate K
+json.growthModule.moltingAgeThreshold = 0.0  # Age threshold at which molting might occur
+json.growthModule.scaleForMassB = scaleForMassB  # Scale factor B in mass-growth equations
+json.growthModule.scaleForMassBforMature = scaleForMassBforMature  # Same, but used post-maturation
+
+# =====================
+# ADDITIONAL PARAMETERS
+# =====================
+
+json.habitatShiftAfterBreeding = TRUE  # If TRUE, individuals shift habitat after breeding
+json.habitatShiftAfterBreedingFactor = 1e+6
+json.habitatShiftBeforeBreeding = TRUE # If TRUE, individuals shift habitat before breeding
+json.habitatShiftBeforeBreedingFactor = 1e+6
+
+json.individualsPerInstar = calculateIndividualsPerInstarIsoperla(
+	totalNumberOfIndividuals = 73,
+	fieldDensity, ageVector, coefficientForMassA, coefficientForMassAforMature, 
+	scaleForMassB, scaleForMassBforMature, conversionToWetMass, 
+	fitted[[as.character(tempFromLab)]]$best_model
+)
+
+json.requiredRepresentAllPossibleAlleles = FALSE
+
+# calculateIndividualsPerInstarIsoperla(
+# 	individualsPerInstarCricotopus = c(1239, 531, 275, 146), 
+# 	massesVectorCricotopus = c(0.07381173, 0.22856926, 0.54930294, 1.27974673),
+# 	ageVector, coefficientForMassA, coefficientForMassAforMature, 
+# 	scaleForMassB, scaleForMassBforMature, conversionToWetMass, 
+# 	fitted$best_model
+# )
+
+# Number of individuals simulated per instar (life stage)
+json.maleMaxReproductionEvents = 8   # Maximum number of reproduction events for a male
+json.maleMobility = 1  # Mobility factor for males (compared to females or baseline)
+json.maleReproductionFactor = 0.25  # Fraction of how many mates or eggs a male can fertilize compared to baseline
+json.minRelativeHumidityThreshold = c(10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10)  # Minimum humidity needed for survival or normal behavior
+
+
+# =====================
+# FINAL PARAMETERS
+# =====================
+
+json.name = "Isoperla_grammatica"  # Name of the species or simulation run
+json.YodzisA = 0.1  # Coefficient used in an adult trait or growth equation
+json.YodzisB = 0.75       # Another coefficient for adult trait or growth equation
+json.numberOfSimulatedAttacks = 10000  # Number of attacks to simulate in predation sub-model
+json.percentageCostForMetabolicDownregulationSearchArea = 0.5  # Cost factor for search area under metabolic downregulation
+json.percentageCostForMetabolicDownregulationSpeed = 0.5       # Cost factor for speed under metabolic downregulation
+json.percentageCostForMetabolicDownregulationVoracity = 0.5    # Cost factor for voracity under metabolic downregulation
+json.percentageMetabolicDownregulation = 0.0  # Overall fraction of metabolic downregulation
+json.plasticityDueToConditionSearch = 0.05    # Plasticity factor for search trait based on condition
+json.plasticityDueToConditionSpeed = 0.05     # Plasticity factor for speed trait based on condition
+json.preserveLeftovers = TRUE  # If TRUE, unconsumed resources or partial prey remain available
+json.probabilityDeathFromBackground = c(
+	nonAdultProbabilityDeathFromBackground, 
+	nonAdultProbabilityDeathFromBackground, 
+	nonAdultProbabilityDeathFromBackground, 
+	nonAdultProbabilityDeathFromBackground, 
+	nonAdultProbabilityDeathFromBackground, 
+	nonAdultProbabilityDeathFromBackground, 
+	nonAdultProbabilityDeathFromBackground, 
+	nonAdultProbabilityDeathFromBackground, 
+	nonAdultProbabilityDeathFromBackground, 
+	nonAdultProbabilityDeathFromBackground, 
+	nonAdultProbabilityDeathFromBackground, 
+	nonAdultProbabilityDeathFromBackground, 
+	nonAdultProbabilityDeathFromBackground, 
+	adultProbabilityDeathFromBackground
+)  # Baseline mortality rate from non-predation causes
+json.sexRatio = sexRatio  # Fraction of female offspring (or ratio of females to males)
+
+json.decisions.predationProbability.additiveMechanism = TRUE
+json.decisions.predationProbability.isRemainingWeightNull = FALSE
+json.decisions.predationProbability.escapeProbability.additiveMechanism = TRUE
+json.decisions.predationProbability.escapeProbability.isRemainingWeightNull = FALSE
+json.decisions.predationProbability.escapeProbability.cVelocity = 0.0
+json.decisions.predationProbability.useGlobalMaximumPreyVoracity = TRUE
+json.decisions.edibilityValue.additiveMechanism = TRUE
+json.decisions.edibilityValue.isRemainingWeightNull = FALSE
+json.decisions.edibilityValue.qualityResourceAssessment = FALSE
+json.decisions.decisionWithinPatch.killProbability = 1.0  # Probability that a predation event kills the prey if attacked
+json.decisions.decisionAmongPatches.weightIndividualToGlobalAssessment = 0.0
+json.decisions.sensoryModel.beta = 2.5
+
+json.sexualType = "diploid"  # Reproduction type (e.g., haplodiploid, diploid, etc.)
+json.statisticsIndividualsPerInstar = 1000  # Number of individuals used in statistics per instar
+json.tempFromLab = tempFromLab  # Reference temperature from lab conditions
+
+# =====================
+# ONTOGENETIC LINKS 
+# =====================
+
+#@ TODO: Introduce here the table with the preferences and profitabilities (trophic network).
+
+json.ontogenetic_links <- data.frame(
+    Species_name_prey = character(0),
+    Instar_predator = numeric(0),
+    Instar_prey = numeric(0), 
+    Preferences = numeric(0), 
+    Profitability = numeric(0),  
+    stringsAsFactors = FALSE 
+)
+
+
+########################
+##                    ##
+##  Non-Mature Links  ##
+##                    ##
+########################
+
+json.ontogenetic_links <- rbind(
+	json.ontogenetic_links,
+	do.call(rbind, lapply(1:length(json.individualsPerInstar)-1, function(instar_predator) {
+		do.call(rbind, lapply(1:4, function(instar_prey) {
+			data.frame(
+				Species_name_prey = "Cricotopus_spx",
+				Instar_predator = instar_predator,
+				Instar_prey = instar_prey,
+				Preferences = 0.000734054560026813/4.0,
+				Profitability = 0.1,
+				stringsAsFactors = FALSE
+			)
+		}))
+	}))
+)
+
+json.ontogenetic_links <- rbind(
+	json.ontogenetic_links,
+	do.call(rbind, lapply(1:length(json.individualsPerInstar)-1, function(instar_predator) {
+		data.frame(
+			Species_name_prey = "Alternative",
+			Instar_predator = instar_predator,
+			Instar_prey = 1,
+			Preferences = 0.9992659454399732,
+			Profitability = 0.1,
+			stringsAsFactors = FALSE
+		)
+	}))
+)
+
+# json.ontogenetic_links <- rbind(
+# 	json.ontogenetic_links,
+# 	do.call(rbind, lapply(1:length(json.individualsPerInstar)-1, function(instar_predator) {
+# 		do.call(rbind, lapply(1:4, function(instar_prey) {
+# 			data.frame(
+# 				Species_name_prey = "Tanypod_hypothetical",
+# 				Instar_predator = instar_predator,
+# 				Instar_prey = instar_prey,
+# 				Preferences = 0.5/4.0,
+# 				Profitability = 0.1,
+# 				stringsAsFactors = FALSE
+# 			)
+# 		}))
+# 	}))
+# )
+
+
+####################
+##                ##
+##  Mature Links  ##
+##                ##
+####################
+
+json.ontogenetic_links <- rbind(
+	json.ontogenetic_links,
+	data.frame(
+		Species_name_prey = "Plant2",
+		Instar_predator = length(json.individualsPerInstar),
+		Instar_prey = 1,
+		Preferences = 1.0,
+		Profitability = 0.1,
+		stringsAsFactors = FALSE
+	)
+)
+
+
+
+
+################################################################
+################################################################
+################################################################
+
+
+source(file.path(parametrisation_path, "utilities", "codes", "functions", "calculateMaximumResourceCapacityDensityAlternative.r"))
+
+
+maximumResourceCapacityDensityAlternative = calculateMaximumResourceCapacityDensityAlternative(
+	json.individualsPerInstar, firstInstarToCalculate=1, landscapeArea=1e+6,
+	ageVector, coefficientForMassA, coefficientForMassAforMature, 
+	scaleForMassB, scaleForMassBforMature, conversionToWetMass, 
+	fitted[[as.character(tempFromLab)]]$best_model
+)
+
+print("maximumResourceCapacityDensityAlternative:")
+print(maximumResourceCapacityDensityAlternative)

@@ -1,0 +1,25 @@
+{
+    "patch": {
+        "initialBiomassDensity": 1.5e+9,
+        "patchSpread": false,
+        "priority": 2,
+        "resourceMaximumCapacityDensity": 1.51e+9,
+        "edibleFractionOfMaxCarryingCapacity": 0.99,
+        "resourceSpecies": "Resource_ground",
+        "shape": {
+            "cubicParams": {
+                "bottomLeftCorner": [3.0, 0.0],
+                "topRightCorner": [4.0, 5.0]
+            },
+            "gaussianParams": {},
+            "homogeneousParams": {},
+            "randomGaussianParams": {},
+            "sphericalParams": {
+                "center": null,
+                "radius": null
+            },
+            "type": "Cubic"
+        }
+    },
+    "version": "23.12.04"
+}

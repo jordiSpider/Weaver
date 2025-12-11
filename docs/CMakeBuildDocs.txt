@@ -1,0 +1,145 @@
+# ============================================================
+# 📚 Sphinx Documentation Build Configuration
+# ------------------------------------------------------------
+# This file defines how project documentation is generated
+# for all versions and languages using Sphinx.
+#
+# Steps performed:
+#   1. Configure Sphinx via CMake.
+#   2. Clean previous builds.
+#   3. Copy static assets and templates.
+#   4. Build versioned and localized documentation.
+#   5. Clean post-build temporary folders.
+# ============================================================
+
+
+# ------------------------------------------------------------
+# ⚙️ Configure Sphinx
+# ------------------------------------------------------------
+# Loads the Sphinx configuration template logic from
+# CMakeConfigureSphinxConf.txt.
+include(${DOCS_DIR}/CMakeConfigureSphinxConf.txt)
+
+
+# ------------------------------------------------------------
+# 🏗️ Root documentation build target
+# ------------------------------------------------------------
+# Defines the main build target that all documentation tasks
+# will depend on.
+add_custom_target(build-docs ALL)
+
+
+# ------------------------------------------------------------
+# 🧹 Clean previous Sphinx builds
+# ------------------------------------------------------------
+# Removes previously generated Sphinx build directories to
+# ensure a clean documentation build.
+add_custom_target(prev-clean-docs ALL 
+    COMMAND ${CMAKE_COMMAND} -E rm -rf "${SPHINX_BUILD_DIR}"
+    COMMENT "Cleaning previous Sphinx build folders..."
+)
+
+add_dependencies(build-docs prev-clean-docs)
+
+
+# ------------------------------------------------------------
+# 🧹 Post-build cleanup
+# ------------------------------------------------------------
+# Defines a target that performs cleanup actions after all
+# documentation builds are complete.
+add_custom_target(post-clean-docs ALL 
+    COMMENT "Performing post-build cleanup for Sphinx..."
+)
+
+
+# ------------------------------------------------------------
+# 🔁 Generate documentation for all versions and languages
+# ------------------------------------------------------------
+foreach(version IN LISTS ALL_VERSIONS)
+    set(version_source_dir "${SPHINX_SOURCE_DIR}/${version}")
+
+    # --------------------------------------------------------
+    # 🧩 Copy static and template assets
+    # --------------------------------------------------------
+    if (version STREQUAL "latest")
+        # Skip copying for 'latest' as it already contains them.
+        add_custom_target(copy-static-templates-${version} ALL)
+
+        # Clean generated API folder in 'latest' version.
+        add_custom_command(
+            TARGET post-clean-docs
+            COMMAND ${CMAKE_COMMAND} -E rm -rf "${version_source_dir}/${API_DIR_NAME}"
+        )
+    else()
+        add_custom_target(copy-static-templates-${version} ALL
+            COMMAND ${CMAKE_COMMAND} -E copy_directory
+                "${SPHINX_SOURCE_DIR}/latest/_static"
+                "${version_source_dir}/_static"
+            COMMAND ${CMAKE_COMMAND} -E copy_directory
+                "${SPHINX_SOURCE_DIR}/latest/_templates"
+                "${version_source_dir}/_templates"
+            COMMENT "Copying '_static' and '_templates' folders for version '${version}'..."
+        )
+
+        # Clean static assets after the build
+        add_custom_command(
+            TARGET post-clean-docs
+            COMMAND ${CMAKE_COMMAND} -E rm -rf "${version_source_dir}/_static"
+            COMMAND ${CMAKE_COMMAND} -E rm -rf "${version_source_dir}/_templates"
+        )
+    endif()
+
+
+    # --------------------------------------------------------
+    # 🌍 Generate localized documentation per language
+    # --------------------------------------------------------
+    foreach(language IN LISTS ALL_LANGUAGES)
+        set(language_docs_output_dir "${SPHINX_DOCS_OUTPUT_DIR}")
+
+        if (NOT version STREQUAL LATEST_VERSION)
+            set(language_docs_output_dir "${language_docs_output_dir}/${version}")
+        endif()
+
+        if (NOT language STREQUAL DEFAULT_LANGUAGE)
+            set(language_docs_output_dir "${language_docs_output_dir}/${language}")
+        endif()
+
+        # ----------------------------------------------------
+        # 📦 Copy API documentation to language output folder
+        # ----------------------------------------------------
+        add_custom_target(copy-api-${version}-${language} ALL
+            COMMAND ${CMAKE_COMMAND} -E copy_directory
+                "${version_source_dir}/${API_DIR_NAME}"
+                "${language_docs_output_dir}/${API_DIR_NAME}"
+            COMMENT "Copying API documentation from '${version_source_dir}' to '${language_docs_output_dir}'..."
+        )
+
+        # ----------------------------------------------------
+        # 📖 Build documentation for version and language
+        # ----------------------------------------------------
+        add_custom_target(build-doc-${version}-${language} ALL
+            COMMAND python -m sphinx 
+                -c ${SPHINX_SOURCE_DIR}/latest 
+                -b html 
+                -q 
+                -j 1 
+                -D current_language=${language} 
+                -D current_version=${version} 
+                ${version_source_dir} 
+                ${language_docs_output_dir}
+            WORKING_DIRECTORY ${PROJECT_SOURCE_DIR}
+            COMMENT "Building Sphinx documentation for version '${version}' and language '${language}'..."
+        )
+        
+        # ----------------------------------------------------
+        # 🔗 Dependencies between targets
+        # ----------------------------------------------------
+        add_dependencies(build-doc-${version}-${language} 
+            build-docs 
+            copy-api-${version}-${language} 
+            copy-static-templates-${version}
+        )
+    
+        add_dependencies(post-clean-docs build-doc-${version}-${language})
+    endforeach()
+endforeach()

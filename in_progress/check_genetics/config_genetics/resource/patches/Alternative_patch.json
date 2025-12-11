@@ -1,0 +1,31 @@
+{
+  "patch": {
+    "initialBiomassDensity": 2.236935522115368e-06,
+    "patchSpread": false,
+    "priority": 1,
+    "resourceMaximumCapacityDensity": 2.236935522115368e-06,
+    "edibleFractionOfMaxCarryingCapacity": 0.98999999999999999,
+    "resourceSpecies": "Alternative",
+    "shape": {
+      "cubicParams": {
+        "bottomLeftCorner": [
+          0,
+          0
+        ],
+        "topRightCorner": [
+          1000,
+          1000
+        ]
+      },
+      "gaussianParams": {},
+      "homogeneousParams": {},
+      "randomGaussianParams": {},
+      "sphericalParams": {
+        "center": null,
+        "radius": null
+      },
+      "type": "Cubic"
+    }
+  },
+  "version": "23.12.04"
+}

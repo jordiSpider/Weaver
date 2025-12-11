@@ -1,0 +1,171 @@
+{
+    "type": "object",
+    "properties": {
+        "version": {
+            "type": "string"
+        },
+        "patch": {
+            "type": "object",
+            "properties": {
+                "priority": {
+                    "type": "integer",
+                    "minimum": 1
+                },
+                "source": {
+                    "type": "object",
+                    "properties": {
+                        "affectedAnimalSpecies": {
+                            "type": "array",
+                            "items": {
+                                "type": "object",
+                                "properties": {
+                                    "name": {
+                                        "type": "string"
+                                    },
+                                    "affectedInstars": {
+                                        "type": "array",
+                                        "items": {
+                                            "type": "integer",
+                                            "minimum": 1
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                },
+                "shape": {
+                    "type": "object",
+                    "properties": {
+                        "type": {
+                            "type": "string",
+                            "enum": [
+                                "Homogeneous",
+                                "Gaussian",
+                                "Spherical",
+                                "Cubic",
+                                "RandomGaussian"
+                            ]
+                        },
+                        "cubicParams": {
+                            "type": "object",
+                            "properties": {
+                                "bottomLeftCorner": {
+                                    "type": "array",
+                                    "items": {
+                                        "type": "number"
+                                    },
+                                    "nullProperty": true
+                                },
+                                "topRightCorner": {
+                                    "type": "array",
+                                    "items": {
+                                        "type": "number"
+                                    },
+                                    "nullProperty": true
+                                }
+                            }
+                        },
+                        "sphericalParams": {
+                            "type": "object",
+                            "properties": {
+                                "center": {
+                                    "type": "array",
+                                    "items": {
+                                        "type": "number"
+                                    },
+                                    "nullProperty": true
+                                },
+                                "radius": {
+                                    "type": "number",
+                                    "minimum": 0.0,
+                                    "nullProperty": true
+                                }
+                            }
+                        },
+                        "homogeneousParams": {
+                            "type": "object",
+                            "properties": {
+                                
+                            }
+                        },
+                        "gaussianParams": {
+                            "type": "object",
+                            "properties": {
+                                
+                            }
+                        },
+                        "randomGaussianParams": {
+                            "type": "object",
+                            "properties": {
+                                
+                            }
+                        }
+                    },
+                    "conditionals": [
+                        {
+                            "condition": {
+                                "operatorType": "comparison",
+                                "comparisonType": "equal",
+                                "lhs": {
+                                    "operatorType": "property",
+                                    "propertyElement": "value",
+                                    "relativePath": [
+                                        "type"
+                                    ]
+                                },
+                                "rhs": {
+                                    "operatorType": "constant",
+                                    "value": "spherical"
+                                }
+                            },
+                            "then": [ 
+                                {
+                                    "workingPath": [
+                                        "sphericalParams"
+                                    ],
+                                    "remove": {
+                                        "nullProperty": [
+                                            "center",
+                                            "radius"
+                                        ]
+                                    }
+                                }
+                            ]
+                        },
+                        {
+                            "condition": {
+                                "operatorType": "comparison",
+                                "comparisonType": "equal",
+                                "lhs": {
+                                    "operatorType": "property",
+                                    "propertyElement": "value",
+                                    "relativePath": [
+                                        "type"
+                                    ]
+                                },
+                                "rhs": {
+                                    "operatorType": "constant",
+                                    "value": "cubic"
+                                }
+                            },
+                            "then": [
+                                {
+                                    "workingPath": [
+                                        "cubicParams"
+                                    ],
+                                    "remove": {
+                                        "nullProperty": [
+                                            "bottomLeftCorner",
+                                            "topRightCorner"
+                                        ]
+                                    }
+                                }
+                            ]
+                        }
+                    ]
+                }
+            }
+        }
+    }
+}

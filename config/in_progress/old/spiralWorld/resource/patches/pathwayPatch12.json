@@ -1,0 +1,30 @@
+{
+    "version": "23.11.05",
+    "patch": {
+        "resourceSpecies": "resourcePathway",
+        "priority": 13,
+        "shape": {
+            "type": "Cubic",
+            "cubicParams": {
+                "bottomLeftCorner": [0.0, 6.0],
+                "topRightCorner": [1.0, 7.0]
+            },
+            "sphericalParams": {
+                "center": null,
+                "radius": null
+            },
+            "homogeneousParams": {
+    
+            },
+            "gaussianParams": {
+    
+            },
+            "randomGaussianParams": {
+    
+            }
+        },
+        "initialBiomassDensity": 16.0,
+        "resourceMaximumCapacityDensity": 16.0,
+        "patchSpread": false
+    }
+}

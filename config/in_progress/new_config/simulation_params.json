@@ -1,0 +1,45 @@
+{
+    "simulation": {
+        "checkpoints": {
+            "binaryEnabled": null,
+            "enabled": false,
+            "recordEach": null
+        },
+        "breakConditions": {
+            "exitAtFirstExtinction": true,
+            "stability": {
+                "enabled": true,
+                "coefficientOfVariationThreshold": 0.0,
+                "stabilityCalculationInterval": 0.05
+            }
+        },
+        "growthAndReproTest": false,
+        "initFromFixedSeed": {
+            "enabled": true,
+            "fixedSeedValue": 1
+        },
+        "outputs": {
+            "saveAnimalConstitutiveTraits": false,
+            "saveGenetics": false,
+            "saveDailySummary": true,
+            "saveExtendedDailySummary": true,
+            "saveMovements": false,
+            "saveEdibilitiesFile": true,
+            "savePredationEventsOnOtherSpecies": false,
+            "recordEach": 1,
+            "saveIntermidiateVolumes": false,
+            "saveIntermidiateVolumesPeriodicity": 100000,
+            "saveAnimalsEachDayStart": true,
+            "saveAnimalsEachDayEnd": true,
+            "saveCellsEachDay": true,
+            "saveAnimalsEachDayVoracities": true,
+            "saveAnimalsEachDayPredationProbabilities": true,
+            "saveActivity": false,
+            "saveMassInfo": false
+        },
+        "numberOfCombinations": 1000,
+        "runDays": 1,
+        "timeStepsPerDay": 0.5
+    },
+    "version": "2023.12.04"
+}

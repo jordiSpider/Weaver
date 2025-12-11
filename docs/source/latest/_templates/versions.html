@@ -1,0 +1,122 @@
+{# ====================================================================================================
+  Template: versions.html
+  ----------------------------------------------------------------------------------------------------
+  This Jinja2 template adds a version and language selector to the Sphinx documentation sidebar or footer.
+
+  It works together with the context variables defined in `conf.py` (html_context), such as:
+    - current_version       → version currently being viewed
+    - default_version       → default or “latest” version
+    - all_versions          → list of all available versions
+    - current_language      → current language/locale
+    - default_language      → default language
+    - all_languages         → list of all available languages
+    - urls[version][lang]   → URL to the index.html of each version and language combination
+
+  The template dynamically builds links for every version and language, 
+  highlighting the currently active ones.
+==================================================================================================== #}
+
+<div class="rst-versions" data-toggle="rst-versions" role="note" aria-label="versions">
+
+  {# -----------------------------------------------------------------------------------------------
+    Compute the relative path from the current page to the documentation root.
+
+    `pathto('index')` returns the path to the index.html of the documentation.
+    Removing the last 10 characters (i.e. "index.html") gives us the base folder path.
+  ------------------------------------------------------------------------------------------------ #}
+  {% set path_to_home = pathto('index')[:-10] %}
+
+  {# -----------------------------------------------------------------------------------------------
+    Determine the relative path needed to reach the documentation root 
+    based on whether the current version is the default or not.
+    Example:
+      - default version → ""
+      - other versions  → "../"
+  ------------------------------------------------------------------------------------------------ #}
+  {% if current_version == default_version %}
+    {% set version_path_to_root = "" %}
+  {% else %}
+    {% set version_path_to_root = "../" %}
+  {% endif %}
+
+  {# -----------------------------------------------------------------------------------------------
+    Determine the relative path adjustment for the language.
+    Similar logic to the version: if it’s the default language, no prefix is needed.
+  ------------------------------------------------------------------------------------------------ #}
+  {% if current_language == default_language %}
+    {% set language_path_to_root = "" %}
+  {% else %}
+    {% set language_path_to_root = "../" %}
+  {% endif %}
+
+  {# -----------------------------------------------------------------------------------------------
+    Combine both the version and language paths to compute the final path to the documentation root.
+  ------------------------------------------------------------------------------------------------ #}
+  {% set path_to_root = version_path_to_root ~ language_path_to_root ~ path_to_home %}
+  
+  {# -----------------------------------------------------------------------------------------------
+    Display the current version and language.
+    The caret icon indicates that the list below can be expanded.
+  ------------------------------------------------------------------------------------------------ #}
+  <span class="rst-current-version" data-toggle="rst-current-version">
+    v: {{ current_version }} ({{ current_language }})
+    <span class="fa fa-caret-down"></span>
+  </span>
+  
+  {# -----------------------------------------------------------------------------------------------
+    The dropdown menu that lists all available versions and languages.
+    The active entries are highlighted in yellow for clarity.
+  ------------------------------------------------------------------------------------------------ #}
+  <div class="rst-other-versions">
+  
+    {# =====================
+      Versions list
+      ===================== #}
+    <dl>
+      <dt>{{ _('Versions') }}</dt>
+      {% for version in all_versions %}
+        {% if current_version == version %}
+          {# Highlight the current version #}
+          <dd>
+            <a style="color: yellow;" href="{{ path_to_root ~ urls[current_version][current_language] }}">
+              {{ version }}
+            </a>
+          </dd>
+        {% else %}
+          {# Link to other versions #}
+          <dd>
+            <a href="{{ path_to_root ~ urls[version][current_language] }}">
+              {{ version }}
+            </a>
+          </dd>
+        {% endif %}
+      {% endfor %}
+    </dl>
+
+    {# =====================
+      Languages list
+      ===================== #}
+    <dl>
+      <dt>{{ _('Languages') }}</dt>
+      {% for language in all_languages %}
+        {% if current_language == language %}
+          {# Highlight the current language #}
+          <dd>
+            <a style="color: yellow;" href="{{ path_to_root ~ urls[current_version][current_language] }}">
+              {{ language }}
+            </a>
+          </dd>
+        {% else %}
+          {# Link to other languages #}
+          <dd>
+            <a href="{{ path_to_root ~ urls[current_version][language] }}">
+              {{ language }}
+            </a>
+          </dd>
+        {% endif %}
+      {% endfor %}
+    </dl>
+    
+    <br>
+  </div>
+</div>

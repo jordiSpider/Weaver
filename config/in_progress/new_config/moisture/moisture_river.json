@@ -1,0 +1,56 @@
+{
+    "patch": {
+        "priority": 1,
+        "source": {
+            "temperatureDynamics": {
+                "cycle": [
+                    10.0,
+                    10.0
+                ]
+            },
+            "relativeHumidityDynamics": {
+                "dynamicsType": "Cycle",
+                "cycleParams": {
+                    "cycle": [
+                        100.0,
+                        100.0
+                    ]
+                },
+                "pulseParams": {
+                    "daysBetweenPulsesRange": {
+                        "min": null,
+                        "max": null
+                    },
+                    "pulsePeakValueRange": {
+                        "min": null,
+                        "max": null
+                    },
+                    "decay": {
+                        "decayType": "NonDecay",
+                        "linealDecayParams": {
+                            "decayOverTime": null
+                        }
+                    }
+                }
+            },
+            "maximumResourceCapacityDensity": 1.090052e-05,
+            "inEnemyFreeSpace": false,
+            "inCompetitorFreeSpace": false
+        },
+        "shape": {
+            "cubicParams": {
+                "bottomLeftCorner": [0.0, 0.0],
+                "topRightCorner": [1000.0, 1000.0]
+            },
+            "gaussianParams": {},
+            "homogeneousParams": {},
+            "randomGaussianParams": {},
+            "sphericalParams": {
+                "center": null,
+                "radius": null
+            },
+            "type": "Cubic"
+        }
+    },
+    "version": "2023.12.04"
+}

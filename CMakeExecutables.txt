@@ -1,0 +1,285 @@
+# ============================================================
+# ⚙️  CMakeExecutables.txt
+# ------------------------------------------------------------
+# Description:
+#   Configures the build and packaging process for the main
+#   Weaver executables (GUI and console versions).
+#
+#   Responsibilities:
+#     - Organizes source files
+#     - Configures external libraries
+#     - Sets compiler and linker options
+#     - Defines preprocessor symbols
+#     - Handles platform-specific settings
+#     - Configures CPack packaging for release builds
+# ============================================================
+
+
+# ============================================================
+# 📁 Directory structure
+# ============================================================
+set(SRC_DIR         "${CMAKE_SOURCE_DIR}/${SRC_DIR_NAME}")
+set(EXECUTABLE_DIR  "${CMAKE_SOURCE_DIR}/${EXECUTABLE_DIR_NAME}")
+set(SCHEMA_DIR      "${CMAKE_SOURCE_DIR}/${SCHEMA_DIR_NAME}")
+set(CONFIG_DIR      "${CMAKE_SOURCE_DIR}/${CONFIG_DIR_NAME}")
+include_directories(${INCLUDE_DIR})
+
+
+# ============================================================
+# 🧩 Source files
+# ============================================================
+file(GLOB_RECURSE APP_MODEL_SOURCES     CONFIGURE_DEPENDS ${SRC_DIR}/App/Model/*.cpp)
+file(GLOB_RECURSE EXCEPTIONS_SOURCES    CONFIGURE_DEPENDS ${SRC_DIR}/Exceptions/*.cpp)
+file(GLOB_RECURSE MISC_SOURCES          CONFIGURE_DEPENDS ${SRC_DIR}/Misc/*.cpp)
+file(GLOB_RECURSE WIDGETS_SOURCES       CONFIGURE_DEPENDS ${SRC_DIR}/App/View/GUI/Widgets/*.cpp)
+
+set(VIEW_SOURCES    ${SRC_DIR}/App/View/View.cpp)
+set(CONSOLE_SOURCES ${SRC_DIR}/App/View/Console.cpp ${VIEW_SOURCES})
+set(GUI_SOURCES     ${SRC_DIR}/App/View/GUI/GUI.cpp ${VIEW_SOURCES} ${WIDGETS_SOURCES})
+
+
+# ============================================================
+# 🧱 Executable configuration
+# ============================================================
+if(GUI)
+    list(APPEND ALL_SOURCES 
+        ${APP_MODEL_SOURCES} 
+        ${EXCEPTIONS_SOURCES} 
+        ${MISC_SOURCES} 
+        ${GUI_SOURCES}
+    )
+    set(MAIN_FILE ${PROJECT_NAME}-GUI)
+else()
+    list(APPEND ALL_SOURCES 
+        ${APP_MODEL_SOURCES} 
+        ${EXCEPTIONS_SOURCES} 
+        ${MISC_SOURCES} 
+        ${CONSOLE_SOURCES}
+    )
+    set(MAIN_FILE ${PROJECT_NAME}-Non-GUI)
+endif()
+
+set(PRECISE_EXECUTABLE ${MAIN_FILE})
+set(FAST_EXECUTABLE    ${MAIN_FILE}-fast)
+
+# Append "_d" suffix for Debug builds
+if(CMAKE_BUILD_TYPE STREQUAL "Debug")
+    set(PRECISE_EXECUTABLE "${PRECISE_EXECUTABLE}_d")
+    set(FAST_EXECUTABLE    "${FAST_EXECUTABLE}_d")
+endif()
+
+# Display names for each executable variant
+set(PRECISE_PROGRAM_NAME "Weaver Simulator")
+set(FAST_PROGRAM_NAME    "Weaver Simulator Fast")
+
+# Output directory configuration
+set(CMAKE_RUNTIME_OUTPUT_DIRECTORY         ${EXECUTABLE_DIR})
+set(CMAKE_RUNTIME_OUTPUT_DIRECTORY_DEBUG   ${EXECUTABLE_DIR})
+set(CMAKE_RUNTIME_OUTPUT_DIRECTORY_RELEASE ${EXECUTABLE_DIR})
+
+# Create both executables
+add_executable(${PRECISE_EXECUTABLE} ${SRC_DIR}/${MAIN_FILE}.cpp ${ALL_SOURCES})
+add_executable(${FAST_EXECUTABLE}    ${SRC_DIR}/${MAIN_FILE}.cpp ${ALL_SOURCES})
+
+
+# ============================================================
+# 📚 External dependencies
+# ============================================================
+find_package(magic_enum CONFIG REQUIRED)
+find_package(cxxopts CONFIG REQUIRED)
+find_package(nlohmann_json CONFIG REQUIRED)
+find_package(Boost REQUIRED COMPONENTS geometry serialization)
+find_path(RAPIDCSV_INCLUDE_DIRS "rapidcsv.h")
+
+if(GUI)
+    find_package(unofficial-nana CONFIG REQUIRED)
+endif()
+
+list(APPEND LINK_LIBRARIES 
+    magic_enum::magic_enum
+    cxxopts::cxxopts
+    nlohmann_json::nlohmann_json
+    Boost::geometry
+    Boost::serialization
+)
+
+if(GUI)
+    list(APPEND LINK_LIBRARIES unofficial::nana::nana)
+endif()
+
+target_link_libraries(${PRECISE_EXECUTABLE} PRIVATE ${LINK_LIBRARIES})
+target_link_libraries(${FAST_EXECUTABLE}    PRIVATE ${LINK_LIBRARIES})
+
+target_include_directories(${PRECISE_EXECUTABLE} PRIVATE ${RAPIDCSV_INCLUDE_DIRS})
+target_include_directories(${FAST_EXECUTABLE}    PRIVATE ${RAPIDCSV_INCLUDE_DIRS})
+
+set(nlohmann-json_IMPLICIT_CONVERSIONS OFF)
+
+
+# ============================================================
+# 🧮 Compilation options
+# ============================================================
+if(WIN32)
+    target_compile_options(${PRECISE_EXECUTABLE} PRIVATE /MP)
+    target_compile_options(${FAST_EXECUTABLE}    PRIVATE /MP)
+
+    if(CMAKE_BUILD_TYPE STREQUAL "Debug")
+        target_compile_options(${PRECISE_EXECUTABLE} PRIVATE /MTd)
+        target_compile_options(${FAST_EXECUTABLE}    PRIVATE /MTd)
+    else()
+        target_compile_options(${PRECISE_EXECUTABLE} PRIVATE /MT)
+        target_compile_options(${FAST_EXECUTABLE}    PRIVATE /MT)
+    endif()
+endif()
+
+
+# ============================================================
+# ⚠️  Warning and optimization settings
+# ============================================================
+if(CMAKE_BUILD_TYPE STREQUAL "Debug")
+    if(WIN32)
+        list(APPEND COMPILE_OPTIONS 
+            /Wall /wd4866 /wd5262 /wd5045 /wd4820 /wd4514 
+            /bigobj /Od /Oy- /Zi /RTC1
+        )
+    else()
+        list(APPEND COMPILE_OPTIONS 
+            -Wall -Wextra -pedantic -Wno-4866 -Wno-5262 -Wno-5045
+            -Wno-4820 -Wno-4514 -O0 -g -fsanitize=address -fsanitize=undefined
+        )
+    endif()
+else()
+    if(WIN32)
+        list(APPEND COMPILE_OPTIONS /W4 /bigobj /O2 /Gy /DNDEBUG /GL)
+    else()
+        list(APPEND COMPILE_OPTIONS -Wall -Wextra -O2 -ffunction-sections -Wl,--gc-sections -DNDEBUG)
+    endif()
+endif()
+
+
+# ============================================================
+# 🧠 Floating-point precision model
+# ============================================================
+if(WIN32)
+    set(PRECISE_COMPILE_OPTIONS ${COMPILE_OPTIONS} /fp:precise)
+    set(FAST_COMPILE_OPTIONS    ${COMPILE_OPTIONS} /fp:fast)
+else()
+    set(PRECISE_COMPILE_OPTIONS ${COMPILE_OPTIONS} -fno-fast-math)
+    set(FAST_COMPILE_OPTIONS    ${COMPILE_OPTIONS})
+endif()
+
+target_compile_options(${PRECISE_EXECUTABLE} PRIVATE ${PRECISE_COMPILE_OPTIONS})
+target_compile_options(${FAST_EXECUTABLE}    PRIVATE ${FAST_COMPILE_OPTIONS})
+
+
+# ============================================================
+# 🔤 Preprocessor definitions
+# ============================================================
+set(COMPILE_DEFINITIONS 
+    DIMENSIONS=2
+    PROGRAM_VERSION="${PROGRAM_VERSION}"
+    SCHEMA_VERSION="${SCHEMA_VERSION}"
+    SERIALIZATION_VERSION="${SERIALIZATION_VERSION}"
+    PROJECT_NAME="${PROJECT_NAME}"
+)
+
+if(CMAKE_BUILD_TYPE STREQUAL "Debug")
+    list(APPEND COMPILE_DEFINITIONS DEBUG)
+endif()
+
+set(PRECISE_COMPILE_DEFINITIONS ${COMPILE_DEFINITIONS} PROGRAM_NAME="${PRECISE_PROGRAM_NAME}")
+set(FAST_COMPILE_DEFINITIONS    ${COMPILE_DEFINITIONS} PROGRAM_NAME="${FAST_PROGRAM_NAME}")
+
+target_compile_definitions(${PRECISE_EXECUTABLE} PRIVATE ${PRECISE_COMPILE_DEFINITIONS})
+target_compile_definitions(${FAST_EXECUTABLE}    PRIVATE ${FAST_COMPILE_DEFINITIONS})
+
+
+# ============================================================
+# 🔗 Linker options
+# ============================================================
+if(CMAKE_BUILD_TYPE STREQUAL "Debug")
+    if(WIN32)
+        list(APPEND LINK_OPTIONS /DEBUG)
+    else()
+        list(APPEND LINK_OPTIONS -g)
+    endif()
+else()
+    if(WIN32)
+        list(APPEND LINK_OPTIONS /INCREMENTAL:NO /LTCG /OPT:REF /OPT:ICF)
+    else()
+        # list(APPEND LINK_OPTIONS)
+    endif()
+endif()
+
+target_link_options(${PRECISE_EXECUTABLE} PRIVATE ${LINK_OPTIONS})
+target_link_options(${FAST_EXECUTABLE}    PRIVATE ${LINK_OPTIONS})
+
+
+# ============================================================
+# 📦 Packaging configuration (CPack)
+# ============================================================
+if(CMAKE_BUILD_TYPE STREQUAL "Release")
+    install(TARGETS ${PRECISE_EXECUTABLE} RUNTIME DESTINATION ${EXECUTABLE_DIR_NAME})
+    install(TARGETS ${FAST_EXECUTABLE}    RUNTIME DESTINATION ${EXECUTABLE_DIR_NAME})
+    install(DIRECTORY ${SCHEMA_DIR} DESTINATION .)
+    install(DIRECTORY ${CONFIG_DIR} DESTINATION .)
+    install(FILES ${CMAKE_SOURCE_DIR}/README.md ${CMAKE_SOURCE_DIR}/LICENSE ${CMAKE_SOURCE_DIR}/THIRD_PARTY_LICENSES.md DESTINATION .)
+
+    set(CPACK_PACKAGE_VERSION             "${PROJECT_VERSION}")
+    set(CPACK_PACKAGE_DESCRIPTION_SUMMARY "${PROJECT_NAME} - IBM")
+    set(CPACK_PACKAGE_VENDOR              "${AUTHOR}")
+    set(CPACK_PACKAGE_INSTALL_DIRECTORY   "${PROJECT_NAME}")
+    set(CPACK_RESOURCE_FILE_LICENSE       "${CMAKE_SOURCE_DIR}/LICENSE")
+
+    set(CPACK_PACKAGE_FILE_NAME ${MAIN_FILE}-${CPACK_PACKAGE_VERSION}-${CMAKE_SYSTEM_NAME})
+
+    set(ALL_PROGRAMS
+        "${PRECISE_EXECUTABLE}" "${PRECISE_PROGRAM_NAME}"
+        "${FAST_EXECUTABLE}"    "${FAST_PROGRAM_NAME}"
+    )
+
+    set(CPACK_PACKAGE_EXECUTABLES ${ALL_PROGRAMS})
+    set(CPACK_CREATE_DESKTOP_LINKS ${ALL_PROGRAMS})
+    set(CPACK_THREADS 0)
+
+    if(WIN32)
+        # NSIS installer configuration
+        set(CPACK_GENERATOR "NSIS")
+        set(CPACK_NSIS_INSTALL_ROOT "$PROGRAMFILES")
+        set(CPACK_NSIS_COMPRESSOR "LZMA")
+        set(CPACK_NSIS_ENABLE_UNINSTALL_BEFORE_INSTALL ON)
+        set(CPACK_NSIS_MODIFY_PATH ON)
+        set(CPACK_NSIS_EXECUTABLES_DIRECTORY "${EXECUTABLE_DIR_NAME}")
+        set(CPACK_NSIS_DISPLAY_NAME "${PROJECT_NAME}")
+        set(CPACK_NSIS_HELP_LINK ${REPO_URL})
+        set(CPACK_NSIS_URL_INFO_ABOUT ${REPO_URL})
+
+        set(CPACK_NSIS_EXTRA_INSTALL_COMMANDS "
+            CreateDirectory $PROFILE\\Documents\\${PROJECT_NAME}\\output
+            CreateDirectory $PROFILE\\Documents\\${PROJECT_NAME}\\user_config
+        ")
+
+        set(CPACK_NSIS_EXTRA_UNINSTALL_COMMANDS "
+            RMDir /r $PROFILE\\Documents\\${PROJECT_NAME}
+        ")
+    elseif(UNIX)
+        # Configuración del instalador Tarball (TGZ)
+        # Esto genera un archivo .tar.gz autocontenido
+        set(CPACK_GENERATOR "TGZ") 
+        
+        # 1. Copiar el script de instalación
+        # Le decimos a CPack que instale el script 'install.sh' en el directorio
+        # raíz de la instalación (lo que será el directorio raíz del .tar.gz).
+        install(FILES "${CMAKE_SOURCE_DIR}/cpack_scripts/install.sh"
+                DESTINATION "."  # Instala en el directorio raíz del paquete
+                PERMISSIONS OWNER_READ OWNER_WRITE OWNER_EXECUTE
+                            GROUP_READ GROUP_EXECUTE
+                            WORLD_READ WORLD_EXECUTE)
+        
+        # 2. Configuración general
+        set(CPACK_PACKAGE_DESCRIPTION_SUMMARY "${PROJECT_NAME} application")
+        set(CPACK_PACKAGE_VENDOR "${AUTHOR}")
+    endif()
+
+    include(CPack)
+endif()

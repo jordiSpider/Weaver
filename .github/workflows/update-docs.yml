@@ -1,0 +1,44 @@
+# ==========================================================
+# Workflow: Update docs
+# ----------------------------------------------------------
+# This workflow updates the project's documentation
+# on GitHub Pages without creating a new release version.
+# It is useful when only documentation changes are made.
+# ==========================================================
+
+name: Update docs
+
+on:
+  # 🧭 Manual trigger — this workflow must be started manually 
+  # from the GitHub Actions tab in GitHub.
+  workflow_dispatch:
+
+jobs:
+  update:
+    runs-on: ubuntu-latest
+    steps:
+      # 🔹 Checkout the repository from the main branch
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          ref: main
+          fetch-depth: 0
+
+      # 🧰 Install Sphinx and its dependencies
+      - name: Install Sphinx
+        run: pip install sphinx sphinx-rtd-theme sphinx-intl
+
+      # ⚙️ Configure and build the documentation
+      - name: Configure and build project docs
+        run: cmake --workflow update-docs
+
+      # ☁️ Deploy the built documentation to GitHub Pages
+      - name: Deploy to GitHub Pages
+        uses: peaceiris/actions-gh-pages@v4
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_branch: gh-pages
+          publish_dir: ./docs/build/html
+          destination_dir: .
+          user_name: 'github-actions[bot]'
+          user_email: 'github-actions[bot]@users.noreply.github.com'

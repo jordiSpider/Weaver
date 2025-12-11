@@ -1,0 +1,48 @@
+# ============================================================
+# ⚙️ Configure Sphinx conf.py for Documentation
+# ------------------------------------------------------------
+# This script validates required variables and generates the
+# final Sphinx configuration file (conf.py) from a template.
+#
+# Steps performed:
+#   1. Validate mandatory CMake variables.
+#   2. Generate conf.py from conf.in.py template.
+# ============================================================
+
+
+# ------------------------------------------------------------
+# ✅ List of required variables
+# ------------------------------------------------------------
+# Ensure that all necessary variables for documentation
+# building are defined.
+set(REQUIRED_VARS
+    LATEST_VERSION
+    DEFAULT_LANGUAGE
+    ALL_VERSIONS
+    ALL_LANGUAGES
+)
+
+set(MISSING_VARS "")
+
+foreach(var_name IN LISTS REQUIRED_VARS)
+    if(NOT DEFINED ${var_name} OR ${var_name} STREQUAL "")
+        list(APPEND MISSING_VARS "${var_name}")
+    endif()
+endforeach()
+
+if(MISSING_VARS)
+    message(FATAL_ERROR
+        "Missing required variables: ${MISSING_VARS}."
+    )
+endif()
+
+
+# ------------------------------------------------------------
+# 📄 Generate Sphinx configuration
+# ------------------------------------------------------------
+# Convert the conf.in.py template into a conf.py file
+# using CMake's configure_file functionality.
+set(SPHINX_CONF_INPUT "${SPHINX_SOURCE_DIR}/latest/conf.in.py")
+set(SPHINX_CONF_OUTPUT "${SPHINX_SOURCE_DIR}/latest/conf.py")
+
+configure_file(${SPHINX_CONF_INPUT} ${SPHINX_CONF_OUTPUT} @ONLY)

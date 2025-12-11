@@ -1,0 +1,48 @@
+{
+    "version": "23.11.05",
+    "patch": {
+        "priority": 1,
+        "shape": {
+            "type": "Spherical",
+            "cubicParams": {
+                "bottomLeftCorner": null,
+                "topRightCorner": null
+            },
+            "sphericalParams": {
+                "center": [10.0, 19.0],
+                "radius": 5.0
+            },
+            "homogeneousParams": {
+    
+            },
+            "gaussianParams": {
+    
+            },
+            "randomGaussianParams": {
+    
+            }
+        },
+        "temperatureCycle": [
+            20.0,
+            20.0
+        ],
+        "relativeHumidityUpdateMethod": {
+            "updateMethodType": "Cycle",
+            "cycleParams": {
+                "relativeHumidityCycle": [
+                    90.0,
+                    90.0
+                ]
+            },
+            "rainEventAndDecayOverTimeParams": {
+                "relativeHumidityDecayOverTime": null,
+                "relativeHumidityOnRainEvent": null,
+                "timeStepsBetweenRainEvents": null,
+                "standardDeviationForRainEvent": null
+            }
+        },
+        "maximumResourceCapacityDensity": 1.801,
+        "inEnemyFreeSpace": false,
+        "inCompetitorFreeSpace": false
+    }
+}

@@ -1,0 +1,228 @@
+{
+    "type": "object",
+    "properties": {
+        "version": {
+            "type": "string"
+        },
+        "simulation": {
+            "type": "object",
+            "properties": {
+                "checkpoints": {
+                    "type": "object",
+                    "properties": {
+                        "enabled": {
+                            "type": "boolean"
+                        },
+                        "recordEach": {
+                            "type": "integer",
+                            "minimum": 0,
+                            "nullProperty": true
+                        },
+                        "binaryEnabled": {
+                            "type": "boolean",
+                            "nullProperty": true
+                        }
+                    },
+                    "conditionals": [
+                        {
+                            "condition": {
+                                "operatorType": "property",
+                                "propertyElement": "value",
+                                "relativePath": [
+                                    "enabled"
+                                ]
+                            },
+                            "then": [
+                                {
+                                    "remove": {
+                                        "nullProperty": [
+                                            "recordEach",
+                                            "binaryEnabled"
+                                        ]
+                                    }
+                                }
+                            ]
+                        }
+                    ]
+                },
+                "numberOfCombinations": {
+                    "type": "integer",
+                    "minimum": 1
+                },
+                "breakConditions": {
+                    "type": "object",
+                    "properties": {
+                        "exitAtFirstExtinction": {
+                            "type": "boolean"
+                        },
+                        "stability": {
+                            "type": "object",
+                            "properties": {
+                                "enabled": {
+                                    "type": "boolean"
+                                },
+                                "coefficientOfVariationThreshold": {
+                                    "type": "number",
+                                    "minimum": 0.0,
+                                    "nullProperty": true
+                                },
+                                "stabilityCalculationInterval": {
+                                    "type": "number",
+                                    "minimum": 0.0,
+                                    "exclusiveMinimum": true,
+                                    "nullProperty": true
+                                }
+                            },
+                            "conditionals": [
+                                {
+                                    "condition": {
+                                        "operatorType": "property",
+                                        "propertyElement": "value",
+                                        "relativePath": [
+                                            "enabled"
+                                        ]
+                                    },
+                                    "then": [
+                                        {
+                                            "remove": {
+                                                "nullProperty": [
+                                                    "coefficientOfVariationThreshold",
+                                                    "stabilityCalculationInterval"
+                                                ]
+                                            }
+                                        }
+                                    ]
+                                }
+                            ]
+                        }
+                    }
+                },
+                "growthAndReproTest": {
+                    "type": "boolean"
+                },
+                "runDays": {
+                    "type": "integer",
+                    "minimum": 1
+                },
+                "timeStepsPerDay": {
+                    "type": "number",
+                    "exclusiveMinimum": true,
+                    "minimum": 0.0
+                },
+                "initFromFixedSeed": {
+                    "type": "object",
+                    "properties": {
+                        "enabled": {
+                            "type": "boolean"
+                        },
+                        "fixedSeedValue": {
+                            "type": "integer",
+                            "nullProperty": true
+                        }
+                    },
+                    "conditionals": [
+                        {
+                            "condition": {
+                                "operatorType": "property",
+                                "propertyElement": "value",
+                                "relativePath": [
+                                    "enabled"
+                                ]
+                            },
+                            "then": [ 
+                                {
+                                    "remove": {
+                                        "nullProperty": [
+                                            "fixedSeedValue"
+                                        ]
+                                    }
+                                }
+                            ]
+                        }
+                    ]
+                },
+                "outputs": {
+                    "type": "object",
+                    "properties": {
+                        "saveAnimalConstitutiveTraits": {
+                            "type": "boolean"
+                        },
+                        "saveGenetics": {
+                            "type": "boolean"
+                        },
+                        "saveDailySummary": {
+                            "type": "boolean"
+                        },
+                        "saveExtendedDailySummary": {
+                            "type": "boolean"
+                        },
+                        "saveMovements": {
+                            "type": "boolean"
+                        },
+                        "saveEdibilitiesFile": {
+                            "type": "boolean"
+                        },
+                        "savePredationEventsOnOtherSpecies": {
+                            "type": "boolean"
+                        },
+                        "recordEach": {
+                            "type": "integer",
+                            "minimum": 0
+                        },
+                        "saveIntermidiateVolumes": {
+                            "type": "boolean"
+                        },
+                        "saveIntermidiateVolumesPeriodicity": {
+                            "type": "integer",
+                            "minimum": 0
+                        },
+                        "saveAnimalsEachDayStart": {
+                            "type": "boolean"
+                        },
+                        "saveAnimalsEachDayEnd": {
+                            "type": "boolean"
+                        },
+                        "saveCellsEachDay": {
+                            "type": "boolean"
+                        },
+                        "saveAnimalsEachDayVoracities": {
+                            "type": "boolean"
+                        },
+                        "saveAnimalsEachDayPredationProbabilities": {
+                            "type": "boolean"
+                        },
+                        "saveActivity": {
+                            "type": "boolean"
+                        },
+                        "saveMassInfo": {
+                            "type": "boolean"
+                        }
+                    }
+                }
+            },
+            "warningConditions": [
+                {
+                    "condition": {
+                        "operatorType": "comparison",
+                        "comparisonType": "greater_than",
+                        "lhs": {
+                            "operatorType": "property",
+                            "propertyElement": "value",
+                            "relativePath": [
+                                "recordEach"
+                            ]
+                        },
+                        "rhs": {
+                            "operatorType": "property",
+                            "propertyElement": "value",
+                            "relativePath": [
+                                "runDays"
+                            ]
+                        }
+                    },
+                    "warning": "Item 'recordEach' is greater than item 'runDays'"
+                }
+            ]
+        }
+    }
+}

@@ -1,0 +1,393 @@
+{
+    "version": "23.11.05",
+    "animal": {
+        "debug": {
+			"surviveWithoutFood": false
+		},
+        "name": "Macrocheles_sp",
+        "defaultHuntingMode": "active_hunting",
+        "sexualType": "haplodiploid",
+        "sexRatio": 0.7,
+        "size": 1,
+        "forcePresenceAllResourcesInvolved": false,
+        "preserveLeftovers": false,
+        "growthCurve": {
+            "curveType": "VonBertalanffy",
+            "vonBertalanffyParams": {
+                "vonBertTime0": -2.946,
+                "vonBertLdistanceMin": 1.120,
+                "vonBertLdistanceMax": 1.305
+            },
+            "logisticParams": {
+                "logisticLdistanceMin": null,
+                "logisticLdistanceMax": null
+            },
+            "logistic3P_Params": {
+                "logistic3pAsymptoticSize": null
+            },
+            "logistic4P_Params": {
+                "logistic4pLeftAsymptote": null,
+                "logistic4pRightAsymptote": null
+            },
+            "gompertzParams": {
+                "gompertzAsymptoticSize": null,
+                "gompertzValueTime0": null
+            },
+            "exponentialParams": {
+                "exponentialA": null
+            }
+        },
+        "genetics": {
+            "numberOfLociPerTrait": 20,
+            "numberOfAllelesPerLocus": 10,
+            "numberOfTraits": 17,
+            "traitsPerModule": 3,
+            "numberOfChiasmasPerChromosome": 2,
+            "restrictPerTrait": [
+                0.01,
+                0.01,
+                0.01,
+                0.01,
+                0.01,
+                0.01,
+                0.01,
+                0.01,
+                0.01,
+                0.01,
+                0.01,
+                0.01,
+                0.01,
+                0.01
+            ],
+            "correlationCoefficientRhoPerModule": [
+                0.1,
+                0.1,
+                0.1,
+                0.1,
+                0.1
+            ]
+        },
+        "modifyAlleles": [
+            { 
+              "pAlleles" : 0.9,
+                "timesAlleles": 30,
+              "affectedLocus": [0.3, 0.6, 0.9],
+              "affectedTraits": ["energy_tank", "growth"]
+            },
+            { 
+              "pAlleles" : 0.7,
+                "timesAlleles": 30,
+              "affectedLocus": [0.3, 0.6, 0.9],
+              "affectedTraits": ["energy_tank", "growth"]
+            }
+        ],
+        "experienceInfluencePerDay": 0.99, 
+        "numberOfSimulatedAttacks": 10000, 
+        "conversionToWetMass": 3.2258,
+        "coefficientForMassA": 0.0229,
+        "scaleForMassB": 2.6775,
+        "coefficientForMassAforMature": 0.0229,
+        "scaleForMassBforMature": 2.6775,
+        "forDensitiesGrowth": 1.4,
+        "forDensitiesEggSize": 0.005,
+        "forDensitiesA": 74.8,
+        "forDensitiesB": -0.75,
+        "indeterminateGrowth": false,
+        "instarFirstReproduction": 4,
+        "instarsForNextReproduction": 1,
+        "femaleMaxReproductionEvents": 60,
+        "eggsPerBatch": 1,
+        "maleMaxReproductionEvents": 8,
+        "maleReproductionFactor": 0.25,
+        "maleMobility": 1,
+        "decreaseOnTraitsDueToEncounters": 1.0,
+        "probabilityDeathFromBackground": 0.0,
+        "assignedForMolt": 0.9,
+        "betaScaleTank": 1.01,
+        "excessInvestInSize": 0.5,
+        "maxEncountersT": 30,
+        "minRelativeHumidityThreshold": 10, 
+        "traits": {
+            "fixedTraits": {
+                "memoryDepth": 5.0,
+                "perception_area": 1.4,
+				"interaction_area": 1.4
+            },
+            "variableTraits": {
+                "minTraitsRanges": {
+                    "energy_tank": 0.32, 
+                    "growth": 0.19579,
+                    "pheno": 2.0,
+                    "factorEggMass": -0.05,
+                    "assim": 0.5,
+                    "voracity": 0.98,
+                    "speed": 2.6,
+                    "search_area": 50.0,
+                    "met_rate": 0.6805,
+                    "actE_vor": 0.66,
+                    "actE_speed": 0.66,
+                    "actE_search": 0.66,
+                    "shock_resistance": 400.0,
+                    "actE_met": 0.3492
+                },
+                "maxTraitsRanges": {
+                    "energy_tank": 0.360,
+                    "growth": 0.21655,
+                    "pheno": 3.0,
+                    "factorEggMass": 0.05,
+                    "assim": 0.7,
+                    "voracity": 1.0,
+                    "speed": 4.4,
+                    "search_area": 60.0,
+                    "met_rate": 0.7005,
+                    "actE_vor": 0.67,
+                    "actE_speed": 0.67,
+                    "actE_search": 0.67,
+                    "shock_resistance": 410.0,
+                    "actE_met": 0.4192 
+                },
+                "minTraitLimits": {
+                    "energy_tank": 0.25,
+                    "growth": 0.00010,
+                    "pheno": 1.0,
+                    "factorEggMass": -0.1,
+                    "assim": 0.4,
+                    "voracity": 0.01,
+                    "speed": 0.5,
+                    "search_area": 5.0,
+                    "met_rate": 0.2,
+                    "actE_vor": 0.2,
+                    "actE_speed": 0.2,
+                    "actE_search": 0.2,
+                    "shock_resistance": 300.0,
+                    "actE_met": 0.2
+                },
+                "maxTraitLimits": {
+                    "energy_tank": 0.4,
+                    "growth": 0.4,
+                    "pheno": 10.0,
+                    "factorEggMass": 0.1,
+                    "assim": 0.9,
+                    "voracity": 6.0,
+                    "speed": 8.0,
+                    "search_area": 105.0,
+                    "met_rate": 0.85,
+                    "actE_vor": 0.8,
+                    "actE_speed": 0.8,
+                    "actE_search": 0.8,
+                    "shock_resistance": 450.0,
+                    "actE_met": 1.0
+                },
+                "order": [
+                    "energy_tank",
+                    "growth",
+                    "pheno",
+                    "factorEggMass",
+                    "assim",
+                    "voracity",
+                    "speed",
+                    "search_area",
+                    "met_rate",
+                    "actE_vor",
+                    "actE_speed",
+                    "actE_search",
+                    "shock_resistance",
+                    "actE_met"
+                ]
+            }
+        },
+        "pupaPeriodLength": 1,
+        "habitatShiftFactor": null,
+		"habitatShift": [],
+		"habitatShiftBeforeBreedingFactor": null,
+		"habitatShiftBeforeBreeding": false,
+		"habitatShiftAfterBreedingFactor": null,
+		"habitatShiftAfterBreeding": false,
+        "cellSizePerInstar": [
+			1.0,
+			1.0,
+			1.0,
+			1.0
+		],
+        "individualsPerInstar": [
+            100,
+            100,
+            100,
+            100
+        ],
+        "statisticsIndividualsPerInstar": 1000,
+        "devTimeVector": [
+            1,
+            3,
+            5
+        ],
+        "LinfKcorr": 0.5,
+        "devTimeConstant": 0.2,
+        "devInter": 6.5574,
+        "EdGrowth": 1.66,
+        "EdVoracity": 1.66,
+        "EdSearch": 1.66,
+        "EdSpeed": 1.66,
+        "fractSearchExtremeT": 0.99,
+        "fractSpeedExtremeT": 0.99,
+        "minVorExtremeT": -1,
+        "longevitySinceMaturation": 13.64, 
+        "reproTimeFactor": 0.2262,	
+        "tempOptGrowth": 35.0,   
+        "tempOptVoracity": 25.0, 
+        "tempOptSearch": 25.0,   
+        "tempOptSpeed": 25.0,    
+        "tempFromLab": 26.5,
+        "tempSizeRuleConstant": 0.01,
+        "eggClutchFromEquation": false,
+        "forClutchMassCoefficient": 0.492,
+        "forClutchMassScale": 0.960,
+        "forEggMassCoefficient": 0.046,
+        "forEggMassScale": 0.478,
+        "eggMassFromEquation": false,
+        "eggDryMass": 0.00478,
+        "femaleWetMass": 0.064,
+        "scaleForVoracity": 0.75,
+        "scaleForSearchArea": 0.25,
+        "scaleForSpeed": 0.25,
+        "maxPlasticityKVonBertalanffy": 0.25,
+        "minPlasticityKVonBertalanffy": 0.30,
+        "maxPlasticityDueToConditionVor": 0.05,
+        "minPlasticityDueToConditionVor": 0.05,
+        "maxPlasticityDueToConditionSearch": 0.05,
+        "minPlasticityDueToConditionSearch": 0.05,
+        "maxPlasticityDueToConditionSpeed": 0.05,
+        "minPlasticityDueToConditionSpeed": 0.05,
+        "coefficientForNumberOfEvaluationsFromSearchArea": 0.1,
+        "attackProbability": 1.0,  
+        "exposedAttackProbability": 0.001,
+        "killProbability": 1.0, 
+        "optimalTemperatureModifier": 4.89,  
+        "daysWithoutFoodForMetabolicDownregulation": 2.0,  
+        "percentageMetabolicDownregulation": 0.0,  
+        "percentageCostForMetabolicDownregulationVoracity": 0.5,  
+        "percentageCostForMetabolicDownregulationSearchArea": 0.5,  
+        "percentageCostForMetabolicDownregulationSpeed": 0.5,  
+        "cellEvaluationBiomass": 1.0,
+        "cellEvaluationRisk": 1.0,
+        "cellEvaluationProConspecific": 1.0,
+        "cellEvaluationAntiConspecific": 1.0,
+        "conspecificWeighing": 0.5, 
+        "coefficientForHandlingTimeA": 28.407,
+        "coefficientForHandlingTimeB": -0.664,
+        "coefficientForHandlingTimeC": -6.365
+    },
+	"ontogeneticLinks": {
+		"animalLinks": [
+            {
+				"species": "Anystis_sp",
+				"links": [
+                    {
+                        "predatorInstar": [1, 2, 3, 4],
+                        "preyInstar": [1, 2, 3, 4, 5],
+                        "preference": 0.02,
+						"profitability": 0.1
+                    }
+                ]
+			},
+            {
+				"species": "Eupodidae_sp",
+				"links": [
+                    {
+                        "predatorInstar": [1, 2, 3, 4],
+                        "preyInstar": [1, 2, 3, 4, 5],
+                        "preference": 0.02,
+						"profitability": 0.1
+                    }
+                ]
+			},
+            {
+				"species": "Damaeus_sp",
+				"links": [
+                    {
+                        "predatorInstar": [1, 2, 3, 4],
+                        "preyInstar": [1, 2, 3, 4, 5],
+                        "preference": 0.02,
+						"profitability": 0.05
+                    }
+                ]
+			},
+            {
+				"species": "Onychiurus_sp",
+				"links": [
+                    {
+                        "predatorInstar": [1, 2, 3, 4],
+                        "preyInstar": [1, 2, 3, 4, 5, 6, 7, 8, 9, 10],
+                        "preference": 0.01,
+						"profitability": 0.05
+                    }
+                ]
+			},
+            {
+				"species": "Tomocerus_sp",
+				"links": [
+                    {
+                        "predatorInstar": [1, 2, 3, 4],
+                        "preyInstar": [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11],
+                        "preference": 0.0099,
+						"profitability": 0.05
+                    }
+                ]
+			},
+            {
+				"species": "Sminthurus_sp",
+				"links": [
+                    {
+                        "predatorInstar": [1, 2, 3, 4],
+                        "preyInstar": [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13],
+                        "preference": 0.0076923,
+						"profitability": 0.05
+                    }
+                ]
+			},
+            {
+				"species": "Galumna_sp",
+				"links": [
+                    {
+                        "predatorInstar": [1, 2, 3, 4],
+                        "preyInstar": [1, 2, 3, 4, 5],
+                        "preference": 0.02,
+						"profitability": 0.05
+                    }
+                ]
+			}
+        ],
+		"resourceLinks": [
+			{
+				"species": "Resource_sp1",
+				"links": [
+                    {
+                        "predatorInstar": [1, 2, 3, 4],
+                        "preference": 0.00033,
+						"profitability": 0.025
+                    }
+                ]
+			},
+            {
+				"species": "Resource_sp2",
+				"links": [
+                    {
+                        "predatorInstar": [1, 2, 3, 4],
+                        "preference": 0.00033,
+						"profitability": 0.025
+                    }
+                ]
+			},
+            {
+				"species": "Resource_sp3",
+				"links": [
+                    {
+                        "predatorInstar": [1, 2, 3, 4],
+                        "preference": 0.00033,
+						"profitability": 0.025
+                    }
+                ]
+			}
+		]
+	}
+}
