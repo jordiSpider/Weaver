@@ -1,0 +1,774 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="../">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Continuous Integration &amp; Continuous Deployment (CI/CD) &mdash; Weaver  documentation</title>
+      <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=80d5e7a1" />
+      <link rel="stylesheet" type="text/css" href="../_static/css/theme.css?v=e59714d7" />
+
+  
+      <script src="../_static/jquery.js?v=5d32c60e"></script>
+      <script src="../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="../_static/documentation_options.js?v=5929fcd5"></script>
+      <script src="../_static/doctools.js?v=9bcbadda"></script>
+      <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="prev" title="Unit Tests" href="unit_tests.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search"  style="background: #2980B9" >
+
+          
+          
+          <a href="../index.html">
+            
+              <img src="../_static/logo.png" class="logo" alt="Logo"/>
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">📘 User Guide</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../user_guide/installation.html">Installation</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../user_guide/installation.html#windows">Windows</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../user_guide/installation.html#linux">Linux</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../user_guide/configuration.html">Configuration</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../user_guide/configuration.html#types-of-configurations">Types of Configurations</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../user_guide/configuration.html#folder-structure">Folder Structure</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../user_guide/configuration.html#file-descriptions">File Descriptions</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../user_guide/configuration.html#simulation-params-json">simulation_params.json</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../user_guide/configuration.html#landscape-params-json">landscape_params.json</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../user_guide/configuration.html#habitat-domain-patch-json">habitat_domain_patch.json</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../user_guide/configuration.html#moisture-patch-json">moisture_patch.json</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../user_guide/configuration.html#obstacle-patch-json">obstacle_patch.json</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../user_guide/configuration.html#resource-json">resource.json</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../user_guide/configuration.html#resource-patch-json">resource_patch.json</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../user_guide/configuration.html#species-json">species.json</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../user_guide/configuration.html#ontogeneticlinkspreference-csv">ontogeneticLinksPreference.csv</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../user_guide/configuration.html#ontogeneticlinksprofitability-csv">ontogeneticLinksProfitability.csv</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../user_guide/configuration.html#checkpoint-bin-checkpoint-txt">checkpoint.bin / checkpoint.txt</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../user_guide/configuration.html#configuration-parameters">Configuration Parameters</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../user_guide/json/simulation_params.html">simulation_params</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../user_guide/json/simulation_params.html#main-properties">Main Properties</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../user_guide/json/simulation_params.html#object-simulation">Object <code class="docutils literal notranslate"><span class="pre">simulation</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../user_guide/json/simulation_params.html#object-checkpoints">Object <code class="docutils literal notranslate"><span class="pre">checkpoints</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../user_guide/json/simulation_params.html#object-breakconditions">Object <code class="docutils literal notranslate"><span class="pre">breakConditions</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../user_guide/json/simulation_params.html#object-stability">Object <code class="docutils literal notranslate"><span class="pre">stability</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../user_guide/json/simulation_params.html#object-initfromfixedseed">Object <code class="docutils literal notranslate"><span class="pre">initFromFixedSeed</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../user_guide/json/simulation_params.html#object-outputs">Object <code class="docutils literal notranslate"><span class="pre">outputs</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../user_guide/json/simulation_params.html#warnings">Warnings</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../user_guide/json/simulation_params.html#hierarchical-summary">Hierarchical Summary</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../user_guide/json/landscape_params.html">landscape_params</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../user_guide/json/landscape_params.html#main-properties">Main Properties</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../user_guide/json/landscape_params.html#object-landscape">Object <code class="docutils literal notranslate"><span class="pre">landscape</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../user_guide/json/landscape_params.html#object-mapconfig">Object <code class="docutils literal notranslate"><span class="pre">mapConfig</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../user_guide/json/landscape_params.html#object-landscapewideparams">Object <code class="docutils literal notranslate"><span class="pre">landscapeWideParams</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../user_guide/json/landscape_params.html#object-spatialtreeparams">Object <code class="docutils literal notranslate"><span class="pre">spatialTreeParams</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../user_guide/json/landscape_params.html#object-moisturebasepatch">Object <code class="docutils literal notranslate"><span class="pre">moistureBasePatch</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../user_guide/json/landscape_params.html#object-temperaturedynamics">Object <code class="docutils literal notranslate"><span class="pre">temperatureDynamics</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../user_guide/json/landscape_params.html#object-relativehumiditydynamics">Object <code class="docutils literal notranslate"><span class="pre">relativeHumidityDynamics</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../user_guide/json/landscape_params.html#object-cycleparams">Object <code class="docutils literal notranslate"><span class="pre">cycleParams</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../user_guide/json/landscape_params.html#object-pulseparams">Object <code class="docutils literal notranslate"><span class="pre">pulseParams</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../user_guide/json/landscape_params.html#object-daysbetweenpulsesrange-and-pulsepeakvaluerange">Object <code class="docutils literal notranslate"><span class="pre">daysBetweenPulsesRange</span></code> and <code class="docutils literal notranslate"><span class="pre">pulsePeakValueRange</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../user_guide/json/landscape_params.html#object-decay">Object <code class="docutils literal notranslate"><span class="pre">decay</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../user_guide/json/landscape_params.html#object-linealdecayparams">Object <code class="docutils literal notranslate"><span class="pre">linealDecayParams</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../user_guide/json/landscape_params.html#object-nutrients">Object <code class="docutils literal notranslate"><span class="pre">nutrients</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../user_guide/json/landscape_params.html#object-life">Object <code class="docutils literal notranslate"><span class="pre">life</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../user_guide/json/landscape_params.html#hierarchical-summary">Hierarchical Summary</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../user_guide/json/habitat_domain_patch.html">habitat_domain_patch</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../user_guide/json/habitat_domain_patch.html#main-properties">Main Properties</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../user_guide/json/habitat_domain_patch.html#object-patch">Object <code class="docutils literal notranslate"><span class="pre">patch</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../user_guide/json/habitat_domain_patch.html#object-source">Object <code class="docutils literal notranslate"><span class="pre">source</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../user_guide/json/habitat_domain_patch.html#object-shape">Object <code class="docutils literal notranslate"><span class="pre">shape</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../user_guide/json/habitat_domain_patch.html#object-cubicparams">Object <code class="docutils literal notranslate"><span class="pre">cubicParams</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../user_guide/json/habitat_domain_patch.html#object-sphericalparams">Object <code class="docutils literal notranslate"><span class="pre">sphericalParams</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../user_guide/json/habitat_domain_patch.html#object-homogeneousparams">Object <code class="docutils literal notranslate"><span class="pre">homogeneousParams</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../user_guide/json/habitat_domain_patch.html#object-gaussianparams">Object <code class="docutils literal notranslate"><span class="pre">gaussianParams</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../user_guide/json/habitat_domain_patch.html#object-randomgaussianparams">Object <code class="docutils literal notranslate"><span class="pre">randomGaussianParams</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../user_guide/json/habitat_domain_patch.html#hierarchical-summary">Hierarchical Summary</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../user_guide/json/moisture_patch.html">moisture_patch</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../user_guide/json/moisture_patch.html#main-properties">Main Properties</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../user_guide/json/moisture_patch.html#object-patch">Object <code class="docutils literal notranslate"><span class="pre">patch</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../user_guide/json/moisture_patch.html#object-source">Object <code class="docutils literal notranslate"><span class="pre">source</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../user_guide/json/moisture_patch.html#object-temperaturedynamics">Object <code class="docutils literal notranslate"><span class="pre">temperatureDynamics</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../user_guide/json/moisture_patch.html#object-relativehumiditydynamics">Object <code class="docutils literal notranslate"><span class="pre">relativeHumidityDynamics</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../user_guide/json/moisture_patch.html#object-cycleparams">Object <code class="docutils literal notranslate"><span class="pre">cycleParams</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../user_guide/json/moisture_patch.html#object-pulseparams">Object <code class="docutils literal notranslate"><span class="pre">pulseParams</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../user_guide/json/moisture_patch.html#object-daysbetweenpulsesrange">Object <code class="docutils literal notranslate"><span class="pre">daysBetweenPulsesRange</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../user_guide/json/moisture_patch.html#object-pulsepeakvaluerange">Object <code class="docutils literal notranslate"><span class="pre">pulsePeakValueRange</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../user_guide/json/moisture_patch.html#object-decay">Object <code class="docutils literal notranslate"><span class="pre">decay</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../user_guide/json/moisture_patch.html#object-linealdecayparams">Object <code class="docutils literal notranslate"><span class="pre">linealDecayParams</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../user_guide/json/moisture_patch.html#object-shape">Object <code class="docutils literal notranslate"><span class="pre">shape</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../user_guide/json/moisture_patch.html#object-cubicparams">Object <code class="docutils literal notranslate"><span class="pre">cubicParams</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../user_guide/json/moisture_patch.html#object-sphericalparams">Object <code class="docutils literal notranslate"><span class="pre">sphericalParams</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../user_guide/json/moisture_patch.html#object-homogeneousparams">Object <code class="docutils literal notranslate"><span class="pre">homogeneousParams</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../user_guide/json/moisture_patch.html#object-gaussianparams">Object <code class="docutils literal notranslate"><span class="pre">gaussianParams</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../user_guide/json/moisture_patch.html#object-randomgaussianparams">Object <code class="docutils literal notranslate"><span class="pre">randomGaussianParams</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../user_guide/json/moisture_patch.html#hierarchical-summary">Hierarchical Summary</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../user_guide/json/obstacle_patch.html">obstacle_patch</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../user_guide/json/obstacle_patch.html#main-properties">Main Properties</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../user_guide/json/obstacle_patch.html#object-patch">Object <code class="docutils literal notranslate"><span class="pre">patch</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../user_guide/json/obstacle_patch.html#object-shape">Object <code class="docutils literal notranslate"><span class="pre">shape</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../user_guide/json/obstacle_patch.html#object-cubicparams">Object <code class="docutils literal notranslate"><span class="pre">cubicParams</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../user_guide/json/obstacle_patch.html#object-sphericalparams">Object <code class="docutils literal notranslate"><span class="pre">sphericalParams</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../user_guide/json/obstacle_patch.html#object-homogeneousparams">Object <code class="docutils literal notranslate"><span class="pre">homogeneousParams</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../user_guide/json/obstacle_patch.html#object-gaussianparams">Object <code class="docutils literal notranslate"><span class="pre">gaussianParams</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../user_guide/json/obstacle_patch.html#object-randomgaussianparams">Object <code class="docutils literal notranslate"><span class="pre">randomGaussianParams</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../user_guide/json/obstacle_patch.html#hierarchical-summary">Hierarchical Summary</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../user_guide/json/resource.html">resource</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../user_guide/json/resource.html#main-properties">Main Properties</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../user_guide/json/resource.html#object-resource">Object <code class="docutils literal notranslate"><span class="pre">resource</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../user_guide/json/resource.html#object-growthmodule">Object <code class="docutils literal notranslate"><span class="pre">growthModule</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../user_guide/json/resource.html#hierarchical-summary">Hierarchical Summary</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../user_guide/json/resource_patch.html">resource_patch</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../user_guide/json/resource_patch.html#main-properties">Main Properties</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../user_guide/json/resource_patch.html#object-patch">Object <code class="docutils literal notranslate"><span class="pre">patch</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../user_guide/json/resource_patch.html#object-source">Object <code class="docutils literal notranslate"><span class="pre">source</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../user_guide/json/resource_patch.html#object-growthdynamics">Object <code class="docutils literal notranslate"><span class="pre">growthDynamics</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../user_guide/json/resource_patch.html#object-cycleparams">Object <code class="docutils literal notranslate"><span class="pre">cycleParams</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../user_guide/json/resource_patch.html#object-pulseparams">Object <code class="docutils literal notranslate"><span class="pre">pulseParams</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../user_guide/json/resource_patch.html#object-daysbetweenpulsesrange-pulsepeakvaluerange">Object <code class="docutils literal notranslate"><span class="pre">daysBetweenPulsesRange</span></code> / <code class="docutils literal notranslate"><span class="pre">pulsePeakValueRange</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../user_guide/json/resource_patch.html#object-decay">Object <code class="docutils literal notranslate"><span class="pre">decay</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../user_guide/json/resource_patch.html#object-linealdecayparams">Object <code class="docutils literal notranslate"><span class="pre">linealDecayParams</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../user_guide/json/resource_patch.html#object-growthrateparams">Object <code class="docutils literal notranslate"><span class="pre">growthRateParams</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../user_guide/json/resource_patch.html#object-temperature">Object <code class="docutils literal notranslate"><span class="pre">temperature</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../user_guide/json/resource_patch.html#object-shape">Object <code class="docutils literal notranslate"><span class="pre">shape</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../user_guide/json/resource_patch.html#object-cubicparams">Object <code class="docutils literal notranslate"><span class="pre">cubicParams</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../user_guide/json/resource_patch.html#object-sphericalparams">Object <code class="docutils literal notranslate"><span class="pre">sphericalParams</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../user_guide/json/resource_patch.html#object-homogeneousparams">Object <code class="docutils literal notranslate"><span class="pre">homogeneousParams</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../user_guide/json/resource_patch.html#object-gaussianparams">Object <code class="docutils literal notranslate"><span class="pre">gaussianParams</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../user_guide/json/resource_patch.html#object-randomgaussianparams">Object <code class="docutils literal notranslate"><span class="pre">randomGaussianParams</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../user_guide/json/resource_patch.html#hierarchical-summary">Hierarchical Summary</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../user_guide/json/species/species.html">species</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../user_guide/json/species/species.html#main-properties">Main Properties</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../user_guide/json/species/species.html#object-animal">Object <code class="docutils literal notranslate"><span class="pre">animal</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../user_guide/json/species/species.html#object-debug">Object <code class="docutils literal notranslate"><span class="pre">debug</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../user_guide/json/species/species.html#submodules">Submodules</a><ul>
+<li class="toctree-l5"><a class="reference internal" href="../user_guide/json/species/decisions_module.html">Decisions Module</a><ul>
+<li class="toctree-l6"><a class="reference internal" href="../user_guide/json/species/decisions_module.html#main-properties">Main Properties</a></li>
+<li class="toctree-l6"><a class="reference internal" href="../user_guide/json/species/decisions_module.html#object-predationprobability">Object <code class="docutils literal notranslate"><span class="pre">predationProbability</span></code></a></li>
+<li class="toctree-l6"><a class="reference internal" href="../user_guide/json/species/decisions_module.html#object-escapeprobability">Object <code class="docutils literal notranslate"><span class="pre">escapeProbability</span></code></a></li>
+<li class="toctree-l6"><a class="reference internal" href="../user_guide/json/species/decisions_module.html#object-edibilityvalue">Object <code class="docutils literal notranslate"><span class="pre">edibilityValue</span></code></a></li>
+<li class="toctree-l6"><a class="reference internal" href="../user_guide/json/species/decisions_module.html#object-decisionwithinpatch">Object <code class="docutils literal notranslate"><span class="pre">decisionWithinPatch</span></code></a></li>
+<li class="toctree-l6"><a class="reference internal" href="../user_guide/json/species/decisions_module.html#object-decisionamongpatches">Object <code class="docutils literal notranslate"><span class="pre">decisionAmongPatches</span></code></a></li>
+<li class="toctree-l6"><a class="reference internal" href="../user_guide/json/species/decisions_module.html#object-sensorymodel">Object <code class="docutils literal notranslate"><span class="pre">sensoryModel</span></code></a></li>
+<li class="toctree-l6"><a class="reference internal" href="../user_guide/json/species/decisions_module.html#hierarchical-summary">Hierarchical Summary</a></li>
+</ul>
+</li>
+<li class="toctree-l5"><a class="reference internal" href="../user_guide/json/species/genetics_module.html">Genetics Module</a><ul>
+<li class="toctree-l6"><a class="reference internal" href="../user_guide/json/species/genetics_module.html#main-properties">Main Properties</a></li>
+<li class="toctree-l6"><a class="reference internal" href="../user_guide/json/species/genetics_module.html#object-modules">Object <code class="docutils literal notranslate"><span class="pre">modules</span></code></a></li>
+<li class="toctree-l6"><a class="reference internal" href="../user_guide/json/species/genetics_module.html#object-modifyalleles">Object <code class="docutils literal notranslate"><span class="pre">modifyAlleles</span></code></a></li>
+<li class="toctree-l6"><a class="reference internal" href="../user_guide/json/species/genetics_module.html#object-affectedtraits">Object <code class="docutils literal notranslate"><span class="pre">affectedTraits</span></code></a></li>
+<li class="toctree-l6"><a class="reference internal" href="../user_guide/json/species/genetics_module.html#object-traits">Object <code class="docutils literal notranslate"><span class="pre">traits</span></code></a></li>
+<li class="toctree-l6"><a class="reference internal" href="../user_guide/json/species/genetics_module.html#object-individualleveltraitsorder">Object <code class="docutils literal notranslate"><span class="pre">individualLevelTraitsOrder</span></code></a></li>
+<li class="toctree-l6"><a class="reference internal" href="../user_guide/json/species/genetics_module.html#object-definition">Object <code class="docutils literal notranslate"><span class="pre">definition</span></code></a></li>
+<li class="toctree-l6"><a class="reference internal" href="../user_guide/json/species/genetics_module.html#object-base">Object <code class="docutils literal notranslate"><span class="pre">base</span></code></a></li>
+<li class="toctree-l6"><a class="reference internal" href="../user_guide/json/species/genetics_module.html#object-decisions">Object <code class="docutils literal notranslate"><span class="pre">decisions</span></code></a></li>
+<li class="toctree-l6"><a class="reference internal" href="../user_guide/json/species/genetics_module.html#object-escapeprobabilityweight">Object <code class="docutils literal notranslate"><span class="pre">escapeProbabilityWeight</span></code></a></li>
+<li class="toctree-l6"><a class="reference internal" href="../user_guide/json/species/genetics_module.html#object-predationprobabilityweight">Object <code class="docutils literal notranslate"><span class="pre">predationProbabilityWeight</span></code></a></li>
+<li class="toctree-l6"><a class="reference internal" href="../user_guide/json/species/genetics_module.html#object-edibilityvalueweight">Object <code class="docutils literal notranslate"><span class="pre">edibilityValueWeight</span></code></a></li>
+<li class="toctree-l6"><a class="reference internal" href="../user_guide/json/species/genetics_module.html#object-preferences">Object <code class="docutils literal notranslate"><span class="pre">preferences</span></code></a></li>
+<li class="toctree-l6"><a class="reference internal" href="../user_guide/json/species/genetics_module.html#object-probabilitydensityfunction">Object <code class="docutils literal notranslate"><span class="pre">probabilityDensityFunction</span></code></a></li>
+<li class="toctree-l6"><a class="reference internal" href="../user_guide/json/species/genetics_module.html#object-cellvalue">Object <code class="docutils literal notranslate"><span class="pre">cellValue</span></code></a></li>
+<li class="toctree-l6"><a class="reference internal" href="../user_guide/json/species/genetics_module.html#object-trait-non-temperature-section">Object <code class="docutils literal notranslate"><span class="pre">&lt;trait-non-temperature-section&gt;</span></code></a></li>
+<li class="toctree-l6"><a class="reference internal" href="../user_guide/json/species/genetics_module.html#object-specieslevelparams">Object <code class="docutils literal notranslate"><span class="pre">speciesLevelParams</span></code></a></li>
+<li class="toctree-l6"><a class="reference internal" href="../user_guide/json/species/genetics_module.html#object-individuallevelparams">Object <code class="docutils literal notranslate"><span class="pre">individualLevelParams</span></code></a></li>
+<li class="toctree-l6"><a class="reference internal" href="../user_guide/json/species/genetics_module.html#object-limits">Object <code class="docutils literal notranslate"><span class="pre">limits</span></code></a></li>
+<li class="toctree-l6"><a class="reference internal" href="../user_guide/json/species/genetics_module.html#object-ranges">Object <code class="docutils literal notranslate"><span class="pre">ranges</span></code></a></li>
+<li class="toctree-l6"><a class="reference internal" href="../user_guide/json/species/genetics_module.html#object-trait-temperature-size-rule-section">Object <code class="docutils literal notranslate"><span class="pre">&lt;trait-temperature-size-rule-section&gt;</span></code></a></li>
+<li class="toctree-l6"><a class="reference internal" href="../user_guide/json/species/genetics_module.html#object-temperature-of-trait-temperature-size-rule-section">Object <code class="docutils literal notranslate"><span class="pre">temperature</span></code> of <code class="docutils literal notranslate"><span class="pre">&lt;trait-temperature-size-rule-section&gt;</span></code></a></li>
+<li class="toctree-l6"><a class="reference internal" href="../user_guide/json/species/genetics_module.html#object-tempsizerulevector">Object <code class="docutils literal notranslate"><span class="pre">tempSizeRuleVector</span></code></a></li>
+<li class="toctree-l6"><a class="reference internal" href="../user_guide/json/species/genetics_module.html#object-trait-dells-section">Object <code class="docutils literal notranslate"><span class="pre">&lt;trait-dells-section&gt;</span></code></a></li>
+<li class="toctree-l6"><a class="reference internal" href="../user_guide/json/species/genetics_module.html#object-temperature-of-trait-dells-section">Object <code class="docutils literal notranslate"><span class="pre">temperature</span></code> of <code class="docutils literal notranslate"><span class="pre">&lt;trait-dells-section&gt;</span></code></a></li>
+<li class="toctree-l6"><a class="reference internal" href="../user_guide/json/species/genetics_module.html#hierarchical-summary">Hierarchical Summary</a></li>
+</ul>
+</li>
+<li class="toctree-l5"><a class="reference internal" href="../user_guide/json/species/growth_module.html">Growth Module</a><ul>
+<li class="toctree-l6"><a class="reference internal" href="../user_guide/json/species/growth_module.html#main-properties">Main Properties</a></li>
+<li class="toctree-l6"><a class="reference internal" href="../user_guide/json/species/growth_module.html#object-capitalbreeding">Object <code class="docutils literal notranslate"><span class="pre">capitalBreeding</span></code></a></li>
+<li class="toctree-l6"><a class="reference internal" href="../user_guide/json/species/growth_module.html#object-capitalbreedingparams">Object <code class="docutils literal notranslate"><span class="pre">capitalBreedingParams</span></code></a></li>
+<li class="toctree-l6"><a class="reference internal" href="../user_guide/json/species/growth_module.html#object-eggsperbatch">Object <code class="docutils literal notranslate"><span class="pre">eggsPerBatch</span></code></a></li>
+<li class="toctree-l6"><a class="reference internal" href="../user_guide/json/species/growth_module.html#object-eggsperbatch-equationparameters">Object <code class="docutils literal notranslate"><span class="pre">eggsPerBatch</span> <span class="pre">-</span> <span class="pre">equationParameters</span></code></a></li>
+<li class="toctree-l6"><a class="reference internal" href="../user_guide/json/species/growth_module.html#object-eggdrymass">Object <code class="docutils literal notranslate"><span class="pre">eggDryMass</span></code></a></li>
+<li class="toctree-l6"><a class="reference internal" href="../user_guide/json/species/growth_module.html#object-eggdrymass-equationparameters">Object <code class="docutils literal notranslate"><span class="pre">eggDryMass</span> <span class="pre">-</span> <span class="pre">equationParameters</span></code></a></li>
+<li class="toctree-l6"><a class="reference internal" href="../user_guide/json/species/growth_module.html#object-growthmodel">Object <code class="docutils literal notranslate"><span class="pre">growthModel</span></code></a></li>
+<li class="toctree-l6"><a class="reference internal" href="../user_guide/json/species/growth_module.html#object-defaultattempfromlab">Object <code class="docutils literal notranslate"><span class="pre">defaultAtTempFromLab</span></code></a></li>
+<li class="toctree-l6"><a class="reference internal" href="../user_guide/json/species/growth_module.html#object-temperature">Object <code class="docutils literal notranslate"><span class="pre">temperature</span></code></a></li>
+<li class="toctree-l6"><a class="reference internal" href="../user_guide/json/species/growth_module.html#object-growthmodelthermalchanges-elements">Object <code class="docutils literal notranslate"><span class="pre">growthModelThermalChanges</span></code> (elements)</a></li>
+<li class="toctree-l6"><a class="reference internal" href="../user_guide/json/species/growth_module.html#hierarchical-summary">Hierarchical Summary</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l4"><a class="reference internal" href="../user_guide/json/species/species.html#hierarchical-summary">Hierarchical Summary</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../user_guide/json/ontogeneticLinksPreference.html">ontogeneticLinksPreference</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../user_guide/json/ontogeneticLinksPreference.html#overview">Overview</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../user_guide/json/ontogeneticLinksPreference.html#file-format">File Format</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../user_guide/json/ontogeneticLinksPreference.html#example-structure">Example Structure</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../user_guide/json/ontogeneticLinksPreference.html#interpretation-example">Interpretation Example</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../user_guide/json/ontogeneticLinksProfitability.html">ontogeneticLinksProfitability</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../user_guide/json/ontogeneticLinksProfitability.html#overview">Overview</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../user_guide/json/ontogeneticLinksProfitability.html#file-format">File Format</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../user_guide/json/ontogeneticLinksProfitability.html#example-structure">Example Structure</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../user_guide/json/ontogeneticLinksProfitability.html#interpretation-example">Interpretation Example</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../user_guide/usage.html">Usage</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../user_guide/usage.html#command-line-options">Command-line Options</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../user_guide/usage.html#modes-of-execution">Modes of Execution</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../user_guide/usage.html#output-folder">Output Folder</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../user_guide/usage.html#interactive-input-non-gui">Interactive Input (Non-GUI)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../user_guide/usage.html#graphical-interface-gui">Graphical Interface (GUI)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../user_guide/usage.html#summary">Summary</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../user_guide/examples.html">Examples</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../user_guide/troubleshooting.html">Troubleshooting</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">🧠 Developer Guide</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../developer_guide/build_system.html">Build System</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../developer_guide/build_system.html#common-requirements">Common Requirements</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../developer_guide/build_system.html#compiler-installation-by-operating-system">Compiler installation by operating system</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../developer_guide/build_system.html#windows"><strong>Windows</strong></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../developer_guide/build_system.html#linux"><strong>Linux</strong></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../developer_guide/build_system.html#release-requirements">Release Requirements</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../developer_guide/build_system.html#id1">Windows</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../developer_guide/build_system.html#id2">Linux</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../developer_guide/build_system.html#documentation-requirements">Documentation Requirements</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../developer_guide/build_system.html#developer-setup">Developer Setup</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../developer_guide/build_system.html#cmake-presets">CMake Presets</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../developer_guide/build_system.html#available-presets">Available Presets</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../developer_guide/build_system.html#updating-vcpkg-version">Updating vcpkg Version</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../developer_guide/adding_features.html">Adding Features</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../developer_guide/adding_features.html#branch-strategy">Branch Strategy</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../developer_guide/contribution.html">Contribution</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../developer_guide/contribution.html#pull-requests">Pull Requests</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../developer_guide/contribution.html#code-review">Code Review</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../developer_guide/contribution.html#issues">Issues</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../developer_guide/code_style.html">Code Style</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../developer_guide/code_style.html#general-guidelines">General Guidelines</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../developer_guide/code_style.html#formatting">Formatting</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../developer_guide/code_style.html#comments">Comments</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../developer_guide/json_validator.html">JSON validator</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../developer_guide/json_validator/getting_started.html">Getting Started</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../developer_guide/json_validator/getting_started.html#what-is-json-schema">What is JSON Schema?</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../developer_guide/json_validator/getting_started.html#elements-of-json-schema">Elements of JSON Schema</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../developer_guide/json_validator/getting_started.html#common-fields">Common Fields</a><ul>
+<li class="toctree-l5"><a class="reference internal" href="../developer_guide/json_validator/getting_started.html#type">type</a></li>
+<li class="toctree-l5"><a class="reference internal" href="../developer_guide/json_validator/getting_started.html#description">description</a></li>
+<li class="toctree-l5"><a class="reference internal" href="../developer_guide/json_validator/getting_started.html#nullproperty">nullProperty</a></li>
+</ul>
+</li>
+<li class="toctree-l4"><a class="reference internal" href="../developer_guide/json_validator/getting_started.html#specific-fields-for-each-type">Specific Fields for Each Type</a><ul>
+<li class="toctree-l5"><a class="reference internal" href="../developer_guide/json_validator/element_types/array.html">Array Type</a><ul>
+<li class="toctree-l6"><a class="reference internal" href="../developer_guide/json_validator/element_types/array.html#specific-fields">Specific Fields</a><ul>
+<li class="toctree-l7"><a class="reference internal" href="../developer_guide/json_validator/element_types/array.html#items">items</a></li>
+<li class="toctree-l7"><a class="reference internal" href="../developer_guide/json_validator/element_types/array.html#minitems">minItems</a></li>
+<li class="toctree-l7"><a class="reference internal" href="../developer_guide/json_validator/element_types/array.html#maxitems">maxItems</a></li>
+<li class="toctree-l7"><a class="reference internal" href="../developer_guide/json_validator/element_types/array.html#itemsorder">itemsOrder</a></li>
+</ul>
+</li>
+<li class="toctree-l6"><a class="reference internal" href="../developer_guide/json_validator/element_types/array.html#example">Example</a></li>
+</ul>
+</li>
+<li class="toctree-l5"><a class="reference internal" href="../developer_guide/json_validator/element_types/boolean.html">Boolean Type</a><ul>
+<li class="toctree-l6"><a class="reference internal" href="../developer_guide/json_validator/element_types/boolean.html#specific-fields">Specific Fields</a></li>
+<li class="toctree-l6"><a class="reference internal" href="../developer_guide/json_validator/element_types/boolean.html#example">Example</a></li>
+</ul>
+</li>
+<li class="toctree-l5"><a class="reference internal" href="../developer_guide/json_validator/element_types/integer.html">Integer Type</a><ul>
+<li class="toctree-l6"><a class="reference internal" href="../developer_guide/json_validator/element_types/integer.html#specific-fields">Specific Fields</a><ul>
+<li class="toctree-l7"><a class="reference internal" href="../developer_guide/json_validator/element_types/integer.html#minimum">minimum</a></li>
+<li class="toctree-l7"><a class="reference internal" href="../developer_guide/json_validator/element_types/integer.html#exclusiveminimum">exclusiveMinimum</a></li>
+<li class="toctree-l7"><a class="reference internal" href="../developer_guide/json_validator/element_types/integer.html#maximum">maximum</a></li>
+<li class="toctree-l7"><a class="reference internal" href="../developer_guide/json_validator/element_types/integer.html#exclusivemaximum">exclusiveMaximum</a></li>
+<li class="toctree-l7"><a class="reference internal" href="../developer_guide/json_validator/element_types/integer.html#multipleof">multipleOf</a></li>
+</ul>
+</li>
+<li class="toctree-l6"><a class="reference internal" href="../developer_guide/json_validator/element_types/integer.html#example">Example</a></li>
+</ul>
+</li>
+<li class="toctree-l5"><a class="reference internal" href="../developer_guide/json_validator/element_types/number.html">Number Type</a><ul>
+<li class="toctree-l6"><a class="reference internal" href="../developer_guide/json_validator/element_types/number.html#specific-fields">Specific Fields</a><ul>
+<li class="toctree-l7"><a class="reference internal" href="../developer_guide/json_validator/element_types/number.html#minimum">minimum</a></li>
+<li class="toctree-l7"><a class="reference internal" href="../developer_guide/json_validator/element_types/number.html#exclusiveminimum">exclusiveMinimum</a></li>
+<li class="toctree-l7"><a class="reference internal" href="../developer_guide/json_validator/element_types/number.html#maximum">maximum</a></li>
+<li class="toctree-l7"><a class="reference internal" href="../developer_guide/json_validator/element_types/number.html#exclusivemaximum">exclusiveMaximum</a></li>
+</ul>
+</li>
+<li class="toctree-l6"><a class="reference internal" href="../developer_guide/json_validator/element_types/number.html#example">Example</a></li>
+</ul>
+</li>
+<li class="toctree-l5"><a class="reference internal" href="../developer_guide/json_validator/element_types/object.html">Object Type</a><ul>
+<li class="toctree-l6"><a class="reference internal" href="../developer_guide/json_validator/element_types/object.html#specific-fields">Specific Fields</a><ul>
+<li class="toctree-l7"><a class="reference internal" href="../developer_guide/json_validator/element_types/object.html#properties">properties</a></li>
+<li class="toctree-l7"><a class="reference internal" href="../developer_guide/json_validator/element_types/object.html#patternproperties">patternProperties</a></li>
+<li class="toctree-l7"><a class="reference internal" href="../developer_guide/json_validator/element_types/object.html#conditionals">conditionals</a></li>
+<li class="toctree-l7"><a class="reference internal" href="../developer_guide/json_validator/element_types/object.html#patternconditionals">patternConditionals</a></li>
+<li class="toctree-l7"><a class="reference internal" href="../developer_guide/json_validator/element_types/object.html#requiredconditions">requiredConditions</a></li>
+<li class="toctree-l7"><a class="reference internal" href="../developer_guide/json_validator/element_types/object.html#warningconditions">warningConditions</a></li>
+</ul>
+</li>
+<li class="toctree-l6"><a class="reference internal" href="../developer_guide/json_validator/element_types/object.html#example">Example</a></li>
+</ul>
+</li>
+<li class="toctree-l5"><a class="reference internal" href="../developer_guide/json_validator/element_types/string.html">String Type</a><ul>
+<li class="toctree-l6"><a class="reference internal" href="../developer_guide/json_validator/element_types/string.html#specific-fields">Specific Fields</a><ul>
+<li class="toctree-l7"><a class="reference internal" href="../developer_guide/json_validator/element_types/string.html#minlength">minLength</a></li>
+<li class="toctree-l7"><a class="reference internal" href="../developer_guide/json_validator/element_types/string.html#maxlength">maxLength</a></li>
+<li class="toctree-l7"><a class="reference internal" href="../developer_guide/json_validator/element_types/string.html#pattern">pattern</a></li>
+<li class="toctree-l7"><a class="reference internal" href="../developer_guide/json_validator/element_types/string.html#enum">enum</a></li>
+</ul>
+</li>
+<li class="toctree-l6"><a class="reference internal" href="../developer_guide/json_validator/element_types/string.html#example">Example</a></li>
+</ul>
+</li>
+<li class="toctree-l5"><a class="reference internal" href="../developer_guide/json_validator/element_types/tuple.html">Tuple Type</a><ul>
+<li class="toctree-l6"><a class="reference internal" href="../developer_guide/json_validator/element_types/tuple.html#specific-fields">Specific Fields</a><ul>
+<li class="toctree-l7"><a class="reference internal" href="../developer_guide/json_validator/element_types/tuple.html#items">items</a></li>
+</ul>
+</li>
+<li class="toctree-l6"><a class="reference internal" href="../developer_guide/json_validator/element_types/tuple.html#example">Example</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../developer_guide/json_validator/getting_started.html#benefits-of-using-json-schema">Benefits of Using JSON Schema</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../developer_guide/json_validator/getting_started.html#example-of-a-complete-json-schema">Example of a Complete JSON Schema</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../developer_guide/json_validator/advanced_features.html">Advanced Features</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../developer_guide/json_validator/advanced_features.html#operators-of-json-schema">Operators of JSON Schema</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../developer_guide/json_validator/advanced_features.html#equality-and-comparison-operators">Equality and Comparison Operators</a><ul>
+<li class="toctree-l5"><a class="reference internal" href="../developer_guide/json_validator/advanced_features.html#equal">Equal (==)</a></li>
+<li class="toctree-l5"><a class="reference internal" href="../developer_guide/json_validator/advanced_features.html#not-equal">Not Equal (!=)</a></li>
+<li class="toctree-l5"><a class="reference internal" href="../developer_guide/json_validator/advanced_features.html#less-than">Less Than (&lt;)</a></li>
+<li class="toctree-l5"><a class="reference internal" href="../developer_guide/json_validator/advanced_features.html#less-than-or-equal">Less Than or Equal (&lt;=)</a></li>
+<li class="toctree-l5"><a class="reference internal" href="../developer_guide/json_validator/advanced_features.html#greater-than">Greater Than (&gt;)</a></li>
+<li class="toctree-l5"><a class="reference internal" href="../developer_guide/json_validator/advanced_features.html#greater-than-or-equal">Greater Than or Equal (&gt;=)</a></li>
+</ul>
+</li>
+<li class="toctree-l4"><a class="reference internal" href="../developer_guide/json_validator/advanced_features.html#logical-operators">Logical Operators</a><ul>
+<li class="toctree-l5"><a class="reference internal" href="../developer_guide/json_validator/advanced_features.html#negation-not">Negation (not)</a></li>
+<li class="toctree-l5"><a class="reference internal" href="../developer_guide/json_validator/advanced_features.html#conjunction-and">Conjunction (and)</a></li>
+<li class="toctree-l5"><a class="reference internal" href="../developer_guide/json_validator/advanced_features.html#disjunction-or">Disjunction (or)</a></li>
+</ul>
+</li>
+<li class="toctree-l4"><a class="reference internal" href="../developer_guide/json_validator/advanced_features.html#property-operators">Property Operators</a><ul>
+<li class="toctree-l5"><a class="reference internal" href="../developer_guide/json_validator/advanced_features.html#value-of-the-property">Value of the Property</a></li>
+<li class="toctree-l5"><a class="reference internal" href="../developer_guide/json_validator/advanced_features.html#item-of-the-property">Item of the Property</a></li>
+<li class="toctree-l5"><a class="reference internal" href="../developer_guide/json_validator/advanced_features.html#size-of-the-property">Size of the Property</a></li>
+<li class="toctree-l5"><a class="reference internal" href="../developer_guide/json_validator/advanced_features.html#null-status-of-the-property">Null Status of the Property</a></li>
+</ul>
+</li>
+<li class="toctree-l4"><a class="reference internal" href="../developer_guide/json_validator/advanced_features.html#constant-operators">Constant Operators</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../developer_guide/json_validator/advanced_features.html#arithmetical-operators">Arithmetical Operators</a><ul>
+<li class="toctree-l5"><a class="reference internal" href="../developer_guide/json_validator/advanced_features.html#subtract">Subtract (-)</a></li>
+<li class="toctree-l5"><a class="reference internal" href="../developer_guide/json_validator/advanced_features.html#addition">Addition (+)</a></li>
+<li class="toctree-l5"><a class="reference internal" href="../developer_guide/json_validator/advanced_features.html#multiply">Multiply (*)</a></li>
+<li class="toctree-l5"><a class="reference internal" href="../developer_guide/json_validator/advanced_features.html#division">Division (/)</a></li>
+<li class="toctree-l5"><a class="reference internal" href="../developer_guide/json_validator/advanced_features.html#module">Module (%)</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../developer_guide/json_validator/advanced_features.html#conditionals-of-json-schema">Conditionals of JSON Schema</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../developer_guide/json_validator/advanced_features.html#condition">Condition</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../developer_guide/json_validator/advanced_features.html#then-block">Then Block</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../developer_guide/json_validator/advanced_features.html#else-block">Else Block</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../developer_guide/json_validator/advanced_features.html#conditions-of-json-schema">Conditions of JSON Schema</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">⚙️ Reference</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../reference/api.html">API</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">🧪 Testing and Deployment</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="overview.html">Overview</a></li>
+<li class="toctree-l1"><a class="reference internal" href="unit_tests.html">Unit Tests</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Continuous Integration &amp; Continuous Deployment (CI/CD)</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#configuration">Configuration</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#workflows">Workflows</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#deploy-release-workflow">Deploy Release Workflow</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#job-1-build-windows">Job 1 — build-windows</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#job-2-release">Job 2 — release</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#job-3-deploy-docs">Job 3 — deploy-docs</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#deploy-release-workflow-notes">Deploy Release Workflow Notes</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#update-documentation-workflow">Update Documentation Workflow</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#job-update">Job — update</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#update-documentation-workflow-notes">Update Documentation Workflow Notes</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu"  style="background: #2980B9" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">Weaver</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../index.html" class="icon icon-home" aria-label="Home"></a></li>
+      <li class="breadcrumb-item active">Continuous Integration &amp; Continuous Deployment (CI/CD)</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="../_sources/testing/ci_cd.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="continuous-integration-continuous-deployment-ci-cd">
+<h1>Continuous Integration &amp; Continuous Deployment (CI/CD)<a class="headerlink" href="#continuous-integration-continuous-deployment-ci-cd" title="Link to this heading"></a></h1>
+<p>The project uses CI/CD pipelines to automate building, testing, releasing executables,
+and updating the documentation. This ensures code quality and fast delivery while keeping
+documentation up-to-date.</p>
+<section id="configuration">
+<h2>Configuration<a class="headerlink" href="#configuration" title="Link to this heading"></a></h2>
+<ul class="simple">
+<li><p>The CI/CD is configured using GitHub Actions.</p></li>
+<li><p>Workflow files are located in <cite>.github/workflows/</cite>.</p></li>
+</ul>
+</section>
+<section id="workflows">
+<h2>Workflows<a class="headerlink" href="#workflows" title="Link to this heading"></a></h2>
+<section id="deploy-release-workflow">
+<h3>Deploy Release Workflow<a class="headerlink" href="#deploy-release-workflow" title="Link to this heading"></a></h3>
+<p>This workflow automates the process of building, packaging, and deploying new releases of the project,
+including the generation and publication of documentation.</p>
+<p><strong>Workflow name:</strong> <code class="docutils literal notranslate"><span class="pre">Deploy</span> <span class="pre">release</span></code></p>
+<p><strong>Trigger:</strong> <code class="docutils literal notranslate"><span class="pre">workflow_dispatch</span></code> (manual trigger from the GitHub Actions interface)</p>
+<p><strong>Purpose:</strong>
+- Build and package both GUI and non-GUI Windows releases
+- Create a new GitHub release with the generated installers
+- Build and deploy the latest documentation to GitHub Pages
+- Merge the updated documentation back into the <code class="docutils literal notranslate"><span class="pre">develop</span></code> branch</p>
+<p><strong>Overview:</strong>
+The workflow is composed of three main jobs:</p>
+<ol class="arabic simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">build-windows</span></code> — Builds the Windows release versions (GUI and non-GUI).</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">release</span></code> — Creates a new GitHub release and attaches the generated installers.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">deploy-docs</span></code> — Builds and publishes the documentation to GitHub Pages.</p></li>
+</ol>
+<p>Each job runs in sequence, ensuring that binaries and documentation are consistent with the latest code.</p>
+<section id="job-1-build-windows">
+<h4>Job 1 — build-windows<a class="headerlink" href="#job-1-build-windows" title="Link to this heading"></a></h4>
+<p><strong>Runs on:</strong> <code class="docutils literal notranslate"><span class="pre">windows-latest</span></code></p>
+<p><strong>Matrix:</strong> preset = [<code class="docutils literal notranslate"><span class="pre">windows-gui-release</span></code>, <code class="docutils literal notranslate"><span class="pre">windows-non-gui-release</span></code>]</p>
+<p><strong>Purpose:</strong>
+Builds the Windows release binaries and packages them into installers.</p>
+<p><strong>Main steps:</strong></p>
+<ol class="arabic simple">
+<li><p><strong>Checkout repository</strong>
+Clones the full repository, including submodules and complete commit history.
+Required for <code class="docutils literal notranslate"><span class="pre">vcpkg</span></code> to work correctly.</p></li>
+<li><p><strong>Bootstrap vcpkg</strong>
+Initializes the vcpkg package manager.</p></li>
+<li><p><strong>Install NSIS</strong>
+Installs NSIS using Chocolatey for creating Windows installers.</p></li>
+<li><p><strong>Restore cached vcpkg</strong>
+Restores cached vcpkg dependencies to speed up builds.</p></li>
+<li><p><strong>Configure and build</strong>
+Builds the project using CMake workflow presets.</p></li>
+<li><p><strong>Save vcpkg cache</strong>
+Saves the current vcpkg installation for reuse in future builds.</p></li>
+<li><p><strong>Package</strong>
+Uses CPack to generate the Windows installer (.exe file).</p></li>
+<li><p><strong>Upload installer</strong>
+Uploads the generated installer as an artifact for later use in the <code class="docutils literal notranslate"><span class="pre">release</span></code> job.</p></li>
+</ol>
+</section>
+<section id="job-2-release">
+<h4>Job 2 — release<a class="headerlink" href="#job-2-release" title="Link to this heading"></a></h4>
+<p><strong>Runs on:</strong> <code class="docutils literal notranslate"><span class="pre">ubuntu-latest</span></code></p>
+<p><strong>Needs:</strong> <code class="docutils literal notranslate"><span class="pre">build-windows</span></code></p>
+<p><strong>Purpose:</strong>
+Creates a new GitHub release and attaches the generated Windows installers.</p>
+<p><strong>Main steps:</strong></p>
+<ol class="arabic simple">
+<li><p><strong>Checkout repository</strong>
+Fetches the <code class="docutils literal notranslate"><span class="pre">main</span></code> branch with full commit history.</p></li>
+<li><p><strong>Download installers</strong>
+Downloads the artifacts created by the previous job.</p></li>
+<li><p><strong>Setup git user</strong>
+Configures Git credentials for tagging and commits.</p></li>
+<li><p><strong>Create unique tag</strong>
+Generates a tag based on the current date (e.g., <code class="docutils literal notranslate"><span class="pre">v2025.10.30</span></code>).
+The job fails if a tag with the same name already exists.</p></li>
+<li><p><strong>Create GitHub release</strong>
+Uses <code class="docutils literal notranslate"><span class="pre">softprops/action-gh-release</span></code> to create a <strong>draft release</strong> and attach the installer files.</p></li>
+</ol>
+</section>
+<section id="job-3-deploy-docs">
+<h4>Job 3 — deploy-docs<a class="headerlink" href="#job-3-deploy-docs" title="Link to this heading"></a></h4>
+<p><strong>Runs on:</strong> <code class="docutils literal notranslate"><span class="pre">ubuntu-latest</span></code></p>
+<p><strong>Needs:</strong> <code class="docutils literal notranslate"><span class="pre">release</span></code></p>
+<p><strong>Permissions:</strong> <code class="docutils literal notranslate"><span class="pre">contents:</span> <span class="pre">write</span></code></p>
+<p><strong>Purpose:</strong>
+Builds the documentation and deploys it to GitHub Pages.</p>
+<p><strong>Main steps:</strong></p>
+<ol class="arabic simple">
+<li><p><strong>Checkout repository</strong>
+Pulls the <code class="docutils literal notranslate"><span class="pre">main</span></code> branch to access the latest source and documentation files.</p></li>
+<li><p><strong>Install dependencies</strong>
+Installs <strong>Doxygen</strong>, <strong>Graphviz</strong>, and <strong>Sphinx</strong> (with <code class="docutils literal notranslate"><span class="pre">sphinx-rtd-theme</span></code> and <code class="docutils literal notranslate"><span class="pre">sphinx-intl</span></code>).</p></li>
+<li><p><strong>Build documentation</strong>
+Uses the CMake workflow preset <code class="docutils literal notranslate"><span class="pre">deploy-docs</span></code> to generate HTML documentation.</p></li>
+<li><p><strong>Deploy to GitHub Pages</strong>
+Publishes the generated HTML files to the <code class="docutils literal notranslate"><span class="pre">gh-pages</span></code> branch using
+<code class="docutils literal notranslate"><span class="pre">peaceiris/actions-gh-pages</span></code>.</p></li>
+<li><p><strong>Commit and push updated docs source</strong>
+Adds and commits updated documentation sources under <code class="docutils literal notranslate"><span class="pre">docs/source/</span></code>.</p></li>
+<li><p><strong>Merge main into develop</strong>
+Synchronizes the <code class="docutils literal notranslate"><span class="pre">develop</span></code> branch with the <code class="docutils literal notranslate"><span class="pre">main</span></code> branch, including the new documentation changes.
+Merge conflicts are logged but do not stop the workflow.</p></li>
+</ol>
+</section>
+<section id="deploy-release-workflow-notes">
+<h4>Deploy Release Workflow Notes<a class="headerlink" href="#deploy-release-workflow-notes" title="Link to this heading"></a></h4>
+<ul class="simple">
+<li><p>The workflow is <strong>manually triggered</strong>, ensuring that new releases are only created when explicitly approved.</p></li>
+<li><p>Each release is created as a <strong>draft</strong>, allowing maintainers to review it before publishing.</p></li>
+<li><p>Documentation deployment automatically updates both <strong>GitHub Pages</strong> and the <strong>develop</strong> branch.</p></li>
+<li><p>All jobs are designed to fail early if an error occurs, ensuring consistent and traceable release artifacts.</p></li>
+</ul>
+</section>
+</section>
+<section id="update-documentation-workflow">
+<h3>Update Documentation Workflow<a class="headerlink" href="#update-documentation-workflow" title="Link to this heading"></a></h3>
+<div class="admonition important">
+<p class="admonition-title">Important</p>
+<p>The workflow determines the <strong>latest release</strong> based only on the <strong>most recent published release</strong>
+— that is, the <strong>latest release that is not marked as a draft</strong>.
+If you intend to update the documentation to reflect the latest release version, make sure
+that the desired release has been <strong>published</strong> and is <strong>not in draft state</strong>.
+Otherwise, the workflow may reference an earlier release instead.</p>
+</div>
+<p>This workflow automates the process of rebuilding and updating the project documentation
+on GitHub Pages <strong>without creating a new software release</strong>.
+It is intended for situations where only documentation content changes (e.g., text edits,
+new guides, or updated examples) and the codebase itself remains unchanged.</p>
+<p><strong>Workflow name:</strong> <code class="docutils literal notranslate"><span class="pre">Update</span> <span class="pre">docs</span></code></p>
+<p><strong>Trigger:</strong> <code class="docutils literal notranslate"><span class="pre">workflow_dispatch</span></code> (manual trigger from the GitHub Actions interface)</p>
+<p><strong>Purpose:</strong>
+- Rebuild the latest documentation using Sphinx and CMake
+- Publish the updated documentation to GitHub Pages
+- Maintain synchronization between the documentation and the main branch</p>
+<p><strong>Overview:</strong>
+The workflow is composed of a single job:</p>
+<ol class="arabic simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">update</span></code> — Builds and deploys the documentation to GitHub Pages.</p></li>
+</ol>
+<section id="job-update">
+<h4>Job — update<a class="headerlink" href="#job-update" title="Link to this heading"></a></h4>
+<p><strong>Runs on:</strong> <code class="docutils literal notranslate"><span class="pre">ubuntu-latest</span></code></p>
+<p><strong>Purpose:</strong>
+Rebuilds the documentation from the <code class="docutils literal notranslate"><span class="pre">main</span></code> branch and redeploys it to GitHub Pages.</p>
+<p><strong>Main steps:</strong></p>
+<ol class="arabic simple">
+<li><p><strong>Checkout repository</strong>
+Fetches the <code class="docutils literal notranslate"><span class="pre">main</span></code> branch with full commit history to ensure all documentation
+source files and CMake presets are available.</p></li>
+<li><p><strong>Install Sphinx</strong>
+Installs the required Python packages to build the documentation:
+- <code class="docutils literal notranslate"><span class="pre">sphinx</span></code> — core documentation generator
+- <code class="docutils literal notranslate"><span class="pre">sphinx-rtd-theme</span></code> — provides the Read the Docs HTML theme
+- <code class="docutils literal notranslate"><span class="pre">sphinx-intl</span></code> — enables translation and internationalization support</p></li>
+<li><p><strong>Configure and build project docs</strong>
+Uses the CMake workflow preset <code class="docutils literal notranslate"><span class="pre">update-docs</span></code> to generate the HTML documentation.
+The output is stored in <code class="docutils literal notranslate"><span class="pre">docs/build/html</span></code>.</p></li>
+<li><p><strong>Deploy to GitHub Pages</strong>
+Publishes the generated HTML documentation to the <code class="docutils literal notranslate"><span class="pre">gh-pages</span></code> branch using
+<code class="docutils literal notranslate"><span class="pre">peaceiris/actions-gh-pages</span></code>.
+The commit is made by the <code class="docutils literal notranslate"><span class="pre">github-actions[bot]</span></code> user and overwrites existing documentation
+with the new build.</p></li>
+</ol>
+</section>
+<section id="update-documentation-workflow-notes">
+<h4>Update Documentation Workflow Notes<a class="headerlink" href="#update-documentation-workflow-notes" title="Link to this heading"></a></h4>
+<ul class="simple">
+<li><p>The workflow is <strong>manually triggered</strong>, allowing maintainers to update documentation
+independently of code releases.</p></li>
+<li><p>It does <strong>not</strong> create new tags or modify the repository source code.</p></li>
+<li><p>It uses the same build system and structure as the <code class="docutils literal notranslate"><span class="pre">Deploy</span> <span class="pre">release</span></code> workflow to ensure
+consistency across documentation updates.</p></li>
+<li><p>Use this workflow when updating text, images, or examples within the documentation,
+but not when releasing new versions of the software.</p></li>
+</ul>
+</section>
+</section>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="unit_tests.html" class="btn btn-neutral float-left" title="Unit Tests" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2025, EEZA.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  
+
+<div class="rst-versions" data-toggle="rst-versions" role="note" aria-label="versions">
+
+  
+  
+
+  
+  
+    
+  
+
+  
+  
+    
+  
+
+  
+  
+  
+  
+  <span class="rst-current-version" data-toggle="rst-current-version">
+    v: 2025.12.12 (en)
+    <span class="fa fa-caret-down"></span>
+  </span>
+  
+  
+  <div class="rst-other-versions">
+  
+    
+    <dl>
+      <dt>Versions</dt>
+      
+        
+          
+          <dd>
+            <a style="color: yellow;" href="../index.html">
+              2025.12.12
+            </a>
+          </dd>
+        
+      
+    </dl>
+
+    
+    <dl>
+      <dt>Languages</dt>
+      
+        
+          
+          <dd>
+            <a style="color: yellow;" href="../index.html">
+              en
+            </a>
+          </dd>
+        
+      
+    </dl>
+    
+    <br>
+  </div>
+</div><script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>
