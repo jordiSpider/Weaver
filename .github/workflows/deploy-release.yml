@@ -147,6 +147,8 @@ jobs:
     # 🚀 Run only after the Windows builds complete
     needs: [build-windows, build-linux]
     runs-on: ubuntu-latest
+    permissions:
+      contents: write
     steps:
       # 🔹 Checkout repository again to prepare for tagging and release
       - name: Checkout repository
