@@ -272,7 +272,7 @@ fitness_function_coefficientOfVariation <- function(result_folder) {
 
 
 WeaverOptimiser$run(
-    population_size = 45, 
+    population_size = 10, 
     max_generations = 20,
     fitness_class = WeaverOptimiser$MultiObjectiveFitness$new(
         objectives = list(
@@ -294,14 +294,14 @@ WeaverOptimiser$run(
         ),
         order = c("totalTime", "minAbundance", "coefficientOfVariation")
     ),
-    program = "C:\\Users\\mcs20\\Desktop\\EEZA\\Weaver\\bin\\Weaver-Non-GUI-fast.exe",
-    output_path = "C:\\Users\\mcs20\\Desktop\\EEZA\\Weaver\\output", 
-    base_config_path = "C:\\Users\\mcs20\\Desktop\\EEZA\\Weaver\\config\\config_Roman_app", 
+    program = "/mnt/c/Users/mcs20/Desktop/EEZA/Jordi/Prueba/Weaver-Non-GUI-2025.12.12-Linux/bin/Weaver-Non-GUI",
+    output_path = "/home/macarse/output", 
+    base_config_path = "/mnt/c/Users/mcs20/Desktop/EEZA/Jordi/Weaver/config/config_Roman_app", 
     keepBest = TRUE,
     tournament_size = 5,
     crossover_prob = 0.8, 
     mutation_rate = 0.05, 
     seed = 0, 
-    num_cores = 45,
+    num_cores = 7,
     debug = TRUE
 )

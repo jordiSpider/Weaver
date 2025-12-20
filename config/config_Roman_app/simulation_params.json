@@ -16,7 +16,7 @@
         "growthAndReproTest": false,
         "initFromFixedSeed": {
             "enabled": true,
-            "fixedSeedValue": 3
+            "fixedSeedValue": 1
         },
         "outputs": {
             "saveAnimalConstitutiveTraits": true,
@@ -38,7 +38,7 @@
             "saveMassInfo": false
         },
         "numberOfCombinations": 1000,
-        "runDays": 10000,
+        "runDays": 1000,
         "timeStepsPerDay": 1.0
     },
     "version": "2025.12.12"
