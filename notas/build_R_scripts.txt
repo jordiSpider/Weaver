@@ -1,0 +1,56 @@
+Instalar R:
+===========
+
+sudo apt update
+sudo apt install r-base r-base-dev -y
+
+-----------------------------------------------------------------------------
+
+Requerimientos optimizador:
+===========================
+
+Paquetes:
+=========
+
+sudo apt install libfontconfig1-dev libharfbuzz-dev libfribidi-dev -y
+
+Dentro de R:
+============
+
+R
+
+> install.packages(c("R6", "future", "future.apply", "progressr", "ggplot2", "svglite", "dplyr", "limSolve"))
+
+-----------------------------------------------------------------------------
+
+Requerimientos config-generator:
+================================
+
+Paquetes:
+=========
+
+sudo apt install libcurl4-openssl-dev libssl-dev -y
+
+Dentro de R:
+============
+
+R
+
+> install.packages(c("shiny", "shinyFiles", "dplyr", "shinyBS", "plotly", "minpack.lm", "GA"))
+
+-----------------------------------------------------------------------------
+
+Ejecutar script:
+================
+
+R
+
+> source("<ruta_script>")
+
+-----------------------------------------------------------------------------
+
+Poner un aviso para WSL, donde se advierta que la ruta de los archivos de salida no 
+debe ser una ruta montada en mnt, ya que por defecto no se tienen permisos.
+
+Dentro del Explorador de archivo de Windows se puede acceder al contenido de WSL desde Windows.
+

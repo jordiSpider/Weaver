@@ -18,7 +18,7 @@
                 "CMAKE_EXPORT_COMPILE_COMMANDS": "ON",
                 "INCLUDE_DIR_NAME": "include",
                 "REPO_URL": "https://github.com/jordiSpider/Weaver",
-                "AUTHOR": "EEZA"
+                "AUTHOR": "Jordi Moya Laraño"
             }
         },
         {
@@ -110,7 +110,7 @@
             "description": "Preset for Release builds (optimized for performance).",
             "cacheVariables": {
                 "CMAKE_BUILD_TYPE": "Release",
-                "CPACK_PACKAGE_CONTACT": "miemail@ejemplo.com",
+                "CPACK_PACKAGE_CONTACT": "jordi@eeza.csic.es",
                 "CPACK_PACKAGE_DIRECTORY": "${sourceDir}/installer/${presetName}"
             }
         },

@@ -28,14 +28,15 @@ WeaverOptimiser$add_parameters(
         ),
         # WeaverOptimiser$RealValued$new(
         #     name = "rMaxScaleBiofilm", 
-        #     files = list(
+        #     min = 2.0, 
+        #     max = 5.0, 
+        #     fixed_destinations = list(
         #         list(
         #             file_path = "resource/patches/Biofilm_patch.json", 
         #             json_path = "patch$source$growthDynamics$growthRateParams$rMaxScale"
         #         )
-        #     ), 
-        #     min = 2.0, 
-        #     max = 5.0,
+        #     )), 
+        #     calculated_destinations = list(),
         #     constraints = list()
         # ),
         WeaverOptimiser$RealValued$new(

@@ -1,25 +1,26 @@
 
-# Weaver
+![Logo](docs/source/latest/_static/images/horizontal_centred_logo.png)
 
-![Deploy release status](https://github.com/jordiSpider/Weaver/actions/workflows/deploy-release.yml/badge.svg)
 ![License](https://img.shields.io/badge/license-MIT-green)
 ![C++](https://img.shields.io/badge/C++17-blue)
 ![Platform](https://img.shields.io/badge/platform-Windows%20%7C%20Linux-lightgrey)
+![GitHub release (latest by date)](https://img.shields.io/github/v/release/jordiSpider/Weaver)
+![Deploy release status](https://github.com/jordiSpider/Weaver/actions/workflows/deploy-release.yml/badge.svg)
 
 ---
 
 ## Table of Contents
 
-- [Weaver](#weaver)
-  - [Table of Contents](#table-of-contents)
-  - [🌍 Overview](#-overview)
-  - [🧭 Getting Started](#-getting-started)
-    - [🧑‍💻 For End Users](#-for-end-users)
-    - [🧠 For Developers](#-for-developers)
-  - [📘 Documentation](#-documentation)
-  - [🤝 Contributing](#-contributing)
-  - [📄 License](#-license)
-  - [References:](#references)
+- [Table of Contents](#table-of-contents)
+- [🌍 Overview](#-overview)
+- [🧭 Getting Started](#-getting-started)
+  - [🧑‍💻 For End Users](#-for-end-users)
+  - [🧠 For Developers](#-for-developers)
+- [📘 Documentation](#-documentation)
+- [🤝 Contributing](#-contributing)
+- [📄 License](#-license)
+- [Contact](#contact)
+- [References:](#references)
 
 ---
 
@@ -40,7 +41,7 @@ Among the new simulation functionalities, we can highlight: a) The code has been
 
 Finally, the code has been optimized using a “building blocks” philosophy [^6], making most individual algorithms easily portable to other platforms. This simulation platform will be made Open Source and include a User Manual, hopefully by the end of 2026.
 
-This research has been possible thanks to grants: Weaver - CGL2014-61314-EXP; ENGIWEB - CGL2015-66192-R (Spanish Ministry of Economy and Competitiveness), SPILL-ISLAND – PID2019-103863RB-I00 (funded by MCIN/AEI /10.13039/501100011033, the Spanish Research Agency) and SIMULPEST – TED2021-129653B-I00 (funded by MCIN/AEI /10.13039/501100011033 Spanish Research Agency, and European Union NextGenerationEU/PRTR), Investigo program - Junta de Andalucía - PRTR - NextGenerationEU.
+This research has been possible thanks to grants Weaver - CGL2014-61314-EXP; ENGIWEB - CGL2015-66192-R (Spanish Ministry of Economy and Competitiveness), SPILL-ISLAND – PID2019-103863RB-I00 (funded by MCIN/AEI /10.13039/501100011033, the Spanish Research Agency) and SIMULPEST – TED2021-129653B-I00 (funded by MCIN/AEI /10.13039/501100011033 Spanish Research Agency, and European Union NextGenerationEU/PRTR), Investigo program - Junta de Andalucía - PRTR - NextGenerationEU.
 
 ---
 
@@ -90,6 +91,20 @@ Developers are welcome to contribute new features or improvements. See [Contribu
 
 This project is licensed under the **MIT License**.
 See [LICENSE](LICENSE) for details.
+
+---
+
+## Contact
+
+For questions, bug reports, or suggestions regarding this software, please contact the main author:
+
+* **Primary Contact:** Jordi Moya Laraño
+* **Email:** jordi@eeza.csic.es
+
+* **Secondary Contact:** Mario Carmona Segovia
+* **Email:** mario.carmona.informatico@gmail.com
+
+---
 
 ## References:
 
