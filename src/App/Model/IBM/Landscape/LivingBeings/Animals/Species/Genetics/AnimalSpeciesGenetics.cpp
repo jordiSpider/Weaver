@@ -308,7 +308,7 @@ void AnimalSpeciesGenetics::generateLociPerTrait(const json& modifyAlleles)
 
 	for(IndividualLevelTrait* trait : individualLevelTraits)
 	{
-		trait->setPseudoValueLimits(lociPerTrait[trait->getOrder()], getTraitsPerModule(), 
+		trait->setPseudoValueRanges(lociPerTrait[trait->getOrder()], getTraitsPerModule(), 
 			getNumberOfLociPerTrait(), getRhoPerModuleVector(), getRhoRangePerModuleVector()
 		);
 	}

@@ -8,6 +8,7 @@
 
 
 #include <string>
+#include <algorithm>
 
 
 #include <boost/serialization/export.hpp>
@@ -148,7 +149,7 @@ public:
      * @param rhoPerModule Vector of rho values per module.
      * @param rhoRangePerModule Vector of rho ranges per module.
      */
-    void setPseudoValueLimits(const std::vector<Locus> &loci, const size_t traitsPerModule, const size_t numberOfLociPerTrait, const std::vector<PreciseDouble>& rhoPerModule, const std::vector<size_t>& rhoRangePerModule);
+    void setPseudoValueRanges(const std::vector<Locus> &loci, const size_t traitsPerModule, const size_t numberOfLociPerTrait, const std::vector<PreciseDouble>& rhoPerModule, const std::vector<size_t>& rhoRangePerModule);
 
     /**
      * @brief Returns the trait identifier string.
@@ -214,17 +215,15 @@ protected:
     /// Maximum restricted trait range.
     PreciseDouble maxTraitRestrictedRange;
 
-    /// Minimum trait limit.
-    PreciseDouble minTraitLimit;
+    PreciseDouble Pi;
 
-    /// Maximum trait limit.
-    PreciseDouble maxTraitLimit;
+    PreciseDouble K;
 
-    /// Minimum pseudo-value limit.
-    PreciseDouble minPseudoValueLimit;
+    /// Minimum pseudo-value range.
+    PreciseDouble minPseudoValueRange;
 
-    /// Maximum pseudo-value limit.
-    PreciseDouble maxPseudoValueLimit;
+    /// Maximum pseudo-value range.
+    PreciseDouble maxPseudoValueRange;
 
     /// Associated file name.
     std::string fileName;
@@ -239,17 +238,15 @@ protected:
     std::string elementStr;
 
 
-    /// Returns minimum pseudo-value limit.
-    const PreciseDouble& getMinPseudoValueLimit() const;
+    /// Returns minimum pseudo-value range.
+    const PreciseDouble& getMinPseudoValueRange() const;
 
-    /// Returns maximum pseudo-value limit.
-    const PreciseDouble& getMaxPseudoValueLimit() const;
+    /// Returns maximum pseudo-value range.
+    const PreciseDouble& getMaxPseudoValueRange() const;
 
-    /// Returns minimum trait limit.
-    const PreciseDouble& getMinTraitLimit() const;
+    const PreciseDouble& getPi() const;
 
-    /// Returns maximum trait limit.
-    const PreciseDouble& getMaxTraitLimit() const;
+    const PreciseDouble& getK() const;
 };
 
 #endif // INDIVIDUAL_LEVEL_TRAIT_H_

@@ -224,7 +224,7 @@ PreciseDouble MathFunctions::linearInterpolate(const PreciseDouble& x, const Pre
 	PreciseDouble result = 0.0;
 
 	if(max_x != min_x) {
-		result = min_y + ( (x - min_x) * ((max_y - min_y)/(max_x - min_x)) );
+		result = min_y + (x - min_x) * (max_y - min_y) / (max_x - min_x);
 	}
 
 	return result;
