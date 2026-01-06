@@ -99,7 +99,7 @@ generate_animal_species_json = function(environment, output_path, name, version)
                 list(
                     definitionType = "SpeciesLevel",
                     individualLevelParams = list(
-                        limits = list(
+                        pctg = list(
                             max = NULL,
                             min = NULL
                         ),
@@ -122,9 +122,9 @@ generate_animal_species_json = function(environment, output_path, name, version)
                 list(
                     definitionType = "IndividualLevel",
                     individualLevelParams = list(
-                        limits = list(
-                            max = get(paste(c("json.traits", trait, "limits.max"), collapse = "."), envir = environment),
-                            min = get(paste(c("json.traits", trait, "limits.min"), collapse = "."), envir = environment)
+                        pctg = list(
+                            max = get(paste(c("json.traits", trait, "pctg.max"), collapse = "."), envir = environment),
+                            min = get(paste(c("json.traits", trait, "pctg.min"), collapse = "."), envir = environment)
                         ),
                         ranges = list(
                             max = ranges_max,
@@ -161,7 +161,7 @@ generate_animal_species_json = function(environment, output_path, name, version)
                         list(
                             definitionType = "SpeciesLevel",
                             individualLevelParams = list(
-                                limits = list(
+                                pctg = list(
                                     max = NULL,
                                     min = NULL
                                 ),

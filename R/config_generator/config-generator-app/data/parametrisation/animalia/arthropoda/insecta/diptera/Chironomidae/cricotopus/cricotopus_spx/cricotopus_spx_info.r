@@ -699,8 +699,8 @@ json.genetics.modifyAlleles = list(
 # The "speciesLevelParams" typically means a constant value for the entire species.
 
 ## base - actE_met // Literature in: Ehnes et al. 2011 Ecology Letters (Mesostigmata, soil fauna)
-json.traits.base.actE_met.limits.max = 0.0  # Upper limit on individual variation
-json.traits.base.actE_met.limits.min = 0.0  # Lower limit on individual variation
+json.traits.base.actE_met.pctg.max = 0.0  # Upper limit on individual variation
+json.traits.base.actE_met.pctg.min = 0.0  # Lower limit on individual variation
 json.traits.base.actE_met.ranges.max = 0.379  # Upper range boundary for sampling initial trait values
 json.traits.base.actE_met.ranges.min = 0.379  # Lower range boundary for sampling initial trait values
 json.traits.base.actE_met.restrictValue = 0.01  # Precision or incremental step for this trait
@@ -712,8 +712,8 @@ json.traits.base.actE_met.temperature.temperatureOptimal = 0.0
 json.traits.base.actE_met.temperature.temperatureRef = 0.0
 
 ## base - assim // Literature in: Taken from Pergamasus longicornis in Bowman 2019
-json.traits.base.assim.limits.max = 0.0  # Upper limit on assimilation rate
-json.traits.base.assim.limits.min = 0.0  # Lower limit on assimilation rate
+json.traits.base.assim.pctg.max = 0.0  # Upper limit on assimilation rate
+json.traits.base.assim.pctg.min = 0.0  # Lower limit on assimilation rate
 json.traits.base.assim.ranges.max = assiM  # Upper range boundary for sampling assimilation
 json.traits.base.assim.ranges.min = assiM  # Lower range boundary for sampling assimilation
 json.traits.base.assim.restrictValue = 0.0  # Precision or incremental step
@@ -741,8 +741,8 @@ devTime_TPC = calculatePawarTPC(
 )
 
 
-json.traits.base.devTime.limits.max = 0.0  # If set NULL, there is no variation over the maximum range.
-json.traits.base.devTime.limits.min = 0.0  # If set NULL, there is no variation over the minimum range.
+json.traits.base.devTime.pctg.max = 0.0  # If set NULL, there is no variation over the maximum range.
+json.traits.base.devTime.pctg.min = 0.0  # If set NULL, there is no variation over the minimum range.
 json.traits.base.devTime.ranges.max = devTime_TPC$traitAtTopt  # If max and min = max(ageVector), no genetic variation
 json.traits.base.devTime.ranges.min = devTime_TPC$traitAtTopt  # If max and min = max(ageVector), no genetic variation
 json.traits.base.devTime.restrictValue = 0.0  # If NULL, No increment restriction will be applied
@@ -754,8 +754,8 @@ json.traits.base.devTime.temperature.temperatureOptimal = devTime_TPC$Topt
 json.traits.base.devTime.temperature.temperatureRef = tempFromLab
 
 ## base - eggDevTime
-json.traits.base.eggDevTime.limits.max = 0.0  # Max for individual egg development time
-json.traits.base.eggDevTime.limits.min = 0.0  # Min for individual egg development time
+json.traits.base.eggDevTime.pctg.max = 0.0  # Max for individual egg development time
+json.traits.base.eggDevTime.pctg.min = 0.0  # Min for individual egg development time
 json.traits.base.eggDevTime.ranges.max = 21.0  # Upper boundary for sampling
 json.traits.base.eggDevTime.ranges.min = 21.0  # Lower boundary for sampling
 json.traits.base.eggDevTime.restrictValue = 0.0  # Increment step
@@ -767,15 +767,15 @@ json.traits.base.eggDevTime.temperature.temperatureOptimal = 0.0
 json.traits.base.eggDevTime.temperature.temperatureRef = 0.0
 
 ## base - energy_tank
-json.traits.base.energy_tank.limits.max = 0.010000000000000014  # Maximum capacity for the "energy tank"
-json.traits.base.energy_tank.limits.min = 0.017500000000000012  # Minimum capacity
+json.traits.base.energy_tank.pctg.max = 0.010000000000000014  # Maximum capacity for the "energy tank"
+json.traits.base.energy_tank.pctg.min = 0.017500000000000012  # Minimum capacity
 json.traits.base.energy_tank.ranges.max = 0.36  # Upper boundary for sampling
 json.traits.base.energy_tank.ranges.min = 0.32  # Lower boundary for sampling
 json.traits.base.energy_tank.restrictValue = 0.01  # Increment step
 
 ## base - factorEggMass
-json.traits.base.factorEggMass.limits.max = 0.0 
-json.traits.base.factorEggMass.limits.min = 0.0
+json.traits.base.factorEggMass.pctg.max = 0.0 
+json.traits.base.factorEggMass.pctg.min = 0.0
 json.traits.base.factorEggMass.ranges.max = 0.0
 json.traits.base.factorEggMass.ranges.min = 0.0
 json.traits.base.factorEggMass.restrictValue = 0.0  
@@ -787,8 +787,8 @@ json.traits.base.factorEggMass.temperature.temperatureOptimal = 0.0
 json.traits.base.factorEggMass.temperature.temperatureRef = 0.0
 
 ## base - dummy
-json.traits.base.dummy.limits.max = 0.0 
-json.traits.base.dummy.limits.min = 0.0
+json.traits.base.dummy.pctg.max = 0.0 
+json.traits.base.dummy.pctg.min = 0.0
 json.traits.base.dummy.ranges.max = 1.0
 json.traits.base.dummy.ranges.min = 0.0
 json.traits.base.dummy.restrictValue = 0.0 
@@ -811,8 +811,8 @@ growthK_TPC = calculatePawarTPC(
 	Tref = tempFromLab
 )
 
-json.traits.base.growth.limits.max = 0.0  # Maximum growth rate limit (0 means no constraint or zero?)
-json.traits.base.growth.limits.min = 0.0  # Minimum growth rate limit
+json.traits.base.growth.pctg.max = 0.0  # Maximum growth rate limit (0 means no constraint or zero?)
+json.traits.base.growth.pctg.min = 0.0  # Minimum growth rate limit
 json.traits.base.growth.ranges.max = growthK_TPC$traitAtTopt  # Upper boundary for sampling growth rate
 json.traits.base.growth.ranges.min = growthK_TPC$traitAtTopt  # Lower boundary for sampling growth rate
 json.traits.base.growth.restrictValue = 0.01  # Increment step
@@ -824,8 +824,8 @@ json.traits.base.growth.temperature.temperatureOptimal = growthK_TPC$Topt
 json.traits.base.growth.temperature.temperatureRef = tempFromLab
 
 ## base - coeffMassForScopeRadius
-json.traits.base.coeffMassForScopeRadius.limits.max = 0.1  
-json.traits.base.coeffMassForScopeRadius.limits.min = 0.1 
+json.traits.base.coeffMassForScopeRadius.pctg.max = 0.1  
+json.traits.base.coeffMassForScopeRadius.pctg.min = 0.1 
 json.traits.base.coeffMassForScopeRadius.ranges.max = coeffMassForScopeRadiusMax 
 json.traits.base.coeffMassForScopeRadius.ranges.min = coeffMassForScopeRadiusMin
 json.traits.base.coeffMassForScopeRadius.restrictValue = 0.0  
@@ -837,8 +837,8 @@ json.traits.base.coeffMassForScopeRadius.temperature.temperatureOptimal = 0.0
 json.traits.base.coeffMassForScopeRadius.temperature.temperatureRef = 0.0
 
 ## base - scaleMassForScopeRadius
-json.traits.base.scaleMassForScopeRadius.limits.max = 0.0  
-json.traits.base.scaleMassForScopeRadius.limits.min = 0.0 
+json.traits.base.scaleMassForScopeRadius.pctg.max = 0.0  
+json.traits.base.scaleMassForScopeRadius.pctg.min = 0.0 
 json.traits.base.scaleMassForScopeRadius.ranges.max = scaleMassForScopeRadiusMax 
 json.traits.base.scaleMassForScopeRadius.ranges.min = scaleMassForScopeRadiusMin
 json.traits.base.scaleMassForScopeRadius.restrictValue = 0.0  
@@ -850,8 +850,8 @@ json.traits.base.scaleMassForScopeRadius.temperature.temperatureOptimal = 0.0
 json.traits.base.scaleMassForScopeRadius.temperature.temperatureRef = 0.0
 
 ## base - coeffMassForInteractionRadius
-json.traits.base.coeffMassForInteractionRadius.limits.max = 0.0  
-json.traits.base.coeffMassForInteractionRadius.limits.min = 0.0 
+json.traits.base.coeffMassForInteractionRadius.pctg.max = 0.0  
+json.traits.base.coeffMassForInteractionRadius.pctg.min = 0.0 
 json.traits.base.coeffMassForInteractionRadius.ranges.max = coeffMassForInteractionRadiusMax 
 json.traits.base.coeffMassForInteractionRadius.ranges.min = coeffMassForInteractionRadiusMin
 json.traits.base.coeffMassForInteractionRadius.restrictValue = 0.0  
@@ -863,8 +863,8 @@ json.traits.base.coeffMassForInteractionRadius.temperature.temperatureOptimal = 
 json.traits.base.coeffMassForInteractionRadius.temperature.temperatureRef = 0.0
 
 ## base - scaleMassForInteractionRadius
-json.traits.base.scaleMassForInteractionRadius.limits.max = 0.0  
-json.traits.base.scaleMassForInteractionRadius.limits.min = 0.0 
+json.traits.base.scaleMassForInteractionRadius.pctg.max = 0.0  
+json.traits.base.scaleMassForInteractionRadius.pctg.min = 0.0 
 json.traits.base.scaleMassForInteractionRadius.ranges.max = scaleMassForInteractionRadiusMax 
 json.traits.base.scaleMassForInteractionRadius.ranges.min = scaleMassForInteractionRadiusMin
 json.traits.base.scaleMassForInteractionRadius.restrictValue = 0.0  
@@ -876,8 +876,8 @@ json.traits.base.scaleMassForInteractionRadius.temperature.temperatureOptimal = 
 json.traits.base.scaleMassForInteractionRadius.temperature.temperatureRef = 0.0
 
 ## base - coeffMassForSearchRadius
-json.traits.base.coeffMassForSearchRadius.limits.max = 0.0  
-json.traits.base.coeffMassForSearchRadius.limits.min = 0.0 
+json.traits.base.coeffMassForSearchRadius.pctg.max = 0.0  
+json.traits.base.coeffMassForSearchRadius.pctg.min = 0.0 
 json.traits.base.coeffMassForSearchRadius.ranges.max = coeffMassForSearchRadiusMax 
 json.traits.base.coeffMassForSearchRadius.ranges.min = coeffMassForSearchRadiusMin
 json.traits.base.coeffMassForSearchRadius.restrictValue = 0.0  
@@ -889,8 +889,8 @@ json.traits.base.coeffMassForSearchRadius.temperature.temperatureOptimal = json.
 json.traits.base.coeffMassForSearchRadius.temperature.temperatureRef = json.traits.base.growth.temperature.temperatureRef
 
 ## base - scaleMassForSearchRadius
-json.traits.base.scaleMassForSearchRadius.limits.max = 0.0  
-json.traits.base.scaleMassForSearchRadius.limits.min = 0.0 
+json.traits.base.scaleMassForSearchRadius.pctg.max = 0.0  
+json.traits.base.scaleMassForSearchRadius.pctg.min = 0.0 
 json.traits.base.scaleMassForSearchRadius.ranges.max = scaleMassForSearchRadiusMax 
 json.traits.base.scaleMassForSearchRadius.ranges.min = scaleMassForSearchRadiusMin
 json.traits.base.scaleMassForSearchRadius.restrictValue = 0.0  
@@ -902,8 +902,8 @@ json.traits.base.scaleMassForSearchRadius.temperature.temperatureOptimal = 0.0
 json.traits.base.scaleMassForSearchRadius.temperature.temperatureRef = 0.0
 
 ## base - coeffMassForSpeed
-json.traits.base.coeffMassForSpeed.limits.max = 0.0  
-json.traits.base.coeffMassForSpeed.limits.min = 0.0 
+json.traits.base.coeffMassForSpeed.pctg.max = 0.0  
+json.traits.base.coeffMassForSpeed.pctg.min = 0.0 
 json.traits.base.coeffMassForSpeed.ranges.max = coeffMassForSpeedMax 
 json.traits.base.coeffMassForSpeed.ranges.min = coeffMassForSpeedMin
 json.traits.base.coeffMassForSpeed.restrictValue = 0.0  
@@ -915,8 +915,8 @@ json.traits.base.coeffMassForSpeed.temperature.temperatureOptimal = json.traits.
 json.traits.base.coeffMassForSpeed.temperature.temperatureRef = json.traits.base.growth.temperature.temperatureRef
 
 ## base - scaleMassForSpeed
-json.traits.base.scaleMassForSpeed.limits.max = 0.0  
-json.traits.base.scaleMassForSpeed.limits.min = 0.0 
+json.traits.base.scaleMassForSpeed.pctg.max = 0.0  
+json.traits.base.scaleMassForSpeed.pctg.min = 0.0 
 json.traits.base.scaleMassForSpeed.ranges.max = scaleMassForSpeedMax 
 json.traits.base.scaleMassForSpeed.ranges.min = scaleMassForSpeedMin
 json.traits.base.scaleMassForSpeed.restrictValue = 0.0  
@@ -928,8 +928,8 @@ json.traits.base.scaleMassForSpeed.temperature.temperatureOptimal = 0.0
 json.traits.base.scaleMassForSpeed.temperature.temperatureRef = 0.0
 
 ## base - lengthAtMaturation
-json.traits.base.lengthAtMaturation.limits.max = 0.0  # Maximum length limit (0 could mean no constraint)
-json.traits.base.lengthAtMaturation.limits.min = 0.0  # Minimum length limit
+json.traits.base.lengthAtMaturation.pctg.max = 0.0  # Maximum length limit (0 could mean no constraint)
+json.traits.base.lengthAtMaturation.pctg.min = 0.0  # Minimum length limit
 json.traits.base.lengthAtMaturation.ranges.max = lMax  # Upper boundary for sampling length
 json.traits.base.lengthAtMaturation.ranges.min = lMin  # Lower boundary for sampling length
 json.traits.base.lengthAtMaturation.restrictValue = 0.0  # Increment step
@@ -938,8 +938,8 @@ json.traits.base.lengthAtMaturation.temperature.dependent = TRUE
 json.traits.base.lengthAtMaturation.temperature.tempSizeRuleVector = calculateTSR(fitted, cricotopus_data, coefficientForMassAforMature, scaleForMassBforMature)
 
 ## base - longevitySinceMaturation
-json.traits.base.longevitySinceMaturation.limits.max = 0.0  
-json.traits.base.longevitySinceMaturation.limits.min = 0.0 
+json.traits.base.longevitySinceMaturation.pctg.max = 0.0  
+json.traits.base.longevitySinceMaturation.pctg.min = 0.0 
 json.traits.base.longevitySinceMaturation.ranges.max = longevitySinceMaturation 
 json.traits.base.longevitySinceMaturation.ranges.min = longevitySinceMaturation
 json.traits.base.longevitySinceMaturation.restrictValue = 0.0  
@@ -951,8 +951,8 @@ json.traits.base.longevitySinceMaturation.temperature.temperatureOptimal = 0.0
 json.traits.base.longevitySinceMaturation.temperature.temperatureRef = 0.0
 
 ## base - memoryDepth
-json.traits.base.memoryDepth.limits.max = 0.0  
-json.traits.base.memoryDepth.limits.min = 0.0 
+json.traits.base.memoryDepth.pctg.max = 0.0  
+json.traits.base.memoryDepth.pctg.min = 0.0 
 json.traits.base.memoryDepth.ranges.max = 5.0 
 json.traits.base.memoryDepth.ranges.min = 5.0
 json.traits.base.memoryDepth.restrictValue = 0.01
@@ -964,8 +964,8 @@ json.traits.base.memoryDepth.temperature.temperatureOptimal = 0.0
 json.traits.base.memoryDepth.temperature.temperatureRef = 0.0
 
 ## base - met_rate
-json.traits.base.met_rate.limits.max = 0.07474999999999991 
-json.traits.base.met_rate.limits.min = 0.24024999999999977
+json.traits.base.met_rate.pctg.max = 0.07474999999999991 
+json.traits.base.met_rate.pctg.min = 0.24024999999999977
 json.traits.base.met_rate.ranges.max = 0.7005 
 json.traits.base.met_rate.ranges.min = 0.6805
 json.traits.base.met_rate.restrictValue = 0.01 
@@ -977,8 +977,8 @@ json.traits.base.met_rate.temperature.temperatureOptimal = 0.0
 json.traits.base.met_rate.temperature.temperatureRef = 0.0
 
 ## base - pupaPeriodTime
-json.traits.base.pupaPeriodTime.limits.max = 0.0
-json.traits.base.pupaPeriodTime.limits.min = 0.0
+json.traits.base.pupaPeriodTime.pctg.max = 0.0
+json.traits.base.pupaPeriodTime.pctg.min = 0.0
 json.traits.base.pupaPeriodTime.ranges.max = pupaPeriodTime 
 json.traits.base.pupaPeriodTime.ranges.min = pupaPeriodTime
 json.traits.base.pupaPeriodTime.restrictValue = 0.0 
@@ -990,8 +990,8 @@ json.traits.base.pupaPeriodTime.temperature.temperatureOptimal = 0.0
 json.traits.base.pupaPeriodTime.temperature.temperatureRef = 0.0
 
 ## base - shock_resistance
-json.traits.base.shock_resistance.limits.max = 0.04  # Maximum limit for shock resistance
-json.traits.base.shock_resistance.limits.min = 0.1   # Minimum limit for shock resistance
+json.traits.base.shock_resistance.pctg.max = 0.04  # Maximum limit for shock resistance
+json.traits.base.shock_resistance.pctg.min = 0.1   # Minimum limit for shock resistance
 json.traits.base.shock_resistance.ranges.max = 410.0 # Upper boundary for sampling shock resistance
 json.traits.base.shock_resistance.ranges.min = 400.0 # Lower boundary for sampling shock resistance
 json.traits.base.shock_resistance.restrictValue = 0.01  # Increment step
@@ -1003,8 +1003,8 @@ json.traits.base.shock_resistance.temperature.temperatureOptimal = 0.0
 json.traits.base.shock_resistance.temperature.temperatureRef = 0.0
 
 ## base - voracityProportion
-json.traits.base.voracityProportion.limits.max = 0.0
-json.traits.base.voracityProportion.limits.min = 0.0
+json.traits.base.voracityProportion.pctg.max = 0.0
+json.traits.base.voracityProportion.pctg.min = 0.0
 json.traits.base.voracityProportion.ranges.max = 1.0
 json.traits.base.voracityProportion.ranges.min = 1.0
 json.traits.base.voracityProportion.restrictValue = 0.0
@@ -1016,8 +1016,8 @@ json.traits.base.voracityProportion.temperature.temperatureOptimal = json.traits
 json.traits.base.voracityProportion.temperature.temperatureRef = json.traits.base.growth.temperature.temperatureRef
 
 ## base - eggFertility
-json.traits.base.eggFertility.limits.max = 0.0 
-json.traits.base.eggFertility.limits.min = 0.0 
+json.traits.base.eggFertility.pctg.max = 0.0 
+json.traits.base.eggFertility.pctg.min = 0.0 
 json.traits.base.eggFertility.ranges.max = 1.0 
 json.traits.base.eggFertility.ranges.min = 1.0  
 json.traits.base.eggFertility.restrictValue = 0.0 
@@ -1029,8 +1029,8 @@ json.traits.base.eggFertility.temperature.temperatureOptimal = 0.0
 json.traits.base.eggFertility.temperature.temperatureRef = 0.0
 
 ## decisions - escapeProbabilityWeight - Pvelocity
-json.traits.decisions.escapeProbabilityWeight.Pvelocity.limits.max = 0.0 
-json.traits.decisions.escapeProbabilityWeight.Pvelocity.limits.min = 0.0 
+json.traits.decisions.escapeProbabilityWeight.Pvelocity.pctg.max = 0.0 
+json.traits.decisions.escapeProbabilityWeight.Pvelocity.pctg.min = 0.0 
 json.traits.decisions.escapeProbabilityWeight.Pvelocity.ranges.max = 0.33 
 json.traits.decisions.escapeProbabilityWeight.Pvelocity.ranges.min = 0.33 
 json.traits.decisions.escapeProbabilityWeight.Pvelocity.restrictValue = 0.0
@@ -1042,8 +1042,8 @@ json.traits.decisions.escapeProbabilityWeight.Pvelocity.temperature.temperatureO
 json.traits.decisions.escapeProbabilityWeight.Pvelocity.temperature.temperatureRef = 0.0
 
 ## decisions - escapeProbabilityWeight - PattackDistance
-json.traits.decisions.escapeProbabilityWeight.PattackDistance.limits.max = 0.0 
-json.traits.decisions.escapeProbabilityWeight.PattackDistance.limits.min = 0.0 
+json.traits.decisions.escapeProbabilityWeight.PattackDistance.pctg.max = 0.0 
+json.traits.decisions.escapeProbabilityWeight.PattackDistance.pctg.min = 0.0 
 json.traits.decisions.escapeProbabilityWeight.PattackDistance.ranges.max = 0.33 
 json.traits.decisions.escapeProbabilityWeight.PattackDistance.ranges.min = 0.33 
 json.traits.decisions.escapeProbabilityWeight.PattackDistance.restrictValue = 0.0
@@ -1055,8 +1055,8 @@ json.traits.decisions.escapeProbabilityWeight.PattackDistance.temperature.temper
 json.traits.decisions.escapeProbabilityWeight.PattackDistance.temperature.temperatureRef = 0.0
 
 ## decisions - predationProbabilityWeight - Preach
-json.traits.decisions.predationProbabilityWeight.Preach.limits.max = 0.0 
-json.traits.decisions.predationProbabilityWeight.Preach.limits.min = 0.0 
+json.traits.decisions.predationProbabilityWeight.Preach.pctg.max = 0.0 
+json.traits.decisions.predationProbabilityWeight.Preach.pctg.min = 0.0 
 json.traits.decisions.predationProbabilityWeight.Preach.ranges.max = 0.25 
 json.traits.decisions.predationProbabilityWeight.Preach.ranges.min = 0.25 
 json.traits.decisions.predationProbabilityWeight.Preach.restrictValue = 0.0
@@ -1068,8 +1068,8 @@ json.traits.decisions.predationProbabilityWeight.Preach.temperature.temperatureO
 json.traits.decisions.predationProbabilityWeight.Preach.temperature.temperatureRef = 0.0
 
 ## decisions - predationProbabilityWeight - Ppdf
-json.traits.decisions.predationProbabilityWeight.Ppdf.limits.max = 0.0 
-json.traits.decisions.predationProbabilityWeight.Ppdf.limits.min = 0.0 
+json.traits.decisions.predationProbabilityWeight.Ppdf.pctg.max = 0.0 
+json.traits.decisions.predationProbabilityWeight.Ppdf.pctg.min = 0.0 
 json.traits.decisions.predationProbabilityWeight.Ppdf.ranges.max = 0.25 
 json.traits.decisions.predationProbabilityWeight.Ppdf.ranges.min = 0.25 
 json.traits.decisions.predationProbabilityWeight.Ppdf.restrictValue = 0.0
@@ -1081,8 +1081,8 @@ json.traits.decisions.predationProbabilityWeight.Ppdf.temperature.temperatureOpt
 json.traits.decisions.predationProbabilityWeight.Ppdf.temperature.temperatureRef = 0.0
 
 ## decisions - predationProbabilityWeight - PvorPred
-json.traits.decisions.predationProbabilityWeight.PvorPred.limits.max = 0.0 
-json.traits.decisions.predationProbabilityWeight.PvorPred.limits.min = 0.0 
+json.traits.decisions.predationProbabilityWeight.PvorPred.pctg.max = 0.0 
+json.traits.decisions.predationProbabilityWeight.PvorPred.pctg.min = 0.0 
 json.traits.decisions.predationProbabilityWeight.PvorPred.ranges.max = 0.25 
 json.traits.decisions.predationProbabilityWeight.PvorPred.ranges.min = 0.25 
 json.traits.decisions.predationProbabilityWeight.PvorPred.restrictValue = 0.0
@@ -1094,8 +1094,8 @@ json.traits.decisions.predationProbabilityWeight.PvorPred.temperature.temperatur
 json.traits.decisions.predationProbabilityWeight.PvorPred.temperature.temperatureRef = 0.0
 
 ## decisions - edibilityValueWeight - Pp
-json.traits.decisions.edibilityValueWeight.Pp.limits.max = 0.0 
-json.traits.decisions.edibilityValueWeight.Pp.limits.min = 0.0 
+json.traits.decisions.edibilityValueWeight.Pp.pctg.max = 0.0 
+json.traits.decisions.edibilityValueWeight.Pp.pctg.min = 0.0 
 json.traits.decisions.edibilityValueWeight.Pp.ranges.max = 0.5 
 json.traits.decisions.edibilityValueWeight.Pp.ranges.min = 0.5 
 json.traits.decisions.edibilityValueWeight.Pp.restrictValue = 0.0
@@ -1107,8 +1107,8 @@ json.traits.decisions.edibilityValueWeight.Pp.temperature.temperatureOptimal = 0
 json.traits.decisions.edibilityValueWeight.Pp.temperature.temperatureRef = 0.0
 
 ## decisions - preferences - experienceInfluenceWithEdibles
-json.traits.decisions.preferences.experienceInfluenceWithEdibles.limits.max = 0.0 
-json.traits.decisions.preferences.experienceInfluenceWithEdibles.limits.min = 0.0 
+json.traits.decisions.preferences.experienceInfluenceWithEdibles.pctg.max = 0.0 
+json.traits.decisions.preferences.experienceInfluenceWithEdibles.pctg.min = 0.0 
 json.traits.decisions.preferences.experienceInfluenceWithEdibles.ranges.max = 0.99 
 json.traits.decisions.preferences.experienceInfluenceWithEdibles.ranges.min = 0.99 
 json.traits.decisions.preferences.experienceInfluenceWithEdibles.restrictValue = 0.0
@@ -1120,8 +1120,8 @@ json.traits.decisions.preferences.experienceInfluenceWithEdibles.temperature.tem
 json.traits.decisions.preferences.experienceInfluenceWithEdibles.temperature.temperatureRef = 0.0
 
 ## probabilityDensityFunction - muForPDF
-json.traits.probabilityDensityFunction.muForPDF.limits.max = 0.0 
-json.traits.probabilityDensityFunction.muForPDF.limits.min = 0.0 
+json.traits.probabilityDensityFunction.muForPDF.pctg.max = 0.0 
+json.traits.probabilityDensityFunction.muForPDF.pctg.min = 0.0 
 json.traits.probabilityDensityFunction.muForPDF.ranges.max = 1.44
 json.traits.probabilityDensityFunction.muForPDF.ranges.min = 1.44
 json.traits.probabilityDensityFunction.muForPDF.restrictValue = 0.0
@@ -1133,8 +1133,8 @@ json.traits.probabilityDensityFunction.muForPDF.temperature.temperatureOptimal =
 json.traits.probabilityDensityFunction.muForPDF.temperature.temperatureRef = 0.0
 
 ## probabilityDensityFunction - sigmaForPDF
-json.traits.probabilityDensityFunction.sigmaForPDF.limits.max = 0.0 
-json.traits.probabilityDensityFunction.sigmaForPDF.limits.min = 0.0 
+json.traits.probabilityDensityFunction.sigmaForPDF.pctg.max = 0.0 
+json.traits.probabilityDensityFunction.sigmaForPDF.pctg.min = 0.0 
 json.traits.probabilityDensityFunction.sigmaForPDF.ranges.max = 2.34
 json.traits.probabilityDensityFunction.sigmaForPDF.ranges.min = 2.34
 json.traits.probabilityDensityFunction.sigmaForPDF.restrictValue = 0.0
@@ -1146,8 +1146,8 @@ json.traits.probabilityDensityFunction.sigmaForPDF.temperature.temperatureOptima
 json.traits.probabilityDensityFunction.sigmaForPDF.temperature.temperatureRef = 0.0
 
 ## cellValue - cellEvaluationBiomass
-json.traits.cellValue.cellEvaluationBiomass.limits.max = 0.0 
-json.traits.cellValue.cellEvaluationBiomass.limits.min = 0.0 
+json.traits.cellValue.cellEvaluationBiomass.pctg.max = 0.0 
+json.traits.cellValue.cellEvaluationBiomass.pctg.min = 0.0 
 json.traits.cellValue.cellEvaluationBiomass.ranges.max = 0.332698376233407 
 json.traits.cellValue.cellEvaluationBiomass.ranges.min = 0.332698376233407 
 json.traits.cellValue.cellEvaluationBiomass.restrictValue = 0.0
@@ -1159,8 +1159,8 @@ json.traits.cellValue.cellEvaluationBiomass.temperature.temperatureOptimal = 0.0
 json.traits.cellValue.cellEvaluationBiomass.temperature.temperatureRef = 0.0
 
 ## cellValue - cellEvaluationProConspecific
-json.traits.cellValue.cellEvaluationProConspecific.limits.max = 0.0 
-json.traits.cellValue.cellEvaluationProConspecific.limits.min = 0.0 
+json.traits.cellValue.cellEvaluationProConspecific.pctg.max = 0.0 
+json.traits.cellValue.cellEvaluationProConspecific.pctg.min = 0.0 
 json.traits.cellValue.cellEvaluationProConspecific.ranges.max = 0.5 
 json.traits.cellValue.cellEvaluationProConspecific.ranges.min = 0.5
 json.traits.cellValue.cellEvaluationProConspecific.restrictValue = 0.0
@@ -1172,8 +1172,8 @@ json.traits.cellValue.cellEvaluationProConspecific.temperature.temperatureOptima
 json.traits.cellValue.cellEvaluationProConspecific.temperature.temperatureRef = 0.0
 
 ## cellValue - conspecificWeight
-json.traits.cellValue.conspecificWeight.limits.max = 0.0 
-json.traits.cellValue.conspecificWeight.limits.min = 0.0 
+json.traits.cellValue.conspecificWeight.pctg.max = 0.0 
+json.traits.cellValue.conspecificWeight.pctg.min = 0.0 
 json.traits.cellValue.conspecificWeight.ranges.max = 0.0 
 json.traits.cellValue.conspecificWeight.ranges.min = 0.0 
 json.traits.cellValue.conspecificWeight.restrictValue = 0.0
