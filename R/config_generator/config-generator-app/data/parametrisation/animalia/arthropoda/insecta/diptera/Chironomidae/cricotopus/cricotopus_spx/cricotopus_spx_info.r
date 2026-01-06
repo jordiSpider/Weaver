@@ -1306,61 +1306,6 @@ json.sexualType = "diploid"  # Reproduction type (e.g., haplodiploid, diploid, e
 json.statisticsIndividualsPerInstar = 1000  # Number of individuals used in statistics per instar
 json.tempFromLab = tempFromLab  # Reference temperature from lab conditions
 
-# =====================
-# ONTOGENETIC LINKS 
-# =====================
-
-#@ TODO: Introduce here the table with the preferences and profitabilities (trophic network).
-
-json.ontogenetic_links <- data.frame(
-    Species_name_prey = character(0),
-    Instar_predator = numeric(0),
-    Instar_prey = numeric(0), 
-    Preferences = numeric(0), 
-    Profitability = numeric(0),  
-    stringsAsFactors = FALSE 
-)
-
-
-########################
-##                    ##
-##  Non-Mature Links  ##
-##                    ##
-########################
-
-json.ontogenetic_links <- rbind(
-	json.ontogenetic_links,
-	do.call(rbind, lapply(1:length(json.individualsPerInstar)-1, function(instar) {
-		data.frame(
-			Species_name_prey = "Biofilm",
-			Instar_predator = instar,
-			Instar_prey = 1,
-			Preferences = 0.99,
-			Profitability = 0.1,
-			stringsAsFactors = FALSE
-		)
-	}))
-)
-
-
-####################
-##                ##
-##  Mature Links  ##
-##                ##
-####################
-
-json.ontogenetic_links <- rbind(
-	json.ontogenetic_links,
-	data.frame(
-		Species_name_prey = "Plant1",
-		Instar_predator = length(json.individualsPerInstar),
-		Instar_prey = 1,
-		Preferences = 1.0,
-		Profitability = 0.1,
-		stringsAsFactors = FALSE
-	)
-)
-
 
 
 

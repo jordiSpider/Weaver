@@ -1523,36 +1523,3 @@ json.decisions.sensoryModel.beta = 2.5
 json.sexualType = "haplodiploid"  # Reproduction type (e.g., haplodiploid, diploid, etc.)
 json.statisticsIndividualsPerInstar = 1000  # Number of individuals used in statistics per instar
 json.tempFromLab = tempFromLab  # Reference temperature from lab conditions
-
-# =====================
-# ONTOGENETIC LINKS 
-# =====================
-
-#@ TODO: Introduce here the table with the preferences and profitabilities (trophic network).
-
-
-json.ontogenetic_links <- data.frame(
-    Species_name_prey = character(0),
-    Instar_predator = numeric(0),
-    Instar_prey = numeric(0), 
-    Preferences = numeric(0), 
-    Profitability = numeric(0),  
-    stringsAsFactors = FALSE 
-)
-
-
-json.ontogenetic_links <- rbind(
-	json.ontogenetic_links,
-	do.call(rbind, lapply(1:length(json.individualsPerInstar), function(instar_predator) {
-		do.call(rbind, lapply(1:6, function(instar_prey) {
-			data.frame(
-				Species_name_prey = "Orius_laevigatus",
-				Instar_predator = instar_predator,
-				Instar_prey = instar_prey,
-				Preferences = 1.0/6.0,
-				Profitability = 0.1,
-				stringsAsFactors = FALSE
-			)
-		}))
-	}))
-)

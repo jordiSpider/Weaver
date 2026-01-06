@@ -13,13 +13,13 @@
 #'    - Creates the configuration folder structure.
 #'    - Processes selected animal species, running species scripts and generating JSON files.
 #'    - Processes selected resource species and generates JSON files.
-#'    - Generates CSV files for ontogenetic links with normalized preferences.
+#'    - Generates CSV files for ontogenetic links filled with zeros.
 #'    - Optionally generates bibliographies using `bibgen2`.
 #'    - Shows success or error modal dialogs.
 #' 3. `generate_animal_species_json` and `generate_resource_species_json`:
 #'    - Helper functions to build structured JSON files from the environment variables.
 #' 4. `generate_ontogenetic_links_csv`:
-#'    - Generates ontogenetic link CSV files with scaled preference values.
+#'    - Generates ontogenetic link CSV files filled with zeros.
 #' 5. `assign_nested`:
 #'    - Utility function to assign values to nested lists (used for JSON construction).
 #'
@@ -71,14 +71,12 @@ generate_animal_species_json = function(environment, output_path, name, version)
     }
 
     all_parameters <- grep("^json\\.", ls(envir = environment), value = TRUE)
-    traits_parameters <- all_parameters[grep("^json\\.traits\\.", all_parameters)] 
-    other_parameters <- setdiff(all_parameters, c(traits_parameters, "json.ontogenetic_links"))
+    traits_parameters <- all_parameters[grep("^json\\.traits\\.", all_parameters)]
 
     json_data <- list(
         animal = list(),
         version = version
     )
-    json_data <- add_parameters(environment, json_data, other_parameters)
 
     traits_parameters_filtered <- grep("ranges\\.min$", traits_parameters, value = TRUE)
     traits_name <- unique(unlist(sapply(traits_parameters_filtered, function(parameter) { 
@@ -215,47 +213,13 @@ generate_resource_species_json = function(environment, output_path, name, versio
 # ----------------------------------------------------------------------
 # Generate CSV files for ontogenetic links
 # ----------------------------------------------------------------------
-generate_ontogenetic_links_csv <- function(ontogenetic_links_info, ontogenetic_links_column_header, ontogenetic_links_row_header, output_path) {
-    preferences_matrix <- matrix(0, nrow = length(ontogenetic_links_row_header), ncol = length(ontogenetic_links_column_header),
+generate_ontogenetic_links_csv <- function(ontogenetic_links_column_header, ontogenetic_links_row_header, output_path) {
+    preferences_matrix <- matrix(0.0, nrow = length(ontogenetic_links_row_header), ncol = length(ontogenetic_links_column_header),
                     dimnames = list(ontogenetic_links_row_header, ontogenetic_links_column_header))
     
     profitability_matrix <- preferences_matrix
 
-    for (column in ontogenetic_links_column_header) {
-        fields <- strsplit(column, "\\$")[[1]]
-        predator_name <- fields[[1]]
-        predator_instar <- fields[[2]]
-        column_info <- subset(ontogenetic_links_info, Species_name_predator == predator_name & Instar_predator == predator_instar)
-    
-        available_prey <- 0
-        if(nrow(column_info) > 0) {
-            for (i in 1:nrow(column_info)) {
-                prey <- paste(column_info$Species_name_prey[i], column_info$Instar_prey[i], sep = "$")
-
-                if (prey %in% ontogenetic_links_row_header) {
-                    preferences_matrix[prey, column] <- column_info$Preferences[i]
-                    profitability_matrix[prey, column] <- column_info$Profitability[i]
-
-                    available_prey <- available_prey + 1
-                }
-            }
-        }
-        if(available_prey == 0) {
-            stop(paste("Error: No prey available for predator", predator_name, "and instar", predator_instar))
-        }
-    }
-
-    # Scale preference columns
-    preferences_matrix_scaled <- apply(preferences_matrix, 2, function(col) {
-        if (sum(col) == 0) {
-            return(rep(0, length(col))) 
-        } else {
-            return(col / sum(col))
-        }
-    })
-    preferences_matrix_scaled <- matrix(preferences_matrix_scaled, nrow = nrow(preferences_matrix), dimnames = dimnames(preferences_matrix))
-
-    preferences_df <- as.data.frame(preferences_matrix_scaled)
+    preferences_df <- as.data.frame(preferences_matrix)
     profitability_df <- as.data.frame(profitability_matrix)
 
     preferences_df <- cbind(RowHeader = rownames(preferences_df), preferences_df)
@@ -277,16 +241,6 @@ config_generator <- function(input, config_name, version, save_directory_path, b
         
         dir.create(file.path(save_directory_path, config_name), recursive = TRUE, showWarnings = FALSE)
 
-        # Initialize ontogenetic links info
-        ontogenetic_links_info <- data.frame(
-            Species_name_predator = character(0),
-            Species_name_prey = character(0),
-            Instar_predator = integer(0),
-            Instar_prey = integer(0), 
-            Preferences = numeric(0), 
-            Profitability = numeric(0),  
-            stringsAsFactors = FALSE 
-        )
         ontogenetic_links_column_header <- c()
 
 
@@ -312,9 +266,6 @@ config_generator <- function(input, config_name, version, save_directory_path, b
             generate_animal_species_json(env, animal_species_folder, name, version)
             instars <- get("json.individualsPerInstar", envir = env)
             ontogenetic_links_column_header <- c(ontogenetic_links_column_header, sapply(seq_along(instars), function(instar) { paste(get("json.name", envir = env), instar, sep = "$") }))
-            new_row_ontogenetic_links_info <- get("json.ontogenetic_links", envir = env)
-            new_row_ontogenetic_links_info$Species_name_predator <- get("json.name", envir = env)
-            ontogenetic_links_info <- rbind(ontogenetic_links_info, new_row_ontogenetic_links_info)
             animal_species_env <- c(animal_species_env, env)
         }
 
@@ -338,7 +289,7 @@ config_generator <- function(input, config_name, version, save_directory_path, b
         }
 
         # --- Ontogenetic Links ---
-        generate_ontogenetic_links_csv(ontogenetic_links_info, ontogenetic_links_column_header, ontogenetic_links_row_header, animal_species_folder)
+        generate_ontogenetic_links_csv(ontogenetic_links_column_header, ontogenetic_links_row_header, animal_species_folder)
 
         # Show success modal
         if(bibliography) {
