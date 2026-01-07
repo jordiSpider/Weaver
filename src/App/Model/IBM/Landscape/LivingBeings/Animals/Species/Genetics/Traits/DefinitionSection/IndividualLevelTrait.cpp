@@ -19,8 +19,8 @@ IndividualLevelTrait::IndividualLevelTrait(const json& config, const size_t newO
 	  restrictValue(config["restrictValue"].get<double>()),
 	  minTraitRestrictedRange(getMinTraitRange() + ((getMaxTraitRange() - getMinTraitRange()) * 0.5) * restrictValue),
 	  maxTraitRestrictedRange(getMaxTraitRange() - ((getMaxTraitRange() - getMinTraitRange()) * 0.5) * restrictValue),
-	  minTraitLimit(getMinTraitRestrictedRange() - (getMaxTraitRestrictedRange() - getMinTraitRestrictedRange()) * config["limits"]["min"].get<double>()), 
-	  maxTraitLimit(getMaxTraitRestrictedRange() + (getMaxTraitRestrictedRange() - getMinTraitRestrictedRange()) * config["limits"]["max"].get<double>()),
+	  Pi(getMinTraitRestrictedRange() - getMinTraitRestrictedRange() * config["pctg"]["min"].get<double>()),
+	  K(getMaxTraitRestrictedRange() + getMaxTraitRestrictedRange() * config["pctg"]["max"].get<double>()),
 	  fileName(fileName), traitStr(traitStr), elementStr(elementStr)
 {
 	
@@ -69,24 +69,24 @@ const PreciseDouble& IndividualLevelTrait::getMaxTraitRestrictedRange() const
 	return maxTraitRestrictedRange; 
 }
 
-const PreciseDouble& IndividualLevelTrait::getMinTraitLimit() const 
+const PreciseDouble& IndividualLevelTrait::getPi() const 
 { 
-	return minTraitLimit; 
+	return Pi; 
 }
 
-const PreciseDouble& IndividualLevelTrait::getMaxTraitLimit() const 
+const PreciseDouble& IndividualLevelTrait::getK() const 
 { 
-	return maxTraitLimit; 
+	return K; 
 }
 
-const PreciseDouble& IndividualLevelTrait::getMinPseudoValueLimit() const 
+const PreciseDouble& IndividualLevelTrait::getMinPseudoValueRange() const 
 { 
-	return minPseudoValueLimit; 
+	return minPseudoValueRange; 
 }
 
-const PreciseDouble& IndividualLevelTrait::getMaxPseudoValueLimit() const 
+const PreciseDouble& IndividualLevelTrait::getMaxPseudoValueRange() const 
 { 
-	return maxPseudoValueLimit; 
+	return maxPseudoValueRange; 
 }
 
 PreciseDouble IndividualLevelTrait::calculatePseudoValue(const Genome& genome, const size_t traitsPerModule, const size_t numberOfLociPerTrait, const vector<PreciseDouble>& rhoPerModule, const vector<size_t>& rhoRangePerModule) const
@@ -221,23 +221,26 @@ void IndividualLevelTrait::printGenetics(const ostringstream& animalInfo, const 
 
 PreciseDouble IndividualLevelTrait::getValue(const Genome& genome, const size_t traitsPerModule, const size_t numberOfLociPerTrait, const vector<PreciseDouble>& rhoPerModule, const vector<size_t>& rhoRangePerModule) const
 {
-	PreciseDouble traitPseudoValue = calculatePseudoValue(genome, traitsPerModule, numberOfLociPerTrait, rhoPerModule, rhoRangePerModule);
+	PreciseDouble pseudo = calculatePseudoValue(genome, traitsPerModule, numberOfLociPerTrait, rhoPerModule, rhoRangePerModule);
 
-	#ifdef DEBUG
-		if(traitPseudoValue < getMinPseudoValueLimit() || getMaxPseudoValueLimit() < traitPseudoValue)
-		{
-			throwLineInfoException("Error: Pseudo-value generated outside the limits.");
-		}
-	#endif
+	PreciseDouble pheno_raw;
 
-	// Interpolate trait value
-	PreciseDouble traitValue = MathFunctions::linearInterpolate(
-		traitPseudoValue, 
-		getMinPseudoValueLimit(), getMaxPseudoValueLimit(),
-		getMinTraitLimit(), getMaxTraitLimit()
-	);
+	// Map pseudo to pheno
+	if(getMinPseudoValueRange() == getMaxPseudoValueRange()) {
+		pheno_raw = (getMaxTraitRestrictedRange() + getMinTraitRestrictedRange()) / 2.0;
+	}
+	else {
+		pheno_raw = MathFunctions::linearInterpolate(
+			pseudo, 
+			getMinPseudoValueRange(), getMaxPseudoValueRange(),
+			getMinTraitRestrictedRange(), getMaxTraitRestrictedRange()
+		);
+	}
 
-	return traitValue;
+	// Apply evo limits
+	PreciseDouble pheno(clamp(pheno_raw.getValue(), getPi().getValue(), getK().getValue()));
+
+	return pheno;
 }
 
 bool IndividualLevelTrait::isInsideRestrictedRanges(const PreciseDouble& traitValue) const
@@ -270,17 +273,17 @@ void IndividualLevelTrait::deserializeIndividualLevelTraits(std::vector<Individu
 	individualLevelTraits.push_back(this);
 }
 
-void IndividualLevelTrait::setPseudoValueLimits(const vector<Locus> &loci, const size_t traitsPerModule, const size_t numberOfLociPerTrait, const vector<PreciseDouble>& rhoPerModule, const vector<size_t>& rhoRangePerModule)
+void IndividualLevelTrait::setPseudoValueRanges(const vector<Locus> &loci, const size_t traitsPerModule, const size_t numberOfLociPerTrait, const vector<PreciseDouble>& rhoPerModule, const vector<size_t>& rhoRangePerModule)
 {
-	minPseudoValueLimit = 0.0;
-	maxPseudoValueLimit = 0.0;
+	minPseudoValueRange = 0.0;
+	maxPseudoValueRange = 0.0;
 	
 	size_t moduleNumber = getOrder() / traitsPerModule;
 
 	//The division is made using RHO. For every trait, the left side alleles of their own chromosomes must be added.
 	for(size_t j = 0; j < rhoRangePerModule[moduleNumber]; ++j) {
-		minPseudoValueLimit += loci[j].getMinAlleleValue();
-		maxPseudoValueLimit += loci[j].getMaxAlleleValue();
+		minPseudoValueRange += loci[j].getMinAlleleValue();
+		maxPseudoValueRange += loci[j].getMaxAlleleValue();
 	}
 
 	//The right side depends on two factors: the sign for RHO for the current module and the dominance of the chromosome.
@@ -291,8 +294,8 @@ void IndividualLevelTrait::setPseudoValueLimits(const vector<Locus> &loci, const
 	{
 		for (size_t j = rhoRangePerModule[moduleNumber]; j < numberOfLociPerTrait; ++j)
 		{
-			minPseudoValueLimit += loci[j].getMinAlleleValue();
-			maxPseudoValueLimit += loci[j].getMaxAlleleValue();
+			minPseudoValueRange += loci[j].getMinAlleleValue();
+			maxPseudoValueRange += loci[j].getMaxAlleleValue();
 		}
 	}
 	//If RHO is negative.
@@ -302,8 +305,8 @@ void IndividualLevelTrait::setPseudoValueLimits(const vector<Locus> &loci, const
 		{
 			for (size_t j = rhoRangePerModule[moduleNumber]; j < numberOfLociPerTrait; ++j)
 			{
-				minPseudoValueLimit += loci[j].getMinAlleleValue();
-				maxPseudoValueLimit += loci[j].getMaxAlleleValue();
+				minPseudoValueRange += loci[j].getMinAlleleValue();
+				maxPseudoValueRange += loci[j].getMaxAlleleValue();
 			}
 		}
 		//If the trait is NOT dominant, 1 - the right side alleles of the dominant chromosome must be added.
@@ -311,8 +314,8 @@ void IndividualLevelTrait::setPseudoValueLimits(const vector<Locus> &loci, const
 		{
 			for (size_t j = rhoRangePerModule[moduleNumber]; j < numberOfLociPerTrait; ++j)
 			{
-				minPseudoValueLimit += (1.0 - loci[j].getMaxAlleleValue());
-				maxPseudoValueLimit += (1.0 - loci[j].getMinAlleleValue());
+				minPseudoValueRange += (1.0 - loci[j].getMaxAlleleValue());
+				maxPseudoValueRange += (1.0 - loci[j].getMinAlleleValue());
 			}
 		}
 	}
@@ -332,11 +335,11 @@ void IndividualLevelTrait::serialize(Archive &ar, const unsigned int) {
     ar & restrictValue;
     ar & minTraitRestrictedRange;
     ar & maxTraitRestrictedRange;
-    ar & minTraitLimit;
-    ar & maxTraitLimit;
+    ar & Pi;
+    ar & K;
 
-    ar & minPseudoValueLimit;
-    ar & maxPseudoValueLimit;
+    ar & minPseudoValueRange;
+    ar & maxPseudoValueRange;
 
 	ar & fileName;
 
