@@ -117,7 +117,7 @@ var searchData=
   ['setpredationprobability_114',['setPredationProbability',['../classEdibilityValue.html#a6c04030f525f9ab145255dc6b34ab9d1',1,'EdibilityValue']]],
   ['setprobabilitydeathfrombackground_115',['setProbabilityDeathFromBackground',['../group__SpeciesModifiers.html#gad41306e65eb57703fdfc6746c386f03a',1,'AnimalSpecies']]],
   ['setprobabilityfunction_116',['setprobabilityfunction',['../classAnimalDecisionProbability.html#ae610a0625b25687051e445cc0bdd41cb',1,'AnimalDecisionProbability::setProbabilityFunction()'],['../classEdibleDecisionProbability.html#a73548985f83c1901dab65396612085ad',1,'EdibleDecisionProbability::setProbabilityFunction()']]],
-  ['setpseudovaluelimits_117',['setPseudoValueLimits',['../classIndividualLevelTrait.html#aec60e4270b886b9421f0028548086303',1,'IndividualLevelTrait']]],
+  ['setpseudovalueranges_117',['setPseudoValueRanges',['../classIndividualLevelTrait.html#a6ed5314a89ac73bbbf79d914f008d4fa',1,'IndividualLevelTrait']]],
   ['setremainingprobabilityfunction_118',['setremainingprobabilityfunction',['../classAnimalDecisionProbability.html#adc80f8b7286fb41f0da00aa4eee5f3f4',1,'AnimalDecisionProbability::setRemainingProbabilityFunction()'],['../classEdibleDecisionProbability.html#a466a37699a63aafc0ccff0deaa90bd0e',1,'EdibleDecisionProbability::setRemainingProbabilityFunction()']]],
   ['setresourcesource_119',['setResourceSource',['../classCellResourceGrowth.html#aca48c36ca5456ec0a7bfd62437bce35d',1,'CellResourceGrowth']]],
   ['setrhopermodule_120',['setRhoPerModule',['../classAnimalSpeciesGenetics.html#a5bb9575ad36755d0c6aadf2bd92d41d0',1,'AnimalSpeciesGenetics']]],

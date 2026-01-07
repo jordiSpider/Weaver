@@ -1,0 +1,98 @@
+<map id="/home/runner/work/Weaver/Weaver/include/App/Model/IBM/Maths/Dynamics/Dynamics.h" name="/home/runner/work/Weaver/Weaver/include/App/Model/IBM/Maths/Dynamics/Dynamics.h">
+<area shape="rect" id="Node000001" title="Defines the abstract Dynamics class for modeling temporal changes in traits or resources." alt="" coords="1182,5,1427,60"/>
+<area shape="rect" id="Node000002" href="$ResourceSource_8h.html" title="Defines the ResourceSource class representing resource availability in the landscape." alt="" coords="879,343,1090,412"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="1227,68,1192,87,1160,110,1131,136,1104,166,1059,230,1024,292,1001,343,996,341,1019,290,1055,227,1100,163,1127,133,1156,106,1190,83,1225,64"/>
+<area shape="rect" id="Node000025" href="$MassBasedDynamics_8h.html" title="Defines the MassBasedDynamics class, a Dynamics subclass based on mass." alt="" coords="1615,115,1933,170"/>
+<area shape="poly" id="edge44_Node000001_Node000025" title=" " alt="" coords="1433,61,1661,113,1659,118,1431,66"/>
+<area shape="rect" id="Node000027" href="$NonMassBasedDynamics_8h.html" title="Defines the NonMassBasedDynamics class, a Dynamics subclass not dependent on mass." alt="" coords="1171,108,1439,177"/>
+<area shape="poly" id="edge46_Node000001_Node000027" title=" " alt="" coords="1307,74,1307,108,1302,108,1302,74"/>
+<area shape="rect" id="Node000003" href="$Landscape_8h.html" title="Doxygen&#45;documented declaration of the Landscape class and related serialization helpers." alt="" coords="399,1707,608,1761"/>
+<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="866,393,658,421,540,442,424,468,319,500,274,519,234,539,202,560,177,583,162,607,157,633,157,1522,163,1562,180,1597,206,1626,239,1651,277,1672,318,1689,399,1713,398,1718,316,1694,275,1677,236,1656,202,1630,176,1600,158,1564,151,1523,151,632,157,605,173,579,198,556,232,534,272,514,318,495,423,463,539,436,657,415,865,387"/>
+<area shape="rect" id="Node000008" href="$PatchApplicator_8h.html" title="Defines the PatchApplicator class responsible for applying patches (moisture, resource,..." alt="" coords="845,863,1087,933"/>
+<area shape="poly" id="edge7_Node000002_Node000008" title=" " alt="" coords="1031,421,1072,471,1110,534,1124,569,1132,604,1134,641,1127,677,1103,733,1070,784,1035,829,1003,865,999,861,1031,826,1066,781,1098,730,1122,675,1129,640,1127,605,1119,570,1105,536,1067,474,1027,424"/>
+<area shape="rect" id="Node000019" href="$CellResourceInterface_8h.html" title="Interface for resources in a terrain cell." alt="" coords="827,592,1113,676"/>
+<area shape="poly" id="edge28_Node000002_Node000019" title=" " alt="" coords="985,426,975,592,970,591,979,426"/>
+<area shape="rect" id="Node000022" href="$CellResourceInterfaceGrowth_8h.html" title="Growth logic for a resource cell, extending EdibleGrowth." alt="" coords="619,460,868,544"/>
+<area shape="poly" id="edge38_Node000002_Node000022" title=" " alt="" coords="908,420,825,462,823,458,906,416"/>
+<area shape="rect" id="Node000004" href="$IBM_8h.html" title="Definition of the IBM class, representing the core individual&#45;based model of the simulation." alt="" coords="5,1809,204,1864"/>
+<area shape="poly" id="edge3_Node000003_Node000004" title=" " alt="" coords="387,1767,205,1813,203,1808,386,1762"/>
+<area shape="rect" id="Node000005" href="$AquaticLandscape_8h.html" title="Defines the AquaticLandscape class for aquatic ecosystem simulations." alt="" coords="227,1809,486,1864"/>
+<area shape="poly" id="edge4_Node000003_Node000005" title=" " alt="" coords="455,1771,397,1811,394,1807,452,1767"/>
+<area shape="rect" id="Node000006" href="$ArthropodsLandscape_8h.html" title="Defines the ArthropodsLandscape class for arthropod&#45;specific ecosystem simulations." alt="" coords="510,1809,790,1864"/>
+<area shape="poly" id="edge5_Node000003_Node000006" title=" " alt="" coords="555,1767,613,1807,610,1811,552,1771"/>
+<area shape="rect" id="Node000007" href="$DinosaursLandscape_8h.html" title="Defines the DinosaursLandscape class for dinosaur&#45;specific ecosystem simulations." alt="" coords="814,1809,1089,1864"/>
+<area shape="poly" id="edge6_Node000003_Node000007" title=" " alt="" coords="622,1759,835,1807,834,1812,621,1764"/>
+<area shape="rect" id="Node000009" href="$SpatialTreePatchApplicator_8h.html" title="Defines the SpatialTreePatchApplicator class for applying patches in a spatial tree of terrain cells." alt="" coords="943,988,1175,1072"/>
+<area shape="poly" id="edge8_Node000008_Node000009" title=" " alt="" coords="1000,942,1032,986,1028,989,996,946"/>
+<area shape="rect" id="Node000017" href="$TerrainCell_8h.html" title="Defines the TerrainCell class representing a cell in the landscape." alt="" coords="369,995,605,1065"/>
+<area shape="poly" id="edge21_Node000008_Node000017" title=" " alt="" coords="832,934,617,991,592,998,591,993,616,985,830,929"/>
+<area shape="rect" id="Node000010" href="$BranchPatchApplicator_8h.html" title="Defines the BranchPatchApplicator class for applying patches to branch terrain cells in a spatial tre..." alt="" coords="786,1120,1018,1204"/>
+<area shape="poly" id="edge9_Node000009_Node000010" title=" " alt="" coords="1001,1083,954,1122,950,1118,997,1079"/>
+<area shape="rect" id="Node000014" href="$LeafPatchApplicator_8h.html" title="Defines the LeafPatchApplicator class for applying patches to leaf terrain cells in a spatial tree." alt="" coords="1325,1120,1557,1204"/>
+<area shape="poly" id="edge14_Node000009_Node000014" title=" " alt="" coords="1190,1073,1325,1119,1323,1124,1188,1078"/>
+<area shape="rect" id="Node000016" href="$SpatialTreeTerrainCell_8h.html" title="Spatial tree implementation of a terrain cell." alt="" coords="1042,1127,1301,1197"/>
+<area shape="poly" id="edge17_Node000009_Node000016" title=" " alt="" coords="1106,1081,1144,1125,1140,1129,1102,1084"/>
+<area shape="rect" id="Node000011" href="$BranchTerrainCell_8h.html" title="Branch node implementation of a spatial tree terrain cell." alt="" coords="786,1369,1018,1439"/>
+<area shape="poly" id="edge10_Node000010_Node000011" title=" " alt="" coords="905,1218,905,1369,899,1369,899,1218"/>
+<area shape="rect" id="Node000012" href="$RootTerrainCell_8h.html" title="Defines the RootTerrainCell class, the top&#45;level node of the spatial tree in the landscape." alt="" coords="763,1487,995,1556"/>
+<area shape="poly" id="edge11_Node000011_Node000012" title=" " alt="" coords="895,1453,889,1487,883,1486,890,1452"/>
+<area shape="rect" id="Node000013" href="$SpatialTree_8h.html" title="Defines the SpatialTree class, a spatially subdivided map implementation." alt="" coords="541,1604,785,1659"/>
+<area shape="poly" id="edge12_Node000012_Node000013" title=" " alt="" coords="801,1565,717,1606,715,1602,799,1560"/>
+<area shape="poly" id="edge13_Node000013_Node000003" title=" " alt="" coords="612,1668,547,1709,544,1704,609,1664"/>
+<area shape="rect" id="Node000015" href="$LeafTerrainCell_8h.html" title="Leaf node implementation of a spatial tree terrain cell." alt="" coords="1055,1252,1287,1321"/>
+<area shape="poly" id="edge15_Node000014_Node000015" title=" " alt="" coords="1340,1212,1246,1254,1244,1249,1337,1207"/>
+<area shape="poly" id="edge16_Node000015_Node000011" title=" " alt="" coords="1081,1329,982,1372,980,1367,1079,1324"/>
+<area shape="poly" id="edge19_Node000016_Node000011" title=" " alt="" coords="1108,1207,1045,1254,983,1314,932,1371,928,1367,979,1310,1042,1250,1105,1202"/>
+<area shape="poly" id="edge18_Node000016_Node000013" title=" " alt="" coords="1046,1204,977,1232,905,1269,836,1315,804,1342,776,1371,754,1399,735,1430,705,1496,684,1557,671,1604,666,1603,679,1555,700,1494,730,1428,750,1396,772,1368,801,1338,833,1311,902,1264,975,1227,1044,1199"/>
+<area shape="poly" id="edge20_Node000016_Node000015" title=" " alt="" coords="1174,1210,1174,1252,1169,1252,1169,1210"/>
+<area shape="poly" id="edge22_Node000017_Node000003" title=" " alt="" coords="457,1077,432,1119,407,1170,388,1227,381,1286,381,1523,383,1550,390,1577,415,1627,446,1671,477,1705,473,1708,442,1674,410,1630,385,1579,378,1551,375,1523,375,1285,383,1226,402,1168,427,1117,453,1074"/>
+<area shape="poly" id="edge26_Node000017_Node000013" title=" " alt="" coords="540,1073,578,1113,616,1164,644,1222,652,1253,655,1285,655,1405,658,1516,664,1604,659,1604,653,1516,650,1405,650,1285,647,1254,639,1224,611,1167,574,1117,536,1076"/>
+<area shape="poly" id="edge27_Node000017_Node000016" title=" " alt="" coords="601,1066,617,1069,732,1088,823,1094,915,1100,1030,1117,1062,1125,1061,1130,1030,1123,914,1105,823,1099,732,1093,616,1075,600,1071"/>
+<area shape="rect" id="Node000018" href="$Map_8h.html" title="Defines the Map class for spatial organization of landscapes." alt="" coords="415,1494,615,1549"/>
+<area shape="poly" id="edge23_Node000017_Node000018" title=" " alt="" coords="493,1078,516,1493,511,1494,487,1078"/>
+<area shape="poly" id="edge24_Node000018_Node000003" title=" " alt="" coords="516,1563,508,1706,502,1706,510,1563"/>
+<area shape="poly" id="edge25_Node000018_Node000013" title=" " alt="" coords="564,1555,629,1601,625,1606,561,1559"/>
+<area shape="poly" id="edge32_Node000019_Node000008" title=" " alt="" coords="972,690,969,863,964,863,967,689"/>
+<area shape="rect" id="Node000020" href="$BranchCellResource_8h.html" title="Defines the BranchCellResource class for managing resources in branch terrain cells." alt="" coords="629,988,868,1072"/>
+<area shape="poly" id="edge29_Node000019_Node000020" title=" " alt="" coords="938,689,888,767,835,857,769,989,765,987,830,855,883,765,933,686"/>
+<area shape="rect" id="Node000021" href="$CellResource_8h.html" title="Implementation of a resource cell in a terrain." alt="" coords="529,731,827,801"/>
+<area shape="poly" id="edge33_Node000019_Node000021" title=" " alt="" coords="867,684,754,734,752,729,865,679"/>
+<area shape="poly" id="edge31_Node000020_Node000010" title=" " alt="" coords="809,1079,855,1118,852,1122,806,1083"/>
+<area shape="poly" id="edge30_Node000020_Node000011" title=" " alt="" coords="753,1086,761,1143,777,1203,798,1250,824,1295,876,1368,872,1371,819,1298,793,1252,771,1205,755,1144,748,1086"/>
+<area shape="poly" id="edge34_Node000021_Node000003" title=" " alt="" coords="550,808,473,843,436,865,402,891,373,920,350,952,335,988,330,1029,330,1523,334,1565,346,1596,367,1624,396,1657,424,1683,455,1704,452,1709,421,1687,392,1661,363,1627,342,1598,329,1566,325,1523,325,1028,330,987,346,950,369,916,399,887,433,861,471,838,548,803"/>
+<area shape="poly" id="edge36_Node000021_Node000008" title=" " alt="" coords="766,804,893,861,891,866,764,809"/>
+<area shape="poly" id="edge35_Node000021_Node000014" title=" " alt="" coords="707,811,731,844,760,878,795,911,834,938,883,959,927,968,967,970,1007,968,1089,964,1136,970,1188,986,1248,1013,1305,1048,1397,1118,1393,1122,1302,1052,1246,1018,1186,990,1135,975,1089,970,1007,973,968,976,926,974,881,964,831,942,791,915,756,882,726,847,703,814"/>
+<area shape="poly" id="edge37_Node000021_Node000017" title=" " alt="" coords="647,814,514,997,510,994,643,811"/>
+<area shape="poly" id="edge41_Node000022_Node000019" title=" " alt="" coords="828,549,900,589,897,594,826,553"/>
+<area shape="rect" id="Node000023" href="$BranchCellResourceGrowth_8h.html" title="Defines the BranchCellResourceGrowth class for aggregating resource growth in branch terrain cells." alt="" coords="192,592,529,676"/>
+<area shape="poly" id="edge39_Node000022_Node000023" title=" " alt="" coords="611,551,482,594,480,589,609,546"/>
+<area shape="rect" id="Node000024" href="$CellResourceGrowth_8h.html" title="Concrete implementation of resource growth for a terrain cell." alt="" coords="553,592,803,676"/>
+<area shape="poly" id="edge42_Node000022_Node000024" title=" " alt="" coords="719,557,701,593,696,590,714,555"/>
+<area shape="poly" id="edge40_Node000023_Node000020" title=" " alt="" coords="407,685,519,806,618,904,705,986,702,990,614,908,515,810,403,688"/>
+<area shape="poly" id="edge43_Node000024_Node000021" title=" " alt="" coords="681,690,681,731,675,731,675,690"/>
+<area shape="rect" id="Node000026" href="$GrowthRateDynamics_8h.html" title="Defines the GrowthRateDynamics class, a mass&#45;based dynamics modeling growth rate." alt="" coords="1730,225,1973,295"/>
+<area shape="poly" id="edge45_Node000025_Node000026" title=" " alt="" coords="1801,180,1831,223,1826,226,1797,183"/>
+<area shape="rect" id="Node000028" href="$MoistureSource_8h.html" title="Defines the MoistureSource class representing environmental moisture dynamics." alt="" coords="1406,599,1617,669"/>
+<area shape="poly" id="edge47_Node000027_Node000028" title=" " alt="" coords="1453,156,1519,167,1583,181,1635,200,1654,211,1668,224,1683,247,1693,271,1698,297,1699,323,1690,376,1669,430,1640,481,1608,528,1546,601,1542,597,1604,524,1636,478,1664,427,1685,375,1694,323,1693,298,1688,273,1679,249,1664,227,1651,215,1632,205,1581,186,1518,172,1452,161"/>
+<area shape="rect" id="Node000032" href="$CycleDynamics_8h.html" title="Defines the CycleDynamics class, which implements periodic non–mass&#45;based dynamics." alt="" coords="1227,343,1495,412"/>
+<area shape="poly" id="edge57_Node000027_Node000032" title=" " alt="" coords="1159,172,1117,194,1099,209,1084,227,1074,244,1071,260,1074,276,1084,293,1105,310,1139,325,1227,350,1226,355,1137,330,1102,314,1080,296,1069,278,1066,260,1069,242,1080,224,1095,205,1114,190,1156,167"/>
+<area shape="rect" id="Node000033" href="$NonDynamics_8h.html" title="Defines the NonDynamics class, representing static (non&#45;changing) dynamics in the ecosystem model." alt="" coords="1387,225,1655,295"/>
+<area shape="poly" id="edge59_Node000027_Node000033" title=" " alt="" coords="1381,181,1459,223,1456,228,1378,186"/>
+<area shape="rect" id="Node000034" href="$PulseDynamics_8h.html" title="Defines the PulseDynamics class, which models dynamic events occurring in pulses." alt="" coords="1095,225,1363,295"/>
+<area shape="poly" id="edge62_Node000027_Node000034" title=" " alt="" coords="1277,190,1253,227,1249,224,1273,188"/>
+<area shape="poly" id="edge48_Node000028_Node000003" title=" " alt="" coords="1567,676,1610,718,1651,770,1669,799,1683,830,1692,863,1695,897,1695,1523,1693,1534,1686,1545,1659,1564,1618,1583,1565,1600,1427,1632,1260,1659,1079,1683,901,1702,609,1728,608,1722,900,1697,1079,1678,1259,1654,1426,1626,1563,1595,1617,1578,1657,1560,1682,1541,1688,1532,1690,1522,1690,897,1687,864,1678,832,1664,802,1647,773,1606,721,1564,680"/>
+<area shape="rect" id="Node000029" href="$CellMoisture_8h.html" title="Concrete implementation of CellMoistureInterface representing the moisture and thermal state of a ter..." alt="" coords="1368,863,1655,933"/>
+<area shape="poly" id="edge49_Node000028_Node000029" title=" " alt="" coords="1514,682,1514,863,1509,863,1509,682"/>
+<area shape="rect" id="Node000030" href="$CellMoistureInterface_8h.html" title="Abstract interface for managing moisture, temperature, and resource capacity in a terrain cell within..." alt="" coords="1195,724,1470,808"/>
+<area shape="poly" id="edge52_Node000028_Node000030" title=" " alt="" coords="1455,679,1391,726,1388,722,1452,675"/>
+<area shape="poly" id="edge50_Node000029_Node000014" title=" " alt="" coords="1501,947,1454,1121,1449,1119,1496,945"/>
+<area shape="poly" id="edge51_Node000029_Node000016" title=" " alt="" coords="1459,943,1217,1129,1213,1125,1456,939"/>
+<area shape="poly" id="edge56_Node000030_Node000008" title=" " alt="" coords="1205,815,1062,866,1060,861,1203,810"/>
+<area shape="poly" id="edge55_Node000030_Node000029" title=" " alt="" coords="1402,814,1466,861,1463,865,1399,818"/>
+<area shape="rect" id="Node000031" href="$BranchCellMoisture_8h.html" title="Defines the BranchCellMoisture class for managing moisture in branch terrain cells." alt="" coords="1111,856,1343,940"/>
+<area shape="poly" id="edge53_Node000030_Node000031" title=" " alt="" coords="1293,820,1263,857,1259,854,1289,817"/>
+<area shape="poly" id="edge54_Node000031_Node000010" title=" " alt="" coords="1098,943,1046,951,1004,953,968,963,951,973,933,990,915,1019,904,1053,900,1088,900,1120,895,1120,895,1088,899,1052,910,1017,929,986,948,969,966,958,1004,948,1046,945,1098,937"/>
+<area shape="poly" id="edge58_Node000032_Node000028" title=" " alt="" coords="1390,423,1494,598,1489,601,1385,425"/>
+<area shape="poly" id="edge61_Node000033_Node000002" title=" " alt="" coords="1374,297,1091,357,1090,352,1373,292"/>
+<area shape="poly" id="edge60_Node000033_Node000003" title=" " alt="" coords="1570,303,1625,362,1683,441,1708,485,1728,533,1741,582,1746,633,1746,1523,1748,1540,1753,1553,1768,1572,1780,1582,1782,1587,1778,1592,1689,1608,1417,1661,1307,1682,1193,1698,969,1721,766,1732,608,1735,608,1730,766,1726,968,1715,1193,1693,1306,1677,1416,1656,1688,1603,1776,1587,1777,1586,1776,1585,1764,1575,1748,1556,1743,1541,1741,1523,1741,633,1736,583,1723,534,1703,488,1678,444,1621,366,1566,306"/>
+</map>

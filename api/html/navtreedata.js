@@ -74,13 +74,13 @@ var NAVTREEINDEX =
 "classCycleDynamics.html#a708616e862b12ea3facd964c134dd951",
 "classElement.html",
 "classIndividualGrowthModel.html#a9423310fe45081bb62aea6f9b162ea86",
-"classLandscape.html#a8db9c5b329246ccc0e2d40127010826e",
-"classMap.html#af5019794b418d8bd423d2a8b2625aa83",
-"classPawarIndividualTraitTemperatureSection.html#a36919d87e27c9e65248a2fa953836dc3",
-"classResourceSource.html#a28122c523be31fb01217b8ddbd58a452",
-"classSphericalPatch.html#ae5915ead544c9475f1b8703bbff97eb3",
-"dir_43cb4bfd147dcd2c8e28f53755d3f09a.html",
-"group__PopulationAndStatistics.html#ga38c2420474d691ed6c91092b03e0338a"
+"classLandscape.html#a902aaad882e7ed4ed24b855d33f5effb",
+"classMassBasedDynamics.html#a4478636b934e69fc7f955c3c19ac8cba",
+"classPawarIndividualTraitTemperatureSection.html#ab4eeceac0636a7ae27600451c0237abc",
+"classResourceSource.html#a68003d497efa8ed5ca591a759f36f6ff",
+"classString.html#a2af145dd7cb771c9ab6fcb19752763e7",
+"dir_642367913842c014a12dbaecbb53dbe5.html",
+"group__PopulationAndStatistics.html#gaa57a0c0387d9396f283960d83da720f6"
 ];
 
 var SYNCONMSG = 'click to disable panel synchronisation';

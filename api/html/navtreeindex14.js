@@ -1,9 +1,5 @@
 var NAVTREEINDEX14 =
 {
-"classSphericalPatch.html#ae5915ead544c9475f1b8703bbff97eb3":[2,0,151,1],
-"classString.html":[2,0,152],
-"classString.html#a1b06a5c6c193969066f1569c8b79d3e1":[2,0,152,10],
-"classString.html#a296e36d7c48d53e78de64666f008564d":[2,0,152,0],
 "classString.html#a2af145dd7cb771c9ab6fcb19752763e7":[2,0,152,1],
 "classString.html#a2ec87f1060c707c160e38567126373af":[2,0,152,8],
 "classString.html#a4c9a490ce829761fda42de5a356150d1":[2,0,152,12],
@@ -249,5 +245,9 @@ var NAVTREEINDEX14 =
 "dir_389a21b4e0d5da4afd1bc923d1c21e90.html":[3,0,0,0,0,0,0,1],
 "dir_3906e21caceb2a8fab2c7e2fa9cc3755.html":[3,0,0,0,0,0,0,1,3,2,0,3,0],
 "dir_3adebfe187e155c12e0fbd6126ba5305.html":[3,0,0,0,1,0,0],
-"dir_4045643538bad1aadeff61b05dc9bc0d.html":[3,0,0,1]
+"dir_4045643538bad1aadeff61b05dc9bc0d.html":[3,0,0,1],
+"dir_43cb4bfd147dcd2c8e28f53755d3f09a.html":[3,0,0,0,0,0,0,0,1],
+"dir_4e45b264a966826cddda22b8cd5f8e68.html":[3,0,0,0,0,0,0,0,2,0],
+"dir_5509a4cb1d24f348dbc75e8be5e6e946.html":[3,0,0,0,0,0,0,1,4,0,2],
+"dir_599f11267c3a85736edb1f98923093b9.html":[3,0,0,0,0,0,0,0,0,3]
 };
