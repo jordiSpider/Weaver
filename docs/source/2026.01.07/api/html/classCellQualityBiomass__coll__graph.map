@@ -1,0 +1,25 @@
+<map id="CellQualityBiomass" name="CellQualityBiomass">
+<area shape="rect" id="Node000001" title="Computes the quality of a cell for a predator based on prey biomass and edibility." alt="" coords="1525,36,1676,61"/>
+<area shape="rect" id="Node000002" href="$classEdibilityValue.html" title="Calculates the edibility value of prey for a predator." alt="" coords="1273,36,1384,61"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="1398,46,1525,46,1525,51,1398,51"/>
+<area shape="rect" id="Node000003" href="$classEdibleDecisionProbability.html" title="Base class for computing probabilities related to edible prey decisions." alt="" coords="575,5,763,31"/>
+<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="777,16,995,21,1250,35,1274,38,1273,43,1249,41,995,26,776,21"/>
+<area shape="rect" id="Node000005" href="$classPredationProbability.html" title="Manages predation probability functions for species across different instars." alt="" coords="933,71,1088,96"/>
+<area shape="poly" id="edge5_Node000005_Node000003" title=" " alt="" coords="750,31,944,68,943,73,749,36"/>
+<area shape="rect" id="Node000004" href="$classDecisionProbability.html" title="Abstract base class for probability calculations in predator&#45;prey decisions." alt="" coords="5,27,153,52"/>
+<area shape="poly" id="edge3_Node000003_Node000004" title=" " alt="" coords="167,34,574,19,575,24,167,39"/>
+<area shape="rect" id="Node000007" href="$classAnimalDecisionProbability.html" title="Abstract class for decision probabilities specific to animal interactions." alt="" coords="235,56,429,81"/>
+<area shape="poly" id="edge8_Node000007_Node000004" title=" " alt="" coords="167,47,235,55,234,60,167,52"/>
+<area shape="poly" id="edge4_Node000002_Node000005" title=" " alt="" coords="1101,71,1273,52,1273,57,1102,76"/>
+<area shape="rect" id="Node000006" href="$classEscapeProbability.html" title="Manages the escape probability functions for a prey in predator&#45;prey interactions." alt="" coords="599,125,738,151"/>
+<area shape="poly" id="edge6_Node000005_Node000006" title=" " alt="" coords="751,125,909,101,948,93,949,99,910,106,752,130"/>
+<area shape="poly" id="edge7_Node000006_Node000007" title=" " alt="" coords="444,77,497,86,550,99,574,110,615,123,613,128,572,115,548,105,496,92,443,83"/>
+<area shape="rect" id="Node000008" href="$classSensoryModel.html" title="Represents a sensory detection model used to calculate the probability of detecting an object based o..." alt="" coords="275,169,389,195"/>
+<area shape="poly" id="edge9_Node000006_Node000008" title=" " alt="" coords="403,170,549,151,599,145,600,150,550,157,403,176"/>
+<area shape="rect" id="Node000009" href="$classPreciseDouble.html" title="Class for precise double&#45;precision floating&#45;point arithmetic." alt="" coords="22,169,137,195"/>
+<area shape="poly" id="edge13_Node000005_Node000009" title=" " alt="" coords="150,193,235,205,384,212,500,205,616,187,764,159,837,145,908,125,983,94,985,98,910,130,838,151,764,165,617,193,501,211,384,217,234,210,150,199"/>
+<area shape="poly" id="edge11_Node000006_Node000009" title=" " alt="" coords="150,164,177,159,293,146,408,138,599,134,599,140,409,144,293,151,178,165,150,169"/>
+<area shape="poly" id="edge10_Node000008_Node000009" title=" " alt="" coords="150,179,274,179,274,185,150,185"/>
+<area shape="rect" id="Node000010" href="$classCustomIndexedVector.html" title=" " alt="" coords="573,61,764,101"/>
+<area shape="poly" id="edge12_Node000005_Node000010" title=" " alt="" coords="778,79,788,79,933,80,933,86,788,85,778,85"/>
+</map>
