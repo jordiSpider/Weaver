@@ -43,7 +43,7 @@ NonMassBasedDynamics::~NonMassBasedDynamics()
 }
 
 
-PreciseDouble NonMassBasedDynamics::getValue(const PreciseDouble& baseValue, const PreciseDouble&, const Temperature&, const PreciseDouble&, const PreciseDouble&, const PreciseDouble&) const
+PreciseDouble NonMassBasedDynamics::getValue(const PreciseDouble& baseValue, bool, const WetMass&, const PreciseDouble&, const Temperature&, const PreciseDouble&, const PreciseDouble&, const PreciseDouble&) const
 {
 	return getValue(baseValue);
 }

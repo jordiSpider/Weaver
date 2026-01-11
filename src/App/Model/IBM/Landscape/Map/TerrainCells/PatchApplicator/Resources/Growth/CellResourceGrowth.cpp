@@ -115,8 +115,10 @@ WetMass CellResourceGrowth::growth(Landscape* const landscape, const PreciseDoub
 	{
 		const WetMass newBiomass(fmax(
 			getSource().getGrowthDynamics().getValue(
-				getCurrentTotalWetMass().getValue(), landscape->getTimeStepsPerDay(), 
-				temperature, moisture, getSpeciesGrowth()->getMinRH(), getSpeciesGrowth()->getMaxRH()
+				getCurrentTotalWetMass().getValue(), landscape->getCompetitionAmongResourceSpecies(), 
+				getOwner()->getTerrainCell()->getPatchApplicator().getCellMoisture().getTotalMaximumResourceCapacity(), 
+				landscape->getTimeStepsPerDay(), temperature, moisture, getSpeciesGrowth()->getMinRH(), 
+				getSpeciesGrowth()->getMaxRH()
 			),
 			0.0
 		));
