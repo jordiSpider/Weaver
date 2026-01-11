@@ -1,0 +1,20 @@
+var searchData=
+[
+  ['landscape_0',['Landscape',['../classLandscape.html#a0a54d8aabc38c0a5aa27ccace3f91915',1,'Landscape']]],
+  ['leafpatchapplicator_1',['leafpatchapplicator',['../classLeafPatchApplicator.html#a00299c0e3e2c596c9be504bdf261ffe2',1,'LeafPatchApplicator::LeafPatchApplicator()'],['../classLeafPatchApplicator.html#af47e26fddd28030938c11c24b53317f8',1,'LeafPatchApplicator::LeafPatchApplicator(TerrainCell *cell, MoistureSource *const moistureBaseSource)'],['../classLeafPatchApplicator.html#a44bb87a6bbbab23a45569b5d18af20b7',1,'LeafPatchApplicator::LeafPatchApplicator(const LeafPatchApplicator &amp;)=delete']]],
+  ['leafterraincell_2',['leafterraincell',['../classLeafTerrainCell.html#ad3c3af65994d87e6a1cc61f48c33037a',1,'LeafTerrainCell::LeafTerrainCell()'],['../classLeafTerrainCell.html#a48226b191c42d1712f314d6814061ea9',1,'LeafTerrainCell::LeafTerrainCell(const std::vector&lt; PreciseDouble &gt; &amp;cellSizes, BranchTerrainCell *const parentTerrainCell, PointSpatialTree *const position, MoistureSource *const moistureBaseSource)']]],
+  ['length_3',['length',['../classLength.html#a775ea8a0d82677aa7b5c4f88ed1c1599',1,'Length::Length()'],['../classLength.html#a502df23e3d3d12ef642562539e639b44',1,'Length::Length(const PreciseDouble &amp;value)'],['../classLength.html#a080ef15ff4b565c0eec8518592d7f93d',1,'Length::Length(const DryMass &amp;dryMass, const PreciseDouble &amp;coefficientForMassA, const PreciseDouble &amp;scaleForMassB)'],['../classLength.html#af366d8b3e4e3fd1ddbc32e68e6638900',1,'Length::Length(const Length &amp;other)']]],
+  ['linealdecay_4',['linealdecay',['../classLinealDecay.html#a197afd24e837ff46b53b68d38b095f33',1,'LinealDecay::LinealDecay()'],['../classLinealDecay.html#ac5c65a28508a9dcfc5b9cc8e8b1b6b95',1,'LinealDecay::LinealDecay(const nlohmann::json &amp;config)'],['../classLinealDecay.html#af682db614e8146df78b21b0e190cdd69',1,'LinealDecay::LinealDecay(const nlohmann::json &amp;config, const PreciseDouble &amp;hyperVolume)']]],
+  ['linear_5',['Linear',['../classLinearIndividualGrowthModel.html#ab5584fe2ab5deff2e26326f4822da1ad',1,'LinearIndividualGrowthModel']]],
+  ['linearindividualgrowthmodel_6',['LinearIndividualGrowthModel',['../classLinearIndividualGrowthModel.html#a7bfc2a286b3b26a9f72e1b90c4b632d3',1,'LinearIndividualGrowthModel']]],
+  ['linearinterpolate_7',['linearInterpolate',['../classMathFunctions.html#a430d612367d1d1de209dc9e5805c4462',1,'MathFunctions']]],
+  ['lineinfoexception_8',['LineInfoException',['../classLineInfoException.html#ad99dfed98ff166a17b984e8a08666765',1,'LineInfoException']]],
+  ['locus_9',['locus',['../classLocus.html#a66f73ca4df29ccd3cb96118a81ea2d38',1,'Locus::Locus()'],['../classLocus.html#a5504d1a540ef4ecfbeb3bdebb5ad6a3e',1,'Locus::Locus(const size_t &amp;numberOfAlleles)'],['../classLocus.html#a82a89715a48ba4f101beb653ea124dea',1,'Locus::Locus(const Locus &amp;other)']]],
+  ['logistic_10',['Logistic',['../classLogisticIndividualGrowthModel.html#a40b498e0964c0147767bd19840f0690e',1,'LogisticIndividualGrowthModel']]],
+  ['logistic4p_11',['Logistic4P',['../classLogistic4PIndividualGrowthModel.html#a0166dd6dae0f992ded7336fafa4b4951',1,'Logistic4PIndividualGrowthModel']]],
+  ['logistic4pindividualgrowthmodel_12',['logistic4pindividualgrowthmodel',['../classLogistic4PIndividualGrowthModel.html#a648e7c1e591c76e305fa43c10914d23b',1,'Logistic4PIndividualGrowthModel::Logistic4PIndividualGrowthModel()'],['../classLogistic4PIndividualGrowthModel.html#aa753152f657d4c2b1b53a95ba71258e2',1,'Logistic4PIndividualGrowthModel::Logistic4PIndividualGrowthModel(const PreciseDouble &amp;A)']]],
+  ['logisticindividualgrowthmodel_13',['LogisticIndividualGrowthModel',['../classLogisticIndividualGrowthModel.html#abe8fe2026ed8e82643f052c25e1bf41f',1,'LogisticIndividualGrowthModel']]],
+  ['logmap_14',['logMap',['../classSpatialTree.html#ab8fe57352a2e11e6d6da931dc8f9f142',1,'SpatialTree']]],
+  ['logtextbox_15',['LogTextbox',['../classLogTextbox.html#abb4a9362248d743c392a7c780072cc9b',1,'LogTextbox']]],
+  ['ltrim_16',['ltrim',['../trim_8h.html#ad43a4a97af0218124c6f1343dd27a295',1,'trim.h']]]
+];

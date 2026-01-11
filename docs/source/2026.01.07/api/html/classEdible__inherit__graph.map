@@ -1,0 +1,17 @@
+<map id="Edible" name="Edible">
+<area shape="rect" id="Node000001" title="Represents a generic edible entity within a terrain cell." alt="" coords="307,5,369,31"/>
+<area shape="rect" id="Node000002" href="$classAnimal.html" title="Abstract base class representing an individual animal." alt="" coords="221,79,289,104"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="316,42,271,80,267,76,313,38"/>
+<area shape="rect" id="Node000006" href="$classCellResourceInterface.html" title="Interface for a resource in a terrain cell." alt="" coords="339,79,505,104"/>
+<area shape="poly" id="edge5_Node000001_Node000006" title=" " alt="" coords="364,38,410,76,407,80,360,42"/>
+<area shape="rect" id="Node000003" href="$classAnimalNonStatistical.html" title="Concrete subclass of Animal implementing detailed individual&#45;based behavior." alt="" coords="5,152,164,177"/>
+<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="216,112,114,154,112,149,214,107"/>
+<area shape="rect" id="Node000005" href="$classAnimalStatistical.html" title="Concrete implementation of Animal for statistical modeling." alt="" coords="189,152,322,177"/>
+<area shape="poly" id="edge4_Node000002_Node000005" title=" " alt="" coords="258,118,258,152,253,152,253,118"/>
+<area shape="rect" id="Node000004" href="$classSpatialTreeAnimal.html" title="Represents a non&#45;statistical animal located in a spatial tree terrain." alt="" coords="15,225,155,251"/>
+<area shape="poly" id="edge3_Node000003_Node000004" title=" " alt="" coords="87,191,87,225,82,225,82,191"/>
+<area shape="rect" id="Node000007" href="$classBranchCellResource.html" title="Resource representation for branch nodes in a spatial tree." alt="" coords="346,152,498,177"/>
+<area shape="poly" id="edge6_Node000006_Node000007" title=" " alt="" coords="425,118,425,152,419,152,419,118"/>
+<area shape="rect" id="Node000008" href="$classCellResource.html" title="Concrete implementation of a resource cell." alt="" coords="522,152,629,177"/>
+<area shape="poly" id="edge7_Node000006_Node000008" title=" " alt="" coords="460,107,551,149,549,154,458,112"/>
+</map>

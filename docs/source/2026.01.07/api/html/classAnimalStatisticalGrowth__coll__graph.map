@@ -1,0 +1,36 @@
+<map id="AnimalStatisticalGrowth" name="AnimalStatisticalGrowth">
+<area shape="rect" id="Node000001" title="Represents an animal growth model based on statistical approaches." alt="" coords="1279,435,1459,461"/>
+<area shape="rect" id="Node000002" href="$classAnimalGrowth.html" title="Manages the growth and mass dynamics of an individual animal." alt="" coords="1115,435,1229,461"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="1243,445,1278,445,1278,451,1243,451"/>
+<area shape="rect" id="Node000003" href="$classEdibleGrowth.html" title="Represents the growth characteristics and current biomasses of an edible object." alt="" coords="753,163,863,189"/>
+<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="876,162,928,159,985,163,1042,177,1068,190,1092,206,1117,231,1136,261,1150,294,1160,328,1171,390,1173,435,1168,435,1166,391,1155,329,1145,296,1131,264,1113,235,1089,210,1066,194,1040,182,984,168,928,165,877,167"/>
+<area shape="rect" id="Node000004" href="$classInstar.html" title="Represents a developmental stage (instar) of an animal in the simulation." alt="" coords="71,86,130,111"/>
+<area shape="poly" id="edge3_Node000003_Node000004" title=" " alt="" coords="145,99,380,118,538,134,698,153,753,163,752,168,697,159,537,139,380,123,144,104"/>
+<area shape="rect" id="Node000005" href="$classSpeciesGrowth.html" title="Represents the growth characteristics of a species across its instars." alt="" coords="393,50,512,75"/>
+<area shape="poly" id="edge5_Node000005_Node000004" title=" " alt="" coords="144,92,393,66,393,71,144,97"/>
+<area shape="poly" id="edge4_Node000003_Node000005" title=" " alt="" coords="526,61,610,70,655,79,698,94,728,108,755,127,796,161,792,165,752,131,725,113,696,98,654,84,609,75,525,66"/>
+<area shape="rect" id="Node000006" href="$classCustomIndexedVector.html" title=" " alt="" coords="5,5,196,45"/>
+<area shape="poly" id="edge6_Node000005_Node000006" title=" " alt="" coords="210,34,394,54,393,59,209,39"/>
+<area shape="rect" id="Node000007" href="$classDryMass.html" title="Represents dry mass in the ecosystem simulation." alt="" coords="413,265,492,290"/>
+<area shape="poly" id="edge15_Node000002_Node000007" title=" " alt="" coords="506,287,536,293,621,306,694,311,820,314,880,318,943,327,1013,346,1092,378,1132,404,1162,433,1158,437,1129,409,1089,382,1011,351,942,332,880,323,820,319,694,317,621,311,536,299,505,292"/>
+<area shape="poly" id="edge7_Node000003_Node000007" title=" " alt="" coords="506,283,548,287,597,287,648,281,696,268,728,251,755,230,795,187,799,191,759,233,730,256,698,273,649,287,597,292,548,292,506,288"/>
+<area shape="rect" id="Node000008" href="$classPreciseDouble.html" title="Class for precise double&#45;precision floating&#45;point arithmetic." alt="" coords="43,231,158,257"/>
+<area shape="poly" id="edge18_Node000002_Node000008" title=" " alt="" coords="172,236,307,229,487,227,691,236,794,248,895,264,1000,284,1043,301,1092,333,1118,357,1140,385,1167,434,1163,436,1135,388,1114,361,1089,337,1040,306,998,289,894,269,794,253,690,242,487,232,307,234,172,241"/>
+<area shape="poly" id="edge8_Node000007_Node000008" title=" " alt="" coords="172,252,220,257,413,273,413,278,220,263,172,257"/>
+<area shape="rect" id="Node000009" href="$classWetMass.html" title="Represents wet mass in the ecosystem simulation." alt="" coords="412,163,493,189"/>
+<area shape="poly" id="edge10_Node000009_Node000008" title=" " alt="" coords="151,224,219,205,323,187,411,177,412,182,324,193,221,211,152,230"/>
+<area shape="rect" id="Node000014" href="$classLength.html" title="Represents length in the ecosystem simulation." alt="" coords="583,473,650,498"/>
+<area shape="poly" id="edge17_Node000014_Node000008" title=" " alt="" coords="143,260,589,470,587,475,141,265"/>
+<area shape="poly" id="edge9_Node000003_Node000009" title=" " alt="" coords="507,173,753,173,753,179,507,179"/>
+<area shape="rect" id="Node000010" href="$classCustomIndexedVector.html" title=" " alt="" coords="726,364,890,404"/>
+<area shape="poly" id="edge11_Node000002_Node000010" title=" " alt="" coords="904,394,1091,425,1123,433,1122,438,1090,431,903,399"/>
+<area shape="rect" id="Node000011" href="$classCustomIndexedVector.html" title=" " alt="" coords="726,428,890,468"/>
+<area shape="poly" id="edge12_Node000002_Node000011" title=" " alt="" coords="904,445,1115,445,1115,451,904,451"/>
+<area shape="rect" id="Node000012" href="$classCustomIndexedVector.html" title=" " alt="" coords="726,492,890,532"/>
+<area shape="poly" id="edge13_Node000002_Node000012" title=" " alt="" coords="903,497,1090,465,1122,458,1123,463,1091,471,904,502"/>
+<area shape="rect" id="Node000013" href="$classIndividualGrowthModel.html" title="Abstract base class for representing an individual animal growth model." alt="" coords="721,557,895,582"/>
+<area shape="poly" id="edge14_Node000002_Node000013" title=" " alt="" coords="908,561,999,546,1045,533,1089,515,1129,488,1158,459,1162,463,1132,492,1092,520,1047,538,1000,551,909,566"/>
+<area shape="poly" id="edge16_Node000002_Node000014" title=" " alt="" coords="633,509,668,561,693,586,722,606,768,620,805,620,894,605,998,601,1040,591,1089,566,1116,542,1137,512,1164,460,1168,462,1142,515,1120,545,1092,570,1042,596,999,606,895,611,806,626,767,625,720,610,690,591,664,564,628,512"/>
+<area shape="rect" id="Node000015" href="$classTimeStep.html" title="Represents a discrete time step in the simulation." alt="" coords="766,670,850,695"/>
+<area shape="poly" id="edge19_Node000002_Node000015" title=" " alt="" coords="864,690,916,695,975,693,1035,680,1063,669,1089,653,1110,632,1128,608,1151,553,1163,500,1167,461,1173,461,1168,500,1156,554,1132,610,1114,636,1092,657,1066,673,1037,685,976,698,916,700,863,695"/>
+</map>
