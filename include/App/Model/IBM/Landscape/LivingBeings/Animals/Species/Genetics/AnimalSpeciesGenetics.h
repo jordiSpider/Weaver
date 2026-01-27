@@ -85,6 +85,13 @@ public:
      /** @brief Get the number of alleles per locus. */
      size_t getNumberOfAllelesPerLocus() const;
 
+     /**
+      * @brief Update pseudo-value ranges for all individual-level traits.
+      * 
+      * @param genome Genome used to calculate pseudo-value ranges.
+      */
+     void updatePseudoValueRanges(const Genome& genome);
+
      /** 
      * @brief Get all traits indexed by execution order.
      * @return Reference to all traits.
@@ -105,13 +112,6 @@ public:
 
      /** @brief Get traits used to weight predation probability. */
      const std::vector<Trait*>& getPredationProbabilityWeightTraits() const;
-
-     /** 
-     * @brief Check if the given traits are within restricted ranges.
-     * @param testTraits Traits to test.
-     * @return True if all traits are inside restricted ranges.
-     */
-     bool isInsideRestrictedRanges(const CustomIndexedVector<Trait::ExecutionOrder, std::vector<IndividualTrait>>& testTraits) const;
 
      /** @brief Check if growth traits are temperature dependent. */
      bool isGrowthTraitsThermallyDependent() const;
@@ -169,9 +169,6 @@ private:
 
      /** @brief Set traits using JSON configuration and modify alleles. */
      void setTraits(const nlohmann::json& traitsConfig, const nlohmann::json& modifyAlleles);
-
-     /** @brief Check if traits are inside restricted range. */
-     bool checkInsideRestrictedRange() const;
 
      /** @brief Generate loci for each trait based on JSON configuration. */
      void generateLociPerTrait(const nlohmann::json& modifyAlleles);

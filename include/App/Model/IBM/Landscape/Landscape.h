@@ -164,7 +164,7 @@ public:
 	* @param initialPopulation Species and instar counts used to seed the landscape.
 	* @param mapSpeciesInhabitableTerrainCells Mapping of species/instars to inhabitible terrain cells.
 	*/
-	void initializeAnimals(const CustomIndexedVector<AnimalSpeciesID, CustomIndexedVector<Instar, unsigned int>>& initialPopulation, std::vector<CustomIndexedVector<Instar, std::vector<std::vector<TerrainCell*>::iterator>>>& mapSpeciesInhabitableTerrainCells);
+	void initializeAnimals(const CustomIndexedVector<AnimalSpeciesID, CustomIndexedVector<Instar, unsigned int>>& initialPopulation, const CustomIndexedVector<AnimalSpeciesID, std::vector<Genome>>& initialGenomesPool, std::vector<CustomIndexedVector<Instar, std::vector<std::vector<TerrainCell*>::iterator>>>& mapSpeciesInhabitableTerrainCells);
 
 	/**
 	* @brief Evolve landscape.
@@ -465,7 +465,7 @@ protected:
 	* @param priority Priority value used when combining multiple sources.
 	*/
 	void addAppliedMoisture(MoistureSource* const source, const size_t priority);
-	
+
 	/**
 	* @brief Add an external resource source with a priority.
 	*

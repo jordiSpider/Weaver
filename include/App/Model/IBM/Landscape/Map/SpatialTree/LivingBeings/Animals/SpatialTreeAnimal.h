@@ -92,6 +92,8 @@ public:
      */
     SpatialTreeAnimal(const Instar &instar, AnimalSpecies* const mySpecies, TerrainCell* terrainCell, const TimeStep actualTimeStep, const PreciseDouble& timeStepsPerDay);
 	
+    SpatialTreeAnimal(const Instar &instar, AnimalSpecies* const mySpecies, TerrainCell* terrainCell, const Genome* const genome, const TimeStep actualTimeStep, const PreciseDouble& timeStepsPerDay);
+
     /**
      * @brief Constructor for an animal from two parent gametes.
      * @param firstParentGamete First parent's gamete.

@@ -145,7 +145,7 @@ public:
     void insertAnimal(Landscape* const landscape, Animal* const newAnimal) override;
 
     /// Randomly insert an animal based on instar and species, returning insertion info.
-    std::tuple<bool, TerrainCell*, TerrainCell*, Animal*, size_t> randomInsertAnimal(Landscape* const landscape, const Instar &instar, AnimalSpecies* animalSpecies, const bool isStatistical, const bool saveGenetics, const bool saveMassInfo, const TimeStep actualTimeStep, const PreciseDouble& timeStepsPerDay) override;
+    std::tuple<bool, TerrainCell*, TerrainCell*, Animal*> randomInsertAnimal(Landscape* const landscape, const Instar &instar, AnimalSpecies* animalSpecies, const bool isStatistical, const Genome* const genome, const bool saveGenetics, const bool saveMassInfo, const TimeStep actualTimeStep, const PreciseDouble& timeStepsPerDay) override;
 
     /// Check if a given continuous position belongs to one of the children.
     bool isChild(Map* const map, const PointContinuous &childPos) const;

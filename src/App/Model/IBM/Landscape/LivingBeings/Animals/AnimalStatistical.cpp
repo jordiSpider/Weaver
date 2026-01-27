@@ -8,7 +8,7 @@ using namespace std;
 
 
 AnimalStatistical::AnimalStatistical(Landscape* const landscape, const Instar &instar, AnimalSpecies* const mySpecies, TerrainCell* terrainCell, const PreciseDouble& timeStepsPerDay)
-	: Animal(landscape->generateEdibleId(), mySpecies, terrainCell, LifeStage::ACTIVE, TimeStep(0)),
+	: Animal(landscape->generateEdibleId(), mySpecies, terrainCell, nullptr, LifeStage::ACTIVE, TimeStep(0)),
 	  growthBuildingBlock(
 		&getMutableSpecies()->getMutableGrowthBuildingBlock(), instar, 
 		getSpecies()->getGenetics().isGrowthTraitsThermallyDependent(), 

@@ -66,7 +66,7 @@ public:
      * @param actualTimeStep Current simulation time step.
      * @param timeStepsPerDay Number of time steps per day in the simulation.
      */
-	explicit AnimalNonStatistical(const Instar &instar, AnimalSpecies* const mySpecies, TerrainCell* terrainCell, const TimeStep actualTimeStep, const PreciseDouble& timeStepsPerDay);
+	explicit AnimalNonStatistical(const Instar &instar, AnimalSpecies* const mySpecies, TerrainCell* terrainCell, const Genome* const genome, const TimeStep actualTimeStep, const PreciseDouble& timeStepsPerDay);
 	
 	/**
      * @brief Constructor for an animal created through sexual reproduction.

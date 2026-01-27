@@ -70,12 +70,6 @@ public:
     ) const;
 
     /**
-     * @brief Check if the trait value is inside restricted ranges.
-     * @return True if inside allowed range, false otherwise.
-     */
-    bool isInsideRestrictedRanges() const;
-
-    /**
      * @brief Convert the temperature section to a string representation.
      * @return String representation of the Pawar temperature section.
      */

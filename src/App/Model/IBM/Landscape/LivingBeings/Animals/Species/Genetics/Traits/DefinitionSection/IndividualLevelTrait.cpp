@@ -19,8 +19,9 @@ IndividualLevelTrait::IndividualLevelTrait(const json& config, const size_t newO
 	  restrictValue(config["restrictValue"].get<double>()),
 	  minTraitRestrictedRange(getMinTraitRange() + ((getMaxTraitRange() - getMinTraitRange()) * 0.5) * restrictValue),
 	  maxTraitRestrictedRange(getMaxTraitRange() - ((getMaxTraitRange() - getMinTraitRange()) * 0.5) * restrictValue),
-	  Pi(getMinTraitRestrictedRange() - getMinTraitRestrictedRange() * config["pctg"]["min"].get<double>()),
-	  K(getMaxTraitRestrictedRange() + getMaxTraitRestrictedRange() * config["pctg"]["max"].get<double>()),
+	  minTraitLimit(getMinTraitRange() - getMinTraitRange() * config["limits"]["min"].get<double>()),
+	  maxTraitLimit(getMaxTraitRange() + getMaxTraitRange() * config["limits"]["max"].get<double>()),
+	  minPseudoValueRange(std::numeric_limits<double>::max()), maxPseudoValueRange(0.0),
 	  fileName(fileName), traitStr(traitStr), elementStr(elementStr)
 {
 	
@@ -69,14 +70,14 @@ const PreciseDouble& IndividualLevelTrait::getMaxTraitRestrictedRange() const
 	return maxTraitRestrictedRange; 
 }
 
-const PreciseDouble& IndividualLevelTrait::getPi() const 
+const PreciseDouble& IndividualLevelTrait::getMinTraitLimit() const 
 { 
-	return Pi; 
+	return minTraitLimit; 
 }
 
-const PreciseDouble& IndividualLevelTrait::getK() const 
+const PreciseDouble& IndividualLevelTrait::getMaxTraitLimit() const 
 { 
-	return K; 
+	return maxTraitLimit; 
 }
 
 const PreciseDouble& IndividualLevelTrait::getMinPseudoValueRange() const 
@@ -87,6 +88,82 @@ const PreciseDouble& IndividualLevelTrait::getMinPseudoValueRange() const
 const PreciseDouble& IndividualLevelTrait::getMaxPseudoValueRange() const 
 { 
 	return maxPseudoValueRange; 
+}
+
+void IndividualLevelTrait::updatePseudoValueRanges(const Genome& genome, const size_t traitsPerModule, const size_t numberOfLociPerTrait, const vector<PreciseDouble>& rhoPerModule, const vector<size_t>& rhoRangePerModule)
+{
+	PreciseDouble newPseudoValue = 0.0;
+
+	size_t moduleNumber = getOrder() / traitsPerModule;
+
+	//The division is made using RHO. For every trait, the left side alleles of their own chromosomes must be added.
+	for(size_t j = 0; j < rhoRangePerModule[moduleNumber]; ++j) {
+		if(genome.getHomologousCorrelosomes().at(getOrder()).first->getAllele(j)->getAlphabeticOrder() >= genome.getHomologousCorrelosomes().at(getOrder()).second->getAllele(j)->getAlphabeticOrder())
+		{
+			newPseudoValue += genome.getHomologousCorrelosomes().at(getOrder()).first->getAllele(j)->getValue();
+		}
+		else
+		{
+			newPseudoValue += genome.getHomologousCorrelosomes().at(getOrder()).second->getAllele(j)->getValue();
+		}
+	}
+
+	//The right side depends on two factors: the sign for RHO for the current module and the dominance of the chromosome.
+	size_t distanceFromDominant = getOrder() % traitsPerModule;
+
+	//If RHO is positive, for every trait the right side alleles of the dominant chromosome must be added.
+	if(rhoPerModule[moduleNumber] >= 0.0)
+	{
+		for (size_t j = rhoRangePerModule[moduleNumber]; j < numberOfLociPerTrait; ++j)
+		{
+			if(genome.getHomologousCorrelosomes().at(getOrder()-distanceFromDominant).first->getAllele(j)->getAlphabeticOrder() >= genome.getHomologousCorrelosomes().at(getOrder()-distanceFromDominant).second->getAllele(j)->getAlphabeticOrder())
+			{
+				newPseudoValue += genome.getHomologousCorrelosomes().at(getOrder()-distanceFromDominant).first->getAllele(j)->getValue();
+			}
+			else
+			{
+				newPseudoValue += genome.getHomologousCorrelosomes().at(getOrder()-distanceFromDominant).second->getAllele(j)->getValue();
+			}
+
+		}
+	}
+	//If RHO is negative.
+	else {
+		//If the trait IS dominant, the right side alleles of its chromosome must be added.
+		if(distanceFromDominant == 0)
+		{
+			for (size_t j = rhoRangePerModule[moduleNumber]; j < numberOfLociPerTrait; ++j)
+			{
+				if(genome.getHomologousCorrelosomes().at(getOrder()).first->getAllele(j)->getAlphabeticOrder() >= genome.getHomologousCorrelosomes().at(getOrder()).second->getAllele(j)->getAlphabeticOrder())
+				{
+					newPseudoValue += genome.getHomologousCorrelosomes().at(getOrder()).first->getAllele(j)->getValue();
+				}
+				else
+				{
+					newPseudoValue += genome.getHomologousCorrelosomes().at(getOrder()).second->getAllele(j)->getValue();
+				}
+			}
+		}
+		//If the trait is NOT dominant, 1 - the right side alleles of the dominant chromosome must be added.
+		else
+		{
+			for (size_t j = rhoRangePerModule[moduleNumber]; j < numberOfLociPerTrait; ++j)
+			{
+				if(genome.getHomologousCorrelosomes().at(getOrder()-distanceFromDominant).first->getAllele(j)->getAlphabeticOrder() >= genome.getHomologousCorrelosomes().at(getOrder()-distanceFromDominant).second->getAllele(j)->getAlphabeticOrder())
+				{
+					newPseudoValue += (1.0 - genome.getHomologousCorrelosomes().at(getOrder()-distanceFromDominant).first->getAllele(j)->getValue());
+				}
+				else
+				{
+					newPseudoValue += (1.0 - genome.getHomologousCorrelosomes().at(getOrder()-distanceFromDominant).second->getAllele(j)->getValue());
+				}
+			}
+		}
+	}
+
+
+	minPseudoValueRange = PreciseDouble(fmin(minPseudoValueRange.getValue(), newPseudoValue.getValue()));
+	maxPseudoValueRange = PreciseDouble(fmax(maxPseudoValueRange.getValue(), newPseudoValue.getValue()));
 }
 
 PreciseDouble IndividualLevelTrait::calculatePseudoValue(const Genome& genome, const size_t traitsPerModule, const size_t numberOfLociPerTrait, const vector<PreciseDouble>& rhoPerModule, const vector<size_t>& rhoRangePerModule) const
@@ -238,14 +315,9 @@ PreciseDouble IndividualLevelTrait::getValue(const Genome& genome, const size_t 
 	}
 
 	// Apply evo limits
-	PreciseDouble pheno(clamp(pheno_raw.getValue(), getPi().getValue(), getK().getValue()));
+	PreciseDouble pheno(clamp(pheno_raw.getValue(), getMinTraitLimit().getValue(), getMaxTraitLimit().getValue()));
 
 	return pheno;
-}
-
-bool IndividualLevelTrait::isInsideRestrictedRanges(const PreciseDouble& traitValue) const
-{
-	return getMinTraitRestrictedRange() <= traitValue && traitValue <= getMaxTraitRestrictedRange();
 }
 
 IndividualLevelTrait::Type IndividualLevelTrait::getType() const
@@ -273,54 +345,6 @@ void IndividualLevelTrait::deserializeIndividualLevelTraits(std::vector<Individu
 	individualLevelTraits.push_back(this);
 }
 
-void IndividualLevelTrait::setPseudoValueRanges(const vector<Locus> &loci, const size_t traitsPerModule, const size_t numberOfLociPerTrait, const vector<PreciseDouble>& rhoPerModule, const vector<size_t>& rhoRangePerModule)
-{
-	minPseudoValueRange = 0.0;
-	maxPseudoValueRange = 0.0;
-	
-	size_t moduleNumber = getOrder() / traitsPerModule;
-
-	//The division is made using RHO. For every trait, the left side alleles of their own chromosomes must be added.
-	for(size_t j = 0; j < rhoRangePerModule[moduleNumber]; ++j) {
-		minPseudoValueRange += loci[j].getMinAlleleValue();
-		maxPseudoValueRange += loci[j].getMaxAlleleValue();
-	}
-
-	//The right side depends on two factors: the sign for RHO for the current module and the dominance of the chromosome.
-	size_t distanceFromDominant = getOrder() % traitsPerModule;
-
-	//If RHO is positive, for every trait the right side alleles of the dominant chromosome must be added.
-	if(rhoPerModule[moduleNumber] >= 0.0)
-	{
-		for (size_t j = rhoRangePerModule[moduleNumber]; j < numberOfLociPerTrait; ++j)
-		{
-			minPseudoValueRange += loci[j].getMinAlleleValue();
-			maxPseudoValueRange += loci[j].getMaxAlleleValue();
-		}
-	}
-	//If RHO is negative.
-	else {
-		//If the trait IS dominant, the right side alleles of its chromosome must be added.
-		if(distanceFromDominant == 0)
-		{
-			for (size_t j = rhoRangePerModule[moduleNumber]; j < numberOfLociPerTrait; ++j)
-			{
-				minPseudoValueRange += loci[j].getMinAlleleValue();
-				maxPseudoValueRange += loci[j].getMaxAlleleValue();
-			}
-		}
-		//If the trait is NOT dominant, 1 - the right side alleles of the dominant chromosome must be added.
-		else
-		{
-			for (size_t j = rhoRangePerModule[moduleNumber]; j < numberOfLociPerTrait; ++j)
-			{
-				minPseudoValueRange += (1.0 - loci[j].getMaxAlleleValue());
-				maxPseudoValueRange += (1.0 - loci[j].getMinAlleleValue());
-			}
-		}
-	}
-}
-
 
 
 BOOST_CLASS_EXPORT(IndividualLevelTrait)
@@ -335,8 +359,8 @@ void IndividualLevelTrait::serialize(Archive &ar, const unsigned int) {
     ar & restrictValue;
     ar & minTraitRestrictedRange;
     ar & maxTraitRestrictedRange;
-    ar & Pi;
-    ar & K;
+    ar & minTraitLimit;
+    ar & maxTraitLimit;
 
     ar & minPseudoValueRange;
     ar & maxPseudoValueRange;

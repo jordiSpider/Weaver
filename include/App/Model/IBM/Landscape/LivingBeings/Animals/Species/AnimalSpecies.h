@@ -567,6 +567,14 @@ public:
 
 	/// Adds a resource species record.
 	void addResourceSpecies();
+
+	/**
+	 * @brief Generates the initial genomes pool for this species.
+	 * 
+	 * @param initialPopulation Initial population per instar.
+	 * @param initialGenomesPool Output vector to be filled with initial genomes.
+	 */
+	void generateInitialGenomesPool(const CustomIndexedVector<Instar, unsigned int>& population, std::vector<Genome>& initialGenomesPool);
 	
 	/// Returns humidity threshold per instar.
 	virtual PreciseDouble getMinRelativeHumidityThreshold(const Instar &instar) const { return minRelativeHumidityThreshold[instar]; };

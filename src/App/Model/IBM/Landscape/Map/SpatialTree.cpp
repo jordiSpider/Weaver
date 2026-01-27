@@ -313,7 +313,7 @@ unsigned int SpatialTree::generateStatisticsPopulation(vector<CustomIndexedVecto
                 size_t randomCellIndex = Random::randomIndex(mapSpeciesInhabitableTerrainCells[animalSpecies->getAnimalSpeciesId()][instar].size());
                 
                 
-                auto newTerrainCell = (*mapSpeciesInhabitableTerrainCells[animalSpecies->getAnimalSpeciesId()][instar][randomCellIndex])->randomInsertAnimal(landscape, instar, animalSpecies, true, false, false, actualTimeStep, timeStepsPerDay);
+                auto newTerrainCell = (*mapSpeciesInhabitableTerrainCells[animalSpecies->getAnimalSpeciesId()][instar][randomCellIndex])->randomInsertAnimal(landscape, instar, animalSpecies, true, nullptr, false, false, actualTimeStep, timeStepsPerDay);
                 
                 if(get<0>(newTerrainCell))
                 {
@@ -364,10 +364,8 @@ unsigned int SpatialTree::getMapDepth() const
     return mapDepth;
 }
 
-size_t SpatialTree::generatePopulation(View* view, Landscape* const landscape, AnimalSpecies* currentAnimalSpecies, const CustomIndexedVector<Instar, unsigned int>& population, const CustomIndexedVector<Instar, vector<vector<TerrainCell*>::iterator>> &speciesInhabitableTerrainCells, const bool saveAnimalConstitutiveTraits, std::ostringstream& animalConstitutiveTraitsFile, const bool saveGenetics, const bool saveMassInfo, const TimeStep actualTimeStep, const PreciseDouble& timeStepsPerDay)
+void SpatialTree::generatePopulation(View* view, Landscape* const landscape, AnimalSpecies* currentAnimalSpecies, const CustomIndexedVector<Instar, unsigned int>& population, const std::vector<Genome>& initialGenomesPool, const CustomIndexedVector<Instar, vector<vector<TerrainCell*>::iterator>> &speciesInhabitableTerrainCells, const bool saveAnimalConstitutiveTraits, std::ostringstream& animalConstitutiveTraitsFile, const bool saveGenetics, const bool saveMassInfo, const TimeStep actualTimeStep, const PreciseDouble& timeStepsPerDay)
 {
-    size_t numberOfDiscardedIndividualsOutsideRestrictedRanges = 0;
-
     unsigned int totalInitialPopulation = 0;
 
     for(const unsigned int instarPopulation : population)
@@ -381,6 +379,8 @@ size_t SpatialTree::generatePopulation(View* view, Landscape* const landscape, A
 
     size_t randomCellIndex;
 
+    unsigned int genomesPoolIndex = 0;
+
     for(const Instar &instar : currentAnimalSpecies->getGrowthBuildingBlock().getInstarsRange())
     {
         for (unsigned long individual = 0; individual < population[instar]; individual++)
@@ -390,8 +390,18 @@ size_t SpatialTree::generatePopulation(View* view, Landscape* const landscape, A
             // Get a random index from this species inhabitable cells
             randomCellIndex = Random::randomIndex(speciesInhabitableTerrainCells[instar].size());
 
-            auto newTerrainCell = (*speciesInhabitableTerrainCells[instar][randomCellIndex])->randomInsertAnimal(landscape, instar, currentAnimalSpecies, false, saveGenetics, saveMassInfo, actualTimeStep, timeStepsPerDay);
+            const Genome* genome;
 
+            if(initialGenomesPool.empty()) {
+                genome = nullptr;
+            }
+            else {
+                genome = &initialGenomesPool[genomesPoolIndex];
+                genomesPoolIndex++;
+            }
+
+            auto newTerrainCell = (*speciesInhabitableTerrainCells[instar][randomCellIndex])->randomInsertAnimal(landscape, instar, currentAnimalSpecies, false, genome, saveGenetics, saveMassInfo, actualTimeStep, timeStepsPerDay);
+            
             if(get<0>(newTerrainCell))
             {
                 bool found = false;
@@ -406,8 +416,6 @@ size_t SpatialTree::generatePopulation(View* view, Landscape* const landscape, A
             }
 
             newAnimal = static_cast<AnimalNonStatistical*>(get<3>(newTerrainCell));
-
-            numberOfDiscardedIndividualsOutsideRestrictedRanges += get<4>(newTerrainCell);
             
             newAnimal->calculateGrowthCurves(timeStepsPerDay);
             newAnimal->forceMolting(landscape, actualTimeStep, timeStepsPerDay);
@@ -420,8 +428,6 @@ size_t SpatialTree::generatePopulation(View* view, Landscape* const landscape, A
             progressBar.update();
         }
     }
-
-	return numberOfDiscardedIndividualsOutsideRestrictedRanges;
 }
 
 void SpatialTree::deserializeSources(

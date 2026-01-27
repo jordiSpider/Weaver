@@ -12,11 +12,11 @@ Animal::Animal()
 
 }
 
-Animal::Animal(const EdibleID id, AnimalSpecies* const mySpecies, TerrainCell* terrainCell, 
+Animal::Animal(const EdibleID id, AnimalSpecies* const mySpecies, TerrainCell* terrainCell, const Genome* const genome, 
 		const LifeStage& lifeStage, const TimeStep actualTimeStep)
 	: Edible(id, mySpecies, terrainCell), 
 	  genetics(
-		&getMutableSpecies()->getMutableGenetics(), getTerrainCell()->getPatchApplicator().getCellMoisture().getTemperature(), actualTimeStep,
+		&getMutableSpecies()->getMutableGenetics(), genome, getTerrainCell()->getPatchApplicator().getCellMoisture().getTemperature(), actualTimeStep,
 		getSpecies()->getGrowthBuildingBlock().getCoefficientForMassAforMature(), 
 		getSpecies()->getGrowthBuildingBlock().getScaleForMassBforMature(),
 		getSpecies()->getTempFromLab()

@@ -139,20 +139,6 @@ void IndividualTrait::tune(const Temperature& temperature, const TimeStep actual
     }
 }
 
-bool IndividualTrait::isInsideRestrictedRanges() const
-{
-    bool isInsideRestrictedRanges = true;
-
-    isInsideRestrictedRanges = isInsideRestrictedRanges && trait->getValue()->isInsideRestrictedRanges(constitutiveValue);
-
-    if(trait->isThermallyDependent())
-    {
-        isInsideRestrictedRanges = isInsideRestrictedRanges && temperatureSection->isInsideRestrictedRanges();
-    }
-
-    return isInsideRestrictedRanges;
-}
-
 void IndividualTrait::setTrait(Trait* newTrait)
 {
     trait = newTrait;

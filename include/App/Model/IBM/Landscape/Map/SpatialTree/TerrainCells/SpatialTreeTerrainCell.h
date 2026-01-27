@@ -58,9 +58,9 @@ protected:
      * @param saveMassInfo Whether to save mass information.
      * @param actualTimeStep Current timestep.
      * @param timeStepsPerDay Number of timesteps per day.
-     * @return Pair containing pointer to the animal and its index in the cell.
+     * @return Created animal.
      */
-    std::pair<AnimalNonStatistical*, size_t> createAnimal(Landscape* const landscape, const Instar &instar, AnimalSpecies* animalSpecies, const bool saveGenetics, const bool saveMassInfo, const TimeStep actualTimeStep, const PreciseDouble& timeStepsPerDay);
+    AnimalNonStatistical* createAnimal(Landscape* const landscape, const Instar &instar, AnimalSpecies* animalSpecies, const Genome* const genome, const bool saveGenetics, const bool saveMassInfo, const TimeStep actualTimeStep, const PreciseDouble& timeStepsPerDay);
 
 public:
     /// Number of children per spatial tree cell (static constant).

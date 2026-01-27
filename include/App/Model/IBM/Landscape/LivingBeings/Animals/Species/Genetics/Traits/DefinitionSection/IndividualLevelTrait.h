@@ -9,6 +9,7 @@
 
 #include <string>
 #include <algorithm>
+#include <limits>
 
 
 #include <boost/serialization/export.hpp>
@@ -133,23 +134,15 @@ public:
     PreciseDouble getValue(const Genome& genome, const size_t traitsPerModule, const size_t numberOfLociPerTrait, const std::vector<PreciseDouble>& rhoPerModule, const std::vector<size_t>& rhoRangePerModule) const;
 
     /**
-     * @brief Checks if a trait value is within restricted ranges.
-     *
-     * @param traitValue Value to check.
-     * @return True if within allowed range, false otherwise.
-     */
-    bool isInsideRestrictedRanges(const PreciseDouble& traitValue) const;
-
-    /**
-     * @brief Sets the pseudo-value limits for the trait.
-     *
-     * @param loci Vector of loci.
+     * @brief Updates pseudo-value ranges based on genome data.
+     * 
+     * @param genome Genome of the individual.
      * @param traitsPerModule Number of traits per module.
      * @param numberOfLociPerTrait Number of loci per trait.
      * @param rhoPerModule Vector of rho values per module.
      * @param rhoRangePerModule Vector of rho ranges per module.
      */
-    void setPseudoValueRanges(const std::vector<Locus> &loci, const size_t traitsPerModule, const size_t numberOfLociPerTrait, const std::vector<PreciseDouble>& rhoPerModule, const std::vector<size_t>& rhoRangePerModule);
+    void updatePseudoValueRanges(const Genome& genome, const size_t traitsPerModule, const size_t numberOfLociPerTrait, const std::vector<PreciseDouble>& rhoPerModule, const std::vector<size_t>& rhoRangePerModule);
 
     /**
      * @brief Returns the trait identifier string.
@@ -215,9 +208,11 @@ protected:
     /// Maximum restricted trait range.
     PreciseDouble maxTraitRestrictedRange;
 
-    PreciseDouble Pi;
+    /// Minimum trait limit.
+    PreciseDouble minTraitLimit;
 
-    PreciseDouble K;
+    /// Maximum trait limit.
+    PreciseDouble maxTraitLimit;
 
     /// Minimum pseudo-value range.
     PreciseDouble minPseudoValueRange;
@@ -244,9 +239,9 @@ protected:
     /// Returns maximum pseudo-value range.
     const PreciseDouble& getMaxPseudoValueRange() const;
 
-    const PreciseDouble& getPi() const;
+    const PreciseDouble& getMinTraitLimit() const;
 
-    const PreciseDouble& getK() const;
+    const PreciseDouble& getMaxTraitLimit() const;
 };
 
 #endif // INDIVIDUAL_LEVEL_TRAIT_H_

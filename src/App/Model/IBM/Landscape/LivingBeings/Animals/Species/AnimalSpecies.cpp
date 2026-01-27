@@ -516,6 +516,29 @@ const AnimalSearchParams& AnimalSpecies::getMatureFemalesSearchParams() const
 	return *matureFemalesSearchParams;
 }
 
+void AnimalSpecies::generateInitialGenomesPool(const CustomIndexedVector<Instar, unsigned int>& initialPopulation, std::vector<Genome>& initialGenomesPool)
+{
+	unsigned int totalInitialPopulation = 0;
+
+    for(const unsigned int instarPopulation : initialPopulation)
+    {
+        totalInitialPopulation += instarPopulation;
+    }
+
+	initialGenomesPool.reserve(totalInitialPopulation);
+
+
+	for(unsigned int i = 0; i < totalInitialPopulation; i++) {
+		initialGenomesPool.emplace_back(
+			getGenetics().getLociPerTrait(), getGenetics().getRandomlyCreatedPositionsForChromosomes(),
+			getGenetics().getNumberOfChromosomes(), getGenetics().getNumberOfLociPerChromosome(),
+			getGenetics().getNumberOfChiasmasPerChromosome()
+		);
+
+		getMutableGenetics().updatePseudoValueRanges(initialGenomesPool.back());
+	}
+}
+
 void AnimalSpecies::obtainMatureFemalesSearchParams()
 {
 	matureFemalesSearchParams->addSearchParams(

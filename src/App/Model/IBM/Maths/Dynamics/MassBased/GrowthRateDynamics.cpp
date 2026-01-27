@@ -44,23 +44,19 @@ PreciseDouble GrowthRateDynamics::getValue(const PreciseDouble& baseValue, bool 
 
 	PreciseDouble rateOfIncreasePerTimeStep = rateOfIncrease * timeStepsPerDay;
 
-	PreciseDouble newValue;
-
-    if(rateOfIncrease > 1.7)
+	if(rateOfIncrease > 1.7)
 	{
-		newValue = (1+rateOfIncreasePerTimeStep) * baseValue;
+		return (1+rateOfIncreasePerTimeStep) * baseValue;
 	}
 	else
 	{
 		if(competitionAmongResourceSpecies) {
-			newValue = baseValue + rateOfIncreasePerTimeStep * baseValue * (1-(baseValue/totalMaximumResourceCapacity.getValue()));
+			return baseValue + rateOfIncreasePerTimeStep * baseValue * (1-(baseValue/totalMaximumResourceCapacity.getValue()));
 		}
 		else {
-			newValue = baseValue + rateOfIncreasePerTimeStep * baseValue * (1-(baseValue/resourceMaximumCapacity.getValue()));
+			return baseValue + rateOfIncreasePerTimeStep * baseValue * (1-(baseValue/resourceMaximumCapacity.getValue()));
 		}
 	}
-
-    return newValue;
 }
 
 void GrowthRateDynamics::update()

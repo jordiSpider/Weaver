@@ -119,6 +119,20 @@ Genome::~Genome() {
 	}
 }
 
+void Genome::initFromOther(const Genome& otherGenome, const std::vector<size_t> &randomlyCreatedPositionsForChromosomes)
+{
+	this->numberOfLociPerChromosome = otherGenome.numberOfLociPerChromosome;
+	this->numberOfChiasmasPerChromosome = otherGenome.numberOfChiasmasPerChromosome;
+
+	homologousChromosomes.reserve(otherGenome.getHomologousChromosomes().size());
+	for(size_t i = 0; i < otherGenome.getHomologousChromosomes().size(); i++)
+	{
+		homologousChromosomes.emplace_back(make_pair(otherGenome.getHomologousChromosomes().at(i).first->clone(), otherGenome.getHomologousChromosomes().at(i).second->clone()));
+	}
+
+	createHomologousCorrelosomesFromChromosomes(randomlyCreatedPositionsForChromosomes);
+}
+
 Gamete* Genome::getGametesFromMeiosis(const size_t &indexSelectedGamete)
 {
 	Gamete* selectedGamete = new Gamete(homologousChromosomes.size());

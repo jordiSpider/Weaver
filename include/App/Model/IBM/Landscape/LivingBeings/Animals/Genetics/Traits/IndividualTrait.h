@@ -94,12 +94,6 @@ public:
     void tune(const Temperature& temperature, const TimeStep actualTimeStep, const PreciseDouble &coefficientForMassAforMature, const PreciseDouble &scaleForMassBforMature, const Temperature& tempFromLab);
 
     /**
-     * @brief Check if the trait's phenotypic value is within restricted ranges.
-     * @return True if within allowed ranges, false otherwise.
-     */
-    bool isInsideRestrictedRanges() const;
-
-    /**
      * @brief Convert the trait to a string representation.
      * @return String containing trait information.
      */

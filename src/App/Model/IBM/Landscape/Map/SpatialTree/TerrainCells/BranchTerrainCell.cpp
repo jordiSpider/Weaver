@@ -276,11 +276,11 @@ void BranchTerrainCell::insertAnimal(Landscape* const landscape, Animal* const n
     }
 }
 
-tuple<bool, TerrainCell*, TerrainCell*, Animal*, size_t> BranchTerrainCell::randomInsertAnimal(Landscape* const landscape, const Instar &instar, AnimalSpecies* animalSpecies, const bool isStatistical, const bool saveGenetics, const bool saveMassInfo, const TimeStep actualTimeStep, const PreciseDouble& timeStepsPerDay)
+tuple<bool, TerrainCell*, TerrainCell*, Animal*> BranchTerrainCell::randomInsertAnimal(Landscape* const landscape, const Instar &instar, AnimalSpecies* animalSpecies, const bool isStatistical, const Genome* const genome, const bool saveGenetics, const bool saveMassInfo, const TimeStep actualTimeStep, const PreciseDouble& timeStepsPerDay)
 {
     if(getPosition().getDepth() == animalSpecies->getCellDepthPerInstar()[instar])
     {
-        return TerrainCell::randomInsertAnimal(landscape, instar, animalSpecies, isStatistical, saveGenetics, saveMassInfo, actualTimeStep, timeStepsPerDay);
+        return TerrainCell::randomInsertAnimal(landscape, instar, animalSpecies, isStatistical, genome, saveGenetics, saveMassInfo, actualTimeStep, timeStepsPerDay);
     }
     else
     {
@@ -291,7 +291,7 @@ tuple<bool, TerrainCell*, TerrainCell*, Animal*, size_t> BranchTerrainCell::rand
         {
             if(!getChildTerrainCell(randomIndexVector.at(i))->getPatchApplicator().getCellObstacle().isObstacle())
             {
-                return getMutableChildTerrainCell(randomIndexVector.at(i))->randomInsertAnimal(landscape, instar, animalSpecies, isStatistical, saveGenetics, saveMassInfo, actualTimeStep, timeStepsPerDay);
+                return getMutableChildTerrainCell(randomIndexVector.at(i))->randomInsertAnimal(landscape, instar, animalSpecies, isStatistical, genome, saveGenetics, saveMassInfo, actualTimeStep, timeStepsPerDay);
             }
         }
 

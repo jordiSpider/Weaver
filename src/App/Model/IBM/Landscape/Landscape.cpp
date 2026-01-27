@@ -119,6 +119,14 @@ void Landscape::init(View* newView, fs::path configPath, fs::path newOutputFolde
 
 	bool newAnimalSpecies = readAnimalSpeciesFromJSONFiles(configPath, initialPopulation);
 
+	CustomIndexedVector<AnimalSpeciesID, std::vector<Genome>> initialGenomesPool(getExistingAnimalSpecies().size());
+
+	if(!fromCheckpoint) {
+		for(AnimalSpecies* animalSpecies : getMutableExistingAnimalSpecies())
+		{
+			animalSpecies->generateInitialGenomesPool(initialPopulation[animalSpecies->getAnimalSpeciesId()], initialGenomesPool[animalSpecies->getAnimalSpeciesId()]);
+		}
+	}
 
 	readObstaclePatchesFromJSONFiles(configPath);
 
@@ -190,7 +198,7 @@ void Landscape::init(View* newView, fs::path configPath, fs::path newOutputFolde
 
 		if(actualEcosystemSize > 0)
 		{
-			initializeAnimals(initialPopulation, mapSpeciesInhabitableTerrainCells);
+			initializeAnimals(initialPopulation, initialGenomesPool, mapSpeciesInhabitableTerrainCells);
 		}
 	}
 }
@@ -2562,7 +2570,7 @@ const Map* Landscape::getMap() const
 	return landscapeMap;
 }
 
-void Landscape::initializeAnimals(const CustomIndexedVector<AnimalSpeciesID, CustomIndexedVector<Instar, unsigned int>>& initialPopulation, std::vector<CustomIndexedVector<Instar, std::vector<std::vector<TerrainCell*>::iterator>>>& mapSpeciesInhabitableTerrainCells)
+void Landscape::initializeAnimals(const CustomIndexedVector<AnimalSpeciesID, CustomIndexedVector<Instar, unsigned int>>& initialPopulation, const CustomIndexedVector<AnimalSpeciesID, std::vector<Genome>>& initialGenomesPool, std::vector<CustomIndexedVector<Instar, std::vector<std::vector<TerrainCell*>::iterator>>>& mapSpeciesInhabitableTerrainCells)
 {
 	view->updateLog("Giving life to animals... \n");
 
@@ -2570,13 +2578,10 @@ void Landscape::initializeAnimals(const CustomIndexedVector<AnimalSpeciesID, Cus
 	{
 		if(initialPopulation[animalSpecies->getAnimalSpeciesId()].size() > 0)
     	{
-			size_t numberOfDiscardedIndividualsOutsideRestrictedRanges = 0;
-
 			ostringstream animalConstitutiveTraitsContent;
 
-			numberOfDiscardedIndividualsOutsideRestrictedRanges = landscapeMap->generatePopulation(view, this, animalSpecies, initialPopulation[animalSpecies->getAnimalSpeciesId()], mapSpeciesInhabitableTerrainCells[animalSpecies->getAnimalSpeciesId()], getSaveAnimalConstitutiveTraits(), animalConstitutiveTraitsContent, saveGenetics, saveMassInfo, TimeStep(0), getTimeStepsPerDay());
+			landscapeMap->generatePopulation(view, this, animalSpecies, initialPopulation[animalSpecies->getAnimalSpeciesId()], initialGenomesPool[animalSpecies->getAnimalSpeciesId()], mapSpeciesInhabitableTerrainCells[animalSpecies->getAnimalSpeciesId()], getSaveAnimalConstitutiveTraits(), animalConstitutiveTraitsContent, saveGenetics, saveMassInfo, TimeStep(0), getTimeStepsPerDay());
 		
-
 			if(getSaveAnimalConstitutiveTraits())
 			{
 				if(getSaveAnimalConstitutiveTraits())
@@ -2585,14 +2590,11 @@ void Landscape::initializeAnimals(const CustomIndexedVector<AnimalSpeciesID, Cus
 					animalConstitutiveTraitsFile[animalSpecies->getAnimalSpeciesId()]->flush();
 				}
 			}
-
-			view->updateLog({">> A total of ", to_string(numberOfDiscardedIndividualsOutsideRestrictedRanges), " individuals have been discarded due to at least one trait value being outside restricted ranges.\n"});
 		}
 	}
 
 	view->updateLog("DONE\n");
 }
-
 
 void Landscape::initializeOutputFiles(fs::path configPath)
 {

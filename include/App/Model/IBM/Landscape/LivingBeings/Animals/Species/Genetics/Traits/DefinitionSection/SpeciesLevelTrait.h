@@ -82,14 +82,6 @@ public:
     const PreciseDouble& getMaxTraitRestrictedRange() const;
 
     /**
-     * @brief Checks if a given value is within restricted ranges.
-     *
-     * @param traitValue Value to check.
-     * @return True if within allowed range, false otherwise.
-     */
-    bool isInsideRestrictedRanges(const PreciseDouble& traitValue) const;
-
-    /**
      * @brief Deserializes individual-level traits (no-op for species-level traits).
      *
      * @param individualLevelTraits Vector of pointers to IndividualLevelTrait objects.

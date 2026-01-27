@@ -205,9 +205,9 @@ protected:
      * @param saveMassInfo Whether to save mass information.
      * @param actualTimeStep Current simulation time step.
      * @param timeStepsPerDay Number of simulation steps per day.
-     * @return Pair of pointer to created animal and its index in storage.
+     * @return Created animal.
      */
-    virtual std::pair<AnimalNonStatistical*, size_t> createAnimal(Landscape* const landscape, const Instar &instar, AnimalSpecies* animalSpecies, const bool saveGenetics, const bool saveMassInfo, const TimeStep actualTimeStep, const PreciseDouble& timeStepsPerDay)=0;
+    virtual AnimalNonStatistical* createAnimal(Landscape* const landscape, const Instar &instar, AnimalSpecies* animalSpecies, const Genome* const genome, const bool saveGenetics, const bool saveMassInfo, const TimeStep actualTimeStep, const PreciseDouble& timeStepsPerDay)=0;
     
     /**
      * @brief Generates the continuous center point of the cell.
@@ -546,7 +546,7 @@ public:
      * @param timeStepsPerDay Simulation time steps per day
      * @return Tuple containing success, old cell, new cell, pointer to animal, and index
      */
-    virtual std::tuple<bool, TerrainCell*, TerrainCell*, Animal*, size_t> randomInsertAnimal(Landscape* const landscape, const Instar &instar, AnimalSpecies* animalSpecies, const bool isStatistical, const bool saveGenetics, const bool saveMassInfo, const TimeStep actualTimeStep, const PreciseDouble& timeStepsPerDay);
+    virtual std::tuple<bool, TerrainCell*, TerrainCell*, Animal*> randomInsertAnimal(Landscape* const landscape, const Instar &instar, AnimalSpecies* animalSpecies, const bool isStatistical, const Genome* const genome, const bool saveGenetics, const bool saveMassInfo, const TimeStep actualTimeStep, const PreciseDouble& timeStepsPerDay);
     
     /**
      * @brief Adds an animal to internal storage structures.

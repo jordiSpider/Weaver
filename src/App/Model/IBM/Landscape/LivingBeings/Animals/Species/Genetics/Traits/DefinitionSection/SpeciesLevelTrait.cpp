@@ -56,11 +56,6 @@ const PreciseDouble& SpeciesLevelTrait::getMaxTraitRestrictedRange() const
 	return value;
 }
 
-bool SpeciesLevelTrait::isInsideRestrictedRanges(const PreciseDouble&) const
-{
-	return true;
-}
-
 void SpeciesLevelTrait::deserializeIndividualLevelTraits(std::vector<IndividualLevelTrait*>&)
 {
 

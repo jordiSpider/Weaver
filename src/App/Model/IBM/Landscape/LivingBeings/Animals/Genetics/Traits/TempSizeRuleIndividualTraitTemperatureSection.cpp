@@ -30,11 +30,6 @@ PreciseDouble TempSizeRuleIndividualTraitTemperatureSection::applyTemperatureDep
 	return MathFunctions::use_TSR(temperature, getTraitTemperatureSection()->getTempSizeRuleVector(), coefficientForMassAforMature, scaleForMassBforMature, Length(traitValue), tempFromLab).getValue();
 }
 
-bool TempSizeRuleIndividualTraitTemperatureSection::isInsideRestrictedRanges() const
-{
-    return true;
-}
-
 const TempSizeRuleTraitTemperatureSection* TempSizeRuleIndividualTraitTemperatureSection::getTraitTemperatureSection() const
 {
     return static_cast<const TempSizeRuleTraitTemperatureSection*>(IndividualTraitTemperatureSection::getTraitTemperatureSection());
