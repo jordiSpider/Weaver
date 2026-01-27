@@ -82,7 +82,7 @@ protected:
      * @param maxRH Maximum relative humidity.
      * @return Computed value as a PreciseDouble.
      */
-    PreciseDouble getValue(const PreciseDouble& baseValue, const PreciseDouble& timeStepsPerDay, const Temperature& temperature, const PreciseDouble& moisture, const PreciseDouble& minRH, const PreciseDouble& maxRH) const;
+    PreciseDouble getValue(const PreciseDouble& baseValue, bool competitionAmongResourceSpecies, const WetMass& totalMaximumResourceCapacity, const PreciseDouble& timeStepsPerDay, const Temperature& temperature, const PreciseDouble& moisture, const PreciseDouble& minRH, const PreciseDouble& maxRH) const;
 };
 
 #endif // NON_MASS_BASED_DYNAMICS_H

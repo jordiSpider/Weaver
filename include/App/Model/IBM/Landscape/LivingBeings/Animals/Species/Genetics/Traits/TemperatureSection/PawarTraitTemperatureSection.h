@@ -79,14 +79,6 @@ public:
     bool isStrictlyPositive() const;
 
     /**
-     * @brief Checks whether the given Pawar element values are inside restricted ranges.
-     *
-     * @param elementsValue Vector of PawarElement values.
-     * @return True if all elements are within allowed ranges, false otherwise.
-     */
-    bool isInsideRestrictedRanges(const CustomIndexedVector<PawarElement, PreciseDouble>& elementsValue) const;
-
-    /**
      * @brief Generates an individual-level temperature section for this Pawar trait.
      *
      * Overrides the pure virtual method from TraitTemperatureSection.

@@ -26,8 +26,8 @@ AnimalNonStatistical::AnimalNonStatistical()
 
 }
 
-AnimalNonStatistical::AnimalNonStatistical(const Instar &instar, AnimalSpecies* const mySpecies, TerrainCell* terrainCell, const TimeStep actualTimeStep, const PreciseDouble& timeStepsPerDay)
-	: Animal(EdibleID(0), mySpecies, terrainCell, LifeStage::ACTIVE, actualTimeStep),
+AnimalNonStatistical::AnimalNonStatistical(const Instar &instar, AnimalSpecies* const mySpecies, TerrainCell* terrainCell, const Genome* const genome, const TimeStep actualTimeStep, const PreciseDouble& timeStepsPerDay)
+	: Animal(EdibleID(0), mySpecies, terrainCell, genome, LifeStage::ACTIVE, actualTimeStep),
 	  growthBuildingBlock( 
 		&getMutableSpecies()->getMutableGrowthBuildingBlock(), instar, 
 		getSpecies()->getGenetics().isGrowthTraitsThermallyDependent(), 

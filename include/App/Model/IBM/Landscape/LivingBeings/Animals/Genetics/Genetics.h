@@ -54,7 +54,7 @@ public:
      * @param scaleForMassBforMature Scale B for mature mass calculation.
      * @param tempFromLab Temperature data from lab experiments.
      */
-    Genetics(AnimalSpeciesGenetics* speciesGenetics, const Temperature& temperature, const TimeStep actualTimeStep, const PreciseDouble &coefficientForMassAforMature, const PreciseDouble &scaleForMassBforMature, const Temperature& tempFromLab);
+    Genetics(AnimalSpeciesGenetics* speciesGenetics, const Genome* const initialGenome, const Temperature& temperature, const TimeStep actualTimeStep, const PreciseDouble &coefficientForMassAforMature, const PreciseDouble &scaleForMassBforMature, const Temperature& tempFromLab);
     
     /**
      * @brief Constructor for an individual from parental gametes.
@@ -74,12 +74,6 @@ public:
      * @brief Destructor for the Genetics class.
      */
     virtual ~Genetics();
-
-    /**
-     * @brief Checks if all traits are within restricted ranges.
-     * @return True if all traits are within allowed ranges, false otherwise.
-     */
-    bool isInsideRestrictedRanges() const;
 
     /**
      * @brief Get all base individual traits.

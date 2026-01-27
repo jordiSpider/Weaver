@@ -190,24 +190,14 @@ pair<bool, pair<TerrainCell*, PointContinuous>> SpatialTreeTerrainCell::getCellB
     return make_pair(atDestination, cellToMoveTo);
 }
 
-pair<AnimalNonStatistical*, size_t> SpatialTreeTerrainCell::createAnimal(Landscape* const landscape, const Instar &instar, AnimalSpecies* animalSpecies, const bool saveGenetics, const bool saveMassInfo, const TimeStep actualTimeStep, const PreciseDouble& timeStepsPerDay)
+AnimalNonStatistical* SpatialTreeTerrainCell::createAnimal(Landscape* const landscape, const Instar &instar, AnimalSpecies* animalSpecies, const Genome* const genome, const bool saveGenetics, const bool saveMassInfo, const TimeStep actualTimeStep, const PreciseDouble& timeStepsPerDay)
 {
-    size_t numberOfDiscardedIndividualsOutsideRestrictedRanges = 0;
-
-    AnimalNonStatistical* newAnimal = new SpatialTreeAnimal(instar, animalSpecies, this, actualTimeStep, timeStepsPerDay);
-
-    while(!newAnimal->getGenetics().isInsideRestrictedRanges())
-    {
-        numberOfDiscardedIndividualsOutsideRestrictedRanges++;
-
-        delete newAnimal;
-        newAnimal = new SpatialTreeAnimal(instar, animalSpecies, this, actualTimeStep, timeStepsPerDay);
-    }
+    AnimalNonStatistical* newAnimal = new SpatialTreeAnimal(instar, animalSpecies, this, genome, actualTimeStep, timeStepsPerDay);
 
     // Indicate that the animal created is the final animal, and therefore assign a final ID to it.
     newAnimal->doDefinitive(landscape, saveGenetics, saveMassInfo);
 
-    return make_pair<>(newAnimal, numberOfDiscardedIndividualsOutsideRestrictedRanges);
+    return newAnimal;
 }
 
 void SpatialTreeTerrainCell::migrateAnimalTo(Landscape* const landscape, Animal* animalToMigrate, TerrainCell* newTerrainCell, const PointContinuous &newPosition)

@@ -32,7 +32,7 @@ ResourceSource::ResourceSource(const json &config, ResourceSpecies* const specie
 	  edibleFractionOfMaxCarryingCapacity(config["edibleFractionOfMaxCarryingCapacity"].get<double>()),
 	  minimumEdibleBiomass(resourceMaximumCapacity.getValue()*(1.0 - edibleFractionOfMaxCarryingCapacity)),
 	  patchSpread(config["patchSpread"].get<bool>()),
-	  growthDynamics(Dynamics::createInstanceForResource(config["growthDynamics"], scaleMass, species->getGrowthBuildingBlock().getCellMass(), timeStepsPerDay, hyperVolume))
+	  growthDynamics(Dynamics::createInstanceForResource(config["growthDynamics"], scaleMass, species->getGrowthBuildingBlock().getCellMass(), timeStepsPerDay, hyperVolume, resourceMaximumCapacity))
 {
 
 }

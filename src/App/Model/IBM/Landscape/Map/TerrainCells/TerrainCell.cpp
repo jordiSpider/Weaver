@@ -177,10 +177,9 @@ void TerrainCell::insertAnimal(Landscape* const, Animal* const newAnimal)
 }
 
 
-tuple<bool, TerrainCell*, TerrainCell*, Animal*, size_t> TerrainCell::randomInsertAnimal(Landscape* const landscape, const Instar &instar, AnimalSpecies* animalSpecies, const bool isStatistical, const bool saveGenetics, const bool saveMassInfo, const TimeStep actualTimeStep, const PreciseDouble& timeStepsPerDay)
+tuple<bool, TerrainCell*, TerrainCell*, Animal*> TerrainCell::randomInsertAnimal(Landscape* const landscape, const Instar &instar, AnimalSpecies* animalSpecies, const bool isStatistical, const Genome* const genome, const bool saveGenetics, const bool saveMassInfo, const TimeStep actualTimeStep, const PreciseDouble& timeStepsPerDay)
 {
     Animal* newAnimal;
-    size_t numberOfDiscardedIndividualsOutsideRestrictedRanges;
     
     if(isStatistical)
     {
@@ -188,7 +187,7 @@ tuple<bool, TerrainCell*, TerrainCell*, Animal*, size_t> TerrainCell::randomInse
     }
     else
     {
-        tie(newAnimal, numberOfDiscardedIndividualsOutsideRestrictedRanges) = createAnimal(landscape, instar, animalSpecies, saveGenetics, saveMassInfo, actualTimeStep, timeStepsPerDay);
+        newAnimal = createAnimal(landscape, instar, animalSpecies, genome, saveGenetics, saveMassInfo, actualTimeStep, timeStepsPerDay);
     }
     
 
@@ -203,7 +202,7 @@ tuple<bool, TerrainCell*, TerrainCell*, Animal*, size_t> TerrainCell::randomInse
     newAnimal->setPosition(axisValues);
     TerrainCell::insertAnimal(landscape, newAnimal);
 
-    return make_tuple(false, nullptr, nullptr, newAnimal, numberOfDiscardedIndividualsOutsideRestrictedRanges);
+    return make_tuple(false, nullptr, nullptr, newAnimal);
 }
 
 

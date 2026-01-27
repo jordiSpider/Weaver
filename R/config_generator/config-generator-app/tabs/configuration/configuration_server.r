@@ -59,7 +59,7 @@ assign_nested <- function(lst, parts, value) {
 # ----------------------------------------------------------------------
 # Generate JSON for animal species based on environment variables
 # ----------------------------------------------------------------------
-generate_animal_species_json = function(environment, output_path, name, version) {
+generate_animal_species_json = function(environment, output_path, version) {
     add_parameters <- function(environment, json_data, parameters_to_add) {
         for(parameter in parameters_to_add) {
             json_path <- paste(c("animal", unlist(strsplit(parameter, "\\."))[-1]), collapse = "$")
@@ -71,12 +71,15 @@ generate_animal_species_json = function(environment, output_path, name, version)
     }
 
     all_parameters <- grep("^json\\.", ls(envir = environment), value = TRUE)
+    
     traits_parameters <- all_parameters[grep("^json\\.traits\\.", all_parameters)]
+    other_parameters <- setdiff(all_parameters, c(traits_parameters, "json.ontogenetic_links"))
 
     json_data <- list(
         animal = list(),
         version = version
     )
+    json_data <- add_parameters(environment, json_data, other_parameters)
 
     traits_parameters_filtered <- grep("ranges\\.min$", traits_parameters, value = TRUE)
     traits_name <- unique(unlist(sapply(traits_parameters_filtered, function(parameter) { 
@@ -99,7 +102,7 @@ generate_animal_species_json = function(environment, output_path, name, version)
                 list(
                     definitionType = "SpeciesLevel",
                     individualLevelParams = list(
-                        pctg = list(
+                        limits = list(
                             max = NULL,
                             min = NULL
                         ),
@@ -122,9 +125,9 @@ generate_animal_species_json = function(environment, output_path, name, version)
                 list(
                     definitionType = "IndividualLevel",
                     individualLevelParams = list(
-                        pctg = list(
-                            max = get(paste(c("json.traits", trait, "pctg.max"), collapse = "."), envir = environment),
-                            min = get(paste(c("json.traits", trait, "pctg.min"), collapse = "."), envir = environment)
+                        limits = list(
+                            max = get(paste(c("json.traits", trait, "limits.max"), collapse = "."), envir = environment),
+                            min = get(paste(c("json.traits", trait, "limits.min"), collapse = "."), envir = environment)
                         ),
                         ranges = list(
                             max = ranges_max,
@@ -161,7 +164,7 @@ generate_animal_species_json = function(environment, output_path, name, version)
                         list(
                             definitionType = "SpeciesLevel",
                             individualLevelParams = list(
-                                pctg = list(
+                                limits = list(
                                     max = NULL,
                                     min = NULL
                                 ),
@@ -184,13 +187,14 @@ generate_animal_species_json = function(environment, output_path, name, version)
     json_data$animal$genetics$traits$individualLevelTraitsOrder <- get("json.traits.individualLevelTraitsOrder", envir = environment)
 
     # Save JSON to file
+    name <- get("json.name", envir = environment)
     write(toJSON(json_data, auto_unbox = TRUE, pretty = TRUE, null = "null", digits = NA), file = file.path(output_path, paste0(name, ".json")))
 }
 
 # ----------------------------------------------------------------------
 # Generate JSON for resource species
 # ----------------------------------------------------------------------
-generate_resource_species_json = function(environment, output_path, name, version) {
+generate_resource_species_json = function(environment, output_path, version) {
     add_parameters <- function(environment, json_data, parameters_to_add) {
         for(parameter in parameters_to_add) {
             json_path <- paste(c("resource", unlist(strsplit(parameter, "\\."))[-1]), collapse = "$")
@@ -207,6 +211,7 @@ generate_resource_species_json = function(environment, output_path, name, versio
     json_data <- add_parameters(environment, json_data, all_parameters)
 
     # Save JSON to file
+    name <- get("json.name", envir = environment)
     write(toJSON(json_data, auto_unbox = TRUE, pretty = TRUE, null = "null", digits = NA), file = file.path(output_path, paste0(name, ".json")))
 }
 
@@ -263,7 +268,7 @@ config_generator <- function(input, config_name, version, save_directory_path, b
                 force_model = force_model
             )
             env <- run_animal_species_info_script(name, env)
-            generate_animal_species_json(env, animal_species_folder, name, version)
+            generate_animal_species_json(env, animal_species_folder, version)
             instars <- get("json.individualsPerInstar", envir = env)
             ontogenetic_links_column_header <- c(ontogenetic_links_column_header, sapply(seq_along(instars), function(instar) { paste(get("json.name", envir = env), instar, sep = "$") }))
             animal_species_env <- c(animal_species_env, env)
@@ -283,7 +288,7 @@ config_generator <- function(input, config_name, version, save_directory_path, b
         for(name in resource_species) {
             env <- new.env()
             env <- run_resource_species_info_script(name, env)
-            generate_resource_species_json(env, resource_species_folder, name, version)
+            generate_resource_species_json(env, resource_species_folder, version)
             ontogenetic_links_row_header <- c(ontogenetic_links_row_header, paste(get("json.name", envir = env), "1", sep = "$"))
             resource_species_env <- c(resource_species_env, env)
         }

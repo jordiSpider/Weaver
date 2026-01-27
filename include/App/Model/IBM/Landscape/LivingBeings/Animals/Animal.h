@@ -54,7 +54,7 @@ public:
      * @param lifeStage Current life stage of the animal.
      * @param actualTimeStep Current simulation time step.
      */
-    Animal(const EdibleID id, AnimalSpecies* const mySpecies, TerrainCell* terrainCell, 
+    Animal(const EdibleID id, AnimalSpecies* const mySpecies, TerrainCell* terrainCell, const Genome* const genome, 
         const LifeStage& lifeStage, const TimeStep actualTimeStep
     );
 

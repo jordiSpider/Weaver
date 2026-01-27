@@ -63,11 +63,6 @@ const PawarTraitTemperatureSection* PawarIndividualTraitTemperatureSection::getT
     return static_cast<const PawarTraitTemperatureSection*>(IndividualTraitTemperatureSection::getTraitTemperatureSection());
 }
 
-bool PawarIndividualTraitTemperatureSection::isInsideRestrictedRanges() const
-{
-    return getTraitTemperatureSection()->isInsideRestrictedRanges(elements);
-}
-
 string PawarIndividualTraitTemperatureSection::to_string() const
 {
     ostringstream content;

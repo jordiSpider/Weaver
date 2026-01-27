@@ -138,16 +138,6 @@ public:
     virtual const PreciseDouble& getMaxTraitRestrictedRange() const=0;
 
     /**
-     * @brief Checks if a trait value is within restricted ranges.
-     *
-     * Must be implemented by derived classes.
-     *
-     * @param traitValue Trait value to check.
-     * @return True if the value is inside restricted ranges, false otherwise.
-     */
-    virtual bool isInsideRestrictedRanges(const PreciseDouble& traitValue) const=0;
-
-    /**
      * @brief Checks if the trait definition is null or uninitialized.
      *
      * Must be implemented by derived classes.

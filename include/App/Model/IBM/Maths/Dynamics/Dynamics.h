@@ -65,7 +65,7 @@ public:
      * @param hyperVolume Hypervolume of the resource.
      * @return Pointer to a newly created Dynamics object.
      */
-    static Dynamics* createInstanceForResource(const nlohmann::json &config, const PreciseDouble& scaleMass, const WetMass& cellMass, const PreciseDouble& timeStepsPerDay, const PreciseDouble& hyperVolume);
+    static Dynamics* createInstanceForResource(const nlohmann::json &config, const PreciseDouble& scaleMass, const WetMass& cellMass, const PreciseDouble& timeStepsPerDay, const PreciseDouble& hyperVolume, const WetMass& resourceMaximumCapacity);
 
     /**
      * @brief Default constructor.
@@ -93,7 +93,7 @@ public:
      * @param maxRH Maximum relative humidity.
      * @return Calculated value as PreciseDouble.
      */
-    virtual PreciseDouble getValue(const PreciseDouble& baseValue, const PreciseDouble& timeStepsPerDay, const Temperature& temperature, const PreciseDouble& moisture, const PreciseDouble& minRH, const PreciseDouble& maxRH) const=0;
+    virtual PreciseDouble getValue(const PreciseDouble& baseValue, bool competitionAmongResourceSpecies, const WetMass& totalMaximumResourceCapacity, const PreciseDouble& timeStepsPerDay, const Temperature& temperature, const PreciseDouble& moisture, const PreciseDouble& minRH, const PreciseDouble& maxRH) const=0;
 
     /**
      * @brief Update the internal state of the dynamics.

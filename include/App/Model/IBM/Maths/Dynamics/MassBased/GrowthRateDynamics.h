@@ -47,7 +47,7 @@ public:
      * @param cellMass Wet mass of the cell or organism.
      * @param hyperVolume Hyper-volume parameter used for scaling.
      */
-    GrowthRateDynamics(const nlohmann::json &config, const PreciseDouble& scaleMass, const WetMass& cellMass, const PreciseDouble& hyperVolume);
+    GrowthRateDynamics(const nlohmann::json &config, const PreciseDouble& scaleMass, const WetMass& cellMass, const PreciseDouble& hyperVolume, const WetMass& resourceMaximumCapacity);
 
     /**
      * @brief Destructor for GrowthRateDynamics.
@@ -70,7 +70,7 @@ public:
      * @param maxRH Maximum relative humidity.
      * @return Computed growth rate as PreciseDouble.
      */
-    PreciseDouble getValue(const PreciseDouble& baseValue, const PreciseDouble& timeStepsPerDay, const Temperature& temperature, const PreciseDouble& moisture, const PreciseDouble& minRH, const PreciseDouble& maxRH) const;
+    PreciseDouble getValue(const PreciseDouble& baseValue, bool competitionAmongResourceSpecies, const WetMass& totalMaximumResourceCapacity, const PreciseDouble& timeStepsPerDay, const Temperature& temperature, const PreciseDouble& moisture, const PreciseDouble& minRH, const PreciseDouble& maxRH) const;
 
     /**
      * @brief Updates the internal state of the dynamics.
@@ -99,6 +99,9 @@ private:
 
     /** @brief Initial value of the growth rate. */
     PreciseDouble initialValue;
+
+    /** @brief Maximum resource carrying capacity. */
+    WetMass resourceMaximumCapacity;
 
     /** @brief Mass of the organism or cell. */
     PreciseDouble M;

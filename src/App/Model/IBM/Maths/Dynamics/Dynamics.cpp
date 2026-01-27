@@ -32,7 +32,7 @@ Dynamics* Dynamics::createInstance(const json &config, const PreciseDouble& time
 	}
 }
 
-Dynamics* Dynamics::createInstanceForResource(const json &config, const PreciseDouble& scaleMass, const WetMass& cellMass, const PreciseDouble& timeStepsPerDay, const PreciseDouble& hyperVolume)
+Dynamics* Dynamics::createInstanceForResource(const json &config, const PreciseDouble& scaleMass, const WetMass& cellMass, const PreciseDouble& timeStepsPerDay, const PreciseDouble& hyperVolume, const WetMass& resourceMaximumCapacity)
 {
     switch(EnumClass<Type>::stringToEnumValue(config["dynamicsType"].get<string>())) {
 		case Type::Cycle: {
@@ -44,7 +44,7 @@ Dynamics* Dynamics::createInstanceForResource(const json &config, const PreciseD
 			break;
 		}
 		case Type::GrowthRate: {
-			return new GrowthRateDynamics(config["growthRateParams"], scaleMass, cellMass, hyperVolume);
+			return new GrowthRateDynamics(config["growthRateParams"], scaleMass, cellMass, hyperVolume, resourceMaximumCapacity);
 			break;
 		}
 		default: {

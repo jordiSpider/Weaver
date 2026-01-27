@@ -83,12 +83,6 @@ public:
     ) const=0;
 
     /**
-     * @brief Check if the trait value is inside restricted ranges.
-     * @return True if inside the allowed range, false otherwise.
-     */
-    virtual bool isInsideRestrictedRanges() const=0;
-
-    /**
       * @brief Serializes the object for persistence.
       *
       * @tparam Archive Serialization archive type.

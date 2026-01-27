@@ -152,6 +152,17 @@ void AnimalSpeciesGenetics::initializeGeneticFiles(const fs::path& geneticsFolde
 	}
 }
 
+void AnimalSpeciesGenetics::updatePseudoValueRanges(const Genome& genome)
+{
+	for(IndividualLevelTrait* trait : individualLevelTraits)
+	{
+		trait->updatePseudoValueRanges(
+			genome, getTraitsPerModule(), getNumberOfLociPerTrait(),
+			getRhoPerModuleVector(), getRhoRangePerModuleVector()
+		);
+	}
+}
+
 void AnimalSpeciesGenetics::setTraits(const json& traitsConfig, const json& modifyAlleles)
 {
 	allTraits = Trait::generateTraits(individualLevelTraits, traitsConfig["definition"], traitsConfig["individualLevelTraitsOrder"]);
@@ -191,49 +202,7 @@ void AnimalSpeciesGenetics::setTraits(const json& traitsConfig, const json& modi
 
 			throwLineInfoException(message.str());
 		}
-
-
-		while(!checkInsideRestrictedRange())
-		{
-			generateLociPerTrait(modifyAlleles);
-		}
 	}
-}
-
-bool AnimalSpeciesGenetics::checkInsideRestrictedRange() const
-{
-	const unsigned int numberOfTestIndividuals = 1000;
-
-	unsigned int numberOfIndividualsInsideRestrictedRange = 0;
-
-	
-	for(unsigned int i = 0; i < numberOfTestIndividuals; i++)
-	{
-		Genome genome(getLociPerTrait(), getRandomlyCreatedPositionsForChromosomes(), getNumberOfChromosomes(), 
-			getNumberOfLociPerChromosome(), getNumberOfChiasmasPerChromosome()
-		);
-
-		CustomIndexedVector<Trait::ExecutionOrder, vector<IndividualTrait>> testTraits(EnumClass<Trait::ExecutionOrder>::size());
-
-		for(Trait::ExecutionOrder order : EnumClass<Trait::ExecutionOrder>::getEnumValues())
-		{
-			for(Trait* const trait : allTraits[order])
-			{
-				testTraits[order].emplace_back(
-					trait, genome, getTraitsPerModule(), getNumberOfLociPerTrait(), 
-					getRhoPerModuleVector(), getRhoRangePerModuleVector()
-				);
-			}
-		}
-
-		if(isInsideRestrictedRanges(testTraits))
-		{
-			numberOfIndividualsInsideRestrictedRange++;
-		}
-	}
-
-
-	return (PreciseDouble(static_cast<double>(numberOfIndividualsInsideRestrictedRange))/PreciseDouble(static_cast<const double>(numberOfTestIndividuals)) >= 0.02);
 }
 
 bool AnimalSpeciesGenetics::isGrowthTraitsThermallyDependent() const
@@ -304,14 +273,6 @@ void AnimalSpeciesGenetics::generateLociPerTrait(const json& modifyAlleles)
 			}
 		}
 	}
-
-
-	for(IndividualLevelTrait* trait : individualLevelTraits)
-	{
-		trait->setPseudoValueRanges(lociPerTrait[trait->getOrder()], getTraitsPerModule(), 
-			getNumberOfLociPerTrait(), getRhoPerModuleVector(), getRhoRangePerModuleVector()
-		);
-	}
 }
 
 void AnimalSpeciesGenetics::deserializeIndividualLevelTraits(CustomIndexedVector<Trait::ExecutionOrder, std::vector<Trait*>>& allTraits, std::vector<IndividualLevelTrait*>& individualLevelTraits)
@@ -323,21 +284,6 @@ void AnimalSpeciesGenetics::deserializeIndividualLevelTraits(CustomIndexedVector
 			trait->deserializeIndividualLevelTraits(individualLevelTraits);
 		}
 	}
-}
-
-bool AnimalSpeciesGenetics::isInsideRestrictedRanges(const CustomIndexedVector<Trait::ExecutionOrder, std::vector<IndividualTrait>>& testTraits) const
-{
-	bool isInsideRestrictedRanges = true;
-
-	for(Trait::ExecutionOrder order : EnumClass<Trait::ExecutionOrder>::getEnumValues())
-	{
-		for(size_t i = 0; i < testTraits[order].size() && isInsideRestrictedRanges; i++)
-		{
-			isInsideRestrictedRanges = isInsideRestrictedRanges && testTraits[order][i].isInsideRestrictedRanges();
-		}
-	}
-
-	return isInsideRestrictedRanges;
 }
 
 void AnimalSpeciesGenetics::printGenetics(const ostringstream& animalInfo, const Genome& genome) const

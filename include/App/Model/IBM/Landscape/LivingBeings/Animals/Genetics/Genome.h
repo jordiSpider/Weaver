@@ -65,11 +65,13 @@ public:
      * @param randomlyCreatedPositionsForChromosomes Vector of randomly created positions for chromosomes.
      */
 	Genome(const Genome& otherGenome, const std::vector<size_t> &randomlyCreatedPositionsForChromosomes);
-	
-	/**
+
+     /**
      * @brief Destructor for the Genome class.
      */
 	virtual ~Genome();
+
+     void initFromOther(const Genome& otherGenome, const std::vector<size_t> &randomlyCreatedPositionsForChromosomes);
 
     /**
      * @brief Get gametes from meiosis.

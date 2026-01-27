@@ -12,8 +12,9 @@ GrowthRateDynamics::GrowthRateDynamics()
 
 }
 
-GrowthRateDynamics::GrowthRateDynamics(const nlohmann::json &config, const PreciseDouble& scaleMass, const WetMass& cellMass, const PreciseDouble& hyperVolume)
-    : MassBasedDynamics(), initialValue(config["initialValue"].get<double>() * hyperVolume), M(cellMass.getValue() * scaleMass), 
+GrowthRateDynamics::GrowthRateDynamics(const nlohmann::json &config, const PreciseDouble& scaleMass, const WetMass& cellMass, const PreciseDouble& hyperVolume, const WetMass& resourceMaximumCapacity)
+    : MassBasedDynamics(), initialValue(config["initialValue"].get<double>() * hyperVolume), 
+	  resourceMaximumCapacity(resourceMaximumCapacity), M(cellMass.getValue() * scaleMass), 
       variableIntrinsicRateOfIncrease(config["variableIntrinsicRateOfIncrease"].get<bool>()),
       rMaxScale(config["rMaxScale"].get<double>())
 {
@@ -37,24 +38,25 @@ PreciseDouble GrowthRateDynamics::getInitialValue() const
     return initialValue;
 }
 
-PreciseDouble GrowthRateDynamics::getValue(const PreciseDouble& baseValue, const PreciseDouble& timeStepsPerDay, const Temperature& temperature, const PreciseDouble& moisture, const PreciseDouble& minRH, const PreciseDouble& maxRH) const
+PreciseDouble GrowthRateDynamics::getValue(const PreciseDouble& baseValue, bool competitionAmongResourceSpecies, const WetMass& totalMaximumResourceCapacity, const PreciseDouble& timeStepsPerDay, const Temperature& temperature, const PreciseDouble& moisture, const PreciseDouble& minRH, const PreciseDouble& maxRH) const
 {
 	const PreciseDouble rateOfIncrease = getRateOfIncrease(temperature, moisture, minRH, maxRH);
 
-    PreciseDouble incrementPerDay;
+	PreciseDouble rateOfIncreasePerTimeStep = rateOfIncrease * timeStepsPerDay;
 
-    if(rateOfIncrease > 2.7)
+	if(rateOfIncrease > 1.7)
 	{
-		incrementPerDay = exp(rateOfIncrease) * baseValue;
+		return (1+rateOfIncreasePerTimeStep) * baseValue;
 	}
 	else
 	{
-		incrementPerDay = rateOfIncrease * baseValue * (1-baseValue);
+		if(competitionAmongResourceSpecies) {
+			return baseValue + rateOfIncreasePerTimeStep * baseValue * (1-(baseValue/totalMaximumResourceCapacity.getValue()));
+		}
+		else {
+			return baseValue + rateOfIncreasePerTimeStep * baseValue * (1-(baseValue/resourceMaximumCapacity.getValue()));
+		}
 	}
-
-    const PreciseDouble incrementPerTimeStep = incrementPerDay * timeStepsPerDay;
-
-    return baseValue + incrementPerTimeStep;
 }
 
 void GrowthRateDynamics::update()

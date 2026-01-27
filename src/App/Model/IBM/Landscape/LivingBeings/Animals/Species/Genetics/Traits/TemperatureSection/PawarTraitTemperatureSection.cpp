@@ -64,18 +64,6 @@ bool PawarTraitTemperatureSection::isStrictlyPositive() const
 	return strictlyPositive;
 }
 
-bool PawarTraitTemperatureSection::isInsideRestrictedRanges(const CustomIndexedVector<PawarElement, PreciseDouble>& elementsValue) const
-{
-	bool isInsideRestrictedRanges = true;
-
-	for(const PawarElement& elem : EnumClass<PawarElement>::getEnumValues())
-	{
-		isInsideRestrictedRanges = isInsideRestrictedRanges && elements[elem]->isInsideRestrictedRanges(elementsValue[elem]);
-	}
-
-	return isInsideRestrictedRanges;
-}
-
 IndividualTraitTemperatureSection* PawarTraitTemperatureSection::generateIndividualTraitTemperatureSection(const PreciseDouble& geneticValue, const Genome& genome, const size_t traitsPerModule, const size_t numberOfLociPerTrait, const std::vector<PreciseDouble>& rhoPerModule, const std::vector<size_t>& rhoRangePerModule) const
 {
 	CustomIndexedVector<PawarElement, PreciseDouble> elementsValue(EnumClass<PawarElement>::size(), 0.0);

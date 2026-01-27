@@ -10,14 +10,23 @@ Genetics::Genetics()
 
 }
 
-Genetics::Genetics(AnimalSpeciesGenetics* speciesGenetics, const Temperature& temperature, const TimeStep actualTimeStep, const PreciseDouble &coefficientForMassAforMature, const PreciseDouble &scaleForMassBforMature, const Temperature& tempFromLab)
-	: speciesGenetics(speciesGenetics),
-	  genome(
-		speciesGenetics->getLociPerTrait(), speciesGenetics->getRandomlyCreatedPositionsForChromosomes(), 
-		speciesGenetics->getNumberOfChromosomes(), speciesGenetics->getNumberOfLociPerChromosome(), 
-		speciesGenetics->getNumberOfChiasmasPerChromosome()
-	  )
+Genetics::Genetics(AnimalSpeciesGenetics* speciesGenetics, const Genome* const initialGenome, const Temperature& temperature, const TimeStep actualTimeStep, const PreciseDouble &coefficientForMassAforMature, const PreciseDouble &scaleForMassBforMature, const Temperature& tempFromLab)
+	: speciesGenetics(speciesGenetics)
 {
+	if(initialGenome == nullptr) {
+		genome.initFromOther(
+			Genome(
+				speciesGenetics->getLociPerTrait(), speciesGenetics->getRandomlyCreatedPositionsForChromosomes(), 
+				speciesGenetics->getNumberOfChromosomes(), speciesGenetics->getNumberOfLociPerChromosome(), 
+				speciesGenetics->getNumberOfChiasmasPerChromosome()
+			), 
+			speciesGenetics->getRandomlyCreatedPositionsForChromosomes()
+		);
+	}
+	else {
+		genome.initFromOther(*initialGenome, speciesGenetics->getRandomlyCreatedPositionsForChromosomes());
+	}
+
 	initTraits(temperature, actualTimeStep, coefficientForMassAforMature, scaleForMassBforMature, tempFromLab);
 }
 
@@ -145,11 +154,6 @@ void Genetics::setAnimalSpeciesGenetics(AnimalSpeciesGenetics* newSpeciesGenetic
 			allIndividualTraits[order][i].setTrait(speciesGenetics->getAllTraits()[order][i]);
 		}
 	}
-}
-
-bool Genetics::isInsideRestrictedRanges() const
-{
-	return speciesGenetics->isInsideRestrictedRanges(allIndividualTraits);
 }
 
 const std::vector<IndividualTrait>& Genetics::getBaseIndividualTraits() const
