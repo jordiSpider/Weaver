@@ -26,7 +26,7 @@
  <tbody>
  <tr id="projectrow">
   <td id="projectalign">
-   <div id="projectname">Weaver<span id="projectnumber">&#160;2026.01.07</span>
+   <div id="projectname">Weaver<span id="projectnumber">&#160;2026.01.31</span>
    </div>
   </td>
  </tr>
@@ -142,9 +142,6 @@ virtual&#160;</td><td class="memItemRight" valign="bottom"><b>~TraitDefinitionSe
 <tr class="memitem:a38f3dbca7b03bdee0fe793c4e72e546e" id="r_a38f3dbca7b03bdee0fe793c4e72e546e"><td class="memItemLeft" align="right" valign="top">virtual const <a class="el" href="classPreciseDouble.html">PreciseDouble</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classTraitDefinitionSection.html#a38f3dbca7b03bdee0fe793c4e72e546e">getMaxTraitRestrictedRange</a> () const =0</td></tr>
 <tr class="memdesc:a38f3dbca7b03bdee0fe793c4e72e546e"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns the maximum allowed value for the trait.  <br /></td></tr>
 <tr class="separator:a38f3dbca7b03bdee0fe793c4e72e546e"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a0a43a44b76d3de4e1e5d7803b7348426" id="r_a0a43a44b76d3de4e1e5d7803b7348426"><td class="memItemLeft" align="right" valign="top">virtual bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classTraitDefinitionSection.html#a0a43a44b76d3de4e1e5d7803b7348426">isInsideRestrictedRanges</a> (const <a class="el" href="classPreciseDouble.html">PreciseDouble</a> &amp;traitValue) const =0</td></tr>
-<tr class="memdesc:a0a43a44b76d3de4e1e5d7803b7348426"><td class="mdescLeft">&#160;</td><td class="mdescRight">Checks if a trait value is within restricted ranges.  <br /></td></tr>
-<tr class="separator:a0a43a44b76d3de4e1e5d7803b7348426"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:abbf56650f0e3aada447e66b4418cae8d" id="r_abbf56650f0e3aada447e66b4418cae8d"><td class="memItemLeft" align="right" valign="top">virtual bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classTraitDefinitionSection.html#abbf56650f0e3aada447e66b4418cae8d">isNull</a> () const =0</td></tr>
 <tr class="memdesc:abbf56650f0e3aada447e66b4418cae8d"><td class="mdescLeft">&#160;</td><td class="mdescRight">Checks if the trait definition is null or uninitialized.  <br /></td></tr>
 <tr class="separator:abbf56650f0e3aada447e66b4418cae8d"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -533,44 +530,6 @@ Static Public Member Functions</h2></td></tr>
 <dl class="section return"><dt>Returns</dt><dd><a class="el" href="classTrait.html" title="Represents a trait of an animal species or individual.">Trait</a> value as a <a class="el" href="classPreciseDouble.html" title="Class for precise double-precision floating-point arithmetic.">PreciseDouble</a>. </dd></dl>
 
 <p>Implemented in <a class="el" href="classIndividualLevelTrait.html#a35ed06a1c9d46ca9cb077066419e5aac">IndividualLevelTrait</a>, and <a class="el" href="classSpeciesLevelTrait.html#ad2d2da41a27d4d9cd97ebca97ba448ef">SpeciesLevelTrait</a>.</p>
-
-</div>
-</div>
-<a id="a0a43a44b76d3de4e1e5d7803b7348426" name="a0a43a44b76d3de4e1e5d7803b7348426"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a0a43a44b76d3de4e1e5d7803b7348426">&#9670;&#160;</a></span>isInsideRestrictedRanges()</h2>
-
-<div class="memitem">
-<div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname">virtual bool TraitDefinitionSection::isInsideRestrictedRanges </td>
-          <td>(</td>
-          <td class="paramtype">const <a class="el" href="classPreciseDouble.html">PreciseDouble</a> &amp;&#160;</td>
-          <td class="paramname"><em>traitValue</em></td><td>)</td>
-          <td> const</td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">pure virtual</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-
-<p>Checks if a trait value is within restricted ranges. </p>
-<p>Must be implemented by derived classes.</p>
-<dl class="params"><dt>Parameters</dt><dd>
-  <table class="params">
-    <tr><td class="paramname">traitValue</td><td><a class="el" href="classTrait.html" title="Represents a trait of an animal species or individual.">Trait</a> value to check. </td></tr>
-  </table>
-  </dd>
-</dl>
-<dl class="section return"><dt>Returns</dt><dd>True if the value is inside restricted ranges, false otherwise. </dd></dl>
-
-<p>Implemented in <a class="el" href="classIndividualLevelTrait.html#ac431f486589efd069a921995e75d1fd8">IndividualLevelTrait</a>, and <a class="el" href="classSpeciesLevelTrait.html#aa8bb47a1e999adeb3de11c75e14dfc0f">SpeciesLevelTrait</a>.</p>
 
 </div>
 </div>

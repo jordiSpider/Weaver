@@ -7,7 +7,6 @@ var classIndividualTrait =
     [ "getConstitutiveValue", "classIndividualTrait.html#af56d8f477fd13572eefa7bd929719efb", null ],
     [ "getPhenotypicValue", "classIndividualTrait.html#a5d91ac89758d8d89bbc467b7c43241e3", null ],
     [ "getType", "classIndividualTrait.html#a2dbcc1d28843e140abb0654a9c845217", null ],
-    [ "isInsideRestrictedRanges", "classIndividualTrait.html#a120227b3d6db5bb3d4f5159b79f2f5b0", null ],
     [ "serialize", "classIndividualTrait.html#a258aaa9d690d027716f5df95b928ef03", null ],
     [ "setPhenotypicValue", "classIndividualTrait.html#a4a3063e950108759590e51a0586d0b66", null ],
     [ "setTrait", "classIndividualTrait.html#afba34af7c97896d06d452297bd51a860", null ],

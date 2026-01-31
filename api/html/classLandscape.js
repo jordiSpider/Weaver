@@ -58,7 +58,7 @@ var classLandscape =
     [ "getType", "classLandscape.html#ad9fd97237fcaba36d0ed28c6bafe9149", null ],
     [ "growAnimals", "classLandscape.html#ada42c969cf6e9e53c29ab9c10df5e849", null ],
     [ "init", "classLandscape.html#aa3122ff2ab77ffdbf99522ac59aa45f7", null ],
-    [ "initializeAnimals", "classLandscape.html#a6ae5394657ae92fefbe88ed5df5f014f", null ],
+    [ "initializeAnimals", "classLandscape.html#a4c53b4363016258a175008d66d26a474", null ],
     [ "initializeMap", "classLandscape.html#a1dd8afe7974d4a8db20a494b29fc77ac", null ],
     [ "initializeOutputFiles", "classLandscape.html#a39ebb4e69e17c3a7bd28cc632af9ac61", null ],
     [ "isBinaryCheckpointEnabled", "classLandscape.html#a8f56201193cfc0f72b69c139bdd8a9ba", null ],

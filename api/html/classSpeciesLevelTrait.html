@@ -26,7 +26,7 @@
  <tbody>
  <tr id="projectrow">
   <td id="projectalign">
-   <div id="projectname">Weaver<span id="projectnumber">&#160;2026.01.07</span>
+   <div id="projectname">Weaver<span id="projectnumber">&#160;2026.01.31</span>
    </div>
   </td>
  </tr>
@@ -141,9 +141,6 @@ virtual&#160;</td><td class="memItemRight" valign="bottom"><b>~SpeciesLevelTrait
 <tr class="memitem:a5061bb3059ebad5548f743a93300a0e0" id="r_a5061bb3059ebad5548f743a93300a0e0"><td class="memItemLeft" align="right" valign="top">const <a class="el" href="classPreciseDouble.html">PreciseDouble</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSpeciesLevelTrait.html#a5061bb3059ebad5548f743a93300a0e0">getMaxTraitRestrictedRange</a> () const</td></tr>
 <tr class="memdesc:a5061bb3059ebad5548f743a93300a0e0"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns the maximum allowed value for the trait.  <br /></td></tr>
 <tr class="separator:a5061bb3059ebad5548f743a93300a0e0"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aa8bb47a1e999adeb3de11c75e14dfc0f" id="r_aa8bb47a1e999adeb3de11c75e14dfc0f"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSpeciesLevelTrait.html#aa8bb47a1e999adeb3de11c75e14dfc0f">isInsideRestrictedRanges</a> (const <a class="el" href="classPreciseDouble.html">PreciseDouble</a> &amp;traitValue) const</td></tr>
-<tr class="memdesc:aa8bb47a1e999adeb3de11c75e14dfc0f"><td class="mdescLeft">&#160;</td><td class="mdescRight">Checks if a given value is within restricted ranges.  <br /></td></tr>
-<tr class="separator:aa8bb47a1e999adeb3de11c75e14dfc0f"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a3f8d005f4ecf4d22a7aa215d19e3c8ae" id="r_a3f8d005f4ecf4d22a7aa215d19e3c8ae"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSpeciesLevelTrait.html#a3f8d005f4ecf4d22a7aa215d19e3c8ae">deserializeIndividualLevelTraits</a> (std::vector&lt; <a class="el" href="classIndividualLevelTrait.html">IndividualLevelTrait</a> * &gt; &amp;individualLevelTraits)</td></tr>
 <tr class="memdesc:a3f8d005f4ecf4d22a7aa215d19e3c8ae"><td class="mdescLeft">&#160;</td><td class="mdescRight">Deserializes individual-level traits (no-op for species-level traits).  <br /></td></tr>
 <tr class="separator:a3f8d005f4ecf4d22a7aa215d19e3c8ae"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -419,43 +416,6 @@ Additional Inherited Members</h2></td></tr>
 <dl class="section return"><dt>Returns</dt><dd>The value of the species-level trait. </dd></dl>
 
 <p>Implements <a class="el" href="classTraitDefinitionSection.html#a45bb754d6ef28d58e3631988b49ab9e2">TraitDefinitionSection</a>.</p>
-
-</div>
-</div>
-<a id="aa8bb47a1e999adeb3de11c75e14dfc0f" name="aa8bb47a1e999adeb3de11c75e14dfc0f"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#aa8bb47a1e999adeb3de11c75e14dfc0f">&#9670;&#160;</a></span>isInsideRestrictedRanges()</h2>
-
-<div class="memitem">
-<div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname">bool SpeciesLevelTrait::isInsideRestrictedRanges </td>
-          <td>(</td>
-          <td class="paramtype">const <a class="el" href="classPreciseDouble.html">PreciseDouble</a> &amp;&#160;</td>
-          <td class="paramname"><em>traitValue</em></td><td>)</td>
-          <td> const</td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">virtual</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-
-<p>Checks if a given value is within restricted ranges. </p>
-<dl class="params"><dt>Parameters</dt><dd>
-  <table class="params">
-    <tr><td class="paramname">traitValue</td><td>Value to check. </td></tr>
-  </table>
-  </dd>
-</dl>
-<dl class="section return"><dt>Returns</dt><dd>True if within allowed range, false otherwise. </dd></dl>
-
-<p>Implements <a class="el" href="classTraitDefinitionSection.html#a0a43a44b76d3de4e1e5d7803b7348426">TraitDefinitionSection</a>.</p>
 
 </div>
 </div>

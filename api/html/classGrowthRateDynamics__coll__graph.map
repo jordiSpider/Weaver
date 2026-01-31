@@ -1,12 +1,15 @@
 <map id="GrowthRateDynamics" name="GrowthRateDynamics">
-<area shape="rect" id="Node000001" title="Implements mass&#45;based dynamics for growth rate of organisms." alt="" coords="133,273,297,299"/>
+<area shape="rect" id="Node000001" title="Implements mass&#45;based dynamics for growth rate of organisms." alt="" coords="164,273,328,299"/>
 <area shape="rect" id="Node000002" href="$classMassBasedDynamics.html" title="Represents dynamics based on mass for living beings or resources." alt="" coords="5,147,167,172"/>
-<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="110,180,205,271,202,275,106,183"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="112,179,198,247,231,271,228,275,195,251,109,183"/>
 <area shape="rect" id="Node000003" href="$classDynamics.html" title="Abstract base class for modeling temporal dynamics." alt="" coords="43,5,129,31"/>
 <area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="89,44,89,146,83,146,83,44"/>
-<area shape="rect" id="Node000004" href="$classPreciseDouble.html" title="Class for precise double&#45;precision floating&#45;point arithmetic." alt="" coords="215,5,330,31"/>
-<area shape="poly" id="edge3_Node000001_Node000004" title=" " alt="" coords="262,44,245,81,230,123,222,166,218,209,218,273,212,273,213,208,217,165,225,122,240,79,257,42"/>
-<area shape="rect" id="Node000005" href="$classTemperature.html" title="Represents a temperature and provides conversions and operations between scales." alt="" coords="350,147,454,172"/>
-<area shape="poly" id="edge5_Node000005_Node000004" title=" " alt="" coords="294,39,393,145,389,148,290,42"/>
-<area shape="poly" id="edge4_Node000001_Node000005" title=" " alt="" coords="375,182,234,275,231,271,372,177"/>
+<area shape="rect" id="Node000004" href="$classPreciseDouble.html" title="Class for precise double&#45;precision floating&#45;point arithmetic." alt="" coords="334,5,449,31"/>
+<area shape="poly" id="edge3_Node000001_Node000004" title=" " alt="" coords="343,38,312,52,280,71,252,95,230,124,222,143,219,164,221,206,232,244,243,272,238,274,226,246,216,207,213,163,217,142,225,121,248,91,277,66,309,47,340,33"/>
+<area shape="rect" id="Node000005" href="$classWetMass.html" title="Represents wet mass in the ecosystem simulation." alt="" coords="351,147,432,172"/>
+<area shape="poly" id="edge5_Node000005_Node000004" title=" " alt="" coords="394,44,394,146,389,146,389,44"/>
+<area shape="rect" id="Node000006" href="$classTemperature.html" title="Represents a temperature and provides conversions and operations between scales." alt="" coords="457,147,561,172"/>
+<area shape="poly" id="edge7_Node000006_Node000004" title=" " alt="" coords="422,37,440,53,479,102,505,145,500,148,474,106,436,56,418,41"/>
+<area shape="poly" id="edge4_Node000001_Node000005" title=" " alt="" coords="362,181,333,198,309,209,288,222,267,248,253,274,249,272,262,245,284,218,306,204,330,194,359,177"/>
+<area shape="poly" id="edge6_Node000001_Node000006" title=" " alt="" coords="507,186,496,220,485,237,472,251,447,263,412,272,329,283,328,277,411,267,445,258,468,247,481,234,491,218,502,184"/>
 </map>

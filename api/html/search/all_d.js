@@ -15,7 +15,7 @@ var searchData=
   ['not_5fequal_12',['not_equal',['../Operators_8h.html#a521a866244dbd66d1ba30bd1b661b011a96ee5c0e2a7149613e7fd0b83316486e',1,'Operators.h']]],
   ['null_13',['null',['../Coverage_8h.html#ae2b78ca9e5e9150381b5b27c4d5ddee5a727b8a8d744d88f4d9596d91abfdf277',1,'Null:&#160;Coverage.h'],['../classSpeciesLevelTrait.html#af3e8f9930ae3fda7fe5fef39bfb07bba',1,'SpeciesLevelTrait::null']]],
   ['nullproperty_14',['nullproperty',['../Operators_8h.html#a52366affc39735798030d8377b981804a2be8c0d2ae530cfc3ece1214e38f6560',1,'nullProperty:&#160;Operators.h'],['../classElement.html#a4318313abfd08feae300a12668cec95a',1,'Element::nullProperty']]],
-  ['number_15',['number',['../classElement.html#a009a3be4c3a037a72e292b2464c9cbc5ab1bc248a7ff2b2e95569f56de68615df',1,'Element::number'],['../classNumber.html',1,'Number'],['../classNumber.html#a80689a201739c9c46568e9f5b2c8eb7b',1,'Number::Number(const nlohmann::json &amp;info)'],['../classNumber.html#a6d789e61bd563842670e7e11161a0fa6',1,'Number::Number(const Number &amp;other, const bool nullProperty)']]],
+  ['number_15',['number',['../classNumber.html#a6d789e61bd563842670e7e11161a0fa6',1,'Number::Number()'],['../classNumber.html',1,'Number'],['../classElement.html#a009a3be4c3a037a72e292b2464c9cbc5ab1bc248a7ff2b2e95569f56de68615df',1,'Element::number'],['../classNumber.html#a80689a201739c9c46568e9f5b2c8eb7b',1,'Number::Number()']]],
   ['number_2eh_16',['Number.h',['../Number_8h.html',1,'']]],
   ['number_5fgametes_5fto_5fgenerate_17',['NUMBER_GAMETES_TO_GENERATE',['../classGenome.html#a814767188c8fbb22c9c9c98db6ac6ba8',1,'Genome']]],
   ['numberofallelesperlocus_18',['numberOfAllelesPerLocus',['../classAnimalSpeciesGenetics.html#abdb2c2523541c0f9c4db229c3af34537',1,'AnimalSpeciesGenetics']]],

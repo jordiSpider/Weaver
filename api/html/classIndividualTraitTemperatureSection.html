@@ -26,7 +26,7 @@
  <tbody>
  <tr id="projectrow">
   <td id="projectalign">
-   <div id="projectname">Weaver<span id="projectnumber">&#160;2026.01.07</span>
+   <div id="projectname">Weaver<span id="projectnumber">&#160;2026.01.31</span>
    </div>
   </td>
  </tr>
@@ -137,9 +137,6 @@ virtual&#160;</td><td class="memItemRight" valign="bottom"><b>~IndividualTraitTe
 <tr class="memitem:a97d10e95e894557ac88bc9e65f6e3af5" id="r_a97d10e95e894557ac88bc9e65f6e3af5"><td class="memItemLeft" align="right" valign="top">virtual <a class="el" href="classPreciseDouble.html">PreciseDouble</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classIndividualTraitTemperatureSection.html#a97d10e95e894557ac88bc9e65f6e3af5">applyTemperatureDependency</a> (const <a class="el" href="classTemperature.html">Temperature</a> &amp;temperature, const <a class="el" href="classPreciseDouble.html">PreciseDouble</a> &amp;traitValue, const <a class="el" href="classPreciseDouble.html">PreciseDouble</a> &amp;coefficientForMassAforMature, const <a class="el" href="classPreciseDouble.html">PreciseDouble</a> &amp;scaleForMassBforMature, const <a class="el" href="classTemperature.html">Temperature</a> &amp;tempFromLab) const =0</td></tr>
 <tr class="memdesc:a97d10e95e894557ac88bc9e65f6e3af5"><td class="mdescLeft">&#160;</td><td class="mdescRight">Apply the temperature dependency to a trait value.  <br /></td></tr>
 <tr class="separator:a97d10e95e894557ac88bc9e65f6e3af5"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a045f800c42a7038919da6fc67d8b6fd9" id="r_a045f800c42a7038919da6fc67d8b6fd9"><td class="memItemLeft" align="right" valign="top">virtual bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classIndividualTraitTemperatureSection.html#a045f800c42a7038919da6fc67d8b6fd9">isInsideRestrictedRanges</a> () const =0</td></tr>
-<tr class="memdesc:a045f800c42a7038919da6fc67d8b6fd9"><td class="mdescLeft">&#160;</td><td class="mdescRight">Check if the trait value is inside restricted ranges.  <br /></td></tr>
-<tr class="separator:a045f800c42a7038919da6fc67d8b6fd9"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a273deb4de6300b416e1527e241b29e99" id="r_a273deb4de6300b416e1527e241b29e99"><td class="memTemplParams" colspan="2">template&lt;class Archive &gt; </td></tr>
 <tr class="memitem:a273deb4de6300b416e1527e241b29e99"><td class="memTemplItemLeft" align="right" valign="top">void&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="classIndividualTraitTemperatureSection.html#a273deb4de6300b416e1527e241b29e99">serialize</a> (Archive &amp;ar, const unsigned int version)</td></tr>
 <tr class="memdesc:a273deb4de6300b416e1527e241b29e99"><td class="mdescLeft">&#160;</td><td class="mdescRight">Serializes the object for persistence.  <br /></td></tr>
@@ -290,36 +287,6 @@ Protected Attributes</h2></td></tr>
 <dl class="section return"><dt>Returns</dt><dd>Pointer to the <a class="el" href="classTraitTemperatureSection.html" title="Represents the temperature-dependent part of a trait.">TraitTemperatureSection</a>. </dd></dl>
 
 <p>Reimplemented in <a class="el" href="classPawarIndividualTraitTemperatureSection.html#a87aa34f8333617b6e9915c26b0f33aaf">PawarIndividualTraitTemperatureSection</a>, and <a class="el" href="classTempSizeRuleIndividualTraitTemperatureSection.html#af9efd6af3cbaaeea6892d630585e297c">TempSizeRuleIndividualTraitTemperatureSection</a>.</p>
-
-</div>
-</div>
-<a id="a045f800c42a7038919da6fc67d8b6fd9" name="a045f800c42a7038919da6fc67d8b6fd9"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a045f800c42a7038919da6fc67d8b6fd9">&#9670;&#160;</a></span>isInsideRestrictedRanges()</h2>
-
-<div class="memitem">
-<div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname">virtual bool IndividualTraitTemperatureSection::isInsideRestrictedRanges </td>
-          <td>(</td>
-          <td class="paramname"></td><td>)</td>
-          <td> const</td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">pure virtual</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-
-<p>Check if the trait value is inside restricted ranges. </p>
-<dl class="section return"><dt>Returns</dt><dd>True if inside the allowed range, false otherwise. </dd></dl>
-
-<p>Implemented in <a class="el" href="classPawarIndividualTraitTemperatureSection.html#a015026e71a6865c8d16c2c967e960efb">PawarIndividualTraitTemperatureSection</a>, and <a class="el" href="classTempSizeRuleIndividualTraitTemperatureSection.html#ab5e1d16bf4dedbb7a56fd5510fdc65fb">TempSizeRuleIndividualTraitTemperatureSection</a>.</p>
 
 </div>
 </div>

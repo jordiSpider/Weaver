@@ -1,6 +1,6 @@
 var searchData=
 [
-  ['b_0',['b',['../classExponentialIndividualGrowthModel.html#a5f75a6261f370152365e53f547ab06d4',1,'ExponentialIndividualGrowthModel::b'],['../classParabola.html#ada3c0d8def7a0329fff000a771a9c6a0',1,'Parabola::b'],['../classLogistic4PIndividualGrowthModel.html#a2bd08f379762e280aa1d7b950c8c2be0',1,'Logistic4PIndividualGrowthModel::B']]],
+  ['b_0',['b',['../classLogistic4PIndividualGrowthModel.html#a2bd08f379762e280aa1d7b950c8c2be0',1,'Logistic4PIndividualGrowthModel::B'],['../classExponentialIndividualGrowthModel.html#a5f75a6261f370152365e53f547ab06d4',1,'ExponentialIndividualGrowthModel::b'],['../classParabola.html#ada3c0d8def7a0329fff000a771a9c6a0',1,'Parabola::b']]],
   ['basedevtimeproportion_1',['baseDevTimeProportion',['../classAnimalGrowth.html#a61050eebbb401dd9d2ee86b364e7681d',1,'AnimalGrowth']]],
   ['bestedibility_2',['bestEdibility',['../structCellValue.html#abceacaa98964f9add2883d88507c446c',1,'CellValue']]],
   ['beta_3',['beta',['../classSensoryModel.html#a98ecc807be473386103372c4ff1f994e',1,'SensoryModel']]],

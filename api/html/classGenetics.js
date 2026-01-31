@@ -1,7 +1,7 @@
 var classGenetics =
 [
     [ "Genetics", "classGenetics.html#a7c9a65ee1c7da6bbb4b35d46d1dcf4fa", null ],
-    [ "Genetics", "classGenetics.html#a125382a435cbe7fe2d46a011d0581fa8", null ],
+    [ "Genetics", "classGenetics.html#a78577c162c53ad930aa4d01d33f8ec14", null ],
     [ "Genetics", "classGenetics.html#abf513cd24a76f7d8179c2da3ae948b07", null ],
     [ "~Genetics", "classGenetics.html#ab145583e4a659deb3ea9de552179d270", null ],
     [ "cloneGenome", "classGenetics.html#ade980d6143812e2d32b822a8cdda000e", null ],
@@ -17,7 +17,6 @@ var classGenetics =
     [ "getPreferencesIndividualTraits", "classGenetics.html#a926c9c288709c1d0a52cfbeec5f867e7", null ],
     [ "getProbabilityDensityFunctionIndividualTraits", "classGenetics.html#a2615f4c32272c2f224008def569dafa5", null ],
     [ "initTraits", "classGenetics.html#a2164bae266c4462a5c6b08ffbd8de733", null ],
-    [ "isInsideRestrictedRanges", "classGenetics.html#ae9eada28f45120c869c3e5c1fe436125", null ],
     [ "printTraits", "classGenetics.html#afc1d4e6aa73e1913cfac250048665123", null ],
     [ "serialize", "classGenetics.html#aafab0694e862d6e694b998188ce71f82", null ],
     [ "setAnimalSpeciesGenetics", "classGenetics.html#ac76be5d1680e76da066463289cddcd0d", null ],

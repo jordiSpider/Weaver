@@ -13,7 +13,7 @@ var searchData=
   ['resource_5fpatch_5fschema_10',['RESOURCE_PATCH_SCHEMA',['../GlobalVariable_8h.html#abbeb36622a62a4c6f0c8de515b7f9118',1,'GlobalVariable.h']]],
   ['resource_5fschema_11',['RESOURCE_SCHEMA',['../GlobalVariable_8h.html#a54803be8dca57c6bb20148d8f540f8b9',1,'GlobalVariable.h']]],
   ['resourceidcounter_12',['resourceIdCounter',['../classLandscape.html#a56e18c5068a9329e8cf73fcf328cdca0',1,'Landscape']]],
-  ['resourcemaximumcapacity_13',['resourceMaximumCapacity',['../classResourceSource.html#ac29085d83de07a18192f2aafb1d8b7a5',1,'ResourceSource']]],
+  ['resourcemaximumcapacity_13',['resourcemaximumcapacity',['../classGrowthRateDynamics.html#a8ce15847043f0ce13531c344a632ea8c',1,'GrowthRateDynamics::resourceMaximumCapacity'],['../classResourceSource.html#ac29085d83de07a18192f2aafb1d8b7a5',1,'ResourceSource::resourceMaximumCapacity']]],
   ['resourcesearchparams_14',['resourceSearchParams',['../classEdibleSearchParams.html#a869e25497d4153771ff10e9195fc7f9d',1,'EdibleSearchParams']]],
   ['resourcesource_15',['resourceSource',['../classCellResourceGrowth.html#a806cc4a3597e4164981a90b6ee379ae7',1,'CellResourceGrowth']]],
   ['resourcespeciesgrowth_16',['resourceSpeciesGrowth',['../classResourceSpecies.html#a0cee6a72f7a062315c1202a8e87ffa8e',1,'ResourceSpecies']]],

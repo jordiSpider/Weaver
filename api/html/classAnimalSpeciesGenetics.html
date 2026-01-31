@@ -26,7 +26,7 @@
  <tbody>
  <tr id="projectrow">
   <td id="projectalign">
-   <div id="projectname">Weaver<span id="projectnumber">&#160;2026.01.07</span>
+   <div id="projectname">Weaver<span id="projectnumber">&#160;2026.01.31</span>
    </div>
   </td>
  </tr>
@@ -167,6 +167,9 @@ const std::vector&lt; <a class="el" href="classIndividualLevelTrait.html">Indivi
 size_t&#160;</td><td class="memItemRight" valign="bottom"><b>getNumberOfAllelesPerLocus</b> () const</td></tr>
 <tr class="memdesc:aaff98b0be20161e362b38260173c0372"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get the number of alleles per locus. <br /></td></tr>
 <tr class="separator:aaff98b0be20161e362b38260173c0372"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a2b2ecd0759fdd96995469c7356134c88" id="r_a2b2ecd0759fdd96995469c7356134c88"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classAnimalSpeciesGenetics.html#a2b2ecd0759fdd96995469c7356134c88">updatePseudoValueRanges</a> (const <a class="el" href="classGenome.html">Genome</a> &amp;genome)</td></tr>
+<tr class="memdesc:a2b2ecd0759fdd96995469c7356134c88"><td class="mdescLeft">&#160;</td><td class="mdescRight">Update pseudo-value ranges for all individual-level traits.  <br /></td></tr>
+<tr class="separator:a2b2ecd0759fdd96995469c7356134c88"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:acd74e5a0e4bacb2e69b3647d98d05666" id="r_acd74e5a0e4bacb2e69b3647d98d05666"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classCustomIndexedVector.html">CustomIndexedVector</a>&lt; <a class="el" href="classTrait.html#ae6b7272eb7b811a0ffe03525a142d468">Trait::ExecutionOrder</a>, std::vector&lt; <a class="el" href="classTrait.html">Trait</a> * &gt; &gt; &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classAnimalSpeciesGenetics.html#acd74e5a0e4bacb2e69b3647d98d05666">getAllTraits</a> ()</td></tr>
 <tr class="memdesc:acd74e5a0e4bacb2e69b3647d98d05666"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get all traits indexed by execution order.  <br /></td></tr>
 <tr class="separator:acd74e5a0e4bacb2e69b3647d98d05666"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -190,9 +193,6 @@ const std::vector&lt; <a class="el" href="classTrait.html">Trait</a> * &gt; &amp
 const std::vector&lt; <a class="el" href="classTrait.html">Trait</a> * &gt; &amp;&#160;</td><td class="memItemRight" valign="bottom"><b>getPredationProbabilityWeightTraits</b> () const</td></tr>
 <tr class="memdesc:ac8e16616d03308bfbd8909117873bf30"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get traits used to weight predation probability. <br /></td></tr>
 <tr class="separator:ac8e16616d03308bfbd8909117873bf30"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a05f849223b2aa49af4f07a45bf01b9a9" id="r_a05f849223b2aa49af4f07a45bf01b9a9"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classAnimalSpeciesGenetics.html#a05f849223b2aa49af4f07a45bf01b9a9">isInsideRestrictedRanges</a> (const <a class="el" href="classCustomIndexedVector.html">CustomIndexedVector</a>&lt; <a class="el" href="classTrait.html#ae6b7272eb7b811a0ffe03525a142d468">Trait::ExecutionOrder</a>, std::vector&lt; <a class="el" href="classIndividualTrait.html">IndividualTrait</a> &gt; &gt; &amp;testTraits) const</td></tr>
-<tr class="memdesc:a05f849223b2aa49af4f07a45bf01b9a9"><td class="mdescLeft">&#160;</td><td class="mdescRight">Check if the given traits are within restricted ranges.  <br /></td></tr>
-<tr class="separator:a05f849223b2aa49af4f07a45bf01b9a9"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aa9fe90a4f1e49e700ec549ed41b21fb1" id="r_aa9fe90a4f1e49e700ec549ed41b21fb1"><td class="memItemLeft" align="right" valign="top"><a id="aa9fe90a4f1e49e700ec549ed41b21fb1" name="aa9fe90a4f1e49e700ec549ed41b21fb1"></a>
 bool&#160;</td><td class="memItemRight" valign="bottom"><b>isGrowthTraitsThermallyDependent</b> () const</td></tr>
 <tr class="memdesc:aa9fe90a4f1e49e700ec549ed41b21fb1"><td class="mdescLeft">&#160;</td><td class="mdescRight">Check if growth traits are temperature dependent. <br /></td></tr>
@@ -214,10 +214,6 @@ Private Member Functions</h2></td></tr>
 void&#160;</td><td class="memItemRight" valign="bottom"><b>setTraits</b> (const nlohmann::json &amp;traitsConfig, const nlohmann::json &amp;modifyAlleles)</td></tr>
 <tr class="memdesc:a839a017720286ad92268e7e5bd35dbcf"><td class="mdescLeft">&#160;</td><td class="mdescRight">Set traits using JSON configuration and modify alleles. <br /></td></tr>
 <tr class="separator:a839a017720286ad92268e7e5bd35dbcf"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a15fb866ccf67ac9c59502d8a4842d722" id="r_a15fb866ccf67ac9c59502d8a4842d722"><td class="memItemLeft" align="right" valign="top"><a id="a15fb866ccf67ac9c59502d8a4842d722" name="a15fb866ccf67ac9c59502d8a4842d722"></a>
-bool&#160;</td><td class="memItemRight" valign="bottom"><b>checkInsideRestrictedRange</b> () const</td></tr>
-<tr class="memdesc:a15fb866ccf67ac9c59502d8a4842d722"><td class="mdescLeft">&#160;</td><td class="mdescRight">Check if traits are inside restricted range. <br /></td></tr>
-<tr class="separator:a15fb866ccf67ac9c59502d8a4842d722"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a2d39dd0b44b43f517c9a8272b1bb3b45" id="r_a2d39dd0b44b43f517c9a8272b1bb3b45"><td class="memItemLeft" align="right" valign="top"><a id="a2d39dd0b44b43f517c9a8272b1bb3b45" name="a2d39dd0b44b43f517c9a8272b1bb3b45"></a>
 void&#160;</td><td class="memItemRight" valign="bottom"><b>generateLociPerTrait</b> (const nlohmann::json &amp;modifyAlleles)</td></tr>
 <tr class="memdesc:a2d39dd0b44b43f517c9a8272b1bb3b45"><td class="mdescLeft">&#160;</td><td class="mdescRight">Generate loci for each trait based on JSON configuration. <br /></td></tr>
@@ -424,33 +420,6 @@ Private Attributes</h2></td></tr>
 
 </div>
 </div>
-<a id="a05f849223b2aa49af4f07a45bf01b9a9" name="a05f849223b2aa49af4f07a45bf01b9a9"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a05f849223b2aa49af4f07a45bf01b9a9">&#9670;&#160;</a></span>isInsideRestrictedRanges()</h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">bool AnimalSpeciesGenetics::isInsideRestrictedRanges </td>
-          <td>(</td>
-          <td class="paramtype">const <a class="el" href="classCustomIndexedVector.html">CustomIndexedVector</a>&lt; <a class="el" href="classTrait.html#ae6b7272eb7b811a0ffe03525a142d468">Trait::ExecutionOrder</a>, std::vector&lt; <a class="el" href="classIndividualTrait.html">IndividualTrait</a> &gt; &gt; &amp;&#160;</td>
-          <td class="paramname"><em>testTraits</em></td><td>)</td>
-          <td> const</td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-<p>Check if the given traits are within restricted ranges. </p>
-<dl class="params"><dt>Parameters</dt><dd>
-  <table class="params">
-    <tr><td class="paramname">testTraits</td><td>Traits to test. </td></tr>
-  </table>
-  </dd>
-</dl>
-<dl class="section return"><dt>Returns</dt><dd>True if all traits are inside restricted ranges. </dd></dl>
-
-</div>
-</div>
 <a id="a0425d45e827aa9c247fe49f60d62378e" name="a0425d45e827aa9c247fe49f60d62378e"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a0425d45e827aa9c247fe49f60d62378e">&#9670;&#160;</a></span>printGenetics()</h2>
 
@@ -527,6 +496,32 @@ template&lt;class Archive &gt; </div>
   <table class="params">
     <tr><td class="paramname">ar</td><td>Archive instance. </td></tr>
     <tr><td class="paramname">version</td><td>Serialization version. </td></tr>
+  </table>
+  </dd>
+</dl>
+
+</div>
+</div>
+<a id="a2b2ecd0759fdd96995469c7356134c88" name="a2b2ecd0759fdd96995469c7356134c88"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a2b2ecd0759fdd96995469c7356134c88">&#9670;&#160;</a></span>updatePseudoValueRanges()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void AnimalSpeciesGenetics::updatePseudoValueRanges </td>
+          <td>(</td>
+          <td class="paramtype">const <a class="el" href="classGenome.html">Genome</a> &amp;&#160;</td>
+          <td class="paramname"><em>genome</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Update pseudo-value ranges for all individual-level traits. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">genome</td><td><a class="el" href="classGenome.html" title="Represents a genome with homologous chromosomes and correlosomes.">Genome</a> used to calculate pseudo-value ranges. </td></tr>
   </table>
   </dd>
 </dl>

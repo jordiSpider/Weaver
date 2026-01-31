@@ -26,7 +26,7 @@
  <tbody>
  <tr id="projectrow">
   <td id="projectalign">
-   <div id="projectname">Weaver<span id="projectnumber">&#160;2026.01.07</span>
+   <div id="projectname">Weaver<span id="projectnumber">&#160;2026.01.31</span>
    </div>
   </td>
  </tr>
@@ -109,6 +109,9 @@ void&#160;</td><td class="memItemRight" valign="bottom"><b>AnimalSpecies::addAni
 void&#160;</td><td class="memItemRight" valign="bottom"><b>AnimalSpecies::addResourceSpecies</b> ()</td></tr>
 <tr class="memdesc:gaded78ec26a930ca6f77dec778c7fe75b"><td class="mdescLeft">&#160;</td><td class="mdescRight">Adds a resource species record. <br /></td></tr>
 <tr class="separator:gaded78ec26a930ca6f77dec778c7fe75b"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga850cf83acc582c716a961db0557748be" id="r_ga850cf83acc582c716a961db0557748be"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__SpeciesModifiers.html#ga850cf83acc582c716a961db0557748be">AnimalSpecies::generateInitialGenomesPool</a> (const <a class="el" href="classCustomIndexedVector.html">CustomIndexedVector</a>&lt; <a class="el" href="classInstar.html">Instar</a>, unsigned int &gt; &amp;<a class="el" href="group__SpeciesPopulationAttributes.html#ga25cd71268f2e553f539ecf9bf55d10ae">population</a>, std::vector&lt; <a class="el" href="classGenome.html">Genome</a> &gt; &amp;initialGenomesPool)</td></tr>
+<tr class="memdesc:ga850cf83acc582c716a961db0557748be"><td class="mdescLeft">&#160;</td><td class="mdescRight">Generates the initial genomes pool for this species.  <br /></td></tr>
+<tr class="separator:ga850cf83acc582c716a961db0557748be"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ga2b93143ea25879035fc24815e626d33c" id="r_ga2b93143ea25879035fc24815e626d33c"><td class="memItemLeft" align="right" valign="top"><a id="ga2b93143ea25879035fc24815e626d33c" name="ga2b93143ea25879035fc24815e626d33c"></a>
 virtual <a class="el" href="classPreciseDouble.html">PreciseDouble</a>&#160;</td><td class="memItemRight" valign="bottom"><b>AnimalSpecies::getMinRelativeHumidityThreshold</b> (const <a class="el" href="classInstar.html">Instar</a> &amp;instar) const</td></tr>
 <tr class="memdesc:ga2b93143ea25879035fc24815e626d33c"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns humidity threshold per instar. <br /></td></tr>
@@ -220,6 +223,44 @@ void&#160;</td><td class="memItemRight" valign="bottom"><b>AnimalSpecies::setSta
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <p>Setters for mobility, metabolism, mortality and population. </p>
+<h2 class="groupheader">Function Documentation</h2>
+<a id="ga850cf83acc582c716a961db0557748be" name="ga850cf83acc582c716a961db0557748be"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ga850cf83acc582c716a961db0557748be">&#9670;&#160;</a></span>generateInitialGenomesPool()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void AnimalSpecies::generateInitialGenomesPool </td>
+          <td>(</td>
+          <td class="paramtype">const <a class="el" href="classCustomIndexedVector.html">CustomIndexedVector</a>&lt; <a class="el" href="classInstar.html">Instar</a>, unsigned int &gt; &amp;&#160;</td>
+          <td class="paramname"><em>population</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">std::vector&lt; <a class="el" href="classGenome.html">Genome</a> &gt; &amp;&#160;</td>
+          <td class="paramname"><em>initialGenomesPool</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Generates the initial genomes pool for this species. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">initialPopulation</td><td>Initial population per instar. </td></tr>
+    <tr><td class="paramname">initialGenomesPool</td><td>Output vector to be filled with initial genomes. </td></tr>
+  </table>
+  </dd>
+</dl>
+
+</div>
+</div>
 </div><!-- contents -->
 </div><!-- doc-content -->
 <!-- start footer part -->

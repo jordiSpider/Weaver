@@ -8,7 +8,6 @@ var classSpeciesLevelTrait =
     [ "getMinTraitRestrictedRange", "classSpeciesLevelTrait.html#a0e4cce169e9da6b93dbf9a86015edd81", null ],
     [ "getType", "classSpeciesLevelTrait.html#a2c21a5062e6be1f4e795777a79e8f004", null ],
     [ "getValue", "classSpeciesLevelTrait.html#ad2d2da41a27d4d9cd97ebca97ba448ef", null ],
-    [ "isInsideRestrictedRanges", "classSpeciesLevelTrait.html#aa8bb47a1e999adeb3de11c75e14dfc0f", null ],
     [ "isNull", "classSpeciesLevelTrait.html#ad30929eaaa4b9aed0347613ed59cf87a", null ],
     [ "serialize", "classSpeciesLevelTrait.html#afecefa22bb420846ce8c4bc83238e8ea", null ],
     [ "setValue", "classSpeciesLevelTrait.html#aec4a015500712207128b998e51666878", null ],

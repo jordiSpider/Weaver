@@ -11,6 +11,7 @@ var classAnimalSpecies =
     [ "canEatEdible", "group__Predation.html#ga70b08d2c597977fa5627ad20327d7d97", null ],
     [ "decreasePopulation", "group__PopulationAndStatistics.html#ga1cc5b7e1b25cc31baba14a6ccfaa3a00", null ],
     [ "eatsAnimalSpecies", "group__Predation.html#ga81da867dd0e662a59d08ee8f2cbaa634", null ],
+    [ "generateInitialGenomesPool", "group__SpeciesModifiers.html#ga850cf83acc582c716a961db0557748be", null ],
     [ "generateInstarInvolvedResourceSpecies", "group__SpeciesResourceGeneration.html#ga2b3c7f18eed0433c831e4518cafeb20e", null ],
     [ "generateInvolvedResourceSpecies", "group__SpeciesResourceGeneration.html#ga0f0b55034914692a5792f227ad2ce8d0", null ],
     [ "getActivatedHandling", "group__MiscSpeciesParameters.html#gaedc8ba5fd7a904530ddc9cf824e6e92d", null ],

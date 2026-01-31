@@ -1,6 +1,6 @@
 var searchData=
 [
-  ['b_0',['b',['../classExponentialIndividualGrowthModel.html#a5f75a6261f370152365e53f547ab06d4',1,'ExponentialIndividualGrowthModel::b'],['../classParabola.html#ada3c0d8def7a0329fff000a771a9c6a0',1,'Parabola::b'],['../classLogistic4PIndividualGrowthModel.html#a2bd08f379762e280aa1d7b950c8c2be0',1,'Logistic4PIndividualGrowthModel::B']]],
+  ['b_0',['b',['../classLogistic4PIndividualGrowthModel.html#a2bd08f379762e280aa1d7b950c8c2be0',1,'Logistic4PIndividualGrowthModel::B'],['../classExponentialIndividualGrowthModel.html#a5f75a6261f370152365e53f547ab06d4',1,'ExponentialIndividualGrowthModel::b'],['../classParabola.html#ada3c0d8def7a0329fff000a771a9c6a0',1,'Parabola::b']]],
   ['back_1',['back',['../classCustomIndexedVector_3_01IndexType_00_01bool_01_4.html#a6a682dab623e55ca20f3ff6b2c720f0d',1,'CustomIndexedVector&lt; IndexType, bool &gt;::back() const'],['../classCustomIndexedVector_3_01IndexType_00_01bool_01_4.html#a0ccaadeaee8b3c0b171628150733fccc',1,'CustomIndexedVector&lt; IndexType, bool &gt;::back()'],['../classCustomIndexedVector.html#a7515bfe40fc99b7a1ed90322a990df3e',1,'CustomIndexedVector::back() const'],['../classCustomIndexedVector.html#a44851a8fddde3ed46e74a050f234cc53',1,'CustomIndexedVector::back()']]],
   ['background_2',['BACKGROUND',['../LifeStage_8h.html#ad7401a93ef5f926a8bb329e843c7823ba87ed58ce5596142e11cb65deb049bb4b',1,'LifeStage.h']]],
   ['basalresource_3',['BasalResource',['../classResourceSpecies.html#ac04073b482101b0225b3420c7c2c276bac00ee1c5d420ffc730ebd2eda1484943',1,'ResourceSpecies']]],
@@ -21,7 +21,7 @@ var searchData=
   ['binarycheckpointenabled_18',['binaryCheckpointEnabled',['../classLandscape.html#a2b2645331cb18b5ab20eacc19af919c2',1,'Landscape']]],
   ['bisection_19',['bisection',['../classMathFunctions.html#a5848093461da6a02d4b7a9d2394bf6d8',1,'MathFunctions']]],
   ['boltzmann_20',['BOLTZMANN',['../Constants_8h.html#adf462665cf998d63dc3cffd56a3b4d04',1,'Constants.h']]],
-  ['boolean_21',['boolean',['../classBoolean.html',1,'Boolean'],['../classBoolean.html#a80e464a575e2c2f9accde1d913b5259c',1,'Boolean::Boolean(const Boolean &amp;other, const bool nullProperty)'],['../classBoolean.html#a74b4724072059e44c0ff61be001efa64',1,'Boolean::Boolean(const nlohmann::json &amp;info)'],['../classElement.html#a009a3be4c3a037a72e292b2464c9cbc5a84e2c64f38f78ba3ea5c905ab5a2da27',1,'Element::boolean']]],
+  ['boolean_21',['boolean',['../classBoolean.html',1,'Boolean'],['../classElement.html#a009a3be4c3a037a72e292b2464c9cbc5a84e2c64f38f78ba3ea5c905ab5a2da27',1,'Element::boolean'],['../classBoolean.html#a80e464a575e2c2f9accde1d913b5259c',1,'Boolean::Boolean(const Boolean &amp;other, const bool nullProperty)'],['../classBoolean.html#a74b4724072059e44c0ff61be001efa64',1,'Boolean::Boolean(const nlohmann::json &amp;info)']]],
   ['boolean_2eh_22',['Boolean.h',['../Boolean_8h.html',1,'']]],
   ['boost_23',['boost',['../namespaceboost.html',1,'']]],
   ['boost_3a_3aserialization_24',['serialization',['../namespaceboost_1_1serialization.html',1,'boost']]],

@@ -26,7 +26,7 @@
  <tbody>
  <tr id="projectrow">
   <td id="projectalign">
-   <div id="projectname">Weaver<span id="projectnumber">&#160;2026.01.07</span>
+   <div id="projectname">Weaver<span id="projectnumber">&#160;2026.01.31</span>
    </div>
   </td>
  </tr>
@@ -133,9 +133,6 @@ virtual&#160;</td><td class="memItemRight" valign="bottom"><b>~PawarTraitTempera
 <tr class="memitem:ac2371802ebe097add3093b6964d0ed53" id="r_ac2371802ebe097add3093b6964d0ed53"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classPawarTraitTemperatureSection.html#ac2371802ebe097add3093b6964d0ed53">isStrictlyPositive</a> () const</td></tr>
 <tr class="memdesc:ac2371802ebe097add3093b6964d0ed53"><td class="mdescLeft">&#160;</td><td class="mdescRight">Checks if the trait must always be strictly positive.  <br /></td></tr>
 <tr class="separator:ac2371802ebe097add3093b6964d0ed53"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:acd2d9837d69c830fa4732fd91912f9e4" id="r_acd2d9837d69c830fa4732fd91912f9e4"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classPawarTraitTemperatureSection.html#acd2d9837d69c830fa4732fd91912f9e4">isInsideRestrictedRanges</a> (const <a class="el" href="classCustomIndexedVector.html">CustomIndexedVector</a>&lt; <a class="el" href="PawarElement_8h.html#a8d6af46429ae2360777307522b3a8e53">PawarElement</a>, <a class="el" href="classPreciseDouble.html">PreciseDouble</a> &gt; &amp;elementsValue) const</td></tr>
-<tr class="memdesc:acd2d9837d69c830fa4732fd91912f9e4"><td class="mdescLeft">&#160;</td><td class="mdescRight">Checks whether the given Pawar element values are inside restricted ranges.  <br /></td></tr>
-<tr class="separator:acd2d9837d69c830fa4732fd91912f9e4"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ae9fd18ca796ef8ee439ebae5df3eca76" id="r_ae9fd18ca796ef8ee439ebae5df3eca76"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classIndividualTraitTemperatureSection.html">IndividualTraitTemperatureSection</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classPawarTraitTemperatureSection.html#ae9fd18ca796ef8ee439ebae5df3eca76">generateIndividualTraitTemperatureSection</a> (const <a class="el" href="classPreciseDouble.html">PreciseDouble</a> &amp;geneticValue, const <a class="el" href="classGenome.html">Genome</a> &amp;genome, const size_t traitsPerModule, const size_t numberOfLociPerTrait, const std::vector&lt; <a class="el" href="classPreciseDouble.html">PreciseDouble</a> &gt; &amp;rhoPerModule, const std::vector&lt; size_t &gt; &amp;rhoRangePerModule) const</td></tr>
 <tr class="memdesc:ae9fd18ca796ef8ee439ebae5df3eca76"><td class="mdescLeft">&#160;</td><td class="mdescRight">Generates an individual-level temperature section for this Pawar trait.  <br /></td></tr>
 <tr class="separator:ae9fd18ca796ef8ee439ebae5df3eca76"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -408,33 +405,6 @@ bool&#160;</td><td class="memItemRight" valign="bottom"><b>strictlyPositive</b><
   </dd>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>Header string for CSV or data output. </dd></dl>
-
-</div>
-</div>
-<a id="acd2d9837d69c830fa4732fd91912f9e4" name="acd2d9837d69c830fa4732fd91912f9e4"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#acd2d9837d69c830fa4732fd91912f9e4">&#9670;&#160;</a></span>isInsideRestrictedRanges()</h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">bool PawarTraitTemperatureSection::isInsideRestrictedRanges </td>
-          <td>(</td>
-          <td class="paramtype">const <a class="el" href="classCustomIndexedVector.html">CustomIndexedVector</a>&lt; <a class="el" href="PawarElement_8h.html#a8d6af46429ae2360777307522b3a8e53">PawarElement</a>, <a class="el" href="classPreciseDouble.html">PreciseDouble</a> &gt; &amp;&#160;</td>
-          <td class="paramname"><em>elementsValue</em></td><td>)</td>
-          <td> const</td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-<p>Checks whether the given Pawar element values are inside restricted ranges. </p>
-<dl class="params"><dt>Parameters</dt><dd>
-  <table class="params">
-    <tr><td class="paramname">elementsValue</td><td>Vector of PawarElement values. </td></tr>
-  </table>
-  </dd>
-</dl>
-<dl class="section return"><dt>Returns</dt><dd>True if all elements are within allowed ranges, false otherwise. </dd></dl>
 
 </div>
 </div>

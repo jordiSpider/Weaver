@@ -26,7 +26,7 @@
  <tbody>
  <tr id="projectrow">
   <td id="projectalign">
-   <div id="projectname">Weaver<span id="projectnumber">&#160;2026.01.07</span>
+   <div id="projectname">Weaver<span id="projectnumber">&#160;2026.01.31</span>
    </div>
   </td>
  </tr>
@@ -131,9 +131,9 @@ virtual&#160;</td><td class="memItemRight" valign="bottom"><b>~Dynamics</b> ()</
 <tr class="memitem:ae9000c3efeec95fe692d45a58ac0edd7" id="r_ae9000c3efeec95fe692d45a58ac0edd7"><td class="memItemLeft" align="right" valign="top">virtual <a class="el" href="classPreciseDouble.html">PreciseDouble</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classDynamics.html#ae9000c3efeec95fe692d45a58ac0edd7">getInitialValue</a> () const =0</td></tr>
 <tr class="memdesc:ae9000c3efeec95fe692d45a58ac0edd7"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get the initial value of the dynamics.  <br /></td></tr>
 <tr class="separator:ae9000c3efeec95fe692d45a58ac0edd7"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a6ccccdb7168e3c3e29fbe42e3b28d5d2" id="r_a6ccccdb7168e3c3e29fbe42e3b28d5d2"><td class="memItemLeft" align="right" valign="top">virtual <a class="el" href="classPreciseDouble.html">PreciseDouble</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classDynamics.html#a6ccccdb7168e3c3e29fbe42e3b28d5d2">getValue</a> (const <a class="el" href="classPreciseDouble.html">PreciseDouble</a> &amp;baseValue, const <a class="el" href="classPreciseDouble.html">PreciseDouble</a> &amp;timeStepsPerDay, const <a class="el" href="classTemperature.html">Temperature</a> &amp;temperature, const <a class="el" href="classPreciseDouble.html">PreciseDouble</a> &amp;moisture, const <a class="el" href="classPreciseDouble.html">PreciseDouble</a> &amp;minRH, const <a class="el" href="classPreciseDouble.html">PreciseDouble</a> &amp;maxRH) const =0</td></tr>
-<tr class="memdesc:a6ccccdb7168e3c3e29fbe42e3b28d5d2"><td class="mdescLeft">&#160;</td><td class="mdescRight">Calculate the current value based on environment and parameters.  <br /></td></tr>
-<tr class="separator:a6ccccdb7168e3c3e29fbe42e3b28d5d2"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ad0df4ad4f58fa172d6f8c330402ffe78" id="r_ad0df4ad4f58fa172d6f8c330402ffe78"><td class="memItemLeft" align="right" valign="top">virtual <a class="el" href="classPreciseDouble.html">PreciseDouble</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classDynamics.html#ad0df4ad4f58fa172d6f8c330402ffe78">getValue</a> (const <a class="el" href="classPreciseDouble.html">PreciseDouble</a> &amp;baseValue, bool competitionAmongResourceSpecies, const <a class="el" href="classWetMass.html">WetMass</a> &amp;totalMaximumResourceCapacity, const <a class="el" href="classPreciseDouble.html">PreciseDouble</a> &amp;timeStepsPerDay, const <a class="el" href="classTemperature.html">Temperature</a> &amp;temperature, const <a class="el" href="classPreciseDouble.html">PreciseDouble</a> &amp;moisture, const <a class="el" href="classPreciseDouble.html">PreciseDouble</a> &amp;minRH, const <a class="el" href="classPreciseDouble.html">PreciseDouble</a> &amp;maxRH) const =0</td></tr>
+<tr class="memdesc:ad0df4ad4f58fa172d6f8c330402ffe78"><td class="mdescLeft">&#160;</td><td class="mdescRight">Calculate the current value based on environment and parameters.  <br /></td></tr>
+<tr class="separator:ad0df4ad4f58fa172d6f8c330402ffe78"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a2687d6e20817c0322fe04eb7dc30d3dc" id="r_a2687d6e20817c0322fe04eb7dc30d3dc"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classDynamics.html#a2687d6e20817c0322fe04eb7dc30d3dc">update</a> ()=0</td></tr>
 <tr class="memdesc:a2687d6e20817c0322fe04eb7dc30d3dc"><td class="mdescLeft">&#160;</td><td class="mdescRight">Update the internal state of the dynamics.  <br /></td></tr>
 <tr class="separator:a2687d6e20817c0322fe04eb7dc30d3dc"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -150,9 +150,9 @@ Static Public Member Functions</h2></td></tr>
 <tr class="memitem:af42fb0a3c5a0076308b9e8e752195eb1" id="r_af42fb0a3c5a0076308b9e8e752195eb1"><td class="memItemLeft" align="right" valign="top">static <a class="el" href="classDynamics.html">Dynamics</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classDynamics.html#af42fb0a3c5a0076308b9e8e752195eb1">createInstance</a> (const nlohmann::json &amp;config, const <a class="el" href="classPreciseDouble.html">PreciseDouble</a> &amp;timeStepsPerDay)</td></tr>
 <tr class="memdesc:af42fb0a3c5a0076308b9e8e752195eb1"><td class="mdescLeft">&#160;</td><td class="mdescRight">Create a <a class="el" href="classDynamics.html" title="Abstract base class for modeling temporal dynamics.">Dynamics</a> instance based on a JSON configuration.  <br /></td></tr>
 <tr class="separator:af42fb0a3c5a0076308b9e8e752195eb1"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:afb86abc73a0e2bf61d38caa1b9356e99" id="r_afb86abc73a0e2bf61d38caa1b9356e99"><td class="memItemLeft" align="right" valign="top">static <a class="el" href="classDynamics.html">Dynamics</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classDynamics.html#afb86abc73a0e2bf61d38caa1b9356e99">createInstanceForResource</a> (const nlohmann::json &amp;config, const <a class="el" href="classPreciseDouble.html">PreciseDouble</a> &amp;scaleMass, const <a class="el" href="classWetMass.html">WetMass</a> &amp;cellMass, const <a class="el" href="classPreciseDouble.html">PreciseDouble</a> &amp;timeStepsPerDay, const <a class="el" href="classPreciseDouble.html">PreciseDouble</a> &amp;hyperVolume)</td></tr>
-<tr class="memdesc:afb86abc73a0e2bf61d38caa1b9356e99"><td class="mdescLeft">&#160;</td><td class="mdescRight">Create a <a class="el" href="classDynamics.html" title="Abstract base class for modeling temporal dynamics.">Dynamics</a> instance specifically for a resource.  <br /></td></tr>
-<tr class="separator:afb86abc73a0e2bf61d38caa1b9356e99"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ad09feb0a33b9dbc56f0dab4cb9d4b88e" id="r_ad09feb0a33b9dbc56f0dab4cb9d4b88e"><td class="memItemLeft" align="right" valign="top">static <a class="el" href="classDynamics.html">Dynamics</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classDynamics.html#ad09feb0a33b9dbc56f0dab4cb9d4b88e">createInstanceForResource</a> (const nlohmann::json &amp;config, const <a class="el" href="classPreciseDouble.html">PreciseDouble</a> &amp;scaleMass, const <a class="el" href="classWetMass.html">WetMass</a> &amp;cellMass, const <a class="el" href="classPreciseDouble.html">PreciseDouble</a> &amp;timeStepsPerDay, const <a class="el" href="classPreciseDouble.html">PreciseDouble</a> &amp;hyperVolume, const <a class="el" href="classWetMass.html">WetMass</a> &amp;resourceMaximumCapacity)</td></tr>
+<tr class="memdesc:ad09feb0a33b9dbc56f0dab4cb9d4b88e"><td class="mdescLeft">&#160;</td><td class="mdescRight">Create a <a class="el" href="classDynamics.html" title="Abstract base class for modeling temporal dynamics.">Dynamics</a> instance specifically for a resource.  <br /></td></tr>
+<tr class="separator:ad09feb0a33b9dbc56f0dab4cb9d4b88e"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p>Abstract base class for modeling temporal dynamics. </p>
@@ -237,8 +237,8 @@ Static Public Member Functions</h2></td></tr>
 
 </div>
 </div>
-<a id="afb86abc73a0e2bf61d38caa1b9356e99" name="afb86abc73a0e2bf61d38caa1b9356e99"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#afb86abc73a0e2bf61d38caa1b9356e99">&#9670;&#160;</a></span>createInstanceForResource()</h2>
+<a id="ad09feb0a33b9dbc56f0dab4cb9d4b88e" name="ad09feb0a33b9dbc56f0dab4cb9d4b88e"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ad09feb0a33b9dbc56f0dab4cb9d4b88e">&#9670;&#160;</a></span>createInstanceForResource()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -274,7 +274,13 @@ Static Public Member Functions</h2></td></tr>
           <td class="paramkey"></td>
           <td></td>
           <td class="paramtype">const <a class="el" href="classPreciseDouble.html">PreciseDouble</a> &amp;&#160;</td>
-          <td class="paramname"><em>hyperVolume</em>&#160;</td>
+          <td class="paramname"><em>hyperVolume</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const <a class="el" href="classWetMass.html">WetMass</a> &amp;&#160;</td>
+          <td class="paramname"><em>resourceMaximumCapacity</em>&#160;</td>
         </tr>
         <tr>
           <td></td>
@@ -334,8 +340,8 @@ Static Public Member Functions</h2></td></tr>
 
 </div>
 </div>
-<a id="a6ccccdb7168e3c3e29fbe42e3b28d5d2" name="a6ccccdb7168e3c3e29fbe42e3b28d5d2"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a6ccccdb7168e3c3e29fbe42e3b28d5d2">&#9670;&#160;</a></span>getValue()</h2>
+<a id="ad0df4ad4f58fa172d6f8c330402ffe78" name="ad0df4ad4f58fa172d6f8c330402ffe78"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ad0df4ad4f58fa172d6f8c330402ffe78">&#9670;&#160;</a></span>getValue()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -348,6 +354,18 @@ Static Public Member Functions</h2></td></tr>
           <td>(</td>
           <td class="paramtype">const <a class="el" href="classPreciseDouble.html">PreciseDouble</a> &amp;&#160;</td>
           <td class="paramname"><em>baseValue</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">bool&#160;</td>
+          <td class="paramname"><em>competitionAmongResourceSpecies</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const <a class="el" href="classWetMass.html">WetMass</a> &amp;&#160;</td>
+          <td class="paramname"><em>totalMaximumResourceCapacity</em>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
@@ -406,7 +424,7 @@ Static Public Member Functions</h2></td></tr>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>Calculated value as <a class="el" href="classPreciseDouble.html" title="Class for precise double-precision floating-point arithmetic.">PreciseDouble</a>. </dd></dl>
 
-<p>Implemented in <a class="el" href="classGrowthRateDynamics.html#ad1a080f8e41df5bdfe69d5316ca83f84">GrowthRateDynamics</a>, and <a class="el" href="classNonMassBasedDynamics.html#aaa59078ca26165a5dcf17a2e1eb2690c">NonMassBasedDynamics</a>.</p>
+<p>Implemented in <a class="el" href="classGrowthRateDynamics.html#a21c3dd7f21d1aefa970c9b91957d8a25">GrowthRateDynamics</a>, and <a class="el" href="classNonMassBasedDynamics.html#a0752ba431b7db3ede797a88663e6412d">NonMassBasedDynamics</a>.</p>
 
 </div>
 </div>

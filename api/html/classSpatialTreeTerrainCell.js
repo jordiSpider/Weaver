@@ -10,7 +10,7 @@ var classSpatialTreeTerrainCell =
     [ "applyFunctionToEdibles", "classSpatialTreeTerrainCell.html#acaa64d654d497d20f8449479fd4afc66", null ],
     [ "applyFunctionToEdiblesInRadius", "classSpatialTreeTerrainCell.html#a9d82c3340570833e351ec91c4cb158d2", null ],
     [ "applyUpFunctionToAnimals", "classSpatialTreeTerrainCell.html#a9b836464aa825a63acbc9db6ebf74faf", null ],
-    [ "createAnimal", "classSpatialTreeTerrainCell.html#a9a66d79cb3572f766d8397c9aa557b89", null ],
+    [ "createAnimal", "classSpatialTreeTerrainCell.html#aa64a3bfb96d4bd66cd1db4364db8511e", null ],
     [ "getCell", "classSpatialTreeTerrainCell.html#a8e8d14a8af67dbb13029459a2540ce0d", null ],
     [ "getCell", "classSpatialTreeTerrainCell.html#a63a502f8730d28002f763ce50fc2ae1f", null ],
     [ "getCellByBearing", "classSpatialTreeTerrainCell.html#a357302d6adb4e23819baa0851f5314c9", null ],

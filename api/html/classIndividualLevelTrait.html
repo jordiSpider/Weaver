@@ -26,7 +26,7 @@
  <tbody>
  <tr id="projectrow">
   <td id="projectalign">
-   <div id="projectname">Weaver<span id="projectnumber">&#160;2026.01.07</span>
+   <div id="projectname">Weaver<span id="projectnumber">&#160;2026.01.31</span>
    </div>
   </td>
  </tr>
@@ -111,7 +111,7 @@ Inheritance diagram for IndividualLevelTrait:</div>
 <div class="dynheader">
 Collaboration diagram for IndividualLevelTrait:</div>
 <div class="dyncontent">
-<div class="center"><iframe scrolling="no" frameborder="0" src="classIndividualLevelTrait__coll__graph.svg" width="402" height="256"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+<div class="center"><iframe scrolling="no" frameborder="0" src="classIndividualLevelTrait__coll__graph.svg" width="404" height="242"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
 <center><span class="legend">[<a target="top" href="graph_legend.html">legend</a>]</span></center></div>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-methods" name="pub-methods"></a>
@@ -160,12 +160,9 @@ virtual&#160;</td><td class="memItemRight" valign="bottom"><b>~IndividualLevelTr
 <tr class="memitem:a35ed06a1c9d46ca9cb077066419e5aac" id="r_a35ed06a1c9d46ca9cb077066419e5aac"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classPreciseDouble.html">PreciseDouble</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classIndividualLevelTrait.html#a35ed06a1c9d46ca9cb077066419e5aac">getValue</a> (const <a class="el" href="classGenome.html">Genome</a> &amp;genome, const size_t traitsPerModule, const size_t numberOfLociPerTrait, const std::vector&lt; <a class="el" href="classPreciseDouble.html">PreciseDouble</a> &gt; &amp;rhoPerModule, const std::vector&lt; size_t &gt; &amp;rhoRangePerModule) const</td></tr>
 <tr class="memdesc:a35ed06a1c9d46ca9cb077066419e5aac"><td class="mdescLeft">&#160;</td><td class="mdescRight">Gets the trait value for a given genome.  <br /></td></tr>
 <tr class="separator:a35ed06a1c9d46ca9cb077066419e5aac"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ac431f486589efd069a921995e75d1fd8" id="r_ac431f486589efd069a921995e75d1fd8"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classIndividualLevelTrait.html#ac431f486589efd069a921995e75d1fd8">isInsideRestrictedRanges</a> (const <a class="el" href="classPreciseDouble.html">PreciseDouble</a> &amp;traitValue) const</td></tr>
-<tr class="memdesc:ac431f486589efd069a921995e75d1fd8"><td class="mdescLeft">&#160;</td><td class="mdescRight">Checks if a trait value is within restricted ranges.  <br /></td></tr>
-<tr class="separator:ac431f486589efd069a921995e75d1fd8"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a6ed5314a89ac73bbbf79d914f008d4fa" id="r_a6ed5314a89ac73bbbf79d914f008d4fa"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classIndividualLevelTrait.html#a6ed5314a89ac73bbbf79d914f008d4fa">setPseudoValueRanges</a> (const std::vector&lt; <a class="el" href="classLocus.html">Locus</a> &gt; &amp;loci, const size_t traitsPerModule, const size_t numberOfLociPerTrait, const std::vector&lt; <a class="el" href="classPreciseDouble.html">PreciseDouble</a> &gt; &amp;rhoPerModule, const std::vector&lt; size_t &gt; &amp;rhoRangePerModule)</td></tr>
-<tr class="memdesc:a6ed5314a89ac73bbbf79d914f008d4fa"><td class="mdescLeft">&#160;</td><td class="mdescRight">Sets the pseudo-value limits for the trait.  <br /></td></tr>
-<tr class="separator:a6ed5314a89ac73bbbf79d914f008d4fa"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ad384969c4a4a25fc5cbeac7fddef5c0a" id="r_ad384969c4a4a25fc5cbeac7fddef5c0a"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classIndividualLevelTrait.html#ad384969c4a4a25fc5cbeac7fddef5c0a">updatePseudoValueRanges</a> (const <a class="el" href="classGenome.html">Genome</a> &amp;genome, const size_t traitsPerModule, const size_t numberOfLociPerTrait, const std::vector&lt; <a class="el" href="classPreciseDouble.html">PreciseDouble</a> &gt; &amp;rhoPerModule, const std::vector&lt; size_t &gt; &amp;rhoRangePerModule)</td></tr>
+<tr class="memdesc:ad384969c4a4a25fc5cbeac7fddef5c0a"><td class="mdescLeft">&#160;</td><td class="mdescRight">Updates pseudo-value ranges based on genome data.  <br /></td></tr>
+<tr class="separator:ad384969c4a4a25fc5cbeac7fddef5c0a"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a74a1cfd2a955cd97e3f3f57c64a8631a" id="r_a74a1cfd2a955cd97e3f3f57c64a8631a"><td class="memItemLeft" align="right" valign="top">const std::string &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classIndividualLevelTrait.html#a74a1cfd2a955cd97e3f3f57c64a8631a">getTraitStr</a> () const</td></tr>
 <tr class="memdesc:a74a1cfd2a955cd97e3f3f57c64a8631a"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns the trait identifier string.  <br /></td></tr>
 <tr class="separator:a74a1cfd2a955cd97e3f3f57c64a8631a"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -209,12 +206,12 @@ const <a class="el" href="classPreciseDouble.html">PreciseDouble</a> &amp;&#160;
 const <a class="el" href="classPreciseDouble.html">PreciseDouble</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><b>getMaxPseudoValueRange</b> () const</td></tr>
 <tr class="memdesc:a0cb7a837e3be185d7b187d4ab2b801ef"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns maximum pseudo-value range. <br /></td></tr>
 <tr class="separator:a0cb7a837e3be185d7b187d4ab2b801ef"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a7e2f9944c9493cf1ef270bfb66318eba" id="r_a7e2f9944c9493cf1ef270bfb66318eba"><td class="memItemLeft" align="right" valign="top"><a id="a7e2f9944c9493cf1ef270bfb66318eba" name="a7e2f9944c9493cf1ef270bfb66318eba"></a>
-const <a class="el" href="classPreciseDouble.html">PreciseDouble</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><b>getPi</b> () const</td></tr>
-<tr class="separator:a7e2f9944c9493cf1ef270bfb66318eba"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aa2cce806ad7be047ea6154d0550319fa" id="r_aa2cce806ad7be047ea6154d0550319fa"><td class="memItemLeft" align="right" valign="top"><a id="aa2cce806ad7be047ea6154d0550319fa" name="aa2cce806ad7be047ea6154d0550319fa"></a>
-const <a class="el" href="classPreciseDouble.html">PreciseDouble</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><b>getK</b> () const</td></tr>
-<tr class="separator:aa2cce806ad7be047ea6154d0550319fa"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a51b34ff1a21ef31677abfe2c849b6002" id="r_a51b34ff1a21ef31677abfe2c849b6002"><td class="memItemLeft" align="right" valign="top"><a id="a51b34ff1a21ef31677abfe2c849b6002" name="a51b34ff1a21ef31677abfe2c849b6002"></a>
+const <a class="el" href="classPreciseDouble.html">PreciseDouble</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><b>getMinTraitLimit</b> () const</td></tr>
+<tr class="separator:a51b34ff1a21ef31677abfe2c849b6002"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a36fb46d88b8b8fa0e27b04b11080307c" id="r_a36fb46d88b8b8fa0e27b04b11080307c"><td class="memItemLeft" align="right" valign="top"><a id="a36fb46d88b8b8fa0e27b04b11080307c" name="a36fb46d88b8b8fa0e27b04b11080307c"></a>
+const <a class="el" href="classPreciseDouble.html">PreciseDouble</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><b>getMaxTraitLimit</b> () const</td></tr>
+<tr class="separator:a36fb46d88b8b8fa0e27b04b11080307c"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pro-attribs" name="pro-attribs"></a>
 Protected Attributes</h2></td></tr>
@@ -242,12 +239,14 @@ size_t&#160;</td><td class="memItemRight" valign="bottom"><b>order</b></td></tr>
 <a class="el" href="classPreciseDouble.html">PreciseDouble</a>&#160;</td><td class="memItemRight" valign="bottom"><b>maxTraitRestrictedRange</b></td></tr>
 <tr class="memdesc:a7bfd800c8c74d825b6c5e1ad894f175a"><td class="mdescLeft">&#160;</td><td class="mdescRight">Maximum restricted trait range. <br /></td></tr>
 <tr class="separator:a7bfd800c8c74d825b6c5e1ad894f175a"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a1bf91d73c52f1f09de41e8ddaeed3cc3" id="r_a1bf91d73c52f1f09de41e8ddaeed3cc3"><td class="memItemLeft" align="right" valign="top"><a id="a1bf91d73c52f1f09de41e8ddaeed3cc3" name="a1bf91d73c52f1f09de41e8ddaeed3cc3"></a>
-<a class="el" href="classPreciseDouble.html">PreciseDouble</a>&#160;</td><td class="memItemRight" valign="bottom"><b>Pi</b></td></tr>
-<tr class="separator:a1bf91d73c52f1f09de41e8ddaeed3cc3"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:abafa889b0962d5f0005c26e61ed6cc1e" id="r_abafa889b0962d5f0005c26e61ed6cc1e"><td class="memItemLeft" align="right" valign="top"><a id="abafa889b0962d5f0005c26e61ed6cc1e" name="abafa889b0962d5f0005c26e61ed6cc1e"></a>
-<a class="el" href="classPreciseDouble.html">PreciseDouble</a>&#160;</td><td class="memItemRight" valign="bottom"><b>K</b></td></tr>
-<tr class="separator:abafa889b0962d5f0005c26e61ed6cc1e"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:af38e6d08e34ad072fd33642b9eae5b2b" id="r_af38e6d08e34ad072fd33642b9eae5b2b"><td class="memItemLeft" align="right" valign="top"><a id="af38e6d08e34ad072fd33642b9eae5b2b" name="af38e6d08e34ad072fd33642b9eae5b2b"></a>
+<a class="el" href="classPreciseDouble.html">PreciseDouble</a>&#160;</td><td class="memItemRight" valign="bottom"><b>minTraitLimit</b></td></tr>
+<tr class="memdesc:af38e6d08e34ad072fd33642b9eae5b2b"><td class="mdescLeft">&#160;</td><td class="mdescRight">Minimum trait limit. <br /></td></tr>
+<tr class="separator:af38e6d08e34ad072fd33642b9eae5b2b"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a6a6a9b4f922427331d5412bdc4ba0516" id="r_a6a6a9b4f922427331d5412bdc4ba0516"><td class="memItemLeft" align="right" valign="top"><a id="a6a6a9b4f922427331d5412bdc4ba0516" name="a6a6a9b4f922427331d5412bdc4ba0516"></a>
+<a class="el" href="classPreciseDouble.html">PreciseDouble</a>&#160;</td><td class="memItemRight" valign="bottom"><b>maxTraitLimit</b></td></tr>
+<tr class="memdesc:a6a6a9b4f922427331d5412bdc4ba0516"><td class="mdescLeft">&#160;</td><td class="mdescRight">Maximum trait limit. <br /></td></tr>
+<tr class="separator:a6a6a9b4f922427331d5412bdc4ba0516"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aa8de2b9349578db4f7cf23f7ad87206d" id="r_aa8de2b9349578db4f7cf23f7ad87206d"><td class="memItemLeft" align="right" valign="top"><a id="aa8de2b9349578db4f7cf23f7ad87206d" name="aa8de2b9349578db4f7cf23f7ad87206d"></a>
 <a class="el" href="classPreciseDouble.html">PreciseDouble</a>&#160;</td><td class="memItemRight" valign="bottom"><b>minPseudoValueRange</b></td></tr>
 <tr class="memdesc:aa8de2b9349578db4f7cf23f7ad87206d"><td class="mdescLeft">&#160;</td><td class="mdescRight">Minimum pseudo-value range. <br /></td></tr>
@@ -745,43 +744,6 @@ Additional Inherited Members</h2></td></tr>
 
 </div>
 </div>
-<a id="ac431f486589efd069a921995e75d1fd8" name="ac431f486589efd069a921995e75d1fd8"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ac431f486589efd069a921995e75d1fd8">&#9670;&#160;</a></span>isInsideRestrictedRanges()</h2>
-
-<div class="memitem">
-<div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname">bool IndividualLevelTrait::isInsideRestrictedRanges </td>
-          <td>(</td>
-          <td class="paramtype">const <a class="el" href="classPreciseDouble.html">PreciseDouble</a> &amp;&#160;</td>
-          <td class="paramname"><em>traitValue</em></td><td>)</td>
-          <td> const</td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">virtual</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-
-<p>Checks if a trait value is within restricted ranges. </p>
-<dl class="params"><dt>Parameters</dt><dd>
-  <table class="params">
-    <tr><td class="paramname">traitValue</td><td>Value to check. </td></tr>
-  </table>
-  </dd>
-</dl>
-<dl class="section return"><dt>Returns</dt><dd>True if within allowed range, false otherwise. </dd></dl>
-
-<p>Implements <a class="el" href="classTraitDefinitionSection.html#a0a43a44b76d3de4e1e5d7803b7348426">TraitDefinitionSection</a>.</p>
-
-</div>
-</div>
 <a id="a77d9d19df487ef32e150179ea27926a6" name="a77d9d19df487ef32e150179ea27926a6"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a77d9d19df487ef32e150179ea27926a6">&#9670;&#160;</a></span>isNull()</h2>
 
@@ -922,17 +884,17 @@ template&lt;class Archive &gt; </div>
 
 </div>
 </div>
-<a id="a6ed5314a89ac73bbbf79d914f008d4fa" name="a6ed5314a89ac73bbbf79d914f008d4fa"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a6ed5314a89ac73bbbf79d914f008d4fa">&#9670;&#160;</a></span>setPseudoValueRanges()</h2>
+<a id="ad384969c4a4a25fc5cbeac7fddef5c0a" name="ad384969c4a4a25fc5cbeac7fddef5c0a"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ad384969c4a4a25fc5cbeac7fddef5c0a">&#9670;&#160;</a></span>updatePseudoValueRanges()</h2>
 
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">void IndividualLevelTrait::setPseudoValueRanges </td>
+          <td class="memname">void IndividualLevelTrait::updatePseudoValueRanges </td>
           <td>(</td>
-          <td class="paramtype">const std::vector&lt; <a class="el" href="classLocus.html">Locus</a> &gt; &amp;&#160;</td>
-          <td class="paramname"><em>loci</em>, </td>
+          <td class="paramtype">const <a class="el" href="classGenome.html">Genome</a> &amp;&#160;</td>
+          <td class="paramname"><em>genome</em>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
@@ -966,10 +928,10 @@ template&lt;class Archive &gt; </div>
       </table>
 </div><div class="memdoc">
 
-<p>Sets the pseudo-value limits for the trait. </p>
+<p>Updates pseudo-value ranges based on genome data. </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">loci</td><td>Vector of loci. </td></tr>
+    <tr><td class="paramname">genome</td><td><a class="el" href="classGenome.html" title="Represents a genome with homologous chromosomes and correlosomes.">Genome</a> of the individual. </td></tr>
     <tr><td class="paramname">traitsPerModule</td><td><a class="el" href="classNumber.html" title="Represents a floating-point number element in a JSON configuration.">Number</a> of traits per module. </td></tr>
     <tr><td class="paramname">numberOfLociPerTrait</td><td><a class="el" href="classNumber.html" title="Represents a floating-point number element in a JSON configuration.">Number</a> of loci per trait. </td></tr>
     <tr><td class="paramname">rhoPerModule</td><td>Vector of rho values per module. </td></tr>

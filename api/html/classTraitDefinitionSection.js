@@ -13,7 +13,6 @@ var classTraitDefinitionSection =
     [ "getMinTraitRestrictedRange", "classTraitDefinitionSection.html#a75e4dcf1465a0dc3f09e049c3504f6ad", null ],
     [ "getType", "classTraitDefinitionSection.html#a026b2d51e67a6321da698a900d095cbb", null ],
     [ "getValue", "classTraitDefinitionSection.html#a45bb754d6ef28d58e3631988b49ab9e2", null ],
-    [ "isInsideRestrictedRanges", "classTraitDefinitionSection.html#a0a43a44b76d3de4e1e5d7803b7348426", null ],
     [ "isNull", "classTraitDefinitionSection.html#abbf56650f0e3aada447e66b4418cae8d", null ],
     [ "serialize", "classTraitDefinitionSection.html#a1e65919bf0848bd145c3d705f473c9c9", null ]
 ];

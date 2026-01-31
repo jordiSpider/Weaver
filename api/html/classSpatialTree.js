@@ -18,7 +18,7 @@ var classSpatialTree =
     [ "generatePoints", "classSpatialTree.html#ad541ed6a19277413d88af8ba73c59aaa", null ],
     [ "generatePointsRecursively", "classSpatialTree.html#acea8cb30ca8e3db3d8ee100038155940", null ],
     [ "generatePointsRecursively", "classSpatialTree.html#aa2232a30fec8d8ec1a95436e43221307", null ],
-    [ "generatePopulation", "classSpatialTree.html#a3c9774234467c865b622cd36eb269c0d", null ],
+    [ "generatePopulation", "classSpatialTree.html#a0b10546d8163176664d1704c3bf134f4", null ],
     [ "generateStatisticsPopulation", "classSpatialTree.html#aec67ddd740be4d2a055141b2a0871d73", null ],
     [ "getAxisSize", "classSpatialTree.html#a43f575bc567486accf1dbffef20e3b47", null ],
     [ "getCellSize", "classSpatialTree.html#a409c88cafc5284c1f61ec9ab9569bb76", null ],
