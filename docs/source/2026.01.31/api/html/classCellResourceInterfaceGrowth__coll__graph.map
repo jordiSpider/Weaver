@@ -1,0 +1,53 @@
+<map id="CellResourceInterfaceGrowth" name="CellResourceInterfaceGrowth">
+<area shape="rect" id="Node000001" title="Manages growth and biomass for a resource cell." alt="" coords="2240,174,2452,199"/>
+<area shape="rect" id="Node000002" href="$classEdibleGrowth.html" title="Represents the growth characteristics and current biomasses of an edible object." alt="" coords="962,109,1071,134"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="1085,123,1228,131,1395,135,2065,135,2130,138,2195,148,2301,171,2300,177,2194,153,2130,144,2065,140,1395,140,1228,136,1085,129"/>
+<area shape="rect" id="Node000003" href="$classInstar.html" title="Represents a developmental stage (instar) of an animal in the simulation." alt="" coords="71,17,130,42"/>
+<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="144,24,271,18,457,18,563,22,673,31,784,46,891,67,946,85,992,106,990,111,945,90,890,72,783,51,673,37,563,28,457,23,271,23,144,29"/>
+<area shape="rect" id="Node000004" href="$classSpeciesGrowth.html" title="Represents the growth characteristics of a species across its instars." alt="" coords="462,66,581,91"/>
+<area shape="poly" id="edge4_Node000004_Node000003" title=" " alt="" coords="144,35,220,48,350,63,462,72,462,77,349,68,220,53,143,40"/>
+<area shape="poly" id="edge3_Node000002_Node000004" title=" " alt="" coords="594,81,891,104,962,112,962,117,890,109,594,86"/>
+<area shape="rect" id="Node000005" href="$classCustomIndexedVector.html" title=" " alt="" coords="5,77,196,117"/>
+<area shape="poly" id="edge5_Node000004_Node000005" title=" " alt="" coords="210,97,369,93,462,84,462,90,369,99,210,102"/>
+<area shape="rect" id="Node000006" href="$classDryMass.html" title="Represents dry mass in the ecosystem simulation." alt="" coords="482,125,561,150"/>
+<area shape="poly" id="edge6_Node000002_Node000006" title=" " alt="" coords="574,133,962,120,962,126,575,138"/>
+<area shape="rect" id="Node000007" href="$classPreciseDouble.html" title="Class for precise double&#45;precision floating&#45;point arithmetic." alt="" coords="43,190,158,215"/>
+<area shape="poly" id="edge7_Node000006_Node000007" title=" " alt="" coords="172,188,220,180,481,140,482,146,220,185,172,193"/>
+<area shape="rect" id="Node000008" href="$classWetMass.html" title="Represents wet mass in the ecosystem simulation." alt="" coords="481,190,562,215"/>
+<area shape="poly" id="edge9_Node000008_Node000007" title=" " alt="" coords="172,200,480,200,480,205,172,205"/>
+<area shape="rect" id="Node000014" href="$classTerrainCell.html" title="Represents a single cell in the landscape." alt="" coords="1655,317,1745,342"/>
+<area shape="poly" id="edge27_Node000014_Node000007" title=" " alt="" coords="172,214,331,240,425,249,520,253,1398,253,1465,255,1517,262,1568,275,1632,295,1676,314,1674,319,1630,300,1566,280,1516,267,1464,261,1398,259,520,259,425,255,330,245,171,220"/>
+<area shape="poly" id="edge8_Node000002_Node000008" title=" " alt="" coords="575,195,718,178,890,151,971,131,972,137,891,156,719,183,576,200"/>
+<area shape="rect" id="Node000016" href="$classCellMoistureInterface.html" title="Base interface representing the hydrological and thermal properties of a terrain cell." alt="" coords="935,307,1098,333"/>
+<area shape="poly" id="edge20_Node000016_Node000008" title=" " alt="" coords="576,213,963,305,962,310,575,218"/>
+<area shape="rect" id="Node000009" href="$classCellResourceInterface.html" title="Interface for a resource in a terrain cell." alt="" coords="1981,249,2147,274"/>
+<area shape="poly" id="edge10_Node000001_Node000009" title=" " alt="" coords="2126,242,2297,197,2298,202,2127,248"/>
+<area shape="rect" id="Node000010" href="$classEdible.html" title="Represents a generic edible entity within a terrain cell." alt="" coords="1869,249,1932,274"/>
+<area shape="poly" id="edge11_Node000009_Node000010" title=" " alt="" coords="1946,259,1981,259,1981,264,1946,264"/>
+<area shape="rect" id="Node000011" href="$classEdibleID.html" title="Encapsulates a unique identifier for an edible object or resource." alt="" coords="1662,199,1738,225"/>
+<area shape="poly" id="edge12_Node000010_Node000011" title=" " alt="" coords="1752,218,1846,239,1870,247,1868,252,1845,244,1751,223"/>
+<area shape="rect" id="Node000012" href="$classSpecies.html" title="Represents a generic species in the ecosystem." alt="" coords="1664,249,1736,274"/>
+<area shape="poly" id="edge13_Node000010_Node000012" title=" " alt="" coords="1750,259,1869,259,1869,264,1750,264"/>
+<area shape="rect" id="Node000013" href="$classSpecies_1_1ID.html" title="Unique identifier for a Species." alt="" coords="1349,193,1444,218"/>
+<area shape="poly" id="edge14_Node000012_Node000013" title=" " alt="" coords="1458,208,1541,218,1631,235,1668,246,1666,251,1630,240,1540,223,1458,213"/>
+<area shape="poly" id="edge15_Node000010_Node000014" title=" " alt="" coords="1753,310,1844,279,1868,270,1870,275,1846,284,1754,315"/>
+<area shape="rect" id="Node000015" href="$classPatchApplicator.html" title="Applies patches to a TerrainCell including moisture, resources, obstacles, and habitat domains." alt="" coords="1335,307,1458,333"/>
+<area shape="poly" id="edge17_Node000015_Node000014" title=" " alt="" coords="1641,339,1631,340,1577,342,1524,340,1458,333,1458,327,1524,335,1577,337,1631,335,1641,334"/>
+<area shape="poly" id="edge16_Node000014_Node000015" title=" " alt="" coords="1472,315,1549,314,1631,317,1655,320,1654,325,1630,323,1549,320,1472,320"/>
+<area shape="poly" id="edge18_Node000015_Node000016" title=" " alt="" coords="1112,317,1335,317,1335,323,1112,323"/>
+<area shape="rect" id="Node000017" href="$classCellElement.html" title="Base class for any modifiable element contained within a terrain cell." alt="" coords="471,442,572,467"/>
+<area shape="poly" id="edge29_Node000009_Node000017" title=" " alt="" coords="586,458,778,473,896,479,1015,481,1902,481,1937,474,1967,456,1993,429,2014,396,2043,327,2057,274,2063,275,2048,328,2018,399,1997,432,1971,460,1939,479,1902,487,1015,487,896,484,778,478,586,464"/>
+<area shape="poly" id="edge19_Node000016_Node000017" title=" " alt="" coords="574,435,673,405,962,330,963,335,674,411,576,440"/>
+<area shape="rect" id="Node000018" href="$classCellObstacleInterface.html" title="Interface for managing obstacles in a terrain cell." alt="" coords="935,389,1098,414"/>
+<area shape="poly" id="edge22_Node000018_Node000017" title=" " alt="" coords="586,445,935,407,935,413,586,450"/>
+<area shape="rect" id="Node000019" href="$classCellHabitatDomainInterface.html" title="Represents the habitat&#45;domain information associated with a terrain cell." alt="" coords="915,522,1119,547"/>
+<area shape="poly" id="edge24_Node000019_Node000017" title=" " alt="" coords="573,469,674,496,799,515,915,526,914,531,798,520,673,501,571,474"/>
+<area shape="poly" id="edge21_Node000015_Node000018" title=" " alt="" coords="1090,383,1336,330,1337,335,1091,388"/>
+<area shape="poly" id="edge23_Node000015_Node000019" title=" " alt="" coords="1067,515,1114,495,1167,467,1220,433,1267,392,1275,379,1278,367,1282,354,1292,342,1312,330,1334,322,1336,328,1314,335,1295,346,1286,357,1283,368,1280,381,1271,395,1223,437,1169,472,1116,499,1069,519"/>
+<area shape="rect" id="Node000020" href="$classCustomIndexedVector.html" title=" " alt="" coords="393,525,649,579"/>
+<area shape="poly" id="edge25_Node000019_Node000020" title=" " alt="" coords="663,553,774,553,890,548,927,545,928,550,891,553,775,558,663,558"/>
+<area shape="rect" id="Node000021" href="$classPointMap.html" title="Represents a point in a discrete map coordinate system." alt="" coords="1355,357,1438,382"/>
+<area shape="poly" id="edge26_Node000014_Node000021" title=" " alt="" coords="1452,370,1536,370,1584,366,1630,357,1675,340,1677,345,1631,363,1584,371,1537,375,1452,376"/>
+<area shape="rect" id="Node000022" href="$classCustomIndexedVector.html" title="A vector container indexed by a custom type with bounds checking." alt="" coords="1293,407,1500,447"/>
+<area shape="poly" id="edge28_Node000014_Node000022" title=" " alt="" coords="1513,421,1573,411,1629,391,1663,367,1687,340,1691,344,1667,371,1632,396,1574,416,1514,427"/>
+</map>
