@@ -1,0 +1,27 @@
+<map id="CellElement" name="CellElement">
+<area shape="rect" id="Node000001" title="Base class for any modifiable element contained within a terrain cell." alt="" coords="5,179,107,204"/>
+<area shape="rect" id="Node000002" href="$classCellHabitatDomainInterface.html" title="Represents the habitat&#45;domain information associated with a terrain cell." alt="" coords="155,55,359,80"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="88,169,233,78,236,83,91,173"/>
+<area shape="rect" id="Node000005" href="$classCellMoistureInterface.html" title="Base interface representing the hydrological and thermal properties of a terrain cell." alt="" coords="175,153,338,179"/>
+<area shape="poly" id="edge4_Node000001_Node000005" title=" " alt="" coords="120,181,175,174,175,179,121,186"/>
+<area shape="rect" id="Node000008" href="$classCellObstacleInterface.html" title="Interface for managing obstacles in a terrain cell." alt="" coords="175,203,338,228"/>
+<area shape="poly" id="edge7_Node000001_Node000008" title=" " alt="" coords="121,196,175,203,175,208,120,202"/>
+<area shape="rect" id="Node000011" href="$classCellResourceInterface.html" title="Interface for a resource in a terrain cell." alt="" coords="174,301,339,327"/>
+<area shape="poly" id="edge10_Node000001_Node000011" title=" " alt="" coords="91,209,236,299,233,304,89,214"/>
+<area shape="rect" id="Node000003" href="$classBranchCellHabitatDomain.html" title="Habitat domain implementation for branch nodes in a spatial tree." alt="" coords="407,5,597,31"/>
+<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="333,49,437,28,438,33,335,55"/>
+<area shape="rect" id="Node000004" href="$classCellHabitatDomain.html" title="Concrete implementation of CellHabitatDomainInterface representing the habitat&#45;domain properties of a..." alt="" coords="429,55,575,80"/>
+<area shape="poly" id="edge3_Node000002_Node000004" title=" " alt="" coords="373,65,429,65,429,70,373,70"/>
+<area shape="rect" id="Node000006" href="$classBranchCellMoisture.html" title="Moisture implementation for branch nodes in a spatial tree." alt="" coords="427,104,577,129"/>
+<area shape="poly" id="edge5_Node000005_Node000006" title=" " alt="" coords="333,148,437,127,438,132,335,153"/>
+<area shape="rect" id="Node000007" href="$classCellMoisture.html" title="Concrete moisture model for a terrain cell." alt="" coords="450,153,554,179"/>
+<area shape="poly" id="edge6_Node000005_Node000007" title=" " alt="" coords="352,163,450,163,450,169,352,169"/>
+<area shape="rect" id="Node000009" href="$classBranchCellObstacle.html" title="Obstacle representation for branch nodes in a spatial tree." alt="" coords="427,203,577,228"/>
+<area shape="poly" id="edge8_Node000008_Node000009" title=" " alt="" coords="351,213,427,213,427,218,351,218"/>
+<area shape="rect" id="Node000010" href="$classCellObstacle.html" title="Concrete obstacle element for a terrain cell." alt="" coords="450,252,554,277"/>
+<area shape="poly" id="edge9_Node000008_Node000010" title=" " alt="" coords="335,228,450,252,449,257,334,233"/>
+<area shape="rect" id="Node000012" href="$classBranchCellResource.html" title="Resource representation for branch nodes in a spatial tree." alt="" coords="426,301,578,327"/>
+<area shape="poly" id="edge11_Node000011_Node000012" title=" " alt="" coords="353,311,426,311,426,317,353,317"/>
+<area shape="rect" id="Node000013" href="$classCellResource.html" title="Concrete implementation of a resource cell." alt="" coords="449,351,555,376"/>
+<area shape="poly" id="edge12_Node000011_Node000013" title=" " alt="" coords="334,327,449,350,448,355,333,332"/>
+</map>

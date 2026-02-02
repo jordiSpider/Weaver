@@ -1,0 +1,1400 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="../../../">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Genetics Module &mdash; Weaver  documentation</title>
+      <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css?v=80d5e7a1" />
+      <link rel="stylesheet" type="text/css" href="../../../_static/css/theme.css?v=9edc463e" />
+
+  
+      <script src="../../../_static/jquery.js?v=5d32c60e"></script>
+      <script src="../../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="../../../_static/documentation_options.js?v=5929fcd5"></script>
+      <script src="../../../_static/doctools.js?v=fd6eb6e6"></script>
+      <script src="../../../_static/sphinx_highlight.js?v=6ffebe34"></script>
+    <script src="../../../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../search.html" />
+    <link rel="next" title="Growth Module" href="growth_module.html" />
+    <link rel="prev" title="Decisions Module" href="decisions_module.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search"  style="background: #2980B9" >
+
+          
+          
+          <a href="../../../index.html">
+            
+              <img src="../../../_static/logo.png" class="logo" alt="Logo"/>
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">📘 User Guide</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../../installation.html">Installation</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../installation.html#windows">Windows</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../installation.html#linux">Linux</a></li>
+</ul>
+</li>
+<li class="toctree-l1 current"><a class="reference internal" href="../../configuration.html">Configuration</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="../../configuration.html#types-of-configurations">Types of Configurations</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../configuration.html#folder-structure">Folder Structure</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../configuration.html#file-descriptions">File Descriptions</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../configuration.html#simulation-params-json">simulation_params.json</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../configuration.html#landscape-params-json">landscape_params.json</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../configuration.html#habitat-domain-patch-json">habitat_domain_patch.json</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../configuration.html#moisture-patch-json">moisture_patch.json</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../configuration.html#obstacle-patch-json">obstacle_patch.json</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../configuration.html#resource-json">resource.json</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../configuration.html#resource-patch-json">resource_patch.json</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../configuration.html#species-json">species.json</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../configuration.html#ontogeneticlinkspreference-csv">ontogeneticLinksPreference.csv</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../configuration.html#ontogeneticlinksprofitability-csv">ontogeneticLinksProfitability.csv</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../configuration.html#checkpoint-bin-checkpoint-txt">checkpoint.bin / checkpoint.txt</a></li>
+</ul>
+</li>
+<li class="toctree-l2 current"><a class="reference internal" href="../../configuration.html#configuration-parameters">Configuration Parameters</a><ul class="current">
+<li class="toctree-l3"><a class="reference internal" href="../simulation_params.html">simulation_params</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../simulation_params.html#main-properties">Main Properties</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../simulation_params.html#object-simulation">Object <code class="docutils literal notranslate"><span class="pre">simulation</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../simulation_params.html#object-checkpoints">Object <code class="docutils literal notranslate"><span class="pre">checkpoints</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../simulation_params.html#object-breakconditions">Object <code class="docutils literal notranslate"><span class="pre">breakConditions</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../simulation_params.html#object-stability">Object <code class="docutils literal notranslate"><span class="pre">stability</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../simulation_params.html#object-initfromfixedseed">Object <code class="docutils literal notranslate"><span class="pre">initFromFixedSeed</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../simulation_params.html#object-outputs">Object <code class="docutils literal notranslate"><span class="pre">outputs</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../simulation_params.html#warnings">Warnings</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../simulation_params.html#hierarchical-summary">Hierarchical Summary</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../landscape_params.html">landscape_params</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../landscape_params.html#main-properties">Main Properties</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../landscape_params.html#object-landscape">Object <code class="docutils literal notranslate"><span class="pre">landscape</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../landscape_params.html#object-mapconfig">Object <code class="docutils literal notranslate"><span class="pre">mapConfig</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../landscape_params.html#object-landscapewideparams">Object <code class="docutils literal notranslate"><span class="pre">landscapeWideParams</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../landscape_params.html#object-spatialtreeparams">Object <code class="docutils literal notranslate"><span class="pre">spatialTreeParams</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../landscape_params.html#object-moisturebasepatch">Object <code class="docutils literal notranslate"><span class="pre">moistureBasePatch</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../landscape_params.html#object-temperaturedynamics">Object <code class="docutils literal notranslate"><span class="pre">temperatureDynamics</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../landscape_params.html#object-relativehumiditydynamics">Object <code class="docutils literal notranslate"><span class="pre">relativeHumidityDynamics</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../landscape_params.html#object-cycleparams">Object <code class="docutils literal notranslate"><span class="pre">cycleParams</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../landscape_params.html#object-pulseparams">Object <code class="docutils literal notranslate"><span class="pre">pulseParams</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../landscape_params.html#object-daysbetweenpulsesrange-and-pulsepeakvaluerange">Object <code class="docutils literal notranslate"><span class="pre">daysBetweenPulsesRange</span></code> and <code class="docutils literal notranslate"><span class="pre">pulsePeakValueRange</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../landscape_params.html#object-decay">Object <code class="docutils literal notranslate"><span class="pre">decay</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../landscape_params.html#object-linealdecayparams">Object <code class="docutils literal notranslate"><span class="pre">linealDecayParams</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../landscape_params.html#object-nutrients">Object <code class="docutils literal notranslate"><span class="pre">nutrients</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../landscape_params.html#object-life">Object <code class="docutils literal notranslate"><span class="pre">life</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../landscape_params.html#hierarchical-summary">Hierarchical Summary</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../habitat_domain_patch.html">habitat_domain_patch</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../habitat_domain_patch.html#main-properties">Main Properties</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../habitat_domain_patch.html#object-patch">Object <code class="docutils literal notranslate"><span class="pre">patch</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../habitat_domain_patch.html#object-source">Object <code class="docutils literal notranslate"><span class="pre">source</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../habitat_domain_patch.html#object-shape">Object <code class="docutils literal notranslate"><span class="pre">shape</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../habitat_domain_patch.html#object-cubicparams">Object <code class="docutils literal notranslate"><span class="pre">cubicParams</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../habitat_domain_patch.html#object-sphericalparams">Object <code class="docutils literal notranslate"><span class="pre">sphericalParams</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../habitat_domain_patch.html#object-homogeneousparams">Object <code class="docutils literal notranslate"><span class="pre">homogeneousParams</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../habitat_domain_patch.html#object-gaussianparams">Object <code class="docutils literal notranslate"><span class="pre">gaussianParams</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../habitat_domain_patch.html#object-randomgaussianparams">Object <code class="docutils literal notranslate"><span class="pre">randomGaussianParams</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../habitat_domain_patch.html#hierarchical-summary">Hierarchical Summary</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../moisture_patch.html">moisture_patch</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../moisture_patch.html#main-properties">Main Properties</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../moisture_patch.html#object-patch">Object <code class="docutils literal notranslate"><span class="pre">patch</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../moisture_patch.html#object-source">Object <code class="docutils literal notranslate"><span class="pre">source</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../moisture_patch.html#object-temperaturedynamics">Object <code class="docutils literal notranslate"><span class="pre">temperatureDynamics</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../moisture_patch.html#object-relativehumiditydynamics">Object <code class="docutils literal notranslate"><span class="pre">relativeHumidityDynamics</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../moisture_patch.html#object-cycleparams">Object <code class="docutils literal notranslate"><span class="pre">cycleParams</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../moisture_patch.html#object-pulseparams">Object <code class="docutils literal notranslate"><span class="pre">pulseParams</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../moisture_patch.html#object-daysbetweenpulsesrange">Object <code class="docutils literal notranslate"><span class="pre">daysBetweenPulsesRange</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../moisture_patch.html#object-pulsepeakvaluerange">Object <code class="docutils literal notranslate"><span class="pre">pulsePeakValueRange</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../moisture_patch.html#object-decay">Object <code class="docutils literal notranslate"><span class="pre">decay</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../moisture_patch.html#object-linealdecayparams">Object <code class="docutils literal notranslate"><span class="pre">linealDecayParams</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../moisture_patch.html#object-shape">Object <code class="docutils literal notranslate"><span class="pre">shape</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../moisture_patch.html#object-cubicparams">Object <code class="docutils literal notranslate"><span class="pre">cubicParams</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../moisture_patch.html#object-sphericalparams">Object <code class="docutils literal notranslate"><span class="pre">sphericalParams</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../moisture_patch.html#object-homogeneousparams">Object <code class="docutils literal notranslate"><span class="pre">homogeneousParams</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../moisture_patch.html#object-gaussianparams">Object <code class="docutils literal notranslate"><span class="pre">gaussianParams</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../moisture_patch.html#object-randomgaussianparams">Object <code class="docutils literal notranslate"><span class="pre">randomGaussianParams</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../moisture_patch.html#hierarchical-summary">Hierarchical Summary</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../obstacle_patch.html">obstacle_patch</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../obstacle_patch.html#main-properties">Main Properties</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../obstacle_patch.html#object-patch">Object <code class="docutils literal notranslate"><span class="pre">patch</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../obstacle_patch.html#object-shape">Object <code class="docutils literal notranslate"><span class="pre">shape</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../obstacle_patch.html#object-cubicparams">Object <code class="docutils literal notranslate"><span class="pre">cubicParams</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../obstacle_patch.html#object-sphericalparams">Object <code class="docutils literal notranslate"><span class="pre">sphericalParams</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../obstacle_patch.html#object-homogeneousparams">Object <code class="docutils literal notranslate"><span class="pre">homogeneousParams</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../obstacle_patch.html#object-gaussianparams">Object <code class="docutils literal notranslate"><span class="pre">gaussianParams</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../obstacle_patch.html#object-randomgaussianparams">Object <code class="docutils literal notranslate"><span class="pre">randomGaussianParams</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../obstacle_patch.html#hierarchical-summary">Hierarchical Summary</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../resource.html">resource</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../resource.html#main-properties">Main Properties</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../resource.html#object-resource">Object <code class="docutils literal notranslate"><span class="pre">resource</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../resource.html#object-growthmodule">Object <code class="docutils literal notranslate"><span class="pre">growthModule</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../resource.html#hierarchical-summary">Hierarchical Summary</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../resource_patch.html">resource_patch</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../resource_patch.html#main-properties">Main Properties</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../resource_patch.html#object-patch">Object <code class="docutils literal notranslate"><span class="pre">patch</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../resource_patch.html#object-source">Object <code class="docutils literal notranslate"><span class="pre">source</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../resource_patch.html#object-growthdynamics">Object <code class="docutils literal notranslate"><span class="pre">growthDynamics</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../resource_patch.html#object-cycleparams">Object <code class="docutils literal notranslate"><span class="pre">cycleParams</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../resource_patch.html#object-pulseparams">Object <code class="docutils literal notranslate"><span class="pre">pulseParams</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../resource_patch.html#object-daysbetweenpulsesrange-pulsepeakvaluerange">Object <code class="docutils literal notranslate"><span class="pre">daysBetweenPulsesRange</span></code> / <code class="docutils literal notranslate"><span class="pre">pulsePeakValueRange</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../resource_patch.html#object-decay">Object <code class="docutils literal notranslate"><span class="pre">decay</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../resource_patch.html#object-linealdecayparams">Object <code class="docutils literal notranslate"><span class="pre">linealDecayParams</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../resource_patch.html#object-growthrateparams">Object <code class="docutils literal notranslate"><span class="pre">growthRateParams</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../resource_patch.html#object-temperature">Object <code class="docutils literal notranslate"><span class="pre">temperature</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../resource_patch.html#object-shape">Object <code class="docutils literal notranslate"><span class="pre">shape</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../resource_patch.html#object-cubicparams">Object <code class="docutils literal notranslate"><span class="pre">cubicParams</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../resource_patch.html#object-sphericalparams">Object <code class="docutils literal notranslate"><span class="pre">sphericalParams</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../resource_patch.html#object-homogeneousparams">Object <code class="docutils literal notranslate"><span class="pre">homogeneousParams</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../resource_patch.html#object-gaussianparams">Object <code class="docutils literal notranslate"><span class="pre">gaussianParams</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../resource_patch.html#object-randomgaussianparams">Object <code class="docutils literal notranslate"><span class="pre">randomGaussianParams</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../resource_patch.html#hierarchical-summary">Hierarchical Summary</a></li>
+</ul>
+</li>
+<li class="toctree-l3 current"><a class="reference internal" href="species.html">species</a><ul class="current">
+<li class="toctree-l4"><a class="reference internal" href="species.html#main-properties">Main Properties</a></li>
+<li class="toctree-l4"><a class="reference internal" href="species.html#object-animal">Object <code class="docutils literal notranslate"><span class="pre">animal</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="species.html#object-debug">Object <code class="docutils literal notranslate"><span class="pre">debug</span></code></a></li>
+<li class="toctree-l4 current"><a class="reference internal" href="species.html#submodules">Submodules</a><ul class="current">
+<li class="toctree-l5"><a class="reference internal" href="decisions_module.html">Decisions Module</a><ul>
+<li class="toctree-l6"><a class="reference internal" href="decisions_module.html#main-properties">Main Properties</a></li>
+<li class="toctree-l6"><a class="reference internal" href="decisions_module.html#object-predationprobability">Object <code class="docutils literal notranslate"><span class="pre">predationProbability</span></code></a></li>
+<li class="toctree-l6"><a class="reference internal" href="decisions_module.html#object-escapeprobability">Object <code class="docutils literal notranslate"><span class="pre">escapeProbability</span></code></a></li>
+<li class="toctree-l6"><a class="reference internal" href="decisions_module.html#object-edibilityvalue">Object <code class="docutils literal notranslate"><span class="pre">edibilityValue</span></code></a></li>
+<li class="toctree-l6"><a class="reference internal" href="decisions_module.html#object-decisionwithinpatch">Object <code class="docutils literal notranslate"><span class="pre">decisionWithinPatch</span></code></a></li>
+<li class="toctree-l6"><a class="reference internal" href="decisions_module.html#object-decisionamongpatches">Object <code class="docutils literal notranslate"><span class="pre">decisionAmongPatches</span></code></a></li>
+<li class="toctree-l6"><a class="reference internal" href="decisions_module.html#object-sensorymodel">Object <code class="docutils literal notranslate"><span class="pre">sensoryModel</span></code></a></li>
+<li class="toctree-l6"><a class="reference internal" href="decisions_module.html#hierarchical-summary">Hierarchical Summary</a></li>
+</ul>
+</li>
+<li class="toctree-l5 current"><a class="current reference internal" href="#">Genetics Module</a><ul>
+<li class="toctree-l6"><a class="reference internal" href="#main-properties">Main Properties</a></li>
+<li class="toctree-l6"><a class="reference internal" href="#object-modules">Object <code class="docutils literal notranslate"><span class="pre">modules</span></code></a></li>
+<li class="toctree-l6"><a class="reference internal" href="#object-modifyalleles">Object <code class="docutils literal notranslate"><span class="pre">modifyAlleles</span></code></a></li>
+<li class="toctree-l6"><a class="reference internal" href="#object-affectedtraits">Object <code class="docutils literal notranslate"><span class="pre">affectedTraits</span></code></a></li>
+<li class="toctree-l6"><a class="reference internal" href="#object-traits">Object <code class="docutils literal notranslate"><span class="pre">traits</span></code></a></li>
+<li class="toctree-l6"><a class="reference internal" href="#object-individualleveltraitsorder">Object <code class="docutils literal notranslate"><span class="pre">individualLevelTraitsOrder</span></code></a></li>
+<li class="toctree-l6"><a class="reference internal" href="#object-definition">Object <code class="docutils literal notranslate"><span class="pre">definition</span></code></a></li>
+<li class="toctree-l6"><a class="reference internal" href="#object-base">Object <code class="docutils literal notranslate"><span class="pre">base</span></code></a></li>
+<li class="toctree-l6"><a class="reference internal" href="#object-decisions">Object <code class="docutils literal notranslate"><span class="pre">decisions</span></code></a></li>
+<li class="toctree-l6"><a class="reference internal" href="#object-escapeprobabilityweight">Object <code class="docutils literal notranslate"><span class="pre">escapeProbabilityWeight</span></code></a></li>
+<li class="toctree-l6"><a class="reference internal" href="#object-predationprobabilityweight">Object <code class="docutils literal notranslate"><span class="pre">predationProbabilityWeight</span></code></a></li>
+<li class="toctree-l6"><a class="reference internal" href="#object-edibilityvalueweight">Object <code class="docutils literal notranslate"><span class="pre">edibilityValueWeight</span></code></a></li>
+<li class="toctree-l6"><a class="reference internal" href="#object-preferences">Object <code class="docutils literal notranslate"><span class="pre">preferences</span></code></a></li>
+<li class="toctree-l6"><a class="reference internal" href="#object-probabilitydensityfunction">Object <code class="docutils literal notranslate"><span class="pre">probabilityDensityFunction</span></code></a></li>
+<li class="toctree-l6"><a class="reference internal" href="#object-cellvalue">Object <code class="docutils literal notranslate"><span class="pre">cellValue</span></code></a></li>
+<li class="toctree-l6"><a class="reference internal" href="#object-trait-non-temperature-section">Object <code class="docutils literal notranslate"><span class="pre">&lt;trait-non-temperature-section&gt;</span></code></a></li>
+<li class="toctree-l6"><a class="reference internal" href="#object-specieslevelparams">Object <code class="docutils literal notranslate"><span class="pre">speciesLevelParams</span></code></a></li>
+<li class="toctree-l6"><a class="reference internal" href="#object-individuallevelparams">Object <code class="docutils literal notranslate"><span class="pre">individualLevelParams</span></code></a></li>
+<li class="toctree-l6"><a class="reference internal" href="#object-limits">Object <code class="docutils literal notranslate"><span class="pre">limits</span></code></a></li>
+<li class="toctree-l6"><a class="reference internal" href="#object-ranges">Object <code class="docutils literal notranslate"><span class="pre">ranges</span></code></a></li>
+<li class="toctree-l6"><a class="reference internal" href="#object-trait-temperature-size-rule-section">Object <code class="docutils literal notranslate"><span class="pre">&lt;trait-temperature-size-rule-section&gt;</span></code></a></li>
+<li class="toctree-l6"><a class="reference internal" href="#object-temperature-of-trait-temperature-size-rule-section">Object <code class="docutils literal notranslate"><span class="pre">temperature</span></code> of <code class="docutils literal notranslate"><span class="pre">&lt;trait-temperature-size-rule-section&gt;</span></code></a></li>
+<li class="toctree-l6"><a class="reference internal" href="#object-tempsizerulevector">Object <code class="docutils literal notranslate"><span class="pre">tempSizeRuleVector</span></code></a></li>
+<li class="toctree-l6"><a class="reference internal" href="#object-trait-dells-section">Object <code class="docutils literal notranslate"><span class="pre">&lt;trait-dells-section&gt;</span></code></a></li>
+<li class="toctree-l6"><a class="reference internal" href="#object-temperature-of-trait-dells-section">Object <code class="docutils literal notranslate"><span class="pre">temperature</span></code> of <code class="docutils literal notranslate"><span class="pre">&lt;trait-dells-section&gt;</span></code></a></li>
+<li class="toctree-l6"><a class="reference internal" href="#hierarchical-summary">Hierarchical Summary</a></li>
+</ul>
+</li>
+<li class="toctree-l5"><a class="reference internal" href="growth_module.html">Growth Module</a><ul>
+<li class="toctree-l6"><a class="reference internal" href="growth_module.html#main-properties">Main Properties</a></li>
+<li class="toctree-l6"><a class="reference internal" href="growth_module.html#object-capitalbreeding">Object <code class="docutils literal notranslate"><span class="pre">capitalBreeding</span></code></a></li>
+<li class="toctree-l6"><a class="reference internal" href="growth_module.html#object-capitalbreedingparams">Object <code class="docutils literal notranslate"><span class="pre">capitalBreedingParams</span></code></a></li>
+<li class="toctree-l6"><a class="reference internal" href="growth_module.html#object-eggsperbatch">Object <code class="docutils literal notranslate"><span class="pre">eggsPerBatch</span></code></a></li>
+<li class="toctree-l6"><a class="reference internal" href="growth_module.html#object-eggsperbatch-equationparameters">Object <code class="docutils literal notranslate"><span class="pre">eggsPerBatch</span> <span class="pre">-</span> <span class="pre">equationParameters</span></code></a></li>
+<li class="toctree-l6"><a class="reference internal" href="growth_module.html#object-eggdrymass">Object <code class="docutils literal notranslate"><span class="pre">eggDryMass</span></code></a></li>
+<li class="toctree-l6"><a class="reference internal" href="growth_module.html#object-eggdrymass-equationparameters">Object <code class="docutils literal notranslate"><span class="pre">eggDryMass</span> <span class="pre">-</span> <span class="pre">equationParameters</span></code></a></li>
+<li class="toctree-l6"><a class="reference internal" href="growth_module.html#object-growthmodel">Object <code class="docutils literal notranslate"><span class="pre">growthModel</span></code></a></li>
+<li class="toctree-l6"><a class="reference internal" href="growth_module.html#object-defaultattempfromlab">Object <code class="docutils literal notranslate"><span class="pre">defaultAtTempFromLab</span></code></a></li>
+<li class="toctree-l6"><a class="reference internal" href="growth_module.html#object-temperature">Object <code class="docutils literal notranslate"><span class="pre">temperature</span></code></a></li>
+<li class="toctree-l6"><a class="reference internal" href="growth_module.html#object-growthmodelthermalchanges-elements">Object <code class="docutils literal notranslate"><span class="pre">growthModelThermalChanges</span></code> (elements)</a></li>
+<li class="toctree-l6"><a class="reference internal" href="growth_module.html#hierarchical-summary">Hierarchical Summary</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l4"><a class="reference internal" href="species.html#hierarchical-summary">Hierarchical Summary</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../ontogeneticLinksPreference.html">ontogeneticLinksPreference</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../ontogeneticLinksPreference.html#overview">Overview</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../ontogeneticLinksPreference.html#file-format">File Format</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../ontogeneticLinksPreference.html#example-structure">Example Structure</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../ontogeneticLinksPreference.html#interpretation-example">Interpretation Example</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../ontogeneticLinksProfitability.html">ontogeneticLinksProfitability</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../ontogeneticLinksProfitability.html#overview">Overview</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../ontogeneticLinksProfitability.html#file-format">File Format</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../ontogeneticLinksProfitability.html#example-structure">Example Structure</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../ontogeneticLinksProfitability.html#interpretation-example">Interpretation Example</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../usage.html">Usage</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../usage.html#command-line-options">Command-line Options</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../usage.html#modes-of-execution">Modes of Execution</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../usage.html#output-folder">Output Folder</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../usage.html#interactive-input-non-gui">Interactive Input (Non-GUI)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../usage.html#graphical-interface-gui">Graphical Interface (GUI)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../usage.html#summary">Summary</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../examples.html">Examples</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../troubleshooting.html">Troubleshooting</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">🧠 Developer Guide</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../developer_guide/build_system.html">Build System</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../../developer_guide/build_system.html#common-requirements">Common Requirements</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../../developer_guide/build_system.html#compiler-installation-by-operating-system">Compiler installation by operating system</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../../../developer_guide/build_system.html#windows"><strong>Windows</strong></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../developer_guide/build_system.html#linux"><strong>Linux</strong></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../../developer_guide/build_system.html#release-requirements">Release Requirements</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../../developer_guide/build_system.html#id1">Windows</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../developer_guide/build_system.html#id2">Linux</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../../developer_guide/build_system.html#documentation-requirements">Documentation Requirements</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../developer_guide/build_system.html#developer-setup">Developer Setup</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../developer_guide/build_system.html#cmake-presets">CMake Presets</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../../developer_guide/build_system.html#available-presets">Available Presets</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../../developer_guide/build_system.html#updating-vcpkg-version">Updating vcpkg Version</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../../developer_guide/adding_features.html">Adding Features</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../../developer_guide/adding_features.html#branch-strategy">Branch Strategy</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../../developer_guide/contribution.html">Contribution</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../../developer_guide/contribution.html#pull-requests">Pull Requests</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../developer_guide/contribution.html#code-review">Code Review</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../developer_guide/contribution.html#issues">Issues</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../../developer_guide/code_style.html">Code Style</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../../developer_guide/code_style.html#general-guidelines">General Guidelines</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../developer_guide/code_style.html#formatting">Formatting</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../developer_guide/code_style.html#comments">Comments</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../../developer_guide/json_validator.html">JSON validator</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../../developer_guide/json_validator/getting_started.html">Getting Started</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../../developer_guide/json_validator/getting_started.html#what-is-json-schema">What is JSON Schema?</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../developer_guide/json_validator/getting_started.html#elements-of-json-schema">Elements of JSON Schema</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../../../developer_guide/json_validator/getting_started.html#common-fields">Common Fields</a><ul>
+<li class="toctree-l5"><a class="reference internal" href="../../../developer_guide/json_validator/getting_started.html#type">type</a></li>
+<li class="toctree-l5"><a class="reference internal" href="../../../developer_guide/json_validator/getting_started.html#description">description</a></li>
+<li class="toctree-l5"><a class="reference internal" href="../../../developer_guide/json_validator/getting_started.html#nullproperty">nullProperty</a></li>
+</ul>
+</li>
+<li class="toctree-l4"><a class="reference internal" href="../../../developer_guide/json_validator/getting_started.html#specific-fields-for-each-type">Specific Fields for Each Type</a><ul>
+<li class="toctree-l5"><a class="reference internal" href="../../../developer_guide/json_validator/element_types/array.html">Array Type</a><ul>
+<li class="toctree-l6"><a class="reference internal" href="../../../developer_guide/json_validator/element_types/array.html#specific-fields">Specific Fields</a><ul>
+<li class="toctree-l7"><a class="reference internal" href="../../../developer_guide/json_validator/element_types/array.html#items">items</a></li>
+<li class="toctree-l7"><a class="reference internal" href="../../../developer_guide/json_validator/element_types/array.html#minitems">minItems</a></li>
+<li class="toctree-l7"><a class="reference internal" href="../../../developer_guide/json_validator/element_types/array.html#maxitems">maxItems</a></li>
+<li class="toctree-l7"><a class="reference internal" href="../../../developer_guide/json_validator/element_types/array.html#itemsorder">itemsOrder</a></li>
+</ul>
+</li>
+<li class="toctree-l6"><a class="reference internal" href="../../../developer_guide/json_validator/element_types/array.html#example">Example</a></li>
+</ul>
+</li>
+<li class="toctree-l5"><a class="reference internal" href="../../../developer_guide/json_validator/element_types/boolean.html">Boolean Type</a><ul>
+<li class="toctree-l6"><a class="reference internal" href="../../../developer_guide/json_validator/element_types/boolean.html#specific-fields">Specific Fields</a></li>
+<li class="toctree-l6"><a class="reference internal" href="../../../developer_guide/json_validator/element_types/boolean.html#example">Example</a></li>
+</ul>
+</li>
+<li class="toctree-l5"><a class="reference internal" href="../../../developer_guide/json_validator/element_types/integer.html">Integer Type</a><ul>
+<li class="toctree-l6"><a class="reference internal" href="../../../developer_guide/json_validator/element_types/integer.html#specific-fields">Specific Fields</a><ul>
+<li class="toctree-l7"><a class="reference internal" href="../../../developer_guide/json_validator/element_types/integer.html#minimum">minimum</a></li>
+<li class="toctree-l7"><a class="reference internal" href="../../../developer_guide/json_validator/element_types/integer.html#exclusiveminimum">exclusiveMinimum</a></li>
+<li class="toctree-l7"><a class="reference internal" href="../../../developer_guide/json_validator/element_types/integer.html#maximum">maximum</a></li>
+<li class="toctree-l7"><a class="reference internal" href="../../../developer_guide/json_validator/element_types/integer.html#exclusivemaximum">exclusiveMaximum</a></li>
+<li class="toctree-l7"><a class="reference internal" href="../../../developer_guide/json_validator/element_types/integer.html#multipleof">multipleOf</a></li>
+</ul>
+</li>
+<li class="toctree-l6"><a class="reference internal" href="../../../developer_guide/json_validator/element_types/integer.html#example">Example</a></li>
+</ul>
+</li>
+<li class="toctree-l5"><a class="reference internal" href="../../../developer_guide/json_validator/element_types/number.html">Number Type</a><ul>
+<li class="toctree-l6"><a class="reference internal" href="../../../developer_guide/json_validator/element_types/number.html#specific-fields">Specific Fields</a><ul>
+<li class="toctree-l7"><a class="reference internal" href="../../../developer_guide/json_validator/element_types/number.html#minimum">minimum</a></li>
+<li class="toctree-l7"><a class="reference internal" href="../../../developer_guide/json_validator/element_types/number.html#exclusiveminimum">exclusiveMinimum</a></li>
+<li class="toctree-l7"><a class="reference internal" href="../../../developer_guide/json_validator/element_types/number.html#maximum">maximum</a></li>
+<li class="toctree-l7"><a class="reference internal" href="../../../developer_guide/json_validator/element_types/number.html#exclusivemaximum">exclusiveMaximum</a></li>
+</ul>
+</li>
+<li class="toctree-l6"><a class="reference internal" href="../../../developer_guide/json_validator/element_types/number.html#example">Example</a></li>
+</ul>
+</li>
+<li class="toctree-l5"><a class="reference internal" href="../../../developer_guide/json_validator/element_types/object.html">Object Type</a><ul>
+<li class="toctree-l6"><a class="reference internal" href="../../../developer_guide/json_validator/element_types/object.html#specific-fields">Specific Fields</a><ul>
+<li class="toctree-l7"><a class="reference internal" href="../../../developer_guide/json_validator/element_types/object.html#properties">properties</a></li>
+<li class="toctree-l7"><a class="reference internal" href="../../../developer_guide/json_validator/element_types/object.html#patternproperties">patternProperties</a></li>
+<li class="toctree-l7"><a class="reference internal" href="../../../developer_guide/json_validator/element_types/object.html#conditionals">conditionals</a></li>
+<li class="toctree-l7"><a class="reference internal" href="../../../developer_guide/json_validator/element_types/object.html#patternconditionals">patternConditionals</a></li>
+<li class="toctree-l7"><a class="reference internal" href="../../../developer_guide/json_validator/element_types/object.html#requiredconditions">requiredConditions</a></li>
+<li class="toctree-l7"><a class="reference internal" href="../../../developer_guide/json_validator/element_types/object.html#warningconditions">warningConditions</a></li>
+</ul>
+</li>
+<li class="toctree-l6"><a class="reference internal" href="../../../developer_guide/json_validator/element_types/object.html#example">Example</a></li>
+</ul>
+</li>
+<li class="toctree-l5"><a class="reference internal" href="../../../developer_guide/json_validator/element_types/string.html">String Type</a><ul>
+<li class="toctree-l6"><a class="reference internal" href="../../../developer_guide/json_validator/element_types/string.html#specific-fields">Specific Fields</a><ul>
+<li class="toctree-l7"><a class="reference internal" href="../../../developer_guide/json_validator/element_types/string.html#minlength">minLength</a></li>
+<li class="toctree-l7"><a class="reference internal" href="../../../developer_guide/json_validator/element_types/string.html#maxlength">maxLength</a></li>
+<li class="toctree-l7"><a class="reference internal" href="../../../developer_guide/json_validator/element_types/string.html#pattern">pattern</a></li>
+<li class="toctree-l7"><a class="reference internal" href="../../../developer_guide/json_validator/element_types/string.html#enum">enum</a></li>
+</ul>
+</li>
+<li class="toctree-l6"><a class="reference internal" href="../../../developer_guide/json_validator/element_types/string.html#example">Example</a></li>
+</ul>
+</li>
+<li class="toctree-l5"><a class="reference internal" href="../../../developer_guide/json_validator/element_types/tuple.html">Tuple Type</a><ul>
+<li class="toctree-l6"><a class="reference internal" href="../../../developer_guide/json_validator/element_types/tuple.html#specific-fields">Specific Fields</a><ul>
+<li class="toctree-l7"><a class="reference internal" href="../../../developer_guide/json_validator/element_types/tuple.html#items">items</a></li>
+</ul>
+</li>
+<li class="toctree-l6"><a class="reference internal" href="../../../developer_guide/json_validator/element_types/tuple.html#example">Example</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../../../developer_guide/json_validator/getting_started.html#benefits-of-using-json-schema">Benefits of Using JSON Schema</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../developer_guide/json_validator/getting_started.html#example-of-a-complete-json-schema">Example of a Complete JSON Schema</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../../developer_guide/json_validator/advanced_features.html">Advanced Features</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../../developer_guide/json_validator/advanced_features.html#operators-of-json-schema">Operators of JSON Schema</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../../../developer_guide/json_validator/advanced_features.html#equality-and-comparison-operators">Equality and Comparison Operators</a><ul>
+<li class="toctree-l5"><a class="reference internal" href="../../../developer_guide/json_validator/advanced_features.html#equal">Equal (==)</a></li>
+<li class="toctree-l5"><a class="reference internal" href="../../../developer_guide/json_validator/advanced_features.html#not-equal">Not Equal (!=)</a></li>
+<li class="toctree-l5"><a class="reference internal" href="../../../developer_guide/json_validator/advanced_features.html#less-than">Less Than (&lt;)</a></li>
+<li class="toctree-l5"><a class="reference internal" href="../../../developer_guide/json_validator/advanced_features.html#less-than-or-equal">Less Than or Equal (&lt;=)</a></li>
+<li class="toctree-l5"><a class="reference internal" href="../../../developer_guide/json_validator/advanced_features.html#greater-than">Greater Than (&gt;)</a></li>
+<li class="toctree-l5"><a class="reference internal" href="../../../developer_guide/json_validator/advanced_features.html#greater-than-or-equal">Greater Than or Equal (&gt;=)</a></li>
+</ul>
+</li>
+<li class="toctree-l4"><a class="reference internal" href="../../../developer_guide/json_validator/advanced_features.html#logical-operators">Logical Operators</a><ul>
+<li class="toctree-l5"><a class="reference internal" href="../../../developer_guide/json_validator/advanced_features.html#negation-not">Negation (not)</a></li>
+<li class="toctree-l5"><a class="reference internal" href="../../../developer_guide/json_validator/advanced_features.html#conjunction-and">Conjunction (and)</a></li>
+<li class="toctree-l5"><a class="reference internal" href="../../../developer_guide/json_validator/advanced_features.html#disjunction-or">Disjunction (or)</a></li>
+</ul>
+</li>
+<li class="toctree-l4"><a class="reference internal" href="../../../developer_guide/json_validator/advanced_features.html#property-operators">Property Operators</a><ul>
+<li class="toctree-l5"><a class="reference internal" href="../../../developer_guide/json_validator/advanced_features.html#value-of-the-property">Value of the Property</a></li>
+<li class="toctree-l5"><a class="reference internal" href="../../../developer_guide/json_validator/advanced_features.html#item-of-the-property">Item of the Property</a></li>
+<li class="toctree-l5"><a class="reference internal" href="../../../developer_guide/json_validator/advanced_features.html#size-of-the-property">Size of the Property</a></li>
+<li class="toctree-l5"><a class="reference internal" href="../../../developer_guide/json_validator/advanced_features.html#null-status-of-the-property">Null Status of the Property</a></li>
+</ul>
+</li>
+<li class="toctree-l4"><a class="reference internal" href="../../../developer_guide/json_validator/advanced_features.html#constant-operators">Constant Operators</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../developer_guide/json_validator/advanced_features.html#arithmetical-operators">Arithmetical Operators</a><ul>
+<li class="toctree-l5"><a class="reference internal" href="../../../developer_guide/json_validator/advanced_features.html#subtract">Subtract (-)</a></li>
+<li class="toctree-l5"><a class="reference internal" href="../../../developer_guide/json_validator/advanced_features.html#addition">Addition (+)</a></li>
+<li class="toctree-l5"><a class="reference internal" href="../../../developer_guide/json_validator/advanced_features.html#multiply">Multiply (*)</a></li>
+<li class="toctree-l5"><a class="reference internal" href="../../../developer_guide/json_validator/advanced_features.html#division">Division (/)</a></li>
+<li class="toctree-l5"><a class="reference internal" href="../../../developer_guide/json_validator/advanced_features.html#module">Module (%)</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../../../developer_guide/json_validator/advanced_features.html#conditionals-of-json-schema">Conditionals of JSON Schema</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../../../developer_guide/json_validator/advanced_features.html#condition">Condition</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../developer_guide/json_validator/advanced_features.html#then-block">Then Block</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../developer_guide/json_validator/advanced_features.html#else-block">Else Block</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../../../developer_guide/json_validator/advanced_features.html#conditions-of-json-schema">Conditions of JSON Schema</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">⚙️ Reference</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../reference/api.html">API</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">🧪 Testing and Deployment</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../testing/overview.html">Overview</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../testing/unit_tests.html">Unit Tests</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../testing/ci_cd.html">Continuous Integration &amp; Continuous Deployment (CI/CD)</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../../testing/ci_cd.html#configuration">Configuration</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../testing/ci_cd.html#workflows">Workflows</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../../testing/ci_cd.html#deploy-release-workflow">Deploy Release Workflow</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../../../testing/ci_cd.html#job-1-build-windows">Job 1 — build-windows</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../testing/ci_cd.html#job-2-release">Job 2 — release</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../testing/ci_cd.html#job-3-deploy-docs">Job 3 — deploy-docs</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../testing/ci_cd.html#deploy-release-workflow-notes">Deploy Release Workflow Notes</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../../../testing/ci_cd.html#update-documentation-workflow">Update Documentation Workflow</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../../../testing/ci_cd.html#job-update">Job — update</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../testing/ci_cd.html#update-documentation-workflow-notes">Update Documentation Workflow Notes</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu"  style="background: #2980B9" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../../index.html">Weaver</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="../../configuration.html">Configuration</a></li>
+          <li class="breadcrumb-item"><a href="species.html">species</a></li>
+      <li class="breadcrumb-item active">Genetics Module</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="../../../_sources/user_guide/json/species/genetics_module.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="genetics-module">
+<h1>Genetics Module<a class="headerlink" href="#genetics-module" title="Link to this heading"></a></h1>
+<p>It defines the genetic architecture of each species, specifying the number of loci and alleles
+per trait, the recombination parameters, and the configuration of modules and traits
+that determine how genetic variation influences phenotypic traits in the simulation.</p>
+<section id="main-properties">
+<h2>Main Properties<a class="headerlink" href="#main-properties" title="Link to this heading"></a></h2>
+<p>Properties:</p>
+<table class="docutils align-left">
+<colgroup>
+<col style="width: 25.0%" />
+<col style="width: 15.0%" />
+<col style="width: 60.0%" />
+</colgroup>
+<thead>
+<tr class="row-odd"><th class="head"><p><strong>Name</strong></p></th>
+<th class="head"><p><strong>Type</strong></p></th>
+<th class="head"><p><strong>Description</strong></p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">numberOfLociPerTrait</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">integer</span></code></p></td>
+<td><p>Number of loci defining each trait. Minimum value: <code class="docutils literal notranslate"><span class="pre">0</span></code>.</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">numberOfAllelesPerLocus</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">integer</span></code></p></td>
+<td><p>Number of alleles per locus. Minimum value: <code class="docutils literal notranslate"><span class="pre">0</span></code>.</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">numberOfChiasmasPerChromosome</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">integer</span></code></p></td>
+<td><p>Number of chiasmas per chromosome. Minimum value: <code class="docutils literal notranslate"><span class="pre">0</span></code>.</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">modules</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">object</span></code></p></td>
+<td><p>Defines the modular genetic organization.</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">modifyAlleles</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">array[object]</span></code></p></td>
+<td><p>Describes allele modification events applied to certain loci or traits.</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">traits</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">object</span></code></p></td>
+<td><p>Describes the genetic definition of traits and their temperature dependence.</p></td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="object-modules">
+<h2>Object <code class="docutils literal notranslate"><span class="pre">modules</span></code><a class="headerlink" href="#object-modules" title="Link to this heading"></a></h2>
+<p>Properties:</p>
+<table class="docutils align-left">
+<colgroup>
+<col style="width: 25.0%" />
+<col style="width: 15.0%" />
+<col style="width: 60.0%" />
+</colgroup>
+<thead>
+<tr class="row-odd"><th class="head"><p><strong>Name</strong></p></th>
+<th class="head"><p><strong>Type</strong></p></th>
+<th class="head"><p><strong>Description</strong></p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">traitsPerModule</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">integer</span></code></p></td>
+<td><p>Number of traits per genetic module. Minimum value: <code class="docutils literal notranslate"><span class="pre">0</span></code>.</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">correlationCoefficientRhoPerModule</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">array[number]</span></code></p></td>
+<td><p>Correlation coefficients (ρ) describing genetic linkage among traits within a module.</p></td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="object-modifyalleles">
+<h2>Object <code class="docutils literal notranslate"><span class="pre">modifyAlleles</span></code><a class="headerlink" href="#object-modifyalleles" title="Link to this heading"></a></h2>
+<p>Properties of each element:</p>
+<table class="docutils align-left">
+<colgroup>
+<col style="width: 25.0%" />
+<col style="width: 15.0%" />
+<col style="width: 60.0%" />
+</colgroup>
+<thead>
+<tr class="row-odd"><th class="head"><p><strong>Name</strong></p></th>
+<th class="head"><p><strong>Type</strong></p></th>
+<th class="head"><p><strong>Description</strong></p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">affectedAlleles</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">number</span></code></p></td>
+<td><p>Identifier of the affected allele.</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">timesAlleles</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">number</span></code></p></td>
+<td><p>Multiplicative factor applied to the alleles. Minimum: <code class="docutils literal notranslate"><span class="pre">0.0</span></code>.</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">affectedLocus</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">array[number]</span></code></p></td>
+<td><p>List of locus indices (between 0 and 1) affected by the modification.</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">affectedTraits</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">array[object]</span></code></p></td>
+<td><p>List of trait elements influenced by the modification.</p></td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="object-affectedtraits">
+<h2>Object <code class="docutils literal notranslate"><span class="pre">affectedTraits</span></code><a class="headerlink" href="#object-affectedtraits" title="Link to this heading"></a></h2>
+<p>Properties:</p>
+<table class="docutils align-left">
+<colgroup>
+<col style="width: 25.0%" />
+<col style="width: 15.0%" />
+<col style="width: 60.0%" />
+</colgroup>
+<thead>
+<tr class="row-odd"><th class="head"><p><strong>Name</strong></p></th>
+<th class="head"><p><strong>Type</strong></p></th>
+<th class="head"><p><strong>Description</strong></p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">trait</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">string</span></code></p></td>
+<td><p>Name of the trait affected.</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">element</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">string</span> <span class="pre">(enum)</span></code></p></td>
+<td><p>Component of the trait affected. Possible values:
+- <code class="docutils literal notranslate"><span class="pre">value</span></code>
+- <code class="docutils literal notranslate"><span class="pre">activationEnergy</span></code>
+- <code class="docutils literal notranslate"><span class="pre">energyDecay</span></code>
+- <code class="docutils literal notranslate"><span class="pre">temperatureOptimal</span></code>
+- <code class="docutils literal notranslate"><span class="pre">temperatureRef</span></code></p></td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="object-traits">
+<h2>Object <code class="docutils literal notranslate"><span class="pre">traits</span></code><a class="headerlink" href="#object-traits" title="Link to this heading"></a></h2>
+<p>Properties:</p>
+<table class="docutils align-left">
+<colgroup>
+<col style="width: 25.0%" />
+<col style="width: 15.0%" />
+<col style="width: 60.0%" />
+</colgroup>
+<thead>
+<tr class="row-odd"><th class="head"><p><strong>Name</strong></p></th>
+<th class="head"><p><strong>Type</strong></p></th>
+<th class="head"><p><strong>Description</strong></p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">individualLevelTraitsOrder</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">array[object]</span></code></p></td>
+<td><p>Defines the order and structure of individual-level traits.</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">definition</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">object</span></code></p></td>
+<td><p>Contains the complete definitions of each trait type.</p></td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="object-individualleveltraitsorder">
+<h2>Object <code class="docutils literal notranslate"><span class="pre">individualLevelTraitsOrder</span></code><a class="headerlink" href="#object-individualleveltraitsorder" title="Link to this heading"></a></h2>
+<p>Properties of each element:</p>
+<table class="docutils align-left">
+<colgroup>
+<col style="width: 25.0%" />
+<col style="width: 15.0%" />
+<col style="width: 60.0%" />
+</colgroup>
+<thead>
+<tr class="row-odd"><th class="head"><p><strong>Name</strong></p></th>
+<th class="head"><p><strong>Type</strong></p></th>
+<th class="head"><p><strong>Description</strong></p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">trait</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">string</span></code></p></td>
+<td><p>Name of the individual-level trait.</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">element</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">string</span> <span class="pre">(enum)</span></code></p></td>
+<td><p>Component of the trait. Possible values:
+- <code class="docutils literal notranslate"><span class="pre">value</span></code>
+- <code class="docutils literal notranslate"><span class="pre">activationEnergy</span></code>
+- <code class="docutils literal notranslate"><span class="pre">energyDecay</span></code>
+- <code class="docutils literal notranslate"><span class="pre">temperatureOptimal</span></code>
+- <code class="docutils literal notranslate"><span class="pre">temperatureRef</span></code></p></td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="object-definition">
+<h2>Object <code class="docutils literal notranslate"><span class="pre">definition</span></code><a class="headerlink" href="#object-definition" title="Link to this heading"></a></h2>
+<p>Contains the definition of the different types of traits.</p>
+<p>Properties:</p>
+<table class="docutils align-left">
+<colgroup>
+<col style="width: 25.0%" />
+<col style="width: 15.0%" />
+<col style="width: 60.0%" />
+</colgroup>
+<thead>
+<tr class="row-odd"><th class="head"><p><strong>Name</strong></p></th>
+<th class="head"><p><strong>Type</strong></p></th>
+<th class="head"><p><strong>Description</strong></p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">base</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">object</span></code></p></td>
+<td><p>A diverse set of traits with different functionalities.</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">decisions</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">object</span></code></p></td>
+<td><p>Traits of weights that influence decisions.</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">probabilityDensityFunction</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">object</span></code></p></td>
+<td><p>Traits of the coefficients of probability density functions.</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">cellValue</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">object</span></code></p></td>
+<td><p>Weights that influence the value of cells.</p></td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="object-base">
+<h2>Object <code class="docutils literal notranslate"><span class="pre">base</span></code><a class="headerlink" href="#object-base" title="Link to this heading"></a></h2>
+<p>Within this section, three types of traits are defined depending on the definition of their temperature subsection.</p>
+<p>The traits without temperature definition are as follows:</p>
+<ul class="simple">
+<li><p>energy_tank</p></li>
+</ul>
+<p>The traits with temperature size rule as their temperature definition are as follows:</p>
+<ul class="simple">
+<li><p>lengthAtMaturation</p></li>
+</ul>
+<p>The traits with dells as the temperature definition are as follows:</p>
+<ul class="simple">
+<li><p>growth</p></li>
+<li><p>eggDevTime</p></li>
+<li><p>factorEggMass</p></li>
+<li><p>assim</p></li>
+<li><p>voracityProportion</p></li>
+<li><p>met_rate</p></li>
+<li><p>shock_resistance</p></li>
+<li><p>actE_met</p></li>
+<li><p>memoryDepth</p></li>
+<li><p>coeffMassForScopeRadius</p></li>
+<li><p>scaleMassForScopeRadius</p></li>
+<li><p>coeffMassForInteractionRadius</p></li>
+<li><p>scaleMassForInteractionRadius</p></li>
+<li><p>coeffMassForSearchRadius</p></li>
+<li><p>scaleMassForSearchRadius</p></li>
+<li><p>coeffMassForSpeed</p></li>
+<li><p>scaleMassForSpeed</p></li>
+<li><p>devTime</p></li>
+<li><p>pupaPeriodTime</p></li>
+<li><p>longevitySinceMaturation</p></li>
+<li><p>dummy</p></li>
+<li><p>eggFertility</p></li>
+</ul>
+</section>
+<section id="object-decisions">
+<h2>Object <code class="docutils literal notranslate"><span class="pre">decisions</span></code><a class="headerlink" href="#object-decisions" title="Link to this heading"></a></h2>
+<p>Properties:</p>
+<table class="docutils align-left">
+<colgroup>
+<col style="width: 25.0%" />
+<col style="width: 15.0%" />
+<col style="width: 60.0%" />
+</colgroup>
+<thead>
+<tr class="row-odd"><th class="head"><p><strong>Name</strong></p></th>
+<th class="head"><p><strong>Type</strong></p></th>
+<th class="head"><p><strong>Description</strong></p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">escapeProbabilityWeight</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">object</span></code></p></td>
+<td><p>Factors influencing the probability of escape.</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">predationProbabilityWeight</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">object</span></code></p></td>
+<td><p>Factors influencing the probability of predation.</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">edibilityValueWeight</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">object</span></code></p></td>
+<td><p>Factors that influence edibility value.</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">preferences</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">object</span></code></p></td>
+<td><p>Factors influencing preferences.</p></td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="object-escapeprobabilityweight">
+<h2>Object <code class="docutils literal notranslate"><span class="pre">escapeProbabilityWeight</span></code><a class="headerlink" href="#object-escapeprobabilityweight" title="Link to this heading"></a></h2>
+<p>The weights defined in this section use traits with dells as the temperature definition.</p>
+<p>The weights are as follows:</p>
+<ul class="simple">
+<li><p>Pvelocity</p></li>
+<li><p>PattackDistance</p></li>
+</ul>
+</section>
+<section id="object-predationprobabilityweight">
+<h2>Object <code class="docutils literal notranslate"><span class="pre">predationProbabilityWeight</span></code><a class="headerlink" href="#object-predationprobabilityweight" title="Link to this heading"></a></h2>
+<p>The weights defined in this section use traits with dells as the temperature definition.</p>
+<p>The weights are as follows:</p>
+<ul class="simple">
+<li><p>Preach</p></li>
+<li><p>Ppdf</p></li>
+<li><p>PvorPred</p></li>
+</ul>
+</section>
+<section id="object-edibilityvalueweight">
+<h2>Object <code class="docutils literal notranslate"><span class="pre">edibilityValueWeight</span></code><a class="headerlink" href="#object-edibilityvalueweight" title="Link to this heading"></a></h2>
+<p>The weights defined in this section use traits with dells as the temperature definition.</p>
+<p>The weights are as follows:</p>
+<ul class="simple">
+<li><p>Pp</p></li>
+</ul>
+</section>
+<section id="object-preferences">
+<h2>Object <code class="docutils literal notranslate"><span class="pre">preferences</span></code><a class="headerlink" href="#object-preferences" title="Link to this heading"></a></h2>
+<p>The weights defined in this section use traits with dells as the temperature definition.</p>
+<p>The weights are as follows:</p>
+<ul class="simple">
+<li><p>experienceInfluenceWithEdibles</p></li>
+</ul>
+</section>
+<section id="object-probabilitydensityfunction">
+<h2>Object <code class="docutils literal notranslate"><span class="pre">probabilityDensityFunction</span></code><a class="headerlink" href="#object-probabilitydensityfunction" title="Link to this heading"></a></h2>
+<p>The coefficients defined in this section use traits with dells as the temperature definition.</p>
+<p>The coefficients are as follows:</p>
+<ul class="simple">
+<li><p>muForPDF</p></li>
+<li><p>sigmaForPDF</p></li>
+</ul>
+</section>
+<section id="object-cellvalue">
+<h2>Object <code class="docutils literal notranslate"><span class="pre">cellValue</span></code><a class="headerlink" href="#object-cellvalue" title="Link to this heading"></a></h2>
+<p>The weights defined in this section use traits with dells as the temperature definition.</p>
+<p>The weights are as follows:</p>
+<ul class="simple">
+<li><p>cellEvaluationBiomass</p></li>
+<li><p>cellEvaluationProConspecific</p></li>
+<li><p>conspecificWeight</p></li>
+</ul>
+</section>
+<section id="object-trait-non-temperature-section">
+<h2>Object <code class="docutils literal notranslate"><span class="pre">&lt;trait-non-temperature-section&gt;</span></code><a class="headerlink" href="#object-trait-non-temperature-section" title="Link to this heading"></a></h2>
+<p>Properties:</p>
+<table class="docutils align-left">
+<colgroup>
+<col style="width: 25.0%" />
+<col style="width: 15.0%" />
+<col style="width: 60.0%" />
+</colgroup>
+<thead>
+<tr class="row-odd"><th class="head"><p><strong>Name</strong></p></th>
+<th class="head"><p><strong>Type</strong></p></th>
+<th class="head"><p><strong>Description</strong></p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">definitionType</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">string</span> <span class="pre">(enum)</span></code></p></td>
+<td><p>Type of definition. Possible values:
+- <code class="docutils literal notranslate"><span class="pre">SpeciesLevel</span></code>
+- <code class="docutils literal notranslate"><span class="pre">IndividualLevel</span></code></p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">speciesLevelParams</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">object</span></code></p></td>
+<td><p>Species-level parameters.</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">individualLevelParams</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">object</span></code></p></td>
+<td><p>Individual-level parameters.</p></td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="object-specieslevelparams">
+<h2>Object <code class="docutils literal notranslate"><span class="pre">speciesLevelParams</span></code><a class="headerlink" href="#object-specieslevelparams" title="Link to this heading"></a></h2>
+<p>Properties:</p>
+<table class="docutils align-left">
+<colgroup>
+<col style="width: 25.0%" />
+<col style="width: 15.0%" />
+<col style="width: 60.0%" />
+</colgroup>
+<thead>
+<tr class="row-odd"><th class="head"><p><strong>Name</strong></p></th>
+<th class="head"><p><strong>Type</strong></p></th>
+<th class="head"><p><strong>Description</strong></p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">value</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">number</span></code></p></td>
+<td><p>Fixed species-level trait value.</p></td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="object-individuallevelparams">
+<h2>Object <code class="docutils literal notranslate"><span class="pre">individualLevelParams</span></code><a class="headerlink" href="#object-individuallevelparams" title="Link to this heading"></a></h2>
+<p>Properties:</p>
+<table class="docutils align-left">
+<colgroup>
+<col style="width: 25.0%" />
+<col style="width: 15.0%" />
+<col style="width: 60.0%" />
+</colgroup>
+<thead>
+<tr class="row-odd"><th class="head"><p><strong>Name</strong></p></th>
+<th class="head"><p><strong>Type</strong></p></th>
+<th class="head"><p><strong>Description</strong></p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">limits</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">object</span></code></p></td>
+<td><p>Limits for individual-level trait values.</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">ranges</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">object</span></code></p></td>
+<td><p>Ranges for individual-level trait values.</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">restrictValue</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">number</span></code></p></td>
+<td><p>Restriction factor for individual-level trait values (between <code class="docutils literal notranslate"><span class="pre">0.0</span></code> and <code class="docutils literal notranslate"><span class="pre">1.0</span></code>).</p></td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="object-limits">
+<h2>Object <code class="docutils literal notranslate"><span class="pre">limits</span></code><a class="headerlink" href="#object-limits" title="Link to this heading"></a></h2>
+<p>Properties:</p>
+<table class="docutils align-left">
+<colgroup>
+<col style="width: 25.0%" />
+<col style="width: 15.0%" />
+<col style="width: 60.0%" />
+</colgroup>
+<thead>
+<tr class="row-odd"><th class="head"><p><strong>Name</strong></p></th>
+<th class="head"><p><strong>Type</strong></p></th>
+<th class="head"><p><strong>Description</strong></p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">min</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">number</span></code></p></td>
+<td><p>Minimum limit for individual-level trait values. Minimum value: <code class="docutils literal notranslate"><span class="pre">0.0</span></code>.</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">max</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">number</span></code></p></td>
+<td><p>Maximum limit for individual-level trait values. Minimum value: <code class="docutils literal notranslate"><span class="pre">0.0</span></code>.</p></td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="object-ranges">
+<h2>Object <code class="docutils literal notranslate"><span class="pre">ranges</span></code><a class="headerlink" href="#object-ranges" title="Link to this heading"></a></h2>
+<p>Properties:</p>
+<table class="docutils align-left">
+<colgroup>
+<col style="width: 25.0%" />
+<col style="width: 15.0%" />
+<col style="width: 60.0%" />
+</colgroup>
+<thead>
+<tr class="row-odd"><th class="head"><p><strong>Name</strong></p></th>
+<th class="head"><p><strong>Type</strong></p></th>
+<th class="head"><p><strong>Description</strong></p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">min</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">number</span></code></p></td>
+<td><p>Minimum range for individual-level trait values.</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">max</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">number</span></code></p></td>
+<td><p>Maximum range for individual-level trait values.</p></td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="object-trait-temperature-size-rule-section">
+<h2>Object <code class="docutils literal notranslate"><span class="pre">&lt;trait-temperature-size-rule-section&gt;</span></code><a class="headerlink" href="#object-trait-temperature-size-rule-section" title="Link to this heading"></a></h2>
+<p>Properties:</p>
+<table class="docutils align-left">
+<colgroup>
+<col style="width: 25.0%" />
+<col style="width: 15.0%" />
+<col style="width: 60.0%" />
+</colgroup>
+<thead>
+<tr class="row-odd"><th class="head"><p><strong>Name</strong></p></th>
+<th class="head"><p><strong>Type</strong></p></th>
+<th class="head"><p><strong>Description</strong></p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">definitionType</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">string</span> <span class="pre">(enum)</span></code></p></td>
+<td><p>Type of definition. Possible values:
+- <code class="docutils literal notranslate"><span class="pre">SpeciesLevel</span></code>
+- <code class="docutils literal notranslate"><span class="pre">IndividualLevel</span></code></p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">speciesLevelParams</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">object</span></code></p></td>
+<td><p>Species-level parameters.</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">individualLevelParams</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">object</span></code></p></td>
+<td><p>Individual-level parameters.</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">temperature</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">object</span></code></p></td>
+<td><p>Temperature dependence parameters.</p></td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="object-temperature-of-trait-temperature-size-rule-section">
+<h2>Object <code class="docutils literal notranslate"><span class="pre">temperature</span></code> of <code class="docutils literal notranslate"><span class="pre">&lt;trait-temperature-size-rule-section&gt;</span></code><a class="headerlink" href="#object-temperature-of-trait-temperature-size-rule-section" title="Link to this heading"></a></h2>
+<p>Properties:</p>
+<table class="docutils align-left">
+<colgroup>
+<col style="width: 25.0%" />
+<col style="width: 15.0%" />
+<col style="width: 60.0%" />
+</colgroup>
+<thead>
+<tr class="row-odd"><th class="head"><p><strong>Name</strong></p></th>
+<th class="head"><p><strong>Type</strong></p></th>
+<th class="head"><p><strong>Description</strong></p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">dependent</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">boolean</span></code></p></td>
+<td><p>Indicates if the trait is temperature-dependent.</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">tempSizeRuleVector</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">array[object]</span></code></p></td>
+<td><p>Array defining the temperature-size rule.</p></td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="object-tempsizerulevector">
+<h2>Object <code class="docutils literal notranslate"><span class="pre">tempSizeRuleVector</span></code><a class="headerlink" href="#object-tempsizerulevector" title="Link to this heading"></a></h2>
+<p>Properties of each element:</p>
+<table class="docutils align-left">
+<colgroup>
+<col style="width: 25.0%" />
+<col style="width: 15.0%" />
+<col style="width: 60.0%" />
+</colgroup>
+<thead>
+<tr class="row-odd"><th class="head"><p><strong>Name</strong></p></th>
+<th class="head"><p><strong>Type</strong></p></th>
+<th class="head"><p><strong>Description</strong></p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">temperature</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">number</span></code></p></td>
+<td><p>Temperature value (greater than <code class="docutils literal notranslate"><span class="pre">0.0</span></code>).</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">dryMass</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">number</span></code></p></td>
+<td><p>Dry mass value (greater than <code class="docutils literal notranslate"><span class="pre">0.0</span></code>).</p></td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="object-trait-dells-section">
+<h2>Object <code class="docutils literal notranslate"><span class="pre">&lt;trait-dells-section&gt;</span></code><a class="headerlink" href="#object-trait-dells-section" title="Link to this heading"></a></h2>
+<p>Properties:</p>
+<table class="docutils align-left">
+<colgroup>
+<col style="width: 25.0%" />
+<col style="width: 15.0%" />
+<col style="width: 60.0%" />
+</colgroup>
+<thead>
+<tr class="row-odd"><th class="head"><p><strong>Name</strong></p></th>
+<th class="head"><p><strong>Type</strong></p></th>
+<th class="head"><p><strong>Description</strong></p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">definitionType</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">string</span> <span class="pre">(enum)</span></code></p></td>
+<td><p>Type of definition. Possible values:
+- <code class="docutils literal notranslate"><span class="pre">SpeciesLevel</span></code>
+- <code class="docutils literal notranslate"><span class="pre">IndividualLevel</span></code></p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">speciesLevelParams</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">object</span></code></p></td>
+<td><p>Species-level parameters.</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">individualLevelParams</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">object</span></code></p></td>
+<td><p>Individual-level parameters.</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">temperature</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">object</span></code></p></td>
+<td><p>Temperature dependence parameters.</p></td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="object-temperature-of-trait-dells-section">
+<h2>Object <code class="docutils literal notranslate"><span class="pre">temperature</span></code> of <code class="docutils literal notranslate"><span class="pre">&lt;trait-dells-section&gt;</span></code><a class="headerlink" href="#object-temperature-of-trait-dells-section" title="Link to this heading"></a></h2>
+<p>Properties:</p>
+<table class="docutils align-left">
+<colgroup>
+<col style="width: 25.0%" />
+<col style="width: 15.0%" />
+<col style="width: 60.0%" />
+</colgroup>
+<thead>
+<tr class="row-odd"><th class="head"><p><strong>Name</strong></p></th>
+<th class="head"><p><strong>Type</strong></p></th>
+<th class="head"><p><strong>Description</strong></p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">dependent</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">boolean</span></code></p></td>
+<td><p>Indicates if the trait is temperature-dependent.</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">activationEnergy</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">&lt;trait-non-temperature-section&gt;</span></code></p></td>
+<td><p>Temperature activation energy parameters.</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">energyDecay</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">&lt;trait-non-temperature-section&gt;</span></code></p></td>
+<td><p>Temperature energy decay parameters.</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">temperatureOptimal</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">&lt;trait-non-temperature-section&gt;</span></code></p></td>
+<td><p>Temperature optimal parameters.</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">temperatureRef</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">&lt;trait-non-temperature-section&gt;</span></code></p></td>
+<td><p>Reference temperature parameters.</p></td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="hierarchical-summary">
+<h2>Hierarchical Summary<a class="headerlink" href="#hierarchical-summary" title="Link to this heading"></a></h2>
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>genetics
+├── numberOfLociPerTrait: integer ≥ 0
+├── numberOfAllelesPerLocus: integer ≥ 0
+├── numberOfChiasmasPerChromosome: integer ≥ 0
+├── modules:
+│   ├── traitsPerModule: integer ≥ 0
+│   └── correlationCoefficientRhoPerModule: array[number]
+├── modifyAlleles:
+│   ├── affectedAlleles: number
+│   ├── timesAlleles: number ≥ 0.0
+│   ├── affectedLocus: array[number 0.0–1.0]
+│   └── affectedTraits:
+│       ├── trait: string
+│       └── element: enum [value, activationEnergy, energyDecay, temperatureOptimal, temperatureRef]
+└── traits:
+    ├── individualLevelTraitsOrder:
+    │   ├── trait: string
+    │   └── element: enum [value, activationEnergy, energyDecay, temperatureOptimal, temperatureRef]
+    └── definition:
+        ├── base
+        │   ├── &lt;enum-base-nonTemperatureTraits&gt;
+        │   │   └── &lt;trait-non-temperature-section&gt;
+        │   ├── &lt;enum-base-temperatureSizeRuleTraits&gt;
+        │   │   └── &lt;trait-temperature-size-rule-section&gt;
+        │   └── &lt;enum-base-dellsTraits&gt;
+        │       └── &lt;trait-dells-section&gt;
+        ├── decisions
+        │   ├── escapeProbabilityWeight
+        │   │   └── &lt;enum-escapeProbabilityWeight-dellsTraits&gt;
+        │   │       └── &lt;trait-dells-section&gt;
+        │   ├── predationProbabilityWeight
+        │   │   └── &lt;enum-predationProbabilityWeight-dellsTraits&gt;
+        │   │       └── &lt;trait-dells-section&gt;
+        │   ├── edibilityValueWeight
+        │   │   └── &lt;enum-edibilityValueWeight-dellsTraits&gt;
+        │   │       └── &lt;trait-dells-section&gt;
+        │   └── preferences
+        │       └── &lt;enum-preferences-dellsTraits&gt;
+        │           └── &lt;trait-dells-section&gt;
+        ├── probabilityDensityFunction
+        │   └── &lt;enum-probabilityDensityFunction-dellsTraits&gt;
+        │       └── &lt;trait-dells-section&gt;
+        └── cellValue
+            └── &lt;enum-cellValue-dellsTraits&gt;
+                └── &lt;trait-dells-section&gt;
+
+&lt;trait-non-temperature-section&gt;
+├── definitionType: enum [SpeciesLevel, IndividualLevel]
+├── speciesLevelParams
+│   └── value: number
+└── individualLevelParams
+    ├── limits
+    │   ├── min: number  ≥ 0.0
+    │   └── max: number  ≥ 0.0
+    ├── ranges
+    │   ├── min: number
+    │   └── max: number
+    └── restrictValue: number [0.0 - 1.0]
+
+&lt;trait-temperature-size-rule-section&gt;
+├── definitionType: enum [SpeciesLevel, IndividualLevel]
+├── speciesLevelParams
+│   └── value: number
+├── individualLevelParams
+│   ├── limits
+│   │   ├── min: number  ≥ 0.0
+│   │   └── max: number  ≥ 0.0
+│   ├── ranges
+│   │   ├── min: number
+│   │   └── max: number
+│   └── restrictValue: number [0.0 - 1.0]
+└── temperature
+    ├── dependent: boolean
+    └── tempSizeRuleVector: array[object]
+        ├── temperature: number &gt; 0.0
+        └── dryMass: number &gt; 0.0
+
+&lt;trait-dells-section&gt;
+├── definitionType: enum [SpeciesLevel, IndividualLevel]
+├── speciesLevelParams
+│   └── value: number
+├── individualLevelParams
+│   ├── limits
+│   │   ├── min: number  ≥ 0.0
+│   │   └── max: number  ≥ 0.0
+│   ├── ranges
+│   │   ├── min: number
+│   │   └── max: number
+│   └── restrictValue: number [0.0 - 1.0]
+└── temperature
+    ├── dependent: boolean
+    ├── activationEnergy
+    │   └── &lt;trait-non-temperature-section&gt;
+    ├── energyDecay
+    │   └── &lt;trait-non-temperature-section&gt;
+    ├── temperatureOptimal
+    │   └── &lt;trait-non-temperature-section&gt;
+    └── temperatureRef
+        └── &lt;trait-non-temperature-section&gt;
+</pre></div>
+</div>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="decisions_module.html" class="btn btn-neutral float-left" title="Decisions Module" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="growth_module.html" class="btn btn-neutral float-right" title="Growth Module" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2026, Jordi Moya Laraño.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  
+
+<div class="rst-versions" data-toggle="rst-versions" role="note" aria-label="versions">
+
+  
+  
+
+  
+  
+    
+  
+
+  
+  
+    
+  
+
+  
+  
+  
+  
+  <span class="rst-current-version" data-toggle="rst-current-version">
+    v: 2026.01.31 (en)
+    <span class="fa fa-caret-down"></span>
+  </span>
+  
+  
+  <div class="rst-other-versions">
+  
+    
+    <dl>
+      <dt>Versions</dt>
+      
+        
+          
+          <dd>
+            <a href="../../../../index.html">
+              2026.02.02
+            </a>
+          </dd>
+        
+      
+        
+          
+          <dd>
+            <a href="../../../../2025.12.12/index.html">
+              2025.12.12
+            </a>
+          </dd>
+        
+      
+        
+          
+          <dd>
+            <a href="../../../../2026.01.07/index.html">
+              2026.01.07
+            </a>
+          </dd>
+        
+      
+        
+          
+          <dd>
+            <a style="color: yellow;" href="../../../../2026.01.31/index.html">
+              2026.01.31
+            </a>
+          </dd>
+        
+      
+    </dl>
+
+    
+    <dl>
+      <dt>Languages</dt>
+      
+        
+          
+          <dd>
+            <a style="color: yellow;" href="../../../../2026.01.31/index.html">
+              en
+            </a>
+          </dd>
+        
+      
+    </dl>
+    
+    <br>
+  </div>
+</div><script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>
