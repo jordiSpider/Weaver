@@ -278,6 +278,7 @@ WeaverOptimiserClass <- R6Class("WeaverOptimiserClass",
                 stop(paste(
                     "Error while executing the command: ", program, 
                     "\nExit status: ", status, 
+                    "\nConfig: ", config_path,
                     "\nStandard output:", paste(readLines(output_file, warn = FALSE), collapse = "\n"),
                     "\nError output:", paste(readLines(error_file, warn = FALSE), collapse = "\n")
                 ))
