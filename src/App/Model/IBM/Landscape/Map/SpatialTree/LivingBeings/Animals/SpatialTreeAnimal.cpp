@@ -125,13 +125,18 @@ void SpatialTreeAnimal::searchTargetToTravelTo(const PreciseDouble &scopeArea, c
         }
         else
         {
-            RingModel* sphere = Geometry::makeSphere(getPosition(), scopeArea);
-            RingModel* evaluationArea = Geometry::calculateIntersection(sphere, bestEvaluations.at(randomIndex).cellEffectiveArea);
+            if(bestEvaluations.at(randomIndex).bestEdibility == nullptr) {
+                targetPoint = Geometry::generateRandomPointOnBox(bestEvaluations.at(randomIndex).cellEffectiveArea);
+            }
+            else {
+                RingModel* sphere = Geometry::makeSphere(getPosition(), scopeArea);
+                RingModel* evaluationArea = Geometry::calculateIntersection(sphere, bestEvaluations.at(randomIndex).cellEffectiveArea);
 
-            targetPoint = Geometry::generateRandomPointOnPolygon(evaluationArea);
+                targetPoint = Geometry::generateRandomPointOnPolygon(evaluationArea);
 
-            delete sphere;
-            delete evaluationArea;
+                delete sphere;
+                delete evaluationArea;
+            }
         }
     }
 
