@@ -38,6 +38,8 @@
 ##                  ##
 ######################
 
+library(jsonlite)
+
 # Initialize an empty data frame to register animal species and their taxonomy
 animal_species_register <- data.frame(
     Phylum = character(0),
@@ -50,33 +52,28 @@ animal_species_register <- data.frame(
 )
 
 # List all directories under 'data/parametrisation/animalia'
-animalia_paths <- list.dirs(file.path("data", "parametrisation", "animalia"), recursive = TRUE, full.names = FALSE)
-
-# Filter paths to include only those with the correct number of levels
-animal_species_paths <- unlist(lapply(animalia_paths, function(path) { 
-    path_list <- unlist(strsplit(path, "/"))
-    if(length(path_list) == length(colnames(animal_species_register))) {
-        return(path)
-    }
-}))
+animal_species_paths <- list.dirs(file.path("data", "parametrisation", "animalia"), recursive = FALSE, full.names = TRUE)
 
 # Initialize list to store mapping from species name to path
 animal_species_paths_list <- list()
 
 # Populate the animal species register and paths list
 for(path in animal_species_paths) {
-    column_values <- lapply(
-        unlist(strsplit(path, "/")), 
-        function(element) { 
-            modified_str <- gsub("_", " ", element)
-            # Capitalize first letter, keep the rest lowercase
-            modified_str <- paste(toupper(substring(modified_str, 1, 1)), 
-                                    substring(modified_str, 2), sep = "")
-            return(modified_str)
-        }
-    )
-    new_row <- setNames(as.list(column_values), colnames(animal_species_register))
+    info_file <- file.path(path, "taxonomy_info.json")
+
+    if (!file.exists(info_file)) {
+        stop(paste0("Error: The taxonomy info file '", info_file, "' could not be found."))
+    }
+
+    info <- fromJSON(info_file)
+
+    new_row <- as.data.frame(info, stringsAsFactors = FALSE)
+
+    cols_ordered <- colnames(animal_species_register)
+    new_row <- new_row[, cols_ordered]
+
     animal_species_register <- rbind(animal_species_register, new_row)
+
     animal_species_paths_list[[new_row$AnimalSpecies]] <- path
 }
 

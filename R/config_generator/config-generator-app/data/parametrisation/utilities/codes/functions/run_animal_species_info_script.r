@@ -49,7 +49,7 @@
 #' @export
 run_animal_species_info_script <- function(species_name, env) {
     # Build the path to the directory containing the species information script
-    env$script_path <- file.path(getwd(), "data", "parametrisation", "animalia", animal_species_paths_list[[species_name]])
+    env$script_path <- file.path(getwd(), animal_species_paths_list[[species_name]])
     
     # Dynamically load and execute the species information script in the provided environment
     source(file.path(env$script_path, paste0(basename(animal_species_paths_list[[species_name]]), "_info.r")), local = env)
