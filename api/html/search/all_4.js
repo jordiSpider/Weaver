@@ -64,7 +64,7 @@ var searchData=
   ['escapeprobabilityweighttype_61',['EscapeProbabilityWeightType',['../DecisionsTraitType_8h.html#a3a2a7272da685f0b5e985d3b34fd9bdc',1,'DecisionsTraitType.h']]],
   ['evaluateexposedattacks_62',['evaluateExposedAttacks',['../classAnimalNonStatistical.html#a92b76cd457b446b91335eebb625057b4',1,'AnimalNonStatistical']]],
   ['evolvelandscape_63',['evolveLandscape',['../classLandscape.html#a2a01d20984d8b1210eec1c9e248cbac7',1,'Landscape']]],
-  ['example_20usage_64',['Example usage',['../classLineInfoException.html#autotoc_md3',1,'']]],
+  ['example_20usage_64',['Example usage',['../classLineInfoException.html#autotoc_md2',1,'']]],
   ['exceptions_2eh_65',['Exceptions.h',['../Exceptions_8h.html',1,'']]],
   ['excessinvestinsize_66',['excessInvestInSize',['../group__EnergyAllocation.html#ga7ad41c24c1e6e3547aeb99576c768f62',1,'AnimalSpeciesGrowth']]],
   ['exclusivemaximum_67',['exclusivemaximum',['../classInteger.html#a286044f3c2ccf0ad2e8d224222dc769d',1,'Integer::exclusiveMaximum'],['../classNumber.html#a2b5de3b96babbed0da2dbbcefd2fe954',1,'Number::exclusiveMaximum']]],
