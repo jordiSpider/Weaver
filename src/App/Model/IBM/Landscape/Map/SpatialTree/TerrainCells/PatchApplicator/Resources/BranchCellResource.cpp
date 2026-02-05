@@ -139,9 +139,6 @@ void BranchCellResource::substractBiomass(const DryMass& dryMassToBeSubstracted,
 
 void BranchCellResource::substractBiomass(const DryMass& dryMassToBeSubstracted, const bool fullCoverage, const PointContinuous &sourcePosition, const PreciseDouble &radius, const RingModel* const radiusArea, const bool competitionAmongResourceSpecies)
 {
-    getMutableGrowthBuildingBlock().substractBiomass(dryMassToBeSubstracted);
-
-
     DryMass totalDryMassAvailable = calculateDryMassAvailable(fullCoverage, &sourcePosition, radius, radiusArea);
 
 
@@ -168,6 +165,9 @@ void BranchCellResource::substractBiomass(const DryMass& dryMassToBeSubstracted,
             }
         }
     }
+
+    
+    getMutableGrowthBuildingBlock().substractBiomass(dryMassToBeSubstracted);
 }
 
 void BranchCellResource::substractBiomassUp(const DryMass& dryMassToBeSubstracted)
