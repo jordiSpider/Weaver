@@ -1,0 +1,25 @@
+var classEdible =
+[
+    [ "Edible", "classEdible.html#ad2bd330d8bddee1968a782c8c7417f6c", null ],
+    [ "Edible", "classEdible.html#ae3ade3a407049a86c8195d25d6df532e", null ],
+    [ "~Edible", "classEdible.html#a8645217fd9d754597e5398be80f03094", null ],
+    [ "Edible", "classEdible.html#aead81535b712265418ab786a8ada4f51", null ],
+    [ "getGrowthBuildingBlock", "classEdible.html#a9a7bf3e902e6a55494764d07896b732f", null ],
+    [ "getId", "classEdible.html#aa7d2d4098a2144b6e98fcee988c4a8ef", null ],
+    [ "getMutableGrowthBuildingBlock", "classEdible.html#a11969fa7f0b24b39eadd450cd3649582", null ],
+    [ "getMutableSpecies", "classEdible.html#ac15c013fca3d7bbb1add42d42b52fba5", null ],
+    [ "getMutableTerrainCell", "classEdible.html#ae8427bf3b3cced2e4c10dabbf7d25bb9", null ],
+    [ "getSpecies", "classEdible.html#a2e2e945811a5e87c2e7fad53e5689de9", null ],
+    [ "getTerrainCell", "classEdible.html#a40371658641bb50c113dcced827247ac", null ],
+    [ "increasePredationEncounters", "classEdible.html#a8fb10616315d84872982aeba494574ea", null ],
+    [ "isHunting", "classEdible.html#a323034d9cc4ba4182252ad04433984db", null ],
+    [ "operator=", "classEdible.html#a8c112449263b7f7c057718102c0e56f8", null ],
+    [ "serialize", "classEdible.html#aaa472efff4315951fd5f52650a781264", null ],
+    [ "setSpecies", "classEdible.html#a1e12758142353ed756c4b74b35913c62", null ],
+    [ "setSpeciesGrowth", "classEdible.html#a42f012c8bd16e3c9b1c48f774527d9f0", null ],
+    [ "setTerrainCell", "classEdible.html#aacd97af4f965dadd80be8cc711829f77", null ],
+    [ "turnIntoDryMass", "classEdible.html#a0e4e6440021a0065de183c97cd2fa5bd", null ],
+    [ "id", "classEdible.html#a787328cb730420aeb1718d0da1160a93", null ],
+    [ "mySpecies", "classEdible.html#a2ee0ce7e08eee8fc76858a05398152ec", null ],
+    [ "terrainCell", "classEdible.html#a035e2c46b32ea4e77f457a8c114106c7", null ]
+];

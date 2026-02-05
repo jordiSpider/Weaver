@@ -1,0 +1,32 @@
+<map id="SpatialTreeTerrainCell" name="SpatialTreeTerrainCell">
+<area shape="rect" id="Node000001" title="Represents a terrain cell in a spatial tree structure." alt="" coords="1109,74,1272,99"/>
+<area shape="rect" id="Node000013" href="$classBranchTerrainCell.html" title="Represents an internal node (branch) of the spatial tree in the landscape." alt="" coords="1436,74,1572,99"/>
+<area shape="poly" id="edge17_Node000013_Node000001" title=" " alt="" coords="1285,84,1436,84,1436,89,1285,89"/>
+<area shape="rect" id="Node000002" href="$classTerrainCell.html" title="Represents a single cell in the landscape." alt="" coords="787,91,878,117"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="892,99,1109,88,1109,93,892,104"/>
+<area shape="rect" id="Node000003" href="$classPatchApplicator.html" title="Applies patches to a TerrainCell including moisture, resources, obstacles, and habitat domains." alt="" coords="1129,199,1252,225"/>
+<area shape="poly" id="edge3_Node000003_Node000002" title=" " alt="" coords="892,110,1000,128,1086,148,1135,172,1173,197,1170,201,1132,177,1084,153,999,133,891,115"/>
+<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="1115,202,1026,185,958,168,901,144,855,119,857,115,903,139,960,163,1027,180,1116,197"/>
+<area shape="rect" id="Node000004" href="$classCellMoistureInterface.html" title="Base interface representing the hydrological and thermal properties of a terrain cell." alt="" coords="751,198,914,223"/>
+<area shape="poly" id="edge4_Node000003_Node000004" title=" " alt="" coords="928,208,1129,209,1129,214,928,214"/>
+<area shape="rect" id="Node000005" href="$classCellElement.html" title="Base class for any modifiable element contained within a terrain cell." alt="" coords="287,255,388,281"/>
+<area shape="poly" id="edge5_Node000004_Node000005" title=" " alt="" coords="402,258,751,217,751,223,402,263"/>
+<area shape="rect" id="Node000008" href="$classCellObstacleInterface.html" title="Interface for managing obstacles in a terrain cell." alt="" coords="751,247,914,273"/>
+<area shape="poly" id="edge9_Node000008_Node000005" title=" " alt="" coords="402,264,751,259,751,264,402,270"/>
+<area shape="rect" id="Node000009" href="$classCellHabitatDomainInterface.html" title="Represents the habitat&#45;domain information associated with a terrain cell." alt="" coords="731,297,935,322"/>
+<area shape="poly" id="edge11_Node000009_Node000005" title=" " alt="" coords="402,271,731,298,730,304,402,276"/>
+<area shape="rect" id="Node000006" href="$classWetMass.html" title="Represents wet mass in the ecosystem simulation." alt="" coords="297,183,378,209"/>
+<area shape="poly" id="edge6_Node000004_Node000006" title=" " alt="" coords="392,195,751,206,751,211,392,200"/>
+<area shape="rect" id="Node000007" href="$classPreciseDouble.html" title="Class for precise double&#45;precision floating&#45;point arithmetic." alt="" coords="5,95,120,121"/>
+<area shape="poly" id="edge14_Node000002_Node000007" title=" " alt="" coords="102,87,152,68,209,53,348,34,458,32,568,44,707,67,794,89,793,94,706,72,567,49,458,38,348,40,210,59,154,73,104,92"/>
+<area shape="poly" id="edge7_Node000006_Node000007" title=" " alt="" coords="103,124,153,147,210,168,297,188,296,193,209,173,151,152,100,129"/>
+<area shape="poly" id="edge8_Node000003_Node000008" title=" " alt="" coords="928,248,1085,228,1129,221,1129,226,1086,233,929,253"/>
+<area shape="poly" id="edge10_Node000003_Node000009" title=" " alt="" coords="948,294,1016,281,1084,263,1130,243,1168,222,1170,227,1132,248,1086,268,1017,287,949,299"/>
+<area shape="rect" id="Node000010" href="$classCustomIndexedVector.html" title=" " alt="" coords="209,309,465,363"/>
+<area shape="poly" id="edge12_Node000009_Node000010" title=" " alt="" coords="479,339,590,339,706,332,780,319,781,325,707,337,591,344,479,345"/>
+<area shape="rect" id="Node000011" href="$classPointMap.html" title="Represents a point in a discrete map coordinate system." alt="" coords="296,69,379,94"/>
+<area shape="poly" id="edge13_Node000002_Node000011" title=" " alt="" coords="393,81,787,99,787,105,393,86"/>
+<area shape="rect" id="Node000012" href="$classCustomIndexedVector.html" title="A vector container indexed by a custom type with bounds checking." alt="" coords="234,119,441,159"/>
+<area shape="poly" id="edge15_Node000002_Node000012" title=" " alt="" coords="454,132,706,116,787,107,787,113,707,121,455,137"/>
+<area shape="poly" id="edge16_Node000001_Node000013" title=" " alt="" coords="1426,104,1412,105,1354,108,1296,105,1265,102,1265,97,1296,100,1354,103,1412,100,1425,99"/>
+</map>
