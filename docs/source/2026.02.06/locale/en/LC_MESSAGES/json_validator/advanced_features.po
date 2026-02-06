@@ -1,0 +1,566 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) 2025, EEZA
+# This file is distributed under the same license as the Weaver package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, 2025.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: Weaver latest\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2025-10-27 21:00+0100\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language: en\n"
+"Language-Team: en <LL@li.org>\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Generated-By: Babel 2.17.0\n"
+
+#: ../json_validator/advanced_features.rst:3
+msgid "Advanced Features"
+msgstr ""
+
+#: ../json_validator/advanced_features.rst:5
+msgid ""
+"This section covers the advanced features of the JSON Schema validator. "
+"These features provide enhanced capabilities and customization options "
+"for schema validation."
+msgstr ""
+
+#: ../json_validator/advanced_features.rst:10
+msgid "Operators of JSON Schema"
+msgstr ""
+
+#: ../json_validator/advanced_features.rst:12
+msgid ""
+"In JSON Schema, operators are used to define constraints and conditions. "
+"This section details the various operators available, their usage, and "
+"examples. The result of any operator will be a value of a basic type, "
+"such as an integer, boolean, string, etc."
+msgstr ""
+
+#: ../json_validator/advanced_features.rst:15
+msgid ""
+"Each operator is defined by a dictionary (or object) with several fields "
+"describing the type of the operator and the properties of each operator."
+msgstr ""
+
+#: ../json_validator/advanced_features.rst:18
+msgid ""
+"The type of the operator is defined through the field '**operatorType**',"
+" the content of which is a string. The available types are shown below:"
+msgstr ""
+
+#: ../json_validator/advanced_features.rst:21
+msgid ":ref:`json_validator/advanced_features:equality and comparison operators`"
+msgstr ""
+
+#: ../json_validator/advanced_features.rst:30
+msgid ":ref:`json_validator/advanced_features:logical operators`"
+msgstr ""
+
+#: ../json_validator/advanced_features.rst:39
+msgid ":ref:`json_validator/advanced_features:property operators`"
+msgstr ""
+
+#: ../json_validator/advanced_features.rst:48
+msgid ":ref:`json_validator/advanced_features:constant operators`"
+msgstr ""
+
+#: ../json_validator/advanced_features.rst:57
+msgid ":ref:`json_validator/advanced_features:arithmetical operators`"
+msgstr ""
+
+#: ../json_validator/advanced_features.rst:68
+msgid "Equality and Comparison Operators"
+msgstr ""
+
+#: ../json_validator/advanced_features.rst:70
+msgid ""
+"These operators are used to compare values and define constraints based "
+"on those comparisons. Each comparison involves two parts: the left-hand "
+"side (`lhs`) and the right-hand side (`rhs`). On both sides another "
+"operator must be defined."
+msgstr ""
+
+#: ../json_validator/advanced_features.rst:73
+msgid ""
+"The type of the comparison operator is defined through the field "
+"'**comparisonType**', the content of which is a string. The comparison "
+"types are defined below:"
+msgstr ""
+
+#: ../json_validator/advanced_features.rst:78
+msgid "Equal (==)"
+msgstr ""
+
+#: ../json_validator/advanced_features.rst:80
+msgid ""
+"Checks if the '**lhs**' is **equal to** the '**rhs**'. The value of the "
+"'**comparisonType**' field is **\"equal\"**."
+msgstr ""
+
+#: ../json_validator/advanced_features.rst:82
+#: ../json_validator/advanced_features.rst:103
+#: ../json_validator/advanced_features.rst:124
+#: ../json_validator/advanced_features.rst:145
+#: ../json_validator/advanced_features.rst:166
+#: ../json_validator/advanced_features.rst:187
+#: ../json_validator/advanced_features.rst:222
+#: ../json_validator/advanced_features.rst:242
+#: ../json_validator/advanced_features.rst:268
+#: ../json_validator/advanced_features.rst:308
+#: ../json_validator/advanced_features.rst:330
+#: ../json_validator/advanced_features.rst:366
+#: ../json_validator/advanced_features.rst:390
+#: ../json_validator/advanced_features.rst:411
+#: ../json_validator/advanced_features.rst:458
+#: ../json_validator/advanced_features.rst:479
+#: ../json_validator/advanced_features.rst:500
+#: ../json_validator/advanced_features.rst:521
+#: ../json_validator/advanced_features.rst:542
+msgid "Example:"
+msgstr ""
+
+#: ../json_validator/advanced_features.rst:99
+msgid "Not Equal (!=)"
+msgstr ""
+
+#: ../json_validator/advanced_features.rst:101
+msgid ""
+"Checks if the '**lhs**' is **not equal to** the '**rhs**'. The value of "
+"the '**comparisonType**' field is **\"not_equal\"**."
+msgstr ""
+
+#: ../json_validator/advanced_features.rst:120
+msgid "Less Than (<)"
+msgstr ""
+
+#: ../json_validator/advanced_features.rst:122
+msgid ""
+"Checks if the '**lhs**' is **less than** the '**rhs**'. The value of the "
+"'**comparisonType**' field is **\"less_than\"**."
+msgstr ""
+
+#: ../json_validator/advanced_features.rst:141
+msgid "Less Than or Equal (<=)"
+msgstr ""
+
+#: ../json_validator/advanced_features.rst:143
+msgid ""
+"Checks if the '**lhs**' is **less than or equal to** the '**rhs**'. The "
+"value of the '**comparisonType**' field is **\"less_equal_than\"**."
+msgstr ""
+
+#: ../json_validator/advanced_features.rst:162
+msgid "Greater Than (>)"
+msgstr ""
+
+#: ../json_validator/advanced_features.rst:164
+msgid ""
+"Checks if the '**lhs**' is **greater than** the '**rhs**'. The value of "
+"the '**comparisonType**' field is **\"greater_than\"**."
+msgstr ""
+
+#: ../json_validator/advanced_features.rst:183
+msgid "Greater Than or Equal (>=)"
+msgstr ""
+
+#: ../json_validator/advanced_features.rst:185
+msgid ""
+"Checks if the '**lhs**' is **greater than or equal to** the '**rhs**'. "
+"The value of the '**comparisonType**' field is "
+"**\"greater_equal_than\"**."
+msgstr ""
+
+#: ../json_validator/advanced_features.rst:204
+msgid "Logical Operators"
+msgstr ""
+
+#: ../json_validator/advanced_features.rst:206
+msgid ""
+"These operators are used to combine or negate conditions. Each logical "
+"operator involves a list of operands, with each operand defining another "
+"operator."
+msgstr ""
+
+#: ../json_validator/advanced_features.rst:209
+msgid ""
+"The type of the logical operator is defined through the field "
+"'**logicalType**', the content of which is a string. The logical types "
+"are defined below:"
+msgstr ""
+
+#: ../json_validator/advanced_features.rst:214
+msgid "Negation (not)"
+msgstr ""
+
+#: ../json_validator/advanced_features.rst:218
+msgid "Negation needs only one operand."
+msgstr ""
+
+#: ../json_validator/advanced_features.rst:220
+msgid ""
+"Negates a operand. The value of the '**logicalType**' field is "
+"**\"negation\"**."
+msgstr ""
+
+#: ../json_validator/advanced_features.rst:238
+msgid "Conjunction (and)"
+msgstr ""
+
+#: ../json_validator/advanced_features.rst:240
+msgid ""
+"Checks if all operands are true. The value of the '**logicalType**' field"
+" is **\"conjunction\"**."
+msgstr ""
+
+#: ../json_validator/advanced_features.rst:264
+msgid "Disjunction (or)"
+msgstr ""
+
+#: ../json_validator/advanced_features.rst:266
+msgid ""
+"Checks if at least one operand is true. The value of the "
+"'**logicalType**' field is **\"disjunction\"**."
+msgstr ""
+
+#: ../json_validator/advanced_features.rst:290
+msgid "Property Operators"
+msgstr ""
+
+#: ../json_validator/advanced_features.rst:292
+msgid ""
+"These operators are used to extract the characteristics of schema "
+"properties; such as the value associated with the property in the "
+"configuration and checking for the possibility that the property is null,"
+" or in the case of an array property, the size of the array or the value "
+"of an array element."
+msgstr ""
+
+#: ../json_validator/advanced_features.rst:296
+msgid ""
+"All property operators have a field called '**relativePath**', where the "
+"path to the desired property is defined by a list of strings."
+msgstr ""
+
+#: ../json_validator/advanced_features.rst:299
+msgid ""
+"The property element to be extracted is defined through the field "
+"'**propertyElement**', whose content is a string. The property elements "
+"are defined below:"
+msgstr ""
+
+#: ../json_validator/advanced_features.rst:304
+msgid "Value of the Property"
+msgstr ""
+
+#: ../json_validator/advanced_features.rst:306
+msgid ""
+"Extracts the value associated with the property in the configuration. The"
+" value of the '**propertyElement**' field is **\"value\"**."
+msgstr ""
+
+#: ../json_validator/advanced_features.rst:324
+msgid "Item of the Property"
+msgstr ""
+
+#: ../json_validator/advanced_features.rst:326
+msgid ""
+"Extracts the value of the desired item of the property in the "
+"configuration. The value of the '**propertyElement**' field is "
+"**\"item\"**."
+msgstr ""
+
+#: ../json_validator/advanced_features.rst:328
+msgid ""
+"The selection of the item is defined through the '**selectedItem**' "
+"field, which can be defined as a positive integer or as an operator."
+msgstr ""
+
+#: ../json_validator/advanced_features.rst:362
+msgid "Size of the Property"
+msgstr ""
+
+#: ../json_validator/advanced_features.rst:364
+msgid ""
+"Extracts the size of the property defined in the configuration. The value"
+" of the '**propertyElement**' field is **\"size\"**."
+msgstr ""
+
+#: ../json_validator/advanced_features.rst:382
+msgid "Null Status of the Property"
+msgstr ""
+
+#: ../json_validator/advanced_features.rst:386
+msgid "Always returns a boolean value"
+msgstr ""
+
+#: ../json_validator/advanced_features.rst:388
+msgid ""
+"Extracts the possibility of being or not being null of the property. The "
+"value of the '**propertyElement**' field is **\"nullProperty\"**."
+msgstr ""
+
+#: ../json_validator/advanced_features.rst:406
+msgid "Constant Operators"
+msgstr ""
+
+#: ../json_validator/advanced_features.rst:408
+msgid ""
+"These operators are used to return constant values independent of the "
+"configuration used. The constant value is defined through the '**value**'"
+" field, which takes values of a basic type such as an integer, a string, "
+"a boolean or a floating point number."
+msgstr ""
+
+#: ../json_validator/advanced_features.rst:443
+msgid "Arithmetical Operators"
+msgstr ""
+
+#: ../json_validator/advanced_features.rst:445
+msgid ""
+"In JSON Schema, arithmetical operators are used to perform basic "
+"arithmetic operations and define numeric constraints. Each arithmetic "
+"operation consists of two parts: the left-hand side (`lhs`) and the "
+"right-hand side (`rhs`). On both sides another operator must be defined."
+msgstr ""
+
+#: ../json_validator/advanced_features.rst:449
+msgid ""
+"The type of the arithmetic operator is defined by the field "
+"'**arithmeticalType**', whose content is a string. The arithmetic "
+"operator types are defined below:"
+msgstr ""
+
+#: ../json_validator/advanced_features.rst:454
+msgid "Subtract (-)"
+msgstr ""
+
+#: ../json_validator/advanced_features.rst:456
+msgid ""
+"The subtract operator is used to subtract one number from another. The "
+"value of the '**arithmeticalType**' field is **\"subtract\"**."
+msgstr ""
+
+#: ../json_validator/advanced_features.rst:475
+msgid "Addition (+)"
+msgstr ""
+
+#: ../json_validator/advanced_features.rst:477
+msgid ""
+"The addition operator is used to sum two numbers. The value of the "
+"'**arithmeticalType**' field is **\"addition\"**."
+msgstr ""
+
+#: ../json_validator/advanced_features.rst:496
+msgid "Multiply (*)"
+msgstr ""
+
+#: ../json_validator/advanced_features.rst:498
+msgid ""
+"The multiply operator is used to multiply two numbers. The value of the "
+"'**arithmeticalType**' field is **\"multiply\"**."
+msgstr ""
+
+#: ../json_validator/advanced_features.rst:517
+msgid "Division (/)"
+msgstr ""
+
+#: ../json_validator/advanced_features.rst:519
+msgid ""
+"The division operator is used to divide one number by another. The value "
+"of the '**arithmeticalType**' field is **\"division\"**."
+msgstr ""
+
+#: ../json_validator/advanced_features.rst:538
+msgid "Module (%)"
+msgstr ""
+
+#: ../json_validator/advanced_features.rst:540
+msgid ""
+"The module operator is used to find the remainder of the division of one "
+"number by another. The value of the '**arithmeticalType**' field is "
+"**\"module\"**."
+msgstr ""
+
+#: ../json_validator/advanced_features.rst:559
+msgid "Conditionals of JSON Schema"
+msgstr ""
+
+#: ../json_validator/advanced_features.rst:561
+msgid ""
+"Conditionals in JSON schemas function as schema modifiers based on the "
+"values of the configuration used in the validation. Each conditional is "
+"defined by a dictionary (or object). These conditionals, like a "
+"conditional in programming, have three distinct parts, which are defined "
+"in three fields:"
+msgstr ""
+
+#: ../json_validator/advanced_features.rst:566
+msgid "Condition"
+msgstr ""
+
+#: ../json_validator/advanced_features.rst:568
+msgid ""
+"The '**condition**' field is in charge of deciding which block of the "
+"conditional will modify the schema, the "
+":ref:`json_validator/advanced_features:then block` or the "
+":ref:`json_validator/advanced_features:else block`."
+msgstr ""
+
+#: ../json_validator/advanced_features.rst:571
+msgid ""
+"This field is defined by the use of operators. The result of the operator"
+" resolution shall be evaluated as a condition. For more information on "
+"operators, see the :ref:`json_validator/advanced_features:operators of "
+"json schema` section."
+msgstr ""
+
+#: ../json_validator/advanced_features.rst:575
+msgid "Then Block"
+msgstr ""
+
+#: ../json_validator/advanced_features.rst:577
+msgid ""
+"The block defined in the '**then**' field shall be applied in case the "
+"conditional condition is true."
+msgstr ""
+
+#: ../json_validator/advanced_features.rst:579
+msgid ""
+"This block is defined by a dictionary (or object), which has three fields"
+" to be defined, as follows:"
+msgstr ""
+
+#: ../json_validator/advanced_features.rst:581
+msgid "**workingPath**:"
+msgstr ""
+
+#: ../json_validator/advanced_features.rst:585
+msgid ""
+"The '**workingPath**' field is optional. Its default value is the height "
+"within the scheme in which the conditional is defined."
+msgstr ""
+
+#: ../json_validator/advanced_features.rst:587
+msgid ""
+"It is defined as a list of strings, which indicates the relative path to "
+"the current position within the schema where the modification is to be "
+"applied."
+msgstr ""
+
+#: ../json_validator/advanced_features.rst:589
+msgid ""
+"This field is necessary because it may be the case that the zone where "
+"the modification is to be applied is at a different height from the zone "
+"where the values for the resolution of the condition are obtained."
+msgstr ""
+
+#: ../json_validator/advanced_features.rst:591
+msgid "**add**:"
+msgstr ""
+
+#: ../json_validator/advanced_features.rst:593
+msgid ""
+"The '**add**' field is defined as a dictionary (or object), in which "
+"different fields are defined depending on the additions to be made to the"
+" schema. The available modification fields are the following:"
+msgstr ""
+
+#: ../json_validator/advanced_features.rst:595
+#: ../json_validator/advanced_features.rst:603
+msgid "**nullProperty**:"
+msgstr ""
+
+#: ../json_validator/advanced_features.rst:597
+msgid ""
+"The purpose of this field is to activate the possibility of a schema "
+"element to have a null value in the configuration. The way to define this"
+" field is through a list of strings indicating the names of the affected "
+"properties."
+msgstr ""
+
+#: ../json_validator/advanced_features.rst:599
+msgid "**remove**:"
+msgstr ""
+
+#: ../json_validator/advanced_features.rst:601
+msgid ""
+"The '**remove**' field is defined as a dictionary (or object), in which "
+"different fields are defined depending on the deletions to be made in the"
+" schema. The following modification fields are available:"
+msgstr ""
+
+#: ../json_validator/advanced_features.rst:605
+msgid ""
+"The purpose of this field is to disable the possibility that a schema "
+"element can take a null value in the configuration. The way to define "
+"this field is through a list of strings indicating the names of the "
+"affected properties."
+msgstr ""
+
+#: ../json_validator/advanced_features.rst:609
+msgid "Else Block"
+msgstr ""
+
+#: ../json_validator/advanced_features.rst:611
+msgid ""
+"The block defined in the \"**else**\" field shall be applied in case the "
+"conditional condition is false."
+msgstr ""
+
+#: ../json_validator/advanced_features.rst:613
+msgid ""
+"The structure of this block is exactly the same as in the "
+":ref:`json_validator/advanced_features:then block` section."
+msgstr ""
+
+#: ../json_validator/advanced_features.rst:616
+msgid ""
+"In the case of having defined a pattern-based conditional, the above "
+"structure is maintained in its entirety except for a single addition, the"
+" possibility of using the value that matches the pattern."
+msgstr ""
+
+#: ../json_validator/advanced_features.rst:619
+msgid ""
+"This value can be used within the path defined by the '**workingPath**' "
+"field as well as in the schema modification fields, such as "
+"'**nullProperty**'. To use this value, the string **\"<pattern>\"** must "
+"be placed, which will be replaced by the value matching the pattern "
+"automatically within the validator."
+msgstr ""
+
+#: ../json_validator/advanced_features.rst:625
+#: ../json_validator/advanced_features.rst:650
+msgid "Example"
+msgstr ""
+
+#: ../json_validator/advanced_features.rst:641
+msgid "Conditions of JSON Schema"
+msgstr ""
+
+#: ../json_validator/advanced_features.rst:643
+msgid ""
+"Conditions in JSON schemas are used to define certain restrictions that "
+"warn the user with errors or warnings of possible malfunctioning of the "
+"validation due to the configuration values used."
+msgstr ""
+
+#: ../json_validator/advanced_features.rst:646
+msgid ""
+"Al igual que sucede con los condicionales, estas condiciones se definen "
+"como un diccionario (o objeto) en el cuál existe un campo "
+"'**condition**', cuya estructura es exactamente igual a la del campo "
+"'condition' de los condicionales, la cual se puede ver en la sección "
+"Condition; y un campo donde se define la advertencia. Esta campo de "
+"advertencia se define como una cadena, que representa el mensaje a "
+"mostrar al usuario. Si la advertencia es de error se define el campo "
+"'**error**', mientras que si la advertencia es de aviso se define el "
+"campo '**warning**'."
+msgstr ""
+

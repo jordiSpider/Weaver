@@ -1,0 +1,68 @@
+<map id="CellResource" name="CellResource">
+<area shape="rect" id="Node000001" title="Concrete implementation of a resource cell." alt="" coords="2885,309,2992,334"/>
+<area shape="rect" id="Node000002" href="$classCellResourceInterface.html" title="Interface for a resource in a terrain cell." alt="" coords="2024,267,2189,293"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="2203,281,2861,313,2885,315,2885,320,2861,319,2203,287"/>
+<area shape="rect" id="Node000019" href="$classCellResourceInterfaceGrowth.html" title="Manages growth and biomass for a resource cell." alt="" coords="2283,415,2495,441"/>
+<area shape="poly" id="edge32_Node000019_Node000002" title=" " alt="" coords="2145,297,2365,413,2362,418,2143,301"/>
+<area shape="rect" id="Node000003" href="$classEdible.html" title="Represents a generic edible entity within a terrain cell." alt="" coords="1891,263,1953,289"/>
+<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="1967,274,2024,276,2024,281,1967,280"/>
+<area shape="rect" id="Node000004" href="$classEdibleID.html" title="Encapsulates a unique identifier for an edible object or resource." alt="" coords="1662,261,1738,286"/>
+<area shape="poly" id="edge3_Node000003_Node000004" title=" " alt="" coords="1752,271,1891,273,1891,278,1752,277"/>
+<area shape="rect" id="Node000005" href="$classSpecies.html" title="Represents a generic species in the ecosystem." alt="" coords="1664,310,1736,335"/>
+<area shape="poly" id="edge4_Node000003_Node000005" title=" " alt="" coords="1749,312,1845,293,1890,282,1891,287,1846,299,1750,317"/>
+<area shape="rect" id="Node000006" href="$classSpecies_1_1ID.html" title="Unique identifier for a Species." alt="" coords="1349,310,1444,335"/>
+<area shape="poly" id="edge5_Node000005_Node000006" title=" " alt="" coords="1458,320,1664,320,1664,325,1458,325"/>
+<area shape="rect" id="Node000007" href="$classTerrainCell.html" title="Represents a single cell in the landscape." alt="" coords="1655,187,1745,213"/>
+<area shape="poly" id="edge6_Node000003_Node000007" title=" " alt="" coords="1752,215,1891,263,1890,268,1750,220"/>
+<area shape="rect" id="Node000008" href="$classPatchApplicator.html" title="Applies patches to a TerrainCell including moisture, resources, obstacles, and habitat domains." alt="" coords="1335,125,1458,150"/>
+<area shape="poly" id="edge8_Node000008_Node000007" title=" " alt="" coords="1669,183,1630,164,1586,153,1541,145,1458,139,1458,134,1541,140,1587,147,1632,159,1671,178"/>
+<area shape="poly" id="edge7_Node000007_Node000008" title=" " alt="" coords="1448,152,1525,173,1593,186,1655,193,1654,199,1592,191,1523,179,1446,157"/>
+<area shape="rect" id="Node000009" href="$classCellMoistureInterface.html" title="Base interface representing the hydrological and thermal properties of a terrain cell." alt="" coords="935,142,1098,167"/>
+<area shape="poly" id="edge9_Node000008_Node000009" title=" " alt="" coords="1112,152,1269,148,1335,142,1335,147,1269,153,1112,158"/>
+<area shape="rect" id="Node000010" href="$classCellElement.html" title="Base class for any modifiable element contained within a terrain cell." alt="" coords="471,58,572,83"/>
+<area shape="poly" id="edge21_Node000002_Node000010" title=" " alt="" coords="585,54,776,21,895,8,1015,3,1923,3,1947,5,1968,12,2006,37,2036,72,2060,115,2078,160,2092,203,2106,267,2101,268,2087,204,2073,161,2055,117,2032,75,2002,41,1966,17,1946,10,1923,8,1015,8,896,13,777,27,586,60"/>
+<area shape="poly" id="edge10_Node000009_Node000010" title=" " alt="" coords="586,82,674,100,936,141,935,146,673,105,585,87"/>
+<area shape="rect" id="Node000013" href="$classCellObstacleInterface.html" title="Interface for managing obstacles in a terrain cell." alt="" coords="935,43,1098,69"/>
+<area shape="poly" id="edge14_Node000013_Node000010" title=" " alt="" coords="586,66,935,56,935,61,586,71"/>
+<area shape="rect" id="Node000014" href="$classCellHabitatDomainInterface.html" title="Represents the habitat&#45;domain information associated with a terrain cell." alt="" coords="915,93,1119,118"/>
+<area shape="poly" id="edge16_Node000014_Node000010" title=" " alt="" coords="586,72,915,96,914,101,586,78"/>
+<area shape="rect" id="Node000011" href="$classWetMass.html" title="Represents wet mass in the ecosystem simulation." alt="" coords="481,435,562,461"/>
+<area shape="poly" id="edge11_Node000009_Node000011" title=" " alt="" coords="575,447,614,440,632,432,647,421,660,401,661,381,661,359,671,335,699,301,725,275,751,256,778,241,914,184,966,165,968,170,916,189,781,246,754,261,729,280,703,305,676,337,666,360,666,381,665,403,651,424,634,437,616,445,576,452"/>
+<area shape="rect" id="Node000020" href="$classEdibleGrowth.html" title="Represents the growth characteristics and current biomasses of an edible object." alt="" coords="962,555,1071,581"/>
+<area shape="poly" id="edge31_Node000020_Node000011" title=" " alt="" coords="576,458,964,553,963,558,575,463"/>
+<area shape="rect" id="Node000025" href="$classResourceSource.html" title="Represents a resource source in the landscape." alt="" coords="953,369,1080,394"/>
+<area shape="poly" id="edge36_Node000025_Node000011" title=" " alt="" coords="576,447,719,446,805,439,890,425,942,410,987,392,989,397,944,415,891,431,806,444,719,451,576,453"/>
+<area shape="rect" id="Node000012" href="$classPreciseDouble.html" title="Class for precise double&#45;precision floating&#45;point arithmetic." alt="" coords="43,315,158,341"/>
+<area shape="poly" id="edge19_Node000007_Node000012" title=" " alt="" coords="143,307,213,281,306,252,411,228,466,221,520,219,1398,219,1538,213,1654,202,1655,208,1539,218,1398,224,520,224,466,227,412,234,307,257,215,286,145,312"/>
+<area shape="poly" id="edge12_Node000011_Node000012" title=" " alt="" coords="150,343,261,380,394,420,481,439,480,444,393,425,259,386,148,348"/>
+<area shape="rect" id="Node000024" href="$classDryMass.html" title="Represents dry mass in the ecosystem simulation." alt="" coords="482,551,561,577"/>
+<area shape="poly" id="edge30_Node000024_Node000012" title=" " alt="" coords="126,349,171,391,235,443,311,495,352,517,394,536,439,549,482,557,481,562,438,555,392,541,350,522,308,499,232,447,168,395,122,352"/>
+<area shape="poly" id="edge37_Node000025_Node000012" title=" " alt="" coords="172,317,306,307,485,300,585,301,688,307,791,317,891,333,944,348,989,366,987,371,942,353,890,339,790,322,688,312,585,307,485,306,306,312,172,323"/>
+<area shape="poly" id="edge13_Node000008_Node000013" title=" " alt="" coords="1112,60,1190,73,1270,95,1294,110,1336,123,1334,128,1292,114,1268,100,1189,78,1111,65"/>
+<area shape="poly" id="edge15_Node000008_Node000014" title=" " alt="" coords="1133,112,1335,130,1335,135,1132,118"/>
+<area shape="rect" id="Node000015" href="$classCustomIndexedVector.html" title=" " alt="" coords="393,129,649,183"/>
+<area shape="poly" id="edge17_Node000014_Node000015" title=" " alt="" coords="663,139,914,113,915,118,664,144"/>
+<area shape="rect" id="Node000016" href="$classPointMap.html" title="Represents a point in a discrete map coordinate system." alt="" coords="1355,259,1438,285"/>
+<area shape="poly" id="edge18_Node000007_Node000016" title=" " alt="" coords="1452,274,1538,273,1585,266,1630,252,1661,233,1685,211,1689,215,1664,238,1632,257,1586,271,1538,278,1452,280"/>
+<area shape="rect" id="Node000017" href="$classCustomIndexedVector.html" title="A vector container indexed by a custom type with bounds checking." alt="" coords="1293,60,1500,100"/>
+<area shape="poly" id="edge20_Node000007_Node000017" title=" " alt="" coords="1515,82,1575,95,1632,119,1652,134,1669,152,1694,185,1689,189,1665,155,1649,138,1629,124,1573,100,1514,88"/>
+<area shape="rect" id="Node000018" href="$classCellResourceGrowth.html" title="Concrete growth handler for a resource in a terrain cell." alt="" coords="2544,365,2699,390"/>
+<area shape="poly" id="edge22_Node000001_Node000018" title=" " alt="" coords="2707,360,2885,328,2886,333,2708,365"/>
+<area shape="poly" id="edge23_Node000018_Node000019" title=" " alt="" coords="2461,410,2562,387,2563,393,2462,415"/>
+<area shape="poly" id="edge24_Node000019_Node000020" title=" " alt="" coords="1076,549,1220,518,1307,506,1395,501,2108,501,2180,495,2250,478,2312,457,2359,438,2361,443,2314,462,2252,483,2181,500,2108,507,1395,507,1308,511,1221,523,1077,554"/>
+<area shape="rect" id="Node000021" href="$classInstar.html" title="Represents a developmental stage (instar) of an animal in the simulation." alt="" coords="71,615,130,641"/>
+<area shape="poly" id="edge25_Node000020_Node000021" title=" " alt="" coords="144,624,360,616,649,600,961,571,962,577,650,605,361,621,144,629"/>
+<area shape="rect" id="Node000022" href="$classSpeciesGrowth.html" title="Represents the growth characteristics of a species across its instars." alt="" coords="462,665,581,690"/>
+<area shape="poly" id="edge27_Node000022_Node000021" title=" " alt="" coords="144,634,220,647,350,661,462,671,462,676,349,667,220,652,143,639"/>
+<area shape="poly" id="edge26_Node000020_Node000022" title=" " alt="" coords="595,680,659,680,734,677,813,666,890,647,922,633,953,614,1000,579,1003,583,956,619,925,637,892,652,814,672,734,682,659,686,595,685"/>
+<area shape="rect" id="Node000023" href="$classCustomIndexedVector.html" title=" " alt="" coords="5,676,196,716"/>
+<area shape="poly" id="edge28_Node000022_Node000023" title=" " alt="" coords="210,695,369,692,462,683,462,688,369,697,210,701"/>
+<area shape="poly" id="edge29_Node000020_Node000024" title=" " alt="" coords="575,562,673,564,961,565,961,571,673,569,575,568"/>
+<area shape="poly" id="edge33_Node000018_Node000025" title=" " alt="" coords="1094,377,1395,375,2390,375,2544,375,2544,380,2390,380,1395,380,1094,383"/>
+<area shape="rect" id="Node000026" href="$classPathSource.html" title="Abstract base class for landscape data sources." alt="" coords="474,502,569,527"/>
+<area shape="poly" id="edge34_Node000025_Node000026" title=" " alt="" coords="583,518,750,526,832,524,865,519,890,512,930,487,963,454,989,420,1006,393,1011,395,994,423,967,457,933,491,892,517,866,525,833,529,750,532,583,523"/>
+<area shape="rect" id="Node000027" href="$classResourceSpecies_1_1ResourceID.html" title="Unique identifier for a resource species." alt="" coords="414,337,629,362"/>
+<area shape="poly" id="edge35_Node000025_Node000027" title=" " alt="" coords="643,351,891,365,954,371,953,377,890,371,643,356"/>
+<area shape="rect" id="Node000028" href="$classDynamics.html" title="Abstract base class for modeling temporal dynamics." alt="" coords="478,386,565,411"/>
+<area shape="poly" id="edge38_Node000025_Node000028" title=" " alt="" coords="578,394,953,381,953,386,578,399"/>
+</map>
