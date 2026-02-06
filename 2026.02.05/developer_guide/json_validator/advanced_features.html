@@ -1,0 +1,1218 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="../../">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Advanced Features &mdash; Weaver  documentation</title>
+      <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=80d5e7a1" />
+      <link rel="stylesheet" type="text/css" href="../../_static/css/theme.css?v=9edc463e" />
+
+  
+      <script src="../../_static/jquery.js?v=5d32c60e"></script>
+      <script src="../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="../../_static/documentation_options.js?v=5929fcd5"></script>
+      <script src="../../_static/doctools.js?v=fd6eb6e6"></script>
+      <script src="../../_static/sphinx_highlight.js?v=6ffebe34"></script>
+    <script src="../../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+    <link rel="next" title="API" href="../../reference/api.html" />
+    <link rel="prev" title="Tuple Type" href="element_types/tuple.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search"  style="background: #2980B9" >
+
+          
+          
+          <a href="../../index.html">
+            
+              <img src="../../_static/logo.png" class="logo" alt="Logo"/>
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">📘 User Guide</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../user_guide/installation.html">Installation</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../user_guide/installation.html#windows">Windows</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../user_guide/installation.html#linux">Linux</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../user_guide/configuration.html">Configuration</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../user_guide/configuration.html#types-of-configurations">Types of Configurations</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../user_guide/configuration.html#folder-structure">Folder Structure</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../user_guide/configuration.html#file-descriptions">File Descriptions</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../user_guide/configuration.html#simulation-params-json">simulation_params.json</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../user_guide/configuration.html#landscape-params-json">landscape_params.json</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../user_guide/configuration.html#habitat-domain-patch-json">habitat_domain_patch.json</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../user_guide/configuration.html#moisture-patch-json">moisture_patch.json</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../user_guide/configuration.html#obstacle-patch-json">obstacle_patch.json</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../user_guide/configuration.html#resource-json">resource.json</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../user_guide/configuration.html#resource-patch-json">resource_patch.json</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../user_guide/configuration.html#species-json">species.json</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../user_guide/configuration.html#ontogeneticlinkspreference-csv">ontogeneticLinksPreference.csv</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../user_guide/configuration.html#ontogeneticlinksprofitability-csv">ontogeneticLinksProfitability.csv</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../user_guide/configuration.html#checkpoint-bin-checkpoint-txt">checkpoint.bin / checkpoint.txt</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../user_guide/configuration.html#configuration-parameters">Configuration Parameters</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../user_guide/json/simulation_params.html">simulation_params</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../../user_guide/json/simulation_params.html#main-properties">Main Properties</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../user_guide/json/simulation_params.html#object-simulation">Object <code class="docutils literal notranslate"><span class="pre">simulation</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../user_guide/json/simulation_params.html#object-checkpoints">Object <code class="docutils literal notranslate"><span class="pre">checkpoints</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../user_guide/json/simulation_params.html#object-breakconditions">Object <code class="docutils literal notranslate"><span class="pre">breakConditions</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../user_guide/json/simulation_params.html#object-stability">Object <code class="docutils literal notranslate"><span class="pre">stability</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../user_guide/json/simulation_params.html#object-initfromfixedseed">Object <code class="docutils literal notranslate"><span class="pre">initFromFixedSeed</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../user_guide/json/simulation_params.html#object-outputs">Object <code class="docutils literal notranslate"><span class="pre">outputs</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../user_guide/json/simulation_params.html#warnings">Warnings</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../user_guide/json/simulation_params.html#hierarchical-summary">Hierarchical Summary</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../../user_guide/json/landscape_params.html">landscape_params</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../../user_guide/json/landscape_params.html#main-properties">Main Properties</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../user_guide/json/landscape_params.html#object-landscape">Object <code class="docutils literal notranslate"><span class="pre">landscape</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../user_guide/json/landscape_params.html#object-mapconfig">Object <code class="docutils literal notranslate"><span class="pre">mapConfig</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../user_guide/json/landscape_params.html#object-landscapewideparams">Object <code class="docutils literal notranslate"><span class="pre">landscapeWideParams</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../user_guide/json/landscape_params.html#object-spatialtreeparams">Object <code class="docutils literal notranslate"><span class="pre">spatialTreeParams</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../user_guide/json/landscape_params.html#object-moisturebasepatch">Object <code class="docutils literal notranslate"><span class="pre">moistureBasePatch</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../user_guide/json/landscape_params.html#object-temperaturedynamics">Object <code class="docutils literal notranslate"><span class="pre">temperatureDynamics</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../user_guide/json/landscape_params.html#object-relativehumiditydynamics">Object <code class="docutils literal notranslate"><span class="pre">relativeHumidityDynamics</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../user_guide/json/landscape_params.html#object-cycleparams">Object <code class="docutils literal notranslate"><span class="pre">cycleParams</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../user_guide/json/landscape_params.html#object-pulseparams">Object <code class="docutils literal notranslate"><span class="pre">pulseParams</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../user_guide/json/landscape_params.html#object-daysbetweenpulsesrange-and-pulsepeakvaluerange">Object <code class="docutils literal notranslate"><span class="pre">daysBetweenPulsesRange</span></code> and <code class="docutils literal notranslate"><span class="pre">pulsePeakValueRange</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../user_guide/json/landscape_params.html#object-decay">Object <code class="docutils literal notranslate"><span class="pre">decay</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../user_guide/json/landscape_params.html#object-linealdecayparams">Object <code class="docutils literal notranslate"><span class="pre">linealDecayParams</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../user_guide/json/landscape_params.html#object-nutrients">Object <code class="docutils literal notranslate"><span class="pre">nutrients</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../user_guide/json/landscape_params.html#object-life">Object <code class="docutils literal notranslate"><span class="pre">life</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../user_guide/json/landscape_params.html#hierarchical-summary">Hierarchical Summary</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../../user_guide/json/habitat_domain_patch.html">habitat_domain_patch</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../../user_guide/json/habitat_domain_patch.html#main-properties">Main Properties</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../user_guide/json/habitat_domain_patch.html#object-patch">Object <code class="docutils literal notranslate"><span class="pre">patch</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../user_guide/json/habitat_domain_patch.html#object-source">Object <code class="docutils literal notranslate"><span class="pre">source</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../user_guide/json/habitat_domain_patch.html#object-shape">Object <code class="docutils literal notranslate"><span class="pre">shape</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../user_guide/json/habitat_domain_patch.html#object-cubicparams">Object <code class="docutils literal notranslate"><span class="pre">cubicParams</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../user_guide/json/habitat_domain_patch.html#object-sphericalparams">Object <code class="docutils literal notranslate"><span class="pre">sphericalParams</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../user_guide/json/habitat_domain_patch.html#object-homogeneousparams">Object <code class="docutils literal notranslate"><span class="pre">homogeneousParams</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../user_guide/json/habitat_domain_patch.html#object-gaussianparams">Object <code class="docutils literal notranslate"><span class="pre">gaussianParams</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../user_guide/json/habitat_domain_patch.html#object-randomgaussianparams">Object <code class="docutils literal notranslate"><span class="pre">randomGaussianParams</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../user_guide/json/habitat_domain_patch.html#hierarchical-summary">Hierarchical Summary</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../../user_guide/json/moisture_patch.html">moisture_patch</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../../user_guide/json/moisture_patch.html#main-properties">Main Properties</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../user_guide/json/moisture_patch.html#object-patch">Object <code class="docutils literal notranslate"><span class="pre">patch</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../user_guide/json/moisture_patch.html#object-source">Object <code class="docutils literal notranslate"><span class="pre">source</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../user_guide/json/moisture_patch.html#object-temperaturedynamics">Object <code class="docutils literal notranslate"><span class="pre">temperatureDynamics</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../user_guide/json/moisture_patch.html#object-relativehumiditydynamics">Object <code class="docutils literal notranslate"><span class="pre">relativeHumidityDynamics</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../user_guide/json/moisture_patch.html#object-cycleparams">Object <code class="docutils literal notranslate"><span class="pre">cycleParams</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../user_guide/json/moisture_patch.html#object-pulseparams">Object <code class="docutils literal notranslate"><span class="pre">pulseParams</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../user_guide/json/moisture_patch.html#object-daysbetweenpulsesrange">Object <code class="docutils literal notranslate"><span class="pre">daysBetweenPulsesRange</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../user_guide/json/moisture_patch.html#object-pulsepeakvaluerange">Object <code class="docutils literal notranslate"><span class="pre">pulsePeakValueRange</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../user_guide/json/moisture_patch.html#object-decay">Object <code class="docutils literal notranslate"><span class="pre">decay</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../user_guide/json/moisture_patch.html#object-linealdecayparams">Object <code class="docutils literal notranslate"><span class="pre">linealDecayParams</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../user_guide/json/moisture_patch.html#object-shape">Object <code class="docutils literal notranslate"><span class="pre">shape</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../user_guide/json/moisture_patch.html#object-cubicparams">Object <code class="docutils literal notranslate"><span class="pre">cubicParams</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../user_guide/json/moisture_patch.html#object-sphericalparams">Object <code class="docutils literal notranslate"><span class="pre">sphericalParams</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../user_guide/json/moisture_patch.html#object-homogeneousparams">Object <code class="docutils literal notranslate"><span class="pre">homogeneousParams</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../user_guide/json/moisture_patch.html#object-gaussianparams">Object <code class="docutils literal notranslate"><span class="pre">gaussianParams</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../user_guide/json/moisture_patch.html#object-randomgaussianparams">Object <code class="docutils literal notranslate"><span class="pre">randomGaussianParams</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../user_guide/json/moisture_patch.html#hierarchical-summary">Hierarchical Summary</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../../user_guide/json/obstacle_patch.html">obstacle_patch</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../../user_guide/json/obstacle_patch.html#main-properties">Main Properties</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../user_guide/json/obstacle_patch.html#object-patch">Object <code class="docutils literal notranslate"><span class="pre">patch</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../user_guide/json/obstacle_patch.html#object-shape">Object <code class="docutils literal notranslate"><span class="pre">shape</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../user_guide/json/obstacle_patch.html#object-cubicparams">Object <code class="docutils literal notranslate"><span class="pre">cubicParams</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../user_guide/json/obstacle_patch.html#object-sphericalparams">Object <code class="docutils literal notranslate"><span class="pre">sphericalParams</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../user_guide/json/obstacle_patch.html#object-homogeneousparams">Object <code class="docutils literal notranslate"><span class="pre">homogeneousParams</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../user_guide/json/obstacle_patch.html#object-gaussianparams">Object <code class="docutils literal notranslate"><span class="pre">gaussianParams</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../user_guide/json/obstacle_patch.html#object-randomgaussianparams">Object <code class="docutils literal notranslate"><span class="pre">randomGaussianParams</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../user_guide/json/obstacle_patch.html#hierarchical-summary">Hierarchical Summary</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../../user_guide/json/resource.html">resource</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../../user_guide/json/resource.html#main-properties">Main Properties</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../user_guide/json/resource.html#object-resource">Object <code class="docutils literal notranslate"><span class="pre">resource</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../user_guide/json/resource.html#object-growthmodule">Object <code class="docutils literal notranslate"><span class="pre">growthModule</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../user_guide/json/resource.html#hierarchical-summary">Hierarchical Summary</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../../user_guide/json/resource_patch.html">resource_patch</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../../user_guide/json/resource_patch.html#main-properties">Main Properties</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../user_guide/json/resource_patch.html#object-patch">Object <code class="docutils literal notranslate"><span class="pre">patch</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../user_guide/json/resource_patch.html#object-source">Object <code class="docutils literal notranslate"><span class="pre">source</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../user_guide/json/resource_patch.html#object-growthdynamics">Object <code class="docutils literal notranslate"><span class="pre">growthDynamics</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../user_guide/json/resource_patch.html#object-cycleparams">Object <code class="docutils literal notranslate"><span class="pre">cycleParams</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../user_guide/json/resource_patch.html#object-pulseparams">Object <code class="docutils literal notranslate"><span class="pre">pulseParams</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../user_guide/json/resource_patch.html#object-daysbetweenpulsesrange-pulsepeakvaluerange">Object <code class="docutils literal notranslate"><span class="pre">daysBetweenPulsesRange</span></code> / <code class="docutils literal notranslate"><span class="pre">pulsePeakValueRange</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../user_guide/json/resource_patch.html#object-decay">Object <code class="docutils literal notranslate"><span class="pre">decay</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../user_guide/json/resource_patch.html#object-linealdecayparams">Object <code class="docutils literal notranslate"><span class="pre">linealDecayParams</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../user_guide/json/resource_patch.html#object-growthrateparams">Object <code class="docutils literal notranslate"><span class="pre">growthRateParams</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../user_guide/json/resource_patch.html#object-temperature">Object <code class="docutils literal notranslate"><span class="pre">temperature</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../user_guide/json/resource_patch.html#object-shape">Object <code class="docutils literal notranslate"><span class="pre">shape</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../user_guide/json/resource_patch.html#object-cubicparams">Object <code class="docutils literal notranslate"><span class="pre">cubicParams</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../user_guide/json/resource_patch.html#object-sphericalparams">Object <code class="docutils literal notranslate"><span class="pre">sphericalParams</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../user_guide/json/resource_patch.html#object-homogeneousparams">Object <code class="docutils literal notranslate"><span class="pre">homogeneousParams</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../user_guide/json/resource_patch.html#object-gaussianparams">Object <code class="docutils literal notranslate"><span class="pre">gaussianParams</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../user_guide/json/resource_patch.html#object-randomgaussianparams">Object <code class="docutils literal notranslate"><span class="pre">randomGaussianParams</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../user_guide/json/resource_patch.html#hierarchical-summary">Hierarchical Summary</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../../user_guide/json/species/species.html">species</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../../user_guide/json/species/species.html#main-properties">Main Properties</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../user_guide/json/species/species.html#object-animal">Object <code class="docutils literal notranslate"><span class="pre">animal</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../user_guide/json/species/species.html#object-debug">Object <code class="docutils literal notranslate"><span class="pre">debug</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../user_guide/json/species/species.html#submodules">Submodules</a><ul>
+<li class="toctree-l5"><a class="reference internal" href="../../user_guide/json/species/decisions_module.html">Decisions Module</a><ul>
+<li class="toctree-l6"><a class="reference internal" href="../../user_guide/json/species/decisions_module.html#main-properties">Main Properties</a></li>
+<li class="toctree-l6"><a class="reference internal" href="../../user_guide/json/species/decisions_module.html#object-predationprobability">Object <code class="docutils literal notranslate"><span class="pre">predationProbability</span></code></a></li>
+<li class="toctree-l6"><a class="reference internal" href="../../user_guide/json/species/decisions_module.html#object-escapeprobability">Object <code class="docutils literal notranslate"><span class="pre">escapeProbability</span></code></a></li>
+<li class="toctree-l6"><a class="reference internal" href="../../user_guide/json/species/decisions_module.html#object-edibilityvalue">Object <code class="docutils literal notranslate"><span class="pre">edibilityValue</span></code></a></li>
+<li class="toctree-l6"><a class="reference internal" href="../../user_guide/json/species/decisions_module.html#object-decisionwithinpatch">Object <code class="docutils literal notranslate"><span class="pre">decisionWithinPatch</span></code></a></li>
+<li class="toctree-l6"><a class="reference internal" href="../../user_guide/json/species/decisions_module.html#object-decisionamongpatches">Object <code class="docutils literal notranslate"><span class="pre">decisionAmongPatches</span></code></a></li>
+<li class="toctree-l6"><a class="reference internal" href="../../user_guide/json/species/decisions_module.html#object-sensorymodel">Object <code class="docutils literal notranslate"><span class="pre">sensoryModel</span></code></a></li>
+<li class="toctree-l6"><a class="reference internal" href="../../user_guide/json/species/decisions_module.html#hierarchical-summary">Hierarchical Summary</a></li>
+</ul>
+</li>
+<li class="toctree-l5"><a class="reference internal" href="../../user_guide/json/species/genetics_module.html">Genetics Module</a><ul>
+<li class="toctree-l6"><a class="reference internal" href="../../user_guide/json/species/genetics_module.html#main-properties">Main Properties</a></li>
+<li class="toctree-l6"><a class="reference internal" href="../../user_guide/json/species/genetics_module.html#object-modules">Object <code class="docutils literal notranslate"><span class="pre">modules</span></code></a></li>
+<li class="toctree-l6"><a class="reference internal" href="../../user_guide/json/species/genetics_module.html#object-modifyalleles">Object <code class="docutils literal notranslate"><span class="pre">modifyAlleles</span></code></a></li>
+<li class="toctree-l6"><a class="reference internal" href="../../user_guide/json/species/genetics_module.html#object-affectedtraits">Object <code class="docutils literal notranslate"><span class="pre">affectedTraits</span></code></a></li>
+<li class="toctree-l6"><a class="reference internal" href="../../user_guide/json/species/genetics_module.html#object-traits">Object <code class="docutils literal notranslate"><span class="pre">traits</span></code></a></li>
+<li class="toctree-l6"><a class="reference internal" href="../../user_guide/json/species/genetics_module.html#object-individualleveltraitsorder">Object <code class="docutils literal notranslate"><span class="pre">individualLevelTraitsOrder</span></code></a></li>
+<li class="toctree-l6"><a class="reference internal" href="../../user_guide/json/species/genetics_module.html#object-definition">Object <code class="docutils literal notranslate"><span class="pre">definition</span></code></a></li>
+<li class="toctree-l6"><a class="reference internal" href="../../user_guide/json/species/genetics_module.html#object-base">Object <code class="docutils literal notranslate"><span class="pre">base</span></code></a></li>
+<li class="toctree-l6"><a class="reference internal" href="../../user_guide/json/species/genetics_module.html#object-decisions">Object <code class="docutils literal notranslate"><span class="pre">decisions</span></code></a></li>
+<li class="toctree-l6"><a class="reference internal" href="../../user_guide/json/species/genetics_module.html#object-escapeprobabilityweight">Object <code class="docutils literal notranslate"><span class="pre">escapeProbabilityWeight</span></code></a></li>
+<li class="toctree-l6"><a class="reference internal" href="../../user_guide/json/species/genetics_module.html#object-predationprobabilityweight">Object <code class="docutils literal notranslate"><span class="pre">predationProbabilityWeight</span></code></a></li>
+<li class="toctree-l6"><a class="reference internal" href="../../user_guide/json/species/genetics_module.html#object-edibilityvalueweight">Object <code class="docutils literal notranslate"><span class="pre">edibilityValueWeight</span></code></a></li>
+<li class="toctree-l6"><a class="reference internal" href="../../user_guide/json/species/genetics_module.html#object-preferences">Object <code class="docutils literal notranslate"><span class="pre">preferences</span></code></a></li>
+<li class="toctree-l6"><a class="reference internal" href="../../user_guide/json/species/genetics_module.html#object-probabilitydensityfunction">Object <code class="docutils literal notranslate"><span class="pre">probabilityDensityFunction</span></code></a></li>
+<li class="toctree-l6"><a class="reference internal" href="../../user_guide/json/species/genetics_module.html#object-cellvalue">Object <code class="docutils literal notranslate"><span class="pre">cellValue</span></code></a></li>
+<li class="toctree-l6"><a class="reference internal" href="../../user_guide/json/species/genetics_module.html#object-trait-non-temperature-section">Object <code class="docutils literal notranslate"><span class="pre">&lt;trait-non-temperature-section&gt;</span></code></a></li>
+<li class="toctree-l6"><a class="reference internal" href="../../user_guide/json/species/genetics_module.html#object-specieslevelparams">Object <code class="docutils literal notranslate"><span class="pre">speciesLevelParams</span></code></a></li>
+<li class="toctree-l6"><a class="reference internal" href="../../user_guide/json/species/genetics_module.html#object-individuallevelparams">Object <code class="docutils literal notranslate"><span class="pre">individualLevelParams</span></code></a></li>
+<li class="toctree-l6"><a class="reference internal" href="../../user_guide/json/species/genetics_module.html#object-limits">Object <code class="docutils literal notranslate"><span class="pre">limits</span></code></a></li>
+<li class="toctree-l6"><a class="reference internal" href="../../user_guide/json/species/genetics_module.html#object-ranges">Object <code class="docutils literal notranslate"><span class="pre">ranges</span></code></a></li>
+<li class="toctree-l6"><a class="reference internal" href="../../user_guide/json/species/genetics_module.html#object-trait-temperature-size-rule-section">Object <code class="docutils literal notranslate"><span class="pre">&lt;trait-temperature-size-rule-section&gt;</span></code></a></li>
+<li class="toctree-l6"><a class="reference internal" href="../../user_guide/json/species/genetics_module.html#object-temperature-of-trait-temperature-size-rule-section">Object <code class="docutils literal notranslate"><span class="pre">temperature</span></code> of <code class="docutils literal notranslate"><span class="pre">&lt;trait-temperature-size-rule-section&gt;</span></code></a></li>
+<li class="toctree-l6"><a class="reference internal" href="../../user_guide/json/species/genetics_module.html#object-tempsizerulevector">Object <code class="docutils literal notranslate"><span class="pre">tempSizeRuleVector</span></code></a></li>
+<li class="toctree-l6"><a class="reference internal" href="../../user_guide/json/species/genetics_module.html#object-trait-dells-section">Object <code class="docutils literal notranslate"><span class="pre">&lt;trait-dells-section&gt;</span></code></a></li>
+<li class="toctree-l6"><a class="reference internal" href="../../user_guide/json/species/genetics_module.html#object-temperature-of-trait-dells-section">Object <code class="docutils literal notranslate"><span class="pre">temperature</span></code> of <code class="docutils literal notranslate"><span class="pre">&lt;trait-dells-section&gt;</span></code></a></li>
+<li class="toctree-l6"><a class="reference internal" href="../../user_guide/json/species/genetics_module.html#hierarchical-summary">Hierarchical Summary</a></li>
+</ul>
+</li>
+<li class="toctree-l5"><a class="reference internal" href="../../user_guide/json/species/growth_module.html">Growth Module</a><ul>
+<li class="toctree-l6"><a class="reference internal" href="../../user_guide/json/species/growth_module.html#main-properties">Main Properties</a></li>
+<li class="toctree-l6"><a class="reference internal" href="../../user_guide/json/species/growth_module.html#object-capitalbreeding">Object <code class="docutils literal notranslate"><span class="pre">capitalBreeding</span></code></a></li>
+<li class="toctree-l6"><a class="reference internal" href="../../user_guide/json/species/growth_module.html#object-capitalbreedingparams">Object <code class="docutils literal notranslate"><span class="pre">capitalBreedingParams</span></code></a></li>
+<li class="toctree-l6"><a class="reference internal" href="../../user_guide/json/species/growth_module.html#object-eggsperbatch">Object <code class="docutils literal notranslate"><span class="pre">eggsPerBatch</span></code></a></li>
+<li class="toctree-l6"><a class="reference internal" href="../../user_guide/json/species/growth_module.html#object-eggsperbatch-equationparameters">Object <code class="docutils literal notranslate"><span class="pre">eggsPerBatch</span> <span class="pre">-</span> <span class="pre">equationParameters</span></code></a></li>
+<li class="toctree-l6"><a class="reference internal" href="../../user_guide/json/species/growth_module.html#object-eggdrymass">Object <code class="docutils literal notranslate"><span class="pre">eggDryMass</span></code></a></li>
+<li class="toctree-l6"><a class="reference internal" href="../../user_guide/json/species/growth_module.html#object-eggdrymass-equationparameters">Object <code class="docutils literal notranslate"><span class="pre">eggDryMass</span> <span class="pre">-</span> <span class="pre">equationParameters</span></code></a></li>
+<li class="toctree-l6"><a class="reference internal" href="../../user_guide/json/species/growth_module.html#object-growthmodel">Object <code class="docutils literal notranslate"><span class="pre">growthModel</span></code></a></li>
+<li class="toctree-l6"><a class="reference internal" href="../../user_guide/json/species/growth_module.html#object-defaultattempfromlab">Object <code class="docutils literal notranslate"><span class="pre">defaultAtTempFromLab</span></code></a></li>
+<li class="toctree-l6"><a class="reference internal" href="../../user_guide/json/species/growth_module.html#object-temperature">Object <code class="docutils literal notranslate"><span class="pre">temperature</span></code></a></li>
+<li class="toctree-l6"><a class="reference internal" href="../../user_guide/json/species/growth_module.html#object-growthmodelthermalchanges-elements">Object <code class="docutils literal notranslate"><span class="pre">growthModelThermalChanges</span></code> (elements)</a></li>
+<li class="toctree-l6"><a class="reference internal" href="../../user_guide/json/species/growth_module.html#hierarchical-summary">Hierarchical Summary</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l4"><a class="reference internal" href="../../user_guide/json/species/species.html#hierarchical-summary">Hierarchical Summary</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../../user_guide/json/ontogeneticLinksPreference.html">ontogeneticLinksPreference</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../../user_guide/json/ontogeneticLinksPreference.html#overview">Overview</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../user_guide/json/ontogeneticLinksPreference.html#file-format">File Format</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../user_guide/json/ontogeneticLinksPreference.html#example-structure">Example Structure</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../user_guide/json/ontogeneticLinksPreference.html#interpretation-example">Interpretation Example</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../../user_guide/json/ontogeneticLinksProfitability.html">ontogeneticLinksProfitability</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../../user_guide/json/ontogeneticLinksProfitability.html#overview">Overview</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../user_guide/json/ontogeneticLinksProfitability.html#file-format">File Format</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../user_guide/json/ontogeneticLinksProfitability.html#example-structure">Example Structure</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../user_guide/json/ontogeneticLinksProfitability.html#interpretation-example">Interpretation Example</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../user_guide/usage.html">Usage</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../user_guide/usage.html#command-line-options">Command-line Options</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../user_guide/usage.html#modes-of-execution">Modes of Execution</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../user_guide/usage.html#output-folder">Output Folder</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../user_guide/usage.html#interactive-input-non-gui">Interactive Input (Non-GUI)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../user_guide/usage.html#graphical-interface-gui">Graphical Interface (GUI)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../user_guide/usage.html#summary">Summary</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../user_guide/examples.html">Examples</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../user_guide/troubleshooting.html">Troubleshooting</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">🧠 Developer Guide</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../build_system.html">Build System</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../build_system.html#common-requirements">Common Requirements</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../build_system.html#compiler-installation-by-operating-system">Compiler installation by operating system</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../build_system.html#windows"><strong>Windows</strong></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../build_system.html#linux"><strong>Linux</strong></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../build_system.html#release-requirements">Release Requirements</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../build_system.html#id1">Windows</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../build_system.html#id2">Linux</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../build_system.html#documentation-requirements">Documentation Requirements</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../build_system.html#developer-setup">Developer Setup</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../build_system.html#cmake-presets">CMake Presets</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../build_system.html#available-presets">Available Presets</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../build_system.html#updating-vcpkg-version">Updating vcpkg Version</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../adding_features.html">Adding Features</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../adding_features.html#branch-strategy">Branch Strategy</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../contribution.html">Contribution</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../contribution.html#pull-requests">Pull Requests</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../contribution.html#code-review">Code Review</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../contribution.html#issues">Issues</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../code_style.html">Code Style</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../code_style.html#general-guidelines">General Guidelines</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../code_style.html#formatting">Formatting</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../code_style.html#comments">Comments</a></li>
+</ul>
+</li>
+<li class="toctree-l1 current"><a class="reference internal" href="../json_validator.html">JSON validator</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="getting_started.html">Getting Started</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="getting_started.html#what-is-json-schema">What is JSON Schema?</a></li>
+<li class="toctree-l3"><a class="reference internal" href="getting_started.html#elements-of-json-schema">Elements of JSON Schema</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="getting_started.html#common-fields">Common Fields</a><ul>
+<li class="toctree-l5"><a class="reference internal" href="getting_started.html#type">type</a></li>
+<li class="toctree-l5"><a class="reference internal" href="getting_started.html#description">description</a></li>
+<li class="toctree-l5"><a class="reference internal" href="getting_started.html#nullproperty">nullProperty</a></li>
+</ul>
+</li>
+<li class="toctree-l4"><a class="reference internal" href="getting_started.html#specific-fields-for-each-type">Specific Fields for Each Type</a><ul>
+<li class="toctree-l5"><a class="reference internal" href="element_types/array.html">Array Type</a><ul>
+<li class="toctree-l6"><a class="reference internal" href="element_types/array.html#specific-fields">Specific Fields</a><ul>
+<li class="toctree-l7"><a class="reference internal" href="element_types/array.html#items">items</a></li>
+<li class="toctree-l7"><a class="reference internal" href="element_types/array.html#minitems">minItems</a></li>
+<li class="toctree-l7"><a class="reference internal" href="element_types/array.html#maxitems">maxItems</a></li>
+<li class="toctree-l7"><a class="reference internal" href="element_types/array.html#itemsorder">itemsOrder</a></li>
+</ul>
+</li>
+<li class="toctree-l6"><a class="reference internal" href="element_types/array.html#example">Example</a></li>
+</ul>
+</li>
+<li class="toctree-l5"><a class="reference internal" href="element_types/boolean.html">Boolean Type</a><ul>
+<li class="toctree-l6"><a class="reference internal" href="element_types/boolean.html#specific-fields">Specific Fields</a></li>
+<li class="toctree-l6"><a class="reference internal" href="element_types/boolean.html#example">Example</a></li>
+</ul>
+</li>
+<li class="toctree-l5"><a class="reference internal" href="element_types/integer.html">Integer Type</a><ul>
+<li class="toctree-l6"><a class="reference internal" href="element_types/integer.html#specific-fields">Specific Fields</a><ul>
+<li class="toctree-l7"><a class="reference internal" href="element_types/integer.html#minimum">minimum</a></li>
+<li class="toctree-l7"><a class="reference internal" href="element_types/integer.html#exclusiveminimum">exclusiveMinimum</a></li>
+<li class="toctree-l7"><a class="reference internal" href="element_types/integer.html#maximum">maximum</a></li>
+<li class="toctree-l7"><a class="reference internal" href="element_types/integer.html#exclusivemaximum">exclusiveMaximum</a></li>
+<li class="toctree-l7"><a class="reference internal" href="element_types/integer.html#multipleof">multipleOf</a></li>
+</ul>
+</li>
+<li class="toctree-l6"><a class="reference internal" href="element_types/integer.html#example">Example</a></li>
+</ul>
+</li>
+<li class="toctree-l5"><a class="reference internal" href="element_types/number.html">Number Type</a><ul>
+<li class="toctree-l6"><a class="reference internal" href="element_types/number.html#specific-fields">Specific Fields</a><ul>
+<li class="toctree-l7"><a class="reference internal" href="element_types/number.html#minimum">minimum</a></li>
+<li class="toctree-l7"><a class="reference internal" href="element_types/number.html#exclusiveminimum">exclusiveMinimum</a></li>
+<li class="toctree-l7"><a class="reference internal" href="element_types/number.html#maximum">maximum</a></li>
+<li class="toctree-l7"><a class="reference internal" href="element_types/number.html#exclusivemaximum">exclusiveMaximum</a></li>
+</ul>
+</li>
+<li class="toctree-l6"><a class="reference internal" href="element_types/number.html#example">Example</a></li>
+</ul>
+</li>
+<li class="toctree-l5"><a class="reference internal" href="element_types/object.html">Object Type</a><ul>
+<li class="toctree-l6"><a class="reference internal" href="element_types/object.html#specific-fields">Specific Fields</a><ul>
+<li class="toctree-l7"><a class="reference internal" href="element_types/object.html#properties">properties</a></li>
+<li class="toctree-l7"><a class="reference internal" href="element_types/object.html#patternproperties">patternProperties</a></li>
+<li class="toctree-l7"><a class="reference internal" href="element_types/object.html#conditionals">conditionals</a></li>
+<li class="toctree-l7"><a class="reference internal" href="element_types/object.html#patternconditionals">patternConditionals</a></li>
+<li class="toctree-l7"><a class="reference internal" href="element_types/object.html#requiredconditions">requiredConditions</a></li>
+<li class="toctree-l7"><a class="reference internal" href="element_types/object.html#warningconditions">warningConditions</a></li>
+</ul>
+</li>
+<li class="toctree-l6"><a class="reference internal" href="element_types/object.html#example">Example</a></li>
+</ul>
+</li>
+<li class="toctree-l5"><a class="reference internal" href="element_types/string.html">String Type</a><ul>
+<li class="toctree-l6"><a class="reference internal" href="element_types/string.html#specific-fields">Specific Fields</a><ul>
+<li class="toctree-l7"><a class="reference internal" href="element_types/string.html#minlength">minLength</a></li>
+<li class="toctree-l7"><a class="reference internal" href="element_types/string.html#maxlength">maxLength</a></li>
+<li class="toctree-l7"><a class="reference internal" href="element_types/string.html#pattern">pattern</a></li>
+<li class="toctree-l7"><a class="reference internal" href="element_types/string.html#enum">enum</a></li>
+</ul>
+</li>
+<li class="toctree-l6"><a class="reference internal" href="element_types/string.html#example">Example</a></li>
+</ul>
+</li>
+<li class="toctree-l5"><a class="reference internal" href="element_types/tuple.html">Tuple Type</a><ul>
+<li class="toctree-l6"><a class="reference internal" href="element_types/tuple.html#specific-fields">Specific Fields</a><ul>
+<li class="toctree-l7"><a class="reference internal" href="element_types/tuple.html#items">items</a></li>
+</ul>
+</li>
+<li class="toctree-l6"><a class="reference internal" href="element_types/tuple.html#example">Example</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="getting_started.html#benefits-of-using-json-schema">Benefits of Using JSON Schema</a></li>
+<li class="toctree-l3"><a class="reference internal" href="getting_started.html#example-of-a-complete-json-schema">Example of a Complete JSON Schema</a></li>
+</ul>
+</li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">Advanced Features</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#operators-of-json-schema">Operators of JSON Schema</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#equality-and-comparison-operators">Equality and Comparison Operators</a><ul>
+<li class="toctree-l5"><a class="reference internal" href="#equal">Equal (==)</a></li>
+<li class="toctree-l5"><a class="reference internal" href="#not-equal">Not Equal (!=)</a></li>
+<li class="toctree-l5"><a class="reference internal" href="#less-than">Less Than (&lt;)</a></li>
+<li class="toctree-l5"><a class="reference internal" href="#less-than-or-equal">Less Than or Equal (&lt;=)</a></li>
+<li class="toctree-l5"><a class="reference internal" href="#greater-than">Greater Than (&gt;)</a></li>
+<li class="toctree-l5"><a class="reference internal" href="#greater-than-or-equal">Greater Than or Equal (&gt;=)</a></li>
+</ul>
+</li>
+<li class="toctree-l4"><a class="reference internal" href="#logical-operators">Logical Operators</a><ul>
+<li class="toctree-l5"><a class="reference internal" href="#negation-not">Negation (not)</a></li>
+<li class="toctree-l5"><a class="reference internal" href="#conjunction-and">Conjunction (and)</a></li>
+<li class="toctree-l5"><a class="reference internal" href="#disjunction-or">Disjunction (or)</a></li>
+</ul>
+</li>
+<li class="toctree-l4"><a class="reference internal" href="#property-operators">Property Operators</a><ul>
+<li class="toctree-l5"><a class="reference internal" href="#value-of-the-property">Value of the Property</a></li>
+<li class="toctree-l5"><a class="reference internal" href="#item-of-the-property">Item of the Property</a></li>
+<li class="toctree-l5"><a class="reference internal" href="#size-of-the-property">Size of the Property</a></li>
+<li class="toctree-l5"><a class="reference internal" href="#null-status-of-the-property">Null Status of the Property</a></li>
+</ul>
+</li>
+<li class="toctree-l4"><a class="reference internal" href="#constant-operators">Constant Operators</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#arithmetical-operators">Arithmetical Operators</a><ul>
+<li class="toctree-l5"><a class="reference internal" href="#subtract">Subtract (-)</a></li>
+<li class="toctree-l5"><a class="reference internal" href="#addition">Addition (+)</a></li>
+<li class="toctree-l5"><a class="reference internal" href="#multiply">Multiply (*)</a></li>
+<li class="toctree-l5"><a class="reference internal" href="#division">Division (/)</a></li>
+<li class="toctree-l5"><a class="reference internal" href="#module">Module (%)</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#conditionals-of-json-schema">Conditionals of JSON Schema</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#condition">Condition</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#then-block">Then Block</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#else-block">Else Block</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#conditions-of-json-schema">Conditions of JSON Schema</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">⚙️ Reference</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../reference/api.html">API</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">🧪 Testing and Deployment</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../testing/overview.html">Overview</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../testing/unit_tests.html">Unit Tests</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../testing/ci_cd.html">Continuous Integration &amp; Continuous Deployment (CI/CD)</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../testing/ci_cd.html#configuration">Configuration</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../testing/ci_cd.html#workflows">Workflows</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../testing/ci_cd.html#deploy-release-workflow">Deploy Release Workflow</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../../testing/ci_cd.html#job-1-build-windows">Job 1 — build-windows</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../testing/ci_cd.html#job-2-release">Job 2 — release</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../testing/ci_cd.html#job-3-deploy-docs">Job 3 — deploy-docs</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../testing/ci_cd.html#deploy-release-workflow-notes">Deploy Release Workflow Notes</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../../testing/ci_cd.html#update-documentation-workflow">Update Documentation Workflow</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../../testing/ci_cd.html#job-update">Job — update</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../testing/ci_cd.html#update-documentation-workflow-notes">Update Documentation Workflow Notes</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu"  style="background: #2980B9" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../index.html">Weaver</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="../json_validator.html">JSON validator</a></li>
+      <li class="breadcrumb-item active">Advanced Features</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="../../_sources/developer_guide/json_validator/advanced_features.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="advanced-features">
+<h1>Advanced Features<a class="headerlink" href="#advanced-features" title="Link to this heading"></a></h1>
+<p>This section covers the advanced features of the JSON Schema validator. These features provide enhanced capabilities and
+customization options for schema validation.</p>
+<section id="operators-of-json-schema">
+<h2>Operators of JSON Schema<a class="headerlink" href="#operators-of-json-schema" title="Link to this heading"></a></h2>
+<p id="id1">In JSON Schema, operators are used to define constraints and conditions. This section details the various operators available,
+their usage, and examples. The result of any operator will be a value of a basic type, such as an integer, boolean, string, etc.</p>
+<p>Each operator is defined by a dictionary (or object) with several fields describing the type of the operator and the properties
+of each operator.</p>
+<p>The type of the operator is defined through the field ‘<strong>operatorType</strong>’, the content of which is a string. The available types are
+shown below:</p>
+<blockquote>
+<div><ul>
+<li><p><a class="reference internal" href="#id2"><span class="std std-ref">Equality and Comparison Operators</span></a></p>
+<blockquote>
+<div><div class="highlight-json notranslate"><div class="highlight"><pre><span></span><span class="p">{</span>
+<span class="w">    </span><span class="nt">&quot;operatorType&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;comparison&quot;</span>
+<span class="w">    </span><span class="c1">// Remaining fields</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+</div></blockquote>
+</li>
+<li><p><a class="reference internal" href="#id3"><span class="std std-ref">Logical Operators</span></a></p>
+<blockquote>
+<div><div class="highlight-json notranslate"><div class="highlight"><pre><span></span><span class="p">{</span>
+<span class="w">    </span><span class="nt">&quot;operatorType&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;logical&quot;</span>
+<span class="w">    </span><span class="c1">// Remaining fields</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+</div></blockquote>
+</li>
+<li><p><a class="reference internal" href="#id4"><span class="std std-ref">Property Operators</span></a></p>
+<blockquote>
+<div><div class="highlight-json notranslate"><div class="highlight"><pre><span></span><span class="p">{</span>
+<span class="w">    </span><span class="nt">&quot;operatorType&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;property&quot;</span>
+<span class="w">    </span><span class="c1">// Remaining fields</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+</div></blockquote>
+</li>
+<li><p><a class="reference internal" href="#id5"><span class="std std-ref">Constant Operators</span></a></p>
+<blockquote>
+<div><div class="highlight-json notranslate"><div class="highlight"><pre><span></span><span class="p">{</span>
+<span class="w">    </span><span class="nt">&quot;operatorType&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;constant&quot;</span>
+<span class="w">    </span><span class="c1">// Remaining fields</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+</div></blockquote>
+</li>
+<li><p><a class="reference internal" href="#id6"><span class="std std-ref">Arithmetical Operators</span></a></p>
+<blockquote>
+<div><div class="highlight-json notranslate"><div class="highlight"><pre><span></span><span class="p">{</span>
+<span class="w">    </span><span class="nt">&quot;operatorType&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;arithmetical&quot;</span>
+<span class="w">    </span><span class="c1">// Remaining fields</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+</div></blockquote>
+</li>
+</ul>
+</div></blockquote>
+<section id="equality-and-comparison-operators">
+<h3>Equality and Comparison Operators<a class="headerlink" href="#equality-and-comparison-operators" title="Link to this heading"></a></h3>
+<p id="id2">These operators are used to compare values and define constraints based on those comparisons. Each comparison involves two
+parts: the left-hand side (<cite>lhs</cite>) and the right-hand side (<cite>rhs</cite>). On both sides another operator must be defined.</p>
+<p>The type of the comparison operator is defined through the field ‘<strong>comparisonType</strong>’, the content of which is a string. The
+comparison types are defined below:</p>
+<section id="equal">
+<h4>Equal (==)<a class="headerlink" href="#equal" title="Link to this heading"></a></h4>
+<blockquote>
+<div><p>Checks if the ‘<strong>lhs</strong>’ is <strong>equal to</strong> the ‘<strong>rhs</strong>’. The value of the ‘<strong>comparisonType</strong>’ field is <strong>“equal”</strong>.</p>
+<p>Example:</p>
+<div class="highlight-json notranslate"><div class="highlight"><pre><span></span><span class="p">{</span>
+<span class="w">    </span><span class="nt">&quot;operatorType&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;comparison&quot;</span><span class="p">,</span>
+<span class="w">    </span><span class="nt">&quot;comparisonType&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;equal&quot;</span><span class="p">,</span>
+<span class="w">    </span><span class="nt">&quot;lhs&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+<span class="w">        </span><span class="c1">// Define another operator</span>
+<span class="w">    </span><span class="p">},</span>
+<span class="w">    </span><span class="nt">&quot;rhs&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+<span class="w">        </span><span class="c1">// Define another operator</span>
+<span class="w">    </span><span class="p">}</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+</div></blockquote>
+</section>
+<section id="not-equal">
+<h4>Not Equal (!=)<a class="headerlink" href="#not-equal" title="Link to this heading"></a></h4>
+<blockquote>
+<div><p>Checks if the ‘<strong>lhs</strong>’ is <strong>not equal to</strong> the ‘<strong>rhs</strong>’. The value of the ‘<strong>comparisonType</strong>’ field is <strong>“not_equal”</strong>.</p>
+<p>Example:</p>
+<div class="highlight-json notranslate"><div class="highlight"><pre><span></span><span class="p">{</span>
+<span class="w">    </span><span class="nt">&quot;operatorType&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;comparison&quot;</span><span class="p">,</span>
+<span class="w">    </span><span class="nt">&quot;comparisonType&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;not_equal&quot;</span><span class="p">,</span>
+<span class="w">    </span><span class="nt">&quot;lhs&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+<span class="w">        </span><span class="c1">// Define another operator</span>
+<span class="w">    </span><span class="p">},</span>
+<span class="w">    </span><span class="nt">&quot;rhs&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+<span class="w">        </span><span class="c1">// Define another operator</span>
+<span class="w">    </span><span class="p">}</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+</div></blockquote>
+</section>
+<section id="less-than">
+<h4>Less Than (&lt;)<a class="headerlink" href="#less-than" title="Link to this heading"></a></h4>
+<blockquote>
+<div><p>Checks if the ‘<strong>lhs</strong>’ is <strong>less than</strong> the ‘<strong>rhs</strong>’. The value of the ‘<strong>comparisonType</strong>’ field is <strong>“less_than”</strong>.</p>
+<p>Example:</p>
+<div class="highlight-json notranslate"><div class="highlight"><pre><span></span><span class="p">{</span>
+<span class="w">    </span><span class="nt">&quot;operatorType&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;comparison&quot;</span><span class="p">,</span>
+<span class="w">    </span><span class="nt">&quot;comparisonType&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;less_than&quot;</span><span class="p">,</span>
+<span class="w">    </span><span class="nt">&quot;lhs&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+<span class="w">        </span><span class="c1">// Define another operator</span>
+<span class="w">    </span><span class="p">},</span>
+<span class="w">    </span><span class="nt">&quot;rhs&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+<span class="w">        </span><span class="c1">// Define another operator</span>
+<span class="w">    </span><span class="p">}</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+</div></blockquote>
+</section>
+<section id="less-than-or-equal">
+<h4>Less Than or Equal (&lt;=)<a class="headerlink" href="#less-than-or-equal" title="Link to this heading"></a></h4>
+<blockquote>
+<div><p>Checks if the ‘<strong>lhs</strong>’ is <strong>less than or equal to</strong> the ‘<strong>rhs</strong>’. The value of the ‘<strong>comparisonType</strong>’ field is <strong>“less_equal_than”</strong>.</p>
+<p>Example:</p>
+<div class="highlight-json notranslate"><div class="highlight"><pre><span></span><span class="p">{</span>
+<span class="w">    </span><span class="nt">&quot;operatorType&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;comparison&quot;</span><span class="p">,</span>
+<span class="w">    </span><span class="nt">&quot;comparisonType&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;less_equal_than&quot;</span><span class="p">,</span>
+<span class="w">    </span><span class="nt">&quot;lhs&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+<span class="w">        </span><span class="c1">// Define another operator</span>
+<span class="w">    </span><span class="p">},</span>
+<span class="w">    </span><span class="nt">&quot;rhs&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+<span class="w">        </span><span class="c1">// Define another operator</span>
+<span class="w">    </span><span class="p">}</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+</div></blockquote>
+</section>
+<section id="greater-than">
+<h4>Greater Than (&gt;)<a class="headerlink" href="#greater-than" title="Link to this heading"></a></h4>
+<blockquote>
+<div><p>Checks if the ‘<strong>lhs</strong>’ is <strong>greater than</strong> the ‘<strong>rhs</strong>’. The value of the ‘<strong>comparisonType</strong>’ field is <strong>“greater_than”</strong>.</p>
+<p>Example:</p>
+<div class="highlight-json notranslate"><div class="highlight"><pre><span></span><span class="p">{</span>
+<span class="w">    </span><span class="nt">&quot;operatorType&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;comparison&quot;</span><span class="p">,</span>
+<span class="w">    </span><span class="nt">&quot;comparisonType&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;greater_than&quot;</span><span class="p">,</span>
+<span class="w">    </span><span class="nt">&quot;lhs&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+<span class="w">        </span><span class="c1">// Define another operator</span>
+<span class="w">    </span><span class="p">},</span>
+<span class="w">    </span><span class="nt">&quot;rhs&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+<span class="w">        </span><span class="c1">// Define another operator</span>
+<span class="w">    </span><span class="p">}</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+</div></blockquote>
+</section>
+<section id="greater-than-or-equal">
+<h4>Greater Than or Equal (&gt;=)<a class="headerlink" href="#greater-than-or-equal" title="Link to this heading"></a></h4>
+<blockquote>
+<div><p>Checks if the ‘<strong>lhs</strong>’ is <strong>greater than or equal to</strong> the ‘<strong>rhs</strong>’. The value of the ‘<strong>comparisonType</strong>’ field is <strong>“greater_equal_than”</strong>.</p>
+<p>Example:</p>
+<div class="highlight-json notranslate"><div class="highlight"><pre><span></span><span class="p">{</span>
+<span class="w">    </span><span class="nt">&quot;operatorType&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;comparison&quot;</span><span class="p">,</span>
+<span class="w">    </span><span class="nt">&quot;comparisonType&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;greater_equal_than&quot;</span><span class="p">,</span>
+<span class="w">    </span><span class="nt">&quot;lhs&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+<span class="w">        </span><span class="c1">// Define another operator</span>
+<span class="w">    </span><span class="p">},</span>
+<span class="w">    </span><span class="nt">&quot;rhs&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+<span class="w">        </span><span class="c1">// Define another operator</span>
+<span class="w">    </span><span class="p">}</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+</div></blockquote>
+</section>
+</section>
+<section id="logical-operators">
+<h3>Logical Operators<a class="headerlink" href="#logical-operators" title="Link to this heading"></a></h3>
+<p id="id3">These operators are used to combine or negate conditions. Each logical operator involves a list of operands, with each operand
+defining another operator.</p>
+<p>The type of the logical operator is defined through the field ‘<strong>logicalType</strong>’, the content of which is a string. The
+logical types are defined below:</p>
+<section id="negation-not">
+<h4>Negation (not)<a class="headerlink" href="#negation-not" title="Link to this heading"></a></h4>
+<blockquote>
+<div><div class="admonition warning">
+<p class="admonition-title">Warning</p>
+<p>Negation needs only one operand.</p>
+</div>
+<p>Negates a operand. The value of the ‘<strong>logicalType</strong>’ field is <strong>“negation”</strong>.</p>
+<p>Example:</p>
+<div class="highlight-json notranslate"><div class="highlight"><pre><span></span><span class="p">{</span>
+<span class="w">    </span><span class="nt">&quot;operatorType&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;logical&quot;</span><span class="p">,</span>
+<span class="w">    </span><span class="nt">&quot;logicalType&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;negation&quot;</span><span class="p">,</span>
+<span class="w">    </span><span class="nt">&quot;operands&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">[</span>
+<span class="w">        </span><span class="p">{</span>
+<span class="w">            </span><span class="c1">// Define another operator</span>
+<span class="w">        </span><span class="p">}</span>
+<span class="w">    </span><span class="p">]</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+</div></blockquote>
+</section>
+<section id="conjunction-and">
+<h4>Conjunction (and)<a class="headerlink" href="#conjunction-and" title="Link to this heading"></a></h4>
+<blockquote>
+<div><p>Checks if all operands are true. The value of the ‘<strong>logicalType</strong>’ field is <strong>“conjunction”</strong>.</p>
+<p>Example:</p>
+<div class="highlight-json notranslate"><div class="highlight"><pre><span></span><span class="p">{</span>
+<span class="w">    </span><span class="nt">&quot;operatorType&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;logical&quot;</span><span class="p">,</span>
+<span class="w">    </span><span class="nt">&quot;logicalType&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;conjunction&quot;</span><span class="p">,</span>
+<span class="w">    </span><span class="nt">&quot;operands&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">[</span>
+<span class="w">        </span><span class="p">{</span>
+<span class="w">            </span><span class="c1">// Define another operator</span>
+<span class="w">        </span><span class="p">},</span>
+<span class="w">        </span><span class="p">{</span>
+<span class="w">            </span><span class="c1">// Define another operator</span>
+<span class="w">        </span><span class="p">},</span>
+<span class="w">        </span><span class="p">{</span>
+<span class="w">            </span><span class="c1">// Define another operator</span>
+<span class="w">        </span><span class="p">}</span>
+<span class="w">    </span><span class="p">]</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+</div></blockquote>
+</section>
+<section id="disjunction-or">
+<h4>Disjunction (or)<a class="headerlink" href="#disjunction-or" title="Link to this heading"></a></h4>
+<blockquote>
+<div><p>Checks if at least one operand is true. The value of the ‘<strong>logicalType</strong>’ field is <strong>“disjunction”</strong>.</p>
+<p>Example:</p>
+<div class="highlight-json notranslate"><div class="highlight"><pre><span></span><span class="p">{</span>
+<span class="w">    </span><span class="nt">&quot;operatorType&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;logical&quot;</span><span class="p">,</span>
+<span class="w">    </span><span class="nt">&quot;logicalType&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;disjunction&quot;</span><span class="p">,</span>
+<span class="w">    </span><span class="nt">&quot;operands&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">[</span>
+<span class="w">        </span><span class="p">{</span>
+<span class="w">            </span><span class="c1">// Define another operator</span>
+<span class="w">        </span><span class="p">},</span>
+<span class="w">        </span><span class="p">{</span>
+<span class="w">            </span><span class="c1">// Define another operator</span>
+<span class="w">        </span><span class="p">},</span>
+<span class="w">        </span><span class="p">{</span>
+<span class="w">            </span><span class="c1">// Define another operator</span>
+<span class="w">        </span><span class="p">}</span>
+<span class="w">    </span><span class="p">]</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+</div></blockquote>
+</section>
+</section>
+<section id="property-operators">
+<h3>Property Operators<a class="headerlink" href="#property-operators" title="Link to this heading"></a></h3>
+<p id="id4">These operators are used to extract the characteristics of schema properties; such as the value associated with the property in
+the configuration and checking for the possibility that the property is null, or in the case of an array property, the size of
+the array or the value of an array element.</p>
+<p>All property operators have a field called ‘<strong>relativePath</strong>’, where the path to the desired property is defined by a list of
+strings.</p>
+<p>The property element to be extracted is defined through the field ‘<strong>propertyElement</strong>’, whose content is a string. The property
+elements are defined below:</p>
+<section id="value-of-the-property">
+<h4>Value of the Property<a class="headerlink" href="#value-of-the-property" title="Link to this heading"></a></h4>
+<blockquote>
+<div><p>Extracts the value associated with the property in the configuration. The value of the ‘<strong>propertyElement</strong>’ field is <strong>“value”</strong>.</p>
+<p>Example:</p>
+<div class="highlight-json notranslate"><div class="highlight"><pre><span></span><span class="p">{</span>
+<span class="w">    </span><span class="nt">&quot;operatorType&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;property&quot;</span><span class="p">,</span>
+<span class="w">    </span><span class="nt">&quot;propertyElement&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;value&quot;</span><span class="p">,</span>
+<span class="w">    </span><span class="nt">&quot;relativePath&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">[</span>
+<span class="w">        </span><span class="s2">&quot;path&quot;</span><span class="p">,</span>
+<span class="w">        </span><span class="s2">&quot;to&quot;</span><span class="p">,</span>
+<span class="w">        </span><span class="s2">&quot;property&quot;</span>
+<span class="w">    </span><span class="p">]</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+</div></blockquote>
+</section>
+<section id="item-of-the-property">
+<h4>Item of the Property<a class="headerlink" href="#item-of-the-property" title="Link to this heading"></a></h4>
+<blockquote>
+<div><p>Extracts the value of the desired item of the property in the configuration. The value of the ‘<strong>propertyElement</strong>’ field is <strong>“item”</strong>.</p>
+<p>The selection of the item is defined through the ‘<strong>selectedItem</strong>’ field, which can be defined as a positive integer or as an operator.</p>
+<p>Example:</p>
+<div class="highlight-json notranslate"><div class="highlight"><pre><span></span><span class="p">{</span>
+<span class="w">    </span><span class="nt">&quot;operatorType&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;property&quot;</span><span class="p">,</span>
+<span class="w">    </span><span class="nt">&quot;propertyElement&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;item&quot;</span><span class="p">,</span>
+<span class="w">    </span><span class="nt">&quot;relativePath&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">[</span>
+<span class="w">        </span><span class="s2">&quot;path&quot;</span><span class="p">,</span>
+<span class="w">        </span><span class="s2">&quot;to&quot;</span><span class="p">,</span>
+<span class="w">        </span><span class="s2">&quot;property&quot;</span>
+<span class="w">    </span><span class="p">],</span>
+<span class="w">    </span><span class="nt">&quot;selectedItem&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">2</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<div class="highlight-json notranslate"><div class="highlight"><pre><span></span><span class="p">{</span>
+<span class="w">    </span><span class="nt">&quot;operatorType&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;property&quot;</span><span class="p">,</span>
+<span class="w">    </span><span class="nt">&quot;propertyElement&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;item&quot;</span><span class="p">,</span>
+<span class="w">    </span><span class="nt">&quot;relativePath&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">[</span>
+<span class="w">        </span><span class="s2">&quot;path&quot;</span><span class="p">,</span>
+<span class="w">        </span><span class="s2">&quot;to&quot;</span><span class="p">,</span>
+<span class="w">        </span><span class="s2">&quot;property&quot;</span>
+<span class="w">    </span><span class="p">],</span>
+<span class="w">    </span><span class="nt">&quot;selectedItem&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+<span class="w">        </span><span class="c1">// Define another operator</span>
+<span class="w">    </span><span class="p">}</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+</div></blockquote>
+</section>
+<section id="size-of-the-property">
+<h4>Size of the Property<a class="headerlink" href="#size-of-the-property" title="Link to this heading"></a></h4>
+<blockquote>
+<div><p>Extracts the size of the property defined in the configuration. The value of the ‘<strong>propertyElement</strong>’ field is <strong>“size”</strong>.</p>
+<p>Example:</p>
+<div class="highlight-json notranslate"><div class="highlight"><pre><span></span><span class="p">{</span>
+<span class="w">    </span><span class="nt">&quot;operatorType&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;property&quot;</span><span class="p">,</span>
+<span class="w">    </span><span class="nt">&quot;propertyElement&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;size&quot;</span><span class="p">,</span>
+<span class="w">    </span><span class="nt">&quot;relativePath&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">[</span>
+<span class="w">        </span><span class="s2">&quot;path&quot;</span><span class="p">,</span>
+<span class="w">        </span><span class="s2">&quot;to&quot;</span><span class="p">,</span>
+<span class="w">        </span><span class="s2">&quot;property&quot;</span>
+<span class="w">    </span><span class="p">]</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+</div></blockquote>
+</section>
+<section id="null-status-of-the-property">
+<h4>Null Status of the Property<a class="headerlink" href="#null-status-of-the-property" title="Link to this heading"></a></h4>
+<blockquote>
+<div><div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>Always returns a boolean value</p>
+</div>
+<p>Extracts the possibility of being or not being null of the property. The value of the ‘<strong>propertyElement</strong>’ field is <strong>“nullProperty”</strong>.</p>
+<p>Example:</p>
+<div class="highlight-json notranslate"><div class="highlight"><pre><span></span><span class="p">{</span>
+<span class="w">    </span><span class="nt">&quot;operatorType&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;property&quot;</span><span class="p">,</span>
+<span class="w">    </span><span class="nt">&quot;propertyElement&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;nullProperty&quot;</span><span class="p">,</span>
+<span class="w">    </span><span class="nt">&quot;relativePath&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">[</span>
+<span class="w">        </span><span class="s2">&quot;path&quot;</span><span class="p">,</span>
+<span class="w">        </span><span class="s2">&quot;to&quot;</span><span class="p">,</span>
+<span class="w">        </span><span class="s2">&quot;property&quot;</span>
+<span class="w">    </span><span class="p">]</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+</div></blockquote>
+</section>
+</section>
+<section id="constant-operators">
+<h3>Constant Operators<a class="headerlink" href="#constant-operators" title="Link to this heading"></a></h3>
+<p id="id5">These operators are used to return constant values independent of the configuration used. The constant value is defined through
+the ‘<strong>value</strong>’ field, which takes values of a basic type such as an integer, a string, a boolean or a floating point number.</p>
+<p>Example:</p>
+<div class="highlight-json notranslate"><div class="highlight"><pre><span></span><span class="p">{</span>
+<span class="w">    </span><span class="nt">&quot;operatorType&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;constant&quot;</span><span class="p">,</span>
+<span class="w">    </span><span class="nt">&quot;value&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">6</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<div class="highlight-json notranslate"><div class="highlight"><pre><span></span><span class="p">{</span>
+<span class="w">    </span><span class="nt">&quot;operatorType&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;constant&quot;</span><span class="p">,</span>
+<span class="w">    </span><span class="nt">&quot;value&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;string&quot;</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<div class="highlight-json notranslate"><div class="highlight"><pre><span></span><span class="p">{</span>
+<span class="w">    </span><span class="nt">&quot;operatorType&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;constant&quot;</span><span class="p">,</span>
+<span class="w">    </span><span class="nt">&quot;value&quot;</span><span class="p">:</span><span class="w"> </span><span class="kc">false</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<div class="highlight-json notranslate"><div class="highlight"><pre><span></span><span class="p">{</span>
+<span class="w">    </span><span class="nt">&quot;operatorType&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;constant&quot;</span><span class="p">,</span>
+<span class="w">    </span><span class="nt">&quot;value&quot;</span><span class="p">:</span><span class="w"> </span><span class="mf">5.7</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+</section>
+<section id="arithmetical-operators">
+<h3>Arithmetical Operators<a class="headerlink" href="#arithmetical-operators" title="Link to this heading"></a></h3>
+<p id="id6">In JSON Schema, arithmetical operators are used to perform basic arithmetic operations and define numeric constraints. Each
+arithmetic operation consists of two parts: the left-hand side (<cite>lhs</cite>) and the right-hand side (<cite>rhs</cite>). On both sides another
+operator must be defined.</p>
+<p>The type of the arithmetic operator is defined by the field ‘<strong>arithmeticalType</strong>’, whose content is a string. The arithmetic
+operator types are defined below:</p>
+<section id="subtract">
+<h4>Subtract (-)<a class="headerlink" href="#subtract" title="Link to this heading"></a></h4>
+<blockquote>
+<div><p>The subtract operator is used to subtract one number from another. The value of the ‘<strong>arithmeticalType</strong>’ field is <strong>“subtract”</strong>.</p>
+<p>Example:</p>
+<div class="highlight-json notranslate"><div class="highlight"><pre><span></span><span class="p">{</span>
+<span class="w">    </span><span class="nt">&quot;operatorType&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;arithmetical&quot;</span><span class="p">,</span>
+<span class="w">    </span><span class="nt">&quot;arithmeticalType&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;subtract&quot;</span><span class="p">,</span>
+<span class="w">    </span><span class="nt">&quot;lhs&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+<span class="w">        </span><span class="c1">// Define another operator</span>
+<span class="w">    </span><span class="p">},</span>
+<span class="w">    </span><span class="nt">&quot;rhs&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+<span class="w">        </span><span class="c1">// Define another operator</span>
+<span class="w">    </span><span class="p">}</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+</div></blockquote>
+</section>
+<section id="addition">
+<h4>Addition (+)<a class="headerlink" href="#addition" title="Link to this heading"></a></h4>
+<blockquote>
+<div><p>The addition operator is used to sum two numbers. The value of the ‘<strong>arithmeticalType</strong>’ field is <strong>“addition”</strong>.</p>
+<p>Example:</p>
+<div class="highlight-json notranslate"><div class="highlight"><pre><span></span><span class="p">{</span>
+<span class="w">    </span><span class="nt">&quot;operatorType&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;arithmetical&quot;</span><span class="p">,</span>
+<span class="w">    </span><span class="nt">&quot;arithmeticalType&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;addition&quot;</span><span class="p">,</span>
+<span class="w">    </span><span class="nt">&quot;lhs&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+<span class="w">        </span><span class="c1">// Define another operator</span>
+<span class="w">    </span><span class="p">},</span>
+<span class="w">    </span><span class="nt">&quot;rhs&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+<span class="w">        </span><span class="c1">// Define another operator</span>
+<span class="w">    </span><span class="p">}</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+</div></blockquote>
+</section>
+<section id="multiply">
+<h4>Multiply (*)<a class="headerlink" href="#multiply" title="Link to this heading"></a></h4>
+<blockquote>
+<div><p>The multiply operator is used to multiply two numbers. The value of the ‘<strong>arithmeticalType</strong>’ field is <strong>“multiply”</strong>.</p>
+<p>Example:</p>
+<div class="highlight-json notranslate"><div class="highlight"><pre><span></span><span class="p">{</span>
+<span class="w">    </span><span class="nt">&quot;operatorType&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;arithmetical&quot;</span><span class="p">,</span>
+<span class="w">    </span><span class="nt">&quot;arithmeticalType&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;multiply&quot;</span><span class="p">,</span>
+<span class="w">    </span><span class="nt">&quot;lhs&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+<span class="w">        </span><span class="c1">// Define another operator</span>
+<span class="w">    </span><span class="p">},</span>
+<span class="w">    </span><span class="nt">&quot;rhs&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+<span class="w">        </span><span class="c1">// Define another operator</span>
+<span class="w">    </span><span class="p">}</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+</div></blockquote>
+</section>
+<section id="division">
+<h4>Division (/)<a class="headerlink" href="#division" title="Link to this heading"></a></h4>
+<blockquote>
+<div><p>The division operator is used to divide one number by another. The value of the ‘<strong>arithmeticalType</strong>’ field is <strong>“division”</strong>.</p>
+<p>Example:</p>
+<div class="highlight-json notranslate"><div class="highlight"><pre><span></span><span class="p">{</span>
+<span class="w">    </span><span class="nt">&quot;operatorType&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;arithmetical&quot;</span><span class="p">,</span>
+<span class="w">    </span><span class="nt">&quot;arithmeticalType&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;division&quot;</span><span class="p">,</span>
+<span class="w">    </span><span class="nt">&quot;lhs&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+<span class="w">        </span><span class="c1">// Define another operator</span>
+<span class="w">    </span><span class="p">},</span>
+<span class="w">    </span><span class="nt">&quot;rhs&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+<span class="w">        </span><span class="c1">// Define another operator</span>
+<span class="w">    </span><span class="p">}</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+</div></blockquote>
+</section>
+<section id="module">
+<h4>Module (%)<a class="headerlink" href="#module" title="Link to this heading"></a></h4>
+<blockquote>
+<div><p>The module operator is used to find the remainder of the division of one number by another. The value of the ‘<strong>arithmeticalType</strong>’ field is <strong>“module”</strong>.</p>
+<p>Example:</p>
+<div class="highlight-json notranslate"><div class="highlight"><pre><span></span><span class="p">{</span>
+<span class="w">    </span><span class="nt">&quot;operatorType&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;arithmetical&quot;</span><span class="p">,</span>
+<span class="w">    </span><span class="nt">&quot;arithmeticalType&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;module&quot;</span><span class="p">,</span>
+<span class="w">    </span><span class="nt">&quot;lhs&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+<span class="w">        </span><span class="c1">// Define another operator</span>
+<span class="w">    </span><span class="p">},</span>
+<span class="w">    </span><span class="nt">&quot;rhs&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+<span class="w">        </span><span class="c1">// Define another operator</span>
+<span class="w">    </span><span class="p">}</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+</div></blockquote>
+</section>
+</section>
+</section>
+<section id="conditionals-of-json-schema">
+<h2>Conditionals of JSON Schema<a class="headerlink" href="#conditionals-of-json-schema" title="Link to this heading"></a></h2>
+<p id="id7">Conditionals in JSON schemas function as schema modifiers based on the values of the configuration used in the validation. Each
+conditional is defined by a dictionary (or object). These conditionals, like a conditional in programming, have three distinct
+parts, which are defined in three fields:</p>
+<section id="condition">
+<h3>Condition<a class="headerlink" href="#condition" title="Link to this heading"></a></h3>
+<blockquote>
+<div><p>The ‘<strong>condition</strong>’ field is in charge of deciding which block of the conditional will modify the schema,
+the <a class="reference internal" href="#id8"><span class="std std-ref">Then Block</span></a> or the <a class="reference internal" href="#id9"><span class="std std-ref">Else Block</span></a>.</p>
+<p>This field is defined by the use of operators. The result of the operator resolution shall be evaluated as a condition. For more
+information on operators, see the <a class="reference internal" href="#id1"><span class="std std-ref">Operators of JSON Schema</span></a> section.</p>
+</div></blockquote>
+</section>
+<section id="then-block">
+<h3>Then Block<a class="headerlink" href="#then-block" title="Link to this heading"></a></h3>
+<blockquote id="id8">
+<div><p>The block defined in the ‘<strong>then</strong>’ field shall be applied in case the conditional condition is true.</p>
+<p>This block is defined by a dictionary (or object), which has three fields to be defined, as follows:</p>
+<ul>
+<li><p><strong>workingPath</strong>:</p>
+<blockquote>
+<div><div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>The ‘<strong>workingPath</strong>’ field is optional. Its default value is the height within the scheme in which the conditional is defined.</p>
+</div>
+<p>It is defined as a list of strings, which indicates the relative path to the current position within the schema where the modification is to be applied.</p>
+<p>This field is necessary because it may be the case that the zone where the modification is to be applied is at a different height from the zone where the values for the resolution of the condition are obtained.</p>
+</div></blockquote>
+</li>
+<li><p><strong>add</strong>:</p>
+<blockquote>
+<div><p>The ‘<strong>add</strong>’ field is defined as a dictionary (or object), in which different fields are defined depending on the additions to be made to the schema. The available modification fields are the following:</p>
+<ul>
+<li><p><strong>nullProperty</strong>:</p>
+<blockquote>
+<div><p>The purpose of this field is to activate the possibility of a schema element to have a null value in the configuration. The way to define this field is through a list of strings indicating the names of the affected properties.</p>
+</div></blockquote>
+</li>
+</ul>
+</div></blockquote>
+</li>
+<li><p><strong>remove</strong>:</p>
+<blockquote>
+<div><p>The ‘<strong>remove</strong>’ field is defined as a dictionary (or object), in which different fields are defined depending on the deletions to be made in the schema. The following modification fields are available:</p>
+<ul>
+<li><p><strong>nullProperty</strong>:</p>
+<blockquote>
+<div><p>The purpose of this field is to disable the possibility that a schema element can take a null value in the configuration. The way to define this field is through a list of strings indicating the names of the affected properties.</p>
+</div></blockquote>
+</li>
+</ul>
+</div></blockquote>
+</li>
+</ul>
+</div></blockquote>
+</section>
+<section id="else-block">
+<h3>Else Block<a class="headerlink" href="#else-block" title="Link to this heading"></a></h3>
+<blockquote id="id9">
+<div><p>The block defined in the “<strong>else</strong>” field shall be applied in case the conditional condition is false.</p>
+<p>The structure of this block is exactly the same as in the <a class="reference internal" href="#id8"><span class="std std-ref">Then Block</span></a> section.</p>
+</div></blockquote>
+<p>In the case of having defined a pattern-based conditional, the above structure is maintained in its entirety except for a single
+addition, the possibility of using the value that matches the pattern.</p>
+<p>This value can be used within the path defined by the ‘<strong>workingPath</strong>’ field as well as in the schema modification fields, such
+as ‘<strong>nullProperty</strong>’. To use this value, the string <strong>“&lt;pattern&gt;”</strong> must be placed, which will be replaced by the value matching
+the pattern automatically within the validator.</p>
+</section>
+</section>
+<section id="conditions-of-json-schema">
+<h2>Conditions of JSON Schema<a class="headerlink" href="#conditions-of-json-schema" title="Link to this heading"></a></h2>
+<p id="id10">Conditions in JSON schemas are used to define certain restrictions that warn the user with errors or warnings of possible
+malfunctioning of the validation due to the configuration values used.</p>
+<p>Al igual que sucede con los condicionales, estas condiciones se definen como un diccionario (o objeto) en el cuál existe un campo ‘<strong>condition</strong>’, cuya estructura es exactamente igual a la del campo ‘condition’ de los condicionales, la cual se puede ver en la sección Condition; y un campo donde se define la advertencia. Esta campo de advertencia se define como una cadena, que representa el mensaje a mostrar al usuario. Si la advertencia es de error se define el campo ‘<strong>error</strong>’, mientras que si la advertencia es de aviso se define el campo ‘<strong>warning</strong>’.</p>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="element_types/tuple.html" class="btn btn-neutral float-left" title="Tuple Type" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="../../reference/api.html" class="btn btn-neutral float-right" title="API" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2026, Jordi Moya Laraño.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  
+
+<div class="rst-versions" data-toggle="rst-versions" role="note" aria-label="versions">
+
+  
+  
+
+  
+  
+    
+  
+
+  
+  
+    
+  
+
+  
+  
+  
+  
+  <span class="rst-current-version" data-toggle="rst-current-version">
+    v: 2026.02.05 (en)
+    <span class="fa fa-caret-down"></span>
+  </span>
+  
+  
+  <div class="rst-other-versions">
+  
+    
+    <dl>
+      <dt>Versions</dt>
+      
+        
+          
+          <dd>
+            <a href="../../../index.html">
+              2026.02.06
+            </a>
+          </dd>
+        
+      
+        
+          
+          <dd>
+            <a href="../../../2025.12.12/index.html">
+              2025.12.12
+            </a>
+          </dd>
+        
+      
+        
+          
+          <dd>
+            <a href="../../../2026.01.07/index.html">
+              2026.01.07
+            </a>
+          </dd>
+        
+      
+        
+          
+          <dd>
+            <a href="../../../2026.01.31/index.html">
+              2026.01.31
+            </a>
+          </dd>
+        
+      
+        
+          
+          <dd>
+            <a href="../../../2026.02.02/index.html">
+              2026.02.02
+            </a>
+          </dd>
+        
+      
+        
+          
+          <dd>
+            <a style="color: yellow;" href="../../../2026.02.05/index.html">
+              2026.02.05
+            </a>
+          </dd>
+        
+      
+    </dl>
+
+    
+    <dl>
+      <dt>Languages</dt>
+      
+        
+          
+          <dd>
+            <a style="color: yellow;" href="../../../2026.02.05/index.html">
+              en
+            </a>
+          </dd>
+        
+      
+    </dl>
+    
+    <br>
+  </div>
+</div><script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

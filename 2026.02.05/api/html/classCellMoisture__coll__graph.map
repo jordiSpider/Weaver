@@ -1,0 +1,27 @@
+<map id="CellMoisture" name="CellMoisture">
+<area shape="rect" id="Node000001" title="Concrete moisture model for a terrain cell." alt="" coords="1309,116,1413,141"/>
+<area shape="rect" id="Node000002" href="$classCellMoistureInterface.html" title="Base interface representing the hydrological and thermal properties of a terrain cell." alt="" coords="992,40,1155,65"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="1136,66,1313,113,1311,118,1135,71"/>
+<area shape="rect" id="Node000003" href="$classCellElement.html" title="Base class for any modifiable element contained within a terrain cell." alt="" coords="565,5,666,31"/>
+<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="680,17,813,22,968,34,995,37,995,43,968,39,812,28,680,22"/>
+<area shape="rect" id="Node000004" href="$classWetMass.html" title="Represents wet mass in the ecosystem simulation." alt="" coords="575,77,656,103"/>
+<area shape="poly" id="edge3_Node000002_Node000004" title=" " alt="" coords="670,83,992,57,992,62,670,88"/>
+<area shape="rect" id="Node000006" href="$classMoistureSource.html" title="Represents a moisture source in the landscape." alt="" coords="1012,191,1135,216"/>
+<area shape="poly" id="edge7_Node000006_Node000004" title=" " alt="" coords="670,92,850,110,969,125,997,138,1022,156,1061,188,1058,192,1019,160,994,143,967,130,849,115,670,98"/>
+<area shape="rect" id="Node000005" href="$classPreciseDouble.html" title="Class for precise double&#45;precision floating&#45;point arithmetic." alt="" coords="177,129,292,155"/>
+<area shape="poly" id="edge4_Node000004_Node000005" title=" " alt="" coords="306,128,352,121,574,92,575,97,352,126,307,133"/>
+<area shape="poly" id="edge14_Node000006_Node000005" title=" " alt="" coords="306,140,595,150,781,162,968,181,1014,188,1013,193,968,186,781,167,595,155,306,146"/>
+<area shape="rect" id="Node000011" href="$classTemperature.html" title="Represents a temperature and provides conversions and operations between scales." alt="" coords="563,191,667,216"/>
+<area shape="poly" id="edge12_Node000011_Node000005" title=" " alt="" coords="266,160,306,184,353,202,408,212,464,214,563,208,563,214,464,220,407,217,351,207,303,189,263,165"/>
+<area shape="poly" id="edge5_Node000001_Node000006" title=" " alt="" coords="1136,184,1311,139,1312,144,1138,190"/>
+<area shape="rect" id="Node000007" href="$classPathSource.html" title="Abstract base class for landscape data sources." alt="" coords="568,240,663,265"/>
+<area shape="poly" id="edge6_Node000006_Node000007" title=" " alt="" coords="676,244,1011,207,1012,213,676,249"/>
+<area shape="rect" id="Node000008" href="$classCycleDynamics.html" title="Implements periodic, non–mass&#45;based dynamic behavior." alt="" coords="554,353,677,379"/>
+<area shape="poly" id="edge8_Node000006_Node000008" title=" " alt="" coords="690,374,753,378,824,375,898,362,933,351,967,336,1002,309,1030,276,1051,242,1064,215,1069,217,1055,244,1034,279,1005,313,969,340,935,356,899,367,825,380,753,383,690,379"/>
+<area shape="rect" id="Node000009" href="$classNonMassBasedDynamics.html" title="Represents dynamics that are independent of mass." alt="" coords="141,315,328,340"/>
+<area shape="poly" id="edge13_Node000006_Node000009" title=" " alt="" coords="342,324,470,319,627,306,799,282,884,265,967,243,1045,214,1047,219,969,249,885,270,799,287,628,311,470,324,342,329"/>
+<area shape="poly" id="edge9_Node000008_Node000009" title=" " alt="" coords="342,336,554,357,553,362,342,341"/>
+<area shape="rect" id="Node000010" href="$classDynamics.html" title="Abstract base class for modeling temporal dynamics." alt="" coords="5,315,92,340"/>
+<area shape="poly" id="edge10_Node000009_Node000010" title=" " alt="" coords="106,325,141,325,141,330,106,330"/>
+<area shape="poly" id="edge11_Node000006_Node000011" title=" " alt="" coords="681,201,1012,201,1012,206,681,206"/>
+</map>
