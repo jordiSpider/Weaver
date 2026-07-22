@@ -13,13 +13,13 @@
 #'    - Creates the configuration folder structure.
 #'    - Processes selected animal species, running species scripts and generating JSON files.
 #'    - Processes selected resource species and generates JSON files.
-#'    - Generates CSV files for ontogenetic links filled with zeros.
+#'    - Generates CSV files for ontogenetic links.
 #'    - Optionally generates bibliographies using `bibgen2`.
 #'    - Shows success or error modal dialogs.
 #' 3. `generate_animal_species_json` and `generate_resource_species_json`:
 #'    - Helper functions to build structured JSON files from the environment variables.
 #' 4. `generate_ontogenetic_links_csv`:
-#'    - Generates ontogenetic link CSV files filled with zeros.
+#'    - Generates ontogenetic link CSV files.
 #' 5. `assign_nested`:
 #'    - Utility function to assign values to nested lists (used for JSON construction).
 #'
@@ -218,11 +218,90 @@ generate_resource_species_json = function(environment, output_path, version) {
 # ----------------------------------------------------------------------
 # Generate CSV files for ontogenetic links
 # ----------------------------------------------------------------------
-generate_ontogenetic_links_csv <- function(ontogenetic_links_column_header, ontogenetic_links_row_header, output_path) {
+generate_ontogenetic_links_csv <- function(animal_species_env, resource_species_env, output_path) {
+
+    # --- Columns ---
+    
+    ontogenetic_links_column_header <- c()
+
+    for(env in animal_species_env) {
+        instars <- seq_along(get("json.individualsPerInstar", envir = env))
+        ontogenetic_links_column_header <- c(ontogenetic_links_column_header, sapply(instars, function(instar) { paste(get("json.name", envir = env), instar, sep = "$") }))
+    }
+
+    # --- Rows ---
+
+    ontogenetic_links_row_header <- ontogenetic_links_column_header
+
+    for(env in resource_species_env) {
+        ontogenetic_links_row_header <- c(ontogenetic_links_row_header, paste(get("json.name", envir = env), "1", sep = "$"))
+    }
+
+    # --- Links ---
+
     preferences_matrix <- matrix(0.0, nrow = length(ontogenetic_links_row_header), ncol = length(ontogenetic_links_column_header),
                     dimnames = list(ontogenetic_links_row_header, ontogenetic_links_column_header))
     
     profitability_matrix <- preferences_matrix
+
+
+    for (species_env in animal_species_env) {
+        
+        # Obtener el nombre de la especie actual
+        species_name <- get("json.name", envir = species_env)
+        
+        # Comprobar si tiene definidos enlaces ontogenéticos
+        if (exists("json.ontogenetic_links", envir = species_env)) {
+            ontogenetic_links <- get("json.ontogenetic_links", envir = species_env)
+            
+            # 3. Iterar por los instares de esta especie (depredador)
+            for (predator_instar in names(ontogenetic_links)) {
+                
+                # Construir el nombre de la columna (Ej. "Amblyseius_swirskii$1")
+                col_name <- paste0(species_name, "$", predator_instar)
+                
+                # Asegurarnos de que este instar está activo en la simulación actual
+                if (col_name %in% ontogenetic_links_column_header) {
+                    prey_list <- ontogenetic_links[[predator_instar]]
+                    
+                    # 4. Iterar sobre las especies presa con las que tiene enlace
+                    for (prey_name in names(prey_list)) {
+                        links <- prey_list[[prey_name]]
+                        
+                        # 5. Iterar sobre las reglas/instares de la presa
+                        for (link in links) {
+                            pref_val <- link$preference
+                            prof_val <- link$profitability
+                            t_instars <- link$target_instars
+                            
+                            # Determinar los nombres de las filas objetivo (presas)
+                            if (is.character(t_instars) && length(t_instars) == 1 && t_instars == "all") {
+                                # Si aplica a todos, buscar todas las filas que empiecen por el nombre de la presa
+                                matching_rows <- grep(paste0("^", prey_name, "\\$"), ontogenetic_links_row_header, value = TRUE)
+                            } else {
+                                # Si son instares específicos, construir los nombres exactos y verificar que existen
+                                expected_rows <- paste0(prey_name, "$", t_instars)
+                                matching_rows <- intersect(expected_rows, ontogenetic_links_row_header)
+                            }
+                            
+                            # 6. Fijar la preferencia y profitability en las matrices
+                            for (row_match in matching_rows) {
+                                preferences_matrix[row_match, col_name] <- pref_val
+                                profitability_matrix[row_match, col_name] <- prof_val
+                            }
+                        }
+                    }
+                    
+                    # 7. Normalizar la columna de preferencias del depredador para que sume 1.0
+                    col_sum <- sum(preferences_matrix[, col_name])
+                    if (col_sum > 0) {
+                        preferences_matrix[, col_name] <- preferences_matrix[, col_name] / col_sum
+                    }
+                }
+            }
+        }
+    }
+
 
     preferences_df <- as.data.frame(preferences_matrix)
     profitability_df <- as.data.frame(profitability_matrix)
@@ -246,8 +325,6 @@ config_generator <- function(input, config_name, version, save_directory_path, b
         
         dir.create(file.path(save_directory_path, config_name), recursive = TRUE, showWarnings = FALSE)
 
-        ontogenetic_links_column_header <- c()
-
 
         # --- Animal Species ---
         animal_species_folder <- file.path(save_directory_path, config_name, "species")
@@ -269,16 +346,12 @@ config_generator <- function(input, config_name, version, save_directory_path, b
             )
             env <- run_animal_species_info_script(name, env)
             generate_animal_species_json(env, animal_species_folder, version)
-            instars <- get("json.individualsPerInstar", envir = env)
-            ontogenetic_links_column_header <- c(ontogenetic_links_column_header, sapply(seq_along(instars), function(instar) { paste(get("json.name", envir = env), instar, sep = "$") }))
             animal_species_env <- c(animal_species_env, env)
         }
 
         if(bibliography) {
             bibgen2(animal_species_env, file.path(save_directory_path, config_name, "species"))
         }
-
-        ontogenetic_links_row_header <- ontogenetic_links_column_header
 
         # --- Resource Species ---
         resource_species_folder <- file.path(save_directory_path, config_name, "resource")
@@ -289,12 +362,11 @@ config_generator <- function(input, config_name, version, save_directory_path, b
             env <- new.env()
             env <- run_resource_species_info_script(name, env)
             generate_resource_species_json(env, resource_species_folder, version)
-            ontogenetic_links_row_header <- c(ontogenetic_links_row_header, paste(get("json.name", envir = env), "1", sep = "$"))
             resource_species_env <- c(resource_species_env, env)
         }
 
         # --- Ontogenetic Links ---
-        generate_ontogenetic_links_csv(ontogenetic_links_column_header, ontogenetic_links_row_header, animal_species_folder)
+        generate_ontogenetic_links_csv(animal_species_env, resource_species_env, animal_species_folder)
 
         # Show success modal
         if(bibliography) {

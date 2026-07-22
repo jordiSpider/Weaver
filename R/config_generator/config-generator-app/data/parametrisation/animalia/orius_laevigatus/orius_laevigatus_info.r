@@ -1428,3 +1428,24 @@ json.decisions.sensoryModel.beta = 2.5
 json.sexualType = "haplodiploid"  # Reproduction type (e.g., haplodiploid, diploid, etc.)
 json.statisticsIndividualsPerInstar = 1000  # Number of individuals used in statistics per instar
 json.tempFromLab = tempFromLab  # Reference temperature from lab conditions
+
+
+# =====================
+# ONTOGENETIC LINKS
+# =====================
+
+links <- list(
+  "Amblyseius_swirskii" = list(
+    list(target_instars = "all", preference = 0.0053, profitability = 0.05)
+  ),
+  "Resource_fast" = list(
+    list(target_instars = "all", preference = 0.9688, profitability = 0.05)
+  )
+)
+
+
+json.ontogenetic_links = list()
+
+for (instar in 1:json.growthModule.instarFirstReproduction) {
+  json.ontogenetic_links[[as.character(instar)]] <- links
+}

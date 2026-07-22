@@ -1307,6 +1307,30 @@ json.statisticsIndividualsPerInstar = 1000  # Number of individuals used in stat
 json.tempFromLab = tempFromLab  # Reference temperature from lab conditions
 
 
+# =====================
+# ONTOGENETIC LINKS
+# =====================
+
+nonAdultLinks <- list(
+  "Biofilm" = list(
+    list(target_instars = "all", preference = 1, profitability = 0.1)
+  )
+)
+
+adultLinks <- list(
+  "Plant1" = list(
+    list(target_instars = "all", preference = 1, profitability = 0.1)
+  )
+)
+
+
+json.ontogenetic_links = list()
+
+for (instar in 1:(json.growthModule.instarFirstReproduction - 1)) {
+  json.ontogenetic_links[[as.character(instar)]] <- nonAdultLinks
+}
+
+json.ontogenetic_links[[as.character(json.growthModule.instarFirstReproduction)]] <- adultLinks
 
 
 ################################################################

@@ -1353,6 +1353,33 @@ json.statisticsIndividualsPerInstar = 1000  # Number of individuals used in stat
 json.tempFromLab = tempFromLab  # Reference temperature from lab conditions
 
 
+# =====================
+# ONTOGENETIC LINKS
+# =====================
+
+nonAdultLinks <- list(
+  "Cricotopus_spx" = list(
+    list(target_instars = 1:4, preference = 0.000183513640006703, profitability = 0.1)
+  ),
+  "Alternative" = list(
+    list(target_instars = "all", preference = 0.999265945439973, profitability = 0.1)
+  )
+)
+
+adultLinks <- list(
+  "Plant2" = list(
+    list(target_instars = "all", preference = 1, profitability = 0.1)
+  )
+)
+
+
+json.ontogenetic_links = list()
+
+for (instar in 1:(json.growthModule.instarFirstReproduction - 1)) {
+  json.ontogenetic_links[[as.character(instar)]] <- nonAdultLinks
+}
+
+json.ontogenetic_links[[as.character(json.growthModule.instarFirstReproduction)]] <- adultLinks
 
 
 ################################################################
