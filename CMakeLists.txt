@@ -23,6 +23,12 @@ cmake_minimum_required(VERSION 3.25)
 # This allows automatic daily versioning for reproducible builds.
 string(TIMESTAMP PROGRAM_VERSION "%Y.%m.%d")
 
+# ------------------------------------------------------------
+# Create the vcpkg cache directory if it was injected by the preset
+# ------------------------------------------------------------
+if(DEFINED ENV{VCPKG_DEFAULT_BINARY_CACHE})
+    file(MAKE_DIRECTORY "$ENV{VCPKG_DEFAULT_BINARY_CACHE}")
+endif()
 
 # ------------------------------------------------------------
 # 🏷️ Define the project

@@ -11,11 +11,18 @@
             "name": "common",
             "hidden": true,
             "description": "Base preset defining common cache variables shared by all builds.",
-            "binaryDir": "${sourceDir}/build/${presetName}",
+            "binaryDir": "$env{HOST_BUILD_DIR}/${presetName}",
+            "environment": {
+                "HOST_BUILD_DIR": "${sourceDir}/build/${hostSystemName}"
+            },
             "cacheVariables": {
                 "CMAKE_CXX_STANDARD": "17",
                 "CMAKE_CXX_STANDARD_REQUIRED": "ON",
+                "CMAKE_CXX_EXTENSIONS": "OFF",
                 "CMAKE_EXPORT_COMPILE_COMMANDS": "ON",
+                "CMAKE_RUNTIME_OUTPUT_DIRECTORY": "${sourceDir}/bin/${hostSystemName}/$<CONFIG>",
+                "CMAKE_LIBRARY_OUTPUT_DIRECTORY": "${sourceDir}/lib/${hostSystemName}/$<CONFIG>",
+                "CMAKE_ARCHIVE_OUTPUT_DIRECTORY": "${sourceDir}/lib/${hostSystemName}/$<CONFIG>",
                 "INCLUDE_DIR_NAME": "include",
                 "REPO_URL": "https://github.com/jordiSpider/Weaver",
                 "AUTHOR": "Jordi Moya Laraño"
@@ -33,7 +40,14 @@
                 "SRC_DIR_NAME": "src",
                 "EXECUTABLE_DIR_NAME": "bin",
                 "SCHEMA_DIR_NAME": "schema",
-                "CONFIG_DIR_NAME": "config"
+                "CONFIG_DIR_NAME": "config",
+                "X_VCPKG_APPLOCAL_DEPS_INSTALL": "ON",
+                "CMAKE_TOOLCHAIN_FILE": "${sourceDir}/external/vcpkg/scripts/buildsystems/vcpkg.cmake",
+                "VCPKG_INSTALL_OPTIONS": "--clean-after-build",
+                "VCPKG_INSTALLED_DIR": "$env{HOST_BUILD_DIR}/vcpkg_installed"
+            },
+            "environment": {
+                "VCPKG_DEFAULT_BINARY_CACHE": "$env{HOST_BUILD_DIR}/vcpkg_cache"
             }
         },
         {
@@ -48,8 +62,6 @@
             },
             "generator": "Visual Studio 17 2022",
             "cacheVariables": {
-                "CMAKE_TOOLCHAIN_FILE": "${sourceDir}/external/vcpkg/scripts/buildsystems/vcpkg.cmake",
-                "VCPKG_INSTALLED_DIR": "${sourceDir}/vcpkg_installed",
                 "VCPKG_TARGET_TRIPLET": "x64-windows-static",
                 "VCPKG_HOST_TRIPLET": "x64-windows-static",
                 "CPACK_NSIS_MUI_ICON": "${sourceDir}/icons/icon.ico",

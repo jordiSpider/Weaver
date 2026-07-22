@@ -50,7 +50,9 @@ jobs:
         id: cache-primes-restore
         uses: actions/cache/restore@v4
         with:
-          path: vcpkg_installed
+          path: |
+            build/Windows/vcpkg_installed
+            build/Windows/vcpkg_cache
           key: ${{ runner.os }}-vcpkg-${{ hashFiles('vcpkg.json') }}
 
       # 🔨 Configure and build the project using CMake workflow presets
@@ -62,7 +64,9 @@ jobs:
         id: cache-primes-save
         uses: actions/cache/save@v4
         with:
-          path: vcpkg_installed
+          path: |
+            build/Windows/vcpkg_installed
+            build/Windows/vcpkg_cache
           key: ${{ runner.os }}-vcpkg-${{ hashFiles('vcpkg.json') }}
 
       # 📦 Package the build output into an installer using CPack
@@ -105,7 +109,9 @@ jobs:
         id: cache-primes-restore
         uses: actions/cache/restore@v4
         with:
-          path: vcpkg_installed
+          path: |
+            build/Linux/vcpkg_installed
+            build/Linux/vcpkg_cache
           key: ${{ runner.os }}-vcpkg-${{ hashFiles('vcpkg.json') }}
 
       # 🛠️ Install required development packages for building GUI applications
@@ -123,7 +129,9 @@ jobs:
         id: cache-primes-save
         uses: actions/cache/save@v4
         with:
-          path: vcpkg_installed
+          path: |
+            build/Linux/vcpkg_installed
+            build/Linux/vcpkg_cache
           key: ${{ runner.os }}-vcpkg-${{ hashFiles('vcpkg.json') }}
 
       # 📦 Package the build output into an installer using CPack
