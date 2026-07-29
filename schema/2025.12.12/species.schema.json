@@ -190,7 +190,7 @@
                                                 "element": {
                                                     "type": "string",
                                                     "enum": [
-                                                        "value", 
+                                                        "value",
                                                         "activationEnergy",
                                                         "energyDecay",
                                                         "temperatureOptimal",
@@ -221,7 +221,7 @@
                                                     "properties": {
                                                         "definitionType": {
                                                             "type": "string",
-                                                            "enum": ["SpeciesLevel","IndividualLevel"]
+                                                            "enum": [ "SpeciesLevel", "IndividualLevel" ]
                                                         },
                                                         "speciesLevelParams": {
                                                             "type": "object",
@@ -289,7 +289,7 @@
                                                                     "value": "SpeciesLevel"
                                                                 }
                                                             },
-                                                            "then": [ 
+                                                            "then": [
                                                                 {
                                                                     "workingPath": [
                                                                         "speciesLevelParams"
@@ -318,24 +318,28 @@
                                                                     "value": "IndividualLevel"
                                                                 }
                                                             },
-                                                            "then": [ 
+                                                            "then": [
                                                                 {
                                                                     "workingPath": [
-                                                                        "individualLevelParams", "limits"
+                                                                        "individualLevelParams",
+                                                                        "limits"
                                                                     ],
                                                                     "remove": {
                                                                         "nullProperty": [
-                                                                            "max", "min"
+                                                                            "max",
+                                                                            "min"
                                                                         ]
                                                                     }
                                                                 },
                                                                 {
                                                                     "workingPath": [
-                                                                        "individualLevelParams", "ranges"
+                                                                        "individualLevelParams",
+                                                                        "ranges"
                                                                     ],
                                                                     "remove": {
                                                                         "nullProperty": [
-                                                                            "max", "min"
+                                                                            "max",
+                                                                            "min"
                                                                         ]
                                                                     }
                                                                 },
@@ -361,7 +365,7 @@
                                                     "properties": {
                                                         "definitionType": {
                                                             "type": "string",
-                                                            "enum": ["SpeciesLevel","IndividualLevel"]
+                                                            "enum": [ "SpeciesLevel", "IndividualLevel" ]
                                                         },
                                                         "speciesLevelParams": {
                                                             "type": "object",
@@ -447,7 +451,7 @@
                                                                             "dependent"
                                                                         ]
                                                                     },
-                                                                    "then": [ 
+                                                                    "then": [
                                                                         {
                                                                             "remove": {
                                                                                 "nullProperty": [
@@ -477,7 +481,7 @@
                                                                     "value": "SpeciesLevel"
                                                                 }
                                                             },
-                                                            "then": [ 
+                                                            "then": [
                                                                 {
                                                                     "workingPath": [
                                                                         "speciesLevelParams"
@@ -506,24 +510,28 @@
                                                                     "value": "IndividualLevel"
                                                                 }
                                                             },
-                                                            "then": [ 
+                                                            "then": [
                                                                 {
                                                                     "workingPath": [
-                                                                        "individualLevelParams", "limits"
+                                                                        "individualLevelParams",
+                                                                        "limits"
                                                                     ],
                                                                     "remove": {
                                                                         "nullProperty": [
-                                                                            "max", "min"
+                                                                            "max",
+                                                                            "min"
                                                                         ]
                                                                     }
                                                                 },
                                                                 {
                                                                     "workingPath": [
-                                                                        "individualLevelParams", "ranges"
+                                                                        "individualLevelParams",
+                                                                        "ranges"
                                                                     ],
                                                                     "remove": {
                                                                         "nullProperty": [
-                                                                            "max", "min"
+                                                                            "max",
+                                                                            "min"
                                                                         ]
                                                                     }
                                                                 },
@@ -570,7 +578,7 @@
                                                     "properties": {
                                                         "definitionType": {
                                                             "type": "string",
-                                                            "enum": ["SpeciesLevel","IndividualLevel"]
+                                                            "enum": [ "SpeciesLevel", "IndividualLevel" ]
                                                         },
                                                         "speciesLevelParams": {
                                                             "type": "object",
@@ -639,7 +647,7 @@
                                                                     "properties": {
                                                                         "definitionType": {
                                                                             "type": "string",
-                                                                            "enum": ["SpeciesLevel","IndividualLevel"],
+                                                                            "enum": [ "SpeciesLevel", "IndividualLevel" ],
                                                                             "nullProperty": true
                                                                         },
                                                                         "speciesLevelParams": {
@@ -728,7 +736,7 @@
                                                                                     "value": false
                                                                                 }
                                                                             },
-                                                                            "then": [ 
+                                                                            "then": [
                                                                                 {
                                                                                     "workingPath": [
                                                                                         "speciesLevelParams"
@@ -777,24 +785,28 @@
                                                                                     "value": false
                                                                                 }
                                                                             },
-                                                                            "then": [ 
+                                                                            "then": [
                                                                                 {
                                                                                     "workingPath": [
-                                                                                        "individualLevelParams", "limits"
+                                                                                        "individualLevelParams",
+                                                                                        "limits"
                                                                                     ],
                                                                                     "remove": {
                                                                                         "nullProperty": [
-                                                                                            "max", "min"
+                                                                                            "max",
+                                                                                            "min"
                                                                                         ]
                                                                                     }
                                                                                 },
                                                                                 {
                                                                                     "workingPath": [
-                                                                                        "individualLevelParams", "ranges"
+                                                                                        "individualLevelParams",
+                                                                                        "ranges"
                                                                                     ],
                                                                                     "remove": {
                                                                                         "nullProperty": [
-                                                                                            "max", "min"
+                                                                                            "max",
+                                                                                            "min"
                                                                                         ]
                                                                                     }
                                                                                 },
@@ -821,7 +833,7 @@
                                                                             "dependent"
                                                                         ]
                                                                     },
-                                                                    "then": [ 
+                                                                    "then": [
                                                                         {
                                                                             "dst": [
                                                                                 "activationEnergy"
@@ -884,7 +896,7 @@
                                                                     "value": "SpeciesLevel"
                                                                 }
                                                             },
-                                                            "then": [ 
+                                                            "then": [
                                                                 {
                                                                     "workingPath": [
                                                                         "speciesLevelParams"
@@ -913,24 +925,28 @@
                                                                     "value": "IndividualLevel"
                                                                 }
                                                             },
-                                                            "then": [ 
+                                                            "then": [
                                                                 {
                                                                     "workingPath": [
-                                                                        "individualLevelParams", "limits"
+                                                                        "individualLevelParams",
+                                                                        "limits"
                                                                     ],
                                                                     "remove": {
                                                                         "nullProperty": [
-                                                                            "max", "min"
+                                                                            "max",
+                                                                            "min"
                                                                         ]
                                                                     }
                                                                 },
                                                                 {
                                                                     "workingPath": [
-                                                                        "individualLevelParams", "ranges"
+                                                                        "individualLevelParams",
+                                                                        "ranges"
                                                                     ],
                                                                     "remove": {
                                                                         "nullProperty": [
-                                                                            "max", "min"
+                                                                            "max",
+                                                                            "min"
                                                                         ]
                                                                     }
                                                                 },
@@ -966,7 +982,7 @@
                                                             "properties": {
                                                                 "definitionType": {
                                                                     "type": "string",
-                                                                    "enum": ["SpeciesLevel","IndividualLevel"]
+                                                                    "enum": [ "SpeciesLevel", "IndividualLevel" ]
                                                                 },
                                                                 "speciesLevelParams": {
                                                                     "type": "object",
@@ -1035,7 +1051,7 @@
                                                                             "properties": {
                                                                                 "definitionType": {
                                                                                     "type": "string",
-                                                                                    "enum": ["SpeciesLevel","IndividualLevel"],
+                                                                                    "enum": [ "SpeciesLevel", "IndividualLevel" ],
                                                                                     "nullProperty": true
                                                                                 },
                                                                                 "speciesLevelParams": {
@@ -1124,7 +1140,7 @@
                                                                                             "value": false
                                                                                         }
                                                                                     },
-                                                                                    "then": [ 
+                                                                                    "then": [
                                                                                         {
                                                                                             "workingPath": [
                                                                                                 "speciesLevelParams"
@@ -1173,24 +1189,28 @@
                                                                                             "value": false
                                                                                         }
                                                                                     },
-                                                                                    "then": [ 
+                                                                                    "then": [
                                                                                         {
                                                                                             "workingPath": [
-                                                                                                "individualLevelParams", "limits"
+                                                                                                "individualLevelParams",
+                                                                                                "limits"
                                                                                             ],
                                                                                             "remove": {
                                                                                                 "nullProperty": [
-                                                                                                    "max", "min"
+                                                                                                    "max",
+                                                                                                    "min"
                                                                                                 ]
                                                                                             }
                                                                                         },
                                                                                         {
                                                                                             "workingPath": [
-                                                                                                "individualLevelParams", "ranges"
+                                                                                                "individualLevelParams",
+                                                                                                "ranges"
                                                                                             ],
                                                                                             "remove": {
                                                                                                 "nullProperty": [
-                                                                                                    "max", "min"
+                                                                                                    "max",
+                                                                                                    "min"
                                                                                                 ]
                                                                                             }
                                                                                         },
@@ -1217,7 +1237,7 @@
                                                                                     "dependent"
                                                                                 ]
                                                                             },
-                                                                            "then": [ 
+                                                                            "then": [
                                                                                 {
                                                                                     "dst": [
                                                                                         "activationEnergy"
@@ -1280,24 +1300,28 @@
                                                                             "value": "IndividualLevel"
                                                                         }
                                                                     },
-                                                                    "then": [ 
+                                                                    "then": [
                                                                         {
                                                                             "workingPath": [
-                                                                                "individualLevelParams", "limits"
+                                                                                "individualLevelParams",
+                                                                                "limits"
                                                                             ],
                                                                             "remove": {
                                                                                 "nullProperty": [
-                                                                                    "max", "min"
+                                                                                    "max",
+                                                                                    "min"
                                                                                 ]
                                                                             }
                                                                         },
                                                                         {
                                                                             "workingPath": [
-                                                                                "individualLevelParams", "ranges"
+                                                                                "individualLevelParams",
+                                                                                "ranges"
                                                                             ],
                                                                             "remove": {
                                                                                 "nullProperty": [
-                                                                                    "max", "min"
+                                                                                    "max",
+                                                                                    "min"
                                                                                 ]
                                                                             }
                                                                         },
@@ -1331,7 +1355,7 @@
                                                             "properties": {
                                                                 "definitionType": {
                                                                     "type": "string",
-                                                                    "enum": ["SpeciesLevel","IndividualLevel"]
+                                                                    "enum": [ "SpeciesLevel", "IndividualLevel" ]
                                                                 },
                                                                 "speciesLevelParams": {
                                                                     "type": "object",
@@ -1400,7 +1424,7 @@
                                                                             "properties": {
                                                                                 "definitionType": {
                                                                                     "type": "string",
-                                                                                    "enum": ["SpeciesLevel","IndividualLevel"],
+                                                                                    "enum": [ "SpeciesLevel", "IndividualLevel" ],
                                                                                     "nullProperty": true
                                                                                 },
                                                                                 "speciesLevelParams": {
@@ -1489,7 +1513,7 @@
                                                                                             "value": false
                                                                                         }
                                                                                     },
-                                                                                    "then": [ 
+                                                                                    "then": [
                                                                                         {
                                                                                             "workingPath": [
                                                                                                 "speciesLevelParams"
@@ -1538,24 +1562,28 @@
                                                                                             "value": false
                                                                                         }
                                                                                     },
-                                                                                    "then": [ 
+                                                                                    "then": [
                                                                                         {
                                                                                             "workingPath": [
-                                                                                                "individualLevelParams", "limits"
+                                                                                                "individualLevelParams",
+                                                                                                "limits"
                                                                                             ],
                                                                                             "remove": {
                                                                                                 "nullProperty": [
-                                                                                                    "max", "min"
+                                                                                                    "max",
+                                                                                                    "min"
                                                                                                 ]
                                                                                             }
                                                                                         },
                                                                                         {
                                                                                             "workingPath": [
-                                                                                                "individualLevelParams", "ranges"
+                                                                                                "individualLevelParams",
+                                                                                                "ranges"
                                                                                             ],
                                                                                             "remove": {
                                                                                                 "nullProperty": [
-                                                                                                    "max", "min"
+                                                                                                    "max",
+                                                                                                    "min"
                                                                                                 ]
                                                                                             }
                                                                                         },
@@ -1582,7 +1610,7 @@
                                                                                     "dependent"
                                                                                 ]
                                                                             },
-                                                                            "then": [ 
+                                                                            "then": [
                                                                                 {
                                                                                     "dst": [
                                                                                         "activationEnergy"
@@ -1645,24 +1673,28 @@
                                                                             "value": "IndividualLevel"
                                                                         }
                                                                     },
-                                                                    "then": [ 
+                                                                    "then": [
                                                                         {
                                                                             "workingPath": [
-                                                                                "individualLevelParams", "limits"
+                                                                                "individualLevelParams",
+                                                                                "limits"
                                                                             ],
                                                                             "remove": {
                                                                                 "nullProperty": [
-                                                                                    "max", "min"
+                                                                                    "max",
+                                                                                    "min"
                                                                                 ]
                                                                             }
                                                                         },
                                                                         {
                                                                             "workingPath": [
-                                                                                "individualLevelParams", "ranges"
+                                                                                "individualLevelParams",
+                                                                                "ranges"
                                                                             ],
                                                                             "remove": {
                                                                                 "nullProperty": [
-                                                                                    "max", "min"
+                                                                                    "max",
+                                                                                    "min"
                                                                                 ]
                                                                             }
                                                                         },
@@ -1694,7 +1726,7 @@
                                                             "properties": {
                                                                 "definitionType": {
                                                                     "type": "string",
-                                                                    "enum": ["SpeciesLevel","IndividualLevel"]
+                                                                    "enum": [ "SpeciesLevel", "IndividualLevel" ]
                                                                 },
                                                                 "speciesLevelParams": {
                                                                     "type": "object",
@@ -1763,7 +1795,7 @@
                                                                             "properties": {
                                                                                 "definitionType": {
                                                                                     "type": "string",
-                                                                                    "enum": ["SpeciesLevel","IndividualLevel"],
+                                                                                    "enum": [ "SpeciesLevel", "IndividualLevel" ],
                                                                                     "nullProperty": true
                                                                                 },
                                                                                 "speciesLevelParams": {
@@ -1852,7 +1884,7 @@
                                                                                             "value": false
                                                                                         }
                                                                                     },
-                                                                                    "then": [ 
+                                                                                    "then": [
                                                                                         {
                                                                                             "workingPath": [
                                                                                                 "speciesLevelParams"
@@ -1901,24 +1933,28 @@
                                                                                             "value": false
                                                                                         }
                                                                                     },
-                                                                                    "then": [ 
+                                                                                    "then": [
                                                                                         {
                                                                                             "workingPath": [
-                                                                                                "individualLevelParams", "limits"
+                                                                                                "individualLevelParams",
+                                                                                                "limits"
                                                                                             ],
                                                                                             "remove": {
                                                                                                 "nullProperty": [
-                                                                                                    "max", "min"
+                                                                                                    "max",
+                                                                                                    "min"
                                                                                                 ]
                                                                                             }
                                                                                         },
                                                                                         {
                                                                                             "workingPath": [
-                                                                                                "individualLevelParams", "ranges"
+                                                                                                "individualLevelParams",
+                                                                                                "ranges"
                                                                                             ],
                                                                                             "remove": {
                                                                                                 "nullProperty": [
-                                                                                                    "max", "min"
+                                                                                                    "max",
+                                                                                                    "min"
                                                                                                 ]
                                                                                             }
                                                                                         },
@@ -1945,7 +1981,7 @@
                                                                                     "dependent"
                                                                                 ]
                                                                             },
-                                                                            "then": [ 
+                                                                            "then": [
                                                                                 {
                                                                                     "dst": [
                                                                                         "activationEnergy"
@@ -2008,24 +2044,28 @@
                                                                             "value": "IndividualLevel"
                                                                         }
                                                                     },
-                                                                    "then": [ 
+                                                                    "then": [
                                                                         {
                                                                             "workingPath": [
-                                                                                "individualLevelParams", "limits"
+                                                                                "individualLevelParams",
+                                                                                "limits"
                                                                             ],
                                                                             "remove": {
                                                                                 "nullProperty": [
-                                                                                    "max", "min"
+                                                                                    "max",
+                                                                                    "min"
                                                                                 ]
                                                                             }
                                                                         },
                                                                         {
                                                                             "workingPath": [
-                                                                                "individualLevelParams", "ranges"
+                                                                                "individualLevelParams",
+                                                                                "ranges"
                                                                             ],
                                                                             "remove": {
                                                                                 "nullProperty": [
-                                                                                    "max", "min"
+                                                                                    "max",
+                                                                                    "min"
                                                                                 ]
                                                                             }
                                                                         },
@@ -2057,7 +2097,7 @@
                                                             "properties": {
                                                                 "definitionType": {
                                                                     "type": "string",
-                                                                    "enum": ["SpeciesLevel","IndividualLevel"]
+                                                                    "enum": [ "SpeciesLevel", "IndividualLevel" ]
                                                                 },
                                                                 "speciesLevelParams": {
                                                                     "type": "object",
@@ -2126,7 +2166,7 @@
                                                                             "properties": {
                                                                                 "definitionType": {
                                                                                     "type": "string",
-                                                                                    "enum": ["SpeciesLevel","IndividualLevel"],
+                                                                                    "enum": [ "SpeciesLevel", "IndividualLevel" ],
                                                                                     "nullProperty": true
                                                                                 },
                                                                                 "speciesLevelParams": {
@@ -2215,7 +2255,7 @@
                                                                                             "value": false
                                                                                         }
                                                                                     },
-                                                                                    "then": [ 
+                                                                                    "then": [
                                                                                         {
                                                                                             "workingPath": [
                                                                                                 "speciesLevelParams"
@@ -2264,24 +2304,28 @@
                                                                                             "value": false
                                                                                         }
                                                                                     },
-                                                                                    "then": [ 
+                                                                                    "then": [
                                                                                         {
                                                                                             "workingPath": [
-                                                                                                "individualLevelParams", "limits"
+                                                                                                "individualLevelParams",
+                                                                                                "limits"
                                                                                             ],
                                                                                             "remove": {
                                                                                                 "nullProperty": [
-                                                                                                    "max", "min"
+                                                                                                    "max",
+                                                                                                    "min"
                                                                                                 ]
                                                                                             }
                                                                                         },
                                                                                         {
                                                                                             "workingPath": [
-                                                                                                "individualLevelParams", "ranges"
+                                                                                                "individualLevelParams",
+                                                                                                "ranges"
                                                                                             ],
                                                                                             "remove": {
                                                                                                 "nullProperty": [
-                                                                                                    "max", "min"
+                                                                                                    "max",
+                                                                                                    "min"
                                                                                                 ]
                                                                                             }
                                                                                         },
@@ -2308,7 +2352,7 @@
                                                                                     "dependent"
                                                                                 ]
                                                                             },
-                                                                            "then": [ 
+                                                                            "then": [
                                                                                 {
                                                                                     "dst": [
                                                                                         "activationEnergy"
@@ -2371,24 +2415,28 @@
                                                                             "value": "IndividualLevel"
                                                                         }
                                                                     },
-                                                                    "then": [ 
+                                                                    "then": [
                                                                         {
                                                                             "workingPath": [
-                                                                                "individualLevelParams", "limits"
+                                                                                "individualLevelParams",
+                                                                                "limits"
                                                                             ],
                                                                             "remove": {
                                                                                 "nullProperty": [
-                                                                                    "max", "min"
+                                                                                    "max",
+                                                                                    "min"
                                                                                 ]
                                                                             }
                                                                         },
                                                                         {
                                                                             "workingPath": [
-                                                                                "individualLevelParams", "ranges"
+                                                                                "individualLevelParams",
+                                                                                "ranges"
                                                                             ],
                                                                             "remove": {
                                                                                 "nullProperty": [
-                                                                                    "max", "min"
+                                                                                    "max",
+                                                                                    "min"
                                                                                 ]
                                                                             }
                                                                         },
@@ -2424,7 +2472,7 @@
                                                     "properties": {
                                                         "definitionType": {
                                                             "type": "string",
-                                                            "enum": ["SpeciesLevel","IndividualLevel"]
+                                                            "enum": [ "SpeciesLevel", "IndividualLevel" ]
                                                         },
                                                         "speciesLevelParams": {
                                                             "type": "object",
@@ -2493,7 +2541,7 @@
                                                                     "properties": {
                                                                         "definitionType": {
                                                                             "type": "string",
-                                                                            "enum": ["SpeciesLevel","IndividualLevel"],
+                                                                            "enum": [ "SpeciesLevel", "IndividualLevel" ],
                                                                             "nullProperty": true
                                                                         },
                                                                         "speciesLevelParams": {
@@ -2582,7 +2630,7 @@
                                                                                     "value": false
                                                                                 }
                                                                             },
-                                                                            "then": [ 
+                                                                            "then": [
                                                                                 {
                                                                                     "workingPath": [
                                                                                         "speciesLevelParams"
@@ -2631,24 +2679,28 @@
                                                                                     "value": false
                                                                                 }
                                                                             },
-                                                                            "then": [ 
+                                                                            "then": [
                                                                                 {
                                                                                     "workingPath": [
-                                                                                        "individualLevelParams", "limits"
+                                                                                        "individualLevelParams",
+                                                                                        "limits"
                                                                                     ],
                                                                                     "remove": {
                                                                                         "nullProperty": [
-                                                                                            "max", "min"
+                                                                                            "max",
+                                                                                            "min"
                                                                                         ]
                                                                                     }
                                                                                 },
                                                                                 {
                                                                                     "workingPath": [
-                                                                                        "individualLevelParams", "ranges"
+                                                                                        "individualLevelParams",
+                                                                                        "ranges"
                                                                                     ],
                                                                                     "remove": {
                                                                                         "nullProperty": [
-                                                                                            "max", "min"
+                                                                                            "max",
+                                                                                            "min"
                                                                                         ]
                                                                                     }
                                                                                 },
@@ -2675,7 +2727,7 @@
                                                                             "dependent"
                                                                         ]
                                                                     },
-                                                                    "then": [ 
+                                                                    "then": [
                                                                         {
                                                                             "dst": [
                                                                                 "activationEnergy"
@@ -2738,24 +2790,28 @@
                                                                     "value": "IndividualLevel"
                                                                 }
                                                             },
-                                                            "then": [ 
+                                                            "then": [
                                                                 {
                                                                     "workingPath": [
-                                                                        "individualLevelParams", "limits"
+                                                                        "individualLevelParams",
+                                                                        "limits"
                                                                     ],
                                                                     "remove": {
                                                                         "nullProperty": [
-                                                                            "max", "min"
+                                                                            "max",
+                                                                            "min"
                                                                         ]
                                                                     }
                                                                 },
                                                                 {
                                                                     "workingPath": [
-                                                                        "individualLevelParams", "ranges"
+                                                                        "individualLevelParams",
+                                                                        "ranges"
                                                                     ],
                                                                     "remove": {
                                                                         "nullProperty": [
-                                                                            "max", "min"
+                                                                            "max",
+                                                                            "min"
                                                                         ]
                                                                     }
                                                                 },
@@ -2789,7 +2845,7 @@
                                                     "properties": {
                                                         "definitionType": {
                                                             "type": "string",
-                                                            "enum": ["SpeciesLevel","IndividualLevel"]
+                                                            "enum": [ "SpeciesLevel", "IndividualLevel" ]
                                                         },
                                                         "speciesLevelParams": {
                                                             "type": "object",
@@ -2858,7 +2914,7 @@
                                                                     "properties": {
                                                                         "definitionType": {
                                                                             "type": "string",
-                                                                            "enum": ["SpeciesLevel","IndividualLevel"],
+                                                                            "enum": [ "SpeciesLevel", "IndividualLevel" ],
                                                                             "nullProperty": true
                                                                         },
                                                                         "speciesLevelParams": {
@@ -2947,7 +3003,7 @@
                                                                                     "value": false
                                                                                 }
                                                                             },
-                                                                            "then": [ 
+                                                                            "then": [
                                                                                 {
                                                                                     "workingPath": [
                                                                                         "speciesLevelParams"
@@ -2996,24 +3052,28 @@
                                                                                     "value": false
                                                                                 }
                                                                             },
-                                                                            "then": [ 
+                                                                            "then": [
                                                                                 {
                                                                                     "workingPath": [
-                                                                                        "individualLevelParams", "limits"
+                                                                                        "individualLevelParams",
+                                                                                        "limits"
                                                                                     ],
                                                                                     "remove": {
                                                                                         "nullProperty": [
-                                                                                            "max", "min"
+                                                                                            "max",
+                                                                                            "min"
                                                                                         ]
                                                                                     }
                                                                                 },
                                                                                 {
                                                                                     "workingPath": [
-                                                                                        "individualLevelParams", "ranges"
+                                                                                        "individualLevelParams",
+                                                                                        "ranges"
                                                                                     ],
                                                                                     "remove": {
                                                                                         "nullProperty": [
-                                                                                            "max", "min"
+                                                                                            "max",
+                                                                                            "min"
                                                                                         ]
                                                                                     }
                                                                                 },
@@ -3040,7 +3100,7 @@
                                                                             "dependent"
                                                                         ]
                                                                     },
-                                                                    "then": [ 
+                                                                    "then": [
                                                                         {
                                                                             "dst": [
                                                                                 "activationEnergy"
@@ -3103,24 +3163,28 @@
                                                                     "value": "IndividualLevel"
                                                                 }
                                                             },
-                                                            "then": [ 
+                                                            "then": [
                                                                 {
                                                                     "workingPath": [
-                                                                        "individualLevelParams", "limits"
+                                                                        "individualLevelParams",
+                                                                        "limits"
                                                                     ],
                                                                     "remove": {
                                                                         "nullProperty": [
-                                                                            "max", "min"
+                                                                            "max",
+                                                                            "min"
                                                                         ]
                                                                     }
                                                                 },
                                                                 {
                                                                     "workingPath": [
-                                                                        "individualLevelParams", "ranges"
+                                                                        "individualLevelParams",
+                                                                        "ranges"
                                                                     ],
                                                                     "remove": {
                                                                         "nullProperty": [
-                                                                            "max", "min"
+                                                                            "max",
+                                                                            "min"
                                                                         ]
                                                                     }
                                                                 },
@@ -3153,7 +3217,7 @@
                                             "element": {
                                                 "type": "string",
                                                 "enum": [
-                                                    "value", 
+                                                    "value",
                                                     "activationEnergy",
                                                     "energyDecay",
                                                     "temperatureOptimal",
@@ -3274,7 +3338,7 @@
                                             "eggsPerBatchFromEquation"
                                         ]
                                     },
-                                    "then": [ 
+                                    "then": [
                                         {
                                             "workingPath": [
                                                 "equationParameters"
@@ -3362,7 +3426,7 @@
                                             "eggDryMassFromEquation"
                                         ]
                                     },
-                                    "then": [ 
+                                    "then": [
                                         {
                                             "workingPath": [
                                                 "equationParameters"
@@ -3395,7 +3459,7 @@
                                     "properties": {
                                         "model": {
                                             "type": "string",
-                                            "enum": ["Linear", "VonBertalanffy", "Logistic", "Exponential", "Logistic4P_FixedA"]
+                                            "enum": [ "Linear", "VonBertalanffy", "Logistic", "Exponential", "Logistic4P_FixedA" ]
                                         },
                                         "A": {
                                             "type": "number"
@@ -3420,7 +3484,7 @@
                                                     },
                                                     "model": {
                                                         "type": "string",
-                                                        "enum": ["Linear", "VonBertalanffy", "Logistic", "Exponential", "Logistic4P_FixedA"]
+                                                        "enum": [ "Linear", "VonBertalanffy", "Logistic", "Exponential", "Logistic4P_FixedA" ]
                                                     },
                                                     "A": {
                                                         "type": "number"
@@ -3440,7 +3504,7 @@
                                                     "dependent"
                                                 ]
                                             },
-                                            "then": [ 
+                                            "then": [
                                                 {
                                                     "remove": {
                                                         "nullProperty": [
@@ -3476,7 +3540,7 @@
                                     "value": 0
                                 }
                             },
-                            "then": [ 
+                            "then": [
                                 {
                                     "remove": {
                                         "nullProperty": [

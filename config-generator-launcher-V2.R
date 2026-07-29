@@ -36,14 +36,11 @@ if (interactive()) {
     script_path <- sub("--file=", "", args[grep("--file=", args)])
 }
 
-# Set the working directory to the folder where this script is located.
-setwd(dirname(script_path))
-
-####################################################################
-
 # Load the shiny library to run the application.
 library(shiny)
 
-# Launch the Shiny app located in the "config-generator-app" directory
+Sys.setenv(APP_SCHEMA_DIR_PATH = file.path(dirname(script_path), "schema"))
+
+# Launch the Shiny app located in the "config-generator" directory
 # on the local host 127.0.0.1, listening on port 8080.
-shiny::runApp("config-generator-app", host = "127.0.0.1", port = 8080)
+shiny::runApp(file.path(dirname(script_path), "R", "config-generator-V2"), host = "127.0.0.1", port = 8080)

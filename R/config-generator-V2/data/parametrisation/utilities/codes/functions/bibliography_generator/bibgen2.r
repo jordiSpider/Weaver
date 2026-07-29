@@ -6,24 +6,25 @@
 #
 # Description:
 #   This function automatically generates bibliography documents (in RIS format)
-#   for one or more species from a provided species environment. Each species
-#   environment is expected to contain a 'script_path' (the path to the directory
-#   where species-specific R scripts are stored) and optionally a 'ris_dir'
-#   (the path to the directory containing RIS files). If 'ris_dir' is not provided,
-#   it is assumed that the RIS files reside in a subfolder named "ris" within the
-#   species directory.
+#   for one or more species from preloaded bibliography metadata.
+#
+#   The function no longer sources species scripts. Instead, each species item
+#   is expected to include bibliography entries already extracted from the
+#   species loading pipeline (e.g., objects named ID_* stored in app state).
+#
+#   Each species item can include:
+#     - species_name: species identifier used in output filenames/logging.
+#     - bibliography_entries: named list of bibliography objects.
+#     - ris_dir: (optional) path to RIS files.
+#     - script_path: (optional) base path used to infer ris_dir as script_path/ris.
 #
 #   The function operates as follows:
-#     1. It processes each species environment (either a single environment or
-#        a list of them). If only one species environment is provided, it is wrapped
-#        into a list for uniform processing.
+#     1. It processes each species item in the provided list.
 #
 #     2. For each species, it:
-#         a. Sources all R scripts in the species directory with filenames ending
-#            in '_info.r' (these scripts are expected to contain bibliography data).
-#         b. Extracts bibliography objects from the sourced scripts. These objects
-#            are identified by names beginning with "ID_" and must be lists that include
-#            at least the fields "Variable" and "DataTreatment".
+#         a. Reads bibliography objects from bibliography_entries.
+#            Objects should contain at least "Variable" and "DataTreatment".
+#            DOI*/ISSN* fields are used to locate RIS files.
 #         c. Extracts DOI/ISSN identifiers from the bibliography objects.
 #         d. Searches the corresponding RIS directory for RIS files whose names match
 #            the DOI/ISSN identifiers.
@@ -41,33 +42,36 @@
 #
 # Parameters:
 #   animal_species_env:
-#     A single species environment (as a list with at least a 'script_path') or a
-#     list of species environments. Each environment must include:
-#       - script_path: (string) The directory containing species-specific scripts.
-#       - ris_dir: (optional string) The directory containing RIS files. If omitted,
-#                  the function assumes a subfolder "ris" within script_path.
+#     A list of species metadata records. Each record should include:
+#       - species_name: (string) The species name used in reporting/output naming.
+#       - bibliography_entries: (named list) Bibliography objects (typically ID_*).
+#       - ris_dir: (optional string) Directory containing RIS files.
+#       - script_path: (optional string) Used to infer ris_dir as script_path/ris.
 #
 #   path_to_output:
 #     (string) The directory where the generated RIS documents (both per species and
 #     the combined document) will be saved. If the directory does not exist, it will be created.
 #
 # Dependencies & Assumptions:
-#   - The provided paths are assumed to be correctly formatted (no normalization is performed).
-#   - Species-specific scripts must follow the naming convention: *_info.r.
-#   - Bibliography objects in these scripts should have names starting with "ID_" and must be
-#     lists containing at least "Variable" and "DataTreatment" fields.
+#   - The provided paths are assumed to be correctly formatted.
+#   - Bibliography entries are preloaded; this function does not source any scripts.
+#   - Bibliography objects should contain at least "Variable" and "DataTreatment" fields.
+#   - RIS files are expected to be named as <DOI_or_ISSN>.ris.
 #
 # Example:
-#   # Define a single species environment:
-#   species_env <- list(
-#       script_path = "/path/to/species_directory",
-#       ris_dir = "/path/to/species_directory/ris"  # Optional; defaults to script_path/ris if omitted
-#   )
-#
-#   # Or define a list of species environments:
+#   # Define species bibliography metadata already extracted from app state:
 #   all_species_env <- list(
-#       species1 = list(script_path = "/path/to/species1", ris_dir = "/path/to/species1/ris"),
-#       species2 = list(script_path = "/path/to/species2")  # Uses default ris_dir = "/path/to/species2/ris"
+#       list(
+#           species_name = "amblyseius_swirskii",
+#           script_path = "/path/to/species1",
+#           bibliography_entries = list(
+#               ID_EXAMPLE_1 = list(
+#                   Variable = "tempFromLab",
+#                   DataTreatment = "Measured from literature",
+#                   DOI1 = "10.1234/example"
+#               )
+#           )
+#       )
 #   )
 #
 #   # Specify the output path:
@@ -79,7 +83,6 @@
 ################################################################################
 
 bibgen2<- function(animal_species_env, path_to_output) {
-  
   # Create the output directory if it does not exist.
   if (!dir.exists(path_to_output)) {
     dir.create(path_to_output, recursive = TRUE)
@@ -90,24 +93,26 @@ bibgen2<- function(animal_species_env, path_to_output) {
   # Process each species environment.
   for (i in seq_along(animal_species_env)) {
     species_info <- animal_species_env[[i]]
-    species_name <- basename(animal_species_env[[i]]$script_path)
-    
+    species_name <- species_info$species_name
+
     # Retrieve the RIS directory if provided; otherwise, assume a subdirectory "ris" within script_path.
-    ris_dir <- if (!is.null(animal_species_env[[i]]$ris_dir)) animal_species_env[[i]]$ris_dir else file.path(animal_species_env[[i]]$script_path, "ris")
+    ris_dir <- species_info$ris_dir
+    if (is.null(ris_dir)) {
+      ris_dir <- file.path(species_info$script_path, "ris")
+    }
+    
+    bibliography_entries <- species_info$bibliography_entries
     
     cat("Processing species:", species_name, "\n")
     
-    # Extract bibliography information from objects whose names begin with "ID_".
-    # Each such object should be a list containing at least "Variable" and "DataTreatment".
     species_df_list <- list()
-    id_objects <- ls(envir = animal_species_env[[i]], pattern = "^ID_")
-    if (length(id_objects) == 0) {
+    if (length(bibliography_entries) == 0) {
       cat("  No bibliography (ID_) objects found in species:", species_name, "\n")
       next
     }
-    
-    for (id_obj in id_objects) {
-      obj <- get(id_obj, envir = animal_species_env[[i]])
+
+    for (id_obj in names(bibliography_entries)) {
+      obj <- bibliography_entries[[id_obj]]
       if (is.list(obj) && "Variable" %in% names(obj) && "DataTreatment" %in% names(obj)) {
         # Construct a data frame row for this bibliography entry.
         df <- data.frame(
@@ -136,6 +141,16 @@ bibgen2<- function(animal_species_env, path_to_output) {
     
     # Identify columns that potentially contain DOI or ISSN identifiers.
     doi_issn_columns <- grep("^(DOI|ISSN)", names(species_df), value = TRUE)
+    if (length(doi_issn_columns) == 0) {
+      cat("  No DOI/ISSN columns found for species:", species_name, "\n")
+      next
+    }
+
+    if (is.null(ris_dir) || !dir.exists(ris_dir)) {
+      cat("  RIS directory not found for species:", species_name, "\n")
+      next
+    }
+
     all_dois_issns <- unique(unlist(species_df[doi_issn_columns]))
     all_dois_issns <- all_dois_issns[!is.na(all_dois_issns)]
     
@@ -161,7 +176,7 @@ bibgen2<- function(animal_species_env, path_to_output) {
                format(Sys.time(), "%Y-%m-%d_%H-%M-%S"), ".ris")
       )
       writeLines(species_ris_content, species_output_file)
-      cat("  Exported bibliography for species", species_name, "to", species_output_file, "\n")
+      cat("Exported bibliography for species", species_name, "to", species_output_file, "\n")
       
       # Accumulate the RIS file paths for creating the combined bibliography.
       combined_ris_files <- c(combined_ris_files, species_ris_files)

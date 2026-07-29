@@ -41,8 +41,8 @@ configuration_ui <- tabPanel(
     # Text input for configuration name
     textInput("config_name", "Configuration Name:", placeholder = "Enter the name of the configuration"),
 
-    # Text input for version
-    textInput("version", "Version (YYYY.MM.DD):", placeholder = "Enter the version of the configuration"),
+    # Dropdown input for version
+    selectInput("version", "Version (YYYY.MM.DD):", choices = NULL),
 
     # Directory selection section
     tags$label("Select Save Directory:"),

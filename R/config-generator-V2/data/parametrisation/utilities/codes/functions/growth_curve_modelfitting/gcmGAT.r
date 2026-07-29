@@ -1,7 +1,8 @@
 #' @title gcmGAT function: Growth Curve Model Fitting with Temperature using GA-enhanced nlsLM (Raw Data)
 #'
 #' @description
-#' The gcmGAT function fits a suite of candidate growth models to raw developmental data, optionally stratified by temperature.
+#' The gcmGAT function fits a suite of candidate growth models to raw developmental data,
+#' processing each temperature subset independently.
 #' It employs a hybrid optimization scheme using Genetic Algorithms (GA) for a global search of starting parameter values
 #' and non-linear least squares minimization (nlsLM) for local refinement. The methodology preserves the original measurement scales,
 #' ensuring that all parameters retain their biological interpretability.
@@ -86,7 +87,8 @@
 #' - When a temperature variable is provided, the function fits models for each unique temperature subset; if not provided, temperature-related fields  
 #'   are omitted from the output summary.
 #'
-#' @param data A data frame containing raw developmental data.
+#' @param data A named list of data frames (one per temperature key). Each data frame
+#'        must contain the variables indicated by `x` and `y`.
 #' @param x A character string specifying the name of the independent variable (e.g., "age").
 #' @param y A character string specifying the name of the dependent variable (e.g., "length").
 #' @param nlsMcontrol A list of control parameters for the \code{nlsLM} algorithm (e.g., \code{list(maxiter = 1024, ftol = 1e-12, ptol = 1e-12, gtol = 1e-12)}).
@@ -94,14 +96,14 @@
 #' @param force_model Optionally, force the use of one candidate model. Valid options are:
 #'   \code{"Exponential"}, \code{"Von Bertalanffy"}, \code{"Logistic"}, \code{"Logistic4P_New"}, or \code{"Linear"}.  
 #'   The default is \code{NULL}, which fits all candidate models.
-#' @param temperature Either a numeric value to filter the data by a specific temperature or the string \code{"ALL"}
-#' to process all unique temperature values present in the data.
 #' @param model_choose A character string specifying the model selection strategy.  
 #' If \code{"auto"}, the function automatically selects the best model based on RSS, AICc, or log-likelihood; otherwise, all candidates are returned.
 #' @param lengthAtBirth (Optional) A numeric value indicating a known length at birth (or an observation at \code{age = 0}), used to fix \eqn{L_0} in the Von Bertalanffy model.
 #' @param lower (Optional) Additional lower bounds for parameters (reserved for future use).
+#' @param use_app Logical. When `TRUE`, generate Plotly objects for UI integration;
+#'        otherwise produce base-R recorded plots.
 #'
-#' @return A list containing:
+#' @return A named list keyed by temperature. Each entry contains:
 #' \itemize{
 #'   \item \code{best_model_name}: A character string with the name of the best-fitting candidate model.
 #'   \item \code{best_model}: The fitted nlsLM model object corresponding to the best candidate.
@@ -111,7 +113,7 @@
 #'         If no temperature is provided, the Temperature column is omitted.
 #'   \item \code{pairwise_comparisons_table}: A data frame containing pairwise likelihood ratio comparisons (p-values) among candidate models.
 #'   \item \code{growth}: The extracted growth parameter from the best candidate model.
-#'   \item \code{temperature}: The temperature value associated with the current subset of data (if applicable).
+#'   \item \code{temperature}: Numeric temperature parsed from the current list key.
 #' }
 #'
 #' @references
@@ -463,7 +465,7 @@ gcmGAT <- function(
         # If force_model is specified, return only that candidate.
         if (!is.null(force_model)) {
             if (!(force_model %in% names(candidate_models))) {
-                stop("Invalid model name. Available models: ", paste(names(candidate_models), collapse = ", "))
+                stop("Invalid model name: ", force_model, ". Available models: ", paste(names(candidate_models), collapse = ", "))
             }
             
             cat("Forcing model:", force_model, "\n")
@@ -612,7 +614,11 @@ gcmGAT <- function(
 
 
         #---------------------------------------------------------------------
-        # Automatic model selection.
+        # Automatic model selection adapts to sample size:
+        # - small n: prioritize RSS
+        # - medium n: prioritize AICc
+        # - large n: highest logLik, then prefer simpler non-significantly
+        #   different candidates via LRT.
         best_candidate <- NULL
         n_obs <- nrow(data)
 
@@ -652,7 +658,8 @@ gcmGAT <- function(
 
 
         #---------------------------------------------------------------------
-        # Build grid plot for candidate models.
+        # Build per-model diagnostic plots. In app mode we return plotly widgets,
+        # outside app mode we keep base plots via recordPlot().
         model_plots <- list()
 
 
@@ -788,7 +795,7 @@ gcmGAT <- function(
 
 
         #---------------------------------------------------------------------
-        # Extract the growth parameter from the best candidate.
+        # Extract a comparable growth coefficient across model families.
         growthK <- NA
         if (!is.null(best_candidate)) {
             if (best_candidate$model_name %in% c("Exponential", "VonBertalanffy")) {
@@ -827,7 +834,8 @@ gcmGAT <- function(
 
 
     # ===========================
-    # Begin main function.
+    # Begin main function. Normalize each temperature dataset to `age`/`length`
+    # column names consumed by candidate model formulas.
     if (missing(x) || missing(y))
         stop("Column names for x and y must be provided.")
 
@@ -862,6 +870,7 @@ gcmGAT <- function(
         }
 
 
+        # Optional per-temperature model forcing via named `force_model` list.
         results_all[[temp]] <- fit_data(
             data = data[[temp]],
             nlsMcontrol = nlsMcontrol, 
@@ -878,10 +887,54 @@ gcmGAT <- function(
 
     }
 
-    if (use_app && "app" %in% ls(envir = parent.frame())) {
-        assign("growth_curve_plots", plots, envir = parent.frame())
-    }
-
     return(results_all)
 
+}
+
+
+build_growth_model_plot_bindings <- function(fitted, temp_from_lab, thermal_changes, path_prefix = "growthModule.growthModel") {
+    # Converts fit outputs into `plot.<path>` bindings consumed by the species
+    # script/app layer. Includes default and thermal-change slots.
+    if (is.null(fitted) || length(fitted) == 0) {
+        return(list())
+    }
+
+    temp_key <- as.character(temp_from_lab)
+    if (!(temp_key %in% names(fitted))) {
+        temp_key <- names(fitted)[[1]]
+    }
+
+    bindings <- list()
+    default_path <- paste(path_prefix, "defaultAtTempFromLab.model", sep = ".")
+    bindings[[default_path]] <- fitted[[temp_key]]$model_plots
+
+    if (!is.null(thermal_changes) && length(thermal_changes) > 0) {
+        for (i in seq_along(thermal_changes)) {
+            thermal_entry <- thermal_changes[[i]]
+            if (is.null(thermal_entry$temperature)) next
+
+            thermal_temp <- as.character(thermal_entry$temperature)
+            if (!(thermal_temp %in% names(fitted))) next
+
+            thermal_path <- paste(path_prefix, "temperature", "growthModelThermalChanges", i, "model", sep = ".")
+            bindings[[thermal_path]] <- fitted[[thermal_temp]]$model_plots
+        }
+    }
+
+    bindings
+}
+
+
+assign_growth_model_plot_bindings <- function(env, bindings) {
+    # Persists each binding in the env namespace expected by the editor:
+    # `plot.<schemaPath>`.
+    if (is.null(bindings) || length(bindings) == 0) {
+        return(invisible(NULL))
+    }
+
+    for (path in names(bindings)) {
+        assign(paste0("plot.", path), bindings[[path]], envir = env)
+    }
+
+    invisible(NULL)
 }

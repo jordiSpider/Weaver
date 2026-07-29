@@ -11,13 +11,13 @@
 #' 1. Directory selection using `shinyDirChoose` and display of the chosen path.
 #' 2. The `config_generator` function:
 #'    - Creates the configuration folder structure.
-#'    - Processes selected animal species, running species scripts and generating JSON files.
+#'    - Exports selected animal species directly from the in-memory editor state (`species_data`) without re-running species scripts.
 #'    - Processes selected resource species and generates JSON files.
 #'    - Generates CSV files for ontogenetic links.
 #'    - Optionally generates bibliographies using `bibgen2`.
+#'    - Validates that all edited animal species are saved before exporting.
 #'    - Shows success or error modal dialogs.
-#' 3. `generate_animal_species_json` and `generate_resource_species_json`:
-#'    - Helper functions to build structured JSON files from the environment variables.
+#' 3. Helpers to transform editor/runtime state into export artifacts (JSON + CSV).
 #' 4. `generate_ontogenetic_links_csv`:
 #'    - Generates ontogenetic link CSV files.
 #' 5. `assign_nested`:
@@ -39,9 +39,141 @@ library(shinyFiles)
 library(fs)
 
 # Source helper scripts for species info and bibliography generation
-source(file.path(getwd(), "data", "parametrisation", "utilities", "codes", "functions", "run_animal_species_info_script.r"))
 source(file.path(getwd(), "data", "parametrisation", "utilities", "codes", "functions", "run_resource_species_info_script.r"))
 source(file.path(getwd(), "data", "parametrisation", "utilities", "codes", "functions", "bibliography_generator", "bibgen2.r"))
+
+
+# Detects wrapped editor entries `list(value=..., derived=...)`.
+is_parameter_entry_config <- function(value) {
+    is.list(value) &&
+        !is.null(names(value)) &&
+        identical(sort(names(value)), c("derived", "value"))
+}
+
+
+# Recursively unwraps editor metadata to obtain plain values for JSON export.
+unwrap_parameter_entries_recursive <- function(value) {
+    if (is_parameter_entry_config(value)) {
+        return(unwrap_parameter_entries_recursive(value$value))
+    }
+
+    if (is.list(value) && !is.data.frame(value)) {
+        return(lapply(value, unwrap_parameter_entries_recursive))
+    }
+
+    value
+}
+
+
+# Builds the canonical JSON payload for one animal species from current tab state.
+build_animal_species_json_data <- function(species_name, species_state, version) {
+    animal_values <- unwrap_parameter_entries_recursive(species_state$params)
+
+    list(
+        animal = animal_values,
+        version = version
+    )
+}
+
+
+# Writes species JSON using `animal.name` as filename when available.
+write_animal_species_json_from_state <- function(species_name, species_state, output_path, version) {
+    json_data <- build_animal_species_json_data(species_name, species_state, version)
+
+    file_name <- species_name
+    if (!is.null(json_data$animal$name) && nzchar(as.character(json_data$animal$name))) {
+        file_name <- as.character(json_data$animal$name)
+    }
+
+    write(
+        toJSON(json_data, auto_unbox = TRUE, pretty = TRUE, null = "null", digits = NA),
+        file = file.path(output_path, paste0(file_name, ".json"))
+    )
+
+    invisible(json_data)
+}
+
+
+# Creates a lightweight environment with only the fields needed by link CSV generation.
+build_animal_species_env_for_links <- function(species_name, species_state) {
+    json_data <- build_animal_species_json_data(species_name, species_state, version = NULL)
+    env <- new.env()
+
+    json_name <- species_name
+    if (!is.null(json_data$animal$name) && nzchar(as.character(json_data$animal$name))) {
+        json_name <- as.character(json_data$animal$name)
+    }
+
+    assign("json.name", json_name, envir = env)
+    assign("json.individualsPerInstar", if (is.null(json_data$animal$individualsPerInstar)) list() else json_data$animal$individualsPerInstar, envir = env)
+
+    if (!is.null(species_state$ontogenetic_links)) {
+        assign("json.ontogenetic_links", species_state$ontogenetic_links, envir = env)
+    }
+
+    env
+}
+
+
+# Extracts bibliography metadata persisted in the species editor state.
+build_animal_species_bibliography_record <- function(species_name, species_state) {
+    bibliography_data <- species_state$bibliography_data
+
+    entries <- list()
+    script_path <- NULL
+    ris_dir <- NULL
+
+    if (!is.null(bibliography_data)) {
+        entries <- if (is.null(bibliography_data$entries)) list() else bibliography_data$entries
+        script_path <- bibliography_data$script_path
+        ris_dir <- bibliography_data$ris_dir
+    }
+
+    list(
+        species_name = species_name,
+        bibliography_entries = entries,
+        script_path = script_path,
+        ris_dir = ris_dir
+    )
+}
+
+
+# Guards export: selected species must exist in-memory and have no unsaved changes.
+validate_animal_species_saved <- function(animal_species) {
+    if (length(animal_species) == 0) {
+        return(list(ok = TRUE, message = NULL))
+    }
+
+    if (!exists("species_data", inherits = TRUE) || !exists("unsaved_changes", inherits = TRUE)) {
+        return(list(ok = FALSE, message = "Animal Species tab state is unavailable. Please open Animal Species and save all species changes before generating the configuration."))
+    }
+
+    missing_species <- animal_species[sapply(animal_species, function(name) is.null(species_data[[name]]))]
+    if (length(missing_species) > 0) {
+        return(list(
+            ok = FALSE,
+            message = paste0(
+                "The following species do not have loaded parameter data: ",
+                paste(missing_species, collapse = ", "),
+                ". Please open each species in Animal Species and save the changes before generating the configuration."
+            )
+        ))
+    }
+
+    unsaved_species <- animal_species[sapply(animal_species, function(name) isTRUE(unsaved_changes[[name]]))]
+    if (length(unsaved_species) > 0) {
+        return(list(
+            ok = FALSE,
+            message = paste0(
+                "There are unsaved changes in: ",
+                paste(unsaved_species, collapse = ", "),
+                ". Please save all species changes before generating the configuration."
+            )
+        ))
+    }
+
+    list(ok = TRUE, message = NULL)
+}
 
 # ----------------------------------------------------------------------
 # Helper function to assign values to a nested list by parts of a path
@@ -58,6 +190,7 @@ assign_nested <- function(lst, parts, value) {
 
 # ----------------------------------------------------------------------
 # Generate JSON for animal species based on environment variables
+# Legacy helper kept for compatibility with env-based exporters.
 # ----------------------------------------------------------------------
 generate_animal_species_json = function(environment, output_path, version) {
     add_parameters <- function(environment, json_data, parameters_to_add) {
@@ -221,21 +354,22 @@ generate_resource_species_json = function(environment, output_path, version) {
 generate_ontogenetic_links_csv <- function(animal_species_env, resource_species_env, output_path) {
 
     # --- Columns ---
-    
-    ontogenetic_links_column_header <- c()
 
-    for(env in animal_species_env) {
+    ontogenetic_links_column_header <- unlist(lapply(animal_species_env, function(env) {
         instars <- seq_along(get("json.individualsPerInstar", envir = env))
-        ontogenetic_links_column_header <- c(ontogenetic_links_column_header, sapply(instars, function(instar) { paste(get("json.name", envir = env), instar, sep = "$") }))
-    }
+        sapply(instars, function(instar) {
+            paste(get("json.name", envir = env), instar, sep = "$")
+        })
+    }), use.names = FALSE)
 
     # --- Rows ---
 
-    ontogenetic_links_row_header <- ontogenetic_links_column_header
-
-    for(env in resource_species_env) {
-        ontogenetic_links_row_header <- c(ontogenetic_links_row_header, paste(get("json.name", envir = env), "1", sep = "$"))
-    }
+    ontogenetic_links_row_header <- c(
+        ontogenetic_links_column_header,
+        unlist(lapply(resource_species_env, function(env) {
+            paste(get("json.name", envir = env), "1", sep = "$")
+        }), use.names = FALSE)
+    )
 
     # --- Links ---
 
@@ -292,7 +426,7 @@ generate_ontogenetic_links_csv <- function(animal_species_env, resource_species_
                         }
                     }
                     
-                    # 7. Normalizar la columna de preferencias del depredador para que sume 1.0
+                    # 7. Normalize each predator column so preferences become a probability vector.
                     col_sum <- sum(preferences_matrix[, col_name])
                     if (col_sum > 0) {
                         preferences_matrix[, col_name] <- preferences_matrix[, col_name] / col_sum
@@ -321,51 +455,50 @@ generate_ontogenetic_links_csv <- function(animal_species_env, resource_species_
 # ----------------------------------------------------------------------
 config_generator <- function(input, config_name, version, save_directory_path, bibliography, animal_species, resource_species) {
     tryCatch({
-        library(jsonlite)
-        
+        # Re-validate right before exporting to avoid race conditions across tabs.
+        validation <- validate_animal_species_saved(animal_species)
+        if (!isTRUE(validation$ok)) {
+            stop(validation$message)
+        }
+
         dir.create(file.path(save_directory_path, config_name), recursive = TRUE, showWarnings = FALSE)
 
 
         # --- Animal Species ---
+        # Export from `species_data` (UI state), preserving user-edited values.
         animal_species_folder <- file.path(save_directory_path, config_name, "species")
         dir.create(animal_species_folder, recursive = TRUE, showWarnings = FALSE)
-        animal_species_env <- c()
+        animal_species_env <- vector("list", length(animal_species))
+        animal_species_bibliography <- vector("list", length(animal_species))
 
-        for(name in animal_species) {
-            env <- new.env()
-            force_model <- list()
-            for(temp in names(species_growth_curve_plots[[name]])) {
-                growth_curve_selected <- input[[paste0("growth_curve_selected_", name, "_", temp)]]
-                if(growth_curve_selected == "") {
-                    stop(paste0("Error: No selected growth curve in the species \"", name, "\" at temperature \"", temp, "\""))
-                }
-                force_model[[temp]] <- growth_curve_selected
-            }
-            env$app <- list(
-                force_model = force_model
-            )
-            env <- run_animal_species_info_script(name, env)
-            generate_animal_species_json(env, animal_species_folder, version)
-            animal_species_env <- c(animal_species_env, env)
+        for(i in seq_along(animal_species)) {
+            name <- animal_species[[i]]
+            current_species_state <- species_data[[name]]
+            write_animal_species_json_from_state(name, current_species_state, animal_species_folder, version)
+            animal_species_env[[i]] <- build_animal_species_env_for_links(name, current_species_state)
+            animal_species_bibliography[[i]] <- build_animal_species_bibliography_record(name, current_species_state)
         }
 
-        if(bibliography) {
-            bibgen2(animal_species_env, file.path(save_directory_path, config_name, "species"))
+        if (isTRUE(bibliography)) {
+            bibgen2(animal_species_bibliography, file.path(save_directory_path, config_name, "species"))
         }
 
         # --- Resource Species ---
+        # Resource species are still loaded from their scripts at export time.
         resource_species_folder <- file.path(save_directory_path, config_name, "resource")
         dir.create(resource_species_folder, recursive = TRUE, showWarnings = FALSE)
-        resource_species_env <- c()
+        resource_species_env <- vector("list", length(resource_species))
 
-        for(name in resource_species) {
+        for(i in seq_along(resource_species)) {
+            name <- resource_species[[i]]
             env <- new.env()
             env <- run_resource_species_info_script(name, env)
             generate_resource_species_json(env, resource_species_folder, version)
-            resource_species_env <- c(resource_species_env, env)
+            resource_species_env[[i]] <- env
         }
 
         # --- Ontogenetic Links ---
+        # Build interaction matrices from exported animal/resource runtime metadata.
         generate_ontogenetic_links_csv(animal_species_env, resource_species_env, animal_species_folder)
 
         # Show success modal
@@ -399,7 +532,44 @@ config_generator <- function(input, config_name, version, save_directory_path, b
 # ----------------------------------------------------------------------
 # Server module for Configuration Setup tab
 # ----------------------------------------------------------------------
+active_schema_version <- shiny::reactiveVal(NULL)
+
 configuration_server <- function(input, output, session) {
+
+    schema_dir_path <- Sys.getenv("APP_SCHEMA_DIR_PATH")
+
+    if (dir.exists(schema_dir_path)) {
+        # Obtener solo los nombres de los subdirectorios, sin la ruta completa
+        available_versions <- list.dirs(schema_dir_path, full.names = FALSE, recursive = FALSE)
+        
+        # Filtrar estrictamente para obtener solo los directorios con el formato YYYY.MM.DD
+        available_versions <- available_versions[grepl("^\\d{4}\\.\\d{2}\\.\\d{2}$", available_versions)]
+        
+        # ¡NUEVO!: Ordenar de más reciente a más antigua (descendente)
+        available_versions <- sort(available_versions, decreasing = TRUE)
+
+        # Actualizar el desplegable en la interfaz
+        updateSelectInput(session, "version", choices = available_versions)
+    }
+
+    # Other tabs consume this reactive value instead of hard-coding a schema
+    # version. Changing it invalidates their schema-backed state.
+    observeEvent(input$version, {
+        active_schema_version(input$version)
+    }, ignoreInit = FALSE)
+
+    output$schema_version_title <- renderUI({
+        version <- active_schema_version()
+        if (is.null(version) || identical(version, "")) {
+            return(NULL)
+        }
+
+        tags$span(
+            style = "font-size: 0.85em; color: #666;",
+            paste0("Schema: ", version)
+        )
+    })
+
     volumes <- c(Home = fs::path_home(), getVolumes()())
 
     # Enable directory chooser
@@ -416,6 +586,17 @@ configuration_server <- function(input, output, session) {
 
     # Observe "Generate Configuration" button
     observeEvent(input$generate_config, {
+        validation <- validate_animal_species_saved(selected_animal_species$values)
+        if (!isTRUE(validation$ok)) {
+            showModal(modalDialog(
+                title = "Unsaved species changes",
+                validation$message,
+                easyClose = TRUE,
+                footer = NULL
+            ))
+            return(invisible(NULL))
+        }
+
         save_path <- parseDirPath(volumes, input$save_directory_chooser)
 
         config_generator(input, input$config_name, input$version, save_path, FALSE, selected_animal_species$values, selected_resource_species$values)
@@ -423,6 +604,17 @@ configuration_server <- function(input, output, session) {
     
     # Observe "Generate Configuration with Bibliography" button
     observeEvent(input$generate_config_bib, {
+        validation <- validate_animal_species_saved(selected_animal_species$values)
+        if (!isTRUE(validation$ok)) {
+            showModal(modalDialog(
+                title = "Unsaved species changes",
+                validation$message,
+                easyClose = TRUE,
+                footer = NULL
+            ))
+            return(invisible(NULL))
+        }
+
         save_path <- parseDirPath(volumes, input$save_directory_chooser)
 
         config_generator(input, input$config_name, input$version, save_path, TRUE, selected_animal_species$values, selected_resource_species$values)

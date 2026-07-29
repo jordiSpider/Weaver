@@ -43,7 +43,13 @@ source("tabs/resource_species/resource_species_ui.r")
 # Each tab corresponds to a separate functional section of the configuration app.
 ui <- fluidPage(
   # Application title
-  titlePanel("Configuration Generator"),
+  titlePanel(
+    tags$div(
+      style = "display: flex; align-items: baseline; gap: 0.75rem; flex-wrap: wrap;",
+      tags$span("Configuration Generator"),
+      uiOutput("schema_version_title", inline = TRUE)
+    )
+  ),
   
   # Tabset panel containing the individual tab UIs
   tabsetPanel(

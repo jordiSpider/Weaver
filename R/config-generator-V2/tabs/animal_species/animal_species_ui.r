@@ -38,8 +38,8 @@ animal_species_ui <- tabPanel(
                 selectizeInput(field, paste0(field, ":"), choices = unique(animal_species_register[[field]]), multiple = TRUE)
             }),
             
-            # Select a specific animal species to generate
-            selectInput("AnimalSpecies", "Select the animal species to generate:", choices = unique(animal_species_register$Species)),
+            # Select a specific animal species to add
+            selectInput("AnimalSpecies", "Select the animal species to add:", choices = unique(animal_species_register$Species)),
 
             # Button to add selected animal species to main panel
             actionButton("add_animal_species_button", "Add"),
