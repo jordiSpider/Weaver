@@ -78,10 +78,9 @@ public:
      * @param searchDepth Depth limit for recursive search.
      * @param searchNeighborsWithFemales Whether to include neighbors with females.
      * @param animalWhoIsEvaluating Pointer to the animal performing the evaluation.
-     * @param animalsHasTriedToPredate List of animals that have already tried predation.
      */
     void getNeighboursCellsOnRadius(
-        std::vector<CellValue>& bestEvaluations, const PointContinuous &sourcePosition, const PreciseDouble &radius, const RingModel* const radiusArea, const size_t searchDepth, const bool searchNeighborsWithFemales, AnimalNonStatistical* animalWhoIsEvaluating, const std::list<const AnimalNonStatistical*> &animalsHasTriedToPredate
+        std::vector<CellValue>& bestEvaluations, const PointContinuous &sourcePosition, const PreciseDouble &radius, const RingModel* const radiusArea, const size_t searchDepth, const bool searchNeighborsWithFemales, AnimalNonStatistical* animalWhoIsEvaluating
     ) override;
 
     /**

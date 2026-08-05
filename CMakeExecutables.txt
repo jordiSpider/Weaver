@@ -90,6 +90,7 @@ find_package(cxxopts CONFIG REQUIRED)
 find_package(nlohmann_json CONFIG REQUIRED)
 find_package(Boost REQUIRED COMPONENTS geometry serialization)
 find_path(RAPIDCSV_INCLUDE_DIRS "rapidcsv.h")
+find_package(TBB CONFIG REQUIRED)
 
 if(GUI)
     find_package(unofficial-nana CONFIG REQUIRED)
@@ -101,6 +102,7 @@ list(APPEND LINK_LIBRARIES
     nlohmann_json::nlohmann_json
     Boost::geometry
     Boost::serialization
+    TBB::tbb TBB::tbbmalloc
 )
 
 if(GUI)

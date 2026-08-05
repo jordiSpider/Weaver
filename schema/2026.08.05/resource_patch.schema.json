@@ -1,0 +1,462 @@
+{
+    "type": "object",
+    "properties": {
+        "version": {
+            "type": "string"
+        },
+        "patch": {
+            "type": "object",
+            "properties": {
+                "resourceSpecies": {
+                    "type": "string"
+                },
+                "priority": {
+                    "type": "integer",
+                    "minimum": 1
+                },
+                "source": {
+                    "type": "object",
+                    "properties": {
+                        "resourceMaximumCapacityDensity": {
+                            "type": "number"
+                        },
+                        "edibleFractionOfMaxCarryingCapacity": {
+                            "type": "number"
+                        },
+                        "patchSpread": {
+                            "type": "boolean"
+                        },
+                        "growthDynamics": {
+                            "type": "object",
+                            "properties": {
+                                "dynamicsType": {
+                                    "type": "string",
+                                    "enum": [
+                                        "Cycle",
+                                        "Pulse",
+                                        "GrowthRate"
+                                    ]
+                                },
+                                "cycleParams": {
+                                    "type": "object",
+                                    "properties": {
+                                        "cycle": {
+                                            "type": "array",
+                                            "items": {
+                                                "type": "number",
+                                                "minimum": 0.0,
+                                                "exclusiveMinimum": true,
+                                                "maximum": 1.0
+                                            },
+                                            "minItems": 1,
+                                            "nullProperty": true
+                                        }
+                                    }
+                                },
+                                "pulseParams": {
+                                    "type": "object",
+                                    "properties": {
+                                        "daysBetweenPulsesRange": {
+                                            "type": "object",
+                                            "properties": {
+                                                "min": {
+                                                    "type": "number",
+                                                    "minimum": 0.0,
+                                                    "exclusiveMinimum": true,
+                                                    "nullProperty": true
+                                                },
+                                                "max": {
+                                                    "type": "number",
+                                                    "minimum": 0.0,
+                                                    "exclusiveMinimum": true,
+                                                    "nullProperty": true
+                                                }
+                                            }
+                                        },
+                                        "pulsePeakValueRange": {
+                                            "type": "object",
+                                            "properties": {
+                                                "min": {
+                                                    "type": "number",
+                                                    "minimum": 0.0,
+                                                    "exclusiveMinimum": true,
+                                                    "maximum": 1.0,
+                                                    "nullProperty": true
+                                                },
+                                                "max": {
+                                                    "type": "number",
+                                                    "minimum": 0.0,
+                                                    "exclusiveMinimum": true,
+                                                    "maximum": 1.0,
+                                                    "nullProperty": true
+                                                }
+                                            }
+                                        },
+                                        "decay": {
+                                            "type": "object",
+                                            "properties": {
+                                                "decayType": {
+                                                    "type": "string",
+                                                    "enum": [
+                                                        "NonDecay",
+                                                        "Lineal"
+                                                    ]
+                                                },
+                                                "linealDecayParams": {
+                                                    "type": "object",
+                                                    "properties": {
+                                                        "decayOverTime": {
+                                                            "type": "number",
+                                                            "minimum": 0.0,
+                                                            "exclusiveMinimum": true,
+                                                            "maximum": 1.0,
+                                                            "nullProperty": true
+                                                        }
+                                                    }
+                                                }
+                                            },
+                                            "conditionals": [
+                                                {
+                                                    "condition": {
+                                                        "operatorType": "comparison",
+                                                        "comparisonType": "equal",
+                                                        "lhs": {
+                                                            "operatorType": "property",
+                                                            "propertyElement": "value",
+                                                            "relativePath": [
+                                                                "decayType"
+                                                            ]
+                                                        },
+                                                        "rhs": {
+                                                            "operatorType": "constant",
+                                                            "value": "Lineal"
+                                                        }
+                                                    },
+                                                    "then": [ 
+                                                        {
+                                                            "workingPath": [
+                                                                "linealDecayParams"
+                                                            ],
+                                                            "remove": {
+                                                                "nullProperty": [
+                                                                    "decayOverTime"
+                                                                ]
+                                                            }
+                                                        }
+                                                    ]
+                                                }
+                                            ]
+                                        }
+                                    }
+                                },
+                                "growthRateParams": {
+                                    "type": "object",
+                                    "properties": {
+                                        "initialValue": {
+                                            "type": "number",
+                                            "minimum": 0.0,
+                                            "exclusiveMinimum": true,
+                                            "maximum": 1.0,
+                                            "nullProperty": true
+                                        },
+                                        "rMaxScale": {
+                                            "type": "number",
+                                            "nullProperty": true
+                                        },
+                                        "variableIntrinsicRateOfIncrease": {
+                                            "type": "boolean",
+                                            "nullProperty": true
+                                        },
+                                        "temperature": {
+                                            "type": "object",
+                                            "properties": {
+                                                "activationEnergy": {
+                                                    "type": "number",
+                                                    "nullProperty": true
+                                                },
+                                                "energyDecay": {
+                                                    "type": "number",
+                                                    "nullProperty": true
+                                                },
+                                                "temperatureOptimal": {
+                                                    "type": "number",
+                                                    "nullProperty": true
+                                                },
+                                                "temperatureRef": {
+                                                    "type": "number",
+                                                    "nullProperty": true
+                                                }
+                                            }
+                                        }
+                                    },
+                                    "conditionals": [
+                                        {
+                                            "condition": {
+                                                "operatorType": "property",
+                                                "propertyElement": "value",
+                                                "relativePath": [
+                                                    "variableIntrinsicRateOfIncrease"
+                                                ]
+                                            },
+                                            "then": [
+                                                {
+                                                    "workingPath": [
+                                                        "temperature"
+                                                    ],
+                                                    "remove": {
+                                                        "nullProperty": [
+                                                            "activationEnergy",
+                                                            "energyDecay",
+                                                            "temperatureOptimal",
+                                                            "temperatureRef"
+                                                        ]
+                                                    }
+                                                }
+                                            ]
+                                        }
+                                    ]
+                                }
+                            },
+                            "conditionals": [
+                                {
+                                    "condition": {
+                                        "operatorType": "comparison",
+                                        "comparisonType": "equal",
+                                        "lhs": {
+                                            "operatorType": "property",
+                                            "propertyElement": "value",
+                                            "relativePath": [
+                                                "dynamicsType"
+                                            ]
+                                        },
+                                        "rhs": {
+                                            "operatorType": "constant",
+                                            "value": "Cycle"
+                                        }
+                                    },
+                                    "then": [ 
+                                        {
+                                            "workingPath": [
+                                                "cycleParams"
+                                            ],
+                                            "remove": {
+                                                "nullProperty": [
+                                                    "cycle"
+                                                ]
+                                            }
+                                        }
+                                    ]
+                                },
+                                {
+                                    "condition": {
+                                        "operatorType": "comparison",
+                                        "comparisonType": "equal",
+                                        "lhs": {
+                                            "operatorType": "property",
+                                            "propertyElement": "value",
+                                            "relativePath": [
+                                                "dynamicsType"
+                                            ]
+                                        },
+                                        "rhs": {
+                                            "operatorType": "constant",
+                                            "value": "Pulse"
+                                        }
+                                    },
+                                    "then": [
+                                        {
+                                            "workingPath": [
+                                                "pulseParams",
+                                                "daysBetweenPulsesRange"
+                                            ],
+                                            "remove": {
+                                                "nullProperty": [
+                                                    "min",
+                                                    "max"
+                                                ]
+                                            }
+                                        },
+                                        {
+                                            "workingPath": [
+                                                "pulseParams",
+                                                "pulsePeakValueRange"
+                                            ],
+                                            "remove": {
+                                                "nullProperty": [
+                                                    "min",
+                                                    "max"
+                                                ]
+                                            }
+                                        }
+                                    ]
+                                },
+                                {
+                                    "condition": {
+                                        "operatorType": "comparison",
+                                        "comparisonType": "equal",
+                                        "lhs": {
+                                            "operatorType": "property",
+                                            "propertyElement": "value",
+                                            "relativePath": [
+                                                "dynamicsType"
+                                            ]
+                                        },
+                                        "rhs": {
+                                            "operatorType": "constant",
+                                            "value": "GrowthRate"
+                                        }
+                                    },
+                                    "then": [ 
+                                        {
+                                            "workingPath": [
+                                                "growthRateParams"
+                                            ],
+                                            "remove": {
+                                                "nullProperty": [
+                                                    "initialValue",
+                                                    "rMaxScale",
+                                                    "variableIntrinsicRateOfIncrease"
+                                                ]
+                                            }
+                                        }
+                                    ]
+                                }
+                            ]
+                        }
+                    }
+                },
+                "shape": {
+                    "type": "object",
+                    "properties": {
+                        "type": {
+                            "type": "string",
+                            "enum": [
+                                "Homogeneous",
+                                "Gaussian",
+                                "Spherical",
+                                "Cubic",
+                                "RandomGaussian"
+                            ]
+                        },
+                        "cubicParams": {
+                            "type": "object",
+                            "properties": {
+                                "bottomLeftCorner": {
+                                    "type": "array",
+                                    "items": {
+                                        "type": "number"
+                                    },
+                                    "nullProperty": true
+                                },
+                                "topRightCorner": {
+                                    "type": "array",
+                                    "items": {
+                                        "type": "number"
+                                    },
+                                    "nullProperty": true
+                                }
+                            }
+                        },
+                        "sphericalParams": {
+                            "type": "object",
+                            "properties": {
+                                "center": {
+                                    "type": "array",
+                                    "items": {
+                                        "type": "number"
+                                    },
+                                    "nullProperty": true
+                                },
+                                "radius": {
+                                    "type": "number",
+                                    "minimum": 0.0,
+                                    "nullProperty": true
+                                }
+                            }
+                        },
+                        "homogeneousParams": {
+                            "type": "object",
+                            "properties": {
+
+                            }
+                        },
+                        "gaussianParams": {
+                            "type": "object",
+                            "properties": {
+
+                            }
+                        },
+                        "randomGaussianParams": {
+                            "type": "object",
+                            "properties": {
+
+                            }
+                        }
+                    },
+                    "conditionals": [
+                        {
+                            "condition": {
+                                "operatorType": "comparison",
+                                "comparisonType": "equal",
+                                "lhs": {
+                                    "operatorType": "property",
+                                    "propertyElement": "value",
+                                    "relativePath": [
+                                        "type"
+                                    ]
+                                },
+                                "rhs": {
+                                    "operatorType": "constant",
+                                    "value": "spherical"
+                                }
+                            },
+                            "then": [ 
+                                {
+                                    "workingPath": [
+                                        "sphericalParams"
+                                    ],
+                                    "remove": {
+                                        "nullProperty": [
+                                            "center",
+                                            "radius"
+                                        ]
+                                    }
+                                }
+                            ]
+                        },
+                        {
+                            "condition": {
+                                "operatorType": "comparison",
+                                "comparisonType": "equal",
+                                "lhs": {
+                                    "operatorType": "property",
+                                    "propertyElement": "value",
+                                    "relativePath": [
+                                        "type"
+                                    ]
+                                },
+                                "rhs": {
+                                    "operatorType": "constant",
+                                    "value": "cubic"
+                                }
+                            },
+                            "then": [
+                                {
+                                    "workingPath": [
+                                        "cubicParams"
+                                    ],
+                                    "remove": {
+                                        "nullProperty": [
+                                            "bottomLeftCorner",
+                                            "topRightCorner"
+                                        ]
+                                    }
+                                }
+                            ]
+                        }
+                    ]
+                }
+            }
+        }
+    }
+}

@@ -264,6 +264,8 @@ public:
 	*/
 	bool getCompetitionAmongResourceSpecies() const;
 
+	PreciseDouble getMinExploitableResource() const;
+
 	/**
 	* @brief Register a non-statistical animal instance with the landscape.
 	*
@@ -412,6 +414,8 @@ protected:
 	
 	bool competitionAmongResourceSpecies; /**< Whether resource species compete for the same resource. */
 	float exitTimeThreshold; /**< Threshold used to determine early simulation exit. */
+
+	PreciseDouble minExploitableResource; /**< Minimum exploitable resource threshold for animals. */
 
 	bool savePredationEventsOnOtherSpecies; /**< Whether predation events matrix should be saved. */
 
@@ -762,10 +766,10 @@ private:
 	void obtainLandscapeResourceBiomassAndAnimalsPopulation(std::vector<WetMass> &landscapeResourceBiomass, CustomIndexedVector<AnimalSpeciesID, CustomIndexedVector<LifeStage, unsigned int>> &landscapeAnimalsPopulation) const;
 	
 	/**
-	* @brief Moves all animals according to their movement rules.
+	* @brief Executes all actions of animals in the landscape for the current timestep.
 	* @param numberOfTimeSteps Current timestep number.
 	*/
-	void moveAnimals(const TimeStep& numberOfTimeSteps);
+	void executingActions(const TimeStep& numberOfTimeSteps);
 
 	/**
 	* @brief Executes all behavioural actions (feeding, interactions, etc.) of animals.

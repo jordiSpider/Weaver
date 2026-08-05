@@ -172,21 +172,6 @@ public:
     void setNewDestination();
 
     /**
-     * @brief Attempts to eat edibles in the landscape according to the animal's decisions.
-     * @param landscape Pointer to the landscape.
-     * @param ediblesByEdibility Vector of tuples (edibility value, Edible*, dry mass) sorted by preference.
-     * @param numberOfTimeSteps Number of time steps.
-     * @param timeStepsPerDay Number of time steps per day.
-     * @param animalsHasTriedToPredate List of animals that have already been targeted.
-     * @param saveAnimalsEachDayPredationProbabilities Flag to save daily predation probabilities.
-     * @param predationProbabilitiesContent Stream to store predation probability data.
-     * @param saveActivity Flag to save activity data.
-     * @param activityContent Stream to store activity information.
-     * @param competitionAmongResourceSpecies Flag indicating competition among resource species.
-     */
-    void tryToEatEdible(Landscape* const landscape, std::vector<std::tuple<PreciseDouble, Edible*, DryMass>>& ediblesByEdibility, const TimeStep numberOfTimeSteps, const PreciseDouble& timeStepsPerDay, std::list<const AnimalNonStatistical*> &animalsHasTriedToPredate, const bool saveAnimalsEachDayPredationProbabilities, std::ostringstream& predationProbabilitiesContent, const bool saveActivity, std::ostringstream& activityContent, const bool competitionAmongResourceSpecies);
-
-    /**
      * @brief Returns the preference value for a given species and instar.
      * @param preySpeciesId ID of the prey species.
      * @param preyInstar Instar of the prey.

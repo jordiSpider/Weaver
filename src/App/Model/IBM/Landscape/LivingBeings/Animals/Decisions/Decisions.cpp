@@ -146,22 +146,6 @@ void Decisions::updatePreferences()
 }
 
 
-void Decisions::tryToEatEdible(Landscape* const landscape, vector<tuple<PreciseDouble, Edible*, DryMass>>& ediblesByEdibility, const TimeStep numberOfTimeSteps, const PreciseDouble& timeStepsPerDay, list<const AnimalNonStatistical*> &animalsHasTriedToPredate, const bool saveAnimalsEachDayPredationProbabilities, ostringstream& predationProbabilitiesContent, const bool saveActivity, ostringstream& activityContent, const bool competitionAmongResourceSpecies)
-{
-	auto ediblesIt = ediblesByEdibility.begin();
-
-	Edible* prey = get<1>(*ediblesIt);
-	DryMass preyDryMass = get<2>(*ediblesIt);
-
-
-	PreciseDouble randomKillProbability = Random::randomUniform();
-
-	owner->predateEdible(randomKillProbability, animalSpeciesDecisions->getKillProbability(), false, false, landscape, *prey, preyDryMass, numberOfTimeSteps, timeStepsPerDay, animalsHasTriedToPredate, saveAnimalsEachDayPredationProbabilities, predationProbabilitiesContent, saveActivity, activityContent, competitionAmongResourceSpecies);
-
-	ediblesByEdibility.erase(ediblesIt);
-}
-
-
 const PreciseDouble& Decisions::getPreference(const Species::ID &preySpeciesId, const Instar &preyInstar) const
 {
 	return preferences.at(preySpeciesId).at(preyInstar);

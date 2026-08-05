@@ -4,6 +4,8 @@
 */
 #include <thread>
 #include <algorithm> // transform
+#include <oneapi/tbb/parallel_for.h>
+#include <tbb/enumerable_thread_specific.h>
 
 #include "App/Model/IBM/Landscape/Landscape.h"
 
@@ -294,6 +296,8 @@ void Landscape::setLandscapeParams(const fs::path& configPath, bool fromCheckpoi
 
 	json landscapeConfig = readConfigFile(configPath / fs::path("landscape_params.json"), landscapeValidator);
 
+
+	minExploitableResource = landscapeConfig["landscape"]["life"]["minExploitableResource"].get<double>();
 
 	competitionAmongResourceSpecies = landscapeConfig["landscape"]["life"]["competitionAmongResourceSpecies"].get<bool>();
 
@@ -1258,13 +1262,13 @@ void Landscape::evolveLandscape()
 		view->updateLog("DONE\n");
 
 //#####################################################################
-//#########################  MOVING ANIMALS   #########################
+//#######################  EXECUTING ACTIONS   ########################
 //#####################################################################
-
+		
 		view->updateLog(" - Moving animals ... \n");
 
 		t0 = chrono::high_resolution_clock::now();
-		moveAnimals(numberOfTimeSteps);
+		executingActions(numberOfTimeSteps);
 		t1 = chrono::high_resolution_clock::now();
 		
 		view->updateLog({"Time: ", to_string(chrono::duration<double>(t1-t0).count()), " secs.\n"});
@@ -1550,34 +1554,88 @@ bool Landscape::isGrowthAndReproTest() const
 	return growthAndReproTest; 
 }
 
-void Landscape::moveAnimals(const TimeStep& numberOfTimeSteps)
+void Landscape::executingActions(const TimeStep& numberOfTimeSteps)
 {
 	ostringstream predationProbabilitiesContent, activityContent, edibilitiesContent, movementsContent;
+
 
 	vector<size_t> randomIndexLandscapeAnimals;
 	Random::createIndicesVector(randomIndexLandscapeAnimals, landscapeAnimals.size());
 
 	ProgressBar progressBar(view, randomIndexLandscapeAnimals.size());
 
-	for(const size_t pos : randomIndexLandscapeAnimals)
+
+	std::vector<bool> animalsWithoutActions(landscapeAnimals.size(), false);
+
+	while(!progressBar.finished())
 	{
-		if(landscapeAnimals[pos]->getLifeStage() == LifeStage::ACTIVE ||
-	       landscapeAnimals[pos]->getLifeStage() == LifeStage::REPRODUCING)
-		{
+		tbb::enumerable_thread_specific<std::ostringstream> localEdibilitiesContent;
+
+		tbb::parallel_for(size_t(0), landscapeAnimals.size(), [&](size_t i) {
 			auto t0 = chrono::high_resolution_clock::now();
-					
-			static_cast<AnimalNonStatistical*>(landscapeAnimals[pos])->moveAnimal(view, this, numberOfTimeSteps, getTimeStepsPerDay(), saveAnimalsEachDayPredationProbabilities, predationProbabilitiesContent, getSaveEdibilitiesFile(), edibilitiesContent, saveActivity, activityContent, saveMovements, movementsContent, getCompetitionAmongResourceSpecies());
-		
+
+            landscapeAnimals[i]->actionPlanning(
+				this, 
+				numberOfTimeSteps, 
+				getTimeStepsPerDay(), 
+				getSaveEdibilitiesFile(), 
+				localEdibilitiesContent.local()
+			);
+
 			auto t1 = chrono::high_resolution_clock::now();
 
-			if(chrono::duration<double>(t1-t0).count() > exitTimeThreshold)
+			if (chrono::duration<double>(t1 - t0).count() > exitTimeThreshold)
 			{
 				throwLineInfoException("too many animals for too little food!!!");
 			}
+        });
+
+		if (getSaveEdibilitiesFile()) {
+			for (const auto& localStream : localEdibilitiesContent) {
+				edibilitiesContent << localStream.str();
+			}
 		}
 
-		progressBar.update();
+
+
+		for(const size_t pos : randomIndexLandscapeAnimals)
+		{
+			if (!animalsWithoutActions[pos]) {
+				if (landscapeAnimals[pos]->getNextAction() == AnimalNonStatistical::Action::PREDATE) {
+					bool actionExecuted = landscapeAnimals[pos]->actionExecution(view, this, saveActivity, activityContent,
+						numberOfTimeSteps, getTimeStepsPerDay(), saveAnimalsEachDayPredationProbabilities,
+						predationProbabilitiesContent, getCompetitionAmongResourceSpecies(), saveMovements,
+						movementsContent);
+
+					if (!actionExecuted) {
+						animalsWithoutActions[pos] = true;
+						progressBar.update();
+					}
+				}
+			}
+		}
+
+		for (const size_t pos : randomIndexLandscapeAnimals)
+		{
+			if (!animalsWithoutActions[pos]) {
+				if (landscapeAnimals[pos]->getNextAction() != AnimalNonStatistical::Action::PREDATE) {
+					bool actionExecuted = landscapeAnimals[pos]->actionExecution(view, this, saveActivity, activityContent,
+						numberOfTimeSteps, getTimeStepsPerDay(), saveAnimalsEachDayPredationProbabilities,
+						predationProbabilitiesContent, getCompetitionAmongResourceSpecies(), saveMovements,
+						movementsContent);
+
+					if (!actionExecuted) {
+						animalsWithoutActions[pos] = true;
+						progressBar.update();
+					}
+				}
+			}
+		}
 	}
+
+	tbb::parallel_for(size_t(0), landscapeAnimals.size(), [&](size_t i) {
+		landscapeAnimals[i]->updateTimeStepsWithoutFood();
+	});
 
 
 	if(getSaveEdibilitiesFile())
@@ -2056,6 +2114,11 @@ void Landscape::addAppliedResource(ResourceSource* const source, const size_t pr
 bool Landscape::getCompetitionAmongResourceSpecies() const
 {
 	return competitionAmongResourceSpecies;
+}
+
+PreciseDouble Landscape::getMinExploitableResource() const
+{
+	return minExploitableResource;
 }
 
 const vector<ResourceSpecies*>& Landscape::getExistingResourceSpecies() const

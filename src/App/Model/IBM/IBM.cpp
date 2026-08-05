@@ -1,6 +1,8 @@
 
 #include "App/Model/IBM/IBM.h"
 
+#include <oneapi/tbb/global_control.h>
+
 
 using namespace std;
 using json = nlohmann::json;
@@ -50,6 +52,10 @@ void IBM::run(const RunMode runMode, const fs::path& inputConfigPath, const fs::
 	#ifdef USE_HEAP_PROFILER
 		HeapProfilerStart("./profiler/heapProfiler");
 	#endif
+
+
+	size_t numberThreads = 4;
+	tbb::global_control control(tbb::global_control::max_allowed_parallelism, numberThreads);
 
 
 	Landscape* myLandscape = nullptr;

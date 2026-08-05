@@ -83,10 +83,9 @@ public:
      * @param searchNeighborsWithFemales Whether to prioritize cells with females.
      * @param parentFullCoverage Flag indicating if parent has full coverage.
      * @param animalWhoIsEvaluating Pointer to the animal performing evaluation.
-     * @param animalsHasTriedToPredate List of animals already considered.
      */
     void getRadiusTerrainCells(
-        std::vector<CellValue>& bestEvaluations, const PointContinuous &sourcePosition, const PreciseDouble &radius, const RingModel* const radiusArea, const size_t searchDepth, const bool searchNeighborsWithFemales, const bool parentFullCoverage, AnimalNonStatistical* animalWhoIsEvaluating, const std::list<const AnimalNonStatistical*> &animalsHasTriedToPredate
+        std::vector<CellValue>& bestEvaluations, const PointContinuous &sourcePosition, const PreciseDouble &radius, const RingModel* const radiusArea, const size_t searchDepth, const bool searchNeighborsWithFemales, const bool parentFullCoverage, AnimalNonStatistical* animalWhoIsEvaluating
     );
 
     /**

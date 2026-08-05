@@ -605,10 +605,9 @@ public:
      * @param searchDepth Maximum search depth
      * @param searchNeighborsWithFemales Whether to prioritize neighbors with females
      * @param animalWhoIsEvaluating Pointer to the evaluating animal
-     * @param animalsHasTriedToPredate List of animals that have already attempted predation
      */
     virtual void getNeighboursCellsOnRadius(
-        std::vector<CellValue>& bestEvaluations, const PointContinuous &sourcePosition, const PreciseDouble &radius, const size_t searchDepth, const bool searchNeighborsWithFemales, AnimalNonStatistical* animalWhoIsEvaluating, const std::list<const AnimalNonStatistical*> &animalsHasTriedToPredate
+        std::vector<CellValue>& bestEvaluations, const PointContinuous &sourcePosition, const PreciseDouble &radius, const size_t searchDepth, const bool searchNeighborsWithFemales, AnimalNonStatistical* animalWhoIsEvaluating
     )=0;
 
     /**
@@ -658,9 +657,8 @@ public:
      * @param radiusArea Optional precomputed area
      * @param searchNeighborsWithFemales Whether to prioritize neighbors with females
      * @param parentFullCoverage Whether parent area has full coverage
-     * @param animalsHasTriedToPredate List of animals that already attempted predation
      */
-    void getCellEvaluation(std::vector<CellValue>& bestEvaluations, AnimalNonStatistical* animalWhoIsEvaluating, const PointContinuous &sourcePosition, const PreciseDouble &radius, const RingModel* const radiusArea, const bool searchNeighborsWithFemales, const bool parentFullCoverage, const std::list<const AnimalNonStatistical*> &animalsHasTriedToPredate);
+    void getCellEvaluation(std::vector<CellValue>& bestEvaluations, AnimalNonStatistical* animalWhoIsEvaluating, const PointContinuous &sourcePosition, const PreciseDouble &radius, const RingModel* const radiusArea, const bool searchNeighborsWithFemales, const bool parentFullCoverage);
 
     /**
      * @brief Serialization function for TerrainCell.

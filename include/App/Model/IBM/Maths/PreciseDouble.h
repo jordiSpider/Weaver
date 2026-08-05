@@ -38,9 +38,7 @@
  */
 class PreciseDouble {
 public:
-    static constexpr double REL_TOL = 1e-9; /**< Relative tolerance for comparisons */
-    static constexpr double ABS_TOL = 1e-12; /**< Absolute tolerance for comparisons */
-    static constexpr double EPS     = 1e-9; /**< Small epsilon value for strict comparisons */
+    static constexpr double EPS = 1e-9; /**< Small epsilon value for strict comparisons */
 
     /**
      * @brief Default constructor initializing to zero.
@@ -70,7 +68,21 @@ public:
      * @return true if the values are nearly equal, false otherwise.
      */
     static inline bool almost_equal(double a, double b) noexcept {
-        return std::fabs(a - b) <= std::max(REL_TOL * std::max(std::fabs(a), std::fabs(b)), ABS_TOL);
+        return std::fabs(a - b) <= EPS;
+    }
+
+    /**
+     * @brief Snaps a value to exact zero if it falls within the absolute tolerance.
+     *
+     * Prevents infinitesimal floating-point residues (e.g. 1e-16) produced by
+     * successive additions/subtractions from lingering as "almost zero but not quite"
+     * values, which can otherwise cause inconsistent downstream comparisons.
+     *
+     * @param v The value to normalize.
+     * @return 0.0 if |v| <= EPS, otherwise v unchanged.
+     */
+    static inline double snap_zero(double v) noexcept {
+        return (std::fabs(v) <= EPS) ? 0.0 : v;
     }
 
     
@@ -78,69 +90,62 @@ public:
      *  Basic arithmetic operations with validation (in DEBUG mode).
      */
     ///@{
-    /** @brief Addition operator. */
-    inline PreciseDouble operator+(const PreciseDouble& other) const noexcept {
-        double r = value + other.value;
-
+	/** @brief Addition operator. */
+	inline PreciseDouble operator+(PreciseDouble other) const noexcept {
 		#ifdef DEBUG
+        double r = snap_zero(value + other.value);
 		validate(r);
+        return r;
+        #else
+        return snap_zero(value + other.value);
 		#endif
+	}
 
-        return PreciseDouble(r);
-    }
-
-    /** @brief Subtraction operator. */
-    inline PreciseDouble operator-(const PreciseDouble& other) const noexcept {
-        double r = value - other.value;
-        
+	/** @brief Subtraction operator. */
+	inline PreciseDouble operator-(PreciseDouble other) const noexcept {
 		#ifdef DEBUG
+        double r = snap_zero(value - other.value);
 		validate(r);
+        return r;
+        #else
+        return snap_zero(value - other.value);
 		#endif
+	}
 
-        return PreciseDouble(r);
-    }
-
-    /** @brief Multiplication operator. */
-    inline PreciseDouble operator*(const PreciseDouble& other) const noexcept {
+	/** @brief Multiplication operator. */
+	inline PreciseDouble operator*(PreciseDouble other) const noexcept {
+		#ifdef DEBUG
         double r = value * other.value;
-        
-		#ifdef DEBUG
 		validate(r);
+        return r;
+        #else
+        return value * other.value;
 		#endif
-
-        return PreciseDouble(r);
-    }
+	}
 
     /** @brief Unary negation operator. */
     inline PreciseDouble operator-() const noexcept {
-        double r = -value;
-        
 		#ifdef DEBUG
+        double r = -value;
 		validate(r);
+        return r;
+        #else
+        return -value;
 		#endif
-
-        return PreciseDouble(r);
     }
 
     /**
      * @brief Division operator.
      * @throws Exception in DEBUG mode if dividing by zero.
      */
-    inline PreciseDouble operator/(const PreciseDouble& other) const {
-        #ifdef DEBUG
-		if(other.value == 0.0)
-		{
-			throwLineInfoException("Division by zero in PreciseDouble.");
-		}
-		#endif
-        
-		double r = value / other.value;
-        
+	inline PreciseDouble operator/(PreciseDouble other) const {
 		#ifdef DEBUG
+        double r = value / other.value;
 		validate(r);
+        return r;
+        #else
+        return value / other.value;
 		#endif
-
-        return PreciseDouble(r);
     }
     ///@}
 
@@ -154,9 +159,9 @@ public:
      * @return Reference to the updated PreciseDouble.
      * @note In debug mode, validates the internal value after addition.
      */
-    inline PreciseDouble& operator+=(const PreciseDouble& other) noexcept {
-        value += other.value;
-        
+    inline PreciseDouble& operator+=(PreciseDouble other) noexcept {
+        value = snap_zero(value + other.value);
+
         #ifdef DEBUG
         validate(value);
         #endif
@@ -170,9 +175,9 @@ public:
      * @return Reference to the updated PreciseDouble.
      * @note In debug mode, validates the internal value after subtraction.
      */
-    inline PreciseDouble& operator-=(const PreciseDouble& other) noexcept {
-        value -= other.value;
-        
+    inline PreciseDouble& operator-=(PreciseDouble other) noexcept {
+        value = snap_zero(value - other.value);
+
         #ifdef DEBUG
         validate(value);
         #endif
@@ -186,7 +191,7 @@ public:
      * @return Reference to the updated PreciseDouble.
      * @note In debug mode, validates the internal value after multiplication.
      */
-    inline PreciseDouble& operator*=(const PreciseDouble& other) noexcept {
+    inline PreciseDouble& operator*=(PreciseDouble other) noexcept {
         value *= other.value;
         
         #ifdef DEBUG
@@ -203,14 +208,7 @@ public:
      * @throws LineInfoException in debug mode if dividing by zero.
      * @note In debug mode, validates the internal value after division.
      */
-    inline PreciseDouble& operator/=(const PreciseDouble& other) {
-        #ifdef DEBUG
-        if(other.value == 0.0)
-        {
-            throwLineInfoException("Division by zero in PreciseDouble.");
-        }
-        #endif
-
+    inline PreciseDouble& operator/=(PreciseDouble other) {
         value /= other.value;
         
         #ifdef DEBUG
@@ -230,56 +228,56 @@ public:
      * @param other The double value to add.
      * @return A new PreciseDouble with the result.
      */
-    constexpr PreciseDouble operator+(double other) const noexcept { return PreciseDouble(value + other); }
+    PreciseDouble operator+(double other) const noexcept { return *this + PreciseDouble(other); }
 
     /**
      * @brief Subtracts a double value from this PreciseDouble and returns the result.
      * @param other The double value to subtract.
      * @return A new PreciseDouble with the result.
      */
-    constexpr PreciseDouble operator-(double other) const noexcept { return PreciseDouble(value - other); }
+    PreciseDouble operator-(double other) const noexcept { return *this - PreciseDouble(other); }
 
     /**
      * @brief Multiplies this PreciseDouble by a double value and returns the result.
      * @param other The double value to multiply with.
      * @return A new PreciseDouble with the result.
      */
-    constexpr PreciseDouble operator*(double other) const noexcept { return PreciseDouble(value * other); }
+    PreciseDouble operator*(double other) const noexcept { return *this * PreciseDouble(other); }
 
     /**
      * @brief Divides this PreciseDouble by a double value and returns the result.
      * @param other The double value to divide by.
      * @return A new PreciseDouble with the result.
      */
-    constexpr PreciseDouble operator/(double other) const noexcept { return PreciseDouble(value / other); }
+    PreciseDouble operator/(double other) const noexcept { return *this / PreciseDouble(other); }
 
     /**
      * @brief Adds a double value to this PreciseDouble in-place.
      * @param other The double value to add.
      * @return Reference to the updated PreciseDouble.
      */
-    constexpr PreciseDouble& operator+=(double other) noexcept { value += other; return *this; }
+    PreciseDouble& operator+=(double other) noexcept { *this += PreciseDouble(other); return *this; }
 
     /**
      * @brief Subtracts a double value from this PreciseDouble in-place.
      * @param other The double value to subtract.
      * @return Reference to the updated PreciseDouble.
      */
-    constexpr PreciseDouble& operator-=(double other) noexcept { value -= other; return *this; }
+    PreciseDouble& operator-=(double other) noexcept { *this -= PreciseDouble(other); return *this; }
 
     /**
      * @brief Multiplies this PreciseDouble by a double value in-place.
      * @param other The double value to multiply with.
      * @return Reference to the updated PreciseDouble.
      */
-    constexpr PreciseDouble& operator*=(double other) noexcept { value *= other; return *this; }
+    PreciseDouble& operator*=(double other) noexcept { *this *= PreciseDouble(other); return *this; }
 
     /**
      * @brief Divides this PreciseDouble by a double value in-place.
      * @param other The double value to divide by.
      * @return Reference to the updated PreciseDouble.
      */
-    constexpr PreciseDouble& operator/=(double other) noexcept { value /= other; return *this; }
+    PreciseDouble& operator/=(double other) noexcept { *this /= PreciseDouble(other); return *this; }
     ///@}
     
     /** @name Comparison Operators
@@ -291,42 +289,47 @@ public:
      * @param other The PreciseDouble to compare with.
      * @return True if the values are approximately equal, false otherwise.
      */
-    inline bool operator==(const PreciseDouble& other) const noexcept { return almost_equal(value, other.value); }
+    inline bool operator==(PreciseDouble other) const noexcept { return almost_equal(value, other.value); }
 
     /**
      * @brief Checks if this PreciseDouble is not equal to another PreciseDouble.
      * @param other The PreciseDouble to compare with.
      * @return True if the values are not approximately equal, false otherwise.
      */
-    inline bool operator!=(const PreciseDouble& other) const noexcept { return !(*this == other); }
+    inline bool operator!=(PreciseDouble other) const noexcept { return !(*this == other); }
 
     /**
      * @brief Checks if this PreciseDouble is less than another PreciseDouble.
+     *
+     * Uses the same tolerance-based equality as operator== so that ==, <, and >
+     * form a consistent total order (no value can be simultaneously "==" and "<"
+     * another, which the previous fixed-EPS implementation allowed).
+     *
      * @param other The PreciseDouble to compare with.
-     * @return True if this value is less than the other, accounting for EPS tolerance.
+     * @return True if this value is less than the other and not almost equal to it.
      */
-    constexpr bool operator<(const PreciseDouble& other) const noexcept { return value < other.value - EPS; }
+    inline bool operator<(PreciseDouble other) const noexcept { return !almost_equal(value, other.value) && value < other.value; }
 
     /**
      * @brief Checks if this PreciseDouble is greater than another PreciseDouble.
      * @param other The PreciseDouble to compare with.
-     * @return True if this value is greater than the other, accounting for EPS tolerance.
+     * @return True if this value is greater than the other and not almost equal to it.
      */
-    constexpr bool operator>(const PreciseDouble& other) const noexcept { return value > other.value + EPS; }
+    inline bool operator>(PreciseDouble other) const noexcept { return !almost_equal(value, other.value) && value > other.value; }
 
     /**
      * @brief Checks if this PreciseDouble is less than or equal to another PreciseDouble.
      * @param other The PreciseDouble to compare with.
-     * @return True if this value is less than or equal to the other, accounting for EPS tolerance.
+     * @return True if this value is less than or equal to the other, accounting for tolerance.
      */
-    constexpr bool operator<=(const PreciseDouble& other) const noexcept { return !(*this > other); }
+    inline bool operator<=(PreciseDouble other) const noexcept { return !(*this > other); }
 
     /**
      * @brief Checks if this PreciseDouble is greater than or equal to another PreciseDouble.
      * @param other The PreciseDouble to compare with.
-     * @return True if this value is greater than or equal to the other, accounting for EPS tolerance.
+     * @return True if this value is greater than or equal to the other, accounting for tolerance.
      */
-    constexpr bool operator>=(const PreciseDouble& other) const noexcept { return !(*this < other); }
+    inline bool operator>=(PreciseDouble other) const noexcept { return !(*this < other); }
 
     /**
      * @brief Checks if this PreciseDouble is equal to a double value.
@@ -345,30 +348,30 @@ public:
     /**
      * @brief Checks if this PreciseDouble is less than a double value.
      * @param other The double value to compare with.
-     * @return True if this value is less than the double, accounting for EPS tolerance.
+     * @return True if this value is less than the double and not almost equal to it.
      */
-    constexpr bool operator<(double other) const noexcept { return value < other - EPS; }
+    inline bool operator<(double other) const noexcept { return !almost_equal(value, other) && value < other; }
 
     /**
      * @brief Checks if this PreciseDouble is greater than a double value.
      * @param other The double value to compare with.
-     * @return True if this value is greater than the double, accounting for EPS tolerance.
+     * @return True if this value is greater than the double and not almost equal to it.
      */
-    constexpr bool operator>(double other) const noexcept { return value > other + EPS; }
+    inline bool operator>(double other) const noexcept { return !almost_equal(value, other) && value > other; }
 
     /**
      * @brief Checks if this PreciseDouble is less than or equal to a double value.
      * @param other The double value to compare with.
-     * @return True if this value is less than or equal to the double, accounting for EPS tolerance.
+     * @return True if this value is less than or equal to the double, accounting for tolerance.
      */
-    constexpr bool operator<=(double other) const noexcept { return !(*this > other); }
+    inline bool operator<=(double other) const noexcept { return !(*this > other); }
 
     /**
      * @brief Checks if this PreciseDouble is greater than or equal to a double value.
      * @param other The double value to compare with.
-     * @return True if this value is greater than or equal to the double, accounting for EPS tolerance.
+     * @return True if this value is greater than or equal to the double, accounting for tolerance.
      */
-    constexpr bool operator>=(double other) const noexcept { return !(*this < other); }
+    inline bool operator>=(double other) const noexcept { return !(*this < other); }
     ///@}
     
     /** @name Mathematical Friend Functions
@@ -380,7 +383,7 @@ public:
      * @param r The input value.
      * @return A PreciseDouble containing the square root.
      */
-    friend constexpr PreciseDouble sqrt(const PreciseDouble& r) noexcept {
+    friend constexpr PreciseDouble sqrt(PreciseDouble r) noexcept {
         return PreciseDouble(std::sqrt(r.value));
     }
 
@@ -389,7 +392,7 @@ public:
      * @param r The input value.
      * @return A PreciseDouble containing the absolute value.
      */
-    friend constexpr PreciseDouble fabs(const PreciseDouble& r) noexcept {
+    friend constexpr PreciseDouble fabs(PreciseDouble r) noexcept {
         return PreciseDouble(std::fabs(r.value));
     }
 
@@ -399,7 +402,7 @@ public:
      * @param p The exponent value.
      * @return A PreciseDouble containing r^p.
      */
-    friend constexpr PreciseDouble pow(const PreciseDouble& r, const PreciseDouble& p) noexcept {
+    friend constexpr PreciseDouble pow(PreciseDouble r, PreciseDouble p) noexcept {
         return PreciseDouble(std::pow(r.value, p.value));
     }
 
@@ -408,7 +411,7 @@ public:
      * @param r The input value.
      * @return A PreciseDouble containing e^r.
      */
-    friend constexpr PreciseDouble exp(const PreciseDouble& r) noexcept {
+    friend constexpr PreciseDouble exp(PreciseDouble r) noexcept {
         return PreciseDouble(std::exp(r.value));
     }
 
@@ -417,7 +420,7 @@ public:
      * @param r The input value.
      * @return A PreciseDouble containing ln(r).
      */
-    friend constexpr PreciseDouble log(const PreciseDouble& r) noexcept {
+    friend constexpr PreciseDouble log(PreciseDouble r) noexcept {
         return PreciseDouble(std::log(r.value));
     }
 
@@ -426,7 +429,7 @@ public:
      * @param r The input value.
      * @return A PreciseDouble containing the largest integer not greater than r.
      */
-    friend constexpr PreciseDouble floor(const PreciseDouble& r) noexcept {
+    friend constexpr PreciseDouble floor(PreciseDouble r) noexcept {
         return PreciseDouble(std::floor(r.value));
     }
 
@@ -435,7 +438,7 @@ public:
      * @param r The input value.
      * @return A PreciseDouble containing the rounded value.
      */
-    friend constexpr PreciseDouble round(const PreciseDouble& r) noexcept {
+    friend constexpr PreciseDouble round(PreciseDouble r) noexcept {
         return PreciseDouble(std::round(r.value));
     }
 
@@ -444,7 +447,7 @@ public:
      * @param r The input value in radians.
      * @return A PreciseDouble containing sin(r).
      */
-    friend constexpr PreciseDouble sin(const PreciseDouble& r) noexcept {
+    friend constexpr PreciseDouble sin(PreciseDouble r) noexcept {
         return PreciseDouble(std::sin(r.value));
     }
 
@@ -453,7 +456,7 @@ public:
      * @param r The input value in radians.
      * @return A PreciseDouble containing cos(r).
      */
-    friend constexpr PreciseDouble cos(const PreciseDouble& r) noexcept {
+    friend constexpr PreciseDouble cos(PreciseDouble r) noexcept {
         return PreciseDouble(std::cos(r.value));
     }
 
@@ -462,7 +465,7 @@ public:
      * @param r The input value in radians.
      * @return A PreciseDouble containing tan(r).
      */
-    friend constexpr PreciseDouble tan(const PreciseDouble& r) noexcept {
+    friend constexpr PreciseDouble tan(PreciseDouble r) noexcept {
         return PreciseDouble(std::tan(r.value));
     }
     ///@}
@@ -473,7 +476,7 @@ public:
      * @param r The PreciseDouble instance to output.
      * @return Reference to the output stream.
      */
-    friend std::ostream& operator<<(std::ostream& os, const PreciseDouble& r) {
+    friend std::ostream& operator<<(std::ostream& os, PreciseDouble r) {
         os << r.value;
         return os;
     }
@@ -526,7 +529,7 @@ private:
  * @param b Right-hand side PreciseDouble value.
  * @return A PreciseDouble representing the sum of a and b.
  */
-constexpr PreciseDouble operator+(double a, const PreciseDouble& b) noexcept { return PreciseDouble(a + b.getValue()); }
+constexpr PreciseDouble operator+(double a, PreciseDouble b) noexcept { return PreciseDouble(a + b.getValue()); }
 
 /**
  * @brief Subtracts a PreciseDouble from a double.
@@ -534,7 +537,7 @@ constexpr PreciseDouble operator+(double a, const PreciseDouble& b) noexcept { r
  * @param b Right-hand side PreciseDouble value.
  * @return A PreciseDouble representing the result of a - b.
  */
-constexpr PreciseDouble operator-(double a, const PreciseDouble& b) noexcept { return PreciseDouble(a - b.getValue()); }
+constexpr PreciseDouble operator-(double a, PreciseDouble b) noexcept { return PreciseDouble(a - b.getValue()); }
 
 /**
  * @brief Multiplies a double by a PreciseDouble.
@@ -542,7 +545,7 @@ constexpr PreciseDouble operator-(double a, const PreciseDouble& b) noexcept { r
  * @param b Right-hand side PreciseDouble value.
  * @return A PreciseDouble representing the product of a and b.
  */
-constexpr PreciseDouble operator*(double a, const PreciseDouble& b) noexcept { return PreciseDouble(a * b.getValue()); }
+constexpr PreciseDouble operator*(double a, PreciseDouble b) noexcept { return PreciseDouble(a * b.getValue()); }
 
 /**
  * @brief Divides a double by a PreciseDouble.
@@ -550,7 +553,7 @@ constexpr PreciseDouble operator*(double a, const PreciseDouble& b) noexcept { r
  * @param b Right-hand side PreciseDouble value.
  * @return A PreciseDouble representing the result of a / b.
  */
-constexpr PreciseDouble operator/(double a, const PreciseDouble& b) noexcept { return PreciseDouble(a / b.getValue()); }
+constexpr PreciseDouble operator/(double a, PreciseDouble b) noexcept { return PreciseDouble(a / b.getValue()); }
 ///@}
 
 /** @name Global Comparison Operators
@@ -563,7 +566,7 @@ constexpr PreciseDouble operator/(double a, const PreciseDouble& b) noexcept { r
  * @param b Right-hand side PreciseDouble value.
  * @return true if a is approximately equal to b, false otherwise.
  */
-inline bool operator==(double a, const PreciseDouble& b) noexcept { return PreciseDouble::almost_equal(a, b.getValue()); }
+inline bool operator==(double a, PreciseDouble b) noexcept { return PreciseDouble::almost_equal(a, b.getValue()); }
 
 /**
  * @brief Checks if a double is not approximately equal to a PreciseDouble.
@@ -571,7 +574,7 @@ inline bool operator==(double a, const PreciseDouble& b) noexcept { return Preci
  * @param b Right-hand side PreciseDouble value.
  * @return true if a is not approximately equal to b, false otherwise.
  */
-inline bool operator!=(double a, const PreciseDouble& b) noexcept { return !PreciseDouble::almost_equal(a, b.getValue()); }
+inline bool operator!=(double a, PreciseDouble b) noexcept { return !PreciseDouble::almost_equal(a, b.getValue()); }
 
 /**
  * @brief Checks if a double is less than a PreciseDouble, considering a small epsilon.
@@ -579,15 +582,15 @@ inline bool operator!=(double a, const PreciseDouble& b) noexcept { return !Prec
  * @param b Right-hand side PreciseDouble value.
  * @return true if a is less than b minus epsilon, false otherwise.
  */
-constexpr bool operator<(double a, const PreciseDouble& b) noexcept { return a < b.getValue() - PreciseDouble::EPS; }
+inline bool operator<(double a, PreciseDouble b) noexcept { return !PreciseDouble::almost_equal(a, b.getValue()) && a < b.getValue(); }
 
 /**
- * @brief Checks if a double is greater than a PreciseDouble, considering a small epsilon.
+ * @brief Checks if a double is greater than a PreciseDouble, considering tolerance.
  * @param a Left-hand side double value.
  * @param b Right-hand side PreciseDouble value.
- * @return true if a is greater than b plus epsilon, false otherwise.
+ * @return true if a is greater than b and not almost equal to it, false otherwise.
  */
-constexpr bool operator>(double a, const PreciseDouble& b) noexcept { return a > b.getValue() + PreciseDouble::EPS; }
+inline bool operator>(double a, PreciseDouble b) noexcept { return !PreciseDouble::almost_equal(a, b.getValue()) && a > b.getValue(); }
 
 /**
  * @brief Checks if a double is less than or approximately equal to a PreciseDouble.
@@ -595,7 +598,7 @@ constexpr bool operator>(double a, const PreciseDouble& b) noexcept { return a >
  * @param b Right-hand side PreciseDouble value.
  * @return true if a is less than or approximately equal to b, false otherwise.
  */
-inline bool operator<=(double a, const PreciseDouble& b) noexcept { return !(a > b.getValue()); }
+inline bool operator<=(double a, PreciseDouble b) noexcept { return !(a > b.getValue()); }
 
 /**
  * @brief Checks if a double is greater than or approximately equal to a PreciseDouble.
@@ -603,7 +606,7 @@ inline bool operator<=(double a, const PreciseDouble& b) noexcept { return !(a >
  * @param b Right-hand side PreciseDouble value.
  * @return true if a is greater than or approximately equal to b, false otherwise.
  */
-inline bool operator>=(double a, const PreciseDouble& b) noexcept { return !(a < b.getValue()); }
+inline bool operator>=(double a, PreciseDouble b) noexcept { return !(a < b.getValue()); }
 ///@}
 
 /**
@@ -612,7 +615,7 @@ inline bool operator>=(double a, const PreciseDouble& b) noexcept { return !(a <
  * @param b Second value.
  * @return The smaller of the two.
  */
-constexpr PreciseDouble fmin(const PreciseDouble& a, const PreciseDouble& b) noexcept {
+inline PreciseDouble fmin(PreciseDouble a, PreciseDouble b) noexcept {
     return (a < b) ? a : b;
 }
 
@@ -622,7 +625,7 @@ constexpr PreciseDouble fmin(const PreciseDouble& a, const PreciseDouble& b) noe
  * @param b Second value.
  * @return The larger of the two.
  */
-constexpr PreciseDouble fmax(const PreciseDouble& a, const PreciseDouble& b) noexcept {
+inline PreciseDouble fmax(PreciseDouble a, PreciseDouble b) noexcept {
     return (a > b) ? a : b;
 }
 
@@ -649,7 +652,7 @@ namespace std {
          * @param r The value to hash.
          * @return A hash value corresponding to the internal double.
          */
-        std::size_t operator()(const PreciseDouble& r) const noexcept {
+        std::size_t operator()(PreciseDouble r) const noexcept {
             return std::hash<double>{}(r.getValue());
         }
     };

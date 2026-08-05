@@ -670,7 +670,7 @@ void TerrainCell::applyFunctionToEdiblesInRadius(
 #endif
 
 
-void TerrainCell::getCellEvaluation(vector<CellValue>& bestEvaluations, AnimalNonStatistical* animalWhoIsEvaluating, const PointContinuous &sourcePosition, const PreciseDouble &radius, const RingModel* const radiusArea, const bool searchNeighborsWithFemales, const bool parentFullCoverage, const list<const AnimalNonStatistical*> &animalsHasTriedToPredate)
+void TerrainCell::getCellEvaluation(vector<CellValue>& bestEvaluations, AnimalNonStatistical* animalWhoIsEvaluating, const PointContinuous &sourcePosition, const PreciseDouble &radius, const RingModel* const radiusArea, const bool searchNeighborsWithFemales, const bool parentFullCoverage)
 {
     AnimalNonStatistical* animalWhoIsEvaluatingCast = static_cast<AnimalNonStatistical*>(animalWhoIsEvaluating);
 
@@ -742,10 +742,10 @@ void TerrainCell::getCellEvaluation(vector<CellValue>& bestEvaluations, AnimalNo
             AnimalFunctions{
                 PreviousAnimalFunctions{},
                 IndividualFunctions{
-                    [&animalWhoIsEvaluatingCast, &animalsHasTriedToPredate, &totalEdibilityValue, &bestAnimalEdibilityValue, &bestAnimal](Animal& animal) {
+                    [&animalWhoIsEvaluatingCast, &totalEdibilityValue, &bestAnimalEdibilityValue, &bestAnimal](Animal& animal) {
                         AnimalNonStatistical* animalCast = static_cast<AnimalNonStatistical*>(&animal);
 
-                        const PreciseDouble edibilityValue = animalWhoIsEvaluatingCast->calculateCellQuality(*animalCast, animalsHasTriedToPredate);
+                        const PreciseDouble edibilityValue = animalWhoIsEvaluatingCast->calculateCellQuality(*animalCast);
 
                         totalEdibilityValue += edibilityValue;
 

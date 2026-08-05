@@ -28,36 +28,15 @@ class SpatialTreeAnimal : public AnimalNonStatistical
 {
 protected:
     /**
-     * @brief Searches for a target cell to travel to within a given scope area.
-     * @param scopeArea Maximum area the animal can travel.
-     * @param animalsHasTriedToPredate List of animals already attempted for predation.
-     */
-    void searchTargetToTravelTo(const PreciseDouble &scopeArea, const std::list<const AnimalNonStatistical*> &animalsHasTriedToPredate);
-    
-    /**
      * @brief Searches for a target cell to travel to, with an output flag indicating
      *        if no destinations are available.
      * @param scopeArea Maximum area the animal can travel.
-     * @param animalsHasTriedToPredate List of animals already attempted for predation.
-     * @param withoutDestinations Flag set to true if no valid destinations are found.
      */
-    void searchTargetToTravelTo(const PreciseDouble &scopeArea, const std::list<const AnimalNonStatistical*> &animalsHasTriedToPredate, bool& withoutDestinations);
+    bool searchTargetToTravelTo(const PreciseDouble &scopeArea);
     
-    /**
-     * @brief Moves the animal one step in the landscape.
-     * @param landscape Pointer to the landscape.
-     * @param saveActivity Whether to save activity logs.
-     * @param activityContent Stream to store activity data.
-     * @param saveMovements Whether to save movement logs.
-     * @param movementsContent Stream to store movement data.
-     * @param actualTimeStep Current time step.
-     * @param timeStepsPerDay Number of time steps per day.
-     * @param edibilitiesContent Stream to store edible-related logs.
-     * @param saveAnimalsEachDayPredationProbabilities Whether to save predation probability logs.
-     * @param predationProbabilitiesContent Stream to store predation probabilities.
-     * @param competitionAmongResourceSpecies Whether to consider competition among resources.
-     */
-    void moveOneStep(Landscape* const landscape, const bool saveActivity, std::ostringstream& activityContent, const bool saveMovements, std::ostringstream& movementsContent, const TimeStep actualTimeStep, const PreciseDouble& timeStepsPerDay, std::ostringstream& edibilitiesContent, const bool saveAnimalsEachDayPredationProbabilities, std::ostringstream& predationProbabilitiesContent, const bool competitionAmongResourceSpecies);
+    void move(Landscape* const landscape, const TimeStep numberOfTimeSteps, const PreciseDouble& timeStepsPerDay, 
+        const bool saveMovements, std::ostringstream& movementsContent, const bool saveActivity, 
+        std::ostringstream& activityContent) override;
     
     /**
      * @brief Creates an offspring from two parent gametes.

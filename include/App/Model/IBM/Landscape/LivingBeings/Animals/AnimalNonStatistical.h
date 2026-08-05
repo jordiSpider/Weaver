@@ -53,6 +53,16 @@ class TerrainCell;
 class AnimalNonStatistical : public Animal
 {
 public:
+	enum class Action : unsigned char
+	{
+		NONE,           /**< Represents no action. */
+		MOVEMENT,       /**< Represents a movement action. */
+		FEED,           /**< Represents a feeding action. */
+		HABITAT_SHIFT,  /**< Represents a habitat shift action. */
+		PREDATE		 	/**< Represents a predation action. */
+	};
+
+
 	/**
      * @brief Default constructor.
      */
@@ -230,10 +240,9 @@ public:
 	/**
      * @brief Calculate cell quality for a prey considering other animals.
      * @param prey Reference to prey.
-     * @param animalsHasTriedToPredate List of animals that have already attempted predation.
      * @return Cell quality as PreciseDouble.
      */
-	PreciseDouble calculateCellQuality(const AnimalNonStatistical& prey, const std::list<const AnimalNonStatistical*> &animalsHasTriedToPredate);
+	PreciseDouble calculateCellQuality(const AnimalNonStatistical& prey);
     
 	/**
      * @brief Calculate cell quality for a resource.
@@ -246,10 +255,9 @@ public:
 	/**
      * @brief Calculate edibility value for a prey considering other animals.
      * @param prey Reference to prey.
-     * @param animalsHasTriedToPredate List of animals that already tried predation.
      * @return Edibility value as PreciseDouble.
      */
-	PreciseDouble calculateEdibilityValue(const AnimalNonStatistical& prey, const std::list<const AnimalNonStatistical*> &animalsHasTriedToPredate);
+	PreciseDouble calculateEdibilityValue(const AnimalNonStatistical& prey);
     
 	/**
      * @brief Calculate edibility value for a resource.
@@ -262,18 +270,13 @@ public:
 	/**
      * @brief Print preference info for prey species and instar.
      */
-	std::ostringstream printPreferenceInfo(const Species::ID &preySpeciesId, const Instar &preyInstar) const;
+	std::string printPreferenceInfo(const Species::ID &preySpeciesId, const Instar &preyInstar) const;
 
 	/**
      * @brief Assimilate food mass from prey.
      */
 	DryMass calculateAssimilatedMass(const DryMass& nonAssimilatedMass, const Species::ID& preySpeciesId, const Instar& preyInstar) const;
 	
-	/**
-     * @brief Execute predation on an edible object.
-     */
-	void predateEdible(const PreciseDouble& randomProbability, const PreciseDouble& probabilityToCompare, const bool retaliation, const bool exposedAttack, Landscape* const landscape, Edible &prey, const DryMass &targetDryMass, const TimeStep numberOfTimeSteps, const PreciseDouble& timeStepsPerDay, std::list<const AnimalNonStatistical*> &animalsHasTriedToPredate, const bool saveAnimalsEachDayPredationProbabilities, std::ostringstream& predationProbabilitiesContent, const bool saveActivity, std::ostringstream& activityContent, const bool competitionAmongResourceSpecies);
-
 	/**
      * @brief Reset control variables for a new time step.
      */
@@ -436,24 +439,22 @@ public:
 	 */
 	virtual void tune(Landscape* const landscape, const bool saveMassInfo, const TimeStep numberOfTimeSteps, const PreciseDouble& timeStepsPerDay);
 	
-	/**
-	 * @brief Move the animal in the landscape.
-	 * @param view Pointer to view object for visualization.
-	 * @param landscape Pointer to the landscape.
-	 * @param numberOfTimeSteps Number of time steps to simulate movement.
-	 * @param timeStepsPerDay Number of time steps per day.
-	 * @param saveAnimalsEachDayPredationProbabilities Whether to save daily predation probabilities.
-	 * @param predationProbabilitiesContent Stream for predation probabilities.
-	 * @param saveEdibilitiesFile Whether to save edibility info.
-	 * @param edibilitiesContent Stream for edibility info.
-	 * @param saveActivity Whether to save activity info.
-	 * @param activityContent Stream for activity info.
-	 * @param saveMovements Whether to save movement info.
-	 * @param movementsContent Stream for movement info.
-	 * @param competitionAmongResourceSpecies Whether competition affects movement.
-	 */
-	virtual void moveAnimal(View* view, Landscape* const landscape, const TimeStep numberOfTimeSteps, const PreciseDouble& timeStepsPerDay, const bool saveAnimalsEachDayPredationProbabilities, std::ostringstream& predationProbabilitiesContent, bool saveEdibilitiesFile, std::ostringstream& edibilitiesContent, const bool saveActivity, std::ostringstream& activityContent, const bool saveMovements, std::ostringstream& movementsContent, const bool competitionAmongResourceSpecies);
-	
+	Action getNextAction() const;
+
+	void actionPlanning(Landscape* const landscape, const TimeStep numberOfTimeSteps, const PreciseDouble& timeStepsPerDay,
+		bool saveEdibilitiesFile, std::ostringstream& edibilitiesContent);
+
+	bool actionExecution(View* view, Landscape* const landscape, const bool saveActivity, std::ostringstream& activityContent,
+		const TimeStep numberOfTimeSteps, const PreciseDouble& timeStepsPerDay, const bool saveAnimalsEachDayPredationProbabilities,
+		std::ostringstream& predationProbabilitiesContent, const bool competitionAmongResourceSpecies, const bool saveMovements, 
+		std::ostringstream& movementsContent);
+
+	void activateRetaliation(Edible* prey, const DryMass& targetDryMass, const bool saveAnimalsEachDayPredationProbabilities,
+		std::ostringstream& predationProbabilitiesContent, Landscape* const landscape, const TimeStep numberOfTimeSteps,
+		const PreciseDouble& timeStepsPerDay, const bool competitionAmongResourceSpecies);
+
+	void updateTimeStepsWithoutFood();
+
 	/**
 	 * @brief Print voracity values to the stream.
 	 * @param landscape Pointer to landscape.
@@ -606,10 +607,9 @@ public:
 	 *
 	 * @param ediblesByEdibility Vector to store potential prey with associated edibility values.
 	 * @param numberOfTimeSteps Number of simulation time steps for the search.
-	 * @param animalsHasTriedToPredate List of animals that have already attempted predation.
 	 * @param edibilitiesContent Stream to store debug information on edibility calculations.
 	 */
-	void searchAnimalsAndResourceToEat(std::vector<std::tuple<PreciseDouble, Edible*, DryMass>>& ediblesByEdibility, const TimeStep numberOfTimeSteps, std::list<const AnimalNonStatistical*> &animalsHasTriedToPredate, std::ostringstream& edibilitiesContent);
+	void searchAnimalsAndResourceToEat(Landscape* const landscape, std::vector<std::tuple<PreciseDouble, Edible*, DryMass>>& ediblesByEdibility, const TimeStep numberOfTimeSteps, bool saveEdibilitiesFile, std::ostringstream& edibilitiesContent);
 
 	/**
 	 * @brief Apply plasticity to a trait value based on the animal's condition.
@@ -800,7 +800,7 @@ protected:
     bool inHabitatShiftBeforeBreeding;                /**< Is the animal shifting habitat before breeding? */
     bool inHabitatShiftAfterBreeding;                 /**< Is the animal shifting habitat after breeding? */
     bool atDestination;                                /**< Has the animal reached its target? */
-    std::pair<PointMap, PointContinuous> targetNeighborToTravelTo; /**< Target neighbor to travel to */
+	std::pair<PointMap, PointContinuous> targetNeighborToTravelTo; /**< Target neighbor to travel to */
 
 	/** @brief Identifier of the male that mated with this animal, if applicable. */
 	EdibleID idFromMatedMale;
@@ -820,8 +820,8 @@ protected:
 	/** @brief Indicates whether the animal is exhausted (cannot perform further actions). */
 	bool exhausted;
 
-	/** @brief Steps moved by the animal in the current time step. */
-	PreciseDouble steps;
+	/** @brief Distance travelled by the animal during the current time step. */
+	PreciseDouble distanceTravelled;
 
 	/** @brief Number of attempted movement steps in the current time step. */
 	unsigned int stepsAttempted;
@@ -843,12 +843,6 @@ protected:
 
 	/** @brief Day on which the animal died (if applicable). */
 	Day dateOfDeath;
-
-	/** @brief Time step of the last movement performed by the animal. */
-	TimeStep lastDayMoved;
-
-	/** @brief Indicates whether this is the first movement of the animal. */
-	bool firstMovement;
 
 	/** @brief Indicates if the animal has exceeded its growth curve (beyond maximum growth). */
 	bool beyondCurve;
@@ -904,12 +898,17 @@ protected:
 	/** @brief Current prey being consumed or targeted. */
 	Prey currentPrey;
 
+	Action nextAction; /**< Pointer to the next action the animal will perform */
 
-	/**
-	 * @brief Returns the current prey the animal is targeting or consuming.
-	 * @return Reference to the current Prey object.
-	 */
-	const Prey& getCurrentPrey() const;
+	unsigned int actionsCurrentTimeStep; /**< Number of actions performed in the current time step */
+
+	std::pair<Edible*, DryMass> potencialPrey; /**< Potential prey for the animal */
+
+
+	const std::pair<Edible*, DryMass>& getPotencialPrey() const;
+	std::pair<Edible*, DryMass>& getPotencialPrey();
+
+	bool mustDoHabitatShift() const;
 
 	/**
 	 * @brief Sets the current prey the animal is targeting or consuming.
@@ -976,14 +975,6 @@ protected:
 	bool checkStepCellLeaving() const;
 
 	/**
-	 * @brief Determines if the animal can eat a given prey.
-	 * @param prey Reference to the potential prey animal.
-	 * @param animalsHasTriedToPredate List of animals that have already been targeted to avoid double predation.
-	 * @return True if the animal can eat the prey, false otherwise.
-	 */
-	bool canEatAnimal(const AnimalNonStatistical& prey, const std::list<const AnimalNonStatistical*> &animalsHasTriedToPredate) const;
-	
-	/**
 	 * @brief Determines if the animal can eat a resource based on its dry mass.
 	 * @param dryMass Dry mass of the resource.
 	 * @return True if the animal can consume the resource, false otherwise.
@@ -998,57 +989,10 @@ protected:
 	void addSpecies(const unsigned int numberOfInstars, const PreciseDouble& timeStepsPerDay);
 
 	/**
-	 * @brief Checks if the animal has already tried to hunt a specific prey.
-	 * @param prey Reference to the prey animal.
-	 * @param animalsHasTriedToPredate List of animals that have already been targeted.
-	 * @return True if the prey has been previously targeted, false otherwise.
-	 */
-	bool hasTriedToHunt(const AnimalNonStatistical& prey, const std::list<const AnimalNonStatistical*> &animalsHasTriedToPredate) const;
-
-	/**
-	 * @brief Evaluates exposed attacks on the animal and updates relevant content streams.
-	 * @param landscape Pointer to the landscape.
-	 * @param numberOfTimeSteps Number of time steps.
-	 * @param timeStepsPerDay Number of time steps per day.
-	 * @param edibilitiesContent Stream to store edibility information.
-	 * @param saveAnimalsEachDayPredationProbabilities Flag to save daily predation probabilities.
-	 * @param predationProbabilitiesContent Stream to store predation probabilities.
-	 * @param saveActivity Flag to save activity data.
-	 * @param activityContent Stream to store activity information.
-	 * @param competitionAmongResourceSpecies Flag indicating competition effects among resource species.
-	 */
-	void evaluateExposedAttacks(Landscape* const landscape, const TimeStep numberOfTimeSteps, const PreciseDouble& timeStepsPerDay, std::ostringstream& edibilitiesContent, const bool saveAnimalsEachDayPredationProbabilities, std::ostringstream& predationProbabilitiesContent, const bool saveActivity, std::ostringstream& activityContent, const bool competitionAmongResourceSpecies);
-
-	/**
-	 * @brief Assimilates the currently targeted prey and updates internal states.
-	 * @param saveActivity Flag to save activity data.
-	 * @param activityContent Stream to store activity information.
-	 * @param actualTimeStep Current simulation time step.
-	 * @param timeStepsPerDay Number of time steps per day.
-	 */
-	void assimilateCurrentPrey(const bool saveActivity, std::ostringstream& activityContent, const TimeStep actualTimeStep, const PreciseDouble& timeStepsPerDay);
-	
-	/**
-	 * @brief Computes the food mass currently being handled by the animal.
-	 * @return Dry mass of the food under handling.
-	 */
-	DryMass computeHandlingFoodMass() const;
-	
-	/**
-	 * @brief Applies handling time effects for consumed food.
-	 * @param foodMass Dry mass of food being handled.
-	 * @param saveActivity Flag to save activity data.
-	 * @param activityContent Stream to store activity information.
-	 * @param actualTimeStep Current simulation time step.
-	 * @param timeStepsPerDay Number of time steps per day.
-	 */
-	void applyHandlingTime(const DryMass& foodMass, const bool saveActivity, std::ostringstream& activityContent, const TimeStep actualTimeStep, const PreciseDouble& timeStepsPerDay);
-	
-	/**
 	 * @brief Increases the number of steps moved by the animal in the current time step.
-	 * @param stepsToAdd Number of steps to add.
+	 * @param distanceToAdd Distance to add.
 	 */
-	void increaseSteps(const PreciseDouble& stepsToAdd);
+	void increaseDistanceTravelled(const PreciseDouble& distanceToAdd);
 	
 	/**
 	 * @brief Computes the handling time for a prey based on its dry mass.
@@ -1099,36 +1043,33 @@ protected:
 	void checkBreed(Landscape* const landscape, const TimeStep numberOfTimeSteps, AnimalNonStatistical &otherAnimal, const PreciseDouble& timeStepsPerDay);
 
 	/**
-	 * @brief Searches for a target to travel to within the given scope area.
-	 * @param scopeArea Maximum distance to search.
-	 * @param animalsHasTriedToPredate List of animals already targeted.
-	 */
-	virtual void searchTargetToTravelTo(const PreciseDouble &scopeArea, const std::list<const AnimalNonStatistical*> &animalsHasTriedToPredate)=0;
-	
-	/**
 	 * @brief Searches for a target to travel to within the given scope area and indicates if no destinations were found.
 	 * @param scopeArea Maximum distance to search.
-	 * @param animalsHasTriedToPredate List of animals already targeted.
-	 * @param withoutDestinations Boolean flag set to true if no destinations found.
 	 */
-	virtual void searchTargetToTravelTo(const PreciseDouble &scopeArea, const std::list<const AnimalNonStatistical*> &animalsHasTriedToPredate, bool& withoutDestinations)=0;
+	virtual bool searchTargetToTravelTo(const PreciseDouble &scopeArea)=0;
 	
-	/**
-	 * @brief Moves the animal one step according to simulation rules.
-	 * @param landscape Pointer to the landscape.
-	 * @param saveActivity Flag to save activity data.
-	 * @param activityContent Stream for activity information.
-	 * @param saveMovements Flag to save movement data.
-	 * @param movementsContent Stream for movement information.
-	 * @param actualTimeStep Current simulation time step.
-	 * @param timeStepsPerDay Number of time steps per day.
-	 * @param edibilitiesContent Stream for edibility data.
-	 * @param saveAnimalsEachDayPredationProbabilities Flag to save daily predation probabilities.
-	 * @param predationProbabilitiesContent Stream for predation probability data.
-	 * @param competitionAmongResourceSpecies Flag indicating competition effects.
-	 */
-	virtual void moveOneStep(Landscape* const landscape, const bool saveActivity, std::ostringstream& activityContent, const bool saveMovements, std::ostringstream& movementsContent, const TimeStep actualTimeStep, const PreciseDouble& timeStepsPerDay, std::ostringstream& edibilitiesContent, const bool saveAnimalsEachDayPredationProbabilities, std::ostringstream& predationProbabilitiesContent, const bool competitionAmongResourceSpecies)=0;
-	
+	void habitatShift(Landscape* const landscape);
+
+	void feed(View* view, const bool saveActivity, std::ostringstream& activityContent, const TimeStep numberOfTimeSteps, const PreciseDouble& timeStepsPerDay);
+
+	bool predate(const bool retaliation, const bool saveAnimalsEachDayPredationProbabilities, 
+		std::ostringstream& predationProbabilitiesContent, Landscape* const landscape, const TimeStep numberOfTimeSteps, 
+		const PreciseDouble& timeStepsPerDay, const bool competitionAmongResourceSpecies);
+
+	virtual void move(Landscape* const landscape, const TimeStep numberOfTimeSteps, const PreciseDouble& timeStepsPerDay, 
+        const bool saveMovements, std::ostringstream& movementsContent, const bool saveActivity, 
+        std::ostringstream& activityContent)=0;
+
+	DryMass computeHandlingFoodMass() const;
+	void applyHandlingTime(const DryMass& foodMass, const bool saveActivity, std::ostringstream& activityContent, const TimeStep actualTimeStep, const PreciseDouble& timeStepsPerDay);
+
+	PreciseDouble getDistanceTravelled() const { return distanceTravelled; }
+
+	Prey& getCurrentPrey() { return currentPrey; }
+	const Prey& getCurrentPrey() const { return currentPrey; }
+
+	void removeCurrentPrey() { currentPrey = Prey(); }
+
 	/**
 	 * @brief Creates an offspring animal from given parental gametes.
 	 * @param firstParentGamete Pointer to the first parent's gamete.

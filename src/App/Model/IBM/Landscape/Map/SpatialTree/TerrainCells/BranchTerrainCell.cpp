@@ -433,7 +433,7 @@ void BranchTerrainCell::registerEdibles(vector<vector<vector<CellResource*>>>& l
 
 
 void BranchTerrainCell::getRadiusTerrainCells(
-    vector<CellValue>& bestEvaluations, const PointContinuous &sourcePosition, const PreciseDouble &radius, const RingModel* const radiusArea, const size_t searchDepth, const bool searchNeighborsWithFemales, const bool parentFullCoverage, AnimalNonStatistical* animalWhoIsEvaluating, const std::list<const AnimalNonStatistical*> &animalsHasTriedToPredate)
+    vector<CellValue>& bestEvaluations, const PointContinuous &sourcePosition, const PreciseDouble &radius, const RingModel* const radiusArea, const size_t searchDepth, const bool searchNeighborsWithFemales, const bool parentFullCoverage, AnimalNonStatistical* animalWhoIsEvaluating)
 {
     if(!getPatchApplicator().getCellObstacle().isFullObstacle())
     {
@@ -441,7 +441,7 @@ void BranchTerrainCell::getRadiusTerrainCells(
         {
             if(!getPatchApplicator().getCellObstacle().isObstacle())
             {
-                getCellEvaluation(bestEvaluations, animalWhoIsEvaluating, sourcePosition, radius, radiusArea, searchNeighborsWithFemales, parentFullCoverage, animalsHasTriedToPredate);
+                getCellEvaluation(bestEvaluations, animalWhoIsEvaluating, sourcePosition, radius, radiusArea, searchNeighborsWithFemales, parentFullCoverage);
             }
         }
         else
@@ -456,7 +456,7 @@ void BranchTerrainCell::getRadiusTerrainCells(
 
             for(auto &child : getMutableChildrenTerrainCells())
             {
-                child->getRadiusTerrainCells(bestEvaluations, sourcePosition, radius, radiusArea, searchDepth, searchNeighborsWithFemales, currentFullCoverage, animalWhoIsEvaluating, animalsHasTriedToPredate);
+                child->getRadiusTerrainCells(bestEvaluations, sourcePosition, radius, radiusArea, searchDepth, searchNeighborsWithFemales, currentFullCoverage, animalWhoIsEvaluating);
             } 
         }
     }

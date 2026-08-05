@@ -48,32 +48,12 @@ AnimalNonStatistical* SpatialTreeAnimal::createOffspring(Gamete* const firstPare
     return new SpatialTreeAnimal(firstParentGamete, secondParentGamete, parentTerrainCell, factorEggMassFromMom, g_numb_prt_female, g_numb_prt_male, ID_prt_female, ID_prt_male, parentSpecies, genderValue, actualTimeStep, timeStepsPerDay);
 }
 
-void SpatialTreeAnimal::searchTargetToTravelTo(const PreciseDouble &scopeArea, const std::list<const AnimalNonStatistical*> &animalsHasTriedToPredate, bool& withoutDestinations)
+bool SpatialTreeAnimal::searchTargetToTravelTo(const PreciseDouble &scopeArea)
 {
+    bool withoutDestinations = false;
     PointContinuous lastDestination = getPosition();
 
 
-    searchTargetToTravelTo(scopeArea, animalsHasTriedToPredate);
-
-
-    if(isSated() && getGrowthBuildingBlock().isMature() && getGender() == Gender::MALE)
-    {
-        bool samePoint = true;
-
-        for(unsigned char axis = 0; axis < DIMENSIONS; axis++)
-        {
-            samePoint = samePoint && (getPositionAxisValue(lastDestination, axis) == getPositionAxisValue(getTargetNeighborToTravelTo().second, axis));
-        }
-
-        if(samePoint)
-        {
-            withoutDestinations = true;
-        }
-    }
-}
-
-void SpatialTreeAnimal::searchTargetToTravelTo(const PreciseDouble &scopeArea, const std::list<const AnimalNonStatistical*> &animalsHasTriedToPredate)
-{
     decisions.setNewDestination();
 
     size_t searchDepth = static_cast<const PointSpatialTree&>(getMutableTerrainCell()->getPosition()).getDepth();
@@ -82,7 +62,7 @@ void SpatialTreeAnimal::searchTargetToTravelTo(const PreciseDouble &scopeArea, c
 
     vector<CellValue> bestEvaluations;
 
-    getMutableTerrainCell()->getNeighboursCellsOnRadius(bestEvaluations, getPosition(), scopeArea, searchDepth, searchNeighborsWithFemales, this, animalsHasTriedToPredate);
+    getMutableTerrainCell()->getNeighboursCellsOnRadius(bestEvaluations, getPosition(), scopeArea, searchDepth, searchNeighborsWithFemales, this);
 
     if(bestEvaluations.empty())
     {
@@ -142,38 +122,55 @@ void SpatialTreeAnimal::searchTargetToTravelTo(const PreciseDouble &scopeArea, c
 
     setTargetNeighborToTravelTo(make_pair(*bestEvaluations.at(randomIndex).cellPosition, targetPoint));
 
-
     setAtDestination(false);
+
+
+    if(isSated() && getGrowthBuildingBlock().isMature() && getGender() == Gender::MALE)
+    {
+        bool samePoint = true;
+
+        for(unsigned char axis = 0; axis < DIMENSIONS; axis++)
+        {
+            samePoint = samePoint && (getPositionAxisValue(lastDestination, axis) == getPositionAxisValue(getTargetNeighborToTravelTo().second, axis));
+        }
+
+        if(samePoint)
+        {
+            withoutDestinations = true;
+        }
+    }
+
+
+    return withoutDestinations;
 }
 
-void SpatialTreeAnimal::moveOneStep(Landscape* const landscape, const bool saveActivity, ostringstream& activityContent, const bool saveMovements, ostringstream& movementsContent, const TimeStep actualTimeStep, const PreciseDouble& timeStepsPerDay, ostringstream& edibilitiesContent, const bool saveAnimalsEachDayPredationProbabilities, std::ostringstream& predationProbabilitiesContent, const bool competitionAmongResourceSpecies)
+void SpatialTreeAnimal::move(Landscape* const landscape, const TimeStep numberOfTimeSteps, const PreciseDouble& timeStepsPerDay, 
+        const bool saveMovements, std::ostringstream& movementsContent, const bool saveActivity, 
+        std::ostringstream& activityContent)
 {
-    if(currentPrey.isThereLeftoverFood())
-    {
-        currentPrey = Prey();
-    }
+    removeCurrentPrey();
 
     if(saveMovements)
     {
-        movementsContent << actualTimeStep << "\t" 
+        movementsContent << numberOfTimeSteps << "\t" 
             << to_string(getId()) << "\t"
             << getPositionAxisValue(getPosition(), 0) << "\t" << getPositionAxisValue(getPosition(), 1) << "\t";
     }
 
-    Day initialDay = Day(actualTimeStep, timeStepsPerDay) + Day((steps / getSearchAreaRadius()) * timeStepsPerDay);
+    Day initialDay = Day(numberOfTimeSteps, timeStepsPerDay) + Day((distanceTravelled / getSearchAreaRadius()) * timeStepsPerDay);
 
     // Increase the number of movement attempts
 	stepsAttempted++;
 
     bool atDestinationTemp;
     pair<TerrainCell*, PointContinuous> cellToMoveTo;
-	tie(atDestinationTemp, cellToMoveTo) = getMutableTerrainCell()->getCellByBearing(landscape->getMutableMap(), getTargetNeighborToTravelTo(), getPosition(), getSearchAreaRadius() - steps);
+	tie(atDestinationTemp, cellToMoveTo) = getMutableTerrainCell()->getCellByBearing(landscape->getMutableMap(), getTargetNeighborToTravelTo(), getPosition(), getSearchAreaRadius() - distanceTravelled);
 
     setAtDestination(atDestinationTemp);
 
 	PreciseDouble distanceToAdd = Geometry::calculateDistanceBetweenPoints(getPosition(), cellToMoveTo.second);
 
-    increaseSteps(distanceToAdd);
+    increaseDistanceTravelled(distanceToAdd);
 
 	if(getMutableTerrainCell() != cellToMoveTo.first)
     {
@@ -189,7 +186,7 @@ void SpatialTreeAnimal::moveOneStep(Landscape* const landscape, const bool saveA
         movementsContent << getPositionAxisValue(getPosition(), 0) << "\t" << getPositionAxisValue(getPosition(), 1) << "\n";
     }
 
-    Day finalDay = Day(actualTimeStep, timeStepsPerDay) + Day((steps / getSearchAreaRadius()) * timeStepsPerDay);
+    Day finalDay = Day(numberOfTimeSteps, timeStepsPerDay) + Day((distanceTravelled / getSearchAreaRadius()) * timeStepsPerDay);
 
     if(saveActivity)
     {
@@ -202,18 +199,21 @@ void SpatialTreeAnimal::moveOneStep(Landscape* const landscape, const bool saveA
     }
 
 
-    evaluateExposedAttacks(landscape, actualTimeStep, timeStepsPerDay, edibilitiesContent, saveAnimalsEachDayPredationProbabilities, predationProbabilitiesContent, saveActivity, activityContent, competitionAmongResourceSpecies);
+    if(isAtDestination() && getLifeStage() == LifeStage::REPRODUCING)
+    {
+        setInBreedingZone(true);
+    }
 
 
     // if(getLifeStage() != LifeStage::PREDATED)
     // {
     //     if(checkStepCellLeaving())
     //     {
-    //         searchTargetToTravelTo(getScopeAreaRadius(), animalsHasTriedToPredate, withoutDestinations);
+    //         searchTargetToTravelTo(getScopeAreaRadius(), withoutDestinations);
 
     //         if(!withoutDestinations)
     //         {
-    //             moveOneStep(landscape, saveActivity, activityContent, saveMovements, movementsContent, actualTimeStep, timeStepsPerDay, edibilitiesContent, saveAnimalsEachDayPredationProbabilities, predationProbabilitiesContent, competitionAmongResourceSpecies, withoutDestinations, animalsHasTriedToPredate);
+    //             moveOneStep(landscape, saveActivity, activityContent, saveMovements, movementsContent, actualTimeStep, timeStepsPerDay, edibilitiesContent, saveAnimalsEachDayPredationProbabilities, predationProbabilitiesContent, competitionAmongResourceSpecies, withoutDestinations);
     //         }
     //     }
     // } 

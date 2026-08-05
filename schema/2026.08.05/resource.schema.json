@@ -1,0 +1,41 @@
+{
+    "type": "object",
+    "properties": {
+        "version": {
+            "type": "string"
+        },
+        "resource": {
+            "type": "object",
+            "properties": {
+                "growthModule": {
+                    "type": "object",
+                    "properties": {
+                        "cellMass": {
+                            "type": "number"
+                        },
+                        "conversionToWetMass": {
+                            "type": "number"
+                        },
+                        "minRH": {
+                            "type": "number",
+                            "minimum": 0.0,
+                            "maximum": 100.0
+                        },
+                        "maxRH": {
+                            "type": "number",
+                            "minimum": 0.0,
+                            "maximum": 100.0
+                        }
+                    }
+                },
+                "name": {
+                    "type": "string"
+                },
+                "zeroResource": {
+                    "type": "integer",
+                    "minimum": 0
+                }
+            }
+        }
+    }
+}

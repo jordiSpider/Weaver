@@ -54,6 +54,8 @@ public:
      */
     void update();
 
+	bool finished() const { return counter >= maxCounter; }
+
 private:
     static constexpr char fill = '#';   /**< Character representing completed progress */
     static constexpr char empty = ' ';  /**< Character representing remaining progress */

@@ -386,26 +386,26 @@ void SpatialTreeTerrainCell::applyFunctionToEdiblesInRadius(
 
 
 void SpatialTreeTerrainCell::getNeighboursCellsOnRadius(
-    vector<CellValue>& bestEvaluations, const PointContinuous &sourcePosition, const PreciseDouble &radius, const RingModel* const radiusArea, const size_t searchDepth, const bool searchNeighborsWithFemales, AnimalNonStatistical* animalWhoIsEvaluating, const std::list<const AnimalNonStatistical*> &animalsHasTriedToPredate)
+    vector<CellValue>& bestEvaluations, const PointContinuous &sourcePosition, const PreciseDouble &radius, const RingModel* const radiusArea, const size_t searchDepth, const bool searchNeighborsWithFemales, AnimalNonStatistical* animalWhoIsEvaluating)
 {
     if(Geometry::fullCoveredBySphere(&getEffectiveArea(), sourcePosition, radius))
     {
-        getMutableParent()->getNeighboursCellsOnRadius(bestEvaluations, sourcePosition, radius, radiusArea, searchDepth, searchNeighborsWithFemales, animalWhoIsEvaluating, animalsHasTriedToPredate);
+        getMutableParent()->getNeighboursCellsOnRadius(bestEvaluations, sourcePosition, radius, radiusArea, searchDepth, searchNeighborsWithFemales, animalWhoIsEvaluating);
     }
     else
     {
-        getRadiusTerrainCells(bestEvaluations, sourcePosition, radius, radiusArea, searchDepth, searchNeighborsWithFemales, false, animalWhoIsEvaluating, animalsHasTriedToPredate);
+        getRadiusTerrainCells(bestEvaluations, sourcePosition, radius, radiusArea, searchDepth, searchNeighborsWithFemales, false, animalWhoIsEvaluating);
     }
 }
 
 void SpatialTreeTerrainCell::getNeighboursCellsOnRadius(
-    vector<CellValue>& bestEvaluations, const PointContinuous &sourcePosition, const PreciseDouble &radius, const size_t searchDepth, const bool searchNeighborsWithFemales, AnimalNonStatistical* animalWhoIsEvaluating, const std::list<const AnimalNonStatistical*> &animalsHasTriedToPredate)
+    vector<CellValue>& bestEvaluations, const PointContinuous &sourcePosition, const PreciseDouble &radius, const size_t searchDepth, const bool searchNeighborsWithFemales, AnimalNonStatistical* animalWhoIsEvaluating)
 {
     if(radius > 0.0)
     {
         RingModel* sphere = Geometry::makeSphere(sourcePosition, radius);
 
-        getNeighboursCellsOnRadius(bestEvaluations, sourcePosition, radius, sphere, searchDepth, searchNeighborsWithFemales, animalWhoIsEvaluating, animalsHasTriedToPredate);
+        getNeighboursCellsOnRadius(bestEvaluations, sourcePosition, radius, sphere, searchDepth, searchNeighborsWithFemales, animalWhoIsEvaluating);
     
         delete sphere;
     }
