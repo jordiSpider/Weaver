@@ -1511,6 +1511,8 @@ void AnimalNonStatistical::searchAnimalsAndResourceToEat(Landscape* const landsc
 {
 	using EdibleTuple = std::tuple<PreciseDouble, Edible*, DryMass>;
 
+	vector<pair<const AnimalSearchParams&, AnimalFunctions>> animalFunctions;
+
 	animalFunctions.emplace_back(
 		getSpecies()->getPreySearchParams(getGrowthBuildingBlock().getInstar()).getAnimalSearchParams(),
 		AnimalFunctions{
