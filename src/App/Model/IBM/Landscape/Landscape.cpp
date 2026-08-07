@@ -769,11 +769,17 @@ void Landscape::printAnimalsAlongCells(const TimeStep numberOfTimeSteps, const i
 
 			header << "\n";
 
+			
+			tbb::enumerable_thread_specific<std::ostringstream> localContent;
+
+			tbb::parallel_for(size_t(0), landscapeAnimals.size(), [&](size_t i) {
+				localContent.local() << static_cast<string>(*static_cast<AnimalNonStatistical*>(landscapeAnimals[i])) << "\n";
+			});
+
 			ostringstream content;
 
-			for(size_t i = 0; i < landscapeAnimals.size(); i++)
-			{
-				content << static_cast<string>(*static_cast<AnimalNonStatistical*>(landscapeAnimals[i])) << "\n";
+			for (const auto& localStream : localContent) {
+				content << localStream.str();
 			}
 
 
@@ -1265,7 +1271,7 @@ void Landscape::evolveLandscape()
 //#######################  EXECUTING ACTIONS   ########################
 //#####################################################################
 		
-		view->updateLog(" - Moving animals ... \n");
+		view->updateLog(" - Executing actions ... \n");
 
 		t0 = chrono::high_resolution_clock::now();
 		executingActions(numberOfTimeSteps);
