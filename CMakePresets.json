@@ -5,8 +5,7 @@
         "minor": 25,
         "patch": 0
     },
-    "configurePresets": 
-    [
+    "configurePresets": [
         {
             "name": "common",
             "hidden": true,
@@ -31,7 +30,7 @@
         {
             "name": "executables",
             "hidden": true,
-            "inherits": ["common"],
+            "inherits": [ "common" ],
             "description": "Defines settings for building project executables.",
             "cacheVariables": {
                 "PROJECT_BUILD_TYPE": "Executables",
@@ -53,7 +52,7 @@
         {
             "name": "windows",
             "hidden": true,
-            "inherits": ["executables"],
+            "inherits": [ "executables" ],
             "description": "Windows-specific preset using Visual Studio 2022 and static vcpkg triplets.",
             "condition": {
                 "type": "equals",
@@ -71,7 +70,7 @@
         {
             "name": "linux",
             "hidden": true,
-            "inherits": ["executables"],
+            "inherits": [ "executables" ],
             "description": "Linux-specific preset using Makefiles and static vcpkg triplets.",
             "condition": {
                 "type": "equals",
@@ -91,7 +90,7 @@
         {
             "name": "gui",
             "hidden": true,
-            "inherits": ["executables"],
+            "inherits": [ "executables" ],
             "description": "Enables GUI mode in the project.",
             "cacheVariables": {
                 "GUI": "ON"
@@ -100,7 +99,7 @@
         {
             "name": "non-gui",
             "hidden": true,
-            "inherits": ["executables"],
+            "inherits": [ "executables" ],
             "description": "Disables GUI mode in the project.",
             "cacheVariables": {
                 "GUI": "OFF"
@@ -109,7 +108,7 @@
         {
             "name": "debug",
             "hidden": true,
-            "inherits": ["executables"],
+            "inherits": [ "executables" ],
             "description": "Preset for Debug builds (includes debug symbols).",
             "cacheVariables": {
                 "CMAKE_BUILD_TYPE": "Debug"
@@ -118,7 +117,7 @@
         {
             "name": "release",
             "hidden": true,
-            "inherits": ["executables"],
+            "inherits": [ "executables" ],
             "description": "Preset for Release builds (optimized for performance).",
             "cacheVariables": {
                 "CMAKE_BUILD_TYPE": "Release",
@@ -127,49 +126,78 @@
             }
         },
         {
+            "name": "trace",
+            "hidden": true,
+            "inherits": [ "release" ],
+            "description": "No description",
+            "cacheVariables": {
+                "ENABLE_TRACE": "ON"
+            }
+        },
+        {
             "name": "windows-gui-debug",
-            "inherits": ["windows", "gui", "debug"],
+            "inherits": [ "windows", "gui", "debug" ],
             "description": "Windows GUI Debug configuration."
         },
         {
             "name": "windows-gui-release",
-            "inherits": ["windows", "gui", "release"],
+            "inherits": [ "windows", "gui", "release" ],
             "description": "Windows GUI Release configuration."
         },
         {
+            "name": "windows-gui-trace",
+            "inherits": [ "windows", "gui", "trace" ],
+            "description": "Windows GUI Trace configuration."
+        },
+        {
             "name": "windows-non-gui-debug",
-            "inherits": ["windows", "non-gui", "debug"],
+            "inherits": [ "windows", "non-gui", "debug" ],
             "description": "Windows Non-GUI Debug configuration."
         },
         {
             "name": "windows-non-gui-release",
-            "inherits": ["windows", "non-gui", "release"],
+            "inherits": [ "windows", "non-gui", "release" ],
             "description": "Windows Non-GUI Release configuration."
         },
         {
+            "name": "windows-non-gui-trace",
+            "inherits": [ "windows", "non-gui", "trace" ],
+            "description": "Windows Non-GUI Trace configuration."
+        },
+        {
             "name": "linux-gui-debug",
-            "inherits": ["linux", "gui", "debug"],
+            "inherits": [ "linux", "gui", "debug" ],
             "description": "Linux GUI Debug configuration."
         },
         {
             "name": "linux-gui-release",
-            "inherits": ["linux", "gui", "release"],
+            "inherits": [ "linux", "gui", "release" ],
             "description": "Linux GUI Release configuration."
         },
         {
+            "name": "linux-gui-trace",
+            "inherits": [ "linux", "gui", "trace" ],
+            "description": "Linux GUI Trace configuration."
+        },
+        {
             "name": "linux-non-gui-debug",
-            "inherits": ["linux", "non-gui", "debug"],
+            "inherits": [ "linux", "non-gui", "debug" ],
             "description": "Linux Non-GUI Debug configuration."
         },
         {
             "name": "linux-non-gui-release",
-            "inherits": ["linux", "non-gui", "release"],
+            "inherits": [ "linux", "non-gui", "release" ],
             "description": "Linux Non-GUI Release configuration."
+        },
+        {
+            "name": "linux-non-gui-trace",
+            "inherits": [ "linux", "non-gui", "trace" ],
+            "description": "Linux Non-GUI Trace configuration."
         },
         {
             "name": "docs",
             "hidden": true,
-            "inherits": ["common"],
+            "inherits": [ "common" ],
             "description": "Base preset for building project documentation with Sphinx and Doxygen.",
             "cacheVariables": {
                 "PROJECT_BUILD_TYPE": "Docs",
@@ -184,7 +212,7 @@
         },
         {
             "name": "deploy-docs",
-            "inherits": ["docs"],
+            "inherits": [ "docs" ],
             "description": "Builds and deploys the final documentation to GitHub Pages.",
             "cacheVariables": {
                 "DOCS_BUILD_TYPE": "Deploy-docs"
@@ -192,7 +220,7 @@
         },
         {
             "name": "build-docs-dev",
-            "inherits": ["docs"],
+            "inherits": [ "docs" ],
             "description": "Builds documentation for development purposes (without deployment).",
             "cacheVariables": {
                 "DOCS_BUILD_TYPE": "Build-docs-dev"
@@ -200,7 +228,7 @@
         },
         {
             "name": "update-docs",
-            "inherits": ["docs"],
+            "inherits": [ "docs" ],
             "description": "Updates the existing documentation deployment with new content.",
             "cacheVariables": {
                 "DOCS_BUILD_TYPE": "Update-docs"
@@ -208,7 +236,7 @@
         },
         {
             "name": "build-docs-locale",
-            "inherits": ["docs"],
+            "inherits": [ "docs" ],
             "description": "Builds documentation for translation (locale generation).",
             "cacheVariables": {
                 "DOCS_BUILD_TYPE": "Build-docs-locale",
@@ -230,6 +258,12 @@
             "configuration": "Release"
         },
         {
+            "name": "windows-gui-trace",
+            "configurePreset": "windows-gui-trace",
+            "description": "Build the Windows GUI Trace configuration.",
+            "configuration": "Release"
+        },
+        {
             "name": "windows-non-gui-debug",
             "configurePreset": "windows-non-gui-debug",
             "description": "Build the Windows Non-GUI Debug configuration.",
@@ -239,6 +273,12 @@
             "name": "windows-non-gui-release",
             "configurePreset": "windows-non-gui-release",
             "description": "Build the Windows Non-GUI Release configuration.",
+            "configuration": "Release"
+        },
+        {
+            "name": "windows-non-gui-trace",
+            "configurePreset": "windows-non-gui-trace",
+            "description": "Build the Windows Non-GUI Trace configuration.",
             "configuration": "Release"
         },
         {
@@ -254,6 +294,12 @@
             "configuration": "Release"
         },
         {
+            "name": "linux-gui-trace",
+            "configurePreset": "linux-gui-trace",
+            "description": "Build the Linux GUI Trace configuration.",
+            "configuration": "Release"
+        },
+        {
             "name": "linux-non-gui-debug",
             "configurePreset": "linux-non-gui-debug",
             "description": "Build the Linux Non-GUI Debug configuration.",
@@ -263,6 +309,12 @@
             "name": "linux-non-gui-release",
             "configurePreset": "linux-non-gui-release",
             "description": "Build the Linux Non-GUI Release configuration.",
+            "configuration": "Release"
+        },
+        {
+            "name": "linux-non-gui-trace",
+            "configurePreset": "linux-non-gui-trace",
+            "description": "Build the Linux Non-GUI Trace configuration.",
             "configuration": "Release"
         },
         {
@@ -295,96 +347,224 @@
             "name": "windows-non-gui-debug",
             "description": "Workflow to configure and build the Windows Non-GUI Debug target.",
             "steps": [
-                { "type": "configure", "name": "windows-non-gui-debug" },
-                { "type": "build", "name": "windows-non-gui-debug" }
+                {
+                    "type": "configure",
+                    "name": "windows-non-gui-debug"
+                },
+                {
+                    "type": "build",
+                    "name": "windows-non-gui-debug"
+                }
             ]
         },
         {
             "name": "windows-non-gui-release",
             "description": "Workflow to configure and build the Windows Non-GUI Release target.",
             "steps": [
-                { "type": "configure", "name": "windows-non-gui-release" },
-                { "type": "build", "name": "windows-non-gui-release" }
+                {
+                    "type": "configure",
+                    "name": "windows-non-gui-release"
+                },
+                {
+                    "type": "build",
+                    "name": "windows-non-gui-release"
+                }
+            ]
+        },
+        {
+            "name": "windows-non-gui-trace",
+            "description": "Workflow to configure and build the Windows Non-GUI Trace target.",
+            "steps": [
+                {
+                    "type": "configure",
+                    "name": "windows-non-gui-trace"
+                },
+                {
+                    "type": "build",
+                    "name": "windows-non-gui-trace"
+                }
             ]
         },
         {
             "name": "windows-gui-debug",
             "description": "Workflow to configure and build the Windows GUI Debug target.",
             "steps": [
-                { "type": "configure", "name": "windows-gui-debug" },
-                { "type": "build", "name": "windows-gui-debug" }
+                {
+                    "type": "configure",
+                    "name": "windows-gui-debug"
+                },
+                {
+                    "type": "build",
+                    "name": "windows-gui-debug"
+                }
             ]
         },
         {
             "name": "windows-gui-release",
             "description": "Workflow to configure and build the Windows GUI Release target.",
             "steps": [
-                { "type": "configure", "name": "windows-gui-release" },
-                { "type": "build", "name": "windows-gui-release" }
+                {
+                    "type": "configure",
+                    "name": "windows-gui-release"
+                },
+                {
+                    "type": "build",
+                    "name": "windows-gui-release"
+                }
+            ]
+        },
+        {
+            "name": "windows-gui-trace",
+            "description": "Workflow to configure and build the Windows GUI Trace target.",
+            "steps": [
+                {
+                    "type": "configure",
+                    "name": "windows-gui-trace"
+                },
+                {
+                    "type": "build",
+                    "name": "windows-gui-trace"
+                }
             ]
         },
         {
             "name": "linux-non-gui-debug",
             "description": "Workflow to configure and build the Linux Non-GUI Debug target.",
             "steps": [
-                { "type": "configure", "name": "linux-non-gui-debug" },
-                { "type": "build", "name": "linux-non-gui-debug" }
+                {
+                    "type": "configure",
+                    "name": "linux-non-gui-debug"
+                },
+                {
+                    "type": "build",
+                    "name": "linux-non-gui-debug"
+                }
             ]
         },
         {
             "name": "linux-non-gui-release",
             "description": "Workflow to configure and build the Linux Non-GUI Release target.",
             "steps": [
-                { "type": "configure", "name": "linux-non-gui-release" },
-                { "type": "build", "name": "linux-non-gui-release" }
+                {
+                    "type": "configure",
+                    "name": "linux-non-gui-release"
+                },
+                {
+                    "type": "build",
+                    "name": "linux-non-gui-release"
+                }
+            ]
+        },
+        {
+            "name": "linux-non-gui-trace",
+            "description": "Workflow to configure and build the Linux Non-GUI Trace target.",
+            "steps": [
+                {
+                    "type": "configure",
+                    "name": "linux-non-gui-trace"
+                },
+                {
+                    "type": "build",
+                    "name": "linux-non-gui-trace"
+                }
             ]
         },
         {
             "name": "linux-gui-debug",
             "description": "Workflow to configure and build the Linux GUI Debug target.",
             "steps": [
-                { "type": "configure", "name": "linux-gui-debug" },
-                { "type": "build", "name": "linux-gui-debug" }
+                {
+                    "type": "configure",
+                    "name": "linux-gui-debug"
+                },
+                {
+                    "type": "build",
+                    "name": "linux-gui-debug"
+                }
             ]
         },
         {
             "name": "linux-gui-release",
             "description": "Workflow to configure and build the Linux GUI Release target.",
             "steps": [
-                { "type": "configure", "name": "linux-gui-release" },
-                { "type": "build", "name": "linux-gui-release" }
+                {
+                    "type": "configure",
+                    "name": "linux-gui-release"
+                },
+                {
+                    "type": "build",
+                    "name": "linux-gui-release"
+                }
+            ]
+        },
+        {
+            "name": "linux-gui-trace",
+            "description": "Workflow to configure and build the Linux GUI Trace target.",
+            "steps": [
+                {
+                    "type": "configure",
+                    "name": "linux-gui-trace"
+                },
+                {
+                    "type": "build",
+                    "name": "linux-gui-trace"
+                }
             ]
         },
         {
             "name": "deploy-docs",
             "description": "Workflow to configure and deploy the documentation build.",
             "steps": [
-                { "type": "configure", "name": "deploy-docs" },
-                { "type": "build", "name": "deploy-docs" }
+                {
+                    "type": "configure",
+                    "name": "deploy-docs"
+                },
+                {
+                    "type": "build",
+                    "name": "deploy-docs"
+                }
             ]
         },
         {
             "name": "build-docs-dev",
             "description": "Workflow to configure and build the development documentation.",
             "steps": [
-                { "type": "configure", "name": "build-docs-dev" },
-                { "type": "build", "name": "build-docs-dev" }
+                {
+                    "type": "configure",
+                    "name": "build-docs-dev"
+                },
+                {
+                    "type": "build",
+                    "name": "build-docs-dev"
+                }
             ]
         },
         {
             "name": "update-docs",
             "description": "Workflow to configure and build the documentation update.",
             "steps": [
-                { "type": "configure", "name": "update-docs" },
-                { "type": "build", "name": "update-docs" }
+                {
+                    "type": "configure",
+                    "name": "update-docs"
+                },
+                {
+                    "type": "build",
+                    "name": "update-docs"
+                }
             ]
         },
         {
             "name": "build-docs-locale",
             "description": "Workflow to configure and build the localized documentation.",
             "steps": [
-                { "type": "configure", "name": "build-docs-locale" },
-                { "type": "build", "name": "build-docs-locale" }
+                {
+                    "type": "configure",
+                    "name": "build-docs-locale"
+                },
+                {
+                    "type": "build",
+                    "name": "build-docs-locale"
+                }
             ]
         }
     ]

@@ -19,7 +19,6 @@
 # 📁 Directory structure
 # ============================================================
 set(SRC_DIR         "${CMAKE_SOURCE_DIR}/${SRC_DIR_NAME}")
-set(EXECUTABLE_DIR  "${CMAKE_SOURCE_DIR}/${EXECUTABLE_DIR_NAME}")
 set(SCHEMA_DIR      "${CMAKE_SOURCE_DIR}/${SCHEMA_DIR_NAME}")
 set(CONFIG_DIR      "${CMAKE_SOURCE_DIR}/${CONFIG_DIR_NAME}")
 include_directories(${INCLUDE_DIR})
@@ -62,6 +61,11 @@ endif()
 set(PRECISE_EXECUTABLE ${MAIN_FILE})
 set(FAST_EXECUTABLE    ${MAIN_FILE}-fast)
 
+if(ENABLE_TRACE)
+    set(PRECISE_EXECUTABLE "${PRECISE_EXECUTABLE}-trace")
+    set(FAST_EXECUTABLE    "${FAST_EXECUTABLE}-trace")
+endif()
+
 # Append "_d" suffix for Debug builds
 if(CMAKE_BUILD_TYPE STREQUAL "Debug")
     set(PRECISE_EXECUTABLE "${PRECISE_EXECUTABLE}_d")
@@ -71,11 +75,6 @@ endif()
 # Display names for each executable variant
 set(PRECISE_PROGRAM_NAME "Weaver Simulator")
 set(FAST_PROGRAM_NAME    "Weaver Simulator Fast")
-
-# Output directory configuration
-set(CMAKE_RUNTIME_OUTPUT_DIRECTORY         ${EXECUTABLE_DIR})
-set(CMAKE_RUNTIME_OUTPUT_DIRECTORY_DEBUG   ${EXECUTABLE_DIR})
-set(CMAKE_RUNTIME_OUTPUT_DIRECTORY_RELEASE ${EXECUTABLE_DIR})
 
 # Create both executables
 add_executable(${PRECISE_EXECUTABLE} ${SRC_DIR}/${MAIN_FILE}.cpp ${ALL_SOURCES})
@@ -158,6 +157,14 @@ else()
     endif()
 endif()
 
+if(ENABLE_TRACE)
+    if(WIN32)
+        list(APPEND COMPILE_OPTIONS /Zi /Oy-)
+    else()
+        list(APPEND COMPILE_OPTIONS -g -fno-omit-frame-pointer)
+    endif()
+endif()
+
 
 # ============================================================
 # 🧠 Floating-point precision model
@@ -210,6 +217,14 @@ else()
         list(APPEND LINK_OPTIONS /INCREMENTAL:NO /LTCG /OPT:REF /OPT:ICF)
     else()
         # list(APPEND LINK_OPTIONS)
+    endif()
+endif()
+
+if(ENABLE_TRACE)
+    if(WIN32)
+        list(APPEND LINK_OPTIONS /DEBUG)
+    else()
+        list(APPEND LINK_OPTIONS -g)
     endif()
 endif()
 

@@ -45,7 +45,7 @@ fs::path getWorkingDirectory()
 	buffer[len] = '\0';
 #endif
 
-	return fs::path(buffer).parent_path().parent_path();
+	return fs::path(buffer).parent_path().parent_path().parent_path().parent_path();
 }
 
 fs::path resolvePath(const fs::path& workingDirectory, const fs::path& input)
