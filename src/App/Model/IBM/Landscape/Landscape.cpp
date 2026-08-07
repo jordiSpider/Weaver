@@ -6,6 +6,7 @@
 #include <algorithm> // transform
 #include <oneapi/tbb/parallel_for.h>
 #include <tbb/enumerable_thread_specific.h>
+#include <tbb/spin_mutex.h>
 
 #include "App/Model/IBM/Landscape/Landscape.h"
 
@@ -1608,7 +1609,7 @@ void Landscape::executingActions(const TimeStep& numberOfTimeSteps)
 		{
 			if (!animalsWithoutActions[pos]) {
 				if (landscapeAnimals[pos]->getNextAction() == AnimalNonStatistical::Action::PREDATE) {
-					bool actionExecuted = landscapeAnimals[pos]->actionExecution(view, this, saveActivity, activityContent,
+					bool actionExecuted = landscapeAnimals[pos]->actionExecution(this, saveActivity, activityContent,
 						numberOfTimeSteps, getTimeStepsPerDay(), saveAnimalsEachDayPredationProbabilities,
 						predationProbabilitiesContent, getCompetitionAmongResourceSpecies(), saveMovements,
 						movementsContent);
@@ -1621,20 +1622,49 @@ void Landscape::executingActions(const TimeStep& numberOfTimeSteps)
 			}
 		}
 
-		for (const size_t pos : randomIndexLandscapeAnimals)
-		{
+		tbb::spin_mutex progressBarMutex;
+
+		tbb::enumerable_thread_specific<std::ostringstream> localActivityContent;
+		tbb::enumerable_thread_specific<std::ostringstream> localPredationProbabilitiesContent;
+		tbb::enumerable_thread_specific<std::ostringstream> localMovementsContent;
+
+		tbb::parallel_for(size_t(0), randomIndexLandscapeAnimals.size(), [&](size_t i) {
+			const size_t pos = randomIndexLandscapeAnimals[i];
+
 			if (!animalsWithoutActions[pos]) {
 				if (landscapeAnimals[pos]->getNextAction() != AnimalNonStatistical::Action::PREDATE) {
-					bool actionExecuted = landscapeAnimals[pos]->actionExecution(view, this, saveActivity, activityContent,
+					bool actionExecuted = landscapeAnimals[pos]->actionExecution(this, saveActivity, localActivityContent.local(),
 						numberOfTimeSteps, getTimeStepsPerDay(), saveAnimalsEachDayPredationProbabilities,
-						predationProbabilitiesContent, getCompetitionAmongResourceSpecies(), saveMovements,
-						movementsContent);
+						localPredationProbabilitiesContent.local(), getCompetitionAmongResourceSpecies(), saveMovements,
+						localMovementsContent.local());
 
 					if (!actionExecuted) {
 						animalsWithoutActions[pos] = true;
-						progressBar.update();
+
+						{
+							tbb::spin_mutex::scoped_lock lock(progressBarMutex);
+							progressBar.update();
+						}
 					}
 				}
+			}
+		});
+
+		if (saveActivity) {
+			for (const auto& localStream : localActivityContent) {
+				activityContent << localStream.str();
+			}
+		}
+
+		if (saveAnimalsEachDayPredationProbabilities) {
+			for (const auto& localStream : localPredationProbabilitiesContent) {
+				predationProbabilitiesContent << localStream.str();
+			}
+		}
+
+		if (saveMovements) {
+			for (const auto& localStream : localMovementsContent) {
+				movementsContent << localStream.str();
 			}
 		}
 	}

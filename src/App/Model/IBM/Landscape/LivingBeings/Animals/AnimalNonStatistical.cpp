@@ -1137,7 +1137,7 @@ void AnimalNonStatistical::actionPlanning(Landscape* const landscape, const Time
 }
 
 
-bool AnimalNonStatistical::actionExecution(View* view, Landscape* const landscape, const bool saveActivity, std::ostringstream& activityContent,
+bool AnimalNonStatistical::actionExecution(Landscape* const landscape, const bool saveActivity, std::ostringstream& activityContent,
 		const TimeStep numberOfTimeSteps, const PreciseDouble& timeStepsPerDay, const bool saveAnimalsEachDayPredationProbabilities,
 		std::ostringstream& predationProbabilitiesContent, const bool competitionAmongResourceSpecies, const bool saveMovements, 
 		std::ostringstream& movementsContent)
@@ -1155,7 +1155,7 @@ bool AnimalNonStatistical::actionExecution(View* view, Landscape* const landscap
 			move(landscape, numberOfTimeSteps, timeStepsPerDay, saveMovements, movementsContent, saveActivity, activityContent);
 			break;
 		case Action::FEED:
-			feed(view, saveActivity, activityContent, numberOfTimeSteps, timeStepsPerDay);
+			feed(saveActivity, activityContent, numberOfTimeSteps, timeStepsPerDay);
 			break;
 		case Action::PREDATE: {
 			bool canPredate = true;
@@ -1212,7 +1212,7 @@ void AnimalNonStatistical::habitatShift(Landscape* const landscape)
 	}
 }
 
-void AnimalNonStatistical::feed(View* view, const bool saveActivity, std::ostringstream& activityContent, const TimeStep numberOfTimeSteps,
+void AnimalNonStatistical::feed(const bool saveActivity, std::ostringstream& activityContent, const TimeStep numberOfTimeSteps,
 		const PreciseDouble& timeStepsPerDay)
 {
 	DryMass foodMass = computeHandlingFoodMass();
@@ -1233,15 +1233,6 @@ void AnimalNonStatistical::feed(View* view, const bool saveActivity, std::ostrin
 	if(!getSpecies()->getPreserveLeftovers() || !getCurrentPrey().isThereLeftoverFood()) 
 	{
 		removeCurrentPrey();
-	}
-
-
-	if(foodMassEatenCurrentTimeStep > getVoracity())
-	{
-		view->updateLog("The food mass eaten was higher than the voracity value:\n");
-		view->updateLog({" - Animal: ", to_string(getId()), "(", getSpecies()->getScientificName(), ")\n"});
-		view->updateLog({" - Food mass eaten: ", foodMassEatenCurrentTimeStep.getValue().to_string(), "\n"});
-		view->updateLog({" - Voracity value: ", getVoracity().to_string(), "\n"});
 	}
 }
 

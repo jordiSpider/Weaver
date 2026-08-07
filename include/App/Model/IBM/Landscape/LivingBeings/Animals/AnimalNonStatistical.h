@@ -444,7 +444,7 @@ public:
 	void actionPlanning(Landscape* const landscape, const TimeStep numberOfTimeSteps, const PreciseDouble& timeStepsPerDay,
 		bool saveEdibilitiesFile, std::ostringstream& edibilitiesContent);
 
-	bool actionExecution(View* view, Landscape* const landscape, const bool saveActivity, std::ostringstream& activityContent,
+	bool actionExecution(Landscape* const landscape, const bool saveActivity, std::ostringstream& activityContent,
 		const TimeStep numberOfTimeSteps, const PreciseDouble& timeStepsPerDay, const bool saveAnimalsEachDayPredationProbabilities,
 		std::ostringstream& predationProbabilitiesContent, const bool competitionAmongResourceSpecies, const bool saveMovements, 
 		std::ostringstream& movementsContent);
@@ -1050,7 +1050,7 @@ protected:
 	
 	void habitatShift(Landscape* const landscape);
 
-	void feed(View* view, const bool saveActivity, std::ostringstream& activityContent, const TimeStep numberOfTimeSteps, const PreciseDouble& timeStepsPerDay);
+	void feed(const bool saveActivity, std::ostringstream& activityContent, const TimeStep numberOfTimeSteps, const PreciseDouble& timeStepsPerDay);
 
 	bool predate(const bool retaliation, const bool saveAnimalsEachDayPredationProbabilities, 
 		std::ostringstream& predationProbabilitiesContent, Landscape* const landscape, const TimeStep numberOfTimeSteps, 
