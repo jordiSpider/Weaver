@@ -116,14 +116,14 @@ void String::validateElement(const json& config) const
         throwValidatorConfigJSONException("': Not an element of type 'string'");
     }
 
-
+	const std::string& configStr = config.get<std::string>();
 	
 	if(enumValues.first)
     {
         bool found = false;
         for(const string& value : enumValues.second)
         {
-            if(value == config) {
+            if(value == configStr) {
                 found = true;
             }
         }
