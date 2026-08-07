@@ -1574,8 +1574,13 @@ void Landscape::executingActions(const TimeStep& numberOfTimeSteps)
 
 	std::vector<bool> animalsWithoutActions(landscapeAnimals.size(), false);
 
+	chrono::duration<double> actionPlanningTime(0.0);
+	chrono::duration<double> actionExecutionTime(0.0);
+
 	while(!progressBar.finished())
 	{
+		auto t0_actionPlanning = chrono::high_resolution_clock::now();
+
 		tbb::enumerable_thread_specific<std::ostringstream> localEdibilitiesContent;
 
 		tbb::parallel_for(size_t(0), landscapeAnimals.size(), [&](size_t i) {
@@ -1603,7 +1608,12 @@ void Landscape::executingActions(const TimeStep& numberOfTimeSteps)
 			}
 		}
 
+		auto t1_actionPlanning = chrono::high_resolution_clock::now();
 
+		actionPlanningTime += chrono::duration<double>(t1_actionPlanning - t0_actionPlanning);
+
+
+		auto t0_actionExecution = chrono::high_resolution_clock::now();
 
 		for(const size_t pos : randomIndexLandscapeAnimals)
 		{
@@ -1667,6 +1677,10 @@ void Landscape::executingActions(const TimeStep& numberOfTimeSteps)
 				movementsContent << localStream.str();
 			}
 		}
+
+		auto t1_actionExecution = chrono::high_resolution_clock::now();
+
+		actionExecutionTime += chrono::duration<double>(t1_actionExecution - t0_actionExecution);
 	}
 
 	tbb::parallel_for(size_t(0), landscapeAnimals.size(), [&](size_t i) {
@@ -1726,6 +1740,13 @@ void Landscape::executingActions(const TimeStep& numberOfTimeSteps)
 		
 		activityFile.close();
 	}
+
+
+	view->updateLog("   - Action planning ... \n");
+	view->updateLog({ "  Time: ", to_string(actionPlanningTime.count()), " secs.\n" });
+
+	view->updateLog("   - Action execution ... \n");
+	view->updateLog({ "  Time: ", to_string(actionExecutionTime.count()), " secs.\n" });
 }
 
 void Landscape::performAnimalsActions(const TimeStep numberOfTimeSteps)
