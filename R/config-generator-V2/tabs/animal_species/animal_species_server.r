@@ -121,7 +121,7 @@ load_animal_schema_properties <- function(version) {
     if (!nzchar(schema_dir_path)) {
         schema_dir_path <- normalizePath(file.path(getwd(), "..", "..", "schema"), mustWork = FALSE)
     }
-    schema_file <- file.path(schema_dir_path, version, "species.schema.json")
+    schema_file <- file.path(schema_dir_path, version, "species_schema.json")
 
     if (!file.exists(schema_file)) {
         stop(paste("Species schema not found for version", version))

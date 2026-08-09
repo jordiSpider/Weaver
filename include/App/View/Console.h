@@ -24,7 +24,6 @@
 #include <unistd.h>
 #endif
 
-#include "Misc/GlobalVariable.h"
 #include "App/View/View.h"
 #include "Misc/EnumClass.h"
 

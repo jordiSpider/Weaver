@@ -6,19 +6,17 @@ using json = nlohmann::json;
 namespace fs = std::filesystem;
 
 
-JsonValidator::JsonValidator(const fs::path& schemaPath)
+JsonValidator::JsonValidator(std::string_view schemaContent, const std::string& schemaName)
 {
-	ifstream schemaFile(schemaPath.string());
-
 	json schema;
 
 	try
 	{
 		schema = json::parse(
-			schemaFile, /* Schema file */
-			nullptr, /* Callback */
-			true, /* Allow exceptions */
-			true /* Ignore comments */
+			schemaContent, /* Embedded JSON string */
+			nullptr,	   /* Callback */
+			true,		   /* Allow exceptions */
+			true		   /* Ignore comments */
 		);
 	}
 	catch (json::exception &e)
@@ -33,7 +31,7 @@ JsonValidator::JsonValidator(const fs::path& schemaPath)
 	}
 	catch(ValidatorSchemaJSONException& e)
 	{
-		e.addPreMessage("(" + schemaPath.filename().string() + ") 'root");
+		e.addPreMessage("(" + schemaName + ") 'root");
 		throw;
 	}
 }

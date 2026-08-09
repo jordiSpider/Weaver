@@ -39,7 +39,6 @@
 
 #include "Exceptions/LineInfoException.h"
 #include "Misc/Utilities.h"
-#include "Misc/GlobalVariable.h"
 #include "App/Model/IBM/Maths/Random.h"
 #include "App/Model/IBM/Landscape/Landscape.h"
 #include "App/Model/Model.h"

@@ -19,7 +19,6 @@
 # 📁 Directory structure
 # ============================================================
 set(SRC_DIR         "${CMAKE_SOURCE_DIR}/${SRC_DIR_NAME}")
-set(SCHEMA_DIR      "${CMAKE_SOURCE_DIR}/${SCHEMA_DIR_NAME}")
 set(CONFIG_DIR      "${CMAKE_SOURCE_DIR}/${CONFIG_DIR_NAME}")
 include_directories(${INCLUDE_DIR})
 
@@ -40,6 +39,17 @@ set(GUI_SOURCES     ${SRC_DIR}/App/View/GUI/GUI.cpp ${VIEW_SOURCES} ${WIDGETS_SO
 # ============================================================
 # 🧱 Executable configuration
 # ============================================================
+
+include(${CMAKE_SOURCE_DIR}/cmake/embed_json_to_header.cmake)
+
+file(GLOB SCHEMA_JSON_FILES CONFIGURE_DEPENDS "${CMAKE_SOURCE_DIR}/schema/${SCHEMA_VERSION}/*.json")
+
+foreach(JSON_FILE IN LISTS SCHEMA_JSON_FILES)
+    # We call our automated function for each file
+    embed_json_to_header("${JSON_FILE}" "${CMAKE_BINARY_DIR}/resources/schema")
+endforeach()
+
+
 if(GUI)
     list(APPEND ALL_SOURCES 
         ${APP_MODEL_SOURCES} 
@@ -79,6 +89,10 @@ set(FAST_PROGRAM_NAME    "Weaver Simulator Fast")
 # Create both executables
 add_executable(${PRECISE_EXECUTABLE} ${SRC_DIR}/${MAIN_FILE}.cpp ${ALL_SOURCES})
 add_executable(${FAST_EXECUTABLE}    ${SRC_DIR}/${MAIN_FILE}.cpp ${ALL_SOURCES})
+
+
+target_include_directories(${PRECISE_EXECUTABLE} PRIVATE ${CMAKE_BINARY_DIR}/resources)
+target_include_directories(${FAST_EXECUTABLE}    PRIVATE ${CMAKE_BINARY_DIR}/resources)
 
 
 # ============================================================
@@ -238,7 +252,6 @@ target_link_options(${FAST_EXECUTABLE}    PRIVATE ${LINK_OPTIONS})
 if(CMAKE_BUILD_TYPE STREQUAL "Release")
     install(TARGETS ${PRECISE_EXECUTABLE} RUNTIME DESTINATION ${EXECUTABLE_DIR_NAME})
     install(TARGETS ${FAST_EXECUTABLE}    RUNTIME DESTINATION ${EXECUTABLE_DIR_NAME})
-    install(DIRECTORY ${SCHEMA_DIR} DESTINATION .)
     install(DIRECTORY ${CONFIG_DIR} DESTINATION .)
     install(DIRECTORY ${CMAKE_SOURCE_DIR}/R DESTINATION .)
     install(FILES ${CMAKE_SOURCE_DIR}/README.md ${CMAKE_SOURCE_DIR}/LICENSE ${CMAKE_SOURCE_DIR}/THIRD_PARTY_LICENSES.md DESTINATION .)

@@ -1,6 +1,8 @@
 
 #include "App/Model/IBM/IBM.h"
 
+#include "schema/landscape_params_schema_json.h"
+
 #include <oneapi/tbb/global_control.h>
 
 
@@ -67,7 +69,7 @@ void IBM::run(const RunMode runMode, const fs::path& inputConfigPath, const fs::
 		view.updateLog("===================================================\n");
 
 
-		JsonValidator landscapeValidator(LANDSCAPE_PARAMS_SCHEMA);
+		JsonValidator landscapeValidator(EmbeddedResources::landscape_params_schema_json, "landscape_params_schema");
 
 		json landscapeConfig = readConfigFile(inputConfigPath / "landscape_params.json", landscapeValidator);
 		

@@ -8,8 +8,6 @@
 
 
 #include <iostream>
-#include <fstream>
-#include <filesystem>
 
 #include <nlohmann/json.hpp>
 
@@ -40,7 +38,7 @@ public:
      * Loads the schema from the specified path and prepares the validator
      * to validate configuration files against it.
      */
-    JsonValidator(const std::filesystem::path& schemaPath);
+    JsonValidator(std::string_view schemaContent, const std::string& schemaName);
 
     /**
      * @brief Virtual destructor.

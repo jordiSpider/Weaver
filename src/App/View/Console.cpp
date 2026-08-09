@@ -63,7 +63,7 @@ fs::path Console::requestInputConfig() const
         cout << "Input config: ";
         cin >> inputConfigPath;
 
-        inputConfigPath = resolvePath(WORKING_DIRECTORY, inputConfigPath);
+        inputConfigPath = std::filesystem::absolute(inputConfigPath).lexically_normal();
     } 
     while(!isValidFolderPath(inputConfigPath));
 
@@ -96,7 +96,7 @@ fs::path Console::requestOutputFolder() const
             outputFolderPath = DEFAULT_OUTPUT_FOLDER;
         }
 
-        outputFolderPath = resolvePath(WORKING_DIRECTORY, outputFolderPath);
+        outputFolderPath = std::filesystem::absolute(outputFolderPath).lexically_normal();
     } 
     while(!isValidFolderPath(outputFolderPath));
 
@@ -148,7 +148,7 @@ void Console::run(const string& runMode, const string& inputConfig, const string
     }
     else
     {
-        inputConfigPath = resolvePath(WORKING_DIRECTORY, fs::path(inputConfig));
+		inputConfigPath = std::filesystem::absolute(fs::path(inputConfig)).lexically_normal();
 
         if(!isValidFolderPath(inputConfigPath))
         {
@@ -165,7 +165,7 @@ void Console::run(const string& runMode, const string& inputConfig, const string
     }
     else
     {
-        outputFolderPath = resolvePath(WORKING_DIRECTORY, fs::path(outputFolder));
+        outputFolderPath = std::filesystem::absolute(fs::path(outputFolder)).lexically_normal();
 
         if(!isValidFolderPath(outputFolderPath))
         {

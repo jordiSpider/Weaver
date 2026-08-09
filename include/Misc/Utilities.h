@@ -28,7 +28,6 @@
 #include "Types.h"
 #include "Exceptions/LineInfoException.h"
 #include "Misc/JsonValidator/Validator.h"
-#include "GlobalVariable.h"
 #include "App/Model/IBM/Landscape/LivingBeings/TimeUnits.h"
 
 /**

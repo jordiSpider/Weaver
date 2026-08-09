@@ -30,31 +30,6 @@ fs::path getDefaultOutputFolderPath() {
 	#endif
 }
 
-fs::path getWorkingDirectory()
-{
-#ifdef _WIN32
-	wchar_t buffer[MAX_PATH];
-
-	GetModuleFileNameW(nullptr, buffer, MAX_PATH);
-#else
-	char buffer[4096];
-
-	ssize_t len = readlink("/proc/self/exe", buffer, sizeof(buffer) - 1);
-	if (len == -1)
-		throw runtime_error("No se pudo obtener la ruta del ejecutable");
-	buffer[len] = '\0';
-#endif
-
-	return fs::path(buffer).parent_path().parent_path().parent_path().parent_path();
-}
-
-fs::path resolvePath(const fs::path& workingDirectory, const fs::path& input)
-{
-	if (input.is_absolute())
-		return fs::weakly_canonical(input);
-	return fs::weakly_canonical(workingDirectory / input);
-}
-
 #ifdef _WIN32
 string getEnvSafe(const char* varName) {
 	char* buffer = nullptr;

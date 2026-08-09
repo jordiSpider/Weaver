@@ -11,10 +11,18 @@
 #include "App/Model/IBM/Landscape/Landscape.h"
 
 #include "Misc/Utilities.h"
-#include "Misc/GlobalVariable.h"
 #include "App/Model/IBM/Landscape/ArthropodsLandscape.h"
 #include "App/Model/IBM/Landscape/DinosaursLandscape.h"
 #include "App/Model/IBM/Landscape/AquaticLandscape.h"
+
+#include "schema/simulation_params_schema_json.h"
+#include "schema/landscape_params_schema_json.h"
+#include "schema/species_schema_json.h"
+#include "schema/resource_schema_json.h"
+#include "schema/resource_patch_schema_json.h"
+#include "schema/obstacle_patch_schema_json.h"
+#include "schema/habitat_domain_patch_schema_json.h"
+#include "schema/moisture_patch_schema_json.h"
 
 
 using namespace std;
@@ -208,7 +216,7 @@ void Landscape::init(View* newView, fs::path configPath, fs::path newOutputFolde
 
 void Landscape::setSimulationParams(const fs::path& configPath)
 {
-	JsonValidator simulationValidator(SIMULATION_PARAMS_SCHEMA);
+	JsonValidator simulationValidator(EmbeddedResources::simulation_params_schema_json, "simulation_params_schema");
 
 	json simulationConfiguration = readConfigFile(configPath / fs::path("simulation_params.json"), simulationValidator);
 
@@ -293,7 +301,7 @@ void Landscape::setSimulationParams(const fs::path& configPath)
 
 void Landscape::setLandscapeParams(const fs::path& configPath, bool fromCheckpoint)
 {
-	JsonValidator landscapeValidator(LANDSCAPE_PARAMS_SCHEMA);
+	JsonValidator landscapeValidator(EmbeddedResources::landscape_params_schema_json, "landscape_params_schema");
 
 	json landscapeConfig = readConfigFile(configPath / fs::path("landscape_params.json"), landscapeValidator);
 
@@ -435,7 +443,7 @@ bool Landscape::readAnimalSpeciesFromJSONFiles(const fs::path& configPath, Custo
 	{
 		bool newAnimalSpecies = false;
 
-		JsonValidator animalSpeciesValidator(SPECIES_SCHEMA);
+		JsonValidator animalSpeciesValidator(EmbeddedResources::species_schema_json, "species_schema");
 
 		for (const auto& entry : fs::directory_iterator(speciesFolder))
 		{
@@ -536,7 +544,7 @@ bool Landscape::readResourceSpeciesFromJSONFiles(const fs::path& configPath)
 	{
 		bool newResourceSpecies = false;
 
-		JsonValidator resourceSpeciesValidator(RESOURCE_SCHEMA);
+		JsonValidator resourceSpeciesValidator(EmbeddedResources::resource_schema_json, "resource_schema");
 
 		for (const auto& entry : fs::directory_iterator(resourceFolder))
 		{
@@ -569,11 +577,11 @@ bool Landscape::readResourcePatchesFromJSONFiles(const fs::path& configPath)
 	
 	vector<PatchPriorityQueue> resourcePatchesToAplly(getExistingResourceSpecies().size());
 
-	fs::path resourcePatchesFolder = configPath / RESOURCE_FOLDER_NAME / RESOURCE_PATCH_FOLDER;
+	fs::path resourcePatchesFolder = configPath / RESOURCE_FOLDER_NAME / "patches";
 
 	if(fs::exists(resourcePatchesFolder) && fs::is_directory(resourcePatchesFolder))
 	{
-		JsonValidator resourcePatchesValidator(RESOURCE_PATCH_SCHEMA);
+		JsonValidator resourcePatchesValidator(EmbeddedResources::resource_patch_schema_json, "resource_patch_schema");
 
 		for (const auto& entry : fs::directory_iterator(resourcePatchesFolder))
 		{
@@ -2038,7 +2046,7 @@ void Landscape::readObstaclePatchesFromJSONFiles(const fs::path& configPath)
 
 	if (fs::exists(obstacleFolder) && fs::is_directory(obstacleFolder))
 	{
-		JsonValidator obstaclePatchesValidator(OBSTACLE_PATCH_SCHEMA);
+		JsonValidator obstaclePatchesValidator(EmbeddedResources::obstacle_patch_schema_json, "obstacle_patch_schema");
 
 		for (const auto& entry : fs::directory_iterator(obstacleFolder))
 		{
@@ -2072,7 +2080,7 @@ void Landscape::readHabitatDomainPatchesFromJSONFiles(const fs::path& configPath
 
 	if (fs::exists(habitatDomainFolder) && fs::is_directory(habitatDomainFolder))
 	{
-		JsonValidator habitatDomainPatchesValidator(HABITAT_DOMAIN_PATCH_SCHEMA);
+		JsonValidator habitatDomainPatchesValidator(EmbeddedResources::habitat_domain_patch_schema_json, "habitat_domain_patch_schema");
 
 		for (const auto& entry : fs::directory_iterator(habitatDomainFolder))
 		{
@@ -2116,7 +2124,7 @@ void Landscape::readMoisturePatchesFromJSONFiles(const fs::path& configPath)
 
 	if (fs::exists(moistureFolder) && fs::is_directory(moistureFolder))
 	{
-		JsonValidator moisturePatchesValidator(MOISTURE_PATCH_SCHEMA);
+		JsonValidator moisturePatchesValidator(EmbeddedResources::moisture_patch_schema_json, "moisture_patch_schema");
 
 		for (const auto& entry : fs::directory_iterator(moistureFolder))
 		{
