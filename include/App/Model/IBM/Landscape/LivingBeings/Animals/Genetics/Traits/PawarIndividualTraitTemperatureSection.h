@@ -11,10 +11,18 @@
 #define PAWAR_INDIVIDUAL_TRAIT_TEMPERATURE_SECTION_H_
 
 
-#include "App/Model/IBM/Landscape/LivingBeings/Animals/Genetics/Traits/IndividualTraitTemperatureSection.h"
-#include "App/Model/IBM/Landscape/LivingBeings/Animals/Species/Genetics/Traits/TemperatureSection/PawarTraitTemperatureSection.h"
-#include "App/Model/IBM/Landscape/LivingBeings/Animals/Species/Genetics/Traits/TemperatureSection/PawarElement.h"
+#include <string>
+#include <utility>
 
+#include <boost/archive/text_iarchive.hpp>
+#include <boost/archive/text_oarchive.hpp>
+#include <boost/archive/binary_iarchive.hpp>
+#include <boost/archive/binary_oarchive.hpp>
+#include <boost/serialization/utility.hpp>
+
+#include "App/Model/IBM/Physics/Temperature.h"
+#include "App/Model/IBM/Landscape/LivingBeings/Animals/Species/Genetics/Traits/TemperatureSection/PawarElement.h"
+#include "Misc/CustomIndexedVector.h"
 
 /**
  * @class PawarIndividualTraitTemperatureSection
@@ -24,7 +32,7 @@
  * using a Pawar-based temperature performance curve. It allows optional inversion
  * of the curve and enforces strictly positive trait values if required.
  */
-class PawarIndividualTraitTemperatureSection : public IndividualTraitTemperatureSection {
+class PawarIndividualTraitTemperatureSection {
 public:
     /**
      * @brief Returns a string representing "Not Available" (NA).
@@ -39,13 +47,12 @@ public:
 
     /**
      * @brief Constructor with initialization.
-     * @param traitTemperatureSection Pointer to the corresponding TraitTemperatureSection.
      * @param elements Vector of Pawar elements defining the temperature response curve.
      * @param geneticValue Constitutive genetic value of the trait.
      * @param inverse Whether the temperature response curve should be inverted.
      * @param strictlyPositive Whether the resulting phenotypic values must remain strictly positive.
      */
-    PawarIndividualTraitTemperatureSection(const TraitTemperatureSection* traitTemperatureSection, const CustomIndexedVector<PawarElement, PreciseDouble>& elements, const PreciseDouble& geneticValue, bool inverse, bool strictlyPositive);
+    PawarIndividualTraitTemperatureSection(const CustomIndexedVector<PawarElement, PreciseDouble>& elements, const PreciseDouble& geneticValue, bool inverse, bool strictlyPositive);
     
     /**
      * @brief Destructor.
@@ -85,17 +92,11 @@ public:
     template <class Archive>
     void serialize(Archive &ar, const unsigned int version);
 
-protected:
+private:
     CustomIndexedVector<PawarElement, PreciseDouble> elements; /**< Vector of Pawar elements defining the TPC. */
-    bool inverse; /**< Whether the temperature response curve should be inverted. */
-    bool strictlyPositive; /**< Whether phenotypic values must remain strictly positive. */
+    bool inverse = false; /**< Whether the temperature response curve should be inverted. */
+    bool strictlyPositive = false; /**< Whether phenotypic values must remain strictly positive. */
     std::pair<Temperature,Temperature> temperatureRangeTPC; /**< Temperature range of the performance curve. */
-
-    /**
-     * @brief Get the Pawar trait temperature section.
-     * @return Pointer to the PawarTraitTemperatureSection.
-     */
-    const PawarTraitTemperatureSection* getTraitTemperatureSection() const override;
 };
 
 #endif // PAWAR_INDIVIDUAL_TRAIT_TEMPERATURE_SECTION_H_

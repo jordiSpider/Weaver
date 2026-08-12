@@ -56,7 +56,7 @@ Landscape* Landscape::createInstance(const std::string& simulationType) {
 
 
 Landscape::Landscape()
-	: serializationVersion(SERIALIZATION_VERSION)
+	: serializationVersion(WEAVER_SERIALIZATION_VERSION)
 {
 	
 }
@@ -2665,6 +2665,8 @@ void Landscape::eraseStatisticsPopulation(std::vector<CustomIndexedVector<Instar
 			for(AnimalStatistical *& animal : instar)
 			{
 				animal->getMutableTerrainCell()->eraseAnimal((animal));
+
+				delete animal;
 			}
 		}
 	}
@@ -2730,9 +2732,9 @@ void Landscape::initializeOutputFiles(fs::path configPath)
 
 	versionsFile.open((resultFolder / fs::path("versions.txt")).string());
 
-	versionsFile << "PROGRAM_VERSION:" << PROGRAM_VERSION << endl; 
-	versionsFile << "SCHEMA_VERSION:" << SCHEMA_VERSION << endl; 
-	versionsFile << "SERIALIZATION_VERSION:" << SERIALIZATION_VERSION << endl;
+	versionsFile << "PROGRAM_VERSION:" << WEAVER_PROGRAM_VERSION << endl; 
+	versionsFile << "SCHEMA_VERSION:" << WEAVER_SCHEMA_VERSION << endl; 
+	versionsFile << "SERIALIZATION_VERSION:" << WEAVER_SERIALIZATION_VERSION << endl;
 
 	versionsFile.close();
 
@@ -2922,10 +2924,10 @@ void Landscape::serialize(Archive &ar, const unsigned int) {
 	ar & serializationVersion;
 
 	if (Archive::is_loading::value) {
-		if (serializationVersion != SERIALIZATION_VERSION) {
+		if (serializationVersion != WEAVER_SERIALIZATION_VERSION) {
 			throwLineInfoException(
 				"Version mismatch: serialized data was created with version " + serializationVersion +
-				", but current serialization version is " + SERIALIZATION_VERSION + "."
+				", but current serialization version is " + WEAVER_SERIALIZATION_VERSION + "."
 			);
 		}
 	}

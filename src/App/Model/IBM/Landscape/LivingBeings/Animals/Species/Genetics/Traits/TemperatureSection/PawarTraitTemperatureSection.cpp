@@ -64,7 +64,7 @@ bool PawarTraitTemperatureSection::isStrictlyPositive() const
 	return strictlyPositive;
 }
 
-IndividualTraitTemperatureSection* PawarTraitTemperatureSection::generateIndividualTraitTemperatureSection(const PreciseDouble& geneticValue, const Genome& genome, const size_t traitsPerModule, const size_t numberOfLociPerTrait, const std::vector<PreciseDouble>& rhoPerModule, const std::vector<size_t>& rhoRangePerModule) const
+TemperatureSectionVariant PawarTraitTemperatureSection::generateIndividualTraitTemperatureSection(const PreciseDouble& geneticValue, const Genome& genome, const size_t traitsPerModule, const size_t numberOfLociPerTrait, const std::vector<PreciseDouble>& rhoPerModule, const std::vector<size_t>& rhoRangePerModule) const
 {
 	CustomIndexedVector<PawarElement, PreciseDouble> elementsValue(EnumClass<PawarElement>::size(), 0.0);
 
@@ -73,7 +73,7 @@ IndividualTraitTemperatureSection* PawarTraitTemperatureSection::generateIndivid
 		elementsValue[elem] = elements[elem]->getValue(genome, traitsPerModule, numberOfLociPerTrait, rhoPerModule, rhoRangePerModule);
 	}
 
-	return new PawarIndividualTraitTemperatureSection(this, elementsValue, geneticValue, isInverse(), isStrictlyPositive());
+	return PawarIndividualTraitTemperatureSection(elementsValue, geneticValue, isInverse(), isStrictlyPositive());
 }
 
 void PawarTraitTemperatureSection::deserializeIndividualLevelTraits(std::vector<IndividualLevelTrait*>& individualLevelTraits)

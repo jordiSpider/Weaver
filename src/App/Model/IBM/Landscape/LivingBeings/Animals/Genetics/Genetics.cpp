@@ -52,6 +52,8 @@ void Genetics::initTraits(const Temperature& temperature, const TimeStep actualT
 
 	for(Trait::ExecutionOrder order : EnumClass<Trait::ExecutionOrder>::getEnumValues())
 	{
+		allIndividualTraits[order].reserve(speciesGenetics->getAllTraits()[order].size());
+
 		for(Trait* trait : speciesGenetics->getAllTraits()[order])
 		{
 			allIndividualTraits[order].emplace_back(

@@ -103,9 +103,9 @@ json readConfigFile(fs::path configPath, const JsonValidator& validator) {
 			// Realizar la validación
 			validator.validate(configPath.filename().string(), configuration);
 
-			if(configuration["version"].get<string>() != SCHEMA_VERSION)
+			if(configuration["version"].get<string>() != WEAVER_SCHEMA_VERSION)
 			{
-				throwLineInfoException("The configuration file '" + configPath.filename().string() + "' version (" + configuration["version"].get<string>() + ") does not match the software schema version (" + SCHEMA_VERSION + ").");
+				throwLineInfoException("The configuration file '" + configPath.filename().string() + "' version (" + configuration["version"].get<string>() + ") does not match the software schema version (" + WEAVER_SCHEMA_VERSION + ").");
 			}
 
 			return configuration;

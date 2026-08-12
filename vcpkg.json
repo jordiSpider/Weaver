@@ -1,13 +1,42 @@
 {
     "builtin-baseline": "b02e341c927f16d991edbd915d8ea43eac52096c",
-    "dependencies": [
-        "magic-enum",
-        "cxxopts",
-        "nlohmann-json",
-        "boost-geometry",
-        "boost-serialization",
-        "rapidcsv",
-        "nana",
-        "tbb"
-    ]
+    "name": "weaver",
+    "version": "1.0.0",
+    "dependencies": [],
+    "features": {
+        "app": {
+            "description": "APP",
+            "dependencies": [
+                {
+                    "name": "magic-enum"
+                },
+                {
+                    "name": "cxxopts"
+                },
+                {
+                    "name": "nlohmann-json"
+                },
+                {
+                    "name": "boost-geometry"
+                },
+                {
+                    "name": "boost-serialization"
+                },
+                {
+                    "name": "rapidcsv"
+                },
+                {
+                    "name": "tbb"
+                }
+            ]
+        },
+        "gui": {
+            "description": "GUI",
+            "dependencies": [
+                {
+                    "name": "nana"
+                }
+            ]
+        }
+    }
 }

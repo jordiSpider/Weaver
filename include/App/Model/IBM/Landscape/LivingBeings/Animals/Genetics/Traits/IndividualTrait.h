@@ -16,9 +16,12 @@
 #include <boost/archive/binary_iarchive.hpp>
 #include <boost/archive/binary_oarchive.hpp>
 
+#include <variant>
+
 
 #include "App/Model/IBM/Landscape/LivingBeings/Animals/Species/Genetics/Traits/Trait.h"
-#include "App/Model/IBM/Landscape/LivingBeings/Animals/Genetics/Traits/IndividualTraitTemperatureSection.h"
+
+#include "App/Model/IBM/Landscape/LivingBeings/Animals/Genetics/Traits/TemperatureSectionVariant.h"
 
 
 /**
@@ -132,7 +135,7 @@ protected:
     Trait* trait; /**< Pointer to the trait definition. */
     PreciseDouble constitutiveValue; /**< Genetic value of the trait. */
     PreciseDouble phenotypicValue; /**< Expressed (phenotypic) value of the trait. */
-    IndividualTraitTemperatureSection* temperatureSection; /**< Temperature-dependent tuning section. */
+    TemperatureSectionVariant temperatureSection; /**< Temperature-dependent tuning section. */
 
     #ifdef DEBUG
         TimeStep phenotypicValueLastTimeStep; /**< Last timestep when phenotypic value was updated (debug). */

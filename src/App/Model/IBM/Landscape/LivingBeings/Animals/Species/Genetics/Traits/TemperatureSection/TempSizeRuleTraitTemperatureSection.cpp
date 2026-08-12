@@ -35,9 +35,9 @@ const std::map<Temperature, DryMass>& TempSizeRuleTraitTemperatureSection::getTe
 	return tempSizeRuleVector;
 }
 
-IndividualTraitTemperatureSection* TempSizeRuleTraitTemperatureSection::generateIndividualTraitTemperatureSection(const PreciseDouble&, const Genome&, const size_t, const size_t, const std::vector<PreciseDouble>&, const std::vector<size_t>&) const
+TemperatureSectionVariant TempSizeRuleTraitTemperatureSection::generateIndividualTraitTemperatureSection(const PreciseDouble&, const Genome&, const size_t, const size_t, const std::vector<PreciseDouble>&, const std::vector<size_t>&) const
 {
-	return new TempSizeRuleIndividualTraitTemperatureSection(this);
+	return TempSizeRuleIndividualTraitTemperatureSection(this);
 }
 
 void TempSizeRuleTraitTemperatureSection::deserializeIndividualLevelTraits(std::vector<IndividualLevelTrait*>&)

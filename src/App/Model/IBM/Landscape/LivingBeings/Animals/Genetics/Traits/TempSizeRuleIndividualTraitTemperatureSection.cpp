@@ -1,5 +1,9 @@
 #include "App/Model/IBM/Landscape/LivingBeings/Animals/Genetics/Traits/TempSizeRuleIndividualTraitTemperatureSection.h"
 
+#include "App/Model/IBM/Maths/MathFunctions.h"
+#include "App/Model/IBM/Landscape/LivingBeings/Animals/Species/Genetics/Traits/TemperatureSection/TempSizeRuleTraitTemperatureSection.h"
+#include "App/Model/IBM/Landscape/LivingBeings/Animals/Genetics/Traits/PawarIndividualTraitTemperatureSection.h"
+
 
 using namespace std;
 
@@ -7,14 +11,10 @@ using namespace std;
 
 
 
-TempSizeRuleIndividualTraitTemperatureSection::TempSizeRuleIndividualTraitTemperatureSection()
-    : IndividualTraitTemperatureSection()
-{
-	
-}
+TempSizeRuleIndividualTraitTemperatureSection::TempSizeRuleIndividualTraitTemperatureSection() = default;
 
-TempSizeRuleIndividualTraitTemperatureSection::TempSizeRuleIndividualTraitTemperatureSection(const TraitTemperatureSection* traitTemperatureSection)
-    : IndividualTraitTemperatureSection(traitTemperatureSection)
+TempSizeRuleIndividualTraitTemperatureSection::TempSizeRuleIndividualTraitTemperatureSection(const TempSizeRuleTraitTemperatureSection* traitTemperatureSection)
+    : traitTemperatureSection(traitTemperatureSection)
 {
 
 }
@@ -27,30 +27,29 @@ TempSizeRuleIndividualTraitTemperatureSection::~TempSizeRuleIndividualTraitTempe
 
 PreciseDouble TempSizeRuleIndividualTraitTemperatureSection::applyTemperatureDependency(const Temperature& temperature, const PreciseDouble& traitValue, const PreciseDouble &coefficientForMassAforMature, const PreciseDouble &scaleForMassBforMature, const Temperature& tempFromLab) const
 {
-	return MathFunctions::use_TSR(temperature, getTraitTemperatureSection()->getTempSizeRuleVector(), coefficientForMassAforMature, scaleForMassBforMature, Length(traitValue), tempFromLab).getValue();
-}
-
-const TempSizeRuleTraitTemperatureSection* TempSizeRuleIndividualTraitTemperatureSection::getTraitTemperatureSection() const
-{
-    return static_cast<const TempSizeRuleTraitTemperatureSection*>(IndividualTraitTemperatureSection::getTraitTemperatureSection());
+	return MathFunctions::use_TSR(temperature, traitTemperatureSection->getTempSizeRuleVector(), coefficientForMassAforMature, scaleForMassBforMature, Length(traitValue), tempFromLab).getValue();
 }
 
 string TempSizeRuleIndividualTraitTemperatureSection::to_string() const
 {
     ostringstream content;
 
-    content << IndividualTraitTemperatureSection::to_string_NA();
+    content << PawarIndividualTraitTemperatureSection::to_string_NA();
 
     return content.str();
 }
 
+void TempSizeRuleIndividualTraitTemperatureSection::setTraitTemperatureSection(const TempSizeRuleTraitTemperatureSection* newTraitTemperatureSection)
+{
+    traitTemperatureSection = newTraitTemperatureSection;
+}
 
 
-BOOST_CLASS_EXPORT(TempSizeRuleIndividualTraitTemperatureSection)
+
 
 template <class Archive>
 void TempSizeRuleIndividualTraitTemperatureSection::serialize(Archive &ar, const unsigned int) {
-	ar & boost::serialization::base_object<IndividualTraitTemperatureSection>(*this);
+	
 } 
 
 // Specialisation

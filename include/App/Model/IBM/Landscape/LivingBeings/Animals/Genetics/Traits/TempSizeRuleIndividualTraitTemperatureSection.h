@@ -11,9 +11,17 @@
 #define TEMP_SIZE_RULE_INDIVIDUAL_TRAIT_TEMPERATURE_SECTION_H_
 
 
-#include "App/Model/IBM/Landscape/LivingBeings/Animals/Genetics/Traits/IndividualTraitTemperatureSection.h"
-#include "App/Model/IBM/Maths/MathFunctions.h"
-#include "App/Model/IBM/Landscape/LivingBeings/Animals/Species/Genetics/Traits/TemperatureSection/TempSizeRuleTraitTemperatureSection.h"
+#include <string>
+
+#include <boost/archive/text_iarchive.hpp>
+#include <boost/archive/text_oarchive.hpp>
+#include <boost/archive/binary_iarchive.hpp>
+#include <boost/archive/binary_oarchive.hpp>
+
+#include "App/Model/IBM/Physics/Temperature.h"
+
+/// Forward declaration to avoid depending on the full TraitTemperatureSection hierarchy in this header.
+class TempSizeRuleTraitTemperatureSection;
 
 
 /**
@@ -23,7 +31,7 @@
  * This class modifies an individual trait according to the Temperature-Size Rule,
  * which generally describes how ectotherms grow smaller at higher temperatures.
  */
-class TempSizeRuleIndividualTraitTemperatureSection : public IndividualTraitTemperatureSection {
+class TempSizeRuleIndividualTraitTemperatureSection {
 public:
     /**
      * @brief Default constructor.
@@ -32,9 +40,9 @@ public:
 
     /**
      * @brief Constructor with initialization.
-     * @param traitTemperatureSection Pointer to the corresponding TraitTemperatureSection.
+     * @param traitTemperatureSection Pointer to the corresponding TempSizeRuleTraitTemperatureSection.
      */
-    TempSizeRuleIndividualTraitTemperatureSection(const TraitTemperatureSection* traitTemperatureSection);
+    TempSizeRuleIndividualTraitTemperatureSection(const TempSizeRuleTraitTemperatureSection* traitTemperatureSection);
     
     /**
      * @brief Destructor.
@@ -64,6 +72,12 @@ public:
     std::string to_string() const;
 
     /**
+     * @brief Update the species-level temperature section this individual trait refers to.
+     * @param newTraitTemperatureSection Pointer to the new TempSizeRuleTraitTemperatureSection.
+     */
+    void setTraitTemperatureSection(const TempSizeRuleTraitTemperatureSection* newTraitTemperatureSection);
+
+    /**
       * @brief Serializes the object for persistence.
       *
       * @tparam Archive Serialization archive type.
@@ -73,12 +87,8 @@ public:
     template <class Archive>
     void serialize(Archive &ar, const unsigned int version);
 
-protected:
-    /**
-     * @brief Get the TempSizeRule trait temperature section.
-     * @return Pointer to the TempSizeRuleTraitTemperatureSection.
-     */
-    const TempSizeRuleTraitTemperatureSection* getTraitTemperatureSection() const override;
+private:
+    const TempSizeRuleTraitTemperatureSection* traitTemperatureSection = nullptr;
 };
 
 #endif // TEMP_SIZE_RULE_INDIVIDUAL_TRAIT_TEMPERATURE_SECTION_H_

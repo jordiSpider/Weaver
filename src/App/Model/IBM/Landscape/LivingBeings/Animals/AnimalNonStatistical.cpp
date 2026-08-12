@@ -1500,8 +1500,6 @@ void AnimalNonStatistical::setInstarToEvaluateCells(const Instar& newInstarToEva
 
 void AnimalNonStatistical::searchAnimalsAndResourceToEat(Landscape* const landscape, vector<tuple<PreciseDouble, Edible*, DryMass>>& ediblesByEdibility, const TimeStep numberOfTimeSteps, bool saveEdibilitiesFile, ostringstream& edibilitiesContent)
 {
-	using EdibleTuple = std::tuple<PreciseDouble, Edible*, DryMass>;
-
 	vector<pair<const AnimalSearchParams&, AnimalFunctions>> animalFunctions;
 
 	animalFunctions.emplace_back(

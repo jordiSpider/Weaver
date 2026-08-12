@@ -65,9 +65,9 @@ public:
      * @param numberOfLociPerTrait Number of loci per trait.
      * @param rhoPerModule Vector of rho values per module.
      * @param rhoRangePerModule Vector of rho ranges per module.
-     * @return Pointer to an IndividualTraitTemperatureSection representing the individual's temperature-dependent trait.
+     * @return Variant holding the individual's temperature-dependent trait section.
      */
-    IndividualTraitTemperatureSection* generateIndividualTraitTemperatureSection(const PreciseDouble& geneticValue, const Genome& genome, const size_t traitsPerModule, const size_t numberOfLociPerTrait, const std::vector<PreciseDouble>& rhoPerModule, const std::vector<size_t>& rhoRangePerModule) const;
+    TemperatureSectionVariant generateIndividualTraitTemperatureSection(const PreciseDouble& geneticValue, const Genome& genome, const size_t traitsPerModule, const size_t numberOfLociPerTrait, const std::vector<PreciseDouble>& rhoPerModule, const std::vector<size_t>& rhoRangePerModule) const;
 
     /**
      * @brief Deserializes individual-level traits from serialized data.

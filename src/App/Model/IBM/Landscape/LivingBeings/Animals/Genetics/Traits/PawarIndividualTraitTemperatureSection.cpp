@@ -1,5 +1,8 @@
 #include "App/Model/IBM/Landscape/LivingBeings/Animals/Genetics/Traits/PawarIndividualTraitTemperatureSection.h"
 
+#include "App/Model/IBM/Maths/MathFunctions.h"
+#include "Misc/EnumClass.h"
+
 
 using namespace std;
 
@@ -25,14 +28,10 @@ string PawarIndividualTraitTemperatureSection::to_string_NA()
 
 
 
-PawarIndividualTraitTemperatureSection::PawarIndividualTraitTemperatureSection()
-    : IndividualTraitTemperatureSection()
-{
-	
-}
+PawarIndividualTraitTemperatureSection::PawarIndividualTraitTemperatureSection() = default;
 
-PawarIndividualTraitTemperatureSection::PawarIndividualTraitTemperatureSection(const TraitTemperatureSection* traitTemperatureSection, const CustomIndexedVector<PawarElement, PreciseDouble>& elements, const PreciseDouble& geneticValue, bool inverse, bool strictlyPositive)
-    : IndividualTraitTemperatureSection(traitTemperatureSection), elements(elements), inverse(inverse), strictlyPositive(strictlyPositive)
+PawarIndividualTraitTemperatureSection::PawarIndividualTraitTemperatureSection(const CustomIndexedVector<PawarElement, PreciseDouble>& elements, const PreciseDouble& geneticValue, bool inverse, bool strictlyPositive)
+    : elements(elements), inverse(inverse), strictlyPositive(strictlyPositive)
 {
     temperatureRangeTPC = MathFunctions::calculateTemperatureRangePawar(
         geneticValue, Temperature(elements[PawarElement::temperatureOptimal]),
@@ -58,11 +57,6 @@ PreciseDouble PawarIndividualTraitTemperatureSection::applyTemperatureDependency
 	);
 }
 
-const PawarTraitTemperatureSection* PawarIndividualTraitTemperatureSection::getTraitTemperatureSection() const
-{
-    return static_cast<const PawarTraitTemperatureSection*>(IndividualTraitTemperatureSection::getTraitTemperatureSection());
-}
-
 string PawarIndividualTraitTemperatureSection::to_string() const
 {
     ostringstream content;
@@ -82,13 +76,10 @@ string PawarIndividualTraitTemperatureSection::to_string() const
 
 
 
-BOOST_CLASS_EXPORT(PawarIndividualTraitTemperatureSection)
 
 template <class Archive>
 void PawarIndividualTraitTemperatureSection::serialize(Archive &ar, const unsigned int) {
-	ar & boost::serialization::base_object<IndividualTraitTemperatureSection>(*this);
-
-    ar & elements;
+	ar & elements;
 
     ar & inverse;
     ar & strictlyPositive;

@@ -1,5 +1,9 @@
 #include "App/Model/IBM/Landscape/LivingBeings/Animals/Genetics/Traits/IndividualTrait.h"
 
+#include "App/Model/IBM/Landscape/LivingBeings/Animals/Genetics/Traits/PawarIndividualTraitTemperatureSection.h"
+#include "App/Model/IBM/Landscape/LivingBeings/Animals/Genetics/Traits/TempSizeRuleIndividualTraitTemperatureSection.h"
+#include "App/Model/IBM/Landscape/LivingBeings/Animals/Species/Genetics/Traits/TemperatureSection/TempSizeRuleTraitTemperatureSection.h"
+
 
 using namespace std;
 
@@ -23,12 +27,19 @@ IndividualTrait::IndividualTrait(Trait* trait, const Genome& genome, const size_
     {
         temperatureSection = trait->getTemperatureSection()->generateIndividualTraitTemperatureSection(constitutiveValue, genome, traitsPerModule, numberOfLociPerTrait, rhoPerModule, rhoRangePerModule);
     
-        phenotypicValue = temperatureSection->applyTemperatureDependency(
-            temperature, constitutiveValue, 
-            coefficientForMassAforMature, 
-            scaleForMassBforMature,
-            tempFromLab
-        );
+        phenotypicValue = std::visit([&](auto&& section) -> PreciseDouble {
+            using T = std::decay_t<decltype(section)>;
+            if constexpr (std::is_same_v<T, std::monostate>) {
+                throwLineInfoException("Temperature section is not available for this trait.");
+            } else {
+                return section.applyTemperatureDependency(
+                    temperature, constitutiveValue, 
+                    coefficientForMassAforMature, 
+                    scaleForMassBforMature, 
+                    tempFromLab
+                );
+            }
+        }, temperatureSection);
     }
     else
     {
@@ -92,11 +103,18 @@ string IndividualTrait::to_string() const
 
     if(trait->isThermallyDependent())
     {
-        content << "\t" << temperatureSection->to_string();
+        content << "\t" << std::visit([&](auto&& section) -> string {
+            using T = std::decay_t<decltype(section)>;
+            if constexpr (std::is_same_v<T, std::monostate>) {
+                throwLineInfoException("Temperature section is not available for this trait.");
+            } else {
+                return section.to_string();
+            }
+        }, temperatureSection);
     }
     else
     {
-        content << "\t" << IndividualTraitTemperatureSection::to_string_NA();
+        content << "\t" << PawarIndividualTraitTemperatureSection::to_string_NA();
     }
 
     
@@ -123,15 +141,21 @@ void IndividualTrait::tune(const Temperature& temperature, const TimeStep actual
 {
     if(trait->isThermallyDependent())
     {
-        setPhenotypicValue(
-            temperatureSection->applyTemperatureDependency(
-                temperature, constitutiveValue, 
-                coefficientForMassAforMature, 
-                scaleForMassBforMature,
-                tempFromLab
-            ),
-            actualTimeStep
-        );
+        PreciseDouble newValue = std::visit([&](auto&& section) -> PreciseDouble {
+            using T = std::decay_t<decltype(section)>;
+            if constexpr (std::is_same_v<T, std::monostate>) {
+                throwLineInfoException("Temperature section is not available for this trait.");
+            } else {
+                return section.applyTemperatureDependency(
+                    temperature, constitutiveValue, 
+                    coefficientForMassAforMature, 
+                    scaleForMassBforMature,
+                    tempFromLab
+                );
+            }
+        }, temperatureSection);
+
+        setPhenotypicValue(newValue, actualTimeStep);
     }
     else
     {
@@ -145,7 +169,15 @@ void IndividualTrait::setTrait(Trait* newTrait)
 
     if(trait->isThermallyDependent())
     {
-        temperatureSection->setTraitTemperatureSection(trait->getTemperatureSection());
+        std::visit([&](auto&& section) {
+            using T = std::decay_t<decltype(section)>;
+            if constexpr (std::is_same_v<T, std::monostate>) {
+                throwLineInfoException("Temperature section is not available for this trait.");
+            } else if constexpr (std::is_same_v<T, TempSizeRuleIndividualTraitTemperatureSection>) {
+                section.setTraitTemperatureSection(static_cast<const TempSizeRuleTraitTemperatureSection*>(trait->getTemperatureSection()));
+            }
+            // PawarIndividualTraitTemperatureSection snapshots its data at construction time and does not need repointing.
+        }, temperatureSection);
     }
 }
 

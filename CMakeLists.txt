@@ -15,13 +15,20 @@
 # issues with older CMake installations.
 cmake_minimum_required(VERSION 3.25)
 
+
 # ------------------------------------------------------------
-# 🕒 Generate project version from current date
+# 📦 Vcpkg Manifest Feature Configuration
 # ------------------------------------------------------------
-# The project version is automatically generated from the
-# current system date using the format YYYY.MM.DD.
-# This allows automatic daily versioning for reproducible builds.
-string(TIMESTAMP PROGRAM_VERSION "%Y.%m.%d")
+set(VCPKG_MANIFEST_FEATURES "")
+
+if(BUILD_APP)
+    list(APPEND VCPKG_MANIFEST_FEATURES "app")
+
+    if(ENABLE_GUI)
+        list(APPEND VCPKG_MANIFEST_FEATURES "gui")
+    endif()
+endif()
+
 
 # ------------------------------------------------------------
 # Create the vcpkg cache directory if it was injected by the preset
@@ -30,6 +37,23 @@ if(DEFINED ENV{VCPKG_DEFAULT_BINARY_CACHE})
     file(MAKE_DIRECTORY "$ENV{VCPKG_DEFAULT_BINARY_CACHE}")
 endif()
 
+
+# ------------------------------------------------------------
+# 🕒 Windows-Compatible Version Generation (MSI Compliant)
+# ------------------------------------------------------------
+string(TIMESTAMP CURRENT_YEAR "%Y")
+string(TIMESTAMP CURRENT_MONTH "%m")
+string(TIMESTAMP CURRENT_DAY "%d")
+
+# Convert the year to a relative minor value under 256 (e.g., 2026 -> 26)
+math(EXPR MAJOR_VER "${CURRENT_YEAR} - 2000")
+# Add 0 to strip leading zeros and prevent CMake from interpreting values as octal
+math(EXPR MINOR_VER "${CURRENT_MONTH} + 0")
+math(EXPR PATCH_VER "${CURRENT_DAY} + 0")
+
+set(PROGRAM_VERSION "${MAJOR_VER}.${MINOR_VER}.${PATCH_VER}")
+
+
 # ------------------------------------------------------------
 # 🏷️ Define the project
 # ------------------------------------------------------------
@@ -37,51 +61,41 @@ endif()
 # and the project uses C++ as its main language.
 project(Weaver VERSION ${PROGRAM_VERSION} LANGUAGES CXX)
 
+# Include standard GNU installation directories module
+include(GNUInstallDirs)
+
+string(TOUPPER "${PROJECT_NAME}" PROJECT_NAME_UPPER)
+
+# Inject global preprocessor definitions for target binaries
+add_compile_definitions(
+    DIMENSIONS=2
+    ${PROJECT_NAME_UPPER}_PROGRAM_NAME="${PROJECT_NAME}"
+    ${PROJECT_NAME_UPPER}_PROGRAM_VERSION="${PROGRAM_VERSION}"
+    ${PROJECT_NAME_UPPER}_SCHEMA_VERSION="${SCHEMA_VERSION}"
+    ${PROJECT_NAME_UPPER}_SERIALIZATION_VERSION="${SERIALIZATION_VERSION}"
+)
+
+if(CMAKE_BUILD_TYPE STREQUAL "Debug")
+    add_compile_definitions(DEBUG)
+endif()
 
 # ------------------------------------------------------------
-# 📁 Define include directory
+# 📂 Subdirectory Targets & External Disclosures
 # ------------------------------------------------------------
-# INCLUDE_DIR_NAME is provided through CMake presets.
-# Here we build the absolute path to the include directory.
-# Example: ${CMAKE_SOURCE_DIR}/include
-set(INCLUDE_DIR "${CMAKE_SOURCE_DIR}/${INCLUDE_DIR_NAME}")
+if(BUILD_APP OR BUILD_TESTS)
+    set(CLI_EXE_NAME "${PROJECT_NAME}CLI")
+    set(GUI_EXE_NAME "${PROJECT_NAME}GUI")
 
+    add_subdirectory(src)
 
-# ------------------------------------------------------------
-# © Generate LICENSE file with current year
-# ------------------------------------------------------------
-# The LICENSE file is generated automatically from LICENSE.in,
-# replacing placeholders such as '@COPYRIGHT_YEAR@' with the
-# current year. This ensures the license always reflects the
-# current copyright year without manual edits.
-# ------------------------------------------------------------
-string(TIMESTAMP COPYRIGHT_YEAR "%Y" UTC)
-configure_file("${CMAKE_SOURCE_DIR}/LICENSE.in"
-               "${CMAKE_SOURCE_DIR}/LICENSE"
-               @ONLY)
+    # Generate third-party open-source attribution notices
+    include(cmake/third_party_notices.cmake)
+    generate_third_party_notices(
+        "${VCPKG_INSTALLED_DIR}" 
+        "${CMAKE_CURRENT_SOURCE_DIR}"
+    )
+endif()
 
-
-# ============================================================
-# ⚙️ Include build mode configuration
-# ============================================================
-# Depending on the PROJECT_BUILD_TYPE (set in presets), the
-# appropriate build configuration file is included.
-# ------------------------------------------------------------
-# - Executables → Includes CMakeExecutables.txt
-# - Docs        → Includes CMakeDocs.txt
-# ------------------------------------------------------------
-# Any unrecognized PROJECT_BUILD_TYPE results in a fatal error.
-# ============================================================
-
-if(PROJECT_BUILD_TYPE STREQUAL "Executables")
-    # Include the configuration file responsible for building executables
-    include(${CMAKE_SOURCE_DIR}/CMakeExecutables.txt)
-
-elseif(PROJECT_BUILD_TYPE STREQUAL "Docs")
-    # Include the configuration file responsible for building documentation
-    include(${CMAKE_SOURCE_DIR}/CMakeDocs.txt)
-
-else()
-    # Unknown project type: stop configuration with an error message
-    message(FATAL_ERROR "Unknown PROJECT_BUILD_TYPE: ${PROJECT_BUILD_TYPE}")
+if(BUILD_DOCS)
+    add_subdirectory(docs)
 endif()

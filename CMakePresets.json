@@ -33,7 +33,7 @@
             "inherits": [ "common" ],
             "description": "Defines settings for building project executables.",
             "cacheVariables": {
-                "PROJECT_BUILD_TYPE": "Executables",
+                "BUILD_APP": "ON",
                 "SCHEMA_VERSION": "2026.08.05",
                 "SERIALIZATION_VERSION": "2026.08.05",
                 "SRC_DIR_NAME": "src",
@@ -78,8 +78,6 @@
             },
             "generator": "Unix Makefiles",
             "cacheVariables": {
-                "CMAKE_TOOLCHAIN_FILE": "${sourceDir}/external/vcpkg/scripts/buildsystems/vcpkg.cmake",
-                "VCPKG_INSTALLED_DIR": "${sourceDir}/vcpkg_installed",
                 "VCPKG_TARGET_TRIPLET": "x64-linux",
                 "VCPKG_HOST_TRIPLET": "x64-linux",
                 "CMAKE_MAKE_PROGRAM": "make",
@@ -92,17 +90,15 @@
             "inherits": [ "executables" ],
             "description": "Enables GUI mode in the project.",
             "cacheVariables": {
-                "GUI": "ON"
+                "ENABLE_GUI": "ON"
             }
         },
         {
-            "name": "non-gui",
+            "name": "cli",
             "hidden": true,
             "inherits": [ "executables" ],
             "description": "Disables GUI mode in the project.",
-            "cacheVariables": {
-                "GUI": "OFF"
-            }
+            "cacheVariables": {}
         },
         {
             "name": "debug",
@@ -110,7 +106,9 @@
             "inherits": [ "executables" ],
             "description": "Preset for Debug builds (includes debug symbols).",
             "cacheVariables": {
-                "CMAKE_BUILD_TYPE": "Debug"
+                "CMAKE_BUILD_TYPE": "Debug",
+                "BUILD_SHARED_LIBS": "ON",
+                "CMAKE_POSITION_INDEPENDENT_CODE": "ON"
             }
         },
         {
@@ -125,12 +123,12 @@
             }
         },
         {
-            "name": "trace",
+            "name": "relWithDebInfo",
             "hidden": true,
-            "inherits": [ "release" ],
+            "inherits": [ "executables" ],
             "description": "No description",
             "cacheVariables": {
-                "ENABLE_TRACE": "ON"
+                "CMAKE_BUILD_TYPE": "RelWithDebInfo"
             }
         },
         {
@@ -144,24 +142,24 @@
             "description": "Windows GUI Release configuration."
         },
         {
-            "name": "windows-gui-trace",
-            "inherits": [ "windows", "gui", "trace" ],
-            "description": "Windows GUI Trace configuration."
+            "name": "windows-gui-relWithDebInfo",
+            "inherits": [ "windows", "gui", "relWithDebInfo" ],
+            "description": "Windows GUI RelWithDebInfo configuration."
         },
         {
-            "name": "windows-non-gui-debug",
-            "inherits": [ "windows", "non-gui", "debug" ],
-            "description": "Windows Non-GUI Debug configuration."
+            "name": "windows-cli-debug",
+            "inherits": [ "windows", "cli", "debug" ],
+            "description": "Windows CLI Debug configuration."
         },
         {
-            "name": "windows-non-gui-release",
-            "inherits": [ "windows", "non-gui", "release" ],
-            "description": "Windows Non-GUI Release configuration."
+            "name": "windows-cli-release",
+            "inherits": [ "windows", "cli", "release" ],
+            "description": "Windows CLI Release configuration."
         },
         {
-            "name": "windows-non-gui-trace",
-            "inherits": [ "windows", "non-gui", "trace" ],
-            "description": "Windows Non-GUI Trace configuration."
+            "name": "windows-cli-relWithDebInfo",
+            "inherits": [ "windows", "cli", "relWithDebInfo" ],
+            "description": "Windows CLI RelWithDebInfo configuration."
         },
         {
             "name": "linux-gui-debug",
@@ -174,24 +172,24 @@
             "description": "Linux GUI Release configuration."
         },
         {
-            "name": "linux-gui-trace",
-            "inherits": [ "linux", "gui", "trace" ],
-            "description": "Linux GUI Trace configuration."
+            "name": "linux-gui-relWithDebInfo",
+            "inherits": [ "linux", "gui", "relWithDebInfo" ],
+            "description": "Linux GUI RelWithDebInfo configuration."
         },
         {
-            "name": "linux-non-gui-debug",
-            "inherits": [ "linux", "non-gui", "debug" ],
-            "description": "Linux Non-GUI Debug configuration."
+            "name": "linux-cli-debug",
+            "inherits": [ "linux", "cli", "debug" ],
+            "description": "Linux CLI Debug configuration."
         },
         {
-            "name": "linux-non-gui-release",
-            "inherits": [ "linux", "non-gui", "release" ],
-            "description": "Linux Non-GUI Release configuration."
+            "name": "linux-cli-release",
+            "inherits": [ "linux", "cli", "release" ],
+            "description": "Linux CLI Release configuration."
         },
         {
-            "name": "linux-non-gui-trace",
-            "inherits": [ "linux", "non-gui", "trace" ],
-            "description": "Linux Non-GUI Trace configuration."
+            "name": "linux-cli-relWithDebInfo",
+            "inherits": [ "linux", "cli", "relWithDebInfo" ],
+            "description": "Linux CLI RelWithDebInfo configuration."
         },
         {
             "name": "docs",
@@ -199,7 +197,7 @@
             "inherits": [ "common" ],
             "description": "Base preset for building project documentation with Sphinx and Doxygen.",
             "cacheVariables": {
-                "PROJECT_BUILD_TYPE": "Docs",
+                "BUILD_DOCS": "ON",
                 "SPHINX_VERSION": "8.1.3",
                 "DOXYGEN_VERSION": "1.9.8",
                 "DOCS_DIR_NAME": "docs",
@@ -257,27 +255,27 @@
             "configuration": "Release"
         },
         {
-            "name": "windows-gui-trace",
-            "configurePreset": "windows-gui-trace",
-            "description": "Build the Windows GUI Trace configuration.",
+            "name": "windows-gui-relWithDebInfo",
+            "configurePreset": "windows-gui-relWithDebInfo",
+            "description": "Build the Windows GUI RelWithDebInfo configuration.",
             "configuration": "Release"
         },
         {
-            "name": "windows-non-gui-debug",
-            "configurePreset": "windows-non-gui-debug",
-            "description": "Build the Windows Non-GUI Debug configuration.",
+            "name": "windows-cli-debug",
+            "configurePreset": "windows-cli-debug",
+            "description": "Build the Windows CLI Debug configuration.",
             "configuration": "Debug"
         },
         {
-            "name": "windows-non-gui-release",
-            "configurePreset": "windows-non-gui-release",
-            "description": "Build the Windows Non-GUI Release configuration.",
+            "name": "windows-cli-release",
+            "configurePreset": "windows-cli-release",
+            "description": "Build the Windows CLI Release configuration.",
             "configuration": "Release"
         },
         {
-            "name": "windows-non-gui-trace",
-            "configurePreset": "windows-non-gui-trace",
-            "description": "Build the Windows Non-GUI Trace configuration.",
+            "name": "windows-cli-relWithDebInfo",
+            "configurePreset": "windows-cli-relWithDebInfo",
+            "description": "Build the Windows CLI RelWithDebInfo configuration.",
             "configuration": "Release"
         },
         {
@@ -293,27 +291,27 @@
             "configuration": "Release"
         },
         {
-            "name": "linux-gui-trace",
-            "configurePreset": "linux-gui-trace",
-            "description": "Build the Linux GUI Trace configuration.",
+            "name": "linux-gui-relWithDebInfo",
+            "configurePreset": "linux-gui-relWithDebInfo",
+            "description": "Build the Linux GUI RelWithDebInfo configuration.",
             "configuration": "Release"
         },
         {
-            "name": "linux-non-gui-debug",
-            "configurePreset": "linux-non-gui-debug",
-            "description": "Build the Linux Non-GUI Debug configuration.",
+            "name": "linux-cli-debug",
+            "configurePreset": "linux-cli-debug",
+            "description": "Build the Linux CLI Debug configuration.",
             "configuration": "Debug"
         },
         {
-            "name": "linux-non-gui-release",
-            "configurePreset": "linux-non-gui-release",
-            "description": "Build the Linux Non-GUI Release configuration.",
+            "name": "linux-cli-release",
+            "configurePreset": "linux-cli-release",
+            "description": "Build the Linux CLI Release configuration.",
             "configuration": "Release"
         },
         {
-            "name": "linux-non-gui-trace",
-            "configurePreset": "linux-non-gui-trace",
-            "description": "Build the Linux Non-GUI Trace configuration.",
+            "name": "linux-cli-relWithDebInfo",
+            "configurePreset": "linux-cli-relWithDebInfo",
+            "description": "Build the Linux CLI RelWithDebInfo configuration.",
             "configuration": "Release"
         },
         {
@@ -343,44 +341,44 @@
     ],
     "workflowPresets": [
         {
-            "name": "windows-non-gui-debug",
-            "description": "Workflow to configure and build the Windows Non-GUI Debug target.",
+            "name": "windows-cli-debug",
+            "description": "Workflow to configure and build the Windows CLI Debug target.",
             "steps": [
                 {
                     "type": "configure",
-                    "name": "windows-non-gui-debug"
+                    "name": "windows-cli-debug"
                 },
                 {
                     "type": "build",
-                    "name": "windows-non-gui-debug"
+                    "name": "windows-cli-debug"
                 }
             ]
         },
         {
-            "name": "windows-non-gui-release",
-            "description": "Workflow to configure and build the Windows Non-GUI Release target.",
+            "name": "windows-cli-release",
+            "description": "Workflow to configure and build the Windows CLI Release target.",
             "steps": [
                 {
                     "type": "configure",
-                    "name": "windows-non-gui-release"
+                    "name": "windows-cli-release"
                 },
                 {
                     "type": "build",
-                    "name": "windows-non-gui-release"
+                    "name": "windows-cli-release"
                 }
             ]
         },
         {
-            "name": "windows-non-gui-trace",
-            "description": "Workflow to configure and build the Windows Non-GUI Trace target.",
+            "name": "windows-cli-relWithDebInfo",
+            "description": "Workflow to configure and build the Windows CLI RelWithDebInfo target.",
             "steps": [
                 {
                     "type": "configure",
-                    "name": "windows-non-gui-trace"
+                    "name": "windows-cli-relWithDebInfo"
                 },
                 {
                     "type": "build",
-                    "name": "windows-non-gui-trace"
+                    "name": "windows-cli-relWithDebInfo"
                 }
             ]
         },
@@ -413,58 +411,58 @@
             ]
         },
         {
-            "name": "windows-gui-trace",
-            "description": "Workflow to configure and build the Windows GUI Trace target.",
+            "name": "windows-gui-relWithDebInfo",
+            "description": "Workflow to configure and build the Windows GUI RelWithDebInfo target.",
             "steps": [
                 {
                     "type": "configure",
-                    "name": "windows-gui-trace"
+                    "name": "windows-gui-relWithDebInfo"
                 },
                 {
                     "type": "build",
-                    "name": "windows-gui-trace"
+                    "name": "windows-gui-relWithDebInfo"
                 }
             ]
         },
         {
-            "name": "linux-non-gui-debug",
-            "description": "Workflow to configure and build the Linux Non-GUI Debug target.",
+            "name": "linux-cli-debug",
+            "description": "Workflow to configure and build the Linux CLI Debug target.",
             "steps": [
                 {
                     "type": "configure",
-                    "name": "linux-non-gui-debug"
+                    "name": "linux-cli-debug"
                 },
                 {
                     "type": "build",
-                    "name": "linux-non-gui-debug"
+                    "name": "linux-cli-debug"
                 }
             ]
         },
         {
-            "name": "linux-non-gui-release",
-            "description": "Workflow to configure and build the Linux Non-GUI Release target.",
+            "name": "linux-cli-release",
+            "description": "Workflow to configure and build the Linux CLI Release target.",
             "steps": [
                 {
                     "type": "configure",
-                    "name": "linux-non-gui-release"
+                    "name": "linux-cli-release"
                 },
                 {
                     "type": "build",
-                    "name": "linux-non-gui-release"
+                    "name": "linux-cli-release"
                 }
             ]
         },
         {
-            "name": "linux-non-gui-trace",
-            "description": "Workflow to configure and build the Linux Non-GUI Trace target.",
+            "name": "linux-cli-relWithDebInfo",
+            "description": "Workflow to configure and build the Linux CLI RelWithDebInfo target.",
             "steps": [
                 {
                     "type": "configure",
-                    "name": "linux-non-gui-trace"
+                    "name": "linux-cli-relWithDebInfo"
                 },
                 {
                     "type": "build",
-                    "name": "linux-non-gui-trace"
+                    "name": "linux-cli-relWithDebInfo"
                 }
             ]
         },
@@ -497,16 +495,16 @@
             ]
         },
         {
-            "name": "linux-gui-trace",
-            "description": "Workflow to configure and build the Linux GUI Trace target.",
+            "name": "linux-gui-relWithDebInfo",
+            "description": "Workflow to configure and build the Linux GUI RelWithDebInfo target.",
             "steps": [
                 {
                     "type": "configure",
-                    "name": "linux-gui-trace"
+                    "name": "linux-gui-relWithDebInfo"
                 },
                 {
                     "type": "build",
-                    "name": "linux-gui-trace"
+                    "name": "linux-gui-relWithDebInfo"
                 }
             ]
         },
