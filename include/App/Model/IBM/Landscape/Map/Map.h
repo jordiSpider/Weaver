@@ -39,7 +39,7 @@
 #include "App/Model/IBM/Landscape/LivingBeings/Animals/Species/AnimalSpeciesID.h"
 #include "App/View/View.h"
 #include "App/Model/IBM/Landscape/LivingBeings/Animals/Species/HuntingMode.h"
-#include "App/Model/IBM/Maths/PreciseDouble.h"
+#include "Misc/Maths/PreciseDouble.h"
 
 
 class Landscape;

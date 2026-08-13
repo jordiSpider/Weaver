@@ -10,7 +10,7 @@
 #define PARABOLA_H_
 
 
-#include "App/Model/IBM/Maths/PreciseDouble.h"
+#include "Misc/Maths/PreciseDouble.h"
 
 
 /**

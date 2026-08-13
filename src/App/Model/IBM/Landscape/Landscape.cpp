@@ -805,7 +805,7 @@ void Landscape::printAnimalsAlongCells(const TimeStep numberOfTimeSteps, const i
 			
 			std::ofstream file;
 
-			createOutputFile(file, resultFolder / fs::path(pathBySimulationPoint), "animals_day_", "txt", numberOfTimeSteps, recordEach);
+			createOutputFile(file, resultFolder / fs::path(pathBySimulationPoint), "animals_day_", "txt", numberOfTimeSteps.getValue(), recordEach);
 			if (!file.is_open())
 			{
 				throwLineInfoException("Error opening the file");
@@ -886,7 +886,7 @@ void Landscape::printCellAlongCells(const TimeStep numberOfTimeSteps) const
 
 			std::ofstream file;
 
-			createOutputFile(file, resultFolder / fs::path("cells_each_day"), "cells_day_", "txt", numberOfTimeSteps, recordEach);
+			createOutputFile(file, resultFolder / fs::path("cells_each_day"), "cells_day_", "txt", numberOfTimeSteps.getValue(), recordEach);
 			if (!file.is_open())
 			{
 				throwLineInfoException("Error opening the file");
@@ -955,7 +955,7 @@ void Landscape::saveAnimalSpeciesSnapshot(fs::path filenameRoot, string filename
 		std::replace(scientificName.begin(), scientificName.end(), ' ', '_');
 
 		std::ofstream file;
-		string fullPath = createOutputFile(file, filenameRoot, filename + "_" + scientificName + "_day_", "dat", numberOfTimeSteps, recordEach, ios::out | ios::binary);
+		string fullPath = createOutputFile(file, filenameRoot, filename + "_" + scientificName + "_day_", "dat", numberOfTimeSteps.getValue(), recordEach, ios::out | ios::binary);
 
 		view->updateLog({"Saving Animal as ", fullPath, "... "});
 
@@ -1000,7 +1000,7 @@ void Landscape::saveResourceSpeciesSnapshot(fs::path filenameRoot, string filena
 	std::replace(scientificName.begin(), scientificName.end(), ' ', '_');
 
 	std::ofstream file;
-	string fullPath = createOutputFile(file, filenameRoot, filename + "_" + scientificName + "_day_", "dat", numberOfTimeSteps, recordEach, ios::out | ios::binary);
+	string fullPath = createOutputFile(file, filenameRoot, filename + "_" + scientificName + "_day_", "dat", numberOfTimeSteps.getValue(), recordEach, ios::out | ios::binary);
 
 	view->updateLog({"Saving Resource as ", fullPath, "... "});
 
@@ -1015,7 +1015,7 @@ void Landscape::saveResourceSpeciesSnapshot(fs::path filenameRoot, string filena
 void Landscape::saveWaterSnapshot(fs::path filenameRoot, string filename, const TimeStep numberOfTimeSteps)
 {
 	std::ofstream file;
-	string fullPath = createOutputFile(file, filenameRoot, filename + "_day_", "dat", numberOfTimeSteps, recordEach, ios::out | ios::binary);
+	string fullPath = createOutputFile(file, filenameRoot, filename + "_day_", "dat", numberOfTimeSteps.getValue(), recordEach, ios::out | ios::binary);
 
 	view->updateLog({"Saving Water volume as ", fullPath, "... "});
 
@@ -1714,7 +1714,7 @@ void Landscape::executingActions(const TimeStep& numberOfTimeSteps)
 	{
 		std::ofstream predationProbabilitiesFile;
 		
-		createOutputFile(predationProbabilitiesFile, resultFolder / fs::path("animals_each_day_predationProbabilities"), "animals_predationProbabilities_day_", "txt", numberOfTimeSteps, recordEach);
+		createOutputFile(predationProbabilitiesFile, resultFolder / fs::path("animals_each_day_predationProbabilities"), "animals_predationProbabilities_day_", "txt", numberOfTimeSteps.getValue(), recordEach);
 		if(!predationProbabilitiesFile.is_open())
 		{
 			throwLineInfoException("Error opening the file");
@@ -1734,7 +1734,7 @@ void Landscape::executingActions(const TimeStep& numberOfTimeSteps)
 	{
 		std::ofstream activityFile;
 
-		createOutputFile(activityFile, resultFolder / fs::path("animals_each_day_activity"), "animals_activity_day_", "txt", numberOfTimeSteps, recordEach);
+		createOutputFile(activityFile, resultFolder / fs::path("animals_each_day_activity"), "animals_activity_day_", "txt", numberOfTimeSteps.getValue(), recordEach);
 		if (!activityFile.is_open())
 		{
 			throwLineInfoException("Error opening the file");
@@ -1798,7 +1798,7 @@ void Landscape::printAnimalsVoracities(const TimeStep& numberOfTimeSteps)
 
 
 		std::ofstream voracitiesFile;
-		createOutputFile(voracitiesFile, resultFolder / fs::path("animals_each_day_voracities"), "animals_voracities_day_", "txt", numberOfTimeSteps, recordEach);
+		createOutputFile(voracitiesFile, resultFolder / fs::path("animals_each_day_voracities"), "animals_voracities_day_", "txt", numberOfTimeSteps.getValue(), recordEach);
 		if (!voracitiesFile.is_open())
 		{
 			throwLineInfoException("Error opening the file");

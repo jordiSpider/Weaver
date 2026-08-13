@@ -20,7 +20,7 @@
 #include "App/Model/IBM/Landscape/LivingBeings/Species/Growth/Instar.h"
 #include "Misc/CustomIndexedVector.h"
 
-#include "App/Model/IBM/Maths/PreciseDouble.h"
+#include "Misc/Maths/PreciseDouble.h"
 
 #ifdef DEBUG
 #include "Exceptions/LineInfoException.h"

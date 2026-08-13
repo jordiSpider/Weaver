@@ -25,7 +25,7 @@
 #include "App/Model/IBM/Landscape/Map/SpatialTree/Points/PointSpatialTree.h"
 #include "App/Model/IBM/Landscape/Map/SpatialTree/TerrainCells/PatchApplicator/Resources/BranchCellResource.h"
 #include "App/Model/IBM/Landscape/Map/Points/Axis.h"
-#include "App/Model/IBM/Maths/OptimisedOperators.h"
+#include "Misc/Maths/OptimisedOperators.h"
 #include "Exceptions/LineInfoException.h"
 #include "App/Model/IBM/Landscape/LivingBeings/Animals/Species/LifeStage.h"
 #include "App/Model/IBM/Landscape/LivingBeings/Animals/Species/AnimalSpeciesID.h"

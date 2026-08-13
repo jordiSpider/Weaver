@@ -21,7 +21,7 @@
 #include <ctime> 
 
 
-#include "App/View/RunMode.h"
+#include "App/Model/RunMode.h"
 #include "Misc/EnumClass.h"
 #include "Misc/CustomIndexedVector.h"
 #include "Misc/PathUtils.h"

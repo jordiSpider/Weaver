@@ -24,10 +24,10 @@ string createOutputFile(std::ofstream &file, fs::path filenameRoot, string filen
     return file_path.string();
 }
 
-string createOutputFile(std::ofstream &file, fs::path filenameRoot, string filename, string extension, const TimeStep numberOfTimeSteps, unsigned int recordEach, ios_base::openmode openMode) {
+string createOutputFile(std::ofstream &file, fs::path filenameRoot, string filename, string extension, unsigned int numberOfTimeSteps, unsigned int recordEach, ios_base::openmode openMode) {
 	string ss;
-	if((static_cast<unsigned int>(round(numberOfTimeSteps.getValue())) % recordEach == 0) || static_cast<unsigned int>(round(numberOfTimeSteps.getValue())) == 0) {
-		ss = string(MAX_NUM_DIGITS_DAY - to_string(numberOfTimeSteps.getValue()).length(), '0') + to_string(numberOfTimeSteps.getValue());
+	if((numberOfTimeSteps % recordEach == 0) || numberOfTimeSteps == 0) {
+		ss = string(MAX_NUM_DIGITS_DAY - to_string(numberOfTimeSteps).length(), '0') + to_string(numberOfTimeSteps);
 	}else{
 		ss = "dummy_file";	
 	}

@@ -1,4 +1,4 @@
-#include "App/Model/IBM/Maths/OptimisedOperators.h"
+#include "Misc/Maths/OptimisedOperators.h"
 
 size_t displacementPower(const size_t displacement, const size_t exponent)
 {

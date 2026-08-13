@@ -70,7 +70,7 @@
 #include "App/Model/IBM/Landscape/LivingBeings/TimeUnits.h"
 #include "App/Model/IBM/Landscape/LivingBeings/EdibleID.h"
 #include "App/Model/IBM/Maths/Dynamics/NonMassBased/NonDynamics.h"
-#include "App/Model/IBM/Maths/PreciseDouble.h"
+#include "Misc/Maths/PreciseDouble.h"
 #include "Misc/ProgressBar.h"
 #include "App/Model/IBM/Landscape/Map/Patches/Shape/CubicPatch.h"
 

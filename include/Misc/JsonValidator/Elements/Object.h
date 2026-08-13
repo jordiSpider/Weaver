@@ -16,7 +16,6 @@
 #include <nlohmann/json.hpp>
 
 #include "Misc/JsonValidator/Elements/Element.h"
-#include "Misc/JsonValidator/Elements/ElementFactory.h"
 #include "Misc/JsonValidator/Operators.h"
 
 

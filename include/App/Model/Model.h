@@ -19,9 +19,10 @@
 #include <filesystem>
 
 #include "Misc/CustomIndexedVector.h"
-#include "App/View/View.h"
-#include "App/View/RunMode.h"
+#include "App/Model/RunMode.h"
 #include "Exceptions/LineInfoException.h"
+
+class View;
 
 
 /**

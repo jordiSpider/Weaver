@@ -89,6 +89,11 @@
             "hidden": true,
             "inherits": [ "executables" ],
             "description": "Enables GUI mode in the project.",
+            "condition": {
+                "type": "equals",
+                "lhs": "$env{WSL_DISTRO_NAME}",
+                "rhs": ""
+            },
             "cacheVariables": {
                 "ENABLE_GUI": "ON"
             }
@@ -109,6 +114,15 @@
                 "CMAKE_BUILD_TYPE": "Debug",
                 "BUILD_SHARED_LIBS": "ON",
                 "CMAKE_POSITION_INDEPENDENT_CODE": "ON"
+            }
+        },
+        {
+            "name": "debug-asan",
+            "hidden": true,
+            "inherits": [ "debug" ],
+            "description": "Preset for Debug builds with AddressSanitizer enabled (for memory error detection).",
+            "cacheVariables": {
+                "ENABLE_ASAN": "ON"
             }
         },
         {
@@ -167,6 +181,11 @@
             "description": "Linux GUI Debug configuration."
         },
         {
+            "name": "linux-gui-debug-asan",
+            "inherits": [ "linux", "gui", "debug-asan" ],
+            "description": "Linux GUI Debug configuration with AddressSanitizer enabled."
+        },
+        {
             "name": "linux-gui-release",
             "inherits": [ "linux", "gui", "release" ],
             "description": "Linux GUI Release configuration."
@@ -180,6 +199,11 @@
             "name": "linux-cli-debug",
             "inherits": [ "linux", "cli", "debug" ],
             "description": "Linux CLI Debug configuration."
+        },
+        {
+            "name": "linux-cli-debug-asan",
+            "inherits": [ "linux", "cli", "debug-asan" ],
+            "description": "Linux CLI Debug configuration with AddressSanitizer enabled."
         },
         {
             "name": "linux-cli-release",
@@ -243,97 +267,134 @@
     ],
     "buildPresets": [
         {
+            "name": "common",
+            "hidden": true,
+            "description": "Base build preset defining common settings shared by all builds.",
+            "configuration": "Release",
+            "jobs": 8
+        },
+        {
             "name": "windows-gui-debug",
+            "inherits": [ "common" ],
             "configurePreset": "windows-gui-debug",
             "description": "Build the Windows GUI Debug configuration.",
             "configuration": "Debug"
         },
         {
             "name": "windows-gui-release",
+            "inherits": [ "common" ],
             "configurePreset": "windows-gui-release",
             "description": "Build the Windows GUI Release configuration.",
             "configuration": "Release"
         },
         {
             "name": "windows-gui-relWithDebInfo",
+            "inherits": [ "common" ],
             "configurePreset": "windows-gui-relWithDebInfo",
             "description": "Build the Windows GUI RelWithDebInfo configuration.",
             "configuration": "Release"
         },
         {
             "name": "windows-cli-debug",
+            "inherits": [ "common" ],
             "configurePreset": "windows-cli-debug",
             "description": "Build the Windows CLI Debug configuration.",
             "configuration": "Debug"
         },
         {
             "name": "windows-cli-release",
+            "inherits": [ "common" ],
             "configurePreset": "windows-cli-release",
             "description": "Build the Windows CLI Release configuration.",
             "configuration": "Release"
         },
         {
             "name": "windows-cli-relWithDebInfo",
+            "inherits": [ "common" ],
             "configurePreset": "windows-cli-relWithDebInfo",
             "description": "Build the Windows CLI RelWithDebInfo configuration.",
             "configuration": "Release"
         },
         {
             "name": "linux-gui-debug",
+            "inherits": [ "common" ],
             "configurePreset": "linux-gui-debug",
             "description": "Build the Linux GUI Debug configuration.",
             "configuration": "Debug"
         },
         {
+            "name": "linux-gui-debug-asan",
+            "inherits": [ "common" ],
+            "configurePreset": "linux-gui-debug-asan",
+            "description": "Build the Linux GUI Debug configuration with AddressSanitizer enabled.",
+            "configuration": "Debug"
+        },
+        {
             "name": "linux-gui-release",
+            "inherits": [ "common" ],
             "configurePreset": "linux-gui-release",
             "description": "Build the Linux GUI Release configuration.",
             "configuration": "Release"
         },
         {
             "name": "linux-gui-relWithDebInfo",
+            "inherits": [ "common" ],
             "configurePreset": "linux-gui-relWithDebInfo",
             "description": "Build the Linux GUI RelWithDebInfo configuration.",
             "configuration": "Release"
         },
         {
             "name": "linux-cli-debug",
+            "inherits": [ "common" ],
             "configurePreset": "linux-cli-debug",
             "description": "Build the Linux CLI Debug configuration.",
             "configuration": "Debug"
         },
         {
+            "name": "linux-cli-debug-asan",
+            "inherits": [ "common" ],
+            "configurePreset": "linux-cli-debug-asan",
+            "description": "Build the Linux CLI Debug configuration with AddressSanitizer enabled.",
+            "configuration": "Debug"
+        },
+        {
             "name": "linux-cli-release",
+            "inherits": [ "common" ],
             "configurePreset": "linux-cli-release",
             "description": "Build the Linux CLI Release configuration.",
             "configuration": "Release"
         },
         {
             "name": "linux-cli-relWithDebInfo",
+            "inherits": [ "common" ],
             "configurePreset": "linux-cli-relWithDebInfo",
             "description": "Build the Linux CLI RelWithDebInfo configuration.",
             "configuration": "Release"
         },
         {
             "name": "deploy-docs",
+            "inherits": [ "common" ],
             "configurePreset": "deploy-docs",
             "description": "Build and deploy project documentation.",
             "configuration": "Release"
         },
         {
             "name": "build-docs-dev",
+            "inherits": [ "common" ],
             "configurePreset": "build-docs-dev",
             "description": "Build documentation in development mode.",
             "configuration": "Release"
         },
         {
             "name": "update-docs",
+            "inherits": [ "common" ],
             "configurePreset": "update-docs",
             "description": "Update existing documentation deployment.",
             "configuration": "Release"
         },
         {
             "name": "build-docs-locale",
+            "inherits": [ "common" ],
             "configurePreset": "build-docs-locale",
             "description": "Build locale files for documentation translations.",
             "configuration": "Release"
@@ -439,6 +500,20 @@
             ]
         },
         {
+            "name": "linux-cli-debug-asan",
+            "description": "Workflow to configure and build the Linux CLI Debug target with AddressSanitizer enabled.",
+            "steps": [
+                {
+                    "type": "configure",
+                    "name": "linux-cli-debug-asan"
+                },
+                {
+                    "type": "build",
+                    "name": "linux-cli-debug-asan"
+                }
+            ]
+        },
+        {
             "name": "linux-cli-release",
             "description": "Workflow to configure and build the Linux CLI Release target.",
             "steps": [
@@ -477,6 +552,20 @@
                 {
                     "type": "build",
                     "name": "linux-gui-debug"
+                }
+            ]
+        },
+        {
+            "name": "linux-gui-debug-asan",
+            "description": "Workflow to configure and build the Linux GUI Debug target with AddressSanitizer enabled.",
+            "steps": [
+                {
+                    "type": "configure",
+                    "name": "linux-gui-debug-asan"
+                },
+                {
+                    "type": "build",
+                    "name": "linux-gui-debug-asan"
                 }
             ]
         },

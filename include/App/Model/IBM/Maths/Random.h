@@ -22,7 +22,7 @@
 #include <nlohmann/json.hpp>
 
 #include "Exceptions/LineInfoException.h"
-#include "App/Model/IBM/Maths/Constants.h"
+#include "Misc/Maths/Constants.h"
 #include "App/Model/IBM/Landscape/LivingBeings/TimeUnits.h"
 #include "Misc/Types.h"
 

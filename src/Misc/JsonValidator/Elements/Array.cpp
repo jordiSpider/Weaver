@@ -1,5 +1,7 @@
 #include "Misc/JsonValidator/Elements/Array.h"
 
+#include "Misc/JsonValidator/Elements/ElementFactory.h"
+
 
 using namespace std;
 using json = nlohmann::json;

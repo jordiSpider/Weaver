@@ -70,7 +70,7 @@ if(BUILD_APP OR BUILD_TESTS)
         # GCC / Clang Toolchains
         target_compile_options(weaver_options INTERFACE
             # DEBUG CONFIGURATION
-            $<$<CONFIG:Debug>:-Wall -Wextra -O0 -g -fno-omit-frame-pointer -fsanitize=address>
+            $<$<CONFIG:Debug>:-Wall -Wextra -O0 -g -fno-omit-frame-pointer>
             # RELEASE CONFIGURATION
             $<$<CONFIG:Release>:-Wall -Wextra -O3 -DNDEBUG>
             # RELWITHDEBINFO CONFIGURATION
@@ -79,12 +79,21 @@ if(BUILD_APP OR BUILD_TESTS)
 
         target_link_options(weaver_options INTERFACE
             # DEBUG CONFIGURATION
-            $<$<CONFIG:Debug>:-g -fsanitize=address>
+            $<$<CONFIG:Debug>:-g>
             # RELEASE CONFIGURATION
             $<$<CONFIG:Release>:>
             # RELWITHDEBINFO CONFIGURATION
             $<$<CONFIG:RelWithDebInfo>:-g>
         )
+
+        if(ENABLE_ASAN)
+            target_compile_options(weaver_options INTERFACE
+                $<$<CONFIG:Debug>:-fsanitize=address>
+            )
+            target_link_options(weaver_options INTERFACE
+                $<$<CONFIG:Debug>:-fsanitize=address>
+            )
+        endif()
     endif()
 
 
@@ -143,6 +152,7 @@ if(BUILD_APP OR BUILD_TESTS)
             ${CMAKE_CURRENT_SOURCE_DIR}/App/Model/IBM/Landscape/LivingBeings/Animals/Species/Genetics/AnimalSpeciesGenetics.cpp
             ${CMAKE_CURRENT_SOURCE_DIR}/App/Model/IBM/Landscape/LivingBeings/Animals/Species/Genetics/Locus.cpp
             ${CMAKE_CURRENT_SOURCE_DIR}/App/Model/IBM/Landscape/LivingBeings/Animals/Species/Growth/AnimalSpeciesGrowth.cpp
+            ${CMAKE_CURRENT_SOURCE_DIR}/App/Model/IBM/Landscape/LivingBeings/Animals/Species/OntogeneticLink.cpp
             ${CMAKE_CURRENT_SOURCE_DIR}/App/Model/IBM/Landscape/LivingBeings/Growth/EdibleGrowth.cpp
             ${CMAKE_CURRENT_SOURCE_DIR}/App/Model/IBM/Landscape/LivingBeings/Resources/Species/ResourceSpecies.cpp
             ${CMAKE_CURRENT_SOURCE_DIR}/App/Model/IBM/Landscape/LivingBeings/Resources/Species/Growth/ResourceSpeciesGrowth.cpp
@@ -200,7 +210,6 @@ if(BUILD_APP OR BUILD_TESTS)
             ${CMAKE_CURRENT_SOURCE_DIR}/App/Model/IBM/Maths/Conversions.cpp
             ${CMAKE_CURRENT_SOURCE_DIR}/App/Model/IBM/Maths/GaussianDistribution.cpp
             ${CMAKE_CURRENT_SOURCE_DIR}/App/Model/IBM/Maths/MathFunctions.cpp
-            ${CMAKE_CURRENT_SOURCE_DIR}/App/Model/IBM/Maths/OptimisedOperators.cpp
             ${CMAKE_CURRENT_SOURCE_DIR}/App/Model/IBM/Maths/Parabola.cpp
             ${CMAKE_CURRENT_SOURCE_DIR}/App/Model/IBM/Maths/Random.cpp
             ${CMAKE_CURRENT_SOURCE_DIR}/App/Model/IBM/Maths/Dynamics/Dynamics.cpp
@@ -217,10 +226,10 @@ if(BUILD_APP OR BUILD_TESTS)
             ${CMAKE_CURRENT_SOURCE_DIR}/App/View/Console.cpp
             ${CMAKE_CURRENT_SOURCE_DIR}/App/View/View.cpp
             ${CMAKE_CURRENT_SOURCE_DIR}/Exceptions/LineInfoException.cpp
-            ${CMAKE_CURRENT_SOURCE_DIR}/Misc/OntogeneticLink.cpp
             ${CMAKE_CURRENT_SOURCE_DIR}/Misc/PathUtils.cpp
             ${CMAKE_CURRENT_SOURCE_DIR}/Misc/ProgressBar.cpp
             ${CMAKE_CURRENT_SOURCE_DIR}/Misc/Utilities.cpp
+            ${CMAKE_CURRENT_SOURCE_DIR}/Misc/Maths/OptimisedOperators.cpp
             ${CMAKE_CURRENT_SOURCE_DIR}/Misc/JsonValidator/Exceptions.cpp
             ${CMAKE_CURRENT_SOURCE_DIR}/Misc/JsonValidator/Operators.cpp
             ${CMAKE_CURRENT_SOURCE_DIR}/Misc/JsonValidator/Validator.cpp
@@ -236,10 +245,17 @@ if(BUILD_APP OR BUILD_TESTS)
             ${CMAKE_CURRENT_SOURCE_DIR}/Misc/string/trim.cpp
     )
 
+    if(UNIX AND NOT APPLE)
+        target_link_libraries(weaver_app PRIVATE
+            -Wl,--whole-archive weaver_traits -Wl,--no-whole-archive
+        )
+    else()
+        target_link_libraries(weaver_app PRIVATE weaver_traits)
+    endif()
+
     target_link_libraries(weaver_app
         PUBLIC
             weaver_options
-            weaver_traits
             magic_enum::magic_enum
             cxxopts::cxxopts
             nlohmann_json::nlohmann_json
@@ -250,6 +266,22 @@ if(BUILD_APP OR BUILD_TESTS)
     target_include_directories(weaver_app 
         PRIVATE 
             ${RAPIDCSV_INCLUDE_DIRS}
+    )
+
+    # Precompiled header: bundles the heaviest/most widely-included third-party and
+    # foundational headers to cut redundant parsing across the ~340 translation units.
+    target_precompile_headers(weaver_app
+        PRIVATE
+            <boost/archive/text_iarchive.hpp>
+            <boost/archive/text_oarchive.hpp>
+            <boost/archive/binary_iarchive.hpp>
+            <boost/archive/binary_oarchive.hpp>
+            <nlohmann/json.hpp>
+            <magic_enum/magic_enum.hpp>
+            "${CMAKE_SOURCE_DIR}/include/Exceptions/LineInfoException.h"
+            "${CMAKE_SOURCE_DIR}/include/Misc/EnumClass.h"
+            "${CMAKE_SOURCE_DIR}/include/Misc/CustomIndexedVector.h"
+            "${CMAKE_SOURCE_DIR}/include/Misc/Maths/PreciseDouble.h"
     )
 
     set(nlohmann-json_IMPLICIT_CONVERSIONS OFF)

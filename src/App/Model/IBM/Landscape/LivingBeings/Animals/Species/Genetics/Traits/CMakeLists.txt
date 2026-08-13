@@ -1,5 +1,5 @@
 
-add_library(weaver_traits OBJECT)
+add_library(weaver_traits)
 
 target_sources(weaver_traits
     PRIVATE

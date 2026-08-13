@@ -21,7 +21,7 @@
 
 #include "App/Model/IBM/Maths/Dynamics/MassBasedDynamics.h"
 #include "App/Model/IBM/Maths/Parabola.h"
-#include "App/Model/IBM/Maths/Constants.h"
+#include "Misc/Maths/Constants.h"
 #include "App/Model/IBM/Maths/MathFunctions.h"
 
 

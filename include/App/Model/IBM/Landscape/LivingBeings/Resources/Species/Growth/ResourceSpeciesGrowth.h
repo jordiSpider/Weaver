@@ -20,7 +20,7 @@
 #include "App/Model/IBM/Maths/Parabola.h"
 #include "App/Model/IBM/Physics/Temperature.h"
 #include "App/Model/IBM/Maths/MathFunctions.h"
-#include "App/Model/IBM/Maths/Constants.h"
+#include "Misc/Maths/Constants.h"
 
 
 /**

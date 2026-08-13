@@ -26,7 +26,7 @@
 
 #include "App/Model/IBM/Landscape/LivingBeings/Species/Species.h"
 #include "App/Model/IBM/Landscape/LivingBeings/Resources/Species/ResourceSpecies.h"
-#include "Misc/OntogeneticLink.h"
+#include "App/Model/IBM/Landscape/LivingBeings/Animals/Species/OntogeneticLink.h"
 #include "Exceptions/LineInfoException.h"
 #include "App/Model/IBM/Maths/Random.h"
 #include "App/Model/IBM/Maths/MathFunctions.h"

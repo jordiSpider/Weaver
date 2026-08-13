@@ -15,9 +15,9 @@
 #include <vector>
 #include <iostream>
 
-#include "App/Model/IBM/Maths/Constants.h"
+#include "Misc/Maths/Constants.h"
 #include "Misc/Types.h"
-#include "App/Model/IBM/Maths/PreciseDouble.h"
+#include "Misc/Maths/PreciseDouble.h"
 
 /**
  * @class Gaussian1D
