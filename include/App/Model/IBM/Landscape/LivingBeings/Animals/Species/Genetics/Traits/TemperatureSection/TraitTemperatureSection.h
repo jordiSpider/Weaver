@@ -16,7 +16,7 @@
 
 #include "App/Model/IBM/Landscape/LivingBeings/Animals/Genetics/Genome.h"
 #include "App/Model/IBM/Landscape/LivingBeings/Animals/Species/Genetics/Traits/DefinitionSection/IndividualLevelTrait.h"
-#include "App/Model/IBM/Landscape/LivingBeings/Animals/Genetics/Traits/TemperatureSectionVariant.h"
+#include "App/Model/IBM/Landscape/LivingBeings/Animals/Genetics/Traits/IndividualTraitTemperatureSectionVariant.h"
 
 
 /**
@@ -61,7 +61,7 @@ public:
      * @param rhoRangePerModule Vector of rho ranges per module.
      * @return Variant holding the individual's temperature-dependent trait section.
      */
-    virtual TemperatureSectionVariant generateIndividualTraitTemperatureSection(const PreciseDouble& geneticValue, const Genome& genome, const size_t traitsPerModule, const size_t numberOfLociPerTrait, const std::vector<PreciseDouble>& rhoPerModule, const std::vector<size_t>& rhoRangePerModule) const=0;
+    virtual IndividualTraitTemperatureSectionVariant generateIndividualTraitTemperatureSection(const PreciseDouble& geneticValue, const Genome& genome, const size_t traitsPerModule, const size_t numberOfLociPerTrait, const std::vector<PreciseDouble>& rhoPerModule, const std::vector<size_t>& rhoRangePerModule) const=0;
 
     /**
      * @brief Deserializes individual-level traits.

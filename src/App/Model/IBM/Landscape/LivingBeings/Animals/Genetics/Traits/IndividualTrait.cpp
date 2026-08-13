@@ -28,17 +28,12 @@ IndividualTrait::IndividualTrait(Trait* trait, const Genome& genome, const size_
         temperatureSection = trait->getTemperatureSection()->generateIndividualTraitTemperatureSection(constitutiveValue, genome, traitsPerModule, numberOfLociPerTrait, rhoPerModule, rhoRangePerModule);
     
         phenotypicValue = std::visit([&](auto&& section) -> PreciseDouble {
-            using T = std::decay_t<decltype(section)>;
-            if constexpr (std::is_same_v<T, std::monostate>) {
-                throwLineInfoException("Temperature section is not available for this trait.");
-            } else {
-                return section.applyTemperatureDependency(
-                    temperature, constitutiveValue, 
-                    coefficientForMassAforMature, 
-                    scaleForMassBforMature, 
-                    tempFromLab
-                );
-            }
+            return section.applyTemperatureDependency(
+                temperature, constitutiveValue, 
+                coefficientForMassAforMature, 
+                scaleForMassBforMature, 
+                tempFromLab
+            );
         }, temperatureSection);
     }
     else
@@ -104,12 +99,7 @@ string IndividualTrait::to_string() const
     if(trait->isThermallyDependent())
     {
         content << "\t" << std::visit([&](auto&& section) -> string {
-            using T = std::decay_t<decltype(section)>;
-            if constexpr (std::is_same_v<T, std::monostate>) {
-                throwLineInfoException("Temperature section is not available for this trait.");
-            } else {
-                return section.to_string();
-            }
+            return section.to_string();
         }, temperatureSection);
     }
     else
@@ -142,17 +132,12 @@ void IndividualTrait::tune(const Temperature& temperature, const TimeStep actual
     if(trait->isThermallyDependent())
     {
         PreciseDouble newValue = std::visit([&](auto&& section) -> PreciseDouble {
-            using T = std::decay_t<decltype(section)>;
-            if constexpr (std::is_same_v<T, std::monostate>) {
-                throwLineInfoException("Temperature section is not available for this trait.");
-            } else {
-                return section.applyTemperatureDependency(
-                    temperature, constitutiveValue, 
-                    coefficientForMassAforMature, 
-                    scaleForMassBforMature,
-                    tempFromLab
-                );
-            }
+            return section.applyTemperatureDependency(
+                temperature, constitutiveValue, 
+                coefficientForMassAforMature, 
+                scaleForMassBforMature,
+                tempFromLab
+            );
         }, temperatureSection);
 
         setPhenotypicValue(newValue, actualTimeStep);
@@ -171,12 +156,9 @@ void IndividualTrait::setTrait(Trait* newTrait)
     {
         std::visit([&](auto&& section) {
             using T = std::decay_t<decltype(section)>;
-            if constexpr (std::is_same_v<T, std::monostate>) {
-                throwLineInfoException("Temperature section is not available for this trait.");
-            } else if constexpr (std::is_same_v<T, TempSizeRuleIndividualTraitTemperatureSection>) {
+            if constexpr (std::is_same_v<T, TempSizeRuleIndividualTraitTemperatureSection>) {
                 section.setTraitTemperatureSection(static_cast<const TempSizeRuleTraitTemperatureSection*>(trait->getTemperatureSection()));
             }
-            // PawarIndividualTraitTemperatureSection snapshots its data at construction time and does not need repointing.
         }, temperatureSection);
     }
 }

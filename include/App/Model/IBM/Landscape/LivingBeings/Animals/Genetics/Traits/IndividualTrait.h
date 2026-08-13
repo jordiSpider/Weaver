@@ -21,7 +21,7 @@
 
 #include "App/Model/IBM/Landscape/LivingBeings/Animals/Species/Genetics/Traits/Trait.h"
 
-#include "App/Model/IBM/Landscape/LivingBeings/Animals/Genetics/Traits/TemperatureSectionVariant.h"
+#include "App/Model/IBM/Landscape/LivingBeings/Animals/Genetics/Traits/IndividualTraitTemperatureSectionVariant.h"
 
 
 /**
@@ -135,7 +135,7 @@ protected:
     Trait* trait; /**< Pointer to the trait definition. */
     PreciseDouble constitutiveValue; /**< Genetic value of the trait. */
     PreciseDouble phenotypicValue; /**< Expressed (phenotypic) value of the trait. */
-    TemperatureSectionVariant temperatureSection; /**< Temperature-dependent tuning section. */
+    IndividualTraitTemperatureSectionVariant temperatureSection; /**< Temperature-dependent tuning section. */
 
     #ifdef DEBUG
         TimeStep phenotypicValueLastTimeStep; /**< Last timestep when phenotypic value was updated (debug). */

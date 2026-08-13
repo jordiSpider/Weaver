@@ -126,6 +126,7 @@ if(BUILD_APP OR BUILD_TESTS)
             ${CMAKE_CURRENT_SOURCE_DIR}/App/Model/IBM/Landscape/LivingBeings/Animals/Genetics/Genetics.cpp
             ${CMAKE_CURRENT_SOURCE_DIR}/App/Model/IBM/Landscape/LivingBeings/Animals/Genetics/Genome.cpp
             ${CMAKE_CURRENT_SOURCE_DIR}/App/Model/IBM/Landscape/LivingBeings/Animals/Genetics/Traits/IndividualTrait.cpp
+            ${CMAKE_CURRENT_SOURCE_DIR}/App/Model/IBM/Landscape/LivingBeings/Animals/Genetics/Traits/IndividualTraitTemperatureSectionNone.cpp
             ${CMAKE_CURRENT_SOURCE_DIR}/App/Model/IBM/Landscape/LivingBeings/Animals/Genetics/Traits/PawarIndividualTraitTemperatureSection.cpp
             ${CMAKE_CURRENT_SOURCE_DIR}/App/Model/IBM/Landscape/LivingBeings/Animals/Genetics/Traits/TempSizeRuleIndividualTraitTemperatureSection.cpp
             ${CMAKE_CURRENT_SOURCE_DIR}/App/Model/IBM/Landscape/LivingBeings/Animals/Growth/AnimalGrowth.cpp
