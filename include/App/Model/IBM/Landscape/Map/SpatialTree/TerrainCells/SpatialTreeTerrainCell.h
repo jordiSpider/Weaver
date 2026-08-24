@@ -63,9 +63,6 @@ protected:
     AnimalNonStatistical* createAnimal(Landscape* const landscape, const Instar &instar, AnimalSpecies* animalSpecies, const Genome* const genome, const bool saveGenetics, const bool saveMassInfo, const TimeStep actualTimeStep, const PreciseDouble& timeStepsPerDay);
 
 public:
-    /// Number of children per spatial tree cell (static constant).
-    static const unsigned int numberOfChildren;
-
     /// Default constructor.
     SpatialTreeTerrainCell();
 
@@ -169,7 +166,7 @@ public:
      * @param animalWhoIsEvaluating Pointer to the animal performing evaluation.
      */
     virtual void getRadiusTerrainCells(
-        std::vector<CellValue>& bestEvaluations, const PointContinuous &sourcePosition, const PreciseDouble &radius, const RingModel* const radiusArea, const size_t searchDepth, const bool searchNeighborsWithFemales, const bool parentFullCoverage, AnimalNonStatistical* animalWhoIsEvaluating
+        std::vector<CellValue>& bestEvaluations, const PointContinuous &sourcePosition, const PreciseDouble &radius, const RingModel& radiusArea, const size_t searchDepth, const bool searchNeighborsWithFemales, const bool parentFullCoverage, AnimalNonStatistical* animalWhoIsEvaluating
     )=0;
 
     /**
@@ -184,7 +181,7 @@ public:
      * @param animalWhoIsEvaluating Pointer to the animal performing evaluation.
      */
     virtual void getNeighboursCellsOnRadius(
-        std::vector<CellValue>& bestEvaluations, const PointContinuous &sourcePosition, const PreciseDouble &radius, const RingModel* const radiusArea, const size_t searchDepth, const bool searchNeighborsWithFemales, AnimalNonStatistical* animalWhoIsEvaluating
+        std::vector<CellValue>& bestEvaluations, const PointContinuous &sourcePosition, const PreciseDouble &radius, const RingModel& radiusArea, const size_t searchDepth, const bool searchNeighborsWithFemales, AnimalNonStatistical* animalWhoIsEvaluating
     );
 
     /// Overloaded neighbor search using default radiusArea.
@@ -328,7 +325,7 @@ public:
      *                          and the functions to apply.
      */
     void applyFunctionToEdibles(
-        std::function<bool(Animal&)> checker, const PointContinuous &sourcePosition, const PreciseDouble &radius, const RingModel* const radiusArea, 
+        std::function<bool(Animal&)> checker, const PointContinuous &sourcePosition, const PreciseDouble &radius, const RingModel& radiusArea, 
         const std::vector<std::pair<const AnimalSearchParams&, AnimalFunctions>>& animalFunctions,
         const std::vector<std::pair<const ResourceSearchParams&, ResourceFunctions>>& resourceFunctions
     ) override;
@@ -349,7 +346,7 @@ public:
      *                          and the functions to apply.
      */
     virtual void applyFunctionToEdiblesInRadius(
-        const PointContinuous &sourcePosition, const PreciseDouble &radius, const RingModel* const radiusArea, 
+        const PointContinuous &sourcePosition, const PreciseDouble &radius, const RingModel& radiusArea, 
         const std::vector<std::pair<const AnimalSearchParams&, AnimalFunctions>>& animalFunctions,
         const std::vector<std::pair<const ResourceSearchParams&, ResourceFunctions>>& resourceFunctions
     );

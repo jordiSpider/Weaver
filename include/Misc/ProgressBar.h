@@ -44,15 +44,12 @@ public:
     ProgressBar& operator=(const ProgressBar&) = delete;
 
     /**
-     * @brief Advances the progress bar by one iteration.
-     *
-     * Increments the internal counter and updates the visual display if a
-     * new threshold is reached. When the maximum is reached, the bar completes
-     * and prints a newline.
-     *
+     * @brief Advances the progress bar.
+     * @param increment Number of iterations completed. Default is 1.
+     * Allows batching for extreme multithreaded performance.
      * @throws LineInfoException (in DEBUG mode) if progress exceeds maxCounter.
      */
-    void update();
+    void update(size_t increment = 1);
 
 	bool finished() const { return counter >= maxCounter; }
 

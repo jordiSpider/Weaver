@@ -80,7 +80,7 @@ public:
 	/// Constructs a Species with a given ID and scientific name.
     /// @param speciesId The unique species identifier.
     /// @param scientificName The scientific name of the species.
-	Species(const Species::ID& speciesId, const std::string& scientificName);
+	Species(const Species::ID& speciesId, const std::string& scientificName, std::vector<std::string>& stringPool);
 
 	/// Virtual destructor for proper cleanup of derived classes.
 	virtual ~Species();
@@ -92,6 +92,8 @@ public:
 	/// Returns the scientific name of the species.
     /// @return Scientific name string.
 	const std::string& getScientificName() const;
+
+	uint32_t getScientificNameId() const { return scientificNameId; }
 
 	/// Returns the scientific name with replacements (e.g., for display or formatting).
     /// @return Formatted scientific name string.
@@ -136,6 +138,7 @@ public:
 private:
 	ID id;                     	///< Unique identifier of the species.
     std::string scientificName; ///< Scientific name of the species.
+	uint32_t scientificNameId;  
     bool extinguished;         	///< True if the species is extinct.
 };
 

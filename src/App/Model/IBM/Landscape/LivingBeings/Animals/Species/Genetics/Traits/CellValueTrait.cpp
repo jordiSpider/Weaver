@@ -26,7 +26,7 @@ vector<Trait*> CellValueTrait::generateTraits(std::vector<IndividualLevelTrait*>
 	for(const CellValueTraitType type : EnumClass<CellValueTraitType>::getEnumValues())
 	{
 		cellValueTraits.push_back(new CellValueTrait(
-			individualLevelTraits, type, definitionConfig[CellValueTrait::getJsonFieldName()].at(EnumClass<CellValueTraitType>::to_string(type)), 
+			individualLevelTraits, type, definitionConfig[CellValueTrait::getJsonFieldName()][EnumClass<CellValueTraitType>::to_string(type)], 
 			individualLevelTraitsOrder
 		));
 	}

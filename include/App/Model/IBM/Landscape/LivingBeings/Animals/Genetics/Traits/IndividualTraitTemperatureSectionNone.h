@@ -53,11 +53,7 @@ public:
         const PreciseDouble &coefficientForMassAforMature, const PreciseDouble &scaleForMassBforMature, const Temperature& tempFromLab
     ) const;
 
-    /**
-     * @brief Convert the temperature section to a string representation.
-     * @return String representation of the Pawar temperature section.
-     */
-    std::string to_string() const;
+    void formatToBuffer(std::string& buffer) const;
 
     /**
       * @brief Serializes the object for persistence.

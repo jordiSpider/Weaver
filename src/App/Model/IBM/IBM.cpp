@@ -5,6 +5,11 @@
 
 #include <oneapi/tbb/global_control.h>
 
+#ifdef PROFILER
+	#include <gperftools/profiler.h>
+#endif
+
+
 
 using namespace std;
 using json = nlohmann::json;
@@ -47,12 +52,8 @@ pair<bool,fs::path> IBM::existsCheckpoint(const fs::path& checkpointFolderPath, 
 
 void IBM::run(const RunMode runMode, const fs::path& inputConfigPath, const fs::path& outputFolderPath)
 {
-    #ifdef USE_CPU_PROFILER
-		ProfilerStart("./profiler/cpuProfiler.txt");
-	#endif
-	
-	#ifdef USE_HEAP_PROFILER
-		HeapProfilerStart("./profiler/heapProfiler");
+	#ifdef PROFILER
+	ProfilerStart("profile.prof"); 
 	#endif
 
 
@@ -125,12 +126,8 @@ void IBM::run(const RunMode runMode, const fs::path& inputConfigPath, const fs::
 
 	view.updateLog("DONE\n");
 
-	#ifdef USE_CPU_PROFILER
-		ProfilerStop();
-	#endif
-
-	#ifdef USE_HEAP_PROFILER
-		HeapProfilerStop();
+	#ifdef PROFILER
+	ProfilerStop();
 	#endif
 
 	view.updateLog("Result folder: " + myLandscape->getResultFolder().string() + "\n", true);

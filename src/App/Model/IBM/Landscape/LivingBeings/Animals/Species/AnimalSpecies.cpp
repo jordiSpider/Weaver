@@ -18,8 +18,8 @@ AnimalSpecies::AnimalSpecies()
 
 }
 
-AnimalSpecies::AnimalSpecies(const AnimalSpecies::ID& speciesId, const AnimalSpeciesID& animalSpeciesId, const json &info, const PreciseDouble& timeStepsPerDay, const PreciseDouble& pdfThreshold, const size_t numberOfExistingSpecies) 
-	: Species(speciesId, info["name"].get<string>()), 
+AnimalSpecies::AnimalSpecies(const AnimalSpecies::ID& speciesId, const AnimalSpeciesID& animalSpeciesId, const json &info, const PreciseDouble& timeStepsPerDay, const PreciseDouble& pdfThreshold, const size_t numberOfExistingSpecies, std::vector<std::string>& stringPool) 
+	: Species(speciesId, info["name"].get<string>(), stringPool), 
 	  genetics(info["genetics"]),
 	  animalSpeciesGrowth(
 		info["growthModule"], static_cast<unsigned int>(info["individualsPerInstar"].size()), 
@@ -125,19 +125,14 @@ bool AnimalSpecies::getPreserveLeftovers() const
 	return preserveLeftovers; 
 }
 
-const AnimalSpeciesID& AnimalSpecies::getAnimalSpeciesId() const 
-{ 
-	return animalSpeciesId; 
-}
-
 const CustomIndexedVector<Species::ID, CustomIndexedVector<Instar, OntogeneticLink>>& AnimalSpecies::getOntogeneticLinksPerInstar(const Instar &predatorInstar) const
 {
-	return edibleOntogeneticLink.at(predatorInstar);
+	return edibleOntogeneticLink[predatorInstar];
 }
 
 const OntogeneticLink& AnimalSpecies::getEdibleOntogeneticLink(const Species::ID &preySpeciesId, const Instar &predatorInstar, const Instar &preyInstar) const
 {
-	return edibleOntogeneticLink.at(predatorInstar).at(preySpeciesId).at(preyInstar);
+	return edibleOntogeneticLink[predatorInstar][preySpeciesId][preyInstar];
 }
 
 void AnimalSpecies::setOntogeneticLinks(View* view, const vector<Species*>& existingSpecies, rapidcsv::Document& ontogeneticLinksPreference, rapidcsv::Document& ontogeneticLinksProfitability)
@@ -270,7 +265,7 @@ bool AnimalSpecies::canEatEdible(const Species::ID &preySpeciesId, const Instar 
 
 void AnimalSpecies::addPredationEventOnOtherSpecies(Species::ID predatedSpeciesId) 
 { 
-	predationEventsOnOtherSpecies.at(predatedSpeciesId)++; 
+	predationEventsOnOtherSpecies[predatedSpeciesId]++; 
 }
 
 void AnimalSpecies::addAnimalSpecies()

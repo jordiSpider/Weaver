@@ -2,6 +2,8 @@
 
 #include "App/Model/IBM/Landscape/LivingBeings/Animals/Genetics/Traits/PawarIndividualTraitTemperatureSection.h"
 
+#include <fmt/format.h>
+#include <iterator>
 
 using namespace std;
 using json = nlohmann::json;
@@ -10,21 +12,18 @@ namespace fs = std::filesystem;
 
 
 
-string PawarTraitTemperatureSection::getHeader(const string& trait)
+void PawarTraitTemperatureSection::getHeader(const string& trait, std::string& header)
 {
-	ostringstream header;
-
-	header << "constitutive_" << trait << "_" << EnumClass<PawarElement>::to_string(EnumClass<PawarElement>::getEnumValues().at(0));
-
-	for(size_t i = 1; i < EnumClass<PawarElement>::size(); i++)
+	for(const PawarElement i : EnumClass<PawarElement>::getEnumValues())
 	{
-		header << "\t" << "constitutive_" << trait << "_" << EnumClass<PawarElement>::to_string(EnumClass<PawarElement>::getEnumValues().at(i));
+		fmt::format_to(std::back_inserter(header), "\tconstitutive_{}_{}", 
+			trait, EnumClass<PawarElement>::to_string(i)
+		);
 	}
 
-	header << "\t" << "constitutive_" << trait << "_Tmin";
-    header << "\t" << "constitutive_" << trait << "_Tmax";
-
-	return header.str();
+	fmt::format_to(std::back_inserter(header), "\tconstitutive_{}_Tmin\tconstitutive_{}_Tmax", 
+		trait, trait
+	);
 }
 
 

@@ -31,7 +31,7 @@ RunMode Console::selectRunMode() const
     
     for(const RunMode runMode : EnumClass<RunMode>::getEnumValues())
     {
-        cout << "\t" << static_cast<int>(runMode) << ") " << getRunModesTitles().at(runMode) << endl;
+        cout << "\t" << static_cast<int>(runMode) << ") " << getRunModesTitles()[runMode] << endl;
     }
 
     cout << endl;
@@ -125,7 +125,7 @@ bool Console::requestShowOutput() const
     return silentModeValue == "Y" || silentModeValue == "y";
 }
 
-void Console::run(const string& runMode, const string& inputConfig, const string& outputFolder, const bool silent)
+void Console::run(const string& runMode, const string& inputConfig, const string& outputFolder, const bool silent, const bool verbose)
 {
     RunMode selectedRunMode;
 
@@ -174,9 +174,17 @@ void Console::run(const string& runMode, const string& inputConfig, const string
     }
     
 
-    if(silent)
+    if(silent || verbose)
     {
-        silentMode = silent;
+        if(silent)
+        {
+            silentMode = silent;
+        }
+        
+        if(verbose)
+        {
+            silentMode = !verbose;
+        }
     }
     else
     {

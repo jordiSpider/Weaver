@@ -112,13 +112,13 @@ void Decisions::setInitialPreferences(const PreciseDouble& timeStepsPerDay)
 
 	for(size_t speciesId = 0; speciesId < ontogeneticLinks->size(); speciesId++)
 	{
-		experienceBuffer.getValue(speciesId).resize(ontogeneticLinks->getValue(speciesId).size());
-		preferences.getValue(speciesId).resize(ontogeneticLinks->getValue(speciesId).size());
+		experienceBuffer[speciesId].resize((*ontogeneticLinks)[speciesId].size());
+		preferences[speciesId].resize((*ontogeneticLinks)[speciesId].size());
 
-		for(size_t preyInstar = 0; preyInstar < ontogeneticLinks->getValue(speciesId).size(); preyInstar++)
+		for(size_t preyInstar = 0; preyInstar < (*ontogeneticLinks)[speciesId].size(); preyInstar++)
 		{
-			experienceBuffer.getValue(speciesId).getValue(preyInstar) = RingBuffer<PreciseDouble>(memoryDepth.getValue(), 0.0);
-			preferences.getValue(speciesId).getValue(preyInstar) = ontogeneticLinks->getValue(speciesId).getValue(preyInstar).getPreference();
+			experienceBuffer[speciesId][preyInstar] = RingBuffer<PreciseDouble>(memoryDepth.getValue(), 0.0);
+			preferences[speciesId][preyInstar] = (*ontogeneticLinks)[speciesId][preyInstar].getPreference();
 		}
 	}
 }
@@ -131,15 +131,15 @@ void Decisions::updatePreferences()
 
 	for(size_t speciesId = 0; speciesId < preferences.size(); speciesId++)
 	{
-		for(size_t preyInstar = 0; preyInstar < preferences.getValue(speciesId).size(); preyInstar++)
+		for(size_t preyInstar = 0; preyInstar < preferences[speciesId].size(); preyInstar++)
 		{
 			if(
-				(previousInstarLinks->getValue(speciesId).getValue(preyInstar).getPreference() == 0.0 || currentInstarLinks->getValue(speciesId).getValue(preyInstar).getPreference() == 0.0) &&
-				(previousInstarLinks->getValue(speciesId).getValue(preyInstar).getPreference() != currentInstarLinks->getValue(speciesId).getValue(preyInstar).getPreference())
+				((*previousInstarLinks)[speciesId][preyInstar].getPreference() == 0.0 || (*currentInstarLinks)[speciesId][preyInstar].getPreference() == 0.0) &&
+				((*previousInstarLinks)[speciesId][preyInstar].getPreference() != (*currentInstarLinks)[speciesId][preyInstar].getPreference())
 			)
 			{
-				experienceBuffer.getValue(speciesId).getValue(preyInstar).clear();
-				preferences.getValue(speciesId).getValue(preyInstar) = currentInstarLinks->getValue(speciesId).getValue(preyInstar).getPreference();
+				experienceBuffer[speciesId][preyInstar].clear();
+				preferences[speciesId][preyInstar] = (*currentInstarLinks)[speciesId][preyInstar].getPreference();
 			}
 		}
 	}
@@ -148,13 +148,13 @@ void Decisions::updatePreferences()
 
 const PreciseDouble& Decisions::getPreference(const Species::ID &preySpeciesId, const Instar &preyInstar) const
 {
-	return preferences.at(preySpeciesId).at(preyInstar);
+	return preferences[preySpeciesId][preyInstar];
 }
 
 
 PreciseDouble Decisions::getMeanExperience(const Species::ID &preySpeciesId, const Instar &preyInstar) const
 {
-	return experienceBuffer.at(preySpeciesId).at(preyInstar).calculateMean();
+	return experienceBuffer[preySpeciesId][preyInstar].calculateMean();
 }
 
 
@@ -221,7 +221,7 @@ void Decisions::updatePreferences(
 {
 	for(size_t speciesId = 0; speciesId < preferences.size(); speciesId++)
 	{
-		for(size_t preyInstar = 0; preyInstar < preferences.getValue(speciesId).size(); preyInstar++)
+		for(size_t preyInstar = 0; preyInstar < preferences[speciesId].size(); preyInstar++)
 		{
 			PreciseDouble experience;
 
@@ -229,11 +229,11 @@ void Decisions::updatePreferences(
 			{
 				if(animalSpeciesDecisions->getQualityResourceAssessment())
 				{
-					experience = foodMassAssimilatedCurrentTimeStepPerSpecies.getValue(speciesId).getValue(preyInstar).getValue() / foodMassAssimilatedCurrentTimeStep.getValue();
+					experience = foodMassAssimilatedCurrentTimeStepPerSpecies[speciesId][preyInstar].getValue() / foodMassAssimilatedCurrentTimeStep.getValue();
 				}
 				else
 				{
-					experience = foodMassEatenCurrentTimeStepPerSpecies.getValue(speciesId).getValue(preyInstar).getValue() / foodMassEatenCurrentTimeStep.getValue();
+					experience = foodMassEatenCurrentTimeStepPerSpecies[speciesId][preyInstar].getValue() / foodMassEatenCurrentTimeStep.getValue();
 				}
 			}
 			else
@@ -241,13 +241,13 @@ void Decisions::updatePreferences(
 				experience = 0.0;
 			}
 
-			experienceBuffer.getValue(speciesId).getValue(preyInstar).push(experience);
+			experienceBuffer[speciesId][preyInstar].push(experience);
 
 			const CustomIndexedVector<Species::ID, CustomIndexedVector<Instar, OntogeneticLink>>* const ontogeneticLinks = &owner->getSpecies()->getOntogeneticLinksPerInstar(owner->getGrowthBuildingBlock().getInstar());
 
 			const PreciseDouble experienceInfluenceWithEdibles = owner->getGenetics().getPreferencesIndividualTraits(PreferencesTraitType::experienceInfluenceWithEdibles).getPhenotypicValue();
 
-			preferences.getValue(speciesId).getValue(preyInstar) = experienceBuffer.getValue(speciesId).getValue(preyInstar).calculateMean() * experienceInfluenceWithEdibles + ontogeneticLinks->getValue(speciesId).getValue(preyInstar).getPreference() * (1.0 - experienceInfluenceWithEdibles);
+			preferences[speciesId][preyInstar] = experienceBuffer[speciesId][preyInstar].calculateMean() * experienceInfluenceWithEdibles + (*ontogeneticLinks)[speciesId][preyInstar].getPreference() * (1.0 - experienceInfluenceWithEdibles);
 		}
 	}
 }

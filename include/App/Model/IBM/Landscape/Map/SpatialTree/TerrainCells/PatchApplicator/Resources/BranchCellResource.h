@@ -89,7 +89,7 @@ public:
      * @param radiusArea Optional ring model defining the area.
      * @return Available dry mass.
      */
-    DryMass calculateDryMassAvailable(const bool fullCoverage, const PointContinuous* const sourcePosition, const PreciseDouble &radius, const RingModel* const radiusArea) const;
+    DryMass calculateDryMassAvailable(const bool fullCoverage, const PointContinuous* const sourcePosition, const PreciseDouble &radius, const RingModel& radiusArea) const;
 
     /**
      * @brief Subtract biomass from this resource within a given radius.
@@ -109,7 +109,7 @@ public:
      * @param radiusArea Optional ring model defining the area.
      * @param competitionAmongResourceSpecies Flag indicating if competition should be considered.
      */
-    void substractBiomass(const DryMass& dryMassToBeSubstracted, const bool fullCoverage, const PointContinuous &sourcePosition, const PreciseDouble &radius, const RingModel* const radiusArea, const bool competitionAmongResourceSpecies);
+    void substractBiomass(const DryMass& dryMassToBeSubstracted, const bool fullCoverage, const PointContinuous &sourcePosition, const PreciseDouble &radius, const RingModel& radiusArea, const bool competitionAmongResourceSpecies);
 
     /// Subtract biomass aggregated upwards in the tree.
     void substractBiomassUp(const DryMass& dryMassToBeSubstracted);

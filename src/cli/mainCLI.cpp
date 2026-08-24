@@ -26,13 +26,14 @@ int main(int argc, char ** argv)
 
 	string mode;
 	string inputConfig, outputFolder, checkpointPath;
-	bool silent = false, help = false;
+	bool silent = false, verbose = false, help = false;
 
 	options.add_options("Common")
 		("mode", "Description mode", cxxopts::value<string>(mode)->default_value("FromConfig"))
 		("I,input_config", "Description input config", cxxopts::value<string>(inputConfig)->default_value(""))
 		("O,output_folder", "Description output folder", cxxopts::value<string>(outputFolder)->default_value(""))
 		("silent", "Run the program in silent mode", cxxopts::value<bool>(silent)->implicit_value("true"))
+		("verbose", "Run the program in verbose mode", cxxopts::value<bool>(verbose)->implicit_value("true"))
 		("h,help", "Print usage", cxxopts::value<bool>(help)->implicit_value("true"));
 
 	auto result = options.parse(argc, argv);
@@ -42,6 +43,11 @@ int main(int argc, char ** argv)
 		cout << options.help() << endl;
 
 		return 0;
+	}
+
+	if(silent && verbose)
+	{
+		throwLineInfoException("Error: Both silent and verbose modes cannot be enabled simultaneously.");
 	}
 	
 	Console view;
@@ -53,7 +59,7 @@ int main(int argc, char ** argv)
 	unsigned char returnCode;
 
 	try {
-        view.run(mode, inputConfig, outputFolder, silent);
+        view.run(mode, inputConfig, outputFolder, silent, verbose);
 		returnCode = 0;
     } catch (const LineInfoException& e) {
         cerr << e.what() << endl;

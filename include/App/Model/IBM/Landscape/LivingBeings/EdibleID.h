@@ -15,6 +15,8 @@
 #include <boost/archive/binary_iarchive.hpp>
 #include <boost/archive/binary_oarchive.hpp>
 
+#include <fmt/format.h>
+
 #include "Misc/Types.h"
 
 
@@ -52,13 +54,19 @@ public:
      */
 	const id_type& getValue() const;
 
+     bool isSet() const { return set; }
+
 	/**
      * @brief Conversion operator to size_t.
      * Allows usage in hashed containers like std::unordered_map.
      */
 	operator size_t() const;
 
-	/**
+	friend std::string format_as(const EdibleID& id) {
+          return std::string(MAX_NUM_DIGITS_ID - std::to_string(id.value).length(), '0') + std::to_string(id.value);
+     }
+
+     /**
      * @brief Conversion operator to std::string.
      * Allows printing and serialization as string.
      */
@@ -71,6 +79,7 @@ public:
      * @return Reference to the output stream
      */
 	friend std::ostream& operator<<(std::ostream& os, const EdibleID& id);
+
 
 	/**
     * @brief Serializes the object for persistence.

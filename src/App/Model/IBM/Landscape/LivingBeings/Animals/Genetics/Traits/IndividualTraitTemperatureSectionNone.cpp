@@ -22,7 +22,7 @@ PreciseDouble IndividualTraitTemperatureSectionNone::applyTemperatureDependency(
 	throwLineInfoException("Temperature section is not available for this trait.");
 }
 
-string IndividualTraitTemperatureSectionNone::to_string() const
+void IndividualTraitTemperatureSectionNone::formatToBuffer(std::string& buffer) const
 {
     throwLineInfoException("Temperature section is not available for this trait.");
 }

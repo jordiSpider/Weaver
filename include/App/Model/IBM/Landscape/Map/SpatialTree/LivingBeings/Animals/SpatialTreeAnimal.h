@@ -35,8 +35,8 @@ protected:
     bool searchTargetToTravelTo(const PreciseDouble &scopeArea);
     
     void move(Landscape* const landscape, const TimeStep numberOfTimeSteps, const PreciseDouble& timeStepsPerDay, 
-        const bool saveMovements, std::ostringstream& movementsContent, const bool saveActivity, 
-        std::ostringstream& activityContent) override;
+        const bool saveMovements, std::vector<MovementDTO>& movements, const bool saveActivity, 
+        std::vector<ActivityDTO>& activities) override;
     
     /**
      * @brief Creates an offspring from two parent gametes.

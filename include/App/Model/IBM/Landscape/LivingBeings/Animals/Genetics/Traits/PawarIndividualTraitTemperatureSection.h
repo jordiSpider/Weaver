@@ -24,6 +24,18 @@
 #include "App/Model/IBM/Landscape/LivingBeings/Animals/Species/Genetics/Traits/TemperatureSection/PawarElement.h"
 #include "Misc/CustomIndexedVector.h"
 
+struct PawarTraitDTO {
+    double constitutiveActivationEnergy;
+    double constitutiveEnergyDecay;
+    double constitutiveTemperatureOptimal;
+    double constitutiveTemperatureRef;
+    double constitutiveTmin;
+    double constitutiveTmax;
+
+    void formatToBuffer(std::string& buffer) const;
+    void formatToBufferNA(std::string& buffer) const;
+};
+
 /**
  * @class PawarIndividualTraitTemperatureSection
  * @brief Temperature-dependent section of an individual trait using the Pawar model.
@@ -34,12 +46,6 @@
  */
 class PawarIndividualTraitTemperatureSection {
 public:
-    /**
-     * @brief Returns a string representing "Not Available" (NA).
-     * @return String "NA".
-     */
-    static std::string to_string_NA();
-
     /**
      * @brief Default constructor.
      */
@@ -76,11 +82,7 @@ public:
         const PreciseDouble &coefficientForMassAforMature, const PreciseDouble &scaleForMassBforMature, const Temperature& tempFromLab
     ) const;
 
-    /**
-     * @brief Convert the temperature section to a string representation.
-     * @return String representation of the Pawar temperature section.
-     */
-    std::string to_string() const;
+    void flatten(PawarTraitDTO& dto) const noexcept;
 
     /**
       * @brief Serializes the object for persistence.

@@ -50,11 +50,11 @@ Species::Species()
 
 }
 
-Species::Species(const Species::ID& speciesId, const string& scientificName)
-	: id(speciesId), scientificName(trim(scientificName)), extinguished(false) 
+Species::Species(const Species::ID& speciesId, const string& scientificName, std::vector<std::string>& stringPool)
+	: id(speciesId), scientificName(trim(scientificName)), scientificNameId(stringPool.size()), extinguished(false) 
 	  
 {
-	
+	stringPool.push_back(this->scientificName);
 }
 
 Species::~Species()
@@ -96,6 +96,7 @@ template <class Archive>
 void Species::serialize(Archive &ar, const unsigned int) {
 	ar & id;
 	ar & scientificName;
+	ar & scientificNameId;
 	ar & extinguished;
 }
 

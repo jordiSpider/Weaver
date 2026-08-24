@@ -155,8 +155,10 @@ public:
 
     /// Retrieve terrain cells within a radius for evaluation across children.
     void getRadiusTerrainCells(
-        std::vector<CellValue>& bestEvaluations, const PointContinuous &sourcePosition, const PreciseDouble &radius, const RingModel* const radiusArea, const size_t searchDepth, const bool searchNeighborsWithFemales, const bool parentFullCoverage, AnimalNonStatistical* animalWhoIsEvaluating
+        std::vector<CellValue>& bestEvaluations, const PointContinuous &sourcePosition, const PreciseDouble &radius, const RingModel& radiusArea, const size_t searchDepth, const bool searchNeighborsWithFemales, const bool parentFullCoverage, AnimalNonStatistical* animalWhoIsEvaluating
     );
+
+    void registerCells(std::vector<TerrainCell*>& terrainCells, unsigned int numberOfCellsPerAxis) override;
 
     /// Check if this node is a leaf (always false for branch).
     bool isLeaf() const;

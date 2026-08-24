@@ -40,24 +40,46 @@ public:
     static Instar convertToIndex(const unsigned int value);
 
     /// Default constructor, initializes to zero.
-    Instar();
+    constexpr Instar()
+    {
+        this->value = 0;
+    }
 
     /// Constructs an Instar with a specific value.
     /// @param value Numeric instar value.
-    explicit Instar(unsigned int value);
+    explicit constexpr Instar(unsigned int value)
+    {
+        #ifdef DEBUG
+            if(value == 0)
+            {
+                throwLineInfoException("Instar value must be greater than or equal to 1.");
+            }
+        #endif
+
+        this->value = value - 1;
+    }
 
     /// Copy constructor.
-    Instar(const Instar &other);
+    constexpr Instar(const Instar &other)
+    {
+        this->value = other.getValue();
+    }
 
     /// Copy assignment operator.
     Instar& operator=(const Instar& other);
 
     /// Destructor.
-    ~Instar();
+    constexpr ~Instar()
+    {
+
+    }
 
     /// Returns the numeric value of the instar.
     /// @return Instar value as unsigned int.
-    unsigned int getValue() const;
+    inline constexpr unsigned int getValue() const noexcept
+    { 
+        return value; 
+    }
 
     /// Moves to the previous instar stage, if possible.
     void moveOnPreviousInstar();
@@ -264,6 +286,10 @@ public:
 
     /// Stream insertion operator.
     friend std::ostream& operator<<(std::ostream& os, const Instar& instar);
+
+    friend std::string format_as(const Instar& instar) {
+        return instar.to_string();
+    }
 
     /// Converts the instar to a size_t for indexing or hashing.
     explicit operator size_t() const;

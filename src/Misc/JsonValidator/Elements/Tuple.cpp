@@ -10,25 +10,26 @@ using json = nlohmann::json;
 Tuple::Tuple(const json& info)
     : Element(info)
 {
-    try
-	{
-		if(!info.at("items").is_array()) {
-			throwValidatorSchemaJSONException("': Not an element of type 'array'");
-		}
-
-		for(const json& item : info["items"])
-        {
-            items.push_back(ElementFactory::createInstance(item));
-        }
-	}
-	catch(ValidatorSchemaJSONException& e)
-	{
-		e.addPreMessage(".items");
-		throw;
-	}
-	catch(const json::out_of_range&) 
-	{
+	if(!info.contains("minLength")) {
 		throwValidatorSchemaJSONException("': Property 'items' not defined");
+	}
+	else {
+		try
+		{
+			if(!info.at("items").is_array()) {
+				throwValidatorSchemaJSONException("': Not an element of type 'array'");
+			}
+
+			for(const json& item : info["items"])
+			{
+				items.push_back(ElementFactory::createInstance(item));
+			}
+		}
+		catch(ValidatorSchemaJSONException& e)
+		{
+			e.addPreMessage(".items");
+			throw;
+		}
 	}
 }
 

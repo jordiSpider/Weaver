@@ -83,9 +83,9 @@ bool SpatialTreeAnimal::searchTargetToTravelTo(const PreciseDouble &scopeArea)
 
     bool bestEdibleIsAnimal = false;
 
-    if(bestEvaluations.at(randomIndex).bestEdibility != nullptr)
+    if(bestEvaluations[randomIndex].bestEdibility != nullptr)
     {
-        if(bestEvaluations.at(randomIndex).bestEdibility->getSpecies()->isMobile())
+        if(bestEvaluations[randomIndex].bestEdibility->getSpecies()->isMobile())
         {
             bestEdibleIsAnimal = true;
         }
@@ -95,32 +95,31 @@ bool SpatialTreeAnimal::searchTargetToTravelTo(const PreciseDouble &scopeArea)
 
     if(bestEdibleIsAnimal)
     {
-        targetPoint = static_cast<const AnimalNonStatistical*>(bestEvaluations.at(randomIndex).bestEdibility)->getPosition();   
+        targetPoint = static_cast<const AnimalNonStatistical*>(bestEvaluations[randomIndex].bestEdibility)->getPosition();   
     }
     else
     {
-        if(bestEvaluations.at(randomIndex).fullCoverage)
+        if(bestEvaluations[randomIndex].fullCoverage)
         {
-            targetPoint = Geometry::generateRandomPointOnBox(bestEvaluations.at(randomIndex).cellEffectiveArea);
+            targetPoint = Geometry::generateRandomPointOnBox(*bestEvaluations[randomIndex].cellEffectiveArea);
         }
         else
         {
-            if(bestEvaluations.at(randomIndex).bestEdibility == nullptr) {
-                targetPoint = Geometry::generateRandomPointOnBox(bestEvaluations.at(randomIndex).cellEffectiveArea);
+            if(bestEvaluations[randomIndex].bestEdibility == nullptr) {
+                targetPoint = Geometry::generateRandomPointOnBox(*bestEvaluations[randomIndex].cellEffectiveArea);
             }
             else {
-                RingModel* sphere = Geometry::makeSphere(getPosition(), scopeArea);
-                RingModel* evaluationArea = Geometry::calculateIntersection(sphere, bestEvaluations.at(randomIndex).cellEffectiveArea);
-
-                targetPoint = Geometry::generateRandomPointOnPolygon(evaluationArea);
-
-                delete sphere;
-                delete evaluationArea;
+                targetPoint = Geometry::generateRandomPointOnPolygon(
+                    Geometry::calculateIntersection(
+                        Geometry::makeSphere(getPosition(), scopeArea), 
+                        *bestEvaluations[randomIndex].cellEffectiveArea
+                    )
+                );
             }
         }
     }
 
-    setTargetNeighborToTravelTo(make_pair(*bestEvaluations.at(randomIndex).cellPosition, targetPoint));
+    setTargetNeighborToTravelTo(make_pair(*bestEvaluations[randomIndex].cellPosition, targetPoint));
 
     setAtDestination(false);
 
@@ -145,16 +144,19 @@ bool SpatialTreeAnimal::searchTargetToTravelTo(const PreciseDouble &scopeArea)
 }
 
 void SpatialTreeAnimal::move(Landscape* const landscape, const TimeStep numberOfTimeSteps, const PreciseDouble& timeStepsPerDay, 
-        const bool saveMovements, std::ostringstream& movementsContent, const bool saveActivity, 
-        std::ostringstream& activityContent)
+        const bool saveMovements, std::vector<MovementDTO>& movements, const bool saveActivity, 
+        std::vector<ActivityDTO>& activities)
 {
     removeCurrentPrey();
 
+    MovementDTO movementDTO;
+
     if(saveMovements)
     {
-        movementsContent << numberOfTimeSteps << "\t" 
-            << to_string(getId()) << "\t"
-            << getPositionAxisValue(getPosition(), 0) << "\t" << getPositionAxisValue(getPosition(), 1) << "\t";
+        movementDTO.timeStep = numberOfTimeSteps.getValue();
+        movementDTO.id = getId();
+        movementDTO.startPointX = getPositionAxisValue(getPosition(), 0).getValue();
+        movementDTO.startPointY = getPositionAxisValue(getPosition(), 1).getValue();
     }
 
     Day initialDay = Day(numberOfTimeSteps, timeStepsPerDay) + Day((distanceTravelled / getSearchAreaRadius()) * timeStepsPerDay);
@@ -183,19 +185,26 @@ void SpatialTreeAnimal::move(Landscape* const landscape, const TimeStep numberOf
 
     if(saveMovements)
     {
-        movementsContent << getPositionAxisValue(getPosition(), 0) << "\t" << getPositionAxisValue(getPosition(), 1) << "\n";
+        movementDTO.endPointX = getPositionAxisValue(getPosition(), 0).getValue();
+        movementDTO.endPointY = getPositionAxisValue(getPosition(), 1).getValue();
+
+        movements.push_back(movementDTO);
     }
 
     Day finalDay = Day(numberOfTimeSteps, timeStepsPerDay) + Day((distanceTravelled / getSearchAreaRadius()) * timeStepsPerDay);
 
     if(saveActivity)
     {
-        activityContent << getId() << "\t"
-        << getSpecies()->getScientificName() << "\t"
-        << "Moving" << "\t"
-        << initialDay << "\t"
-        << finalDay << "\t"
-        << (finalDay-initialDay) << "\n";
+        ActivityDTO activityDTO;
+
+        activityDTO.id = getId().getValue();
+        activityDTO.speciesNameId = getSpecies()->getScientificNameId();
+        activityDTO.activityType = ActivityType::MOVING;
+        activityDTO.initialDay = initialDay.getValue().getValue();
+        activityDTO.finalDay = finalDay.getValue().getValue();
+        activityDTO.activityDuration = (finalDay-initialDay).getValue().getValue();
+
+        activities.push_back(activityDTO);
     }
 
 

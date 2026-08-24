@@ -24,6 +24,16 @@
 #include "App/Model/IBM/Landscape/LivingBeings/Animals/Genetics/Traits/IndividualTraitTemperatureSectionVariant.h"
 
 
+struct TraitDTO {
+    double constitutiveValue;
+    double phenotypicValue;
+    
+    bool isPawarTrait;
+    PawarTraitDTO pawarTraitDTO;
+
+    void formatToBuffer(std::string& buffer) const;
+};
+
 /**
  * @class IndividualTrait
  * @brief Represents an individual trait of an animal.
@@ -96,11 +106,7 @@ public:
      */
     void tune(const Temperature& temperature, const TimeStep actualTimeStep, const PreciseDouble &coefficientForMassAforMature, const PreciseDouble &scaleForMassBforMature, const Temperature& tempFromLab);
 
-    /**
-     * @brief Convert the trait to a string representation.
-     * @return String containing trait information.
-     */
-    std::string to_string() const;
+    void flatten(TraitDTO& dto) const noexcept;
 
     /**
      * @brief Get the trait type.

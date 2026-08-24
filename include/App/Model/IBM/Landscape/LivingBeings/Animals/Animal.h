@@ -105,7 +105,10 @@ public:
      * @brief Get the animal's current life stage.
      * @return Const reference to LifeStage.
      */
-    const LifeStage& getLifeStage() const;
+    inline constexpr LifeStage getLifeStage() const noexcept
+    { 
+        return lifeStage; 
+    }
 
     /**
      * @brief Set a new species for the animal (overrides Edible).
@@ -157,7 +160,7 @@ public:
      *
      * Pure virtual: must be implemented in derived classes.
      */
-    virtual const Instar& getInstarToEvaluateCells() const=0;
+    virtual constexpr Instar getInstarToEvaluateCells() const noexcept=0;
 
     /**
      * @brief Apply an allometric model to the animal's traits.
@@ -217,7 +220,15 @@ public:
      * @brief Get the animal's gender.
      * @return Gender of the animal.
      */
-    Gender getGender() const;
+    inline constexpr Gender getGender() const noexcept
+    { 
+        return gender; 
+    }
+
+    inline constexpr AnimalSpeciesID getAnimalSpeciesId() const noexcept 
+    { 
+        return animalSpeciesId; 
+    }
 
     /**
      * @brief Set a new life stage for the animal (abstract version).
@@ -273,6 +284,8 @@ protected:
     LifeStage lifeStage;     /**< Current life stage */
     Gender gender;           /**< Animal gender */
     PointContinuous position;/**< Continuous position in the landscape */
+
+    AnimalSpeciesID animalSpeciesId;
 
     /**
      * @brief Check the minimum value for growth and enforce constraints if needed.

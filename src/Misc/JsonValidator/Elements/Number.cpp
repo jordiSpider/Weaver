@@ -10,77 +10,61 @@ Number::Number(const json& info)
 {
 	try
 	{
-		if(!info.at("minimum").is_number_float()) {
+		minimum = info.value("minimum", -numeric_limits<double>::max());
+
+		if(info.contains("minimum") && !info.at("minimum").is_number_float()) {
 			throwValidatorSchemaJSONException("': Not an element of type 'number'");
 		}
-
-		minimum = info["minimum"];
 	}
 	catch(ValidatorSchemaJSONException& e)
 	{
 		e.addPreMessage(".minimum");
 		throw;
 	}
-	catch(const json::out_of_range&)
-	{
-		minimum = -numeric_limits<double>::max();
-	}
 
 
 	try
 	{
-		if(!info.at("exclusiveMinimum").is_boolean()) {
+		exclusiveMinimum = info.value("exclusiveMinimum", false);
+
+		if(info.contains("exclusiveMinimum") && !info.at("exclusiveMinimum").is_boolean()) {
 			throwValidatorSchemaJSONException("': Not an element of type 'boolean'");
 		}
-
-		exclusiveMinimum = info["exclusiveMinimum"];
 	}
 	catch(ValidatorSchemaJSONException& e)
 	{
 		e.addPreMessage(".exclusiveMinimum");
 		throw;
 	}
-	catch(const json::out_of_range&)
-	{
-		exclusiveMinimum = false;
-	}
 
 
 	try
 	{
-		if(!info.at("maximum").is_number_float()) {
+		maximum = info.value("maximum", numeric_limits<double>::max());
+
+		if(info.contains("maximum") && !info.at("maximum").is_number_float()) {
 			throwValidatorSchemaJSONException("': Not an element of type 'number'");
 		}
-
-		maximum = info["maximum"];
 	}
 	catch(ValidatorSchemaJSONException& e)
 	{
 		e.addPreMessage(".maximum");
 		throw;
 	}
-	catch(const json::out_of_range&)
-	{
-		maximum = numeric_limits<double>::max();
-	}
 
 
 	try
 	{
-		if(!info.at("exclusiveMaximum").is_boolean()) {
+		exclusiveMaximum = info.value("exclusiveMaximum", false);
+
+		if(info.contains("exclusiveMaximum") && !info.at("exclusiveMaximum").is_boolean()) {
 			throwValidatorSchemaJSONException("': Not an element of type 'boolean'");
 		}
-
-		exclusiveMaximum = info["exclusiveMaximum"];
 	}
 	catch(ValidatorSchemaJSONException& e)
 	{
 		e.addPreMessage(".exclusiveMaximum");
 		throw;
-	}
-	catch(const json::out_of_range&)
-	{
-		exclusiveMaximum = false;
 	}
 }
 

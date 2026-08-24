@@ -3,28 +3,30 @@
 #include "App/Model/IBM/Maths/MathFunctions.h"
 #include "Misc/EnumClass.h"
 
+#include <fmt/format.h>
+#include <iterator>
 
 using namespace std;
 
 
 
 
-string PawarIndividualTraitTemperatureSection::to_string_NA()
+
+void PawarTraitDTO::formatToBuffer(std::string& buffer) const
 {
-    ostringstream content;
-
-    content << "NA";
-
-    for(size_t i = 1; i < EnumClass<PawarElement>::size(); i++)
-    {
-        content << "\t" << "NA";
-    }
-
-    content << "\t" << "NA";
-    content << "\t" << "NA";
-
-    return content.str();
+    fmt::format_to(std::back_inserter(buffer), "\t{}\t{}\t{}\t{}\t{}\t{}", 
+        constitutiveActivationEnergy, constitutiveEnergyDecay,
+        constitutiveTemperatureOptimal, constitutiveTemperatureRef,
+        constitutiveTmin, constitutiveTmax
+    );
 }
+
+void PawarTraitDTO::formatToBufferNA(std::string& buffer) const
+{
+    buffer.append("\tNA\tNA\tNA\tNA\tNA\tNA");
+}
+
+
 
 
 
@@ -57,23 +59,15 @@ PreciseDouble PawarIndividualTraitTemperatureSection::applyTemperatureDependency
 	);
 }
 
-string PawarIndividualTraitTemperatureSection::to_string() const
+void PawarIndividualTraitTemperatureSection::flatten(PawarTraitDTO& dto) const noexcept
 {
-    ostringstream content;
-
-    content << elements[static_cast<PawarElement>(0)];
-
-    for(size_t i = 1; i < elements.size(); i++)
-    {
-        content << "\t" << elements[static_cast<PawarElement>(i)];
-    }
-
-    content << "\t" << temperatureRangeTPC.first.getTemperatureCelsius();
-    content << "\t" << temperatureRangeTPC.second.getTemperatureCelsius();
-
-    return content.str();
+    dto.constitutiveActivationEnergy = elements[PawarElement::activationEnergy].getValue();
+    dto.constitutiveEnergyDecay = elements[PawarElement::energyDecay].getValue();
+    dto.constitutiveTemperatureOptimal = elements[PawarElement::temperatureOptimal].getValue();
+    dto.constitutiveTemperatureRef = elements[PawarElement::temperatureRef].getValue();
+    dto.constitutiveTmin = temperatureRangeTPC.first.getTemperatureCelsius().getValue();
+    dto.constitutiveTmax = temperatureRangeTPC.second.getTemperatureCelsius().getValue();
 }
-
 
 
 

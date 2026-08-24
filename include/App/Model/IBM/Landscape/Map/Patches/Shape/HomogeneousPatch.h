@@ -46,7 +46,7 @@ public:
      * @param cellBounds Bounds of the landscape cell to check.
      * @return Coverage Enum indicating Null, Partial, Over50Percent, or Full coverage.
      */
-    Coverage checkCoverage(const RingModel* const cellBounds) const override;
+    Coverage checkCoverage(const RingModel& cellBounds) const override;
 
     /**
      * @brief Returns the type of this patch shape.

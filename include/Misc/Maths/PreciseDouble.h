@@ -16,6 +16,8 @@
 #include <boost/archive/binary_iarchive.hpp>
 #include <boost/archive/binary_oarchive.hpp>
 
+#include <fmt/format.h>
+
 #include <string>
 #include <cmath>
 #include <algorithm>
@@ -470,12 +472,10 @@ public:
     }
     ///@}
 
-    /**
-     * @brief Stream output operator.
-     * @param os Output stream.
-     * @param r The PreciseDouble instance to output.
-     * @return Reference to the output stream.
-     */
+    friend std::string format_as(const PreciseDouble& r) {
+        return std::to_string(r.value);
+    }
+
     friend std::ostream& operator<<(std::ostream& os, PreciseDouble r) {
         os << r.value;
         return os;

@@ -90,6 +90,13 @@ public:
      */
 	friend std::ostream& operator<<(std::ostream& os, const Generation& gen);
 
+     friend std::string format_as(const Generation& gen) {
+          if (gen.set) {
+               return std::to_string(gen.value);
+          }
+          return "-1";
+     }
+
 	/**
       * @brief Serializes the object for persistence.
       *

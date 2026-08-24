@@ -79,12 +79,21 @@ if(CMAKE_BUILD_TYPE STREQUAL "Debug")
     add_compile_definitions(DEBUG)
 endif()
 
+if(PROFILER)
+    add_compile_definitions(PROFILER)
+endif()
+
 # ------------------------------------------------------------
 # 📂 Subdirectory Targets & External Disclosures
 # ------------------------------------------------------------
 if(BUILD_APP OR BUILD_TESTS)
     set(CLI_EXE_NAME "${PROJECT_NAME}CLI")
     set(GUI_EXE_NAME "${PROJECT_NAME}GUI")
+
+    if(PROFILER)
+        set(CLI_EXE_NAME "${CLI_EXE_NAME}Profiler")
+        set(GUI_EXE_NAME "${GUI_EXE_NAME}Profiler")
+    endif()
 
     add_subdirectory(src)
 

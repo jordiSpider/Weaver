@@ -80,7 +80,7 @@ public:
      * @param animalWhoIsEvaluating Pointer to the animal performing the evaluation.
      */
     void getNeighboursCellsOnRadius(
-        std::vector<CellValue>& bestEvaluations, const PointContinuous &sourcePosition, const PreciseDouble &radius, const RingModel* const radiusArea, const size_t searchDepth, const bool searchNeighborsWithFemales, AnimalNonStatistical* animalWhoIsEvaluating
+        std::vector<CellValue>& bestEvaluations, const PointContinuous &sourcePosition, const PreciseDouble &radius, const RingModel& radiusArea, const size_t searchDepth, const bool searchNeighborsWithFemales, AnimalNonStatistical* animalWhoIsEvaluating
     ) override;
 
     /**
@@ -119,7 +119,7 @@ public:
      * @param resourceFunctions Vector of resource functions with their search parameters.
      */
     void applyFunctionToEdiblesInRadius(
-        const PointContinuous &sourcePosition, const PreciseDouble &radius, const RingModel* const radiusArea, 
+        const PointContinuous &sourcePosition, const PreciseDouble &radius, const RingModel& radiusArea, 
         const std::vector<std::pair<const AnimalSearchParams&, AnimalFunctions>>& animalFunctions,
         const std::vector<std::pair<const ResourceSearchParams&, ResourceFunctions>>& resourceFunctions
     ) override;

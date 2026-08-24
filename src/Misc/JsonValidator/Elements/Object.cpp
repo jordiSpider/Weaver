@@ -10,283 +10,289 @@ using json = nlohmann::json;
 Object::Object(const json& info)
     : Element(info)
 {
-    try
-	{
-		#ifdef DEBUG
-		if(!info.at("properties").is_object()) {
-			throwValidatorSchemaJSONException("': Not an element of type 'object'");
-		}
-		#endif
-
-		for(const auto& [key, value] : info.at("properties").items()) {
-			try
-			{
-				properties.insert({key, ElementFactory::createInstance(value)});
-			}
-			catch(ValidatorSchemaJSONException& e)
-			{
-				e.addPreMessage("." + key);
-				throw;
-			}
-        }
-	}
-	catch(ValidatorSchemaJSONException& e)
-	{
-		e.addPreMessage(".properties");
-		throw;
-	}
-	catch(const json::out_of_range&) 
-	{
+	if(!info.contains("properties")) {
 		throwValidatorSchemaJSONException("': Property 'properties' not defined");
 	}
+	else {
+		try
+		{
+			#ifdef DEBUG
+			if(!info.at("properties").is_object()) {
+				throwValidatorSchemaJSONException("': Not an element of type 'object'");
+			}
+			#endif
 
-
-    try
-	{
-		#ifdef DEBUG
-		if(!info.at("patternProperties").is_object()) {
-			throwValidatorSchemaJSONException("': Not an element of type 'object'");
-		}
-		#endif
-
-		for(const auto& [key, value] : info.at("patternProperties").items()) {
-			try
-			{
-				#ifdef DEBUG
+			for(const auto& [key, value] : info.at("properties").items()) {
 				try
 				{
-					if(!value.at("pattern").is_string()) {
-						throwValidatorSchemaJSONException("': Not an element of type 'string'");
-					}
-
-
-					try
-					{
-						value.at("enum");
-
-						throwValidatorSchemaJSONException("': Property 'pattern' and 'enum' are mutually exclusive");
-					}
-					catch(const json::out_of_range&) {}
+					properties.insert({key, ElementFactory::createInstance(value)});
 				}
 				catch(ValidatorSchemaJSONException& e)
 				{
-					e.addPreMessage(".pattern");
+					e.addPreMessage("." + key);
 					throw;
 				}
-				catch(const json::out_of_range&) 
+			}
+		}
+		catch(ValidatorSchemaJSONException& e)
+		{
+			e.addPreMessage(".properties");
+			throw;
+		}
+	}
+
+
+	if(info.contains("patternProperties")) {
+		try
+		{
+			#ifdef DEBUG
+			if(!info.at("patternProperties").is_object()) {
+				throwValidatorSchemaJSONException("': Not an element of type 'object'");
+			}
+			#endif
+
+			for(const auto& [key, value] : info.at("patternProperties").items()) {
+				try
 				{
+					#ifdef DEBUG
 					try
 					{
-						if(!value.at("enum").is_array()) {
-							throwValidatorSchemaJSONException("': Not an element of type 'array'");
+						if(!value.at("pattern").is_string()) {
+							throwValidatorSchemaJSONException("': Not an element of type 'string'");
 						}
 
-						for(size_t i = 0; i < value["enum"].size(); i++) {
-							try
-							{
-								if(!value["enum"][i].is_string()) {
-									throwValidatorSchemaJSONException("': Not an element of type 'string'");
-								}
-							}
-							catch(ValidatorSchemaJSONException& e)
-							{
-								e.addPreMessage(".item_" + to_string(i));
-								throw;
-							}
+
+						try
+						{
+							value.at("enum");
+
+							throwValidatorSchemaJSONException("': Property 'pattern' and 'enum' are mutually exclusive");
 						}
+						catch(const json::out_of_range&) {}
 					}
 					catch(ValidatorSchemaJSONException& e)
 					{
-						e.addPreMessage(".enum");
+						e.addPreMessage(".pattern");
 						throw;
 					}
 					catch(const json::out_of_range&) 
 					{
-						throwValidatorSchemaJSONException("': Property 'pattern' or 'enum' not defined");
-					}
-				}
-				#endif
-
-
-				try
-				{
-					patternProperties.insert({static_cast<string>(value.at("pattern")), ElementFactory::createInstance(value)});
-				}
-				catch(const json::out_of_range&) 
-				{
-					for(const string propertyName : value["enum"])
-					{
 						try
 						{
-							properties.insert({propertyName, ElementFactory::createInstance(value)});
+							if(!value.at("enum").is_array()) {
+								throwValidatorSchemaJSONException("': Not an element of type 'array'");
+							}
+
+							for(size_t i = 0; i < value["enum"].size(); i++) {
+								try
+								{
+									if(!value["enum"][i].is_string()) {
+										throwValidatorSchemaJSONException("': Not an element of type 'string'");
+									}
+								}
+								catch(ValidatorSchemaJSONException& e)
+								{
+									e.addPreMessage(".item_" + to_string(i));
+									throw;
+								}
+							}
 						}
 						catch(ValidatorSchemaJSONException& e)
 						{
-							e.addPreMessage("." + propertyName);
+							e.addPreMessage(".enum");
 							throw;
 						}
+						catch(const json::out_of_range&) 
+						{
+							throwValidatorSchemaJSONException("': Property 'pattern' or 'enum' not defined");
+						}
 					}
-				}
-			}
-			catch(ValidatorSchemaJSONException& e)
-			{
-				e.addPreMessage("." + key);
-				throw;
-			}
-		}
-	}
-	catch(ValidatorSchemaJSONException& e)
-	{
-		e.addPreMessage(".patternProperties");
-		throw;
-	}
-	catch(const json::out_of_range&) {}
+					#endif
 
 
-    try
-	{
-		#ifdef DEBUG
-		if(!info.at("conditionals").is_array()) {
-			throwValidatorSchemaJSONException("': Not an element of type 'array'");
-		}
-		
-		for(size_t i = 0; i < conditionals.size(); i++) {
-			try
-			{
-				if(!conditionals.at(i).is_object()) {
-					throwValidatorSchemaJSONException("': Not an element of type 'object'");
-				}
-
-				verifyConditional(conditionals.at(i));
-			}
-			catch(ValidatorSchemaJSONException& e)
-			{
-				e.addPreMessage(".item_" + to_string(i));
-				throw;
-			}
-		}
-		#endif
-	}
-	catch(ValidatorSchemaJSONException& e)
-	{
-		e.addPreMessage(".conditionals");
-		throw;
-	}
-	catch(const json::out_of_range&) {}
-
-
-	try
-	{
-		#ifdef DEBUG
-		if(!info.at("patternConditionals").is_array()) {
-			throwValidatorSchemaJSONException("': Not an element of type 'array'");
-		}
-		
-		for(size_t i = 0; i < patternConditionals.size(); i++) {
-			try
-			{
-				if(!patternConditionals.at(i).is_object()) {
-					throwValidatorSchemaJSONException("': Not an element of type 'object'");
-				}
-
-
-				try
-				{
-					if(!patternConditionals.at(i).at("pattern").is_string()) {
-						throwValidatorSchemaJSONException("': Not an element of type 'string'");
+					try
+					{
+						patternProperties.insert({static_cast<string>(value.at("pattern")), ElementFactory::createInstance(value)});
+					}
+					catch(const json::out_of_range&) 
+					{
+						for(const string propertyName : value["enum"])
+						{
+							try
+							{
+								properties.insert({propertyName, ElementFactory::createInstance(value)});
+							}
+							catch(ValidatorSchemaJSONException& e)
+							{
+								e.addPreMessage("." + propertyName);
+								throw;
+							}
+						}
 					}
 				}
 				catch(ValidatorSchemaJSONException& e)
 				{
-					e.addPreMessage(".pattern");
+					e.addPreMessage("." + key);
 					throw;
 				}
-				catch(const json::out_of_range&) 
+			}
+		}
+		catch(ValidatorSchemaJSONException& e)
+		{
+			e.addPreMessage(".patternProperties");
+			throw;
+		}
+	}
+
+
+	if(info.contains("conditionals")) {
+		try
+		{
+			#ifdef DEBUG
+			if(!info.at("conditionals").is_array()) {
+				throwValidatorSchemaJSONException("': Not an element of type 'array'");
+			}
+			
+			for(size_t i = 0; i < conditionals.size(); i++) {
+				try
 				{
-					throwValidatorSchemaJSONException("': Property 'pattern' not defined");
+					if(!conditionals.at(i).is_object()) {
+						throwValidatorSchemaJSONException("': Not an element of type 'object'");
+					}
+
+					verifyConditional(conditionals.at(i));
 				}
-
-
-				verifyConditional(patternConditionals.at(i));
-			}
-			catch(ValidatorSchemaJSONException& e)
-			{
-				e.addPreMessage(".item_" + to_string(i));
-				throw;
-			}
-		}
-		#endif
-	}
-	catch(ValidatorSchemaJSONException& e)
-	{
-		e.addPreMessage(".patternConditionals");
-		throw;
-	}
-	catch(const json::out_of_range&) {}
-
-
-	try
-	{
-		#ifdef DEBUG
-		if(!info.at("requiredConditions").is_array()) {
-			throwValidatorSchemaJSONException("': Not an element of type 'array'");
-		}
-		
-		for(size_t i = 0; i < requiredConditions.size(); i++) {
-			try
-			{
-				if(!requiredConditions.at(i).is_object()) {
-					throwValidatorSchemaJSONException("': Not an element of type 'object'");
+				catch(ValidatorSchemaJSONException& e)
+				{
+					e.addPreMessage(".item_" + to_string(i));
+					throw;
 				}
-
-				verifyRequiredCondition(requiredConditions.at(i));
 			}
-			catch(ValidatorSchemaJSONException& e)
-			{
-				e.addPreMessage(".item_" + to_string(i));
-				throw;
+			#endif
+		}
+		catch(ValidatorSchemaJSONException& e)
+		{
+			e.addPreMessage(".conditionals");
+			throw;
+		}
+	}
+
+
+	if(info.contains("patternConditionals")) {
+		try
+		{
+			#ifdef DEBUG
+			if(!info.at("patternConditionals").is_array()) {
+				throwValidatorSchemaJSONException("': Not an element of type 'array'");
 			}
-		}
-		#endif
-	}
-	catch(ValidatorSchemaJSONException& e)
-	{
-		e.addPreMessage(".requiredConditions");
-		throw;
-	}
-	catch(const json::out_of_range&) {}
+			
+			for(size_t i = 0; i < patternConditionals.size(); i++) {
+				try
+				{
+					if(!patternConditionals.at(i).is_object()) {
+						throwValidatorSchemaJSONException("': Not an element of type 'object'");
+					}
 
 
-	try
-	{
-		#ifdef DEBUG
-		if(!info.at("warningConditions").is_array()) {
-			throwValidatorSchemaJSONException("': Not an element of type 'array'");
-		}
-		
-		for(size_t i = 0; i < warningConditions.size(); i++) {
-			try
-			{
-				if(!warningConditions.at(i).is_object()) {
-					throwValidatorSchemaJSONException("': Not an element of type 'object'");
+					try
+					{
+						if(!patternConditionals.at(i).at("pattern").is_string()) {
+							throwValidatorSchemaJSONException("': Not an element of type 'string'");
+						}
+					}
+					catch(ValidatorSchemaJSONException& e)
+					{
+						e.addPreMessage(".pattern");
+						throw;
+					}
+					catch(const json::out_of_range&) 
+					{
+						throwValidatorSchemaJSONException("': Property 'pattern' not defined");
+					}
+
+
+					verifyConditional(patternConditionals.at(i));
 				}
-
-				verifyWarningCondition(warningConditions.at(i));
+				catch(ValidatorSchemaJSONException& e)
+				{
+					e.addPreMessage(".item_" + to_string(i));
+					throw;
+				}
 			}
-			catch(ValidatorSchemaJSONException& e)
-			{
-				e.addPreMessage(".item_" + to_string(i));
-				throw;
-			}
+			#endif
 		}
-		#endif
+		catch(ValidatorSchemaJSONException& e)
+		{
+			e.addPreMessage(".patternConditionals");
+			throw;
+		}
 	}
-	catch(ValidatorSchemaJSONException& e)
-	{
-		e.addPreMessage(".warningConditions");
-		throw;
+
+
+	if(info.contains("requiredConditions")) {
+		try
+		{
+			#ifdef DEBUG
+			if(!info.at("requiredConditions").is_array()) {
+				throwValidatorSchemaJSONException("': Not an element of type 'array'");
+			}
+			
+			for(size_t i = 0; i < requiredConditions.size(); i++) {
+				try
+				{
+					if(!requiredConditions.at(i).is_object()) {
+						throwValidatorSchemaJSONException("': Not an element of type 'object'");
+					}
+
+					verifyRequiredCondition(requiredConditions.at(i));
+				}
+				catch(ValidatorSchemaJSONException& e)
+				{
+					e.addPreMessage(".item_" + to_string(i));
+					throw;
+				}
+			}
+			#endif
+		}
+		catch(ValidatorSchemaJSONException& e)
+		{
+			e.addPreMessage(".requiredConditions");
+			throw;
+		}
 	}
-	catch(const json::out_of_range&) {}
+
+
+	if(info.contains("warningConditions")) {
+		try
+		{
+			#ifdef DEBUG
+			if(!info.at("warningConditions").is_array()) {
+				throwValidatorSchemaJSONException("': Not an element of type 'array'");
+			}
+			
+			for(size_t i = 0; i < warningConditions.size(); i++) {
+				try
+				{
+					if(!warningConditions.at(i).is_object()) {
+						throwValidatorSchemaJSONException("': Not an element of type 'object'");
+					}
+
+					verifyWarningCondition(warningConditions.at(i));
+				}
+				catch(ValidatorSchemaJSONException& e)
+				{
+					e.addPreMessage(".item_" + to_string(i));
+					throw;
+				}
+			}
+			#endif
+		}
+		catch(ValidatorSchemaJSONException& e)
+		{
+			e.addPreMessage(".warningConditions");
+			throw;
+		}
+	}
 }
 
 Object::Object(const Object& other, const bool nullProperty)
@@ -521,18 +527,14 @@ void Object::validateElement(const json& config) const
 	for(const auto& [key, value] : static_cast<const unordered_map<string, json>&>(config)) {
         try
         {
-			try
-			{
+			if(modifiedProperties.contains(key)) {
 				modifiedProperties.at(key)->validate(value);
 			}
-			catch(const std::out_of_range&)
-			{	
-				try
-				{
+			else {
+				if(matchedProperties.contains(key)) {
 					matchedProperties.at(key)->validate(value);
 				}
-				catch(const std::out_of_range&)
-				{
+				else {
 					properties.at(key)->validate(value);
 				}
 			}

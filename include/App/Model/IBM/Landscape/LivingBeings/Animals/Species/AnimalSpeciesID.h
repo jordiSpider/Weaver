@@ -25,13 +25,20 @@ public:
 	/**
      * @brief Default constructor, initializes the ID to a default value.
      */
-	AnimalSpeciesID();
+	constexpr AnimalSpeciesID()
+     {
+
+     }
 
 	/**
      * @brief Constructor with an initial ID value.
      * @param value The value to assign to the species ID.
      */
-	AnimalSpeciesID(const id_type& value);
+	constexpr AnimalSpeciesID(const id_type& value)
+          : value(value)
+     {
+
+     }
 
 	/**
      * @brief Get the underlying ID value.
@@ -43,7 +50,10 @@ public:
      * @brief Conversion operator to size_t.
      * @return The ID value as size_t.
      */
-	operator size_t() const;
+	constexpr operator size_t() const
+     {
+          return static_cast<size_t>(value);
+     }
 
 	/**
       * @brief Serializes the object for persistence.

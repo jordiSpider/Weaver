@@ -6,7 +6,7 @@ using namespace std;
 
 
 
-BoxModel* Geometry::makeBox(const PointMap &position, const PreciseDouble &size, const bool applyEpsilon)
+BoxModel Geometry::makeBox(const PointMap &position, const PreciseDouble &size, const bool applyEpsilon)
 {
     PointContinuous minCorner;
     boost::geometry::assign_zero(minCorner);
@@ -20,7 +20,7 @@ BoxModel* Geometry::makeBox(const PointMap &position, const PreciseDouble &size,
     PointContinuous maxCorner = minCorner;
     boost::geometry::add_value(maxCorner, ((applyEpsilon) ? size-PreciseDouble::EPS : size).getValue());
 
-    return new BoxModel(minCorner, maxCorner);
+    return BoxModel(minCorner, maxCorner);
 }
 
 PreciseDouble Geometry::calculateDistanceBetweenPoints(const PointContinuous& pointA, const PointContinuous& pointB)
@@ -30,7 +30,7 @@ PreciseDouble Geometry::calculateDistanceBetweenPoints(const PointContinuous& po
 
 PreciseDouble Geometry::calculateDistanceBetweenPointAndPolygon(const PointContinuous& point, const RingModel& polygon)
 {
-    if(Geometry::withinPolygon(point, &polygon))
+    if(Geometry::withinPolygon(point, polygon))
     {
         return 0.0;
     }
@@ -42,12 +42,12 @@ PreciseDouble Geometry::calculateDistanceBetweenPointAndPolygon(const PointConti
 
 
 
-BoxModel* Geometry::makeBoxEffectiveArea(const PointMap &position, const PreciseDouble &size)
+BoxModel Geometry::makeBoxEffectiveArea(const PointMap &position, const PreciseDouble &size)
 {
     return makeBox(position, size, true);
 }
 
-RingModel* Geometry::makeSphere(const PointContinuous &center, const PreciseDouble &radius)
+RingModel Geometry::makeSphere(const PointContinuous &center, const PreciseDouble &radius)
 {
     boost::geometry::strategy::buffer::point_circle point_strategy(POINTS_PER_CIRCLE);
     boost::geometry::strategy::buffer::distance_symmetric<double> distance_strategy(radius.getValue());
@@ -61,21 +61,21 @@ RingModel* Geometry::makeSphere(const PointContinuous &center, const PreciseDoub
         join_strategy, end_strategy, point_strategy
     );
 
-    return new RingModel(result[0].outer());;
+    return RingModel(result[0].outer());;
 }
 
-RingModel* Geometry::calculateIntersection(const RingModel* const objA, const RingModel* const objB)
+RingModel Geometry::calculateIntersection(const RingModel& objA, const RingModel& objB)
 {
     vector<PolygonModel> intersection;
-	boost::geometry::intersection(*objA, *objB, intersection);
+	boost::geometry::intersection(objA, objB, intersection);
 
     if(intersection.empty())
     {
-        return nullptr;
+        return RingModel();
     }
     else
     {
-        return new RingModel(intersection[0].outer());
+        return RingModel(intersection[0].outer());
     }
 }
 
@@ -105,9 +105,9 @@ PointContinuous Geometry::calculateClosestPoint(const RingModel& polygon, const 
     return closestPoint;
 }
 
-bool Geometry::withinPolygon(const PointContinuous &point, const RingModel* const polygon)
+bool Geometry::withinPolygon(const PointContinuous &point, const RingModel& polygon)
 {
-    return boost::geometry::within(point, *polygon);
+    return boost::geometry::within(point, polygon);
 }
 
 PointContinuous Geometry::calculateLineStringPointAtDistance(const PointContinuous &initialPoint, const PointContinuous &finalPoint, const PreciseDouble& distance)
@@ -151,13 +151,13 @@ PointContinuous Geometry::calculateLineStringPointAtDistance(const PointContinuo
     return newPoint;
 }
 
-PointContinuous Geometry::generateRandomPointOnBox(const RingModel* const box)
+PointContinuous Geometry::generateRandomPointOnBox(const RingModel& box)
 {
     #if DIMENSIONS == 3
     throwLineInfoException("Not implemented method for 3D");
     #endif
 
-    auto boundingBox = boost::geometry::return_envelope<BoxModel>(*box);
+    auto boundingBox = boost::geometry::return_envelope<BoxModel>(box);
 
     PreciseDouble randomX = Random::randomUniform(boost::geometry::get<0>(boundingBox.min_corner()), (boost::geometry::get<0>(boundingBox.max_corner())));
     PreciseDouble randomY = Random::randomUniform(boost::geometry::get<1>(boundingBox.min_corner()), (boost::geometry::get<1>(boundingBox.max_corner())));
@@ -165,13 +165,13 @@ PointContinuous Geometry::generateRandomPointOnBox(const RingModel* const box)
     return PointContinuous(randomX.getValue(), randomY.getValue());
 }
 
-PointContinuous Geometry::generateRandomPointOnPolygon(const RingModel* const area)
+PointContinuous Geometry::generateRandomPointOnPolygon(const RingModel& area)
 {
     #if DIMENSIONS == 3
     throwLineInfoException("Not implemented method for 3D");
     #endif
 
-    auto boundingBox = boost::geometry::return_envelope<BoxModel>(*area);
+    auto boundingBox = boost::geometry::return_envelope<BoxModel>(area);
 
     PointContinuous randomPoint;
     do 
@@ -180,19 +180,19 @@ PointContinuous Geometry::generateRandomPointOnPolygon(const RingModel* const ar
         PreciseDouble randomY = Random::randomUniform(boost::geometry::get<1>(boundingBox.min_corner()), (boost::geometry::get<1>(boundingBox.max_corner())));
         randomPoint = PointContinuous(randomX.getValue(), randomY.getValue());
     } 
-    while(!boost::geometry::within(randomPoint, *area));
+    while(!boost::geometry::within(randomPoint, area));
 
     return randomPoint;
 }
 
-Coverage Geometry::checkFirstCoverageLevelBySecond(const RingModel* const first, const RingModel* const second, const bool applyIntersection)
+Coverage Geometry::checkFirstCoverageLevelBySecond(const RingModel& first, const RingModel& second, const bool applyIntersection)
 {
     return checkCoverageLevel(calculateFirstCoveragePercentBySecond(first, second, applyIntersection));
 }
 
-bool Geometry::fullCoveredBySphere(const RingModel* const area, const PointContinuous &center, const PreciseDouble &radius)
+bool Geometry::fullCoveredBySphere(const RingModel& area, const PointContinuous &center, const PreciseDouble &radius)
 {
-    for(const auto &corner : *area)
+    for(const auto &corner : area)
     {
         if(calculateDistanceBetweenPoints(center, corner) > radius)
         {
@@ -203,11 +203,11 @@ bool Geometry::fullCoveredBySphere(const RingModel* const area, const PointConti
     return true;
 }
 
-Coverage Geometry::checkCoveredLevelBySphere(const RingModel* const area, const PointContinuous &center, const PreciseDouble &radius)
+Coverage Geometry::checkCoveredLevelBySphere(const RingModel& area, const PointContinuous &center, const PreciseDouble &radius)
 {
     unsigned char pointsInsideSphere = 0u;
 
-    for(const auto &corner : *area)
+    for(const auto &corner : area)
     {
         if(Geometry::pointInsideSphere(corner, center, radius))
         {
@@ -226,7 +226,7 @@ Coverage Geometry::checkCoveredLevelBySphere(const RingModel* const area, const 
             return Coverage::Null;
         }
     }
-    else if(pointsInsideSphere == area->size())
+    else if(pointsInsideSphere == area.size())
     {
         return Coverage::Full;
     }
@@ -241,33 +241,29 @@ bool Geometry::pointInsideSphere(const PointContinuous& point, const PointContin
     return Geometry::calculateDistanceBetweenPoints(point, center) <= radius;
 }
 
-PreciseDouble Geometry::calculateArea(const RingModel* const obj)
+PreciseDouble Geometry::calculateArea(const RingModel& obj)
 {
-    return boost::geometry::area(*obj);
+    return boost::geometry::area(obj);
 }
 
-PreciseDouble Geometry::calculateFirstCoveragePercentBySecond(const RingModel* const first, const RingModel* const second, const bool applyIntersection)
+PreciseDouble Geometry::calculateFirstCoveragePercentBySecond(const RingModel& first, const RingModel& second, const bool applyIntersection)
 {
-    if(first == nullptr || second == nullptr)
+    if(first.empty() || second.empty())
     {
         return 0.0;
     }
 
     if(applyIntersection)
     {
-        RingModel* intersection = calculateIntersection(first, second);
+        RingModel intersection = calculateIntersection(first, second);
 
-        if(intersection == nullptr)
+        if(intersection.empty())
         {
             return 0.0;
         }
         else
         {
-            PreciseDouble coveragePercent = calculateArea(intersection) / calculateArea(first);
-
-            delete intersection;
-
-            return coveragePercent;
+            return calculateArea(intersection) / calculateArea(first);
         }
     }
     else

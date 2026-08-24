@@ -26,5 +26,5 @@ void Gamete::pushChromosome(Chromosome *newChromosome)
 
 Chromosome* Gamete::getChromosome(const size_t& position) 
 { 
-    return chromosomes.at(position); 
+    return chromosomes[position]; 
 }

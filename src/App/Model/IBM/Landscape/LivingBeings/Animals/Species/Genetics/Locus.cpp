@@ -54,7 +54,7 @@ Locus& Locus::operator=(const Locus& other)
 
 const Allele* Locus::getAlleleRandomly() const 
 { 
-	return &alleles.at(Random::randomIndex(alleles.size())); 
+	return &alleles[Random::randomIndex(alleles.size())]; 
 }
 
 const std::vector<Allele>& Locus::getAlleles() const

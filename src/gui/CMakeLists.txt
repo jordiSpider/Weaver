@@ -18,8 +18,12 @@ else()
     add_executable(${GUI_EXE_NAME} mainGUI.cpp)
 endif()
 
-# Append a 'd' suffix to the binary name during Debug builds to avoid overwriting Release assets
-set_target_properties(${GUI_EXE_NAME} PROPERTIES DEBUG_POSTFIX "_d")
+# Append a suffix to the binary name during Debug builds to avoid overwriting Release assets
+if(ENABLE_ASAN)
+    set_target_properties(${GUI_EXE_NAME} PROPERTIES DEBUG_POSTFIX "_d_asan")
+else()
+    set_target_properties(${GUI_EXE_NAME} PROPERTIES DEBUG_POSTFIX "_d")
+endif()
 
 # ---------------------------------------------------------
 # Windows-Specific Subsystem & Linker Overrides

@@ -181,7 +181,9 @@ void AnimalSpeciesGenetics::setTraits(const json& traitsConfig, const json& modi
 	{
 		randomlyCreatedPositionsForChromosomes.emplace_back(i);
 	}
-	Random::shuffleVector(randomlyCreatedPositionsForChromosomes);
+
+	auto& localRng = Random::getEngine();
+	shuffle(randomlyCreatedPositionsForChromosomes.begin(), randomlyCreatedPositionsForChromosomes.end(), localRng);
 
 
 	//TODO Hay alguna restricción más para el parametrizador? Cual es el máximo de numberOfChromosomes??

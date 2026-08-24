@@ -51,8 +51,8 @@ ResourceSpecies::ResourceSpecies()
 
 }
 
-ResourceSpecies::ResourceSpecies(const ResourceSpecies::ID& speciesId, const ResourceSpecies::ResourceID& resourceSpeciesId, const json &resourceSpeciesInfo) 
-	: Species(speciesId, resourceSpeciesInfo["name"].get<string>()), 
+ResourceSpecies::ResourceSpecies(const ResourceSpecies::ID& speciesId, const ResourceSpecies::ResourceID& resourceSpeciesId, const json &resourceSpeciesInfo, std::vector<std::string>& stringPool) 
+	: Species(speciesId, resourceSpeciesInfo["name"].get<string>(), stringPool), 
 	  resourceSpeciesId(resourceSpeciesId), resourceSpeciesGrowth(resourceSpeciesInfo["growthModule"])
 {
 	

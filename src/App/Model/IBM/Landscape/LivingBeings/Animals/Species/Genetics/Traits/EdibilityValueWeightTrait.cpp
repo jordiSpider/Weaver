@@ -26,7 +26,7 @@ vector<Trait*> EdibilityValueWeightTrait::generateTraits(std::vector<IndividualL
 	for(const EdibilityValueWeightType type : EnumClass<EdibilityValueWeightType>::getEnumValues())
 	{
 		edibilityValueWeightTraits.push_back(new EdibilityValueWeightTrait(
-			individualLevelTraits, type, definitionConfig[DecisionsTrait::getJsonFieldName()][EdibilityValueWeightTrait::getJsonFieldName()].at(EnumClass<EdibilityValueWeightType>::to_string(type)), 
+			individualLevelTraits, type, definitionConfig[DecisionsTrait::getJsonFieldName()][EdibilityValueWeightTrait::getJsonFieldName()][EnumClass<EdibilityValueWeightType>::to_string(type)], 
 			individualLevelTraitsOrder
 		));
 	}

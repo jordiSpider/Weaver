@@ -135,7 +135,7 @@ public:
      * @param radiusArea Optional area for partial coverage calculations.
      * @return Amount of dry mass available.
      */
-	virtual DryMass calculateDryMassAvailable(const bool fullCoverage, const PointContinuous* const sourcePosition, const PreciseDouble &radius, const RingModel * const radiusArea) const=0;
+	virtual DryMass calculateDryMassAvailable(const bool fullCoverage, const PointContinuous* const sourcePosition, const PreciseDouble &radius, const RingModel& radiusArea) const=0;
 
 	/// Deserialize applied resource sources for this cell.
 	virtual void deserializeCellResource(std::vector<std::pair<size_t, ResourceSource*>>& appliedResource)=0;
@@ -160,7 +160,7 @@ public:
      * @param radiusArea Optional area for partial coverage calculations.
      * @param competitionAmongResourceSpecies If true, consider competition with other resources.
      */
-	virtual void substractBiomass(const DryMass& dryMassToBeSubstracted, const bool fullCoverage, const PointContinuous &sourcePosition, const PreciseDouble &radius, const RingModel* const radiusArea, const bool competitionAmongResourceSpecies)=0;
+	virtual void substractBiomass(const DryMass& dryMassToBeSubstracted, const bool fullCoverage, const PointContinuous &sourcePosition, const PreciseDouble &radius, const RingModel& radiusArea, const bool competitionAmongResourceSpecies)=0;
 
 	/**
      * @brief Serialization method for persistence.

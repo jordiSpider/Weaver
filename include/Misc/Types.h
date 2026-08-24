@@ -81,7 +81,7 @@ typedef unsigned int date_type;
  * @typedef id_type
  * @brief Type used to represent unique IDs (size_t).
  */
-typedef size_t id_type;
+typedef uint64_t id_type;
 
 /**
  * @def MAX_NUM_DIGITS_ID

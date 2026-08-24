@@ -26,7 +26,7 @@ Patch::~Patch()
 	delete shape;
 }
 
-Coverage Patch::checkCoverage(const RingModel* const cellBounds) const
+Coverage Patch::checkCoverage(const RingModel& cellBounds) const
 {
 	return shape->checkCoverage(cellBounds);
 }

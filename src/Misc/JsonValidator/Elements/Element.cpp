@@ -10,38 +10,30 @@ Element::Element(const json& info)
 {
     try
 	{
-		if(!info.at("nullProperty").is_boolean()) {
-			throwValidatorSchemaJSONException("': Not an element of type 'boolean'");
-		}
+		nullProperty = info.value("nullProperty", false);
 
-		nullProperty = info["nullProperty"];
+		if (info.contains("nullProperty") && !info.at("nullProperty").is_boolean()) {
+            throwValidatorSchemaJSONException("': Not an element of type 'boolean'");
+        }
 	}
 	catch(ValidatorSchemaJSONException& e)
 	{
 		e.addPreMessage(".nullProperty");
 		throw;
 	}
-	catch(const json::out_of_range&)
-	{
-		nullProperty = false;
-	}
 
 	try
 	{
-		if(!info.at("description").is_string()) {
+		description = info.value("description", "");
+
+		if(info.contains("description") && !info.at("description").is_string()) {
 			throwValidatorSchemaJSONException("': Not an element of type 'string'");
 		}
-
-		description = info["description"];
 	}
 	catch(ValidatorSchemaJSONException& e)
 	{
 		e.addPreMessage(".description");
 		throw;
-	}
-	catch(const json::out_of_range&)
-	{
-		description = "";
 	}
 }
 

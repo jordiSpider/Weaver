@@ -82,11 +82,6 @@ void AnimalStatistical::setNewLifeStage(Landscape* const, const LifeStage, const
 	throwLineInfoException("Error: Do not use this method with the class 'AnimalStatistical'.");
 }
 
-const Instar& AnimalStatistical::getInstarToEvaluateCells() const
-{
-	return getGrowthBuildingBlock().getInstar();
-}
-
 pair<bool, DryMass> AnimalStatistical::predateEdible(Landscape* const, Edible &, const DryMass &, const PointContinuous &, const PreciseDouble &, const TimeStep, const PreciseDouble&, bool, std::list<const Edible*> &, std::ostringstream&, std::ostringstream&, const PreciseDouble&, const PreciseDouble&, const PreciseDouble&, const PreciseDouble&, const PreciseDouble&, const PreciseDouble&, const bool)
 {
 	throwLineInfoException("Error: Do not use this method with the class 'AnimalStatistical'.");

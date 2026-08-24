@@ -36,7 +36,7 @@ Chromosome::~Chromosome()
 
 const Allele* Chromosome::getAllele(const size_t lociPosition) const 
 { 
-	return alleles.at(lociPosition); 
+	return alleles[lociPosition]; 
 }
 
 size_t Chromosome::size() const 
@@ -46,7 +46,7 @@ size_t Chromosome::size() const
 
 void Chromosome::setAllele(const Allele* const allele, const size_t lociPosition) 
 { 
-	alleles.at(lociPosition) = allele; 
+	alleles[lociPosition] = allele; 
 }
 
 void Chromosome::pushAllele(const Allele* const allele) 

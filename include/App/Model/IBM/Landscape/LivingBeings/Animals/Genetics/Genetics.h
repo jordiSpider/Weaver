@@ -27,6 +27,16 @@
 #include "App/Model/IBM/Landscape/LivingBeings/Animals/Species/Genetics/AnimalSpeciesGenetics.h"
 
 
+
+constexpr size_t MAX_TRAITS = 64;
+
+struct GeneticsDTO {
+    uint16_t numTraits;
+    TraitDTO traits[MAX_TRAITS];
+
+    void formatToBuffer(std::string& buffer) const;
+};
+
 /**
  * @class Genetics
  * @brief Represents the genetic information and traits of an individual.
@@ -137,11 +147,7 @@ public:
      */
     void tune(const Temperature& temperature, const TimeStep actualTimeStep, const PreciseDouble &coefficientForMassAforMature, const PreciseDouble &scaleForMassBforMature, const Temperature& tempFromLab);
 
-    /**
-     * @brief Convert the genetics information to a string representation.
-     * @return String describing traits and genome.
-     */
-    std::string to_string() const;
+    void flatten(GeneticsDTO& dto) const noexcept;
 
     /**
      * @brief Set the species genetics pointer.

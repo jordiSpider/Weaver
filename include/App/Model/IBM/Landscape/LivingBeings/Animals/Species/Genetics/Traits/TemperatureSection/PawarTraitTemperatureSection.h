@@ -33,12 +33,12 @@
 class PawarTraitTemperatureSection : public TraitTemperatureSection {
 public:
     /**
-     * @brief Returns the CSV header for a given trait.
+     * @brief Appends the CSV header for a given trait.
      *
      * @param trait Name of the trait.
-     * @return Header string for CSV or data output.
+     * @param header Header string to append to.
      */
-    static std::string getHeader(const std::string& trait);
+    static void getHeader(const std::string& trait, std::string& header);
 
 
     /**

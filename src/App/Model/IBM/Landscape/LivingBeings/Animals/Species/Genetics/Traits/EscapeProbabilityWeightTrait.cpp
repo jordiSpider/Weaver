@@ -26,7 +26,7 @@ vector<Trait*> EscapeProbabilityWeightTrait::generateTraits(std::vector<Individu
 	for(const EscapeProbabilityWeightType type : EnumClass<EscapeProbabilityWeightType>::getEnumValues())
 	{
 		escapeProbabilityWeightTraits.push_back(new EscapeProbabilityWeightTrait(
-			individualLevelTraits, type, definitionConfig[DecisionsTrait::getJsonFieldName()][EscapeProbabilityWeightTrait::getJsonFieldName()].at(EnumClass<EscapeProbabilityWeightType>::to_string(type)), 
+			individualLevelTraits, type, definitionConfig[DecisionsTrait::getJsonFieldName()][EscapeProbabilityWeightTrait::getJsonFieldName()][EnumClass<EscapeProbabilityWeightType>::to_string(type)], 
 			individualLevelTraitsOrder
 		));
 	}

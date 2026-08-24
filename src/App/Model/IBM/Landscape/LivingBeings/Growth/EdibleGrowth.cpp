@@ -33,11 +33,6 @@ SpeciesGrowth* EdibleGrowth::getMutableSpeciesGrowth()
     return speciesGrowth;
 }
 
-const Instar& EdibleGrowth::getInstar() const 
-{ 
-	return instar; 
-}
-
 void EdibleGrowth::setInstar(const Instar& newInstar)
 {
 	instar = newInstar;

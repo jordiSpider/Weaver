@@ -31,6 +31,7 @@
 #include "App/Model/IBM/Landscape/Map/Points/PointMap.h"
 #include "App/Model/IBM/Landscape/LivingBeings/Animals/Growth/AnimalNonStatisticalGrowth.h"
 #include "Misc/EnumClass.h"
+#include "App/Model/IBM/Landscape/LivingBeings/Animals/ActivityType.h"
 #include "App/Model/IBM/Landscape/LivingBeings/Animals/Generation.h"
 #include "App/Model/IBM/Landscape/LivingBeings/Animals/Species/HuntingMode.h"
 #include "App/Model/IBM/Landscape/LivingBeings/Animals/Species/SexualType.h"
@@ -39,6 +40,121 @@
 
 
 class TerrainCell;
+
+
+struct AnimalNonStatisticalDTO {
+    id_type id;
+	uint32_t scientificNameId;
+	Gender gender;
+	double position[DIMENSIONS];
+	LifeStage lifeStage;
+	unsigned int instar;
+	unsigned int currentAge;
+	double pheno_ini;
+	double dateEgg;
+	unsigned int ageOfFirstReproduction;
+	unsigned int reproCounter;
+	unsigned int fecundity;
+	double dateOfDeath;
+	unsigned int generationNumberFromFemaleParent;
+	unsigned int generationNumberFromMaleParent;
+	bool idFromFemaleParentSetted;
+	id_type idFromFemaleParent;
+	bool idFromMaleParentSetted;
+	id_type idFromMaleParent;
+	uint64_t predationEncountersCurrentDay;
+	uint64_t totalPredationEncounters;
+	double voracity;
+	double searchAreaRadius;
+	double speed;
+	double tank_ini;
+	double currentBodySize;
+	double currentDryMass;
+	double currentEnergyTank;
+
+	GeneticsDTO genetics;
+
+
+	void formatToBuffer(std::string& buffer, const std::vector<std::string>& stringPool) const;
+};
+
+struct EdibilityDTO {
+	unsigned int timeStep;
+	id_type searcherId;
+	uint32_t searcherSpeciesNameId;
+	double foodMass;
+	id_type predatorId;
+	uint32_t predatorSpeciesNameId;
+	double predatorDryMass;
+	id_type predatedId;
+	uint32_t predatedSpeciesNameId;
+	double predatedDryMass;
+	double predationProbability;
+	double edibility;
+	double preference;
+	double experience;
+
+
+	void formatToBuffer(std::string& buffer, const std::vector<std::string>& stringPool) const;
+
+	inline static std::string getHeader() noexcept {
+		return "timeStep\tsearcherId\tsearcherSpecies\tfoodMass\tpredatorId\tpredatorSpecies\tpredatorDryMass\tpredatedId\tpredatedSpecies\tpredatedDryMass\tpredationProbability\tedibility\tpreference\texperience\n";
+	}
+};
+
+struct MovementDTO {
+	unsigned int timeStep;
+	id_type id;
+	double startPointX;
+	double startPointY;
+	double endPointX;
+	double endPointY;
+
+
+	void formatToBuffer(std::string& buffer, const std::vector<std::string>& stringPool) const;
+
+	inline static std::string getHeader() noexcept {
+		return "timeStep\tid\tstartPointX\tstartPointY\tendPointX\tendPointY\n";
+	}
+};
+
+struct ActivityDTO {
+	id_type id;
+	uint32_t speciesNameId;
+	ActivityType activityType;
+	double initialDay;
+	double finalDay;
+	double activityDuration;
+
+
+	void formatToBuffer(std::string& buffer, const std::vector<std::string>& stringPool) const;
+
+	inline static std::string getHeader() noexcept {
+		return "id\tspecies\tactivityType\tinitialDay\tfinalDay\tactivityDuration\n";
+	} 
+};
+
+struct PredationProbabilityDTO {
+	double randomProbability;
+	double probabilityToCompare;
+	bool retaliation;
+	id_type idHunter;
+	id_type idHunted;
+	uint32_t speciesHunterNameId;
+	uint32_t speciesHuntedNameId;
+	bool huntedIsPredator;
+	double massHunter;
+	double massHunted;
+	bool successfulKill;
+
+
+	void formatToBuffer(std::string& buffer, const std::vector<std::string>& stringPool) const;
+
+	inline static std::string getHeader() noexcept {
+		return "randomProbability\tprobabilityToCompare\tretaliation\tidHunter\tidHunted\tspeciesHunter\tspeciesHunted\thuntedIsPredator\tmassHunter\tmassHunted\tsuccessfulKill\n";
+	} 
+};
+
 
 
 /**
@@ -268,11 +384,6 @@ public:
 	PreciseDouble calculateEdibilityValue(const CellResourceInterface& prey, const DryMass& preyDryMass);
 
 	/**
-     * @brief Print preference info for prey species and instar.
-     */
-	std::string printPreferenceInfo(const Species::ID &preySpeciesId, const Instar &preyInstar) const;
-
-	/**
      * @brief Assimilate food mass from prey.
      */
 	DryMass calculateAssimilatedMass(const DryMass& nonAssimilatedMass, const Species::ID& preySpeciesId, const Instar& preyInstar) const;
@@ -442,15 +553,15 @@ public:
 	Action getNextAction() const;
 
 	void actionPlanning(Landscape* const landscape, const TimeStep numberOfTimeSteps, const PreciseDouble& timeStepsPerDay,
-		bool saveEdibilitiesFile, std::ostringstream& edibilitiesContent);
+		bool saveEdibilitiesFile, std::vector<EdibilityDTO>& edibilities);
 
-	bool actionExecution(Landscape* const landscape, const bool saveActivity, std::ostringstream& activityContent,
+	bool actionExecution(Landscape* const landscape, const bool saveActivity, std::vector<ActivityDTO>& activities,
 		const TimeStep numberOfTimeSteps, const PreciseDouble& timeStepsPerDay, const bool saveAnimalsEachDayPredationProbabilities,
-		std::ostringstream& predationProbabilitiesContent, const bool competitionAmongResourceSpecies, const bool saveMovements, 
-		std::ostringstream& movementsContent);
+		std::vector<PredationProbabilityDTO>& predationProbabilities, const bool competitionAmongResourceSpecies, const bool saveMovements, 
+		std::vector<MovementDTO>& movements);
 
 	void activateRetaliation(Edible* prey, const DryMass& targetDryMass, const bool saveAnimalsEachDayPredationProbabilities,
-		std::ostringstream& predationProbabilitiesContent, Landscape* const landscape, const TimeStep numberOfTimeSteps,
+		std::vector<PredationProbabilityDTO>& predationProbabilities, Landscape* const landscape, const TimeStep numberOfTimeSteps,
 		const PreciseDouble& timeStepsPerDay, const bool competitionAmongResourceSpecies);
 
 	void updateTimeStepsWithoutFood();
@@ -521,7 +632,7 @@ public:
 	 * @brief Get total number of predation encounters.
 	 * @return Const reference to total encounters.
 	 */
-	const size_t& getTotalPredationEncounters() const;
+	const uint64_t& getTotalPredationEncounters() const;
 
 	/**
 	 * @brief Increase age by a given number of time steps.
@@ -607,9 +718,9 @@ public:
 	 *
 	 * @param ediblesByEdibility Vector to store potential prey with associated edibility values.
 	 * @param numberOfTimeSteps Number of simulation time steps for the search.
-	 * @param edibilitiesContent Stream to store debug information on edibility calculations.
+	 * @param edibilities 
 	 */
-	void searchAnimalsAndResourceToEat(Landscape* const landscape, std::vector<std::tuple<PreciseDouble, Edible*, DryMass>>& ediblesByEdibility, const TimeStep numberOfTimeSteps, bool saveEdibilitiesFile, std::ostringstream& edibilitiesContent);
+	void searchAnimalsAndResourceToEat(Landscape* const landscape, std::vector<std::tuple<PreciseDouble, Edible*, DryMass>>& ediblesByEdibility, const TimeStep numberOfTimeSteps, bool saveEdibilitiesFile, std::vector<EdibilityDTO>& edibilities);
 
 	/**
 	 * @brief Apply plasticity to a trait value based on the animal's condition.
@@ -668,7 +779,10 @@ public:
 	 *
 	 * @return Reference to the current instar.
 	 */
-	const Instar& getInstarToEvaluateCells() const;
+	inline constexpr Instar getInstarToEvaluateCells() const noexcept
+	{
+		return instarToEvaluateCells;
+	}
 
 	/**
 	 * @brief Set a new instar for evaluating terrain cells.
@@ -770,12 +884,9 @@ public:
 	 */
 	void doInitialCellEvaluation();
 
-	/**
-	 * @brief Convert the animal state to a string for display or logging.
-	 *
-	 * @return std::string Representation of the animal state.
-	 */
-	operator std::string() const;
+	AnimalNonStatisticalDTO toDTO() const noexcept;
+
+	static void getHeader(std::string& header);
 
 	/**
       * @brief Serializes the object for persistence.
@@ -827,7 +938,7 @@ protected:
 	unsigned int stepsAttempted;
 
 	/** @brief Total number of predation encounters the animal has experienced. */
-	size_t totalPredationEncounters;
+	uint64_t totalPredationEncounters;
 
 	/** @brief Identifier of the predator that last predated this animal. */
 	EdibleID predatedByID;
@@ -890,7 +1001,7 @@ protected:
 	DryMass foodMassEatenCurrentTimeStep;
 
 	/** @brief Number of predation encounters in the current day. */
-	size_t predationEncountersCurrentDay;
+	uint64_t predationEncountersCurrentDay;
 
 	/** @brief Net growth of the animal from the previous time step. */
 	DryMass previousNetGrowth;
@@ -938,7 +1049,7 @@ protected:
 	 * @brief Returns the number of predation encounters the animal has had during the current day.
 	 * @return Reference to the current day predation encounters.
 	 */
-	const size_t& getPredationEncountersCurrentDay() const;
+	const uint64_t& getPredationEncountersCurrentDay() const;
 
 	/**
 	 * @brief Sets parent-related attributes for the animal.
@@ -1050,18 +1161,18 @@ protected:
 	
 	void habitatShift(Landscape* const landscape);
 
-	void feed(const bool saveActivity, std::ostringstream& activityContent, const TimeStep numberOfTimeSteps, const PreciseDouble& timeStepsPerDay);
+	void feed(const bool saveActivity, std::vector<ActivityDTO>& activities, const TimeStep numberOfTimeSteps, const PreciseDouble& timeStepsPerDay);
 
 	bool predate(const bool retaliation, const bool saveAnimalsEachDayPredationProbabilities, 
-		std::ostringstream& predationProbabilitiesContent, Landscape* const landscape, const TimeStep numberOfTimeSteps, 
+		std::vector<PredationProbabilityDTO>& predationProbabilities, Landscape* const landscape, const TimeStep numberOfTimeSteps, 
 		const PreciseDouble& timeStepsPerDay, const bool competitionAmongResourceSpecies);
 
 	virtual void move(Landscape* const landscape, const TimeStep numberOfTimeSteps, const PreciseDouble& timeStepsPerDay, 
-        const bool saveMovements, std::ostringstream& movementsContent, const bool saveActivity, 
-        std::ostringstream& activityContent)=0;
+        const bool saveMovements, std::vector<MovementDTO>& movements, const bool saveActivity, 
+        std::vector<ActivityDTO>& activities)=0;
 
 	DryMass computeHandlingFoodMass() const;
-	void applyHandlingTime(const DryMass& foodMass, const bool saveActivity, std::ostringstream& activityContent, const TimeStep actualTimeStep, const PreciseDouble& timeStepsPerDay);
+	void applyHandlingTime(const DryMass& foodMass, const bool saveActivity, std::vector<ActivityDTO>& activities, const TimeStep actualTimeStep, const PreciseDouble& timeStepsPerDay);
 
 	PreciseDouble getDistanceTravelled() const { return distanceTravelled; }
 

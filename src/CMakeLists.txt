@@ -23,13 +23,14 @@ if(BUILD_APP OR BUILD_TESTS)
     find_package(Boost REQUIRED COMPONENTS geometry serialization)
     find_path(RAPIDCSV_INCLUDE_DIRS "rapidcsv.h")
     find_package(TBB CONFIG REQUIRED)
+    find_package(fmt CONFIG REQUIRED)
+
+    find_package(PkgConfig REQUIRED)
+    pkg_check_modules(GPERF_PROFILER REQUIRED IMPORTED_TARGET libprofiler)
 
 
     # Define an interface configuration target to propagate global build policies
     add_library(weaver_options INTERFACE)
-
-    # Compilation Directives & Feature Requirements
-    target_compile_features(weaver_options INTERFACE cxx_std_20)
 
     target_include_directories(weaver_options
         INTERFACE
@@ -40,7 +41,15 @@ if(BUILD_APP OR BUILD_TESTS)
     target_link_libraries(weaver_options
         INTERFACE
             Boost::serialization
+            fmt::fmt
     )
+
+    if(PROFILER)
+        target_link_libraries(weaver_options
+            INTERFACE
+                PkgConfig::GPERF_PROFILER
+        )
+    endif()
 
     if(WIN32)
         target_compile_definitions(weaver_options INTERFACE 

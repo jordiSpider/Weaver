@@ -49,7 +49,7 @@ PreciseDouble DecisionProbability::calculateValue(const AnimalNonStatistical& pr
 	{
 		if(computedWeights[i])
 		{
-			const PreciseDouble weight = getWeightIndividualTraits(predator).at(i).getPhenotypicValue();
+			const PreciseDouble weight = getWeightIndividualTraits(predator)[i].getPhenotypicValue();
 
 			if(additiveMechanism)
 			{

@@ -58,7 +58,9 @@ public:
      * @param type The enum value.
      * @return The string name of the enum value.
      */
-	static std::string to_string(const T& type);
+	static inline constexpr std::string to_string(const T& type) {
+		return std::string(magic_enum::enum_name(type)); 
+	};
 	
 	/**
      * @brief Returns a tab-separated string of all enum names (useful as a header).
@@ -98,12 +100,6 @@ const std::vector<T> EnumClass<T>::getEnumValues()
 	}
 
 	return values;
-}
-
-template <typename T>
-std::string EnumClass<T>::to_string(const T& type) 
-{ 
-	return std::string(magic_enum::enum_name(type)); 
 }
 
 template <typename T>

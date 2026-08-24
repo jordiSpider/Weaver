@@ -66,12 +66,6 @@ public:
     ) const;
 
     /**
-     * @brief Convert the temperature section to a string representation.
-     * @return String representation of the Temperature-Size Rule temperature section.
-     */
-    std::string to_string() const;
-
-    /**
      * @brief Update the species-level temperature section this individual trait refers to.
      * @param newTraitTemperatureSection Pointer to the new TempSizeRuleTraitTemperatureSection.
      */

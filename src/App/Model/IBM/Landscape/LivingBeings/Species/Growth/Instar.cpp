@@ -11,45 +11,12 @@ Instar Instar::convertToIndex(const unsigned int value)
 }
 
 
-
-Instar::Instar()
-{
-    this->value = 0;
-}
-
-Instar::Instar(unsigned int value)
-{
-    #ifdef DEBUG
-        if(value == 0)
-        {
-            throwLineInfoException("Instar value must be greater than or equal to 1.");
-        }
-    #endif
-
-    this->value = value - 1;
-}
-
-Instar::Instar(const Instar &other)
-{
-    this->value = other.getValue();
-}
-
 Instar& Instar::operator=(const Instar& other)
 {
     if (this != &other) {
         value = other.value;
     }
     return *this;
-}
-
-Instar::~Instar()
-{
-
-}
-
-unsigned int Instar::getValue() const 
-{ 
-    return value; 
 }
 
 void Instar::moveOnPreviousInstar() 

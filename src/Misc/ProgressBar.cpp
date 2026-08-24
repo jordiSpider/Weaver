@@ -45,19 +45,7 @@ ProgressBar::ProgressBar(View* view, const size_t maxCounter)
 	view->updateLog("0%|" + string(width, empty) + "|100%\n   ");
 }
 
-/**
- * @brief Advances the counter by one unit.
- *
- * Each call increments the progress counter. When the accumulated progress exceeds
- * the next step threshold, new filled characters are printed to the output view.
- *
- * The function prints only the necessary characters instead of redrawing the full
- * bar for efficiency.
- *
- * @note This function is designed for high-frequency updates, such as loops over
- * vector elements, where `maxCounter` corresponds to the vector’s size.
- */
-void ProgressBar::update() {
+void ProgressBar::update(size_t increment) {
 	#ifdef DEBUG
 	if(counter > maxCounter)
 	{
@@ -65,7 +53,7 @@ void ProgressBar::update() {
 	}
 	#endif
 
-	counter++;
+	counter += increment;
 
 	string progress = "";
 

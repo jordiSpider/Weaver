@@ -12,41 +12,37 @@ Array::Array(const json& info)
 {
     try
 	{
-		if(!info.at("minItems").is_number_integer()) {
+		minItems = info.value("minItems", 0);
+
+		if(info.contains("minItems") && !info.at("minItems").is_number_integer()) {
 			throwValidatorSchemaJSONException("': Not an element of type 'integer'");
 		}
-
-		minItems = info["minItems"];
 	}
 	catch(ValidatorSchemaJSONException& e)
 	{
 		e.addPreMessage(".minItems");
 		throw;
 	}
-	catch(const json::out_of_range&) 
-    {
-        minItems = 0;
-    }
 
 
 	try
 	{
-		if(!info.at("maxItems").is_number_integer()) {
+		maxItems = info.value("maxItems", numeric_limits<size_t>::max());
+
+		if(info.contains("maxItems") && !info.at("maxItems").is_number_integer()) {
 			throwValidatorSchemaJSONException("': Not an element of type 'integer'");
 		}
-
-		maxItems = info["maxItems"];
 	}
 	catch(ValidatorSchemaJSONException& e)
 	{
 		e.addPreMessage(".maxItems");
 		throw;
 	}
-	catch(const json::out_of_range&) 
-    {
-        maxItems = numeric_limits<size_t>::max();
-    }
 
+
+	if(!info.contains("items")) {
+		throwValidatorSchemaJSONException("': Property 'items' not defined");
+	}
 
 	try
 	{
@@ -61,28 +57,25 @@ Array::Array(const json& info)
 		e.addPreMessage(".items");
 		throw;
 	}
-	catch(const json::out_of_range&) 
-	{
-		throwValidatorSchemaJSONException("': Property 'items' not defined");
+
+
+	if(!info.contains("itemsOrder")) {
+		itemsOrder = make_pair<>(false, ItemsOrder::increasing);
 	}
+	else {
+		try
+		{
+			if(!info.at("itemsOrder").is_string()) {
+				throwValidatorSchemaJSONException("': Not an element of type 'string'");
+			}
 
-
-	try
-	{
-		if(!info.at("itemsOrder").is_string()) {
-			throwValidatorSchemaJSONException("': Not an element of type 'string'");
+			itemsOrder = make_pair<>(true, EnumClass<ItemsOrder>::stringToEnumValue(info["itemsOrder"]));
 		}
-
-		itemsOrder = make_pair<>(true, EnumClass<ItemsOrder>::stringToEnumValue(info["itemsOrder"]));
-	}
-	catch(ValidatorSchemaJSONException& e)
-	{
-		e.addPreMessage(".itemsOrder");
-		throw;
-	}
-	catch(const json::out_of_range&) 
-	{
-        itemsOrder = make_pair<>(false, ItemsOrder::increasing);
+		catch(ValidatorSchemaJSONException& e)
+		{
+			e.addPreMessage(".itemsOrder");
+			throw;
+		}
 	}
 }
 

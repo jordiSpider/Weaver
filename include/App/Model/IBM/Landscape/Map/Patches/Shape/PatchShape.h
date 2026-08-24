@@ -30,17 +30,17 @@
 class PatchShape {
 protected:
     /// Influence zone of the patch (geometry used for coverage calculations)
-    const RingModel* const influenceZone;
+    const RingModel influenceZone;
 
     /// Description of the patch shape
     std::string description;
 
     /**
      * @brief Protected constructor for derived classes.
-     * @param influenceZone Pointer to the geometry representing the patch's influence.
+     * @param influenceZone Geometry representing the patch's influence.
      * @param description Textual description of the patch shape.
      */
-    PatchShape(const RingModel* const influenceZone, const std::string description);
+    PatchShape(const RingModel& influenceZone, const std::string description);
 
     /**
      * @brief Deleted copy constructor (PatchShape is non-copyable).
@@ -56,7 +56,7 @@ protected:
      * @brief Returns the influence zone of the patch.
      * @return Pointer to the RingModel representing the patch influence zone.
      */
-    const RingModel* getInfluenceZone() const;    
+    const RingModel& getInfluenceZone() const;    
 
 public:
     /**
@@ -85,10 +85,10 @@ public:
 
     /**
      * @brief Checks the coverage level of a given cell by this patch.
-     * @param cellBounds Pointer to the cell's RingModel bounds.
+     * @param cellBounds Bounds of the landscape cell to check.
      * @return Coverage enum value indicating how much of the cell is covered.
      */
-    virtual Coverage checkCoverage(const RingModel* const cellBounds) const;
+    virtual Coverage checkCoverage(const RingModel& cellBounds) const;
     
     /**
      * @brief Returns the textual description of the patch.

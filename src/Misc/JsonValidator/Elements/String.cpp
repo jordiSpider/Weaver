@@ -8,94 +8,88 @@ using json = nlohmann::json;
 String::String(const json& info)
     : Element(info)
 {
-    try
-	{
-		if(!info.at("enum").is_array()) {
-			throwValidatorSchemaJSONException("': Not an element of type 'array'");
-		}
+	if(!info.contains("enum")) {
+		enumValues = make_pair<>(false, vector<string>());
+	}
+	else {
+		try
+		{
+			if(!info.at("enum").is_array()) {
+				throwValidatorSchemaJSONException("': Not an element of type 'array'");
+			}
 
-		for(size_t i = 0; i < info["enum"].size(); i++) {
-			try
-			{
-				if(!info["enum"][i].is_string()) {
-					throwValidatorSchemaJSONException("': Not an element of type 'string'");
+			for(size_t i = 0; i < info["enum"].size(); i++) {
+				try
+				{
+					if(!info["enum"][i].is_string()) {
+						throwValidatorSchemaJSONException("': Not an element of type 'string'");
+					}
+				}
+				catch(ValidatorSchemaJSONException& e)
+				{
+					e.addPreMessage(".item_" + to_string(i));
+					throw;
 				}
 			}
-			catch(ValidatorSchemaJSONException& e)
-			{
-				e.addPreMessage(".item_" + to_string(i));
-				throw;
-			}
-		}
 
-        enumValues = make_pair<>(true, info["enum"]);
+			enumValues = make_pair<>(true, info["enum"]);
+		}
+		catch(ValidatorSchemaJSONException& e)
+		{
+			e.addPreMessage(".enum");
+			throw;
+		}
 	}
-	catch(ValidatorSchemaJSONException& e)
-	{
-		e.addPreMessage(".enum");
-		throw;
-	}
-	catch(const json::out_of_range&) 
-    {
-        enumValues = make_pair<>(false, vector<string>());
-    }
 
 
 	try
 	{
-		if(!info.at("minLength").is_number_integer()) {
+		minLength = info.value("minLength", 0);
+
+		if(info.contains("minLength") && !info.at("minLength").is_number_integer()) {
 			throwValidatorSchemaJSONException("': Not an element of type 'integer'");
 		}
-
-		minLength = info["minLength"];
 	}
 	catch(ValidatorSchemaJSONException& e)
 	{
 		e.addPreMessage(".minLength");
 		throw;
 	}
-	catch(const json::out_of_range&) 
-    {
-        minLength = 0;
-    }
 
 
 	try
 	{
-		if(!info.at("maxLength").is_number_integer()) {
+		maxLength = info.value("maxLength", numeric_limits<size_t>::max());
+
+		if(info.contains("maxLength") && !info.at("maxLength").is_number_integer()) {
 			throwValidatorSchemaJSONException("': Not an element of type 'integer'");
 		}
-
-		maxLength = info["maxLength"];
 	}
 	catch(ValidatorSchemaJSONException& e)
 	{
 		e.addPreMessage(".maxLength");
 		throw;
 	}
-	catch(const json::out_of_range&) 
-    {
-        maxLength = numeric_limits<size_t>::max();
-    }
 
 
-	try
-	{
-		if(!info.at("pattern").is_string()) {
-			throwValidatorSchemaJSONException("': Not an element of type 'string'");
+	if(!info.contains("pattern")) {
+		patternStr = make_pair<>(false, "");
+	}
+	else {
+		try
+		{
+			if(!info.at("pattern").is_string()) {
+				throwValidatorSchemaJSONException("': Not an element of type 'string'");
+			}
+
+			patternStr = make_pair<>(true, info["pattern"]);
 		}
-
-        patternStr = make_pair<>(true, info["pattern"]);
+		catch(ValidatorSchemaJSONException& e)
+		{
+			e.addPreMessage(".pattern");
+			throw;
+		}
 	}
-	catch(ValidatorSchemaJSONException& e)
-	{
-		e.addPreMessage(".pattern");
-		throw;
-	}
-	catch(const json::out_of_range&) 
-    {
-        patternStr = make_pair<>(false, "");
-    }
 }
 
 String::String(const String& other, const bool nullProperty)

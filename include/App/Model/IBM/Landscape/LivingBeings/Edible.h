@@ -118,6 +118,11 @@ public:
      */
 	virtual EdibleGrowth& getMutableGrowthBuildingBlock()=0;
 
+     inline constexpr Instar getInstar() const noexcept
+     { 
+          return getGrowthBuildingBlock().getInstar(); 
+     }
+
 	/// Increases the number of predation encounters
 	virtual void increasePredationEncounters()=0;
 

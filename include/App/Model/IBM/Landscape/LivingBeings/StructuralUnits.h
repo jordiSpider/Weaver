@@ -72,6 +72,10 @@ public:
     /// Stream output operator
     friend std::ostream& operator<<(std::ostream& os, const DryMass& dryMass);
 
+    friend std::string format_as(const DryMass& dryMass) {
+        return format_as(dryMass.getValue());
+    }
+
     /**
     * @brief Serializes the object for persistence.
     *
@@ -320,6 +324,10 @@ public:
     
     /// Stream output operator
     friend std::ostream& operator<<(std::ostream& os, const WetMass& wetMass);
+
+    friend std::string format_as(const WetMass& wetMass) {
+        return format_as(wetMass.getValue());
+    }
 
     /**
     * @brief Serializes the object for persistence.
@@ -570,6 +578,10 @@ public:
     
     /// Stream output operator
     friend std::ostream& operator<<(std::ostream& os, const Length& length);
+
+    friend std::string format_as(const Length& length) {
+        return format_as(length.getValue());
+    }
 
     /**
     * @brief Serializes the object for persistence.

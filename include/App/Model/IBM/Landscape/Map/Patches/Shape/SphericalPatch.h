@@ -35,9 +35,9 @@ protected:
      * @brief Generates the influence zone of the spherical patch as a RingModel.
      * @param center Coordinates of the patch center.
      * @param radius Radius of the sphere.
-     * @return Pointer to a RingModel representing the influence zone.
+     * @return RingModel representing the influence zone.
      */
-    const RingModel* generateInfluenceZone(const std::vector<double> &center, const double &radius);
+    RingModel generateInfluenceZone(const std::vector<double> &center, const double &radius);
 
 public:
     /**

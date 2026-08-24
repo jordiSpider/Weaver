@@ -26,7 +26,7 @@ vector<Trait*> PreferencesTrait::generateTraits(std::vector<IndividualLevelTrait
 	for(const PreferencesTraitType type : EnumClass<PreferencesTraitType>::getEnumValues())
 	{
 		preferencesTraits.push_back(new PreferencesTrait(
-			individualLevelTraits, type, definitionConfig[DecisionsTrait::getJsonFieldName()][PreferencesTrait::getJsonFieldName()].at(EnumClass<PreferencesTraitType>::to_string(type)), 
+			individualLevelTraits, type, definitionConfig[DecisionsTrait::getJsonFieldName()][PreferencesTrait::getJsonFieldName()][EnumClass<PreferencesTraitType>::to_string(type)], 
 			individualLevelTraitsOrder
 		));
 	}

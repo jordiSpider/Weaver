@@ -239,11 +239,11 @@ void SpatialTree::obtainLeafAndBranchInhabitableTerrainCells(vector<vector<vecto
     {
         if(static_cast<SpatialTreeTerrainCell*>((*inhabitableTerrainCell))->isLeaf())
         {
-            leafInhabitableTerrainCells.at(static_cast<const PointSpatialTree&>((*inhabitableTerrainCell)->getPosition()).getDepth()).push_back(inhabitableTerrainCell);
+            leafInhabitableTerrainCells[static_cast<const PointSpatialTree&>((*inhabitableTerrainCell)->getPosition()).getDepth()].push_back(inhabitableTerrainCell);
         }
         else
         {
-            branchInhabitableTerrainCells.at(static_cast<const PointSpatialTree&>((*inhabitableTerrainCell)->getPosition()).getDepth()).push_back(inhabitableTerrainCell);
+            branchInhabitableTerrainCells[static_cast<const PointSpatialTree&>((*inhabitableTerrainCell)->getPosition()).getDepth()].push_back(inhabitableTerrainCell);
         }
     }
 }
@@ -265,7 +265,7 @@ void SpatialTree::obtainSpeciesInhabitableTerrainCells(vector<CustomIndexedVecto
         {
             for(unsigned int depth = 0; depth <= animalSpecies->getInstarCellDepth(instar); depth++)
             {
-                for(auto &potencialInhabitableTerrainCell : leafInhabitableTerrainCells.at(depth))
+                for(auto &potencialInhabitableTerrainCell : leafInhabitableTerrainCells[depth])
                 {
                     if(isSpeciesInhabitableTerrainCell(*animalSpecies, *potencialInhabitableTerrainCell, involvedResourceSpecies[animalSpecies->getAnimalSpeciesId()][instar]))
                     {
@@ -278,7 +278,7 @@ void SpatialTree::obtainSpeciesInhabitableTerrainCells(vector<CustomIndexedVecto
                 }
             }
 
-            for(auto &potencialInhabitableTerrainCell : branchInhabitableTerrainCells.at(animalSpecies->getInstarCellDepth(instar)))
+            for(auto &potencialInhabitableTerrainCell : branchInhabitableTerrainCells[animalSpecies->getInstarCellDepth(instar)])
             {
                 if(isSpeciesInhabitableTerrainCell(*animalSpecies, *potencialInhabitableTerrainCell, involvedResourceSpecies[animalSpecies->getAnimalSpeciesId()][instar]))
                 {
@@ -301,7 +301,7 @@ unsigned int SpatialTree::generateStatisticsPopulation(vector<CustomIndexedVecto
 
         ProgressBar progressBar(view, animalSpecies->getGrowthBuildingBlock().getInstarsRange().size() * animalSpecies->getStatisticsIndividualsPerInstar());
 
-        animalsPopulation.at(animalSpecies->getAnimalSpeciesId()).resize(animalSpecies->getGrowthBuildingBlock().getNumberOfInstars());
+        animalsPopulation[animalSpecies->getAnimalSpeciesId()].resize(animalSpecies->getGrowthBuildingBlock().getNumberOfInstars());
 
 		for(const Instar &instar : animalSpecies->getGrowthBuildingBlock().getInstarsRange())
 		{
@@ -331,7 +331,7 @@ unsigned int SpatialTree::generateStatisticsPopulation(vector<CustomIndexedVecto
                 newAnimal = static_cast<AnimalStatistical*>(get<3>(newTerrainCell));
 
 
-				animalsPopulation.at(animalSpecies->getAnimalSpeciesId()).at(instar).push_back(newAnimal);
+				animalsPopulation[animalSpecies->getAnimalSpeciesId()][instar].push_back(newAnimal);
                 populationSize++;
 
 
@@ -456,11 +456,11 @@ string SpatialTree::getMapPositionHeader() const
 }
 
 
-void SpatialTree::obtainResourceBiomass(vector<WetMass> &landscapeResourceBiomass) const
+void SpatialTree::obtainResourcesBiomass(vector<double> &resourcesBiomass) const
 {
     for(size_t i = 0; i < rootTerrainCell->getPatchApplicator().getNumberOfResources(); i++)
     {
-        landscapeResourceBiomass[i] = landscapeResourceBiomass[i] + rootTerrainCell->getPatchApplicator().getCellResource(i).getGrowthBuildingBlock().getCurrentTotalWetMass();
+        resourcesBiomass[i] = rootTerrainCell->getPatchApplicator().getCellResource(i).getGrowthBuildingBlock().getCurrentTotalWetMass().getValue().getValue();
     }
 }
 
@@ -484,6 +484,11 @@ void SpatialTree::saveWaterSnapshot(ofstream &file) const
 SpatialTree::Type SpatialTree::getType() const
 {
     return Type::SpatialTree;
+}
+
+void SpatialTree::registerCells(std::vector<TerrainCell*>& terrainCells)
+{
+    rootTerrainCell->registerCells(terrainCells, getNumberOfCellsPerAxis());
 }
 
 

@@ -10,97 +10,77 @@ Integer::Integer(const json& info)
 {
 	try
 	{
-		if(!info.at("minimum").is_number_integer()) {
+		minimum = info.value("minimum", numeric_limits<int>::min());
+
+		if(info.contains("minimum") && !info.at("minimum").is_number_integer()) {
 			throwValidatorSchemaJSONException("': Not an element of type 'integer'");
 		}
-
-		minimum = info["minimum"];
 	}
 	catch(ValidatorSchemaJSONException& e)
 	{
 		e.addPreMessage(".minimum");
 		throw;
 	}
-	catch(const json::out_of_range&)
-	{
-		minimum = numeric_limits<int>::min();
-	}
 
 
 	try
 	{
-		if(!info.at("exclusiveMinimum").is_boolean()) {
+		exclusiveMinimum = info.value("exclusiveMinimum", false);
+
+		if(info.contains("exclusiveMinimum") && !info.at("exclusiveMinimum").is_boolean()) {
 			throwValidatorSchemaJSONException("': Not an element of type 'boolean'");
 		}
-
-		exclusiveMinimum = info["exclusiveMinimum"];
 	}
 	catch(ValidatorSchemaJSONException& e)
 	{
 		e.addPreMessage(".exclusiveMinimum");
 		throw;
 	}
-	catch(const json::out_of_range&)
-	{
-		exclusiveMinimum = false;
-	}
 
 
 	try
 	{
-		if(!info.at("maximum").is_number_integer()) {
+		maximum = info.value("maximum", numeric_limits<int>::max());
+
+		if(info.contains("maximum") && !info.at("maximum").is_number_integer()) {
 			throwValidatorSchemaJSONException("': Not an element of type 'integer'");
 		}
-
-		maximum = info["maximum"];
 	}
 	catch(ValidatorSchemaJSONException& e)
 	{
 		e.addPreMessage(".maximum");
 		throw;
 	}
-	catch(const json::out_of_range&)
-	{
-		maximum = numeric_limits<int>::max();
-	}
 
 
 	try
 	{
-		if(!info.at("exclusiveMaximum").is_boolean()) {
+		exclusiveMaximum = info.value("exclusiveMaximum", false);
+		
+		if(info.contains("exclusiveMaximum") && !info.at("exclusiveMaximum").is_boolean()) {
 			throwValidatorSchemaJSONException("': Not an element of type 'boolean'");
 		}
-
-		exclusiveMaximum = info["exclusiveMaximum"];
 	}
 	catch(ValidatorSchemaJSONException& e)
 	{
 		e.addPreMessage(".exclusiveMaximum");
 		throw;
 	}
-	catch(const json::out_of_range&)
-	{
-		exclusiveMaximum = false;
-	}
 
 
 	try
 	{
-		if(!info.at("multipleOf").is_number_integer()) {
+		multipleOf = info.value("multipleOf", make_pair<>(false, 0));
+
+		if(info.contains("multipleOf") && !info.at("multipleOf").is_number_integer()) {
 			throwValidatorSchemaJSONException("': Not an element of type 'integer'");
 		}
-
-        multipleOf = make_pair<>(true, info.at("multipleOf"));
 	}
 	catch(ValidatorSchemaJSONException& e)
 	{
 		e.addPreMessage(".multipleOf");
 		throw;
 	}
-	catch(const json::out_of_range&) 
-    {
-        multipleOf = make_pair<>(false, 0);
-    }
 }
 
 Integer::Integer(const Integer& other, const bool nullProperty)

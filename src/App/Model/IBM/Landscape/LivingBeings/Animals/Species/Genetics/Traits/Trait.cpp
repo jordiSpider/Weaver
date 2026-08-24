@@ -1,5 +1,7 @@
 #include "App/Model/IBM/Landscape/LivingBeings/Animals/Species/Genetics/Traits/Trait.h"
 
+#include <fmt/format.h>
+#include <iterator>
 
 using namespace std;
 using json = nlohmann::json;
@@ -39,18 +41,14 @@ CustomIndexedVector<Trait::ExecutionOrder, std::vector<Trait*>> Trait::generateT
 	return allTraits;
 }
 
-string Trait::getHeader()
+void Trait::getHeader(std::string& header)
 {
-	auto getTraitHeader = [](const string& trait) -> string {
-		ostringstream header;
+	auto getTraitHeader = [](const string& trait, std::string& header) {
+		fmt::format_to(std::back_inserter(header), "constitutive_{}_value\tphenotypic_{}_value", 
+			trait, trait
+		);
 
-		header << "constitutive_" << trait << "_value";
-
-		header << "\t" << "phenotypic_" << trait << "_value";
-
-		header << "\t" << TraitTemperatureSection::getHeader(trait);
-
-        return header.str();
+		TraitTemperatureSection::getHeader(trait, header);
     };
 
 
@@ -64,16 +62,11 @@ string Trait::getHeader()
 	}
 
 
-	ostringstream header;
-
-	header << getTraitHeader(allTraitStrVector[0]);
-
-	for(size_t i = 1; i < allTraitStrVector.size(); i++)
+	for(size_t i = 0; i < allTraitStrVector.size(); i++)
 	{
-		header << "\t" << getTraitHeader(allTraitStrVector[i]);
+		header.append("\t");
+		getTraitHeader(allTraitStrVector[i], header);
 	}
-
-	return header.str();
 }
 
 

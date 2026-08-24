@@ -15,8 +15,12 @@ else()
     add_executable(${CLI_EXE_NAME} mainCLI.cpp)
 endif()
 
-# Append a 'd' suffix to the binary name during Debug builds to avoid overwriting Release assets
-set_target_properties(${CLI_EXE_NAME} PROPERTIES DEBUG_POSTFIX "_d")
+# Append a suffix to the binary name during Debug builds to avoid overwriting Release assets
+if(ENABLE_ASAN)
+    set_target_properties(${CLI_EXE_NAME} PROPERTIES DEBUG_POSTFIX "_d_asan")
+else()
+    set_target_properties(${CLI_EXE_NAME} PROPERTIES DEBUG_POSTFIX "_d")
+endif()
 
 # ---------------------------------------------------------
 # 🔗 Linkage & Dependency Propagation

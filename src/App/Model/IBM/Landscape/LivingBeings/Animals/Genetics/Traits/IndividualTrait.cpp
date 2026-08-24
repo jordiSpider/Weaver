@@ -4,8 +4,30 @@
 #include "App/Model/IBM/Landscape/LivingBeings/Animals/Genetics/Traits/TempSizeRuleIndividualTraitTemperatureSection.h"
 #include "App/Model/IBM/Landscape/LivingBeings/Animals/Species/Genetics/Traits/TemperatureSection/TempSizeRuleTraitTemperatureSection.h"
 
+#include <fmt/format.h>
+#include <iterator>
 
 using namespace std;
+
+
+
+
+
+void TraitDTO::formatToBuffer(std::string& buffer) const
+{
+    fmt::format_to(std::back_inserter(buffer), "\t{}\t{}",
+		constitutiveValue, phenotypicValue
+	);
+
+    if(isPawarTrait)
+    {
+        pawarTraitDTO.formatToBuffer(buffer);
+    }
+    else
+    {
+        pawarTraitDTO.formatToBufferNA(buffer);
+    }
+}
 
 
 
@@ -90,26 +112,22 @@ void IndividualTrait::setPhenotypicValue(const PreciseDouble& newValue, const Ti
 	phenotypicValue = newValue;
 }
 
-string IndividualTrait::to_string() const
+void IndividualTrait::flatten(TraitDTO& dto) const noexcept
 {
-    ostringstream content;
-
-    content << constitutiveValue << "\t" << phenotypicValue;
+    dto.constitutiveValue = constitutiveValue.getValue();
+    dto.phenotypicValue = phenotypicValue.getValue();
+    
+    dto.isPawarTrait = false;
 
     if(trait->isThermallyDependent())
     {
-        content << "\t" << std::visit([&](auto&& section) -> string {
-            return section.to_string();
+        std::visit([&](auto&& section) {
+            if constexpr (std::is_same_v<std::decay_t<decltype(section)>, PawarIndividualTraitTemperatureSection>) {
+                dto.isPawarTrait = true;
+                section.flatten(dto.pawarTraitDTO);
+            }
         }, temperatureSection);
     }
-    else
-    {
-        content << "\t" << PawarIndividualTraitTemperatureSection::to_string_NA();
-    }
-
-    
-
-    return content.str();
 }
 
 IndividualLevelTrait::Type IndividualTrait::getType() const

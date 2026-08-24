@@ -85,7 +85,7 @@ void BranchCellResource::setSpeciesGrowth(SpeciesGrowth* newSpeciesGrowth)
 	growthBuildingBlock.setSpeciesGrowth(newSpeciesGrowth);
 }
 
-DryMass BranchCellResource::calculateDryMassAvailable(const bool fullCoverage, const PointContinuous* const sourcePosition, const PreciseDouble &radius, const RingModel* const radiusArea) const
+DryMass BranchCellResource::calculateDryMassAvailable(const bool fullCoverage, const PointContinuous* const sourcePosition, const PreciseDouble &radius, const RingModel& radiusArea) const
 {
 	DryMass dryMassAvailable(0.0);
 
@@ -101,7 +101,7 @@ DryMass BranchCellResource::calculateDryMassAvailable(const bool fullCoverage, c
 
             if(!childFullCoveraged)
             {
-                childFullCoveraged = Geometry::fullCoveredBySphere(&child->getEffectiveArea(), *sourcePosition, radius);
+                childFullCoveraged = Geometry::fullCoveredBySphere(child->getEffectiveArea(), *sourcePosition, radius);
             }
 
             dryMassAvailable = dryMassAvailable + child->getPatchApplicator().getCellResource(getSpecies()->getResourceSpeciesId()).calculateDryMassAvailable(childFullCoveraged, sourcePosition, radius, radiusArea);
@@ -115,19 +115,15 @@ DryMass BranchCellResource::calculateDryMassAvailable(const bool fullCoverage, c
 
 void BranchCellResource::substractBiomass(const DryMass& dryMassToBeSubstracted, const PointContinuous &sourcePosition, const PreciseDouble &radius, const bool competitionAmongResourceSpecies)
 {
-    bool fullCoverage = Geometry::fullCoveredBySphere(&getTerrainCell()->getEffectiveArea(), sourcePosition, radius);
+    bool fullCoverage = Geometry::fullCoveredBySphere(getTerrainCell()->getEffectiveArea(), sourcePosition, radius);
 
     if(fullCoverage)
     {
-        substractBiomass(dryMassToBeSubstracted, fullCoverage, sourcePosition, radius, nullptr, competitionAmongResourceSpecies);
+        substractBiomass(dryMassToBeSubstracted, fullCoverage, sourcePosition, radius, RingModel(), competitionAmongResourceSpecies);
     }
     else
     {
-        RingModel* radiusArea = Geometry::makeSphere(sourcePosition, radius);
-
-        substractBiomass(dryMassToBeSubstracted, fullCoverage, sourcePosition, radius, radiusArea, competitionAmongResourceSpecies);
-    
-        delete radiusArea;
+        substractBiomass(dryMassToBeSubstracted, fullCoverage, sourcePosition, radius, Geometry::makeSphere(sourcePosition, radius), competitionAmongResourceSpecies);
     }
     
 
@@ -137,7 +133,7 @@ void BranchCellResource::substractBiomass(const DryMass& dryMassToBeSubstracted,
 	}
 }
 
-void BranchCellResource::substractBiomass(const DryMass& dryMassToBeSubstracted, const bool fullCoverage, const PointContinuous &sourcePosition, const PreciseDouble &radius, const RingModel* const radiusArea, const bool competitionAmongResourceSpecies)
+void BranchCellResource::substractBiomass(const DryMass& dryMassToBeSubstracted, const bool fullCoverage, const PointContinuous &sourcePosition, const PreciseDouble &radius, const RingModel& radiusArea, const bool competitionAmongResourceSpecies)
 {
     DryMass totalDryMassAvailable = calculateDryMassAvailable(fullCoverage, &sourcePosition, radius, radiusArea);
 
@@ -150,7 +146,7 @@ void BranchCellResource::substractBiomass(const DryMass& dryMassToBeSubstracted,
 
             if(!childFullCoverage)
             {
-                childFullCoverage = Geometry::fullCoveredBySphere(&child->getEffectiveArea(), sourcePosition, radius);
+                childFullCoverage = Geometry::fullCoveredBySphere(child->getEffectiveArea(), sourcePosition, radius);
             }
 
 

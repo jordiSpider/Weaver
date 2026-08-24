@@ -1,8 +1,24 @@
 #include "App/Model/IBM/Landscape/LivingBeings/Animals/Genetics/Genetics.h"
 
 
-
 using namespace std;
+
+
+
+
+
+
+void GeneticsDTO::formatToBuffer(std::string& buffer) const
+{
+	for (uint16_t i = 0; i < numTraits; ++i) 
+	{
+		traits[i].formatToBuffer(buffer);
+	}
+}
+
+
+
+
 
 
 Genetics::Genetics()
@@ -48,6 +64,8 @@ Genetics::~Genetics()
 
 void Genetics::initTraits(const Temperature& temperature, const TimeStep actualTimeStep, const PreciseDouble &coefficientForMassAforMature, const PreciseDouble &scaleForMassBforMature, const Temperature& tempFromLab)
 {
+	uint16_t numTraits = 0u;
+
 	allIndividualTraits.resize(EnumClass<Trait::ExecutionOrder>::size());
 
 	for(Trait::ExecutionOrder order : EnumClass<Trait::ExecutionOrder>::getEnumValues())
@@ -62,6 +80,13 @@ void Genetics::initTraits(const Temperature& temperature, const TimeStep actualT
 				actualTimeStep, coefficientForMassAforMature, scaleForMassBforMature, tempFromLab
 			);
 		}
+
+		numTraits += speciesGenetics->getAllTraits()[order].size();
+	}
+
+	if(numTraits >= MAX_TRAITS)
+	{
+		throwLineInfoException("Number of traits exceeds MAX_TRAITS");
 	}
 }
 
@@ -88,27 +113,19 @@ Genome& Genetics::getMutableGenome()
 	return genome; 
 }
 
-string Genetics::to_string() const
+void Genetics::flatten(GeneticsDTO& dto) const noexcept
 {
-	ostringstream content;
+	dto.numTraits = 0u;
 
-	content << allIndividualTraits[EnumClass<Trait::ExecutionOrder>::getEnumValues().at(0)][0].to_string();
-
-	for(size_t i = 1; i < allIndividualTraits[EnumClass<Trait::ExecutionOrder>::getEnumValues().at(0)].size(); i++)
+	for(const Trait::ExecutionOrder order : EnumClass<Trait::ExecutionOrder>::getEnumValues())
 	{
-		content << "\t" << allIndividualTraits[EnumClass<Trait::ExecutionOrder>::getEnumValues().at(0)][i].to_string();
-	}
-
-
-	for(size_t order = 1; order < EnumClass<Trait::ExecutionOrder>::size(); order++)
-	{
-		for(size_t i = 0; i < allIndividualTraits[EnumClass<Trait::ExecutionOrder>::getEnumValues().at(order)].size(); i++)
+		for(size_t i = 0; i < allIndividualTraits[order].size(); i++)
 		{
-			content << "\t" << allIndividualTraits[EnumClass<Trait::ExecutionOrder>::getEnumValues().at(order)][i].to_string();
+			allIndividualTraits[order][i].flatten(dto.traits[dto.numTraits]);
+
+			dto.numTraits++;
 		}
 	}
-
-	return content.str();
 }
 
 string Genetics::printTraits() const
@@ -119,19 +136,19 @@ string Genetics::printTraits() const
 
 	for(size_t order = 0; order < EnumClass<Trait::ExecutionOrder>::size(); order++)
 	{
-		for(size_t i = 0; i < allIndividualTraits[EnumClass<Trait::ExecutionOrder>::getEnumValues().at(order)].size(); i++)
+		for(size_t i = 0; i < allIndividualTraits[EnumClass<Trait::ExecutionOrder>::getEnumValues()[order]].size(); i++)
 		{
-			if(allIndividualTraits[EnumClass<Trait::ExecutionOrder>::getEnumValues().at(order)][i].getType() == IndividualLevelTrait::Type::IndividualLevel)
+			if(allIndividualTraits[EnumClass<Trait::ExecutionOrder>::getEnumValues()[order]][i].getType() == IndividualLevelTrait::Type::IndividualLevel)
 			{
 				if(firstPrint)
 				{
-					content << allIndividualTraits[EnumClass<Trait::ExecutionOrder>::getEnumValues().at(order)][i].getConstitutiveValue();
+					content << allIndividualTraits[EnumClass<Trait::ExecutionOrder>::getEnumValues()[order]][i].getConstitutiveValue();
 
 					firstPrint = false;
 				}
 				else
 				{
-					content << "\t" << allIndividualTraits[EnumClass<Trait::ExecutionOrder>::getEnumValues().at(order)][i].getConstitutiveValue();
+					content << "\t" << allIndividualTraits[EnumClass<Trait::ExecutionOrder>::getEnumValues()[order]][i].getConstitutiveValue();
 				}
 			}
 		}

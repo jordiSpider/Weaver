@@ -42,7 +42,7 @@ PatchShape* PatchShape::createInstance(const json &shapeConfig)
 }
 
 
-PatchShape::PatchShape(const RingModel* const influenceZone, const string description)
+PatchShape::PatchShape(const RingModel& influenceZone, const string description)
     : influenceZone(influenceZone),
 	  description(description)
 {
@@ -51,7 +51,7 @@ PatchShape::PatchShape(const RingModel* const influenceZone, const string descri
 
 PatchShape::~PatchShape()
 {
-	delete influenceZone;
+	
 }
 
 const string_view PatchShape::getDescription() const
@@ -59,12 +59,12 @@ const string_view PatchShape::getDescription() const
 	return description;
 }
 
-const RingModel* PatchShape::getInfluenceZone() const
+const RingModel& PatchShape::getInfluenceZone() const
 {
 	return influenceZone;
 }
 
-Coverage PatchShape::checkCoverage(const RingModel* const cellBounds) const
+Coverage PatchShape::checkCoverage(const RingModel& cellBounds) const
 {
 	return Geometry::checkFirstCoverageLevelBySecond(cellBounds, getInfluenceZone(), true);
 }

@@ -50,7 +50,7 @@ void LeafTerrainCell::registerEdibles(vector<vector<vector<CellResource*>>>& lan
 }
 
 void LeafTerrainCell::getRadiusTerrainCells(
-    vector<CellValue>& bestEvaluations, const PointContinuous &sourcePosition, const PreciseDouble &radius, const RingModel* const radiusArea, const size_t, const bool searchNeighborsWithFemales, const bool parentFullCoverage, AnimalNonStatistical* animalWhoIsEvaluating)
+    vector<CellValue>& bestEvaluations, const PointContinuous &sourcePosition, const PreciseDouble &radius, const RingModel& radiusArea, const size_t, const bool searchNeighborsWithFemales, const bool parentFullCoverage, AnimalNonStatistical* animalWhoIsEvaluating)
 {
     if(!getPatchApplicator().getCellObstacle().isObstacle())
     {

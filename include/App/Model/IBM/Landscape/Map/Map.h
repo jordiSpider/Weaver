@@ -270,11 +270,7 @@ public:
      */
     virtual std::string getMapPositionHeader() const=0;
 
-    /**
-     * @brief Obtains total resource biomass.
-     * @param landscapeResourceBiomass Vector to store wet mass per resource.
-     */
-    virtual void obtainResourceBiomass(std::vector<WetMass> &landscapeResourceBiomass) const=0;
+    virtual void obtainResourcesBiomass(std::vector<double> &resourcesBiomass) const=0;
     
     /**
      * @brief Saves a snapshot of a resource species to a file.
@@ -301,6 +297,8 @@ public:
      * @return Map::Type
      */
     virtual Type getType() const=0;
+
+    virtual void registerCells(std::vector<TerrainCell*>& terrainCells)=0;
 
     /**
     * @brief Serializes the Map object.

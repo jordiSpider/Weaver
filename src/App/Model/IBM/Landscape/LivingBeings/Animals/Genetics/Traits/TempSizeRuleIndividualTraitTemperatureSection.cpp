@@ -30,15 +30,6 @@ PreciseDouble TempSizeRuleIndividualTraitTemperatureSection::applyTemperatureDep
 	return MathFunctions::use_TSR(temperature, traitTemperatureSection->getTempSizeRuleVector(), coefficientForMassAforMature, scaleForMassBforMature, Length(traitValue), tempFromLab).getValue();
 }
 
-string TempSizeRuleIndividualTraitTemperatureSection::to_string() const
-{
-    ostringstream content;
-
-    content << PawarIndividualTraitTemperatureSection::to_string_NA();
-
-    return content.str();
-}
-
 void TempSizeRuleIndividualTraitTemperatureSection::setTraitTemperatureSection(const TempSizeRuleTraitTemperatureSection* newTraitTemperatureSection)
 {
     traitTemperatureSection = newTraitTemperatureSection;

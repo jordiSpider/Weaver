@@ -12,9 +12,6 @@ using namespace std;
 
 
 
-const unsigned int SpatialTreeTerrainCell::numberOfChildren = static_cast<unsigned int>(std::pow(SpatialTree::numbreOfSubdivisions, DIMENSIONS));
-
-
 SpatialTreeTerrainCell::SpatialTreeTerrainCell()
     : TerrainCell()
 {
@@ -114,9 +111,9 @@ pair<bool, pair<TerrainCell*, PointContinuous>> SpatialTreeTerrainCell::getCellB
 
             for(size_t i = 0; i < neighboursPoints.size(); i++)
             {
-                if(calculateManhattanDistanceToPoint(neighboursPoints.at(i)) == 1)
+                if(calculateManhattanDistanceToPoint(neighboursPoints[i]) == 1)
                 {
-                    auto neighbour = getCell(neighboursPoints.at(i));
+                    auto neighbour = getCell(neighboursPoints[i]);
                 
                     if(!neighbour->getPatchApplicator().getCellObstacle().isObstacle())
                     {
@@ -126,11 +123,11 @@ pair<bool, pair<TerrainCell*, PointContinuous>> SpatialTreeTerrainCell::getCellB
                         {
                             bestBearingDifference = bearingDifference;
                             surroundingTerrainCells.clear();
-                            surroundingTerrainCells.push_back(make_pair(neighbour, neighboursPoints.at(i)));
+                            surroundingTerrainCells.push_back(make_pair(neighbour, neighboursPoints[i]));
                         }
                         else if(bearingDifference == bestBearingDifference)
                         {
-                            surroundingTerrainCells.push_back(make_pair(neighbour, neighboursPoints.at(i)));
+                            surroundingTerrainCells.push_back(make_pair(neighbour, neighboursPoints[i]));
                         }
                     }
                 }  
@@ -155,12 +152,8 @@ pair<bool, pair<TerrainCell*, PointContinuous>> SpatialTreeTerrainCell::getCellB
         }
         else
         {
-            BoxModel* boxEffectiveArea = Geometry::makeBoxEffectiveArea(nextCellPosition, getSize());
-
             RingModel ringEffectiveArea;
-            boost::geometry::convert(*boxEffectiveArea, ringEffectiveArea);
-
-            delete boxEffectiveArea;
+            boost::geometry::convert(Geometry::makeBoxEffectiveArea(nextCellPosition, getSize()), ringEffectiveArea);
 
             PointContinuous closestPoint = Geometry::calculateClosestPoint(
                 ringEffectiveArea, LineStringModel({animalPosition, targetNeighborToTravelTo.second})
@@ -230,7 +223,7 @@ void SpatialTreeTerrainCell::applyFunctionToAnimals(const vector<pair<const Anim
 {
     applyUpFunctionToAnimals(
         [&polygon = getEffectiveArea()](Animal& animal) {
-            return Geometry::withinPolygon(animal.getPosition(), &polygon);
+            return Geometry::withinPolygon(animal.getPosition(), polygon);
         }, 
         animalFunctions
     );
@@ -244,33 +237,29 @@ void SpatialTreeTerrainCell::applyFunctionToAnimals(const vector<pair<const Anim
 
 void SpatialTreeTerrainCell::randomApplyFunctionToAnimals(const vector<pair<const AnimalSearchParams&, AnimalFunctions>>& animalFunctions)
 {
-    vector<size_t> indexVector;
-    Random::createIndicesVector(indexVector, 3);
+    std::array<size_t, 3> indexArray = {0, 1, 2};
+    auto& localRng = Random::getEngine();
+    std::shuffle(indexArray.begin(), indexArray.end(), localRng);
 
-    for(const auto &index : indexVector)
-    {
-        switch(index) {
-            case 0: {
+    for (const size_t index : indexArray) {
+        switch (index) {
+            case 0:
                 randomApplyUpFunctionToAnimals(
                     [&polygon = getEffectiveArea()](Animal& animal) {
-                        return Geometry::withinPolygon(animal.getPosition(), &polygon);
+                        return Geometry::withinPolygon(animal.getPosition(), polygon);
                     },
                     animalFunctions
                 );
                 break;
-            }
-            case 1: {
+            case 1:
                 TerrainCell::randomApplyFunctionToAnimals(animalFunctions);
                 break;
-            }
-            case 2: {
+            case 2:
                 randomApplyDownFunctionToAnimals(animalFunctions);
                 break;
-            }
-            default: {
+            default:
                 throwLineInfoException("Default case");
                 break;
-            }
         }
     }
 }
@@ -297,25 +286,13 @@ void SpatialTreeTerrainCell::randomApplyUpFunctionToAnimals(
         const vector<pair<const AnimalSearchParams&, AnimalFunctions>>& animalFunctions
     )
 {
-    vector<size_t> indexVector;
-    Random::createIndicesVector(indexVector, 2);
-
-    for(const auto &index : indexVector)
-    {
-        switch(index) {
-            case 0: {
-                getMutableParent()->randomApplyUpFunctionToAnimals(checker, animalFunctions);
-                break;
-            }
-            case 1: {
-                getMutableParent()->TerrainCell::randomApplyFunctionToAnimals(checker, animalFunctions);
-                break;
-            }
-            default: {
-                throwLineInfoException("Default case");
-                break;
-            }
-        }
+    auto& localRng = Random::getEngine();
+    if (localRng() & 1) {
+        getMutableParent()->randomApplyUpFunctionToAnimals(checker, animalFunctions);
+        getMutableParent()->TerrainCell::randomApplyFunctionToAnimals(checker, animalFunctions);
+    } else {
+        getMutableParent()->TerrainCell::randomApplyFunctionToAnimals(checker, animalFunctions);
+        getMutableParent()->randomApplyUpFunctionToAnimals(checker, animalFunctions);
     }
 }
 
@@ -331,7 +308,7 @@ void SpatialTreeTerrainCell::applyFunctionToEdibles(
 {
     applyUpFunctionToAnimals(
         [&polygon = getEffectiveArea()](Animal& animal) {
-            return Geometry::withinPolygon(animal.getPosition(), &polygon);
+            return Geometry::withinPolygon(animal.getPosition(), polygon);
         },
         animalFunctions
     );
@@ -342,14 +319,14 @@ void SpatialTreeTerrainCell::applyFunctionToEdibles(
 }
 
 void SpatialTreeTerrainCell::applyFunctionToEdibles(
-        function<bool(Animal&)> checker, const PointContinuous &sourcePosition, const PreciseDouble &radius, const RingModel* const radiusArea, 
+        function<bool(Animal&)> checker, const PointContinuous &sourcePosition, const PreciseDouble &radius, const RingModel& radiusArea, 
         const vector<pair<const AnimalSearchParams&, AnimalFunctions>>& animalFunctions,
         const vector<pair<const ResourceSearchParams&, ResourceFunctions>>& resourceFunctions
     )
 {   
     applyUpFunctionToAnimals(
         [&polygon = getEffectiveArea()](Animal& animal) {
-            return Geometry::withinPolygon(animal.getPosition(), &polygon);
+            return Geometry::withinPolygon(animal.getPosition(), polygon);
         }, 
         animalFunctions
     );
@@ -365,12 +342,12 @@ void SpatialTreeTerrainCell::applyFunctionToEdibles(
 /**************************/
 
 void SpatialTreeTerrainCell::applyFunctionToEdiblesInRadius(
-        const PointContinuous &sourcePosition, const PreciseDouble &radius, const RingModel* const radiusArea, 
+        const PointContinuous &sourcePosition, const PreciseDouble &radius, const RingModel& radiusArea, 
         const vector<pair<const AnimalSearchParams&, AnimalFunctions>>& animalFunctions,
         const vector<pair<const ResourceSearchParams&, ResourceFunctions>>& resourceFunctions
     )
 {   
-    if(Geometry::fullCoveredBySphere(&getEffectiveArea(), sourcePosition, radius))
+    if(Geometry::fullCoveredBySphere(getEffectiveArea(), sourcePosition, radius))
     {
         getMutableParent()->applyFunctionToEdiblesInRadius(sourcePosition, radius, radiusArea, animalFunctions, resourceFunctions);
     }
@@ -386,9 +363,9 @@ void SpatialTreeTerrainCell::applyFunctionToEdiblesInRadius(
 
 
 void SpatialTreeTerrainCell::getNeighboursCellsOnRadius(
-    vector<CellValue>& bestEvaluations, const PointContinuous &sourcePosition, const PreciseDouble &radius, const RingModel* const radiusArea, const size_t searchDepth, const bool searchNeighborsWithFemales, AnimalNonStatistical* animalWhoIsEvaluating)
+    vector<CellValue>& bestEvaluations, const PointContinuous &sourcePosition, const PreciseDouble &radius, const RingModel& radiusArea, const size_t searchDepth, const bool searchNeighborsWithFemales, AnimalNonStatistical* animalWhoIsEvaluating)
 {
-    if(Geometry::fullCoveredBySphere(&getEffectiveArea(), sourcePosition, radius))
+    if(Geometry::fullCoveredBySphere(getEffectiveArea(), sourcePosition, radius))
     {
         getMutableParent()->getNeighboursCellsOnRadius(bestEvaluations, sourcePosition, radius, radiusArea, searchDepth, searchNeighborsWithFemales, animalWhoIsEvaluating);
     }
@@ -403,11 +380,7 @@ void SpatialTreeTerrainCell::getNeighboursCellsOnRadius(
 {
     if(radius > 0.0)
     {
-        RingModel* sphere = Geometry::makeSphere(sourcePosition, radius);
-
-        getNeighboursCellsOnRadius(bestEvaluations, sourcePosition, radius, sphere, searchDepth, searchNeighborsWithFemales, animalWhoIsEvaluating);
-    
-        delete sphere;
+        getNeighboursCellsOnRadius(bestEvaluations, sourcePosition, radius, Geometry::makeSphere(sourcePosition, radius), searchDepth, searchNeighborsWithFemales, animalWhoIsEvaluating);
     }
 }
 

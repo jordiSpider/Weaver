@@ -135,7 +135,7 @@ void CellResource::deserializeCellResource(std::vector<std::pair<size_t, Resourc
 
 
 
-DryMass CellResource::calculateDryMassAvailable(const bool fullCoverage, const PointContinuous* const, const PreciseDouble &, const RingModel* const radiusArea) const
+DryMass CellResource::calculateDryMassAvailable(const bool fullCoverage, const PointContinuous* const, const PreciseDouble &, const RingModel& radiusArea) const
 {
 	if(getGrowthBuildingBlock().getCurrentTotalWetMass() > 0.0)
 	{
@@ -145,7 +145,7 @@ DryMass CellResource::calculateDryMassAvailable(const bool fullCoverage, const P
 			coveragePercent = 1.0;
 		}
 		else {
-			coveragePercent = Geometry::calculateFirstCoveragePercentBySecond(&getTerrainCell()->getEffectiveArea(), radiusArea, true);
+			coveragePercent = Geometry::calculateFirstCoveragePercentBySecond(getTerrainCell()->getEffectiveArea(), radiusArea, true);
 		}
 
 		DryMass dryMassAvailable(WetMass((getGrowthBuildingBlock().getCurrentTotalWetMass() - getGrowthBuildingBlock().getMinimumEdibleBiomass()).getValue() * coveragePercent), getSpecies()->getGrowthBuildingBlock().getConversionToWetMass(getGrowthBuildingBlock().getInstar()));
@@ -176,7 +176,7 @@ void CellResource::substractBiomass(const DryMass& dryMassToBeSubstracted, const
 	}
 }
 
-void CellResource::substractBiomass(const DryMass& dryMassToBeSubstracted, const bool, const PointContinuous &, const PreciseDouble &, const RingModel* const, const bool competitionAmongResourceSpecies)
+void CellResource::substractBiomass(const DryMass& dryMassToBeSubstracted, const bool, const PointContinuous &, const PreciseDouble &, const RingModel&, const bool competitionAmongResourceSpecies)
 {
 	getMutableGrowthBuildingBlock().substractBiomass(dryMassToBeSubstracted, competitionAmongResourceSpecies);
 }

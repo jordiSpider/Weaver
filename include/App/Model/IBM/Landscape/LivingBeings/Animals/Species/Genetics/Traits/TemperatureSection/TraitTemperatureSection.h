@@ -34,7 +34,7 @@ public:
      * @param trait Name of the trait.
      * @return Header string for CSV or data output.
      */
-    static std::string getHeader(const std::string& trait);
+    static void getHeader(const std::string& trait, std::string& header);
 
 
     /**

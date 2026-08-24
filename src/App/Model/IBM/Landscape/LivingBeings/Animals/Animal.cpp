@@ -23,7 +23,7 @@ Animal::Animal(const EdibleID id, AnimalSpecies* const mySpecies, TerrainCell* t
 	  ), 
 	  lifeStage(lifeStage), gender(getSpecies()->getRandomGender())
 {
-	
+	animalSpeciesId = getSpecies()->getAnimalSpeciesId();
 }
 
 Animal::Animal(const EdibleID id, AnimalSpecies* const mySpecies, TerrainCell* terrainCell, 
@@ -39,7 +39,7 @@ Animal::Animal(const EdibleID id, AnimalSpecies* const mySpecies, TerrainCell* t
 	  ), 
 	  lifeStage(lifeStage), gender(gender)
 {
-	
+	animalSpeciesId = getSpecies()->getAnimalSpeciesId();
 }
 
 Animal::~Animal()
@@ -95,19 +95,9 @@ void Animal::setPosition(const vector<PreciseDouble> &newPosition)
 	}
 }
 
-const LifeStage& Animal::getLifeStage() const 
-{ 
-	return lifeStage; 
-}
-
 PreciseDouble Animal::applyAllometricModel(const PreciseDouble& coefficient, const PreciseDouble& scale) const
 {
 	return coefficient * pow(getGrowthBuildingBlock().getCurrentTotalDryMass().getValue(), scale);
-}
-
-Gender Animal::getGender() const 
-{ 
-	return gender; 
 }
 
 #ifdef DEBUG
@@ -203,6 +193,8 @@ void Animal::serialize(Archive &ar, const unsigned int)
     ar & gender;
 
     ar & position;
+
+	ar & animalSpeciesId;
 }
 
 // // Specialisation

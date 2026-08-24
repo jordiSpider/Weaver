@@ -2,6 +2,7 @@
 #include "App/Model/IBM/Landscape/Map/SpatialTree/TerrainCells/PatchApplicator/Moisture/BranchCellMoisture.h"
 
 #include "App/Model/IBM/Landscape/Map/SpatialTree/TerrainCells/BranchTerrainCell.h"
+#include "App/Model/IBM/Landscape/Map/SpatialTree.h"
 
 using namespace std;
 
@@ -43,7 +44,7 @@ bool BranchCellMoisture::calculateInEnemyFreeSpace(const BranchTerrainCell* cons
         }
     );
 
-    return PreciseDouble(static_cast<double>(sumInEnemyFreeSpace)) / PreciseDouble(static_cast<double>(SpatialTreeTerrainCell::numberOfChildren)) >= 0.5;
+    return PreciseDouble(static_cast<double>(sumInEnemyFreeSpace)) / PreciseDouble(static_cast<double>(SpatialTree::numberOfChildren)) >= 0.5;
 }
 
 bool BranchCellMoisture::calculateInCompetitorFreeSpace(const BranchTerrainCell* const summaryTerrainCell)
@@ -55,7 +56,7 @@ bool BranchCellMoisture::calculateInCompetitorFreeSpace(const BranchTerrainCell*
         }
     );
 
-    return PreciseDouble(static_cast<double>(sumInCompetitorFreeSpace)) / PreciseDouble(static_cast<double>(SpatialTreeTerrainCell::numberOfChildren)) >= 0.5;
+    return PreciseDouble(static_cast<double>(sumInCompetitorFreeSpace)) / PreciseDouble(static_cast<double>(SpatialTree::numberOfChildren)) >= 0.5;
 }
 
 
@@ -116,7 +117,7 @@ void BranchCellMoisture::updateTemperature()
             sumTemperature += child->getPatchApplicator().getCellMoisture().getTemperature();
         }
 
-        sumTemperature.setTemperatureCelsius(sumTemperature.getTemperatureCelsius() / static_cast<double>(SpatialTreeTerrainCell::numberOfChildren));
+        sumTemperature.setTemperatureCelsius(sumTemperature.getTemperatureCelsius() / static_cast<double>(SpatialTree::numberOfChildren));
         setTemperature(sumTemperature);
     }
 }
@@ -150,7 +151,7 @@ void BranchCellMoisture::addTemperatureRange(unordered_set<Temperature>& globalT
 
         for(const vector<Temperature>& childTemperatureCycle : childrenTemperatureCycle)
         {
-            timeStepTemperature = timeStepTemperature + childTemperatureCycle.at(i % childTemperatureCycle.size());
+            timeStepTemperature = timeStepTemperature + childTemperatureCycle[i % childTemperatureCycle.size()];
         }
 
         timeStepTemperature = timeStepTemperature / static_cast<double>(childrenTemperatureCycle.size());
@@ -209,7 +210,7 @@ void BranchCellMoisture::updateRelativeHumidity()
             }
         );
 
-        setMoisture(sumMoisture / static_cast<double>(SpatialTreeTerrainCell::numberOfChildren));   
+        setMoisture(sumMoisture / static_cast<double>(SpatialTree::numberOfChildren));   
     }
 }
 

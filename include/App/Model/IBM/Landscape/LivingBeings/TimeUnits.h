@@ -63,6 +63,10 @@ public:
     /// Returns the numeric value of the time step
     friend std::ostream& operator<<(std::ostream& os, const TimeStep& timeStep);
 
+    friend std::string format_as(const TimeStep& timeStep) {
+        return std::to_string(timeStep.getValue());
+    }
+
     /**
     * @brief Serializes the object for persistence.
     *
@@ -249,6 +253,10 @@ public:
     
     /// Stream output operator
     friend std::ostream& operator<<(std::ostream& os, const Day& day);
+
+    friend std::string format_as(const Day& day) {
+        return format_as(day.getValue());
+    }
 
     /**
     * @brief Serializes the object for persistence.

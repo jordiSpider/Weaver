@@ -26,7 +26,7 @@ vector<Trait*> PredationProbabilityWeightTrait::generateTraits(std::vector<Indiv
 	for(const PredationProbabilityWeightType type : EnumClass<PredationProbabilityWeightType>::getEnumValues())
 	{
 		predationProbabilityWeight.push_back(new PredationProbabilityWeightTrait(
-			individualLevelTraits, type, definitionConfig[DecisionsTrait::getJsonFieldName()][PredationProbabilityWeightTrait::getJsonFieldName()].at(EnumClass<PredationProbabilityWeightType>::to_string(type)), 
+			individualLevelTraits, type, definitionConfig[DecisionsTrait::getJsonFieldName()][PredationProbabilityWeightTrait::getJsonFieldName()][EnumClass<PredationProbabilityWeightType>::to_string(type)], 
 			individualLevelTraitsOrder
 		));
 	}

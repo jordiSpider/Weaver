@@ -102,7 +102,7 @@ public:
      * @param pdfThreshold Threshold for probability density functions.
      * @param numberOfExistingSpecies Number of existing species for initialization purposes.
      */
-	AnimalSpecies(const AnimalSpecies::ID& speciesId, const AnimalSpeciesID& animalSpeciesId, const nlohmann::json &info, const PreciseDouble& timeStepsPerDay, const PreciseDouble& pdfThreshold, const size_t numberOfExistingSpecies);
+	AnimalSpecies(const AnimalSpecies::ID& speciesId, const AnimalSpeciesID& animalSpeciesId, const nlohmann::json &info, const PreciseDouble& timeStepsPerDay, const PreciseDouble& pdfThreshold, const size_t numberOfExistingSpecies, std::vector<std::string>& stringPool);
 	
 	/**
      * @brief Destructor.
@@ -527,7 +527,10 @@ public:
 	void generateInvolvedResourceSpecies(const std::vector<Species*> &existingSpecies, const std::vector<AnimalSpecies*>& existingAnimalSpecies, CustomIndexedVector<AnimalSpeciesID, CustomIndexedVector<Instar, std::vector<ResourceSpecies::ResourceID>>>& involvedResourceSpecies) const;
 
 	/// Returns species identifier.
-	const AnimalSpeciesID& getAnimalSpeciesId() const;
+	inline constexpr AnimalSpeciesID getAnimalSpeciesId() const noexcept 
+	{ 
+		return animalSpeciesId; 
+	}
 
 	/// Initializes genetic files.
 	void initializeGeneticFiles(const std::filesystem::path& geneticsFolder);

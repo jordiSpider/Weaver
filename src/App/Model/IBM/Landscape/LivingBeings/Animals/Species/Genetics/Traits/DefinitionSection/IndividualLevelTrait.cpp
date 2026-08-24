@@ -98,13 +98,13 @@ void IndividualLevelTrait::updatePseudoValueRanges(const Genome& genome, const s
 
 	//The division is made using RHO. For every trait, the left side alleles of their own chromosomes must be added.
 	for(size_t j = 0; j < rhoRangePerModule[moduleNumber]; ++j) {
-		if(genome.getHomologousCorrelosomes().at(getOrder()).first->getAllele(j)->getAlphabeticOrder() >= genome.getHomologousCorrelosomes().at(getOrder()).second->getAllele(j)->getAlphabeticOrder())
+		if(genome.getHomologousCorrelosomes()[getOrder()].first->getAllele(j)->getAlphabeticOrder() >= genome.getHomologousCorrelosomes()[getOrder()].second->getAllele(j)->getAlphabeticOrder())
 		{
-			newPseudoValue += genome.getHomologousCorrelosomes().at(getOrder()).first->getAllele(j)->getValue();
+			newPseudoValue += genome.getHomologousCorrelosomes()[getOrder()].first->getAllele(j)->getValue();
 		}
 		else
 		{
-			newPseudoValue += genome.getHomologousCorrelosomes().at(getOrder()).second->getAllele(j)->getValue();
+			newPseudoValue += genome.getHomologousCorrelosomes()[getOrder()].second->getAllele(j)->getValue();
 		}
 	}
 
@@ -116,13 +116,13 @@ void IndividualLevelTrait::updatePseudoValueRanges(const Genome& genome, const s
 	{
 		for (size_t j = rhoRangePerModule[moduleNumber]; j < numberOfLociPerTrait; ++j)
 		{
-			if(genome.getHomologousCorrelosomes().at(getOrder()-distanceFromDominant).first->getAllele(j)->getAlphabeticOrder() >= genome.getHomologousCorrelosomes().at(getOrder()-distanceFromDominant).second->getAllele(j)->getAlphabeticOrder())
+			if(genome.getHomologousCorrelosomes()[getOrder()-distanceFromDominant].first->getAllele(j)->getAlphabeticOrder() >= genome.getHomologousCorrelosomes()[getOrder()-distanceFromDominant].second->getAllele(j)->getAlphabeticOrder())
 			{
-				newPseudoValue += genome.getHomologousCorrelosomes().at(getOrder()-distanceFromDominant).first->getAllele(j)->getValue();
+				newPseudoValue += genome.getHomologousCorrelosomes()[getOrder()-distanceFromDominant].first->getAllele(j)->getValue();
 			}
 			else
 			{
-				newPseudoValue += genome.getHomologousCorrelosomes().at(getOrder()-distanceFromDominant).second->getAllele(j)->getValue();
+				newPseudoValue += genome.getHomologousCorrelosomes()[getOrder()-distanceFromDominant].second->getAllele(j)->getValue();
 			}
 
 		}
@@ -134,13 +134,13 @@ void IndividualLevelTrait::updatePseudoValueRanges(const Genome& genome, const s
 		{
 			for (size_t j = rhoRangePerModule[moduleNumber]; j < numberOfLociPerTrait; ++j)
 			{
-				if(genome.getHomologousCorrelosomes().at(getOrder()).first->getAllele(j)->getAlphabeticOrder() >= genome.getHomologousCorrelosomes().at(getOrder()).second->getAllele(j)->getAlphabeticOrder())
+				if(genome.getHomologousCorrelosomes()[getOrder()].first->getAllele(j)->getAlphabeticOrder() >= genome.getHomologousCorrelosomes()[getOrder()].second->getAllele(j)->getAlphabeticOrder())
 				{
-					newPseudoValue += genome.getHomologousCorrelosomes().at(getOrder()).first->getAllele(j)->getValue();
+					newPseudoValue += genome.getHomologousCorrelosomes()[getOrder()].first->getAllele(j)->getValue();
 				}
 				else
 				{
-					newPseudoValue += genome.getHomologousCorrelosomes().at(getOrder()).second->getAllele(j)->getValue();
+					newPseudoValue += genome.getHomologousCorrelosomes()[getOrder()].second->getAllele(j)->getValue();
 				}
 			}
 		}
@@ -149,13 +149,13 @@ void IndividualLevelTrait::updatePseudoValueRanges(const Genome& genome, const s
 		{
 			for (size_t j = rhoRangePerModule[moduleNumber]; j < numberOfLociPerTrait; ++j)
 			{
-				if(genome.getHomologousCorrelosomes().at(getOrder()-distanceFromDominant).first->getAllele(j)->getAlphabeticOrder() >= genome.getHomologousCorrelosomes().at(getOrder()-distanceFromDominant).second->getAllele(j)->getAlphabeticOrder())
+				if(genome.getHomologousCorrelosomes()[getOrder()-distanceFromDominant].first->getAllele(j)->getAlphabeticOrder() >= genome.getHomologousCorrelosomes()[getOrder()-distanceFromDominant].second->getAllele(j)->getAlphabeticOrder())
 				{
-					newPseudoValue += (1.0 - genome.getHomologousCorrelosomes().at(getOrder()-distanceFromDominant).first->getAllele(j)->getValue());
+					newPseudoValue += (1.0 - genome.getHomologousCorrelosomes()[getOrder()-distanceFromDominant].first->getAllele(j)->getValue());
 				}
 				else
 				{
-					newPseudoValue += (1.0 - genome.getHomologousCorrelosomes().at(getOrder()-distanceFromDominant).second->getAllele(j)->getValue());
+					newPseudoValue += (1.0 - genome.getHomologousCorrelosomes()[getOrder()-distanceFromDominant].second->getAllele(j)->getValue());
 				}
 			}
 		}
@@ -178,13 +178,13 @@ PreciseDouble IndividualLevelTrait::calculatePseudoValue(const Genome& genome, c
 
 	//The division is made using RHO. For every trait, the left side alleles of their own chromosomes must be added.
 	for(size_t j = 0; j < rhoRangePerModule[moduleNumber]; ++j) {
-		if(genome.getHomologousCorrelosomes().at(getOrder()).first->getAllele(j)->getAlphabeticOrder() >= genome.getHomologousCorrelosomes().at(getOrder()).second->getAllele(j)->getAlphabeticOrder())
+		if(genome.getHomologousCorrelosomes()[getOrder()].first->getAllele(j)->getAlphabeticOrder() >= genome.getHomologousCorrelosomes()[getOrder()].second->getAllele(j)->getAlphabeticOrder())
 		{
-			traitPseudoValue += genome.getHomologousCorrelosomes().at(getOrder()).first->getAllele(j)->getValue();
+			traitPseudoValue += genome.getHomologousCorrelosomes()[getOrder()].first->getAllele(j)->getValue();
 		}
 		else
 		{
-			traitPseudoValue += genome.getHomologousCorrelosomes().at(getOrder()).second->getAllele(j)->getValue();
+			traitPseudoValue += genome.getHomologousCorrelosomes()[getOrder()].second->getAllele(j)->getValue();
 		}
 	}
 
@@ -196,13 +196,13 @@ PreciseDouble IndividualLevelTrait::calculatePseudoValue(const Genome& genome, c
 	{
 		for (size_t j = rhoRangePerModule[moduleNumber]; j < numberOfLociPerTrait; ++j)
 		{
-			if(genome.getHomologousCorrelosomes().at(getOrder()-distanceFromDominant).first->getAllele(j)->getAlphabeticOrder() >= genome.getHomologousCorrelosomes().at(getOrder()-distanceFromDominant).second->getAllele(j)->getAlphabeticOrder())
+			if(genome.getHomologousCorrelosomes()[getOrder()-distanceFromDominant].first->getAllele(j)->getAlphabeticOrder() >= genome.getHomologousCorrelosomes()[getOrder()-distanceFromDominant].second->getAllele(j)->getAlphabeticOrder())
 			{
-				traitPseudoValue += genome.getHomologousCorrelosomes().at(getOrder()-distanceFromDominant).first->getAllele(j)->getValue();
+				traitPseudoValue += genome.getHomologousCorrelosomes()[getOrder()-distanceFromDominant].first->getAllele(j)->getValue();
 			}
 			else
 			{
-				traitPseudoValue += genome.getHomologousCorrelosomes().at(getOrder()-distanceFromDominant).second->getAllele(j)->getValue();
+				traitPseudoValue += genome.getHomologousCorrelosomes()[getOrder()-distanceFromDominant].second->getAllele(j)->getValue();
 			}
 
 		}
@@ -214,13 +214,13 @@ PreciseDouble IndividualLevelTrait::calculatePseudoValue(const Genome& genome, c
 		{
 			for (size_t j = rhoRangePerModule[moduleNumber]; j < numberOfLociPerTrait; ++j)
 			{
-				if(genome.getHomologousCorrelosomes().at(getOrder()).first->getAllele(j)->getAlphabeticOrder() >= genome.getHomologousCorrelosomes().at(getOrder()).second->getAllele(j)->getAlphabeticOrder())
+				if(genome.getHomologousCorrelosomes()[getOrder()].first->getAllele(j)->getAlphabeticOrder() >= genome.getHomologousCorrelosomes()[getOrder()].second->getAllele(j)->getAlphabeticOrder())
 				{
-					traitPseudoValue += genome.getHomologousCorrelosomes().at(getOrder()).first->getAllele(j)->getValue();
+					traitPseudoValue += genome.getHomologousCorrelosomes()[getOrder()].first->getAllele(j)->getValue();
 				}
 				else
 				{
-					traitPseudoValue += genome.getHomologousCorrelosomes().at(getOrder()).second->getAllele(j)->getValue();
+					traitPseudoValue += genome.getHomologousCorrelosomes()[getOrder()].second->getAllele(j)->getValue();
 				}
 			}
 		}
@@ -229,13 +229,13 @@ PreciseDouble IndividualLevelTrait::calculatePseudoValue(const Genome& genome, c
 		{
 			for (size_t j = rhoRangePerModule[moduleNumber]; j < numberOfLociPerTrait; ++j)
 			{
-				if(genome.getHomologousCorrelosomes().at(getOrder()-distanceFromDominant).first->getAllele(j)->getAlphabeticOrder() >= genome.getHomologousCorrelosomes().at(getOrder()-distanceFromDominant).second->getAllele(j)->getAlphabeticOrder())
+				if(genome.getHomologousCorrelosomes()[getOrder()-distanceFromDominant].first->getAllele(j)->getAlphabeticOrder() >= genome.getHomologousCorrelosomes()[getOrder()-distanceFromDominant].second->getAllele(j)->getAlphabeticOrder())
 				{
-					traitPseudoValue += (1.0 - genome.getHomologousCorrelosomes().at(getOrder()-distanceFromDominant).first->getAllele(j)->getValue());
+					traitPseudoValue += (1.0 - genome.getHomologousCorrelosomes()[getOrder()-distanceFromDominant].first->getAllele(j)->getValue());
 				}
 				else
 				{
-					traitPseudoValue += (1.0 - genome.getHomologousCorrelosomes().at(getOrder()-distanceFromDominant).second->getAllele(j)->getValue());
+					traitPseudoValue += (1.0 - genome.getHomologousCorrelosomes()[getOrder()-distanceFromDominant].second->getAllele(j)->getValue());
 				}
 			}
 		}
@@ -253,8 +253,8 @@ void IndividualLevelTrait::printGenetics(const ostringstream& animalInfo, const 
 
 	//The division is made using RHO. For every trait, the left side alleles of their own chromosomes must be added.
 	for(size_t j = 0; j < rhoRangePerModule[moduleNumber]; ++j) {
-		geneticFile << "\t" << *(genome.getHomologousCorrelosomes().at(getOrder()).first->getAllele(j));
-		geneticFile << "\t" << *(genome.getHomologousCorrelosomes().at(getOrder()).second->getAllele(j));
+		geneticFile << "\t" << *(genome.getHomologousCorrelosomes()[getOrder()].first->getAllele(j));
+		geneticFile << "\t" << *(genome.getHomologousCorrelosomes()[getOrder()].second->getAllele(j));
 	}
 
 	//The right side depends on two factors: the sign for RHO for the current module and the dominance of the chromosome.
@@ -265,8 +265,8 @@ void IndividualLevelTrait::printGenetics(const ostringstream& animalInfo, const 
 	{
 		for (size_t j = rhoRangePerModule[moduleNumber]; j < numberOfLociPerTrait; ++j)
 		{
-			geneticFile << "\t" << *(genome.getHomologousCorrelosomes().at(getOrder()-distanceFromDominant).first->getAllele(j));
-			geneticFile << "\t" << *(genome.getHomologousCorrelosomes().at(getOrder()-distanceFromDominant).second->getAllele(j));
+			geneticFile << "\t" << *(genome.getHomologousCorrelosomes()[getOrder()-distanceFromDominant].first->getAllele(j));
+			geneticFile << "\t" << *(genome.getHomologousCorrelosomes()[getOrder()-distanceFromDominant].second->getAllele(j));
 		}
 	}
 	//If RHO is negative.
@@ -276,8 +276,8 @@ void IndividualLevelTrait::printGenetics(const ostringstream& animalInfo, const 
 		{
 			for (size_t j = rhoRangePerModule[moduleNumber]; j < numberOfLociPerTrait; ++j)
 			{
-				geneticFile << "\t" << *(genome.getHomologousCorrelosomes().at(getOrder()).first->getAllele(j));
-				geneticFile << "\t" << *(genome.getHomologousCorrelosomes().at(getOrder()).second->getAllele(j));
+				geneticFile << "\t" << *(genome.getHomologousCorrelosomes()[getOrder()].first->getAllele(j));
+				geneticFile << "\t" << *(genome.getHomologousCorrelosomes()[getOrder()].second->getAllele(j));
 			}
 		}
 		//If the trait is NOT dominant, 1 - the right side alleles of the dominant chromosome must be added.
@@ -285,8 +285,8 @@ void IndividualLevelTrait::printGenetics(const ostringstream& animalInfo, const 
 		{
 			for (size_t j = rhoRangePerModule[moduleNumber]; j < numberOfLociPerTrait; ++j)
 			{
-				geneticFile << "\t" << *(genome.getHomologousCorrelosomes().at(getOrder()-distanceFromDominant).first->getAllele(j));
-				geneticFile << "\t" << *(genome.getHomologousCorrelosomes().at(getOrder()-distanceFromDominant).second->getAllele(j));
+				geneticFile << "\t" << *(genome.getHomologousCorrelosomes()[getOrder()-distanceFromDominant].first->getAllele(j));
+				geneticFile << "\t" << *(genome.getHomologousCorrelosomes()[getOrder()-distanceFromDominant].second->getAllele(j));
 			}
 		}
 	}

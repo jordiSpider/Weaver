@@ -89,7 +89,7 @@ public:
      * @brief Get the header string for traits.
      * @return Header string.
      */
-    static std::string getHeader();
+    static void getHeader(std::string& header);
 
     /** @brief Default constructor. */
     Trait();

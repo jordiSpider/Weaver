@@ -146,6 +146,15 @@
             }
         },
         {
+            "name": "profiler",
+            "hidden": true,
+            "inherits": [ "relWithDebInfo" ],
+            "description": "No description",
+            "cacheVariables": {
+                "PROFILER": "ON"
+            }
+        },
+        {
             "name": "windows-gui-debug",
             "inherits": [ "windows", "gui", "debug" ],
             "description": "Windows GUI Debug configuration."
@@ -196,6 +205,11 @@
             "description": "Linux GUI RelWithDebInfo configuration."
         },
         {
+            "name": "linux-gui-profiler",
+            "inherits": [ "linux", "gui", "profiler" ],
+            "description": "Linux GUI Profiler configuration."
+        },
+        {
             "name": "linux-cli-debug",
             "inherits": [ "linux", "cli", "debug" ],
             "description": "Linux CLI Debug configuration."
@@ -214,6 +228,11 @@
             "name": "linux-cli-relWithDebInfo",
             "inherits": [ "linux", "cli", "relWithDebInfo" ],
             "description": "Linux CLI RelWithDebInfo configuration."
+        },
+        {
+            "name": "linux-cli-profiler",
+            "inherits": [ "linux", "cli", "profiler" ],
+            "description": "Linux CLI Profiler configuration."
         },
         {
             "name": "docs",
@@ -344,6 +363,13 @@
             "configuration": "Release"
         },
         {
+            "name": "linux-gui-profiler",
+            "inherits": [ "common" ],
+            "configurePreset": "linux-gui-profiler",
+            "description": "Build the Linux GUI Profiler configuration.",
+            "configuration": "Release"
+        },
+        {
             "name": "linux-cli-debug",
             "inherits": [ "common" ],
             "configurePreset": "linux-cli-debug",
@@ -369,6 +395,13 @@
             "inherits": [ "common" ],
             "configurePreset": "linux-cli-relWithDebInfo",
             "description": "Build the Linux CLI RelWithDebInfo configuration.",
+            "configuration": "Release"
+        },
+        {
+            "name": "linux-cli-profiler",
+            "inherits": [ "common" ],
+            "configurePreset": "linux-cli-profiler",
+            "description": "Build the Linux CLI Profiler configuration.",
             "configuration": "Release"
         },
         {
@@ -542,6 +575,20 @@
             ]
         },
         {
+            "name": "linux-cli-profiler",
+            "description": "Workflow to configure and build the Linux CLI Profiler target.",
+            "steps": [
+                {
+                    "type": "configure",
+                    "name": "linux-cli-profiler"
+                },
+                {
+                    "type": "build",
+                    "name": "linux-cli-profiler"
+                }
+            ]
+        },
+        {
             "name": "linux-gui-debug",
             "description": "Workflow to configure and build the Linux GUI Debug target.",
             "steps": [
@@ -594,6 +641,20 @@
                 {
                     "type": "build",
                     "name": "linux-gui-relWithDebInfo"
+                }
+            ]
+        },
+        {
+            "name": "linux-gui-profiler",
+            "description": "Workflow to configure and build the Linux GUI Profiler target.",
+            "steps": [
+                {
+                    "type": "configure",
+                    "name": "linux-gui-profiler"
+                },
+                {
+                    "type": "build",
+                    "name": "linux-gui-profiler"
                 }
             ]
         },

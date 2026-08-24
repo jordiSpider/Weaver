@@ -98,6 +98,7 @@ protected:
 
 public:
     static constexpr const size_t numbreOfSubdivisions = 2; ///< Number of subdivisions per axis
+    static constexpr const size_t numberOfChildren = std::pow(numbreOfSubdivisions, DIMENSIONS); ///< Total number of children per cell
 
     /**
      * @brief Default constructor.
@@ -272,10 +273,7 @@ public:
      */
     std::string getMapPositionHeader() const;
 
-    /**
-     * @brief Obtains the total resource biomass for the landscape.
-     */
-    void obtainResourceBiomass(std::vector<WetMass> &landscapeResourceBiomass) const;
+    void obtainResourcesBiomass(std::vector<double> &resourcesBiomass) const;
     
     /**
      * @brief Saves a snapshot of a resource species to file.
@@ -298,6 +296,8 @@ public:
      * @return Map::Type
      */
     Type getType() const;
+
+    void registerCells(std::vector<TerrainCell*>& terrainCells);
 
     /**
      * @brief Serializes the SpatialTree object.

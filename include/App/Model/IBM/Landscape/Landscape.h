@@ -26,6 +26,7 @@
 #include <numeric>
 #include <unordered_set>
 #include <nlohmann/json.hpp>
+#include <tbb/enumerable_thread_specific.h>
 
 
 #include <boost/serialization/map.hpp>
@@ -41,6 +42,7 @@
 #include <filesystem>
 #include <sstream>
 #include <algorithm>
+#include <future>
 
 #include "rapidcsv.h"
 
@@ -74,6 +76,45 @@
 #include "Misc/ProgressBar.h"
 #include "App/Model/IBM/Landscape/Map/Patches/Shape/CubicPatch.h"
 
+
+
+
+struct ResourceDataDTO {
+    double wetMass;
+    double dryMass;
+};
+
+struct CellCountDTO {
+	std::array<uint32_t, DIMENSIONS> position;
+
+    std::vector<uint32_t> animalCounts;
+    std::vector<ResourceDataDTO> resourceQuantities;
+
+
+	void formatToBuffer(std::string& buffer, const std::vector<std::string>& stringPool) const;
+};
+
+struct LifeStageCountsDTO {
+	std::array<uint32_t, EnumClass<LifeStage>::size()> counts{0};
+};
+
+
+
+
+
+
+template<typename DTO>
+struct ExportData {
+	std::future<void> writeFuture;
+	std::string textBuffer;
+	std::vector<DTO> dtosBufferA;
+	std::vector<DTO> dtosBufferB;
+	bool useBufferA = true;
+
+	inline constexpr std::vector<DTO>& getDtoBuffer() noexcept {
+		return useBufferA ? dtosBufferA : dtosBufferB;
+	}
+};
 
 
 
@@ -389,6 +430,39 @@ protected:
 
 	unsigned int fixedSeedValue; /**< Fixed RNG seed value for deterministic runs (when used). */
 
+	std::vector<std::string> stringPool;
+
+	std::string printAnimalsAlongCellsHeader; /**< Header string for printing animals along cells. */
+
+	std::string printCellAlongCellsHeader;
+
+
+	ExportData<AnimalNonStatisticalDTO> exportAnimalsAlongCellsDayStart;
+	ExportData<AnimalNonStatisticalDTO> exportAnimalsAlongCellsDayEnd;
+
+	ExportData<EdibilityDTO> exportEdibilities;
+
+	ExportData<MovementDTO> exportMovements;
+
+	ExportData<ActivityDTO> exportActivities;
+
+	ExportData<PredationProbabilityDTO> exportPredationProbabilities;
+
+	ExportData<CellCountDTO> exportCellAlongCells;
+
+
+
+
+	tbb::enumerable_thread_specific<std::vector<EdibilityDTO>> localEdibilities;
+	tbb::enumerable_thread_specific<std::vector<MovementDTO>> localMovements;
+	tbb::enumerable_thread_specific<std::vector<ActivityDTO>> localActivities;
+	tbb::enumerable_thread_specific<std::vector<PredationProbabilityDTO>> localPredationProbabilities;
+
+
+	tbb::enumerable_thread_specific<size_t> localProgressBarCounter;
+
+
+
 	Day runDays;				/**< Number of days to simulate. */
 	unsigned int recordEach;	/**< Frequency (in time-steps) to record checkpoints or outputs. */
 	PreciseDouble timeStepsPerDay; /**< Number of discrete time-steps per simulation day. */
@@ -402,10 +476,12 @@ protected:
 
 	std::vector<std::vector<std::vector<CellResource*>>> landscapeResources; /**< Resources by cell and species. */
 
+	std::vector<TerrainCell*> terrainCells; /**< All terrain cells in the landscape. */
+
 	std::filesystem::path outputFolder; /**< Base folder for output files during a run. */
 	std::filesystem::path resultFolder; /**< Final result folder for the simulation run. */
 
-	CustomIndexedVector<AnimalSpeciesID, std::ofstream*> animalConstitutiveTraitsFile; /**< Per-species files for constitutive traits. */
+	CustomIndexedVector<AnimalSpeciesID, std::ofstream> animalConstitutiveTraitsFile; /**< Per-species files for constitutive traits. */
 	std::ofstream dailySummaryFile; /**< Stream for daily summary outputs. */
 	std::ofstream extendedDailySummaryFile; /**< Stream for extended daily summary outputs. */
 	std::ofstream movementsFile; /**< Stream for recorded movements. */
@@ -650,10 +726,10 @@ protected:
 	* @param numberOfTimeSteps Time-step index.
 	* @param simulationPoint Simulation point index if required by multi-point runs.
 	*/
-	void printAnimalsAlongCells(const TimeStep numberOfTimeSteps, const int simulationPoint) const;
+	void printAnimalsAlongCells(const TimeStep numberOfTimeSteps, const int simulationPoint);
 	
 	/** @brief Print cell values along cells at the provided time-step (debug output). */
-	void printCellAlongCells(const TimeStep numberOfTimeSteps) const;
+	void printCellAlongCells(const TimeStep numberOfTimeSteps);
 
 	/**
 	* @brief Append extended daily summary information to a provided stream.
@@ -661,7 +737,7 @@ protected:
 	* @param os Output stream to append to.
 	* @param numberOfTimeSteps Current time-step index for timestamping.
 	*/
-	void printExtendedDailySummary(std::ostream& os, const TimeStep numberOfTimeSteps) const;
+	void printExtendedDailySummary(std::ostream& os, const TimeStep numberOfTimeSteps);
 	
 	/**
 	* @brief Save a snapshot of a specific animal species to disk.
@@ -757,14 +833,6 @@ private:
 	*/
 	void saveCheckpoint(const TimeStep& numberOfTimeSteps);
 
-	/**
-	* @brief Extracts landscape resource biomass and animal population counts.
-	*
-	* @param landscapeResourceBiomass Output vector with biomass per cell.
-	* @param landscapeAnimalsPopulation Output nested structure with counts of animals per species and instar.
-	*/
-	void obtainLandscapeResourceBiomassAndAnimalsPopulation(std::vector<WetMass> &landscapeResourceBiomass, CustomIndexedVector<AnimalSpeciesID, CustomIndexedVector<LifeStage, unsigned int>> &landscapeAnimalsPopulation) const;
-	
 	/**
 	* @brief Executes all actions of animals in the landscape for the current timestep.
 	* @param numberOfTimeSteps Current timestep number.
@@ -863,6 +931,46 @@ private:
 	*/
 	void calculateAnimalSpeciesStatistics();
 };
+
+
+template<typename DTO>
+void writeDtosToFile(std::ofstream& file, ExportData<DTO>& exportData, const std::vector<std::string>& stringPool, bool clearBufferAfterWrite)
+{
+	std::vector<DTO>& dtos = exportData.getDtoBuffer();
+
+	exportData.useBufferA = !exportData.useBufferA;
+
+	exportData.textBuffer.clear();
+    if(exportData.textBuffer.capacity() < 1024 * 1024) exportData.textBuffer.reserve(1024 * 1024);
+
+	for (const auto& dto : dtos) {
+        dto.formatToBuffer(exportData.textBuffer, stringPool);
+		exportData.textBuffer.push_back('\n');
+
+		// If the buffer accumulates more than 512 KB, we flush to disk and clear
+        if (exportData.textBuffer.size() > 512 * 1024) {
+            file << exportData.textBuffer;
+            exportData.textBuffer.clear();
+        }
+    }
+
+	if (!exportData.textBuffer.empty()) {
+        file << exportData.textBuffer;
+    }
+
+	if(clearBufferAfterWrite) {
+		dtos.clear();
+	}
+}
+
+
+void writeAnimalsAlongCells(const std::string& header, ExportData<AnimalNonStatisticalDTO>& exportAnimalsAlongCells, const int simulationPoint, const TimeStep numberOfTimeSteps, std::filesystem::path resultFolder, unsigned int recordEach, const std::vector<std::string>& stringPool);
+
+void writeActivity(ExportData<ActivityDTO>& exportData, const TimeStep numberOfTimeSteps, std::filesystem::path resultFolder, unsigned int recordEach, const std::vector<std::string>& stringPool);
+
+void writePredationProbabilities(ExportData<PredationProbabilityDTO>& exportData, const TimeStep numberOfTimeSteps, std::filesystem::path resultFolder, unsigned int recordEach, const std::vector<std::string>& stringPool);
+
+void writeCellAlongCells(const std::string& header, ExportData<CellCountDTO>& exportData, const TimeStep numberOfTimeSteps, std::filesystem::path resultFolder, unsigned int recordEach, const std::vector<std::string>& stringPool);
 
 
 /**

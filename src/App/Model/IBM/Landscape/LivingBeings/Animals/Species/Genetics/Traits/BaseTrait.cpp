@@ -27,7 +27,7 @@ vector<Trait*> BaseTrait::generateTraits(std::vector<IndividualLevelTrait*>& ind
 	for(const BaseTraitType type : EnumClass<BaseTraitType>::getEnumValues())
 	{
 		baseTraits.push_back(new BaseTrait(
-			individualLevelTraits, type, definitionConfig[BaseTrait::getJsonFieldName()].at(EnumClass<BaseTraitType>::to_string(type)), 
+			individualLevelTraits, type, definitionConfig[BaseTrait::getJsonFieldName()][EnumClass<BaseTraitType>::to_string(type)], 
 			individualLevelTraitsOrder
 		));
 	}

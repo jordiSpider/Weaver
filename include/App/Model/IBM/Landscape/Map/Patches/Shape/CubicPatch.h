@@ -39,9 +39,9 @@ protected:
      *
      * @param bottomLeftCorner Vector of coordinates for the bottom-left corner.
      * @param topRightCorner Vector of coordinates for the top-right corner.
-     * @return Pointer to a RingModel representing the patch influence zone.
+     * @return RingModel representing the patch influence zone.
      */
-    const RingModel* generateInfluenceZone(const std::vector<double> &bottomLeftCorner, const std::vector<double> &topRightCorner);
+    RingModel generateInfluenceZone(const std::vector<double> &bottomLeftCorner, const std::vector<double> &topRightCorner);
 
 public:
     /**

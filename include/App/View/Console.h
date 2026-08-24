@@ -58,7 +58,7 @@ public:
      * @param outputFolder Path to the output directory.
      * @param silent True to suppress log output; false to display logs.
      */
-    void run(const std::string& runMode, const std::string& inputConfig, const std::string& outputFolder, const bool silent);
+    void run(const std::string& runMode, const std::string& inputConfig, const std::string& outputFolder, const bool silent, const bool verbose);
 
     /**
      * @brief Prints a message to the console log if not in silent mode.

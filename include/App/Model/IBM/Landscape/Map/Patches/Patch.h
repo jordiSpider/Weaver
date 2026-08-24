@@ -63,7 +63,7 @@ public:
      * @param cellBounds RingModel representing the bounds of the terrain cell.
      * @return Coverage level of the patch over the cell (Null, Partial, Over50Percent, Full).
      */
-    virtual Coverage checkCoverage(const RingModel* const cellBounds) const;
+    virtual Coverage checkCoverage(const RingModel& cellBounds) const;
 
     /**
      * @brief Returns a description of the patch.

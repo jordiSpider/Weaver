@@ -73,7 +73,7 @@ void GUI::run(const string& runMode)
 
     for(unsigned int i = 0; i < getRunModesTitles().size(); i++)
     {
-        if(getRunModesTitles().at(static_cast<RunMode>(i)) == runMode)
+        if(getRunModesTitles()[i] == runMode)
         {
             selectedRunMode = i;
         }

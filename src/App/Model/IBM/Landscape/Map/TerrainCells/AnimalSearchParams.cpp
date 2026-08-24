@@ -1,6 +1,8 @@
 
 #include "App/Model/IBM/Landscape/Map/TerrainCells/AnimalSearchParams.h"
 
+#include "App/Model/IBM/Landscape/LivingBeings/Animals/Animal.h"
+
 
 using namespace std;
 
@@ -8,9 +10,7 @@ using namespace std;
 
 AnimalSearchParams::AnimalSearchParams()
 {
-    searchableAnimalSpecies.resize(EnumClass<LifeStage>::size());
-    searchableInstars.resize(EnumClass<LifeStage>::size());
-    searchableGenders.resize(EnumClass<LifeStage>::size());
+    
 }
 
 AnimalSearchParams::AnimalSearchParams(
@@ -30,29 +30,15 @@ AnimalSearchParams::~AnimalSearchParams()
 
 AnimalSearchParams::AnimalSearchParams(const AnimalSearchParams &other)
 {
-    searchableLifeStages = other.searchableLifeStages;
-    searchableAnimalSpecies = other.searchableAnimalSpecies;
-    searchableInstars = other.searchableInstars;
-    searchableGenders = other.searchableGenders;
+    validSignatures = other.validSignatures;
 }
 
 AnimalSearchParams& AnimalSearchParams::operator=(const AnimalSearchParams& other)
 {
     if (this != &other) {
-        searchableLifeStages = other.searchableLifeStages;
-        searchableAnimalSpecies = other.searchableAnimalSpecies;
-        searchableInstars = other.searchableInstars;
-        searchableGenders = other.searchableGenders;
+        validSignatures = other.validSignatures;
     }
     return *this;
-}
-
-template<typename T>
-void AnimalSearchParams::insertElement(vector<T>& uniqueVector, const T& elementToInsert)
-{
-    if(!binary_search(uniqueVector.begin(), uniqueVector.end(), elementToInsert)) {
-        uniqueVector.insert(std::upper_bound(uniqueVector.begin(), uniqueVector.end(), elementToInsert), elementToInsert);
-    }
 }
 
 void AnimalSearchParams::addSearchParams(
@@ -61,102 +47,38 @@ void AnimalSearchParams::addSearchParams(
     const vector<Instar> &newSearchableInstars,
     const vector<Gender> &newSearchableGenders)
 {
-    #ifdef DEBUG
-    if(newSearchableLifeStages.empty())
-    {
-        throwLineInfoException("The search life stages vector must not be empty");
-    }
-
-    if(newSearchableAnimalSpecies.empty())
-    {
-        throwLineInfoException("The search animal species vector must not be empty");
-    }
-
-    if(newSearchableInstars.empty())
-    {
-        throwLineInfoException("The search instars vector must not be empty");
-    }
-
-    if(newSearchableGenders.empty())
-    {
-        throwLineInfoException("The search genders vector must not be empty");
-    }
-	#endif
-
-    
-    for(const LifeStage &lifeStage : newSearchableLifeStages)
-    {
-        insertElement(searchableLifeStages, lifeStage);
-
-        for(const AnimalSpeciesID &animalSpeciesId : newSearchableAnimalSpecies)
-        {
-            insertElement(searchableAnimalSpecies[lifeStage], animalSpeciesId);
-
-            for(const Instar &instar : newSearchableInstars)
-            {
-                try {
-                    insertElement(searchableInstars[lifeStage].at(animalSpeciesId), instar);
-                } catch (const std::out_of_range&) {
-                    searchableInstars[lifeStage].resize(animalSpeciesId+1);
-                    searchableGenders[lifeStage].resize(animalSpeciesId+1);
-
-                    insertElement(searchableInstars[lifeStage][animalSpeciesId], instar);
-                }
-
-
-                for(const auto &gender : newSearchableGenders)
-                {
-                    try {
-                        insertElement(searchableGenders[lifeStage][animalSpeciesId].at(instar), gender);
-                    } catch (const std::out_of_range&) {
-                        searchableGenders[lifeStage][animalSpeciesId].resize(static_cast<size_t>(instar)+1);
-
-                        insertElement(searchableGenders[lifeStage][animalSpeciesId][instar], gender);
-                    }
+    for(const auto &lifeStage : newSearchableLifeStages) {
+        for(const auto &animalSpeciesId : newSearchableAnimalSpecies) {
+            for(const auto &instar : newSearchableInstars) {
+                for(const auto &gender : newSearchableGenders) {
+                    
+                    uint32_t signature = packSignature(lifeStage, animalSpeciesId, instar, gender);
+                    validSignatures.push_back(signature);
+                    
                 }
             }
         }
     }
+
+    std::sort(validSignatures.begin(), validSignatures.end());
+    validSignatures.erase(std::unique(validSignatures.begin(), validSignatures.end()), validSignatures.end());
 }
 
-const vector<LifeStage>& AnimalSearchParams::getSearchableLifeStages() const
+bool AnimalSearchParams::matches(const Animal& animal) const noexcept
 {
-    return searchableLifeStages;
-}
+    uint32_t animalSignature = packSignature(
+        animal.getLifeStage(),
+        animal.getAnimalSpeciesId(),
+        animal.getInstar(),
+        animal.getGender()
+    );
 
-const vector<AnimalSpeciesID>& AnimalSearchParams::getSearchableAnimalSpecies(
-        const LifeStage &lifeStage
-    ) const
-{
-    return searchableAnimalSpecies[lifeStage];
-}
-
-const vector<Instar>& AnimalSearchParams::getSearchableInstars(
-        const LifeStage &lifeStage,
-        const AnimalSpeciesID &animalSpeciesId
-    ) const
-{
-    return searchableInstars[lifeStage][animalSpeciesId];
-}
-
-const vector<Gender>& AnimalSearchParams::getSearchableGenders(
-        const LifeStage &lifeStage,
-        const AnimalSpeciesID &animalSpeciesId, const Instar &instar
-    ) const
-{
-    return searchableGenders[lifeStage][animalSpeciesId][instar];
+    return std::binary_search(validSignatures.begin(), validSignatures.end(), animalSignature);
 }
 
 void AnimalSearchParams::clear()
 {
-    searchableLifeStages.clear();
-    searchableAnimalSpecies.clear();
-    searchableInstars.clear();
-    searchableGenders.clear();
-
-    searchableAnimalSpecies.resize(EnumClass<LifeStage>::size());
-    searchableInstars.resize(EnumClass<LifeStage>::size());
-    searchableGenders.resize(EnumClass<LifeStage>::size());
+    validSignatures.clear();
 }
 
 
@@ -165,10 +87,7 @@ BOOST_CLASS_EXPORT(AnimalSearchParams)
 
 template <class Archive>
 void AnimalSearchParams::serialize(Archive &ar, const unsigned int) {
-    ar & searchableLifeStages;
-    ar & searchableAnimalSpecies;
-    ar & searchableInstars;
-    ar & searchableGenders;
+    ar & validSignatures;
 }
 
 // Specialisation

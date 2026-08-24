@@ -26,7 +26,7 @@ vector<Trait*> ProbabilityDensityFunctionTrait::generateTraits(std::vector<Indiv
 	for(const ProbabilityDensityFunctionTraitType type : EnumClass<ProbabilityDensityFunctionTraitType>::getEnumValues())
 	{
 		probabilityDensityFunctionTraits.push_back(new ProbabilityDensityFunctionTrait(
-			individualLevelTraits, type, definitionConfig[ProbabilityDensityFunctionTrait::getJsonFieldName()].at(EnumClass<ProbabilityDensityFunctionTraitType>::to_string(type)), 
+			individualLevelTraits, type, definitionConfig[ProbabilityDensityFunctionTrait::getJsonFieldName()][EnumClass<ProbabilityDensityFunctionTraitType>::to_string(type)], 
 			individualLevelTraitsOrder
 		));
 	}

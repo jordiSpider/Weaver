@@ -37,7 +37,7 @@ BranchTerrainCell* RootTerrainCell::getMutableParent() const
 }
 
 void RootTerrainCell::getNeighboursCellsOnRadius(
-    vector<CellValue>& bestEvaluations, const PointContinuous &sourcePosition, const PreciseDouble &radius, const RingModel* const radiusArea, const size_t searchDepth, const bool searchNeighborsWithFemales, AnimalNonStatistical* animalWhoIsEvaluating)
+    vector<CellValue>& bestEvaluations, const PointContinuous &sourcePosition, const PreciseDouble &radius, const RingModel& radiusArea, const size_t searchDepth, const bool searchNeighborsWithFemales, AnimalNonStatistical* animalWhoIsEvaluating)
 {
     getRadiusTerrainCells(bestEvaluations, sourcePosition, radius, radiusArea, searchDepth, searchNeighborsWithFemales, false, animalWhoIsEvaluating);
 }
@@ -88,12 +88,12 @@ void RootTerrainCell::randomApplyUpFunctionToAnimals(
 /**************************/
 
 void RootTerrainCell::applyFunctionToEdiblesInRadius(
-        const PointContinuous &sourcePosition, const PreciseDouble &radius, const RingModel* const radiusArea, 
+        const PointContinuous &sourcePosition, const PreciseDouble &radius, const RingModel& radiusArea, 
         const vector<pair<const AnimalSearchParams&, AnimalFunctions>>& animalFunctions,
         const vector<pair<const ResourceSearchParams&, ResourceFunctions>>& resourceFunctions
     )
 {   
-    if(Geometry::fullCoveredBySphere(&getEffectiveArea(), sourcePosition, radius))
+    if(Geometry::fullCoveredBySphere(getEffectiveArea(), sourcePosition, radius))
     {
         applyFunctionToEdiblesInCell(true, sourcePosition, radius, radiusArea, animalFunctions, resourceFunctions);
     }

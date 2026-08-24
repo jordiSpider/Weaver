@@ -51,7 +51,10 @@ public:
      * @brief Returns the current instar of the edible entity.
      * @return Instar object.
      */
-	const Instar& getInstar() const;
+	inline constexpr Instar getInstar() const noexcept
+     { 
+          return instar; 
+     }
 
 	/**
      * @brief Updates the instar of the edible entity.

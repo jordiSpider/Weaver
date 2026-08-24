@@ -82,7 +82,10 @@ public:
      * @brief Get the instar to evaluate terrain cells.
      * @return Const reference to Instar.
      */
-    const Instar& getInstarToEvaluateCells() const;
+    inline constexpr Instar getInstarToEvaluateCells() const noexcept
+    {
+        return getInstar();
+    }
 
     /**
      * @brief Increment the count of predation encounters for the animal.

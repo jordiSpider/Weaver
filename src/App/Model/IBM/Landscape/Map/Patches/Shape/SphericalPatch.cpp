@@ -44,7 +44,7 @@ const string SphericalPatch::generateDescription(const vector<double> &center, c
     return newDescription.str();
 }
 
-const RingModel* SphericalPatch::generateInfluenceZone(const vector<double> &center, const double &radius)
+RingModel SphericalPatch::generateInfluenceZone(const vector<double> &center, const double &radius)
 {
     PointContinuous centerPoint;
     for(unsigned char axis = 0; axis < DIMENSIONS; axis++)
@@ -52,9 +52,7 @@ const RingModel* SphericalPatch::generateInfluenceZone(const vector<double> &cen
         setPositionAxisValue(centerPoint, axis, center[axis]);
     }
 
-    auto sphere = Geometry::makeSphere(centerPoint, radius);
-
-    return new RingModel(*sphere);
+    return Geometry::makeSphere(centerPoint, radius);
 }
 
 PatchShape::Type SphericalPatch::getType() const
