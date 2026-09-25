@@ -14,8 +14,8 @@ CellResourceInterface::CellResourceInterface()
 }
 
 
-CellResourceInterface::CellResourceInterface(const EdibleID id, TerrainCell* terrainCell, const size_t newResourcePatchPriority, ResourceSpecies& resourceSpecies)
-    : Edible(id, &resourceSpecies, terrainCell), CellElement(newResourcePatchPriority)
+CellResourceInterface::CellResourceInterface(id_type id, TerrainCell* terrainCell, const size_t newResourcePatchPriority, ResourceSpecies& resourceSpecies)
+    : Edible(id, &resourceSpecies, terrainCell), CellElement(newResourcePatchPriority), signature(getSpecies()->getResourceSpeciesId())
 {
 	
 }
@@ -47,11 +47,6 @@ PreciseDouble CellResourceInterface::getVoracity() const
 	return 0.0; 
 }
 
-void CellResourceInterface::increasePredationEncounters() 
-{
-	
-}
-
 DryMass CellResourceInterface::turnIntoDryMass(const DryMass &targetDryMass, const PreciseDouble& predatorRemainingVoracity) const
 {
 	return DryMass(fmin(predatorRemainingVoracity, targetDryMass.getValue()));
@@ -65,6 +60,8 @@ template <class Archive>
 void CellResourceInterface::serialize(Archive &ar, const unsigned int) {
 	ar & boost::serialization::base_object<Edible>(*this);
 	ar & boost::serialization::base_object<CellElement>(*this);
+
+	ar & signature;
 }
 
 // // Specialisation

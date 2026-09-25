@@ -15,7 +15,7 @@
 #include <list>
 #include <tuple>
 #include <ostream>
-
+#include <tuple>
 
 #include <boost/archive/text_iarchive.hpp>
 #include <boost/archive/text_oarchive.hpp>
@@ -37,123 +37,15 @@
 #include "App/Model/IBM/Landscape/LivingBeings/Animals/Species/SexualType.h"
 #include "App/Model/IBM/Landscape/LivingBeings/Animals/Decisions/Decisions.h"
 #include "App/Model/IBM/Landscape/LivingBeings/Animals/Prey.h"
+#include "App/IO/StorageBridge.h"
+
+#include <fmt/format.h>
 
 
 class TerrainCell;
 
 
-struct AnimalNonStatisticalDTO {
-    id_type id;
-	uint32_t scientificNameId;
-	Gender gender;
-	double position[DIMENSIONS];
-	LifeStage lifeStage;
-	unsigned int instar;
-	unsigned int currentAge;
-	double pheno_ini;
-	double dateEgg;
-	unsigned int ageOfFirstReproduction;
-	unsigned int reproCounter;
-	unsigned int fecundity;
-	double dateOfDeath;
-	unsigned int generationNumberFromFemaleParent;
-	unsigned int generationNumberFromMaleParent;
-	bool idFromFemaleParentSetted;
-	id_type idFromFemaleParent;
-	bool idFromMaleParentSetted;
-	id_type idFromMaleParent;
-	uint64_t predationEncountersCurrentDay;
-	uint64_t totalPredationEncounters;
-	double voracity;
-	double searchAreaRadius;
-	double speed;
-	double tank_ini;
-	double currentBodySize;
-	double currentDryMass;
-	double currentEnergyTank;
 
-	GeneticsDTO genetics;
-
-
-	void formatToBuffer(std::string& buffer, const std::vector<std::string>& stringPool) const;
-};
-
-struct EdibilityDTO {
-	unsigned int timeStep;
-	id_type searcherId;
-	uint32_t searcherSpeciesNameId;
-	double foodMass;
-	id_type predatorId;
-	uint32_t predatorSpeciesNameId;
-	double predatorDryMass;
-	id_type predatedId;
-	uint32_t predatedSpeciesNameId;
-	double predatedDryMass;
-	double predationProbability;
-	double edibility;
-	double preference;
-	double experience;
-
-
-	void formatToBuffer(std::string& buffer, const std::vector<std::string>& stringPool) const;
-
-	inline static std::string getHeader() noexcept {
-		return "timeStep\tsearcherId\tsearcherSpecies\tfoodMass\tpredatorId\tpredatorSpecies\tpredatorDryMass\tpredatedId\tpredatedSpecies\tpredatedDryMass\tpredationProbability\tedibility\tpreference\texperience\n";
-	}
-};
-
-struct MovementDTO {
-	unsigned int timeStep;
-	id_type id;
-	double startPointX;
-	double startPointY;
-	double endPointX;
-	double endPointY;
-
-
-	void formatToBuffer(std::string& buffer, const std::vector<std::string>& stringPool) const;
-
-	inline static std::string getHeader() noexcept {
-		return "timeStep\tid\tstartPointX\tstartPointY\tendPointX\tendPointY\n";
-	}
-};
-
-struct ActivityDTO {
-	id_type id;
-	uint32_t speciesNameId;
-	ActivityType activityType;
-	double initialDay;
-	double finalDay;
-	double activityDuration;
-
-
-	void formatToBuffer(std::string& buffer, const std::vector<std::string>& stringPool) const;
-
-	inline static std::string getHeader() noexcept {
-		return "id\tspecies\tactivityType\tinitialDay\tfinalDay\tactivityDuration\n";
-	} 
-};
-
-struct PredationProbabilityDTO {
-	double randomProbability;
-	double probabilityToCompare;
-	bool retaliation;
-	id_type idHunter;
-	id_type idHunted;
-	uint32_t speciesHunterNameId;
-	uint32_t speciesHuntedNameId;
-	bool huntedIsPredator;
-	double massHunter;
-	double massHunted;
-	bool successfulKill;
-
-
-	void formatToBuffer(std::string& buffer, const std::vector<std::string>& stringPool) const;
-
-	inline static std::string getHeader() noexcept {
-		return "randomProbability\tprobabilityToCompare\tretaliation\tidHunter\tidHunted\tspeciesHunter\tspeciesHunted\thuntedIsPredator\tmassHunter\tmassHunted\tsuccessfulKill\n";
-	} 
-};
 
 
 
@@ -210,7 +102,7 @@ public:
      * @param timeStepsPerDay Number of time steps per day.
      */
 	explicit AnimalNonStatistical(Gamete* const firstParentGamete, Gamete* const secondParentGamete, TerrainCell* parentTerrainCell, const PreciseDouble& newFactorEggMassFromMom, const Generation& g_numb_prt_female,
-			const Generation& g_numb_prt_male, EdibleID ID_prt_female, EdibleID ID_prt_male, AnimalSpecies* const mySpecies, Gender gender, const TimeStep actualTimeStep, const PreciseDouble& timeStepsPerDay);
+			const Generation& g_numb_prt_male, id_type ID_prt_female, id_type ID_prt_male, AnimalSpecies* const mySpecies, Gender gender, const TimeStep actualTimeStep, const PreciseDouble& timeStepsPerDay);
 	
 	/**
      * @brief Destructor.
@@ -248,7 +140,7 @@ public:
 	/**
      * @brief Increment the count of predation encounters.
      */
-	void increasePredationEncounters();
+	void increasePredationEncounters(CustomIndexedVector<AnimalSpeciesID, uint64_t>& animalSpeciesMaximumPredationEncountersPerDay);
 
 	/**
      * @brief Get the growth building block (const).
@@ -279,13 +171,6 @@ public:
      * @return Const reference to DryMass.
      */
 	const DryMass& getMassesLastInstar() const;
-
-	/**
-     * @brief Prepare mass information file header for results.
-     * @param resultFolder Path to the result folder.
-     * @param saveMassInfo Whether to save mass information.
-     */
-	void setInfoMassFileHeader(const std::filesystem::path& resultFolder, const bool saveMassInfo) const;
 
 	/**
      * @brief Calculate total mass load of the animal.
@@ -341,10 +226,9 @@ public:
 
 	/**
      * @brief Calculate predation probability for a prey.
-     * @param prey Reference to the prey.
      * @return Probability as PreciseDouble.
      */
-	PreciseDouble calculatePredationProbability(const AnimalNonStatistical& prey);
+	PreciseDouble calculatePredationProbability(const Edible& prey, const DryMass& preyDryMass);
 
 	/**
      * @brief Calculate biomass of conspecific animal.
@@ -388,6 +272,10 @@ public:
      */
 	DryMass calculateAssimilatedMass(const DryMass& nonAssimilatedMass, const Species::ID& preySpeciesId, const Instar& preyInstar) const;
 	
+	void initControlVariables(const std::vector<Species*>& existingSpecies);
+
+	void setInitialPreferences(const PreciseDouble& timeStepsPerDay);
+
 	/**
      * @brief Reset control variables for a new time step.
      */
@@ -396,17 +284,7 @@ public:
 	/**
      * @brief Set the ID of the predator that predated this animal.
      */
-	void setPredatedByID(EdibleID predatorId);
-
-	/**
-     * @brief Add new animal species for evaluation.
-     */
-	void addAnimalSpecies(const unsigned int numberOfInstars, const PreciseDouble& timeStepsPerDay);
-
-	/**
-     * @brief Add new resource species for evaluation.
-     */
-	void addResourceSpecies(const unsigned int numberOfInstars, const PreciseDouble& timeStepsPerDay);
+	void setPredatedByID(id_type predatorId);
 
 	/**
      * @brief Check if the animal is sated.
@@ -426,9 +304,8 @@ public:
 	 *
 	 * @param landscape Pointer to the landscape where the animal exists.
 	 * @param saveGenetics If true, the animal's genetic information is saved.
-	 * @param saveMassInfo If true, the animal's mass information is saved.
 	 */
-	void doDefinitive(Landscape* const landscape, const bool saveGenetics, const bool saveMassInfo);
+	void doDefinitive(Landscape* const landscape, const bool saveGenetics, std::vector<fmt::memory_buffer>& geneticsText);
 
 	/**
 	 * @brief Get the age at last moult or reproduction.
@@ -480,15 +357,15 @@ public:
 
 	/**
 	 * @brief Get the ID of the female parent.
-	 * @return Const reference to EdibleID.
+	 * @return Const reference to id_type.
 	 */
-	const EdibleID& getIdFromFemaleParent() const;
+	id_type getIdFromFemaleParent() const;
 
 	/**
 	 * @brief Get the ID of the male parent.
-	 * @return Const reference to EdibleID.
+	 * @return Const reference to id_type.
 	 */
-	const EdibleID& getIdFromMaleParent() const;
+	id_type getIdFromMaleParent() const;
 
 	/**
 	 * @brief Set the animal to a new life stage.
@@ -514,7 +391,7 @@ public:
 	 * @param predatorId ID of the predator causing the life stage change.
 	 * @param timeStepsPerDay Time steps per day for conversion.
 	 */
-	virtual void setNewLifeStage(Landscape* const landscape, const LifeStage newLifeStage, const TimeStep numberOfTimeSteps, EdibleID predatorId, const PreciseDouble& timeStepsPerDay);
+	virtual void setNewLifeStage(Landscape* const landscape, const LifeStage newLifeStage, const TimeStep numberOfTimeSteps, id_type predatorId, const PreciseDouble& timeStepsPerDay);
 	
 	/**
 	 * @brief Get the date of death.
@@ -532,7 +409,7 @@ public:
 	 * @brief Print the animal's traits to the provided stream.
 	 * @param traitsContent Stream to print traits.
 	 */
-	virtual void printTraits(std::ostringstream& traitsContent);
+	virtual void printTraits(fmt::memory_buffer& traitsText);
 
 	/**
 	 * @brief Prepare the animal to be born in the simulation.
@@ -548,21 +425,30 @@ public:
 	 * @param numberOfTimeSteps Number of time steps for tuning.
 	 * @param timeStepsPerDay Time steps per day.
 	 */
-	virtual void tune(Landscape* const landscape, const bool saveMassInfo, const TimeStep numberOfTimeSteps, const PreciseDouble& timeStepsPerDay);
+	virtual void tune(Landscape* const landscape, const bool saveMassInfo, fmt::memory_buffer& infoMassText, const TimeStep numberOfTimeSteps, const PreciseDouble& timeStepsPerDay, CustomIndexedVector<Instar, PreciseDouble>& maximumInteractionArea, CustomIndexedVector<Instar, PreciseDouble>& maximumVoracity);
 	
 	Action getNextAction() const;
 
 	void actionPlanning(Landscape* const landscape, const TimeStep numberOfTimeSteps, const PreciseDouble& timeStepsPerDay,
-		bool saveEdibilitiesFile, std::vector<EdibilityDTO>& edibilities);
+		bool saveEdibilitiesFile, fmt::memory_buffer& edibilitiesText, CustomIndexedVector<Instar, PreciseDouble>& maximumPatchEdibilityValueGlobal,
+		CustomIndexedVector<Instar, PreciseDouble>& maximumPatchPredationRiskGlobal, 
+		CustomIndexedVector<Instar, PreciseDouble>& maximumPatchConspecificBiomassGlobal);
 
-	bool actionExecution(Landscape* const landscape, const bool saveActivity, std::vector<ActivityDTO>& activities,
-		const TimeStep numberOfTimeSteps, const PreciseDouble& timeStepsPerDay, const bool saveAnimalsEachDayPredationProbabilities,
-		std::vector<PredationProbabilityDTO>& predationProbabilities, const bool competitionAmongResourceSpecies, const bool saveMovements, 
-		std::vector<MovementDTO>& movements);
+	void actionExecution(Landscape* const landscape, const bool saveActivity, fmt::memory_buffer& activitiesText,
+		const TimeStep numberOfTimeSteps, const PreciseDouble& timeStepsPerDay,
+		const bool saveMovements, fmt::memory_buffer& movementsText);
+
+	bool predate(const bool retaliation, const bool saveAnimalsEachDayPredationProbabilities,
+		fmt::memory_buffer& predationProbabilitiesText, Landscape* const landscape, const TimeStep numberOfTimeSteps,
+		const PreciseDouble& timeStepsPerDay, const bool competitionAmongResourceSpecies,
+		CustomIndexedVector<Species::ID, unsigned int>& predationEventsOnOtherSpecies,
+		CustomIndexedVector<AnimalSpeciesID, uint64_t>& animalSpeciesMaximumPredationEncountersPerDay);
 
 	void activateRetaliation(Edible* prey, const DryMass& targetDryMass, const bool saveAnimalsEachDayPredationProbabilities,
-		std::vector<PredationProbabilityDTO>& predationProbabilities, Landscape* const landscape, const TimeStep numberOfTimeSteps,
-		const PreciseDouble& timeStepsPerDay, const bool competitionAmongResourceSpecies);
+		fmt::memory_buffer& predationProbabilitiesText, Landscape* const landscape, const TimeStep numberOfTimeSteps,
+		const PreciseDouble& timeStepsPerDay, const bool competitionAmongResourceSpecies, 
+		CustomIndexedVector<Species::ID, unsigned int>& predationEventsOnOtherSpecies,
+		CustomIndexedVector<AnimalSpeciesID, uint64_t>& animalSpeciesMaximumPredationEncountersPerDay);
 
 	void updateTimeStepsWithoutFood();
 
@@ -572,7 +458,7 @@ public:
 	 * @param voracitiesContent Stream to print voracity.
 	 * @param timeStepsPerDay Time steps per day.
 	 */
-	virtual void printVoracities(const Landscape* const landscape, std::ostringstream& voracitiesContent, const PreciseDouble& timeStepsPerDay);
+	virtual void printVoracities(const Landscape* const landscape, fmt::memory_buffer& voracitiesText, const PreciseDouble& timeStepsPerDay);
 	
 	/**
 	 * @brief Handle death from background mortality.
@@ -597,23 +483,19 @@ public:
 
 	/**
 	 * @brief Apply metabolism for the animal.
-	 * @param view Pointer to view for visualization.
 	 * @param landscape Pointer to landscape.
 	 * @param actualTimeStep Current time step.
 	 */
-	virtual void metabolize(View* view, const Landscape* const landscape, const TimeStep& actualTimeStep);
+	virtual void metabolize(const Landscape* const landscape, const TimeStep& actualTimeStep);
 	
 	/**
 	 * @brief Breed animals and add offspring to list.
-	 * @param offspring List to append offspring.
-	 * @param view Pointer to view.
 	 * @param landscape Pointer to landscape.
 	 * @param numberOfTimeSteps Number of time steps.
 	 * @param saveGenetics Whether to save genetics.
-	 * @param saveMassInfo Whether to save mass info.
 	 * @param timeStepsPerDay Time steps per day.
 	 */
-	void breed(std::list<AnimalNonStatistical*>& offspring, View* view, Landscape* const landscape, const TimeStep numberOfTimeSteps, const bool saveGenetics, const bool saveMassInfo, const PreciseDouble& timeStepsPerDay);
+	unsigned int breed(Landscape* const landscape, const TimeStep numberOfTimeSteps, const bool saveGenetics, std::vector<fmt::memory_buffer>& geneticsText, const PreciseDouble& timeStepsPerDay, bool saveAnimalConstitutiveTraits, fmt::memory_buffer& traitsText);
 	
 	/**
 	 * @brief Actions after breeding.
@@ -661,32 +543,28 @@ public:
 	 *
 	 * This method generates offspring from asexual reproduction.
 	 *
-	 * @param offspring List where the newly created offspring will be stored.
-	 * @param view Pointer to the current view for visualization.
 	 * @param landscape Pointer to the landscape where the breeding occurs.
 	 * @param objectiveEggsNumber Target number of eggs to produce.
 	 * @param numberOfTimeSteps Number of simulation time steps for this breeding event.
 	 * @param saveGenetics If true, saves the genetic information of the offspring.
-	 * @param saveMassInfo If true, saves mass information of the offspring.
 	 * @param timeStepsPerDay Conversion factor of time steps to days.
+	 * @param population Reference to the population counter to update.
 	 */
-	void breedAsexually(std::list<AnimalNonStatistical*>& offspring, View* view, Landscape* const landscape, unsigned int objectiveEggsNumber, const TimeStep numberOfTimeSteps, const bool saveGenetics, const bool saveMassInfo, const PreciseDouble& timeStepsPerDay);
+	unsigned int breedAsexually(Landscape* const landscape, unsigned int objectiveEggsNumber, const TimeStep numberOfTimeSteps, const bool saveGenetics, std::vector<fmt::memory_buffer>& geneticsText, const PreciseDouble& timeStepsPerDay, bool saveAnimalConstitutiveTraits, fmt::memory_buffer& traitsText);
 	
 	/**
 	 * @brief Breed sexually to produce offspring.
 	 *
 	 * This method generates offspring from sexual reproduction using a mated partner.
 	 *
-	 * @param offspring List where the newly created offspring will be stored.
-	 * @param view Pointer to the current view for visualization.
 	 * @param landscape Pointer to the landscape where the breeding occurs.
 	 * @param objectiveEggsNumber Target number of eggs to produce.
 	 * @param numberOfTimeSteps Number of simulation time steps for this breeding event.
 	 * @param saveGenetics If true, saves the genetic information of the offspring.
-	 * @param saveMassInfo If true, saves mass information of the offspring.
 	 * @param timeStepsPerDay Conversion factor of time steps to days.
+	 * @param population Reference to the population counter to update.
 	 */
-	void breedSexually(std::list<AnimalNonStatistical*>& offspring, View* view, Landscape* const landscape, unsigned int objectiveEggsNumber, const TimeStep numberOfTimeSteps, const bool saveGenetics, const bool saveMassInfo, const PreciseDouble& timeStepsPerDay);
+	unsigned int breedSexually(Landscape* const landscape, unsigned int objectiveEggsNumber, const TimeStep numberOfTimeSteps, const bool saveGenetics, std::vector<fmt::memory_buffer>& geneticsText, const PreciseDouble& timeStepsPerDay, bool saveAnimalConstitutiveTraits, fmt::memory_buffer& traitsText);
 
 	/**
 	 * @brief Convert a portion of mass to dry mass considering predator voracity.
@@ -720,7 +598,7 @@ public:
 	 * @param numberOfTimeSteps Number of simulation time steps for the search.
 	 * @param edibilities 
 	 */
-	void searchAnimalsAndResourceToEat(Landscape* const landscape, std::vector<std::tuple<PreciseDouble, Edible*, DryMass>>& ediblesByEdibility, const TimeStep numberOfTimeSteps, bool saveEdibilitiesFile, std::vector<EdibilityDTO>& edibilities);
+	void searchAnimalsAndResourceToEat(Landscape* const landscape, std::vector<std::tuple<PreciseDouble, Edible*, DryMass, bool>>& ediblesByEdibility, const TimeStep numberOfTimeSteps, bool saveEdibilitiesFile, fmt::memory_buffer& edibilitiesText);
 
 	/**
 	 * @brief Apply plasticity to a trait value based on the animal's condition.
@@ -882,9 +760,14 @@ public:
 	/**
 	 * @brief Perform initial evaluation of the terrain cell for this animal.
 	 */
-	void doInitialCellEvaluation();
+	void doInitialCellEvaluation(CustomIndexedVector<Instar, PreciseDouble>& maximumPatchEdibilityValueGlobal, CustomIndexedVector<Instar, PreciseDouble>& maximumPatchPredationRiskGlobal, CustomIndexedVector<Instar, PreciseDouble>& maximumPatchConspecificBiomassGlobal);
 
-	AnimalNonStatisticalDTO toDTO() const noexcept;
+	void formatToBufferDirect(std::string& out) const noexcept;
+	void formatToBufferDirect(fmt::memory_buffer& out) const noexcept;
+
+	// Internal reusable formatting buffer to reduce allocations when serializing
+	// the animal to text. Mutable so it can be reused across const format calls.
+	mutable fmt::memory_buffer formatBuffer;
 
 	static void getHeader(std::string& header);
 
@@ -914,7 +797,7 @@ protected:
 	std::pair<PointMap, PointContinuous> targetNeighborToTravelTo; /**< Target neighbor to travel to */
 
 	/** @brief Identifier of the male that mated with this animal, if applicable. */
-	EdibleID idFromMatedMale;
+	id_type idFromMatedMale;
 
 	/** @brief Generation number of the mated male parent. */
 	Generation generationNumberFromMatedMale;
@@ -941,7 +824,7 @@ protected:
 	uint64_t totalPredationEncounters;
 
 	/** @brief Identifier of the predator that last predated this animal. */
-	EdibleID predatedByID;
+	id_type predatedByID;
 
 	/** @brief Number of time steps the animal has spent without food. */
 	TimeStep timeStepsWithoutFood;
@@ -968,10 +851,10 @@ protected:
 	Generation generationNumberFromMaleParent;
 
 	/** @brief Identifier of the female parent. */
-	EdibleID idFromFemaleParent;
+	id_type idFromFemaleParent;
 
 	/** @brief Identifier of the male parent. */
-	EdibleID idFromMaleParent;
+	id_type idFromMaleParent;
 
 	/** @brief Counter of reproduction events performed by the animal. */
 	unsigned int reproCounter;
@@ -1013,11 +896,11 @@ protected:
 
 	unsigned int actionsCurrentTimeStep; /**< Number of actions performed in the current time step */
 
-	std::pair<Edible*, DryMass> potencialPrey; /**< Potential prey for the animal */
+	std::tuple<Edible*, DryMass, bool> potencialPrey; /**< Potential prey for the animal */
 
 
-	const std::pair<Edible*, DryMass>& getPotencialPrey() const;
-	std::pair<Edible*, DryMass>& getPotencialPrey();
+	const std::tuple<Edible*, DryMass, bool>& getPotencialPrey() const;
+	std::tuple<Edible*, DryMass, bool>& getPotencialPrey();
 
 	bool mustDoHabitatShift() const;
 
@@ -1030,7 +913,7 @@ protected:
 	 * @param timeStepsPerDay Number of time steps per day for scaling purposes.
 	 * @param competitionAmongResourceSpecies Flag indicating if competition among resource species should be considered.
 	 */
-	void setCurrentPrey(Edible& prey, Landscape* const landscape, const DryMass &targetDryMass, const TimeStep numberOfTimeSteps, const PreciseDouble& timeStepsPerDay, const bool competitionAmongResourceSpecies);
+	void setCurrentPrey(const std::tuple<Edible*, DryMass, bool>& prey, Landscape* const landscape, const TimeStep numberOfTimeSteps, const PreciseDouble& timeStepsPerDay, const bool competitionAmongResourceSpecies, CustomIndexedVector<Species::ID, unsigned int>& predationEventsOnOtherSpecies);
 
 	/**
 	 * @brief Set the Scope Area Radius object
@@ -1058,7 +941,7 @@ protected:
 	 * @param ID_prt_female Identifier of the female parent.
 	 * @param ID_prt_male Identifier of the male parent.
 	 */
-	void setOtherAttributes(const Generation& g_numb_prt_female, const Generation& g_numb_prt_male, EdibleID ID_prt_female, EdibleID ID_prt_male);
+	void setOtherAttributes(const Generation& g_numb_prt_female, const Generation& g_numb_prt_male, id_type ID_prt_female, id_type ID_prt_male);
 
 	/**
 	 * @brief Calculates the proportion of time the animal spent moving relative to total time.
@@ -1091,13 +974,6 @@ protected:
 	 * @return True if the animal can consume the resource, false otherwise.
 	 */
 	bool canEatResource(const DryMass &dryMass) const;
-
-	/**
-	 * @brief Adds species-specific data for growth and feeding.
-	 * @param numberOfInstars Number of instars in the species.
-	 * @param timeStepsPerDay Number of time steps per day.
-	 */
-	void addSpecies(const unsigned int numberOfInstars, const PreciseDouble& timeStepsPerDay);
 
 	/**
 	 * @brief Increases the number of steps moved by the animal in the current time step.
@@ -1156,23 +1032,23 @@ protected:
 	/**
 	 * @brief Searches for a target to travel to within the given scope area and indicates if no destinations were found.
 	 * @param scopeArea Maximum distance to search.
+	 * @param maximumPatchEdibilityValueGlobal Global maximum patch edibility values.
+	 * @param maximumPatchPredationRiskGlobal Global maximum patch predation risk values.
+	 * @param maximumPatchConspecificBiomassGlobal Global maximum patch conspecific biomass values.
+	 * @return True if a target was found, false otherwise.
 	 */
-	virtual bool searchTargetToTravelTo(const PreciseDouble &scopeArea)=0;
+	virtual bool searchTargetToTravelTo(const PreciseDouble &scopeArea, CustomIndexedVector<Instar, PreciseDouble>& maximumPatchEdibilityValueGlobal, CustomIndexedVector<Instar, PreciseDouble>& maximumPatchPredationRiskGlobal, CustomIndexedVector<Instar, PreciseDouble>& maximumPatchConspecificBiomassGlobal)=0;
 	
 	void habitatShift(Landscape* const landscape);
 
-	void feed(const bool saveActivity, std::vector<ActivityDTO>& activities, const TimeStep numberOfTimeSteps, const PreciseDouble& timeStepsPerDay);
-
-	bool predate(const bool retaliation, const bool saveAnimalsEachDayPredationProbabilities, 
-		std::vector<PredationProbabilityDTO>& predationProbabilities, Landscape* const landscape, const TimeStep numberOfTimeSteps, 
-		const PreciseDouble& timeStepsPerDay, const bool competitionAmongResourceSpecies);
+	void feed(const bool saveActivity, fmt::memory_buffer& activitiesText, const TimeStep numberOfTimeSteps, const PreciseDouble& timeStepsPerDay);
 
 	virtual void move(Landscape* const landscape, const TimeStep numberOfTimeSteps, const PreciseDouble& timeStepsPerDay, 
-        const bool saveMovements, std::vector<MovementDTO>& movements, const bool saveActivity, 
-        std::vector<ActivityDTO>& activities)=0;
+        const bool saveMovements, fmt::memory_buffer& movementsText, const bool saveActivity, 
+        fmt::memory_buffer& activitiesText)=0;
 
 	DryMass computeHandlingFoodMass() const;
-	void applyHandlingTime(const DryMass& foodMass, const bool saveActivity, std::vector<ActivityDTO>& activities, const TimeStep actualTimeStep, const PreciseDouble& timeStepsPerDay);
+	void applyHandlingTime(const DryMass& foodMass, const bool saveActivity, fmt::memory_buffer& activitiesText, const TimeStep actualTimeStep, const PreciseDouble& timeStepsPerDay);
 
 	PreciseDouble getDistanceTravelled() const { return distanceTravelled; }
 
@@ -1198,7 +1074,7 @@ protected:
 	 * @return Pointer to the newly created offspring animal.
 	 */
 	virtual AnimalNonStatistical* createOffspring(Gamete* const firstParentGamete, Gamete* const secondParentGamete, TerrainCell* parentTerrainCell, const PreciseDouble& factorEggMassFromMom, const Generation& g_numb_prt_female,
-		const Generation& g_numb_prt_male, EdibleID ID_prt_female, EdibleID ID_prt_male, AnimalSpecies* const mySpecies, Gender gender, const TimeStep actualTimeStep, const PreciseDouble& timeStepsPerDay)=0;
+		const Generation& g_numb_prt_male, id_type ID_prt_female, id_type ID_prt_male, AnimalSpecies* const mySpecies, Gender gender, const TimeStep actualTimeStep, const PreciseDouble& timeStepsPerDay)=0;
 };
 
 #endif /* ANIMAL_NON_STATISTICAL_H_ */

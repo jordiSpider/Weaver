@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Wix xmlns="http://schemas.microsoft.com/wix/2006/wi">
+    <Fragment>
+        <DirectoryRef Id="CM_DP_bin">
+           <Component Id="setEnviroment" Guid="A1B2C3D4-E5F6-7A8B-9C0D-1E2F3A4B5C6D">
+                <CreateFolder />
+                <Environment 
+                      Id="PATH" 
+                      Name="PATH" 
+                      Value="[CM_DP_bin]" 
+                      Permanent="no" 
+                      Part="last" 
+                      Action="set" 
+                      System="no" />
+            </Component>
+        </DirectoryRef>
+        
+        <InstallExecuteSequence>
+            <WriteEnvironmentStrings/>
+        </InstallExecuteSequence>
+    </Fragment>
+</Wix>

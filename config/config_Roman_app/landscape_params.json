@@ -1,7 +1,8 @@
 {
-    "version": "2025.12.12",
+    "version": "2026.08.05",
     "landscape": {
         "life": {
+            "minExploitableResource": 1e-6,
             "competitionAmongResourceSpecies": false,
             "exitTimeThreshold": 100000,
             "pdfThreshold": 0.0,

@@ -26,7 +26,7 @@ vector<Trait*> CellValueTrait::generateTraits(std::vector<IndividualLevelTrait*>
 	for(const CellValueTraitType type : EnumClass<CellValueTraitType>::getEnumValues())
 	{
 		cellValueTraits.push_back(new CellValueTrait(
-			individualLevelTraits, type, definitionConfig[CellValueTrait::getJsonFieldName()][EnumClass<CellValueTraitType>::to_string(type)], 
+			individualLevelTraits, type, definitionConfig[CellValueTrait::getJsonFieldName()][fmt::to_string(type)],
 			individualLevelTraitsOrder
 		));
 	}
@@ -41,7 +41,7 @@ vector<string> CellValueTrait::getTraitStrVector()
 
 	for(CellValueTraitType type : EnumClass<CellValueTraitType>::getEnumValues())
 	{
-		traitStrVector.push_back(EnumClass<CellValueTraitType>::to_string(type));
+		traitStrVector.push_back(fmt::to_string(type));
 	}
 
 	return traitStrVector;
@@ -72,10 +72,10 @@ CellValueTrait::CellValueTrait()
 
 CellValueTrait::CellValueTrait(std::vector<IndividualLevelTrait*>& individualLevelTraits, const CellValueTraitType type, const json& config, const vector<json>& individualLevelTraitsOrder)
 	: Trait(
-		individualLevelTraits, config, individualLevelTraitsOrder, getParentTraitStr() + "$" + EnumClass<CellValueTraitType>::to_string(type), 
+		individualLevelTraits, config, individualLevelTraitsOrder, getParentTraitStr() + "$" + fmt::to_string(type), 
 		getFileName(),
 		createTemperatureSection(
-			individualLevelTraits, config, individualLevelTraitsOrder, getParentTraitStr() + "$" + EnumClass<CellValueTraitType>::to_string(type), 
+			individualLevelTraits, config, individualLevelTraitsOrder, getParentTraitStr() + "$" + fmt::to_string(type), 
 			getFileName()
 		)
 	  )

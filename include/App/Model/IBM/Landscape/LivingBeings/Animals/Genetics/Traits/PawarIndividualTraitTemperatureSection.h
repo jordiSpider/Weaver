@@ -23,27 +23,18 @@
 #include "App/Model/IBM/Physics/Temperature.h"
 #include "App/Model/IBM/Landscape/LivingBeings/Animals/Species/Genetics/Traits/TemperatureSection/PawarElement.h"
 #include "Misc/CustomIndexedVector.h"
+#include "App/IO/StorageBridge.h"
 
-struct PawarTraitDTO {
-    double constitutiveActivationEnergy;
-    double constitutiveEnergyDecay;
-    double constitutiveTemperatureOptimal;
-    double constitutiveTemperatureRef;
-    double constitutiveTmin;
-    double constitutiveTmax;
 
-    void formatToBuffer(std::string& buffer) const;
-    void formatToBufferNA(std::string& buffer) const;
-};
 
-/**
- * @class PawarIndividualTraitTemperatureSection
- * @brief Temperature-dependent section of an individual trait using the Pawar model.
- *
- * This class modifies an individual trait according to environmental temperature,
- * using a Pawar-based temperature performance curve. It allows optional inversion
- * of the curve and enforces strictly positive trait values if required.
- */
+ /**
+  * @class PawarIndividualTraitTemperatureSection
+  * @brief Temperature-dependent section of an individual trait using the Pawar model.
+  *
+  * This class modifies an individual trait according to environmental temperature,
+  * using a Pawar-based temperature performance curve. It allows optional inversion
+  * of the curve and enforces strictly positive trait values if required.
+  */
 class PawarIndividualTraitTemperatureSection {
 public:
     /**
@@ -59,7 +50,7 @@ public:
      * @param strictlyPositive Whether the resulting phenotypic values must remain strictly positive.
      */
     PawarIndividualTraitTemperatureSection(const CustomIndexedVector<PawarElement, PreciseDouble>& elements, const PreciseDouble& geneticValue, bool inverse, bool strictlyPositive);
-    
+
     /**
      * @brief Destructor.
      */
@@ -67,7 +58,7 @@ public:
 
     /**
      * @brief Apply the temperature dependency to a trait value.
-     * 
+     *
      * Computes the phenotypic value of a trait under the current environmental temperature
      * using the Pawar temperature performance curve.
      *
@@ -79,10 +70,10 @@ public:
      * @return Modified trait value considering temperature effects.
      */
     PreciseDouble applyTemperatureDependency(const Temperature& temperature, const PreciseDouble& traitValue,
-        const PreciseDouble &coefficientForMassAforMature, const PreciseDouble &scaleForMassBforMature, const Temperature& tempFromLab
+        const PreciseDouble& coefficientForMassAforMature, const PreciseDouble& scaleForMassBforMature, const Temperature& tempFromLab
     ) const;
 
-    void flatten(PawarTraitDTO& dto) const noexcept;
+    void formatTraitDirect(fmt::memory_buffer& buf) const noexcept;
 
     /**
       * @brief Serializes the object for persistence.
@@ -92,13 +83,13 @@ public:
       * @param version Serialization version.
       */
     template <class Archive>
-    void serialize(Archive &ar, const unsigned int version);
+    void serialize(Archive& ar, const unsigned int version);
 
 private:
     CustomIndexedVector<PawarElement, PreciseDouble> elements; /**< Vector of Pawar elements defining the TPC. */
     bool inverse = false; /**< Whether the temperature response curve should be inverted. */
     bool strictlyPositive = false; /**< Whether phenotypic values must remain strictly positive. */
-    std::pair<Temperature,Temperature> temperatureRangeTPC; /**< Temperature range of the performance curve. */
+    std::pair<Temperature, Temperature> temperatureRangeTPC; /**< Temperature range of the performance curve. */
 };
 
 #endif // PAWAR_INDIVIDUAL_TRAIT_TEMPERATURE_SECTION_H_

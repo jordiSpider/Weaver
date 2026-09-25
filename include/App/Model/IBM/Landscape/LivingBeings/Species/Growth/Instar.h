@@ -16,6 +16,8 @@
 #include <boost/archive/binary_iarchive.hpp>
 #include <boost/archive/binary_oarchive.hpp>
 
+#include <fmt/format.h>
+
 #ifdef DEBUG
 #include "Exceptions/LineInfoException.h"
 #endif
@@ -281,16 +283,6 @@ public:
     friend bool operator!=(const unsigned int& lhs, const Instar& rhs);
     ///@}
 
-    /// Converts the instar value to a string representation.
-    std::string to_string() const;
-
-    /// Stream insertion operator.
-    friend std::ostream& operator<<(std::ostream& os, const Instar& instar);
-
-    friend std::string format_as(const Instar& instar) {
-        return instar.to_string();
-    }
-
     /// Converts the instar to a size_t for indexing or hashing.
     explicit operator size_t() const;
 
@@ -307,6 +299,17 @@ public:
 private:
     unsigned int value; ///< Numeric value of the instar.
 };
+
+
+namespace fmt {
+    template <>
+    struct formatter<Instar> : formatter<unsigned int> {
+        template <typename FormatContext>
+        auto format(const Instar& instar, FormatContext& ctx) const {
+            return formatter<unsigned int>::format(instar.getValue() + 1, ctx);
+        }
+    };
+}
 
 
 /**

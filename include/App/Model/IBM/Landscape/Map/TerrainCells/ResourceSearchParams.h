@@ -8,24 +8,13 @@
 
 
 #include <vector>
-#include <unordered_set>
-
-
-#include <boost/serialization/export.hpp>
-#include <boost/serialization/unordered_set.hpp>
 
 
 #include <fstream>
 #include <ostream>
 
 #include "App/Model/IBM/Landscape/LivingBeings/Resources/Species/ResourceSpecies.h"
-
-
-/**
- * @typedef SearchableResourceSpecies
- * @brief Set of resource IDs that can be searched.
- */
-typedef std::unordered_set<ResourceSpecies::ResourceID> SearchableResourceSpecies;
+#include "App/Model/IBM/Landscape/Map/TerrainCells/PatchApplicator/Resources/CellResourceInterface.h"
 
 
 /**
@@ -39,7 +28,7 @@ class ResourceSearchParams
 {
 protected:
     /// Set of resource species IDs that are searchable
-    SearchableResourceSpecies searchParams;
+    std::vector<bool> validSignaturesBitmask;
 
 public:
     /**
@@ -73,29 +62,11 @@ public:
      * @param existingResourceSpecies Vector of existing ResourceSpecies objects
      * @param searchableResourceSpecies Optional vector of resource IDs to add explicitly
      */
-    void addSearchParams(const std::vector<ResourceSpecies*>& existingResourceSpecies, const std::vector<ResourceSpecies::ResourceID> &searchableResourceSpecies = {});
+    void addSearchParams(size_t numberExistingResourceSpecies, const std::vector<ResourceSpecies::ResourceID> &searchableResourceSpecies = {});
 
-    /**
-     * @brief Returns the set of searchable resource species IDs.
-     * 
-     * @return Reference to the set of searchable resource species
-     */
-    const SearchableResourceSpecies& getSearchParams() const;
+    void init();
 
-    /**
-     * @brief Clears all stored searchable parameters.
-     */
-    void clear();
-
-    /**
-     * @brief Serialization function for ResourceSearchParams.
-     * 
-     * @tparam Archive Type of archive
-     * @param ar Archive object
-     * @param version Version of the serialization
-     */
-    template <class Archive>
-    void serialize(Archive &ar, const unsigned int version);
+    bool matches(const CellResourceInterface& resource) const noexcept;
 };
 
 #endif /* RESOURCE_SEARCH_PARAMS_H_ */

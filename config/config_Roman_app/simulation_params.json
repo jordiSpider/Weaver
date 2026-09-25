@@ -19,21 +19,20 @@
             "fixedSeedValue": 1
         },
         "outputs": {
-            "saveAnimalConstitutiveTraits": true,
-            "saveGenetics": true,
-            "saveDailySummary": true,
+            "saveAnimalConstitutiveTraits": false,
+            "saveGenetics": false,
             "saveExtendedDailySummary": true,
             "saveMovements": false,
-            "saveEdibilitiesFile": true,
+            "saveEdibilitiesFile": false,
             "savePredationEventsOnOtherSpecies": false,
             "recordEach": 1,
-            "saveIntermidiateVolumes": false,
-            "saveIntermidiateVolumesPeriodicity": 100000,
-            "saveAnimalsEachDayStart": true,
-            "saveAnimalsEachDayEnd": true,
-            "saveCellsEachDay": true,
-            "saveAnimalsEachDayVoracities": true,
-            "saveAnimalsEachDayPredationProbabilities": true,
+            "saveSnapshots": false,
+            "saveSnapshotsPeriodicity": 100000,
+            "saveAnimalsEachDayStart": false,
+            "saveAnimalsEachDayEnd": false,
+            "saveCellsEachDay": false,
+            "saveAnimalsEachDayVoracities": false,
+            "saveAnimalsEachDayPredationProbabilities": false,
             "saveActivity": false,
             "saveMassInfo": false
         },
@@ -41,5 +40,5 @@
         "runDays": 1000,
         "timeStepsPerDay": 1.0
     },
-    "version": "2025.12.12"
+    "version": "2026.08.05"
 }

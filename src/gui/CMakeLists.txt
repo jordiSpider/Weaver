@@ -38,22 +38,13 @@ if(WIN32)
     target_link_options(${GUI_EXE_NAME} PRIVATE "/ENTRY:mainCRTStartup")
 endif()
 
-target_sources(${GUI_EXE_NAME}
-    PRIVATE
-        ${CMAKE_SOURCE_DIR}/src/App/View/GUI/GUI.cpp
-        ${CMAKE_SOURCE_DIR}/src/App/View/GUI/Widgets/Checkbox.cpp
-        ${CMAKE_SOURCE_DIR}/src/App/View/GUI/Widgets/LogTextbox.cpp
-        ${CMAKE_SOURCE_DIR}/src/App/View/GUI/Widgets/OptionSelector.cpp
-        ${CMAKE_SOURCE_DIR}/src/App/View/GUI/Widgets/PathChooser.cpp
-)
-
 # ---------------------------------------------------------
 # 🔗 Linkage & Include Directives
 # ---------------------------------------------------------
 target_link_libraries(${GUI_EXE_NAME}
     PRIVATE
         weaver_options
-        weaver_app
+        weaver_app_view
         unofficial::nana::nana
 )
 

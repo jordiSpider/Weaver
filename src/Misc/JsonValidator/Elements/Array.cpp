@@ -12,7 +12,7 @@ Array::Array(const json& info)
 {
     try
 	{
-		minItems = info.value("minItems", 0);
+		minItems = info.value("minItems", 0u);
 
 		if(info.contains("minItems") && !info.at("minItems").is_number_integer()) {
 			throwValidatorSchemaJSONException("': Not an element of type 'integer'");

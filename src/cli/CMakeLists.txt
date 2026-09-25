@@ -28,7 +28,8 @@ endif()
 target_link_libraries(${CLI_EXE_NAME}
     PRIVATE
         weaver_options
-        weaver_app
+        weaver_app_view
+        weaver_core_misc
 )
 
 # ---------------------------------------------------------

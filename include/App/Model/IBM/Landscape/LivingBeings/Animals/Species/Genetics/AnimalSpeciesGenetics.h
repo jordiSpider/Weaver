@@ -127,7 +127,7 @@ public:
      * @param animalInfo Output stream for animal information.
      * @param genome Genome to print.
      */
-     void printGenetics(const std::ostringstream& animalInfo, const Genome& genome) const;
+     void printGenetics(const std::string& animalInfo, const Genome& genome, std::vector<fmt::memory_buffer>& geneticsText) const;
 
      /**
       * @brief Serializes the object for persistence.
@@ -140,14 +140,6 @@ public:
      void serialize(Archive & ar, const unsigned int version);
 
 private:
-     /**
-     * @brief Generate the genetic header string for a file.
-     * @param numberOfLociPerTrait Number of loci per trait.
-     * @return Header string.
-     */
-     static std::string generateGeneticHeader(const size_t numberOfLociPerTrait);
-
-
      size_t numberOfLociPerTrait; /**< Number of loci per trait */
      size_t numberOfAllelesPerLocus; /**< Number of alleles per locus */
      size_t traitsPerModule; /**< Number of traits per module */

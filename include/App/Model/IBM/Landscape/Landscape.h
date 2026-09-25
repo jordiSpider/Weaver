@@ -25,6 +25,7 @@
 #include <chrono>
 #include <numeric>
 #include <unordered_set>
+#include <atomic>
 #include <nlohmann/json.hpp>
 #include <tbb/enumerable_thread_specific.h>
 
@@ -68,9 +69,7 @@
 #include "App/Model/IBM/Landscape/Map/Patches/Source/HabitatDomainSource.h"
 #include "Misc/EnumClass.h"
 #include "App/Model/IBM/Landscape/LivingBeings/Animals/AnimalNonStatistical.h"
-#include "App/View/View.h"
 #include "App/Model/IBM/Landscape/LivingBeings/TimeUnits.h"
-#include "App/Model/IBM/Landscape/LivingBeings/EdibleID.h"
 #include "App/Model/IBM/Maths/Dynamics/NonMassBased/NonDynamics.h"
 #include "Misc/Maths/PreciseDouble.h"
 #include "Misc/ProgressBar.h"
@@ -78,43 +77,6 @@
 
 
 
-
-struct ResourceDataDTO {
-    double wetMass;
-    double dryMass;
-};
-
-struct CellCountDTO {
-	std::array<uint32_t, DIMENSIONS> position;
-
-    std::vector<uint32_t> animalCounts;
-    std::vector<ResourceDataDTO> resourceQuantities;
-
-
-	void formatToBuffer(std::string& buffer, const std::vector<std::string>& stringPool) const;
-};
-
-struct LifeStageCountsDTO {
-	std::array<uint32_t, EnumClass<LifeStage>::size()> counts{0};
-};
-
-
-
-
-
-
-template<typename DTO>
-struct ExportData {
-	std::future<void> writeFuture;
-	std::string textBuffer;
-	std::vector<DTO> dtosBufferA;
-	std::vector<DTO> dtosBufferB;
-	bool useBufferA = true;
-
-	inline constexpr std::vector<DTO>& getDtoBuffer() noexcept {
-		return useBufferA ? dtosBufferA : dtosBufferB;
-	}
-};
 
 
 
@@ -159,13 +121,6 @@ public:
     Landscape& operator=(const Landscape&) = delete;
 
 	/**
-	* @brief Attach a view object used for visualization or UI callbacks.
-	*
-	* @param newView Pointer to a View instance. Can be nullptr to detach.
-	*/
-	void setView(View* newView);
-
-	/**
 	* @brief Obtain a mutable pointer to the internal Map object.
 	*
 	* @return Pointer to the Map that can be modified by the caller.
@@ -182,12 +137,11 @@ public:
 	/**
 	* @brief Initialize the landscape from configuration files and options.
 	*
-	* @param newView View pointer to attach during initialization.
 	* @param configPath Filesystem path to configuration folder or file.
 	* @param newOutputFolder Path where simulation outputs must be written.
 	* @param fromCheckpoint True if initialization should restore state from a checkpoint.
 	*/
-	void init(View* newView, std::filesystem::path configPath, std::filesystem::path newOutputFolder, bool fromCheckpoint);
+	void init(std::filesystem::path configPath, std::filesystem::path newOutputFolder, bool fromCheckpoint);
 
 	/**
 	* @brief Calculate statistics related to predation/attack for each species.
@@ -220,7 +174,7 @@ public:
 	*
 	* @return A newly generated EdibleID (project-specific type alias).
 	*/
-	EdibleID generateEdibleId();
+	id_type generateEdibleId();
 
 	/** @brief Reset the internal edible identifier counter to its initial state. */
 	void resetEdibleIdCounter();
@@ -296,7 +250,7 @@ public:
 	void setOutputFolder(std::filesystem::path newOutputFolder, const std::string& configName);
 
 	/** @brief Print predation events matrix showing how species prey on others. */
-	void printPredationEventsOnOtherSpeciesMatrix();
+	void printPredationEventsOnOtherSpeciesMatrix(const TimeStep numberOfTimeSteps);
 
 	/**
 	* @brief Query whether resources species compete among themselves.
@@ -410,6 +364,9 @@ public:
 	*/
 	PreciseDouble calculateNewVoracity(const PreciseDouble&wetMass, const PreciseDouble&conversionToWetMass) const;
 
+	/** @brief Get a const reference to the vector of all species. */
+	const std::vector<Species*>& getExistingSpecies() const;
+
 	/**
 	* @brief Get the landscape type enum of this instance.
 	*
@@ -426,42 +383,15 @@ public:
     void serialize(Archive &ar, const unsigned int version);
 
 protected:
-	View* view;	/**< Visualization / UI view attached to the landscape (may be null). */
-
 	unsigned int fixedSeedValue; /**< Fixed RNG seed value for deterministic runs (when used). */
-
-	std::vector<std::string> stringPool;
 
 	std::string printAnimalsAlongCellsHeader; /**< Header string for printing animals along cells. */
 
 	std::string printCellAlongCellsHeader;
 
 
-	ExportData<AnimalNonStatisticalDTO> exportAnimalsAlongCellsDayStart;
-	ExportData<AnimalNonStatisticalDTO> exportAnimalsAlongCellsDayEnd;
-
-	ExportData<EdibilityDTO> exportEdibilities;
-
-	ExportData<MovementDTO> exportMovements;
-
-	ExportData<ActivityDTO> exportActivities;
-
-	ExportData<PredationProbabilityDTO> exportPredationProbabilities;
-
-	ExportData<CellCountDTO> exportCellAlongCells;
-
-
-
-
-	tbb::enumerable_thread_specific<std::vector<EdibilityDTO>> localEdibilities;
-	tbb::enumerable_thread_specific<std::vector<MovementDTO>> localMovements;
-	tbb::enumerable_thread_specific<std::vector<ActivityDTO>> localActivities;
-	tbb::enumerable_thread_specific<std::vector<PredationProbabilityDTO>> localPredationProbabilities;
-
 
 	tbb::enumerable_thread_specific<size_t> localProgressBarCounter;
-
-
 
 	Day runDays;				/**< Number of days to simulate. */
 	unsigned int recordEach;	/**< Frequency (in time-steps) to record checkpoints or outputs. */
@@ -473,6 +403,7 @@ protected:
 	std::vector<std::vector<std::pair<size_t, ResourceSource*>>> appliedResource; /**< Resource sources grouped by priority. */
 
 	std::vector<AnimalNonStatistical*> landscapeAnimals; /**< Non-statistical animals present in the landscape. */
+	mutable std::mutex landscapeAnimalsMutex;
 
 	std::vector<std::vector<std::vector<CellResource*>>> landscapeResources; /**< Resources by cell and species. */
 
@@ -481,11 +412,7 @@ protected:
 	std::filesystem::path outputFolder; /**< Base folder for output files during a run. */
 	std::filesystem::path resultFolder; /**< Final result folder for the simulation run. */
 
-	CustomIndexedVector<AnimalSpeciesID, std::ofstream> animalConstitutiveTraitsFile; /**< Per-species files for constitutive traits. */
-	std::ofstream dailySummaryFile; /**< Stream for daily summary outputs. */
-	std::ofstream extendedDailySummaryFile; /**< Stream for extended daily summary outputs. */
-	std::ofstream movementsFile; /**< Stream for recorded movements. */
-	std::ofstream edibilitiesFile; /**< Stream describing edible links / edibilities. */
+	CustomIndexedVector<AnimalSpeciesID, std::filesystem::path> animalConstitutiveTraitsFilePath; /**< Per-species file paths for constitutive traits. */
 	bool saveEdibilitiesFile; /**< Whether to produce the edibilities file. */
 	
 	bool competitionAmongResourceSpecies; /**< Whether resource species compete for the same resource. */
@@ -498,8 +425,6 @@ protected:
 	bool saveAnimalConstitutiveTraits; /**< Whether to save animal constitutive trait files. */
 
 	bool saveGenetics; /**< Whether genetic data should be saved. */
-
-	bool saveDailySummary; /**< Whether daily summary should be written. */
 
 	bool saveExtendedDailySummary; /**< Whether extended daily summary should be written. */
 
@@ -519,8 +444,8 @@ protected:
 
 	bool saveMassInfo; /**< Whether to save mass/energetics information. */
 
-	bool saveIntermidiateVolumes; /**< Whether intermediate volume snapshots are saved. */
-	unsigned int saveIntermidiateVolumesPeriodicity; /**< Periodicity for intermediate volumes. */
+	bool saveSnapshots; /**< Whether intermediate volume snapshots are saved. */
+	unsigned int saveSnapshotsPeriodicity; /**< Periodicity for intermediate volumes. */
 
 	std::vector<float> heatingCodeTemperatureCycle;	/**< Optional heating code cycle defining temperatures through time. */
 
@@ -734,10 +659,9 @@ protected:
 	/**
 	* @brief Append extended daily summary information to a provided stream.
 	*
-	* @param os Output stream to append to.
 	* @param numberOfTimeSteps Current time-step index for timestamping.
 	*/
-	void printExtendedDailySummary(std::ostream& os, const TimeStep numberOfTimeSteps);
+	void printExtendedDailySummary(const TimeStep numberOfTimeSteps);
 	
 	/**
 	* @brief Save a snapshot of a specific animal species to disk.
@@ -786,9 +710,6 @@ protected:
 	/** @brief Get a mutable reference to the vector of all species. */
 	std::vector<Species*>& getMutableExistingSpecies();
 
-	/** @brief Get a const reference to the vector of all species. */
-	const std::vector<Species*>& getExistingSpecies() const;
-
 private:
 	const std::filesystem::path RESOURCE_FOLDER_NAME = "resource"; /**< Name of the resource folder. */
 	const std::filesystem::path SPECIES_FOLDER_NAME = "species"; /**< Name of the species folder. */
@@ -807,6 +728,27 @@ private:
 	unsigned int checkpointsRecordEach; /**< Frequency for writing checkpoints. */
 
 	PreciseDouble pdfThreshold; /**< Threshold used for PDF-based filtering. */
+
+
+	tbb::enumerable_thread_specific<fmt::memory_buffer> localBuffersAnimalsStart;
+	tbb::enumerable_thread_specific<fmt::memory_buffer> localBuffersAnimalsEnd;
+	tbb::enumerable_thread_specific<fmt::memory_buffer> localBuffersCells;
+	tbb::enumerable_thread_specific<fmt::memory_buffer> localBuffersMassInfo;
+	tbb::enumerable_thread_specific<fmt::memory_buffer> localBuffersEdibilities;
+	tbb::enumerable_thread_specific<fmt::memory_buffer> localBuffersActivities;
+	tbb::enumerable_thread_specific<fmt::memory_buffer> localBuffersVoracities;
+	tbb::enumerable_thread_specific<fmt::memory_buffer> localBuffersMovements;
+	tbb::enumerable_thread_specific<fmt::memory_buffer> localBuffersPredationProbabilities;
+	tbb::enumerable_thread_specific<CustomIndexedVector<AnimalSpeciesID, fmt::memory_buffer>> localBuffersAnimalConstitutiveTraits;
+	tbb::enumerable_thread_specific<CustomIndexedVector<AnimalSpeciesID, std::vector<fmt::memory_buffer>>> localBuffersGenetics;
+
+
+	fmt::memory_buffer extendedDailySummaryBuffer;
+	fmt::memory_buffer executionTimeBuffer;
+	fmt::memory_buffer timeSpentBuffer;
+	fmt::memory_buffer predationEventsOnOtherSpeciesMatrixBuffer;
+	fmt::memory_buffer versionsBuffer;
+
 
 	/**
 	* @brief Checks whether simulation checkpoints are enabled.
@@ -844,42 +786,6 @@ private:
 	* @param numberOfTimeSteps Current timestep number.
 	*/
 	void performAnimalsActions(const TimeStep numberOfTimeSteps);
-
-	/**
-	* @brief Prints (or logs) voracity values for all animals in the landscape.
-	* @param numberOfTimeSteps Current timestep number.
-	*/
-	void printAnimalsVoracities(const TimeStep& numberOfTimeSteps);
-
-	/**
-	* @brief Removes animals that die from background mortality.
-	* @param numberOfTimeSteps Current timestep.
-	*/
-    void dieFromBackground(const TimeStep& numberOfTimeSteps);
-
-	/**
-	* @brief Transfers assimilated food into the internal energy tanks of animals.
-	* @param numberOfTimeSteps Current timestep.
-	*/
-    void transferAssimilatedFoodToEnergyTank(const TimeStep& numberOfTimeSteps);
-    
-	/**
-	* @brief Applies metabolic costs to animals for the current timestep.
-	* @param numberOfTimeSteps Current timestep.
-	*/
-	void metabolizeAnimals(const TimeStep numberOfTimeSteps);
-
-	/**
-	* @brief Applies growth processes to animals.
-	* @param numberOfTimeSteps Current timestep.
-	*/
-    void growAnimals(const TimeStep& numberOfTimeSteps);
-
-	/**
-	* @brief Performs breeding and reproduction actions.
-	* @param numberOfTimeSteps Current timestep.
-	*/
-    void breedAnimals(const TimeStep& numberOfTimeSteps);
 
 	/**
 	* @brief Evaluates simulation break conditions.
@@ -933,45 +839,6 @@ private:
 };
 
 
-template<typename DTO>
-void writeDtosToFile(std::ofstream& file, ExportData<DTO>& exportData, const std::vector<std::string>& stringPool, bool clearBufferAfterWrite)
-{
-	std::vector<DTO>& dtos = exportData.getDtoBuffer();
-
-	exportData.useBufferA = !exportData.useBufferA;
-
-	exportData.textBuffer.clear();
-    if(exportData.textBuffer.capacity() < 1024 * 1024) exportData.textBuffer.reserve(1024 * 1024);
-
-	for (const auto& dto : dtos) {
-        dto.formatToBuffer(exportData.textBuffer, stringPool);
-		exportData.textBuffer.push_back('\n');
-
-		// If the buffer accumulates more than 512 KB, we flush to disk and clear
-        if (exportData.textBuffer.size() > 512 * 1024) {
-            file << exportData.textBuffer;
-            exportData.textBuffer.clear();
-        }
-    }
-
-	if (!exportData.textBuffer.empty()) {
-        file << exportData.textBuffer;
-    }
-
-	if(clearBufferAfterWrite) {
-		dtos.clear();
-	}
-}
-
-
-void writeAnimalsAlongCells(const std::string& header, ExportData<AnimalNonStatisticalDTO>& exportAnimalsAlongCells, const int simulationPoint, const TimeStep numberOfTimeSteps, std::filesystem::path resultFolder, unsigned int recordEach, const std::vector<std::string>& stringPool);
-
-void writeActivity(ExportData<ActivityDTO>& exportData, const TimeStep numberOfTimeSteps, std::filesystem::path resultFolder, unsigned int recordEach, const std::vector<std::string>& stringPool);
-
-void writePredationProbabilities(ExportData<PredationProbabilityDTO>& exportData, const TimeStep numberOfTimeSteps, std::filesystem::path resultFolder, unsigned int recordEach, const std::vector<std::string>& stringPool);
-
-void writeCellAlongCells(const std::string& header, ExportData<CellCountDTO>& exportData, const TimeStep numberOfTimeSteps, std::filesystem::path resultFolder, unsigned int recordEach, const std::vector<std::string>& stringPool);
-
 
 /**
  * @brief Boost library namespace.
@@ -984,11 +851,10 @@ namespace boost {
 		/**
 		* @brief Boost.Serialization free function overload to (de)serialize Landscape pointers.
 		*
-		* Specialization to assist in (de)serializing polymorphic Landscape* pointers
-		* while providing a View pointer during restoration.
+		* Specialization to assist in (de)serializing polymorphic Landscape* pointers.
 		*/
         template<class Archive>
-        void serialize(Archive &ar, Landscape* &landscapePtr, const unsigned int version, View* view);
+        void serialize(Archive &ar, Landscape* &landscapePtr, const unsigned int version);
     }
 }
 

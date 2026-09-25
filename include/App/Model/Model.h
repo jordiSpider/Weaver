@@ -8,7 +8,7 @@
  * model instantiation.
  *
  * This class acts as the bridge between the simulation logic and the graphical or
- * textual visualization layer represented by the `View` class.
+ * textual visualization layer.
  */
 
 #ifndef MODEL_H_
@@ -22,23 +22,20 @@
 #include "App/Model/RunMode.h"
 #include "Exceptions/LineInfoException.h"
 
-class View;
-
 
 /**
  * @class Model
  * @brief Abstract base class for all simulation models in the Weaver framework.
  *
  * The `Model` class establishes the interface that all derived simulation models must follow.
- * It encapsulates the essential lifecycle methods (`run`), provides a static factory method for
- * model creation, and maintains a reference to a `View` object for rendering or monitoring.
+ * It encapsulates the essential lifecycle methods (`run`) and provides a static factory method for
+ * model creation.
  *
  * The derived classes (e.g., `IBM`) implement specific simulation logic while conforming to
  * this standardized structure.
  *
  * ### Responsibilities
  * - Define the contract for simulation execution (`run`).
- * - Manage interaction with the visualization layer (`View`).
  * - Provide a common base for polymorphic use across different model types.
  */
 class Model
@@ -58,28 +55,18 @@ public:
     /**
      * @brief Factory method for creating a model instance.
      *
-     * Creates and returns an instance of a specific model subclass
-     * based on the given `Type`. The instance is initialized with
-     * a reference to the `View` object.
-     *
      * @param modelType The type of model to create (e.g., `Type::IBM`).
-     * @param view Reference to the visualization or controller view.
      * @return Pointer to the newly created model instance.
      *
      * @throw LineInfoException If the provided model type is not supported.
      */
-    static Model* createInstance(Type modelType, View& view);
+    static Model* createInstance(Type modelType);
 
 
     /**
      * @brief Constructs a new Model object.
-     *
-     * Initializes the reference to the associated `View`. This constructor
-     * is called by derived classes such as `IBM`.
-     *
-     * @param view Reference to the view associated with the model.
      */
-    Model(View& view);
+    Model();
 
     /**
      * @brief Virtual destructor for safe polymorphic cleanup.
@@ -91,9 +78,6 @@ public:
 
     /**
      * @brief Deleted copy constructor.
-     *
-     * The `Model` class is non-copyable to avoid unintended duplication
-     * of simulation resources and view references.
      *
      * @param other Another instance of Model (unused).
      */
@@ -121,9 +105,6 @@ public:
      * @param outputFolderPath Path to the folder where output files will be generated.
      */
     virtual void run(const RunMode runMode, const std::filesystem::path& inputConfigPath, const std::filesystem::path& outputFolderPath)=0;
-
-protected:
-    View& view; /**< Reference to the associated View object for visualization or logging. */
 };
 
 #endif // MODEL_H_

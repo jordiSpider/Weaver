@@ -150,9 +150,6 @@
                         "saveGenetics": {
                             "type": "boolean"
                         },
-                        "saveDailySummary": {
-                            "type": "boolean"
-                        },
                         "saveExtendedDailySummary": {
                             "type": "boolean"
                         },
@@ -169,10 +166,10 @@
                             "type": "integer",
                             "minimum": 0
                         },
-                        "saveIntermidiateVolumes": {
+                        "saveSnapshots": {
                             "type": "boolean"
                         },
-                        "saveIntermidiateVolumesPeriodicity": {
+                        "saveSnapshotsPeriodicity": {
                             "type": "integer",
                             "minimum": 0
                         },

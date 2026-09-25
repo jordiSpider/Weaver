@@ -4,30 +4,14 @@
 #include "App/Model/IBM/Landscape/LivingBeings/Animals/Genetics/Traits/TempSizeRuleIndividualTraitTemperatureSection.h"
 #include "App/Model/IBM/Landscape/LivingBeings/Animals/Species/Genetics/Traits/TemperatureSection/TempSizeRuleTraitTemperatureSection.h"
 
+#include <fmt/compile.h>
 #include <fmt/format.h>
 #include <iterator>
+#include <string_view>
 
 using namespace std;
 
 
-
-
-
-void TraitDTO::formatToBuffer(std::string& buffer) const
-{
-    fmt::format_to(std::back_inserter(buffer), "\t{}\t{}",
-		constitutiveValue, phenotypicValue
-	);
-
-    if(isPawarTrait)
-    {
-        pawarTraitDTO.formatToBuffer(buffer);
-    }
-    else
-    {
-        pawarTraitDTO.formatToBufferNA(buffer);
-    }
-}
 
 
 
@@ -38,7 +22,7 @@ IndividualTrait::IndividualTrait()
 	
 }
 
-IndividualTrait::IndividualTrait(Trait* trait, const Genome& genome, const size_t traitsPerModule, const size_t numberOfLociPerTrait, const std::vector<PreciseDouble>& rhoPerModule, const std::vector<size_t>& rhoRangePerModule, const Temperature& temperature, const TimeStep actualTimeStep, const PreciseDouble &coefficientForMassAforMature, const PreciseDouble &scaleForMassBforMature, const Temperature& tempFromLab)
+IndividualTrait::IndividualTrait(Trait* trait, const Genome& genome, const size_t traitsPerModule, const size_t numberOfLociPerTrait, const std::vector<PreciseDouble>& rhoPerModule, const std::vector<size_t>& rhoRangePerModule, const Temperature& temperature, const PreciseDouble &coefficientForMassAforMature, const PreciseDouble &scaleForMassBforMature, const Temperature& tempFromLab)
     : trait(trait), constitutiveValue(trait->getValue()->getValue(genome, traitsPerModule, numberOfLociPerTrait, rhoPerModule, rhoRangePerModule))
 {
     #ifdef DEBUG
@@ -112,37 +96,34 @@ void IndividualTrait::setPhenotypicValue(const PreciseDouble& newValue, const Ti
 	phenotypicValue = newValue;
 }
 
-void IndividualTrait::flatten(TraitDTO& dto) const noexcept
+void IndividualTrait::formatTraitDirect(fmt::memory_buffer& buf) const noexcept
 {
-    dto.constitutiveValue = constitutiveValue.getValue();
-    dto.phenotypicValue = phenotypicValue.getValue();
-    
-    dto.isPawarTrait = false;
+    constexpr std::string_view naThermalSection = "\tNA\tNA\tNA\tNA\tNA\tNA";
 
-    if(trait->isThermallyDependent())
+    fmt::format_to(fmt::appender(buf), FMT_COMPILE("\t{}\t{}"),
+        constitutiveValue, phenotypicValue
+    );
+
+    if (!trait->isThermallyDependent())
     {
-        std::visit([&](auto&& section) {
-            if constexpr (std::is_same_v<std::decay_t<decltype(section)>, PawarIndividualTraitTemperatureSection>) {
-                dto.isPawarTrait = true;
-                section.flatten(dto.pawarTraitDTO);
-            }
-        }, temperatureSection);
+        buf.append(naThermalSection.data(), naThermalSection.data() + naThermalSection.size());
+        return;
     }
+
+    std::visit([&](auto&& section) {
+        using T = std::decay_t<decltype(section)>;
+        if constexpr (std::is_same_v<T, PawarIndividualTraitTemperatureSection>) {
+            section.formatTraitDirect(buf);
+        }
+        else {
+            buf.append(naThermalSection.data(), naThermalSection.data() + naThermalSection.size());
+        }
+        }, temperatureSection);
 }
 
 IndividualLevelTrait::Type IndividualTrait::getType() const
 {
 	return trait->getValue()->getType();
-}
-
-const PreciseDouble& IndividualTrait::getConstitutiveValue() const
-{
-    return constitutiveValue;
-}
-
-const PreciseDouble& IndividualTrait::getPhenotypicValue() const
-{
-    return phenotypicValue;
 }
 
 void IndividualTrait::tune(const Temperature& temperature, const TimeStep actualTimeStep, const PreciseDouble &coefficientForMassAforMature, const PreciseDouble &scaleForMassBforMature, const Temperature& tempFromLab)

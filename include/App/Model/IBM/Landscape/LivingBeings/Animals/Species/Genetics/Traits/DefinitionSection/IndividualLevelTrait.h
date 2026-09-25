@@ -117,7 +117,7 @@ public:
      * @param rhoPerModule Vector of rho values per module.
      * @param rhoRangePerModule Vector of rho ranges per module.
      */
-    void printGenetics(const std::ostringstream& animalInfo, const Genome& genome, const size_t traitsPerModule, const size_t numberOfLociPerTrait, const std::vector<PreciseDouble>& rhoPerModule, const std::vector<size_t>& rhoRangePerModule);
+    void printGenetics(const std::string& animalInfo, const Genome& genome, fmt::memory_buffer& traitText, const size_t traitsPerModule, const size_t numberOfLociPerTrait, const std::vector<PreciseDouble>& rhoPerModule, const std::vector<size_t>& rhoRangePerModule);
 
     /**
      * @brief Gets the trait value for a given genome.
@@ -178,6 +178,8 @@ public:
      * @return TraitDefinitionSection::Type::IndividualLevel
      */
     Type getType() const;
+
+	inline const std::string& getFileName() const { return fileName; }
 
     /**
       * @brief Serializes the object for persistence.

@@ -15,14 +15,14 @@ IndividualTraitTemperatureSectionNone::~IndividualTraitTemperatureSectionNone()
 }
 
 
-PreciseDouble IndividualTraitTemperatureSectionNone::applyTemperatureDependency(const Temperature& temperature, const PreciseDouble& traitValue,
+PreciseDouble IndividualTraitTemperatureSectionNone::applyTemperatureDependency(const Temperature&, const PreciseDouble&,
         const PreciseDouble &, const PreciseDouble &, const Temperature&
     ) const
 {
 	throwLineInfoException("Temperature section is not available for this trait.");
 }
 
-void IndividualTraitTemperatureSectionNone::formatToBuffer(std::string& buffer) const
+void IndividualTraitTemperatureSectionNone::formatToBuffer(std::string&) const
 {
     throwLineInfoException("Temperature section is not available for this trait.");
 }
@@ -31,7 +31,7 @@ void IndividualTraitTemperatureSectionNone::formatToBuffer(std::string& buffer) 
 
 
 template <class Archive>
-void IndividualTraitTemperatureSectionNone::serialize(Archive &ar, const unsigned int) {
+void IndividualTraitTemperatureSectionNone::serialize(Archive &, const unsigned int) {
 	
 } 
 

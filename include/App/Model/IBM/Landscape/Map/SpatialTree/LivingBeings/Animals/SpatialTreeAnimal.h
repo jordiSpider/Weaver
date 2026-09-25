@@ -32,11 +32,11 @@ protected:
      *        if no destinations are available.
      * @param scopeArea Maximum area the animal can travel.
      */
-    bool searchTargetToTravelTo(const PreciseDouble &scopeArea);
+    bool searchTargetToTravelTo(const PreciseDouble &scopeArea, CustomIndexedVector<Instar, PreciseDouble>& maximumPatchEdibilityValueGlobal, CustomIndexedVector<Instar, PreciseDouble>& maximumPatchPredationRiskGlobal, CustomIndexedVector<Instar, PreciseDouble>& maximumPatchConspecificBiomassGlobal);
     
     void move(Landscape* const landscape, const TimeStep numberOfTimeSteps, const PreciseDouble& timeStepsPerDay, 
-        const bool saveMovements, std::vector<MovementDTO>& movements, const bool saveActivity, 
-        std::vector<ActivityDTO>& activities) override;
+        const bool saveMovements, fmt::memory_buffer& movementsText, const bool saveActivity,
+        fmt::memory_buffer& activitiesText) override;
     
     /**
      * @brief Creates an offspring from two parent gametes.
@@ -46,8 +46,8 @@ protected:
      * @param factorEggMassFromMom Factor of egg mass contributed by the mother.
      * @param g_numb_prt_female Generation number of the female parent.
      * @param g_numb_prt_male Generation number of the male parent.
-     * @param ID_prt_female EdibleID of the female parent.
-     * @param ID_prt_male EdibleID of the male parent.
+     * @param ID_prt_female id_type of the female parent.
+     * @param ID_prt_male id_type of the male parent.
      * @param parentSpecies Pointer to the parent species.
      * @param genderValue Gender of the offspring.
      * @param actualTimeStep Current time step.
@@ -55,7 +55,7 @@ protected:
      * @return Pointer to the newly created offspring.
      */
     AnimalNonStatistical* createOffspring(Gamete* const firstParentGamete, Gamete* const secondParentGamete, TerrainCell* parentTerrainCell, const PreciseDouble& factorEggMassFromMom, const Generation& g_numb_prt_female,
-		const Generation& g_numb_prt_male, EdibleID ID_prt_female, EdibleID ID_prt_male, AnimalSpecies* const parentSpecies, Gender genderValue, const TimeStep actualTimeStep, const PreciseDouble& timeStepsPerDay);
+		const Generation& g_numb_prt_male, id_type ID_prt_female, id_type ID_prt_male, AnimalSpecies* const parentSpecies, Gender genderValue, const TimeStep actualTimeStep, const PreciseDouble& timeStepsPerDay);
 
 public:
     /// Default constructor
@@ -81,15 +81,15 @@ public:
      * @param eggMassAtBirth Egg mass at birth.
      * @param g_numb_prt_female Generation number of the female parent.
      * @param g_numb_prt_male Generation number of the male parent.
-     * @param ID_prt_female EdibleID of the female parent.
-     * @param ID_prt_male EdibleID of the male parent.
+     * @param ID_prt_female id_type of the female parent.
+     * @param ID_prt_male id_type of the male parent.
      * @param mySpecies Pointer to the species.
      * @param genderValue Gender of the offspring.
      * @param actualTimeStep Current time step.
      * @param timeStepsPerDay Number of time steps per day.
      */
     SpatialTreeAnimal(Gamete* const firstParentGamete, Gamete* const secondParentGamete, TerrainCell* parentTerrainCell, const PreciseDouble& eggMassAtBirth, const Generation& g_numb_prt_female,
-			const Generation& g_numb_prt_male, EdibleID ID_prt_female, EdibleID ID_prt_male, AnimalSpecies* const mySpecies, Gender genderValue, const TimeStep actualTimeStep, const PreciseDouble& timeStepsPerDay);
+			const Generation& g_numb_prt_male, id_type ID_prt_female, id_type ID_prt_male, AnimalSpecies* const mySpecies, Gender genderValue, const TimeStep actualTimeStep, const PreciseDouble& timeStepsPerDay);
     
     /// Destructor
     virtual ~SpatialTreeAnimal();

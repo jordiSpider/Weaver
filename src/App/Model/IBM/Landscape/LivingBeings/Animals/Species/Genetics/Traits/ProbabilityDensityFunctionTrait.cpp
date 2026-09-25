@@ -26,7 +26,7 @@ vector<Trait*> ProbabilityDensityFunctionTrait::generateTraits(std::vector<Indiv
 	for(const ProbabilityDensityFunctionTraitType type : EnumClass<ProbabilityDensityFunctionTraitType>::getEnumValues())
 	{
 		probabilityDensityFunctionTraits.push_back(new ProbabilityDensityFunctionTrait(
-			individualLevelTraits, type, definitionConfig[ProbabilityDensityFunctionTrait::getJsonFieldName()][EnumClass<ProbabilityDensityFunctionTraitType>::to_string(type)], 
+			individualLevelTraits, type, definitionConfig[ProbabilityDensityFunctionTrait::getJsonFieldName()][fmt::to_string(type)],
 			individualLevelTraitsOrder
 		));
 	}
@@ -41,7 +41,7 @@ vector<string> ProbabilityDensityFunctionTrait::getTraitStrVector()
 
 	for(ProbabilityDensityFunctionTraitType type : EnumClass<ProbabilityDensityFunctionTraitType>::getEnumValues())
 	{
-		traitStrVector.push_back(EnumClass<ProbabilityDensityFunctionTraitType>::to_string(type));
+		traitStrVector.push_back(fmt::to_string(type));
 	}
 
 	return traitStrVector;
@@ -72,10 +72,10 @@ ProbabilityDensityFunctionTrait::ProbabilityDensityFunctionTrait()
 
 ProbabilityDensityFunctionTrait::ProbabilityDensityFunctionTrait(std::vector<IndividualLevelTrait*>& individualLevelTraits, const ProbabilityDensityFunctionTraitType type, const json& config, const vector<json>& individualLevelTraitsOrder)
 	: Trait(
-		individualLevelTraits, config, individualLevelTraitsOrder, getParentTraitStr() + "$" + EnumClass<ProbabilityDensityFunctionTraitType>::to_string(type), 
+		individualLevelTraits, config, individualLevelTraitsOrder, getParentTraitStr() + "$" + fmt::to_string(type), 
 		getFileName(),
 		createTemperatureSection(
-			individualLevelTraits, config, individualLevelTraitsOrder, getParentTraitStr() + "$" + EnumClass<ProbabilityDensityFunctionTraitType>::to_string(type), 
+			individualLevelTraits, config, individualLevelTraitsOrder, getParentTraitStr() + "$" + fmt::to_string(type), 
 			getFileName()
 		)
 	  )

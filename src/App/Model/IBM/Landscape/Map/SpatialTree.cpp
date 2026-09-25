@@ -1,6 +1,7 @@
 
 #include "App/Model/IBM/Landscape/Map/SpatialTree.h"
 #include "App/Model/IBM/Landscape/Landscape.h"
+#include "App/Manager/LogManager.h"
 
 using namespace std;
 using json = nlohmann::json;
@@ -15,9 +16,9 @@ SpatialTree::SpatialTree()
 }
 
 SpatialTree::SpatialTree(const json &mapConfig, const json &, MoistureSource* const moistureBaseSource)
-    : Map(mapConfig), mapDepth(calculateMapDepth()), 
+    : Map(mapConfig), mapDepth(calculateMapDepth()), MAX_PARALLEL_DEPTH(std::min(4u, mapDepth - 2u)),
       cellSizes(calculateCellSizes()),
-      axisSizes(calculateAxisSizes()), totalNumberOfActiveAnimals(0)
+      axisSizes(calculateAxisSizes())
 {
     rootTerrainCell = new RootTerrainCell(cellSizes, mapDepth, new PointSpatialTree(), moistureBaseSource);
 }
@@ -78,21 +79,6 @@ vector<unsigned int> SpatialTree::calculateAxisSizes() const
     return newAxisSizes;
 }
 
-void SpatialTree::increaseTotalNumberOfActiveAnimals()
-{
-    totalNumberOfActiveAnimals++;
-}
-
-void SpatialTree::decreaseTotalNumberOfActiveAnimals()
-{
-    totalNumberOfActiveAnimals--;
-}
-
-const unsigned int& SpatialTree::getTotalNumberOfActiveAnimals() const
-{
-    return totalNumberOfActiveAnimals;
-}
-
 
 const PreciseDouble& SpatialTree::getCellSize(const unsigned int depth) const
 {
@@ -111,33 +97,18 @@ void SpatialTree::insertAnimal(Landscape* const landscape, Animal* const newAnim
 
 void SpatialTree::update(const TimeStep& numberOfTimeSteps)
 {
-    rootTerrainCell->update(numberOfTimeSteps);
+    rootTerrainCell->update(numberOfTimeSteps, MAX_PARALLEL_DEPTH);
 }
 
 
-void SpatialTree::addAnimalSpecies(const AnimalSpecies& animalSpecies, const PreciseDouble& timeStepsPerDay)
+void SpatialTree::addAnimalSpecies(const AnimalSpecies& animalSpecies)
 {
-    rootTerrainCell->addAnimalSpecies(animalSpecies, getAllAnimalsSearchParams(), timeStepsPerDay);
-
-
-    for(const LifeStage &lifeStage : EnumClass<LifeStage>::getEnumValues())
-    {
-        lifeStageSearchParams[lifeStage].addSearchParams(
-            {lifeStage}, {animalSpecies.getAnimalSpeciesId()}, 
-            animalSpecies.getGrowthBuildingBlock().getInstarsRange(), EnumClass<Gender>::getEnumValues()
-        );
-    }
-
-    allAnimalsSearchParams.addSearchParams(
-        EnumClass<LifeStage>::getEnumValues(), {animalSpecies.getAnimalSpeciesId()},
-        animalSpecies.getGrowthBuildingBlock().getInstarsRange(),
-        EnumClass<Gender>::getEnumValues()
-    );
+    rootTerrainCell->addAnimalSpecies(animalSpecies);
 }
 
-void SpatialTree::addResourceSpecies(Landscape* const landscape, vector<vector<vector<CellResource*>>>& landscapeResources, ResourceSpecies& resourceSpecies, ResourceSource* const resourceBaseSource, const PreciseDouble& timeStepsPerDay)
+void SpatialTree::addResourceSpecies(Landscape* const landscape, vector<vector<vector<CellResource*>>>& landscapeResources, ResourceSpecies& resourceSpecies, ResourceSource* const resourceBaseSource)
 {
-    rootTerrainCell->addResourceSpecies(landscape, landscapeResources, resourceSpecies, resourceBaseSource, getAllAnimalsSearchParams(), timeStepsPerDay);
+    rootTerrainCell->addResourceSpecies(landscape, landscapeResources, resourceSpecies, resourceBaseSource);
 }
 
 
@@ -290,16 +261,16 @@ void SpatialTree::obtainSpeciesInhabitableTerrainCells(vector<CustomIndexedVecto
 }
 
 
-unsigned int SpatialTree::generateStatisticsPopulation(vector<CustomIndexedVector<Instar, vector<AnimalStatistical*>>>& animalsPopulation, View* view, Landscape* const landscape, vector<AnimalSpecies*>& existingAnimalSpecies, vector<CustomIndexedVector<Instar, vector<vector<TerrainCell*>::iterator>>> &mapSpeciesInhabitableTerrainCells, const TimeStep actualTimeStep, const PreciseDouble& timeStepsPerDay)
+unsigned int SpatialTree::generateStatisticsPopulation(vector<CustomIndexedVector<Instar, vector<AnimalStatistical*>>>& animalsPopulation, Landscape* const landscape, vector<AnimalSpecies*>& existingAnimalSpecies, vector<CustomIndexedVector<Instar, vector<vector<TerrainCell*>::iterator>>> &mapSpeciesInhabitableTerrainCells, const TimeStep actualTimeStep, const PreciseDouble& timeStepsPerDay)
 {
     unsigned int populationSize = 0;
     animalsPopulation.resize(existingAnimalSpecies.size());
 
 	for(AnimalSpecies* &animalSpecies : existingAnimalSpecies)
     {
-        view->updateLog({" - Animal species ", animalSpecies->getScientificName(), "\n"});
+        LogManager::emit(fmt::format(" - Animal species {}\n", animalSpecies->getScientificName()));
 
-        ProgressBar progressBar(view, animalSpecies->getGrowthBuildingBlock().getInstarsRange().size() * animalSpecies->getStatisticsIndividualsPerInstar());
+        ProgressBar progressBar(animalSpecies->getGrowthBuildingBlock().getInstarsRange().size() * animalSpecies->getStatisticsIndividualsPerInstar());
 
         animalsPopulation[animalSpecies->getAnimalSpeciesId()].resize(animalSpecies->getGrowthBuildingBlock().getNumberOfInstars());
 
@@ -312,8 +283,9 @@ unsigned int SpatialTree::generateStatisticsPopulation(vector<CustomIndexedVecto
                 // Get a random index from this species inhabitable cells
                 size_t randomCellIndex = Random::randomIndex(mapSpeciesInhabitableTerrainCells[animalSpecies->getAnimalSpeciesId()][instar].size());
                 
-                
-                auto newTerrainCell = (*mapSpeciesInhabitableTerrainCells[animalSpecies->getAnimalSpeciesId()][instar][randomCellIndex])->randomInsertAnimal(landscape, instar, animalSpecies, true, nullptr, false, false, actualTimeStep, timeStepsPerDay);
+                std::vector<fmt::memory_buffer> geneticsBuffer;
+
+                auto newTerrainCell = (*mapSpeciesInhabitableTerrainCells[animalSpecies->getAnimalSpeciesId()][instar][randomCellIndex])->randomInsertAnimal(landscape, instar, animalSpecies, true, nullptr, false, geneticsBuffer, actualTimeStep, timeStepsPerDay);
                 
                 if(get<0>(newTerrainCell))
                 {
@@ -362,72 +334,6 @@ PointContinuous SpatialTree::calculateCenterPosition(const PointSpatialTree &cel
 unsigned int SpatialTree::getMapDepth() const
 {
     return mapDepth;
-}
-
-void SpatialTree::generatePopulation(View* view, Landscape* const landscape, AnimalSpecies* currentAnimalSpecies, const CustomIndexedVector<Instar, unsigned int>& population, const std::vector<Genome>& initialGenomesPool, const CustomIndexedVector<Instar, vector<vector<TerrainCell*>::iterator>> &speciesInhabitableTerrainCells, const bool saveAnimalConstitutiveTraits, std::ostringstream& animalConstitutiveTraitsFile, const bool saveGenetics, const bool saveMassInfo, const TimeStep actualTimeStep, const PreciseDouble& timeStepsPerDay)
-{
-    unsigned int totalInitialPopulation = 0;
-
-    for(const unsigned int instarPopulation : population)
-    {
-        totalInitialPopulation += instarPopulation;
-    }
-
-    view->updateLog({"Creating ", to_string(totalInitialPopulation), " individuals of the species \"", currentAnimalSpecies->getScientificName(), "\"...\n"});
-
-    ProgressBar progressBar(view, totalInitialPopulation);
-
-    size_t randomCellIndex;
-
-    unsigned int genomesPoolIndex = 0;
-
-    for(const Instar &instar : currentAnimalSpecies->getGrowthBuildingBlock().getInstarsRange())
-    {
-        for (unsigned long individual = 0; individual < population[instar]; individual++)
-        {
-            AnimalNonStatistical* newAnimal;
-
-            // Get a random index from this species inhabitable cells
-            randomCellIndex = Random::randomIndex(speciesInhabitableTerrainCells[instar].size());
-
-            const Genome* genome;
-
-            if(initialGenomesPool.empty()) {
-                genome = nullptr;
-            }
-            else {
-                genome = &initialGenomesPool[genomesPoolIndex];
-                genomesPoolIndex++;
-            }
-
-            auto newTerrainCell = (*speciesInhabitableTerrainCells[instar][randomCellIndex])->randomInsertAnimal(landscape, instar, currentAnimalSpecies, false, genome, saveGenetics, saveMassInfo, actualTimeStep, timeStepsPerDay);
-            
-            if(get<0>(newTerrainCell))
-            {
-                bool found = false;
-                for(unsigned int i = 0; i < speciesInhabitableTerrainCells[instar].size() && !found; i++)
-                {
-                    if((*speciesInhabitableTerrainCells[instar][i]) == get<1>(newTerrainCell))
-                    {
-                        (*speciesInhabitableTerrainCells[instar][i]) = get<2>(newTerrainCell);
-                        found = true;
-                    }
-                }
-            }
-
-            newAnimal = static_cast<AnimalNonStatistical*>(get<3>(newTerrainCell));
-            
-            newAnimal->calculateGrowthCurves(timeStepsPerDay);
-            newAnimal->forceMolting(landscape, actualTimeStep, timeStepsPerDay);
-
-            if(saveAnimalConstitutiveTraits)
-            {
-                newAnimal->printTraits(animalConstitutiveTraitsFile);
-            }
-
-            progressBar.update();
-        }
-    }
 }
 
 void SpatialTree::deserializeSources(
@@ -501,9 +407,9 @@ void SpatialTree::serialize(Archive &ar, const unsigned int) {
     ar & boost::serialization::base_object<Map>(*this);
     
     ar & mapDepth;
+    ar & MAX_PARALLEL_DEPTH;
     ar & cellSizes;
     ar & axisSizes;
-    ar & totalNumberOfActiveAnimals;
 
     ar & rootTerrainCell;
 }

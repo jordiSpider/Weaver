@@ -3,6 +3,7 @@
 #include "App/Model/IBM/Landscape/Map/SpatialTree.h"
 
 #include "App/Model/IBM/Landscape/LivingBeings/Animals/Animal.h"
+#include "App/Manager/LogManager.h"
 
 
 
@@ -18,8 +19,8 @@ AnimalSpecies::AnimalSpecies()
 
 }
 
-AnimalSpecies::AnimalSpecies(const AnimalSpecies::ID& speciesId, const AnimalSpeciesID& animalSpeciesId, const json &info, const PreciseDouble& timeStepsPerDay, const PreciseDouble& pdfThreshold, const size_t numberOfExistingSpecies, std::vector<std::string>& stringPool) 
-	: Species(speciesId, info["name"].get<string>(), stringPool), 
+AnimalSpecies::AnimalSpecies(const AnimalSpecies::ID& speciesId, const AnimalSpeciesID& animalSpeciesId, const json &info, const PreciseDouble& timeStepsPerDay, const PreciseDouble& pdfThreshold, const size_t numberOfExistingSpecies) 
+	: Species(speciesId, info["name"].get<string>()), 
 	  genetics(info["genetics"]),
 	  animalSpeciesGrowth(
 		info["growthModule"], static_cast<unsigned int>(info["individualsPerInstar"].size()), 
@@ -29,22 +30,18 @@ AnimalSpecies::AnimalSpecies(const AnimalSpecies::ID& speciesId, const AnimalSpe
 	  decisions(info["decisions"], getGenetics(), getGrowthBuildingBlock().getNumberOfInstars(), pdfThreshold),
 	  animalSpeciesId(animalSpeciesId), 
 	  defaultHuntingMode(EnumClass<HuntingMode>::stringToEnumValue(info["defaultHuntingMode"].get<string>())),
-	  breedSearchParams(EnumClass<Gender>::size()),
-	  matureFemalesSearchParams(new AnimalSearchParams()), 
-	  populationSearchParams(new AnimalSearchParams()), lifeStageSearchParams(EnumClass<LifeStage>::size()),
-	  tempFromLab(info["tempFromLab"].get<double>()),
-	  population(0), activatedHandling(info["activatedHandling"].get<bool>()),
+	  population(0), activatedHandling(info["activatedHandling"].get<bool>()), 
 	  sexualType(EnumClass<SexualType>::stringToEnumValue(info["sexualType"].get<string>())), 
 	  forcePresenceAllResourcesInvolved(info["debug"]["forcePresenceAllResourcesInvolved"].get<bool>()),
-	  preserveLeftovers(info["preserveLeftovers"].get<bool>()), YodzisA(info["YodzisA"].get<double>()), YodzisB(info["YodzisB"].get<double>())
+	  preserveLeftovers(info["preserveLeftovers"].get<bool>()), YodzisA(info["YodzisA"].get<double>()), 
+	  YodzisB(info["YodzisB"].get<double>()), tempFromLab(info["tempFromLab"].get<double>())
 {
 	setPoreUsePerInstar(info["poreUsePerInstar"].get<std::vector<double>>());
 
 
 
 	edibleSpecies = CustomIndexedVector<Instar, CustomIndexedVector<SpeciesType, std::unordered_map<ID, std::vector<Instar>>>>(getGrowthBuildingBlock().getNumberOfInstars(), vector<unordered_map<Species::ID, vector<Instar>>>(EnumClass<SpeciesType>::size()));
-	preySearchParams = CustomIndexedVector<Instar, EdibleSearchParams>(getGrowthBuildingBlock().getNumberOfInstars());
-	predatorSearchParams = CustomIndexedVector<Instar, AnimalSearchParams>(getGrowthBuildingBlock().getNumberOfInstars());
+	
 	maximumInteractionArea = CustomIndexedVector<Instar, PreciseDouble>(getGrowthBuildingBlock().getNumberOfInstars(), 0.0);
 
 
@@ -90,21 +87,13 @@ AnimalSpecies::AnimalSpecies(const AnimalSpecies::ID& speciesId, const AnimalSpe
 	}
 
 
-	obtainBreedSearchParams();
-	obtainMatureFemalesSearchParams();
-	obtainPopulationSearchParams();
-	obtainLifeStageSearchParams();
-	obtainConspecificSearchParams();
-
 
 	predationEventsOnOtherSpecies.resize(numberOfExistingSpecies, 0);
 }
 
 AnimalSpecies::~AnimalSpecies()
 {
-	delete matureFemalesSearchParams;
-
-	delete populationSearchParams;
+	
 }
 
 void AnimalSpecies::setPoreUsePerInstar(const vector<double>& newPoreUsePerInstar)
@@ -135,7 +124,7 @@ const OntogeneticLink& AnimalSpecies::getEdibleOntogeneticLink(const Species::ID
 	return edibleOntogeneticLink[predatorInstar][preySpeciesId][preyInstar];
 }
 
-void AnimalSpecies::setOntogeneticLinks(View* view, const vector<Species*>& existingSpecies, rapidcsv::Document& ontogeneticLinksPreference, rapidcsv::Document& ontogeneticLinksProfitability)
+void AnimalSpecies::setOntogeneticLinks(const vector<Species*>& existingSpecies, rapidcsv::Document& ontogeneticLinksPreference, rapidcsv::Document& ontogeneticLinksProfitability)
 {
 	edibleOntogeneticLink.clear();
 
@@ -145,7 +134,7 @@ void AnimalSpecies::setOntogeneticLinks(View* view, const vector<Species*>& exis
 	{
 		edibleOntogeneticLink[predatorInstar].resize(existingSpecies.size());
 
-		view->updateLog({" - Instar ", predatorInstar.to_string(), ":\n"});
+		LogManager::emit(fmt::format(" - Instar {}:\n", predatorInstar));
 
 		for(const auto& type : EnumClass<SpeciesType>::getEnumValues())
 		{
@@ -154,7 +143,7 @@ void AnimalSpecies::setOntogeneticLinks(View* view, const vector<Species*>& exis
 
 		PreciseDouble instarPreference = 0.0;
 
-		string column = getScientificName() + "$" + predatorInstar.to_string();
+		string column = getScientificName() + "$" + fmt::to_string(predatorInstar);
 
 		for(const Species* const preySpecies : existingSpecies)
 		{
@@ -164,7 +153,7 @@ void AnimalSpecies::setOntogeneticLinks(View* view, const vector<Species*>& exis
 
 			for(const Instar& preyInstar : preySpecies->getGrowthBuildingBlock().getInstarsRange())
 			{
-				string row = preySpecies->getScientificName() + "$" + preyInstar.to_string();
+				string row = preySpecies->getScientificName() + "$" + fmt::to_string(preyInstar);
 
 				PreciseDouble preference;
 
@@ -207,10 +196,10 @@ void AnimalSpecies::setOntogeneticLinks(View* view, const vector<Species*>& exis
 				switch(preySpecies->getType())
 				{
 					case SpeciesType::Animal:
-						view->updateLog({"   * Animal: ", preySpecies->getScientificName(), "\n"});
+						LogManager::emit(fmt::format("   * Animal: {}\n", preySpecies->getScientificName()));
 						break;
 					case SpeciesType::Resource:
-						view->updateLog({"   * Resource: ", preySpecies->getScientificName(), "\n"});
+						LogManager::emit(fmt::format("   * Resource: {}\n", preySpecies->getScientificName()));
 						break;
 					default:
 						throwLineInfoException("Default case");
@@ -221,7 +210,7 @@ void AnimalSpecies::setOntogeneticLinks(View* view, const vector<Species*>& exis
 
 		if(instarPreference > 1.0)
 		{
-			throwLineInfoException("Error: The total preference of instar " + predatorInstar.to_string() + " of '" + getScientificName() + "' animal species must less or equal to 1.");
+			throwLineInfoException("Error: The total preference of instar " + fmt::to_string(predatorInstar) + " of '" + getScientificName() + "' animal species must less or equal to 1.");
 		}
 	}
 }
@@ -263,9 +252,12 @@ bool AnimalSpecies::canEatEdible(const Species::ID &preySpeciesId, const Instar 
 	return getEdibleOntogeneticLink(preySpeciesId, predatorInstar, preyInstar).getEdible();
 }
 
-void AnimalSpecies::addPredationEventOnOtherSpecies(Species::ID predatedSpeciesId) 
+void AnimalSpecies::addPredationEventOnOtherSpecies(const CustomIndexedVector<Species::ID, unsigned int>& newEvents)
 { 
-	predationEventsOnOtherSpecies[predatedSpeciesId]++; 
+	for (size_t i = 0; i < newEvents.size(); ++i)
+	{
+		predationEventsOnOtherSpecies[i] += newEvents[i];
+	}
 }
 
 void AnimalSpecies::addAnimalSpecies()
@@ -423,10 +415,26 @@ const AnimalSearchParams& AnimalSpecies::getBreedSearchParams(const Gender &gend
 	return breedSearchParams[gender];
 }
 
+void AnimalSpecies::obtainSearchParams(const vector<Species*>& existingSpecies, const vector<AnimalSpecies*>& existingAnimalSpecies, size_t numberExistingResourceSpecies)
+{
+	obtainBreedSearchParams();
+	obtainMatureFemalesSearchParams();
+	obtainMatureMalesSearchParams();
+	obtainPopulationSearchParams();
+	obtainLifeStageSearchParams();
+	obtainConspecificSearchParams();
+
+	obtainPreyAndPredatorSearchParams(existingSpecies, existingAnimalSpecies, numberExistingResourceSpecies);
+}
+
 void AnimalSpecies::obtainBreedSearchParams()
 {
+	breedSearchParams.resize(EnumClass<Gender>::size());
+
 	for(const Gender &gender : EnumClass<Gender>::getEnumValues())
 	{
+		breedSearchParams[gender].init();
+
 		vector<Gender> searchableGender;
 
 		switch(gender)
@@ -454,6 +462,8 @@ void AnimalSpecies::obtainBreedSearchParams()
 
 void AnimalSpecies::obtainConspecificSearchParams()
 {
+	conspecificSearchParams.init();
+
 	conspecificSearchParams.addSearchParams(
 		{LifeStage::ACTIVE}, {getAnimalSpeciesId()}, 
 		getGrowthBuildingBlock().getInstarsRange(),
@@ -461,12 +471,15 @@ void AnimalSpecies::obtainConspecificSearchParams()
 	);
 }
 
-void AnimalSpecies::obtainPreyAndPredatorSearchParams(const vector<Species*>& existingSpecies, const vector<AnimalSpecies*>& existingAnimalSpecies, const vector<ResourceSpecies*>& existingResourceSpecies)
+void AnimalSpecies::obtainPreyAndPredatorSearchParams(const vector<Species*>& existingSpecies, const vector<AnimalSpecies*>& existingAnimalSpecies, size_t numberExistingResourceSpecies)
 {
+	preySearchParams = CustomIndexedVector<Instar, EdibleSearchParams>(getGrowthBuildingBlock().getNumberOfInstars());
+	predatorSearchParams = CustomIndexedVector<Instar, AnimalSearchParams>(getGrowthBuildingBlock().getNumberOfInstars());
+
 	for(const Instar &instar : getGrowthBuildingBlock().getInstarsRange())
 	{
-		preySearchParams[instar].clear();
-		predatorSearchParams[instar].clear();
+		preySearchParams[instar].init();
+		predatorSearchParams[instar].init();
 
 		for(const AnimalSpecies* const &otherAnimalSpecies : existingAnimalSpecies)
 		{
@@ -499,7 +512,7 @@ void AnimalSpecies::obtainPreyAndPredatorSearchParams(const vector<Species*>& ex
 		for(const auto &instarEdibleResourceSpeciesEntry : getInstarEdibleResourceSpecies(instar))
 		{
 			preySearchParams[instar].addResourceSearchParams(
-				existingResourceSpecies,
+				numberExistingResourceSpecies,
 				{static_cast<ResourceSpecies*>(existingSpecies[instarEdibleResourceSpeciesEntry.first])->getResourceSpeciesId()}
 			);
 		}	
@@ -508,7 +521,12 @@ void AnimalSpecies::obtainPreyAndPredatorSearchParams(const vector<Species*>& ex
 
 const AnimalSearchParams& AnimalSpecies::getMatureFemalesSearchParams() const
 {
-	return *matureFemalesSearchParams;
+	return matureFemalesSearchParams;
+}
+
+const AnimalSearchParams& AnimalSpecies::getMatureMalesSearchParams() const
+{
+	return matureMalesSearchParams;
 }
 
 void AnimalSpecies::generateInitialGenomesPool(const CustomIndexedVector<Instar, unsigned int>& initialPopulation, std::vector<Genome>& initialGenomesPool)
@@ -536,15 +554,27 @@ void AnimalSpecies::generateInitialGenomesPool(const CustomIndexedVector<Instar,
 
 void AnimalSpecies::obtainMatureFemalesSearchParams()
 {
-	matureFemalesSearchParams->addSearchParams(
+	matureFemalesSearchParams.init();
+
+	matureFemalesSearchParams.addSearchParams(
 		{LifeStage::ACTIVE, LifeStage::DIAPAUSE},
 		{getAnimalSpeciesId()}, getGrowthBuildingBlock().getMatureInstarsRange(), {Gender::FEMALE}
 	);
 }
 
+void AnimalSpecies::obtainMatureMalesSearchParams()
+{
+	matureMalesSearchParams.init();
+
+	matureMalesSearchParams.addSearchParams(
+		{ LifeStage::ACTIVE, LifeStage::DIAPAUSE },
+		{ getAnimalSpeciesId() }, getGrowthBuildingBlock().getMatureInstarsRange(), { Gender::MALE }
+	);
+}
+
 const AnimalSearchParams& AnimalSpecies::getPopulationSearchParams() const
 {
-	return *populationSearchParams;
+	return populationSearchParams;
 }
 
 void AnimalSpecies::setTimeStepsWithoutFoodForMetabolicDownregulation(const PreciseDouble& daysWithoutFoodForMetabolicDownregulation, const PreciseDouble& timeStepsPerDay) 
@@ -559,7 +589,9 @@ SpeciesType AnimalSpecies::getType() const
 
 void AnimalSpecies::obtainPopulationSearchParams()
 {
-	populationSearchParams->addSearchParams(
+	populationSearchParams.init();
+
+	populationSearchParams.addSearchParams(
 		EnumClass<LifeStage>::getEnumValues(), {getAnimalSpeciesId()},
 		getGrowthBuildingBlock().getInstarsRange(), EnumClass<Gender>::getEnumValues()
 	);
@@ -572,8 +604,12 @@ const AnimalSearchParams& AnimalSpecies::getLifeStageSearchParams(const LifeStag
 
 void AnimalSpecies::obtainLifeStageSearchParams()
 {
+	lifeStageSearchParams.resize(EnumClass<LifeStage>::size());
+
     for(const auto &lifeStage : EnumClass<LifeStage>::getEnumValues())
     {
+		lifeStageSearchParams[lifeStage].init();
+
         lifeStageSearchParams[lifeStage].addSearchParams(
 			{lifeStage}, {getAnimalSpeciesId()}, getGrowthBuildingBlock().getInstarsRange(),
 			EnumClass<Gender>::getEnumValues()
@@ -642,7 +678,7 @@ void AnimalSpecies::setPlasticityDueToConditionSearch(const PreciseDouble& plast
 	}
 	else
 	{
-		throwLineInfoException("For the species '" + getScientificName() + "':\nplasticityDueToConditionSearch must be a positive value. You entered " + plasticityDueToConditionSearchValue.to_string() + ". Exiting now.");
+		throwLineInfoException("For the species '" + getScientificName() + "':\nplasticityDueToConditionSearch must be a positive value. You entered " + fmt::to_string(plasticityDueToConditionSearchValue) + ". Exiting now.");
 	}
 }
 
@@ -654,7 +690,7 @@ void AnimalSpecies::setPlasticityDueToConditionSpeed(const PreciseDouble& plasti
 	}
 	else
 	{
-		throwLineInfoException("For the species '" + getScientificName() + "':\nplasticityDueToConditionSpeed must be a positive value. You entered " + plasticityDueToConditionSpeedValue.to_string() + ". Exiting now.");
+		throwLineInfoException("For the species '" + getScientificName() + "':\nplasticityDueToConditionSpeed must be a positive value. You entered " + fmt::to_string(plasticityDueToConditionSpeedValue) + ". Exiting now.");
 	}
 }
 
@@ -743,14 +779,14 @@ unsigned int AnimalSpecies::getPopulation() const
 	return population;
 }
 
-void AnimalSpecies::increasePopulation()
+void AnimalSpecies::increasePopulation(unsigned int increment)
 {
-	population++;
+	population += increment;
 }
 
-void AnimalSpecies::decreasePopulation()
+void AnimalSpecies::decreasePopulation(unsigned int decrement)
 {
-	population--;
+	population -= decrement;
 }
 
 Gender AnimalSpecies::getRandomGender() const
@@ -795,9 +831,12 @@ unsigned int AnimalSpecies::getTotalInitialStatisticsPopulation()
 	return getStatisticsIndividualsPerInstar() * getGrowthBuildingBlock().getNumberOfInstars();
 }
 
-void AnimalSpecies::updateMaximumInteractionArea(const Instar& instar, const PreciseDouble& newValue)
+void AnimalSpecies::updateMaximumInteractionArea(const CustomIndexedVector<Instar, PreciseDouble>& newMaximumInteractionArea)
 {
-	maximumInteractionArea[instar] = fmax(maximumInteractionArea[instar], newValue);
+	for (size_t i = 0; i < maximumInteractionArea.size(); ++i)
+	{
+		maximumInteractionArea[i] = fmax(maximumInteractionArea[i], newMaximumInteractionArea[i]);
+	}
 }
 
 const PreciseDouble& AnimalSpecies::getMaximumInteractionArea(const Instar& instar) const
@@ -805,7 +844,7 @@ const PreciseDouble& AnimalSpecies::getMaximumInteractionArea(const Instar& inst
 	return maximumInteractionArea[instar];
 }
 
-void AnimalSpecies::interactionRanges(Animal& predator, Animal& prey)
+void AnimalSpecies::interactionRanges(Animal& predator, Animal& prey, CustomIndexedVector<Instar, PreciseDouble>& newMaximumInteractionArea)
 {
 	getMutableDecisionsBuildingBlock()->updateMaximumPDF(predator.getInstarToEvaluateCells(), PredationProbability::calculateProbabilityDensityFunction(predator, prey));
 
@@ -814,7 +853,8 @@ void AnimalSpecies::interactionRanges(Animal& predator, Animal& prey)
 		predator.getGenetics().getBaseIndividualTraits(BaseTraitType::scaleMassForInteractionRadius).getPhenotypicValue()
 	);
 
-	updateMaximumInteractionArea(predator.getGrowthBuildingBlock().getInstar(), interactionAreaRadius);
+	PreciseDouble& instarMaximumInteractionArea = newMaximumInteractionArea[predator.getGrowthBuildingBlock().getInstar()];
+	instarMaximumInteractionArea = fmax(instarMaximumInteractionArea, interactionAreaRadius);
 }
 
 bool AnimalSpecies::getActivatedHandling() const
@@ -860,15 +900,6 @@ void AnimalSpecies::serialize(Archive &ar, const unsigned int) {
 	ar & edibleSpecies;
 
 	ar & edibleOntogeneticLink;
-
-	ar & preySearchParams;
-	ar & predatorSearchParams;
-	ar & conspecificSearchParams;
-
-	ar & breedSearchParams;
-	ar & matureFemalesSearchParams;
-	ar & populationSearchParams;
-	ar & lifeStageSearchParams;
 
 	ar & predationEventsOnOtherSpecies;
 

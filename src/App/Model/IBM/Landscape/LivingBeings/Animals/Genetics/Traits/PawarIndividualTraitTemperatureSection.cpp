@@ -3,28 +3,11 @@
 #include "App/Model/IBM/Maths/MathFunctions.h"
 #include "Misc/EnumClass.h"
 
+#include <fmt/compile.h>
 #include <fmt/format.h>
 #include <iterator>
 
 using namespace std;
-
-
-
-
-
-void PawarTraitDTO::formatToBuffer(std::string& buffer) const
-{
-    fmt::format_to(std::back_inserter(buffer), "\t{}\t{}\t{}\t{}\t{}\t{}", 
-        constitutiveActivationEnergy, constitutiveEnergyDecay,
-        constitutiveTemperatureOptimal, constitutiveTemperatureRef,
-        constitutiveTmin, constitutiveTmax
-    );
-}
-
-void PawarTraitDTO::formatToBufferNA(std::string& buffer) const
-{
-    buffer.append("\tNA\tNA\tNA\tNA\tNA\tNA");
-}
 
 
 
@@ -59,14 +42,16 @@ PreciseDouble PawarIndividualTraitTemperatureSection::applyTemperatureDependency
 	);
 }
 
-void PawarIndividualTraitTemperatureSection::flatten(PawarTraitDTO& dto) const noexcept
+void PawarIndividualTraitTemperatureSection::formatTraitDirect(fmt::memory_buffer& buf) const noexcept
 {
-    dto.constitutiveActivationEnergy = elements[PawarElement::activationEnergy].getValue();
-    dto.constitutiveEnergyDecay = elements[PawarElement::energyDecay].getValue();
-    dto.constitutiveTemperatureOptimal = elements[PawarElement::temperatureOptimal].getValue();
-    dto.constitutiveTemperatureRef = elements[PawarElement::temperatureRef].getValue();
-    dto.constitutiveTmin = temperatureRangeTPC.first.getTemperatureCelsius().getValue();
-    dto.constitutiveTmax = temperatureRangeTPC.second.getTemperatureCelsius().getValue();
+    fmt::format_to(fmt::appender(buf), FMT_COMPILE("\t{}\t{}\t{}\t{}\t{}\t{}"),
+        elements[PawarElement::activationEnergy],
+        elements[PawarElement::energyDecay],
+        elements[PawarElement::temperatureOptimal],
+        elements[PawarElement::temperatureRef],
+        temperatureRangeTPC.first.getTemperatureCelsius(),
+        temperatureRangeTPC.second.getTemperatureCelsius()
+    );
 }
 
 

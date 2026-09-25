@@ -63,7 +63,7 @@ const DryMass& AnimalNonStatisticalGrowth::getPreviousMoultingMassTarget() const
 	return previousMoultingMassTarget;
 }
 
-void AnimalNonStatisticalGrowth::tune(const std::vector<IndividualTrait>& baseIndividualTraits, const TimeStep actualTimeStep, const unsigned int femaleMaxReproductionEvents, const Temperature& actualTemperature, const Temperature& tempFromLab, const PreciseDouble &timeStepsPerDay)
+void AnimalNonStatisticalGrowth::tune(const std::vector<IndividualTrait>& baseIndividualTraits, const unsigned int femaleMaxReproductionEvents, const Temperature& actualTemperature, const Temperature& tempFromLab, const PreciseDouble &timeStepsPerDay)
 {
 	calculateGrowthModel(baseIndividualTraits, actualTemperature, tempFromLab, timeStepsPerDay);
 
@@ -135,6 +135,8 @@ void AnimalNonStatisticalGrowth::moveOnNextInstar(Landscape* const landscape, An
 	Instar actualInstar = getInstar();
 	actualInstar.moveOnNextInstar();
 	setInstar(landscape, actualInstar, animal, timeStepsPerDay);
+
+	animal->updateSignature();
 }
 
 void AnimalNonStatisticalGrowth::setAgeForNextReproduction(const TimeStep& newAgeForNextReproduction)

@@ -1,6 +1,7 @@
 #include "App/Model/IBM/Landscape/Map/TerrainCells/PatchApplicator/Resources/CellResource.h"
 
 #include "App/Model/IBM/Landscape/Landscape.h"
+#include "App/Manager/LogManager.h"
 
 using namespace std;
 
@@ -135,7 +136,7 @@ void CellResource::deserializeCellResource(std::vector<std::pair<size_t, Resourc
 
 
 
-DryMass CellResource::calculateDryMassAvailable(const bool fullCoverage, const PointContinuous* const, const PreciseDouble &, const RingModel& radiusArea) const
+DryMass CellResource::calculateDryMassAvailable(const bool fullCoverage, const PointContinuous* const sourcePosition, const PreciseDouble& radius) const
 {
 	if(getGrowthBuildingBlock().getCurrentTotalWetMass() > 0.0)
 	{
@@ -145,7 +146,7 @@ DryMass CellResource::calculateDryMassAvailable(const bool fullCoverage, const P
 			coveragePercent = 1.0;
 		}
 		else {
-			coveragePercent = Geometry::calculateFirstCoveragePercentBySecond(getTerrainCell()->getEffectiveArea(), radiusArea, true);
+			coveragePercent = Geometry::calculateCoveragePercentBySphere(getTerrainCell()->getEffectiveArea(), *sourcePosition, radius);
 		}
 
 		DryMass dryMassAvailable(WetMass((getGrowthBuildingBlock().getCurrentTotalWetMass() - getGrowthBuildingBlock().getMinimumEdibleBiomass()).getValue() * coveragePercent), getSpecies()->getGrowthBuildingBlock().getConversionToWetMass(getGrowthBuildingBlock().getInstar()));
@@ -166,7 +167,7 @@ void CellResource::setSpeciesGrowth(SpeciesGrowth* newSpeciesGrowth)
 }
 
 
-void CellResource::substractBiomass(const DryMass& dryMassToBeSubstracted, const PointContinuous &, const PreciseDouble &, const bool competitionAmongResourceSpecies)
+void CellResource::substractBiomass(const DryMass& dryMassToBeSubstracted, bool, const PointContinuous &, const PreciseDouble &, const bool competitionAmongResourceSpecies)
 {
 	getMutableGrowthBuildingBlock().substractBiomass(dryMassToBeSubstracted, competitionAmongResourceSpecies);
 
@@ -176,7 +177,7 @@ void CellResource::substractBiomass(const DryMass& dryMassToBeSubstracted, const
 	}
 }
 
-void CellResource::substractBiomass(const DryMass& dryMassToBeSubstracted, const bool, const PointContinuous &, const PreciseDouble &, const RingModel&, const bool competitionAmongResourceSpecies)
+void CellResource::substractBiomassDown(const DryMass& dryMassToBeSubstracted, const bool, const PointContinuous &, const PreciseDouble &, const bool competitionAmongResourceSpecies)
 {
 	getMutableGrowthBuildingBlock().substractBiomass(dryMassToBeSubstracted, competitionAmongResourceSpecies);
 }

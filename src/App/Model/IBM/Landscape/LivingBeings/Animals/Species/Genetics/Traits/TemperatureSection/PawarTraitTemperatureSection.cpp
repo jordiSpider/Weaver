@@ -41,7 +41,7 @@ PawarTraitTemperatureSection::PawarTraitTemperatureSection(std::vector<Individua
 
 	for(const PawarElement& elem : EnumClass<PawarElement>::getEnumValues())
 	{
-		elements[elem] = TraitDefinitionSection::createInstance(individualLevelTraits, config[EnumClass<PawarElement>::to_string(elem)], individualLevelTraitsOrder, trait, EnumClass<PawarElement>::to_string(elem), fileName);
+		elements[elem] = TraitDefinitionSection::createInstance(individualLevelTraits, config[fmt::to_string(elem)], individualLevelTraitsOrder, trait, fmt::to_string(elem), fileName);
 	}
 }
 

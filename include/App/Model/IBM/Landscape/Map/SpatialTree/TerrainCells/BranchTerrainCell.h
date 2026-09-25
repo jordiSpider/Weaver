@@ -21,6 +21,9 @@
 #include <boost/serialization/vector.hpp>
 
 
+#include <tbb/parallel_invoke.h>
+
+
 #include "App/Model/IBM/Landscape/Map/SpatialTree/TerrainCells/SpatialTreeTerrainCell.h"
 #include "App/Model/IBM/Landscape/Map/SpatialTree/Points/PointSpatialTree.h"
 #include "App/Model/IBM/Landscape/Map/SpatialTree/TerrainCells/PatchApplicator/Resources/BranchCellResource.h"
@@ -105,6 +108,11 @@ public:
      */
     BranchTerrainCell(const std::vector<PreciseDouble>& cellSizes, const unsigned int& mapDepth, BranchTerrainCell* const parentTerrainCell, PointSpatialTree* const position, MoistureSource* const moistureBaseSource);
     
+    BranchTerrainCell(const BranchTerrainCell&) = delete;
+    BranchTerrainCell& operator=(const BranchTerrainCell&) = delete;
+    BranchTerrainCell(BranchTerrainCell&&) = delete;
+    BranchTerrainCell& operator=(BranchTerrainCell&&) = delete;
+
     /// Virtual destructor.
     virtual ~BranchTerrainCell();
 
@@ -136,26 +144,23 @@ public:
     void deserializeSpecies(std::vector<ResourceSpecies*>& existingResourceSpecies, std::vector<AnimalSpecies*>& existingAnimalSpecies) override;
 
     /// Add an animal species to all children according to search parameters.
-    void addAnimalSpecies(const AnimalSpecies& animalSpecies, const AnimalSearchParams& allAnimalsSearchParams, const PreciseDouble& timeStepsPerDay) override;
+    void addAnimalSpecies(const AnimalSpecies& animalSpecies) override;
     
     /// Add a resource species to all children.
-    void addResourceSpecies(Landscape* const landscape, std::vector<std::vector<std::vector<CellResource*>>>& landscapeResources, ResourceSpecies& resourceSpecies, ResourceSource* const resourceBaseSource, const AnimalSearchParams& allAnimalsSearchParams, const PreciseDouble& timeStepsPerDay);
+    void addResourceSpecies(Landscape* const landscape, std::vector<std::vector<std::vector<CellResource*>>>& landscapeResources, ResourceSpecies& resourceSpecies, ResourceSource* const resourceBaseSource);
 
     /// Insert an individual animal into the appropriate child.
     void insertAnimal(Landscape* const landscape, Animal* const newAnimal) override;
 
     /// Randomly insert an animal based on instar and species, returning insertion info.
-    std::tuple<bool, TerrainCell*, TerrainCell*, Animal*> randomInsertAnimal(Landscape* const landscape, const Instar &instar, AnimalSpecies* animalSpecies, const bool isStatistical, const Genome* const genome, const bool saveGenetics, const bool saveMassInfo, const TimeStep actualTimeStep, const PreciseDouble& timeStepsPerDay) override;
-
-    /// Check if a given continuous position belongs to one of the children.
-    bool isChild(Map* const map, const PointContinuous &childPos) const;
+    std::tuple<bool, TerrainCell*, TerrainCell*, Animal*> randomInsertAnimal(Landscape* const landscape, const Instar &instar, AnimalSpecies* animalSpecies, const bool isStatistical, const Genome* const genome, const bool saveGenetics, std::vector<fmt::memory_buffer>& geneticsText, const TimeStep actualTimeStep, const PreciseDouble& timeStepsPerDay) override;
 
     /// Check if a given spatial position belongs to one of the children.
     bool isChild(const PointSpatialTree &childPos) const;
 
     /// Retrieve terrain cells within a radius for evaluation across children.
     void getRadiusTerrainCells(
-        std::vector<CellValue>& bestEvaluations, const PointContinuous &sourcePosition, const PreciseDouble &radius, const RingModel& radiusArea, const size_t searchDepth, const bool searchNeighborsWithFemales, const bool parentFullCoverage, AnimalNonStatistical* animalWhoIsEvaluating
+        std::vector<CellValue>& bestEvaluations, const PointContinuous &sourcePosition, const PreciseDouble &radius, const size_t searchDepth, bool searchNeighborsWithFemales, bool searchNeighborsWithMales, const bool parentFullCoverage, AnimalNonStatistical* animalWhoIsEvaluating, CustomIndexedVector<Instar, PreciseDouble>& maximumPatchEdibilityValueGlobal, CustomIndexedVector<Instar, PreciseDouble>& maximumPatchPredationRiskGlobal, CustomIndexedVector<Instar, PreciseDouble>& maximumPatchConspecificBiomassGlobal
     );
 
     void registerCells(std::vector<TerrainCell*>& terrainCells, unsigned int numberOfCellsPerAxis) override;
@@ -217,17 +222,7 @@ public:
      * 
      * @param numberOfTimeSteps The number of time steps to advance.
      */
-    void update(const TimeStep& numberOfTimeSteps) override;
-    
-    /**
-     * @brief Updates the state of all child objects over a given number of time steps.
-     * 
-     * This function iterates over all child entities and updates them according
-     * to their individual update rules.
-     * 
-     * @param numberOfTimeSteps The number of time steps to advance for each child.
-     */
-    void updateChildren(const TimeStep& numberOfTimeSteps);
+    void update(const TimeStep& numberOfTimeSteps, unsigned int maxParallelDepth) override;
     ///@}
 
     /// Obtain all inhabitable terrain cells recursively.
@@ -252,5 +247,19 @@ public:
     template <class Archive>
     void serialize(Archive &ar, const unsigned int version);
 };
+
+
+
+template <size_t... Is>
+void invoke_children_parallel(BranchTerrainCell* node, const TimeStep& numberOfTimeSteps, unsigned int maxParallelDepth, std::index_sequence<Is...>) {
+    tbb::parallel_invoke(
+        [node, &numberOfTimeSteps, maxParallelDepth]() {
+            // Cada 'Is' se expande en 0, 1, 2, 3... en tiempo de compilación
+            node->getMutableChildTerrainCell(Is)->update(numberOfTimeSteps, maxParallelDepth);
+        }...
+    );
+}
+
+
 
 #endif /* BRANCH_TERRAINCELL_H_ */

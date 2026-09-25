@@ -73,7 +73,9 @@ public:
 		 * Enables use of ResourceID as a key in hash-based containers.
 		 * @return Identifier value converted to size_t.
 		 */
-		operator size_t() const;
+		constexpr operator size_t() const noexcept {
+			return static_cast<size_t>(value);
+		}
 
 		/**
 		 * @brief Serializes the object for persistence.
@@ -102,7 +104,7 @@ public:
      * @param resourceSpeciesId Resource-specific identifier.
      * @param resourceSpeciesInfo JSON object containing species configuration data.
      */
-	ResourceSpecies(const ResourceSpecies::ID& speciesId, const ResourceSpecies::ResourceID& resourceSpeciesId, const nlohmann::json &resourceSpeciesInfo, std::vector<std::string>& stringPool);
+	ResourceSpecies(const ResourceSpecies::ID& speciesId, const ResourceSpecies::ResourceID& resourceSpeciesId, const nlohmann::json &resourceSpeciesInfo);
 	
 	/**
      * @brief Virtual destructor.

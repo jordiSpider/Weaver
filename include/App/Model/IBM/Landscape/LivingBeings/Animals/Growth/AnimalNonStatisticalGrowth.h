@@ -65,7 +65,7 @@ public:
     /**
      * @brief Tunes growth parameters based on individual traits, reproduction events, and temperature.
      */
-    void tune(const std::vector<IndividualTrait>& baseIndividualTraits, const TimeStep actualTimeStep, const unsigned int femaleMaxReproductionEvents, const Temperature& actualTemperature, const Temperature& tempFromLab, const PreciseDouble &timeStepsPerDay);
+    void tune(const std::vector<IndividualTrait>& baseIndividualTraits, const unsigned int femaleMaxReproductionEvents, const Temperature& actualTemperature, const Temperature& tempFromLab, const PreciseDouble &timeStepsPerDay);
 
     /**
      * @brief Gets the complete vector of lengths for each instar.

@@ -55,74 +55,67 @@ Object::Object(const json& info)
 				try
 				{
 					#ifdef DEBUG
+					if (value.contains("pattern") && value.contains("enum")) {
+						throwValidatorSchemaJSONException("': Property 'pattern' and 'enum' are mutually exclusive");
+					}
+
+					if (!value.contains("pattern") && !value.contains("enum")) {
+						throwValidatorSchemaJSONException("': Property 'pattern' or 'enum' not defined");
+					}
+					
 					try
 					{
-						if(!value.at("pattern").is_string()) {
+						if (value.contains("pattern") && !value.at("pattern").is_string()) {
 							throwValidatorSchemaJSONException("': Not an element of type 'string'");
 						}
-
-
-						try
-						{
-							value.at("enum");
-
-							throwValidatorSchemaJSONException("': Property 'pattern' and 'enum' are mutually exclusive");
-						}
-						catch(const json::out_of_range&) {}
 					}
-					catch(ValidatorSchemaJSONException& e)
+					catch (ValidatorSchemaJSONException& e)
 					{
 						e.addPreMessage(".pattern");
 						throw;
 					}
-					catch(const json::out_of_range&) 
+
+					try
 					{
-						try
-						{
-							if(!value.at("enum").is_array()) {
+						if (value.contains("enum")) {
+							if (!value["enum"].is_array()) {
 								throwValidatorSchemaJSONException("': Not an element of type 'array'");
 							}
-
-							for(size_t i = 0; i < value["enum"].size(); i++) {
+							
+							for (size_t i = 0; i < value["enum"].size(); i++) {
 								try
 								{
-									if(!value["enum"][i].is_string()) {
+									if (!value["enum"][i].is_string()) {
 										throwValidatorSchemaJSONException("': Not an element of type 'string'");
 									}
 								}
-								catch(ValidatorSchemaJSONException& e)
+								catch (ValidatorSchemaJSONException& e)
 								{
 									e.addPreMessage(".item_" + to_string(i));
 									throw;
 								}
 							}
 						}
-						catch(ValidatorSchemaJSONException& e)
-						{
-							e.addPreMessage(".enum");
-							throw;
-						}
-						catch(const json::out_of_range&) 
-						{
-							throwValidatorSchemaJSONException("': Property 'pattern' or 'enum' not defined");
-						}
+					}
+					catch (ValidatorSchemaJSONException& e)
+					{
+						e.addPreMessage(".enum");
+						throw;
 					}
 					#endif
 
 
-					try
-					{
-						patternProperties.insert({static_cast<string>(value.at("pattern")), ElementFactory::createInstance(value)});
+					if (value.contains("pattern")) {
+						patternProperties.insert({ static_cast<string>(value["pattern"]), ElementFactory::createInstance(value) });
 					}
-					catch(const json::out_of_range&) 
-					{
-						for(const string propertyName : value["enum"])
+					else {
+						for (const string propertyName : value["enum"])
 						{
 							try
 							{
-								properties.insert({propertyName, ElementFactory::createInstance(value)});
+								properties.insert({ propertyName, ElementFactory::createInstance(value) });
 							}
-							catch(ValidatorSchemaJSONException& e)
+							catch (ValidatorSchemaJSONException& e)
 							{
 								e.addPreMessage("." + propertyName);
 								throw;

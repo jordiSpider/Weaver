@@ -50,11 +50,11 @@ void LeafTerrainCell::registerEdibles(vector<vector<vector<CellResource*>>>& lan
 }
 
 void LeafTerrainCell::getRadiusTerrainCells(
-    vector<CellValue>& bestEvaluations, const PointContinuous &sourcePosition, const PreciseDouble &radius, const RingModel& radiusArea, const size_t, const bool searchNeighborsWithFemales, const bool parentFullCoverage, AnimalNonStatistical* animalWhoIsEvaluating)
+    vector<CellValue>& bestEvaluations, const PointContinuous &sourcePosition, const PreciseDouble &radius, const size_t, bool searchNeighborsWithFemales, bool searchNeighborsWithMales, const bool parentFullCoverage, AnimalNonStatistical* animalWhoIsEvaluating, CustomIndexedVector<Instar, PreciseDouble>& maximumPatchEdibilityValueGlobal, CustomIndexedVector<Instar, PreciseDouble>& maximumPatchPredationRiskGlobal, CustomIndexedVector<Instar, PreciseDouble>& maximumPatchConspecificBiomassGlobal)
 {
     if(!getPatchApplicator().getCellObstacle().isObstacle())
     {
-        getCellEvaluation(bestEvaluations, animalWhoIsEvaluating, sourcePosition, radius, radiusArea, searchNeighborsWithFemales, parentFullCoverage);
+        getCellEvaluation(bestEvaluations, animalWhoIsEvaluating, sourcePosition, radius, searchNeighborsWithFemales, searchNeighborsWithMales, parentFullCoverage, maximumPatchEdibilityValueGlobal, maximumPatchPredationRiskGlobal, maximumPatchConspecificBiomassGlobal);
     }
 }
 

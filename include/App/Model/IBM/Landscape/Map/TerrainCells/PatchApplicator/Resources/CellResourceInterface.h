@@ -27,6 +27,7 @@
 #include "App/Model/IBM/Landscape/Map/Geometry/Geometry.h"
 #include "App/Model/IBM/Landscape/Map/TerrainCells/PatchApplicator/CellElement.h"
 #include "App/Model/IBM/Landscape/Map/Patches/Source/ResourceSource.h"
+#include "App/Model/IBM/Landscape/Map/TerrainCells/PatchApplicator/Resources/ResourceSignature.h"
 
 
 
@@ -42,6 +43,9 @@
  */
 class CellResourceInterface : public Edible, public CellElement
 {
+protected:
+    ResourceSignature signature;
+
 public:
 	/**
      * @brief Default constructor.
@@ -58,7 +62,7 @@ public:
      * @param newResourcePatchPriority Patch priority of this resource.
      * @param resourceSpecies Reference to the species of this resource.
      */
-	CellResourceInterface(const EdibleID id, TerrainCell* terrainCell, const size_t newResourcePatchPriority, ResourceSpecies& resourceSpecies);
+	CellResourceInterface(id_type id, TerrainCell* terrainCell, const size_t newResourcePatchPriority, ResourceSpecies& resourceSpecies);
 	
 	/// Virtual destructor.
 	virtual ~CellResourceInterface();
@@ -114,9 +118,6 @@ public:
      */
 	PreciseDouble getVoracity() const;
 
-	/// Increase the number of predation encounters on this resource.
-	void increasePredationEncounters();
-
 	/**
      * @brief Convert a target biomass to dry mass based on predator's remaining voracity.
      *
@@ -132,10 +133,9 @@ public:
      * @param fullCoverage Whether to consider the full cell coverage.
      * @param sourcePosition Position from which consumption is measured.
      * @param radius Radius around the source position.
-     * @param radiusArea Optional area for partial coverage calculations.
      * @return Amount of dry mass available.
      */
-	virtual DryMass calculateDryMassAvailable(const bool fullCoverage, const PointContinuous* const sourcePosition, const PreciseDouble &radius, const RingModel& radiusArea) const=0;
+	virtual DryMass calculateDryMassAvailable(const bool fullCoverage, const PointContinuous* const sourcePosition, const PreciseDouble &radius) const=0;
 
 	/// Deserialize applied resource sources for this cell.
 	virtual void deserializeCellResource(std::vector<std::pair<size_t, ResourceSource*>>& appliedResource)=0;
@@ -148,7 +148,7 @@ public:
      * @param radius Radius around the source position.
      * @param competitionAmongResourceSpecies If true, consider competition with other resources.
      */
-	virtual void substractBiomass(const DryMass& dryMassToBeSubstracted, const PointContinuous &sourcePosition, const PreciseDouble &radius, const bool competitionAmongResourceSpecies)=0;
+	virtual void substractBiomass(const DryMass& dryMassToBeSubstracted, bool fullCoverage, const PointContinuous &sourcePosition, const PreciseDouble &radius, const bool competitionAmongResourceSpecies)=0;
 
 	/**
      * @brief Subtract biomass from the resource with full coverage consideration.
@@ -157,10 +157,13 @@ public:
      * @param fullCoverage Whether to consider the full cell coverage.
      * @param sourcePosition Position of the consumer.
      * @param radius Radius around the source position.
-     * @param radiusArea Optional area for partial coverage calculations.
      * @param competitionAmongResourceSpecies If true, consider competition with other resources.
      */
-	virtual void substractBiomass(const DryMass& dryMassToBeSubstracted, const bool fullCoverage, const PointContinuous &sourcePosition, const PreciseDouble &radius, const RingModel& radiusArea, const bool competitionAmongResourceSpecies)=0;
+	virtual void substractBiomassDown(const DryMass& dryMassToBeSubstracted, const bool fullCoverage, const PointContinuous &sourcePosition, const PreciseDouble &radius, const bool competitionAmongResourceSpecies)=0;
+
+    inline ResourceSignature getSignature() const noexcept {
+        return signature;
+    }
 
 	/**
      * @brief Serialization method for persistence.

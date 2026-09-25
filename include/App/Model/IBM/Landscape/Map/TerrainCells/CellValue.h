@@ -45,6 +45,8 @@ struct CellValue {
     /// Number of mature females in the cell
     unsigned int numberOfFemales;
 
+    unsigned int numberOfMales;
+
     /// Whether the cell belongs to the habitat domain of the evaluating animal
     bool habitatDomain;
 
@@ -63,7 +65,7 @@ struct CellValue {
      * @param numberOfFemales Number of mature females present in the cell
      * @param habitatDomain Whether the cell belongs to the habitat domain
      */
-    CellValue(const AnimalNonStatistical& animalWhoIsEvaluating, const Edible* bestEdibility, bool fullCoverage, const RingModel* cellEffectiveArea, const PointMap* const cellPosition, const PointContinuous& cellCenter, const PreciseDouble &edibilityValue, const PreciseDouble &predatoryRiskEdibilityValue, const PreciseDouble &conspecificBiomass, const unsigned int numberOfFemales, const bool habitatDomain);
+    CellValue(const AnimalNonStatistical& animalWhoIsEvaluating, const Edible* bestEdibility, bool fullCoverage, const RingModel* cellEffectiveArea, const PointMap* const cellPosition, const PointContinuous& cellCenter, const PreciseDouble &edibilityValue, const PreciseDouble &predatoryRiskEdibilityValue, const PreciseDouble &conspecificBiomass, unsigned int numberOfFemales, unsigned int numberOfMales, const bool habitatDomain);
     
     /**
      * @brief Destructor.

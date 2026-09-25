@@ -5,9 +5,11 @@
 #include <iomanip>
 #include <limits>
 #include <string>
+#include <thread>
 
 #include "App/Model/Model.h"
 #include "App/View/Console.h"
+
 
 
 using namespace std;
@@ -26,7 +28,8 @@ int main(int argc, char ** argv)
 
 	string mode;
 	string inputConfig, outputFolder, checkpointPath;
-	bool silent = false, verbose = false, help = false;
+	bool silent = false, verbose = false, enableDiskOutputMock = false, help = false;
+	unsigned int requestedThreads;
 
 	options.add_options("Common")
 		("mode", "Description mode", cxxopts::value<string>(mode)->default_value("FromConfig"))
@@ -34,6 +37,8 @@ int main(int argc, char ** argv)
 		("O,output_folder", "Description output folder", cxxopts::value<string>(outputFolder)->default_value(""))
 		("silent", "Run the program in silent mode", cxxopts::value<bool>(silent)->implicit_value("true"))
 		("verbose", "Run the program in verbose mode", cxxopts::value<bool>(verbose)->implicit_value("true"))
+		("enableDiskOutputMock", "Enable disk output mock execution", cxxopts::value<bool>(enableDiskOutputMock)->implicit_value("true"))
+		("parallel", "Specify the number of threads to use", cxxopts::value<unsigned int>(requestedThreads)->default_value("0"))
 		("h,help", "Print usage", cxxopts::value<bool>(help)->implicit_value("true"));
 
 	auto result = options.parse(argc, argv);
@@ -50,16 +55,16 @@ int main(int argc, char ** argv)
 		throwLineInfoException("Error: Both silent and verbose modes cannot be enabled simultaneously.");
 	}
 	
-	Console view;
 
-	Model* model = Model::createInstance(Model::Type::IBM, view);
 
-	view.setModel(*model);
+	Model* model = Model::createInstance(Model::Type::IBM);
+
+	Console view(model);
 
 	unsigned char returnCode;
 
 	try {
-        view.run(mode, inputConfig, outputFolder, silent, verbose);
+		view.run(mode, inputConfig, outputFolder, silent, verbose, enableDiskOutputMock, requestedThreads);
 		returnCode = 0;
     } catch (const LineInfoException& e) {
         cerr << e.what() << endl;

@@ -54,6 +54,11 @@ public:
      */
     RootTerrainCell(const std::vector<PreciseDouble>& cellSizes, const unsigned int& mapDepth, PointSpatialTree *position, MoistureSource* const moistureBaseSource);
     
+    RootTerrainCell(const RootTerrainCell&) = delete;
+    RootTerrainCell& operator=(const RootTerrainCell&) = delete;
+    RootTerrainCell(RootTerrainCell&&) = delete;
+    RootTerrainCell& operator=(RootTerrainCell&&) = delete;
+
     /// Destructor.
     virtual ~RootTerrainCell();
 
@@ -74,13 +79,12 @@ public:
      * @param bestEvaluations Vector to store evaluated cells.
      * @param sourcePosition Center of the search.
      * @param radius Radius of the search area.
-     * @param radiusArea Optional area model for partial coverage.
      * @param searchDepth Depth limit for recursive search.
      * @param searchNeighborsWithFemales Whether to include neighbors with females.
      * @param animalWhoIsEvaluating Pointer to the animal performing the evaluation.
      */
     void getNeighboursCellsOnRadius(
-        std::vector<CellValue>& bestEvaluations, const PointContinuous &sourcePosition, const PreciseDouble &radius, const RingModel& radiusArea, const size_t searchDepth, const bool searchNeighborsWithFemales, AnimalNonStatistical* animalWhoIsEvaluating
+        std::vector<CellValue>& bestEvaluations, const PointContinuous &sourcePosition, const PreciseDouble &radius, const size_t searchDepth, bool searchNeighborsWithFemales, bool searchNeighborsWithMales, AnimalNonStatistical* animalWhoIsEvaluating, CustomIndexedVector<Instar, PreciseDouble>& maximumPatchEdibilityValueGlobal, CustomIndexedVector<Instar, PreciseDouble>& maximumPatchPredationRiskGlobal, CustomIndexedVector<Instar, PreciseDouble>& maximumPatchConspecificBiomassGlobal
     ) override;
 
     /**
@@ -114,12 +118,11 @@ public:
      * @brief Applies functions to edibles within a given radius starting from the root.
      * @param sourcePosition Center of the search.
      * @param radius Radius of the search area.
-     * @param radiusArea Optional area model for partial coverage.
      * @param animalFunctions Vector of animal functions with their search parameters.
      * @param resourceFunctions Vector of resource functions with their search parameters.
      */
     void applyFunctionToEdiblesInRadius(
-        const PointContinuous &sourcePosition, const PreciseDouble &radius, const RingModel& radiusArea, 
+        const PointContinuous &sourcePosition, const PreciseDouble &radius, 
         const std::vector<std::pair<const AnimalSearchParams&, AnimalFunctions>>& animalFunctions,
         const std::vector<std::pair<const ResourceSearchParams&, ResourceFunctions>>& resourceFunctions
     ) override;

@@ -152,17 +152,6 @@ bool operator!=(const unsigned int& lhs, const Instar& rhs)
     return lhs != (rhs.value+1);
 }
 
-string Instar::to_string() const 
-{
-    return std::to_string(value + 1);
-}
-
-ostream& operator<<(ostream& os, const Instar& instar)
-{
-    os << instar.to_string();
-    return os;
-}
-
 Instar::operator size_t() const 
 {
     return static_cast<size_t>(value);

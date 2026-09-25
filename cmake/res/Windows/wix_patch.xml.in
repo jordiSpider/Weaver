@@ -1,0 +1,31 @@
+<CPackWiXPatch>
+	<CPackWiXFragment Id="#PRODUCTFEATURE">
+		<ComponentRef Id="setEnviroment"/>
+	</CPackWiXFragment>
+
+	<CPackWiXFragment Id="#PRODUCT">
+		<Property Id="APPDATADIR" Secure="yes" />
+
+		<CustomAction Id="SetDefaultAppDataDir"
+			Property="APPDATADIR"
+			Value="[PersonalFolder]@CPACK_PACKAGE_INSTALL_DIRECTORY@" />
+
+		<CustomAction Id="SetUiAppDataDir"
+			Property="CM_DP_AppData"
+			Value="[APPDATADIR]" />
+
+		<CustomAction Id="SetExecAppDataDir"
+			Property="CM_DP_AppData"
+			Value="[APPDATADIR]" />
+
+		<InstallUISequence>
+			<Custom Action="SetDefaultAppDataDir" Before="CostFinalize">NOT APPDATADIR</Custom>
+			<Custom Action="SetUiAppDataDir" Before="CostFinalize">APPDATADIR</Custom>
+		</InstallUISequence>
+
+		<InstallExecuteSequence>
+			<Custom Action="SetDefaultAppDataDir" Before="CostFinalize">NOT APPDATADIR</Custom>
+			<Custom Action="SetExecAppDataDir" Before="CostFinalize">APPDATADIR</Custom>
+		</InstallExecuteSequence>
+	</CPackWiXFragment>
+</CPackWiXPatch>

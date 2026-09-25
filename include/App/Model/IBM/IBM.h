@@ -65,12 +65,11 @@ public:
 	/**
      * @brief Constructs the IBM model and initializes its subsystems.
      *
-     * The constructor links the model with a given `View` instance, which
-     * may be used for visualization or real-time interaction.
+     * The constructor initializes the model's internal state and prepares
+     * its subsystems for simulation.
      *
-     * @param view Reference to the View object associated with the simulation.
      */
-	IBM(View& view);
+	IBM();
 
 	/**
      * @brief Destroys the IBM model.

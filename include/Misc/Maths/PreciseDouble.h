@@ -54,11 +54,27 @@ public:
      */
     constexpr PreciseDouble(double v) noexcept : value(v) {}
 
+    // Constructor de movimiento
+    PreciseDouble(PreciseDouble&& other) noexcept : value(other.value) {}
+
+    // Operador de asignación de movimiento
+    PreciseDouble& operator=(PreciseDouble&& other) noexcept {
+        if (this != &other) {
+            this->value = other.value;
+        }
+        return *this;
+    }
+
+    PreciseDouble(const PreciseDouble& other) noexcept = default;
+    PreciseDouble& operator=(const PreciseDouble& other) noexcept = default;
+
     /**
      * @brief Returns the stored double value.
      * @return The encapsulated double value.
      */
     constexpr double getValue() const noexcept { return value; }
+
+    double& getInternalReference() noexcept { return value; }
 
     /**
      * @brief Checks if two double values are approximately equal.
@@ -472,21 +488,9 @@ public:
     }
     ///@}
 
-    friend std::string format_as(const PreciseDouble& r) {
-        return std::to_string(r.value);
-    }
-
     friend std::ostream& operator<<(std::ostream& os, PreciseDouble r) {
         os << r.value;
         return os;
-    }
-
-    /**
-     * @brief Converts the value to a string.
-     * @return String representation of the value.
-     */
-    inline std::string to_string() const noexcept {
-        return std::to_string(value);
     }
 
     /**
@@ -627,6 +631,20 @@ inline PreciseDouble fmin(PreciseDouble a, PreciseDouble b) noexcept {
  */
 inline PreciseDouble fmax(PreciseDouble a, PreciseDouble b) noexcept {
     return (a > b) ? a : b;
+}
+
+
+
+namespace fmt {
+    template <>
+    struct formatter<PreciseDouble> : formatter<double> {
+        // Heredamos la lógica de parseo de especificaciones de double (ej. {:.6f})
+        template <typename FormatContext>
+        auto format(const PreciseDouble& pd, FormatContext& ctx) const {
+            // Pasamos el double primitivo puro directamente al motor máquina de fmt
+            return formatter<double>::format(pd.getValue(), ctx);
+        }
+    };
 }
 
 

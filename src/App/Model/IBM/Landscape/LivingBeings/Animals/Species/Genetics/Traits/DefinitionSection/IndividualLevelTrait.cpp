@@ -1,5 +1,6 @@
 #include "App/Model/IBM/Landscape/LivingBeings/Animals/Species/Genetics/Traits/DefinitionSection/IndividualLevelTrait.h"
 
+#include "App/IO/StorageBridge.h"
 
 using namespace std;
 using json = nlohmann::json;
@@ -29,20 +30,12 @@ IndividualLevelTrait::IndividualLevelTrait(const json& config, const size_t newO
 
 IndividualLevelTrait::~IndividualLevelTrait() 
 {
-	geneticFile.close();
+	
 }
 
 void IndividualLevelTrait::initializeGeneticFile(const fs::path& geneticsFolder, const string& geneticHeader)
 {
-	createOutputFile(geneticFile, geneticsFolder, fileName, "txt");
-
-	if(!geneticFile.is_open())
-	{
-		throwLineInfoException("Error opening the file '" + fileName + "'.");
-	}
-
-	geneticFile << geneticHeader;
-	geneticFile.flush();
+	StorageBridge::writeHeaderPackToDisk(geneticsFolder / (fileName + ".txt"), geneticHeader);
 }
 
 const size_t& IndividualLevelTrait::getOrder() const
@@ -244,17 +237,18 @@ PreciseDouble IndividualLevelTrait::calculatePseudoValue(const Genome& genome, c
 	return traitPseudoValue;
 }
 
-void IndividualLevelTrait::printGenetics(const ostringstream& animalInfo, const Genome& genome, const size_t traitsPerModule, const size_t numberOfLociPerTrait, const vector<PreciseDouble>& rhoPerModule, const vector<size_t>& rhoRangePerModule)
+void IndividualLevelTrait::printGenetics(const std::string& animalInfo, const Genome& genome, fmt::memory_buffer& traitText, const size_t traitsPerModule, const size_t numberOfLociPerTrait, const vector<PreciseDouble>& rhoPerModule, const vector<size_t>& rhoRangePerModule)
 {
-	geneticFile << animalInfo.str();
-
+	fmt::format_to(fmt::appender(traitText), "{}", animalInfo);
 
 	size_t moduleNumber = getOrder() / traitsPerModule;
 
 	//The division is made using RHO. For every trait, the left side alleles of their own chromosomes must be added.
 	for(size_t j = 0; j < rhoRangePerModule[moduleNumber]; ++j) {
-		geneticFile << "\t" << *(genome.getHomologousCorrelosomes()[getOrder()].first->getAllele(j));
-		geneticFile << "\t" << *(genome.getHomologousCorrelosomes()[getOrder()].second->getAllele(j));
+		fmt::format_to(fmt::appender(traitText), "\t{}\t{}", 
+			*(genome.getHomologousCorrelosomes()[getOrder()].first->getAllele(j)),
+			*(genome.getHomologousCorrelosomes()[getOrder()].second->getAllele(j))
+		);
 	}
 
 	//The right side depends on two factors: the sign for RHO for the current module and the dominance of the chromosome.
@@ -265,8 +259,10 @@ void IndividualLevelTrait::printGenetics(const ostringstream& animalInfo, const 
 	{
 		for (size_t j = rhoRangePerModule[moduleNumber]; j < numberOfLociPerTrait; ++j)
 		{
-			geneticFile << "\t" << *(genome.getHomologousCorrelosomes()[getOrder()-distanceFromDominant].first->getAllele(j));
-			geneticFile << "\t" << *(genome.getHomologousCorrelosomes()[getOrder()-distanceFromDominant].second->getAllele(j));
+			fmt::format_to(fmt::appender(traitText), "\t{}\t{}",
+				*(genome.getHomologousCorrelosomes()[getOrder() - distanceFromDominant].first->getAllele(j)),
+				*(genome.getHomologousCorrelosomes()[getOrder() - distanceFromDominant].second->getAllele(j))
+			);
 		}
 	}
 	//If RHO is negative.
@@ -276,8 +272,10 @@ void IndividualLevelTrait::printGenetics(const ostringstream& animalInfo, const 
 		{
 			for (size_t j = rhoRangePerModule[moduleNumber]; j < numberOfLociPerTrait; ++j)
 			{
-				geneticFile << "\t" << *(genome.getHomologousCorrelosomes()[getOrder()].first->getAllele(j));
-				geneticFile << "\t" << *(genome.getHomologousCorrelosomes()[getOrder()].second->getAllele(j));
+				fmt::format_to(fmt::appender(traitText), "\t{}\t{}",
+					*(genome.getHomologousCorrelosomes()[getOrder()].first->getAllele(j)),
+					*(genome.getHomologousCorrelosomes()[getOrder()].second->getAllele(j))
+				);
 			}
 		}
 		//If the trait is NOT dominant, 1 - the right side alleles of the dominant chromosome must be added.
@@ -285,15 +283,15 @@ void IndividualLevelTrait::printGenetics(const ostringstream& animalInfo, const 
 		{
 			for (size_t j = rhoRangePerModule[moduleNumber]; j < numberOfLociPerTrait; ++j)
 			{
-				geneticFile << "\t" << *(genome.getHomologousCorrelosomes()[getOrder()-distanceFromDominant].first->getAllele(j));
-				geneticFile << "\t" << *(genome.getHomologousCorrelosomes()[getOrder()-distanceFromDominant].second->getAllele(j));
+				fmt::format_to(fmt::appender(traitText), "\t{}\t{}",
+					*(genome.getHomologousCorrelosomes()[getOrder() - distanceFromDominant].first->getAllele(j)),
+					*(genome.getHomologousCorrelosomes()[getOrder() - distanceFromDominant].second->getAllele(j))
+				);
 			}
 		}
 	}
 
-	geneticFile << "\n";
-
-	geneticFile.flush();
+	traitText.push_back('\n');
 }
 
 PreciseDouble IndividualLevelTrait::getValue(const Genome& genome, const size_t traitsPerModule, const size_t numberOfLociPerTrait, const vector<PreciseDouble>& rhoPerModule, const vector<size_t>& rhoRangePerModule) const

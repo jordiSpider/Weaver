@@ -62,17 +62,7 @@ void Chromosome::swapAlleles(const size_t lociPosition, Chromosome* const otherC
 }
 
 //TODO COMPROBAR QUE SE IMPRIMAN BIEN
-ostream& operator<<(ostream& os, const Chromosome &chromosome)
-{
-	os << *chromosome.getAllele(0);
 
-	for(size_t i = 1; i < chromosome.size(); ++i)
-	{
-		os << "\t" << *chromosome.getAllele(i);
-	}
-
-	return os;
-}
 
 
 

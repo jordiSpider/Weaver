@@ -7,10 +7,6 @@
 #define EDIBLE_SEARCH_PARAMS_H_
 
 
-#include <boost/serialization/export.hpp>
-
-
-
 #include <fstream>
 #include <ostream>
 
@@ -87,7 +83,7 @@ public:
      * @param existingResourceSpecies Vector of existing resource species
      * @param searchableResourceSpecies Optional vector of resource IDs to include
      */
-    void addResourceSearchParams(const std::vector<ResourceSpecies*>& existingResourceSpecies, const std::vector<ResourceSpecies::ResourceID> &searchableResourceSpecies = {});
+    void addResourceSearchParams(size_t numberExistingResourceSpecies, const std::vector<ResourceSpecies::ResourceID> &searchableResourceSpecies = {});
 
     /**
      * @brief Returns the animal search parameters.
@@ -103,20 +99,7 @@ public:
      */
     const ResourceSearchParams& getResourceSearchParams() const;
 
-    /**
-     * @brief Clears all search parameters (animals and resources).
-     */
-    void clear();
-
-    /**
-     * @brief Serialization function for EdibleSearchParams.
-     * 
-     * @tparam Archive Type of archive
-     * @param ar Archive object
-     * @param version Version of the serialization
-     */
-    template <class Archive>
-    void serialize(Archive &ar, const unsigned int version);
+    void init();
 };
 
 #endif /* EDIBLE_SEARCH_PARAMS_H_ */

@@ -44,7 +44,7 @@ String::String(const json& info)
 
 	try
 	{
-		minLength = info.value("minLength", 0);
+		minLength = info.value("minLength", 0u);
 
 		if(info.contains("minLength") && !info.at("minLength").is_number_integer()) {
 			throwValidatorSchemaJSONException("': Not an element of type 'integer'");

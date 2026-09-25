@@ -12,11 +12,11 @@ Animal::Animal()
 
 }
 
-Animal::Animal(const EdibleID id, AnimalSpecies* const mySpecies, TerrainCell* terrainCell, const Genome* const genome, 
-		const LifeStage& lifeStage, const TimeStep actualTimeStep)
+Animal::Animal(id_type id, AnimalSpecies* const mySpecies, TerrainCell* terrainCell, const Genome* const genome,
+		const LifeStage& lifeStage)
 	: Edible(id, mySpecies, terrainCell), 
 	  genetics(
-		&getMutableSpecies()->getMutableGenetics(), genome, getTerrainCell()->getPatchApplicator().getCellMoisture().getTemperature(), actualTimeStep,
+		&getMutableSpecies()->getMutableGenetics(), genome, getTerrainCell()->getPatchApplicator().getCellMoisture().getTemperature(),
 		getSpecies()->getGrowthBuildingBlock().getCoefficientForMassAforMature(), 
 		getSpecies()->getGrowthBuildingBlock().getScaleForMassBforMature(),
 		getSpecies()->getTempFromLab()
@@ -26,13 +26,13 @@ Animal::Animal(const EdibleID id, AnimalSpecies* const mySpecies, TerrainCell* t
 	animalSpeciesId = getSpecies()->getAnimalSpeciesId();
 }
 
-Animal::Animal(const EdibleID id, AnimalSpecies* const mySpecies, TerrainCell* terrainCell, 
+Animal::Animal(id_type id, AnimalSpecies* const mySpecies, TerrainCell* terrainCell,
 		const LifeStage& lifeStage, Gamete* const firstParentGamete, Gamete* const secondParentGamete, 
-		const Gender& gender, const TimeStep actualTimeStep)
+		const Gender& gender)
 	: Edible(id, mySpecies, terrainCell), 
 	  genetics(
 		&getMutableSpecies()->getMutableGenetics(), firstParentGamete, secondParentGamete,
-		getTerrainCell()->getPatchApplicator().getCellMoisture().getTemperature(), actualTimeStep,
+		getTerrainCell()->getPatchApplicator().getCellMoisture().getTemperature(),
 		getSpecies()->getGrowthBuildingBlock().getCoefficientForMassAforMature(), 
 		getSpecies()->getGrowthBuildingBlock().getScaleForMassBforMature(),
 		getSpecies()->getTempFromLab()
@@ -45,6 +45,11 @@ Animal::Animal(const EdibleID id, AnimalSpecies* const mySpecies, TerrainCell* t
 Animal::~Animal()
 {
 	
+}
+
+void Animal::updateSignature()
+{
+	signature = AnimalSignature(getLifeStage(), getAnimalSpeciesId(), getInstar(), getGender());
 }
 
 const AnimalSpecies* Animal::getSpecies() const 
@@ -195,6 +200,8 @@ void Animal::serialize(Archive &ar, const unsigned int)
     ar & position;
 
 	ar & animalSpeciesId;
+
+	ar & signature;
 }
 
 // // Specialisation

@@ -13,6 +13,7 @@
 #include <cmath>
 #include <numeric>
 #include <nlohmann/json.hpp>
+#include <atomic>
 
 
 #include <boost/serialization/export.hpp>
@@ -102,7 +103,7 @@ public:
      * @param pdfThreshold Threshold for probability density functions.
      * @param numberOfExistingSpecies Number of existing species for initialization purposes.
      */
-	AnimalSpecies(const AnimalSpecies::ID& speciesId, const AnimalSpeciesID& animalSpeciesId, const nlohmann::json &info, const PreciseDouble& timeStepsPerDay, const PreciseDouble& pdfThreshold, const size_t numberOfExistingSpecies, std::vector<std::string>& stringPool);
+	AnimalSpecies(const AnimalSpecies::ID& speciesId, const AnimalSpeciesID& animalSpeciesId, const nlohmann::json &info, const PreciseDouble& timeStepsPerDay, const PreciseDouble& pdfThreshold, const size_t numberOfExistingSpecies);
 	
 	/**
      * @brief Destructor.
@@ -203,7 +204,7 @@ public:
 	/**
 	 * @brief Initializes ontogenetic link structures using external tables of preferences and profitability.
 	 */
-	void setOntogeneticLinks(View* view, const std::vector<Species*>& existingSpecies, rapidcsv::Document& ontogeneticLinksPreference, rapidcsv::Document& ontogeneticLinksProfitability);
+	void setOntogeneticLinks(const std::vector<Species*>& existingSpecies, rapidcsv::Document& ontogeneticLinksPreference, rapidcsv::Document& ontogeneticLinksProfitability);
 	
 	///@}
 
@@ -213,11 +214,6 @@ public:
 	 * @{
 	 */
 
-	/**
-	 * @brief Computes search parameters for prey, predators and conspecifics.
-	 */
-	void obtainPreyAndPredatorSearchParams(const std::vector<Species*>& existingSpecies, const std::vector<AnimalSpecies*>& existingAnimalSpecies, const std::vector<ResourceSpecies*>& existingResourceSpecies);
-	
 	/**
 	 * @brief Returns search parameters for prey detection for the given instar.
 	 */
@@ -242,6 +238,11 @@ public:
 	 * @brief Returns search parameters for detecting mature females.
 	 */
 	const AnimalSearchParams& getMatureFemalesSearchParams() const;
+
+	/**
+	 * @brief Returns search parameters for detecting mature males.
+	 */
+	const AnimalSearchParams& getMatureMalesSearchParams() const;
 	
 	/**
 	 * @brief Returns search parameters related to population-level detection.
@@ -317,7 +318,7 @@ public:
 	/**
 	 * @brief Updates the maximum interaction area for individuals of a given instar.
 	 */
-	void updateMaximumInteractionArea(const Instar& instar, const PreciseDouble& newValue);
+	void updateMaximumInteractionArea(const CustomIndexedVector<Instar, PreciseDouble>& newMaximumInteractionArea);
 	
 	/**
 	 * @brief Returns the maximum interaction area for individuals of an instar.
@@ -327,7 +328,7 @@ public:
 	/**
 	 * @brief Registers a predation event on another species.
 	 */
-	void addPredationEventOnOtherSpecies(Species::ID predatedSpeciesId);
+	void addPredationEventOnOtherSpecies(const CustomIndexedVector<Species::ID, unsigned int>& newEvents);
 	
 	/**
 	 * @brief Returns total predation events on a specific species.
@@ -335,6 +336,8 @@ public:
 	const unsigned int& getPredationEventsOnOtherSpecies(Species::ID predatedSpeciesId) const;
 	
 	///@}
+
+	void obtainSearchParams(const std::vector<Species*>& existingSpecies, const std::vector<AnimalSpecies*>& existingAnimalSpecies, size_t numberExistingResourceSpecies);
 
 	/**
 	 * @defgroup MobilityTraits Mobility and Behavioral Traits
@@ -411,14 +414,14 @@ public:
 	unsigned int getPopulation() const;
 	
 	/**
-	 * @brief Increases population by one.
+	 * @brief Increases population by a specified increment.
 	 */
-	void increasePopulation();
+	void increasePopulation(unsigned int increment);
 	
 	/**
-	 * @brief Decreases population by one.
+	 * @brief Decreases population by a specified decrement.
 	 */
-	void decreasePopulation();
+	void decreasePopulation(unsigned int decrement);
 	
 	/**
 	 * @brief Updates history of population values for stability analysis.
@@ -619,7 +622,7 @@ public:
 	virtual const PreciseDouble& getProbabilityDeathFromBackground(const Instar& instar) const { return probabilityDeathFromBackground[instar]; };
 	
 	/// Computes interaction ranges between predator and prey.
-	virtual void interactionRanges(Animal& predator, Animal& prey);
+	virtual void interactionRanges(Animal& predator, Animal& prey, CustomIndexedVector<Instar, PreciseDouble>& maximumInteractionArea);
 
 	/// Updates max predation encounters per day.
 	void updateMaximumPredationEncountersPerDay(const size_t& predationEncountersPerDay);
@@ -743,10 +746,13 @@ protected:
 	CustomIndexedVector<Gender, AnimalSearchParams> breedSearchParams;
 
 	/// Search parameters for locating mature females.
-	AnimalSearchParams* matureFemalesSearchParams;
+	AnimalSearchParams matureFemalesSearchParams;
+
+	/// Search parameters for locating mature males.
+	AnimalSearchParams matureMalesSearchParams;
 
 	/// Search parameters for population-level interactions.
-	AnimalSearchParams* populationSearchParams;
+	AnimalSearchParams populationSearchParams;
 
 	/// Search parameters depending on the individual's life stage.
 	CustomIndexedVector<LifeStage, AnimalSearchParams> lifeStageSearchParams;
@@ -924,6 +930,8 @@ protected:
 	 */
 	void obtainMatureFemalesSearchParams();
 
+	void obtainMatureMalesSearchParams();
+
 	/**
 	 * @ingroup PopulationParameters
 	 * @brief Computes and stores the search parameters for detecting conspecific individuals.
@@ -950,6 +958,11 @@ protected:
 	 * estimation, such as cooperative behaviors, territoriality, or social signaling.
 	 */
 	void obtainConspecificSearchParams();
+
+	/**
+	 * @brief Computes search parameters for prey, predators and conspecifics.
+	 */
+	void obtainPreyAndPredatorSearchParams(const std::vector<Species*>& existingSpecies, const std::vector<AnimalSpecies*>& existingAnimalSpecies, size_t numberExistingResourceSpecies);
 
 	/**
 	 * @ingroup MorphologyAndPhysiology

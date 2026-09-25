@@ -42,7 +42,7 @@ public:
     /**
      * @brief Constructs a Console object.
      */
-    Console();
+    Console(Model* newModel);
 
     /**
      * @brief Destructor for Console.
@@ -58,21 +58,7 @@ public:
      * @param outputFolder Path to the output directory.
      * @param silent True to suppress log output; false to display logs.
      */
-    void run(const std::string& runMode, const std::string& inputConfig, const std::string& outputFolder, const bool silent, const bool verbose);
-
-    /**
-     * @brief Prints a message to the console log if not in silent mode.
-     * @param message Message text.
-     * @param ignoreSilentMode If true, the message will be logged even in silent mode.
-     */
-    void updateLog(const std::string& message, bool ignoreSilentMode = false);
-
-    /**
-     * @brief Prints an error message to the console log if not in silent mode.
-     * @param message Error message text.
-     * @param ignoreSilentMode If true, the message will be logged even in silent mode.
-     */
-    void updateLogError(const std::string& message, bool ignoreSilentMode = false);
+    void run(const std::string& runMode, const std::string& inputConfig, const std::string& outputFolder, bool silent, bool verbose, bool enableDiskOutputMock, unsigned int requestedThreads);
 
 protected:
     bool silentMode; /**< Flag indicating if the console is in silent mode */
@@ -113,6 +99,8 @@ protected:
      * @return Valid output folder path.
      */
     std::filesystem::path requestOutputFolder() const;
+
+    unsigned int requestThreads() const;
 };
 
 #endif // CONSOLE_H_

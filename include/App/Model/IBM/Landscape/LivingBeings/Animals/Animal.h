@@ -23,6 +23,7 @@
 #include "App/Model/IBM/Landscape/LivingBeings/Animals/Genetics/Genetics.h"
 #include "App/Model/IBM/Landscape/LivingBeings/Animals/Species/Gender.h"
 #include "App/Model/IBM/Landscape/LivingBeings/Animals/Species/LifeStage.h"
+#include "App/Model/IBM/Landscape/LivingBeings/Animals/AnimalSignature.h"
 
 
 
@@ -52,10 +53,9 @@ public:
      * @param mySpecies Pointer to the animal's species.
      * @param terrainCell Pointer to the cell the animal occupies.
      * @param lifeStage Current life stage of the animal.
-     * @param actualTimeStep Current simulation time step.
      */
-    Animal(const EdibleID id, AnimalSpecies* const mySpecies, TerrainCell* terrainCell, const Genome* const genome, 
-        const LifeStage& lifeStage, const TimeStep actualTimeStep
+    Animal(id_type id, AnimalSpecies* const mySpecies, TerrainCell* terrainCell, const Genome* const genome,
+        const LifeStage& lifeStage
     );
 
     /**
@@ -67,11 +67,10 @@ public:
      * @param firstParentGamete Pointer to the first parent's gamete.
      * @param secondParentGamete Pointer to the second parent's gamete.
      * @param gender Gender of the offspring.
-     * @param actualTimeStep Current simulation time step.
      */
-    Animal(const EdibleID id, AnimalSpecies* const mySpecies, TerrainCell* terrainCell, 
+    Animal(id_type id, AnimalSpecies* const mySpecies, TerrainCell* terrainCell,
         const LifeStage& lifeStage, Gamete* const firstParentGamete, Gamete* const secondParentGamete,
-        const Gender& gender, const TimeStep actualTimeStep
+        const Gender& gender
     );
 
     /**
@@ -135,24 +134,6 @@ public:
      * Pure virtual: must be implemented in derived classes.
      */
     virtual PreciseDouble getRemainingVoracity() const=0;
-
-    /**
-     * @brief Add animal species to the simulation.
-     * @param numberOfInstars Number of instars.
-     * @param timeStepsPerDay Number of time steps per day.
-     *
-     * Pure virtual: must be implemented in derived classes.
-     */
-    virtual void addAnimalSpecies(const unsigned int numberOfInstars, const PreciseDouble& timeStepsPerDay)=0;
-
-    /**
-     * @brief Add resource species to the simulation.
-     * @param numberOfInstars Number of instars.
-     * @param timeStepsPerDay Number of time steps per day.
-     *
-     * Pure virtual: must be implemented in derived classes.
-     */
-    virtual void addResourceSpecies(const unsigned int numberOfInstars, const PreciseDouble& timeStepsPerDay)=0;
 
     /**
      * @brief Get the instar to evaluate the terrain cells.
@@ -260,7 +241,13 @@ public:
      *
      * Pure virtual: must be implemented in derived classes.
      */
-    virtual void setNewLifeStage(Landscape* const landscape, const LifeStage newLifeStage, const TimeStep numberOfTimeSteps, EdibleID predatorId, const PreciseDouble& timeStepsPerDay)=0;
+    virtual void setNewLifeStage(Landscape* const landscape, const LifeStage newLifeStage, const TimeStep numberOfTimeSteps, id_type predatorId, const PreciseDouble& timeStepsPerDay)=0;
+
+	inline AnimalSignature getSignature() const noexcept {
+		return signature;
+	}
+
+    void updateSignature();
 
     #ifdef DEBUG
         /**
@@ -286,6 +273,8 @@ protected:
     PointContinuous position;/**< Continuous position in the landscape */
 
     AnimalSpeciesID animalSpeciesId;
+
+    AnimalSignature signature;
 
     /**
      * @brief Check the minimum value for growth and enforce constraints if needed.

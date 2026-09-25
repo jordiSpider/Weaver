@@ -43,8 +43,7 @@ unsigned int nextPowerOf2(const unsigned int n) {
 }
 
 Map::Map(const json &mapConfig)
-	: minCellSize(mapConfig["minCellSize"].get<double>()), minHyperVolume(pow(minCellSize, DIMENSIONS)),
-      lifeStageSearchParams(EnumClass<LifeStage>::size())
+	: minCellSize(mapConfig["minCellSize"].get<double>()), minHyperVolume(pow(minCellSize, DIMENSIONS))
 {
     unsigned int numberOfCellsAxisX = mapConfig["numberOfCellsAxisX"].get<unsigned int>();
     unsigned int numberOfCellsAxisY = mapConfig["numberOfCellsAxisY"].get<unsigned int>();
@@ -101,16 +100,6 @@ vector<TerrainCell*>& Map::getMutableInhabitableTerrainCells()
 TerrainCell*& Map::getMutableInhabitableTerrainCell(const unsigned int index)
 {
     return inhabitableTerrainCells[index];
-}
-
-const AnimalSearchParams& Map::getLifeStageSearchParams(const LifeStage &lifeStage) const
-{
-    return lifeStageSearchParams[lifeStage];
-}
-
-const AnimalSearchParams& Map::getAllAnimalsSearchParams() const
-{
-    return allAnimalsSearchParams;
 }
 
 bool Map::isSpeciesInhabitableTerrainCell(const AnimalSpecies &animalSpecies, const TerrainCell* const potentialInhabitableTerrainCell, const std::vector<ResourceSpecies::ResourceID>& involvedResourceSpecies)
@@ -172,8 +161,6 @@ void Map::serialize(Archive &ar, const unsigned int) {
     ar & minCellSize;
     ar & minHyperVolume;
     ar & numberOfCellsPerAxis;
-    ar & lifeStageSearchParams;
-    ar & allAnimalsSearchParams;
 }
 
 // // Specialisation

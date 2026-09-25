@@ -31,11 +31,9 @@ int main()
 	cerr << setprecision(numeric_limits<double>::max_digits10) << fixed;
 
 
-	GUI view;
+    Model* model = Model::createInstance(Model::Type::IBM);
 
-	Model* model = Model::createInstance(Model::Type::IBM, view);
-
-	view.setModel(*model);
+	GUI view(model);
 
     unsigned char returnCode;
 

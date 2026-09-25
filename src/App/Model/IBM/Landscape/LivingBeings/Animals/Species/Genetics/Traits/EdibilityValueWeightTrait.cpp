@@ -26,7 +26,7 @@ vector<Trait*> EdibilityValueWeightTrait::generateTraits(std::vector<IndividualL
 	for(const EdibilityValueWeightType type : EnumClass<EdibilityValueWeightType>::getEnumValues())
 	{
 		edibilityValueWeightTraits.push_back(new EdibilityValueWeightTrait(
-			individualLevelTraits, type, definitionConfig[DecisionsTrait::getJsonFieldName()][EdibilityValueWeightTrait::getJsonFieldName()][EnumClass<EdibilityValueWeightType>::to_string(type)], 
+			individualLevelTraits, type, definitionConfig[DecisionsTrait::getJsonFieldName()][EdibilityValueWeightTrait::getJsonFieldName()][fmt::to_string(type)],
 			individualLevelTraitsOrder
 		));
 	}
@@ -41,7 +41,7 @@ vector<string> EdibilityValueWeightTrait::getTraitStrVector()
 
 	for(EdibilityValueWeightType type : EnumClass<EdibilityValueWeightType>::getEnumValues())
 	{
-		traitStrVector.push_back(EnumClass<EdibilityValueWeightType>::to_string(type));
+		traitStrVector.push_back(fmt::to_string(type));
 	}
 
 	return traitStrVector;
@@ -72,10 +72,10 @@ EdibilityValueWeightTrait::EdibilityValueWeightTrait()
 
 EdibilityValueWeightTrait::EdibilityValueWeightTrait(std::vector<IndividualLevelTrait*>& individualLevelTraits, const EdibilityValueWeightType type, const json& config, const vector<json>& individualLevelTraitsOrder)
 	: DecisionsTrait(
-		individualLevelTraits, config, individualLevelTraitsOrder, getParentTraitStr() + "$" + EnumClass<EdibilityValueWeightType>::to_string(type), 
+		individualLevelTraits, config, individualLevelTraitsOrder, getParentTraitStr() + "$" + fmt::to_string(type), 
 		getFileName(),
 		createTemperatureSection(
-			individualLevelTraits, config, individualLevelTraitsOrder, getParentTraitStr() + "$" + EnumClass<EdibilityValueWeightType>::to_string(type), 
+			individualLevelTraits, config, individualLevelTraitsOrder, getParentTraitStr() + "$" + fmt::to_string(type), 
 			getFileName()
 		)
 	  )

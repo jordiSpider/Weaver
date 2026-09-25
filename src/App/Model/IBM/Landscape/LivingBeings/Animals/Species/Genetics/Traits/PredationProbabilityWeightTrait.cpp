@@ -26,7 +26,7 @@ vector<Trait*> PredationProbabilityWeightTrait::generateTraits(std::vector<Indiv
 	for(const PredationProbabilityWeightType type : EnumClass<PredationProbabilityWeightType>::getEnumValues())
 	{
 		predationProbabilityWeight.push_back(new PredationProbabilityWeightTrait(
-			individualLevelTraits, type, definitionConfig[DecisionsTrait::getJsonFieldName()][PredationProbabilityWeightTrait::getJsonFieldName()][EnumClass<PredationProbabilityWeightType>::to_string(type)], 
+			individualLevelTraits, type, definitionConfig[DecisionsTrait::getJsonFieldName()][PredationProbabilityWeightTrait::getJsonFieldName()][fmt::to_string(type)],
 			individualLevelTraitsOrder
 		));
 	}
@@ -41,7 +41,7 @@ vector<string> PredationProbabilityWeightTrait::getTraitStrVector()
 
 	for(PredationProbabilityWeightType type : EnumClass<PredationProbabilityWeightType>::getEnumValues())
 	{
-		traitStrVector.push_back(EnumClass<PredationProbabilityWeightType>::to_string(type));
+		traitStrVector.push_back(fmt::to_string(type));
 	}
 
 	return traitStrVector;
@@ -72,10 +72,10 @@ PredationProbabilityWeightTrait::PredationProbabilityWeightTrait()
 
 PredationProbabilityWeightTrait::PredationProbabilityWeightTrait(std::vector<IndividualLevelTrait*>& individualLevelTraits, const PredationProbabilityWeightType type, const json& config, const vector<json>& individualLevelTraitsOrder)
 	: DecisionsTrait(
-		individualLevelTraits, config, individualLevelTraitsOrder, getParentTraitStr() + "$" + EnumClass<PredationProbabilityWeightType>::to_string(type), 
+		individualLevelTraits, config, individualLevelTraitsOrder, getParentTraitStr() + "$" + fmt::to_string(type), 
 		getFileName(),
 		createTemperatureSection(
-			individualLevelTraits, config, individualLevelTraitsOrder, getParentTraitStr() + "$" + EnumClass<PredationProbabilityWeightType>::to_string(type), 
+			individualLevelTraits, config, individualLevelTraitsOrder, getParentTraitStr() + "$" + fmt::to_string(type), 
 			getFileName()
 		)
 	  )

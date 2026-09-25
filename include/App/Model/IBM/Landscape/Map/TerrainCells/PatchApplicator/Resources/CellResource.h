@@ -106,10 +106,9 @@ public:
      * @param fullCoverage Whether to consider the full cell coverage.
      * @param sourcePosition Position of the consumer.
      * @param radius Radius around the source position.
-     * @param radiusArea Optional area for partial coverage calculations.
      * @return Amount of dry mass available.
      */
-	DryMass calculateDryMassAvailable(const bool fullCoverage, const PointContinuous* const sourcePosition, const PreciseDouble &radius, const RingModel& radiusArea) const;
+	DryMass calculateDryMassAvailable(const bool fullCoverage, const PointContinuous* const sourcePosition, const PreciseDouble &radius) const;
 
 	/// Deserialize resource sources applied to this cell.
 	void deserializeCellResource(std::vector<std::pair<size_t, ResourceSource*>>& appliedResource);
@@ -122,7 +121,7 @@ public:
      * @param radius Radius around the source position.
      * @param competitionAmongResourceSpecies Whether to consider competition with other resources.
      */
-	void substractBiomass(const DryMass& dryMassToBeSubstracted, const PointContinuous &sourcePosition, const PreciseDouble &radius, const bool competitionAmongResourceSpecies);
+	void substractBiomass(const DryMass& dryMassToBeSubstracted, bool fullCoverage, const PointContinuous &sourcePosition, const PreciseDouble &radius, const bool competitionAmongResourceSpecies);
 
 	/**
      * @brief Subtract biomass with optional full coverage consideration.
@@ -131,10 +130,9 @@ public:
      * @param fullCoverage Whether to consider full cell coverage.
      * @param sourcePosition Position of the consumer.
      * @param radius Radius around the source position.
-     * @param radiusArea Optional area for partial coverage.
      * @param competitionAmongResourceSpecies Whether to consider competition with other resources.
      */
-	void substractBiomass(const DryMass& dryMassToBeSubstracted, const bool fullCoverage, const PointContinuous &sourcePosition, const PreciseDouble &radius, const RingModel& radiusArea, const bool competitionAmongResourceSpecies);
+	void substractBiomassDown(const DryMass& dryMassToBeSubstracted, const bool fullCoverage, const PointContinuous &sourcePosition, const PreciseDouble &radius, const bool competitionAmongResourceSpecies);
 
 	/**
      * @brief Serialization method for persistence.

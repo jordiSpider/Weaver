@@ -1,20 +1,12 @@
 #include "App/Model/IBM/Landscape/LivingBeings/Animals/Genetics/Genetics.h"
 
 
+#include <fmt/compile.h>
+#include <fmt/format.h>
+
+
 using namespace std;
 
-
-
-
-
-
-void GeneticsDTO::formatToBuffer(std::string& buffer) const
-{
-	for (uint16_t i = 0; i < numTraits; ++i) 
-	{
-		traits[i].formatToBuffer(buffer);
-	}
-}
 
 
 
@@ -26,7 +18,7 @@ Genetics::Genetics()
 
 }
 
-Genetics::Genetics(AnimalSpeciesGenetics* speciesGenetics, const Genome* const initialGenome, const Temperature& temperature, const TimeStep actualTimeStep, const PreciseDouble &coefficientForMassAforMature, const PreciseDouble &scaleForMassBforMature, const Temperature& tempFromLab)
+Genetics::Genetics(AnimalSpeciesGenetics* speciesGenetics, const Genome* const initialGenome, const Temperature& temperature, const PreciseDouble &coefficientForMassAforMature, const PreciseDouble &scaleForMassBforMature, const Temperature& tempFromLab)
 	: speciesGenetics(speciesGenetics)
 {
 	if(initialGenome == nullptr) {
@@ -43,17 +35,17 @@ Genetics::Genetics(AnimalSpeciesGenetics* speciesGenetics, const Genome* const i
 		genome.initFromOther(*initialGenome, speciesGenetics->getRandomlyCreatedPositionsForChromosomes());
 	}
 
-	initTraits(temperature, actualTimeStep, coefficientForMassAforMature, scaleForMassBforMature, tempFromLab);
+	initTraits(temperature, coefficientForMassAforMature, scaleForMassBforMature, tempFromLab);
 }
 
-Genetics::Genetics(AnimalSpeciesGenetics* speciesGenetics, Gamete* const firstParentGamete, Gamete* const secondParentGamete, const Temperature& temperature, const TimeStep actualTimeStep, const PreciseDouble &coefficientForMassAforMature, const PreciseDouble &scaleForMassBforMature, const Temperature& tempFromLab)
+Genetics::Genetics(AnimalSpeciesGenetics* speciesGenetics, Gamete* const firstParentGamete, Gamete* const secondParentGamete, const Temperature& temperature, const PreciseDouble &coefficientForMassAforMature, const PreciseDouble &scaleForMassBforMature, const Temperature& tempFromLab)
 	: speciesGenetics(speciesGenetics),
 	  genome(
 		firstParentGamete, secondParentGamete, speciesGenetics->getRandomlyCreatedPositionsForChromosomes(), 
 	  	speciesGenetics->getNumberOfLociPerChromosome(), speciesGenetics->getNumberOfChiasmasPerChromosome()
 	  )
 {
-	initTraits(temperature, actualTimeStep, coefficientForMassAforMature, scaleForMassBforMature, tempFromLab);
+	initTraits(temperature, coefficientForMassAforMature, scaleForMassBforMature, tempFromLab);
 }
 
 Genetics::~Genetics()
@@ -62,7 +54,7 @@ Genetics::~Genetics()
 }
 
 
-void Genetics::initTraits(const Temperature& temperature, const TimeStep actualTimeStep, const PreciseDouble &coefficientForMassAforMature, const PreciseDouble &scaleForMassBforMature, const Temperature& tempFromLab)
+void Genetics::initTraits(const Temperature& temperature, const PreciseDouble &coefficientForMassAforMature, const PreciseDouble &scaleForMassBforMature, const Temperature& tempFromLab)
 {
 	uint16_t numTraits = 0u;
 
@@ -77,16 +69,11 @@ void Genetics::initTraits(const Temperature& temperature, const TimeStep actualT
 			allIndividualTraits[order].emplace_back(
 				trait, getGenome(), speciesGenetics->getTraitsPerModule(), speciesGenetics->getNumberOfLociPerTrait(), 
 				speciesGenetics->getRhoPerModuleVector(), speciesGenetics->getRhoRangePerModuleVector(), temperature,
-				actualTimeStep, coefficientForMassAforMature, scaleForMassBforMature, tempFromLab
+				coefficientForMassAforMature, scaleForMassBforMature, tempFromLab
 			);
 		}
 
-		numTraits += speciesGenetics->getAllTraits()[order].size();
-	}
-
-	if(numTraits >= MAX_TRAITS)
-	{
-		throwLineInfoException("Number of traits exceeds MAX_TRAITS");
+		numTraits += static_cast<uint16_t>(speciesGenetics->getAllTraits()[order].size());
 	}
 }
 
@@ -113,26 +100,23 @@ Genome& Genetics::getMutableGenome()
 	return genome; 
 }
 
-void Genetics::flatten(GeneticsDTO& dto) const noexcept
+void Genetics::formatToBufferDirect(fmt::memory_buffer& buf) const noexcept
 {
-	dto.numTraits = 0u;
+	const auto executionOrders = EnumClass<Trait::ExecutionOrder>::getEnumValues();
 
-	for(const Trait::ExecutionOrder order : EnumClass<Trait::ExecutionOrder>::getEnumValues())
+	for (const Trait::ExecutionOrder order : executionOrders)
 	{
-		for(size_t i = 0; i < allIndividualTraits[order].size(); i++)
+		const std::vector<IndividualTrait>& traitsByOrder = allIndividualTraits[order];
+		for (const IndividualTrait& trait : traitsByOrder)
 		{
-			allIndividualTraits[order][i].flatten(dto.traits[dto.numTraits]);
-
-			dto.numTraits++;
+			trait.formatTraitDirect(buf);
 		}
 	}
 }
 
-string Genetics::printTraits() const
+void Genetics::printTraits(fmt::memory_buffer& traitsText) const
 {
 	bool firstPrint = true;
-
-	ostringstream content;
 
 	for(size_t order = 0; order < EnumClass<Trait::ExecutionOrder>::size(); order++)
 	{
@@ -142,19 +126,21 @@ string Genetics::printTraits() const
 			{
 				if(firstPrint)
 				{
-					content << allIndividualTraits[EnumClass<Trait::ExecutionOrder>::getEnumValues()[order]][i].getConstitutiveValue();
+					fmt::format_to(fmt::appender(traitsText), FMT_COMPILE("{}"),
+						allIndividualTraits[EnumClass<Trait::ExecutionOrder>::getEnumValues()[order]][i].getConstitutiveValue()
+					);
 
 					firstPrint = false;
 				}
 				else
 				{
-					content << "\t" << allIndividualTraits[EnumClass<Trait::ExecutionOrder>::getEnumValues()[order]][i].getConstitutiveValue();
+					fmt::format_to(fmt::appender(traitsText), FMT_COMPILE("\t{}"),
+						allIndividualTraits[EnumClass<Trait::ExecutionOrder>::getEnumValues()[order]][i].getConstitutiveValue()
+					);
 				}
 			}
 		}
 	}
-
-	return content.str();
 }
 
 void Genetics::deleteHomologousCorrelosomes() 

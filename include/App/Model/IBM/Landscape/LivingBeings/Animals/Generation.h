@@ -19,6 +19,8 @@
 #include <boost/archive/binary_iarchive.hpp>
 #include <boost/archive/binary_oarchive.hpp>
 
+#include <fmt/format.h>
+
 
 /**
  * @class Generation
@@ -77,27 +79,6 @@ public:
 	operator size_t() const;
 
 	/**
-     * @brief Conversion operator to string.
-     * @return The generation value as a string.
-     */
-	explicit operator std::string() const;
-
-	/**
-     * @brief Output stream operator.
-     * @param os The output stream.
-     * @param gen The Generation object to output.
-     * @return Reference to the output stream.
-     */
-	friend std::ostream& operator<<(std::ostream& os, const Generation& gen);
-
-     friend std::string format_as(const Generation& gen) {
-          if (gen.set) {
-               return std::to_string(gen.value);
-          }
-          return "-1";
-     }
-
-	/**
       * @brief Serializes the object for persistence.
       *
       * @tparam Archive Serialization archive type.
@@ -109,7 +90,20 @@ public:
 
 private:
 	unsigned int value; /**< The numeric value of the generation */
-    bool set;           /**< Flag indicating whether the value has been set */
 };
+
+
+namespace fmt {
+    template <>
+    struct formatter<Generation> : formatter<unsigned int> {
+        // Heredamos la lógica de parseo de especificaciones de double (ej. {:.6f})
+        template <typename FormatContext>
+        auto format(const Generation& gen, FormatContext& ctx) const {
+            // Pasamos el double primitivo puro directamente al motor máquina de fmt
+            return formatter<unsigned int>::format(gen.getValue(), ctx);
+        }
+    };
+}
+
 
 #endif /* GENERATION_H_ */

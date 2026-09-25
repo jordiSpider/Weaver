@@ -30,7 +30,7 @@ SpatialTreeAnimal::SpatialTreeAnimal(const Instar &instar, AnimalSpecies* const 
 
 
 SpatialTreeAnimal::SpatialTreeAnimal(Gamete* const firstParentGamete, Gamete* const secondParentGamete, TerrainCell* parentTerrainCell, const PreciseDouble& factorEggMassFromMom, const Generation& g_numb_prt_female,
-		const Generation& g_numb_prt_male, EdibleID ID_prt_female, EdibleID ID_prt_male, AnimalSpecies* const mySpecies, Gender genderValue, const TimeStep actualTimeStep, const PreciseDouble& timeStepsPerDay)
+		const Generation& g_numb_prt_male, id_type ID_prt_female, id_type ID_prt_male, AnimalSpecies* const mySpecies, Gender genderValue, const TimeStep actualTimeStep, const PreciseDouble& timeStepsPerDay)
 	: AnimalNonStatistical(firstParentGamete, secondParentGamete, parentTerrainCell, factorEggMassFromMom, g_numb_prt_female, g_numb_prt_male, ID_prt_female, ID_prt_male, mySpecies, genderValue, actualTimeStep, timeStepsPerDay)
 {
 	
@@ -43,12 +43,12 @@ SpatialTreeAnimal::~SpatialTreeAnimal()
 }
 
 AnimalNonStatistical* SpatialTreeAnimal::createOffspring(Gamete* const firstParentGamete, Gamete* const secondParentGamete, TerrainCell* parentTerrainCell, const PreciseDouble& factorEggMassFromMom, const Generation& g_numb_prt_female,
-			const Generation& g_numb_prt_male, EdibleID ID_prt_female, EdibleID ID_prt_male, AnimalSpecies* const parentSpecies, Gender genderValue, const TimeStep actualTimeStep, const PreciseDouble& timeStepsPerDay)
+			const Generation& g_numb_prt_male, id_type ID_prt_female, id_type ID_prt_male, AnimalSpecies* const parentSpecies, Gender genderValue, const TimeStep actualTimeStep, const PreciseDouble& timeStepsPerDay)
 {
     return new SpatialTreeAnimal(firstParentGamete, secondParentGamete, parentTerrainCell, factorEggMassFromMom, g_numb_prt_female, g_numb_prt_male, ID_prt_female, ID_prt_male, parentSpecies, genderValue, actualTimeStep, timeStepsPerDay);
 }
 
-bool SpatialTreeAnimal::searchTargetToTravelTo(const PreciseDouble &scopeArea)
+bool SpatialTreeAnimal::searchTargetToTravelTo(const PreciseDouble &scopeArea, CustomIndexedVector<Instar, PreciseDouble>& maximumPatchEdibilityValueGlobal, CustomIndexedVector<Instar, PreciseDouble>& maximumPatchPredationRiskGlobal, CustomIndexedVector<Instar, PreciseDouble>& maximumPatchConspecificBiomassGlobal)
 {
     bool withoutDestinations = false;
     PointContinuous lastDestination = getPosition();
@@ -60,9 +60,13 @@ bool SpatialTreeAnimal::searchTargetToTravelTo(const PreciseDouble &scopeArea)
 
     bool searchNeighborsWithFemales = (getGender() == Gender::MALE && getGrowthBuildingBlock().isMature());
 
+    bool searchNeighborsWithMales = (getGender() == Gender::FEMALE && getGrowthBuildingBlock().isMature() && !isMated());
+
     vector<CellValue> bestEvaluations;
 
-    getMutableTerrainCell()->getNeighboursCellsOnRadius(bestEvaluations, getPosition(), scopeArea, searchDepth, searchNeighborsWithFemales, this);
+    if (scopeArea > 0.0) {
+        getMutableTerrainCell()->getNeighboursCellsOnRadius(bestEvaluations, getPosition(), scopeArea, searchDepth, searchNeighborsWithFemales, searchNeighborsWithMales, this, maximumPatchEdibilityValueGlobal, maximumPatchPredationRiskGlobal, maximumPatchConspecificBiomassGlobal);
+    }
 
     if(bestEvaluations.empty())
     {
@@ -144,19 +148,17 @@ bool SpatialTreeAnimal::searchTargetToTravelTo(const PreciseDouble &scopeArea)
 }
 
 void SpatialTreeAnimal::move(Landscape* const landscape, const TimeStep numberOfTimeSteps, const PreciseDouble& timeStepsPerDay, 
-        const bool saveMovements, std::vector<MovementDTO>& movements, const bool saveActivity, 
-        std::vector<ActivityDTO>& activities)
+        const bool saveMovements, fmt::memory_buffer& movementsText, const bool saveActivity, 
+        fmt::memory_buffer& activitiesText)
 {
     removeCurrentPrey();
 
-    MovementDTO movementDTO;
-
     if(saveMovements)
     {
-        movementDTO.timeStep = numberOfTimeSteps.getValue();
-        movementDTO.id = getId();
-        movementDTO.startPointX = getPositionAxisValue(getPosition(), 0).getValue();
-        movementDTO.startPointY = getPositionAxisValue(getPosition(), 1).getValue();
+        fmt::format_to(fmt::appender(movementsText), "{}\t{}\t{}\t{}",
+            numberOfTimeSteps.getValue(), getId(), 
+            getPositionAxisValue(getPosition(), 0).getValue(), getPositionAxisValue(getPosition(), 1).getValue()
+        );
     }
 
     Day initialDay = Day(numberOfTimeSteps, timeStepsPerDay) + Day((distanceTravelled / getSearchAreaRadius()) * timeStepsPerDay);
@@ -185,26 +187,20 @@ void SpatialTreeAnimal::move(Landscape* const landscape, const TimeStep numberOf
 
     if(saveMovements)
     {
-        movementDTO.endPointX = getPositionAxisValue(getPosition(), 0).getValue();
-        movementDTO.endPointY = getPositionAxisValue(getPosition(), 1).getValue();
-
-        movements.push_back(movementDTO);
+        fmt::format_to(fmt::appender(movementsText), "\t{}\t{}\t{}\t{}\t{}\n",
+            getPositionAxisValue(getPosition(), 0).getValue(), getPositionAxisValue(getPosition(), 1).getValue(),
+			getDistanceTravelled(), getSearchAreaRadius(), isExhausted()
+        );
     }
 
     Day finalDay = Day(numberOfTimeSteps, timeStepsPerDay) + Day((distanceTravelled / getSearchAreaRadius()) * timeStepsPerDay);
 
     if(saveActivity)
     {
-        ActivityDTO activityDTO;
-
-        activityDTO.id = getId().getValue();
-        activityDTO.speciesNameId = getSpecies()->getScientificNameId();
-        activityDTO.activityType = ActivityType::MOVING;
-        activityDTO.initialDay = initialDay.getValue().getValue();
-        activityDTO.finalDay = finalDay.getValue().getValue();
-        activityDTO.activityDuration = (finalDay-initialDay).getValue().getValue();
-
-        activities.push_back(activityDTO);
+        fmt::format_to(fmt::appender(activitiesText), "{}\t{}\t{}\t{}\t{}\t{}\n",
+            getId(), getSpecies()->getScientificName(), EnumClass<ActivityType>::to_string(ActivityType::MOVING),
+            initialDay.getValue().getValue(), finalDay.getValue().getValue(), (finalDay - initialDay).getValue().getValue()
+        );
     }
 
 

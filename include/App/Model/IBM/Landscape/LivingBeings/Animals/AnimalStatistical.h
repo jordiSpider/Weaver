@@ -122,7 +122,7 @@ public:
      * @param predatorId ID of the predator.
      * @param timeStepsPerDay Number of time steps per day.
      */
-    void setNewLifeStage(Landscape* const landscape, const LifeStage newLifeStage, const TimeStep numberOfTimeSteps, EdibleID predatorId, const PreciseDouble& timeStepsPerDay);
+    void setNewLifeStage(Landscape* const landscape, const LifeStage newLifeStage, const TimeStep numberOfTimeSteps, id_type predatorId, const PreciseDouble& timeStepsPerDay);
     
     /**
      * @brief Get the remaining voracity of the animal.

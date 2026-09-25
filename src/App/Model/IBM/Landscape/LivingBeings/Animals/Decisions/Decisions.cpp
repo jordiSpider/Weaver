@@ -53,12 +53,6 @@ void Decisions::setOwner(AnimalNonStatistical* newOwner) {
 }
 
 
-PreciseDouble Decisions::calculatePredationProbability(const AnimalNonStatistical& prey)
-{
-	return calculatePredationProbability(prey, prey.getGrowthBuildingBlock().getCurrentTotalDryMass());
-}
-
-
 PreciseDouble Decisions::calculatePredationProbability(const Edible& prey, const DryMass& preyDryMass)
 {
 	return animalSpeciesDecisions->calculatePredationProbability(*owner, prey, preyDryMass);
@@ -67,7 +61,7 @@ PreciseDouble Decisions::calculatePredationProbability(const Edible& prey, const
 
 PreciseDouble Decisions::calculatePredationRisk(AnimalNonStatistical& predator) const
 {
-	return predator.calculatePredationProbability(*owner);
+	return predator.calculatePredationProbability(*owner, owner->getGrowthBuildingBlock().getCurrentTotalDryMass());
 }
 
 
@@ -103,6 +97,12 @@ DryMass Decisions::calculateConspecificBiomass(const AnimalNonStatistical& other
 
 void Decisions::setInitialPreferences(const PreciseDouble& timeStepsPerDay)
 {
+	resetMaximumPatchValuesIndividual();
+
+
+	experienceBuffer.clear();
+	preferences.clear();
+
 	TimeStep memoryDepth(Day(owner->getGenetics().getBaseIndividualTraits(BaseTraitType::memoryDepth).getPhenotypicValue()), timeStepsPerDay);
 
 	const CustomIndexedVector<Species::ID, CustomIndexedVector<Instar, OntogeneticLink>>* const ontogeneticLinks = &owner->getSpecies()->getOntogeneticLinksPerInstar(owner->getGrowthBuildingBlock().getInstar());
@@ -133,10 +133,7 @@ void Decisions::updatePreferences()
 	{
 		for(size_t preyInstar = 0; preyInstar < preferences[speciesId].size(); preyInstar++)
 		{
-			if(
-				((*previousInstarLinks)[speciesId][preyInstar].getPreference() == 0.0 || (*currentInstarLinks)[speciesId][preyInstar].getPreference() == 0.0) &&
-				((*previousInstarLinks)[speciesId][preyInstar].getPreference() != (*currentInstarLinks)[speciesId][preyInstar].getPreference())
-			)
+			if((*previousInstarLinks)[speciesId][preyInstar].getPreference() != (*currentInstarLinks)[speciesId][preyInstar].getPreference())
 			{
 				experienceBuffer[speciesId][preyInstar].clear();
 				preferences[speciesId][preyInstar] = (*currentInstarLinks)[speciesId][preyInstar].getPreference();
@@ -175,15 +172,6 @@ void Decisions::updateVariablesAssociatedWithInstar()
 	resetMaximumPatchValuesIndividual();
 
 	updatePreferences();
-}
-
-
-void Decisions::addSpecies(const unsigned int numberOfInstars, const PreciseDouble& timeStepsPerDay)
-{
-	TimeStep memoryDepth(Day(owner->getGenetics().getBaseIndividualTraits(BaseTraitType::memoryDepth).getPhenotypicValue()), timeStepsPerDay);
-
-	experienceBuffer.emplace_back(numberOfInstars, RingBuffer<PreciseDouble>(memoryDepth.getValue(), 0.0));
-	preferences.emplace_back(numberOfInstars, 0.0);
 }
 
 
@@ -312,22 +300,16 @@ PreciseDouble Decisions::getMaximumPatchConspecificBiomass() const
 void Decisions::setMaximumPatchEdibilityValueIndividual(const PreciseDouble& newValue)
 {
 	maximumPatchEdibilityValueIndividual = fmax(maximumPatchEdibilityValueIndividual, newValue);
-
-	animalSpeciesDecisions->setMaximumPatchEdibilityValueGlobal(owner->getGrowthBuildingBlock().getInstar(), getMaximumPatchEdibilityValueIndividual());
 }
 
 void Decisions::setMaximumPatchPredationRiskIndividual(const PreciseDouble& newValue)
 {
 	maximumPatchPredationRiskIndividual = fmax(maximumPatchPredationRiskIndividual, newValue);
-
-	animalSpeciesDecisions->setMaximumPatchPredationRiskGlobal(owner->getGrowthBuildingBlock().getInstar(), getMaximumPatchPredationRiskIndividual());
 }
 
 void Decisions::setMaximumPatchConspecificBiomassIndividual(const PreciseDouble& newValue)
 {
 	maximumPatchConspecificBiomassIndividual = fmax(maximumPatchConspecificBiomassIndividual, newValue);
-
-	animalSpeciesDecisions->setMaximumPatchConspecificBiomassGlobal(owner->getGrowthBuildingBlock().getInstar(), getMaximumPatchConspecificBiomassIndividual());
 }
 
 void Decisions::resetMaximumPatchValuesIndividual()

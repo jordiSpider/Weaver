@@ -7,13 +7,21 @@
     },
     "configurePresets": [
         {
-            "name": "common",
+            "name": "common-configure-options",
             "hidden": true,
             "description": "Base preset defining common cache variables shared by all builds.",
             "binaryDir": "$env{HOST_BUILD_DIR}/${presetName}",
             "environment": {
                 "HOST_BUILD_DIR": "${sourceDir}/build/${hostSystemName}"
-            },
+            }
+        },
+        {
+            "name": "vcpkg-base",
+            "hidden": true,
+            "inherits": [
+                "common-configure-options"
+            ],
+            "description": "Base configuration for vcpkg and global C++ settings shared by app and tests.",
             "cacheVariables": {
                 "CMAKE_CXX_STANDARD": "20",
                 "CMAKE_CXX_STANDARD_REQUIRED": "ON",
@@ -22,16 +30,21 @@
                 "CMAKE_RUNTIME_OUTPUT_DIRECTORY": "${sourceDir}/bin/${hostSystemName}/$<CONFIG>",
                 "CMAKE_LIBRARY_OUTPUT_DIRECTORY": "${sourceDir}/lib/${hostSystemName}/$<CONFIG>",
                 "CMAKE_ARCHIVE_OUTPUT_DIRECTORY": "${sourceDir}/lib/${hostSystemName}/$<CONFIG>",
-                "INCLUDE_DIR_NAME": "include",
-                "REPO_URL": "https://github.com/jordiSpider/Weaver",
-                "AUTHOR": "Jordi Moya Laraño"
+                "X_VCPKG_APPLOCAL_DEPS_INSTALL": "ON",
+                "CMAKE_TOOLCHAIN_FILE": "${sourceDir}/external/vcpkg/scripts/buildsystems/vcpkg.cmake",
+                "VCPKG_INSTALL_OPTIONS": "--clean-after-build",
+                "VCPKG_INSTALLED_DIR": "$env{HOST_BUILD_DIR}/vcpkg_installed"
+            },
+            "environment": {
+                "VCPKG_DEFAULT_BINARY_CACHE": "$env{HOST_BUILD_DIR}/vcpkg_cache",
+                "VCPKG_CXX_FLAGS": "/std:c++20"
             }
         },
         {
-            "name": "executables",
+            "name": "app",
             "hidden": true,
-            "inherits": [ "common" ],
-            "description": "Defines settings for building project executables.",
+            "inherits": [ "vcpkg-base" ],
+            "description": "Defines settings for building project apps.",
             "cacheVariables": {
                 "BUILD_APP": "ON",
                 "SCHEMA_VERSION": "2026.08.05",
@@ -39,19 +52,15 @@
                 "SRC_DIR_NAME": "src",
                 "EXECUTABLE_DIR_NAME": "bin",
                 "CONFIG_DIR_NAME": "config",
-                "X_VCPKG_APPLOCAL_DEPS_INSTALL": "ON",
-                "CMAKE_TOOLCHAIN_FILE": "${sourceDir}/external/vcpkg/scripts/buildsystems/vcpkg.cmake",
-                "VCPKG_INSTALL_OPTIONS": "--clean-after-build",
-                "VCPKG_INSTALLED_DIR": "$env{HOST_BUILD_DIR}/vcpkg_installed"
-            },
-            "environment": {
-                "VCPKG_DEFAULT_BINARY_CACHE": "$env{HOST_BUILD_DIR}/vcpkg_cache"
+                "AUTHOR": "Jordi Moya Laraño",
+                "CONTACT_EMAIL": "jordi@eeza.csic.es",
+                "REPO_URL": "https://github.com/jordiSpider/Weaver"
             }
         },
         {
             "name": "windows",
             "hidden": true,
-            "inherits": [ "executables" ],
+            "inherits": [ "common-configure-options" ],
             "description": "Windows-specific preset using Visual Studio 2022 and static vcpkg triplets.",
             "condition": {
                 "type": "equals",
@@ -62,6 +71,7 @@
             "cacheVariables": {
                 "VCPKG_TARGET_TRIPLET": "x64-windows-static",
                 "VCPKG_HOST_TRIPLET": "x64-windows-static",
+                "CMAKE_MSVC_RUNTIME_LIBRARY": "MultiThreaded$<$<CONFIG:Debug>:Debug>",
                 "CPACK_NSIS_MUI_ICON": "${sourceDir}/icons/icon.ico",
                 "CPACK_NSIS_MUI_UNIICON": "${sourceDir}/icons/uninstall_icon.ico"
             }
@@ -69,7 +79,7 @@
         {
             "name": "linux",
             "hidden": true,
-            "inherits": [ "executables" ],
+            "inherits": [ "common-configure-options" ],
             "description": "Linux-specific preset using Makefiles and static vcpkg triplets.",
             "condition": {
                 "type": "equals",
@@ -87,7 +97,7 @@
         {
             "name": "gui",
             "hidden": true,
-            "inherits": [ "executables" ],
+            "inherits": [ "common-configure-options" ],
             "description": "Enables GUI mode in the project.",
             "condition": {
                 "type": "equals",
@@ -101,18 +111,17 @@
         {
             "name": "cli",
             "hidden": true,
-            "inherits": [ "executables" ],
+            "inherits": [ "common-configure-options" ],
             "description": "Disables GUI mode in the project.",
             "cacheVariables": {}
         },
         {
             "name": "debug",
             "hidden": true,
-            "inherits": [ "executables" ],
+            "inherits": [ "common-configure-options" ],
             "description": "Preset for Debug builds (includes debug symbols).",
             "cacheVariables": {
                 "CMAKE_BUILD_TYPE": "Debug",
-                "BUILD_SHARED_LIBS": "ON",
                 "CMAKE_POSITION_INDEPENDENT_CODE": "ON"
             }
         },
@@ -128,7 +137,7 @@
         {
             "name": "release",
             "hidden": true,
-            "inherits": [ "executables" ],
+            "inherits": [ "common-configure-options" ],
             "description": "Preset for Release builds (optimized for performance).",
             "cacheVariables": {
                 "CMAKE_BUILD_TYPE": "Release",
@@ -139,105 +148,106 @@
         {
             "name": "relWithDebInfo",
             "hidden": true,
-            "inherits": [ "executables" ],
+            "inherits": [ "common-configure-options" ],
             "description": "No description",
             "cacheVariables": {
                 "CMAKE_BUILD_TYPE": "RelWithDebInfo"
             }
         },
         {
-            "name": "profiler",
-            "hidden": true,
-            "inherits": [ "relWithDebInfo" ],
-            "description": "No description",
-            "cacheVariables": {
-                "PROFILER": "ON"
-            }
+            "name": "windows-full-suite-debug",
+            "inherits": [ "app", "windows", "gui", "debug" ],
+            "description": "Windows GUI & CLI Debug configuration."
         },
         {
-            "name": "windows-gui-debug",
-            "inherits": [ "windows", "gui", "debug" ],
-            "description": "Windows GUI Debug configuration."
+            "name": "windows-full-suite-release",
+            "inherits": [ "app", "windows", "gui", "release" ],
+            "description": "Windows GUI & CLI Release configuration."
         },
         {
-            "name": "windows-gui-release",
-            "inherits": [ "windows", "gui", "release" ],
-            "description": "Windows GUI Release configuration."
+            "name": "windows-full-suite-relWithDebInfo",
+            "inherits": [ "app", "windows", "gui", "relWithDebInfo" ],
+            "description": "Windows GUI & CLI RelWithDebInfo configuration."
         },
         {
-            "name": "windows-gui-relWithDebInfo",
-            "inherits": [ "windows", "gui", "relWithDebInfo" ],
-            "description": "Windows GUI RelWithDebInfo configuration."
-        },
-        {
-            "name": "windows-cli-debug",
-            "inherits": [ "windows", "cli", "debug" ],
+            "name": "windows-cli-only-debug",
+            "inherits": [ "app", "windows", "cli", "debug" ],
             "description": "Windows CLI Debug configuration."
         },
         {
-            "name": "windows-cli-release",
-            "inherits": [ "windows", "cli", "release" ],
+            "name": "windows-cli-only-release",
+            "inherits": [ "app", "windows", "cli", "release" ],
             "description": "Windows CLI Release configuration."
         },
         {
-            "name": "windows-cli-relWithDebInfo",
-            "inherits": [ "windows", "cli", "relWithDebInfo" ],
+            "name": "windows-cli-only-relWithDebInfo",
+            "inherits": [ "app", "windows", "cli", "relWithDebInfo" ],
             "description": "Windows CLI RelWithDebInfo configuration."
         },
         {
-            "name": "linux-gui-debug",
-            "inherits": [ "linux", "gui", "debug" ],
-            "description": "Linux GUI Debug configuration."
+            "name": "linux-full-suite-debug",
+            "inherits": [ "app", "linux", "gui", "debug" ],
+            "description": "Linux GUI & CLI Debug configuration."
         },
         {
-            "name": "linux-gui-debug-asan",
-            "inherits": [ "linux", "gui", "debug-asan" ],
-            "description": "Linux GUI Debug configuration with AddressSanitizer enabled."
+            "name": "linux-full-suite-debug-asan",
+            "inherits": [ "app", "linux", "gui", "debug-asan" ],
+            "description": "Linux GUI & CLI Debug configuration with AddressSanitizer enabled."
         },
         {
-            "name": "linux-gui-release",
-            "inherits": [ "linux", "gui", "release" ],
-            "description": "Linux GUI Release configuration."
+            "name": "linux-full-suite-release",
+            "inherits": [ "app", "linux", "gui", "release" ],
+            "description": "Linux GUI & CLI Release configuration."
         },
         {
-            "name": "linux-gui-relWithDebInfo",
-            "inherits": [ "linux", "gui", "relWithDebInfo" ],
-            "description": "Linux GUI RelWithDebInfo configuration."
+            "name": "linux-full-suite-relWithDebInfo",
+            "inherits": [ "app", "linux", "gui", "relWithDebInfo" ],
+            "description": "Linux GUI & CLI RelWithDebInfo configuration."
         },
         {
-            "name": "linux-gui-profiler",
-            "inherits": [ "linux", "gui", "profiler" ],
-            "description": "Linux GUI Profiler configuration."
-        },
-        {
-            "name": "linux-cli-debug",
-            "inherits": [ "linux", "cli", "debug" ],
+            "name": "linux-cli-only-debug",
+            "inherits": [ "app", "linux", "cli", "debug" ],
             "description": "Linux CLI Debug configuration."
         },
         {
-            "name": "linux-cli-debug-asan",
-            "inherits": [ "linux", "cli", "debug-asan" ],
+            "name": "linux-cli-only-debug-asan",
+            "inherits": [ "app", "linux", "cli", "debug-asan" ],
             "description": "Linux CLI Debug configuration with AddressSanitizer enabled."
         },
         {
-            "name": "linux-cli-release",
-            "inherits": [ "linux", "cli", "release" ],
+            "name": "linux-cli-only-release",
+            "inherits": [ "app", "linux", "cli", "release" ],
             "description": "Linux CLI Release configuration."
         },
         {
-            "name": "linux-cli-relWithDebInfo",
-            "inherits": [ "linux", "cli", "relWithDebInfo" ],
+            "name": "linux-cli-only-relWithDebInfo",
+            "inherits": [ "app", "linux", "cli", "relWithDebInfo" ],
             "description": "Linux CLI RelWithDebInfo configuration."
         },
         {
-            "name": "linux-cli-profiler",
-            "inherits": [ "linux", "cli", "profiler" ],
-            "description": "Linux CLI Profiler configuration."
+            "name": "windows-cli-only-relWithDebInfo-profile-baseline",
+            "inherits": [ "app", "windows", "cli", "relWithDebInfo" ],
+            "description": "Windows CLI RelWithDebInfo profiling baseline with isolated binaries and symbols.",
+            "cacheVariables": {
+                "CMAKE_RUNTIME_OUTPUT_DIRECTORY": "${sourceDir}/bin/${hostSystemName}/$<CONFIG>/profiles/baseline",
+                "CMAKE_LIBRARY_OUTPUT_DIRECTORY": "${sourceDir}/lib/${hostSystemName}/$<CONFIG>/profiles/baseline",
+                "CMAKE_ARCHIVE_OUTPUT_DIRECTORY": "${sourceDir}/lib/${hostSystemName}/$<CONFIG>/profiles/baseline"
+            }
+        },
+        {
+            "name": "windows-cli-only-relWithDebInfo-profile-candidate",
+            "inherits": [ "app", "windows", "cli", "relWithDebInfo" ],
+            "description": "Windows CLI RelWithDebInfo profiling candidate with isolated binaries and symbols.",
+            "cacheVariables": {
+                "CMAKE_RUNTIME_OUTPUT_DIRECTORY": "${sourceDir}/bin/${hostSystemName}/$<CONFIG>/profiles/candidate",
+                "CMAKE_LIBRARY_OUTPUT_DIRECTORY": "${sourceDir}/lib/${hostSystemName}/$<CONFIG>/profiles/candidate",
+                "CMAKE_ARCHIVE_OUTPUT_DIRECTORY": "${sourceDir}/lib/${hostSystemName}/$<CONFIG>/profiles/candidate"
+            }
         },
         {
             "name": "docs",
             "hidden": true,
-            "inherits": [ "common" ],
+            "inherits": [ "common-configure-options" ],
             "description": "Base preset for building project documentation with Sphinx and Doxygen.",
             "cacheVariables": {
                 "BUILD_DOCS": "ON",
@@ -286,375 +296,510 @@
     ],
     "buildPresets": [
         {
-            "name": "common",
+            "name": "windows-common-build-options",
             "hidden": true,
-            "description": "Base build preset defining common settings shared by all builds.",
+            "description": "Base package for Windows builds",
             "configuration": "Release",
             "jobs": 8
         },
         {
-            "name": "windows-gui-debug",
-            "inherits": [ "common" ],
-            "configurePreset": "windows-gui-debug",
-            "description": "Build the Windows GUI Debug configuration.",
+            "name": "linux-common-build-options",
+            "hidden": true,
+            "description": "Base package for Linux builds",
+            "configuration": "Release",
+            "jobs": 0
+        },
+        {
+            "name": "windows-full-suite-debug",
+            "inherits": [ "windows-common-build-options" ],
+            "configurePreset": "windows-full-suite-debug",
+            "description": "Build the Windows GUI & CLI Debug configuration.",
             "configuration": "Debug"
         },
         {
-            "name": "windows-gui-release",
-            "inherits": [ "common" ],
-            "configurePreset": "windows-gui-release",
-            "description": "Build the Windows GUI Release configuration.",
+            "name": "windows-full-suite-release",
+            "inherits": [ "windows-common-build-options" ],
+            "configurePreset": "windows-full-suite-release",
+            "description": "Build the Windows GUI & CLI Release configuration.",
             "configuration": "Release"
         },
         {
-            "name": "windows-gui-relWithDebInfo",
-            "inherits": [ "common" ],
-            "configurePreset": "windows-gui-relWithDebInfo",
-            "description": "Build the Windows GUI RelWithDebInfo configuration.",
-            "configuration": "Release"
+            "name": "windows-full-suite-relWithDebInfo",
+            "inherits": [ "windows-common-build-options" ],
+            "configurePreset": "windows-full-suite-relWithDebInfo",
+            "description": "Build the Windows GUI & CLI RelWithDebInfo configuration.",
+            "configuration": "RelWithDebInfo"
         },
         {
-            "name": "windows-cli-debug",
-            "inherits": [ "common" ],
-            "configurePreset": "windows-cli-debug",
+            "name": "windows-cli-only-debug",
+            "inherits": [ "windows-common-build-options" ],
+            "configurePreset": "windows-cli-only-debug",
             "description": "Build the Windows CLI Debug configuration.",
             "configuration": "Debug"
         },
         {
-            "name": "windows-cli-release",
-            "inherits": [ "common" ],
-            "configurePreset": "windows-cli-release",
+            "name": "windows-cli-only-release",
+            "inherits": [ "windows-common-build-options" ],
+            "configurePreset": "windows-cli-only-release",
             "description": "Build the Windows CLI Release configuration.",
             "configuration": "Release"
         },
         {
-            "name": "windows-cli-relWithDebInfo",
-            "inherits": [ "common" ],
-            "configurePreset": "windows-cli-relWithDebInfo",
+            "name": "windows-cli-only-relWithDebInfo",
+            "inherits": [ "windows-common-build-options" ],
+            "configurePreset": "windows-cli-only-relWithDebInfo",
             "description": "Build the Windows CLI RelWithDebInfo configuration.",
-            "configuration": "Release"
+            "configuration": "RelWithDebInfo"
         },
         {
-            "name": "linux-gui-debug",
-            "inherits": [ "common" ],
-            "configurePreset": "linux-gui-debug",
-            "description": "Build the Linux GUI Debug configuration.",
+            "name": "windows-cli-only-relWithDebInfo-profile-baseline",
+            "inherits": [ "windows-common-build-options" ],
+            "configurePreset": "windows-cli-only-relWithDebInfo-profile-baseline",
+            "description": "Build the Windows CLI profiling baseline configuration.",
+            "configuration": "RelWithDebInfo"
+        },
+        {
+            "name": "windows-cli-only-relWithDebInfo-profile-candidate",
+            "inherits": [ "windows-common-build-options" ],
+            "configurePreset": "windows-cli-only-relWithDebInfo-profile-candidate",
+            "description": "Build the Windows CLI profiling candidate configuration.",
+            "configuration": "RelWithDebInfo"
+        },
+        {
+            "name": "linux-full-suite-debug",
+            "inherits": [ "linux-common-build-options" ],
+            "configurePreset": "linux-full-suite-debug",
+            "description": "Build the Linux GUI & CLI Debug configuration.",
             "configuration": "Debug"
         },
         {
-            "name": "linux-gui-debug-asan",
-            "inherits": [ "common" ],
-            "configurePreset": "linux-gui-debug-asan",
-            "description": "Build the Linux GUI Debug configuration with AddressSanitizer enabled.",
+            "name": "linux-full-suite-debug-asan",
+            "inherits": [ "linux-common-build-options" ],
+            "configurePreset": "linux-full-suite-debug-asan",
+            "description": "Build the Linux GUI & CLI Debug configuration with AddressSanitizer enabled.",
             "configuration": "Debug"
         },
         {
-            "name": "linux-gui-release",
-            "inherits": [ "common" ],
-            "configurePreset": "linux-gui-release",
-            "description": "Build the Linux GUI Release configuration.",
+            "name": "linux-full-suite-release",
+            "inherits": [ "linux-common-build-options" ],
+            "configurePreset": "linux-full-suite-release",
+            "description": "Build the Linux GUI & CLI Release configuration.",
             "configuration": "Release"
         },
         {
-            "name": "linux-gui-relWithDebInfo",
-            "inherits": [ "common" ],
-            "configurePreset": "linux-gui-relWithDebInfo",
-            "description": "Build the Linux GUI RelWithDebInfo configuration.",
-            "configuration": "Release"
+            "name": "linux-full-suite-relWithDebInfo",
+            "inherits": [ "linux-common-build-options" ],
+            "configurePreset": "linux-full-suite-relWithDebInfo",
+            "description": "Build the Linux GUI & CLI RelWithDebInfo configuration.",
+            "configuration": "RelWithDebInfo"
         },
         {
-            "name": "linux-gui-profiler",
-            "inherits": [ "common" ],
-            "configurePreset": "linux-gui-profiler",
-            "description": "Build the Linux GUI Profiler configuration.",
-            "configuration": "Release"
-        },
-        {
-            "name": "linux-cli-debug",
-            "inherits": [ "common" ],
-            "configurePreset": "linux-cli-debug",
+            "name": "linux-cli-only-debug",
+            "inherits": [ "linux-common-build-options" ],
+            "configurePreset": "linux-cli-only-debug",
             "description": "Build the Linux CLI Debug configuration.",
             "configuration": "Debug"
         },
         {
-            "name": "linux-cli-debug-asan",
-            "inherits": [ "common" ],
-            "configurePreset": "linux-cli-debug-asan",
+            "name": "linux-cli-only-debug-asan",
+            "inherits": [ "linux-common-build-options" ],
+            "configurePreset": "linux-cli-only-debug-asan",
             "description": "Build the Linux CLI Debug configuration with AddressSanitizer enabled.",
             "configuration": "Debug"
         },
         {
-            "name": "linux-cli-release",
-            "inherits": [ "common" ],
-            "configurePreset": "linux-cli-release",
+            "name": "linux-cli-only-release",
+            "inherits": [ "linux-common-build-options" ],
+            "configurePreset": "linux-cli-only-release",
             "description": "Build the Linux CLI Release configuration.",
             "configuration": "Release"
         },
         {
-            "name": "linux-cli-relWithDebInfo",
-            "inherits": [ "common" ],
-            "configurePreset": "linux-cli-relWithDebInfo",
+            "name": "linux-cli-only-relWithDebInfo",
+            "inherits": [ "linux-common-build-options" ],
+            "configurePreset": "linux-cli-only-relWithDebInfo",
             "description": "Build the Linux CLI RelWithDebInfo configuration.",
-            "configuration": "Release"
-        },
-        {
-            "name": "linux-cli-profiler",
-            "inherits": [ "common" ],
-            "configurePreset": "linux-cli-profiler",
-            "description": "Build the Linux CLI Profiler configuration.",
-            "configuration": "Release"
+            "configuration": "RelWithDebInfo"
         },
         {
             "name": "deploy-docs",
-            "inherits": [ "common" ],
             "configurePreset": "deploy-docs",
             "description": "Build and deploy project documentation.",
-            "configuration": "Release"
+            "configuration": "Release",
+            "jobs": 8
         },
         {
             "name": "build-docs-dev",
-            "inherits": [ "common" ],
             "configurePreset": "build-docs-dev",
             "description": "Build documentation in development mode.",
-            "configuration": "Release"
+            "configuration": "Release",
+            "jobs": 8
         },
         {
             "name": "update-docs",
-            "inherits": [ "common" ],
             "configurePreset": "update-docs",
             "description": "Update existing documentation deployment.",
-            "configuration": "Release"
+            "configuration": "Release",
+            "jobs": 8
         },
         {
             "name": "build-docs-locale",
-            "inherits": [ "common" ],
             "configurePreset": "build-docs-locale",
             "description": "Build locale files for documentation translations.",
-            "configuration": "Release"
+            "configuration": "Release",
+            "jobs": 8
+        }
+    ],
+    "packagePresets": [
+        {
+            "name": "common-package-options",
+            "hidden": true,
+            "description": "Base CPack settings specifying output destination directory.",
+            "variables": {
+                "CPACK_PACKAGE_DIRECTORY": "${sourceDir}/installer"
+            }
+        },
+        {
+            "name": "server",
+            "hidden": true,
+            "inherits": [ "common-package-options" ],
+            "description": "Abstract package configuration restricting content strictly to the Command Line Interface.",
+            "variables": {
+                "CPACK_COMPONENTS_ALL": "CLI"
+            }
+        },
+        {
+            "name": "desktop",
+            "hidden": true,
+            "inherits": [ "common-package-options" ],
+            "description": "Abstract package configuration bundling both CLI and GUI application components.",
+            "variables": {
+                "CPACK_COMPONENTS_ALL": "CLI;GUI"
+            }
+        },
+        {
+            "name": "windows-pack-server",
+            "displayName": "Windows Installer - CLI Only",
+            "inherits": [ "server" ],
+            "description": "Generate Windows installation packages containing only the server/CLI binaries.",
+            "configurePreset": "windows-cli-only-release"
+        },
+        {
+            "name": "windows-pack-desktop",
+            "displayName": "Windows Installer - GUI & CLI",
+            "inherits": [ "desktop" ],
+            "description": "Generate Windows installer containing full suite desktop application packages.",
+            "configurePreset": "windows-full-suite-release"
+        },
+        {
+            "name": "linux-pack-server",
+            "displayName": "Linux Installer - CLI Only",
+            "inherits": [ "server" ],
+            "description": "Generate Linux installation packages containing only the server/CLI binaries.",
+            "configurePreset": "linux-cli-only-release"
+        },
+        {
+            "name": "linux-pack-desktop",
+            "displayName": "Linux Installer - GUI & CLI",
+            "inherits": [ "desktop" ],
+            "description": "Generate Linux installer containing full suite desktop application packages.",
+            "configurePreset": "linux-full-suite-release"
         }
     ],
     "workflowPresets": [
         {
-            "name": "windows-cli-debug",
+            "name": "windows-cli-only-debug",
             "description": "Workflow to configure and build the Windows CLI Debug target.",
             "steps": [
                 {
                     "type": "configure",
-                    "name": "windows-cli-debug"
+                    "name": "windows-cli-only-debug"
                 },
                 {
                     "type": "build",
-                    "name": "windows-cli-debug"
+                    "name": "windows-cli-only-debug"
                 }
             ]
         },
         {
-            "name": "windows-cli-release",
+            "name": "windows-cli-only-release",
             "description": "Workflow to configure and build the Windows CLI Release target.",
             "steps": [
                 {
                     "type": "configure",
-                    "name": "windows-cli-release"
+                    "name": "windows-cli-only-release"
                 },
                 {
                     "type": "build",
-                    "name": "windows-cli-release"
+                    "name": "windows-cli-only-release"
                 }
             ]
         },
         {
-            "name": "windows-cli-relWithDebInfo",
+            "name": "windows-cli-only-relWithDebInfo",
             "description": "Workflow to configure and build the Windows CLI RelWithDebInfo target.",
             "steps": [
                 {
                     "type": "configure",
-                    "name": "windows-cli-relWithDebInfo"
+                    "name": "windows-cli-only-relWithDebInfo"
                 },
                 {
                     "type": "build",
-                    "name": "windows-cli-relWithDebInfo"
+                    "name": "windows-cli-only-relWithDebInfo"
                 }
             ]
         },
         {
-            "name": "windows-gui-debug",
-            "description": "Workflow to configure and build the Windows GUI Debug target.",
+            "name": "windows-cli-only-relWithDebInfo-profile-baseline",
+            "description": "Workflow to configure and build the Windows CLI profiling baseline target.",
             "steps": [
                 {
                     "type": "configure",
-                    "name": "windows-gui-debug"
+                    "name": "windows-cli-only-relWithDebInfo-profile-baseline"
                 },
                 {
                     "type": "build",
-                    "name": "windows-gui-debug"
+                    "name": "windows-cli-only-relWithDebInfo-profile-baseline"
                 }
             ]
         },
         {
-            "name": "windows-gui-release",
-            "description": "Workflow to configure and build the Windows GUI Release target.",
+            "name": "windows-cli-only-relWithDebInfo-profile-candidate",
+            "description": "Workflow to configure and build the Windows CLI profiling candidate target.",
             "steps": [
                 {
                     "type": "configure",
-                    "name": "windows-gui-release"
+                    "name": "windows-cli-only-relWithDebInfo-profile-candidate"
                 },
                 {
                     "type": "build",
-                    "name": "windows-gui-release"
+                    "name": "windows-cli-only-relWithDebInfo-profile-candidate"
                 }
             ]
         },
         {
-            "name": "windows-gui-relWithDebInfo",
-            "description": "Workflow to configure and build the Windows GUI RelWithDebInfo target.",
+            "name": "windows-full-suite-debug",
+            "description": "Workflow to configure and build the Windows GUI & CLI Debug target.",
             "steps": [
                 {
                     "type": "configure",
-                    "name": "windows-gui-relWithDebInfo"
+                    "name": "windows-full-suite-debug"
                 },
                 {
                     "type": "build",
-                    "name": "windows-gui-relWithDebInfo"
+                    "name": "windows-full-suite-debug"
                 }
             ]
         },
         {
-            "name": "linux-cli-debug",
+            "name": "windows-full-suite-release",
+            "description": "Workflow to configure and build the Windows GUI & CLI Release target.",
+            "steps": [
+                {
+                    "type": "configure",
+                    "name": "windows-full-suite-release"
+                },
+                {
+                    "type": "build",
+                    "name": "windows-full-suite-release"
+                }
+            ]
+        },
+        {
+            "name": "windows-full-suite-relWithDebInfo",
+            "description": "Workflow to configure and build the Windows GUI & CLI RelWithDebInfo target.",
+            "steps": [
+                {
+                    "type": "configure",
+                    "name": "windows-full-suite-relWithDebInfo"
+                },
+                {
+                    "type": "build",
+                    "name": "windows-full-suite-relWithDebInfo"
+                }
+            ]
+        },
+        {
+            "name": "linux-cli-only-debug",
             "description": "Workflow to configure and build the Linux CLI Debug target.",
             "steps": [
                 {
                     "type": "configure",
-                    "name": "linux-cli-debug"
+                    "name": "linux-cli-only-debug"
                 },
                 {
                     "type": "build",
-                    "name": "linux-cli-debug"
+                    "name": "linux-cli-only-debug"
                 }
             ]
         },
         {
-            "name": "linux-cli-debug-asan",
+            "name": "linux-cli-only-debug-asan",
             "description": "Workflow to configure and build the Linux CLI Debug target with AddressSanitizer enabled.",
             "steps": [
                 {
                     "type": "configure",
-                    "name": "linux-cli-debug-asan"
+                    "name": "linux-cli-only-debug-asan"
                 },
                 {
                     "type": "build",
-                    "name": "linux-cli-debug-asan"
+                    "name": "linux-cli-only-debug-asan"
                 }
             ]
         },
         {
-            "name": "linux-cli-release",
+            "name": "linux-cli-only-release",
             "description": "Workflow to configure and build the Linux CLI Release target.",
             "steps": [
                 {
                     "type": "configure",
-                    "name": "linux-cli-release"
+                    "name": "linux-cli-only-release"
                 },
                 {
                     "type": "build",
-                    "name": "linux-cli-release"
+                    "name": "linux-cli-only-release"
                 }
             ]
         },
         {
-            "name": "linux-cli-relWithDebInfo",
+            "name": "linux-cli-only-relWithDebInfo",
             "description": "Workflow to configure and build the Linux CLI RelWithDebInfo target.",
             "steps": [
                 {
                     "type": "configure",
-                    "name": "linux-cli-relWithDebInfo"
+                    "name": "linux-cli-only-relWithDebInfo"
                 },
                 {
                     "type": "build",
-                    "name": "linux-cli-relWithDebInfo"
+                    "name": "linux-cli-only-relWithDebInfo"
                 }
             ]
         },
         {
-            "name": "linux-cli-profiler",
-            "description": "Workflow to configure and build the Linux CLI Profiler target.",
+            "name": "linux-full-suite-debug",
+            "description": "Workflow to configure and build the Linux GUI & CLI Debug target.",
             "steps": [
                 {
                     "type": "configure",
-                    "name": "linux-cli-profiler"
+                    "name": "linux-full-suite-debug"
                 },
                 {
                     "type": "build",
-                    "name": "linux-cli-profiler"
+                    "name": "linux-full-suite-debug"
                 }
             ]
         },
         {
-            "name": "linux-gui-debug",
-            "description": "Workflow to configure and build the Linux GUI Debug target.",
+            "name": "linux-full-suite-debug-asan",
+            "description": "Workflow to configure and build the Linux GUI & CLI Debug target with AddressSanitizer enabled.",
             "steps": [
                 {
                     "type": "configure",
-                    "name": "linux-gui-debug"
+                    "name": "linux-full-suite-debug-asan"
                 },
                 {
                     "type": "build",
-                    "name": "linux-gui-debug"
+                    "name": "linux-full-suite-debug-asan"
                 }
             ]
         },
         {
-            "name": "linux-gui-debug-asan",
-            "description": "Workflow to configure and build the Linux GUI Debug target with AddressSanitizer enabled.",
+            "name": "linux-full-suite-release",
+            "description": "Workflow to configure and build the Linux GUI & CLI Release target.",
             "steps": [
                 {
                     "type": "configure",
-                    "name": "linux-gui-debug-asan"
+                    "name": "linux-full-suite-release"
                 },
                 {
                     "type": "build",
-                    "name": "linux-gui-debug-asan"
+                    "name": "linux-full-suite-release"
                 }
             ]
         },
         {
-            "name": "linux-gui-release",
-            "description": "Workflow to configure and build the Linux GUI Release target.",
+            "name": "linux-full-suite-relWithDebInfo",
+            "description": "Workflow to configure and build the Linux GUI & CLI RelWithDebInfo target.",
             "steps": [
                 {
                     "type": "configure",
-                    "name": "linux-gui-release"
+                    "name": "linux-full-suite-relWithDebInfo"
                 },
                 {
                     "type": "build",
-                    "name": "linux-gui-release"
+                    "name": "linux-full-suite-relWithDebInfo"
                 }
             ]
         },
         {
-            "name": "linux-gui-relWithDebInfo",
-            "description": "Workflow to configure and build the Linux GUI RelWithDebInfo target.",
+            "name": "windows-pack-server",
+            "description": "Complete continuous pipeline to build and package Windows CLI server installers.",
             "steps": [
                 {
                     "type": "configure",
-                    "name": "linux-gui-relWithDebInfo"
+                    "name": "windows-cli-only-release"
                 },
                 {
                     "type": "build",
-                    "name": "linux-gui-relWithDebInfo"
+                    "name": "windows-cli-only-release"
+                },
+                {
+                    "type": "package",
+                    "name": "windows-pack-server"
                 }
             ]
         },
         {
-            "name": "linux-gui-profiler",
-            "description": "Workflow to configure and build the Linux GUI Profiler target.",
+            "name": "windows-pack-desktop",
+            "description": "Complete continuous pipeline to build and package Windows full suite desktop installers.",
             "steps": [
                 {
                     "type": "configure",
-                    "name": "linux-gui-profiler"
+                    "name": "windows-full-suite-release"
                 },
                 {
                     "type": "build",
-                    "name": "linux-gui-profiler"
+                    "name": "windows-full-suite-release"
+                },
+                {
+                    "type": "package",
+                    "name": "windows-pack-desktop"
+                }
+            ]
+        },
+        {
+            "name": "linux-pack-server",
+            "description": "Complete continuous pipeline to build and package Linux CLI server installers.",
+            "steps": [
+                {
+                    "type": "configure",
+                    "name": "linux-cli-only-release"
+                },
+                {
+                    "type": "build",
+                    "name": "linux-cli-only-release"
+                },
+                {
+                    "type": "package",
+                    "name": "linux-pack-server"
+                }
+            ]
+        },
+        {
+            "name": "linux-pack-desktop",
+            "description": "Complete continuous pipeline to build and package Linux full suite desktop installers.",
+            "steps": [
+                {
+                    "type": "configure",
+                    "name": "linux-full-suite-release"
+                },
+                {
+                    "type": "build",
+                    "name": "linux-full-suite-release"
+                },
+                {
+                    "type": "package",
+                    "name": "linux-pack-desktop"
                 }
             ]
         },

@@ -12,7 +12,7 @@ Edible::Edible()
 
 }
 
-Edible::Edible(const EdibleID id, Species* const mySpecies, TerrainCell* terrainCell) 
+Edible::Edible(id_type id, Species* const mySpecies, TerrainCell* terrainCell) 
 	: id(id), mySpecies(mySpecies), terrainCell(terrainCell)
 {
 	
@@ -26,7 +26,7 @@ Edible::~Edible()
 
 
 
-const EdibleID& Edible::getId() const
+id_type Edible::getId() const
 {
 	return id;
 }

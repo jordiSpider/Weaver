@@ -26,7 +26,7 @@ vector<Trait*> PreferencesTrait::generateTraits(std::vector<IndividualLevelTrait
 	for(const PreferencesTraitType type : EnumClass<PreferencesTraitType>::getEnumValues())
 	{
 		preferencesTraits.push_back(new PreferencesTrait(
-			individualLevelTraits, type, definitionConfig[DecisionsTrait::getJsonFieldName()][PreferencesTrait::getJsonFieldName()][EnumClass<PreferencesTraitType>::to_string(type)], 
+			individualLevelTraits, type, definitionConfig[DecisionsTrait::getJsonFieldName()][PreferencesTrait::getJsonFieldName()][fmt::to_string(type)],
 			individualLevelTraitsOrder
 		));
 	}
@@ -41,7 +41,7 @@ vector<string> PreferencesTrait::getTraitStrVector()
 
 	for(PreferencesTraitType type : EnumClass<PreferencesTraitType>::getEnumValues())
 	{
-		traitStrVector.push_back(EnumClass<PreferencesTraitType>::to_string(type));
+		traitStrVector.push_back(fmt::to_string(type));
 	}
 
 	return traitStrVector;
@@ -72,10 +72,10 @@ PreferencesTrait::PreferencesTrait()
 
 PreferencesTrait::PreferencesTrait(std::vector<IndividualLevelTrait*>& individualLevelTraits, const PreferencesTraitType type, const json& config, const vector<json>& individualLevelTraitsOrder)
 	: DecisionsTrait(
-		individualLevelTraits, config, individualLevelTraitsOrder, getParentTraitStr() + "$" + EnumClass<PreferencesTraitType>::to_string(type), 
+		individualLevelTraits, config, individualLevelTraitsOrder, getParentTraitStr() + "$" + fmt::to_string(type), 
 		getFileName(),
 		createTemperatureSection(
-			individualLevelTraits, config, individualLevelTraitsOrder, getParentTraitStr() + "$" + EnumClass<PreferencesTraitType>::to_string(type), 
+			individualLevelTraits, config, individualLevelTraitsOrder, getParentTraitStr() + "$" + fmt::to_string(type), 
 			getFileName()
 		)
 	  )

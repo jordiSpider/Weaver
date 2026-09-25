@@ -294,14 +294,15 @@ WeaverOptimiser$run(
         ),
         order = c("totalTime", "minAbundance", "coefficientOfVariation")
     ), 
-    program = "C:\\Users\\mcs20\\Desktop\\EEZA\\Weaver\\bin\\Weaver-Non-GUI-fast.exe",
-    output_path = "C:\\Users\\mcs20\\Desktop\\EEZA\\Weaver\\output", 
-    base_config_path = "C:\\Users\\mcs20\\Desktop\\EEZA\\Weaver\\config\\config_Roman_app", 
+    program = "C:\\Program Files\\Weaver\\bin\\WeaverCLI.exe",
+    output_path = paste0("C:\\Users\\", Sys.getenv("USERNAME"), "\\Documents\\Weaver\\output"), 
+    base_config_path = paste0("C:\\Users\\", Sys.getenv("USERNAME"), "\\Documents\\Weaver\\config\\config_Roman_app"), 
     keepBest = TRUE,
     tournament_size = 5,
     crossover_prob = 0.8, 
     mutation_rate = 0.05, 
-    seed = 0, 
-    num_cores = 45,
-    debug = TRUE
+    debug = TRUE, 
+    seed = 0,
+    total_cores = NULL,
+    program_cores = 4
 )

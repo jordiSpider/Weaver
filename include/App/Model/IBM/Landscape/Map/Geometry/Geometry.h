@@ -91,6 +91,8 @@ private:
      */
     static Coverage checkCoverageLevel(const PreciseDouble& percent);
 
+    static bool pointInCircle(double circleX, double circleY, double radiusSq, double px, double py);
+
 public:
     /// @brief Number of points used to approximate a circle.
     static constexpr const unsigned int POINTS_PER_CIRCLE = 45;
@@ -200,6 +202,8 @@ public:
      * @return Coverage enum representing the coverage level.
      */
     static Coverage checkCoveredLevelBySphere(const RingModel& area, const PointContinuous &center, const PreciseDouble &radius);
+
+    static PreciseDouble calculateCoveragePercentBySphere(const RingModel& area, const PointContinuous& center, const PreciseDouble& radius);
     
     /**
      * @brief Checks if a point is inside a sphere.
@@ -209,6 +213,8 @@ public:
      * @return True if the point lies inside the sphere.
      */
     static bool pointInsideSphere(const PointContinuous& point, const PointContinuous &center, const PreciseDouble &radius);
+
+    static bool pointInsideBox(const PointContinuous& point, const RingModel& box);
 
     /**
      * @brief Calculates the coverage percentage of the first ring by the second.

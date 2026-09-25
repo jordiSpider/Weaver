@@ -3,11 +3,7 @@
 
 #include "schema/landscape_params_schema_json.h"
 
-#include <oneapi/tbb/global_control.h>
-
-#ifdef PROFILER
-	#include <gperftools/profiler.h>
-#endif
+#include "App/Manager/LogManager.h"
 
 
 
@@ -16,8 +12,8 @@ using json = nlohmann::json;
 namespace fs = std::filesystem;
 
 
-IBM::IBM(View& view)
-	: Model(view)
+IBM::IBM()
+	: Model()
 {
 
 }
@@ -52,22 +48,13 @@ pair<bool,fs::path> IBM::existsCheckpoint(const fs::path& checkpointFolderPath, 
 
 void IBM::run(const RunMode runMode, const fs::path& inputConfigPath, const fs::path& outputFolderPath)
 {
-	#ifdef PROFILER
-	ProfilerStart("profile.prof"); 
-	#endif
-
-
-	size_t numberThreads = 4;
-	tbb::global_control control(tbb::global_control::max_allowed_parallelism, numberThreads);
-
-
 	Landscape* myLandscape = nullptr;
 
 	if(runMode == RunMode::FromConfig)
 	{
-		view.updateLog("===================================================\n");
-		view.updateLog("Reading configuration and initializing landscape...\n");
-		view.updateLog("===================================================\n");
+		LogManager::emit("===================================================\n");
+		LogManager::emit("Reading configuration and initializing landscape...\n");
+		LogManager::emit("===================================================\n");
 
 
 		JsonValidator landscapeValidator(EmbeddedResources::landscape_params_schema_json, "landscape_params_schema");
@@ -78,9 +65,9 @@ void IBM::run(const RunMode runMode, const fs::path& inputConfigPath, const fs::
 	}
 	else
 	{
-		view.updateLog("============================================\n");
-		view.updateLog("Reading checkpoint and resuming landscape...\n");
-		view.updateLog("============================================\n\n");
+		LogManager::emit("============================================\n");
+		LogManager::emit("Reading checkpoint and resuming landscape...\n");
+		LogManager::emit("============================================\n\n");
 
 
 		bool isBinaryCheckpoint = (runMode == RunMode::FromBinaryCheckpoint);
@@ -109,28 +96,20 @@ void IBM::run(const RunMode runMode, const fs::path& inputConfigPath, const fs::
 	}
 
 
-	myLandscape->init(&view, inputConfigPath, outputFolderPath, (runMode != RunMode::FromConfig));
-
-    #ifdef USE_HEAP_PROFILER
-		HeapProfilerDump("prueba");
-	#endif
+	myLandscape->init(inputConfigPath, outputFolderPath, (runMode != RunMode::FromConfig));
 
 
-	view.updateLog("DONE\n\n");
+	LogManager::emit("DONE\n\n");
 
-	view.updateLog("======================\n");
-	view.updateLog("Running simulation ...\n");
-	view.updateLog("======================\n\n");
+	LogManager::emit("======================\n");
+	LogManager::emit("Running simulation ...\n");
+	LogManager::emit("======================\n\n");
 
 	myLandscape->evolveLandscape();
 
-	view.updateLog("DONE\n");
+	LogManager::emit("DONE\n");
 
-	#ifdef PROFILER
-	ProfilerStop();
-	#endif
-
-	view.updateLog("Result folder: " + myLandscape->getResultFolder().string() + "\n", true);
+	LogManager::emit("Result folder: " + myLandscape->getResultFolder().string() + "\n", true);
 
 	delete myLandscape;
 }

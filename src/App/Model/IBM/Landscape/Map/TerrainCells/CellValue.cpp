@@ -5,8 +5,8 @@ using namespace std;
 
 
 CellValue::CellValue(const AnimalNonStatistical& animalWhoIsEvaluating, const Edible* bestEdibility, bool fullCoverage, const RingModel* cellEffectiveArea, const PointMap* const cellPosition, const PointContinuous& cellCenter, const PreciseDouble &edibilityValue, 
-											 const PreciseDouble &predatoryRiskEdibilityValue, const PreciseDouble &conspecificBiomass, const unsigned int numberOfFemales, const bool habitatDomain)
-	: bestEdibility(bestEdibility), fullCoverage(fullCoverage), cellEffectiveArea(cellEffectiveArea), cellPosition(cellPosition), numberOfFemales(numberOfFemales), habitatDomain(habitatDomain)
+											 const PreciseDouble &predatoryRiskEdibilityValue, const PreciseDouble &conspecificBiomass, unsigned int numberOfFemales, unsigned int numberOfMales, const bool habitatDomain)
+	: bestEdibility(bestEdibility), fullCoverage(fullCoverage), cellEffectiveArea(cellEffectiveArea), cellPosition(cellPosition), numberOfFemales(numberOfFemales), numberOfMales(numberOfMales), habitatDomain(habitatDomain)
 {
 	const PreciseDouble cellEvaluationBiomass = animalWhoIsEvaluating.getGenetics().getCellValueIndividualTraits(CellValueTraitType::cellEvaluationBiomass).getPhenotypicValue();
 	const PreciseDouble cellEvaluationRisk = 1.0 - cellEvaluationBiomass;
@@ -40,7 +40,7 @@ CellValue::~CellValue()
 CellValue::CellValue(const CellValue& other)
 	: bestEdibility(other.bestEdibility), fullCoverage(other.fullCoverage), cellEffectiveArea(other.cellEffectiveArea),
 	  cellPosition(other.cellPosition), valuePerceived(other.valuePerceived), numberOfFemales(other.numberOfFemales),
-	  habitatDomain(other.habitatDomain)
+	  numberOfMales(other.numberOfMales), habitatDomain(other.habitatDomain)
 {
 
 }
@@ -62,6 +62,27 @@ bool CellValue::operator>(const CellValue& other) const {
 		}
 	}
 
+
+	if (numberOfFemales > other.numberOfFemales)
+	{
+		return true;
+	}
+	else if (numberOfFemales < other.numberOfFemales)
+	{
+		return false;
+	}
+
+
+	if (numberOfMales > other.numberOfMales)
+	{
+		return true;
+	}
+	else if (numberOfMales < other.numberOfMales)
+	{
+		return false;
+	}
+
+
 	return valuePerceived > other.valuePerceived;
 }
 
@@ -80,6 +101,27 @@ bool CellValue::operator>=(const CellValue& other) const {
 			return false;
 		}
 	}
+
+
+	if (numberOfFemales > other.numberOfFemales)
+	{
+		return true;
+	}
+	else if (numberOfFemales < other.numberOfFemales)
+	{
+		return false;
+	}
+
+
+	if (numberOfMales > other.numberOfMales)
+	{
+		return true;
+	}
+	else if (numberOfMales < other.numberOfMales)
+	{
+		return false;
+	}
+
 
 	return valuePerceived >= other.valuePerceived;
 }

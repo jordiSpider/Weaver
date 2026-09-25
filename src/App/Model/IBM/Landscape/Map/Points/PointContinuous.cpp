@@ -4,48 +4,6 @@
 using namespace std;
 
 
-
-PreciseDouble getPositionAxisValue(const PointContinuous& position, const unsigned char axis)
-{
-    #if DIMENSIONS == 2
-        switch(axis) {
-            case 0: {
-                return position.get<0>();
-                break;
-            }
-            case 1: {
-                return position.get<1>();
-                break;
-            }
-            default: {
-                throwLineInfoException("Default case");
-                break;
-            }
-        }
-    #elif DIMENSIONS == 3
-        switch(axis) {
-            case 0: {
-                return position.get<0>();
-                break;
-            }
-            case 1: {
-                return position.get<1>();
-                break;
-            }
-            case 2: {
-                return position.get<2>();
-                break;
-            }
-            default: {
-                throwLineInfoException("Default case");
-                break;
-            }
-        }
-    #else
-        throwLineInfoException("Invalid DIMENSIONS value");
-    #endif
-}
-
 void setPositionAxisValue(PointContinuous& position, const unsigned char axis, const PreciseDouble& newValue)
 {
     #if DIMENSIONS == 2

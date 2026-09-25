@@ -40,6 +40,11 @@
 
 
 
+constexpr size_t constexpr_pow(size_t base, size_t exp) {
+    return exp == 0 ? 1 : base * constexpr_pow(base, exp - 1);
+}
+
+
 
 /**
  * @class SpatialTree
@@ -53,9 +58,9 @@ class SpatialTree : public Map
 {
 protected:
     unsigned int mapDepth; ///< Depth of the spatial tree
+    unsigned int MAX_PARALLEL_DEPTH;
     std::vector<PreciseDouble> cellSizes; ///< Sizes of cells at each depth
     std::vector<unsigned int> axisSizes; ///< Number of cells along each axis
-    unsigned int totalNumberOfActiveAnimals; ///< Total active animals in the tree
     RootTerrainCell* rootTerrainCell; ///< Pointer to the root cell of the tree
 
     /**
@@ -98,7 +103,7 @@ protected:
 
 public:
     static constexpr const size_t numbreOfSubdivisions = 2; ///< Number of subdivisions per axis
-    static constexpr const size_t numberOfChildren = std::pow(numbreOfSubdivisions, DIMENSIONS); ///< Total number of children per cell
+    static constexpr const size_t numberOfChildren = constexpr_pow(numbreOfSubdivisions, DIMENSIONS); ///< Total number of children per cell
 
     /**
      * @brief Default constructor.
@@ -120,16 +125,6 @@ public:
 
     SpatialTree(const SpatialTree&) = delete; ///< Deleted copy constructor
     SpatialTree& operator=(const SpatialTree&) = delete; ///< Deleted assignment operator
-
-    /**
-     * @brief Increments the total number of active animals in the tree.
-     */
-    void increaseTotalNumberOfActiveAnimals(); 
-
-    /**
-     * @brief Decrements the total number of active animals in the tree.
-     */
-    void decreaseTotalNumberOfActiveAnimals(); 
 
     /**
      * @brief Applies a patch to the landscape within the spatial tree.
@@ -179,12 +174,6 @@ public:
      * @return PointMap representing the discrete cell coordinates.
      */
     PointMap obtainPointMap(const PointContinuous &point, const unsigned int depth) const;
-    
-    /**
-     * @brief Returns the total number of active animals in the tree.
-     * @return Total active animals as unsigned int.
-     */
-    const unsigned int& getTotalNumberOfActiveAnimals() const;
 
     /**
      * @brief Registers resources and non-statistical animals in the tree.
@@ -198,7 +187,7 @@ public:
      * @param animalSpecies Reference to the AnimalSpecies object.
      * @param timeStepsPerDay Number of timesteps per day for this species.
      */
-    void addAnimalSpecies(const AnimalSpecies& animalSpecies, const PreciseDouble& timeStepsPerDay);
+    void addAnimalSpecies(const AnimalSpecies& animalSpecies);
     
     /**
      * @brief Adds a new resource species to the tree.
@@ -208,7 +197,7 @@ public:
      * @param resourceBaseSource Pointer to the base resource source.
      * @param timeStepsPerDay Number of timesteps per day.
      */
-    void addResourceSpecies(Landscape* const landscape, std::vector<std::vector<std::vector<CellResource*>>>& landscapeResources, ResourceSpecies& resourceSpecies, ResourceSource* const resourceBaseSource, const PreciseDouble& timeStepsPerDay);
+    void addResourceSpecies(Landscape* const landscape, std::vector<std::vector<std::vector<CellResource*>>>& landscapeResources, ResourceSpecies& resourceSpecies, ResourceSource* const resourceBaseSource);
 
     /**
      * @brief Deserializes moisture and resource sources.
@@ -260,12 +249,7 @@ public:
     /**
      * @brief Generates statistics population for visualization or analysis.
      */
-    unsigned int generateStatisticsPopulation(std::vector<CustomIndexedVector<Instar, std::vector<AnimalStatistical*>>>& animalsPopulation, View* view, Landscape* const landscape, std::vector<AnimalSpecies*>& existingAnimalSpecies, std::vector<CustomIndexedVector<Instar, std::vector<std::vector<TerrainCell*>::iterator>>> &mapSpeciesInhabitableTerrainCells, const TimeStep actualTimeStep, const PreciseDouble& timeStepsPerDay);
-    
-    /**
-     * @brief Generates actual animal population in the landscape.
-     */
-    void generatePopulation(View* view, Landscape* const landscape, AnimalSpecies* currentAnimalSpecies, const CustomIndexedVector<Instar, unsigned int>& population, const std::vector<Genome>& initialGenomesPool, const CustomIndexedVector<Instar, std::vector<std::vector<TerrainCell*>::iterator>> &speciesInhabitableTerrainCells, const bool saveAnimalConstitutiveTraits, std::ostringstream& animalConstitutiveTraitsFile, const bool saveGenetics, const bool saveMassInfo, const TimeStep actualTimeStep, const PreciseDouble& timeStepsPerDay);
+    unsigned int generateStatisticsPopulation(std::vector<CustomIndexedVector<Instar, std::vector<AnimalStatistical*>>>& animalsPopulation, Landscape* const landscape, std::vector<AnimalSpecies*>& existingAnimalSpecies, std::vector<CustomIndexedVector<Instar, std::vector<std::vector<TerrainCell*>::iterator>>> &mapSpeciesInhabitableTerrainCells, const TimeStep actualTimeStep, const PreciseDouble& timeStepsPerDay);
     
     /**
      * @brief Returns the header string for map position outputs.

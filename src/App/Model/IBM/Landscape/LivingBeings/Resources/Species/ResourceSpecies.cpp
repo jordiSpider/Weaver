@@ -21,10 +21,6 @@ const id_type& ResourceSpecies::ResourceID::getValue() const
 	return value;
 }
 
-ResourceSpecies::ResourceID::operator size_t() const {
-	return static_cast<size_t>(value);
-}
-
 size_t hash<ResourceSpecies::ResourceID>::operator()(const ResourceSpecies::ResourceID& resourceID) const
 {
     return hash<size_t>{}(resourceID.getValue());
@@ -51,8 +47,8 @@ ResourceSpecies::ResourceSpecies()
 
 }
 
-ResourceSpecies::ResourceSpecies(const ResourceSpecies::ID& speciesId, const ResourceSpecies::ResourceID& resourceSpeciesId, const json &resourceSpeciesInfo, std::vector<std::string>& stringPool) 
-	: Species(speciesId, resourceSpeciesInfo["name"].get<string>(), stringPool), 
+ResourceSpecies::ResourceSpecies(const ResourceSpecies::ID& speciesId, const ResourceSpecies::ResourceID& resourceSpeciesId, const json &resourceSpeciesInfo) 
+	: Species(speciesId, resourceSpeciesInfo["name"].get<string>()), 
 	  resourceSpeciesId(resourceSpeciesId), resourceSpeciesGrowth(resourceSpeciesInfo["growthModule"])
 {
 	

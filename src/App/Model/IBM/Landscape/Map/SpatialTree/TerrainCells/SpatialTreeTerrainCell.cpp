@@ -183,12 +183,12 @@ pair<bool, pair<TerrainCell*, PointContinuous>> SpatialTreeTerrainCell::getCellB
     return make_pair(atDestination, cellToMoveTo);
 }
 
-AnimalNonStatistical* SpatialTreeTerrainCell::createAnimal(Landscape* const landscape, const Instar &instar, AnimalSpecies* animalSpecies, const Genome* const genome, const bool saveGenetics, const bool saveMassInfo, const TimeStep actualTimeStep, const PreciseDouble& timeStepsPerDay)
+AnimalNonStatistical* SpatialTreeTerrainCell::createAnimal(Landscape* const landscape, const Instar &instar, AnimalSpecies* animalSpecies, const Genome* const genome, const bool saveGenetics, std::vector<fmt::memory_buffer>& geneticsText, const TimeStep actualTimeStep, const PreciseDouble& timeStepsPerDay)
 {
     AnimalNonStatistical* newAnimal = new SpatialTreeAnimal(instar, animalSpecies, this, genome, actualTimeStep, timeStepsPerDay);
 
     // Indicate that the animal created is the final animal, and therefore assign a final ID to it.
-    newAnimal->doDefinitive(landscape, saveGenetics, saveMassInfo);
+    newAnimal->doDefinitive(landscape, saveGenetics, geneticsText);
 
     return newAnimal;
 }
@@ -319,7 +319,7 @@ void SpatialTreeTerrainCell::applyFunctionToEdibles(
 }
 
 void SpatialTreeTerrainCell::applyFunctionToEdibles(
-        function<bool(Animal&)> checker, const PointContinuous &sourcePosition, const PreciseDouble &radius, const RingModel& radiusArea, 
+        function<bool(Animal&)> checker, const PointContinuous &sourcePosition, const PreciseDouble &radius, 
         const vector<pair<const AnimalSearchParams&, AnimalFunctions>>& animalFunctions,
         const vector<pair<const ResourceSearchParams&, ResourceFunctions>>& resourceFunctions
     )
@@ -331,7 +331,7 @@ void SpatialTreeTerrainCell::applyFunctionToEdibles(
         animalFunctions
     );
 
-    TerrainCell::applyFunctionToEdibles(checker, sourcePosition, radius, radiusArea, animalFunctions, resourceFunctions);
+    TerrainCell::applyFunctionToEdibles(checker, sourcePosition, radius, animalFunctions, resourceFunctions);
 
     applyDownFunctionToAnimals(checker, sourcePosition, radius, animalFunctions);
 }
@@ -342,18 +342,18 @@ void SpatialTreeTerrainCell::applyFunctionToEdibles(
 /**************************/
 
 void SpatialTreeTerrainCell::applyFunctionToEdiblesInRadius(
-        const PointContinuous &sourcePosition, const PreciseDouble &radius, const RingModel& radiusArea, 
+        const PointContinuous &sourcePosition, const PreciseDouble &radius, 
         const vector<pair<const AnimalSearchParams&, AnimalFunctions>>& animalFunctions,
         const vector<pair<const ResourceSearchParams&, ResourceFunctions>>& resourceFunctions
     )
 {   
     if(Geometry::fullCoveredBySphere(getEffectiveArea(), sourcePosition, radius))
     {
-        getMutableParent()->applyFunctionToEdiblesInRadius(sourcePosition, radius, radiusArea, animalFunctions, resourceFunctions);
+        getMutableParent()->applyFunctionToEdiblesInRadius(sourcePosition, radius, animalFunctions, resourceFunctions);
     }
     else
     {
-        applyFunctionToEdiblesInCell(false, sourcePosition, radius, radiusArea, animalFunctions, resourceFunctions);
+        applyFunctionToEdiblesInCell(false, sourcePosition, radius, animalFunctions, resourceFunctions);
     }
 }
 
@@ -363,24 +363,15 @@ void SpatialTreeTerrainCell::applyFunctionToEdiblesInRadius(
 
 
 void SpatialTreeTerrainCell::getNeighboursCellsOnRadius(
-    vector<CellValue>& bestEvaluations, const PointContinuous &sourcePosition, const PreciseDouble &radius, const RingModel& radiusArea, const size_t searchDepth, const bool searchNeighborsWithFemales, AnimalNonStatistical* animalWhoIsEvaluating)
+    vector<CellValue>& bestEvaluations, const PointContinuous &sourcePosition, const PreciseDouble &radius, const size_t searchDepth, bool searchNeighborsWithFemales, bool searchNeighborsWithMales, AnimalNonStatistical* animalWhoIsEvaluating, CustomIndexedVector<Instar, PreciseDouble>& maximumPatchEdibilityValueGlobal, CustomIndexedVector<Instar, PreciseDouble>& maximumPatchPredationRiskGlobal, CustomIndexedVector<Instar, PreciseDouble>& maximumPatchConspecificBiomassGlobal)
 {
     if(Geometry::fullCoveredBySphere(getEffectiveArea(), sourcePosition, radius))
     {
-        getMutableParent()->getNeighboursCellsOnRadius(bestEvaluations, sourcePosition, radius, radiusArea, searchDepth, searchNeighborsWithFemales, animalWhoIsEvaluating);
+        getMutableParent()->getNeighboursCellsOnRadius(bestEvaluations, sourcePosition, radius, searchDepth, searchNeighborsWithFemales, searchNeighborsWithMales, animalWhoIsEvaluating, maximumPatchEdibilityValueGlobal, maximumPatchPredationRiskGlobal, maximumPatchConspecificBiomassGlobal);
     }
     else
     {
-        getRadiusTerrainCells(bestEvaluations, sourcePosition, radius, radiusArea, searchDepth, searchNeighborsWithFemales, false, animalWhoIsEvaluating);
-    }
-}
-
-void SpatialTreeTerrainCell::getNeighboursCellsOnRadius(
-    vector<CellValue>& bestEvaluations, const PointContinuous &sourcePosition, const PreciseDouble &radius, const size_t searchDepth, const bool searchNeighborsWithFemales, AnimalNonStatistical* animalWhoIsEvaluating)
-{
-    if(radius > 0.0)
-    {
-        getNeighboursCellsOnRadius(bestEvaluations, sourcePosition, radius, Geometry::makeSphere(sourcePosition, radius), searchDepth, searchNeighborsWithFemales, animalWhoIsEvaluating);
+        getRadiusTerrainCells(bestEvaluations, sourcePosition, radius, searchDepth, searchNeighborsWithFemales, searchNeighborsWithMales, false, animalWhoIsEvaluating, maximumPatchEdibilityValueGlobal, maximumPatchPredationRiskGlobal, maximumPatchConspecificBiomassGlobal);
     }
 }
 

@@ -40,9 +40,9 @@ void EdibleSearchParams::addAnimalSearchParams(
     animalSearchParams.addSearchParams(searchableLifeStages, searchableAnimalSpecies, searchableInstars, searchableGenders);
 }
 
-void EdibleSearchParams::addResourceSearchParams(const vector<ResourceSpecies*>& existingResourceSpecies, const vector<ResourceSpecies::ResourceID> &searchableResourceSpecies)
+void EdibleSearchParams::addResourceSearchParams(size_t numberExistingResourceSpecies, const vector<ResourceSpecies::ResourceID> &searchableResourceSpecies)
 {
-    resourceSearchParams.addSearchParams(existingResourceSpecies, searchableResourceSpecies);
+    resourceSearchParams.addSearchParams(numberExistingResourceSpecies, searchableResourceSpecies);
 }
 
 const AnimalSearchParams& EdibleSearchParams::getAnimalSearchParams() const
@@ -55,25 +55,8 @@ const ResourceSearchParams& EdibleSearchParams::getResourceSearchParams() const
     return resourceSearchParams;
 }
 
-void EdibleSearchParams::clear()
+void EdibleSearchParams::init()
 {
-    animalSearchParams.clear();
-    resourceSearchParams.clear();
+    animalSearchParams.init();
+    resourceSearchParams.init();
 }
-
-
-
-BOOST_CLASS_EXPORT(EdibleSearchParams)
-
-template <class Archive>
-void EdibleSearchParams::serialize(Archive &ar, const unsigned int) {
-    ar & animalSearchParams;
-    ar & resourceSearchParams;
-}
-
-// Specialisation
-template void EdibleSearchParams::serialize<boost::archive::text_iarchive>(boost::archive::text_iarchive&, const unsigned int);
-template void EdibleSearchParams::serialize<boost::archive::text_oarchive>(boost::archive::text_oarchive&, const unsigned int);
-
-template void EdibleSearchParams::serialize<boost::archive::binary_iarchive>(boost::archive::binary_iarchive&, const unsigned int);
-template void EdibleSearchParams::serialize<boost::archive::binary_oarchive>(boost::archive::binary_oarchive&, const unsigned int);

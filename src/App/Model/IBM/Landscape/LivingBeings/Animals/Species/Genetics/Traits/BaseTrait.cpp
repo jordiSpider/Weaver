@@ -1,6 +1,9 @@
 #include "App/Model/IBM/Landscape/LivingBeings/Animals/Species/Genetics/Traits/BaseTrait.h"
 
 
+#include <fmt/format.h>
+
+
 using namespace std;
 using json = nlohmann::json;
 namespace fs = std::filesystem;
@@ -43,7 +46,7 @@ vector<string> BaseTrait::getTraitStrVector()
 
 	for(BaseTraitType type : EnumClass<BaseTraitType>::getEnumValues())
 	{
-		traitStrVector.push_back(EnumClass<BaseTraitType>::to_string(type));
+		traitStrVector.push_back(fmt::to_string(type));
 	}
 
 	return traitStrVector;
@@ -87,10 +90,10 @@ BaseTrait::BaseTrait()
 
 BaseTrait::BaseTrait(std::vector<IndividualLevelTrait*>& individualLevelTraits, const BaseTraitType type, const json& config, const vector<json>& individualLevelTraitsOrder)
 	: Trait(
-		individualLevelTraits, config, individualLevelTraitsOrder, getParentTraitStr() + "$" + EnumClass<BaseTraitType>::to_string(type), 
+		individualLevelTraits, config, individualLevelTraitsOrder, getParentTraitStr() + "$" + fmt::to_string(type),
 		getFileName(),
 		createTemperatureSection(
-			individualLevelTraits, type, config, individualLevelTraitsOrder, getParentTraitStr() + "$" + EnumClass<BaseTraitType>::to_string(type), 
+			individualLevelTraits, type, config, individualLevelTraitsOrder, getParentTraitStr() + "$" + fmt::to_string(type),
 			getFileName()
 		)
 	  ),

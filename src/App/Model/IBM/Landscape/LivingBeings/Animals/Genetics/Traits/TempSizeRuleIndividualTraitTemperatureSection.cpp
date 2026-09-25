@@ -39,7 +39,7 @@ void TempSizeRuleIndividualTraitTemperatureSection::setTraitTemperatureSection(c
 
 
 template <class Archive>
-void TempSizeRuleIndividualTraitTemperatureSection::serialize(Archive &ar, const unsigned int) {
+void TempSizeRuleIndividualTraitTemperatureSection::serialize(Archive &, const unsigned int) {
 	
 } 
 

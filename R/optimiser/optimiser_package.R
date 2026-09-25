@@ -27,7 +27,7 @@ WeaverOptimiserClass <- R6Class("WeaverOptimiserClass",
 
         parameters_constraints_level = list(),
 
-        parallel = NULL,
+        program_cores = NULL,
 
         debug = NULL,
 
@@ -267,7 +267,8 @@ WeaverOptimiserClass <- R6Class("WeaverOptimiserClass",
                     "--mode", "FromConfig",
                     "-I", config_path,
                     "-O", results_output_path,
-                    "--silent"
+                    "--silent",
+                    "--parallel", private$program_cores
                 ),
                 stdout = output_file,
                 stderr = error_file,
@@ -321,18 +322,10 @@ WeaverOptimiserClass <- R6Class("WeaverOptimiserClass",
                 result_folder_vector <- with_progress({
                     progress_bar <- progressor(nrow(population_to_evaluate))
 
-                    if(private$parallel) {
-                        future_lapply(
-                            split(population_to_evaluate, seq_len(nrow(population_to_evaluate))), 
-                            private$evaluation_function, program, output_path, base_config_path, progress_bar
-                        )
-                    }
-                    else {
-                        lapply(
-                            split(population_to_evaluate, seq_len(nrow(population_to_evaluate))), 
-                            private$evaluation_function, program, output_path, base_config_path, progress_bar
-                        )
-                    }
+                    future_lapply(
+                        split(population_to_evaluate, seq_len(nrow(population_to_evaluate))), 
+                        private$evaluation_function, program, output_path, base_config_path, progress_bar
+                    )
                 })
 
                 new_fitness_values <- lapply(result_folder_vector, function(result_folder) fitness_class$evaluate(result_folder))
@@ -1681,7 +1674,7 @@ WeaverOptimiserClass <- R6Class("WeaverOptimiserClass",
             }
         },
 
-        run = function(population_size, max_generations, fitness_class, program, output_path, base_config_path, keepBest, tournament_size, crossover_prob, mutation_rate, seed, num_cores, debug) {
+        run = function(population_size, max_generations, fitness_class, program, output_path, base_config_path, keepBest, tournament_size, crossover_prob, mutation_rate, debug, seed, total_cores, program_cores) {
             library(jsonlite)
             
             default_opts <- options()
@@ -1723,24 +1716,38 @@ WeaverOptimiserClass <- R6Class("WeaverOptimiserClass",
                 set.seed(seed)
             }
 
-            if (num_cores > 1) {
-                if(availableCores() == num_cores) {
-                    stop("Error: The number of cores selected is equal to the total available cores. Please leave at least one core free for system processes.")
-                }
-
-                if(.Platform$OS.type == "windows") {
-                    plan(multisession, workers = num_cores)
-                }
-                else {
-                    plan(multicore, workers = num_cores)
-                }
-
-                private$parallel = TRUE
-                self$display(paste0("Parallel mode: ON | Cores: ", num_cores))
+            if(is.null(total_cores)) {
+                total_cores = availableCores()
             }
-            else {
-                private$parallel = FALSE
-                self$display("Parallel mode: OFF")
+
+            if(availableCores() < total_cores) {
+                stop(paste0("Error: The requested number of cores (", total_cores, 
+                    ") exceeds the maximum available on this system (", availableCores(), ")."))
+            }
+
+            private$program_cores = min(program_cores, total_cores)
+
+            workers_optimiser <- total_cores %/% private$program_cores
+
+            idle_cores <- total_cores - (workers_optimiser * private$program_cores)
+
+            if (workers_optimiser > 1) {
+                if(.Platform$OS.type == "windows") {
+                    plan(multisession, workers = workers_optimiser)
+                } else {
+                    plan(multicore, workers = workers_optimiser)
+                }
+
+                self$display(paste0("Parallel mode: ON | Evaluating ", workers_optimiser, 
+                                    " individuals at the same time. Each using ", private$program_cores, " cores."))
+            } else {
+                plan(sequential)
+
+                self$display(paste0("Parallel mode: OFF (Optimizer sequential) | Each individual program uses ", private$program_cores, " cores."))
+            }
+
+            if (idle_cores > 0) {
+                self$display(paste0("Notice: ", idle_cores, " assigned core(s) will remain idle due to optimization allocation rules."))
             }
 
 

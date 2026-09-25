@@ -18,7 +18,6 @@
 
 #include "App/Model/IBM/Landscape/LivingBeings/Species/Species.h"
 #include "App/Model/IBM/Landscape/LivingBeings/Growth/EdibleGrowth.h"
-#include "App/Model/IBM/Landscape/LivingBeings/EdibleID.h"
 #include "App/Model/IBM/Landscape/LivingBeings/StructuralUnits.h"
 #include "App/Model/IBM/Landscape/LivingBeings/TimeUnits.h"
 #include "App/Model/IBM/Landscape/Map/Points/PointContinuous.h"
@@ -50,7 +49,7 @@ public:
      * @param mySpecies Pointer to the associated Species
      * @param terrainCell Pointer to the terrain cell containing this edible
      */
-	Edible(const EdibleID id, Species* const mySpecies, TerrainCell* terrainCell);
+	Edible(id_type id, Species* const mySpecies, TerrainCell* terrainCell);
 	
 	/// Virtual destructor
 	virtual ~Edible();
@@ -65,7 +64,7 @@ public:
      * @brief Returns the unique identifier of this edible.
      * @return Reference to the EdibleID
      */
-	const EdibleID& getId() const;
+	id_type getId() const;
 
 	/**
      * @brief Returns the associated species (const).
@@ -123,9 +122,6 @@ public:
           return getGrowthBuildingBlock().getInstar(); 
      }
 
-	/// Increases the number of predation encounters
-	virtual void increasePredationEncounters()=0;
-
 	/// Returns whether this edible is currently being hunted
 	virtual bool isHunting() const=0;
 
@@ -149,7 +145,7 @@ public:
 
 protected:
 	/// Unique identifier for this edible
-    EdibleID id;
+    id_type id;
 
     /// Pointer to the species associated with this edible
     Species* mySpecies;

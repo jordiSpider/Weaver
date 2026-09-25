@@ -22,17 +22,9 @@
 #include "App/Model/IBM/Landscape/LivingBeings/Animals/Species/Genetics/Traits/Trait.h"
 
 #include "App/Model/IBM/Landscape/LivingBeings/Animals/Genetics/Traits/IndividualTraitTemperatureSectionVariant.h"
+#include "App/IO/StorageBridge.h"
 
 
-struct TraitDTO {
-    double constitutiveValue;
-    double phenotypicValue;
-    
-    bool isPawarTrait;
-    PawarTraitDTO pawarTraitDTO;
-
-    void formatToBuffer(std::string& buffer) const;
-};
 
 /**
  * @class IndividualTrait
@@ -60,12 +52,11 @@ public:
      * @param rhoPerModule Vector of correlation values per module.
      * @param rhoRangePerModule Vector of correlation range indices per module.
      * @param temperature Current environmental temperature.
-     * @param actualTimeStep Current simulation timestep.
      * @param coefficientForMassAforMature Coefficient A for mature mass calculation.
      * @param scaleForMassBforMature Scale B for mature mass calculation.
      * @param tempFromLab Temperature data from lab experiments.
      */
-    IndividualTrait(Trait* trait, const Genome& genome, const size_t traitsPerModule, const size_t numberOfLociPerTrait, const std::vector<PreciseDouble>& rhoPerModule, const std::vector<size_t>& rhoRangePerModule, const Temperature& temperature, const TimeStep actualTimeStep, const PreciseDouble &coefficientForMassAforMature, const PreciseDouble &scaleForMassBforMature, const Temperature& tempFromLab);
+    IndividualTrait(Trait* trait, const Genome& genome, const size_t traitsPerModule, const size_t numberOfLociPerTrait, const std::vector<PreciseDouble>& rhoPerModule, const std::vector<size_t>& rhoRangePerModule, const Temperature& temperature, const PreciseDouble &coefficientForMassAforMature, const PreciseDouble &scaleForMassBforMature, const Temperature& tempFromLab);
     
     /**
      * @brief Constructor for testing without environmental tuning.
@@ -88,13 +79,19 @@ public:
      * @brief Get the constitutive (genetic) value of the trait.
      * @return Reference to the constitutive value.
      */
-    const PreciseDouble& getConstitutiveValue() const;
+    inline const PreciseDouble& getConstitutiveValue() const noexcept
+    {
+        return constitutiveValue;
+    }
 
     /**
      * @brief Get the phenotypic (expressed) value of the trait.
      * @return Reference to the phenotypic value.
      */
-    const PreciseDouble& getPhenotypicValue() const;
+    inline const PreciseDouble& getPhenotypicValue() const noexcept
+    {
+        return phenotypicValue;
+    }
 
     /**
      * @brief Tune the trait according to environmental conditions.
@@ -106,7 +103,7 @@ public:
      */
     void tune(const Temperature& temperature, const TimeStep actualTimeStep, const PreciseDouble &coefficientForMassAforMature, const PreciseDouble &scaleForMassBforMature, const Temperature& tempFromLab);
 
-    void flatten(TraitDTO& dto) const noexcept;
+    void formatTraitDirect(fmt::memory_buffer& buf) const noexcept;
 
     /**
      * @brief Get the trait type.

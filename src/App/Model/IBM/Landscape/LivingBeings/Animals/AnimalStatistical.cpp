@@ -8,7 +8,7 @@ using namespace std;
 
 
 AnimalStatistical::AnimalStatistical(Landscape* const landscape, const Instar &instar, AnimalSpecies* const mySpecies, TerrainCell* terrainCell, const PreciseDouble& timeStepsPerDay)
-	: Animal(landscape->generateEdibleId(), mySpecies, terrainCell, nullptr, LifeStage::ACTIVE, TimeStep(0)),
+	: Animal(landscape->generateEdibleId(), mySpecies, terrainCell, nullptr, LifeStage::ACTIVE),
 	  growthBuildingBlock(
 		&getMutableSpecies()->getMutableGrowthBuildingBlock(), instar, 
 		getSpecies()->getGenetics().isGrowthTraitsThermallyDependent(), 
@@ -20,6 +20,8 @@ AnimalStatistical::AnimalStatistical(Landscape* const landscape, const Instar &i
 	getMutableGrowthBuildingBlock().forceMolting(getGenetics().getBaseIndividualTraits(), getGender(), timeStepsPerDay);
 
 	getMutableGenetics().deleteHomologousCorrelosomes();
+
+	updateSignature();
 }
 
 AnimalStatistical::~AnimalStatistical()
@@ -77,7 +79,7 @@ void AnimalStatistical::setNewLifeStage(Landscape* const, const LifeStage, const
 	throwLineInfoException("Error: Do not use this method with the class 'AnimalStatistical'.");
 }
 
-void AnimalStatistical::setNewLifeStage(Landscape* const, const LifeStage, const TimeStep, EdibleID, const PreciseDouble&)
+void AnimalStatistical::setNewLifeStage(Landscape* const, const LifeStage, const TimeStep, id_type, const PreciseDouble&)
 {
 	throwLineInfoException("Error: Do not use this method with the class 'AnimalStatistical'.");
 }

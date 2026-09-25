@@ -123,28 +123,19 @@ const std::vector<IndividualLevelTrait*>& AnimalSpeciesGenetics::getIndividualLe
 }
 
 
-string AnimalSpeciesGenetics::generateGeneticHeader(const size_t numberOfLociPerTrait)
-{
-	ostringstream geneticHeader;
-
-	geneticHeader << "id\tspecies\tg_numb_prt1\tg_numb_prt2\tID_prt1\tID_prt2";
-
-	for(unsigned int numLocus = 1; numLocus <= numberOfLociPerTrait; numLocus++)
-	{
-		geneticHeader << "\t" << "first_locus_" << numLocus << "_value" << "\t" << "first_locus_" << numLocus << "_order";
-		geneticHeader << "\t" << "second_locus_" << numLocus << "_value" << "\t" << "second_locus_" << numLocus << "_order";
-	}
-
-	geneticHeader << "\n";
-
-	return geneticHeader.str();
-}
-
 void AnimalSpeciesGenetics::initializeGeneticFiles(const fs::path& geneticsFolder)
 {
 	fs::create_directories(geneticsFolder);
 
-	string geneticHeader = AnimalSpeciesGenetics::generateGeneticHeader(getNumberOfLociPerTrait());
+	string geneticHeader = "id\tspecies\tg_numb_prt1\tg_numb_prt2\tID_prt1\tID_prt2";
+
+	for (unsigned int numLocus = 1; numLocus <= getNumberOfLociPerTrait(); numLocus++)
+	{
+		fmt::format_to(std::back_inserter(geneticHeader), 
+			"\tfirst_locus_{}_value\tfirst_locus_{}_order\tsecond_locus_{}_value\tsecond_locus_{}_order",
+			numLocus, numLocus, numLocus, numLocus
+		);
+	}
 
 	for(IndividualLevelTrait* trait : individualLevelTraits)
 	{
@@ -288,11 +279,13 @@ void AnimalSpeciesGenetics::deserializeIndividualLevelTraits(CustomIndexedVector
 	}
 }
 
-void AnimalSpeciesGenetics::printGenetics(const ostringstream& animalInfo, const Genome& genome) const
+void AnimalSpeciesGenetics::printGenetics(const std::string& animalInfo, const Genome& genome, std::vector<fmt::memory_buffer>& geneticsText) const
 {
-	for(IndividualLevelTrait* trait : individualLevelTraits)
+	for (size_t i = 0; i < individualLevelTraits.size(); ++i)
 	{
-		trait->printGenetics(animalInfo, genome, getTraitsPerModule(), getNumberOfLociPerTrait(), getRhoPerModuleVector(), getRhoRangePerModuleVector());
+		IndividualLevelTrait* trait = individualLevelTraits[i];
+
+		trait->printGenetics(animalInfo, genome, geneticsText[i], getTraitsPerModule(), getNumberOfLociPerTrait(), getRhoPerModuleVector(), getRhoRangePerModuleVector());
 	}
 }
 

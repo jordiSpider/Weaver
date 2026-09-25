@@ -60,11 +60,15 @@ public:
     /// Returns the numeric value of the time step
     unsigned int getValue() const;
 
-    /// Returns the numeric value of the time step
-    friend std::ostream& operator<<(std::ostream& os, const TimeStep& timeStep);
+    TimeStep& operator++() {
+        ++value;
+        return *this;
+    }
 
-    friend std::string format_as(const TimeStep& timeStep) {
-        return std::to_string(timeStep.getValue());
+    TimeStep operator++(int) {
+        TimeStep temp = *this; // Guardamos el estado actual (antes del incremento)
+        ++value;               // Incrementamos el valor interno
+        return temp;           // Retornamos el estado antiguo
     }
 
     /**
@@ -77,6 +81,20 @@ public:
     template <class Archive>
     void serialize(Archive &ar, const unsigned int version);
 };
+
+
+
+namespace fmt {
+    template <>
+    struct formatter<TimeStep> : formatter<unsigned int> {
+        // Heredamos la lógica de parseo de especificaciones de double (ej. {:.6f})
+        template <typename FormatContext>
+        auto format(const TimeStep& timeStep, FormatContext& ctx) const {
+            // Pasamos el double primitivo puro directamente al motor máquina de fmt
+            return formatter<unsigned int>::format(timeStep.getValue(), ctx);
+        }
+    };
+}
 
 
 /** @name Arithmetic Operators for TimeStep
@@ -250,13 +268,6 @@ public:
 
     /// Returns the numeric value of the day
     const PreciseDouble& getValue() const;
-    
-    /// Stream output operator
-    friend std::ostream& operator<<(std::ostream& os, const Day& day);
-
-    friend std::string format_as(const Day& day) {
-        return format_as(day.getValue());
-    }
 
     /**
     * @brief Serializes the object for persistence.
@@ -268,6 +279,21 @@ public:
     template <class Archive>
     void serialize(Archive &ar, const unsigned int version);
 };
+
+
+
+namespace fmt {
+    template <>
+    struct formatter<Day> : formatter<PreciseDouble> {
+        // Heredamos la lógica de parseo de especificaciones de double (ej. {:.6f})
+        template <typename FormatContext>
+        auto format(const Day& day, FormatContext& ctx) const {
+            // Pasamos el double primitivo puro directamente al motor máquina de fmt
+            return formatter<PreciseDouble>::format(day.getValue(), ctx);
+        }
+    };
+}
+
 
 
 /** @name Arithmetic Operators for Day

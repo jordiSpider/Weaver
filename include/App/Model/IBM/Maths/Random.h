@@ -19,6 +19,7 @@
 #include <random>
 #include <atomic>
 #include <algorithm>
+#include <numeric>
 #include <memory>
 
 #include "Exceptions/LineInfoException.h"

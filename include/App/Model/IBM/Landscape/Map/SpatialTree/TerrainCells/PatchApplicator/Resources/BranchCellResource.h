@@ -86,10 +86,9 @@ public:
      * @param fullCoverage If true, consider full coverage of the cell.
      * @param sourcePosition Optional source position for distance-based calculations.
      * @param radius Radius to consider for the calculation.
-     * @param radiusArea Optional ring model defining the area.
      * @return Available dry mass.
      */
-    DryMass calculateDryMassAvailable(const bool fullCoverage, const PointContinuous* const sourcePosition, const PreciseDouble &radius, const RingModel& radiusArea) const;
+    DryMass calculateDryMassAvailable(const bool fullCoverage, const PointContinuous* const sourcePosition, const PreciseDouble &radius) const;
 
     /**
      * @brief Subtract biomass from this resource within a given radius.
@@ -98,7 +97,7 @@ public:
      * @param radius Radius over which biomass is subtracted.
      * @param competitionAmongResourceSpecies Flag indicating if competition should be considered.
      */
-    void substractBiomass(const DryMass& dryMassToBeSubstracted, const PointContinuous &sourcePosition, const PreciseDouble &radius, const bool competitionAmongResourceSpecies);
+    void substractBiomass(const DryMass& dryMassToBeSubstracted, bool fullCoverage, const PointContinuous &sourcePosition, const PreciseDouble &radius, const bool competitionAmongResourceSpecies);
 
     /**
      * @brief Subtract biomass with optional full coverage and radius area.
@@ -106,10 +105,9 @@ public:
      * @param fullCoverage Whether to consider full coverage.
      * @param sourcePosition Position of the source.
      * @param radius Radius over which biomass is subtracted.
-     * @param radiusArea Optional ring model defining the area.
      * @param competitionAmongResourceSpecies Flag indicating if competition should be considered.
      */
-    void substractBiomass(const DryMass& dryMassToBeSubstracted, const bool fullCoverage, const PointContinuous &sourcePosition, const PreciseDouble &radius, const RingModel& radiusArea, const bool competitionAmongResourceSpecies);
+    void substractBiomassDown(const DryMass& dryMassToBeSubstracted, const bool fullCoverage, const PointContinuous &sourcePosition, const PreciseDouble &radius, const bool competitionAmongResourceSpecies);
 
     /// Subtract biomass aggregated upwards in the tree.
     void substractBiomassUp(const DryMass& dryMassToBeSubstracted);

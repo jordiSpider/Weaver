@@ -16,6 +16,8 @@
 #include <unordered_map>
 #include <magic_enum/magic_enum.hpp>
 
+#include <fmt/format.h>
+
 #include "Exceptions/LineInfoException.h"
 
 /**
@@ -54,12 +56,12 @@ public:
 	static const std::vector<T> getEnumValues();
 	
 	/**
-     * @brief Converts an enum value to its string representation.
-     * @param type The enum value.
-     * @return The string name of the enum value.
-     */
-	static inline constexpr std::string to_string(const T& type) {
-		return std::string(magic_enum::enum_name(type)); 
+	 * @brief Converts an enum value to its string_view representation.
+	 * @param type The enum value.
+	 * @return The string_view name of the enum value (Zero-Copy).
+	 */
+	static inline constexpr std::string_view to_string(const T& type) noexcept {
+		return magic_enum::enum_name(type);
 	};
 	
 	/**
@@ -139,7 +141,7 @@ const std::unordered_map<std::string, const T> EnumClass<T>::generateMap()
 
 	for(size_t i = 0; i < EnumClass<T>::size(); i++) {
 		const T type = static_cast<const T>(i);
-		enumMap.insert({EnumClass<T>::to_string(type), type});
+		enumMap.insert({std::string(EnumClass<T>::to_string(type)), type});
 	}
 
 	return enumMap;
@@ -162,5 +164,24 @@ T EnumClass<T>::stringToEnumValue(const std::string &str) {
 		throwLineInfoException(message.str());
 	}
 }
+
+
+
+namespace fmt {
+	template <typename T>
+	struct formatter<T, char, std::enable_if_t<std::is_enum_v<T>>> : formatter<string_view> {
+		template <typename FormatContext>
+		auto format(T e, FormatContext& ctx) const {
+			// magic_enum nos da el string_view sin coste de heap
+			std::string_view name = magic_enum::enum_name(e);
+			if (name.empty()) {
+				return formatter<string_view>::format("UNKNOWN", ctx);
+			}
+			return formatter<string_view>::format(name, ctx);
+		}
+	};
+}
+
+
 
 #endif // ENUM_CLASS_H_

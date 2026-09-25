@@ -53,6 +53,11 @@ public:
      */
     LeafTerrainCell(const std::vector<PreciseDouble>& cellSizes, BranchTerrainCell* const parentTerrainCell, PointSpatialTree* const position, MoistureSource* const moistureBaseSource);
     
+    LeafTerrainCell(const LeafTerrainCell&) = delete;
+    LeafTerrainCell& operator=(const LeafTerrainCell&) = delete;
+    LeafTerrainCell(LeafTerrainCell&&) = delete;
+    LeafTerrainCell& operator=(LeafTerrainCell&&) = delete;
+
     /// Virtual destructor.
     virtual ~LeafTerrainCell();
 
@@ -85,7 +90,7 @@ public:
      * @param animalWhoIsEvaluating Pointer to the animal performing evaluation.
      */
     void getRadiusTerrainCells(
-        std::vector<CellValue>& bestEvaluations, const PointContinuous &sourcePosition, const PreciseDouble &radius, const RingModel& radiusArea, const size_t searchDepth, const bool searchNeighborsWithFemales, const bool parentFullCoverage, AnimalNonStatistical* animalWhoIsEvaluating
+        std::vector<CellValue>& bestEvaluations, const PointContinuous &sourcePosition, const PreciseDouble &radius, const size_t searchDepth, bool searchNeighborsWithFemales, bool searchNeighborsWithMales, const bool parentFullCoverage, AnimalNonStatistical* animalWhoIsEvaluating, CustomIndexedVector<Instar, PreciseDouble>& maximumPatchEdibilityValueGlobal, CustomIndexedVector<Instar, PreciseDouble>& maximumPatchPredationRiskGlobal, CustomIndexedVector<Instar, PreciseDouble>& maximumPatchConspecificBiomassGlobal
     );
 
     /**

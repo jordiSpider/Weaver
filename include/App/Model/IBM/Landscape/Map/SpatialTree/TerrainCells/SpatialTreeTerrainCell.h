@@ -60,7 +60,7 @@ protected:
      * @param timeStepsPerDay Number of timesteps per day.
      * @return Created animal.
      */
-    AnimalNonStatistical* createAnimal(Landscape* const landscape, const Instar &instar, AnimalSpecies* animalSpecies, const Genome* const genome, const bool saveGenetics, const bool saveMassInfo, const TimeStep actualTimeStep, const PreciseDouble& timeStepsPerDay);
+    AnimalNonStatistical* createAnimal(Landscape* const landscape, const Instar &instar, AnimalSpecies* animalSpecies, const Genome* const genome, const bool saveGenetics, std::vector<fmt::memory_buffer>& geneticsText, const TimeStep actualTimeStep, const PreciseDouble& timeStepsPerDay);
 
 public:
     /// Default constructor.
@@ -75,6 +75,11 @@ public:
      */
     SpatialTreeTerrainCell(BranchTerrainCell* const parentTerrainCell, PointSpatialTree* const position, const PreciseDouble &size);
     
+    SpatialTreeTerrainCell(const SpatialTreeTerrainCell&) = delete;
+    SpatialTreeTerrainCell& operator=(const SpatialTreeTerrainCell&) = delete;
+    SpatialTreeTerrainCell(SpatialTreeTerrainCell&&) = delete;
+    SpatialTreeTerrainCell& operator=(SpatialTreeTerrainCell&&) = delete;
+
     /// Virtual destructor.
     virtual ~SpatialTreeTerrainCell();
 
@@ -166,7 +171,7 @@ public:
      * @param animalWhoIsEvaluating Pointer to the animal performing evaluation.
      */
     virtual void getRadiusTerrainCells(
-        std::vector<CellValue>& bestEvaluations, const PointContinuous &sourcePosition, const PreciseDouble &radius, const RingModel& radiusArea, const size_t searchDepth, const bool searchNeighborsWithFemales, const bool parentFullCoverage, AnimalNonStatistical* animalWhoIsEvaluating
+        std::vector<CellValue>& bestEvaluations, const PointContinuous &sourcePosition, const PreciseDouble &radius, const size_t searchDepth, bool searchNeighborsWithFemales, bool searchNeighborsWithMales, const bool parentFullCoverage, AnimalNonStatistical* animalWhoIsEvaluating, CustomIndexedVector<Instar, PreciseDouble>& maximumPatchEdibilityValueGlobal, CustomIndexedVector<Instar, PreciseDouble>& maximumPatchPredationRiskGlobal, CustomIndexedVector<Instar, PreciseDouble>& maximumPatchConspecificBiomassGlobal
     )=0;
 
     /**
@@ -181,12 +186,7 @@ public:
      * @param animalWhoIsEvaluating Pointer to the animal performing evaluation.
      */
     virtual void getNeighboursCellsOnRadius(
-        std::vector<CellValue>& bestEvaluations, const PointContinuous &sourcePosition, const PreciseDouble &radius, const RingModel& radiusArea, const size_t searchDepth, const bool searchNeighborsWithFemales, AnimalNonStatistical* animalWhoIsEvaluating
-    );
-
-    /// Overloaded neighbor search using default radiusArea.
-    void getNeighboursCellsOnRadius(
-        std::vector<CellValue>& bestEvaluations, const PointContinuous &sourcePosition, const PreciseDouble &radius, const size_t searchDepth, const bool searchNeighborsWithFemales, AnimalNonStatistical* animalWhoIsEvaluating
+        std::vector<CellValue>& bestEvaluations, const PointContinuous &sourcePosition, const PreciseDouble &radius, const size_t searchDepth, bool searchNeighborsWithFemales, bool searchNeighborsWithMales, AnimalNonStatistical* animalWhoIsEvaluating, CustomIndexedVector<Instar, PreciseDouble>& maximumPatchEdibilityValueGlobal, CustomIndexedVector<Instar, PreciseDouble>& maximumPatchPredationRiskGlobal, CustomIndexedVector<Instar, PreciseDouble>& maximumPatchConspecificBiomassGlobal
     );
 
     /** @name Downward traversal functions (pure virtual)
@@ -318,14 +318,13 @@ public:
      * @param checker Function returning true for animals to be affected.
      * @param sourcePosition Center point for the radius check.
      * @param radius Radius around the source position to consider.
-     * @param radiusArea Optional ring model defining the effective area.
      * @param animalFunctions Vector of pairs containing animal search parameters
      *                        and the functions to apply.
      * @param resourceFunctions Vector of pairs containing resource search parameters
      *                          and the functions to apply.
      */
     void applyFunctionToEdibles(
-        std::function<bool(Animal&)> checker, const PointContinuous &sourcePosition, const PreciseDouble &radius, const RingModel& radiusArea, 
+        std::function<bool(Animal&)> checker, const PointContinuous &sourcePosition, const PreciseDouble &radius, 
         const std::vector<std::pair<const AnimalSearchParams&, AnimalFunctions>>& animalFunctions,
         const std::vector<std::pair<const ResourceSearchParams&, ResourceFunctions>>& resourceFunctions
     ) override;
@@ -339,14 +338,13 @@ public:
      *
      * @param sourcePosition Center point for the radius check.
      * @param radius Radius around the source position to consider.
-     * @param radiusArea Optional ring model defining the effective area.
      * @param animalFunctions Vector of pairs containing animal search parameters
      *                        and the functions to apply.
      * @param resourceFunctions Vector of pairs containing resource search parameters
      *                          and the functions to apply.
      */
     virtual void applyFunctionToEdiblesInRadius(
-        const PointContinuous &sourcePosition, const PreciseDouble &radius, const RingModel& radiusArea, 
+        const PointContinuous &sourcePosition, const PreciseDouble &radius, 
         const std::vector<std::pair<const AnimalSearchParams&, AnimalFunctions>>& animalFunctions,
         const std::vector<std::pair<const ResourceSearchParams&, ResourceFunctions>>& resourceFunctions
     );

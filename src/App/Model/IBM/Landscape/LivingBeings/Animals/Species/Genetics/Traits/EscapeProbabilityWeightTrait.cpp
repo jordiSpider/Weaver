@@ -26,7 +26,7 @@ vector<Trait*> EscapeProbabilityWeightTrait::generateTraits(std::vector<Individu
 	for(const EscapeProbabilityWeightType type : EnumClass<EscapeProbabilityWeightType>::getEnumValues())
 	{
 		escapeProbabilityWeightTraits.push_back(new EscapeProbabilityWeightTrait(
-			individualLevelTraits, type, definitionConfig[DecisionsTrait::getJsonFieldName()][EscapeProbabilityWeightTrait::getJsonFieldName()][EnumClass<EscapeProbabilityWeightType>::to_string(type)], 
+			individualLevelTraits, type, definitionConfig[DecisionsTrait::getJsonFieldName()][EscapeProbabilityWeightTrait::getJsonFieldName()][fmt::to_string(type)],
 			individualLevelTraitsOrder
 		));
 	}
@@ -41,7 +41,7 @@ vector<string> EscapeProbabilityWeightTrait::getTraitStrVector()
 
 	for(EscapeProbabilityWeightType type : EnumClass<EscapeProbabilityWeightType>::getEnumValues())
 	{
-		traitStrVector.push_back(EnumClass<EscapeProbabilityWeightType>::to_string(type));
+		traitStrVector.push_back(fmt::to_string(type));
 	}
 
 	return traitStrVector;
@@ -72,10 +72,10 @@ EscapeProbabilityWeightTrait::EscapeProbabilityWeightTrait()
 
 EscapeProbabilityWeightTrait::EscapeProbabilityWeightTrait(std::vector<IndividualLevelTrait*>& individualLevelTraits, const EscapeProbabilityWeightType type, const json& config, const vector<json>& individualLevelTraitsOrder)
 	: DecisionsTrait(
-		individualLevelTraits, config, individualLevelTraitsOrder, getParentTraitStr() + "$" + EnumClass<EscapeProbabilityWeightType>::to_string(type), 
+		individualLevelTraits, config, individualLevelTraitsOrder, getParentTraitStr() + "$" + fmt::to_string(type), 
 		getFileName(),
 		createTemperatureSection(
-			individualLevelTraits, config, individualLevelTraitsOrder, getParentTraitStr() + "$" + EnumClass<EscapeProbabilityWeightType>::to_string(type), 
+			individualLevelTraits, config, individualLevelTraitsOrder, getParentTraitStr() + "$" + fmt::to_string(type), 
 			getFileName()
 		)
 	  )

@@ -71,13 +71,6 @@ public:
     void setOwner(AnimalNonStatistical* newOwner);
 
     /**
-     * @brief Calculates predation probability for a prey animal.
-     * @param prey Reference to the prey animal.
-     * @return Predation probability as PreciseDouble.
-     */
-    PreciseDouble calculatePredationProbability(const AnimalNonStatistical& prey);
-
-    /**
      * @brief Calculates predation probability for an edible resource.
      * @param prey Reference to the Edible object.
      * @param preyDryMass Dry mass of the prey.
@@ -221,13 +214,12 @@ public:
      * @brief Updates variables associated with the current instar.
      */
     void updateVariablesAssociatedWithInstar();
-    
+
     /**
-     * @brief Adds a new species to the decision-making system.
-     * @param numberOfInstars Number of instars for the species.
-     * @param timeStepsPerDay Number of time steps per day.
+     * @brief Initializes the animal's preferences at the start of simulation or after reset.
+     * @param timeStepsPerDay Number of time steps per day to scale initial preferences.
      */
-    void addSpecies(const unsigned int numberOfInstars, const PreciseDouble& timeStepsPerDay);
+    void setInitialPreferences(const PreciseDouble& timeStepsPerDay);
 
     /**
       * @brief Serializes the object for persistence.
@@ -312,12 +304,6 @@ protected:
      * cumulative predation probability, and other ecological factors.
      */
     void updatePreferences();
-
-    /**
-     * @brief Initializes the animal's preferences at the start of simulation or after reset.
-     * @param timeStepsPerDay Number of time steps per day to scale initial preferences.
-     */
-    void setInitialPreferences(const PreciseDouble& timeStepsPerDay);
 
     /**
      * @brief Updates preferences based on the most recent feeding events.

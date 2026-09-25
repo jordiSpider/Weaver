@@ -11,10 +11,6 @@
 #include <algorithm>
 
 
-#include <boost/serialization/export.hpp>
-#include <boost/serialization/vector.hpp>
-
-
 #include <fstream>
 #include <ostream>
 
@@ -41,15 +37,7 @@ class Animal;
 class AnimalSearchParams
 {
 protected:
-    std::vector<uint32_t> validSignatures;
-
-    static constexpr uint32_t packSignature(const LifeStage& ls, const AnimalSpeciesID& as, const Instar& in, const Gender& g) noexcept
-    {
-        return (static_cast<uint32_t>(ls) << 24) |
-               (static_cast<uint32_t>(as) << 16) |
-               (static_cast<uint32_t>(in.getValue()) << 8)  |
-               (static_cast<uint32_t>(g));
-    }
+    std::vector<bool> validSignaturesBitmask;
 
 public:
     /**
@@ -107,19 +95,9 @@ public:
         const std::vector<Gender> &newSearchableGenders
     );
 
+    void init();
+
     bool matches(const Animal& animal) const noexcept;
-
-    void clear();
-
-    /**
-     * @brief Serialization function for AnimalSearchParams.
-     * 
-     * @tparam Archive Type of archive
-     * @param ar Archive object
-     * @param version Version of the serialization
-     */
-    template <class Archive>
-    void serialize(Archive &ar, const unsigned int version);
 };
 
 #endif /* ANIMAL_SEARCH_PARAMS_H_ */

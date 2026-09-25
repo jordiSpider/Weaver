@@ -55,6 +55,23 @@ public:
         
     }
 
+    // Constructor de movimiento explícito
+    CustomIndexedVector(CustomIndexedVector&& other) noexcept
+        : data(std::move(other.data))
+    {
+    }
+
+    // Operador de asignación de movimiento explícito
+    CustomIndexedVector& operator=(CustomIndexedVector&& other) noexcept {
+        if (this != &other) {
+            data = std::move(other.data);
+        }
+        return *this;
+    }
+
+    CustomIndexedVector(const CustomIndexedVector& other) = default;
+    CustomIndexedVector& operator=(const CustomIndexedVector& other) = default;
+
     /// Returns a const reference to the internal vector.
     const std::vector<ContentType>& getData() const
     {
