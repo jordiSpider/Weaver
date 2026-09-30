@@ -355,6 +355,45 @@ public:
 	*/
 	virtual DryMass calculateMetabolicDryMassLossPerDay(const WetMass &wetMass, const PreciseDouble&proportionOfTimeTheAnimalWasMoving, const PreciseDouble& actE_metValue, const bool actE_metThermallyDependent, const PreciseDouble& met_rateValue, const bool met_rateThermallyDependent, const PreciseDouble& search_areaValue, const Temperature& tempFromLab, const Temperature& terrainCellTemperature, const PreciseDouble& conversionToWetMass) const=0;
 	
+	/** @brief Get a const reference to the active non-statistical animals in the landscape. */
+	const std::vector<AnimalNonStatistical*>& getLandscapeAnimals() const;
+
+	std::vector<AnimalNonStatistical*>& getLandscapeAnimals();
+
+	const std::vector<TerrainCell*>& getLandscapeTerrainCells() const;
+
+	std::vector<TerrainCell*>& getLandscapeTerrainCells();
+
+	/** @brief Get a const reference to the vector of loaded animal species. */
+	const std::vector<AnimalSpecies*>& getExistingAnimalSpecies() const;
+
+	/** @brief Get a mutable reference to the vector of animal species. */
+	std::vector<AnimalSpecies*>& getMutableExistingAnimalSpecies();
+
+	inline bool getSaveAnimalsEachDayPredationProbabilities() const {
+		return saveAnimalsEachDayPredationProbabilities;
+	}
+
+	inline bool getSaveActivity() const {
+		return saveActivity;
+	}
+
+	inline bool getSaveMovements() const {
+		return saveMovements;
+	}
+
+	inline bool getSaveAnimalsEachDayVoracities() const {
+		return saveAnimalsEachDayVoracities;
+	}
+
+	inline bool getSaveGenetics() const {
+		return saveGenetics;
+	}
+
+	inline bool getSaveMassInfo() const {
+		return saveMassInfo;
+	}
+
 	/**
 	* @brief Calculate a new voracity value (wet/dry conversion aware).
 	*
@@ -700,12 +739,6 @@ protected:
 	
 	/** @brief Get a mutable reference to the vector of resource species. */
 	std::vector<ResourceSpecies*>& getMutableExistingResourceSpecies();
-
-	/** @brief Get a mutable reference to the vector of animal species. */
-	std::vector<AnimalSpecies*>& getMutableExistingAnimalSpecies();
-	
-	/** @brief Get a const reference to the vector of loaded animal species. */
-	const std::vector<AnimalSpecies*>& getExistingAnimalSpecies() const;
 
 	/** @brief Get a mutable reference to the vector of all species. */
 	std::vector<Species*>& getMutableExistingSpecies();

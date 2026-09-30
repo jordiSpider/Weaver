@@ -43,6 +43,14 @@
                     "name": "nana"
                 }
             ]
+        },
+        "benchmarks": {
+            "description": "Google Benchmark targets",
+            "dependencies": [
+                {
+                    "name": "benchmark"
+                }
+            ]
         }
     }
 }

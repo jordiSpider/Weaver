@@ -8,6 +8,8 @@
 #include <oneapi/tbb/parallel_for.h>
 #include <tbb/spin_mutex.h>
 
+#include "App/Manager/TbbAdaptiveWrapper.h"
+
 #include "App/Model/IBM/Landscape/Landscape.h"
 
 #include "Misc/Utilities.h"
@@ -852,37 +854,38 @@ void Landscape::printAnimalsAlongCells(const TimeStep numberOfTimeSteps, const i
 			StorageBridge::writeHeaderPackToDisk(filePath, printAnimalsAlongCellsHeader);
 
 
-
-
 			// 1. Obtener de forma segura el límite máximo de hilos concurrentes de la arena actual
 			size_t maxThreadsInArena = static_cast<size_t>(tbb::this_task_arena::max_concurrency());
 			constexpr size_t estimatedAnimalLineSize = 2000u;
 
-			// 2. Calcular la estimación del búfer basada en la concurrencia real de la arena
-			size_t estimatedPerThreadSize = (landscapeAnimals.size() * estimatedAnimalLineSize) / std::max<size_t>(1, maxThreadsInArena);
+			size_t estimatedSize = landscapeAnimals.size() * estimatedAnimalLineSize;
 
+			// 2. Calcular la estimación del búfer basada en la concurrencia real de la arena
+			size_t estimatedPerThreadSize = estimatedSize / maxThreadsInArena;
 
 			auto& persistentBuffers = (simulationPoint == 0) ? localBuffersAnimalsStart : localBuffersAnimalsEnd;
 
 
-			// 3. parallel_for: Cada subtarea añade texto al búfer de la hebra que la ejecuta
-			tbb::parallel_for(
-				tbb::blocked_range<size_t>(0, landscapeAnimals.size()),
-				[&](const tbb::blocked_range<size_t>& r) {
+			TbbAdaptiveWrapper::Execute(landscapeAnimals, 0, landscapeAnimals.size(), 3u,
+				[&](auto& animals, size_t start, size_t end) {
 					fmt::memory_buffer& localStr = persistentBuffers.local();
-					const size_t blockReserve = r.size() * estimatedAnimalLineSize;
+					localStr.reserve(estimatedSize);
 
-					if (localStr.capacity() == 0) {
-						localStr.reserve(estimatedPerThreadSize);
+					for (size_t i = start; i < end; ++i) {
+						animals[i]->formatToBufferDirect(localStr);
 					}
-					else if (localStr.capacity() < localStr.size() + blockReserve) {
-						localStr.reserve(localStr.size() + blockReserve);
-					}
+				},
+				[&](auto& animals, size_t start, size_t end) {
+					tbb::parallel_for(tbb::blocked_range<size_t>(start, end),
+						[&](const tbb::blocked_range<size_t>& r) {
+							fmt::memory_buffer& localStr = persistentBuffers.local();
+							localStr.reserve(estimatedPerThreadSize);
 
-					for (size_t i = r.begin(); i != r.end(); ++i) {
-						static_cast<AnimalNonStatistical*>(landscapeAnimals[i])->formatToBufferDirect(localStr);
-					}
-
+							for (size_t i = r.begin(); i < r.end(); ++i) {
+								animals[i]->formatToBufferDirect(localStr);
+							}
+						}
+					);
 				}
 			);
 
@@ -913,29 +916,22 @@ void Landscape::printCellAlongCells(const TimeStep numberOfTimeSteps)
 
 			const size_t numAnimalSpecies = existingAnimalSpecies.size();
 
+			size_t estimatedSize = terrainCells.size() * 256;
+
 			// 1. Obtener de forma segura el límite máximo de hilos concurrentes de la arena actual
 			size_t maxThreadsInArena = static_cast<size_t>(tbb::this_task_arena::max_concurrency());
 
 			// 2. Calcular la estimación del búfer basada en la concurrencia real de la arena
-			size_t estimatedPerThreadSize = (terrainCells.size() * 256) / std::max<size_t>(1, maxThreadsInArena);
+			size_t estimatedPerThreadSize = estimatedSize / maxThreadsInArena;
 
-			tbb::parallel_for(
-				tbb::blocked_range<size_t>(0, terrainCells.size()),
-				[&](const tbb::blocked_range<size_t>& r) {
+
+			TbbAdaptiveWrapper::Execute(terrainCells, 0, terrainCells.size(), 1u,
+				[&](auto& cells, size_t start, size_t end) {
 					fmt::memory_buffer& localStr = localBuffersCells.local();
+					localStr.reserve(estimatedSize);
 
-					// CERO COPIAS: Si el hilo entra por primera vez a procesar una subtarea, 
-					// su capacidad será 0. En ese instante exacto reserva toda la memoria de golpe.
-					if (localStr.capacity() == 0) {
-						localStr.reserve(std::max(estimatedPerThreadSize + (r.size() * 256), size_t(256)));
-					}
-					else if (localStr.capacity() < localStr.size() + (r.size() * 256)) {
-						// Salvaguarda por si un hilo recibe más carga de la estimada promedialmente
-						localStr.reserve(localStr.size() + (r.size() * 256));
-					}
-
-					for (size_t i = r.begin(); i != r.end(); ++i) {
-						const auto& cell = terrainCells[i];
+					for (size_t i = start; i < end; ++i) {
+						const auto& cell = cells[i];
 
 						const PointMap& position = cell->getPosition();
 
@@ -951,7 +947,7 @@ void Landscape::printCellAlongCells(const TimeStep numberOfTimeSteps)
 						{
 							const CellResourceInterface& resource = cell->getPatchApplicator().getCellResource(j);
 
-							fmt::format_to(fmt::appender(localStr), "\t{}\t{}", 
+							fmt::format_to(fmt::appender(localStr), "\t{}\t{}",
 								resource.getGrowthBuildingBlock().getCurrentTotalWetMass().getValue().getValue(),
 								resource.calculateDryMassAvailable(true, nullptr, 0.0).getValue().getValue()
 							);
@@ -961,7 +957,7 @@ void Landscape::printCellAlongCells(const TimeStep numberOfTimeSteps)
 						std::vector<uint32_t> animalCounts(numAnimalSpecies, 0u);
 
 						for (const auto* animal : landscapeAnimals) {
-							if(cell->isAnimalInside(animal->getPosition())) {
+							if (cell->isAnimalInside(animal->getPosition())) {
 								animalCounts[animal->getAnimalSpeciesId()]++;
 							}
 						}
@@ -974,8 +970,58 @@ void Landscape::printCellAlongCells(const TimeStep numberOfTimeSteps)
 
 						localStr.push_back('\n');
 					}
+				},
+				[&](auto& cells, size_t start, size_t end) {
+					tbb::parallel_for(tbb::blocked_range<size_t>(start, end),
+						[&](const tbb::blocked_range<size_t>& r) {
+							fmt::memory_buffer& localStr = localBuffersCells.local();
+							localStr.reserve(estimatedPerThreadSize);
+
+							for (size_t i = r.begin(); i < r.end(); ++i) {
+								const auto& cell = cells[i];
+
+								const PointMap& position = cell->getPosition();
+
+								fmt::format_to(fmt::appender(localStr), "{}", position.get(magic_enum::enum_cast<Axis>(0).value()));
+
+								for (unsigned int axis = 1; axis < DIMENSIONS; axis++)
+								{
+									fmt::format_to(fmt::appender(localStr), "\t{}", position.get(magic_enum::enum_cast<Axis>(axis).value()));
+								}
+
+
+								for (size_t j = 0; j < cell->getPatchApplicator().getNumberOfResources(); j++)
+								{
+									const CellResourceInterface& resource = cell->getPatchApplicator().getCellResource(j);
+
+									fmt::format_to(fmt::appender(localStr), "\t{}\t{}",
+										resource.getGrowthBuildingBlock().getCurrentTotalWetMass().getValue().getValue(),
+										resource.calculateDryMassAvailable(true, nullptr, 0.0).getValue().getValue()
+									);
+								}
+
+
+								std::vector<uint32_t> animalCounts(numAnimalSpecies, 0u);
+
+								for (const auto* animal : landscapeAnimals) {
+									if (cell->isAnimalInside(animal->getPosition())) {
+										animalCounts[animal->getAnimalSpeciesId()]++;
+									}
+								}
+
+								for (uint32_t count : animalCounts)
+								{
+									fmt::format_to(fmt::appender(localStr), "\t{}", count);
+								}
+
+
+								localStr.push_back('\n');
+							}
+						}
+					);
 				}
 			);
+
 
 			// 4. Enviar un paquete por cada hebra usando std::move (Cero copias, contención mínima)
 			for (fmt::memory_buffer& threadBuffer : localBuffersCells) {
@@ -1149,8 +1195,10 @@ void Landscape::updateMap(const TimeStep numberOfTimeSteps)
 	// 1. Obtener de forma segura el límite máximo de hilos concurrentes de la arena actual
 	size_t maxThreadsInArena = static_cast<size_t>(tbb::this_task_arena::max_concurrency());
 
+	size_t estimatedSize = (landscapeAnimals.size() * 256);
+
 	// 2. Calcular la estimación del búfer basada en la concurrencia real de la arena
-	size_t estimatedPerThreadSize = (landscapeAnimals.size() * 256) / std::max<size_t>(1, maxThreadsInArena);
+	size_t estimatedPerThreadSize = estimatedSize / maxThreadsInArena;
 
 
 	tbb::enumerable_thread_specific<CustomIndexedVector<AnimalSpeciesID, CustomIndexedVector<Instar, PreciseDouble>>> maximumInteractionAreaLocal(
@@ -1178,64 +1226,117 @@ void Landscape::updateMap(const TimeStep numberOfTimeSteps)
 	);
 
 
-	tbb::parallel_for(
-		tbb::blocked_range<size_t>(0, landscapeAnimals.size()),
-		[&](const tbb::blocked_range<size_t>& r) {
+
+	TbbAdaptiveWrapper::Execute(landscapeAnimals, 0, landscapeAnimals.size(), 8u,
+		[&](auto& animals, size_t start, size_t end) {
 			fmt::memory_buffer& localStr = localBuffersMassInfo.local();
+			if (saveMassInfo) {
+				localStr.reserve(estimatedSize);
+			}
 
 			CustomIndexedVector<AnimalSpeciesID, CustomIndexedVector<Instar, PreciseDouble>>& animalSpeciesMaximumInteractionArea = maximumInteractionAreaLocal.local();
 			CustomIndexedVector<AnimalSpeciesID, CustomIndexedVector<Instar, PreciseDouble>>& animalSpeciesMaximumVoracity = maximumVoracityLocal.local();
 
-			if (saveMassInfo) {
-				// CERO COPIAS: Si el hilo entra por primera vez a procesar una subtarea, 
-				// su capacidad será 0. En ese instante exacto reserva toda la memoria de golpe.
-				if (localStr.capacity() == 0) {
-					localStr.reserve(estimatedPerThreadSize + (r.size() * 256));
+
+			for (size_t i = start; i < end; ++i) {
+				auto animalPtr = animals[i];
+
+				AnimalSpeciesID id = animalPtr->getSpecies()->getAnimalSpeciesId();
+
+				CustomIndexedVector<Instar, PreciseDouble>& maximumInteractionArea = animalSpeciesMaximumInteractionArea[id];
+				CustomIndexedVector<Instar, PreciseDouble>& maximumVoracity = animalSpeciesMaximumVoracity[id];
+
+
+				animalPtr->resetControlVariables(numberOfTimeSteps, getTimeStepsPerDay());
+
+				if (animalPtr->getLifeStage() != LifeStage::UNBORN)
+				{
+					animalPtr->increaseAge(this, numberOfTimeSteps, getTimeStepsPerDay());
 				}
-				else if (localStr.capacity() < localStr.size() + (r.size() * 256)) {
-					// Salvaguarda por si un hilo recibe más carga de la estimada promedialmente
-					localStr.reserve(localStr.size() + (r.size() * 256));
+
+				if (animalPtr->getLifeStage() == LifeStage::UNBORN)
+				{
+					animalPtr->isReadyToBeBorn(this, getTimeStepsPerDay());
+				}
+
+				if (animalPtr->getLifeStage() == LifeStage::DIAPAUSE)
+				{
+					animalPtr->isReadyToResumeFromDiapauseOrIncreaseDiapauseTimeSteps(this);
+				}
+
+				if (animalPtr->getLifeStage() == LifeStage::PUPA)
+				{
+					animalPtr->isReadyToResumeFromPupaOrDecreasePupaTimer(this);
+				}
+
+				if (animalPtr->getLifeStage() != LifeStage::UNBORN)
+				{
+					animalPtr->tune(this, saveMassInfo, localStr, numberOfTimeSteps, getTimeStepsPerDay(), maximumInteractionArea, maximumVoracity);
+				}
+
+				if (animalPtr->getLifeStage() == LifeStage::ACTIVE)
+				{
+					animalPtr->grow(this, numberOfTimeSteps, getTimeStepsPerDay());
 				}
 			}
+		},
+		[&](auto& animals, size_t start, size_t end) {
+			tbb::parallel_for(tbb::blocked_range<size_t>(start, end),
+				[&](const tbb::blocked_range<size_t>& r) {
+					fmt::memory_buffer& localStr = localBuffersMassInfo.local();
+					if (saveMassInfo) {
+						localStr.reserve(estimatedPerThreadSize);
+					}
 
-			for (size_t i = r.begin(); i != r.end(); ++i) {
-				CustomIndexedVector<Instar, PreciseDouble>& maximumInteractionArea = animalSpeciesMaximumInteractionArea[landscapeAnimals[i]->getAnimalSpeciesId()];
-				CustomIndexedVector<Instar, PreciseDouble>& maximumVoracity = animalSpeciesMaximumVoracity[landscapeAnimals[i]->getAnimalSpeciesId()];
+					CustomIndexedVector<AnimalSpeciesID, CustomIndexedVector<Instar, PreciseDouble>>& animalSpeciesMaximumInteractionArea = maximumInteractionAreaLocal.local();
+					CustomIndexedVector<AnimalSpeciesID, CustomIndexedVector<Instar, PreciseDouble>>& animalSpeciesMaximumVoracity = maximumVoracityLocal.local();
 
-				static_cast<AnimalNonStatistical*>(landscapeAnimals[i])->resetControlVariables(numberOfTimeSteps, getTimeStepsPerDay());
+					for (size_t i = r.begin(); i < r.end(); ++i) {
+						auto animalPtr = animals[i];
 
-				if (landscapeAnimals[i]->getLifeStage() != LifeStage::UNBORN)
-				{
-					static_cast<AnimalNonStatistical*>(landscapeAnimals[i])->increaseAge(this, numberOfTimeSteps, getTimeStepsPerDay());
+						AnimalSpeciesID id = animalPtr->getSpecies()->getAnimalSpeciesId();
+
+						CustomIndexedVector<Instar, PreciseDouble>& maximumInteractionArea = animalSpeciesMaximumInteractionArea[id];
+						CustomIndexedVector<Instar, PreciseDouble>& maximumVoracity = animalSpeciesMaximumVoracity[id];
+
+
+						animalPtr->resetControlVariables(numberOfTimeSteps, getTimeStepsPerDay());
+
+						if (animalPtr->getLifeStage() != LifeStage::UNBORN)
+						{
+							animalPtr->increaseAge(this, numberOfTimeSteps, getTimeStepsPerDay());
+						}
+
+						if (animalPtr->getLifeStage() == LifeStage::UNBORN)
+						{
+							animalPtr->isReadyToBeBorn(this, getTimeStepsPerDay());
+						}
+
+						if (animalPtr->getLifeStage() == LifeStage::DIAPAUSE)
+						{
+							animalPtr->isReadyToResumeFromDiapauseOrIncreaseDiapauseTimeSteps(this);
+						}
+
+						if (animalPtr->getLifeStage() == LifeStage::PUPA)
+						{
+							animalPtr->isReadyToResumeFromPupaOrDecreasePupaTimer(this);
+						}
+
+						if (animalPtr->getLifeStage() != LifeStage::UNBORN)
+						{
+							animalPtr->tune(this, saveMassInfo, localStr, numberOfTimeSteps, getTimeStepsPerDay(), maximumInteractionArea, maximumVoracity);
+						}
+
+						if (animalPtr->getLifeStage() == LifeStage::ACTIVE)
+						{
+							animalPtr->grow(this, numberOfTimeSteps, getTimeStepsPerDay());
+						}
+					}
 				}
-
-				if (landscapeAnimals[i]->getLifeStage() == LifeStage::UNBORN)
-				{
-					static_cast<AnimalNonStatistical*>(landscapeAnimals[i])->isReadyToBeBorn(this, getTimeStepsPerDay());
-				}
-
-				if (landscapeAnimals[i]->getLifeStage() == LifeStage::DIAPAUSE)
-				{
-					static_cast<AnimalNonStatistical*>(landscapeAnimals[i])->isReadyToResumeFromDiapauseOrIncreaseDiapauseTimeSteps(this);
-				}
-
-				if (landscapeAnimals[i]->getLifeStage() == LifeStage::PUPA)
-				{
-					static_cast<AnimalNonStatistical*>(landscapeAnimals[i])->isReadyToResumeFromPupaOrDecreasePupaTimer(this);
-				}
-
-				if (landscapeAnimals[i]->getLifeStage() != LifeStage::UNBORN)
-				{
-					static_cast<AnimalNonStatistical*>(landscapeAnimals[i])->tune(this, saveMassInfo, localStr, numberOfTimeSteps, getTimeStepsPerDay(), maximumInteractionArea, maximumVoracity);
-				}
-
-				if (landscapeAnimals[i]->getLifeStage() == LifeStage::ACTIVE)
-				{
-					static_cast<AnimalNonStatistical*>(landscapeAnimals[i])->grow(this, numberOfTimeSteps, getTimeStepsPerDay());
-				}
-			}
+			);
 		}
 	);
+
 
 	if (saveMassInfo) {
 		// 4. Enviar un paquete por cada hebra usando std::move (Cero copias, contención mínima)
@@ -1363,12 +1464,20 @@ void Landscape::evolveLandscape()
 	const TimeStep totalNumberOfTimeSteps(getRunDays(), getTimeStepsPerDay());
 
 
-	tbb::parallel_for(
-		tbb::blocked_range<size_t>(0, landscapeAnimals.size()),
-		[&](const tbb::blocked_range<size_t>& r) {
-			for (size_t i = r.begin(); i != r.end(); ++i) {
-				static_cast<AnimalNonStatistical*>(landscapeAnimals[i])->initControlVariables(getExistingSpecies());
+	TbbAdaptiveWrapper::Execute(landscapeAnimals, 0, landscapeAnimals.size(), 45u,
+		[this](auto& animals, size_t start, size_t end) {
+			for (size_t i = start; i < end; ++i) {
+				animals[i]->initControlVariables(getExistingSpecies());
 			}
+		},
+		[this](auto& animals, size_t start, size_t end) {
+			tbb::parallel_for(tbb::blocked_range<size_t>(start, end),
+				[this, &animals](const tbb::blocked_range<size_t>& r) {
+					for (size_t i = r.begin(); i < r.end(); ++i) {
+						animals[i]->initControlVariables(getExistingSpecies());
+					}
+				}
+			);
 		}
 	);
 
@@ -1808,47 +1917,39 @@ void Landscape::executingActions(const TimeStep& numberOfTimeSteps)
 		maximumPatchPredationRiskGlobalLocal.clear();
 		maximumPatchConspecificBiomassGlobalLocal.clear();
 
-		size_t estimatedPerThreadSize = (activeElements * 256) / std::max<size_t>(1, maxThreadsInArena);
+		size_t estimatedSize = activeElements * 256;
 
-		tbb::parallel_for(
-			tbb::blocked_range<size_t>(0, activeElements),
-			[&](const tbb::blocked_range<size_t>& r) {
+		size_t estimatedPerThreadSize = estimatedSize / maxThreadsInArena;
+
+
+		TbbAdaptiveWrapper::Execute(landscapeAnimals, 0, activeElements, 48u,
+			[&](auto& animals, size_t start, size_t end) {
 				fmt::memory_buffer& localStr = localBuffersEdibilities.local();
+
+				if (getSaveEdibilitiesFile()) {
+					localStr.reserve(estimatedSize);
+				}
 
 				CustomIndexedVector<AnimalSpeciesID, CustomIndexedVector<Instar, PreciseDouble>>& animalSpeciesMaximumPatchEdibilityValueGlobal = maximumPatchEdibilityValueGlobalLocal.local();
 				CustomIndexedVector<AnimalSpeciesID, CustomIndexedVector<Instar, PreciseDouble>>& animalSpeciesMaximumPatchPredationRiskGlobal = maximumPatchPredationRiskGlobalLocal.local();
 				CustomIndexedVector<AnimalSpeciesID, CustomIndexedVector<Instar, PreciseDouble>>& animalSpeciesMaximumPatchConspecificBiomassGlobal = maximumPatchConspecificBiomassGlobalLocal.local();
 
-				if (getSaveEdibilitiesFile()) {
-					// CERO COPIAS: Si el hilo entra por primera vez a procesar una subtarea, 
-					// su capacidad será 0. En ese instante exacto reserva toda la memoria de golpe.
-					if (localStr.capacity() == 0) {
-						localStr.reserve(estimatedPerThreadSize + (r.size() * 256));
-					}
-					else if (localStr.capacity() < localStr.size() + (r.size() * 256)) {
-						// Salvaguarda por si un hilo recibe más carga de la estimada promedialmente
-						localStr.reserve(localStr.size() + (r.size() * 256));
-					}
-				}
-
-				auto* animalsData = landscapeAnimals.data();
 				const bool saveEd = getSaveEdibilitiesFile();
 				const auto& timeStepsPerDay = getTimeStepsPerDay();
-				const size_t begin = r.begin();
-				const size_t end = r.end();
 
-				for (size_t idx = begin; idx < end; ++idx) {
+				for (size_t i = start; i < end; ++i) {
 #ifdef DEBUG
 					auto t0 = chrono::high_resolution_clock::now();
 #endif
 
-					AnimalNonStatistical* animal = animalsData[idx];
-					auto speciesId = animal->getAnimalSpeciesId();
+					auto animalPtr = animals[i];
+
+					auto speciesId = animalPtr->getAnimalSpeciesId();
 					auto& maxEd = animalSpeciesMaximumPatchEdibilityValueGlobal[speciesId];
 					auto& maxPred = animalSpeciesMaximumPatchPredationRiskGlobal[speciesId];
 					auto& maxCons = animalSpeciesMaximumPatchConspecificBiomassGlobal[speciesId];
 
-					animal->actionPlanning(
+					animalPtr->actionPlanning(
 						this,
 						numberOfTimeSteps,
 						timeStepsPerDay,
@@ -1868,8 +1969,60 @@ void Landscape::executingActions(const TimeStep& numberOfTimeSteps)
 					}
 #endif
 				}
+			},
+			[&](auto& animals, size_t start, size_t end) {
+				tbb::parallel_for(tbb::blocked_range<size_t>(start, end),
+					[&](const tbb::blocked_range<size_t>& r) {
+						fmt::memory_buffer& localStr = localBuffersEdibilities.local();
+
+						if (getSaveEdibilitiesFile()) {
+							localStr.reserve(estimatedPerThreadSize);
+						}
+
+						CustomIndexedVector<AnimalSpeciesID, CustomIndexedVector<Instar, PreciseDouble>>& animalSpeciesMaximumPatchEdibilityValueGlobal = maximumPatchEdibilityValueGlobalLocal.local();
+						CustomIndexedVector<AnimalSpeciesID, CustomIndexedVector<Instar, PreciseDouble>>& animalSpeciesMaximumPatchPredationRiskGlobal = maximumPatchPredationRiskGlobalLocal.local();
+						CustomIndexedVector<AnimalSpeciesID, CustomIndexedVector<Instar, PreciseDouble>>& animalSpeciesMaximumPatchConspecificBiomassGlobal = maximumPatchConspecificBiomassGlobalLocal.local();
+
+						const bool saveEd = getSaveEdibilitiesFile();
+						const auto& timeStepsPerDay = getTimeStepsPerDay();
+
+						for (size_t i = r.begin(); i < r.end(); ++i) {
+#ifdef DEBUG
+							auto t0 = chrono::high_resolution_clock::now();
+#endif
+
+							auto animalPtr = animals[i];
+
+							auto speciesId = animalPtr->getAnimalSpeciesId();
+							auto& maxEd = animalSpeciesMaximumPatchEdibilityValueGlobal[speciesId];
+							auto& maxPred = animalSpeciesMaximumPatchPredationRiskGlobal[speciesId];
+							auto& maxCons = animalSpeciesMaximumPatchConspecificBiomassGlobal[speciesId];
+
+							animalPtr->actionPlanning(
+								this,
+								numberOfTimeSteps,
+								timeStepsPerDay,
+								saveEd,
+								localStr,
+								maxEd,
+								maxPred,
+								maxCons
+							);
+
+#ifdef DEBUG
+							auto t1 = chrono::high_resolution_clock::now();
+
+							if (chrono::duration<double>(t1 - t0).count() > exitTimeThreshold)
+							{
+								throwLineInfoException("too many animals for too little food!!!");
+							}
+#endif
+						}
+					}
+				);
 			}
 		);
+
 
 		for (auto& animalSpeciesMaximumPatchEdibilityValueGlobal : maximumPatchEdibilityValueGlobalLocal) {
 			for (size_t i = 0; i < animalSpeciesMaximumPatchEdibilityValueGlobal.size(); ++i) {
@@ -1941,14 +2094,14 @@ void Landscape::executingActions(const TimeStep& numberOfTimeSteps)
 			// Eliminado el 'if' dentro del bucle. Iteramos estrictamente sobre el Bloque 1 [0 ... predateEnd)
 			CustomIndexedVector<AnimalSpeciesID, uint64_t> animalSpeciesMaximumPredationEncountersPerDay(getExistingAnimalSpecies().size(), 0u);
 
-			size_t predateEstimatedPerThreadSize = (predateEnd * 256) / std::max<size_t>(1, maxThreadsInArena);
+			size_t predateEstimatedPerThreadSize = predateEnd * 256;
 
 
 			for (size_t k = 0; k < predateEnd; k++) {
 				fmt::memory_buffer& predationProbabilitiesLocalStr = localBuffersPredationProbabilities.local();
 				CustomIndexedVector<Species::ID, unsigned int>& predationEventsOnOtherSpecies = predationEventsOnOtherSpeciesLocal.local()[landscapeAnimals[k]->getSpecies()->getAnimalSpeciesId()];
 
-				if (saveAnimalsEachDayPredationProbabilities && predationProbabilitiesLocalStr.capacity() == 0) {
+				if (saveAnimalsEachDayPredationProbabilities) {
 					predationProbabilitiesLocalStr.reserve(predateEstimatedPerThreadSize);
 				}
 
@@ -1969,42 +2122,49 @@ void Landscape::executingActions(const TimeStep& numberOfTimeSteps)
 			// =================================================================
 			// Eliminado el 'if' de predicado. Iteramos estrictamente sobre el Bloque 2 [predateEnd ... parallelEnd)
 
-			size_t nonPredateEstimatedPerThreadSize = ((parallelEnd - predateEnd) * 256) / std::max<size_t>(1, maxThreadsInArena);
+			size_t nonPredateEstimatedSize = ((parallelEnd - predateEnd) * 256);
 
-			tbb::parallel_for(
-				tbb::blocked_range<size_t>(predateEnd, parallelEnd),
-				[&](const tbb::blocked_range<size_t>& r) {
+			size_t nonPredateEstimatedPerThreadSize = nonPredateEstimatedSize / maxThreadsInArena;
+
+
+			TbbAdaptiveWrapper::Execute(landscapeAnimals, predateEnd, parallelEnd, 3u,
+				[&](auto& animals, size_t start, size_t end) {
 					fmt::memory_buffer& activitiesLocalStr = localBuffersActivities.local();
 					fmt::memory_buffer& movementsLocalStr = localBuffersMovements.local();
 
 					if (saveActivity) {
-						// CERO COPIAS: Si el hilo entra por primera vez a procesar una subtarea, 
-						// su capacidad será 0. En ese instante exacto reserva toda la memoria de golpe.
-						if (activitiesLocalStr.capacity() == 0) {
-							activitiesLocalStr.reserve(nonPredateEstimatedPerThreadSize + (r.size() * 256));
-						}
-						else if (activitiesLocalStr.capacity() < activitiesLocalStr.size() + (r.size() * 256)) {
-							// Salvaguarda por si un hilo recibe más carga de la estimada promedialmente
-							activitiesLocalStr.reserve(activitiesLocalStr.size() + (r.size() * 256));
-						}
+						activitiesLocalStr.reserve(nonPredateEstimatedSize);
 					}
 
 					if (saveMovements) {
-						// CERO COPIAS: Si el hilo entra por primera vez a procesar una subtarea, 
-						// su capacidad será 0. En ese instante exacto reserva toda la memoria de golpe.
-						if (movementsLocalStr.capacity() == 0) {
-							movementsLocalStr.reserve(nonPredateEstimatedPerThreadSize + (r.size() * 256));
-						}
-						else if (movementsLocalStr.capacity() < movementsLocalStr.size() + (r.size() * 256)) {
-							// Salvaguarda por si un hilo recibe más carga de la estimada promedialmente
-							movementsLocalStr.reserve(movementsLocalStr.size() + (r.size() * 256));
-						}
+						movementsLocalStr.reserve(nonPredateEstimatedSize);
 					}
 
-					for (size_t idx = r.begin(); idx < r.end(); ++idx) {
-						landscapeAnimals[idx]->actionExecution(this, saveActivity, activitiesLocalStr,
+					for (size_t i = start; i < end; ++i) {
+						animals[i]->actionExecution(this, saveActivity, activitiesLocalStr,
 							numberOfTimeSteps, getTimeStepsPerDay(), saveMovements, movementsLocalStr);
 					}
+				},
+				[&](auto& animals, size_t start, size_t end) {
+					tbb::parallel_for(tbb::blocked_range<size_t>(start, end),
+						[&](const tbb::blocked_range<size_t>& r) {
+							fmt::memory_buffer& activitiesLocalStr = localBuffersActivities.local();
+							fmt::memory_buffer& movementsLocalStr = localBuffersMovements.local();
+
+							if (saveActivity) {
+								activitiesLocalStr.reserve(nonPredateEstimatedPerThreadSize);
+							}
+
+							if (saveMovements) {
+								movementsLocalStr.reserve(nonPredateEstimatedPerThreadSize);
+							}
+
+							for (size_t i = r.begin(); i < r.end(); ++i) {
+								animals[i]->actionExecution(this, saveActivity, activitiesLocalStr,
+									numberOfTimeSteps, getTimeStepsPerDay(), saveMovements, movementsLocalStr);
+							}
+						}
+					);
 				}
 			);
 		}
@@ -2059,12 +2219,20 @@ void Landscape::executingActions(const TimeStep& numberOfTimeSteps)
 	}
 
 
-	tbb::parallel_for(
-		tbb::blocked_range<size_t>(0, totalElements), 
-		[&](const tbb::blocked_range<size_t>& r) {
-			for (size_t i = r.begin(); i != r.end(); ++i) {
-				landscapeAnimals[i]->updateTimeStepsWithoutFood();
+	TbbAdaptiveWrapper::Execute(landscapeAnimals, 0, landscapeAnimals.size(), 1321u,
+		[](auto& animals, size_t start, size_t end) {
+			for (size_t i = start; i < end; ++i) {
+				animals[i]->updateTimeStepsWithoutFood();
 			}
+		},
+		[](auto& animals, size_t start, size_t end) {
+			tbb::parallel_for(tbb::blocked_range<size_t>(start, end),
+				[&](const tbb::blocked_range<size_t>& r) {
+					for (size_t i = r.begin(); i < r.end(); ++i) {
+						animals[i]->updateTimeStepsWithoutFood();
+					}
+				}
+			);
 		}
 	);
 
@@ -2099,115 +2267,124 @@ void Landscape::performAnimalsActions(const TimeStep numberOfTimeSteps)
 
 	if (saveAnimalsEachDayVoracities)
 	{
-		StorageBridge::writeHeaderPackToDisk(voracitiesFilePath, "id\tspecies\tstate\tcurrentAge\tinstar\tmature\tbody_size\tenergy_tank\tdryMass\tcurrentWetMass\ttankAtGrowth\tnextDinoMass\tmaxVoracityTimeStep\tmin_mass_for_death\tvoracity_ini\tpreT_search\tpreT_speed\tafter_encounters_voracity\tafter_encounters_search\tfinal_speed\texpectedDryMassFromMaxVor\tfood_mass\tdryMassAfterAssim\ttotalMetabolicDryMassLossAfterAssim\tmaxSearchArea\teatenToday\tsteps\tstepsAttempted\tafter_encounters_search\tsated\tpercentMoving\tvoracity_body_mass_ratio\tgender\tmated\teggDryMass\tK\tfactorEggMass\tdeath_date\tageOfFirstMaturation\treproCounter");
+		StorageBridge::writeHeaderPackToDisk(voracitiesFilePath, "id\tspecies\tstate\tcurrentAge\tinstar\tmature\tbody_size\tenergy_tank\tdryMass\tcurrentWetMass\ttankAtGrowth\tnextDinoMass\tmaxVoracityTimeStep\tmin_mass_for_death\tvoracity_ini\tpreT_search\tpreT_speed\tafter_encounters_voracity\tafter_encounters_search\tfinal_speed\texpectedDryMassFromMaxVor\tfood_mass\tdryMassAfterAssim\ttotalMetabolicDryMassLossAfterAssim\tmaxSearchArea\teatenToday\th\tsteps\tstepsAttempted\tafter_encounters_search\tsated\tpercentMoving\tvoracity_body_mass_ratio\tgender\tmated\teggDryMass\tK\tfactorEggMass\tdeath_date\tageOfFirstMaturation\treproCounter");
 	}
 
-	// 1. Obtener de forma segura el límite máximo de hilos concurrentes de la arena actual
 	size_t maxThreadsInArena = static_cast<size_t>(tbb::this_task_arena::max_concurrency());
-
-	// 2. Calcular la estimación del búfer basada en la concurrencia real de la arena
-	size_t estimatedPerThreadSize = (landscapeAnimals.size() * 256) / std::max<size_t>(1, maxThreadsInArena);
+	size_t estimatedSize = (landscapeAnimals.size() * 256);
+	size_t estimatedPerThreadSize = estimatedSize / maxThreadsInArena;
 
 	tbb::enumerable_thread_specific<CustomIndexedVector<AnimalSpeciesID, unsigned int>> animalSpeciesPopulationLocal(getExistingAnimalSpecies().size(), 0u);
 
-
-	tbb::parallel_for(
-		tbb::blocked_range<size_t>(0, landscapeAnimals.size()),
-		[&](const tbb::blocked_range<size_t>& r) {
+	// Invocamos el Wrapper adaptativo
+	TbbAdaptiveWrapper::Execute(landscapeAnimals, 0, landscapeAnimals.size(), 19u,
+		// === OPERACIÓN SECUENCIAL (SeqOp) ===
+		[&](auto& animals, size_t start, size_t end) {
+			// En entorno puramente secuencial, accedemos directamente de forma segura
 			fmt::memory_buffer& voracitiesLocalStr = localBuffersVoracities.local();
-
 			CustomIndexedVector<AnimalSpeciesID, unsigned int>& animalSpeciesPopulation = animalSpeciesPopulationLocal.local();
-
 			CustomIndexedVector<AnimalSpeciesID, fmt::memory_buffer>& animalConstitutiveTraitsLocalStr = localBuffersAnimalConstitutiveTraits.local();
-
 			CustomIndexedVector<AnimalSpeciesID, std::vector<fmt::memory_buffer>>& animalSpeciesGeneticsLocalStr = localBuffersGenetics.local();
 
-			if (saveAnimalsEachDayVoracities) 
-			{
-				// CERO COPIAS: Si el hilo entra por primera vez a procesar una subtarea, 
-				// su capacidad será 0. En ese instante exacto reserva toda la memoria de golpe.
-				if (voracitiesLocalStr.capacity() == 0) {
-					voracitiesLocalStr.reserve(estimatedPerThreadSize + (r.size() * 256));
-				}
-				else if (voracitiesLocalStr.capacity() < voracitiesLocalStr.size() + (r.size() * 256)) {
-					// Salvaguarda por si un hilo recibe más carga de la estimada promedialmente
-					voracitiesLocalStr.reserve(voracitiesLocalStr.size() + (r.size() * 256));
-				}
+			if (saveAnimalsEachDayVoracities) {
+				voracitiesLocalStr.reserve(estimatedSize);
 			}
 
-			for (size_t i = r.begin(); i != r.end(); ++i) {
-				AnimalSpeciesID id = landscapeAnimals[i]->getSpecies()->getAnimalSpeciesId();
+			for (size_t i = start; i < end; ++i) {
+				auto animalPtr = animals[i];
 
+				AnimalSpeciesID id = animalPtr->getSpecies()->getAnimalSpeciesId();
 				fmt::memory_buffer& animalSpeciesTraitsLocalStr = animalConstitutiveTraitsLocalStr[id];
-
 				std::vector<fmt::memory_buffer>& geneticsLocalStr = animalSpeciesGeneticsLocalStr[id];
-
 				unsigned int& population = animalSpeciesPopulation[id];
 
-				if (getSaveAnimalConstitutiveTraits())
-				{
-					if (animalSpeciesTraitsLocalStr.capacity() == 0) {
-						animalSpeciesTraitsLocalStr.reserve(estimatedPerThreadSize + (r.size() * 256));
-					}
-					else if (animalSpeciesTraitsLocalStr.capacity() < animalSpeciesTraitsLocalStr.size() + (r.size() * 256)) {
-						// Salvaguarda por si un hilo recibe más carga de la estimada promedialmente
-						animalSpeciesTraitsLocalStr.reserve(animalSpeciesTraitsLocalStr.size() + (r.size() * 256));
-					}
+				if (getSaveAnimalConstitutiveTraits()) {
+					animalSpeciesTraitsLocalStr.reserve(estimatedSize);
 				}
-
 				if (saveGenetics) {
-					if (geneticsLocalStr.capacity() == 0) {
-						geneticsLocalStr.reserve(estimatedPerThreadSize + (r.size() * 256));
-					}
-					else if (geneticsLocalStr.capacity() < geneticsLocalStr.size() + (r.size() * 256)) {
-						// Salvaguarda por si un hilo recibe más carga de la estimada promedialmente
-						geneticsLocalStr.reserve(geneticsLocalStr.size() + (r.size() * 256));
-					}
+					geneticsLocalStr.reserve(estimatedSize);
 				}
 
-				if (landscapeAnimals[i]->getLifeStage() == LifeStage::ACTIVE)
-				{
-					static_cast<AnimalNonStatistical*>(landscapeAnimals[i])->printVoracities(this, voracitiesLocalStr, getTimeStepsPerDay());
-
-					static_cast<AnimalNonStatistical*>(landscapeAnimals[i])->dieFromBackground(this, numberOfTimeSteps, getTimeStepsPerDay(), isGrowthAndReproTest());
+				if (animalPtr->getLifeStage() == LifeStage::ACTIVE) {
+					animalPtr->printVoracities(this, voracitiesLocalStr, getTimeStepsPerDay());
+					animalPtr->dieFromBackground(this, numberOfTimeSteps, getTimeStepsPerDay(), isGrowthAndReproTest());
 				}
-
-				if (landscapeAnimals[i]->getLifeStage() == LifeStage::ACTIVE)
-				{
-					static_cast<AnimalNonStatistical*>(landscapeAnimals[i])->transferAssimilatedFoodToEnergyTank(numberOfTimeSteps);
-
-					static_cast<AnimalNonStatistical*>(landscapeAnimals[i])->metabolize(this, numberOfTimeSteps);
+				if (animalPtr->getLifeStage() == LifeStage::ACTIVE) {
+					animalPtr->transferAssimilatedFoodToEnergyTank(numberOfTimeSteps);
+					animalPtr->metabolize(this, numberOfTimeSteps);
 				}
-
-				if (landscapeAnimals[i]->getLifeStage() == LifeStage::REPRODUCING)
-				{
-					if (static_cast<AnimalNonStatistical*>(landscapeAnimals[i])->isInBreedingZone())
-					{
-						population += static_cast<AnimalNonStatistical*>(landscapeAnimals[i])->breed(this, numberOfTimeSteps, saveGenetics, geneticsLocalStr, getTimeStepsPerDay(), getSaveAnimalConstitutiveTraits(), animalSpeciesTraitsLocalStr);
-
-						static_cast<AnimalNonStatistical*>(landscapeAnimals[i])->setInBreedingZone(false);
+				if (animalPtr->getLifeStage() == LifeStage::REPRODUCING) {
+					if (animalPtr->isInBreedingZone()) {
+						population += animalPtr->breed(this, numberOfTimeSteps, saveGenetics, geneticsLocalStr, getTimeStepsPerDay(), getSaveAnimalConstitutiveTraits(), animalSpeciesTraitsLocalStr);
+						animalPtr->setInBreedingZone(false);
 					}
 				}
-
-				if (landscapeAnimals[i]->getLifeStage() == LifeStage::ACTIVE)
-				{
-					static_cast<AnimalNonStatistical*>(landscapeAnimals[i])->checkEnergyTank(this, numberOfTimeSteps, getTimeStepsPerDay());
+				if (animalPtr->getLifeStage() == LifeStage::ACTIVE) {
+					animalPtr->checkEnergyTank(this, numberOfTimeSteps, getTimeStepsPerDay());
 				}
 			}
+		},
+		// === OPERACIÓN PARALELA (ParOp) ===
+		[&](auto& animals, size_t start, size_t end) {
+			tbb::parallel_for(tbb::blocked_range<size_t>(start, end),
+				[&](const tbb::blocked_range<size_t>& r) {
+					// CADA HILO obtiene su propia referencia local de forma segura dentro del rango asignado
+					fmt::memory_buffer& voracitiesLocalStr = localBuffersVoracities.local();
+					CustomIndexedVector<AnimalSpeciesID, unsigned int>& animalSpeciesPopulation = animalSpeciesPopulationLocal.local();
+					CustomIndexedVector<AnimalSpeciesID, fmt::memory_buffer>& animalConstitutiveTraitsLocalStr = localBuffersAnimalConstitutiveTraits.local();
+					CustomIndexedVector<AnimalSpeciesID, std::vector<fmt::memory_buffer>>& animalSpeciesGeneticsLocalStr = localBuffersGenetics.local();
+
+					if (saveAnimalsEachDayVoracities) {
+						voracitiesLocalStr.reserve(estimatedPerThreadSize);
+					}
+
+					for (size_t i = r.begin(); i < r.end(); ++i) {
+						auto animalPtr = animals[i];
+
+						AnimalSpeciesID id = animalPtr->getSpecies()->getAnimalSpeciesId();
+						fmt::memory_buffer& animalSpeciesTraitsLocalStr = animalConstitutiveTraitsLocalStr[id];
+						std::vector<fmt::memory_buffer>& geneticsLocalStr = animalSpeciesGeneticsLocalStr[id];
+						unsigned int& population = animalSpeciesPopulation[id];
+
+						if (getSaveAnimalConstitutiveTraits()) {
+							animalSpeciesTraitsLocalStr.reserve(estimatedPerThreadSize);
+						}
+						if (saveGenetics) {
+							geneticsLocalStr.reserve(estimatedPerThreadSize);
+						}
+
+						if (animalPtr->getLifeStage() == LifeStage::ACTIVE) {
+							animalPtr->printVoracities(this, voracitiesLocalStr, getTimeStepsPerDay());
+							animalPtr->dieFromBackground(this, numberOfTimeSteps, getTimeStepsPerDay(), isGrowthAndReproTest());
+						}
+						if (animalPtr->getLifeStage() == LifeStage::ACTIVE) {
+							animalPtr->transferAssimilatedFoodToEnergyTank(numberOfTimeSteps);
+							animalPtr->metabolize(this, numberOfTimeSteps);
+						}
+						if (animalPtr->getLifeStage() == LifeStage::REPRODUCING) {
+							if (animalPtr->isInBreedingZone()) {
+								population += animalPtr->breed(this, numberOfTimeSteps, saveGenetics, geneticsLocalStr, getTimeStepsPerDay(), getSaveAnimalConstitutiveTraits(), animalSpeciesTraitsLocalStr);
+								animalPtr->setInBreedingZone(false);
+							}
+						}
+						if (animalPtr->getLifeStage() == LifeStage::ACTIVE) {
+							animalPtr->checkEnergyTank(this, numberOfTimeSteps, getTimeStepsPerDay());
+						}
+					}
+				}
+			);
 		}
 	);
 
 
+	// Reducción y escritura a disco (se mantiene igual a tu lógica original)
 	if (saveAnimalsEachDayVoracities)
 	{
-		// 4. Enviar un paquete por cada hebra usando std::move (Cero copias, contención mínima)
 		for (fmt::memory_buffer& threadBuffer : localBuffersVoracities) {
 			if (threadBuffer.size() != 0) {
 				StorageBridge::writeContentPackToDisk(voracitiesFilePath, threadBuffer);
 			}
 		}
-
-
 		StorageBridge::writeClosePackToDisk(voracitiesFilePath);
 	}
 
@@ -2228,15 +2405,12 @@ void Landscape::performAnimalsActions(const TimeStep numberOfTimeSteps)
 			for (size_t i = 0; i < threadBuffer.size(); ++i) {
 				std::vector<fmt::memory_buffer>& traitBuffer = threadBuffer[i];
 				AnimalSpecies* animalSpecies = getExistingAnimalSpecies()[i];
-
 				std::string scientificNameReplaced = animalSpecies->getScientificNameReplaced();
-
 				const std::vector<IndividualLevelTrait*>& individualLevelTraits = animalSpecies->getGenetics().getIndividualLevelTraits();
 
 				for (size_t j = 0; j < traitBuffer.size(); ++j) {
 					if (traitBuffer[j].size() != 0) {
 						IndividualLevelTrait* trait = individualLevelTraits[j];
-
 						StorageBridge::writeContentPackToDisk(resultFolder / fs::path("genetics") / scientificNameReplaced / (trait->getFileName() + ".txt"), traitBuffer[j]);
 					}
 				}
@@ -2576,6 +2750,26 @@ vector<AnimalSpecies*>& Landscape::getMutableExistingAnimalSpecies()
 const vector<AnimalSpecies*>& Landscape::getExistingAnimalSpecies() const
 {
 	return existingAnimalSpecies;
+}
+
+const vector<AnimalNonStatistical*>& Landscape::getLandscapeAnimals() const
+{
+	return landscapeAnimals;
+}
+
+vector<AnimalNonStatistical*>& Landscape::getLandscapeAnimals()
+{
+	return landscapeAnimals;
+}
+
+const std::vector<TerrainCell*>& Landscape::getLandscapeTerrainCells() const
+{
+	return terrainCells;
+}
+
+std::vector<TerrainCell*>& Landscape::getLandscapeTerrainCells() 
+{
+	return terrainCells;
 }
 
 const vector<Species*>& Landscape::getExistingSpecies() const

@@ -795,6 +795,7 @@ protected:
     bool inHabitatShiftAfterBreeding;                 /**< Is the animal shifting habitat after breeding? */
     bool atDestination;                                /**< Has the animal reached its target? */
 	std::pair<PointMap, PointContinuous> targetNeighborToTravelTo; /**< Target neighbor to travel to */
+	PreciseDouble enhancedH;
 
 	/** @brief Identifier of the male that mated with this animal, if applicable. */
 	id_type idFromMatedMale;
@@ -903,6 +904,11 @@ protected:
 	std::tuple<Edible*, DryMass, bool>& getPotencialPrey();
 
 	bool mustDoHabitatShift() const;
+
+	inline PreciseDouble getEnhancedH() const noexcept
+	{
+		return enhancedH;
+	}
 
 	/**
 	 * @brief Sets the current prey the animal is targeting or consuming.

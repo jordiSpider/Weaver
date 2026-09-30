@@ -7,291 +7,313 @@
     },
     "configurePresets": [
         {
-            "name": "common-configure-options",
-            "hidden": true,
-            "description": "Base preset defining common cache variables shared by all builds.",
-            "binaryDir": "$env{HOST_BUILD_DIR}/${presetName}",
-            "environment": {
-                "HOST_BUILD_DIR": "${sourceDir}/build/${hostSystemName}"
-            }
+          "name": "common-configure-options",
+          "hidden": true,
+          "description": "Base preset defining common cache variables shared by all builds.",
+          "binaryDir": "$env{HOST_BUILD_DIR}/${presetName}",
+          "cacheVariables": {
+            "SCHEMA_VERSION": "2026.08.05",
+            "SERIALIZATION_VERSION": "2026.08.05"
+          },
+          "environment": {
+            "HOST_BUILD_DIR": "${sourceDir}/build/${hostSystemName}"
+          }
         },
         {
-            "name": "vcpkg-base",
-            "hidden": true,
-            "inherits": [
-                "common-configure-options"
-            ],
-            "description": "Base configuration for vcpkg and global C++ settings shared by app and tests.",
-            "cacheVariables": {
-                "CMAKE_CXX_STANDARD": "20",
-                "CMAKE_CXX_STANDARD_REQUIRED": "ON",
-                "CMAKE_CXX_EXTENSIONS": "OFF",
-                "CMAKE_EXPORT_COMPILE_COMMANDS": "ON",
-                "CMAKE_RUNTIME_OUTPUT_DIRECTORY": "${sourceDir}/bin/${hostSystemName}/$<CONFIG>",
-                "CMAKE_LIBRARY_OUTPUT_DIRECTORY": "${sourceDir}/lib/${hostSystemName}/$<CONFIG>",
-                "CMAKE_ARCHIVE_OUTPUT_DIRECTORY": "${sourceDir}/lib/${hostSystemName}/$<CONFIG>",
-                "X_VCPKG_APPLOCAL_DEPS_INSTALL": "ON",
-                "CMAKE_TOOLCHAIN_FILE": "${sourceDir}/external/vcpkg/scripts/buildsystems/vcpkg.cmake",
-                "VCPKG_INSTALL_OPTIONS": "--clean-after-build",
-                "VCPKG_INSTALLED_DIR": "$env{HOST_BUILD_DIR}/vcpkg_installed"
-            },
-            "environment": {
-                "VCPKG_DEFAULT_BINARY_CACHE": "$env{HOST_BUILD_DIR}/vcpkg_cache",
-                "VCPKG_CXX_FLAGS": "/std:c++20"
-            }
+          "name": "vcpkg-base",
+          "hidden": true,
+          "inherits": [
+            "common-configure-options"
+          ],
+          "description": "Base configuration for vcpkg and global C++ settings shared by app and tests.",
+          "cacheVariables": {
+            "CMAKE_CXX_STANDARD": "20",
+            "CMAKE_CXX_STANDARD_REQUIRED": "ON",
+            "CMAKE_CXX_EXTENSIONS": "OFF",
+            "CMAKE_EXPORT_COMPILE_COMMANDS": "ON",
+            "CMAKE_LIBRARY_OUTPUT_DIRECTORY": "${sourceDir}/lib/${hostSystemName}/$<CONFIG>",
+            "CMAKE_ARCHIVE_OUTPUT_DIRECTORY": "${sourceDir}/lib/${hostSystemName}/$<CONFIG>",
+            "X_VCPKG_APPLOCAL_DEPS_INSTALL": "ON",
+            "CMAKE_TOOLCHAIN_FILE": "${sourceDir}/external/vcpkg/scripts/buildsystems/vcpkg.cmake",
+            "VCPKG_INSTALL_OPTIONS": "--clean-after-build",
+            "VCPKG_INSTALLED_DIR": "$env{HOST_BUILD_DIR}/vcpkg_installed"
+          },
+          "environment": {
+            "VCPKG_DEFAULT_BINARY_CACHE": "$env{HOST_BUILD_DIR}/vcpkg_cache",
+            "VCPKG_CXX_FLAGS": "/std:c++20"
+          }
         },
         {
-            "name": "app",
-            "hidden": true,
-            "inherits": [ "vcpkg-base" ],
-            "description": "Defines settings for building project apps.",
-            "cacheVariables": {
-                "BUILD_APP": "ON",
-                "SCHEMA_VERSION": "2026.08.05",
-                "SERIALIZATION_VERSION": "2026.08.05",
-                "SRC_DIR_NAME": "src",
-                "EXECUTABLE_DIR_NAME": "bin",
-                "CONFIG_DIR_NAME": "config",
-                "AUTHOR": "Jordi Moya Laraño",
-                "CONTACT_EMAIL": "jordi@eeza.csic.es",
-                "REPO_URL": "https://github.com/jordiSpider/Weaver"
-            }
+          "name": "app",
+          "hidden": true,
+          "inherits": [ "vcpkg-base" ],
+          "description": "Defines settings for building project apps.",
+          "cacheVariables": {
+            "BUILD_APP": "ON",
+            "CMAKE_RUNTIME_OUTPUT_DIRECTORY": "${sourceDir}/bin/${hostSystemName}/$<CONFIG>",
+            "SRC_DIR_NAME": "src",
+            "EXECUTABLE_DIR_NAME": "bin",
+            "CONFIG_DIR_NAME": "config",
+            "AUTHOR": "Jordi Moya Laraño",
+            "CONTACT_EMAIL": "jordi@eeza.csic.es",
+            "REPO_URL": "https://github.com/jordiSpider/Weaver"
+          }
         },
         {
-            "name": "windows",
-            "hidden": true,
-            "inherits": [ "common-configure-options" ],
-            "description": "Windows-specific preset using Visual Studio 2022 and static vcpkg triplets.",
-            "condition": {
-                "type": "equals",
-                "lhs": "${hostSystemName}",
-                "rhs": "Windows"
-            },
-            "generator": "Visual Studio 17 2022",
-            "cacheVariables": {
-                "VCPKG_TARGET_TRIPLET": "x64-windows-static",
-                "VCPKG_HOST_TRIPLET": "x64-windows-static",
-                "CMAKE_MSVC_RUNTIME_LIBRARY": "MultiThreaded$<$<CONFIG:Debug>:Debug>",
-                "CPACK_NSIS_MUI_ICON": "${sourceDir}/icons/icon.ico",
-                "CPACK_NSIS_MUI_UNIICON": "${sourceDir}/icons/uninstall_icon.ico"
-            }
+          "name": "windows",
+          "hidden": true,
+          "inherits": [ "common-configure-options" ],
+          "description": "Windows-specific preset using Visual Studio 2026 and static vcpkg triplets.",
+          "condition": {
+            "type": "equals",
+            "lhs": "${hostSystemName}",
+            "rhs": "Windows"
+          },
+          "generator": "Visual Studio 18 2026",
+          "cacheVariables": {
+            "VCPKG_TARGET_TRIPLET": "x64-windows-static",
+            "VCPKG_HOST_TRIPLET": "x64-windows-static",
+            "CMAKE_MSVC_RUNTIME_LIBRARY": "MultiThreaded$<$<CONFIG:Debug>:Debug>",
+            "CPACK_NSIS_MUI_ICON": "${sourceDir}/icons/icon.ico",
+            "CPACK_NSIS_MUI_UNIICON": "${sourceDir}/icons/uninstall_icon.ico"
+          }
         },
         {
-            "name": "linux",
-            "hidden": true,
-            "inherits": [ "common-configure-options" ],
-            "description": "Linux-specific preset using Makefiles and static vcpkg triplets.",
-            "condition": {
-                "type": "equals",
-                "lhs": "${hostSystemName}",
-                "rhs": "Linux"
-            },
-            "generator": "Unix Makefiles",
-            "cacheVariables": {
-                "VCPKG_TARGET_TRIPLET": "x64-linux",
-                "VCPKG_HOST_TRIPLET": "x64-linux",
-                "CMAKE_MAKE_PROGRAM": "make",
-                "CMAKE_CXX_COMPILER": "g++"
-            }
+          "name": "linux",
+          "hidden": true,
+          "inherits": [ "common-configure-options" ],
+          "description": "Linux-specific preset using Makefiles and static vcpkg triplets.",
+          "condition": {
+            "type": "equals",
+            "lhs": "${hostSystemName}",
+            "rhs": "Linux"
+          },
+          "generator": "Unix Makefiles",
+          "cacheVariables": {
+            "VCPKG_TARGET_TRIPLET": "x64-linux",
+            "VCPKG_HOST_TRIPLET": "x64-linux",
+            "CMAKE_MAKE_PROGRAM": "make",
+            "CMAKE_CXX_COMPILER": "g++"
+          }
         },
         {
-            "name": "gui",
-            "hidden": true,
-            "inherits": [ "common-configure-options" ],
-            "description": "Enables GUI mode in the project.",
-            "condition": {
-                "type": "equals",
-                "lhs": "$env{WSL_DISTRO_NAME}",
-                "rhs": ""
-            },
-            "cacheVariables": {
-                "ENABLE_GUI": "ON"
-            }
+          "name": "gui",
+          "hidden": true,
+          "inherits": [ "common-configure-options" ],
+          "description": "Enables GUI mode in the project.",
+          "condition": {
+            "type": "equals",
+            "lhs": "$env{WSL_DISTRO_NAME}",
+            "rhs": ""
+          },
+          "cacheVariables": {
+            "ENABLE_GUI": "ON"
+          }
         },
         {
-            "name": "cli",
-            "hidden": true,
-            "inherits": [ "common-configure-options" ],
-            "description": "Disables GUI mode in the project.",
-            "cacheVariables": {}
+          "name": "cli",
+          "hidden": true,
+          "inherits": [ "common-configure-options" ],
+          "description": "Disables GUI mode in the project.",
+          "cacheVariables": {}
         },
         {
-            "name": "debug",
-            "hidden": true,
-            "inherits": [ "common-configure-options" ],
-            "description": "Preset for Debug builds (includes debug symbols).",
-            "cacheVariables": {
-                "CMAKE_BUILD_TYPE": "Debug",
-                "CMAKE_POSITION_INDEPENDENT_CODE": "ON"
-            }
+          "name": "benchmarks",
+          "hidden": true,
+          "inherits": [ "vcpkg-base" ],
+          "description": "Enables Google Benchmark targets.",
+          "cacheVariables": {
+            "BUILD_BENCHMARKS": "ON",
+            "CMAKE_RUNTIME_OUTPUT_DIRECTORY": "${sourceDir}/benchmarks/bin/${hostSystemName}"
+          }
         },
         {
-            "name": "debug-asan",
-            "hidden": true,
-            "inherits": [ "debug" ],
-            "description": "Preset for Debug builds with AddressSanitizer enabled (for memory error detection).",
-            "cacheVariables": {
-                "ENABLE_ASAN": "ON"
-            }
+          "name": "debug",
+          "hidden": true,
+          "inherits": [ "common-configure-options" ],
+          "description": "Preset for Debug builds (includes debug symbols).",
+          "cacheVariables": {
+            "CMAKE_BUILD_TYPE": "Debug",
+            "CMAKE_POSITION_INDEPENDENT_CODE": "ON"
+          }
         },
         {
-            "name": "release",
-            "hidden": true,
-            "inherits": [ "common-configure-options" ],
-            "description": "Preset for Release builds (optimized for performance).",
-            "cacheVariables": {
-                "CMAKE_BUILD_TYPE": "Release",
-                "CPACK_PACKAGE_CONTACT": "jordi@eeza.csic.es",
-                "CPACK_PACKAGE_DIRECTORY": "${sourceDir}/installer/${presetName}"
-            }
+          "name": "debug-asan",
+          "hidden": true,
+          "inherits": [ "debug" ],
+          "description": "Preset for Debug builds with AddressSanitizer enabled (for memory error detection).",
+          "cacheVariables": {
+            "ENABLE_ASAN": "ON"
+          }
         },
         {
-            "name": "relWithDebInfo",
-            "hidden": true,
-            "inherits": [ "common-configure-options" ],
-            "description": "No description",
-            "cacheVariables": {
-                "CMAKE_BUILD_TYPE": "RelWithDebInfo"
-            }
+          "name": "release",
+          "hidden": true,
+          "inherits": [ "common-configure-options" ],
+          "description": "Preset for Release builds (optimized for performance).",
+          "cacheVariables": {
+            "CMAKE_BUILD_TYPE": "Release",
+            "CPACK_PACKAGE_CONTACT": "jordi@eeza.csic.es",
+            "CPACK_PACKAGE_DIRECTORY": "${sourceDir}/installer/${presetName}"
+          }
         },
         {
-            "name": "windows-full-suite-debug",
-            "inherits": [ "app", "windows", "gui", "debug" ],
-            "description": "Windows GUI & CLI Debug configuration."
+          "name": "relWithDebInfo",
+          "hidden": true,
+          "inherits": [ "common-configure-options" ],
+          "description": "No description",
+          "cacheVariables": {
+            "CMAKE_BUILD_TYPE": "RelWithDebInfo"
+          }
         },
         {
-            "name": "windows-full-suite-release",
-            "inherits": [ "app", "windows", "gui", "release" ],
-            "description": "Windows GUI & CLI Release configuration."
+          "name": "windows-full-suite-debug",
+          "inherits": [ "app", "windows", "gui", "debug" ],
+          "description": "Windows GUI & CLI Debug configuration."
         },
         {
-            "name": "windows-full-suite-relWithDebInfo",
-            "inherits": [ "app", "windows", "gui", "relWithDebInfo" ],
-            "description": "Windows GUI & CLI RelWithDebInfo configuration."
+          "name": "windows-full-suite-release",
+          "inherits": [ "app", "windows", "gui", "release" ],
+          "description": "Windows GUI & CLI Release configuration."
         },
         {
-            "name": "windows-cli-only-debug",
-            "inherits": [ "app", "windows", "cli", "debug" ],
-            "description": "Windows CLI Debug configuration."
+          "name": "windows-full-suite-relWithDebInfo",
+          "inherits": [ "app", "windows", "gui", "relWithDebInfo" ],
+          "description": "Windows GUI & CLI RelWithDebInfo configuration."
         },
         {
-            "name": "windows-cli-only-release",
-            "inherits": [ "app", "windows", "cli", "release" ],
-            "description": "Windows CLI Release configuration."
+          "name": "windows-cli-only-debug",
+          "inherits": [ "app", "windows", "cli", "debug" ],
+          "description": "Windows CLI Debug configuration."
         },
         {
-            "name": "windows-cli-only-relWithDebInfo",
-            "inherits": [ "app", "windows", "cli", "relWithDebInfo" ],
-            "description": "Windows CLI RelWithDebInfo configuration."
+          "name": "windows-cli-only-release",
+          "inherits": [ "app", "windows", "cli", "release" ],
+          "description": "Windows CLI Release configuration."
         },
         {
-            "name": "linux-full-suite-debug",
-            "inherits": [ "app", "linux", "gui", "debug" ],
-            "description": "Linux GUI & CLI Debug configuration."
+          "name": "windows-cli-only-relWithDebInfo",
+          "inherits": [ "app", "windows", "cli", "relWithDebInfo" ],
+          "description": "Windows CLI RelWithDebInfo configuration."
         },
         {
-            "name": "linux-full-suite-debug-asan",
-            "inherits": [ "app", "linux", "gui", "debug-asan" ],
-            "description": "Linux GUI & CLI Debug configuration with AddressSanitizer enabled."
+          "name": "windows-benchmarks",
+          "inherits": [ "benchmarks", "windows", "cli", "release" ],
+          "description": "Windows CLI Release configuration with Google Benchmark targets enabled."
         },
         {
-            "name": "linux-full-suite-release",
-            "inherits": [ "app", "linux", "gui", "release" ],
-            "description": "Linux GUI & CLI Release configuration."
+          "name": "linux-full-suite-debug",
+          "inherits": [ "app", "linux", "gui", "debug" ],
+          "description": "Linux GUI & CLI Debug configuration."
         },
         {
-            "name": "linux-full-suite-relWithDebInfo",
-            "inherits": [ "app", "linux", "gui", "relWithDebInfo" ],
-            "description": "Linux GUI & CLI RelWithDebInfo configuration."
+          "name": "linux-full-suite-debug-asan",
+          "inherits": [ "app", "linux", "gui", "debug-asan" ],
+          "description": "Linux GUI & CLI Debug configuration with AddressSanitizer enabled."
         },
         {
-            "name": "linux-cli-only-debug",
-            "inherits": [ "app", "linux", "cli", "debug" ],
-            "description": "Linux CLI Debug configuration."
+          "name": "linux-full-suite-release",
+          "inherits": [ "app", "linux", "gui", "release" ],
+          "description": "Linux GUI & CLI Release configuration."
         },
         {
-            "name": "linux-cli-only-debug-asan",
-            "inherits": [ "app", "linux", "cli", "debug-asan" ],
-            "description": "Linux CLI Debug configuration with AddressSanitizer enabled."
+          "name": "linux-full-suite-relWithDebInfo",
+          "inherits": [ "app", "linux", "gui", "relWithDebInfo" ],
+          "description": "Linux GUI & CLI RelWithDebInfo configuration."
         },
         {
-            "name": "linux-cli-only-release",
-            "inherits": [ "app", "linux", "cli", "release" ],
-            "description": "Linux CLI Release configuration."
+          "name": "linux-cli-only-debug",
+          "inherits": [ "app", "linux", "cli", "debug" ],
+          "description": "Linux CLI Debug configuration."
         },
         {
-            "name": "linux-cli-only-relWithDebInfo",
-            "inherits": [ "app", "linux", "cli", "relWithDebInfo" ],
-            "description": "Linux CLI RelWithDebInfo configuration."
+          "name": "linux-cli-only-debug-asan",
+          "inherits": [ "app", "linux", "cli", "debug-asan" ],
+          "description": "Linux CLI Debug configuration with AddressSanitizer enabled."
         },
         {
-            "name": "windows-cli-only-relWithDebInfo-profile-baseline",
-            "inherits": [ "app", "windows", "cli", "relWithDebInfo" ],
-            "description": "Windows CLI RelWithDebInfo profiling baseline with isolated binaries and symbols.",
-            "cacheVariables": {
-                "CMAKE_RUNTIME_OUTPUT_DIRECTORY": "${sourceDir}/bin/${hostSystemName}/$<CONFIG>/profiles/baseline",
-                "CMAKE_LIBRARY_OUTPUT_DIRECTORY": "${sourceDir}/lib/${hostSystemName}/$<CONFIG>/profiles/baseline",
-                "CMAKE_ARCHIVE_OUTPUT_DIRECTORY": "${sourceDir}/lib/${hostSystemName}/$<CONFIG>/profiles/baseline"
-            }
+          "name": "linux-cli-only-release",
+          "inherits": [ "app", "linux", "cli", "release" ],
+          "description": "Linux CLI Release configuration."
         },
         {
-            "name": "windows-cli-only-relWithDebInfo-profile-candidate",
-            "inherits": [ "app", "windows", "cli", "relWithDebInfo" ],
-            "description": "Windows CLI RelWithDebInfo profiling candidate with isolated binaries and symbols.",
-            "cacheVariables": {
-                "CMAKE_RUNTIME_OUTPUT_DIRECTORY": "${sourceDir}/bin/${hostSystemName}/$<CONFIG>/profiles/candidate",
-                "CMAKE_LIBRARY_OUTPUT_DIRECTORY": "${sourceDir}/lib/${hostSystemName}/$<CONFIG>/profiles/candidate",
-                "CMAKE_ARCHIVE_OUTPUT_DIRECTORY": "${sourceDir}/lib/${hostSystemName}/$<CONFIG>/profiles/candidate"
-            }
+          "name": "linux-cli-only-relWithDebInfo",
+          "inherits": [ "app", "linux", "cli", "relWithDebInfo" ],
+          "description": "Linux CLI RelWithDebInfo configuration."
         },
         {
-            "name": "docs",
-            "hidden": true,
-            "inherits": [ "common-configure-options" ],
-            "description": "Base preset for building project documentation with Sphinx and Doxygen.",
-            "cacheVariables": {
-                "BUILD_DOCS": "ON",
-                "SPHINX_VERSION": "8.1.3",
-                "DOXYGEN_VERSION": "1.9.8",
-                "DOCS_DIR_NAME": "docs",
-                "SPHINX_BUILD_DIR_NAME": "build",
-                "SPHINX_SOURCE_DIR_NAME": "source",
-                "API_DIR_NAME": "api",
-                "DEFAULT_LANGUAGE": "en"
-            }
+          "name": "linux-benchmarks",
+          "inherits": [ "benchmarks", "linux", "cli", "release" ],
+          "description": "Linux CLI Release configuration with Google Benchmark targets enabled."
         },
         {
-            "name": "deploy-docs",
-            "inherits": [ "docs" ],
-            "description": "Builds and deploys the final documentation to GitHub Pages.",
-            "cacheVariables": {
-                "DOCS_BUILD_TYPE": "Deploy-docs"
-            }
+          "name": "windows-cli-only-relWithDebInfo-profile-baseline",
+          "inherits": [ "app", "windows", "cli", "relWithDebInfo" ],
+          "description": "Windows CLI RelWithDebInfo profiling baseline with isolated binaries and symbols.",
+          "cacheVariables": {
+            "CMAKE_RUNTIME_OUTPUT_DIRECTORY": "${sourceDir}/bin/${hostSystemName}/$<CONFIG>/profiles/baseline",
+            "CMAKE_LIBRARY_OUTPUT_DIRECTORY": "${sourceDir}/lib/${hostSystemName}/$<CONFIG>/profiles/baseline",
+            "CMAKE_ARCHIVE_OUTPUT_DIRECTORY": "${sourceDir}/lib/${hostSystemName}/$<CONFIG>/profiles/baseline"
+          }
         },
         {
-            "name": "build-docs-dev",
-            "inherits": [ "docs" ],
-            "description": "Builds documentation for development purposes (without deployment).",
-            "cacheVariables": {
-                "DOCS_BUILD_TYPE": "Build-docs-dev"
-            }
+          "name": "windows-cli-only-relWithDebInfo-profile-candidate",
+          "inherits": [ "app", "windows", "cli", "relWithDebInfo" ],
+          "description": "Windows CLI RelWithDebInfo profiling candidate with isolated binaries and symbols.",
+          "cacheVariables": {
+            "CMAKE_RUNTIME_OUTPUT_DIRECTORY": "${sourceDir}/bin/${hostSystemName}/$<CONFIG>/profiles/candidate",
+            "CMAKE_LIBRARY_OUTPUT_DIRECTORY": "${sourceDir}/lib/${hostSystemName}/$<CONFIG>/profiles/candidate",
+            "CMAKE_ARCHIVE_OUTPUT_DIRECTORY": "${sourceDir}/lib/${hostSystemName}/$<CONFIG>/profiles/candidate"
+          }
         },
         {
-            "name": "update-docs",
-            "inherits": [ "docs" ],
-            "description": "Updates the existing documentation deployment with new content.",
-            "cacheVariables": {
-                "DOCS_BUILD_TYPE": "Update-docs"
-            }
+          "name": "docs",
+          "hidden": true,
+          "inherits": [ "common-configure-options" ],
+          "description": "Base preset for building project documentation with Sphinx and Doxygen.",
+          "cacheVariables": {
+            "BUILD_DOCS": "ON",
+            "SPHINX_VERSION": "8.1.3",
+            "DOXYGEN_VERSION": "1.9.8",
+            "DOCS_DIR_NAME": "docs",
+            "SPHINX_BUILD_DIR_NAME": "build",
+            "SPHINX_SOURCE_DIR_NAME": "source",
+            "API_DIR_NAME": "api",
+            "DEFAULT_LANGUAGE": "en"
+          }
         },
         {
-            "name": "build-docs-locale",
-            "inherits": [ "docs" ],
-            "description": "Builds documentation for translation (locale generation).",
-            "cacheVariables": {
-                "DOCS_BUILD_TYPE": "Build-docs-locale",
-                "LANGUAGES_TO_TRANSLATE": "en"
-            }
+          "name": "deploy-docs",
+          "inherits": [ "docs" ],
+          "description": "Builds and deploys the final documentation to GitHub Pages.",
+          "cacheVariables": {
+            "DOCS_BUILD_TYPE": "Deploy-docs"
+          }
+        },
+        {
+          "name": "build-docs-dev",
+          "inherits": [ "docs" ],
+          "description": "Builds documentation for development purposes (without deployment).",
+          "cacheVariables": {
+            "DOCS_BUILD_TYPE": "Build-docs-dev"
+          }
+        },
+        {
+          "name": "update-docs",
+          "inherits": [ "docs" ],
+          "description": "Updates the existing documentation deployment with new content.",
+          "cacheVariables": {
+            "DOCS_BUILD_TYPE": "Update-docs"
+          }
+        },
+        {
+          "name": "build-docs-locale",
+          "inherits": [ "docs" ],
+          "description": "Builds documentation for translation (locale generation).",
+          "cacheVariables": {
+            "DOCS_BUILD_TYPE": "Build-docs-locale",
+            "LANGUAGES_TO_TRANSLATE": "en"
+          }
         }
     ],
     "buildPresets": [
@@ -350,6 +372,13 @@
             "configurePreset": "windows-cli-only-relWithDebInfo",
             "description": "Build the Windows CLI RelWithDebInfo configuration.",
             "configuration": "RelWithDebInfo"
+        },
+        {
+          "name": "windows-benchmarks",
+          "inherits": [ "windows-common-build-options" ],
+          "configurePreset": "windows-benchmarks",
+          "description": "Build the Windows CLI Release benchmarks configuration.",
+          "configuration": "Release"
         },
         {
             "name": "windows-cli-only-relWithDebInfo-profile-baseline",
@@ -420,6 +449,13 @@
             "configurePreset": "linux-cli-only-relWithDebInfo",
             "description": "Build the Linux CLI RelWithDebInfo configuration.",
             "configuration": "RelWithDebInfo"
+        },
+        {
+          "name": "linux-benchmarks",
+          "inherits": [ "linux-common-build-options" ],
+          "configurePreset": "linux-benchmarks",
+          "description": "Build the Linux CLI Release benchmarks configuration.",
+          "configuration": "Release"
         },
         {
             "name": "deploy-docs",
@@ -550,6 +586,20 @@
             ]
         },
         {
+            "name": "windows-benchmarks",
+            "description": "Workflow to configure and build the Windows CLI Release benchmark target.",
+            "steps": [
+                {
+                    "type": "configure",
+                    "name": "windows-benchmarks"
+                },
+                {
+                    "type": "build",
+                    "name": "windows-benchmarks"
+                }
+            ]
+        },
+        {
             "name": "windows-cli-only-relWithDebInfo-profile-baseline",
             "description": "Workflow to configure and build the Windows CLI profiling baseline target.",
             "steps": [
@@ -674,6 +724,20 @@
                     "name": "linux-cli-only-relWithDebInfo"
                 }
             ]
+        },
+        {
+          "name": "linux-benchmarks",
+          "description": "Workflow to configure and build the Linux CLI Release benchmark target.",
+          "steps": [
+            {
+              "type": "configure",
+              "name": "linux-benchmarks"
+            },
+            {
+              "type": "build",
+              "name": "linux-benchmarks"
+            }
+          ]
         },
         {
             "name": "linux-full-suite-debug",

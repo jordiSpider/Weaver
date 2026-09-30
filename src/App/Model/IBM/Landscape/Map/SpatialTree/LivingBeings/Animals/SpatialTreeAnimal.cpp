@@ -66,11 +66,16 @@ bool SpatialTreeAnimal::searchTargetToTravelTo(const PreciseDouble &scopeArea, C
 
     if (scopeArea > 0.0) {
         getMutableTerrainCell()->getNeighboursCellsOnRadius(bestEvaluations, getPosition(), scopeArea, searchDepth, searchNeighborsWithFemales, searchNeighborsWithMales, this, maximumPatchEdibilityValueGlobal, maximumPatchPredationRiskGlobal, maximumPatchConspecificBiomassGlobal);
+    
+        if (bestEvaluations.empty())
+        {
+            throwLineInfoException("bestEvaluations is empty");
+        }
     }
 
     if(bestEvaluations.empty())
     {
-        throwLineInfoException("bestEvaluations is empty");
+        return false;
     }
 
     size_t randomIndex;

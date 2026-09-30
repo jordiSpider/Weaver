@@ -201,29 +201,27 @@ void AnimalNonStatistical::tune(Landscape* const landscape, const bool saveMassI
 
 
 		// enhanced h
-		PreciseDouble h;
-
 		if(getGrowthBuildingBlock().hasCapitalBreeding())
 		{
-			h = 0.0;
+			enhancedH = 0.0;
 		}
 		else
 		{
 			if (getGender() == Gender::MALE && getGrowthBuildingBlock().isMature()) {
-				h = 1.0;
+				enhancedH = 1.0;
 			}
 			else {
 				if (nextTarget == previousTarget)
 				{
-					h = 0.0;
+					enhancedH = 0.0;
 				}
 				else
 				{
-					h = 1 - (getGrowthBuildingBlock().getCurrentTotalDryMass() - previousTarget).getValue() / (nextTarget - previousTarget).getValue();
+					enhancedH = 1 - (getGrowthBuildingBlock().getCurrentTotalDryMass() - previousTarget).getValue() / (nextTarget - previousTarget).getValue();
 
-					if (h < 0)
+					if (getEnhancedH() < 0)
 					{
-						h = 0.0;
+						enhancedH = 0.0;
 					}
 				}
 			}
@@ -243,7 +241,7 @@ void AnimalNonStatistical::tune(Landscape* const landscape, const bool saveMassI
 			const PreciseDouble& voracityProportion = getGenetics().getBaseIndividualTraits(BaseTraitType::voracityProportion).getPhenotypicValue();
 			
 			if (deficit < 0.0) {
-				voracityAfterApplyProportion = preFinalVoracity.getValue() * h * voracityProportion;
+				voracityAfterApplyProportion = preFinalVoracity.getValue() * getEnhancedH() * voracityProportion;
 			}
 			else {
 				const PreciseDouble& assim = getGenetics().getBaseIndividualTraits(BaseTraitType::assim).getPhenotypicValue();
@@ -270,7 +268,7 @@ void AnimalNonStatistical::tune(Landscape* const landscape, const bool saveMassI
 			getGenetics().getBaseIndividualTraits(BaseTraitType::coeffMassForSearchRadius).getPhenotypicValue(),
 			getGenetics().getBaseIndividualTraits(BaseTraitType::scaleMassForSearchRadius).getPhenotypicValue()
 		);
-		PreciseDouble searchAfterPlasticity = applyPlasticityDueToConditionToTrait(searchAfterAllometric, getSpecies()->getPlasticityDueToConditionSearch(), h);
+		PreciseDouble searchAfterPlasticity = applyPlasticityDueToConditionToTrait(searchAfterAllometric, getSpecies()->getPlasticityDueToConditionSearch(), getEnhancedH());
 		
 
 		PreciseDouble speedAfterAllometric = applyAllometricModel(
@@ -279,7 +277,7 @@ void AnimalNonStatistical::tune(Landscape* const landscape, const bool saveMassI
 		);
 		
 		PreciseDouble postTspeed = landscape->calculatePostTSpeed(speedAfterAllometric, getGrowthBuildingBlock().getCurrentTotalWetMass());
-		PreciseDouble speedAfterPlasticity = applyPlasticityDueToConditionToTrait(postTspeed, getSpecies()->getPlasticityDueToConditionSpeed(), h);
+		PreciseDouble speedAfterPlasticity = applyPlasticityDueToConditionToTrait(postTspeed, getSpecies()->getPlasticityDueToConditionSpeed(), getEnhancedH());
 
 
 		
@@ -709,7 +707,7 @@ void AnimalNonStatistical::printVoracities(const Landscape* const landscape, fmt
 	TimeStep pupaPeriodTime(Day(getGenetics().getBaseIndividualTraits(BaseTraitType::pupaPeriodTime).getPhenotypicValue()), timeStepsPerDay);
 
 
-	fmt::format_to(fmt::appender(voracitiesText), FMT_COMPILE("{}\t{}\t{}\t{}\t{}\t{}\t{}\t{}\t{}\t{}\t{}\t{}\t{}\t{}\t{}\t{}\t{}\t{}\t{}\t{}\t{}\t{}\t{}\t{}\t{}\t{}\t{}\t{}\t{}\t{}\t{}\t{}\t{}\t{}\t{}\t{}\t{}\t{}\t{}\t{}\n"),
+	fmt::format_to(fmt::appender(voracitiesText), FMT_COMPILE("{}\t{}\t{}\t{}\t{}\t{}\t{}\t{}\t{}\t{}\t{}\t{}\t{}\t{}\t{}\t{}\t{}\t{}\t{}\t{}\t{}\t{}\t{}\t{}\t{}\t{}\t{}\t{}\t{}\t{}\t{}\t{}\t{}\t{}\t{}\t{}\t{}\t{}\t{}\t{}\t{}\n"),
 		getId(), getSpecies()->getScientificName(), lifeStage, getGrowthBuildingBlock().getCurrentAge() - TimeStep(1),
 		getGrowthBuildingBlock().getInstar(), getGrowthBuildingBlock().isMature(), getGrowthBuildingBlock().getCurrentBodySize(),
 		getGrowthBuildingBlock().getCurrentEnergyTank(), getGrowthBuildingBlock().getCurrentTotalDryMass(),
@@ -718,7 +716,7 @@ void AnimalNonStatistical::printVoracities(const Landscape* const landscape, fmt
 		getSearchAreaRadius(), getSpeed(), getVoracity(), getSearchAreaRadius(), getSpeed(), 
 		getGrowthBuildingBlock().getCurrentTotalDryMass() + getVoracity(), foodMassEatenCurrentTimeStep,
 		getGrowthBuildingBlock().getCurrentTotalDryMass() + foodMassAssimilatedCurrentTimeStep,
-		totalMetabolicDryMassLossAfterAssim, getSearchAreaRadius(), eatenToday, distanceTravelled, stepsAttempted,
+		totalMetabolicDryMassLossAfterAssim, getSearchAreaRadius(), eatenToday, getEnhancedH(), distanceTravelled, stepsAttempted,
 		getSearchAreaRadius(), sated, calculateProportionOfTimeWasMoving(), 
 		getVoracity() / getGrowthBuildingBlock().getCurrentTotalDryMass().getValue(),
 		getGender(), mated, getGrowthBuildingBlock().getEggDryMassAtBirth(), 

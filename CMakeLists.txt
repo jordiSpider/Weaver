@@ -21,12 +21,16 @@ cmake_minimum_required(VERSION 3.25)
 # ------------------------------------------------------------
 set(VCPKG_MANIFEST_FEATURES "")
 
-if(BUILD_APP)
+if(BUILD_APP OR BUILD_BENCHMARKS)
     list(APPEND VCPKG_MANIFEST_FEATURES "app")
 
     if(ENABLE_GUI)
         list(APPEND VCPKG_MANIFEST_FEATURES "gui")
     endif()
+endif()
+
+if(BUILD_BENCHMARKS)
+    list(APPEND VCPKG_MANIFEST_FEATURES "benchmarks")
 endif()
 
 
@@ -87,10 +91,7 @@ endif()
 # ------------------------------------------------------------
 # 📂 Subdirectory Targets & External Disclosures
 # ------------------------------------------------------------
-if(BUILD_APP OR BUILD_TESTS)
-    set(CLI_EXE_NAME "${PROJECT_NAME}CLI")
-    set(GUI_EXE_NAME "${PROJECT_NAME}GUI")
-
+if(BUILD_APP OR BUILD_BENCHMARKS)
     add_subdirectory(src)
 
     # Generate third-party open-source attribution notices
@@ -99,6 +100,20 @@ if(BUILD_APP OR BUILD_TESTS)
         "${VCPKG_INSTALLED_DIR}" 
         "${CMAKE_CURRENT_SOURCE_DIR}"
     )
+endif()
+
+if(BUILD_APP)
+    # 1. Always include the CLI target (serves as the core simulator foundation)
+    add_subdirectory(src/cli)
+
+    # 2. Conditionally append the Graphical User Interface (GUI) target layer
+    if(ENABLE_GUI)
+        add_subdirectory(src/gui)
+    endif()
+endif()
+
+if(BUILD_BENCHMARKS)
+    add_subdirectory(benchmarks)
 endif()
 
 if(BUILD_DOCS)

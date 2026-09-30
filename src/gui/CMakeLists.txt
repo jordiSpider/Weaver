@@ -6,6 +6,8 @@
 # Dependency Resolution for GUI Tooling
 find_package(unofficial-nana CONFIG REQUIRED)
 
+set(GUI_EXE_NAME "${PROJECT_NAME}GUI")
+
 # ---------------------------------------------------------
 # 🎯 Executable Target Declaration
 # ---------------------------------------------------------

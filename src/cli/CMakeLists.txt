@@ -3,6 +3,8 @@
 # 💻 Command Line Interface (CLI) Target Configuration
 # =========================================================
 
+set(CLI_EXE_NAME "${PROJECT_NAME}CLI")
+
 # ---------------------------------------------------------
 # 🎯 Executable Target Declaration
 # ---------------------------------------------------------
