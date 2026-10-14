@@ -2051,9 +2051,12 @@ void Landscape::executingActions(const TimeStep& numberOfTimeSteps)
 
 
 		// =================================================================
-		// 2. EL ALGORITMO CLAVE: PARTADO TRIPLE (Three-Way Partition)
+		// 2. EL ALGORITMO CLAVE: PARTICIONADO TRIPLE (Three-Way Partition)
 		// =================================================================
-		// Reorganizamos el vector en 3 bloques contiguos en tiempo O(N) secuencial rápido
+		// Reorganizamos la zona activa en 3 bloques contiguos:
+		// [0, predateEnd) => PREDATE
+		// [predateEnd, parallelEnd) => resto de acciones ejecutables
+		// [parallelEnd, activeElements) => NONE
 		size_t predateEnd = 0;
 		size_t parallelEnd = activeElements;
 		size_t i = 0;
@@ -2065,19 +2068,28 @@ void Landscape::executingActions(const TimeStep& numberOfTimeSteps)
 				if (i != predateEnd) {
 					std::swap(landscapeAnimals[i], landscapeAnimals[predateEnd]);
 				}
-				predateEnd++;
-				i++;
+				++predateEnd;
+				++i;
+				continue;
 			}
-			else if (action == AnimalNonStatistical::Action::NONE) {
-				// Mandamos los 'NONE' al final de la zona activa
-				parallelEnd--;
-				std::swap(landscapeAnimals[i], landscapeAnimals[parallelEnd]);
-				// No incrementamos 'i' porque el elemento intercambiado desde 'parallelEnd' debe ser evaluado
+
+			if (action == AnimalNonStatistical::Action::NONE) {
+				// Evitamos swaps innecesarios con NONE ya agrupados al final.
+				do {
+					--parallelEnd;
+				} while (i < parallelEnd &&
+					landscapeAnimals[parallelEnd]->getNextAction() == AnimalNonStatistical::Action::NONE);
+
+				if (i < parallelEnd) {
+					std::swap(landscapeAnimals[i], landscapeAnimals[parallelEnd]);
+				}
+
+				// No incrementamos i: hay que evaluar el elemento recién traído desde el final.
+				continue;
 			}
-			else {
-				// Es una acción común paralelizable
-				i++;
-			}
+
+			// Es una acción común paralelizable
+			++i;
 		}
 
 		// Calculamos cuántos terminaron sin hacer nada (NONE) en esta iteración
@@ -2140,8 +2152,8 @@ void Landscape::executingActions(const TimeStep& numberOfTimeSteps)
 						movementsLocalStr.reserve(nonPredateEstimatedSize);
 					}
 
-					for (size_t i = start; i < end; ++i) {
-						animals[i]->actionExecution(this, saveActivity, activitiesLocalStr,
+					for (size_t k = start; k < end; ++k) {
+						animals[k]->actionExecution(this, saveActivity, activitiesLocalStr,
 							numberOfTimeSteps, getTimeStepsPerDay(), saveMovements, movementsLocalStr);
 					}
 				},
@@ -2159,8 +2171,8 @@ void Landscape::executingActions(const TimeStep& numberOfTimeSteps)
 								movementsLocalStr.reserve(nonPredateEstimatedPerThreadSize);
 							}
 
-							for (size_t i = r.begin(); i < r.end(); ++i) {
-								animals[i]->actionExecution(this, saveActivity, activitiesLocalStr,
+							for (size_t k = r.begin(); k < r.end(); ++k) {
+								animals[k]->actionExecution(this, saveActivity, activitiesLocalStr,
 									numberOfTimeSteps, getTimeStepsPerDay(), saveMovements, movementsLocalStr);
 							}
 						}

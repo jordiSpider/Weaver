@@ -1,0 +1,25 @@
+Package: weaverRHub
+Title: Central Tool Hub and Optimiser Framework
+Version: 0.1.0
+Authors@R: person("Developer", "User", email = "dev@example.com", role = c("aut", "cre"))
+Description: A unified production-ready R package wrapping a central Shiny tool hub 
+    and integrating advanced genetic algorithm optimisation modules.
+License: Proprietary
+Encoding: UTF-8
+LazyData: true
+Imports: 
+    shiny,
+    bslib,
+    shinyFiles,
+    shinyTree,
+    shinyWidgets,
+    R6,
+    future,
+    future.apply,
+    progressr,
+    ggplot2,
+    svglite,
+    dplyr,
+    limSolve,
+    jsonlite
+RoxygenNote: 7.2.3

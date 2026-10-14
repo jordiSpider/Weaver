@@ -90,11 +90,6 @@ const DryMass& AnimalNonStatisticalGrowth::getInstarMass(const Instar& instarVal
     return instarMassesVector[instarValue-1];
 }
 
-const TimeStep AnimalNonStatisticalGrowth::getAgeOfFirstMaturation(const TimeStep& pupaPeriodTime) const
-{
-    return getInstarAge(getSpeciesGrowth()->getInstarFirstMaturation()) + pupaPeriodTime;
-}
-
 void AnimalNonStatisticalGrowth::calculateLongevity(const PreciseDouble& longevitySinceMaturationValue, const TimeStep& pupaPeriodTime)
 {
     longevity = longevitySinceMaturationValue * getAgeOfFirstMaturation(pupaPeriodTime);

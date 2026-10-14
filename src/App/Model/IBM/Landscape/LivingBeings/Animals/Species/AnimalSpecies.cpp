@@ -6,6 +6,9 @@
 #include "App/Manager/LogManager.h"
 
 
+#include <cmath>
+
+
 
 using namespace std;
 using json = nlohmann::json;
@@ -208,9 +211,9 @@ void AnimalSpecies::setOntogeneticLinks(const vector<Species*>& existingSpecies,
 			}
 		}
 
-		if(instarPreference > 1.0)
+		if(std::abs(instarPreference.getValue() - 1.0) > 1e-5)
 		{
-			throwLineInfoException("Error: The total preference of instar " + fmt::to_string(predatorInstar) + " of '" + getScientificName() + "' animal species must less or equal to 1.");
+			throwLineInfoException("Error: The total preference of instar " + fmt::to_string(predatorInstar) + " of '" + getScientificName() + "' animal species must equal to 1.");
 		}
 	}
 }

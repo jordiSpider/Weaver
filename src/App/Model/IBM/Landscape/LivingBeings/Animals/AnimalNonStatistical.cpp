@@ -812,27 +812,27 @@ void AnimalNonStatistical::setNewLifeStage(Landscape* const landscape, const Lif
 	{
 	case LifeStage::STARVED: {
 		setDateOfDeath(Day(numberOfTimeSteps, timeStepsPerDay));
-		nextAction = Action::NONE;
+		nextAction = Action::DEAD;
 		break;
 	}
 	case LifeStage::PREDATED: {
 		setDateOfDeath(Day(numberOfTimeSteps, timeStepsPerDay));
-		nextAction = Action::NONE;
+		nextAction = Action::DEAD;
 		break;
 	}
 	case LifeStage::BACKGROUND: {
 		setDateOfDeath(Day(numberOfTimeSteps, timeStepsPerDay));
-		nextAction = Action::NONE;
+		nextAction = Action::DEAD;
 		break;
 	}
 	case LifeStage::SENESCED: {
 		setDateOfDeath(Day(numberOfTimeSteps, timeStepsPerDay));
-		nextAction = Action::NONE;
+		nextAction = Action::DEAD;
 		break;
 	}
 	case LifeStage::SHOCKED: {
 		setDateOfDeath(Day(numberOfTimeSteps, timeStepsPerDay));
-		nextAction = Action::NONE;
+		nextAction = Action::DEAD;
 		break;
 	}
 	case LifeStage::UNBORN:
@@ -1150,6 +1150,11 @@ void AnimalNonStatistical::actionExecution(Landscape* const landscape, const boo
 	case Action::HABITAT_SHIFT:
 		habitatShift(landscape);
 		break;
+	case Action::RETALIATION:
+		break;
+	case Action::DEAD:
+		return;
+		break;
 	case Action::NONE:
 		throwLineInfoException("Parallel execution is not supported for this action type");
 		break;
@@ -1265,6 +1270,17 @@ bool AnimalNonStatistical::predate(const bool retaliation, const bool saveAnimal
 			return false;
 		}
 	}
+	else {
+		const DryMass dryMassAvailable = static_cast<CellResourceInterface&>(*get<0>(getPotencialPrey())).calculateDryMassAvailable(get<2>(getPotencialPrey()), &getPosition(), getInteractionAreaRadius());
+
+		if (dryMassAvailable >= landscape->getMinExploitableResource())
+		{
+			std::get<1>(getPotencialPrey()) = dryMassAvailable;
+		}
+		else {
+			return false;
+		}
+	}
 
 
 	PreciseDouble randomProbability = Random::randomUniform();
@@ -1360,7 +1376,7 @@ void AnimalNonStatistical::activateRetaliation(Edible* prey, const DryMass &targ
 		timeStepsPerDay, competitionAmongResourceSpecies, predationEventsOnOtherSpecies, animalSpeciesMaximumPredationEncountersPerDay);
 
 	if (success) {
-		nextAction = Action::NONE;
+		nextAction = Action::RETALIATION;
 	}
 	else {
 		potencialPrey = currentPotencialPrey;
@@ -2101,11 +2117,11 @@ void AnimalNonStatistical::setCurrentPrey(const std::tuple<Edible*, DryMass, boo
 
 	if(get<0>(prey)->getSpecies()->isMobile())
 	{
-        static_cast<Animal&>(*get<0>(prey)).setNewLifeStage(landscape, LifeStage::PREDATED, numberOfTimeSteps, getId(), timeStepsPerDay);
+		static_cast<Animal&>(*get<0>(prey)).setNewLifeStage(landscape, LifeStage::PREDATED, numberOfTimeSteps, getId(), timeStepsPerDay);
 	}
 	else
 	{
-        static_cast<CellResourceInterface&>(*get<0>(prey)).substractBiomass(preyDryMass, get<2>(prey), getPosition(), getInteractionAreaRadius(), competitionAmongResourceSpecies);
+		static_cast<CellResourceInterface&>(*get<0>(prey)).substractBiomass(preyDryMass, get<2>(prey), getPosition(), getInteractionAreaRadius(), competitionAmongResourceSpecies);
 	}
 
 

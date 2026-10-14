@@ -78,6 +78,11 @@ public:
     const TimeStep& getInstarAge(const Instar& instarValue) const;
 
     /**
+     * @brief Calculates the age of first maturation after pupation.
+     */
+    const TimeStep getAgeOfFirstMaturation(const TimeStep& pupaPeriodTime) const;
+
+    /**
      * @brief Get the full vector of individual instar ages.
      * @return Vector of instar ages.
      */

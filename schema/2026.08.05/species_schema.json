@@ -3459,7 +3459,7 @@
                                     "properties": {
                                         "model": {
                                             "type": "string",
-                                            "enum": [ "Linear", "VonBertalanffy", "Logistic", "Exponential", "Logistic4P_FixedA" ]
+                                            "enum": [ "Linear", "VonBertalanffy", "Logistic", "Exponential", "Logistic4P" ]
                                         },
                                         "A": {
                                             "type": "number"

@@ -120,6 +120,10 @@ if(BUILD_DOCS)
     add_subdirectory(docs)
 endif()
 
+if(BUILD_R_PACKAGES)
+    add_subdirectory(R)
+endif()
+
 
 # ------------------------------------------------------------
 # 🚀 Resource & Asset Installation Rules

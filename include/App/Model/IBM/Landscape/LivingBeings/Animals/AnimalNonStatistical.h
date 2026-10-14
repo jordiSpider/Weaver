@@ -67,7 +67,9 @@ public:
 		MOVEMENT,       /**< Represents a movement action. */
 		FEED,           /**< Represents a feeding action. */
 		HABITAT_SHIFT,  /**< Represents a habitat shift action. */
-		PREDATE		 	/**< Represents a predation action. */
+		PREDATE,	 	/**< Represents a predation action. */
+		RETALIATION,	/**< Represents a retaliation action. */
+		DEAD			/**< Represents a dead action. */
 	};
 
 

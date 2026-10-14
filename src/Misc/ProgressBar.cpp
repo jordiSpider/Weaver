@@ -10,7 +10,7 @@ using namespace std;
  * @brief ProgressBar constructor.
  *
  * Initializes progress thresholds and prints the initial empty bar:
- * 
+ *
  * Example output:
  * ```
  * 0%|                                                  |100%
@@ -23,9 +23,23 @@ using namespace std;
  * @param maxCounter The total number of iterations to complete.
  */
 ProgressBar::ProgressBar(const size_t maxCounter)
-    : maxCounter(maxCounter), nextStep(1u), counter(0u)
+	: maxCounter(maxCounter), nextStep(1u), counter(0u)
 {
-	if(maxCounter < width)
+	// CASO BORDE: Si maxCounter es 0, el progreso ya está completado al 100%
+	if (maxCounter == 0)
+	{
+		maxSteps = width;
+		stepProgress = 1u;
+		iterationsPerStep = 1u;
+		thresholdToNextStep = 0u;
+		nextStep = maxSteps + 1; // Evita que update entre al bucle while
+
+		// Imprime la barra completamente llena desde el inicio
+		LogManager::emit("0%|" + std::string(width, fill) + "|100%\n");
+		return;
+	}
+
+	if (maxCounter < width)
 	{
 		// Small number of iterations: each iteration fills multiple characters.
 		maxSteps = maxCounter;
@@ -47,12 +61,12 @@ ProgressBar::ProgressBar(const size_t maxCounter)
 }
 
 void ProgressBar::update(size_t increment) {
-	#ifdef DEBUG
-	if(counter > maxCounter)
+#ifdef DEBUG
+	if (counter > maxCounter)
 	{
 		throwLineInfoException("Error: ProgressBar overflow.");
 	}
-	#endif
+#endif
 
 	counter += increment;
 
@@ -64,7 +78,7 @@ void ProgressBar::update(size_t increment) {
 	size_t stepsToPrint = 0;
 
 	// Calcular cuántos pasos visuales se han superado en esta actualización
-	while(counter >= thresholdToNextStep && nextStep <= maxSteps)
+	while (counter >= thresholdToNextStep && nextStep <= maxSteps)
 	{
 		// Cada paso completado equivale a 'stepProgress' caracteres en la barra
 		stepsToPrint += stepProgress;

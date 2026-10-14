@@ -98,11 +98,6 @@ public:
     const DryMass& getInstarMass(const Instar& instarValue) const;
 
     /**
-     * @brief Calculates the age of first maturation after pupation.
-     */
-    const TimeStep getAgeOfFirstMaturation(const TimeStep& pupaPeriodTime) const;
-
-    /**
      * @brief Executes the growth step for the animal.
      * 
      * @return A pair of status flags and life stage information.

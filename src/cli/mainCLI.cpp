@@ -28,7 +28,7 @@ int main(int argc, char ** argv)
 
 	string mode;
 	string inputConfig, outputFolder, checkpointPath;
-	bool silent = false, verbose = false, enableDiskOutputMock = false, help = false;
+	bool silent = false, verbose = false, enableDiskOutputMock = false, schema_version = false, help = false;
 	unsigned int requestedThreads;
 
 	options.add_options("Common")
@@ -39,6 +39,7 @@ int main(int argc, char ** argv)
 		("verbose", "Run the program in verbose mode", cxxopts::value<bool>(verbose)->implicit_value("true"))
 		("enableDiskOutputMock", "Enable disk output mock execution", cxxopts::value<bool>(enableDiskOutputMock)->implicit_value("true"))
 		("parallel", "Specify the number of threads to use", cxxopts::value<unsigned int>(requestedThreads)->default_value("0"))
+		("schema_version", "Print schema version", cxxopts::value<bool>(schema_version)->implicit_value("true"))
 		("h,help", "Print usage", cxxopts::value<bool>(help)->implicit_value("true"));
 
 	auto result = options.parse(argc, argv);
@@ -54,6 +55,12 @@ int main(int argc, char ** argv)
 	{
 		throwLineInfoException("Error: Both silent and verbose modes cannot be enabled simultaneously.");
 	}
+
+	if (schema_version)
+	{
+		cout << "Schema version: " << WEAVER_SCHEMA_VERSION << endl;
+		return 0;
+	}
 	
 
 
@@ -66,16 +73,19 @@ int main(int argc, char ** argv)
 	try {
 		view.run(mode, inputConfig, outputFolder, silent, verbose, enableDiskOutputMock, requestedThreads);
 		returnCode = 0;
-    } catch (const LineInfoException& e) {
-        cerr << e.what() << endl;
-        returnCode = 1;
-    } catch (const std::exception& e) {
-        cerr << "Caught std::exception: " << e.what() << endl;
-        returnCode = 2;
-    } catch (...) {
-        cerr << "Caught unknown exception." << endl;
-        returnCode = 3;
-    }
+	}
+	catch (const LineInfoException& e) {
+		cerr << e.what() << endl;
+		returnCode = 1;
+	}
+	catch (const std::exception& e) {
+		cerr << "Caught std::exception: " << e.what() << endl;
+		returnCode = 2;
+	}
+	catch (...) {
+		cerr << "Caught unknown exception." << endl;
+		returnCode = 3;
+	}
 
 	delete model;
 

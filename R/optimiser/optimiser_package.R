@@ -13,7 +13,11 @@ WeaverOptimiserClass <- R6Class("WeaverOptimiserClass",
     private = list(
         optimise_preferences = FALSE,
 
+        optimise_profitability = FALSE,
+
         preferences_groups = list(),
+
+        profitability_groups = list(),
 
         preferences_constraints = NULL,
 
@@ -80,6 +84,10 @@ WeaverOptimiserClass <- R6Class("WeaverOptimiserClass",
                     self$display_debug(paste0("# | Preference: ", name, " | Value: ", population[[i]][[name]]))
                 })
 
+                sapply(names(private$profitability_groups), function(name) {
+                    self$display_debug(paste0("# | Profitability: ", name, " | Value: ", population[[i]][[name]]))
+                })
+
                 self$display_debug("#  \\")
             })
         },
@@ -123,6 +131,16 @@ WeaverOptimiserClass <- R6Class("WeaverOptimiserClass",
                     param$show()
                 }
             }
+
+            if(private$optimise_profitability) {
+                for(param in private$profitability_groups) {
+                    self$display("")
+                    self$display("--------------------------------------------------")
+                    self$display("")
+
+                    param$show()
+                }
+            }
         },
 
         # Función para generar un individuo aleatorio
@@ -152,6 +170,17 @@ WeaverOptimiserClass <- R6Class("WeaverOptimiserClass",
                     individual[[name]] = preferences_sample[[name]]
 
                     self$display_debug(paste0("* | Preference: ", name, " | Value: ", individual[[name]]))
+                }
+            }
+
+            if(private$optimise_profitability) {
+                for(name in names(private$profitability_groups)) {
+                    min_val <- max(0.0, private$profitability_groups[[name]]$min)
+                    max_val <- min(1.0, private$profitability_groups[[name]]$max)
+
+                    individual[[name]] <- runif(1, min = min_val, max = max_val)
+
+                    self$display_debug(paste0("* | Profitability: ", name, " | Value: ", individual[[name]]))
                 }
             }
 
@@ -242,6 +271,25 @@ WeaverOptimiserClass <- R6Class("WeaverOptimiserClass",
                 )
 
                 write.csv(preference_data, csv_path, quote = FALSE)
+            }
+
+            if(private$optimise_profitability) {
+                csv_path = file.path(config_path, "species", "ontogeneticLinksProfitability.csv")
+
+                profitability_data <- read.csv(csv_path, header = TRUE, row.names = 1, sep = ",", check.names = FALSE)
+
+                for(name in names(private$profitability_groups)) {
+                    for(cell in private$profitability_groups[[name]]$cells[[1]]) {
+                        profitability_data[cell[[1]], cell[[2]]] = individual[[name]]
+                    }
+                }
+
+                profitability_data[] <- lapply(profitability_data, function(col) {
+                        if (is.numeric(col)) format(col, scientific = TRUE, digits = 17) else col
+                    }
+                )
+
+                write.csv(profitability_data, csv_path, quote = FALSE)
             }
 
             return(config_path)
@@ -360,6 +408,10 @@ WeaverOptimiserClass <- R6Class("WeaverOptimiserClass",
                     self$display_debug(paste0("* | Preference: ", name, " | Value: ", population[[i]][[name]]))
                 })
 
+                sapply(names(private$profitability_groups), function(name) {
+                    self$display_debug(paste0("* | Profitability: ", name, " | Value: ", population[[i]][[name]]))
+                })
+
                 self$display_debug("* | Fitness:")
                 self$display_debug("* | /")
 
@@ -444,10 +496,12 @@ WeaverOptimiserClass <- R6Class("WeaverOptimiserClass",
                 offspring1 <- parent1
                 offspring1[afterPoint] <- parent2[afterPoint]
                 offspring1[names(private$preferences_groups)] <- parent2[names(private$preferences_groups)]
+                offspring1[names(private$profitability_groups)] <- parent2[names(private$profitability_groups)]
 
                 offspring2 <- parent2
                 offspring2[afterPoint] <- parent1[afterPoint]
                 offspring2[names(private$preferences_groups)] <- parent1[names(private$preferences_groups)]
+                offspring2[names(private$profitability_groups)] <- parent1[names(private$profitability_groups)]
 
                 self$display_debug("* | Offspring 1: ")
                 self$display_debug("* | /")
@@ -456,6 +510,9 @@ WeaverOptimiserClass <- R6Class("WeaverOptimiserClass",
                 })
                 sapply(names(private$preferences_groups), function(name) {
                     self$display_debug(paste0("* || Preference: ", name, " | Value: ", offspring1[[name]]))
+                })
+                sapply(names(private$profitability_groups), function(name) {
+                    self$display_debug(paste0("* || Profitability: ", name, " | Value: ", offspring1[[name]]))
                 })
                 self$display_debug("* | \\")
 
@@ -466,6 +523,9 @@ WeaverOptimiserClass <- R6Class("WeaverOptimiserClass",
                 })
                 sapply(names(private$preferences_groups), function(name) {
                     self$display_debug(paste0("* || Preference: ", name, " | Value: ", offspring2[[name]]))
+                })
+                sapply(names(private$profitability_groups), function(name) {
+                    self$display_debug(paste0("* || Profitability: ", name, " | Value: ", offspring2[[name]]))
                 })
                 self$display_debug("* | \\")
 
@@ -535,6 +595,44 @@ WeaverOptimiserClass <- R6Class("WeaverOptimiserClass",
                 }
 
                 self$display_debug("* || \\")
+            }
+
+            if(private$optimise_profitability) {
+                self$display_debug("* | Profitability: ")
+                self$display_debug("* | /")
+
+                prob <- runif(1)
+
+                self$display_debug(paste0("* || Successful: ", ifelse(prob <= mutation_rate, "Yes", "No"), " | Prob: ", prob, " | Mutation rate: ", mutation_rate))
+
+                if (prob <= mutation_rate) {
+                    self$display_debug("* || Old Value: ")
+                    self$display_debug("* || /")
+
+                    for(name in names(private$profitability_groups)) {
+                        self$display_debug(paste0("* ||| ", name, ": ", individual[[name]]))
+                    }
+
+                    self$display_debug("* || \\")
+
+                    for(name in names(private$profitability_groups)) {
+                        min_val <- max(0.0, private$profitability_groups[[name]]$min)
+                        max_val <- min(1.0, private$profitability_groups[[name]]$max)
+
+                        individual[[name]] <- runif(1, min = min_val, max = max_val)
+                    }
+
+                    self$display_debug("* || New Value: ")
+                    self$display_debug("* || /")
+
+                    for(name in names(private$profitability_groups)) {
+                        self$display_debug(paste0("* ||| ", name, ": ", individual[[name]]))
+                    }
+
+                    self$display_debug("* || \\")
+                }
+
+                self$display_debug("* | \\")
             }
 
             self$display_debug("* | \\")
@@ -614,6 +712,9 @@ WeaverOptimiserClass <- R6Class("WeaverOptimiserClass",
                     sapply(names(private$preferences_groups), function(name) {
                         self$display_debug(paste0("* || Preference: ", name, " | Value: ", selected_population[[i]][[name]]))
                     })
+                    sapply(names(private$profitability_groups), function(name) {
+                        self$display_debug(paste0("* || Profitability: ", name, " | Value: ", selected_population[[i]][[name]]))
+                    })
                     self$display_debug("* | \\")
 
                     self$display_debug("* | Parent 2: ")
@@ -623,6 +724,9 @@ WeaverOptimiserClass <- R6Class("WeaverOptimiserClass",
                     })
                     sapply(names(private$preferences_groups), function(name) {
                         self$display_debug(paste0("* || Preference: ", name, " | Value: ", selected_population[[i+1]][[name]]))
+                    })
+                    sapply(names(private$profitability_groups), function(name) {
+                        self$display_debug(paste0("* || Profitability: ", name, " | Value: ", selected_population[[i+1]][[name]]))
                     })
                     self$display_debug("* | \\")
 
@@ -739,6 +843,40 @@ WeaverOptimiserClass <- R6Class("WeaverOptimiserClass",
             public = list(
                 initialize = function() {
                     stop("Cannot instantiate the base class directly")
+                }
+            )
+        ),
+
+        Profitability = R6Class("Profitability",
+            inherit = WeaverOptimiserClass$Parameter,
+            public = list(
+                name = character(0),
+                cells = list(),
+                min = numeric(0),
+                max = numeric(0),
+
+                initialize = function(name, cells, min, max) {
+                    self$name <- name
+
+                    for(cell in cells) {
+                        self$cells[[length(self$cells) + 1]] <- cell$generate_cells()
+                    }
+
+                    self$min <- min
+                    self$max <- max
+                },
+
+                show = function() {
+                    WeaverOptimiser$display(paste0("  Parameter Name: \"", self$name, "\""))
+                    WeaverOptimiser$display(paste0("  Type: ", class(self)[1]))
+                    WeaverOptimiser$display("  Cells:")
+                    WeaverOptimiser$display("   /")
+                    for(cell in self$cells[[1]]) {
+                        WeaverOptimiser$display(paste0("  | Row: ", cell[[1]], " Column: ", cell[[2]]))
+                    }
+                    WeaverOptimiser$display("   \\")
+                    WeaverOptimiser$display(paste0("  Minimum: ", self$min))
+                    WeaverOptimiser$display(paste0("  Maximum: ", self$max))
                 }
             )
         ),
@@ -1666,6 +1804,11 @@ WeaverOptimiserClass <- R6Class("WeaverOptimiserClass",
 
                     private$preferences_groups[[param$name]] <- param
                 }
+                else if(class(param)[1] == "Profitability") {
+                    private$optimise_profitability <- TRUE
+
+                    private$profitability_groups[[param$name]] <- param
+                }
                 else {
                     private$parameters[[param$name]] <- param
                 }
@@ -1814,35 +1957,59 @@ WeaverOptimiserClass <- R6Class("WeaverOptimiserClass",
                 colums <- colnames(preference_data)
                 rows <- rownames(preference_data)
 
+                group_names <- names(private$preferences_groups)
+                cell_owner_group <- list()
+
+                for (g in seq_len(num_groups)) {
+                    group <- group_names[[g]]
+
+                    for (cell in private$preferences_groups[[group]]$cells[[1]]) {
+                        cell_key <- paste(cell[[1]], cell[[2]], sep = "||")
+                        current_owner <- cell_owner_group[[cell_key]]
+
+                        if (!is.null(current_owner) && current_owner != g) {
+                            stop(paste0(
+                                "Error: Overlapping preference groups are not allowed. Cell ('",
+                                cell[[1]], "', '", cell[[2]],
+                                "') is assigned to both groups '",
+                                group_names[[current_owner]], "' and '", group, "'."
+                            ))
+                        }
+
+                        cell_owner_group[[cell_key]] <- g
+                    }
+                }
+
                 for (j in 1:length(colums)) {
 
                     fixed_sum <- 0
 
                     for (i in 1:length(rows)) {
 
-                        cell_is_grouped <- FALSE
+                        cell_key <- paste(rows[[i]], colums[[j]], sep = "||")
+                        owner_group <- cell_owner_group[[cell_key]]
 
-                        for (g in 1:length(private$preferences_groups)) {
-                            group <- names(private$preferences_groups)[[g]]
-
-                            if (any(sapply(private$preferences_groups[[group]]$cells[[1]], function(cell) all(cell == c(rows[[i]], colums[[j]]))))) {
-                                equality_constraints[j, g] <- equality_constraints[j, g] + 1  # esa variable afecta a esta suma de columna
-                                cell_is_grouped <- TRUE
-                                break
-                            }
-                        }
-
-                        if (!cell_is_grouped) {
+                        if (!is.null(owner_group)) {
+                            equality_constraints[j, owner_group] <- equality_constraints[j, owner_group] + 1
+                        } else {
                             fixed_sum <- fixed_sum + preference_data[rows[[i]], colums[[j]]]
                         }
                     }
 
-                    equality_constraints[[j, ncol(equality_constraints)]] <- max(0.99 - fixed_sum, 0.0)
+                    if (fixed_sum > 1.0 + 1e-9) {
+                        stop(paste0(
+                            "Error: Unsolvable preference system. Column '", colums[[j]],
+                            "' has immutable values summing ", round(fixed_sum, 6),
+                            ", which exceeds 1.0."
+                        ))
+                    }
+
+                    equality_constraints[[j, ncol(equality_constraints)]] <- 1.0 - fixed_sum
                 }
 
 
                 for (g in 1:num_groups) {
-                    group <- names(private$preferences_groups)[[g]]
+                    group <- group_names[[g]]
 
                     inequality_constraints[[(g-1)*2+1, g]] <- 1
                     inequality_constraints[[(g-1)*2+2, g]] <- -1
@@ -1860,6 +2027,62 @@ WeaverOptimiserClass <- R6Class("WeaverOptimiserClass",
                     G = inequality_constraints[, -ncol(inequality_constraints), drop = FALSE],
                     H = inequality_constraints[, ncol(inequality_constraints)]
                 )
+
+                feasibility_test <- linprog(
+                    E = private$preferences_constraints$E,
+                    F = private$preferences_constraints$F,
+                    G = private$preferences_constraints$G,
+                    H = private$preferences_constraints$H,
+                    Cost = rep(0, num_groups)
+                )
+
+                if (!identical(feasibility_test$IsFeasible, TRUE)) {
+                    stop("Error: Unsolvable preference system. With the selected optimized cells and min/max bounds, there is no feasible solution that satisfies all predator column constraints while keeping non-optimized cells immutable.")
+                }
+            }
+
+            if(private$optimise_profitability) {
+                csv_path = file.path(base_config_path, "species", "ontogeneticLinksProfitability.csv")
+                profitability_data <- read.csv(csv_path, header = TRUE, row.names = 1, sep = ",", check.names = FALSE)
+
+                group_names <- names(private$profitability_groups)
+                cell_owner_group <- list()
+
+                for (g in seq_len(length(group_names))) {
+                    group <- group_names[[g]]
+
+                    min_val <- private$profitability_groups[[group]]$min
+                    max_val <- private$profitability_groups[[group]]$max
+
+                    if (min_val < 0.0 || max_val > 1.0 || min_val > max_val) {
+                        stop(paste0(
+                            "Error: Invalid profitability bounds in group '", group,
+                            "'. Bounds must satisfy 0.0 <= min <= max <= 1.0."
+                        ))
+                    }
+
+                    for (cell in private$profitability_groups[[group]]$cells[[1]]) {
+                        if (!(cell[[1]] %in% rownames(profitability_data)) || !(cell[[2]] %in% colnames(profitability_data))) {
+                            stop(paste0(
+                                "Error: Profitability cell ('", cell[[1]], "', '", cell[[2]], "') does not exist in ontogeneticLinksProfitability.csv."
+                            ))
+                        }
+
+                        cell_key <- paste(cell[[1]], cell[[2]], sep = "||")
+                        current_owner <- cell_owner_group[[cell_key]]
+
+                        if (!is.null(current_owner) && current_owner != g) {
+                            stop(paste0(
+                                "Error: Overlapping profitability groups are not allowed. Cell ('",
+                                cell[[1]], "', '", cell[[2]],
+                                "') is assigned to both groups '",
+                                group_names[[current_owner]], "' and '", group, "'."
+                            ))
+                        }
+
+                        cell_owner_group[[cell_key]] <- g
+                    }
+                }
             }
 
 
@@ -1869,7 +2092,7 @@ WeaverOptimiserClass <- R6Class("WeaverOptimiserClass",
             self$display("")
 
 
-            header_names <- c("Generation", "Individual", names(private$parameters), names(private$preferences_groups), fitness_class$get_header(), "Result_folder")
+            header_names <- c("Generation", "Individual", names(private$parameters), names(private$preferences_groups), names(private$profitability_groups), fitness_class$get_header(), "Result_folder")
 
             private$evolution_history <- data.frame(matrix(ncol = length(header_names), nrow = 0), stringsAsFactors = FALSE)
             colnames(private$evolution_history) <- header_names
@@ -1895,6 +2118,7 @@ WeaverOptimiserClass <- R6Class("WeaverOptimiserClass",
                         generation, i, 
                         unname(population[[i]][names(private$parameters)]), 
                         unname(population[[i]][names(private$preferences_groups)]), 
+                        unname(population[[i]][names(private$profitability_groups)]), 
                         fitness_class$get_row_info(fitness_values[[i]]),
                         result_folders[[i]]
                     ))
