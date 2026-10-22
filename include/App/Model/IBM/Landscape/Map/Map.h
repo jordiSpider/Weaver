@@ -124,7 +124,7 @@ public:
     * @param patch Patch to apply.
     * @return True if applied successfully.
     */
-    virtual bool applyPatch(Landscape* const landscape, const Patch& patch)=0;
+    virtual bool applyPatch(Landscape* const landscape, const Patch& patch, unsigned int seed)=0;
 
     /**
     * @brief Adds a terrain cell that can be inhabited.

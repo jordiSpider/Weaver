@@ -53,6 +53,8 @@ public:
      */
     PreciseDouble getValue(const Genome& genome, const size_t traitsPerModule, const size_t numberOfLociPerTrait, const std::vector<PreciseDouble>& rhoPerModule, const std::vector<size_t>& rhoRangePerModule) const;
 
+    PreciseDouble getValue() const;
+
     /**
      * @brief Sets the value of the species-level trait.
      *

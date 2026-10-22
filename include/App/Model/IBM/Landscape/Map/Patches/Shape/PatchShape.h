@@ -52,12 +52,6 @@ protected:
      */
     PatchShape& operator=(const PatchShape&) = delete;
 
-    /**
-     * @brief Returns the influence zone of the patch.
-     * @return Pointer to the RingModel representing the patch influence zone.
-     */
-    const RingModel& getInfluenceZone() const;    
-
 public:
     /**
      * @brief Types of patch shapes.
@@ -89,6 +83,8 @@ public:
      * @return Coverage enum value indicating how much of the cell is covered.
      */
     virtual Coverage checkCoverage(const RingModel& cellBounds) const;
+
+    const RingModel& getInfluenceZone() const;
     
     /**
      * @brief Returns the textual description of the patch.

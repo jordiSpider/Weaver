@@ -1,0 +1,177 @@
+{
+    "type": "object",
+    "properties": {
+        "version": {
+            "type": "string"
+        },
+        "patch": {
+            "type": "object",
+          "properties": {
+            "priority": {
+              "type": "integer",
+              "minimum": 1
+            },
+            "shape": {
+              "type": "object",
+              "properties": {
+                "type": {
+                  "type": "string",
+                  "enum": [
+                    "Homogeneous",
+                    "Gaussian",
+                    "Spherical",
+                    "Cubic",
+                    "RandomGaussian"
+                  ]
+                },
+                "cubicParams": {
+                  "type": "object",
+                  "properties": {
+                    "bottomLeftCorner": {
+                      "type": "array",
+                      "items": {
+                        "type": "number"
+                      },
+                      "nullProperty": true
+                    },
+                    "topRightCorner": {
+                      "type": "array",
+                      "items": {
+                        "type": "number"
+                      },
+                      "nullProperty": true
+                    }
+                  }
+                },
+                "sphericalParams": {
+                  "type": "object",
+                  "properties": {
+                    "center": {
+                      "type": "array",
+                      "items": {
+                        "type": "number"
+                      },
+                      "nullProperty": true
+                    },
+                    "radius": {
+                      "type": "number",
+                      "minimum": 0.0,
+                      "nullProperty": true
+                    }
+                  }
+                },
+                "homogeneousParams": {
+                  "type": "object",
+                  "properties": {
+
+                  }
+                },
+                "gaussianParams": {
+                  "type": "object",
+                  "properties": {
+
+                  }
+                },
+                "randomGaussianParams": {
+                  "type": "object",
+                  "properties": {
+
+                  }
+                }
+              },
+              "conditionals": [
+                {
+                  "condition": {
+                    "operatorType": "comparison",
+                    "comparisonType": "equal",
+                    "lhs": {
+                      "operatorType": "property",
+                      "propertyElement": "value",
+                      "relativePath": [
+                        "type"
+                      ]
+                    },
+                    "rhs": {
+                      "operatorType": "constant",
+                      "value": "spherical"
+                    }
+                  },
+                  "then": [
+                    {
+                      "workingPath": [
+                        "sphericalParams"
+                      ],
+                      "remove": {
+                        "nullProperty": [
+                          "center",
+                          "radius"
+                        ]
+                      }
+                    }
+                  ]
+                },
+                {
+                  "condition": {
+                    "operatorType": "comparison",
+                    "comparisonType": "equal",
+                    "lhs": {
+                      "operatorType": "property",
+                      "propertyElement": "value",
+                      "relativePath": [
+                        "type"
+                      ]
+                    },
+                    "rhs": {
+                      "operatorType": "constant",
+                      "value": "cubic"
+                    }
+                  },
+                  "then": [
+                    {
+                      "workingPath": [
+                        "cubicParams"
+                      ],
+                      "remove": {
+                        "nullProperty": [
+                          "bottomLeftCorner",
+                          "topRightCorner"
+                        ]
+                      }
+                    }
+                  ]
+                }
+              ]
+            },
+            "porosity": {
+              "type": "object",
+              "properties": {
+                "fraction": {
+                  "type": "number",
+                  "minimum": 0.0,
+                  "maximum": 1.0,
+                  "nullProperty": true
+                },
+                "minimumPoreWidth": {
+                  "type": "number",
+                  "minimum": 0.0,
+                  "exclusiveMinimum": true,
+                  "nullProperty": true
+                },
+                "featureSize": {
+                  "type": "number",
+                  "minimum": 0.0,
+                  "exclusiveMinimum": true,
+                  "nullProperty": true
+                },
+                "octaves": {
+                  "type": "integer",
+                  "minimum": 1,
+                  "maximum": 8,
+                  "nullProperty": true
+                }
+              }
+            }
+          }
+        }
+    }
+}

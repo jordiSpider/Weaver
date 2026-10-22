@@ -1,0 +1,318 @@
+{
+  "metadata": {
+    "schema_version": "2026.08.05",
+    "export_timestamp": "2026-10-09 19:45:45.184339"
+  },
+  "genetic_algorithm_settings": {
+    "population_size": 45,
+    "max_generations": 20,
+    "tournament_size": 5,
+    "crossover_prob": 0.8,
+    "mutation_rate": 0.05,
+    "keep_best": true
+  },
+  "computing_environment": {
+    "fitness_class": "MultiObjectiveFitness",
+    "priority_ranking": [ "totalTime", "minAbundance", "coefficientOfVariation" ],
+    "assigned_weights": {},
+    "objectives": {
+      "1": {
+        "name": "totalTime",
+        "criteria": "MAX",
+        "fitness_func_name": "totalTime",
+        "custom_code_raw": {}
+      },
+      "2": {
+        "name": "minAbundance",
+        "criteria": "MAX",
+        "fitness_func_name": "minAbundance",
+        "custom_code_raw": {}
+      },
+      "3": {
+        "name": "coefficientOfVariation",
+        "criteria": "MIN",
+        "fitness_func_name": "coefficientOfVariation",
+        "custom_code_raw": {}
+      }
+    }
+  },
+  "optimization_variables_allocation": {
+    "resourceMaximumCapacityDensityAlternative": {
+      "parameter_class": "RealValued",
+      "tied_destinations_coordinates": [
+        {
+          "target_json_file": "resource/patches/Alternative_patch.json",
+          "internal_json_path": "patch$source$resourceMaximumCapacityDensity"
+        },
+        {
+          "target_json_file": "resource/patches/Alternative_patch.json",
+          "internal_json_path": "patch$source$growthDynamics$growthRateParams$initialValue"
+        }
+      ],
+      "min_bound": 1.980022e-06,
+      "max_bound": 2.894791e-06,
+      "boolean_toggle": {},
+      "selected_enums": {}
+    },
+    "rMaxScaleAlternative": {
+      "parameter_class": "RealValued",
+      "tied_destinations_coordinates": [
+        {
+          "target_json_file": "resource/patches/Alternative_patch.json",
+          "internal_json_path": "patch$source$growthDynamics$growthRateParams$rMaxScale"
+        }
+      ],
+      "min_bound": 2.7,
+      "max_bound": 10.0,
+      "boolean_toggle": {},
+      "selected_enums": {}
+    },
+    "cellEvaluationBiomassCricotopus": {
+      "parameter_class": "RealValued",
+      "tied_destinations_coordinates": [
+        {
+          "target_json_file": "species/Cricotopus spx.json",
+          "internal_json_path": "animal$genetics$traits$definition$cellValue$cellEvaluationBiomass$speciesLevelParams$value"
+        }
+      ],
+      "min_bound": 0.0,
+      "max_bound": 1.0,
+      "boolean_toggle": {},
+      "selected_enums": {}
+    },
+    "cellEvaluationBiomassIsoperla": {
+      "parameter_class": "RealValued",
+      "tied_destinations_coordinates": [
+        {
+          "target_json_file": "species/Isoperla grammatica.json",
+          "internal_json_path": "animal$genetics$traits$definition$cellValue$cellEvaluationBiomass$speciesLevelParams$value"
+        }
+      ],
+      "min_bound": 0.0,
+      "max_bound": 1.0,
+      "boolean_toggle": {},
+      "selected_enums": {}
+    },
+    "probabilityDeathFromBackground_1_Isoperla": {
+      "parameter_class": "RealValued",
+      "tied_destinations_coordinates": [
+        {
+          "target_json_file": "species/Isoperla grammatica.json",
+          "internal_json_path": "animal$probabilityDeathFromBackground[[1]]"
+        }
+      ],
+      "min_bound": 0.001,
+      "max_bound": 0.005,
+      "boolean_toggle": {},
+      "selected_enums": {}
+    },
+    "probabilityDeathFromBackground_2_Isoperla": {
+      "parameter_class": "RealValued",
+      "tied_destinations_coordinates": [
+        {
+          "target_json_file": "species/Isoperla grammatica.json",
+          "internal_json_path": "animal$probabilityDeathFromBackground[[2]]"
+        }
+      ],
+      "min_bound": 0.001,
+      "max_bound": 0.005,
+      "boolean_toggle": {},
+      "selected_enums": {}
+    },
+    "probabilityDeathFromBackground_3_Isoperla": {
+      "parameter_class": "RealValued",
+      "tied_destinations_coordinates": [
+        {
+          "target_json_file": "species/Isoperla grammatica.json",
+          "internal_json_path": "animal$probabilityDeathFromBackground[[3]]"
+        }
+      ],
+      "min_bound": 0.001,
+      "max_bound": 0.005,
+      "boolean_toggle": {},
+      "selected_enums": {}
+    },
+    "probabilityDeathFromBackground_4_Isoperla": {
+      "parameter_class": "RealValued",
+      "tied_destinations_coordinates": [
+        {
+          "target_json_file": "species/Isoperla grammatica.json",
+          "internal_json_path": "animal$probabilityDeathFromBackground[[4]]"
+        }
+      ],
+      "min_bound": 0.001,
+      "max_bound": 0.005,
+      "boolean_toggle": {},
+      "selected_enums": {}
+    },
+    "probabilityDeathFromBackground_5_Isoperla": {
+      "parameter_class": "RealValued",
+      "tied_destinations_coordinates": [
+        {
+          "target_json_file": "species/Isoperla grammatica.json",
+          "internal_json_path": "animal$probabilityDeathFromBackground[[5]]"
+        }
+      ],
+      "min_bound": 0.001,
+      "max_bound": 0.005,
+      "boolean_toggle": {},
+      "selected_enums": {}
+    },
+    "probabilityDeathFromBackground_6_Isoperla": {
+      "parameter_class": "RealValued",
+      "tied_destinations_coordinates": [
+        {
+          "target_json_file": "species/Isoperla grammatica.json",
+          "internal_json_path": "animal$probabilityDeathFromBackground[[6]]"
+        }
+      ],
+      "min_bound": 0.001,
+      "max_bound": 0.005,
+      "boolean_toggle": {},
+      "selected_enums": {}
+    },
+    "probabilityDeathFromBackground_7_Isoperla": {
+      "parameter_class": "RealValued",
+      "tied_destinations_coordinates": [
+        {
+          "target_json_file": "species/Isoperla grammatica.json",
+          "internal_json_path": "animal$probabilityDeathFromBackground[[7]]"
+        }
+      ],
+      "min_bound": 0.001,
+      "max_bound": 0.005,
+      "boolean_toggle": {},
+      "selected_enums": {}
+    },
+    "probabilityDeathFromBackground_8_Isoperla": {
+      "parameter_class": "RealValued",
+      "tied_destinations_coordinates": [
+        {
+          "target_json_file": "species/Isoperla grammatica.json",
+          "internal_json_path": "animal$probabilityDeathFromBackground[[8]]"
+        }
+      ],
+      "min_bound": 0.001,
+      "max_bound": 0.005,
+      "boolean_toggle": {},
+      "selected_enums": {}
+    },
+    "probabilityDeathFromBackground_9_Isoperla": {
+      "parameter_class": "RealValued",
+      "tied_destinations_coordinates": [
+        {
+          "target_json_file": "species/Isoperla grammatica.json",
+          "internal_json_path": "animal$probabilityDeathFromBackground[[9]]"
+        }
+      ],
+      "min_bound": 0.001,
+      "max_bound": 0.005,
+      "boolean_toggle": {},
+      "selected_enums": {}
+    },
+    "probabilityDeathFromBackground_10_Isoperla": {
+      "parameter_class": "RealValued",
+      "tied_destinations_coordinates": [
+        {
+          "target_json_file": "species/Isoperla grammatica.json",
+          "internal_json_path": "animal$probabilityDeathFromBackground[[10]]"
+        }
+      ],
+      "min_bound": 0.001,
+      "max_bound": 0.005,
+      "boolean_toggle": {},
+      "selected_enums": {}
+    },
+    "probabilityDeathFromBackground_11_Isoperla": {
+      "parameter_class": "RealValued",
+      "tied_destinations_coordinates": [
+        {
+          "target_json_file": "species/Isoperla grammatica.json",
+          "internal_json_path": "animal$probabilityDeathFromBackground[[11]]"
+        }
+      ],
+      "min_bound": 0.001,
+      "max_bound": 0.005,
+      "boolean_toggle": {},
+      "selected_enums": {}
+    },
+    "probabilityDeathFromBackground_12_Isoperla": {
+      "parameter_class": "RealValued",
+      "tied_destinations_coordinates": [
+        {
+          "target_json_file": "species/Isoperla grammatica.json",
+          "internal_json_path": "animal$probabilityDeathFromBackground[[12]]"
+        }
+      ],
+      "min_bound": 0.001,
+      "max_bound": 0.005,
+      "boolean_toggle": {},
+      "selected_enums": {}
+    },
+    "probabilityDeathFromBackground_13_Isoperla": {
+      "parameter_class": "RealValued",
+      "tied_destinations_coordinates": [
+        {
+          "target_json_file": "species/Isoperla grammatica.json",
+          "internal_json_path": "animal$probabilityDeathFromBackground[[13]]"
+        }
+      ],
+      "min_bound": 0.001,
+      "max_bound": 0.005,
+      "boolean_toggle": {},
+      "selected_enums": {}
+    },
+    "preferenceIsoperlaCricotopus": {
+      "parameter_class": "Preference",
+      "tied_destinations_coordinates": [],
+      "min_bound": 0.0000000001,
+      "max_bound": 0.001,
+      "boolean_toggle": {},
+      "selected_enums": {},
+      "cells": [
+        {
+          "predator_species": "Isoperla_grammatica",
+          "predator_instars": [ 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13 ],
+          "prey_species": "Cricotopus_spx",
+          "prey_instars": [ 1, 2, 3, 4 ]
+        }
+      ]
+    },
+    "preferenceIsoperlaAlternative": {
+      "parameter_class": "Preference",
+      "tied_destinations_coordinates": [],
+      "min_bound": 0.999,
+      "max_bound": 0.9999999999,
+      "boolean_toggle": {},
+      "selected_enums": {},
+      "cells": [
+        {
+          "predator_species": "Isoperla_grammatica",
+          "predator_instars": [ 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13 ],
+          "prey_species": "Alternative",
+          "prey_instars": 1
+        }
+      ]
+    },
+    "cricotopusAbundances": {
+      "parameter_class": "Abundances",
+      "tied_destinations_coordinates": [
+        {
+          "target_json_file": "species/Cricotopus spx.json",
+          "internal_json_path": "animal$individualsPerInstar"
+        }
+      ],
+      "min_bound": 200,
+      "max_bound": 1200,
+      "boolean_toggle": {},
+      "selected_enums": {},
+      "densities_vector": [
+        0.863331127902244,
+        0.0745578298605458,
+        0.0334583312410968,
+        0.0182683328016344,
+        0.0103843781944787
+      ]
+    }
+  }
+}

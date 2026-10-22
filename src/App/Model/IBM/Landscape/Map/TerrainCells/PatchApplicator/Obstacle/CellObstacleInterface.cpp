@@ -24,11 +24,11 @@ CellObstacleInterface::~CellObstacleInterface()
 
 }
 
-void CellObstacleInterface::applySource(const size_t obstaclePatchPriority)
+void CellObstacleInterface::applySource(const size_t obstaclePatchPriority, const bool obstacleValue)
 {
     setPatchPriority(obstaclePatchPriority);
-    setFullObstacleValue(true);
-    setObstacleValue(true);
+    setFullObstacleValue(obstacleValue);
+    setObstacleValue(obstacleValue);
 }
 
 bool CellObstacleInterface::isFullObstacle() const

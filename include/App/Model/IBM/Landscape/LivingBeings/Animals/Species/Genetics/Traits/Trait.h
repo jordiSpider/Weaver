@@ -111,6 +111,8 @@ public:
     /** @brief Get the value section of the trait. */
     TraitDefinitionSection* getValue();
 
+    const TraitDefinitionSection* const getValue() const;
+
     /** @brief Get the temperature section of the trait. */
     TraitTemperatureSection* getTemperatureSection();
 

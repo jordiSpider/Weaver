@@ -1,49 +1,64 @@
 # =========================================================================
-# BÚSQUEDA AUTOMATIZADA DEL INTÉRPRETE DE R (WINDOWS COMPATIBLE)
+# R TOOLCHAIN DISCOVERY
 # =========================================================================
+# R (the launcher used for "R CMD ...") and Rscript (used to run scripts) are
+# located separately: they are different executables and "Rscript CMD INSTALL"
+# does not work.
 
-# 1. Definir los nombres de los ejecutables válidos
-set(R_NAMES R Rscript Rscript.exe R.exe)
+set(_R_HINTS "")
 
-# 2. Definir las rutas de instalación estándar de R en Windows de forma dinámica
-set(R_PROG_FILES_PATHS
-    "C:/Program Files/R"
-    "C:/Program Files (x86)/R"
-)
-
-# 3. Escanear las subcarpetas "bin" de cualquier versión instalada (R-4.2, R-4.4, etc.)
-set(R_HINTS "")
-foreach(BASE_PATH ${R_PROG_FILES_PATHS})
-    if(EXISTS ${BASE_PATH})
-        # Obtener la lista de subcarpetas (ej: R-4.4.1)
-        file(GLOB R_VERSIONS RELATIVE ${BASE_PATH} "${BASE_PATH}/R-*")
-        foreach(VERSION ${R_VERSIONS})
-            # Añadir las variantes de arquitectura de 64 y 32 bits a la lista de búsqueda
-            list(APPEND R_HINTS "${BASE_PATH}/${VERSION}/bin")
-            list(APPEND R_HINTS "${BASE_PATH}/${VERSION}/bin/x64")
-            list(APPEND R_HINTS "${BASE_PATH}/${VERSION}/bin/i386")
-        endforeach()
+if(WIN32)
+    # 1. Official installer registry entry (most reliable)
+    cmake_host_system_information(
+        RESULT _R_REG_PATH
+        QUERY WINDOWS_REGISTRY "HKLM\\SOFTWARE\\R-core\\R"
+        VALUE "InstallPath"
+        VIEW 64
+        ERROR_VARIABLE _R_REG_ERROR
+    )
+    if(NOT _R_REG_ERROR AND _R_REG_PATH)
+        file(TO_CMAKE_PATH "${_R_REG_PATH}" _R_REG_PATH)
+        list(APPEND _R_HINTS "${_R_REG_PATH}/bin/x64" "${_R_REG_PATH}/bin")
     endif()
-endforeach()
 
-# 4. Lanzar la búsqueda con prioridad en los directorios encontrados
-find_program(R_EXECUTABLE 
-    NAMES ${R_NAMES}
-    HINTS ${R_HINTS}
-    PATHS ${R_HINTS}
-    COMMENT "Buscando binarios de R en el sistema..."
-)
+    # 2. Fallback: scan standard folders, newest R version first
+    foreach(_BASE_PATH IN ITEMS "C:/Program Files/R" "C:/Program Files (x86)/R")
+        if(EXISTS "${_BASE_PATH}")
+            file(GLOB _R_VERSIONS "${_BASE_PATH}/R-*")
+            list(SORT _R_VERSIONS COMPARE NATURAL ORDER DESCENDING)
+            foreach(_R_VERSION IN LISTS _R_VERSIONS)
+                list(APPEND _R_HINTS "${_R_VERSION}/bin/x64" "${_R_VERSION}/bin")
+            endforeach()
+        endif()
+    endforeach()
+endif()
 
-# 5. Si CMake sigue sin encontrarlo, mostrar un mensaje de ayuda descriptivo en lugar de colapsar
-if(NOT R_EXECUTABLE)
-    message(FATAL_ERROR 
-        "CMake Error: El intérprete de R no ha sido detectado en el sistema.\n"
-        "Asegúrate de tener R instalado de forma independiente a RStudio.\n"
-        "Si ya lo tienes, puedes forzar la ruta en la consola de CMake ejecutando:\n"
-        "cmake .. -DR_EXECUTABLE=\"C:/Ruta/A/Tu/R/bin/x64/Rscript.exe\""
+find_program(R_EXECUTABLE      NAMES R      HINTS ${_R_HINTS})
+find_program(RSCRIPT_EXECUTABLE NAMES Rscript HINTS ${_R_HINTS})
+mark_as_advanced(R_EXECUTABLE RSCRIPT_EXECUTABLE)
+
+if(NOT R_EXECUTABLE OR NOT RSCRIPT_EXECUTABLE)
+    message(FATAL_ERROR
+        "R was not found on this system.\n"
+        "Install R (independently of RStudio) or pass the paths explicitly:\n"
+        "  -DR_EXECUTABLE=\"C:/Program Files/R/R-4.x.y/bin/x64/R.exe\"\n"
+        "  -DRSCRIPT_EXECUTABLE=\"C:/Program Files/R/R-4.x.y/bin/x64/Rscript.exe\""
     )
 endif()
 
-message(STATUS "Intérprete de R detectado con éxito en: ${R_EXECUTABLE}")
+# Report the R version. The bundled R library contains compiled packages, so the
+# R version used here must match the major.minor series (e.g. 4.5) of the R
+# installed on the machines where the installer will be used.
+execute_process(
+    COMMAND "${RSCRIPT_EXECUTABLE}" --vanilla -e "cat(as.character(getRversion()))"
+    OUTPUT_VARIABLE R_VERSION_STRING
+    OUTPUT_STRIP_TRAILING_WHITESPACE
+)
+message(STATUS "R ${R_VERSION_STRING} found: ${R_EXECUTABLE}")
 
-add_subdirectory(weaverRHub)
+# CRAN repository used to resolve the package dependencies.
+# A dated Posit Package Manager snapshot makes builds reproducible.
+set(WEAVER_R_REPO "https://packagemanager.posit.co/cran/2026-10-01"
+    CACHE STRING "CRAN repository (or dated snapshot) used to resolve R dependencies")
+
+add_subdirectory(weaverR)

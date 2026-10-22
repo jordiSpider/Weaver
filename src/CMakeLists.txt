@@ -22,6 +22,7 @@ find_package(Boost REQUIRED COMPONENTS geometry serialization)
 find_path(RAPIDCSV_INCLUDE_DIRS "rapidcsv.h")
 find_package(TBB CONFIG REQUIRED)
 find_package(fmt CONFIG REQUIRED)
+find_package(unofficial-noise CONFIG REQUIRED)
 
 set(nlohmann-json_IMPLICIT_CONVERSIONS OFF)
 
@@ -193,6 +194,7 @@ target_sources(weaver_app_landscape
         ${CMAKE_CURRENT_SOURCE_DIR}/App/Model/IBM/Landscape/Map/SpatialTree.cpp
         ${CMAKE_CURRENT_SOURCE_DIR}/App/Model/IBM/Landscape/Map/Geometry/Geometry.cpp
         ${CMAKE_CURRENT_SOURCE_DIR}/App/Model/IBM/Landscape/Map/Patches/Patch.cpp
+        ${CMAKE_CURRENT_SOURCE_DIR}/App/Model/IBM/Landscape/Map/Patches/ObstaclePorosityMaskGenerator.cpp
         ${CMAKE_CURRENT_SOURCE_DIR}/App/Model/IBM/Landscape/Map/Patches/Shape/CubicPatch.cpp
         ${CMAKE_CURRENT_SOURCE_DIR}/App/Model/IBM/Landscape/Map/Patches/Shape/GaussianPatch.cpp
         ${CMAKE_CURRENT_SOURCE_DIR}/App/Model/IBM/Landscape/Map/Patches/Shape/HomogeneousPatch.cpp
@@ -246,6 +248,7 @@ target_link_libraries(weaver_app_landscape
         weaver_core_misc
         weaver_app_maths_physics
         weaver_app_living_beings
+        unofficial::noise::noise-static
 )
 
 

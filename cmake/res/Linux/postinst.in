@@ -1,0 +1,15 @@
+#!/bin/sh
+# Installs weaverR and missing or outdated dependencies in R's standard site library.
+set -e
+
+R_DIR="@WEAVER_R_PAYLOAD_DIR@"
+LEGACY_R_LIB="@WEAVER_LEGACY_R_LIBRARY_DIR@"
+case "$1" in
+    configure)
+        TARBALL=$(ls "$R_DIR"/weaverR_*.tar.gz | sort | tail -n 1)
+        Rscript --no-save --no-restore --no-init-file "$R_DIR/install_r_env.R" site "$TARBALL" "$R_DIR/cran_repo.txt"
+        rm -rf "$LEGACY_R_LIB"
+        ;;
+esac
+
+exit 0

@@ -4,6 +4,8 @@
 
 #include "App/Model/IBM/Landscape/LivingBeings/Animals/Animal.h"
 #include "App/Manager/LogManager.h"
+#include "App/Model/IBM/Landscape/LivingBeings/Animals/Species/Genetics/Traits/DefinitionSection/SpeciesLevelTrait.h"
+#include "App/Model/IBM/Landscape/LivingBeings/Animals/Species/Genetics/Traits/DefinitionSection/IndividualLevelTrait.h"
 
 
 #include <cmath>
@@ -39,6 +41,22 @@ AnimalSpecies::AnimalSpecies(const AnimalSpecies::ID& speciesId, const AnimalSpe
 	  preserveLeftovers(info["preserveLeftovers"].get<bool>()), YodzisA(info["YodzisA"].get<double>()), 
 	  YodzisB(info["YodzisB"].get<double>()), tempFromLab(info["tempFromLab"].get<double>())
 {
+	const Trait* const pupaPeriodTimeTrait = getGenetics().getBaseTraits(BaseTraitType::pupaPeriodTime);
+
+	PreciseDouble pupaPeriodTimeMinValue;
+
+	if (pupaPeriodTimeTrait->getValue()->getType() == TraitDefinitionSection::Type::SpeciesLevel) {
+		pupaPeriodTimeMinValue = static_cast<const SpeciesLevelTrait*>(pupaPeriodTimeTrait->getValue())->getValue();
+	}
+	else {
+		pupaPeriodTimeMinValue = static_cast<const IndividualLevelTrait*>(pupaPeriodTimeTrait->getValue())->getMinTraitLimit();
+	}
+
+	if (pupaPeriodTimeMinValue < timeStepsPerDay) {
+		throwLineInfoException("Error: The minimum pupa period time is less than the number of time steps per day. This is not allowed.");
+	}
+
+
 	setPoreUsePerInstar(info["poreUsePerInstar"].get<std::vector<double>>());
 
 

@@ -12,8 +12,8 @@
       "description": "Base preset defining common cache variables shared by all builds.",
       "binaryDir": "$env{HOST_BUILD_DIR}/${presetName}",
       "cacheVariables": {
-        "SCHEMA_VERSION": "2026.08.05",
-        "SERIALIZATION_VERSION": "2026.08.05"
+        "SCHEMA_VERSION": "2026.10.21",
+        "SERIALIZATION_VERSION": "2026.10.21"
       },
       "environment": {
         "HOST_BUILD_DIR": "${sourceDir}/build/${hostSystemName}"
@@ -130,8 +130,8 @@
     {
       "name": "R-packages",
       "hidden": true,
-      "inherits": [ "common-configure-options" ],
-      "description": "Enables R package targets.",
+      "inherits": [ "vcpkg-base" ],
+      "description": "Builds the R packages and installs them in the local R library.",
       "cacheVariables": {
         "BUILD_R_PACKAGES": "ON"
       }
@@ -176,6 +176,15 @@
       }
     },
     {
+      "name": "installer-r",
+      "hidden": true,
+      "inherits": [ "vcpkg-base" ],
+      "description": "Builds the weaverR private R library and includes it in the installer (component RPackages). Nothing is installed in the local R.",
+      "cacheVariables": {
+        "INSTALLER_INCLUDE_R": "ON"
+      }
+    },
+    {
       "name": "windows-full-suite-debug",
       "inherits": [ "app", "windows", "gui", "debug" ],
       "description": "Windows GUI & CLI Debug configuration."
@@ -213,7 +222,12 @@
     {
       "name": "windows-R-packages",
       "inherits": [ "R-packages", "windows", "cli", "release" ],
-      "description": "Windows CLI Release configuration with R package targets enabled."
+      "description": "Windows CLI Release configuration with the headless R package variant enabled."
+    },
+    {
+      "name": "windows-R-packages-full",
+      "inherits": [ "R-packages", "windows", "gui", "release" ],
+      "description": "Windows GUI Release configuration with the full R package variant enabled."
     },
     {
       "name": "linux-full-suite-debug",
@@ -263,7 +277,12 @@
     {
       "name": "linux-R-packages",
       "inherits": [ "R-packages", "linux", "cli", "release" ],
-      "description": "Linux CLI Release configuration with R package targets enabled."
+      "description": "Linux CLI Release configuration with the headless R package variant enabled."
+    },
+    {
+      "name": "linux-R-packages-full",
+      "inherits": [ "R-packages", "linux", "gui", "release" ],
+      "description": "Linux GUI Release configuration with the full R package variant enabled."
     },
     {
       "name": "windows-cli-only-relWithDebInfo-profile-baseline",
@@ -284,6 +303,26 @@
         "CMAKE_LIBRARY_OUTPUT_DIRECTORY": "${sourceDir}/lib/${hostSystemName}/$<CONFIG>/profiles/candidate",
         "CMAKE_ARCHIVE_OUTPUT_DIRECTORY": "${sourceDir}/lib/${hostSystemName}/$<CONFIG>/profiles/candidate"
       }
+    },
+    {
+      "name": "windows-pack-server",
+      "inherits": [ "app", "windows", "cli", "release", "installer-r" ],
+      "description": "Windows CLI Release configuration used to build the server installer (includes the R library)."
+    },
+    {
+      "name": "windows-pack-desktop",
+      "inherits": [ "app", "windows", "gui", "release", "installer-r" ],
+      "description": "Windows GUI & CLI Release configuration used to build the desktop installer (includes the R library)."
+    },
+    {
+      "name": "linux-pack-server",
+      "inherits": [ "app", "linux", "cli", "release", "installer-r" ],
+      "description": "Linux CLI Release configuration used to build the server package (includes the R library)."
+    },
+    {
+      "name": "linux-pack-desktop",
+      "inherits": [ "app", "linux", "gui", "release", "installer-r" ],
+      "description": "Linux GUI & CLI Release configuration used to build the desktop package (includes the R library)."
     },
     {
       "name": "docs",
@@ -403,7 +442,14 @@
       "name": "windows-R-packages",
       "inherits": [ "windows-common-build-options" ],
       "configurePreset": "windows-R-packages",
-      "description": "Build the Windows R packages configuration.",
+      "description": "Build the Windows headless R packages configuration.",
+      "configuration": "Release"
+    },
+    {
+      "name": "windows-R-packages-full",
+      "inherits": [ "windows-common-build-options" ],
+      "configurePreset": "windows-R-packages-full",
+      "description": "Build the Windows full R packages configuration.",
       "configuration": "Release"
     },
     {
@@ -487,7 +533,42 @@
       "name": "linux-R-packages",
       "inherits": [ "linux-common-build-options" ],
       "configurePreset": "linux-R-packages",
-      "description": "Build the Linux R packages configuration.",
+      "description": "Build the Linux headless R packages configuration.",
+      "configuration": "Release"
+    },
+    {
+      "name": "linux-R-packages-full",
+      "inherits": [ "linux-common-build-options" ],
+      "configurePreset": "linux-R-packages-full",
+      "description": "Build the Linux full R packages configuration.",
+      "configuration": "Release"
+    },
+    {
+      "name": "windows-pack-server",
+      "inherits": [ "windows-common-build-options" ],
+      "configurePreset": "windows-pack-server",
+      "description": "Build the Windows CLI Release configuration for the server installer.",
+      "configuration": "Release"
+    },
+    {
+      "name": "windows-pack-desktop",
+      "inherits": [ "windows-common-build-options" ],
+      "configurePreset": "windows-pack-desktop",
+      "description": "Build the Windows GUI & CLI Release configuration for the desktop installer.",
+      "configuration": "Release"
+    },
+    {
+      "name": "linux-pack-server",
+      "inherits": [ "linux-common-build-options" ],
+      "configurePreset": "linux-pack-server",
+      "description": "Build the Linux CLI Release configuration for the server package.",
+      "configuration": "Release"
+    },
+    {
+      "name": "linux-pack-desktop",
+      "inherits": [ "linux-common-build-options" ],
+      "configurePreset": "linux-pack-desktop",
+      "description": "Build the Linux GUI & CLI Release configuration for the desktop package.",
       "configuration": "Release"
     },
     {
@@ -532,47 +613,47 @@
             "name": "server",
             "hidden": true,
             "inherits": [ "common-package-options" ],
-            "description": "Abstract package configuration restricting content strictly to the Command Line Interface.",
-            "variables": {
-                "CPACK_COMPONENTS_ALL": "CLI"
-            }
+            "description": "Abstract package configuration restricting content strictly to the Command Line Interface."
         },
         {
             "name": "desktop",
             "hidden": true,
             "inherits": [ "common-package-options" ],
-            "description": "Abstract package configuration bundling both CLI and GUI application components.",
-            "variables": {
-                "CPACK_COMPONENTS_ALL": "CLI;GUI"
-            }
+            "description": "Abstract package configuration bundling both CLI and GUI application components."
         },
         {
             "name": "windows-pack-server",
             "displayName": "Windows Installer - CLI Only",
             "inherits": [ "server" ],
             "description": "Generate Windows installation packages containing only the server/CLI binaries.",
-            "configurePreset": "windows-cli-only-release"
+            "configurePreset": "windows-pack-server",
+            "configurations": [ "Release" ],
+            "generators": [ "WIX" ]
         },
         {
             "name": "windows-pack-desktop",
             "displayName": "Windows Installer - GUI & CLI",
             "inherits": [ "desktop" ],
             "description": "Generate Windows installer containing full suite desktop application packages.",
-            "configurePreset": "windows-full-suite-release"
+            "configurePreset": "windows-pack-desktop",
+            "configurations": [ "Release" ],
+            "generators": [ "WIX" ]
         },
         {
             "name": "linux-pack-server",
             "displayName": "Linux Installer - CLI Only",
             "inherits": [ "server" ],
             "description": "Generate Linux installation packages containing only the server/CLI binaries.",
-            "configurePreset": "linux-cli-only-release"
+            "configurePreset": "linux-pack-server",
+            "generators": [ "DEB" ]
         },
         {
             "name": "linux-pack-desktop",
             "displayName": "Linux Installer - GUI & CLI",
             "inherits": [ "desktop" ],
             "description": "Generate Linux installer containing full suite desktop application packages.",
-            "configurePreset": "linux-full-suite-release"
+            "configurePreset": "linux-pack-desktop",
+            "generators": [ "DEB" ]
         }
     ],
   "workflowPresets": [
@@ -634,7 +715,7 @@
     },
     {
       "name": "windows-R-packages",
-      "description": "Workflow to configure and build the Windows R packages target.",
+      "description": "Workflow to configure and build the Windows headless R packages target.",
       "steps": [
         {
           "type": "configure",
@@ -643,6 +724,20 @@
         {
           "type": "build",
           "name": "windows-R-packages"
+        }
+      ]
+    },
+    {
+      "name": "windows-R-packages-full",
+      "description": "Workflow to configure and build the Windows full R packages target.",
+      "steps": [
+        {
+          "type": "configure",
+          "name": "windows-R-packages-full"
+        },
+        {
+          "type": "build",
+          "name": "windows-R-packages-full"
         }
       ]
     },
@@ -788,7 +883,7 @@
     },
     {
       "name": "linux-R-packages",
-      "description": "Workflow to configure and build the Linux CLI Release R packages target.",
+      "description": "Workflow to configure and build the Linux CLI Release headless R packages target.",
       "steps": [
         {
           "type": "configure",
@@ -797,6 +892,20 @@
         {
           "type": "build",
           "name": "linux-R-packages"
+        }
+      ]
+    },
+    {
+      "name": "linux-R-packages-full",
+      "description": "Workflow to configure and build the Linux full R packages target.",
+      "steps": [
+        {
+          "type": "configure",
+          "name": "linux-R-packages-full"
+        },
+        {
+          "type": "build",
+          "name": "linux-R-packages-full"
         }
       ]
     },
@@ -862,11 +971,11 @@
       "steps": [
         {
           "type": "configure",
-          "name": "windows-cli-only-release"
+          "name": "windows-pack-server"
         },
         {
           "type": "build",
-          "name": "windows-cli-only-release"
+          "name": "windows-pack-server"
         },
         {
           "type": "package",
@@ -880,11 +989,11 @@
       "steps": [
         {
           "type": "configure",
-          "name": "windows-full-suite-release"
+          "name": "windows-pack-desktop"
         },
         {
           "type": "build",
-          "name": "windows-full-suite-release"
+          "name": "windows-pack-desktop"
         },
         {
           "type": "package",
@@ -898,11 +1007,11 @@
       "steps": [
         {
           "type": "configure",
-          "name": "linux-cli-only-release"
+          "name": "linux-pack-server"
         },
         {
           "type": "build",
-          "name": "linux-cli-only-release"
+          "name": "linux-pack-server"
         },
         {
           "type": "package",
@@ -916,11 +1025,11 @@
       "steps": [
         {
           "type": "configure",
-          "name": "linux-full-suite-release"
+          "name": "linux-pack-desktop"
         },
         {
           "type": "build",
-          "name": "linux-full-suite-release"
+          "name": "linux-pack-desktop"
         },
         {
           "type": "package",

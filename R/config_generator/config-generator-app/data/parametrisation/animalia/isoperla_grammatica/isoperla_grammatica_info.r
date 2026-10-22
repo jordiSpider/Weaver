@@ -1364,7 +1364,7 @@ source(file.path(parametrisation_path, "utilities", "codes", "functions", "calcu
 
 
 maximumResourceCapacityDensityAlternative = calculateMaximumResourceCapacityDensityAlternative(
-	json.individualsPerInstar, firstInstarToCalculate=1, landscapeArea=1e+6,
+	"Aquatic", json.individualsPerInstar, firstInstarToCalculate=1, landscapeArea=1e+6,
 	ageVector, coefficientForMassA, coefficientForMassAforMature, 
 	scaleForMassB, scaleForMassBforMature, conversionToWetMass, 
 	fitted[[as.character(tempFromLab)]]$best_model

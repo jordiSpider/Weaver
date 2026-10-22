@@ -82,19 +82,6 @@ ID_TYRREX_conversionToWetMass<-data.frame(
 conversionToWetMass<-3.3333
 conversionToWetMass #@conversionToWetMass=3.3333
 
-
-# Start reading ID_TYRREX_indeterminateGrowth data frame	
-ID_TYRREX_indeterminateGrowth<-data.frame(
-			Variable = "indeterminateGrowth", 
-			DOI1 = NA, ##document sources
-			Category1 = NA,
-			DataTreatment = "Write a paragraph in scientific format for publishing. Add references." 
-)
-# End reading ID_TYRREX_indeterminateGrowth data frame
-
-indeterminateGrowth<-"true"
-indeterminateGrowth #@indeterminateGrowth="true"
-
 # Start reading ID_TYRREX_eggsPerBatch data frame
 ID_TYRREX_eggsPerBatch<-data.frame(
 			Variable = "eggsPerBatch",
@@ -498,13 +485,18 @@ growthKmax #@growthKmax= 0.0007657056
 
 json.activatedHandling = FALSE  # If TRUE, predator handling time is considered for the simulation
 json.activityUnderPredationRisk = 1.0  # Fraction of normal activity maintained under predation risk
-json.poreUsePerInstar = c(4.0, 4.0, 4.0, 4.0)  # Pore use for each developmental instar
+json.poreUsePerInstar = c(4.0, 4.0, 4.0, 4.0, 4.0, 4.0, 4.0, 4.0, 4.0, 4.0, 4.0, 4.0, 4.0, 4.0, 4.0, 4.0, 4.0, 4.0, 4.0, 4.0, 4.0, 4.0, 4.0, 4.0, 4.0, 4.0, 4.0, 4.0, 4.0, 4.0, 4.0, 4.0, 4.0, 4.0)  # Pore use for each developmental instar
 json.coefficientForHandlingTimeA = 28.407  # Coefficient 'A' for handling time equation
 json.coefficientForHandlingTimeB = -0.664  # Coefficient 'B' for handling time equation
 json.coefficientForHandlingTimeC = -6.365  # Coefficient 'C' for handling time equation
 json.conversionToWetMass = c(
-	conversionToWetMass, conversionToWetMass,
-	conversionToWetMass, conversionToWetMass
+	conversionToWetMass, conversionToWetMass, conversionToWetMass, conversionToWetMass, conversionToWetMass, 
+	conversionToWetMass, conversionToWetMass, conversionToWetMass, conversionToWetMass, conversionToWetMass, 
+	conversionToWetMass, conversionToWetMass, conversionToWetMass, conversionToWetMass, conversionToWetMass, 
+	conversionToWetMass, conversionToWetMass, conversionToWetMass, conversionToWetMass, conversionToWetMass, 
+	conversionToWetMass, conversionToWetMass, conversionToWetMass, conversionToWetMass, conversionToWetMass, 
+	conversionToWetMass, conversionToWetMass, conversionToWetMass, conversionToWetMass, conversionToWetMass, 
+	conversionToWetMass, conversionToWetMass, conversionToWetMass, conversionToWetMass
 )  # Factor to convert from dry mass (or another measure) to wet mass
 json.daysWithoutFoodForMetabolicDownregulation = 999999999.0  # Days without food before metabolic downregulation
 json.debug.surviveWithoutFood = FALSE  # Debug flag to allow survival without food if TRUE

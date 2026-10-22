@@ -1,0 +1,14 @@
+#!/bin/sh
+# Removes only weaverR from R's site library; shared dependencies remain available.
+set -e
+
+case "$1" in
+    remove|purge)
+        if command -v Rscript >/dev/null 2>&1; then
+            Rscript --no-save --no-restore --no-init-file -e \
+                'if (length(.Library.site) && dir.exists(.Library.site[1])) { installed <- utils::installed.packages(lib.loc = .Library.site[1]); if ("weaverR" %in% rownames(installed)) utils::remove.packages("weaverR", lib = .Library.site[1]) }'
+        fi
+        ;;
+esac
+
+exit 0

@@ -2,10 +2,120 @@
 #include "App/Model/IBM/Landscape/Map/SpatialTree.h"
 #include "App/Model/IBM/Landscape/Landscape.h"
 #include "App/Manager/LogManager.h"
+#include "App/Model/IBM/Landscape/Map/Patches/Patch.h"
+#include "App/Model/IBM/Landscape/Map/Patches/ObstaclePorosityMaskGenerator.h"
+#include "App/Model/IBM/Landscape/Map/SpatialTree/TerrainCells/PatchApplicator/Obstacle/BranchCellObstacle.h"
+#include "App/Model/IBM/Landscape/Map/SpatialTree/TerrainCells/PatchApplicator/BranchPatchApplicator.h"
+
+#include <algorithm>
+#include <cstdint>
+#include <stdexcept>
 
 using namespace std;
 using json = nlohmann::json;
 namespace fs = std::filesystem;
+
+namespace {
+void collectLeafCells(SpatialTreeTerrainCell* const cell, vector<LeafTerrainCell*>& leafCells, const size_t gridWidth)
+{
+    if(cell->isLeaf())
+    {
+        auto* leaf = static_cast<LeafTerrainCell*>(cell);
+        const size_t x = leaf->getPosition().get(Axis::X);
+        const size_t y = leaf->getPosition().get(Axis::Y);
+        leafCells[y * gridWidth + x] = leaf;
+        return;
+    }
+
+    auto* branch = static_cast<BranchTerrainCell*>(cell);
+    for(SpatialTreeTerrainCell* const child : branch->getMutableChildrenTerrainCells())
+    {
+        collectLeafCells(child, leafCells, gridWidth);
+    }
+}
+
+void updateObstacleSummaries(SpatialTreeTerrainCell* const cell)
+{
+    if(cell->isLeaf())
+    {
+        return;
+    }
+
+    auto* branch = static_cast<BranchTerrainCell*>(cell);
+    for(SpatialTreeTerrainCell* const child : branch->getMutableChildrenTerrainCells())
+    {
+        updateObstacleSummaries(child);
+    }
+
+    static_cast<BranchPatchApplicator&>(branch->getMutablePatchApplicator()).getMutableCellObstacle().applyBranch(branch);
+}
+
+bool applyPorousObstaclePatch(
+    RootTerrainCell* const root,
+    const Patch& patch,
+    const ObstacleSource& source,
+    const size_t gridWidth,
+    const double cellSize,
+    unsigned int seed)
+{
+    if(patch.getShapeType() != PatchShape::Type::Cubic)
+    {
+        throw invalid_argument("Porosity is currently supported only for cubic patches.");
+    }
+
+    const size_t numberOfCells = gridWidth * gridWidth;
+    vector<LeafTerrainCell*> leafCells(numberOfCells, nullptr);
+    collectLeafCells(root, leafCells, gridWidth);
+
+    vector<std::uint8_t> eligibleCells(numberOfCells, 0u);
+    for(size_t index = 0u; index < numberOfCells; ++index)
+    {
+        LeafTerrainCell* const leaf = leafCells[index];
+        if(patch.getPriority() <= leaf->getPatchApplicator().getCellObstacle().getPatchPriority())
+        {
+            continue;
+        }
+
+        eligibleCells[index] = 1u;
+    }
+
+    const ObstacleSource::PorosityParameters& sourceParameters = source.getPorosityParameters();
+    const ObstaclePorosityMaskGenerator::Parameters parameters{
+        sourceParameters.fraction,
+        sourceParameters.minimumPoreWidth,
+        sourceParameters.featureSize,
+        sourceParameters.octaves
+    };
+    auto patchBounds = boost::geometry::return_envelope<BoxModel>(patch.getInfluenceZone());
+    const vector<int> patchCells = ObstaclePorosityMaskGenerator::generatePatch(
+        eligibleCells,
+        gridWidth,
+        gridWidth,
+        cellSize,
+        cellSize,
+        boost::geometry::get<0>(patchBounds.min_corner()),
+        boost::geometry::get<1>(patchBounds.min_corner()),
+        boost::geometry::get<0>(patchBounds.max_corner()),
+        boost::geometry::get<1>(patchBounds.max_corner()),
+        parameters,
+        seed);
+
+    bool applied = false;
+    for(size_t index = 0u; index < numberOfCells; ++index)
+    {
+        if(patchCells[index] >= 0)
+        {
+            leafCells[index]->getMutablePatchApplicator().getMutableCellObstacle().applySource(
+                patch.getPriority(), patchCells[index] == 0);
+            applied = true;
+        }
+    }
+
+    if(!applied) return false;
+    updateObstacleSummaries(root);
+    return true;
+}
+}
 
 
 
@@ -112,8 +222,17 @@ void SpatialTree::addResourceSpecies(Landscape* const landscape, vector<vector<v
 }
 
 
-bool SpatialTree::applyPatch(Landscape* const landscape, const Patch& patch)
+bool SpatialTree::applyPatch(Landscape* const landscape, const Patch& patch, unsigned int seed)
 {
+    if(patch.getSource().getType() == PathSource::Type::Obstacle)
+    {
+        const auto& obstacleSource = static_cast<const ObstacleSource&>(patch.getSource());
+        if(obstacleSource.hasPorosity())
+        {
+            return applyPorousObstaclePatch(rootTerrainCell, patch, obstacleSource, getNumberOfCellsPerAxis(), getMinCellSize().getValue(), seed);
+        }
+    }
+
     return rootTerrainCell->getMutablePatchApplicator().applyPatch(landscape, patch).second;
 }
 
@@ -276,39 +395,46 @@ unsigned int SpatialTree::generateStatisticsPopulation(vector<CustomIndexedVecto
 
 		for(const Instar &instar : animalSpecies->getGrowthBuildingBlock().getInstarsRange())
 		{
-			for(unsigned long individual = 0; individual < animalSpecies->getStatisticsIndividualsPerInstar(); individual++)
-			{
-				AnimalStatistical* newAnimal;
+            if (mapSpeciesInhabitableTerrainCells[animalSpecies->getAnimalSpeciesId()][instar].empty()) {
+                LogManager::emit(fmt::format("Generation omitted: No inhabitable terrain cells available for {} ({} instar).\n", animalSpecies->getScientificName(), instar));
 
-                // Get a random index from this species inhabitable cells
-                size_t randomCellIndex = Random::randomIndex(mapSpeciesInhabitableTerrainCells[animalSpecies->getAnimalSpeciesId()][instar].size());
-                
-                std::vector<fmt::memory_buffer> geneticsBuffer;
-
-                auto newTerrainCell = (*mapSpeciesInhabitableTerrainCells[animalSpecies->getAnimalSpeciesId()][instar][randomCellIndex])->randomInsertAnimal(landscape, instar, animalSpecies, true, nullptr, false, geneticsBuffer, actualTimeStep, timeStepsPerDay);
-                
-                if(get<0>(newTerrainCell))
+                progressBar.update(animalSpecies->getStatisticsIndividualsPerInstar());
+            }
+            else {
+                for (unsigned long individual = 0; individual < animalSpecies->getStatisticsIndividualsPerInstar(); individual++)
                 {
-                    bool found = false;
-                    for(unsigned int i = 0; i < mapSpeciesInhabitableTerrainCells[animalSpecies->getAnimalSpeciesId()][instar].size() && !found; i++)
+                    AnimalStatistical* newAnimal;
+
+                    // Get a random index from this species inhabitable cells
+                    size_t randomCellIndex = Random::randomIndex(mapSpeciesInhabitableTerrainCells[animalSpecies->getAnimalSpeciesId()][instar].size());
+
+                    std::vector<fmt::memory_buffer> geneticsBuffer;
+
+                    auto newTerrainCell = (*mapSpeciesInhabitableTerrainCells[animalSpecies->getAnimalSpeciesId()][instar][randomCellIndex])->randomInsertAnimal(landscape, instar, animalSpecies, true, nullptr, false, geneticsBuffer, actualTimeStep, timeStepsPerDay);
+
+                    if (get<0>(newTerrainCell))
                     {
-                        if((*mapSpeciesInhabitableTerrainCells[animalSpecies->getAnimalSpeciesId()][instar][i]) == get<1>(newTerrainCell))
+                        bool found = false;
+                        for (unsigned int i = 0; i < mapSpeciesInhabitableTerrainCells[animalSpecies->getAnimalSpeciesId()][instar].size() && !found; i++)
                         {
-                            (*mapSpeciesInhabitableTerrainCells[animalSpecies->getAnimalSpeciesId()][instar][i]) = get<2>(newTerrainCell);
-                            found = true;
+                            if ((*mapSpeciesInhabitableTerrainCells[animalSpecies->getAnimalSpeciesId()][instar][i]) == get<1>(newTerrainCell))
+                            {
+                                (*mapSpeciesInhabitableTerrainCells[animalSpecies->getAnimalSpeciesId()][instar][i]) = get<2>(newTerrainCell);
+                                found = true;
+                            }
                         }
                     }
+
+                    newAnimal = static_cast<AnimalStatistical*>(get<3>(newTerrainCell));
+
+
+                    animalsPopulation[animalSpecies->getAnimalSpeciesId()][instar].push_back(newAnimal);
+                    populationSize++;
+
+
+                    progressBar.update();
                 }
-
-                newAnimal = static_cast<AnimalStatistical*>(get<3>(newTerrainCell));
-
-
-				animalsPopulation[animalSpecies->getAnimalSpeciesId()][instar].push_back(newAnimal);
-                populationSize++;
-
-
-                progressBar.update();
-			}
+            }
 		}
 	}
 

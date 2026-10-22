@@ -87,6 +87,8 @@ public:
      */
     const PreciseDouble& getMaxTraitRestrictedRange() const;
 
+    const PreciseDouble& getMinTraitLimit() const;
+
     /**
      * @brief Initializes a genetics file for storing individual trait values.
      *
@@ -240,8 +242,6 @@ protected:
 
     /// Returns maximum pseudo-value range.
     const PreciseDouble& getMaxPseudoValueRange() const;
-
-    const PreciseDouble& getMinTraitLimit() const;
 
     const PreciseDouble& getMaxTraitLimit() const;
 };

@@ -49,7 +49,7 @@
 #' \code{\link{calculateMaximumResourceCapacityDensityBiofilm}} for a version that includes all instars.
 #'
 #' @export
-calculateMaximumResourceCapacityDensityAlternative <- function(individualsPerInstar, firstInstarToCalculate, landscapeArea, ageVector, coefficientForMassA, coefficientForMassAforMature, scaleForMassB, scaleForMassBforMature, conversionToWetMass, growthModel) {
+calculateMaximumResourceCapacityDensityAlternative <- function(simulationType, individualsPerInstar, firstInstarToCalculate, landscapeArea, ageVector, coefficientForMassA, coefficientForMassAforMature, scaleForMassB, scaleForMassBforMature, conversionToWetMass, growthModel) {
     
     # Predict length (L) for each requested age using the provided growth model.
     # Note: newdata includes 0.0 followed by ageVector — ensures a length prediction
@@ -65,13 +65,30 @@ calculateMaximumResourceCapacityDensityAlternative <- function(individualsPerIns
         (coefficientForMassA * L^scaleForMassB) * conversionToWetMass
     )
 
-    # Estimate maximum ingestion per instar using a mass-dependent allometric scaling
-    maxIngestionPerInstar = 0.1*massesVector^0.75
+
+    maxIngestionAllometricConstant = NULL
+    maxIngestionAllometricExponent = NULL
+
+    if(simulationType == "Aquatic") {
+        maxIngestionAllometricConstant = 0.1
+        maxIngestionAllometricExponent = 0.75
+    } else if(simulationType == "Dinosaurs") {
+        maxIngestionAllometricConstant = 0.152
+        maxIngestionAllometricExponent = 0.738
+    } else {
+        stop("Invalid simulationType. Must be 'Aquatic' or 'Dinosaurs'.")
+    }
+
+
+    # Estimate maximum ingestion per instar using a mass-dependent allometric scaling - Garland...
+    maxIngestionPerInstar = maxIngestionAllometricConstant*massesVector^maxIngestionAllometricExponent
 
     # Sum the ingested wet biomass per day across the instars included in the calculation.
     # The calculation selects instars from firstInstarToCalculate up to the last instar.
     # Multiplication is element-wise: number of individuals * ingestion per individual.
-    totalIngestedWetBiomassInSimulationPerDay=sum(individualsPerInstar[firstInstarToCalculate:length(individualsPerInstar)]*maxIngestionPerInstar[firstInstarToCalculate:length(maxIngestionPerInstar)])
+    totalIngestedWetBiomassInSimulationPerDay=
+	sum(individualsPerInstar[firstInstarToCalculate:length(individualsPerInstar)]*
+	maxIngestionPerInstar[firstInstarToCalculate:length(maxIngestionPerInstar)])
 
     # Normalize the total ingested biomass per day by the landscape area to obtain
     # the maximum resource capacity density (biomass per unit area per day).

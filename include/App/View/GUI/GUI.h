@@ -48,11 +48,6 @@ private:
     std::condition_variable cv_;
 
 public:
-	bool empty() const {
-		std::lock_guard<std::mutex> lock(mutex_);
-		return queue_.empty();
-	}
-
     // Inserta un elemento y notifica a los hilos que esperan
     void push(const std::string& value) {
         std::lock_guard<std::mutex> lock(mutex_);

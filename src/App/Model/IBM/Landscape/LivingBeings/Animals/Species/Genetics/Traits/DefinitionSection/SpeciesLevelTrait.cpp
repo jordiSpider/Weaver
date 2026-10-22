@@ -36,6 +36,11 @@ PreciseDouble SpeciesLevelTrait::getValue(const Genome&, const size_t, const siz
 	return value; 
 }
 
+PreciseDouble SpeciesLevelTrait::getValue() const
+{
+	return value;
+}
+
 void SpeciesLevelTrait::setValue(const PreciseDouble& newValue) 
 { 
 	value = newValue; 

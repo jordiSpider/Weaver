@@ -8,7 +8,7 @@
             "description": "APP",
             "dependencies": [
                 {
-                    "name": "magic-enum"
+                  "name": "magic-enum"
                 },
                 {
                     "name": "fmt"
@@ -34,6 +34,12 @@
                 {
                     "name": "vcpkg-pkgconfig-get-modules"
                 }
+            ]
+        },
+        "obstacle-engine": {
+            "description": "Shared native obstacle generation engine for the R package",
+            "dependencies": [
+                { "name": "libnoise" }
             ]
         },
         "gui": {

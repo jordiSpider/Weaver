@@ -132,7 +132,7 @@ public:
      * @param patch Reference to the Patch object to apply.
      * @return True if the patch was applied successfully, false otherwise.
      */
-    bool applyPatch(Landscape* const landscape, const Patch& patch);
+    bool applyPatch(Landscape* const landscape, const Patch& patch, unsigned int seed);
 
     /**
      * @brief Returns the depth of the spatial tree.

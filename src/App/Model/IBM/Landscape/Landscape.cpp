@@ -267,6 +267,8 @@ void Landscape::init(fs::path configPath, fs::path newOutputFolder, bool fromChe
 
 	printCellAlongCellsHeader.append(landscapeMap->getMapPositionHeader());
 
+	printCellAlongCellsHeader.append("\tobstacle");
+
 	for(const auto &resourceSpecies : existingResourceSpecies)
 	{
 		printCellAlongCellsHeader.append("\t" + resourceSpecies->getScientificName());
@@ -942,6 +944,7 @@ void Landscape::printCellAlongCells(const TimeStep numberOfTimeSteps)
 							fmt::format_to(fmt::appender(localStr), "\t{}", position.get(magic_enum::enum_cast<Axis>(axis).value()));
 						}
 
+						fmt::format_to(fmt::appender(localStr), "\t{}", static_cast<unsigned int>(cell->getPatchApplicator().getCellObstacle().isObstacle()));
 
 						for (size_t j = 0; j < cell->getPatchApplicator().getNumberOfResources(); j++)
 						{
@@ -989,6 +992,7 @@ void Landscape::printCellAlongCells(const TimeStep numberOfTimeSteps)
 									fmt::format_to(fmt::appender(localStr), "\t{}", position.get(magic_enum::enum_cast<Axis>(axis).value()));
 								}
 
+								fmt::format_to(fmt::appender(localStr), "\t{}", static_cast<unsigned int>(cell->getPatchApplicator().getCellObstacle().isObstacle()));
 
 								for (size_t j = 0; j < cell->getPatchApplicator().getNumberOfResources(); j++)
 								{
@@ -2566,7 +2570,7 @@ void Landscape::initializeMap(const json &mapConfig)
 			)
 		);
 
-		landscapeMap->applyPatch(this, edgeObstacles);
+		landscapeMap->applyPatch(this, edgeObstacles, fixedSeedValue);
 	}
 
 	unsigned int numberOfCellsAxisY = mapConfig["landscapeWideParams"]["numberOfCellsAxisY"].get<unsigned int>();
@@ -2583,7 +2587,7 @@ void Landscape::initializeMap(const json &mapConfig)
 			)
 		);
 
-		landscapeMap->applyPatch(this, edgeObstacles);
+		landscapeMap->applyPatch(this, edgeObstacles, fixedSeedValue);
 	}
 
 	LogManager::emit("DONE\n");
@@ -2612,7 +2616,7 @@ void Landscape::readObstaclePatchesFromJSONFiles(const fs::path& configPath)
 			{
 				json ptMain = readConfigFile(entry.path(), obstaclePatchesValidator);
 
-				obstaclePatchesToAplly.push(make_unique<Patch>(new ObstacleSource(), ptMain["patch"], entry.path().string()));
+				obstaclePatchesToAplly.push(make_unique<Patch>(new ObstacleSource(ptMain["patch"]["porosity"]), ptMain["patch"], entry.path().string()));
 			}
 		}
 	}
@@ -2718,7 +2722,7 @@ bool Landscape::applyPatch(Patch& patch)
 {
 	LogManager::emit(fmt::format("{}\n\n", patch.getDescription()));
 
-	return landscapeMap->applyPatch(this, patch);
+	return landscapeMap->applyPatch(this, patch, fixedSeedValue);
 }
 
 

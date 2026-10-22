@@ -1,31 +1,65 @@
 <CPackWiXPatch>
+	<!-- Ensure the PATH component is always installed with the root feature -->
 	<CPackWiXFragment Id="#PRODUCTFEATURE">
 		<ComponentRef Id="setEnviroment"/>
+		<ComponentRef Id="rememberAppDataPath"/>
+	</CPackWiXFragment>
+
+	<!-- Installer-log cleanup, installed only with the "R packages" feature -->
+	<CPackWiXFragment Id="CM_C_RPackages">
+		<ComponentRef Id="removeRInstallerLogs"/>
 	</CPackWiXFragment>
 
 	<CPackWiXFragment Id="#PRODUCT">
-		<Property Id="APPDATADIR" Secure="yes" />
+		<!-- Public property holding the application data folder chosen by the user -->
+		<Property Id="APPDATADIR" Secure="yes">
+			<RegistrySearch Id="SearchWeaverAppDataPath"
+				Root="HKLM"
+				Key="Software\Weaver\@CPACK_PACKAGE_NAME@"
+				Name="AppDataPath"
+				Type="raw" />
+		</Property>
+		<!-- RemoveFolderEx accepts environment variables in its path property. -->
+		<Property Id="WEAVER_INSTALL_LOG_DIR" Value="%ProgramData%\@CPACK_PACKAGE_NAME@\logs" />
+		<Property Id="INSTALLRENVIRONMENT" Secure="yes" />
 
+		<!-- Default location: [Documents]\<install dir name> -->
 		<CustomAction Id="SetDefaultAppDataDir"
 			Property="APPDATADIR"
 			Value="[PersonalFolder]@CPACK_PACKAGE_INSTALL_DIRECTORY@" />
 
-		<CustomAction Id="SetUiAppDataDir"
-			Property="CM_DP_AppData"
+		<!--
+			In component-based installs CPack names directories CM_DP_<component>.<path>.
+			"config" is installed by the Unspecified component.
+		-->
+		<CustomAction Id="SetAppDataDirUnspecified"
+			Property="CM_DP_Unspecified.AppData"
 			Value="[APPDATADIR]" />
 
-		<CustomAction Id="SetExecAppDataDir"
-			Property="CM_DP_AppData"
-			Value="[APPDATADIR]" />
-
+		<!--
+			WeaverRSetup.exe (no window) finds R, reuses dependencies meeting their
+			minimum versions, installs missing or outdated packages in the installing
+			user's standard R library, then installs weaverR. If R is not
+			installed or anything fails, the installation is rolled back; the reason
+			is written to %ProgramData%\<edition>\logs\install_r_env.log,
+			or to %TEMP%\<edition>\logs\install_r_env.log if ProgramData is unavailable.
+		-->
+		<CustomAction Id="SetInstallREnvironmentCommand"
+			Property="INSTALLRENVIRONMENT"
+			Value="[CM_DP_RPackages.R]WeaverRSetup.exe|[PersonalFolder]" />
+		<!-- Actions are chained with After= so their order is deterministic -->
 		<InstallUISequence>
 			<Custom Action="SetDefaultAppDataDir" Before="CostFinalize">NOT APPDATADIR</Custom>
-			<Custom Action="SetUiAppDataDir" Before="CostFinalize">APPDATADIR</Custom>
+			<Custom Action="SetAppDataDirUnspecified" After="SetDefaultAppDataDir">APPDATADIR</Custom>
 		</InstallUISequence>
 
 		<InstallExecuteSequence>
 			<Custom Action="SetDefaultAppDataDir" Before="CostFinalize">NOT APPDATADIR</Custom>
-			<Custom Action="SetExecAppDataDir" Before="CostFinalize">APPDATADIR</Custom>
+			<Custom Action="SetAppDataDirUnspecified" After="SetDefaultAppDataDir">APPDATADIR</Custom>
+			<!-- Run after the previous MSI is removed so the current R package setup
+				 uses the final installed payload. -->
+			<Custom Action="SetInstallREnvironmentCommand" After="RemoveExistingProducts">&amp;CM_C_RPackages = 3</Custom>
+			<Custom Action="INSTALLRENVIRONMENT" After="SetInstallREnvironmentCommand">&amp;CM_C_RPackages = 3</Custom>
 		</InstallExecuteSequence>
 	</CPackWiXFragment>
 </CPackWiXPatch>

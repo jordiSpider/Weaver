@@ -1,0 +1,17 @@
+Package: weaverR
+Title: @PKG_TITLE@
+Version: @PROGRAM_VERSION@
+Authors@R: 
+    person("Jordi", "Moya Laraño", email = "jordi@eeza.csic.es",
+           role = c("aut", "cre"))
+Description: @PKG_DESCRIPTION@
+License: MIT + file LICENSE
+URL: https://github.com/jordiSpider/Weaver
+BugReports: https://github.com/jordiSpider/Weaver/issues
+Depends:
+    R (>= 4.2.0)
+Imports:
+    @PKG_IMPORTS@
+Encoding: UTF-8
+Roxygen: list(markdown = TRUE)
+RoxygenNote: 7.2.3

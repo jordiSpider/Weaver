@@ -108,6 +108,11 @@ TraitDefinitionSection* Trait::getValue()
 	return value;
 }
 
+const TraitDefinitionSection* const Trait::getValue() const
+{
+	return value;
+}
+
 TraitTemperatureSection* Trait::getTemperatureSection()
 {
 	return temperatureSection;

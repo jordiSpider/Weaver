@@ -304,11 +304,11 @@ void BranchTerrainCell::update(const TimeStep& numberOfTimeSteps, unsigned int m
 
 void BranchTerrainCell::obtainInhabitableTerrainCells(Map* const map)
 {
-    if(!getPatchApplicator().getCellObstacle().isFullObstacle())
+    if (!getPatchApplicator().getCellObstacle().isFullObstacle())
     {
         TerrainCell::obtainInhabitableTerrainCells(map);
 
-        for(auto &child : getMutableChildrenTerrainCells())
+        for (auto& child : getMutableChildrenTerrainCells())
         {
             child->obtainInhabitableTerrainCells(map);
         }

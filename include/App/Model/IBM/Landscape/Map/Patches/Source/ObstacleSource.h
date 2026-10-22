@@ -12,6 +12,7 @@
 
 
 
+#include <cstddef>
 #include <nlohmann/json.hpp>
 
 
@@ -28,10 +29,19 @@
  */
 class ObstacleSource : public PathSource {
 public:
+    struct PorosityParameters {
+        double fraction = 0.0;
+        double minimumPoreWidth = 0.0;
+        double featureSize = 0.0;
+        std::size_t octaves = 0;
+    };
+
     /**
      * @brief Default constructor.
      */
     ObstacleSource();
+
+    explicit ObstacleSource(const nlohmann::json& porosityConfig);
 
     /**
      * @brief Destructor.
@@ -45,12 +55,19 @@ public:
      */
     std::string showInfo() const;
 
+    const PorosityParameters& getPorosityParameters() const;
+
+    bool hasPorosity() const;
+
     /**
      * @brief Returns the type of this path source.
      *
      * @return PathSource::Type::Obstacle
      */
     Type getType() const;
+
+private:
+    PorosityParameters porosityParameters;
 };
 
 

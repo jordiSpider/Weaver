@@ -55,10 +55,10 @@ GUI::GUI(Model* newModel)
 
     // Configure log update timer
     logUpdateTimer.elapse([this]{
-        std::lock_guard<std::mutex> lock(logMutex);
-        while(!pendingLogs.empty())
+        std::string message;
+        while (pendingLogs.try_pop(message))
         {
-            log.append(pendingLogs.pop());
+            log.append(message);
         }
 
         if (!simulationRunning && !startSimulationButton.enabled())
@@ -139,7 +139,6 @@ void GUI::startSimulation()
                 : (LogManager::GREEN + "[SIM][INFO] " + LogManager::RESET);
         }
 
-        lock_guard<mutex> lock(logMutex);
         pendingLogs.push(fmt::format(FMT_COMPILE("{}{}"), prefix, logItem.message));
     });
 
@@ -156,17 +155,14 @@ void GUI::startSimulation()
                 });
 
             std::string prefix = (LogManager::GREEN + "[SIM][INFO] " + LogManager::RESET);
-            std::lock_guard<std::mutex> lock(logMutex);
             pendingLogs.push(fmt::format(FMT_COMPILE("{}Simulation complete.\n"), prefix));
         }
         catch (const std::exception& e) {
             std::string prefix = (LogManager::RED + "[SIM][ERROR] " + LogManager::RESET);
-            std::lock_guard<std::mutex> lock(logMutex);
             pendingLogs.push(fmt::format(FMT_COMPILE("{}{}\n"), prefix, e.what()));
         }
         catch (...) {
             std::string prefix = (LogManager::RED + "[SIM][ERROR] " + LogManager::RESET);
-            std::lock_guard<std::mutex> lock(logMutex);
             pendingLogs.push(fmt::format(FMT_COMPILE("{}Unknown non-standard exception.\n"), prefix));
         }
 

@@ -1,0 +1,6 @@
+<Wix xmlns="http://schemas.microsoft.com/wix/2006/wi">
+	<Fragment>
+		<Binary Id="WeaverRSetupCA" SourceFile="@WEAVER_R_SETUP_CA_DLL@" />
+		<CustomAction Id="INSTALLRENVIRONMENT" BinaryKey="WeaverRSetupCA" DllEntry="InstallREnvironment" Execute="deferred" Impersonate="no" Return="check" />
+	</Fragment>
+</Wix>

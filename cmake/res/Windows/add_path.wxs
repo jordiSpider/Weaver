@@ -1,22 +1,27 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <Wix xmlns="http://schemas.microsoft.com/wix/2006/wi">
-    <Fragment>
-        <DirectoryRef Id="CM_DP_bin">
-           <Component Id="setEnviroment" Guid="A1B2C3D4-E5F6-7A8B-9C0D-1E2F3A4B5C6D">
-                <CreateFolder />
-                <Environment 
-                      Id="PATH" 
-                      Name="PATH" 
-                      Value="[CM_DP_bin]" 
-                      Permanent="no" 
-                      Part="last" 
-                      Action="set" 
-                      System="no" />
-            </Component>
-        </DirectoryRef>
-        
-        <InstallExecuteSequence>
-            <WriteEnvironmentStrings/>
-        </InstallExecuteSequence>
-    </Fragment>
+	<Fragment>
+		<DirectoryRef Id="CM_DP_CLI.bin">
+			<Component Id="setEnviroment" Guid="@WEAVER_SET_PATH_GUID@">
+				<CreateFolder />
+				<Environment
+                      Id="PATH"
+                      Name="PATH"
+                      Value="[CM_DP_CLI.bin]"
+                      Permanent="no"
+                      Part="last"
+                      Action="set"
+                      System="yes" />
+			</Component>
+			<!-- Remember the user's selected data path for same-edition upgrades. -->
+			<Component Id="rememberAppDataPath" Guid="@WEAVER_APPDATA_PATH_GUID@">
+				<RegistryValue Root="HKLM"
+					Key="Software\Weaver\@CPACK_PACKAGE_NAME@"
+					Name="AppDataPath"
+					Type="string"
+					Value="[APPDATADIR]"
+					KeyPath="yes" />
+			</Component>
+		</DirectoryRef>
+	</Fragment>
 </Wix>

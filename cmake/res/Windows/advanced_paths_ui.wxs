@@ -3,6 +3,8 @@
 	<Fragment>
 		<UI Id="WixUI_AdvancedPaths">
 			<UIRef Id="WixUI_Common" />
+			<!-- The element text populates the MSI ActionText description for this long action. -->
+			<ProgressText Action="INSTALLRENVIRONMENT">Installing R packages...</ProgressText>
 			<TextStyle Id="WixUI_Font_Normal" FaceName="Tahoma" Size="8" />
 			<TextStyle Id="WixUI_Font_Bigger" FaceName="Tahoma" Size="12" />
 			<TextStyle Id="WixUI_Font_Title" FaceName="Tahoma" Size="9" Bold="yes" />
@@ -22,23 +24,66 @@
 			<DialogRef Id="WelcomeDlg" />
 			<DialogRef Id="LicenseAgreementDlg" />
 			<DialogRef Id="InstallDirDlg" />
+			<DialogRef Id="CustomizeDlg" />
 			<DialogRef Id="VerifyReadyDlg" />
 			<DialogRef Id="MaintenanceWelcomeDlg" />
 			<DialogRef Id="MaintenanceTypeDlg" />
 
-			<Publish Dialog="WelcomeDlg" Control="Next" Event="NewDialog" Value="LicenseAgreementDlg">NOT Installed</Publish>
-			<Publish Dialog="WelcomeDlg" Control="Next" Event="NewDialog" Value="MaintenanceWelcomeDlg">Installed AND NOT PATCH</Publish>
+			<!-- Welcome -->
+			<Publish Dialog="WelcomeDlg" Control="Next" Event="NewDialog" Value="LegacyInstallNoticeDlg" Order="1">WEAVER_LEGACY_INSTALL_DETECTED</Publish>
+			<Publish Dialog="WelcomeDlg" Control="Next" Event="NewDialog" Value="DowngradeConfirmDlg" Order="2">WEAVER_NEWER_VERSION_DETECTED</Publish>
+			<Publish Dialog="WelcomeDlg" Control="Next" Event="NewDialog" Value="UpgradeConfirmDlg" Order="3">WIX_UPGRADE_DETECTED AND NOT WEAVER_NEWER_VERSION_DETECTED</Publish>
+			<Publish Dialog="WelcomeDlg" Control="Next" Event="NewDialog" Value="LicenseAgreementDlg" Order="4">NOT Installed AND NOT WIX_UPGRADE_DETECTED AND NOT WEAVER_LEGACY_INSTALL_DETECTED</Publish>
+			<Publish Dialog="WelcomeDlg" Control="Next" Event="NewDialog" Value="MaintenanceWelcomeDlg" Order="5">Installed AND NOT PATCH</Publish>
 
+			<!-- License -->
 			<Publish Dialog="LicenseAgreementDlg" Control="Back" Event="NewDialog" Value="WelcomeDlg">1</Publish>
 			<Publish Dialog="LicenseAgreementDlg" Control="Next" Event="NewDialog" Value="InstallDirDlg">LicenseAccepted = &quot;1&quot;</Publish>
 
+			<!-- Legacy installs predate separate edition UpgradeCodes. -->
+			<Publish Dialog="LegacyInstallNoticeDlg" Control="Continue" Event="NewDialog" Value="DowngradeConfirmDlg" Order="1">WEAVER_NEWER_VERSION_DETECTED</Publish>
+			<Publish Dialog="LegacyInstallNoticeDlg" Control="Continue" Event="NewDialog" Value="UpgradeConfirmDlg" Order="2">WIX_UPGRADE_DETECTED AND NOT WEAVER_NEWER_VERSION_DETECTED</Publish>
+			<Publish Dialog="LegacyInstallNoticeDlg" Control="Continue" Event="NewDialog" Value="LicenseAgreementDlg" Order="3">NOT WIX_UPGRADE_DETECTED</Publish>
+			<Publish Dialog="LegacyInstallNoticeDlg" Control="Cancel" Event="SpawnDialog" Value="CancelDlg">1</Publish>
+
+			<!-- Confirm replacing the installed same-edition version. -->
+			<Publish Dialog="UpgradeConfirmDlg" Control="Continue" Event="NewDialog" Value="LicenseAgreementDlg">1</Publish>
+			<Publish Dialog="UpgradeConfirmDlg" Control="Cancel" Event="SpawnDialog" Value="CancelDlg">1</Publish>
+			<Publish Dialog="UpgradeConfirmDlg" Control="Back" Event="NewDialog" Value="WelcomeDlg">1</Publish>
+
+			<!-- A lower version is permitted only after an explicit confirmation. -->
+			<Publish Dialog="DowngradeConfirmDlg" Control="Continue" Property="REINSTALLMODE" Value="amus" Order="1">1</Publish>
+			<Publish Dialog="DowngradeConfirmDlg" Control="Continue" Event="NewDialog" Value="LicenseAgreementDlg" Order="2">1</Publish>
+			<Publish Dialog="DowngradeConfirmDlg" Control="Cancel" Event="SpawnDialog" Value="CancelDlg">1</Publish>
+			<Publish Dialog="DowngradeConfirmDlg" Control="Back" Event="NewDialog" Value="WelcomeDlg">1</Publish>
+
+			<!-- Install directory -->
 			<Publish Dialog="InstallDirDlg" Control="Back" Event="NewDialog" Value="LicenseAgreementDlg">1</Publish>
 			<Publish Dialog="InstallDirDlg" Control="Next" Event="SetTargetPath" Value="[WIXUI_INSTALLDIR]" Order="1">1</Publish>
-			<Publish Dialog="InstallDirDlg" Control="Next" Event="SetTargetPath" Value="CM_DP_AppData" Order="2">1</Publish>
-			<Publish Dialog="InstallDirDlg" Control="Next" Event="NewDialog" Value="ApplicationDataDirDlg" Order="3">1</Publish>
+			<!-- Validate the application data directory -->
+			<Publish Dialog="InstallDirDlg" Control="Next" Event="SetTargetPath" Value="CM_DP_Unspecified.AppData" Order="2">1</Publish>
+			<!-- Next goes to the component selection tree -->
+			<Publish Dialog="InstallDirDlg" Control="Next" Event="NewDialog" Value="CustomizeDlg" Order="3">1</Publish>
 			<Publish Dialog="InstallDirDlg" Control="ChangeFolder" Property="_BrowseProperty" Value="[WIXUI_INSTALLDIR]" Order="1">1</Publish>
 			<Publish Dialog="InstallDirDlg" Control="ChangeFolder" Event="SpawnDialog" Value="BrowseDlg" Order="2">1</Publish>
 
+			<!-- Component selection tree -->
+			<Publish Dialog="CustomizeDlg" Control="Back" Event="NewDialog" Value="InstallDirDlg">1</Publish>
+			<Publish Dialog="CustomizeDlg" Control="Next" Event="NewDialog" Value="ApplicationDataDirDlg">1</Publish>
+
+			<!-- Application data directory -->
+			<Publish Dialog="ApplicationDataDirDlg" Control="Back" Event="NewDialog" Value="CustomizeDlg">1</Publish>
+			<!-- Chosen folder -> APPDATADIR -->
+			<Publish Dialog="ApplicationDataDirDlg" Control="Next" Property="APPDATADIR" Value="[CM_DP_Unspecified.AppData]" Order="1">1</Publish>
+			<Publish Dialog="ApplicationDataDirDlg" Control="Next" Event="SetTargetPath" Value="CM_DP_Unspecified.AppData" Order="2">1</Publish>
+			<Publish Dialog="ApplicationDataDirDlg" Control="Next" Event="NewDialog" Value="VerifyReadyDlg" Order="3">1</Publish>
+
+			<Publish Dialog="ApplicationDataDirDlg" Control="ChangeAppData" Property="_BrowseProperty" Value="CM_DP_Unspecified.AppData" Order="1">1</Publish>
+			<Publish Dialog="ApplicationDataDirDlg" Control="ChangeAppData" Event="SpawnDialog" Value="BrowseDlg" Order="2">1</Publish>
+
+			<Publish Dialog="ApplicationDataDirDlg" Control="Cancel" Event="SpawnDialog" Value="CancelDlg">1</Publish>
+
+			<!-- Maintenance -->
 			<Publish Dialog="MaintenanceWelcomeDlg" Control="Back" Event="NewDialog" Value="WelcomeDlg">1</Publish>
 			<Publish Dialog="MaintenanceWelcomeDlg" Control="Next" Event="NewDialog" Value="MaintenanceTypeDlg">1</Publish>
 
@@ -46,22 +91,47 @@
 			<Publish Dialog="MaintenanceTypeDlg" Control="RepairButton" Event="NewDialog" Value="VerifyReadyDlg">1</Publish>
 			<Publish Dialog="MaintenanceTypeDlg" Control="RemoveButton" Event="NewDialog" Value="VerifyReadyDlg">1</Publish>
 
+			<!-- Verify ready -->
 			<Publish Dialog="VerifyReadyDlg" Control="Back" Event="NewDialog" Value="ApplicationDataDirDlg">NOT Installed</Publish>
 			<Publish Dialog="VerifyReadyDlg" Control="Back" Event="NewDialog" Value="MaintenanceTypeDlg">Installed AND NOT PATCH</Publish>
 
-			<Publish Dialog="ApplicationDataDirDlg" Control="Back" Event="NewDialog" Value="InstallDirDlg">1</Publish>
-			<Publish Dialog="ApplicationDataDirDlg" Control="Next" Property="APPDATADIR" Value="[CM_DP_AppData]" Order="1">1</Publish>
-			<Publish Dialog="ApplicationDataDirDlg" Control="Next" Event="SetTargetPath" Value="CM_DP_AppData" Order="2">1</Publish>
-			<Publish Dialog="ApplicationDataDirDlg" Control="Next" Event="NewDialog" Value="VerifyReadyDlg" Order="3">1</Publish>
-
-			<Publish Dialog="ApplicationDataDirDlg" Control="ChangeAppData" Property="_BrowseProperty" Value="CM_DP_AppData" Order="1">1</Publish>
-			<Publish Dialog="ApplicationDataDirDlg" Control="ChangeAppData" Event="SpawnDialog" Value="BrowseDlg" Order="2">1</Publish>
-
-			<Publish Dialog="ApplicationDataDirDlg" Control="Cancel" Event="SpawnDialog" Value="CancelDlg">1</Publish>
+			<!-- Exit -->
 			<Publish Dialog="ExitDialog" Control="Finish" Event="EndDialog" Value="Return">1</Publish>
 		</UI>
 
 		<UI>
+			<Dialog Id="LegacyInstallNoticeDlg" Width="370" Height="270" Title="[ProductName] Setup" NoMinimize="yes">
+				<Control Id="BannerBitmap" Type="Bitmap" X="0" Y="0" Width="370" Height="44" TabSkip="no" Text="WixUI_Bmp_Banner" />
+				<Control Id="BannerLine" Type="Line" X="0" Y="44" Width="370" Height="0" />
+				<Control Id="BottomLine" Type="Line" X="0" Y="234" Width="370" Height="0" />
+				<Control Id="Title" Type="Text" X="15" Y="6" Width="330" Height="18" Transparent="yes" NoPrefix="yes" Text="Previous Weaver installation found" />
+				<Control Id="Description" Type="Text" X="20" Y="58" Width="330" Height="125" NoPrefix="yes" Text="An installation created before the editions had separate identities was found. It cannot be removed automatically because it might be the other edition, so its program and data folders will remain untouched. This edition will use separate program and default data folders. To reuse the old data, choose its folder on the next screen. Continue side by side?" />
+				<Control Id="Continue" Type="PushButton" X="218" Y="243" Width="76" Height="17" Default="yes" Text="Continue" />
+				<Control Id="Cancel" Type="PushButton" X="304" Y="243" Width="56" Height="17" Cancel="yes" Text="!(loc.WixUICancel)" />
+			</Dialog>
+
+			<Dialog Id="UpgradeConfirmDlg" Width="370" Height="270" Title="[ProductName] Setup" NoMinimize="yes">
+				<Control Id="BannerBitmap" Type="Bitmap" X="0" Y="0" Width="370" Height="44" TabSkip="no" Text="WixUI_Bmp_Banner" />
+				<Control Id="BannerLine" Type="Line" X="0" Y="44" Width="370" Height="0" />
+				<Control Id="BottomLine" Type="Line" X="0" Y="234" Width="370" Height="0" />
+				<Control Id="Title" Type="Text" X="15" Y="6" Width="330" Height="18" Transparent="yes" NoPrefix="yes" Text="An existing installation will be updated" />
+				<Control Id="Description" Type="Text" X="20" Y="65" Width="330" Height="95" NoPrefix="yes" Text="An installation of this edition was found. Continuing will replace it with version [ProductVersion]. Its selected data folder will be reused. Installer-managed files may be updated; files not managed by the installer are left in place." />
+				<Control Id="Continue" Type="PushButton" X="218" Y="243" Width="76" Height="17" Default="yes" Text="Continue" />
+				<Control Id="Back" Type="PushButton" X="160" Y="243" Width="56" Height="17" Text="!(loc.WixUIBack)" />
+				<Control Id="Cancel" Type="PushButton" X="304" Y="243" Width="56" Height="17" Cancel="yes" Text="!(loc.WixUICancel)" />
+			</Dialog>
+
+			<Dialog Id="DowngradeConfirmDlg" Width="370" Height="270" Title="[ProductName] Setup" NoMinimize="yes">
+				<Control Id="BannerBitmap" Type="Bitmap" X="0" Y="0" Width="370" Height="44" TabSkip="no" Text="WixUI_Bmp_Banner" />
+				<Control Id="BannerLine" Type="Line" X="0" Y="44" Width="370" Height="0" />
+				<Control Id="BottomLine" Type="Line" X="0" Y="234" Width="370" Height="0" />
+				<Control Id="Title" Type="Text" X="15" Y="6" Width="330" Height="18" Transparent="yes" NoPrefix="yes" Text="You are installing an older version" />
+				<Control Id="Description" Type="Text" X="20" Y="65" Width="330" Height="110" NoPrefix="yes" Text="A newer version of this edition is installed. Continuing will remove that version and install [ProductVersion]. Installer-managed files in the application data folder may be replaced. Files not managed by the installer are left in place. Do you want to continue?" />
+				<Control Id="Continue" Type="PushButton" X="218" Y="243" Width="76" Height="17" Default="yes" Text="Continue" />
+				<Control Id="Back" Type="PushButton" X="160" Y="243" Width="56" Height="17" Text="!(loc.WixUIBack)" />
+				<Control Id="Cancel" Type="PushButton" X="304" Y="243" Width="56" Height="17" Cancel="yes" Text="!(loc.WixUICancel)" />
+			</Dialog>
+
 			<Dialog Id="ApplicationDataDirDlg" Width="370" Height="270" Title="[ProductName] Setup" NoMinimize="yes">
 				<Control Id="BannerBitmap" Type="Bitmap" X="0" Y="0" Width="370" Height="44" TabSkip="no" Text="WixUI_Bmp_Banner" />
 				<Control Id="BannerLine" Type="Line" X="0" Y="44" Width="370" Height="0" />
@@ -71,13 +141,14 @@
 				<Control Id="Description" Type="Text" X="25" Y="23" Width="280" Height="30" Transparent="yes" NoPrefix="yes" Text="Click Next to store to the default folder or click Change to choose another." />
 
 				<Control Id="AppDataLabel" Type="Text" X="20" Y="60" Width="320" Height="15" Transparent="yes" NoPrefix="yes" Text="Store application data to:" />
-				<Control Id="AppDataPath" Type="PathEdit" X="20" Y="100" Width="320" Height="18" Property="CM_DP_AppData" />
+				<Control Id="AppDataPath" Type="PathEdit" X="20" Y="100" Width="320" Height="18" Property="CM_DP_Unspecified.AppData" />
 				<Control Id="ChangeAppData" Type="PushButton" X="20" Y="120" Width="56" Height="17" Text="Change..." />
 
 				<Control Id="Back" Type="PushButton" X="180" Y="243" Width="56" Height="17" Text="!(loc.WixUIBack)" />
 				<Control Id="Next" Type="PushButton" X="236" Y="243" Width="56" Height="17" Default="yes" Text="!(loc.WixUINext)" />
 				<Control Id="Cancel" Type="PushButton" X="304" Y="243" Width="56" Height="17" Cancel="yes" Text="!(loc.WixUICancel)" />
 			</Dialog>
+
 		</UI>
 	</Fragment>
 </Wix>

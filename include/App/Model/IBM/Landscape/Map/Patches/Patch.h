@@ -77,6 +77,10 @@ public:
      */
     size_t getPriority() const;
 
+    PatchShape::Type getShapeType() const;
+
+    const RingModel& getInfluenceZone() const;
+
     /**
      * @brief Returns a const reference to the patch's source.
      * @return Reference to the PathSource object.
