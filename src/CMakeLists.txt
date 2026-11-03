@@ -192,6 +192,12 @@ target_sources(weaver_app_landscape
         ${CMAKE_CURRENT_SOURCE_DIR}/App/Model/IBM/Landscape/Landscape.cpp
         ${CMAKE_CURRENT_SOURCE_DIR}/App/Model/IBM/Landscape/Map/Map.cpp
         ${CMAKE_CURRENT_SOURCE_DIR}/App/Model/IBM/Landscape/Map/SpatialTree.cpp
+        ${CMAKE_CURRENT_SOURCE_DIR}/App/Model/IBM/Landscape/Map/Navigation/RouteCandidateGenerator.cpp
+        ${CMAKE_CURRENT_SOURCE_DIR}/App/Model/IBM/Landscape/Map/Navigation/RouteCollisionValidator.cpp
+        ${CMAKE_CURRENT_SOURCE_DIR}/App/Model/IBM/Landscape/Map/Navigation/ContinuousAStarRoutePlanner.cpp
+        ${CMAKE_CURRENT_SOURCE_DIR}/App/Model/IBM/Landscape/Map/Navigation/EuclideanRouteCostPolicy.cpp
+        ${CMAKE_CURRENT_SOURCE_DIR}/App/Model/IBM/Landscape/Map/Navigation/RandomizedCandidateSelectionPolicy.cpp
+        ${CMAKE_CURRENT_SOURCE_DIR}/App/Model/IBM/Landscape/Map/Navigation/WaypointRouteFollowingPolicy.cpp
         ${CMAKE_CURRENT_SOURCE_DIR}/App/Model/IBM/Landscape/Map/Geometry/Geometry.cpp
         ${CMAKE_CURRENT_SOURCE_DIR}/App/Model/IBM/Landscape/Map/Patches/Patch.cpp
         ${CMAKE_CURRENT_SOURCE_DIR}/App/Model/IBM/Landscape/Map/Patches/ObstaclePorosityMaskGenerator.cpp

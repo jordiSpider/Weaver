@@ -236,31 +236,9 @@ void AnimalSpecies::setOntogeneticLinks(const vector<Species*>& existingSpecies,
 	}
 }
 
-void AnimalSpecies::calculateCellDepthPerInstar(const Map* const map)
+const PreciseDouble& AnimalSpecies::getPoreUsePerInstar(const Instar &instar) const
 {
-	cellDepthPerInstar.reserve(poreUsePerInstar.size());
-	
-	for(const PreciseDouble &poreUse : poreUsePerInstar)
-	{
-		unsigned int actualDepth = static_cast<const SpatialTree* const>(map)->getMapDepth()-1u;
-
-		while(poreUse > static_cast<const SpatialTree* const>(map)->getCellSize(actualDepth))
-		{
-			actualDepth--;
-		}
-
-		cellDepthPerInstar.push_back(actualDepth);
-	}
-}
-
-const CustomIndexedVector<Instar, unsigned int>& AnimalSpecies::getCellDepthPerInstar() const
-{
-	return cellDepthPerInstar;
-}
-
-unsigned int AnimalSpecies::getInstarCellDepth(const Instar &instar) const
-{
-	return cellDepthPerInstar[instar];
+	return poreUsePerInstar[instar];
 }
 
 const PreciseDouble& AnimalSpecies::getEdibleProfitability(const Species::ID &preySpeciesId, const Instar &predatorInstar, const Instar &preyInstar) const
@@ -558,6 +536,12 @@ void AnimalSpecies::generateInitialGenomesPool(const CustomIndexedVector<Instar,
     {
         totalInitialPopulation += instarPopulation;
     }
+
+
+	if (totalInitialPopulation == 0) {
+		throwLineInfoException("Error: The initial population cannot be empty.");
+	}
+
 
 	initialGenomesPool.reserve(totalInitialPopulation);
 
@@ -967,7 +951,6 @@ void AnimalSpecies::serialize(Archive &ar, const unsigned int) {
 	ar & habitatShiftAfterBreedingFactor;
 
 	ar & poreUsePerInstar;
-	ar & cellDepthPerInstar;
 
 	ar & forcePresenceAllResourcesInvolved;
 	ar & preserveLeftovers;

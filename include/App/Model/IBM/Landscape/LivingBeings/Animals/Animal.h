@@ -192,12 +192,6 @@ public:
     void setPosition(const std::vector<PreciseDouble> &newPosition);
 
     /**
-     * @brief Get the cell depth on the animal's current instar.
-     * @return Depth as unsigned int.
-     */
-    unsigned int getCellDepthOnActualInstar() const;
-
-    /**
      * @brief Get the animal's gender.
      * @return Gender of the animal.
      */

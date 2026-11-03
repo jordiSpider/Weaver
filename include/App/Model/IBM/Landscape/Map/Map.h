@@ -29,9 +29,11 @@
 #include <fstream>
 #include <ostream>
 #include <unordered_set>
+#include <vector>
 
 #include "Misc/Types.h"
 #include "App/Model/IBM/Landscape/Map/TerrainCells/TerrainCell.h"
+#include "App/Model/IBM/Landscape/Map/Points/PointContinuous.h"
 #include "Misc/EnumClass.h"
 #include "App/Model/IBM/Landscape/LivingBeings/Animals/AnimalStatistical.h"
 #include "Misc/CustomIndexedVector.h"
@@ -58,6 +60,7 @@ protected:
     PreciseDouble minCellSize; /**< Minimum cell size in the map */
     PreciseDouble minHyperVolume; /**< Minimum hypervolume of a cell */
     unsigned int numberOfCellsPerAxis; /**< Number of cells along each axis */
+    std::vector<unsigned int> numberOfCellsByAxis; /**< Number of configured cells along each axis */
     std::vector<TerrainCell*> inhabitableTerrainCells; /**< Cells that can be inhabited by animals */
 
     /**
@@ -125,6 +128,13 @@ public:
     * @return True if applied successfully.
     */
     virtual bool applyPatch(Landscape* const landscape, const Patch& patch, unsigned int seed)=0;
+    virtual void prepareObstacleGeometry()=0;
+    virtual bool isTraversable(const PointContinuous& position, const PreciseDouble& animalBodySection) const=0;
+    virtual bool isTraversable(const PointContinuous& start, const PointContinuous& end, const PreciseDouble& animalBodySection) const=0;
+    virtual std::vector<PointContinuous> generateRouteCandidatePositions(const PreciseDouble& animalBodySection) const=0;
+
+    virtual TerrainCell* getCell(const PointContinuous& position) const = 0;
+    virtual TerrainCell* getCell(const PointMap& position) const = 0;
 
     /**
     * @brief Adds a terrain cell that can be inhabited.
@@ -149,6 +159,7 @@ public:
      * @return Number of cells per axis.
      */
     unsigned int getNumberOfCellsPerAxis() const;
+    unsigned int getNumberOfCellsByAxis(const unsigned char axis) const;
 
     /**
      * @brief Returns all inhabitable terrain cells.
@@ -168,13 +179,6 @@ public:
      * @return Reference to the terrain cell pointer.
      */
     TerrainCell*& getMutableInhabitableTerrainCell(const unsigned int index);
-    
-    /**
-     * @brief Inserts a new animal into the map.
-     * @param landscape Pointer to the Landscape object.
-     * @param newAnimal Pointer to the new Animal object.
-     */
-    virtual void insertAnimal(Landscape* const landscape, Animal* const newAnimal)=0;
     
     /**
      * @brief Updates the map and all its entities for a timestep.

@@ -95,26 +95,6 @@ public:
     SpatialTreeTerrainCell* getCell(const PointSpatialTree &cellPos) override;
 
     /**
-     * @brief Applies functions upward to animals starting from the root.
-     * @param checker Function to check which animals to apply operations to.
-     * @param animalFunctions Vector of animal functions and their search parameters.
-     */
-    void applyUpFunctionToAnimals(
-        std::function<bool(Animal&)> checker,
-        const std::vector<std::pair<const AnimalSearchParams&, AnimalFunctions>>& animalFunctions
-    ) override;
-
-    /**
-     * @brief Applies functions upward to animals in random order starting from the root.
-     * @param checker Function to check which animals to apply operations to.
-     * @param animalFunctions Vector of animal functions and their search parameters.
-     */
-    void randomApplyUpFunctionToAnimals(
-        std::function<bool(Animal&)> checker,
-        const std::vector<std::pair<const AnimalSearchParams&, AnimalFunctions>>& animalFunctions
-    ) override;
-
-    /**
      * @brief Applies functions to edibles within a given radius starting from the root.
      * @param sourcePosition Center of the search.
      * @param radius Radius of the search area.
@@ -124,7 +104,8 @@ public:
     void applyFunctionToEdiblesInRadius(
         const PointContinuous &sourcePosition, const PreciseDouble &radius, 
         const std::vector<std::pair<const AnimalSearchParams&, AnimalFunctions>>& animalFunctions,
-        const std::vector<std::pair<const ResourceSearchParams&, ResourceFunctions>>& resourceFunctions
+        const std::vector<std::pair<const ResourceSearchParams&, ResourceFunctions>>& resourceFunctions,
+        const PreciseDouble& animalBodySection
     ) override;
 
     /**

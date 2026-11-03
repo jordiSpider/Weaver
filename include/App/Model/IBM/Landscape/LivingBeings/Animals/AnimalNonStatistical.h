@@ -578,13 +578,6 @@ public:
 	DryMass turnIntoDryMass(const DryMass &targetDryMass, const PreciseDouble& predatorRemainingVoracity) const;
 
 	/**
-	 * @brief Update the depth of the animal in its current terrain cell.
-	 *
-	 * @param timeStepsPerDay Conversion factor of time steps to days.
-	 */
-	void updateDepth(const PreciseDouble& timeStepsPerDay);
-
-	/**
 	 * @brief Search for a suitable partner to breed.
 	 *
 	 * @param landscape Pointer to the landscape.
@@ -600,7 +593,7 @@ public:
 	 * @param numberOfTimeSteps Number of simulation time steps for the search.
 	 * @param edibilities 
 	 */
-	void searchAnimalsAndResourceToEat(Landscape* const landscape, std::vector<std::tuple<PreciseDouble, Edible*, DryMass, bool>>& ediblesByEdibility, const TimeStep numberOfTimeSteps, bool saveEdibilitiesFile, fmt::memory_buffer& edibilitiesText);
+	void searchAnimalsAndResourceToEat(Landscape* const landscape, std::vector<std::pair<PreciseDouble, std::vector<std::tuple<Edible*, DryMass, bool>>>>& ediblesByEdibility, const TimeStep numberOfTimeSteps, bool saveEdibilitiesFile, fmt::memory_buffer& edibilitiesText);
 
 	/**
 	 * @brief Apply plasticity to a trait value based on the animal's condition.
@@ -762,7 +755,7 @@ public:
 	/**
 	 * @brief Perform initial evaluation of the terrain cell for this animal.
 	 */
-	void doInitialCellEvaluation(CustomIndexedVector<Instar, PreciseDouble>& maximumPatchEdibilityValueGlobal, CustomIndexedVector<Instar, PreciseDouble>& maximumPatchPredationRiskGlobal, CustomIndexedVector<Instar, PreciseDouble>& maximumPatchConspecificBiomassGlobal);
+	void doInitialCellEvaluation(Landscape* const landscape, CustomIndexedVector<Instar, PreciseDouble>& maximumPatchEdibilityValueGlobal, CustomIndexedVector<Instar, PreciseDouble>& maximumPatchPredationRiskGlobal, CustomIndexedVector<Instar, PreciseDouble>& maximumPatchConspecificBiomassGlobal);
 
 	void formatToBufferDirect(std::string& out) const noexcept;
 	void formatToBufferDirect(fmt::memory_buffer& out) const noexcept;
@@ -899,11 +892,11 @@ protected:
 
 	unsigned int actionsCurrentTimeStep; /**< Number of actions performed in the current time step */
 
-	std::tuple<Edible*, DryMass, bool> potencialPrey; /**< Potential prey for the animal */
+	std::vector<std::tuple<Edible*, DryMass, bool>> potencialPrey; /**< Potential prey for the animal */
 
 
-	const std::tuple<Edible*, DryMass, bool>& getPotencialPrey() const;
-	std::tuple<Edible*, DryMass, bool>& getPotencialPrey();
+	const std::vector<std::tuple<Edible*, DryMass, bool>>& getPotencialPrey() const;
+	std::vector<std::tuple<Edible*, DryMass, bool>>& getPotencialPrey();
 
 	bool mustDoHabitatShift() const;
 
@@ -921,7 +914,7 @@ protected:
 	 * @param timeStepsPerDay Number of time steps per day for scaling purposes.
 	 * @param competitionAmongResourceSpecies Flag indicating if competition among resource species should be considered.
 	 */
-	void setCurrentPrey(const std::tuple<Edible*, DryMass, bool>& prey, Landscape* const landscape, const TimeStep numberOfTimeSteps, const PreciseDouble& timeStepsPerDay, const bool competitionAmongResourceSpecies, CustomIndexedVector<Species::ID, unsigned int>& predationEventsOnOtherSpecies);
+	void setCurrentPrey(const std::vector<std::tuple<Edible*, DryMass, bool>>& prey, Landscape* const landscape, const TimeStep numberOfTimeSteps, const PreciseDouble& timeStepsPerDay, const bool competitionAmongResourceSpecies, CustomIndexedVector<Species::ID, unsigned int>& predationEventsOnOtherSpecies);
 
 	/**
 	 * @brief Set the Scope Area Radius object
@@ -935,6 +928,8 @@ protected:
 	 * @param newSpeciesGrowth Pointer to the new SpeciesGrowth object.
 	 */
 	void setSpeciesGrowth(SpeciesGrowth* newSpeciesGrowth);
+
+	void increaseActionsCounter();
 
 	/**
 	 * @brief Returns the number of predation encounters the animal has had during the current day.
@@ -1045,7 +1040,7 @@ protected:
 	 * @param maximumPatchConspecificBiomassGlobal Global maximum patch conspecific biomass values.
 	 * @return True if a target was found, false otherwise.
 	 */
-	virtual bool searchTargetToTravelTo(const PreciseDouble &scopeArea, CustomIndexedVector<Instar, PreciseDouble>& maximumPatchEdibilityValueGlobal, CustomIndexedVector<Instar, PreciseDouble>& maximumPatchPredationRiskGlobal, CustomIndexedVector<Instar, PreciseDouble>& maximumPatchConspecificBiomassGlobal)=0;
+	virtual bool searchTargetToTravelTo(Landscape* const landscape, const PreciseDouble &scopeArea, CustomIndexedVector<Instar, PreciseDouble>& maximumPatchEdibilityValueGlobal, CustomIndexedVector<Instar, PreciseDouble>& maximumPatchPredationRiskGlobal, CustomIndexedVector<Instar, PreciseDouble>& maximumPatchConspecificBiomassGlobal)=0;
 	
 	void habitatShift(Landscape* const landscape);
 

@@ -181,6 +181,10 @@ void Landscape::init(fs::path configPath, fs::path newOutputFolder, bool fromChe
 
 	readObstaclePatchesFromJSONFiles(configPath);
 
+
+	landscapeMap->prepareObstacleGeometry();
+
+
 	readHabitatDomainPatchesFromJSONFiles(configPath);
 
 
@@ -800,9 +804,6 @@ void Landscape::addAnimalSpecies(const json &animalSpeciesInfo, CustomIndexedVec
 	{
 		animalSpecies->addAnimalSpecies();
 	}
-
-
-	getMutableExistingAnimalSpecies().back()->calculateCellDepthPerInstar(landscapeMap);
 
 
 	landscapeMap->addAnimalSpecies(*getExistingAnimalSpecies().back());
@@ -3338,57 +3339,61 @@ void Landscape::initializeAnimals(const CustomIndexedVector<AnimalSpeciesID, Cus
 				}
 			}
 
-			for (size_t i = 0; i < totalInitialPopulation; ++i) {
-				Instar instar;
-				unsigned int prevPopulationSum = 0;
+			size_t currentGenomeIndex = 0;
+			unsigned int createdPopulation = 0u;
 
-				while (i >= prevPopulationSum && i < prevPopulationSum + initialPopulation[animalSpecies->getAnimalSpeciesId()][instar]) {
-					prevPopulationSum += initialPopulation[animalSpecies->getAnimalSpeciesId()][instar];
-					instar.moveOnNextInstar();
-				}
-
-
-				// Get a random index from this species inhabitable cells
-				size_t randomCellIndex = Random::randomIndex(mapSpeciesInhabitableTerrainCells[animalSpecies->getAnimalSpeciesId()][instar].size());
-
-				const Genome* genome;
-
-				if (initialGenomesPool.empty()) {
-					genome = nullptr;
-				}
-				else {
-					genome = &initialGenomesPool[animalSpecies->getAnimalSpeciesId()][i];
-				}
-
-
-				auto newTerrainCell = (*mapSpeciesInhabitableTerrainCells[animalSpecies->getAnimalSpeciesId()][instar][randomCellIndex])->randomInsertAnimal(this, instar, animalSpecies, false, genome, saveGenetics, geneticsLocalStr, TimeStep(0), timeStepsPerDay);
-
-				if (get<0>(newTerrainCell))
+			for (Instar instar : animalSpecies->getGrowthBuildingBlock().getInstarsRange())
+			{
+				const auto& inhabitableCells = mapSpeciesInhabitableTerrainCells[animalSpecies->getAnimalSpeciesId()][instar];
+				const size_t requestedPopulation = initialPopulation[animalSpecies->getAnimalSpeciesId()][instar];
+				for (size_t individual = 0u; individual < requestedPopulation; ++individual)
 				{
-					bool found = false;
-					for (unsigned int index = 0; index < mapSpeciesInhabitableTerrainCells[animalSpecies->getAnimalSpeciesId()][instar].size() && !found; ++index)
+					auto candidateCells = inhabitableCells;
+					AnimalNonStatistical* newAnimal = nullptr;
+					while (!candidateCells.empty() && newAnimal == nullptr)
 					{
-						if ((*mapSpeciesInhabitableTerrainCells[animalSpecies->getAnimalSpeciesId()][instar][index]) == get<1>(newTerrainCell))
+						const size_t randomCellIndex = Random::randomIndex(candidateCells.size());
+
+						const Genome* genome;
+
+						if (initialGenomesPool.empty()) {
+							genome = nullptr;
+						}
+						else {
+							genome = &initialGenomesPool[animalSpecies->getAnimalSpeciesId()][currentGenomeIndex];
+						}
+
+
+						auto newTerrainCell = (*candidateCells[randomCellIndex])->randomInsertAnimal(this, instar, animalSpecies, false, genome, saveGenetics, geneticsLocalStr, TimeStep(0), timeStepsPerDay);
+						newAnimal = static_cast<AnimalNonStatistical*>(get<3>(newTerrainCell));
+
+						if (newAnimal == nullptr)
 						{
-							(*mapSpeciesInhabitableTerrainCells[animalSpecies->getAnimalSpeciesId()][instar][index]) = get<2>(newTerrainCell);
-							found = true;
+							candidateCells.erase(candidateCells.begin() + randomCellIndex);
 						}
 					}
-				}
 
-				AnimalNonStatistical* newAnimal = static_cast<AnimalNonStatistical*>(get<3>(newTerrainCell));
+					if (newAnimal == nullptr)
+					{
+						LogManager::emit(fmt::format("Generation omitted: No valid initialization position for {} ({} instar).\n", animalSpecies->getScientificName(), instar));
+						++currentGenomeIndex;
+						continue;
+					}
 
-				newAnimal->calculateGrowthCurves(timeStepsPerDay);
-				newAnimal->forceMolting(this, TimeStep(0), timeStepsPerDay);
+					newAnimal->calculateGrowthCurves(timeStepsPerDay);
+					newAnimal->forceMolting(this, TimeStep(0), timeStepsPerDay);
 
-				if (saveAnimalConstitutiveTraits)
-				{
-					newAnimal->printTraits(animalConstitutiveTraitsLocalStr);
+					if (saveAnimalConstitutiveTraits)
+					{
+						newAnimal->printTraits(animalConstitutiveTraitsLocalStr);
+					}
+					++currentGenomeIndex;
+					++createdPopulation;
 				}
 			}
 
 
-			animalSpecies->increasePopulation(totalInitialPopulation);
+			animalSpecies->increasePopulation(createdPopulation);
 		}
 	}
 

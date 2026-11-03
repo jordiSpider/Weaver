@@ -52,10 +52,7 @@ void LeafTerrainCell::registerEdibles(vector<vector<vector<CellResource*>>>& lan
 void LeafTerrainCell::getRadiusTerrainCells(
     vector<CellValue>& bestEvaluations, const PointContinuous &sourcePosition, const PreciseDouble &radius, const size_t, bool searchNeighborsWithFemales, bool searchNeighborsWithMales, const bool parentFullCoverage, AnimalNonStatistical* animalWhoIsEvaluating, CustomIndexedVector<Instar, PreciseDouble>& maximumPatchEdibilityValueGlobal, CustomIndexedVector<Instar, PreciseDouble>& maximumPatchPredationRiskGlobal, CustomIndexedVector<Instar, PreciseDouble>& maximumPatchConspecificBiomassGlobal)
 {
-    if(!getPatchApplicator().getCellObstacle().isObstacle())
-    {
-        getCellEvaluation(bestEvaluations, animalWhoIsEvaluating, sourcePosition, radius, searchNeighborsWithFemales, searchNeighborsWithMales, parentFullCoverage, maximumPatchEdibilityValueGlobal, maximumPatchPredationRiskGlobal, maximumPatchConspecificBiomassGlobal);
-    }
+    getCellEvaluation(bestEvaluations, animalWhoIsEvaluating, sourcePosition, radius, searchNeighborsWithFemales, searchNeighborsWithMales, parentFullCoverage, maximumPatchEdibilityValueGlobal, maximumPatchPredationRiskGlobal, maximumPatchConspecificBiomassGlobal);
 }
 
 SpatialTreeTerrainCell* LeafTerrainCell::getCell(const PointSpatialTree &cellPos)
@@ -85,41 +82,6 @@ const LeafPatchApplicator& LeafTerrainCell::getPatchApplicator() const
 {
     return static_cast<const LeafPatchApplicator&>(SpatialTreeTerrainCell::getPatchApplicator());
 }
-
-
-
-/****************/
-/*    Animal    */
-/****************/
-
-    /**************/
-    /*    Down    */
-    /**************/
-
-void LeafTerrainCell::applyDownFunctionToAnimals(const vector<pair<const AnimalSearchParams&, AnimalFunctions>>&)
-{
-    
-}
-
-void LeafTerrainCell::applyDownFunctionToAnimals(
-        function<bool(Animal&)>, const PointContinuous &, const PreciseDouble &,
-        const vector<pair<const AnimalSearchParams&, AnimalFunctions>>&
-    )
-{
-    
-}
-
-////////////////
-
-void LeafTerrainCell::randomApplyDownFunctionToAnimals(const vector<pair<const AnimalSearchParams&, AnimalFunctions>>&)
-{
-    
-}
-
-
-
-
-
 
 
 BOOST_CLASS_EXPORT(LeafTerrainCell)

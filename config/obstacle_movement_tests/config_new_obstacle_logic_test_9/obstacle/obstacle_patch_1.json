@@ -1,0 +1,32 @@
+{
+  "patch": {
+    "priority": 1,
+    "shape": {
+      "cubicParams": {
+        "bottomLeftCorner": [
+          250,
+          250
+        ],
+        "topRightCorner": [
+          300,
+          400
+        ]
+      },
+      "gaussianParams": {},
+      "homogeneousParams": {},
+      "randomGaussianParams": {},
+      "sphericalParams": {
+        "center": null,
+        "radius": null
+      },
+      "type": "Cubic"
+    },
+    "porosity": {
+      "fraction": 0.0,
+      "minimumPoreWidth": 49.0,
+      "featureSize": 49.0,
+      "octaves": 2
+    }
+  },
+  "version": "2026.10.21"
+}

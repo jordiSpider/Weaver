@@ -149,12 +149,6 @@ public:
     /// Add a resource species to all children.
     void addResourceSpecies(Landscape* const landscape, std::vector<std::vector<std::vector<CellResource*>>>& landscapeResources, ResourceSpecies& resourceSpecies, ResourceSource* const resourceBaseSource);
 
-    /// Insert an individual animal into the appropriate child.
-    void insertAnimal(Landscape* const landscape, Animal* const newAnimal) override;
-
-    /// Randomly insert an animal based on instar and species, returning insertion info.
-    std::tuple<bool, TerrainCell*, TerrainCell*, Animal*> randomInsertAnimal(Landscape* const landscape, const Instar &instar, AnimalSpecies* animalSpecies, const bool isStatistical, const Genome* const genome, const bool saveGenetics, std::vector<fmt::memory_buffer>& geneticsText, const TimeStep actualTimeStep, const PreciseDouble& timeStepsPerDay) override;
-
     /// Check if a given spatial position belongs to one of the children.
     bool isChild(const PointSpatialTree &childPos) const;
 
@@ -171,45 +165,80 @@ public:
     /// Register edibles and animals for all children.
     void registerEdibles(std::vector<std::vector<std::vector<CellResource*>>>& landscapeResources, std::vector<AnimalNonStatistical*>& landscapeAnimals);
 
-    /** @name Downward traversal functions
+    /** @name Upward traversal functions
      */
-    ///@{
+     ///@{
     /**
-     * @brief Applies a set of downward functions to all animals in the cell.
-     * 
-     * Each function is associated with a set of animal search parameters (`AnimalSearchParams`) 
-     * that determines which animals will be affected.
-     * 
-     * @param animalFunctions Vector of pairs, each containing search parameters and functions to apply.
+     * @brief Applies functions to animals in the cell matching search parameters.
+     *
+     * @param animalFunctions Vector of pairs of animal search parameters and functions to apply
      */
-    void applyDownFunctionToAnimals(const std::vector<std::pair<const AnimalSearchParams&, AnimalFunctions>>& animalFunctions) override;
-    
+    void applyFunctionToAnimals(const std::vector<std::pair<const AnimalSearchParams&, AnimalFunctions>>& animalFunctions, const PreciseDouble& animalBodySection) override;
+
     /**
-     * @brief Applies downward functions to animals within a specific area of the cell.
-     * 
-     * Functions are applied only to animals that satisfy the `checker` predicate and are located
-     * within a radius around the `sourcePosition`.
-     * 
-     * @param checker Function returning true if an animal should be affected.
-     * @param sourcePosition Center of the influence area.
-     * @param radius Radius around `sourcePosition` defining the influence area.
-     * @param animalFunctions Vector of pairs with search parameters and functions to apply.
+     * @brief Applies functions to animals that satisfy a custom checker.
+     *
+     * @param checker Function to determine which animals to process
+     * @param animalFunctions Vector of animal search parameters and functions to apply
      */
-    void applyDownFunctionToAnimals(
-        std::function<bool(Animal&)> checker, const PointContinuous &sourcePosition, const PreciseDouble &radius,
-        const std::vector<std::pair<const AnimalSearchParams&, AnimalFunctions>>& animalFunctions
+    void applyFunctionToAnimals(
+        std::function<bool(Animal&)> checker, const PointContinuous& sourcePosition, const PreciseDouble& radius,
+        const std::vector<std::pair<const AnimalSearchParams&, AnimalFunctions>>& animalFunctions,
+        const PreciseDouble& animalBodySection
     ) override;
 
     /**
-     * @brief Applies downward functions to the animals in the cell in a random order.
-     * 
-     * This ensures that the execution of functions on animals does not depend on a fixed iteration order,
-     * preventing potential bias.
-     * 
-     * @param animalFunctions Vector of pairs with search parameters and functions to apply.
+     * @brief Randomly applies functions to animals in the cell matching search parameters.
+     *
+     * @param animalFunctions Vector of pairs of animal search parameters and functions to apply
      */
-    void randomApplyDownFunctionToAnimals(const std::vector<std::pair<const AnimalSearchParams&, AnimalFunctions>>& animalFunctions) override;
+    void randomApplyFunctionToAnimals(const std::vector<std::pair<const AnimalSearchParams&, AnimalFunctions>>& animalFunctions, const PreciseDouble& animalBodySection) override;
+    
+    void randomApplyFunctionToAnimals(
+        std::function<bool(Animal&)> checker, const PointContinuous& sourcePosition, const PreciseDouble& radius,
+        const std::vector<std::pair<const AnimalSearchParams&, AnimalFunctions>>& animalFunctions,
+        const PreciseDouble& animalBodySection
+    ) override;
     ///@}
+
+    /**
+     * @brief Applies functions to all edible animals and resources.
+     *
+     * Overrides the base implementation. Functions are applied deterministically
+     * to all animals and resources that match the provided search parameters.
+     *
+     * @param animalFunctions Vector of pairs containing animal search parameters
+     *                        and the functions to apply.
+     * @param resourceFunctions Vector of pairs containing resource search parameters
+     *                          and the functions to apply.
+     */
+    void applyFunctionToEdibles(
+        const std::vector<std::pair<const AnimalSearchParams&, AnimalFunctions>>& animalFunctions,
+        const std::vector<std::pair<const ResourceSearchParams&, ResourceFunctions>>& resourceFunctions,
+        const PreciseDouble& animalBodySection
+    ) override;
+
+    /**
+     * @brief Applies functions to edible animals and resources within a specific radius
+     *        and optionally filtered by a custom checker.
+     *
+     * Overrides the base implementation. Functions are applied to all animals and resources
+     * within the specified radius that satisfy the `checker` predicate.
+     *
+     * @param checker Function returning true for animals to be affected.
+     * @param sourcePosition Center point for the radius check.
+     * @param radius Radius around the source position to consider.
+     * @param animalFunctions Vector of pairs containing animal search parameters
+     *                        and the functions to apply.
+     * @param resourceFunctions Vector of pairs containing resource search parameters
+     *                          and the functions to apply.
+     */
+    void applyFunctionToEdibles(
+        std::function<bool(Animal&)> checker, const PointContinuous& sourcePosition, const PreciseDouble& radius,
+        const std::vector<std::pair<const AnimalSearchParams&, AnimalFunctions>>& animalFunctions,
+        const std::vector<std::pair<const ResourceSearchParams&, ResourceFunctions>>& resourceFunctions,
+        const PreciseDouble& animalBodySection
+    ) override;
 
     /** @name Update the branch and propagate updates to children
      */

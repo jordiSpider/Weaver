@@ -407,6 +407,13 @@ public:
 	const std::vector<Species*>& getExistingSpecies() const;
 
 	/**
+	* @brief Get a const reference to the list of resource species currently loaded.
+	*
+	* @return Vector of pointers to ResourceSpecies objects.
+	*/
+	const std::vector<ResourceSpecies*>& getExistingResourceSpecies() const;
+
+	/**
 	* @brief Get the landscape type enum of this instance.
 	*
 	* @return A Type value identifying the concrete landscape kind.
@@ -729,13 +736,6 @@ protected:
 	* @param numberOfTimeSteps Time-step used as reference for stabilisation check.
 	*/
 	bool isSimulationStabilised(const TimeStep& numberOfTimeSteps);
-
-	/**
-	* @brief Get a const reference to the list of resource species currently loaded.
-	*
-	* @return Vector of pointers to ResourceSpecies objects.
-	*/
-	const std::vector<ResourceSpecies*>& getExistingResourceSpecies() const;
 	
 	/** @brief Get a mutable reference to the vector of resource species. */
 	std::vector<ResourceSpecies*>& getMutableExistingResourceSpecies();

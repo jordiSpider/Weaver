@@ -50,6 +50,12 @@ struct CellValue {
     /// Whether the cell belongs to the habitat domain of the evaluating animal
     bool habitatDomain;
 
+	PreciseDouble totalEdibilityValue;
+	PreciseDouble totalPredatoryRiskEdibilityValue;
+    PreciseDouble totalConspecificBiomass;
+
+    PointContinuous cellCenter;
+
     /**
      * @brief Constructor that evaluates a cell for a given animal.
      * 
@@ -65,7 +71,7 @@ struct CellValue {
      * @param numberOfFemales Number of mature females present in the cell
      * @param habitatDomain Whether the cell belongs to the habitat domain
      */
-    CellValue(const AnimalNonStatistical& animalWhoIsEvaluating, const Edible* bestEdibility, bool fullCoverage, const RingModel* cellEffectiveArea, const PointMap* const cellPosition, const PointContinuous& cellCenter, const PreciseDouble &edibilityValue, const PreciseDouble &predatoryRiskEdibilityValue, const PreciseDouble &conspecificBiomass, unsigned int numberOfFemales, unsigned int numberOfMales, const bool habitatDomain);
+    CellValue(const Edible* bestEdibility, bool fullCoverage, const RingModel* cellEffectiveArea, const PointMap* const cellPosition, const PointContinuous& cellCenter, const PreciseDouble & totalEdibilityValue, const PreciseDouble & totalPredatoryRiskEdibilityValue, const PreciseDouble & totalConspecificBiomass, unsigned int numberOfFemales, unsigned int numberOfMales, const bool habitatDomain);
     
     /**
      * @brief Destructor.
@@ -83,6 +89,8 @@ struct CellValue {
      * @brief Copy assignment operator is deleted.
      */
     CellValue& operator=(const CellValue&) = delete;
+
+    void calculateValuePerceived(const AnimalNonStatistical& animalWhoIsEvaluating);
 
     /**
      * @brief Greater-than operator based on perceived value and other criteria.

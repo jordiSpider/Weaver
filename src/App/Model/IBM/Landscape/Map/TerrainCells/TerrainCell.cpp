@@ -129,6 +129,12 @@ void TerrainCell::insertAnimal(Landscape* const, Animal* const newAnimal)
 
 tuple<bool, TerrainCell*, TerrainCell*, Animal*> TerrainCell::randomInsertAnimal(Landscape* const landscape, const Instar &instar, AnimalSpecies* animalSpecies, const bool isStatistical, const Genome* const genome, const bool saveGenetics, std::vector<fmt::memory_buffer>& geneticsText, const TimeStep actualTimeStep, const PreciseDouble& timeStepsPerDay)
 {
+    const optional<PointContinuous> position = generateAnimalPosition(animalSpecies, instar, *landscape->getMap());
+    if (!position)
+    {
+        return make_tuple(false, nullptr, nullptr, nullptr);
+    }
+
     Animal* newAnimal;
     
     if(isStatistical)
@@ -141,20 +147,86 @@ tuple<bool, TerrainCell*, TerrainCell*, Animal*> TerrainCell::randomInsertAnimal
     }
     
 
-    vector<PreciseDouble> axisValues(DIMENSIONS);
-    
-    for(unsigned char i = 0; i < DIMENSIONS; i++)
-    {
-        Axis axis = magic_enum::enum_cast<Axis>(i).value();
-        axisValues[i] = static_cast<double>(getPosition().get(axis)) * getSize() + Random::randomUniform(0.0, getSize());
-    }
-
-    newAnimal->setPosition(axisValues);
+    newAnimal->setPosition(*position);
     TerrainCell::insertAnimal(landscape, newAnimal);
 
     return make_tuple(false, nullptr, nullptr, newAnimal);
 }
 
+optional<PointContinuous> TerrainCell::generateAnimalPosition(const AnimalSpecies* animalSpecies, const Instar& instar, const Map& map) const
+{
+    const PreciseDouble bodySection = animalSpecies->getPoreUsePerInstar(instar);
+    const auto isValid = [&](const PointContinuous& position)
+    {
+        return map.isTraversable(position, bodySection);
+    };
+
+    const double cellSize = getSize().getValue();
+    const auto makePosition = [&](const vector<double>& fractions)
+    {
+        PointContinuous position;
+        for (unsigned char axis = 0; axis < DIMENSIONS; ++axis)
+        {
+            const Axis mapAxis = magic_enum::enum_cast<Axis>(axis).value();
+            setPositionAxisValue(position, axis,
+                static_cast<double>(getPosition().get(mapAxis)) * cellSize + fractions[axis] * cellSize);
+        }
+        return position;
+    };
+
+    constexpr size_t randomAttempts = 16u;
+    for (size_t attempt = 0u; attempt < randomAttempts; ++attempt)
+    {
+        vector<double> fractions(DIMENSIONS);
+        for (double& fraction : fractions)
+        {
+            fraction = Random::randomUniform(0.0, 1.0).getValue();
+        }
+        const PointContinuous position = makePosition(fractions);
+        if (isValid(position))
+        {
+            return position;
+        }
+    }
+
+    constexpr size_t gridResolution = 16u;
+    size_t gridCandidateCount = 1u;
+    for (unsigned char axis = 0; axis < DIMENSIONS; ++axis)
+    {
+        gridCandidateCount *= gridResolution;
+    }
+    vector<double> gridOffsets(DIMENSIONS);
+    for (double& offset : gridOffsets)
+    {
+        offset = Random::randomUniform(0.0, 1.0).getValue();
+    }
+    const size_t gridStart = Random::randomIndex(gridCandidateCount);
+    for (size_t offset = 0u; offset < gridCandidateCount; ++offset)
+    {
+        const size_t gridIndex = (gridStart + offset) % gridCandidateCount;
+        size_t remainingIndex = gridIndex;
+        vector<double> fractions(DIMENSIONS);
+        for (unsigned char axis = 0; axis < DIMENSIONS; ++axis)
+        {
+            const size_t coordinate = remainingIndex % gridResolution;
+            remainingIndex /= gridResolution;
+            fractions[axis] = (static_cast<double>(coordinate) + gridOffsets[axis]) / gridResolution;
+        }
+        const PointContinuous position = makePosition(fractions);
+        if (isValid(position))
+        {
+            return position;
+        }
+    }
+
+    const PointContinuous& centerPosition = getCenter();
+    if (isValid(centerPosition))
+    {
+        return centerPosition;
+    }
+
+    return nullopt;
+}
 
 const PointContinuous& TerrainCell::getCenter() const
 {
@@ -252,14 +324,11 @@ void TerrainCell::obtainInhabitableTerrainCells(Map* const map)
 }
 
 
-
-
-
 /******************/
 /*    Resource    */
 /******************/
 
-void TerrainCell::applyFunctionToResources(const vector<pair<const ResourceSearchParams&, ResourceFunctions>>& resourceFunctions)
+void TerrainCell::applyFunctionToResources(const vector<pair<const ResourceSearchParams&, ResourceFunctions>>& resourceFunctions, const PreciseDouble&)
 {
     if(!resourceFunctions.empty())
     {
@@ -284,7 +353,8 @@ void TerrainCell::applyFunctionToResources(const vector<pair<const ResourceSearc
 
 void TerrainCell::applyFunctionToResources(
         const PointContinuous &sourcePosition, const PreciseDouble &radius, 
-        const vector<pair<const ResourceSearchParams&, ResourceFunctions>>& resourceFunctions
+        const vector<pair<const ResourceSearchParams&, ResourceFunctions>>& resourceFunctions, 
+        const PreciseDouble&
     )
 {
     if(!resourceFunctions.empty())
@@ -313,7 +383,7 @@ void TerrainCell::applyFunctionToResources(
 /*    Animal    */
 /****************/
 
-void TerrainCell::applyFunctionToAnimals(const vector<pair<const AnimalSearchParams&, AnimalFunctions>>& animalFunctions)
+void TerrainCell::applyFunctionToAnimals(const vector<pair<const AnimalSearchParams&, AnimalFunctions>>& animalFunctions, const PreciseDouble&)
 {
     if(animalFunctions.empty() || getPatchApplicator().getCellObstacle().isObstacle()) return;
 
@@ -336,8 +406,9 @@ void TerrainCell::applyFunctionToAnimals(const vector<pair<const AnimalSearchPar
 }
 
 void TerrainCell::applyFunctionToAnimals(
-        function<bool(Animal&)> checker, 
-        const vector<pair<const AnimalSearchParams&, AnimalFunctions>>& animalFunctions
+        function<bool(Animal&)> checker, const PointContinuous&, const PreciseDouble&,
+        const vector<pair<const AnimalSearchParams&, AnimalFunctions>>& animalFunctions,
+        const PreciseDouble&
     )
 {
     if(animalFunctions.empty() || getPatchApplicator().getCellObstacle().isObstacle()) return;
@@ -361,7 +432,7 @@ void TerrainCell::applyFunctionToAnimals(
 }
 
 
-void TerrainCell::randomApplyFunctionToAnimals(const vector<pair<const AnimalSearchParams&, AnimalFunctions>>& animalFunctions)
+void TerrainCell::randomApplyFunctionToAnimals(const vector<pair<const AnimalSearchParams&, AnimalFunctions>>& animalFunctions, const PreciseDouble&)
 {
     if(animalFunctions.empty() || getPatchApplicator().getCellObstacle().isObstacle()) return;
 
@@ -390,8 +461,9 @@ void TerrainCell::randomApplyFunctionToAnimals(const vector<pair<const AnimalSea
 }
 
 void TerrainCell::randomApplyFunctionToAnimals(
-        function<bool(Animal&)> checker, 
-        const vector<pair<const AnimalSearchParams&, AnimalFunctions>>& animalFunctions
+        function<bool(Animal&)> checker, const PointContinuous&, const PreciseDouble&,
+        const vector<pair<const AnimalSearchParams&, AnimalFunctions>>& animalFunctions,
+        const PreciseDouble&
     )
 {
     if(animalFunctions.empty() || getPatchApplicator().getCellObstacle().isObstacle()) return;
@@ -427,21 +499,23 @@ void TerrainCell::randomApplyFunctionToAnimals(
 
 void TerrainCell::applyFunctionToEdibles(
         const vector<pair<const AnimalSearchParams&, AnimalFunctions>>& animalFunctions,
-        const vector<pair<const ResourceSearchParams&, ResourceFunctions>>& resourceFunctions
+        const vector<pair<const ResourceSearchParams&, ResourceFunctions>>& resourceFunctions,
+        const PreciseDouble& animalBodySection
     )
 {
-    applyFunctionToAnimals(animalFunctions);
-    applyFunctionToResources(resourceFunctions);
+    applyFunctionToAnimals(animalFunctions, animalBodySection);
+    applyFunctionToResources(resourceFunctions, animalBodySection);
 }
 
 void TerrainCell::applyFunctionToEdibles(
         function<bool(Animal&)> checker, const PointContinuous &sourcePosition, const PreciseDouble &radius, 
         const vector<pair<const AnimalSearchParams&, AnimalFunctions>>& animalFunctions,
-        const vector<pair<const ResourceSearchParams&, ResourceFunctions>>& resourceFunctions
+        const vector<pair<const ResourceSearchParams&, ResourceFunctions>>& resourceFunctions,
+        const PreciseDouble& animalBodySection
     )
 {
-    applyFunctionToAnimals(checker, animalFunctions);
-    applyFunctionToResources(sourcePosition, radius, resourceFunctions);
+    applyFunctionToAnimals(checker, sourcePosition, radius, animalFunctions, animalBodySection);
+    applyFunctionToResources(sourcePosition, radius, resourceFunctions, animalBodySection);
 }
 
 
@@ -452,11 +526,12 @@ void TerrainCell::applyFunctionToEdibles(
 void TerrainCell::applyFunctionToEdiblesInCell(bool fullCoverage, 
     const PointContinuous &sourcePosition, const PreciseDouble &radius, 
     const vector<pair<const AnimalSearchParams&, AnimalFunctions>>& animalFunctions,
-    const vector<pair<const ResourceSearchParams&, ResourceFunctions>>& resourceFunctions)
+    const vector<pair<const ResourceSearchParams&, ResourceFunctions>>& resourceFunctions,
+    const PreciseDouble& animalBodySection)
 {   
     if(fullCoverage)
     {
-        applyFunctionToEdibles(animalFunctions, resourceFunctions);
+        applyFunctionToEdibles(animalFunctions, resourceFunctions, animalBodySection);
     }
     else
     {
@@ -464,7 +539,7 @@ void TerrainCell::applyFunctionToEdiblesInCell(bool fullCoverage,
             return Geometry::pointInsideSphere(animal.getPosition(), sourcePosition, radius);
         };
 
-        applyFunctionToEdibles(radiusChecker, sourcePosition, radius, animalFunctions, resourceFunctions);
+        applyFunctionToEdibles(radiusChecker, sourcePosition, radius, animalFunctions, resourceFunctions, animalBodySection);
     }
 }
 
@@ -486,8 +561,7 @@ void TerrainCell::applyFunctionToEdiblesInCell(bool fullCoverage,
 
 void TerrainCell::getCellEvaluation(vector<CellValue>& bestEvaluations, AnimalNonStatistical* animalWhoIsEvaluating, const PointContinuous &sourcePosition, const PreciseDouble &radius, bool searchNeighborsWithFemales, bool searchNeighborsWithMales, const bool parentFullCoverage, CustomIndexedVector<Instar, PreciseDouble>& maximumPatchEdibilityValueGlobal, CustomIndexedVector<Instar, PreciseDouble>& maximumPatchPredationRiskGlobal, CustomIndexedVector<Instar, PreciseDouble>& maximumPatchConspecificBiomassGlobal)
 {
-    AnimalNonStatistical* animalWhoIsEvaluatingCast = static_cast<AnimalNonStatistical*>(animalWhoIsEvaluating);
-
+    if (getPatchApplicator().getCellObstacle().isObstacle()) return;
 
 
     bool fullCoverage = parentFullCoverage;
@@ -539,12 +613,12 @@ void TerrainCell::getCellEvaluation(vector<CellValue>& bestEvaluations, AnimalNo
         vector<pair<const AnimalSearchParams&, AnimalFunctions>> animalFunctions;
 
         animalFunctions.emplace_back(
-            animalWhoIsEvaluatingCast->getSpecies()->getConspecificSearchParams(),
+            animalWhoIsEvaluating->getSpecies()->getConspecificSearchParams(),
             AnimalFunctions{
                 PreviousAnimalFunctions{},
                 IndividualFunctions{
-                    [&animalWhoIsEvaluatingCast, &totalConspecificBiomass](Animal& animal) {
-                        totalConspecificBiomass += animalWhoIsEvaluatingCast->calculateConspecificBiomass(static_cast<AnimalNonStatistical&>(animal)).getValue();
+                    [&animalWhoIsEvaluating, &totalConspecificBiomass](Animal& animal) {
+                        totalConspecificBiomass += animalWhoIsEvaluating->calculateConspecificBiomass(static_cast<AnimalNonStatistical&>(animal)).getValue();
                     }
                 },
                 PostAnimalFunctions{}
@@ -552,14 +626,14 @@ void TerrainCell::getCellEvaluation(vector<CellValue>& bestEvaluations, AnimalNo
         );
 
         animalFunctions.emplace_back(
-            animalWhoIsEvaluatingCast->getSpecies()->getPreySearchParams(animalWhoIsEvaluatingCast->getInstarToEvaluateCells()).getAnimalSearchParams(),
+            animalWhoIsEvaluating->getSpecies()->getPreySearchParams(animalWhoIsEvaluating->getInstarToEvaluateCells()).getAnimalSearchParams(),
             AnimalFunctions{
                 PreviousAnimalFunctions{},
                 IndividualFunctions{
-                    [&animalWhoIsEvaluatingCast, &totalEdibilityValue, &bestAnimalEdibilityValue, &bestAnimal](Animal& animal) {
+                    [&animalWhoIsEvaluating, &totalEdibilityValue, &bestAnimalEdibilityValue, &bestAnimal](Animal& animal) {
                         AnimalNonStatistical* animalCast = static_cast<AnimalNonStatistical*>(&animal);
 
-                        const PreciseDouble edibilityValue = animalWhoIsEvaluatingCast->calculateCellQuality(*animalCast);
+                        const PreciseDouble edibilityValue = animalWhoIsEvaluating->calculateCellQuality(*animalCast);
 
                         totalEdibilityValue += edibilityValue;
 
@@ -575,12 +649,12 @@ void TerrainCell::getCellEvaluation(vector<CellValue>& bestEvaluations, AnimalNo
         );
 
         animalFunctions.emplace_back(
-            animalWhoIsEvaluatingCast->getSpecies()->getPredatorSearchParams(animalWhoIsEvaluatingCast->getInstarToEvaluateCells()),
+            animalWhoIsEvaluating->getSpecies()->getPredatorSearchParams(animalWhoIsEvaluating->getInstarToEvaluateCells()),
             AnimalFunctions{
                 PreviousAnimalFunctions{},
                 IndividualFunctions{
-                    [&animalWhoIsEvaluatingCast, &totalPredatoryRiskEdibilityValue](Animal& animal) {
-                        totalPredatoryRiskEdibilityValue += animalWhoIsEvaluatingCast->calculatePredationRisk(static_cast<AnimalNonStatistical&>(animal));
+                    [&animalWhoIsEvaluating, &totalPredatoryRiskEdibilityValue](Animal& animal) {
+                        totalPredatoryRiskEdibilityValue += animalWhoIsEvaluating->calculatePredationRisk(static_cast<AnimalNonStatistical&>(animal));
                     }
                 },
                 PostAnimalFunctions{}
@@ -591,12 +665,12 @@ void TerrainCell::getCellEvaluation(vector<CellValue>& bestEvaluations, AnimalNo
         vector<pair<const ResourceSearchParams&, ResourceFunctions>> resourceFunctions;
 
         resourceFunctions.emplace_back(
-            animalWhoIsEvaluatingCast->getSpecies()->getPreySearchParams(animalWhoIsEvaluatingCast->getInstarToEvaluateCells()).getResourceSearchParams(),
+            animalWhoIsEvaluating->getSpecies()->getPreySearchParams(animalWhoIsEvaluating->getInstarToEvaluateCells()).getResourceSearchParams(),
             ResourceFunctions{
-                [&animalWhoIsEvaluatingCast, &bestResourceEdibilityValue, &bestResource, &totalEdibilityValue](CellResourceInterface& resource, bool fullCoverage, const PointContinuous* const sourcePosition, const PreciseDouble &radius) {
+                [&animalWhoIsEvaluating, &bestResourceEdibilityValue, &bestResource, &totalEdibilityValue](CellResourceInterface& resource, bool fullCoverage, const PointContinuous* const sourcePosition, const PreciseDouble &radius) {
                     const DryMass dryMassAvailable = resource.calculateDryMassAvailable(fullCoverage, sourcePosition, radius);
                     
-                    const PreciseDouble edibilityValue = animalWhoIsEvaluatingCast->calculateCellQuality(resource, dryMassAvailable);
+                    const PreciseDouble edibilityValue = animalWhoIsEvaluating->calculateCellQuality(resource, dryMassAvailable);
 
                     totalEdibilityValue += edibilityValue;
 
@@ -609,8 +683,9 @@ void TerrainCell::getCellEvaluation(vector<CellValue>& bestEvaluations, AnimalNo
             }
         );
 
+        const PreciseDouble sectionSize = animalWhoIsEvaluating->getSpecies()->getPoreUsePerInstar(animalWhoIsEvaluating->getInstar());
 
-        applyFunctionToEdiblesInCell(fullCoverage, sourcePosition, radius, animalFunctions, resourceFunctions);
+        applyFunctionToEdiblesInCell(fullCoverage, sourcePosition, radius, animalFunctions, resourceFunctions, sectionSize);
 
 
         const Edible* bestEdible;
@@ -638,60 +713,36 @@ void TerrainCell::getCellEvaluation(vector<CellValue>& bestEvaluations, AnimalNo
 
         if(searchNeighborsWithFemales)
         {
-            numberOfFemales = getNumberOfMatureFemales(animalWhoIsEvaluatingCast->getMutableSpecies());
+            numberOfFemales = getNumberOfMatureFemales(animalWhoIsEvaluating->getMutableSpecies(), sectionSize);
         }
 
 		if (searchNeighborsWithMales)
 		{
-            numberOfMales = getNumberOfMatureMales(animalWhoIsEvaluatingCast->getMutableSpecies());
+            numberOfMales = getNumberOfMatureMales(animalWhoIsEvaluating->getMutableSpecies(), sectionSize);
 		}
 
 
-        animalWhoIsEvaluatingCast->setMaximumCellEvaluation(totalEdibilityValue, totalPredatoryRiskEdibilityValue, totalConspecificBiomass);
+        animalWhoIsEvaluating->setMaximumCellEvaluation(totalEdibilityValue, totalPredatoryRiskEdibilityValue, totalConspecificBiomass);
 
 
-        PreciseDouble& instarMaximumPatchEdibilityValueGlobal = maximumPatchEdibilityValueGlobal[animalWhoIsEvaluatingCast->getGrowthBuildingBlock().getInstar()];
+        PreciseDouble& instarMaximumPatchEdibilityValueGlobal = maximumPatchEdibilityValueGlobal[animalWhoIsEvaluating->getGrowthBuildingBlock().getInstar()];
         instarMaximumPatchEdibilityValueGlobal = fmax(instarMaximumPatchEdibilityValueGlobal, totalEdibilityValue);
 
-        PreciseDouble& instarMaximumPatchPredationRiskGlobal = maximumPatchPredationRiskGlobal[animalWhoIsEvaluatingCast->getGrowthBuildingBlock().getInstar()];
+        PreciseDouble& instarMaximumPatchPredationRiskGlobal = maximumPatchPredationRiskGlobal[animalWhoIsEvaluating->getGrowthBuildingBlock().getInstar()];
         instarMaximumPatchPredationRiskGlobal = fmax(instarMaximumPatchPredationRiskGlobal, totalPredatoryRiskEdibilityValue);
 
-        PreciseDouble& instarMaximumPatchConspecificBiomassGlobal = maximumPatchConspecificBiomassGlobal[animalWhoIsEvaluatingCast->getGrowthBuildingBlock().getInstar()];
+        PreciseDouble& instarMaximumPatchConspecificBiomassGlobal = maximumPatchConspecificBiomassGlobal[animalWhoIsEvaluating->getGrowthBuildingBlock().getInstar()];
         instarMaximumPatchConspecificBiomassGlobal = fmax(instarMaximumPatchConspecificBiomassGlobal, totalConspecificBiomass);
 
 
-        const PreciseDouble maximumPatchEdibilityValue = animalWhoIsEvaluatingCast->getMaximumPatchEdibilityValue();
-        const PreciseDouble maximumPatchPredationRisk = animalWhoIsEvaluatingCast->getMaximumPatchPredationRisk();
-        const PreciseDouble maximumPatchConspecificBiomass = animalWhoIsEvaluatingCast->getMaximumPatchConspecificBiomass();
-
-        const PreciseDouble edibilityValueProbability = (maximumPatchEdibilityValue > 0.0) ? totalEdibilityValue / maximumPatchEdibilityValue : 0.0;
-        const PreciseDouble predationRiskProbability = (maximumPatchPredationRisk > 0.0) ? totalPredatoryRiskEdibilityValue / maximumPatchPredationRisk : 0.0;
-        const PreciseDouble conspecificBiomass = (maximumPatchConspecificBiomass > 0.0) ? totalConspecificBiomass / maximumPatchConspecificBiomass : 0.0;
-
-
-        CellValue cellEvaluation(*animalWhoIsEvaluatingCast, bestEdible, 
+        CellValue cellEvaluation(bestEdible, 
             fullCoverage, &getEffectiveArea(), &getPosition(), getCenter(), 
-            edibilityValueProbability, predationRiskProbability, conspecificBiomass, numberOfFemales, numberOfMales, 
-            getPatchApplicator().getCellHabitatDomain().isHabitatDomain(animalWhoIsEvaluatingCast->getSpecies()->getAnimalSpeciesId(), animalWhoIsEvaluatingCast->getInstarToEvaluateCells())
+            totalEdibilityValue, totalPredatoryRiskEdibilityValue, totalConspecificBiomass, numberOfFemales, numberOfMales,
+            getPatchApplicator().getCellHabitatDomain().isHabitatDomain(animalWhoIsEvaluating->getSpecies()->getAnimalSpeciesId(), animalWhoIsEvaluating->getInstarToEvaluateCells())
         );
 
 
-        if(bestEvaluations.empty())
-        {
-            bestEvaluations.emplace_back(cellEvaluation);
-        }
-        else
-        {
-            if (cellEvaluation >= bestEvaluations.front())
-            {
-                if (cellEvaluation > bestEvaluations.front())
-                {
-                    bestEvaluations.clear();
-                }
-
-                bestEvaluations.emplace_back(cellEvaluation);
-            }
-        }
+        bestEvaluations.emplace_back(cellEvaluation);
     }
 }
 
@@ -777,7 +828,7 @@ void TerrainCell::saveWaterSnapshot(ofstream &file) const
     }
 }
 
-unsigned int TerrainCell::getNumberOfMatureFemales(AnimalSpecies *const animalSpecies)
+unsigned int TerrainCell::getNumberOfMatureFemales(AnimalSpecies *const animalSpecies, const PreciseDouble& animalBodySection)
 {
     unsigned int counter = 0;
 
@@ -796,12 +847,12 @@ unsigned int TerrainCell::getNumberOfMatureFemales(AnimalSpecies *const animalSp
         }
     );
 
-    applyFunctionToAnimals(animalFunctions);
+    applyFunctionToAnimals(animalFunctions, animalBodySection);
 
     return counter;
 }
 
-unsigned int TerrainCell::getNumberOfMatureMales(AnimalSpecies* const animalSpecies)
+unsigned int TerrainCell::getNumberOfMatureMales(AnimalSpecies* const animalSpecies, const PreciseDouble& animalBodySection)
 {
     unsigned int counter = 0;
 
@@ -820,7 +871,7 @@ unsigned int TerrainCell::getNumberOfMatureMales(AnimalSpecies* const animalSpec
         }
     );
 
-    applyFunctionToAnimals(animalFunctions);
+    applyFunctionToAnimals(animalFunctions, animalBodySection);
 
     return counter;
 }

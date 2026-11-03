@@ -29,6 +29,7 @@ Map* Map::createInstance(const json &mapInfo, MoistureSource* const moistureBase
 
 
 Map::Map()
+    : numberOfCellsPerAxis(0u), numberOfCellsByAxis(DIMENSIONS, 0u)
 {
 
 }
@@ -47,6 +48,9 @@ Map::Map(const json &mapConfig)
 {
     unsigned int numberOfCellsAxisX = mapConfig["numberOfCellsAxisX"].get<unsigned int>();
     unsigned int numberOfCellsAxisY = mapConfig["numberOfCellsAxisY"].get<unsigned int>();
+    numberOfCellsByAxis = vector<unsigned int>(DIMENSIONS, 0u);
+    numberOfCellsByAxis[0] = numberOfCellsAxisX;
+    numberOfCellsByAxis[1] = numberOfCellsAxisY;
 
     unsigned int maxNumberOfCellsAxis = (numberOfCellsAxisX > numberOfCellsAxisY) ? numberOfCellsAxisX : numberOfCellsAxisY;
 
@@ -85,6 +89,11 @@ const PreciseDouble& Map::getMinHyperVolume() const
 unsigned int Map::getNumberOfCellsPerAxis() const
 {
     return numberOfCellsPerAxis;
+}
+
+unsigned int Map::getNumberOfCellsByAxis(const unsigned char axis) const
+{
+    return numberOfCellsByAxis[axis];
 }
 
 const vector<TerrainCell*>& Map::getInhabitableTerrainCells() const
@@ -161,6 +170,7 @@ void Map::serialize(Archive &ar, const unsigned int) {
     ar & minCellSize;
     ar & minHyperVolume;
     ar & numberOfCellsPerAxis;
+    ar & numberOfCellsByAxis;
 }
 
 // // Specialisation

@@ -73,6 +73,16 @@ run_hub <- function(...) {
         uiOutput("render_obstacle_simulator_module")
       )
     ),
+
+    # Anchor Tab 5: Simulation Results Analysis
+    bslib::nav_panel(
+      title = "Results Analysis Workspace",
+      value = "simulation_analysis_tab",
+      icon = icon("search"),
+      fluidPage(
+        uiOutput("render_simulation_analysis_module")
+      )
+    ),
     
     # Right-aligned globally inherited theme and system lifecycle controls
     bslib::nav_spacer(),
@@ -89,6 +99,7 @@ run_hub <- function(...) {
     shinyFiles::shinyFileChoose(input, "optimization_template_file_picker", roots = shared_system_volumes, session = session, pattern = "^.*\\.[jJ][sS][oO][nN]$")
     shinyFiles::shinyFileChoose(input, "simulator_executable_picker", roots = shared_system_volumes, session = session, pattern = "^.*\\.([eE][xX][eE])$")
     shinyFiles::shinyDirChoose(input, "base_config_picker", roots = shared_system_volumes, session = session)
+    shinyFiles::shinyDirChoose(input, "simulation_analysis_results_picker", roots = shared_system_volumes, session = session)
     observeEvent(input$optimization_template_file_picker, {
       selected <- shinyFiles::parseFilePaths(shared_system_volumes, input$optimization_template_file_picker)
       if (nrow(selected) > 0) updateTextInput(session, "optimization_template_path", value = normalizePath(selected$datapath, mustWork = FALSE))
@@ -101,10 +112,15 @@ run_hub <- function(...) {
       selected <- shinyFiles::parseDirPath(shared_system_volumes, input$base_config_picker)
       if (length(selected) > 0) updateTextInput(session, "base_config_path", value = normalizePath(selected, mustWork = FALSE))
     })
+    observeEvent(input$simulation_analysis_results_picker, {
+      selected <- shinyFiles::parseDirPath(shared_system_volumes, input$simulation_analysis_results_picker)
+      if (length(selected) > 0) updateTextInput(session, "simulation_analysis_results_path", value = normalizePath(selected, mustWork = FALSE))
+    })
     
     # Core state machine vectors mapping active panels and tracking target shifts
     active_view <- reactiveVal("home_tab")
     pending_destination <- reactiveVal(NULL)
+    selected_simulation_results_directory <- reactiveVal(NULL)
     pending_optimization_template_validation <- reactiveVal(NULL)
     loaded_optimization_config <- reactiveVal(NULL)
     optimization_variables_validation_in_progress <- reactiveVal(FALSE)
@@ -402,6 +418,15 @@ run_hub <- function(...) {
               bslib::card_footer(actionButton("btn_goto_obstacle_simulator", "Open Workspace", class = "btn-primary w-100"))
             )
           )
+        ),
+        fluidRow(
+          column(width = 4,
+            bslib::card(
+              bslib::card_header(span(icon("search"), class = "me-2"), "Simulation Results Analysis"),
+              p("Inspect simulation results by functionality, starting with movement."),
+              bslib::card_footer(actionButton("btn_goto_simulation_analysis", "Analyze Results", class = "btn-primary w-100"))
+            )
+          )
         )
       )
     })
@@ -426,6 +451,14 @@ run_hub <- function(...) {
         mod_obstacle_simulator_ui("obstacle_simulator_core_session")
       )
     })
+
+    output$render_simulation_analysis_module <- renderUI({
+      req(active_view() == "simulation_analysis_tab", selected_simulation_results_directory())
+      mod_simulation_analysis_ui(
+        "simulation_analysis_core_session",
+        results_directory = selected_simulation_results_directory()
+      )
+    })
     
     # --- ISOLATED MODULE LIFECYCLE SERVERS INVOCATION ---
     observeEvent(active_view(), {
@@ -435,6 +468,12 @@ run_hub <- function(...) {
         mod_input_configuration_server("input_manager_core_session")
       } else if (active_view() == "obstacle_simulator_tab") {
         mod_obstacle_simulator_server("obstacle_simulator_core_session")
+      } else if (active_view() == "simulation_analysis_tab") {
+        mod_simulation_analysis_server(
+          "simulation_analysis_core_session",
+          results_directory = selected_simulation_results_directory(),
+          on_return = function() route_to_target("home_tab")
+        )
       }
     }, ignoreInit = TRUE)
     
@@ -479,6 +518,43 @@ run_hub <- function(...) {
         ),
         easyClose = FALSE
       ))
+    })
+
+    observeEvent(input$btn_goto_simulation_analysis, {
+      selected_directory <- selected_simulation_results_directory()
+      showModal(modalDialog(
+        title = "Select Simulation Results Folder",
+        p("Choose the folder containing the simulation results to analyze."),
+        textInput(
+          "simulation_analysis_results_path",
+          "Simulation results folder",
+          value = if (is.null(selected_directory)) "" else selected_directory,
+          width = "100%"
+        ),
+        shinyFiles::shinyDirButton(
+          "simulation_analysis_results_picker",
+          "Browse...",
+          title = "Select Simulation Results Folder",
+          class = "btn-outline-primary w-100"
+        ),
+        footer = tagList(
+          modalButton("Cancel"),
+          actionButton("btn_confirm_simulation_analysis", "Open Analysis", class = "btn-primary")
+        ),
+        easyClose = FALSE
+      ))
+    })
+
+    observeEvent(input$btn_confirm_simulation_analysis, {
+      results_directory <- trimws(input$simulation_analysis_results_path)
+      if (length(results_directory) != 1L || is.na(results_directory) || !nzchar(results_directory) || !dir.exists(results_directory)) {
+        showNotification("Select an existing simulation results folder.", type = "error")
+        return()
+      }
+
+      selected_simulation_results_directory(normalizePath(results_directory, mustWork = TRUE))
+      removeModal()
+      route_to_target("simulation_analysis_tab")
     })
 
     observeEvent(input$btn_start_blank_optimiser, {

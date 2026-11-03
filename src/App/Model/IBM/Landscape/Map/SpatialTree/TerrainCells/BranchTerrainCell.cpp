@@ -216,67 +216,6 @@ SpatialTreeTerrainCell* BranchTerrainCell::getMutableChildTerrainCell(const Poin
     return getMutableChildTerrainCell(childPosOnVector);
 }
 
-
-void BranchTerrainCell::insertAnimal(Landscape* const landscape, Animal* const newAnimal)
-{
-    AnimalNonStatistical* const newAnimalCast = static_cast<AnimalNonStatistical* const>(newAnimal);
-
-    if(getPosition().getDepth() == newAnimalCast->getCellDepthOnActualInstar())
-    {
-        #ifdef DEBUG
-        if(getPatchApplicator().getCellObstacle().isObstacle())
-        {
-            throwLineInfoException("The animal has been inserted in an obstacle");
-        }
-        #endif
-
-        TerrainCell::insertAnimal(landscape, newAnimal);
-    }
-    else
-    {
-        for (const auto& child : getMutableChildrenTerrainCells())
-        {
-			if (child->isAnimalInside(newAnimalCast->getPosition()))
-			{
-                #ifdef DEBUG
-                if (child->getPatchApplicator().getCellObstacle().isFullObstacle())
-                {
-                    throwLineInfoException("The animal has been inserted in an obstacle");
-                }
-                #endif
-
-				child->insertAnimal(landscape, newAnimal);
-				return;
-			}
-        }
-
-        throwLineInfoException("The animal (id: " + to_string(newAnimalCast->getId()) + ") has not been inserted into any child cell");
-    }
-}
-
-tuple<bool, TerrainCell*, TerrainCell*, Animal*> BranchTerrainCell::randomInsertAnimal(Landscape* const landscape, const Instar &instar, AnimalSpecies* animalSpecies, const bool isStatistical, const Genome* const genome, const bool saveGenetics, std::vector<fmt::memory_buffer>& geneticsText, const TimeStep actualTimeStep, const PreciseDouble& timeStepsPerDay)
-{
-    if(getPosition().getDepth() == animalSpecies->getCellDepthPerInstar()[instar])
-    {
-        return TerrainCell::randomInsertAnimal(landscape, instar, animalSpecies, isStatistical, genome, saveGenetics, geneticsText, actualTimeStep, timeStepsPerDay);
-    }
-    else
-    {
-        std::array<size_t, SpatialTree::numberOfChildren> indexArray;
-        Random::createIndicesArray<SpatialTree::numberOfChildren>(indexArray);
-
-        for (const auto& index : indexArray)
-        {
-            if(!getChildTerrainCell(index)->getPatchApplicator().getCellObstacle().isObstacle())
-            {
-                return getMutableChildTerrainCell(index)->randomInsertAnimal(landscape, instar, animalSpecies, isStatistical, genome, saveGenetics, geneticsText, actualTimeStep, timeStepsPerDay);
-            }
-        }
-
-        throwLineInfoException("The animal has not been inserted into any child cell");
-    }
-}
-
 void BranchTerrainCell::update(const TimeStep& numberOfTimeSteps, unsigned int maxParallelDepth)
 {
 	unsigned int depth = static_cast<const PointSpatialTree&>(getPosition()).getDepth();
@@ -306,8 +245,6 @@ void BranchTerrainCell::obtainInhabitableTerrainCells(Map* const map)
 {
     if (!getPatchApplicator().getCellObstacle().isFullObstacle())
     {
-        TerrainCell::obtainInhabitableTerrainCells(map);
-
         for (auto& child : getMutableChildrenTerrainCells())
         {
             child->obtainInhabitableTerrainCells(map);
@@ -326,66 +263,111 @@ bool BranchTerrainCell::isLeaf() const
 /*    Animal    */
 /****************/
 
-    /**************/
-    /*    Down    */
-    /**************/
-
-void BranchTerrainCell::applyDownFunctionToAnimals(const vector<pair<const AnimalSearchParams&, AnimalFunctions>>& animalFunctions)
-{
-    if(!getPatchApplicator().getCellObstacle().isFullObstacle())
+void BranchTerrainCell::applyFunctionToAnimals(const std::vector<std::pair<const AnimalSearchParams&, AnimalFunctions>>& animalFunctions, const PreciseDouble& animalBodySection) {
+    if (!getPatchApplicator().getCellObstacle().isFullObstacle())
     {
-        for(auto &child : getMutableChildrenTerrainCells())
+        for (auto& child : getMutableChildrenTerrainCells())
         {
-            child->TerrainCell::applyFunctionToAnimals(animalFunctions);
-
-            child->applyDownFunctionToAnimals(animalFunctions);
+            child->applyFunctionToAnimals(animalFunctions, animalBodySection);
         }
     }
 }
 
-void BranchTerrainCell::applyDownFunctionToAnimals(
-        function<bool(Animal&)> checker, const PointContinuous &sourcePosition, const PreciseDouble &radius,
-        const vector<pair<const AnimalSearchParams&, AnimalFunctions>>& animalFunctions
-    )
-{
-    if(!getPatchApplicator().getCellObstacle().isFullObstacle())
-    {
-        for(auto &child : getMutableChildrenTerrainCells())
-        {
-            if(Geometry::fullCoveredBySphere(child->getEffectiveArea(), sourcePosition, radius))
-            {
-                child->TerrainCell::applyFunctionToAnimals(animalFunctions);
+void BranchTerrainCell::applyFunctionToAnimals(
+            std::function<bool(Animal&)> checker, const PointContinuous& sourcePosition, const PreciseDouble& radius,
+            const std::vector<std::pair<const AnimalSearchParams&, AnimalFunctions>>& animalFunctions,
+            const PreciseDouble& animalBodySection
+        ) {
 
-                child->applyDownFunctionToAnimals(animalFunctions);
+    if (!getPatchApplicator().getCellObstacle().isFullObstacle())
+    {
+        for (auto& child : getMutableChildrenTerrainCells())
+        {
+            if (Geometry::fullCoveredBySphere(child->getEffectiveArea(), sourcePosition, radius))
+            {
+                child->applyFunctionToAnimals(animalFunctions, animalBodySection);
             }
             else
             {
-                child->TerrainCell::applyFunctionToAnimals(checker, animalFunctions);
-
-                child->applyDownFunctionToAnimals(checker, sourcePosition, radius, animalFunctions);
+                child->applyFunctionToAnimals(checker, sourcePosition, radius, animalFunctions, animalBodySection);
             }
         }
     }
 }
 
-void BranchTerrainCell::randomApplyDownFunctionToAnimals(const vector<pair<const AnimalSearchParams&, AnimalFunctions>>& animalFunctions)
-{
-    if(!getPatchApplicator().getCellObstacle().isFullObstacle())
+void BranchTerrainCell::randomApplyFunctionToAnimals(const std::vector<std::pair<const AnimalSearchParams&, AnimalFunctions>>& animalFunctions, const PreciseDouble& animalBodySection) {
+    if (!getPatchApplicator().getCellObstacle().isFullObstacle())
     {
         std::array<size_t, SpatialTree::numberOfChildren> indexArray;
         Random::createIndicesArray<SpatialTree::numberOfChildren>(indexArray);
 
-        auto& localRng = Random::getEngine();
-
-        for (const auto& index : indexArray) 
+        for (const auto& index : indexArray)
         {
-            if (localRng() & 1) {
-                getMutableChildTerrainCell(index)->TerrainCell::randomApplyFunctionToAnimals(animalFunctions);
-                getMutableChildTerrainCell(index)->randomApplyDownFunctionToAnimals(animalFunctions);
-            } else {
-                getMutableChildTerrainCell(index)->randomApplyDownFunctionToAnimals(animalFunctions);
-                getMutableChildTerrainCell(index)->TerrainCell::randomApplyFunctionToAnimals(animalFunctions);
+            getMutableChildTerrainCell(index)->randomApplyFunctionToAnimals(animalFunctions, animalBodySection);
+        }
+    }
+}
+
+void BranchTerrainCell::randomApplyFunctionToAnimals(
+            std::function<bool(Animal&)> checker, const PointContinuous& sourcePosition, const PreciseDouble& radius,
+            const std::vector<std::pair<const AnimalSearchParams&, AnimalFunctions>>& animalFunctions,
+            const PreciseDouble& animalBodySection
+        ) {
+
+    if (!getPatchApplicator().getCellObstacle().isFullObstacle())
+    {
+        std::array<size_t, SpatialTree::numberOfChildren> indexArray;
+        Random::createIndicesArray<SpatialTree::numberOfChildren>(indexArray);
+
+        for (const auto& index : indexArray)
+        {
+            auto child = getMutableChildTerrainCell(index);
+
+            if (Geometry::fullCoveredBySphere(child->getEffectiveArea(), sourcePosition, radius))
+            {
+                child->randomApplyFunctionToAnimals(animalFunctions, animalBodySection);
             }
+            else
+            {
+                child->randomApplyFunctionToAnimals(checker, sourcePosition, radius, animalFunctions, animalBodySection);
+            }
+        }
+    }
+}
+
+
+
+
+
+
+
+void BranchTerrainCell::applyFunctionToEdibles(
+    const vector<pair<const AnimalSearchParams&, AnimalFunctions>>& animalFunctions,
+    const vector<pair<const ResourceSearchParams&, ResourceFunctions>>& resourceFunctions,
+    const PreciseDouble& animalBodySection
+)
+{
+    if (!getPatchApplicator().getCellObstacle().isFullObstacle())
+    {
+        for (auto& child : getMutableChildrenTerrainCells())
+        {
+            child->applyFunctionToEdibles(animalFunctions, resourceFunctions, animalBodySection);
+        }
+    }
+}
+
+void BranchTerrainCell::applyFunctionToEdibles(
+    function<bool(Animal&)> checker, const PointContinuous& sourcePosition, const PreciseDouble& radius,
+    const vector<pair<const AnimalSearchParams&, AnimalFunctions>>& animalFunctions,
+    const vector<pair<const ResourceSearchParams&, ResourceFunctions>>& resourceFunctions,
+    const PreciseDouble& animalBodySection
+)
+{
+    if (!getPatchApplicator().getCellObstacle().isFullObstacle())
+    {
+        for (auto& child : getMutableChildrenTerrainCells())
+        {
+            child->applyFunctionToEdibles(checker, sourcePosition, radius, animalFunctions, resourceFunctions, animalBodySection);
         }
     }
 }
@@ -402,8 +384,6 @@ void BranchTerrainCell::registerCells(std::vector<TerrainCell*>& terrainCells, u
 
 void BranchTerrainCell::registerEdibles(vector<vector<vector<CellResource*>>>& landscapeResources, vector<AnimalNonStatistical*>& landscapeAnimals)
 {
-    registerAnimals(landscapeAnimals);
-
     for(auto &child : getMutableChildrenTerrainCells())
     {
         child->registerEdibles(landscapeResources, landscapeAnimals);
@@ -414,29 +394,19 @@ void BranchTerrainCell::registerEdibles(vector<vector<vector<CellResource*>>>& l
 void BranchTerrainCell::getRadiusTerrainCells(
     vector<CellValue>& bestEvaluations, const PointContinuous &sourcePosition, const PreciseDouble &radius, const size_t searchDepth, bool searchNeighborsWithFemales, bool searchNeighborsWithMales, const bool parentFullCoverage, AnimalNonStatistical* animalWhoIsEvaluating, CustomIndexedVector<Instar, PreciseDouble>& maximumPatchEdibilityValueGlobal, CustomIndexedVector<Instar, PreciseDouble>& maximumPatchPredationRiskGlobal, CustomIndexedVector<Instar, PreciseDouble>& maximumPatchConspecificBiomassGlobal)
 {
-    if(!getPatchApplicator().getCellObstacle().isFullObstacle())
+    if (!getPatchApplicator().getCellObstacle().isFullObstacle())
     {
-        if(static_cast<const PointSpatialTree&>(getPosition()).getDepth() == searchDepth)
+        bool currentFullCoverage = parentFullCoverage;
+
+        if (!currentFullCoverage)
         {
-            if(!getPatchApplicator().getCellObstacle().isObstacle())
-            {
-                getCellEvaluation(bestEvaluations, animalWhoIsEvaluating, sourcePosition, radius, searchNeighborsWithFemales, searchNeighborsWithMales, parentFullCoverage, maximumPatchEdibilityValueGlobal, maximumPatchPredationRiskGlobal, maximumPatchConspecificBiomassGlobal);
-            }
+            currentFullCoverage = Geometry::fullCoveredBySphere(getEffectiveArea(), sourcePosition, radius);
         }
-        else
+
+
+        for (auto& child : getMutableChildrenTerrainCells())
         {
-            bool currentFullCoverage = parentFullCoverage;
-
-            if(!currentFullCoverage)
-            {
-                currentFullCoverage = Geometry::fullCoveredBySphere(getEffectiveArea(), sourcePosition, radius);
-            }
-
-
-            for(auto &child : getMutableChildrenTerrainCells())
-            {
-                child->getRadiusTerrainCells(bestEvaluations, sourcePosition, radius, searchDepth, searchNeighborsWithFemales, searchNeighborsWithMales, currentFullCoverage, animalWhoIsEvaluating, maximumPatchEdibilityValueGlobal, maximumPatchPredationRiskGlobal, maximumPatchConspecificBiomassGlobal);
-            } 
+            child->getRadiusTerrainCells(bestEvaluations, sourcePosition, radius, searchDepth, searchNeighborsWithFemales, searchNeighborsWithMales, currentFullCoverage, animalWhoIsEvaluating, maximumPatchEdibilityValueGlobal, maximumPatchPredationRiskGlobal, maximumPatchConspecificBiomassGlobal);
         }
     }
 }

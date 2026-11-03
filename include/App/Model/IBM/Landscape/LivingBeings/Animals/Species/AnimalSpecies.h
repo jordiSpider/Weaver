@@ -158,20 +158,7 @@ public:
 	 * @{
 	 */
 
-	/**
-	 * @brief Computes cell depth per instar using the provided map.
-	 */
-	void calculateCellDepthPerInstar(const Map* const map);
-
-	/**
-	 * @brief Returns the mapping of instars to their cell depths.
-	 */
-	const CustomIndexedVector<Instar, unsigned int>& getCellDepthPerInstar() const;
-
-	/**
-	 * @brief Returns the cell depth corresponding to a given instar.
-	 */
-	unsigned int getInstarCellDepth(const Instar &instar) const;
+	const PreciseDouble& getPoreUsePerInstar(const Instar &instar) const;
 
 	/**
 	 * @brief Returns the immutable growth blueprint object for the species.
@@ -868,9 +855,6 @@ protected:
 
 	/// Pore usage per instar (soil or substrate penetration).
 	CustomIndexedVector<Instar, PreciseDouble> poreUsePerInstar;
-
-	/// Depth per instar inside the spatial cell.
-	CustomIndexedVector<Instar, unsigned int> cellDepthPerInstar;
 
 	/// @}
 

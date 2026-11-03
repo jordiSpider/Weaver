@@ -13,6 +13,8 @@
 
 
 #include <vector>
+#include <cstddef>
+#include <cstdint>
 #include <nlohmann/json.hpp>
 #include <magic_enum/magic_enum.hpp>
 #include <cmath>
@@ -57,17 +59,26 @@ constexpr size_t constexpr_pow(size_t base, size_t exp) {
 class SpatialTree : public Map
 {
 protected:
+    struct ObstacleBoundarySegment
+    {
+        size_t fixedCoordinate;
+        size_t startCoordinate;
+        size_t endCoordinate;
+        bool horizontal;
+        bool obstacleOnPositiveSide;
+    };
+
     unsigned int mapDepth; ///< Depth of the spatial tree
     unsigned int MAX_PARALLEL_DEPTH;
     std::vector<PreciseDouble> cellSizes; ///< Sizes of cells at each depth
     std::vector<unsigned int> axisSizes; ///< Number of cells along each axis
     RootTerrainCell* rootTerrainCell; ///< Pointer to the root cell of the tree
+    mutable std::vector<std::uint8_t> obstacleCellMask;
+    mutable std::vector<ObstacleBoundarySegment> obstacleBoundarySegments;
+    mutable std::vector<size_t> obstacleEdgeOffsets;
+    mutable std::vector<size_t> obstacleEdgeIndices;
+    mutable bool obstacleGeometryValid = false;
 
-    /**
-     * @brief Obtains iterators to leaf and branch inhabitable terrain cells.
-     */
-    void obtainLeafAndBranchInhabitableTerrainCells(std::vector<std::vector<std::vector<TerrainCell*>::iterator>>& leafInhabitableTerrainCells, std::vector<std::vector<std::vector<TerrainCell*>::iterator>>& branchInhabitableTerrainCells);
-    
     /**
      * @brief Calculates the depth of the spatial tree.
      * @return Depth of the tree.
@@ -92,6 +103,9 @@ protected:
      * @return Logarithmically scaled value.
      */
     PreciseDouble logMap(const PreciseDouble& value) const;
+
+    void ensureObstacleGeometry() const;
+    void invalidateObstacleGeometry();
     
     /**
      * @brief Calculates the center position of a given spatial tree cell.
@@ -104,6 +118,9 @@ protected:
 public:
     static constexpr const size_t numbreOfSubdivisions = 2; ///< Number of subdivisions per axis
     static constexpr const size_t numberOfChildren = constexpr_pow(numbreOfSubdivisions, DIMENSIONS); ///< Total number of children per cell
+
+    TerrainCell* getCell(const PointContinuous& position) const;
+    TerrainCell* getCell(const PointMap& position) const;
 
     /**
      * @brief Default constructor.
@@ -153,13 +170,6 @@ public:
      * @return Axis size at the given depth.
      */
     const unsigned int& getAxisSize(const unsigned int depth) const;
-
-    /**
-     * @brief Inserts a new animal into the spatial tree.
-     * @param landscape Pointer to the Landscape object.
-     * @param newAnimal Pointer to the Animal object to insert.
-     */
-    void insertAnimal(Landscape* const landscape, Animal* const newAnimal);
     
     /**
      * @brief Updates all terrain cells and animals in the spatial tree.
@@ -198,6 +208,11 @@ public:
      * @param timeStepsPerDay Number of timesteps per day.
      */
     void addResourceSpecies(Landscape* const landscape, std::vector<std::vector<std::vector<CellResource*>>>& landscapeResources, ResourceSpecies& resourceSpecies, ResourceSource* const resourceBaseSource);
+
+    void prepareObstacleGeometry() override;
+    bool isTraversable(const PointContinuous& position, const PreciseDouble& animalBodySection) const override;
+    bool isTraversable(const PointContinuous& start, const PointContinuous& end, const PreciseDouble& animalBodySection) const override;
+    std::vector<PointContinuous> generateRouteCandidatePositions(const PreciseDouble& animalBodySection) const override;
 
     /**
      * @brief Deserializes moisture and resource sources.

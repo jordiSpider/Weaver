@@ -4,10 +4,41 @@ using namespace std;
 
 
 
-CellValue::CellValue(const AnimalNonStatistical& animalWhoIsEvaluating, const Edible* bestEdibility, bool fullCoverage, const RingModel* cellEffectiveArea, const PointMap* const cellPosition, const PointContinuous& cellCenter, const PreciseDouble &edibilityValue, 
-											 const PreciseDouble &predatoryRiskEdibilityValue, const PreciseDouble &conspecificBiomass, unsigned int numberOfFemales, unsigned int numberOfMales, const bool habitatDomain)
-	: bestEdibility(bestEdibility), fullCoverage(fullCoverage), cellEffectiveArea(cellEffectiveArea), cellPosition(cellPosition), numberOfFemales(numberOfFemales), numberOfMales(numberOfMales), habitatDomain(habitatDomain)
+CellValue::CellValue(const Edible* bestEdibility, bool fullCoverage, const RingModel* cellEffectiveArea, const PointMap* const cellPosition, const PointContinuous& cellCenter, 
+			const PreciseDouble& totalEdibilityValue, const PreciseDouble& totalPredatoryRiskEdibilityValue, const PreciseDouble& totalConspecificBiomass, unsigned int numberOfFemales, unsigned int numberOfMales, const bool habitatDomain)
+	: bestEdibility(bestEdibility), fullCoverage(fullCoverage), cellEffectiveArea(cellEffectiveArea), cellPosition(cellPosition), numberOfFemales(numberOfFemales), numberOfMales(numberOfMales), habitatDomain(habitatDomain), totalEdibilityValue(totalEdibilityValue), totalPredatoryRiskEdibilityValue(totalPredatoryRiskEdibilityValue), totalConspecificBiomass(totalConspecificBiomass), cellCenter(cellCenter)
 {
+	
+}
+
+CellValue::~CellValue()
+{
+	
+}
+
+CellValue::CellValue(const CellValue& other)
+	: bestEdibility(other.bestEdibility), fullCoverage(other.fullCoverage), cellEffectiveArea(other.cellEffectiveArea),
+	  cellPosition(other.cellPosition), valuePerceived(other.valuePerceived), numberOfFemales(other.numberOfFemales),
+	  numberOfMales(other.numberOfMales), habitatDomain(other.habitatDomain), totalEdibilityValue(other.totalEdibilityValue), 
+	  totalPredatoryRiskEdibilityValue(other.totalPredatoryRiskEdibilityValue), totalConspecificBiomass(other.totalConspecificBiomass),
+	  cellCenter(other.cellCenter)
+{
+
+}
+
+
+void CellValue::calculateValuePerceived(const AnimalNonStatistical& animalWhoIsEvaluating)
+{
+	const PreciseDouble maximumPatchEdibilityValue = animalWhoIsEvaluating.getMaximumPatchEdibilityValue();
+	const PreciseDouble maximumPatchPredationRisk = animalWhoIsEvaluating.getMaximumPatchPredationRisk();
+	const PreciseDouble maximumPatchConspecificBiomass = animalWhoIsEvaluating.getMaximumPatchConspecificBiomass();
+
+	const PreciseDouble edibilityValue = (maximumPatchEdibilityValue > 0.0) ? totalEdibilityValue / maximumPatchEdibilityValue : 0.0;
+	const PreciseDouble predatoryRiskEdibilityValue = (maximumPatchPredationRisk > 0.0) ? totalPredatoryRiskEdibilityValue / maximumPatchPredationRisk : 0.0;
+	const PreciseDouble conspecificBiomass = (maximumPatchConspecificBiomass > 0.0) ? totalConspecificBiomass / maximumPatchConspecificBiomass : 0.0;
+
+
+
 	const PreciseDouble cellEvaluationBiomass = animalWhoIsEvaluating.getGenetics().getCellValueIndividualTraits(CellValueTraitType::cellEvaluationBiomass).getPhenotypicValue();
 	const PreciseDouble cellEvaluationRisk = 1.0 - cellEvaluationBiomass;
 
@@ -16,7 +47,7 @@ CellValue::CellValue(const AnimalNonStatistical& animalWhoIsEvaluating, const Ed
 
 
 	const PreciseDouble cellEdibilityAndRiskEvaluation = cellEvaluationBiomass * edibilityValue - cellEvaluationRisk * predatoryRiskEdibilityValue;
-	const PreciseDouble cellConspecificAndAntiEvaluation = cellEvaluationProConspecific * conspecificBiomass - cellEvaluationAntiConspecific * pow(conspecificBiomass,2);
+	const PreciseDouble cellConspecificAndAntiEvaluation = cellEvaluationProConspecific * conspecificBiomass - cellEvaluationAntiConspecific * pow(conspecificBiomass, 2);
 
 	const PreciseDouble conspecificWeight = animalWhoIsEvaluating.getGenetics().getCellValueIndividualTraits(CellValueTraitType::conspecificWeight).getPhenotypicValue();
 
@@ -30,19 +61,6 @@ CellValue::CellValue(const AnimalNonStatistical& animalWhoIsEvaluating, const Ed
 	const PreciseDouble error = Random::randomDoubleInRange(-(1.0 - Pscope), (1.0 - Pscope));
 
 	valuePerceived = valueReal + valueReal * error;
-}
-
-CellValue::~CellValue()
-{
-	
-}
-
-CellValue::CellValue(const CellValue& other)
-	: bestEdibility(other.bestEdibility), fullCoverage(other.fullCoverage), cellEffectiveArea(other.cellEffectiveArea),
-	  cellPosition(other.cellPosition), valuePerceived(other.valuePerceived), numberOfFemales(other.numberOfFemales),
-	  numberOfMales(other.numberOfMales), habitatDomain(other.habitatDomain)
-{
-
 }
 
 

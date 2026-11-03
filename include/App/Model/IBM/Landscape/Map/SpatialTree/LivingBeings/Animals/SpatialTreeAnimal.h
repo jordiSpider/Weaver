@@ -15,6 +15,13 @@
 #include "App/Model/IBM/Landscape/Map/SpatialTree/Points/PointSpatialTree.h"
 #include "App/Model/IBM/Landscape/Map/TerrainCells/CellValue.h"
 #include "App/Model/IBM/Landscape/LivingBeings/Animals/Species/Gender.h"
+#include "App/Model/IBM/Landscape/Map/Navigation/NavigationRoute.h"
+
+class DestinationSelectionPolicy;
+class RouteCostPolicy;
+class RouteDestinationSelectionPolicy;
+class RoutePlanner;
+class RouteFollowingPolicy;
 
 
 /**
@@ -27,12 +34,22 @@
 class SpatialTreeAnimal : public AnimalNonStatistical
 {
 protected:
+    std::shared_ptr<const DestinationSelectionPolicy> destinationSelectionPolicy;
+    std::shared_ptr<const RouteCostPolicy> routeCostPolicy;
+    std::shared_ptr<const RouteDestinationSelectionPolicy> routeDestinationSelectionPolicy;
+    std::shared_ptr<const RoutePlanner> routePlanner;
+    std::shared_ptr<const RouteFollowingPolicy> routeFollowingPolicy;
+    NavigationRoute navigationRoute;
+    size_t nextRouteCellIndex;
+
+    void initializeNavigationPolicies();
+
     /**
      * @brief Searches for a target cell to travel to, with an output flag indicating
      *        if no destinations are available.
      * @param scopeArea Maximum area the animal can travel.
      */
-    bool searchTargetToTravelTo(const PreciseDouble &scopeArea, CustomIndexedVector<Instar, PreciseDouble>& maximumPatchEdibilityValueGlobal, CustomIndexedVector<Instar, PreciseDouble>& maximumPatchPredationRiskGlobal, CustomIndexedVector<Instar, PreciseDouble>& maximumPatchConspecificBiomassGlobal);
+    bool searchTargetToTravelTo(Landscape* const landscape, const PreciseDouble &scopeArea, CustomIndexedVector<Instar, PreciseDouble>& maximumPatchEdibilityValueGlobal, CustomIndexedVector<Instar, PreciseDouble>& maximumPatchPredationRiskGlobal, CustomIndexedVector<Instar, PreciseDouble>& maximumPatchConspecificBiomassGlobal);
     
     void move(Landscape* const landscape, const TimeStep numberOfTimeSteps, const PreciseDouble& timeStepsPerDay, 
         const bool saveMovements, fmt::memory_buffer& movementsText, const bool saveActivity,
@@ -93,6 +110,12 @@ public:
     
     /// Destructor
     virtual ~SpatialTreeAnimal();
+
+    void setDestinationSelectionPolicy(std::shared_ptr<const DestinationSelectionPolicy> policy);
+    void setRouteCostPolicy(std::shared_ptr<const RouteCostPolicy> policy);
+    void setRouteDestinationSelectionPolicy(std::shared_ptr<const RouteDestinationSelectionPolicy> policy);
+    void setRoutePlanner(std::shared_ptr<const RoutePlanner> planner);
+    void setRouteFollowingPolicy(std::shared_ptr<const RouteFollowingPolicy> policy);
 
     /// Deleted copy constructor
     SpatialTreeAnimal(const SpatialTreeAnimal&) = delete;

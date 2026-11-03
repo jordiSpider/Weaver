@@ -39,7 +39,7 @@ BranchTerrainCell* RootTerrainCell::getMutableParent() const
 void RootTerrainCell::getNeighboursCellsOnRadius(
     vector<CellValue>& bestEvaluations, const PointContinuous &sourcePosition, const PreciseDouble &radius, const size_t searchDepth, bool searchNeighborsWithFemales, bool searchNeighborsWithMales, AnimalNonStatistical* animalWhoIsEvaluating, CustomIndexedVector<Instar, PreciseDouble>& maximumPatchEdibilityValueGlobal, CustomIndexedVector<Instar, PreciseDouble>& maximumPatchPredationRiskGlobal, CustomIndexedVector<Instar, PreciseDouble>& maximumPatchConspecificBiomassGlobal)
 {
-    getRadiusTerrainCells(bestEvaluations, sourcePosition, radius, searchDepth, searchNeighborsWithFemales, searchNeighborsWithMales, false, animalWhoIsEvaluating, maximumPatchEdibilityValueGlobal, maximumPatchPredationRiskGlobal, maximumPatchConspecificBiomassGlobal);
+    BranchTerrainCell::getRadiusTerrainCells(bestEvaluations, sourcePosition, radius, searchDepth, searchNeighborsWithFemales, searchNeighborsWithMales, false, animalWhoIsEvaluating, maximumPatchEdibilityValueGlobal, maximumPatchPredationRiskGlobal, maximumPatchConspecificBiomassGlobal);
 }
 
 SpatialTreeTerrainCell* RootTerrainCell::getCell(const PointSpatialTree &cellPos)
@@ -55,34 +55,6 @@ SpatialTreeTerrainCell* RootTerrainCell::getCell(const PointSpatialTree &cellPos
 }
 
 
-
-/****************/
-/*    Animal    */
-/****************/
-
-    /************/
-    /*    Up    */
-    /************/
-
-void RootTerrainCell::applyUpFunctionToAnimals(
-        function<bool(Animal&)>,
-        const vector<pair<const AnimalSearchParams&, AnimalFunctions>>&
-    )
-{
-    
-}
-
-//////////////////
-
-void RootTerrainCell::randomApplyUpFunctionToAnimals(
-        function<bool(Animal&)>,
-        const vector<pair<const AnimalSearchParams&, AnimalFunctions>>&
-    )
-{
-    
-}
-
-
 /**************************/
 /*    Edible in Radius    */
 /**************************/
@@ -90,16 +62,17 @@ void RootTerrainCell::randomApplyUpFunctionToAnimals(
 void RootTerrainCell::applyFunctionToEdiblesInRadius(
         const PointContinuous &sourcePosition, const PreciseDouble &radius, 
         const vector<pair<const AnimalSearchParams&, AnimalFunctions>>& animalFunctions,
-        const vector<pair<const ResourceSearchParams&, ResourceFunctions>>& resourceFunctions
+        const vector<pair<const ResourceSearchParams&, ResourceFunctions>>& resourceFunctions,
+        const PreciseDouble& animalBodySection
     )
 {   
     if(Geometry::fullCoveredBySphere(getEffectiveArea(), sourcePosition, radius))
     {
-        applyFunctionToEdiblesInCell(true, sourcePosition, radius, animalFunctions, resourceFunctions);
+        applyFunctionToEdiblesInCell(true, sourcePosition, radius, animalFunctions, resourceFunctions, animalBodySection);
     }
     else
     {
-        applyFunctionToEdiblesInCell(false, sourcePosition, radius, animalFunctions, resourceFunctions);
+        applyFunctionToEdiblesInCell(false, sourcePosition, radius, animalFunctions, resourceFunctions, animalBodySection);
     }
 }
 

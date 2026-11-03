@@ -62,11 +62,6 @@ AnimalSpecies* Animal::getMutableSpecies()
 	return static_cast<AnimalSpecies*>(Edible::getMutableSpecies()); 
 }
 
-unsigned int Animal::getCellDepthOnActualInstar() const
-{
-	return getSpecies()->getCellDepthPerInstar()[getGrowthBuildingBlock().getInstar()];
-}
-
 const PointContinuous& Animal::getPosition() const
 {
 	return position;

@@ -118,17 +118,6 @@ public:
     /// Check if this cell is a leaf.
     bool isLeaf() const;
 
-    /** @name Downward traversal functions
-     */
-    ///@{
-    void applyDownFunctionToAnimals(const std::vector<std::pair<const AnimalSearchParams&, AnimalFunctions>>& animalFunctions) override;
-    void applyDownFunctionToAnimals(
-        std::function<bool(Animal&)> checker, const PointContinuous &sourcePosition, const PreciseDouble &radius,
-        const std::vector<std::pair<const AnimalSearchParams&, AnimalFunctions>>& animalFunctions
-    ) override;
-    void randomApplyDownFunctionToAnimals(const std::vector<std::pair<const AnimalSearchParams&, AnimalFunctions>>& animalFunctions) override;
-    ///@}
-
     /**
      * @brief Serialization method for persistence.
      *

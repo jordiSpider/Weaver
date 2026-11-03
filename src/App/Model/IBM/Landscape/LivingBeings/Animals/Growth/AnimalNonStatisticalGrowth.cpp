@@ -531,8 +531,6 @@ void AnimalNonStatisticalGrowth::setInstar(Landscape* const landscape, const Ins
 
 	animal->setInstarToEvaluateCells(newInstar);
 
-	animal->updateDepth(timeStepsPerDay);
-
 	animal->updateVariablesAssociatedWithInstar();
 
 	setInHabitatShift(getSpeciesGrowth()->habitatShiftOccurs(getInstar()));

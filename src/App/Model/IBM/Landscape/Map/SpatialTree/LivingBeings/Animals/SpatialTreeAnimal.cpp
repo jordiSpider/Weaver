@@ -4,6 +4,15 @@
 #include "App/Model/IBM/Landscape/Map/TerrainCells/TerrainCell.h"
 #include "App/Model/IBM/Landscape/Map/Map.h"
 #include "App/Model/IBM/Landscape/Landscape.h"
+#include "App/Model/IBM/Landscape/Map/SpatialTree.h"
+#include "App/Model/IBM/Landscape/Map/Navigation/DestinationSelectionPolicy.h"
+#include "App/Model/IBM/Landscape/Map/Navigation/RouteCostPolicy.h"
+#include "App/Model/IBM/Landscape/Map/Navigation/RoutePlanner.h"
+#include "App/Model/IBM/Landscape/Map/Navigation/RouteFollowingPolicy.h"
+#include "App/Model/IBM/Landscape/Map/Geometry/Geometry.h"
+
+#include <unordered_set>
+#include <utility>
 
 using namespace std;
 
@@ -13,7 +22,7 @@ using namespace std;
 SpatialTreeAnimal::SpatialTreeAnimal()
 	: AnimalNonStatistical()
 {
-
+    initializeNavigationPolicies();
 }
 
 SpatialTreeAnimal::SpatialTreeAnimal(const Instar &instar, AnimalSpecies* const mySpecies, TerrainCell* terrainCell, const TimeStep actualTimeStep, const PreciseDouble& timeStepsPerDay)
@@ -25,7 +34,7 @@ SpatialTreeAnimal::SpatialTreeAnimal(const Instar &instar, AnimalSpecies* const 
 SpatialTreeAnimal::SpatialTreeAnimal(const Instar &instar, AnimalSpecies* const mySpecies, TerrainCell* terrainCell, const Genome* const genome, const TimeStep actualTimeStep, const PreciseDouble& timeStepsPerDay)
 	: AnimalNonStatistical(instar, mySpecies, terrainCell, genome, actualTimeStep, timeStepsPerDay)
 {
-	
+    initializeNavigationPolicies();
 }
 
 
@@ -33,7 +42,7 @@ SpatialTreeAnimal::SpatialTreeAnimal(Gamete* const firstParentGamete, Gamete* co
 		const Generation& g_numb_prt_male, id_type ID_prt_female, id_type ID_prt_male, AnimalSpecies* const mySpecies, Gender genderValue, const TimeStep actualTimeStep, const PreciseDouble& timeStepsPerDay)
 	: AnimalNonStatistical(firstParentGamete, secondParentGamete, parentTerrainCell, factorEggMassFromMom, g_numb_prt_female, g_numb_prt_male, ID_prt_female, ID_prt_male, mySpecies, genderValue, actualTimeStep, timeStepsPerDay)
 {
-	
+    initializeNavigationPolicies();
 }
 
 
@@ -42,13 +51,74 @@ SpatialTreeAnimal::~SpatialTreeAnimal()
 
 }
 
+void SpatialTreeAnimal::initializeNavigationPolicies()
+{
+    destinationSelectionPolicy = make_shared<RandomizedCandidateSelectionPolicy>();
+    routeCostPolicy = make_shared<EuclideanRouteCostPolicy>();
+    routeDestinationSelectionPolicy = make_shared<CandidatePriorityRouteSelectionPolicy>();
+    routePlanner = make_shared<AStarRoutePlanner>();
+    routeFollowingPolicy = make_shared<WaypointRouteFollowingPolicy>();
+    navigationRoute.waypoints.clear();
+    nextRouteCellIndex = 1u;
+}
+
+void SpatialTreeAnimal::setRouteDestinationSelectionPolicy(shared_ptr<const RouteDestinationSelectionPolicy> policy)
+{
+    if (policy)
+    {
+        routeDestinationSelectionPolicy = std::move(policy);
+        navigationRoute.waypoints.clear();
+        nextRouteCellIndex = 1u;
+    }
+}
+
+void SpatialTreeAnimal::setDestinationSelectionPolicy(shared_ptr<const DestinationSelectionPolicy> policy)
+{
+    if (policy)
+    {
+        destinationSelectionPolicy = std::move(policy);
+        navigationRoute.waypoints.clear();
+        nextRouteCellIndex = 1u;
+    }
+}
+
+void SpatialTreeAnimal::setRouteCostPolicy(shared_ptr<const RouteCostPolicy> policy)
+{
+    if (policy)
+    {
+        routeCostPolicy = std::move(policy);
+        navigationRoute.waypoints.clear();
+        nextRouteCellIndex = 1u;
+    }
+}
+
+void SpatialTreeAnimal::setRoutePlanner(shared_ptr<const RoutePlanner> planner)
+{
+    if (planner)
+    {
+        routePlanner = std::move(planner);
+        navigationRoute.waypoints.clear();
+        nextRouteCellIndex = 1u;
+    }
+}
+
+void SpatialTreeAnimal::setRouteFollowingPolicy(shared_ptr<const RouteFollowingPolicy> policy)
+{
+    if (policy)
+    {
+        routeFollowingPolicy = std::move(policy);
+        navigationRoute.waypoints.clear();
+        nextRouteCellIndex = 1u;
+    }
+}
+
 AnimalNonStatistical* SpatialTreeAnimal::createOffspring(Gamete* const firstParentGamete, Gamete* const secondParentGamete, TerrainCell* parentTerrainCell, const PreciseDouble& factorEggMassFromMom, const Generation& g_numb_prt_female,
 			const Generation& g_numb_prt_male, id_type ID_prt_female, id_type ID_prt_male, AnimalSpecies* const parentSpecies, Gender genderValue, const TimeStep actualTimeStep, const PreciseDouble& timeStepsPerDay)
 {
     return new SpatialTreeAnimal(firstParentGamete, secondParentGamete, parentTerrainCell, factorEggMassFromMom, g_numb_prt_female, g_numb_prt_male, ID_prt_female, ID_prt_male, parentSpecies, genderValue, actualTimeStep, timeStepsPerDay);
 }
 
-bool SpatialTreeAnimal::searchTargetToTravelTo(const PreciseDouble &scopeArea, CustomIndexedVector<Instar, PreciseDouble>& maximumPatchEdibilityValueGlobal, CustomIndexedVector<Instar, PreciseDouble>& maximumPatchPredationRiskGlobal, CustomIndexedVector<Instar, PreciseDouble>& maximumPatchConspecificBiomassGlobal)
+bool SpatialTreeAnimal::searchTargetToTravelTo(Landscape* const landscape, const PreciseDouble &scopeArea, CustomIndexedVector<Instar, PreciseDouble>& maximumPatchEdibilityValueGlobal, CustomIndexedVector<Instar, PreciseDouble>& maximumPatchPredationRiskGlobal, CustomIndexedVector<Instar, PreciseDouble>& maximumPatchConspecificBiomassGlobal)
 {
     bool withoutDestinations = false;
     PointContinuous lastDestination = getPosition();
@@ -75,61 +145,124 @@ bool SpatialTreeAnimal::searchTargetToTravelTo(const PreciseDouble &scopeArea, C
 
     if(bestEvaluations.empty())
     {
-        return false;
-    }
-
-    size_t randomIndex;
-
-    if(bestEvaluations.size() > 1)
-    {
-        randomIndex = Random::randomIndex(bestEvaluations.size());
-    }
-    else
-    {
-        randomIndex = 0;
+        navigationRoute.waypoints.clear();
+        nextRouteCellIndex = 1u;
+        setAtDestination(true);
+        return true;
     }
 
 
-    bool bestEdibleIsAnimal = false;
+    for (auto& elem : bestEvaluations) {
+        elem.calculateValuePerceived(*this);
+    }
 
-    if(bestEvaluations[randomIndex].bestEdibility != nullptr)
+
+    const vector<size_t> candidateOrder = destinationSelectionPolicy->rankCandidates(bestEvaluations);
+    SpatialTree* const map = static_cast<SpatialTree*>(landscape->getMutableMap());
+    SpatialTreeTerrainCell* const startCell = static_cast<SpatialTreeTerrainCell*>(getMutableTerrainCell());
+    const PreciseDouble animalBodySection = getSpecies()->getPoreUsePerInstar(getInstar());
+    vector<RouteGoal> routeGoals;
+    unordered_set<const TerrainCell*> goalCells;
+    constexpr size_t maxDestinationSamples = 8u;
+    constexpr size_t maxPolygonSamplingAttempts = 16u;
+
+    for (const size_t candidateIndex : candidateOrder)
     {
-        if(bestEvaluations[randomIndex].bestEdibility->getSpecies()->isMobile())
+        if (candidateIndex >= bestEvaluations.size())
         {
-            bestEdibleIsAnimal = true;
+            continue;
         }
-    }
 
-    PointContinuous targetPoint;
-
-    if(bestEdibleIsAnimal)
-    {
-        targetPoint = static_cast<const AnimalNonStatistical*>(bestEvaluations[randomIndex].bestEdibility)->getPosition();   
-    }
-    else
-    {
-        if(bestEvaluations[randomIndex].fullCoverage)
+        const CellValue& candidate = bestEvaluations[candidateIndex];
+        RingModel targetArea;
+        if (candidate.fullCoverage)
         {
-            targetPoint = Geometry::generateRandomPointOnBox(*bestEvaluations[randomIndex].cellEffectiveArea);
+            targetArea = *candidate.cellEffectiveArea;
         }
         else
         {
-            if(bestEvaluations[randomIndex].bestEdibility == nullptr) {
-                targetPoint = Geometry::generateRandomPointOnBox(*bestEvaluations[randomIndex].cellEffectiveArea);
+            targetArea = Geometry::calculateIntersection(
+                Geometry::makeSphere(getPosition(), scopeArea),
+                *candidate.cellEffectiveArea);
+        }
+
+        if (targetArea.empty())
+        {
+            continue;
+        }
+        const BoxModel targetAreaBounds = boost::geometry::return_envelope<BoxModel>(targetArea);
+
+        bool foundGoalForCell = false;
+        for (size_t sampleIndex = 0u; sampleIndex < maxDestinationSamples && !foundGoalForCell; ++sampleIndex)
+        {
+            PointContinuous targetPoint;
+            if (candidate.fullCoverage)
+            {
+                targetPoint = Geometry::generateRandomPointOnBox(targetArea);
             }
-            else {
-                targetPoint = Geometry::generateRandomPointOnPolygon(
-                    Geometry::calculateIntersection(
-                        Geometry::makeSphere(getPosition(), scopeArea), 
-                        *bestEvaluations[randomIndex].cellEffectiveArea
-                    )
-                );
+            else
+            {
+                bool foundPointInArea = false;
+                for (size_t attempt = 0u; attempt < maxPolygonSamplingAttempts; ++attempt)
+                {
+                    targetPoint = PointContinuous(
+                        Random::randomUniform(boost::geometry::get<0>(targetAreaBounds.min_corner()), boost::geometry::get<0>(targetAreaBounds.max_corner())).getValue(),
+                        Random::randomUniform(boost::geometry::get<1>(targetAreaBounds.min_corner()), boost::geometry::get<1>(targetAreaBounds.max_corner())).getValue());
+                    if (Geometry::withinPolygon(targetPoint, targetArea))
+                    {
+                        foundPointInArea = true;
+                        break;
+                    }
+                }
+                if (!foundPointInArea)
+                {
+                    break;
+                }
             }
+
+            if (!map->isTraversable(targetPoint, animalBodySection))
+            {
+                continue;
+            }
+
+            const TerrainCell* const goalCell = map->getCell(targetPoint);
+            if (goalCell == nullptr)
+            {
+                continue;
+            }
+            if (goalCells.contains(goalCell))
+            {
+                foundGoalForCell = true;
+                break;
+            }
+
+            routeGoals.push_back({goalCell, targetPoint, routeGoals.size()});
+            goalCells.insert(goalCell);
+            foundGoalForCell = true;
         }
     }
 
-    setTargetNeighborToTravelTo(make_pair(*bestEvaluations[randomIndex].cellPosition, targetPoint));
+    const RoutePlanResult routePlan = routePlanner->planRouteToBestGoal(
+        *map,
+        *startCell,
+        getPosition(),
+        routeGoals,
+        *this,
+        animalBodySection,
+        *routeCostPolicy,
+        *routeDestinationSelectionPolicy);
+    if (routePlan.route.waypoints.empty() || routePlan.goalIndex >= routeGoals.size())
+    {
+        navigationRoute.waypoints.clear();
+        nextRouteCellIndex = 1u;
+        setAtDestination(true);
+        return true;
+    }
 
+    const RouteGoal& selectedGoal = routeGoals[routePlan.goalIndex];
+    setTargetNeighborToTravelTo(make_pair(PointMap(selectedGoal.cell->getPosition()), selectedGoal.position));
+    navigationRoute = routePlan.route;
+    nextRouteCellIndex = 1u;
     setAtDestination(false);
 
 
@@ -145,6 +278,9 @@ bool SpatialTreeAnimal::searchTargetToTravelTo(const PreciseDouble &scopeArea, C
         if(samePoint)
         {
             withoutDestinations = true;
+            navigationRoute.waypoints.clear();
+            nextRouteCellIndex = 1u;
+            setAtDestination(true);
         }
     }
 
@@ -171,23 +307,60 @@ void SpatialTreeAnimal::move(Landscape* const landscape, const TimeStep numberOf
     // Increase the number of movement attempts
 	stepsAttempted++;
 
-    bool atDestinationTemp;
-    pair<TerrainCell*, PointContinuous> cellToMoveTo;
-	tie(atDestinationTemp, cellToMoveTo) = getMutableTerrainCell()->getCellByBearing(landscape->getMutableMap(), getTargetNeighborToTravelTo(), getPosition(), getSearchAreaRadius() - distanceTravelled);
+    SpatialTree* const map = static_cast<SpatialTree*>(landscape->getMutableMap());
+    const PreciseDouble sectionSize = getSpecies()->getPoreUsePerInstar(getInstar());
+    const PreciseDouble remainingMovement = getSearchAreaRadius() - distanceTravelled;
+    RouteFollowingResult movement = routeFollowingPolicy->advance(
+        navigationRoute,
+        nextRouteCellIndex,
+        *map,
+        getPosition(),
+        getTargetNeighborToTravelTo().second,
+        remainingMovement,
+        sectionSize
+    );
 
-    setAtDestination(atDestinationTemp);
+    if (movement.routeBlocked)
+    {
+        TerrainCell* const startCell = getMutableTerrainCell();
+        TerrainCell* const goalCell = map->getCell(getTargetNeighborToTravelTo().second);
+        if (goalCell != nullptr)
+        {
+            navigationRoute = routePlanner->planRoute(*map, *startCell, *goalCell, getPosition(), getTargetNeighborToTravelTo().second, *this, sectionSize, *routeCostPolicy);
+            nextRouteCellIndex = 1u;
+            movement = routeFollowingPolicy->advance(
+                navigationRoute,
+                nextRouteCellIndex,
+                *map,
+                getPosition(),
+                getTargetNeighborToTravelTo().second,
+                remainingMovement,
+                sectionSize
+            );
+        }
 
-	PreciseDouble distanceToAdd = Geometry::calculateDistanceBetweenPoints(getPosition(), cellToMoveTo.second);
+        if (movement.routeBlocked)
+        {
+            navigationRoute.waypoints.clear();
+            nextRouteCellIndex = 1u;
+            movement = {getPosition(), getMutableTerrainCell(), nextRouteCellIndex, true, false};
+        }
+    }
+
+    setAtDestination(movement.atDestination);
+    nextRouteCellIndex = movement.nextCellIndex;
+
+    PreciseDouble distanceToAdd = Geometry::calculateDistanceBetweenPoints(getPosition(), movement.position);
 
     increaseDistanceTravelled(distanceToAdd);
 
-	if(getMutableTerrainCell() != cellToMoveTo.first)
+    if(getMutableTerrainCell() != movement.terrainCell)
     {
-        getMutableTerrainCell()->migrateAnimalTo(landscape, this, cellToMoveTo.first, cellToMoveTo.second);
+        getMutableTerrainCell()->migrateAnimalTo(landscape, this, movement.terrainCell, movement.position);
     }
     else
     {
-        setPosition(cellToMoveTo.second);
+        setPosition(movement.position);
     }
 
     if(saveMovements)
