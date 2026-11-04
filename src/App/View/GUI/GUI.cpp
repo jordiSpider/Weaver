@@ -131,11 +131,13 @@ void GUI::startSimulation()
 
         std::string prefix;
         if (logItem.subsystem == LogManager::Subsystem::IO) {
-            prefix = logItem.is_error ? (LogManager::RED + "[IO ][ERROR] " + LogManager::RESET)
+            prefix = logItem.is_warning ? (LogManager::YELLOW + "[IO ][WARNING] " + LogManager::RESET)
+                : logItem.is_error ? (LogManager::RED + "[IO ][ERROR] " + LogManager::RESET)
                 : (LogManager::CYAN + "[IO ][INFO] " + LogManager::RESET);
         }
         else {
-            prefix = logItem.is_error ? (LogManager::RED + "[SIM][ERROR] " + LogManager::RESET)
+            prefix = logItem.is_warning ? (LogManager::YELLOW + "[SIM][WARNING] " + LogManager::RESET)
+                : logItem.is_error ? (LogManager::RED + "[SIM][ERROR] " + LogManager::RESET)
                 : (LogManager::GREEN + "[SIM][INFO] " + LogManager::RESET);
         }
 

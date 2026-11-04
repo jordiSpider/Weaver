@@ -2,7 +2,9 @@
 # Function to embed a text file (JSON) into a C++ Header
 function(embed_json_to_header INPUT_JSON GENERATED_DIR)
     # Extract the base name of the file (e.g., from "path/config.json" extract "config")
-    get_filename_component(BASE_NAME "${INPUT_JSON}" NAME_WE)
+    get_filename_component(BASE_NAME "${INPUT_JSON}" NAME)
+    string(REGEX REPLACE "\\.json$" "" BASE_NAME "${BASE_NAME}")
+    string(REGEX REPLACE "[^A-Za-z0-9_]" "_" BASE_NAME "${BASE_NAME}")
 
     # Construct the variable name and the header file name by appending "_json"
     set(VAR_NAME "${BASE_NAME}_json")

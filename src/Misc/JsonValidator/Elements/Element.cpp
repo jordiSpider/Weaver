@@ -65,15 +65,14 @@ const string& Element::getDescription() const
 
 void Element::validate(const json& config) const
 {
-    if(!isNullProperty())
-	{
-        if(config.is_null())
-		{
-			throwValidatorConfigJSONException("': Cannot be null");
-		}
+	if (config.is_null()) {
+		if (isNullProperty()) return;
+		throwValidatorConfigJSONException("': Cannot be null");
+	}
 
-        validateElement(config);
-    }
+	// nullProperty means a value may be absent/null. If it is supplied, validate
+	// it normally so optional arrays and their object items cannot bypass checks.
+	validateElement(config);
 }
 
 void Element::verifyPropertyPath(const vector<string>& path, const unsigned int currentIndex) const

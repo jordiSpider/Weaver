@@ -280,7 +280,7 @@ mod_optimiser_phase_2_server <- function(id, global_store, current_phase) {
       }
 
       species <- Filter(Negate(is.null), read_species_files(file.path(config_root, "species"), "animal"))
-      resources <- Filter(Negate(is.null), read_species_files(file.path(config_root, "resource"), "resource"))
+      resources <- Filter(Negate(is.null), read_species_files(file.path(config_root, "resources"), "resource"))
 
       # Mantener el primer archivo si hay nombres repetidos y conservar el
       # recuento de instares de cada animal para sus selectores dependientes.

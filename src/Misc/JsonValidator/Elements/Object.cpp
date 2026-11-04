@@ -10,6 +10,30 @@ using json = nlohmann::json;
 Object::Object(const json& info)
     : Element(info)
 {
+	const vector<pair<string, vector<json>*>> conditionArrays = {
+		{"conditionals", &conditionals},
+		{"patternConditionals", &patternConditionals},
+	};
+	for (const auto& [name, destination] : conditionArrays) {
+		if (!info.contains(name)) continue;
+		try {
+			if (!info.at(name).is_array()) throwValidatorSchemaJSONException("': Not an element of type 'array'");
+			for (size_t i = 0; i < info.at(name).size(); ++i) {
+				if (!info.at(name).at(i).is_object()) {
+					throwValidatorSchemaJSONException("': Item " + to_string(i) + " is not an object");
+				}
+			}
+			*destination = info.at(name).get<vector<json>>();
+		}
+		catch (ValidatorSchemaJSONException& e) {
+			e.addPreMessage("." + name);
+			throw;
+		}
+		catch (const json::exception& e) {
+			throwValidatorSchemaJSONException("." + name + "': " + e.what());
+		}
+	}
+
 	if(!info.contains("properties")) {
 		throwValidatorSchemaJSONException("': Property 'properties' not defined");
 	}
@@ -222,76 +246,11 @@ Object::Object(const json& info)
 	}
 
 
-	if(info.contains("requiredConditions")) {
-		try
-		{
-			#ifdef DEBUG
-			if(!info.at("requiredConditions").is_array()) {
-				throwValidatorSchemaJSONException("': Not an element of type 'array'");
-			}
-			
-			for(size_t i = 0; i < requiredConditions.size(); i++) {
-				try
-				{
-					if(!requiredConditions.at(i).is_object()) {
-						throwValidatorSchemaJSONException("': Not an element of type 'object'");
-					}
-
-					verifyRequiredCondition(requiredConditions.at(i));
-				}
-				catch(ValidatorSchemaJSONException& e)
-				{
-					e.addPreMessage(".item_" + to_string(i));
-					throw;
-				}
-			}
-			#endif
-		}
-		catch(ValidatorSchemaJSONException& e)
-		{
-			e.addPreMessage(".requiredConditions");
-			throw;
-		}
-	}
-
-
-	if(info.contains("warningConditions")) {
-		try
-		{
-			#ifdef DEBUG
-			if(!info.at("warningConditions").is_array()) {
-				throwValidatorSchemaJSONException("': Not an element of type 'array'");
-			}
-			
-			for(size_t i = 0; i < warningConditions.size(); i++) {
-				try
-				{
-					if(!warningConditions.at(i).is_object()) {
-						throwValidatorSchemaJSONException("': Not an element of type 'object'");
-					}
-
-					verifyWarningCondition(warningConditions.at(i));
-				}
-				catch(ValidatorSchemaJSONException& e)
-				{
-					e.addPreMessage(".item_" + to_string(i));
-					throw;
-				}
-			}
-			#endif
-		}
-		catch(ValidatorSchemaJSONException& e)
-		{
-			e.addPreMessage(".warningConditions");
-			throw;
-		}
-	}
 }
 
 Object::Object(const Object& other, const bool nullProperty)
 	: Element(nullProperty, other.getDescription()), properties(other.getProperties()), patternProperties(other.getPatternProperties()), 
-	  conditionals(other.getConditionals()), patternConditionals(other.getPatternConditionals()),
-	  requiredConditions(other.getRequiredConditions()), warningConditions(other.getWarningConditions())
+	  conditionals(other.getConditionals()), patternConditionals(other.getPatternConditionals())
 {
 
 }
@@ -320,7 +279,7 @@ void Object::verifyPropertyPath(const std::vector<std::string>& path, const unsi
 	properties.at(path[currentIndex])->verifyPropertyPath(path, currentIndex+1);
 }
 
-void Object::applyConditionalBlock(const unordered_map<string, json>& conditionalBlock, unordered_map<string, Element*>& modifiedProperties, const bool patternReplacement, const string& replacementValue) const
+void Object::applyConditionalBlock(const json& conditionalBlock, unordered_map<string, Element*>& modifiedProperties, const bool patternReplacement, const string& replacementValue) const
 {
 	string elementName;
 	const Element* workingPath = this;
@@ -368,7 +327,7 @@ void Object::applyConditionalBlock(const unordered_map<string, json>& conditiona
 	catch(const json::out_of_range&) {}
 }
 
-void Object::applyConditionalBlock(const unordered_map<string, json>& conditionalBlock, unordered_map<string, Element*>& modifiedProperties) const
+void Object::applyConditionalBlock(const json& conditionalBlock, unordered_map<string, Element*>& modifiedProperties) const
 {
 	applyConditionalBlock(conditionalBlock, modifiedProperties, false, "");
 }
@@ -387,14 +346,16 @@ void Object::validateElement(const json& config) const
         }
         catch(const std::out_of_range&)
         {	
-            throwValidatorConfigJSONException("': Required item '" + key + "' not found");
+	        throwValidatorConfigJSONException("." + key + "': Required item '" + key + "' not found");
         }
     }
 
 
 	unordered_map<string, Element*> matchedProperties;
 
-	for(const auto& [key, value] : static_cast<const unordered_map<string, json>&>(config)) {
+	for(const auto& item : config.items()) {
+		const auto& key = item.key();
+		const auto& value = item.value();
 		bool matched = false;
 		string matchedPattern;
 
@@ -422,7 +383,7 @@ void Object::validateElement(const json& config) const
 			}
 			catch(const std::out_of_range&)
 			{
-				throwValidatorConfigJSONException("': Item '" + key + "' not defined in schema");
+				throwValidatorConfigJSONException("." + key + "': Item '" + key + "' not defined in schema");
 			}
 		}
 	}
@@ -439,13 +400,13 @@ void Object::validateElement(const json& config) const
 				{
 					if(static_cast<const bool>(checkOperator(conditionals.at(i)["condition"], config, getProperties())))
 					{
-						applyConditionalBlock(conditionals.at(i)["then"], modifiedProperties);
+						for (const auto& block : conditionals.at(i).at("then")) applyConditionalBlock(block, modifiedProperties);
 					}
 					else
 					{
 						try
 						{
-							applyConditionalBlock(conditionals.at(i).at("else"), modifiedProperties);
+							for (const auto& block : conditionals.at(i).at("else")) applyConditionalBlock(block, modifiedProperties);
 						}
 						catch(const json::out_of_range&) {}
 					}
@@ -470,7 +431,9 @@ void Object::validateElement(const json& config) const
 	}
 
 
-	for(const auto& [key, value] : static_cast<const unordered_map<string, json>&>(config)) {
+	for(const auto& item : config.items()) {
+		const auto& key = item.key();
+		const auto& value = item.value();
 		try
 		{
 			for(size_t i = 0; i < patternConditionals.size(); i++) {
@@ -484,13 +447,13 @@ void Object::validateElement(const json& config) const
 						{
 							if(static_cast<const bool>(checkOperator(patternConditionals.at(i)["condition"], config, getProperties(), true, key)))
 							{
-								applyConditionalBlock(patternConditionals.at(i)["then"], modifiedProperties, true, key);
+								for (const auto& block : patternConditionals.at(i).at("then")) applyConditionalBlock(block, modifiedProperties, true, key);
 							}
 							else
 							{
 								try
 								{
-									applyConditionalBlock(patternConditionals.at(i).at("else"), modifiedProperties, true, key);
+								for (const auto& block : patternConditionals.at(i).at("else")) applyConditionalBlock(block, modifiedProperties, true, key);
 								}
 								catch(const json::out_of_range&) {}
 							}
@@ -517,7 +480,9 @@ void Object::validateElement(const json& config) const
 	}
 
 
-	for(const auto& [key, value] : static_cast<const unordered_map<string, json>&>(config)) {
+	for(const auto& item : config.items()) {
+		const auto& key = item.key();
+		const auto& value = item.value();
         try
         {
 			if(modifiedProperties.contains(key)) {
@@ -538,68 +503,6 @@ void Object::validateElement(const json& config) const
             throw;
         }
     }
-
-
-	try
-	{
-		for(size_t i = 0; i < requiredConditions.size(); i++) {
-			try
-			{
-				try
-				{
-					if(checkOperator(requiredConditions.at(i)["condition"], config, getProperties())) {
-						throwValidatorConfigJSONException("': " + string(requiredConditions.at(i)["error"]));
-					}
-				}
-				catch(ValidatorConfigJSONException& e)
-				{
-					e.addPreMessage(".condition");
-					throw;
-				}
-			}
-			catch(ValidatorConfigJSONException& e)
-			{
-				e.addPreMessage(".item_" + to_string(i));
-				throw;
-			}
-		}
-	}
-	catch(ValidatorConfigJSONException& e)
-	{
-		e.addPreMessage(".requiredConditions");
-		throw;
-	}
-
-
-	try
-	{
-		for(size_t i = 0; i < warningConditions.size(); i++) {
-			try
-			{
-				try
-				{
-					if(checkOperator(warningConditions.at(i)["condition"], config, getProperties())) {
-						throwValidatorConfigJSONException("': " + string(warningConditions.at(i)["warning"]));
-					}
-				}
-				catch(ValidatorConfigJSONException& e)
-				{
-					e.addPreMessage(".condition");
-					throw;
-				}
-			}
-			catch(ValidatorConfigJSONException& e)
-			{
-				e.addPreMessage(".item_" + to_string(i));
-				throw;
-			}
-		}
-	}
-	catch(ValidatorConfigJSONException& e)
-	{
-		e.addPreMessage(".warningConditions");
-		throw;
-	}
 
 
 	for(const auto& [key, value] : modifiedProperties) {
@@ -795,82 +698,6 @@ void Object::verifyConditional(const json& conditional) const
 	}
 }
 
-void Object::verifyRequiredCondition(json& condition) const
-{
-	try
-	{
-		if(!condition.at("condition").is_object()) {
-			throwValidatorSchemaJSONException("': Not an element of type 'object'");
-		}
-
-		verifyOperator(condition["condition"], properties);
-	}
-	catch(ValidatorSchemaJSONException& e)
-	{
-		e.addPreMessage(".condition");
-		throw;
-	}
-	catch(const json::out_of_range&) 
-	{
-		throwValidatorSchemaJSONException("': Property 'condition' not defined");
-	}
-
-
-	try
-	{
-		if(!condition.at("error").is_string()) {
-			throwValidatorSchemaJSONException("': Not an element of type 'string'");
-		}
-	}
-	catch(ValidatorSchemaJSONException& e)
-	{
-		e.addPreMessage(".error");
-		throw;
-	}
-	catch(const json::out_of_range&) 
-	{
-		throwValidatorSchemaJSONException("': Property 'error' not defined");
-	}
-}
-
-void Object::verifyWarningCondition(json& condition) const
-{
-	try
-	{
-		if(!condition.at("condition").is_object()) {
-			throwValidatorSchemaJSONException("': Not an element of type 'object'");
-		}
-
-		verifyOperator(condition["condition"], properties);
-	}
-	catch(ValidatorSchemaJSONException& e)
-	{
-		e.addPreMessage(".condition");
-		throw;
-	}
-	catch(const json::out_of_range&) 
-	{
-		throwValidatorSchemaJSONException("': Property 'condition' not defined");
-	}
-
-
-	try
-	{
-		if(!condition.at("warning").is_string()) {
-			throwValidatorSchemaJSONException("': Not an element of type 'string'");
-		}
-	}
-	catch(ValidatorSchemaJSONException& e)
-	{
-		e.addPreMessage(".warning");
-		throw;
-	}
-	catch(const json::out_of_range&) 
-	{
-		throwValidatorSchemaJSONException("': Property 'warning' not defined");
-	}
-}
-
 pair<const Element* const, string> Object::getProperty(const string& propertyName, const bool patternReplacement, const string& replacementValue) const
 {
 	if(patternReplacement)
@@ -915,12 +742,3 @@ const vector<json>& Object::getPatternConditionals() const
 	return patternConditionals;
 }
 
-const vector<json>& Object::getRequiredConditions() const
-{
-	return requiredConditions;
-}
-
-const vector<json>& Object::getWarningConditions() const
-{
-	return warningConditions;
-}

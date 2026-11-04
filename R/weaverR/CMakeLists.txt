@@ -22,23 +22,20 @@
 
 set(PKG_NAME             weaverR)
 
-find_package(unofficial-noise CONFIG REQUIRED)
+include(${CMAKE_SOURCE_DIR}/cmake/embed_configuration_schemas.cmake)
+weaver_embed_configuration_schemas("${CMAKE_BINARY_DIR}/resources")
 
-add_library(weaver_obstacle_engine SHARED
-    "${CMAKE_SOURCE_DIR}/src/App/Model/IBM/Landscape/Map/Patches/ObstaclePorosityMaskGenerator.cpp"
+add_library(weaver_config_validator_r SHARED
+    "${CMAKE_CURRENT_SOURCE_DIR}/native/configuration_validator.cpp"
 )
-set_property(TARGET weaver_obstacle_engine PROPERTY POSITION_INDEPENDENT_CODE ON)
-target_compile_features(weaver_obstacle_engine PRIVATE cxx_std_20)
-target_compile_definitions(weaver_obstacle_engine PRIVATE
-    WEAVER_OBSTACLE_ENGINE_BUILD
-)
-target_include_directories(weaver_obstacle_engine PRIVATE "${CMAKE_SOURCE_DIR}/include")
-target_link_libraries(weaver_obstacle_engine PRIVATE unofficial::noise::noise-static)
-set_target_properties(weaver_obstacle_engine PROPERTIES
+target_link_libraries(weaver_config_validator_r PRIVATE weaver_options weaver_config_validator)
+target_compile_features(weaver_config_validator_r PRIVATE cxx_std_20)
+set_target_properties(weaver_config_validator_r PROPERTIES
+    POSITION_INDEPENDENT_CODE ON
     PREFIX ""
-    OUTPUT_NAME "weaver_obstacle_engine"
-    CXX_VISIBILITY_PRESET hidden
-    VISIBILITY_INLINES_HIDDEN YES
+    OUTPUT_NAME "weaver_config_validator"
+    BUILD_RPATH "$ORIGIN"
+    INSTALL_RPATH "$ORIGIN"
 )
 
 
@@ -163,6 +160,8 @@ add_custom_command(
             -File "${FLATTEN_SCRIPT}" "${PKG_SRC_DIR}" "${STAGE_DIR}" "${PKG_VARIANT}"
     COMMAND "${CMAKE_COMMAND}" -E make_directory "${STAGE_DIR}/inst/native"
     COMMAND "${CMAKE_COMMAND}" -E copy "$<TARGET_FILE:weaver_obstacle_engine>" "${STAGE_DIR}/inst/native/"
+    COMMAND "${CMAKE_COMMAND}" -E copy "$<TARGET_FILE:weaver_config_validator_r>" "${STAGE_DIR}/inst/native/"
+    COMMAND "${CMAKE_COMMAND}" -E copy "$<TARGET_FILE:weaver_config_validator>" "${STAGE_DIR}/inst/native/"
     # Embed the project schemas: available at runtime via
     # system.file("schema", package = "weaverR")
     COMMAND "${POWERSHELL_EXECUTABLE}" -NoProfile -ExecutionPolicy Bypass
@@ -175,7 +174,7 @@ add_custom_command(
     COMMAND "${R_EXECUTABLE}" CMD build --no-build-vignettes "${STAGE_DIR}"
     COMMAND "${CMAKE_COMMAND}" -E touch "${TARBALL_STAMP}"
     WORKING_DIRECTORY "${CMAKE_CURRENT_BINARY_DIR}"
-    DEPENDS ${_PKG_FILES} ${_SCHEMA_FILES} "${GENERATED_DESCRIPTION}" "${GENERATED_NAMESPACE}" weaver_obstacle_engine
+    DEPENDS ${_PKG_FILES} ${_SCHEMA_FILES} "${GENERATED_DESCRIPTION}" "${GENERATED_NAMESPACE}" weaver_obstacle_engine weaver_config_validator_r weaver_config_validator
     COMMENT "[${PKG_NAME}] Flattening, embedding schemas and building the tarball..."
     VERBATIM
 )

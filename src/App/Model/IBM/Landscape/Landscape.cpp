@@ -22,14 +22,6 @@
 #include "App/Manager/LogManager.h"
 #include "App/IO/StorageBridge.h"
 
-#include "schema/simulation_params_schema_json.h"
-#include "schema/landscape_params_schema_json.h"
-#include "schema/species_schema_json.h"
-#include "schema/resource_schema_json.h"
-#include "schema/resource_patch_schema_json.h"
-#include "schema/obstacle_patch_schema_json.h"
-#include "schema/habitat_domain_patch_schema_json.h"
-#include "schema/moisture_patch_schema_json.h"
 
 #include <fmt/compile.h>
 #include <fmt/format.h>
@@ -38,6 +30,7 @@
 using namespace std;
 using json = nlohmann::json;
 namespace fs = std::filesystem;
+
 
 
 
@@ -287,9 +280,8 @@ void Landscape::init(fs::path configPath, fs::path newOutputFolder, bool fromChe
 
 void Landscape::setSimulationParams(const fs::path& configPath)
 {
-	JsonValidator simulationValidator(EmbeddedResources::simulation_params_schema_json, "simulation_params_schema");
 
-	json simulationConfiguration = readConfigFile(configPath / fs::path("simulation_params.json"), simulationValidator);
+	json simulationConfiguration = readConfigFile(configPath / fs::path("simulation_params.json"));
 
 
 	if(simulationConfiguration["simulation"]["initFromFixedSeed"]["enabled"].get<bool>())
@@ -370,9 +362,8 @@ void Landscape::setSimulationParams(const fs::path& configPath)
 
 void Landscape::setLandscapeParams(const fs::path& configPath, bool fromCheckpoint)
 {
-	JsonValidator landscapeValidator(EmbeddedResources::landscape_params_schema_json, "landscape_params_schema");
 
-	json landscapeConfig = readConfigFile(configPath / fs::path("landscape_params.json"), landscapeValidator);
+	json landscapeConfig = readConfigFile(configPath / fs::path("landscape_params.json"));
 
 
 	minExploitableResource = landscapeConfig["landscape"]["life"]["minExploitableResource"].get<double>();
@@ -541,13 +532,11 @@ bool Landscape::readAnimalSpeciesFromJSONFiles(const fs::path& configPath, Custo
 	{
 		bool newAnimalSpecies = false;
 
-		JsonValidator animalSpeciesValidator(EmbeddedResources::species_schema_json, "species_schema");
-
 		for (const auto& entry : fs::directory_iterator(speciesFolder))
 		{
 			if (entry.path().extension() == ".json")
 			{
-				json ptMain = readConfigFile(entry.path(), animalSpeciesValidator);
+				json ptMain = readConfigFile(entry.path());
 
 				LogManager::emit(fmt::format(" - Animal scientific name: {}\n", ptMain["animal"]["name"].get<string>()));
 
@@ -567,49 +556,10 @@ bool Landscape::readAnimalSpeciesFromJSONFiles(const fs::path& configPath, Custo
 	}
 }
 
-void Landscape::checkOntogeneticLinksHeaders(const rapidcsv::Document& ontogeneticLinksPreference, const rapidcsv::Document& ontogeneticLinksProfitability) const
-{
-	unsigned int numRows = 0, numCols = 0;
-
-	for(const AnimalSpecies* const animalSpecies : getExistingAnimalSpecies())
-	{
-		numCols += animalSpecies->getGrowthBuildingBlock().getNumberOfInstars();
-		numRows += animalSpecies->getGrowthBuildingBlock().getNumberOfInstars();
-	}
-
-	for(const ResourceSpecies* const resourceSpecies : getExistingResourceSpecies())
-	{
-		numRows += resourceSpecies->getGrowthBuildingBlock().getNumberOfInstars();
-	}
-
-	if(numRows != ontogeneticLinksPreference.GetRowCount())
-	{
-		throwLineInfoException("Error: Incorrect 'ontogeneticLinksPreference.csv' row headers.");
-	}
-
-	if(numCols != ontogeneticLinksPreference.GetColumnCount())
-	{
-		throwLineInfoException("Error: Incorrect 'ontogeneticLinksPreference.csv' column headers.");
-	}
-
-	if(numRows != ontogeneticLinksProfitability.GetRowCount())
-	{
-		throwLineInfoException("Error: Incorrect 'ontogeneticLinksProfitability.csv' row headers.");
-	}
-
-	if(numCols != ontogeneticLinksProfitability.GetColumnCount())
-	{
-		throwLineInfoException("Error: Incorrect 'ontogeneticLinksProfitability.csv' column headers.");
-	}
-}
-
 void Landscape::setOntogeneticLinks(const fs::path& configPath)
 {
 	rapidcsv::Document ontogeneticLinksPreference((configPath / SPECIES_FOLDER_NAME / "ontogeneticLinksPreference.csv").string(), rapidcsv::LabelParams(0, 0));
 	rapidcsv::Document ontogeneticLinksProfitability((configPath / SPECIES_FOLDER_NAME / "ontogeneticLinksProfitability.csv").string(), rapidcsv::LabelParams(0, 0));
-
-
-	checkOntogeneticLinksHeaders(ontogeneticLinksPreference, ontogeneticLinksProfitability);
 
 
 	for(AnimalSpecies* animalSpecies : getMutableExistingAnimalSpecies())
@@ -630,19 +580,17 @@ bool Landscape::readResourceSpeciesFromJSONFiles(const fs::path& configPath)
 {
 	LogManager::emit("Reading all resource species from JSON files ... \n");
 	
-	fs::path resourceFolder = configPath / RESOURCE_FOLDER_NAME;
+	fs::path resourceFolder = (configPath / RESOURCE_FOLDER_NAME);
 	
 	if (fs::exists(resourceFolder) && fs::is_directory(resourceFolder))
 	{
 		bool newResourceSpecies = false;
 
-		JsonValidator resourceSpeciesValidator(EmbeddedResources::resource_schema_json, "resource_schema");
-
 		for (const auto& entry : fs::directory_iterator(resourceFolder))
 		{
 			if (entry.path().extension() == ".json")
 			{
-				json ptMain = readConfigFile(entry.path(), resourceSpeciesValidator);
+				json ptMain = readConfigFile(entry.path());
 
 				LogManager::emit(fmt::format(" - Resource scientific name: {}\n\n", ptMain["resource"]["name"].get<string>()));
 
@@ -669,17 +617,16 @@ bool Landscape::readResourcePatchesFromJSONFiles(const fs::path& configPath)
 	
 	vector<PatchPriorityQueue> resourcePatchesToAplly(getExistingResourceSpecies().size());
 
-	fs::path resourcePatchesFolder = configPath / RESOURCE_FOLDER_NAME / "patches";
+	fs::path resourcePatchesFolder = (configPath / "patches" / "resource");
 
 	if(fs::exists(resourcePatchesFolder) && fs::is_directory(resourcePatchesFolder))
 	{
-		JsonValidator resourcePatchesValidator(EmbeddedResources::resource_patch_schema_json, "resource_patch_schema");
 
 		for (const auto& entry : fs::directory_iterator(resourcePatchesFolder))
 		{
 			if(entry.path().extension() == ".json")
 			{
-				json ptMain = readConfigFile(entry.path(), resourcePatchesValidator);
+				json ptMain = readConfigFile(entry.path());
 
 				bool foundResourceSpecies = false;
 				size_t resourceSpeciesId = 0u;
@@ -2605,17 +2552,16 @@ void Landscape::readObstaclePatchesFromJSONFiles(const fs::path& configPath)
 
 	PatchPriorityQueue obstaclePatchesToAplly;
 
-	fs::path obstacleFolder = configPath / OBSTACLE_FOLDER_NAME;
+	fs::path obstacleFolder = (configPath / OBSTACLE_FOLDER_NAME);
 
 	if (fs::exists(obstacleFolder) && fs::is_directory(obstacleFolder))
 	{
-		JsonValidator obstaclePatchesValidator(EmbeddedResources::obstacle_patch_schema_json, "obstacle_patch_schema");
 
 		for (const auto& entry : fs::directory_iterator(obstacleFolder))
 		{
 			if (entry.path().extension() == ".json")
 			{
-				json ptMain = readConfigFile(entry.path(), obstaclePatchesValidator);
+				json ptMain = readConfigFile(entry.path());
 
 				obstaclePatchesToAplly.push(make_unique<Patch>(new ObstacleSource(ptMain["patch"]["porosity"]), ptMain["patch"], entry.path().string()));
 			}
@@ -2639,17 +2585,16 @@ void Landscape::readHabitatDomainPatchesFromJSONFiles(const fs::path& configPath
 
 	PatchPriorityQueue habitatDomainPatchesToAplly;
 
-	fs::path habitatDomainFolder = configPath / HABITAT_DOMAIN_FOLDER_NAME;
+	fs::path habitatDomainFolder = (configPath / HABITAT_DOMAIN_FOLDER_NAME);
 
 	if (fs::exists(habitatDomainFolder) && fs::is_directory(habitatDomainFolder))
 	{
-		JsonValidator habitatDomainPatchesValidator(EmbeddedResources::habitat_domain_patch_schema_json, "habitat_domain_patch_schema");
 
 		for (const auto& entry : fs::directory_iterator(habitatDomainFolder))
 		{
 			if (entry.path().extension() == ".json")
 			{
-				json ptMain = readConfigFile(entry.path(), habitatDomainPatchesValidator);
+				json ptMain = readConfigFile(entry.path());
 
 				habitatDomainPatchesToAplly.push(make_unique<Patch>(new HabitatDomainSource(ptMain["patch"]["source"], getExistingAnimalSpecies()), ptMain["patch"], entry.path().string()));
 			}
@@ -2683,17 +2628,16 @@ void Landscape::readMoisturePatchesFromJSONFiles(const fs::path& configPath)
 
 	PatchPriorityQueue moisturePatchesToAplly;
 
-	fs::path moistureFolder = configPath / MOISTURE_FOLDER_NAME;
+	fs::path moistureFolder = (configPath / MOISTURE_FOLDER_NAME);
 
 	if (fs::exists(moistureFolder) && fs::is_directory(moistureFolder))
 	{
-		JsonValidator moisturePatchesValidator(EmbeddedResources::moisture_patch_schema_json, "moisture_patch_schema");
 
 		for (const auto& entry : fs::directory_iterator(moistureFolder))
 		{
 			if (entry.path().extension() == ".json")
 			{
-				json ptMain = readConfigFile(entry.path(), moisturePatchesValidator);
+				json ptMain = readConfigFile(entry.path());
 
 				moisturePatchesToAplly.push(make_unique<Patch>(new MoistureSource(ptMain["patch"]["source"], getTimeStepsPerDay()), ptMain["patch"], entry.path().string()));
 			}
@@ -3642,4 +3586,6 @@ template void Landscape::serialize<boost::archive::text_oarchive>(boost::archive
 template void Landscape::serialize<boost::archive::text_iarchive>(boost::archive::text_iarchive &, const unsigned int);
 template void Landscape::serialize<boost::archive::binary_oarchive>(boost::archive::binary_oarchive &, const unsigned int);
 template void Landscape::serialize<boost::archive::binary_iarchive>(boost::archive::binary_iarchive &, const unsigned int);
+
+
 

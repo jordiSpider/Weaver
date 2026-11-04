@@ -1,0 +1,400 @@
+{
+  "type": "object",
+  "properties": {
+    "version": {
+      "type": "string",
+      "description": "Configuration parameter: version."
+    },
+    "patch": {
+      "type": "object",
+      "properties": {
+        "priority": {
+          "type": "integer",
+          "minimum": 1,
+          "description": "Configuration parameter: priority."
+        },
+        "source": {
+          "type": "object",
+          "properties": {
+            "temperatureDynamics": {
+              "type": "object",
+              "properties": {
+                "cycle": {
+                  "type": "array",
+                  "items": {
+                    "type": "number"
+                  },
+                  "minItems": 1,
+                  "description": "Configuration parameter: cycle."
+                }
+              },
+              "description": "Configuration parameter: temperature dynamics."
+            },
+            "relativeHumidityDynamics": {
+              "type": "object",
+              "properties": {
+                "dynamicsType": {
+                  "type": "string",
+                  "enum": [
+                    "Cycle",
+                    "Pulse"
+                  ],
+                  "description": "Configuration parameter: dynamics type."
+                },
+                "cycleParams": {
+                  "type": "object",
+                  "properties": {
+                    "cycle": {
+                      "type": "array",
+                      "items": {
+                        "type": "number",
+                        "minimum": 0.0,
+                        "maximum": 100.0
+                      },
+                      "minItems": 1,
+                      "nullProperty": true,
+                      "description": "Configuration parameter: cycle."
+                    }
+                  },
+                  "description": "Configuration parameter: cycle params."
+                },
+                "pulseParams": {
+                  "type": "object",
+                  "properties": {
+                    "daysBetweenPulsesRange": {
+                      "type": "object",
+                      "properties": {
+                        "min": {
+                          "type": "number",
+                          "minimum": 0.0,
+                          "exclusiveMinimum": true,
+                          "nullProperty": true,
+                          "description": "Configuration parameter: min."
+                        },
+                        "max": {
+                          "type": "number",
+                          "minimum": 0.0,
+                          "exclusiveMinimum": true,
+                          "nullProperty": true,
+                          "description": "Configuration parameter: max."
+                        }
+                      },
+                      "description": "Configuration parameter: days between pulses range."
+                    },
+                    "pulsePeakValueRange": {
+                      "type": "object",
+                      "properties": {
+                        "min": {
+                          "type": "number",
+                          "minimum": 0.0,
+                          "maximum": 100.0,
+                          "nullProperty": true,
+                          "description": "Configuration parameter: min."
+                        },
+                        "max": {
+                          "type": "number",
+                          "minimum": 0.0,
+                          "maximum": 100.0,
+                          "nullProperty": true,
+                          "description": "Configuration parameter: max."
+                        }
+                      },
+                      "description": "Configuration parameter: pulse peak value range."
+                    },
+                    "decay": {
+                      "type": "object",
+                      "properties": {
+                        "decayType": {
+                          "type": "string",
+                          "enum": [
+                            "NonDecay",
+                            "Lineal"
+                          ],
+                          "description": "Configuration parameter: decay type."
+                        },
+                        "linealDecayParams": {
+                          "type": "object",
+                          "properties": {
+                            "decayOverTime": {
+                              "type": "number",
+                              "minimum": 0.0,
+                              "nullProperty": true,
+                              "description": "Configuration parameter: decay over time."
+                            }
+                          },
+                          "description": "Configuration parameter: lineal decay params."
+                        }
+                      },
+                      "conditionals": [
+                        {
+                          "condition": {
+                            "operatorType": "comparison",
+                            "comparisonType": "equal",
+                            "lhs": {
+                              "operatorType": "property",
+                              "propertyElement": "value",
+                              "relativePath": [
+                                "decayType"
+                              ]
+                            },
+                            "rhs": {
+                              "operatorType": "constant",
+                              "value": "Lineal"
+                            }
+                          },
+                          "then": [
+                            {
+                              "workingPath": [
+                                "linealDecayParams"
+                              ],
+                              "remove": {
+                                "nullProperty": [
+                                  "decayOverTime"
+                                ]
+                              }
+                            }
+                          ]
+                        }
+                      ],
+                      "description": "Configuration parameter: decay."
+                    }
+                  },
+                  "description": "Configuration parameter: pulse params."
+                }
+              },
+              "conditionals": [
+                {
+                  "condition": {
+                    "operatorType": "comparison",
+                    "comparisonType": "equal",
+                    "lhs": {
+                      "operatorType": "property",
+                      "propertyElement": "value",
+                      "relativePath": [
+                        "dynamicsType"
+                      ]
+                    },
+                    "rhs": {
+                      "operatorType": "constant",
+                      "value": "Cycle"
+                    }
+                  },
+                  "then": [
+                    {
+                      "workingPath": [
+                        "cycleParams"
+                      ],
+                      "remove": {
+                        "nullProperty": [
+                          "cycle"
+                        ]
+                      }
+                    }
+                  ]
+                },
+                {
+                  "condition": {
+                    "operatorType": "comparison",
+                    "comparisonType": "equal",
+                    "lhs": {
+                      "operatorType": "property",
+                      "propertyElement": "value",
+                      "relativePath": [
+                        "dynamicsType"
+                      ]
+                    },
+                    "rhs": {
+                      "operatorType": "constant",
+                      "value": "Pulse"
+                    }
+                  },
+                  "then": [
+                    {
+                      "workingPath": [
+                        "pulseParams",
+                        "daysBetweenPulsesRange"
+                      ],
+                      "remove": {
+                        "nullProperty": [
+                          "min",
+                          "max"
+                        ]
+                      }
+                    },
+                    {
+                      "workingPath": [
+                        "pulseParams",
+                        "pulsePeakValueRange"
+                      ],
+                      "remove": {
+                        "nullProperty": [
+                          "min",
+                          "max"
+                        ]
+                      }
+                    }
+                  ]
+                }
+              ],
+              "description": "Configuration parameter: relative humidity dynamics."
+            },
+            "maximumResourceCapacityDensity": {
+              "type": "number",
+              "minimum": 0.0,
+              "description": "Configuration parameter: maximum resource capacity density."
+            },
+            "inEnemyFreeSpace": {
+              "type": "boolean",
+              "description": "Configuration parameter: in enemy free space."
+            },
+            "inCompetitorFreeSpace": {
+              "type": "boolean",
+              "description": "Configuration parameter: in competitor free space."
+            }
+          },
+          "description": "Configuration parameter: source."
+        },
+        "shape": {
+          "type": "object",
+          "properties": {
+            "type": {
+              "type": "string",
+              "enum": [
+                "Homogeneous",
+                "Gaussian",
+                "Spherical",
+                "Cubic",
+                "RandomGaussian"
+              ],
+              "description": "Configuration parameter: type."
+            },
+            "cubicParams": {
+              "type": "object",
+              "properties": {
+                "bottomLeftCorner": {
+                  "type": "array",
+                  "items": {
+                    "type": "number"
+                  },
+                  "nullProperty": true,
+                  "description": "Configuration parameter: bottom left corner."
+                },
+                "topRightCorner": {
+                  "type": "array",
+                  "items": {
+                    "type": "number"
+                  },
+                  "nullProperty": true,
+                  "description": "Configuration parameter: top right corner."
+                }
+              },
+              "description": "Configuration parameter: cubic params."
+            },
+            "sphericalParams": {
+              "type": "object",
+              "properties": {
+                "center": {
+                  "type": "array",
+                  "items": {
+                    "type": "number"
+                  },
+                  "nullProperty": true,
+                  "description": "Configuration parameter: center."
+                },
+                "radius": {
+                  "type": "number",
+                  "minimum": 0.0,
+                  "nullProperty": true,
+                  "description": "Configuration parameter: radius."
+                }
+              },
+              "description": "Configuration parameter: spherical params."
+            },
+            "homogeneousParams": {
+              "type": "object",
+              "properties": {},
+              "description": "Configuration parameter: homogeneous params."
+            },
+            "gaussianParams": {
+              "type": "object",
+              "properties": {},
+              "description": "Configuration parameter: gaussian params."
+            },
+            "randomGaussianParams": {
+              "type": "object",
+              "properties": {},
+              "description": "Configuration parameter: random gaussian params."
+            }
+          },
+          "conditionals": [
+            {
+              "condition": {
+                "operatorType": "comparison",
+                "comparisonType": "equal",
+                "lhs": {
+                  "operatorType": "property",
+                  "propertyElement": "value",
+                  "relativePath": [
+                    "type"
+                  ]
+                },
+                "rhs": {
+                  "operatorType": "constant",
+                  "value": "spherical"
+                }
+              },
+              "then": [
+                {
+                  "workingPath": [
+                    "sphericalParams"
+                  ],
+                  "remove": {
+                    "nullProperty": [
+                      "center",
+                      "radius"
+                    ]
+                  }
+                }
+              ]
+            },
+            {
+              "condition": {
+                "operatorType": "comparison",
+                "comparisonType": "equal",
+                "lhs": {
+                  "operatorType": "property",
+                  "propertyElement": "value",
+                  "relativePath": [
+                    "type"
+                  ]
+                },
+                "rhs": {
+                  "operatorType": "constant",
+                  "value": "cubic"
+                }
+              },
+              "then": [
+                {
+                  "workingPath": [
+                    "cubicParams"
+                  ],
+                  "remove": {
+                    "nullProperty": [
+                      "bottomLeftCorner",
+                      "topRightCorner"
+                    ]
+                  }
+                }
+              ]
+            }
+          ],
+          "description": "Configuration parameter: shape."
+        }
+      },
+      "description": "Configuration parameter: patch."
+    }
+  },
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://raw.githubusercontent.com/jordiSpider/Weaver/main/schema/2026.10.21/json/moisture_patch_schema.json"
+}
+

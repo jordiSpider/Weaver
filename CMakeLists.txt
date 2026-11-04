@@ -95,6 +95,10 @@ if(CMAKE_BUILD_TYPE STREQUAL "Debug")
     add_compile_definitions(DEBUG)
 endif()
 
+if(BUILD_APP OR BUILD_BENCHMARKS OR BUILD_R_PACKAGES OR INSTALLER_INCLUDE_R)
+    include(cmake/weaver_shared_targets.cmake)
+endif()
+
 # ------------------------------------------------------------
 # 📂 Subdirectory Targets & External Disclosures
 # ------------------------------------------------------------
@@ -117,6 +121,14 @@ if(BUILD_APP)
     if(ENABLE_GUI)
         add_subdirectory(src/gui)
     endif()
+endif()
+
+if(BUILD_APP)
+    install(TARGETS weaver_config_validator weaver_obstacle_engine
+        RUNTIME DESTINATION ${CMAKE_INSTALL_BINDIR} COMPONENT Unspecified
+        LIBRARY DESTINATION ${CMAKE_INSTALL_BINDIR} COMPONENT Unspecified
+        ARCHIVE DESTINATION ${CMAKE_INSTALL_LIBDIR} COMPONENT Unspecified
+    )
 endif()
 
 if(BUILD_BENCHMARKS)

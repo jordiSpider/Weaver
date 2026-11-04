@@ -485,7 +485,7 @@ config_generator <- function(input, config_name, version, save_directory_path, b
 
         # --- Resource Species ---
         # Resource species are still loaded from their scripts at export time.
-        resource_species_folder <- file.path(save_directory_path, config_name, "resource")
+        resource_species_folder <- file.path(save_directory_path, config_name, "resources")
         dir.create(resource_species_folder, recursive = TRUE, showWarnings = FALSE)
         resource_species_env <- vector("list", length(resource_species))
 

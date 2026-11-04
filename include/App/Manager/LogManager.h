@@ -11,6 +11,7 @@ namespace LogManager {
     inline const std::string RED = "\033[31m"; // Errores
     inline const std::string GREEN = "\033[32m"; // Simulación (Información)
     inline const std::string CYAN = "\033[36m"; // IO / Disco
+    inline const std::string YELLOW = "\033[33m"; // Advertencias
 
 
     enum class Subsystem : unsigned char {
@@ -23,6 +24,7 @@ namespace LogManager {
         bool is_error = false;
         bool ignore_silent = false;
         Subsystem subsystem = Subsystem::Simulation;
+        bool is_warning = false;
     };
 
     using LogHandler = std::function<void(const LogMessage&)>;
@@ -40,5 +42,9 @@ namespace LogManager {
 
     inline void emitError(std::string msg, bool ignore_silent = false, Subsystem sub = Subsystem::Simulation) {
         handler(LogMessage{ std::move(msg), true, ignore_silent, sub });
+    }
+
+    inline void emitWarning(std::string msg, bool ignore_silent = false, Subsystem sub = Subsystem::Simulation) {
+        handler(LogMessage{ std::move(msg), false, ignore_silent, sub, true });
     }
 }

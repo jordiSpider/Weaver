@@ -40,7 +40,7 @@ string createOutputFile(std::ofstream &file, fs::path filenameRoot, string filen
     return file_path.string();
 }
 
-json readConfigFile(fs::path configPath, const JsonValidator& validator) {
+json readConfigFile(fs::path configPath) {
 	
 	try {
         // Read configuration file
@@ -54,59 +54,7 @@ json readConfigFile(fs::path configPath, const JsonValidator& validator) {
 
 		try
 		{
-			/*
-				He añadido esta función porque nlohmann json no incluye la comprobación
-				de claves repetidas.
-
-				Para más información ver la dicusión (https://github.com/nlohmann/json/issues/375)
-
-				Para implementar la función me he basado en la documentación (https://json.nlohmann.me/api/basic_json/parser_callback_t/#nlohmannbasic_jsonparser_callback_t)
-			*/
-			stack<set<json>> parse_stack;
-			json::parser_callback_t check_duplicate_keys = [&parse_stack](int, json::parse_event_t event, json &parsed) {
-				switch (event) {
-					case json::parse_event_t::object_start: {
-						parse_stack.push(set<json>());
-						break;
-					}
-					case json::parse_event_t::object_end: {
-						parse_stack.pop();
-						break;
-					} 
-					case json::parse_event_t::key: {
-						const auto result = parse_stack.top().insert(parsed);
-						if (!result.second) {
-							throwValidatorJSONException("'" + string(parsed) + "': Key duplicated");
-						}
-						break;
-					}
-					case json::parse_event_t::array_start:
-					case json::parse_event_t::array_end:
-					case json::parse_event_t::value:
-						break;
-					default: {
-						break;
-					}
-				}
-
-				// yes, store parsed value
-				return true;
-			};
-
-			configuration = json::parse(
-				configFile, /* Configuration file */
-				check_duplicate_keys, /* Callback */
-				true, /* Allow exceptions */
-				true /* Ignore comments */
-			);
-
-			// Realizar la validación
-			validator.validate(configPath.filename().string(), configuration);
-
-			if(configuration["version"].get<string>() != WEAVER_SCHEMA_VERSION)
-			{
-				throwLineInfoException("The configuration file '" + configPath.filename().string() + "' version (" + configuration["version"].get<string>() + ") does not match the software schema version (" + WEAVER_SCHEMA_VERSION + ").");
-			}
+			configuration = json::parse(configFile, nullptr, true, true);
 
 			return configuration;
 		}
@@ -135,3 +83,4 @@ void saveConfigFile(fs::path configPath, json fileContent) {
 		outputFile.close();
     }
 }
+

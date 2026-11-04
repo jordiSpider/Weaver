@@ -202,52 +202,36 @@ run_hub <- function(...) {
             field_errors$optimization_template <- paste0("Schema version mismatch: template ", optimization_template_version, "; executable ", executable_version, ".")
           }
 
-          config_path_is_valid <- nzchar(config_path) && dir.exists(config_path)
+          config_errors <- character(0)
           if (!nzchar(config_path)) {
             field_errors$config <- "Select a base configuration directory."
           } else if (!dir.exists(config_path)) {
             field_errors$config <- "The selected base configuration directory does not exist."
           } else {
-            required_dirs <- c("habitat_domain", "moisture", "obstacle", "resource", "resource/patches", "species")
-            required_files <- c("simulation_params.json", "landscape_params.json")
-            required_csv <- c("ontogeneticLinksPreference.csv", "ontogeneticLinksProfitability.csv")
-            for (directory in required_dirs) {
-              if (!dir.exists(file.path(config_path, directory))) config_errors <- c(config_errors, paste0("Missing folder: ", directory))
+            shared_validator <- get("validate_configuration", envir = asNamespace("weaverR"), inherits = FALSE)
+            validation <- tryCatch(
+              shared_validator(config_path, or_null(executable_version, "")),
+              error = function(e) e
+            )
+            if (inherits(validation, "error")) {
+              config_errors <- c(config_errors, paste("Shared configuration validator failed:", conditionMessage(validation)))
+            } else if (!isTRUE(validation$valid)) {
+              config_errors <- vapply(validation$errors, function(d) {
+                file <- as.character(or_null(d$file, ""))
+                instance_path <- as.character(or_null(d$instancePath, ""))
+                location <- paste(c(file[nzchar(file)], instance_path[nzchar(instance_path)]), collapse = ":")
+                paste0(if (nzchar(location)) paste0(location, ": ") else "", d$message, " [", d$code, "]")
+              }, character(1))
             }
-            for (file_name in required_files) {
-              if (!file.exists(file.path(config_path, file_name))) config_errors <- c(config_errors, paste0("Missing root file: ", file_name))
-            }
-            if (dir.exists(file.path(config_path, "species"))) {
-              for (file_name in required_csv) {
-                if (!file.exists(file.path(config_path, "species", file_name))) config_errors <- c(config_errors, paste0("Missing file: species/", file_name))
-              }
-            }
-            if (length(config_errors) > 0) field_errors$config <- "The base configuration is missing required components."
+            if (length(config_errors) > 0) field_errors$config <- "The base configuration failed validation."
           }
 
-          config_version_errors <- character(0)
-          if (config_path_is_valid && length(config_errors) == 0 && !is.null(executable_version)) {
-            config_json_files <- list.files(config_path, pattern = "\\.[jJ][sS][oO][nN]$", recursive = TRUE, full.names = TRUE)
-            for (json_file in config_json_files) {
-              tryCatch({
-                json_data <- jsonlite::fromJSON(json_file, simplifyVector = TRUE)
-                file_version <- json_data[["version"]]
-                if (!is.null(file_version) && as.character(file_version) != executable_version) {
-                  relative_path <- substring(normalizePath(json_file, mustWork = FALSE), nchar(normalizePath(config_path, mustWork = FALSE)) + 2L)
-                  config_version_errors <- c(config_version_errors, paste0(relative_path, " [Expected: ", executable_version, "; found: ", file_version, "]"))
-                }
-              }, error = function(e) {
-                config_version_errors <<- c(config_version_errors, paste0(basename(json_file), " [Malformed JSON]"))
-              })
-            }
-            if (length(config_version_errors) > 0) field_errors$config <- "One or more configuration JSON files are malformed or use a different schema version."
-          }
 
-          if (any(!vapply(field_errors, is.null, logical(1))) || length(config_errors) > 0 || length(config_version_errors) > 0) {
+          if (any(!vapply(field_errors, is.null, logical(1))) || length(config_errors) > 0) {
             return(list(
               valid = FALSE,
               field_errors = field_errors,
-              config_errors = c(config_errors, config_version_errors),
+              config_errors = config_errors,
               omitted = character(0),
               executable_version = executable_version
             ))
@@ -294,7 +278,7 @@ run_hub <- function(...) {
           }
 
           predator_entries <- read_taxon_entries(file.path(config_path, "species"), "animal")
-          prey_entries <- c(predator_entries, read_taxon_entries(file.path(config_path, "resource"), "resource"))
+          prey_entries <- c(predator_entries, read_taxon_entries(file.path(config_path, "resources"), "resource"))
           predator_names <- if (length(predator_entries)) vapply(predator_entries, `[[`, character(1), "name") else character(0)
           prey_names <- if (length(prey_entries)) vapply(prey_entries, `[[`, character(1), "name") else character(0)
           preference_matrix <- tryCatch(
@@ -649,16 +633,8 @@ run_hub <- function(...) {
       if (!nzchar(executable_path)) field_errors$executable <- "Select a simulator executable."
       if (!nzchar(config_path)) field_errors$config <- "Select a base configuration directory."
 
-      if (any(!vapply(field_errors, is.null, logical(1)))) {
-        pending_optimization_template_validation(list(
-          valid = FALSE,
-          field_errors = field_errors,
-          config_errors = character(0),
-          omitted = character(0)
-        ))
-        return()
-      }
-
+      # Run even when template or executable inputs are still incomplete so the
+      # base configuration gets validated as soon as its directory is selected.
       optimization_variables_validation_in_progress(TRUE)
       tryCatch(
         optimization_variables_validation_task$invoke(
@@ -739,7 +715,7 @@ run_hub <- function(...) {
       if (is.null(config_error) && length(errors) == 0) return(NULL)
       if (length(errors) > 1L) {
         div(class = "weaver-validation-error",
-          p(icon("circle-xmark"), " The directory layout structure breaks mandatory Weaver formats. Missing or invalid elements:"),
+          p(icon("circle-xmark"), " The base configuration has validation errors:"),
           tags$ul(lapply(errors, tags$li)))
       } else {
         div(class = "weaver-validation-error", icon("circle-xmark"), if (length(errors)) errors[[1]] else config_error)

@@ -176,25 +176,13 @@ void AnimalSpecies::setOntogeneticLinks(const vector<Species*>& existingSpecies,
 			{
 				string row = preySpecies->getScientificName() + "$" + fmt::to_string(preyInstar);
 
-				PreciseDouble preference;
-
-				try {
-					preference = ontogeneticLinksPreference.GetCell<double>(column, row);
-				} catch (const std::out_of_range&) {
-					throwLineInfoException("Error: The cell (Row: " + row + ", Column: " + column + ") in 'ontogeneticLinksPreference.csv' does not exist.");
-				}
+				PreciseDouble preference = ontogeneticLinksPreference.GetCell<double>(column, row);
 
 				if(preference > 0.0)
 				{
 					instarPreference += preference;
 
-					PreciseDouble profitability;
-
-					try {
-						profitability = ontogeneticLinksProfitability.GetCell<double>(column, row);
-					} catch (const std::out_of_range&) {
-						throwLineInfoException("Error: The cell (Row: " + row + ", Column: " + column + ") in 'ontogeneticLinksProfitability.csv' does not exist.");
-					}
+					PreciseDouble profitability = ontogeneticLinksProfitability.GetCell<double>(column, row);
 
 					edibleOntogeneticLink[predatorInstar][preySpecies->getId()][preyInstar].setInfo(preference,profitability);
 
@@ -227,11 +215,6 @@ void AnimalSpecies::setOntogeneticLinks(const vector<Species*>& existingSpecies,
 						break;
 				}
 			}
-		}
-
-		if(std::abs(instarPreference.getValue() - 1.0) > 1e-5)
-		{
-			throwLineInfoException("Error: The total preference of instar " + fmt::to_string(predatorInstar) + " of '" + getScientificName() + "' animal species must equal to 1.");
 		}
 	}
 }

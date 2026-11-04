@@ -1,7 +1,8 @@
 
 #include "App/Model/IBM/IBM.h"
 
-#include "schema/landscape_params_schema_json.h"
+#include "Misc/JsonValidator/ConfigurationValidator.h"
+#include "Misc/JsonValidator/EmbeddedConfigurationSchemas.h"
 
 #include "App/Manager/LogManager.h"
 
@@ -52,14 +53,29 @@ void IBM::run(const RunMode runMode, const fs::path& inputConfigPath, const fs::
 
 	if(runMode == RunMode::FromConfig)
 	{
+		ConfigurationValidator validator(WeaverEmbeddedSchemas::configurationStructure,
+			WeaverEmbeddedSchemas::configurationConstraints, WeaverEmbeddedSchemas::jsonSchemas());
+		auto validation = validator.validate(inputConfigPath, WEAVER_SCHEMA_VERSION);
+		if (!validation.valid()) throwLineInfoException("Configuration validation failed:\n" + validation.toPrettyString());
+		if (validation.hasWarnings()) {
+			std::string warningMessage = "Configuration validation produced warnings:\n";
+			for (const auto& warning : validation.warnings) {
+				warningMessage += " - ";
+				if (!warning.file.empty()) warningMessage += warning.file;
+				if (!warning.instancePath.empty()) warningMessage += warning.instancePath;
+				if (!warning.file.empty() || !warning.instancePath.empty()) warningMessage += ": ";
+				warningMessage += warning.message;
+				if (warningMessage.back() != '\n') warningMessage += '\n';
+			}
+			LogManager::emitWarning(std::move(warningMessage));
+		}
+
 		LogManager::emit("===================================================\n");
 		LogManager::emit("Reading configuration and initializing landscape...\n");
 		LogManager::emit("===================================================\n");
 
 
-		JsonValidator landscapeValidator(EmbeddedResources::landscape_params_schema_json, "landscape_params_schema");
-
-		json landscapeConfig = readConfigFile(inputConfigPath / "landscape_params.json", landscapeValidator);
+		json landscapeConfig = readConfigFile(inputConfigPath / "landscape_params.json");
 		
 		myLandscape = Landscape::createInstance(landscapeConfig["landscape"]["simulationType"]);
 	}

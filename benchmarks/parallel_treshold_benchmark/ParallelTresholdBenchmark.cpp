@@ -8,6 +8,7 @@
 #include <vector>
 #include <chrono>
 #include <iostream>
+#include <stdexcept>
 #include <iomanip>
 #include <map>
 
@@ -24,7 +25,8 @@
 #include "App/Manager/TbbManager.h"
 #include "App/Manager/LogManager.h"
 
-#include "schema/landscape_params_schema_json.h"
+#include "Misc/JsonValidator/ConfigurationValidator.h"
+#include "Misc/JsonValidator/EmbeddedConfigurationSchemas.h"
 
 namespace
 {
@@ -47,9 +49,11 @@ namespace
 
 		const std::filesystem::path configPath = benchmarkConfigDir / configSubPath;
 
-		JsonValidator landscapeValidator(EmbeddedResources::landscape_params_schema_json, "landscape_params_schema");
-
-		nlohmann::json landscapeConfig = readConfigFile(configPath / "landscape_params.json", landscapeValidator);
+		ConfigurationValidator validator(WeaverEmbeddedSchemas::configurationStructure,
+			WeaverEmbeddedSchemas::configurationConstraints, WeaverEmbeddedSchemas::jsonSchemas());
+		auto validation = validator.validate(configPath);
+		if (!validation.valid()) throw std::runtime_error("Benchmark configuration validation failed:\n" + validation.toPrettyString());
+		nlohmann::json landscapeConfig = readConfigFile(configPath / "landscape_params.json");
 
 		const std::filesystem::path outputPath = std::filesystem::temp_directory_path() / "parallel_treshold_benchmark_output";
 

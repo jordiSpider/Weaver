@@ -543,14 +543,6 @@ protected:
 	void purgeDeadAnimals();
 
 	/**
-	* @brief Validate the headers of ontogenetic links CSVs read via rapidcsv.
-	*
-	* @param ontogeneticLinksPreference rapidcsv document representing preference links.
-	* @param ontogeneticLinksProfitability rapidcsv document representing profitability links.
-	*/
-	void checkOntogeneticLinksHeaders(const rapidcsv::Document& ontogeneticLinksPreference, const rapidcsv::Document& ontogeneticLinksProfitability) const;
-
-	/**
 	* @brief Allometric scaling formula by Yodzis (helper).
 	*
 	* @param wetMass Animal wet mass used in the scaling.
@@ -744,11 +736,11 @@ protected:
 	std::vector<Species*>& getMutableExistingSpecies();
 
 private:
-	const std::filesystem::path RESOURCE_FOLDER_NAME = "resource"; /**< Name of the resource folder. */
+	const std::filesystem::path RESOURCE_FOLDER_NAME = "resources"; /**< Name of the resource folder. */
 	const std::filesystem::path SPECIES_FOLDER_NAME = "species"; /**< Name of the species folder. */
-	const std::filesystem::path OBSTACLE_FOLDER_NAME = "obstacle"; /**< Name of the obstacle folder. */
-	const std::filesystem::path HABITAT_DOMAIN_FOLDER_NAME = "habitat_domain"; /**< Habitat domain folder name. */
-	const std::filesystem::path MOISTURE_FOLDER_NAME = "moisture"; /**< Moisture folder name. */
+	const std::filesystem::path OBSTACLE_FOLDER_NAME = std::filesystem::path("patches") / "obstacle"; /**< Name of the obstacle folder. */
+	const std::filesystem::path HABITAT_DOMAIN_FOLDER_NAME = std::filesystem::path("patches") / "habitat_domain"; /**< Habitat domain folder name. */
+	const std::filesystem::path MOISTURE_FOLDER_NAME = std::filesystem::path("patches") / "moisture"; /**< Moisture folder name. */
 
 	std::string serializationVersion; /**< Serialization version used for checkpoints. */
 
@@ -892,3 +884,4 @@ namespace boost {
 }
 
 #endif // LANDSCAPE_H_
+

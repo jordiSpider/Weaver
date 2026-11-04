@@ -42,11 +42,6 @@ protected:
     /// Conditional blocks applied to pattern properties.
     std::vector<nlohmann::json> patternConditionals;
 
-    /// Required conditions that must be satisfied for the object to be valid.
-    std::vector<nlohmann::json> requiredConditions;
-
-    /// Warning conditions for optional validation notifications.
-    std::vector<nlohmann::json> warningConditions;
 
 
     /**
@@ -56,14 +51,14 @@ protected:
      * @param patternReplacement Whether to replace patterns in property names.
      * @param replacementValue Replacement string for pattern keys.
      */
-    void applyConditionalBlock(const std::unordered_map<std::string, nlohmann::json>& conditionalBlock, std::unordered_map<std::string, Element*>& modifiedProperties, const bool patternReplacement, const std::string& replacementValue) const;
+    void applyConditionalBlock(const nlohmann::json& conditionalBlock, std::unordered_map<std::string, Element*>& modifiedProperties, const bool patternReplacement, const std::string& replacementValue) const;
     
     /**
      * @brief Applies a conditional block without pattern replacement.
      * @param conditionalBlock JSON map representing the conditional block.
      * @param modifiedProperties Map of properties to be modified by the conditional.
      */
-    void applyConditionalBlock(const std::unordered_map<std::string, nlohmann::json>& conditionalBlock, std::unordered_map<std::string, Element*>& modifiedProperties) const;
+    void applyConditionalBlock(const nlohmann::json& conditionalBlock, std::unordered_map<std::string, Element*>& modifiedProperties) const;
 
     /**
      * @brief Validates that the object conforms to its schema and constraints.
@@ -105,27 +100,6 @@ protected:
      */
     void verifyConditional(const nlohmann::json& conditional) const;
 
-    /**
-     * @brief Verifies that a required condition is correctly defined.
-     * @param condition JSON object representing the required condition. Passed by reference
-     *                  because it may be modified during validation.
-     *
-     * This method ensures that required conditions are valid, properly reference existing
-     * properties, and adhere to the schema rules. Throws an exception if the required
-     * condition is invalid or cannot be satisfied.
-     */
-    void verifyRequiredCondition(nlohmann::json& condition) const;
-
-    /**
-     * @brief Verifies that a warning condition is correctly defined.
-     * @param condition JSON object representing the warning condition. Passed by reference
-     *                  because it may be modified during validation.
-     *
-     * This method ensures that warning conditions are valid and properly reference existing
-     * properties. Unlike required conditions, these do not prevent validation from
-     * succeeding, but may trigger warnings during the validation process.
-     */
-    void verifyWarningCondition(nlohmann::json& condition) const;
 
 public:
     /**
@@ -196,17 +170,7 @@ public:
      */
     const std::vector<nlohmann::json>& getPatternConditionals() const;
 
-    /**
-     * @brief Returns the required conditions for the object.
-     * @return Vector of JSON required conditions.
-     */
-    const std::vector<nlohmann::json>& getRequiredConditions() const;
 
-    /**
-     * @brief Returns the warning conditions for the object.
-     * @return Vector of JSON warning conditions.
-     */
-    const std::vector<nlohmann::json>& getWarningConditions() const;
 };
 
 #endif /* OBJECT_H_ */

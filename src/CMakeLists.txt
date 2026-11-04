@@ -1,117 +1,12 @@
 
-# =========================================================
-# ⚙️ GLOBAL TARGET OPTIONS DEFINITION (INTERFACE TARGET)
-# =========================================================
+include(${CMAKE_SOURCE_DIR}/cmake/embed_configuration_schemas.cmake)
+weaver_embed_configuration_schemas("${CMAKE_BINARY_DIR}/resources")
 
-include(${CMAKE_SOURCE_DIR}/cmake/embed_json_to_header.cmake)
-
-file(GLOB SCHEMA_JSON_FILES CONFIGURE_DEPENDS "${CMAKE_SOURCE_DIR}/schema/${SCHEMA_VERSION}/*.json")
-
-foreach(JSON_FILE IN LISTS SCHEMA_JSON_FILES)
-    # We call our automated function for each file
-    embed_json_to_header("${JSON_FILE}" "${CMAKE_BINARY_DIR}/resources/schema")
-endforeach()
-
-# ---------------------------------------------------------
-# 📂 Subprojects & Target Hierarchy Traversals
-# ---------------------------------------------------------
-find_package(magic_enum CONFIG REQUIRED)
+# Dependencies used by the simulator and application libraries, but not by R.
 find_package(cxxopts CONFIG REQUIRED)
-find_package(nlohmann_json CONFIG REQUIRED)
 find_package(Boost REQUIRED COMPONENTS geometry serialization)
-find_path(RAPIDCSV_INCLUDE_DIRS "rapidcsv.h")
+find_path(RAPIDCSV_INCLUDE_DIRS "rapidcsv.h" REQUIRED)
 find_package(TBB CONFIG REQUIRED)
-find_package(fmt CONFIG REQUIRED)
-find_package(unofficial-noise CONFIG REQUIRED)
-
-set(nlohmann-json_IMPLICIT_CONVERSIONS OFF)
-
-
-
-
-# Define an interface configuration target to propagate global build policies
-add_library(weaver_options INTERFACE)
-
-target_include_directories(weaver_options
-    INTERFACE
-        ${CMAKE_SOURCE_DIR}/include
-        ${CMAKE_BINARY_DIR}/resources
-        ${RAPIDCSV_INCLUDE_DIRS}
-)
-
-target_link_libraries(weaver_options
-    INTERFACE
-        Boost::serialization
-        fmt::fmt
-        magic_enum::magic_enum
-        cxxopts::cxxopts
-        nlohmann_json::nlohmann_json
-        Boost::geometry
-        TBB::tbb TBB::tbbmalloc
-)
-
-if(WIN32)
-    target_compile_definitions(weaver_options INTERFACE 
-        NOMINMAX
-        WIN32_LEAN_AND_MEAN # Optimization: Accelerate compilation phases on Windows platforms
-    )
-
-    target_compile_options(weaver_options INTERFACE
-        # DEBUG CONFIGURATION
-        $<$<CONFIG:Debug>:/Wall /wd4866 /wd5262 /wd5045 /wd4820 /wd4514 /Od /Zi /MTd /EHsc /RTC1 /utf-8>
-        # RELEASE CONFIGURATION
-        $<$<CONFIG:Release>:/W4 /O2 /Ob2 /Ot /Gy /GL /DNDEBUG /MT /utf-8>
-        # RELWITHDEBINFO CONFIGURATION
-        $<$<CONFIG:RelWithDebInfo>:/W4 /O2 /Ob2 /Ot /Gy /GL /Z7 /DNDEBUG /MT /utf-8>
-    )
-        
-    # Linker Directives (Typically required by MSVC for Link-Time Code Generation / LTCG)
-    target_link_options(weaver_options INTERFACE
-        # DEBUG CONFIGURATION
-        $<$<CONFIG:Debug>:/DEBUG /INCREMENTAL>
-        # RELEASE CONFIGURATION
-        $<$<CONFIG:Release>:/INCREMENTAL:NO /LTCG /OPT:REF /OPT:ICF>
-        # RELWITHDEBINFO CONFIGURATION
-        $<$<CONFIG:RelWithDebInfo>:/DEBUG /LTCG /OPT:REF /OPT:ICF /INCREMENTAL:NO>
-    )
-else()
-    # GCC / Clang Toolchains
-    target_compile_options(weaver_options INTERFACE
-        # DEBUG CONFIGURATION
-        $<$<CONFIG:Debug>:-Wall -Wextra -O0 -g -fno-omit-frame-pointer -fsanitize=address?$<BOOL:${ENABLE_ASAN}>:->
-        # RELEASE CONFIGURATION
-        $<$<CONFIG:Release>:-Wall -Wextra -O3 -mtune=native -flto -ffunction-sections -fdata-sections -funroll-loops -DNDEBUG>
-        # RELWITHDEBINFO CONFIGURATION
-        $<$<CONFIG:RelWithDebInfo>:-Wall -Wextra -O3 -g -mtune=native -flto -fno-omit-frame-pointer -DNDEBUG>
-    )
-
-    target_link_options(weaver_options INTERFACE
-        # DEBUG CONFIGURATION
-        $<$<CONFIG:Debug>:-g>
-        # RELEASE CONFIGURATION
-        $<$<CONFIG:Release>:-flto -Wl,--gc-sections -Wl,-O1>
-        # RELWITHDEBINFO CONFIGURATION
-        $<$<CONFIG:RelWithDebInfo>:-flto -g -Wl,--gc-sections>
-    )
-endif()
-
-# Precompiled header: bundles the heaviest/most widely-included third-party and
-# foundational headers to cut redundant parsing across the ~340 translation units.
-target_precompile_headers(weaver_options
-    INTERFACE
-        <boost/archive/text_iarchive.hpp>
-        <boost/archive/text_oarchive.hpp>
-        <boost/archive/binary_iarchive.hpp>
-        <boost/archive/binary_oarchive.hpp>
-        <nlohmann/json.hpp>
-        <magic_enum/magic_enum.hpp>
-)
-
-
-
-
-
-add_library(weaver_core_misc)
 
 target_sources(weaver_core_misc
     PRIVATE
@@ -119,20 +14,7 @@ target_sources(weaver_core_misc
         ${CMAKE_CURRENT_SOURCE_DIR}/Misc/ProgressBar.cpp
         ${CMAKE_CURRENT_SOURCE_DIR}/Misc/Utilities.cpp
         ${CMAKE_CURRENT_SOURCE_DIR}/Misc/Maths/OptimisedOperators.cpp
-        ${CMAKE_CURRENT_SOURCE_DIR}/Misc/JsonValidator/Exceptions.cpp
-        ${CMAKE_CURRENT_SOURCE_DIR}/Misc/JsonValidator/Operators.cpp
-        ${CMAKE_CURRENT_SOURCE_DIR}/Misc/JsonValidator/Validator.cpp
-        ${CMAKE_CURRENT_SOURCE_DIR}/Misc/JsonValidator/Elements/Array.cpp
-        ${CMAKE_CURRENT_SOURCE_DIR}/Misc/JsonValidator/Elements/Boolean.cpp
-        ${CMAKE_CURRENT_SOURCE_DIR}/Misc/JsonValidator/Elements/Element.cpp
-        ${CMAKE_CURRENT_SOURCE_DIR}/Misc/JsonValidator/Elements/ElementFactory.cpp
-        ${CMAKE_CURRENT_SOURCE_DIR}/Misc/JsonValidator/Elements/Integer.cpp
-        ${CMAKE_CURRENT_SOURCE_DIR}/Misc/JsonValidator/Elements/Number.cpp
-        ${CMAKE_CURRENT_SOURCE_DIR}/Misc/JsonValidator/Elements/Object.cpp
-        ${CMAKE_CURRENT_SOURCE_DIR}/Misc/JsonValidator/Elements/String.cpp
-        ${CMAKE_CURRENT_SOURCE_DIR}/Misc/JsonValidator/Elements/Tuple.cpp
         ${CMAKE_CURRENT_SOURCE_DIR}/Misc/string/trim.cpp
-        ${CMAKE_CURRENT_SOURCE_DIR}/Exceptions/LineInfoException.cpp
 )
 
 target_precompile_headers(weaver_core_misc
@@ -143,10 +25,24 @@ target_precompile_headers(weaver_core_misc
         "${CMAKE_SOURCE_DIR}/include/Misc/Maths/PreciseDouble.h"
 )
 
+target_precompile_headers(weaver_core_misc PUBLIC
+    <boost/archive/text_iarchive.hpp>
+    <boost/archive/text_oarchive.hpp>
+    <boost/archive/binary_iarchive.hpp>
+    <boost/archive/binary_oarchive.hpp>
+)
+
 target_link_libraries(weaver_core_misc
     PUBLIC
         weaver_options
+        Boost::serialization
+        Boost::geometry
+        cxxopts::cxxopts
+        TBB::tbb
+        TBB::tbbmalloc
 )
+
+target_include_directories(weaver_core_misc PUBLIC "${RAPIDCSV_INCLUDE_DIRS}")
 
 
 
@@ -200,7 +96,6 @@ target_sources(weaver_app_landscape
         ${CMAKE_CURRENT_SOURCE_DIR}/App/Model/IBM/Landscape/Map/Navigation/WaypointRouteFollowingPolicy.cpp
         ${CMAKE_CURRENT_SOURCE_DIR}/App/Model/IBM/Landscape/Map/Geometry/Geometry.cpp
         ${CMAKE_CURRENT_SOURCE_DIR}/App/Model/IBM/Landscape/Map/Patches/Patch.cpp
-        ${CMAKE_CURRENT_SOURCE_DIR}/App/Model/IBM/Landscape/Map/Patches/ObstaclePorosityMaskGenerator.cpp
         ${CMAKE_CURRENT_SOURCE_DIR}/App/Model/IBM/Landscape/Map/Patches/Shape/CubicPatch.cpp
         ${CMAKE_CURRENT_SOURCE_DIR}/App/Model/IBM/Landscape/Map/Patches/Shape/GaussianPatch.cpp
         ${CMAKE_CURRENT_SOURCE_DIR}/App/Model/IBM/Landscape/Map/Patches/Shape/HomogeneousPatch.cpp
@@ -254,6 +149,7 @@ target_link_libraries(weaver_app_landscape
         weaver_core_misc
         weaver_app_maths_physics
         weaver_app_living_beings
+        weaver_obstacle_engine
         unofficial::noise::noise-static
 )
 
@@ -376,6 +272,7 @@ target_link_libraries(weaver_app_model
     PUBLIC
         weaver_options
         weaver_core_misc
+        weaver_config_validator
         weaver_app_landscape
         weaver_app_living_beings
 )

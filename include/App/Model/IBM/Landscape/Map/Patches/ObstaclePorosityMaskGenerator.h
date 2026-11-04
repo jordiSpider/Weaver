@@ -5,6 +5,16 @@
 #include <cstdint>
 #include <vector>
 
+#if defined(_WIN32)
+#  if defined(WEAVER_OBSTACLE_ENGINE_BUILD)
+#    define WEAVER_OBSTACLE_ENGINE_API __declspec(dllexport)
+#  else
+#    define WEAVER_OBSTACLE_ENGINE_API __declspec(dllimport)
+#  endif
+#else
+#  define WEAVER_OBSTACLE_ENGINE_API __attribute__((visibility("default")))
+#endif
+
 class ObstaclePorosityMaskGenerator {
 public:
 	struct Parameters {
@@ -14,7 +24,7 @@ public:
 		std::size_t octaves = 0u;
 	};
 
-	static std::vector<std::uint8_t> generate(
+	static WEAVER_OBSTACLE_ENGINE_API std::vector<std::uint8_t> generate(
 		const std::vector<std::uint8_t>& coveredCells,
 		std::size_t gridWidth,
 		std::size_t gridHeight,
@@ -25,7 +35,7 @@ public:
 		const Parameters& parameters,
 		unsigned int seed);
 
-	static std::vector<int> generatePatch(
+	static WEAVER_OBSTACLE_ENGINE_API std::vector<int> generatePatch(
 		const std::vector<std::uint8_t>& eligibleCells,
 		std::size_t mapWidth,
 		std::size_t mapHeight,

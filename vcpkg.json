@@ -2,61 +2,62 @@
     "builtin-baseline": "9e593bb18ea69cc5095e012465dcd675a822ed0d",
     "name": "weaver",
     "version": "1.0.0",
-    "dependencies": [],
+    "dependencies": [
+      {
+        "name": "magic-enum"
+      },
+      {
+        "name": "fmt"
+      },
+      {
+        "name": "nlohmann-json"
+      }
+    ],
     "features": {
-        "app": {
-            "description": "APP",
-            "dependencies": [
-                {
-                  "name": "magic-enum"
-                },
-                {
-                    "name": "fmt"
-                },
-                {
-                    "name": "cxxopts"
-                },
-                {
-                    "name": "nlohmann-json"
-                },
-                {
-                    "name": "boost-geometry"
-                },
-                {
-                    "name": "boost-serialization"
-                },
-                {
-                    "name": "rapidcsv"
-                },
-                {
-                    "name": "tbb"
-                },
-                {
-                    "name": "vcpkg-pkgconfig-get-modules"
-                }
-            ]
-        },
-        "obstacle-engine": {
-            "description": "Shared native obstacle generation engine for the R package",
-            "dependencies": [
-                { "name": "libnoise" }
-            ]
-        },
-        "gui": {
-            "description": "GUI",
-            "dependencies": [
-                {
-                    "name": "nana"
-                }
-            ]
-        },
-        "benchmarks": {
-            "description": "Google Benchmark targets",
-            "dependencies": [
-                {
-                    "name": "benchmark"
-                }
-            ]
-        }
+      "app": {
+        "description": "APP",
+        "dependencies": [
+          {
+            "name": "cxxopts"
+          },
+          {
+            "name": "boost-geometry"
+          },
+          {
+            "name": "boost-serialization"
+          },
+          {
+            "name": "rapidcsv"
+          },
+          {
+            "name": "tbb"
+          },
+          {
+            "name": "vcpkg-pkgconfig-get-modules"
+          }
+        ]
+      },
+      "obstacle-engine": {
+        "description": "Shared native obstacle generation engine for the R package",
+        "dependencies": [
+          { "name": "libnoise" }
+        ]
+      },
+      "gui": {
+        "description": "GUI",
+        "dependencies": [
+          {
+            "name": "nana"
+          }
+        ]
+      },
+      "benchmarks": {
+        "description": "Google Benchmark targets",
+        "dependencies": [
+          {
+            "name": "benchmark"
+          }
+        ]
+      }
     }
 }

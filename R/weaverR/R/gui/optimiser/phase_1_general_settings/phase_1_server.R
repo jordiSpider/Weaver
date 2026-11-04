@@ -25,8 +25,7 @@ mod_optimiser_phase_1_server <- function(id, global_store, max_cores_allowed, sh
       zero_objectives       = NULL,
       duplicate_objectives  = list(),
       code_syntax_errors    = list(),
-      weights_validation    = NULL,
-      schema_version_mismatch = list() 
+      weights_validation    = NULL
     )
 
     # Secure storage schema tracking card IDs and all their internal input fields structures
@@ -130,85 +129,45 @@ mod_optimiser_phase_1_server <- function(id, global_store, max_cores_allowed, sh
     }, ignoreInit = FALSE)
     
     # ============================================================================
-    # 3. ISOLATED EVENT LISTENERS VALIDATORS (Base Configuration Layout Structure)
+    # 3. SHARED NATIVE VALIDATION (Base Configuration)
     # ============================================================================
-    observeEvent(input$base_config_text_path, {
-      path <- input$base_config_text_path
+    observeEvent(list(input$base_config_text_path, input$program_text_path), {
+      path <- trimws(input$base_config_text_path %||% "")
+      expected_version <- tryCatch(schema_version(), error = function(e) NULL)
+      if (is.null(expected_version) || !length(expected_version) || is.na(expected_version[[1]])) {
+        expected_version <- ""
+      } else {
+        expected_version <- as.character(expected_version[[1]])
+      }
       
-      if (is.null(path) || path == "") {
+      if (!nzchar(path)) {
         active_errors$base_config_text_path <- "Error: Base configuration directory path cannot be left blank."
-        active_errors$schema_version_mismatch <- list()
         return()
       }
       if (!dir.exists(path)) {
         active_errors$base_config_text_path <- "Error: The specified base configuration path does not point to an existing directory."
-        active_errors$schema_version_mismatch <- list()
         return()
       }
-      
-      # Strict validation of folders structure and parameter matrices presence
-      required_dirs <- c("habitat_domain", "moisture", "obstacle", "resource", "resource/patches", "species")
-      required_files <- c("simulation_params.json", "landscape_params.json")
-      required_csv   <- c("ontogeneticLinksPreference.csv", "ontogeneticLinksProfitability.csv")
-      
-      missing <- c()
-      for (d in required_dirs) { if (!dir.exists(file.path(path, d))) missing <- c(missing, paste0("Folder missing: ", d)) }
-      for (f in required_files) { if (!file.exists(file.path(path, f))) missing <- c(missing, paste0("File missing at root: ", f)) }
-      if (!"Folder missing: species" %in% missing) {
-        for (c in required_csv) { if (!file.exists(file.path(path, "species", c))) missing <- c(missing, paste0("File missing: species/", c)) }
-      }
-      
-      if (length(missing) > 0) {
-        active_errors$base_config_text_path <- missing
-        active_errors$schema_version_mismatch <- list()
+
+      shared_validator <- get("validate_configuration", envir = asNamespace("weaverR"), inherits = FALSE)
+      validation <- tryCatch(shared_validator(path, expected_version), error = function(e) e)
+      if (inherits(validation, "error")) {
+        active_errors$base_config_text_path <- paste(
+          "Shared configuration validator failed:", conditionMessage(validation)
+        )
+      } else if (!isTRUE(validation$valid)) {
+        active_errors$base_config_text_path <- vapply(validation$errors, function(d) {
+          file <- as.character(d$file %||% "")
+          instance_path <- as.character(d$instancePath %||% "")
+          schema_path <- as.character(d$schemaPath %||% "")
+          location <- paste(c(file[nzchar(file)], instance_path[nzchar(instance_path)]), collapse = ":")
+          schema <- if (nzchar(schema_path)) paste0(" (schema ", schema_path, ")") else ""
+          paste0(if (nzchar(location)) paste0(location, ": ") else "", d$message, schema, " [", d$code, "]")
+        }, character(1))
       } else {
         active_errors$base_config_text_path <- NULL
       }
     }, ignoreInit = FALSE)
-    
-    observe({
-      path <- input$base_config_text_path
-      exec_version <- schema_version()
-      
-      # CONDITIONAL SAFETY LIEN: Si falta la ruta, las carpetas están rotas o el exe no tiene versión, abortamos
-      if (is.null(path) || path == "" || !dir.exists(path) || !is.null(active_errors$base_config_text_path)) {
-        active_errors$schema_version_mismatch <- list()
-        return()
-      }
-      if (is.null(exec_version) || exec_version == "") {
-        active_errors$schema_version_mismatch <- list()
-        return()
-      }
-      
-      version_mismatches <- c()
-      
-      # Realizamos el escaneo recursivo de los ficheros JSON en segundo plano de forma segura
-      all_json_files <- list.files(path, pattern = "\\.[jJ][sS][oO][nN]$", recursive = TRUE, full.names = TRUE)
-      
-      for (json_file in all_json_files) {
-        tryCatch({
-          json_data <- jsonlite::fromJSON(json_file, simplifyVector = TRUE)
-          file_version_token <- json_data[["version"]]
-          
-          if (!is.null(file_version_token)) {
-            if (as.character(file_version_token) != as.character(exec_version)) {
-              relative_path <- sub(paste0(normalizePath(path, mustWork = FALSE), "/"), "", normalizePath(json_file, mustWork = FALSE), fixed = TRUE)
-              version_mismatches <- c(version_mismatches, paste0("File: ", relative_path, " [Expected: ", exec_version, " | Found: ", file_version_token, "]"))
-            }
-          }
-        }, error = function(e) {
-          relative_path <- sub(paste0(normalizePath(path, mustWork = FALSE), "/"), "", normalizePath(json_file, mustWork = FALSE), fixed = TRUE)
-          version_mismatches <- c(version_mismatches, paste0("File: ", relative_path, " [Parse failed: Malformed syntax]"))
-        })
-      }
-      
-      # Guardamos el resultado final en el slot correspondiente
-      if (length(version_mismatches) > 0) {
-        active_errors$schema_version_mismatch <- version_mismatches
-      } else {
-        active_errors$schema_version_mismatch <- list()
-      }
-    })
 
     # ============================================================================
     # 2.2 ISOLATED EVENT LISTENERS VALIDATORS (Ecosystem Objectives Constraints)
@@ -432,9 +391,9 @@ mod_optimiser_phase_1_server <- function(id, global_store, max_cores_allowed, sh
     # 4. BACKGROUND ASYNC SIMULATOR SCHEMA VERSION EXTRACTOR
     # ============================================================================
     schema_version <- reactive({
-      req(is.null(active_errors$program_text_path))
       current_executable_path <- input$program_text_path
-      if (is.null(current_executable_path) || current_executable_path == "") return(NULL)
+      if (is.null(current_executable_path) || current_executable_path == "" ||
+          !file.exists(current_executable_path)) return(NULL)
       
       tryCatch({
         execution_response <- system2(command = current_executable_path, args = c("--schema_version"), stdout = TRUE, stderr = TRUE, timeout = 5)
@@ -470,11 +429,10 @@ mod_optimiser_phase_1_server <- function(id, global_store, max_cores_allowed, sh
   
       if (!is.null(all_errors$base_config_text_path)) {
         err_content <- all_errors$base_config_text_path
-        if (length(err_content) > 1) {
-          consolidated_errors_vector <- c(consolidated_errors_vector, "Error: Required Weaver configuration layout components are missing inside base path.")
-        } else {
-          consolidated_errors_vector <- c(consolidated_errors_vector, err_content)
-        }
+        consolidated_errors_vector <- c(
+          consolidated_errors_vector,
+          as.character(unlist(err_content, use.names = FALSE))
+        )
       }
   
       objective_errors <- unlist(all_errors$duplicate_objectives, use.names = FALSE)
@@ -485,10 +443,6 @@ mod_optimiser_phase_1_server <- function(id, global_store, max_cores_allowed, sh
       syntax_errors <- syntax_errors[!is.na(syntax_errors) & nzchar(trimws(syntax_errors))]
       if (length(syntax_errors) > 0) consolidated_errors_vector <- c(consolidated_errors_vector, unique(syntax_errors))
   
-      if (length(all_errors$schema_version_mismatch) > 0) {
-        consolidated_errors_vector <- c(consolidated_errors_vector, "Error: One or more JSON layout configuration files mismatch the active simulator runtime schema version.")
-      }
-
       consolidated_errors_vector <- as.character(unlist(consolidated_errors_vector, use.names = FALSE))
       consolidated_errors_vector <- unique(consolidated_errors_vector[!is.na(consolidated_errors_vector) & nzchar(trimws(consolidated_errors_vector))])
   
@@ -521,38 +475,19 @@ mod_optimiser_phase_1_server <- function(id, global_store, max_cores_allowed, sh
     
     # Custom local view for the configuration directory unrolling the dotted lines
     output$error_local_base_config_text_path <- renderUI({ 
-      # CORRECCIÓN ENCONTRADA: '||' reemplazado por comprobaciones individuales is.null y de longitud seguras
-      has_structure_error <- !is.null(active_errors$base_config_text_path)
-      has_version_mismatch <- length(active_errors$schema_version_mismatch) > 0
-      
-      # Si no hay ninguna de las dos anomalías activas, detenemos el renderizado de forma segura
-      req(has_structure_error || has_version_mismatch)
-      
-      err_content    <- active_errors$base_config_text_path
-      version_issues <- active_errors$schema_version_mismatch
-      
+      err_content <- as.character(unlist(active_errors$base_config_text_path, use.names = FALSE))
+      req(length(err_content) > 0)
+
       div(class = "text-danger small fw-bold text-break mt-1 mb-0",
-          # Escenario A: El directorio base tiene carpetas o archivos json mandatorios ausentes
-          if (has_structure_error) {
-            if (length(err_content) > 1) {
-              tagList(
-                p(icon("circle-xmark"), " Error: The directory layout structure breaks mandatory Weaver formats. Missing elements:"),
-                tags$ul(style = "margin-top: 5px; margin-bottom: 5px; padding-left: 20px;", 
-                       lapply(err_content, function(item) tags$li(item)))
-              )
-            } else {
-              p(icon("circle-xmark"), err_content)
-            }
-          } else { NULL },
-          
-          # Escenario B: Las carpetas existen, pero hay archivos JSON que infringen la firma del simulador
-          if (has_version_mismatch) {
+          if (length(err_content) > 1) {
             tagList(
-              p(icon("circle-xmark"), " Error: Schema compatibility integrity failure. The following asset configurations mismatch your execution binary runtime version:"),
-              tags$ul(style = "margin-top: 5px; margin-bottom: 0; padding-left: 20px; font-family: 'Fira Code', monospace; font-size: 0.8rem;", 
-                     lapply(version_issues, function(item) tags$li(item)))
+              p(icon("circle-xmark"), " Error: Base configuration validation failed:"),
+              tags$ul(style = "margin-top: 5px; margin-bottom: 5px; padding-left: 20px;",
+                      lapply(err_content, function(item) tags$li(item)))
             )
-          } else { NULL }
+          } else {
+            p(icon("circle-xmark"), err_content)
+          }
       )
     })
     

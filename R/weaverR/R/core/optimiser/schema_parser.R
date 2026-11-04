@@ -280,6 +280,9 @@ load_all_version_schemas <- function(version_str, include_basic_strings = FALSE)
     schema_dir <- system.file("schema", package = "weaverR")
     if (!dir.exists(schema_dir)) return(data.frame())
   }
+
+  versioned_json_dir <- file.path(schema_dir, "json")
+  if (dir.exists(versioned_json_dir)) schema_dir <- versioned_json_dir
   
   json_files <- list.files(schema_dir, pattern = "\\.json$", full.names = TRUE)
   if (length(json_files) == 0) return(data.frame())
@@ -318,11 +321,11 @@ resolve_config_destinations_by_schema <- function(schema_file, base_config_path)
     simulation_params_schema.json = list(mode = "file", path = "simulation_params.json"),
     landscape_params_schema.json = list(mode = "file", path = "landscape_params.json"),
     species_schema.json = list(mode = "dir", path = "species"),
-    resource_schema.json = list(mode = "dir", path = "resource"),
-    resource_patch_schema.json = list(mode = "dir", path = "resource/patches"),
-    obstacle_patch_schema.json = list(mode = "dir", path = "obstacle"),
-    moisture_patch_schema.json = list(mode = "dir", path = "moisture"),
-    habitat_domain_patch_schema.json = list(mode = "dir", path = "habitat_domain")
+    resource_schema.json = list(mode = "dir", path = "resources"),
+    resource_patch_schema.json = list(mode = "dir", path = "patches/resource"),
+    obstacle_patch_schema.json = list(mode = "dir", path = "patches/obstacle"),
+    moisture_patch_schema.json = list(mode = "dir", path = "patches/moisture"),
+    habitat_domain_patch_schema.json = list(mode = "dir", path = "patches/habitat_domain")
   )
   rule <- schema_to_target[[schema_file]]
   if (is.null(rule)) return(character(0))

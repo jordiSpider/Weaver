@@ -1,0 +1,53 @@
+{
+  "type": "object",
+  "properties": {
+    "version": {
+      "type": "string",
+      "description": "Configuration parameter: version."
+    },
+    "resource": {
+      "type": "object",
+      "properties": {
+        "growthModule": {
+          "type": "object",
+          "properties": {
+            "cellMass": {
+              "type": "number",
+              "description": "Configuration parameter: cell mass."
+            },
+            "conversionToWetMass": {
+              "type": "number",
+              "description": "Configuration parameter: conversion to wet mass."
+            },
+            "minRH": {
+              "type": "number",
+              "minimum": 0.0,
+              "maximum": 100.0,
+              "description": "Configuration parameter: min rh."
+            },
+            "maxRH": {
+              "type": "number",
+              "minimum": 0.0,
+              "maximum": 100.0,
+              "description": "Configuration parameter: max rh."
+            }
+          },
+          "description": "Configuration parameter: growth module."
+        },
+        "name": {
+          "type": "string",
+          "description": "Configuration parameter: name."
+        },
+        "zeroResource": {
+          "type": "integer",
+          "minimum": 0,
+          "description": "Configuration parameter: zero resource."
+        }
+      },
+      "description": "Configuration parameter: resource."
+    }
+  },
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://raw.githubusercontent.com/jordiSpider/Weaver/main/schema/2026.10.21/json/resource_schema.json"
+}
+

@@ -1,0 +1,78 @@
+{
+  "$schema": "https://raw.githubusercontent.com/jordiSpider/Weaver/main/schema/constraints.schema.json",
+  "$id": "https://raw.githubusercontent.com/jordiSpider/Weaver/main/schema/2026.10.21/constraints.json",
+  "version": "1.0.0",
+  "description": "Cross-file assertions evaluated against the complete configuration document set.",
+  "constraints": [
+    {
+      "id": "individual-level-trait-ranges-max-greater-than-min",
+      "forEachFile": "species/*.json",
+      "forEachPath": "/animal/genetics/traits/definition/**",
+      "where": {
+        "eq": [
+          {
+            "ref": {
+              "file": "$item",
+              "path": "/definitionType"
+            }
+          },
+          "IndividualLevel"
+        ]
+      },
+      "description": "Every IndividualLevel trait must have ranges.max strictly greater than ranges.min.",
+      "code": "invalid_individual_level_trait_range",
+      "path": "/individualLevelParams/ranges/max",
+      "assert": {
+        "gt": [
+          {
+            "ref": {
+              "file": "$item",
+              "path": "/individualLevelParams/ranges/max"
+            }
+          },
+          {
+            "ref": {
+              "file": "$item",
+              "path": "/individualLevelParams/ranges/min"
+            }
+          }
+        ]
+      }
+    },
+    {
+      "id": "species-individuals-per-instar-age-vector-length",
+      "forEachFile": "species/*.json",
+      "description": "Item 'individualsPerInstar' must have an additional element to the item 'ageVector'.",
+      "code": "constraint_failed",
+      "assert": {
+        "eq": [
+          { "count": { "ref": { "file": "$current", "path": "/animal/individualsPerInstar" } } },
+          { "add": [ { "count": { "ref": { "file": "$current", "path": "/animal/growthModule/ageVector" } } }, 1 ] }
+        ]
+      }
+    },
+    {
+      "id": "species-individuals-per-instar-pore-use-length",
+      "forEachFile": "species/*.json",
+      "description": "Items 'individualsPerInstar' and 'poreUsePerInstar' must have the same size.",
+      "code": "constraint_failed",
+      "assert": { "eq": [ { "count": { "ref": { "file": "$current", "path": "/animal/individualsPerInstar" } } }, { "count": { "ref": { "file": "$current", "path": "/animal/poreUsePerInstar" } } } ] }
+    },
+    {
+      "id": "species-individuals-per-instar-conversion-length",
+      "forEachFile": "species/*.json",
+      "description": "Items 'individualsPerInstar' and 'conversionToWetMass' must have the same size.",
+      "code": "constraint_failed",
+      "assert": { "eq": [ { "count": { "ref": { "file": "$current", "path": "/animal/individualsPerInstar" } } }, { "count": { "ref": { "file": "$current", "path": "/animal/conversionToWetMass" } } } ] }
+    },
+    {
+      "id": "simulation-record-periodicity-warning",
+      "forEachFile": "simulation_params.json",
+      "description": "Item 'recordEach' is greater than item 'runDays'.",
+      "code": "record_periodicity_exceeds_run_days",
+      "severity": "warning",
+      "assert": { "lte": [ { "ref": { "file": "$current", "path": "/outputs/recordEach" } }, { "ref": { "file": "$current", "path": "/runDays" } } ] }
+    }
+  ]
+}
+

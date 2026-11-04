@@ -27,7 +27,6 @@
 
 #include "Types.h"
 #include "Exceptions/LineInfoException.h"
-#include "Misc/JsonValidator/Validator.h"
 
 /**
  * @brief Creates an output file at the specified path.
@@ -66,14 +65,13 @@ std::string createOutputFile(std::ofstream &file, std::filesystem::path filename
 std::string createOutputFile(std::ofstream &file, std::filesystem::path filenameRoot, std::string filename, std::string extension, unsigned int numberOfTimeSteps, unsigned int recordEach, std::ios_base::openmode openMode = std::ofstream::out);
 
 /**
- * @brief Reads a JSON configuration file and validates it.
+ * @brief Reads a JSON configuration file already validated by ConfigurationValidator.
  *
  * @param configPath Path to the JSON configuration file.
- * @param validator JsonValidator object used to validate the JSON structure.
  * @return The content of the configuration file as a nlohmann::json object.
  * @throws LineInfoException if the file cannot be read or is invalid.
  */
-nlohmann::json readConfigFile(std::filesystem::path configPath, const JsonValidator& validator);
+nlohmann::json readConfigFile(std::filesystem::path configPath);
 
 /**
  * @brief Saves a JSON object to a configuration file.
