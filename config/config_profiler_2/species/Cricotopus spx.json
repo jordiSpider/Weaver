@@ -5,7 +5,7 @@
     "coefficientForHandlingTimeA": 28.407,
     "coefficientForHandlingTimeB": -0.664,
     "coefficientForHandlingTimeC": -6.365,
-    "conversionToWetMass": [9.193, 9.193, 9.193, 9.193, 9.193],
+    "conversionToWetMass": [ 9.193, 9.193, 9.193, 9.193, 9.193 ],
     "daysWithoutFoodForMetabolicDownregulation": 2,
     "debug": {
       "forcePresenceAllResourcesInvolved": false,
@@ -77,7 +77,7 @@
         }
       ],
       "modules": {
-        "correlationCoefficientRhoPerModule": [0.1, 0.1],
+        "correlationCoefficientRhoPerModule": [ 0.1, 0.1 ],
         "traitsPerModule": 3
       },
       "numberOfAllelesPerLocus": 10,
@@ -3170,7 +3170,7 @@
       }
     },
     "growthModule": {
-      "ageVector": [7.47, 13.39, 20.14, 29.04],
+      "ageVector": [ 7.47, 13.39, 20.14, 29.04 ],
       "assignedForMolt": 0.99,
       "betaScaleTank": 1.01,
       "capitalBreeding": {
@@ -3236,11 +3236,11 @@
     "habitatShiftAfterBreedingFactor": 1000000,
     "habitatShiftBeforeBreeding": true,
     "habitatShiftBeforeBreedingFactor": 1000000,
-    "individualsPerInstar": [1892, 163, 73, 40, 23],
+    "individualsPerInstar": [ 1892, 163, 73, 40, 23 ],
     "maleMaxReproductionEvents": 8,
     "maleMobility": 1,
     "maleReproductionFactor": 0.25,
-    "minRelativeHumidityThreshold": [10, 10, 10, 10, 10],
+    "minRelativeHumidityThreshold": [ 10, 10, 10, 10, 10 ],
     "name": "Cricotopus_spx",
     "numberOfSimulatedAttacks": 10000,
     "percentageCostForMetabolicDownregulationSearchArea": 0.5,
@@ -3249,9 +3249,9 @@
     "percentageMetabolicDownregulation": 0,
     "plasticityDueToConditionSearch": 0.05,
     "plasticityDueToConditionSpeed": 0.05,
-    "poreUsePerInstar": [1, 1, 1, 1, 1],
+    "poreUsePerInstar": [ 1, 1, 1, 1, 1 ],
     "preserveLeftovers": true,
-    "probabilityDeathFromBackground": [0, 0, 0, 0, 0],
+    "probabilityDeathFromBackground": [ 0, 0, 0, 0, 0 ],
     "requiredRepresentAllPossibleAlleles": false,
     "sexRatio": 0.5,
     "sexualType": "diploid",
@@ -3260,5 +3260,5 @@
     "YodzisA": 0.1,
     "YodzisB": 0.75
   },
-    "version": "2026.08.05"
+  "version": "2026.10.21"
 }

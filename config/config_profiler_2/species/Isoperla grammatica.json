@@ -5,7 +5,7 @@
     "coefficientForHandlingTimeA": 28.407,
     "coefficientForHandlingTimeB": -0.664,
     "coefficientForHandlingTimeC": -6.365,
-        "conversionToWetMass": [ 4.31404958677686, 4.31404958677686, 4.31404958677686, 4.31404958677686, 4.31404958677686, 4.31404958677686, 4.31404958677686, 4.31404958677686, 4.31404958677686, 4.31404958677686, 4.31404958677686, 4.31404958677686, 4.31404958677686, 4.31404958677686 ],
+    "conversionToWetMass": [ 4.31404958677686, 4.31404958677686, 4.31404958677686, 4.31404958677686, 4.31404958677686, 4.31404958677686, 4.31404958677686, 4.31404958677686, 4.31404958677686, 4.31404958677686, 4.31404958677686, 4.31404958677686, 4.31404958677686, 4.31404958677686 ],
     "daysWithoutFoodForMetabolicDownregulation": 2,
     "debug": {
       "forcePresenceAllResourcesInvolved": false,
@@ -77,7 +77,7 @@
         }
       ],
       "modules": {
-                "correlationCoefficientRhoPerModule": [ 0.1, 0.1 ],
+        "correlationCoefficientRhoPerModule": [ 0.1, 0.1 ],
         "traitsPerModule": 3
       },
       "numberOfAllelesPerLocus": 10,
@@ -3161,7 +3161,7 @@
       }
     },
     "growthModule": {
-      "ageVector": [20.77, 41.54, 62.31, 83.08, 103.85, 124.62, 145.38, 166.15, 186.92, 207.69, 228.46, 249.23, 270],
+      "ageVector": [ 20.77, 41.54, 62.31, 83.08, 103.85, 124.62, 145.38, 166.15, 186.92, 207.69, 228.46, 249.23, 270 ],
       "assignedForMolt": 0.99,
       "betaScaleTank": 1.01,
       "capitalBreeding": {
@@ -3216,11 +3216,11 @@
     "habitatShiftAfterBreedingFactor": 1000000,
     "habitatShiftBeforeBreeding": true,
     "habitatShiftBeforeBreedingFactor": 1000000,
-    "individualsPerInstar": [17, 14, 11, 9, 7, 5, 4, 3, 2, 1, 1, 1, 0, 0],
+    "individualsPerInstar": [ 17, 14, 11, 9, 7, 5, 4, 3, 2, 1, 1, 1, 0, 0 ],
     "maleMaxReproductionEvents": 8,
     "maleMobility": 1,
     "maleReproductionFactor": 0.25,
-    "minRelativeHumidityThreshold": [10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10],
+    "minRelativeHumidityThreshold": [ 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10 ],
     "name": "Isoperla_grammatica",
     "numberOfSimulatedAttacks": 10000,
     "percentageCostForMetabolicDownregulationSearchArea": 0.5,
@@ -3229,9 +3229,9 @@
     "percentageMetabolicDownregulation": 0,
     "plasticityDueToConditionSearch": 0.05,
     "plasticityDueToConditionSpeed": 0.05,
-    "poreUsePerInstar": [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1],
+    "poreUsePerInstar": [ 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1 ],
     "preserveLeftovers": true,
-    "probabilityDeathFromBackground": [0.000925925925925926, 0.000925925925925926, 0.000925925925925926, 0.000925925925925926, 0.000925925925925926, 0.000925925925925926, 0.000925925925925926, 0.000925925925925926, 0.000925925925925926, 0.000925925925925926, 0.000925925925925926, 0.000925925925925926, 0.000925925925925926, 0.00510204081632653],
+    "probabilityDeathFromBackground": [ 0.000925925925925926, 0.000925925925925926, 0.000925925925925926, 0.000925925925925926, 0.000925925925925926, 0.000925925925925926, 0.000925925925925926, 0.000925925925925926, 0.000925925925925926, 0.000925925925925926, 0.000925925925925926, 0.000925925925925926, 0.000925925925925926, 0.00510204081632653 ],
     "requiredRepresentAllPossibleAlleles": false,
     "sexRatio": 0.5,
     "sexualType": "diploid",
@@ -3240,5 +3240,5 @@
     "YodzisA": 0.1,
     "YodzisB": 0.75
   },
-    "version": "2026.08.05"
+  "version": "2026.10.21"
 }

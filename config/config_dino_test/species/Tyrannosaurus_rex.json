@@ -78,7 +78,8 @@
       ],
       "modules": {
         "correlationCoefficientRhoPerModule": [
-          0.1, 0.1
+          0.1,
+          0.1
         ],
         "traitsPerModule": 3
       },
@@ -3163,7 +3164,7 @@
       }
     },
     "growthModule": {
-      "ageVector": [371, 742, 1113, 1484, 1855, 2226, 2597, 2968, 3339, 3710, 4081, 4452, 4823, 5194, 5565, 5936, 6307, 6678, 7049, 7420, 7791, 8162, 8533, 8904, 9275, 9646, 10017, 10388, 10759, 11130, 11501, 11872, 12243],
+      "ageVector": [ 371, 742, 1113, 1484, 1855, 2226, 2597, 2968, 3339, 3710, 4081, 4452, 4823, 5194, 5565, 5936, 6307, 6678, 7049, 7420, 7791, 8162, 8533, 8904, 9275, 9646, 10017, 10388, 10759, 11130, 11501, 11872, 12243 ],
       "assignedForMolt": 0.99,
       "betaScaleTank": 1,
       "capitalBreeding": {
@@ -3216,11 +3217,11 @@
     "habitatShiftAfterBreedingFactor": 0,
     "habitatShiftBeforeBreeding": false,
     "habitatShiftBeforeBreedingFactor": 0,
-    "individualsPerInstar": [387, 228, 135, 81, 50, 31, 20, 13, 9, 6, 5, 4, 3, 2, 2, 2, 2, 2, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1],
+    "individualsPerInstar": [ 387, 228, 135, 81, 50, 31, 20, 13, 9, 6, 5, 4, 3, 2, 2, 2, 2, 2, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1 ],
     "maleMaxReproductionEvents": 8,
     "maleMobility": 1,
     "maleReproductionFactor": 0.25,
-    "minRelativeHumidityThreshold": [10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10],
+    "minRelativeHumidityThreshold": [ 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10 ],
     "name": "Tyrannosaurus_rex",
     "numberOfSimulatedAttacks": 10000,
     "percentageCostForMetabolicDownregulationSearchArea": 0.5,
@@ -3231,7 +3232,7 @@
     "plasticityDueToConditionSpeed": 0.05,
     "poreUsePerInstar": [ 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4 ],
     "preserveLeftovers": false,
-    "probabilityDeathFromBackground": [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+    "probabilityDeathFromBackground": [ 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 ],
     "requiredRepresentAllPossibleAlleles": false,
     "sexRatio": 0.5,
     "sexualType": "diploid",
@@ -3240,5 +3241,5 @@
     "YodzisA": 0.1,
     "YodzisB": 0.75
   },
-  "version": "2026.08.05"
+  "version": "2026.10.21"
 }

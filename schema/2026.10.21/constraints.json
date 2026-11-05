@@ -46,8 +46,27 @@
       "code": "constraint_failed",
       "assert": {
         "eq": [
-          { "count": { "ref": { "file": "$current", "path": "/animal/individualsPerInstar" } } },
-          { "add": [ { "count": { "ref": { "file": "$current", "path": "/animal/growthModule/ageVector" } } }, 1 ] }
+          {
+            "count": {
+              "ref": {
+                "file": "$current",
+                "path": "/animal/individualsPerInstar"
+              }
+            }
+          },
+          {
+            "add": [
+              {
+                "count": {
+                  "ref": {
+                    "file": "$current",
+                    "path": "/animal/growthModule/ageVector"
+                  }
+                }
+              },
+              1
+            ]
+          }
         ]
       }
     },
@@ -56,14 +75,87 @@
       "forEachFile": "species/*.json",
       "description": "Items 'individualsPerInstar' and 'poreUsePerInstar' must have the same size.",
       "code": "constraint_failed",
-      "assert": { "eq": [ { "count": { "ref": { "file": "$current", "path": "/animal/individualsPerInstar" } } }, { "count": { "ref": { "file": "$current", "path": "/animal/poreUsePerInstar" } } } ] }
+      "assert": {
+        "eq": [
+          {
+            "count": {
+              "ref": {
+                "file": "$current",
+                "path": "/animal/individualsPerInstar"
+              }
+            }
+          },
+          {
+            "count": {
+              "ref": {
+                "file": "$current",
+                "path": "/animal/poreUsePerInstar"
+              }
+            }
+          }
+        ]
+      }
     },
     {
       "id": "species-individuals-per-instar-conversion-length",
       "forEachFile": "species/*.json",
       "description": "Items 'individualsPerInstar' and 'conversionToWetMass' must have the same size.",
       "code": "constraint_failed",
-      "assert": { "eq": [ { "count": { "ref": { "file": "$current", "path": "/animal/individualsPerInstar" } } }, { "count": { "ref": { "file": "$current", "path": "/animal/conversionToWetMass" } } } ] }
+      "assert": {
+        "eq": [
+          {
+            "count": {
+              "ref": {
+                "file": "$current",
+                "path": "/animal/individualsPerInstar"
+              }
+            }
+          },
+          {
+            "count": {
+              "ref": {
+                "file": "$current",
+                "path": "/animal/conversionToWetMass"
+              }
+            }
+          }
+        ]
+      }
+    },
+    {
+      "id": "species-temp-size-rule-vector-min-length",
+      "forEachFile": "species/*.json",
+      "description": "If temperature dependency is true, the 'tempSizeRuleVector' array must contain at least 2 elements.",
+      "code": "species-temp-size-rule-vector-min-length",
+      "assert": {
+        "if": [
+          {
+            "eq": [
+              {
+                "ref": {
+                  "file": "$current",
+                  "path": "/animal/genetics/traits/definition/base/lengthAtMaturation/temperature/dependent"
+                }
+              },
+              true
+            ]
+          },
+          {
+            "ge": [
+              {
+                "count": {
+                  "ref": {
+                    "file": "$current",
+                    "path": "/animal/genetics/traits/definition/base/lengthAtMaturation/temperature/tempSizeRuleVector"
+                  }
+                }
+              },
+              2
+            ]
+          },
+          true
+        ]
+      }
     },
     {
       "id": "simulation-record-periodicity-warning",
@@ -71,7 +163,22 @@
       "description": "Item 'recordEach' is greater than item 'runDays'.",
       "code": "record_periodicity_exceeds_run_days",
       "severity": "warning",
-      "assert": { "lte": [ { "ref": { "file": "$current", "path": "/outputs/recordEach" } }, { "ref": { "file": "$current", "path": "/runDays" } } ] }
+      "assert": {
+        "lte": [
+          {
+            "ref": {
+              "file": "$current",
+              "path": "/outputs/recordEach"
+            }
+          },
+          {
+            "ref": {
+              "file": "$current",
+              "path": "/runDays"
+            }
+          }
+        ]
+      }
     }
   ]
 }

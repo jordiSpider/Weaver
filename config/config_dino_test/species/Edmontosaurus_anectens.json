@@ -5,7 +5,7 @@
     "coefficientForHandlingTimeA": 28.407,
     "coefficientForHandlingTimeB": -0.664,
     "coefficientForHandlingTimeC": -6.365,
-    "conversionToWetMass": [3.3333, 3.3333, 3.3333, 3.3333, 3.3333, 3.3333, 3.3333, 3.3333, 3.3333, 3.3333, 3.3333, 3.3333, 3.3333, 3.3333, 3.3333, 3.3333, 3.3333, 3.3333],
+    "conversionToWetMass": [ 3.3333, 3.3333, 3.3333, 3.3333, 3.3333, 3.3333, 3.3333, 3.3333, 3.3333, 3.3333, 3.3333, 3.3333, 3.3333, 3.3333, 3.3333, 3.3333, 3.3333, 3.3333, 3.3333 ],
     "daysWithoutFoodForMetabolicDownregulation": 2,
     "debug": {
       "forcePresenceAllResourcesInvolved": false,
@@ -77,7 +77,7 @@
         }
       ],
       "modules": {
-        "correlationCoefficientRhoPerModule": [0.01, 0.01],
+        "correlationCoefficientRhoPerModule": [ 0.01, 0.01 ],
         "traitsPerModule": 3
       },
       "numberOfAllelesPerLocus": 10,
@@ -3161,7 +3161,7 @@
       }
     },
     "growthModule": {
-      "ageVector": [371, 742, 1113, 1484, 1855, 2226, 2597, 2968, 3339, 3710, 4081, 4452, 4823, 5194, 5565, 5936, 6307, 6678],
+      "ageVector": [ 371, 742, 1113, 1484, 1855, 2226, 2597, 2968, 3339, 3710, 4081, 4452, 4823, 5194, 5565, 5936, 6307, 6678 ],
       "assignedForMolt": 0.99,
       "betaScaleTank": 1,
       "capitalBreeding": {
@@ -3214,11 +3214,11 @@
     "habitatShiftAfterBreedingFactor": 0,
     "habitatShiftBeforeBreeding": false,
     "habitatShiftBeforeBreedingFactor": 0,
-    "individualsPerInstar": [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+    "individualsPerInstar": [ 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 ],
     "maleMaxReproductionEvents": 8,
     "maleMobility": 1,
     "maleReproductionFactor": 0.25,
-    "minRelativeHumidityThreshold": [10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10],
+    "minRelativeHumidityThreshold": [ 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10 ],
     "name": "Edmontosaurus_anectens",
     "numberOfSimulatedAttacks": 10000,
     "percentageCostForMetabolicDownregulationSearchArea": 0.5,
@@ -3227,9 +3227,9 @@
     "percentageMetabolicDownregulation": 0,
     "plasticityDueToConditionSearch": 0.05,
     "plasticityDueToConditionSpeed": 0.05,
-    "poreUsePerInstar": [4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4],
+    "poreUsePerInstar": [ 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4 ],
     "preserveLeftovers": false,
-    "probabilityDeathFromBackground": [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+    "probabilityDeathFromBackground": [ 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 ],
     "requiredRepresentAllPossibleAlleles": false,
     "sexRatio": 0.5,
     "sexualType": "diploid",
@@ -3238,5 +3238,5 @@
     "YodzisA": 0.1,
     "YodzisB": 0.75
   },
-  "version": "2026.08.05"
+  "version": "2026.10.21"
 }

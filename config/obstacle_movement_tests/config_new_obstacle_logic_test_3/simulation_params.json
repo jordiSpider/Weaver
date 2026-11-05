@@ -7,11 +7,11 @@
         },
         "breakConditions": {
             "exitAtFirstExtinction": false,
-            "stability": {
-                "enabled": true,
-                "coefficientOfVariationThreshold": -1.0,
-                "stabilityCalculationInterval": 0.4
-            }
+          "stability": {
+            "enabled": true,
+            "coefficientOfVariationThreshold": 0.0,
+            "stabilityCalculationInterval": 0.4
+          }
         },
         "growthAndReproTest": false,
         "initFromFixedSeed": {
