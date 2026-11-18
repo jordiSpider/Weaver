@@ -1,0 +1,375 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.14.0" xml:lang="en-US">
+  <compounddef id="class_integer" kind="class" language="C++" prot="public">
+    <compoundname>Integer</compoundname>
+    <basecompoundref refid="class_element" prot="public" virt="non-virtual">Element</basecompoundref>
+    <includes refid="_integer_8h" local="no">Integer.h</includes>
+    <sectiondef kind="protected-attrib">
+      <memberdef kind="variable" id="class_integer_1a286044f3c2ccf0ad2e8d224222dc769d" prot="protected" static="no" mutable="no">
+        <type>bool</type>
+        <definition>bool Integer::exclusiveMaximum</definition>
+        <argsstring></argsstring>
+        <name>exclusiveMaximum</name>
+        <qualifiedname>Integer::exclusiveMaximum</qualifiedname>
+        <briefdescription>
+<para>Flag indicating if the maximum is exclusive. </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="Misc/JsonValidator/Elements/Integer.h" line="41" column="10" bodyfile="Misc/JsonValidator/Elements/Integer.h" bodystart="41" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="class_integer_1a2911db6972ddaf2c19bbe82abb08a79d" prot="protected" static="no" mutable="no">
+        <type>bool</type>
+        <definition>bool Integer::exclusiveMinimum</definition>
+        <argsstring></argsstring>
+        <name>exclusiveMinimum</name>
+        <qualifiedname>Integer::exclusiveMinimum</qualifiedname>
+        <briefdescription>
+<para>Flag indicating if the minimum is exclusive. </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="Misc/JsonValidator/Elements/Integer.h" line="35" column="10" bodyfile="Misc/JsonValidator/Elements/Integer.h" bodystart="35" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="class_integer_1a6768de55815d62a3719c9febdfae20e2" prot="protected" static="no" mutable="no">
+        <type>int</type>
+        <definition>int Integer::maximum</definition>
+        <argsstring></argsstring>
+        <name>maximum</name>
+        <qualifiedname>Integer::maximum</qualifiedname>
+        <briefdescription>
+<para>Maximum allowed value for the integer. </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="Misc/JsonValidator/Elements/Integer.h" line="38" column="9" bodyfile="Misc/JsonValidator/Elements/Integer.h" bodystart="38" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="class_integer_1a1d49dd293c7e453e5948a19db39bc5c4" prot="protected" static="no" mutable="no">
+        <type>int</type>
+        <definition>int Integer::minimum</definition>
+        <argsstring></argsstring>
+        <name>minimum</name>
+        <qualifiedname>Integer::minimum</qualifiedname>
+        <briefdescription>
+<para>Minimum allowed value for the integer. </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="Misc/JsonValidator/Elements/Integer.h" line="32" column="9" bodyfile="Misc/JsonValidator/Elements/Integer.h" bodystart="32" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="class_integer_1a9285032ee249d3dde116ee19755de8c7" prot="protected" static="no" mutable="no">
+        <type>std::pair&lt; bool, int &gt;</type>
+        <definition>std::pair&lt;bool, int&gt; Integer::multipleOf</definition>
+        <argsstring></argsstring>
+        <name>multipleOf</name>
+        <qualifiedname>Integer::multipleOf</qualifiedname>
+        <briefdescription>
+<para>Optional multiplicity constraint (value must be a multiple of the given integer). </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="Misc/JsonValidator/Elements/Integer.h" line="44" column="15" bodyfile="Misc/JsonValidator/Elements/Integer.h" bodystart="44" bodyend="-1"/>
+      </memberdef>
+    </sectiondef>
+    <sectiondef kind="protected-func">
+      <memberdef kind="function" id="class_integer_1a75332e1010229eb65afa21a270f6e156" prot="protected" static="no" const="yes" explicit="no" inline="no" virt="virtual">
+        <type>void</type>
+        <definition>void Integer::validateElement</definition>
+        <argsstring>(const nlohmann::json &amp;config) const</argsstring>
+        <name>validateElement</name>
+        <qualifiedname>Integer::validateElement</qualifiedname>
+        <reimplements refid="class_element_1a2e31082683027a829ee75a4bd872738a">validateElement</reimplements>
+        <param>
+          <type>const nlohmann::json &amp;</type>
+          <declname>config</declname>
+        </param>
+        <briefdescription>
+<para>Validates that the JSON value is an integer and respects constraints. </para>
+        </briefdescription>
+        <detaileddescription>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>config</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>JSON object representing the integer value.</para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+Overrides <ref refid="class_element_1a2e31082683027a829ee75a4bd872738a" kindref="member">Element::validateElement</ref>. Throws an exception if the value does not respect the min/max/multipleOf constraints. </para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="Misc/JsonValidator/Elements/Integer.h" line="54" column="10"/>
+      </memberdef>
+    </sectiondef>
+    <sectiondef kind="public-func">
+      <memberdef kind="function" id="class_integer_1a344e54172e2ba07fc55cb33d8ad89484" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type></type>
+        <definition>Integer::Integer</definition>
+        <argsstring>(const Integer &amp;other, const bool nullProperty)</argsstring>
+        <name>Integer</name>
+        <qualifiedname>Integer::Integer</qualifiedname>
+        <param>
+          <type>const <ref refid="class_integer" kindref="compound">Integer</ref> &amp;</type>
+          <declname>other</declname>
+        </param>
+        <param>
+          <type>const bool</type>
+          <declname>nullProperty</declname>
+        </param>
+        <briefdescription>
+<para>Copy constructor with optional null property flag. </para>
+        </briefdescription>
+        <detaileddescription>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>other</parametername>
+</parameternamelist>
+<parameterdescription>
+<para><ref refid="class_integer" kindref="compound">Integer</ref> instance to copy from. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>nullProperty</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Whether the new instance should represent a null property. </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="Misc/JsonValidator/Elements/Integer.h" line="68" column="5"/>
+      </memberdef>
+      <memberdef kind="function" id="class_integer_1a3f3e3c8a7fb15fc94c395d136cf56710" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type></type>
+        <definition>Integer::Integer</definition>
+        <argsstring>(const nlohmann::json &amp;info)</argsstring>
+        <name>Integer</name>
+        <qualifiedname>Integer::Integer</qualifiedname>
+        <param>
+          <type>const nlohmann::json &amp;</type>
+          <declname>info</declname>
+        </param>
+        <briefdescription>
+<para>Constructs an <ref refid="class_integer" kindref="compound">Integer</ref> element from a JSON configuration. </para>
+        </briefdescription>
+        <detaileddescription>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>info</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>JSON object containing integer metadata and constraints. </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="Misc/JsonValidator/Elements/Integer.h" line="61" column="5"/>
+      </memberdef>
+      <memberdef kind="function" id="class_integer_1a6caf6b3d10e4fbfce9d42b53cb4e6ada" prot="public" static="no" const="no" explicit="no" inline="no" virt="virtual">
+        <type></type>
+        <definition>virtual Integer::~Integer</definition>
+        <argsstring>()</argsstring>
+        <name>~Integer</name>
+        <qualifiedname>Integer::~Integer</qualifiedname>
+        <briefdescription>
+<para>Virtual destructor. </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="Misc/JsonValidator/Elements/Integer.h" line="73" column="13"/>
+      </memberdef>
+      <memberdef kind="function" id="class_integer_1aa1455d7cd3470762c83726c65f416a0c" prot="public" static="no" const="yes" explicit="no" inline="no" virt="non-virtual">
+        <type>bool</type>
+        <definition>bool Integer::getExclusiveMaximum</definition>
+        <argsstring>() const</argsstring>
+        <name>getExclusiveMaximum</name>
+        <qualifiedname>Integer::getExclusiveMaximum</qualifiedname>
+        <briefdescription>
+<para>Checks if the maximum value is exclusive. </para>
+        </briefdescription>
+        <detaileddescription>
+<para><simplesect kind="return"><para>True if maximum is exclusive, false otherwise. </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="Misc/JsonValidator/Elements/Integer.h" line="103" column="10"/>
+      </memberdef>
+      <memberdef kind="function" id="class_integer_1a94ffa5a4658a5d8f2d5e6f62c4ae7c1d" prot="public" static="no" const="yes" explicit="no" inline="no" virt="non-virtual">
+        <type>bool</type>
+        <definition>bool Integer::getExclusiveMinimum</definition>
+        <argsstring>() const</argsstring>
+        <name>getExclusiveMinimum</name>
+        <qualifiedname>Integer::getExclusiveMinimum</qualifiedname>
+        <briefdescription>
+<para>Checks if the minimum value is exclusive. </para>
+        </briefdescription>
+        <detaileddescription>
+<para><simplesect kind="return"><para>True if minimum is exclusive, false otherwise. </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="Misc/JsonValidator/Elements/Integer.h" line="91" column="10"/>
+      </memberdef>
+      <memberdef kind="function" id="class_integer_1aa9039f975160b2067064a9a1d3db4af1" prot="public" static="no" const="yes" explicit="no" inline="no" virt="non-virtual">
+        <type>int</type>
+        <definition>int Integer::getMaximum</definition>
+        <argsstring>() const</argsstring>
+        <name>getMaximum</name>
+        <qualifiedname>Integer::getMaximum</qualifiedname>
+        <briefdescription>
+<para>Returns the maximum allowed value. </para>
+        </briefdescription>
+        <detaileddescription>
+<para><simplesect kind="return"><para>Maximum integer. </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="Misc/JsonValidator/Elements/Integer.h" line="97" column="9"/>
+      </memberdef>
+      <memberdef kind="function" id="class_integer_1a89468742a0df58791f125950eef52a72" prot="public" static="no" const="yes" explicit="no" inline="no" virt="non-virtual">
+        <type>int</type>
+        <definition>int Integer::getMinimum</definition>
+        <argsstring>() const</argsstring>
+        <name>getMinimum</name>
+        <qualifiedname>Integer::getMinimum</qualifiedname>
+        <briefdescription>
+<para>Returns the minimum allowed value. </para>
+        </briefdescription>
+        <detaileddescription>
+<para><simplesect kind="return"><para>Minimum integer. </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="Misc/JsonValidator/Elements/Integer.h" line="85" column="9"/>
+      </memberdef>
+      <memberdef kind="function" id="class_integer_1a81c6b633018971289210d83e3466ab1a" prot="public" static="no" const="yes" explicit="no" inline="no" virt="non-virtual">
+        <type>const std::pair&lt; bool, int &gt; &amp;</type>
+        <definition>const std::pair&lt; bool, int &gt; &amp; Integer::getMultipleOf</definition>
+        <argsstring>() const</argsstring>
+        <name>getMultipleOf</name>
+        <qualifiedname>Integer::getMultipleOf</qualifiedname>
+        <briefdescription>
+<para>Returns the multiplicity constraint. </para>
+        </briefdescription>
+        <detaileddescription>
+<para><simplesect kind="return"><para>Pair of &lt;isDefined, multipleOfValue&gt;. </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="Misc/JsonValidator/Elements/Integer.h" line="109" column="21"/>
+      </memberdef>
+      <memberdef kind="function" id="class_integer_1ab94dff0fc68241967363eaa30f3a95e1" prot="public" static="no" const="yes" explicit="no" inline="no" virt="virtual">
+        <type><ref refid="class_element_1a009a3be4c3a037a72e292b2464c9cbc5" kindref="member">Type</ref></type>
+        <definition>Type Integer::getType</definition>
+        <argsstring>() const</argsstring>
+        <name>getType</name>
+        <qualifiedname>Integer::getType</qualifiedname>
+        <reimplements refid="class_element_1a00ef06c036d1d4628fcd3586885ca131">getType</reimplements>
+        <briefdescription>
+<para>Returns the type of the element. </para>
+        </briefdescription>
+        <detaileddescription>
+<para><simplesect kind="return"><para><ref refid="class_element_1a009a3be4c3a037a72e292b2464c9cbc5a157db7df530023575515d366c9b672e8" kindref="member">Type::integer</ref> </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="Misc/JsonValidator/Elements/Integer.h" line="79" column="10"/>
+      </memberdef>
+    </sectiondef>
+    <briefdescription>
+<para>Represents an integer element in a JSON configuration. </para>
+    </briefdescription>
+    <detaileddescription>
+<para>Inherits from <ref refid="class_element" kindref="compound">Element</ref>. Provides validation for integer values, including minimum, maximum, exclusivity, and multiplicity constraints. </para>
+    </detaileddescription>
+    <inheritancegraph>
+      <node id="2">
+        <label>Element</label>
+        <link refid="class_element"/>
+      </node>
+      <node id="1">
+        <label>Integer</label>
+        <link refid="class_integer"/>
+        <childnode refid="2" relation="public-inheritance">
+        </childnode>
+      </node>
+    </inheritancegraph>
+    <collaborationgraph>
+      <node id="2">
+        <label>Element</label>
+        <link refid="class_element"/>
+      </node>
+      <node id="1">
+        <label>Integer</label>
+        <link refid="class_integer"/>
+        <childnode refid="2" relation="public-inheritance">
+        </childnode>
+      </node>
+    </collaborationgraph>
+    <location file="Misc/JsonValidator/Elements/Integer.h" line="28" column="1" bodyfile="Misc/JsonValidator/Elements/Integer.h" bodystart="29" bodyend="110"/>
+    <listofallmembers>
+      <member refid="class_element_1a31838aa329c7380f4395b9c0a4a82cfe" prot="protected" virt="non-virtual"><scope>Integer</scope><name>description</name></member>
+      <member refid="class_element_1a5ef746a08042747acd608589686df030" prot="public" virt="non-virtual"><scope>Integer</scope><name>Element</name></member>
+      <member refid="class_element_1a7adf23f4617107ee13fcab2747d8b394" prot="public" virt="non-virtual"><scope>Integer</scope><name>Element</name></member>
+      <member refid="class_integer_1a286044f3c2ccf0ad2e8d224222dc769d" prot="protected" virt="non-virtual"><scope>Integer</scope><name>exclusiveMaximum</name></member>
+      <member refid="class_integer_1a2911db6972ddaf2c19bbe82abb08a79d" prot="protected" virt="non-virtual"><scope>Integer</scope><name>exclusiveMinimum</name></member>
+      <member refid="class_element_1a2eab22dd80bfba5646c6f0e79dec8569" prot="public" virt="non-virtual"><scope>Integer</scope><name>getDescription</name></member>
+      <member refid="class_integer_1aa1455d7cd3470762c83726c65f416a0c" prot="public" virt="non-virtual"><scope>Integer</scope><name>getExclusiveMaximum</name></member>
+      <member refid="class_integer_1a94ffa5a4658a5d8f2d5e6f62c4ae7c1d" prot="public" virt="non-virtual"><scope>Integer</scope><name>getExclusiveMinimum</name></member>
+      <member refid="class_integer_1aa9039f975160b2067064a9a1d3db4af1" prot="public" virt="non-virtual"><scope>Integer</scope><name>getMaximum</name></member>
+      <member refid="class_integer_1a89468742a0df58791f125950eef52a72" prot="public" virt="non-virtual"><scope>Integer</scope><name>getMinimum</name></member>
+      <member refid="class_integer_1a81c6b633018971289210d83e3466ab1a" prot="public" virt="non-virtual"><scope>Integer</scope><name>getMultipleOf</name></member>
+      <member refid="class_element_1abf6e4f402b616bf7f52166f96c450b36" prot="public" virt="virtual"><scope>Integer</scope><name>getProperty</name></member>
+      <member refid="class_element_1ae4ee4a9ec97bb054a43aea28d9700f8e" prot="public" virt="non-virtual"><scope>Integer</scope><name>getProperty</name></member>
+      <member refid="class_integer_1ab94dff0fc68241967363eaa30f3a95e1" prot="public" virt="virtual"><scope>Integer</scope><name>getType</name></member>
+      <member refid="class_integer_1a3f3e3c8a7fb15fc94c395d136cf56710" prot="public" virt="non-virtual"><scope>Integer</scope><name>Integer</name></member>
+      <member refid="class_integer_1a344e54172e2ba07fc55cb33d8ad89484" prot="public" virt="non-virtual"><scope>Integer</scope><name>Integer</name></member>
+      <member refid="class_element_1a4e3a7ef1a3b0b42c84c1022a4db94246" prot="public" virt="non-virtual"><scope>Integer</scope><name>isModified</name></member>
+      <member refid="class_element_1a97d883c0b237ec9e1fe6993825fd0f8c" prot="public" virt="non-virtual"><scope>Integer</scope><name>isNullProperty</name></member>
+      <member refid="class_integer_1a6768de55815d62a3719c9febdfae20e2" prot="protected" virt="non-virtual"><scope>Integer</scope><name>maximum</name></member>
+      <member refid="class_integer_1a1d49dd293c7e453e5948a19db39bc5c4" prot="protected" virt="non-virtual"><scope>Integer</scope><name>minimum</name></member>
+      <member refid="class_element_1a1b0c283200e0e2c16b8713369631214d" prot="protected" virt="non-virtual"><scope>Integer</scope><name>modified</name></member>
+      <member refid="class_integer_1a9285032ee249d3dde116ee19755de8c7" prot="protected" virt="non-virtual"><scope>Integer</scope><name>multipleOf</name></member>
+      <member refid="class_element_1a4318313abfd08feae300a12668cec95a" prot="protected" virt="non-virtual"><scope>Integer</scope><name>nullProperty</name></member>
+      <member refid="class_element_1a009a3be4c3a037a72e292b2464c9cbc5" prot="public" virt="non-virtual"><scope>Integer</scope><name>Type</name></member>
+      <member refid="class_element_1a59cc1d05821dd36340deffd7f56add32" prot="public" virt="non-virtual"><scope>Integer</scope><name>validate</name></member>
+      <member refid="class_integer_1a75332e1010229eb65afa21a270f6e156" prot="protected" virt="virtual"><scope>Integer</scope><name>validateElement</name></member>
+      <member refid="class_element_1adbcc49811634a36df5d3830d366ba2b0" prot="public" virt="virtual"><scope>Integer</scope><name>verifyPropertyPath</name></member>
+      <member refid="class_element_1ab4fc182292f44e46acba9c55662237bf" prot="public" virt="virtual"><scope>Integer</scope><name>~Element</name></member>
+      <member refid="class_integer_1a6caf6b3d10e4fbfce9d42b53cb4e6ada" prot="public" virt="virtual"><scope>Integer</scope><name>~Integer</name></member>
+    </listofallmembers>
+  </compounddef>
+</doxygen>

@@ -1,0 +1,79 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.14.0" xml:lang="en-US">
+  <compounddef id="struct_obstacle_porosity_mask_generator_1_1_parameters" kind="struct" language="C++" prot="public">
+    <compoundname>ObstaclePorosityMaskGenerator::Parameters</compoundname>
+    <sectiondef kind="public-attrib">
+      <memberdef kind="variable" id="struct_obstacle_porosity_mask_generator_1_1_parameters_1a382727dcff875ef50473bc4641db8a5a" prot="public" static="no" mutable="no">
+        <type>double</type>
+        <definition>double ObstaclePorosityMaskGenerator::Parameters::featureSize</definition>
+        <argsstring></argsstring>
+        <name>featureSize</name>
+        <qualifiedname>ObstaclePorosityMaskGenerator::Parameters::featureSize</qualifiedname>
+        <initializer>= 0.0</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="App/Model/IBM/Landscape/Map/Patches/ObstaclePorosityMaskGenerator.h" line="23" column="8" bodyfile="App/Model/IBM/Landscape/Map/Patches/ObstaclePorosityMaskGenerator.h" bodystart="23" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="struct_obstacle_porosity_mask_generator_1_1_parameters_1a1d36dd9c11c5429c9fa55c46e6354690" prot="public" static="no" mutable="no">
+        <type>double</type>
+        <definition>double ObstaclePorosityMaskGenerator::Parameters::fraction</definition>
+        <argsstring></argsstring>
+        <name>fraction</name>
+        <qualifiedname>ObstaclePorosityMaskGenerator::Parameters::fraction</qualifiedname>
+        <initializer>= 0.0</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="App/Model/IBM/Landscape/Map/Patches/ObstaclePorosityMaskGenerator.h" line="21" column="8" bodyfile="App/Model/IBM/Landscape/Map/Patches/ObstaclePorosityMaskGenerator.h" bodystart="21" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="struct_obstacle_porosity_mask_generator_1_1_parameters_1ad72bf0fa0e4540c969265370b3519674" prot="public" static="no" mutable="no">
+        <type>double</type>
+        <definition>double ObstaclePorosityMaskGenerator::Parameters::minimumPoreWidth</definition>
+        <argsstring></argsstring>
+        <name>minimumPoreWidth</name>
+        <qualifiedname>ObstaclePorosityMaskGenerator::Parameters::minimumPoreWidth</qualifiedname>
+        <initializer>= 0.0</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="App/Model/IBM/Landscape/Map/Patches/ObstaclePorosityMaskGenerator.h" line="22" column="8" bodyfile="App/Model/IBM/Landscape/Map/Patches/ObstaclePorosityMaskGenerator.h" bodystart="22" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="struct_obstacle_porosity_mask_generator_1_1_parameters_1af197611cab700dc363588b617168b8ff" prot="public" static="no" mutable="no">
+        <type>std::size_t</type>
+        <definition>std::size_t ObstaclePorosityMaskGenerator::Parameters::octaves</definition>
+        <argsstring></argsstring>
+        <name>octaves</name>
+        <qualifiedname>ObstaclePorosityMaskGenerator::Parameters::octaves</qualifiedname>
+        <initializer>= 0u</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="App/Model/IBM/Landscape/Map/Patches/ObstaclePorosityMaskGenerator.h" line="24" column="13" bodyfile="App/Model/IBM/Landscape/Map/Patches/ObstaclePorosityMaskGenerator.h" bodystart="24" bodyend="-1"/>
+      </memberdef>
+    </sectiondef>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+    </detaileddescription>
+    <location file="App/Model/IBM/Landscape/Map/Patches/ObstaclePorosityMaskGenerator.h" line="20" column="1" bodyfile="App/Model/IBM/Landscape/Map/Patches/ObstaclePorosityMaskGenerator.h" bodystart="20" bodyend="25"/>
+    <listofallmembers>
+      <member refid="struct_obstacle_porosity_mask_generator_1_1_parameters_1a382727dcff875ef50473bc4641db8a5a" prot="public" virt="non-virtual"><scope>ObstaclePorosityMaskGenerator::Parameters</scope><name>featureSize</name></member>
+      <member refid="struct_obstacle_porosity_mask_generator_1_1_parameters_1a1d36dd9c11c5429c9fa55c46e6354690" prot="public" virt="non-virtual"><scope>ObstaclePorosityMaskGenerator::Parameters</scope><name>fraction</name></member>
+      <member refid="struct_obstacle_porosity_mask_generator_1_1_parameters_1ad72bf0fa0e4540c969265370b3519674" prot="public" virt="non-virtual"><scope>ObstaclePorosityMaskGenerator::Parameters</scope><name>minimumPoreWidth</name></member>
+      <member refid="struct_obstacle_porosity_mask_generator_1_1_parameters_1af197611cab700dc363588b617168b8ff" prot="public" virt="non-virtual"><scope>ObstaclePorosityMaskGenerator::Parameters</scope><name>octaves</name></member>
+    </listofallmembers>
+  </compounddef>
+</doxygen>

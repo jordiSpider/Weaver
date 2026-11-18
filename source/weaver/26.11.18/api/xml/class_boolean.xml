@@ -1,0 +1,198 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.14.0" xml:lang="en-US">
+  <compounddef id="class_boolean" kind="class" language="C++" prot="public">
+    <compoundname>Boolean</compoundname>
+    <basecompoundref refid="class_element" prot="public" virt="non-virtual">Element</basecompoundref>
+    <includes refid="_boolean_8h" local="no">Boolean.h</includes>
+    <sectiondef kind="protected-func">
+      <memberdef kind="function" id="class_boolean_1a25edf02ba439c1d7ced60f62b4e113b6" prot="protected" static="no" const="yes" explicit="no" inline="no" virt="virtual">
+        <type>void</type>
+        <definition>void Boolean::validateElement</definition>
+        <argsstring>(const nlohmann::json &amp;config) const</argsstring>
+        <name>validateElement</name>
+        <qualifiedname>Boolean::validateElement</qualifiedname>
+        <reimplements refid="class_element_1a2e31082683027a829ee75a4bd872738a">validateElement</reimplements>
+        <param>
+          <type>const nlohmann::json &amp;</type>
+          <declname>config</declname>
+        </param>
+        <briefdescription>
+<para>Validates that the JSON value is a boolean. </para>
+        </briefdescription>
+        <detaileddescription>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>config</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>JSON object representing the boolean value.</para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+Overrides <ref refid="class_element_1a2e31082683027a829ee75a4bd872738a" kindref="member">Element::validateElement</ref>. Throws an exception if the value is not a boolean. </para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="Misc/JsonValidator/Elements/Boolean.h" line="35" column="10"/>
+      </memberdef>
+    </sectiondef>
+    <sectiondef kind="public-func">
+      <memberdef kind="function" id="class_boolean_1a80e464a575e2c2f9accde1d913b5259c" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type></type>
+        <definition>Boolean::Boolean</definition>
+        <argsstring>(const Boolean &amp;other, const bool nullProperty)</argsstring>
+        <name>Boolean</name>
+        <qualifiedname>Boolean::Boolean</qualifiedname>
+        <param>
+          <type>const <ref refid="class_boolean" kindref="compound">Boolean</ref> &amp;</type>
+          <declname>other</declname>
+        </param>
+        <param>
+          <type>const bool</type>
+          <declname>nullProperty</declname>
+        </param>
+        <briefdescription>
+<para>Copy constructor with optional null property flag. </para>
+        </briefdescription>
+        <detaileddescription>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>other</parametername>
+</parameternamelist>
+<parameterdescription>
+<para><ref refid="class_boolean" kindref="compound">Boolean</ref> instance to copy from. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>nullProperty</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Whether the new instance should represent a null property. </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="Misc/JsonValidator/Elements/Boolean.h" line="49" column="5"/>
+      </memberdef>
+      <memberdef kind="function" id="class_boolean_1a74b4724072059e44c0ff61be001efa64" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type></type>
+        <definition>Boolean::Boolean</definition>
+        <argsstring>(const nlohmann::json &amp;info)</argsstring>
+        <name>Boolean</name>
+        <qualifiedname>Boolean::Boolean</qualifiedname>
+        <param>
+          <type>const nlohmann::json &amp;</type>
+          <declname>info</declname>
+        </param>
+        <briefdescription>
+<para>Constructs a <ref refid="class_boolean" kindref="compound">Boolean</ref> element from a JSON configuration. </para>
+        </briefdescription>
+        <detaileddescription>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>info</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>JSON object containing boolean metadata. </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="Misc/JsonValidator/Elements/Boolean.h" line="42" column="5"/>
+      </memberdef>
+      <memberdef kind="function" id="class_boolean_1a462abfae2063ca0cfeb2f53644dd9a98" prot="public" static="no" const="no" explicit="no" inline="no" virt="virtual">
+        <type></type>
+        <definition>virtual Boolean::~Boolean</definition>
+        <argsstring>()</argsstring>
+        <name>~Boolean</name>
+        <qualifiedname>Boolean::~Boolean</qualifiedname>
+        <briefdescription>
+<para>Virtual destructor. </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="Misc/JsonValidator/Elements/Boolean.h" line="54" column="13"/>
+      </memberdef>
+      <memberdef kind="function" id="class_boolean_1ae1b5e9cb75831650e15c7fdd7c6af50a" prot="public" static="no" const="yes" explicit="no" inline="no" virt="virtual">
+        <type><ref refid="class_element_1a009a3be4c3a037a72e292b2464c9cbc5" kindref="member">Type</ref></type>
+        <definition>Type Boolean::getType</definition>
+        <argsstring>() const</argsstring>
+        <name>getType</name>
+        <qualifiedname>Boolean::getType</qualifiedname>
+        <reimplements refid="class_element_1a00ef06c036d1d4628fcd3586885ca131">getType</reimplements>
+        <briefdescription>
+<para>Returns the type of the element. </para>
+        </briefdescription>
+        <detaileddescription>
+<para><simplesect kind="return"><para><ref refid="class_element_1a009a3be4c3a037a72e292b2464c9cbc5a84e2c64f38f78ba3ea5c905ab5a2da27" kindref="member">Type::boolean</ref> </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="Misc/JsonValidator/Elements/Boolean.h" line="60" column="10"/>
+      </memberdef>
+    </sectiondef>
+    <briefdescription>
+<para>Represents a boolean element in a JSON configuration. </para>
+    </briefdescription>
+    <detaileddescription>
+<para>Inherits from <ref refid="class_element" kindref="compound">Element</ref>. Provides validation for JSON boolean values. </para>
+    </detaileddescription>
+    <inheritancegraph>
+      <node id="1">
+        <label>Boolean</label>
+        <link refid="class_boolean"/>
+        <childnode refid="2" relation="public-inheritance">
+        </childnode>
+      </node>
+      <node id="2">
+        <label>Element</label>
+        <link refid="class_element"/>
+      </node>
+    </inheritancegraph>
+    <collaborationgraph>
+      <node id="1">
+        <label>Boolean</label>
+        <link refid="class_boolean"/>
+        <childnode refid="2" relation="public-inheritance">
+        </childnode>
+      </node>
+      <node id="2">
+        <label>Element</label>
+        <link refid="class_element"/>
+      </node>
+    </collaborationgraph>
+    <location file="Misc/JsonValidator/Elements/Boolean.h" line="26" column="1" bodyfile="Misc/JsonValidator/Elements/Boolean.h" bodystart="27" bodyend="61"/>
+    <listofallmembers>
+      <member refid="class_boolean_1a74b4724072059e44c0ff61be001efa64" prot="public" virt="non-virtual"><scope>Boolean</scope><name>Boolean</name></member>
+      <member refid="class_boolean_1a80e464a575e2c2f9accde1d913b5259c" prot="public" virt="non-virtual"><scope>Boolean</scope><name>Boolean</name></member>
+      <member refid="class_element_1a31838aa329c7380f4395b9c0a4a82cfe" prot="protected" virt="non-virtual"><scope>Boolean</scope><name>description</name></member>
+      <member refid="class_element_1a5ef746a08042747acd608589686df030" prot="public" virt="non-virtual"><scope>Boolean</scope><name>Element</name></member>
+      <member refid="class_element_1a7adf23f4617107ee13fcab2747d8b394" prot="public" virt="non-virtual"><scope>Boolean</scope><name>Element</name></member>
+      <member refid="class_element_1a2eab22dd80bfba5646c6f0e79dec8569" prot="public" virt="non-virtual"><scope>Boolean</scope><name>getDescription</name></member>
+      <member refid="class_element_1abf6e4f402b616bf7f52166f96c450b36" prot="public" virt="virtual"><scope>Boolean</scope><name>getProperty</name></member>
+      <member refid="class_element_1ae4ee4a9ec97bb054a43aea28d9700f8e" prot="public" virt="non-virtual"><scope>Boolean</scope><name>getProperty</name></member>
+      <member refid="class_boolean_1ae1b5e9cb75831650e15c7fdd7c6af50a" prot="public" virt="virtual"><scope>Boolean</scope><name>getType</name></member>
+      <member refid="class_element_1a4e3a7ef1a3b0b42c84c1022a4db94246" prot="public" virt="non-virtual"><scope>Boolean</scope><name>isModified</name></member>
+      <member refid="class_element_1a97d883c0b237ec9e1fe6993825fd0f8c" prot="public" virt="non-virtual"><scope>Boolean</scope><name>isNullProperty</name></member>
+      <member refid="class_element_1a1b0c283200e0e2c16b8713369631214d" prot="protected" virt="non-virtual"><scope>Boolean</scope><name>modified</name></member>
+      <member refid="class_element_1a4318313abfd08feae300a12668cec95a" prot="protected" virt="non-virtual"><scope>Boolean</scope><name>nullProperty</name></member>
+      <member refid="class_element_1a009a3be4c3a037a72e292b2464c9cbc5" prot="public" virt="non-virtual"><scope>Boolean</scope><name>Type</name></member>
+      <member refid="class_element_1a59cc1d05821dd36340deffd7f56add32" prot="public" virt="non-virtual"><scope>Boolean</scope><name>validate</name></member>
+      <member refid="class_boolean_1a25edf02ba439c1d7ced60f62b4e113b6" prot="protected" virt="virtual"><scope>Boolean</scope><name>validateElement</name></member>
+      <member refid="class_element_1adbcc49811634a36df5d3830d366ba2b0" prot="public" virt="virtual"><scope>Boolean</scope><name>verifyPropertyPath</name></member>
+      <member refid="class_boolean_1a462abfae2063ca0cfeb2f53644dd9a98" prot="public" virt="virtual"><scope>Boolean</scope><name>~Boolean</name></member>
+      <member refid="class_element_1ab4fc182292f44e46acba9c55662237bf" prot="public" virt="virtual"><scope>Boolean</scope><name>~Element</name></member>
+    </listofallmembers>
+  </compounddef>
+</doxygen>

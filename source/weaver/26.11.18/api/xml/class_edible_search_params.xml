@@ -1,0 +1,328 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.14.0" xml:lang="en-US">
+  <compounddef id="class_edible_search_params" kind="class" language="C++" prot="public">
+    <compoundname>EdibleSearchParams</compoundname>
+    <includes refid="_edible_search_params_8h" local="no">EdibleSearchParams.h</includes>
+    <sectiondef kind="protected-attrib">
+      <memberdef kind="variable" id="class_edible_search_params_1ae192b046f5aaeaac51ab01f5a1c0f979" prot="protected" static="no" mutable="no">
+        <type><ref refid="class_animal_search_params" kindref="compound">AnimalSearchParams</ref></type>
+        <definition>AnimalSearchParams EdibleSearchParams::animalSearchParams</definition>
+        <argsstring></argsstring>
+        <name>animalSearchParams</name>
+        <qualifiedname>EdibleSearchParams::animalSearchParams</qualifiedname>
+        <briefdescription>
+<para>Search parameters for animals. </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="App/Model/IBM/Landscape/Map/TerrainCells/EdibleSearchParams.h" line="35" column="24" bodyfile="App/Model/IBM/Landscape/Map/TerrainCells/EdibleSearchParams.h" bodystart="35" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="class_edible_search_params_1a869e25497d4153771ff10e9195fc7f9d" prot="protected" static="no" mutable="no">
+        <type><ref refid="class_resource_search_params" kindref="compound">ResourceSearchParams</ref></type>
+        <definition>ResourceSearchParams EdibleSearchParams::resourceSearchParams</definition>
+        <argsstring></argsstring>
+        <name>resourceSearchParams</name>
+        <qualifiedname>EdibleSearchParams::resourceSearchParams</qualifiedname>
+        <briefdescription>
+<para>Search parameters for resources. </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="App/Model/IBM/Landscape/Map/TerrainCells/EdibleSearchParams.h" line="38" column="26" bodyfile="App/Model/IBM/Landscape/Map/TerrainCells/EdibleSearchParams.h" bodystart="38" bodyend="-1"/>
+      </memberdef>
+    </sectiondef>
+    <sectiondef kind="public-func">
+      <memberdef kind="function" id="class_edible_search_params_1afc30f8af7a473f5a2160343a504b08fa" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type></type>
+        <definition>EdibleSearchParams::EdibleSearchParams</definition>
+        <argsstring>()</argsstring>
+        <name>EdibleSearchParams</name>
+        <qualifiedname>EdibleSearchParams::EdibleSearchParams</qualifiedname>
+        <briefdescription>
+<para>Default constructor, initializes empty search parameters. </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="App/Model/IBM/Landscape/Map/TerrainCells/EdibleSearchParams.h" line="44" column="5"/>
+      </memberdef>
+      <memberdef kind="function" id="class_edible_search_params_1ac530cb8d047d93436d46136a73ee6416" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type></type>
+        <definition>EdibleSearchParams::EdibleSearchParams</definition>
+        <argsstring>(const EdibleSearchParams &amp;other)</argsstring>
+        <name>EdibleSearchParams</name>
+        <qualifiedname>EdibleSearchParams::EdibleSearchParams</qualifiedname>
+        <param>
+          <type>const <ref refid="class_edible_search_params" kindref="compound">EdibleSearchParams</ref> &amp;</type>
+          <declname>other</declname>
+        </param>
+        <briefdescription>
+<para>Copy constructor. </para>
+        </briefdescription>
+        <detaileddescription>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>other</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Another <ref refid="class_edible_search_params" kindref="compound">EdibleSearchParams</ref> object to copy from </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="App/Model/IBM/Landscape/Map/TerrainCells/EdibleSearchParams.h" line="56" column="5"/>
+      </memberdef>
+      <memberdef kind="function" id="class_edible_search_params_1abbbcfabed5c7bd257f7906bddd287375" prot="public" static="no" const="no" explicit="no" inline="no" virt="virtual">
+        <type></type>
+        <definition>virtual EdibleSearchParams::~EdibleSearchParams</definition>
+        <argsstring>()</argsstring>
+        <name>~EdibleSearchParams</name>
+        <qualifiedname>EdibleSearchParams::~EdibleSearchParams</qualifiedname>
+        <briefdescription>
+<para>Destructor. </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="App/Model/IBM/Landscape/Map/TerrainCells/EdibleSearchParams.h" line="49" column="13"/>
+      </memberdef>
+      <memberdef kind="function" id="class_edible_search_params_1a1b6918a363e4f56432445abfd240d084" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void EdibleSearchParams::addAnimalSearchParams</definition>
+        <argsstring>(const std::vector&lt; LifeStage &gt; &amp;searchableLifeStages, const std::vector&lt; AnimalSpeciesID &gt; &amp;searchableAnimalSpecies, const std::vector&lt; Instar &gt; &amp;searchableInstars, const std::vector&lt; Gender &gt; &amp;searchableGenders)</argsstring>
+        <name>addAnimalSearchParams</name>
+        <qualifiedname>EdibleSearchParams::addAnimalSearchParams</qualifiedname>
+        <param>
+          <type>const std::vector&lt; LifeStage &gt; &amp;</type>
+          <declname>searchableLifeStages</declname>
+        </param>
+        <param>
+          <type>const std::vector&lt; <ref refid="class_animal_species_i_d" kindref="compound">AnimalSpeciesID</ref> &gt; &amp;</type>
+          <declname>searchableAnimalSpecies</declname>
+        </param>
+        <param>
+          <type>const std::vector&lt; <ref refid="class_instar" kindref="compound">Instar</ref> &gt; &amp;</type>
+          <declname>searchableInstars</declname>
+        </param>
+        <param>
+          <type>const std::vector&lt; Gender &gt; &amp;</type>
+          <declname>searchableGenders</declname>
+        </param>
+        <briefdescription>
+<para>Adds animal search parameters to this object. </para>
+        </briefdescription>
+        <detaileddescription>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>searchableLifeStages</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Vector of life stages to include </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>searchableAnimalSpecies</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Vector of animal species IDs to include </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>searchableInstars</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Vector of instars to include </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>searchableGenders</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Vector of genders to include </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="App/Model/IBM/Landscape/Map/TerrainCells/EdibleSearchParams.h" line="74" column="10"/>
+      </memberdef>
+      <memberdef kind="function" id="class_edible_search_params_1ab5f3873d26cd4c8636fec12b290d6f9a" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void EdibleSearchParams::addResourceSearchParams</definition>
+        <argsstring>(size_t numberExistingResourceSpecies, const std::vector&lt; ResourceSpecies::ResourceID &gt; &amp;searchableResourceSpecies={})</argsstring>
+        <name>addResourceSearchParams</name>
+        <qualifiedname>EdibleSearchParams::addResourceSearchParams</qualifiedname>
+        <param>
+          <type>size_t</type>
+          <declname>numberExistingResourceSpecies</declname>
+        </param>
+        <param>
+          <type>const std::vector&lt; <ref refid="class_resource_species_1_1_resource_i_d" kindref="compound">ResourceSpecies::ResourceID</ref> &gt; &amp;</type>
+          <declname>searchableResourceSpecies</declname>
+          <defval>{}</defval>
+        </param>
+        <briefdescription>
+<para>Adds resource search parameters to this object. </para>
+        </briefdescription>
+        <detaileddescription>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>existingResourceSpecies</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Vector of existing resource species </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>searchableResourceSpecies</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Optional vector of resource IDs to include </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="App/Model/IBM/Landscape/Map/TerrainCells/EdibleSearchParams.h" line="87" column="10"/>
+      </memberdef>
+      <memberdef kind="function" id="class_edible_search_params_1af8652e2ef0a1a71d44d7f956d4339b8e" prot="public" static="no" const="yes" explicit="no" inline="no" virt="non-virtual">
+        <type>const <ref refid="class_animal_search_params" kindref="compound">AnimalSearchParams</ref> &amp;</type>
+        <definition>const AnimalSearchParams &amp; EdibleSearchParams::getAnimalSearchParams</definition>
+        <argsstring>() const</argsstring>
+        <name>getAnimalSearchParams</name>
+        <qualifiedname>EdibleSearchParams::getAnimalSearchParams</qualifiedname>
+        <briefdescription>
+<para>Returns the animal search parameters. </para>
+        </briefdescription>
+        <detaileddescription>
+<para><simplesect kind="return"><para>Reference to <ref refid="class_animal_search_params" kindref="compound">AnimalSearchParams</ref> object </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="App/Model/IBM/Landscape/Map/TerrainCells/EdibleSearchParams.h" line="94" column="30"/>
+      </memberdef>
+      <memberdef kind="function" id="class_edible_search_params_1ad1e8803af24c13bdde6f1bbab2db7e46" prot="public" static="no" const="yes" explicit="no" inline="no" virt="non-virtual">
+        <type>const <ref refid="class_resource_search_params" kindref="compound">ResourceSearchParams</ref> &amp;</type>
+        <definition>const ResourceSearchParams &amp; EdibleSearchParams::getResourceSearchParams</definition>
+        <argsstring>() const</argsstring>
+        <name>getResourceSearchParams</name>
+        <qualifiedname>EdibleSearchParams::getResourceSearchParams</qualifiedname>
+        <briefdescription>
+<para>Returns the resource search parameters. </para>
+        </briefdescription>
+        <detaileddescription>
+<para><simplesect kind="return"><para>Reference to <ref refid="class_resource_search_params" kindref="compound">ResourceSearchParams</ref> object </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="App/Model/IBM/Landscape/Map/TerrainCells/EdibleSearchParams.h" line="101" column="32"/>
+      </memberdef>
+      <memberdef kind="function" id="class_edible_search_params_1a4f32529f0c03f10b578d24d5e86a9563" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void EdibleSearchParams::init</definition>
+        <argsstring>()</argsstring>
+        <name>init</name>
+        <qualifiedname>EdibleSearchParams::init</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="App/Model/IBM/Landscape/Map/TerrainCells/EdibleSearchParams.h" line="103" column="10"/>
+      </memberdef>
+      <memberdef kind="function" id="class_edible_search_params_1aa999db3e699f7a140b3cf4ce8b38b3d3" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type><ref refid="class_edible_search_params" kindref="compound">EdibleSearchParams</ref> &amp;</type>
+        <definition>EdibleSearchParams &amp; EdibleSearchParams::operator=</definition>
+        <argsstring>(const EdibleSearchParams &amp;other)</argsstring>
+        <name>operator=</name>
+        <qualifiedname>EdibleSearchParams::operator=</qualifiedname>
+        <param>
+          <type>const <ref refid="class_edible_search_params" kindref="compound">EdibleSearchParams</ref> &amp;</type>
+          <declname>other</declname>
+        </param>
+        <briefdescription>
+<para>Copy assignment operator. </para>
+        </briefdescription>
+        <detaileddescription>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>other</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Another <ref refid="class_edible_search_params" kindref="compound">EdibleSearchParams</ref> object to assign from </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<simplesect kind="return"><para>Reference to this object </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="App/Model/IBM/Landscape/Map/TerrainCells/EdibleSearchParams.h" line="64" column="24"/>
+      </memberdef>
+    </sectiondef>
+    <briefdescription>
+<para>Encapsulates search parameters for both animals and resources. </para>
+    </briefdescription>
+    <detaileddescription>
+<para>This class combines animal search parameters and resource search parameters to facilitate the filtering of edibles (animals and resources) within a terrain cell during simulation. </para>
+    </detaileddescription>
+    <collaborationgraph>
+      <node id="2">
+        <label>AnimalSearchParams</label>
+        <link refid="class_animal_search_params"/>
+      </node>
+      <node id="1">
+        <label>EdibleSearchParams</label>
+        <link refid="class_edible_search_params"/>
+        <childnode refid="2" relation="usage">
+          <edgelabel>animalSearchParams</edgelabel>
+        </childnode>
+        <childnode refid="3" relation="usage">
+          <edgelabel>resourceSearchParams</edgelabel>
+        </childnode>
+      </node>
+      <node id="3">
+        <label>ResourceSearchParams</label>
+        <link refid="class_resource_search_params"/>
+      </node>
+    </collaborationgraph>
+    <location file="App/Model/IBM/Landscape/Map/TerrainCells/EdibleSearchParams.h" line="31" column="1" bodyfile="App/Model/IBM/Landscape/Map/TerrainCells/EdibleSearchParams.h" bodystart="32" bodyend="104"/>
+    <listofallmembers>
+      <member refid="class_edible_search_params_1a1b6918a363e4f56432445abfd240d084" prot="public" virt="non-virtual"><scope>EdibleSearchParams</scope><name>addAnimalSearchParams</name></member>
+      <member refid="class_edible_search_params_1ab5f3873d26cd4c8636fec12b290d6f9a" prot="public" virt="non-virtual"><scope>EdibleSearchParams</scope><name>addResourceSearchParams</name></member>
+      <member refid="class_edible_search_params_1ae192b046f5aaeaac51ab01f5a1c0f979" prot="protected" virt="non-virtual"><scope>EdibleSearchParams</scope><name>animalSearchParams</name></member>
+      <member refid="class_edible_search_params_1afc30f8af7a473f5a2160343a504b08fa" prot="public" virt="non-virtual"><scope>EdibleSearchParams</scope><name>EdibleSearchParams</name></member>
+      <member refid="class_edible_search_params_1ac530cb8d047d93436d46136a73ee6416" prot="public" virt="non-virtual"><scope>EdibleSearchParams</scope><name>EdibleSearchParams</name></member>
+      <member refid="class_edible_search_params_1af8652e2ef0a1a71d44d7f956d4339b8e" prot="public" virt="non-virtual"><scope>EdibleSearchParams</scope><name>getAnimalSearchParams</name></member>
+      <member refid="class_edible_search_params_1ad1e8803af24c13bdde6f1bbab2db7e46" prot="public" virt="non-virtual"><scope>EdibleSearchParams</scope><name>getResourceSearchParams</name></member>
+      <member refid="class_edible_search_params_1a4f32529f0c03f10b578d24d5e86a9563" prot="public" virt="non-virtual"><scope>EdibleSearchParams</scope><name>init</name></member>
+      <member refid="class_edible_search_params_1aa999db3e699f7a140b3cf4ce8b38b3d3" prot="public" virt="non-virtual"><scope>EdibleSearchParams</scope><name>operator=</name></member>
+      <member refid="class_edible_search_params_1a869e25497d4153771ff10e9195fc7f9d" prot="protected" virt="non-virtual"><scope>EdibleSearchParams</scope><name>resourceSearchParams</name></member>
+      <member refid="class_edible_search_params_1abbbcfabed5c7bd257f7906bddd287375" prot="public" virt="virtual"><scope>EdibleSearchParams</scope><name>~EdibleSearchParams</name></member>
+    </listofallmembers>
+  </compounddef>
+</doxygen>

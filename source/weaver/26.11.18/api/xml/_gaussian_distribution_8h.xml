@@ -1,0 +1,318 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.14.0" xml:lang="en-US">
+  <compounddef id="_gaussian_distribution_8h" kind="file" language="C++">
+    <compoundname>GaussianDistribution.h</compoundname>
+    <includes local="no">math.h</includes>
+    <includes local="no">vector</includes>
+    <includes local="no">iostream</includes>
+    <includes refid="_constants_8h" local="yes">Misc/Maths/Constants.h</includes>
+    <includes refid="_types_8h" local="yes">Misc/Types.h</includes>
+    <includes refid="_precise_double_8h" local="yes">Misc/Maths/PreciseDouble.h</includes>
+    <includedby refid="_landscape_8h" local="yes">App/Model/IBM/Landscape/Landscape.h</includedby>
+    <incdepgraph>
+      <node id="1">
+        <label>App/Model/IBM/Maths/GaussianDistribution.h</label>
+        <link refid="_gaussian_distribution_8h"/>
+        <childnode refid="2" relation="include">
+        </childnode>
+        <childnode refid="3" relation="include">
+        </childnode>
+        <childnode refid="4" relation="include">
+        </childnode>
+        <childnode refid="5" relation="include">
+        </childnode>
+        <childnode refid="6" relation="include">
+        </childnode>
+        <childnode refid="14" relation="include">
+        </childnode>
+      </node>
+      <node id="7">
+        <label>Coordinate3D.h</label>
+        <link refid="_coordinate3_d_8h_source"/>
+        <childnode refid="8" relation="include">
+        </childnode>
+        <childnode refid="9" relation="include">
+        </childnode>
+        <childnode refid="10" relation="include">
+        </childnode>
+        <childnode refid="11" relation="include">
+        </childnode>
+      </node>
+      <node id="5">
+        <label>Misc/Maths/Constants.h</label>
+        <link refid="_constants_8h_source"/>
+      </node>
+      <node id="14">
+        <label>Misc/Maths/PreciseDouble.h</label>
+        <link refid="_precise_double_8h_source"/>
+        <childnode refid="15" relation="include">
+        </childnode>
+        <childnode refid="16" relation="include">
+        </childnode>
+        <childnode refid="9" relation="include">
+        </childnode>
+        <childnode refid="10" relation="include">
+        </childnode>
+        <childnode refid="17" relation="include">
+        </childnode>
+        <childnode refid="18" relation="include">
+        </childnode>
+        <childnode refid="19" relation="include">
+        </childnode>
+        <childnode refid="20" relation="include">
+        </childnode>
+        <childnode refid="4" relation="include">
+        </childnode>
+        <childnode refid="13" relation="include">
+        </childnode>
+        <childnode refid="21" relation="include">
+        </childnode>
+      </node>
+      <node id="6">
+        <label>Misc/Types.h</label>
+        <link refid="_types_8h_source"/>
+        <childnode refid="7" relation="include">
+        </childnode>
+        <childnode refid="12" relation="include">
+        </childnode>
+        <childnode refid="13" relation="include">
+        </childnode>
+        <childnode refid="14" relation="include">
+        </childnode>
+      </node>
+      <node id="20">
+        <label>algorithm</label>
+      </node>
+      <node id="9">
+        <label>boost/archive/binary_iarchive.hpp</label>
+      </node>
+      <node id="10">
+        <label>boost/archive/binary_oarchive.hpp</label>
+      </node>
+      <node id="15">
+        <label>boost/archive/text_iarchive.hpp</label>
+      </node>
+      <node id="16">
+        <label>boost/archive/text_oarchive.hpp</label>
+      </node>
+      <node id="8">
+        <label>boost/serialization/access.hpp</label>
+      </node>
+      <node id="12">
+        <label>cfloat</label>
+      </node>
+      <node id="19">
+        <label>cmath</label>
+      </node>
+      <node id="17">
+        <label>fmt/format.h</label>
+      </node>
+      <node id="11">
+        <label>fstream</label>
+      </node>
+      <node id="21">
+        <label>functional</label>
+      </node>
+      <node id="4">
+        <label>iostream</label>
+      </node>
+      <node id="13">
+        <label>limits</label>
+      </node>
+      <node id="2">
+        <label>math.h</label>
+      </node>
+      <node id="18">
+        <label>string</label>
+      </node>
+      <node id="3">
+        <label>vector</label>
+      </node>
+    </incdepgraph>
+    <invincdepgraph>
+      <node id="3">
+        <label>App/Model/IBM/IBM.h</label>
+        <link refid="_i_b_m_8h_source"/>
+      </node>
+      <node id="4">
+        <label>App/Model/IBM/Landscape/AquaticLandscape.h</label>
+        <link refid="_aquatic_landscape_8h_source"/>
+      </node>
+      <node id="5">
+        <label>App/Model/IBM/Landscape/ArthropodsLandscape.h</label>
+        <link refid="_arthropods_landscape_8h_source"/>
+      </node>
+      <node id="6">
+        <label>App/Model/IBM/Landscape/DinosaursLandscape.h</label>
+        <link refid="_dinosaurs_landscape_8h_source"/>
+      </node>
+      <node id="2">
+        <label>App/Model/IBM/Landscape/Landscape.h</label>
+        <link refid="_landscape_8h_source"/>
+        <childnode refid="3" relation="include">
+        </childnode>
+        <childnode refid="4" relation="include">
+        </childnode>
+        <childnode refid="5" relation="include">
+        </childnode>
+        <childnode refid="6" relation="include">
+        </childnode>
+      </node>
+      <node id="1">
+        <label>App/Model/IBM/Maths/GaussianDistribution.h</label>
+        <link refid="_gaussian_distribution_8h"/>
+        <childnode refid="2" relation="include">
+        </childnode>
+      </node>
+    </invincdepgraph>
+    <innerclass refid="class_anisotropic_gaussian3_d" prot="public">AnisotropicGaussian3D</innerclass>
+    <innerclass refid="class_gaussian1_d" prot="public">Gaussian1D</innerclass>
+    <innerclass refid="class_isotropic_gaussian3_d" prot="public">IsotropicGaussian3D</innerclass>
+    <briefdescription>
+<para>Classes for handling 1D and 3D Gaussian distributions (isotropic and anisotropic) with optional precomputation. </para>
+    </briefdescription>
+    <detaileddescription>
+<para>Provides classes for Gaussian distributions:<itemizedlist>
+<listitem><para><ref refid="class_gaussian1_d" kindref="compound">Gaussian1D</ref>: 1-dimensional Gaussian with optional precomputed values.</para>
+</listitem><listitem><para><ref refid="class_isotropic_gaussian3_d" kindref="compound">IsotropicGaussian3D</ref>: 3D Gaussian with the same sigma in all directions.</para>
+</listitem><listitem><para><ref refid="class_anisotropic_gaussian3_d" kindref="compound">AnisotropicGaussian3D</ref>: 3D Gaussian with different sigma values along X, Y, Z axes. </para>
+</listitem></itemizedlist>
+</para>
+    </detaileddescription>
+    <programlisting>
+<codeline lineno="1"><highlight class="normal"></highlight></codeline>
+<codeline lineno="10"><highlight class="normal"></highlight></codeline>
+<codeline lineno="11"><highlight class="normal"></highlight><highlight class="preprocessor">#ifndef<sp/>GAUSSIAN_DISTRIBUTION_H_</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="12"><highlight class="normal"></highlight><highlight class="preprocessor">#define<sp/>GAUSSIAN_DISTRIBUTION_H_</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="13"><highlight class="normal"></highlight></codeline>
+<codeline lineno="14"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&lt;math.h&gt;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="15"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&lt;vector&gt;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="16"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&lt;iostream&gt;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="17"><highlight class="normal"></highlight></codeline>
+<codeline lineno="18"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&quot;Misc/Maths/Constants.h&quot;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="19"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&quot;Misc/Types.h&quot;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="20"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&quot;Misc/Maths/PreciseDouble.h&quot;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="21"><highlight class="normal"></highlight></codeline>
+<codeline lineno="29" refid="class_gaussian1_d" refkind="compound"><highlight class="normal"></highlight><highlight class="keyword">class<sp/></highlight><highlight class="normal"><ref refid="class_gaussian1_d_1abf7212b4d34e315c576c62dee1cf8b3b" kindref="member">Gaussian1D</ref><sp/>{</highlight></codeline>
+<codeline lineno="30"><highlight class="normal"></highlight><highlight class="keyword">protected</highlight><highlight class="normal">:</highlight></codeline>
+<codeline lineno="31" refid="class_gaussian1_d_1abed6cd37e6c3b7ad1ae1a5cd2247b2e7" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="class_precise_double" kindref="compound">PreciseDouble</ref><sp/><ref refid="class_gaussian1_d_1abed6cd37e6c3b7ad1ae1a5cd2247b2e7" kindref="member">sigma</ref>;<sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight></codeline>
+<codeline lineno="32" refid="class_gaussian1_d_1ad23fcab6572d5fa5ebd90188163746a8" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="class_precise_double" kindref="compound">PreciseDouble</ref><sp/><ref refid="class_gaussian1_d_1ad23fcab6572d5fa5ebd90188163746a8" kindref="member">amplitude</ref>;<sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight></codeline>
+<codeline lineno="33" refid="class_gaussian1_d_1ae20133474bd2c91f235211f6c17f96ac" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="class_precise_double" kindref="compound">PreciseDouble</ref><sp/><ref refid="class_gaussian1_d_1ae20133474bd2c91f235211f6c17f96ac" kindref="member">center</ref>;<sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight></codeline>
+<codeline lineno="34" refid="class_gaussian1_d_1ad4cf80d0971dd179e30ac3c30bc1736d" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">bool</highlight><highlight class="normal"><sp/><ref refid="class_gaussian1_d_1ad4cf80d0971dd179e30ac3c30bc1736d" kindref="member">precompute</ref>;<sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight></codeline>
+<codeline lineno="35" refid="class_gaussian1_d_1a66892329041332ca675b95dfe50026ad" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">unsigned</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/><ref refid="class_gaussian1_d_1a66892329041332ca675b95dfe50026ad" kindref="member">precomputeBins</ref>;<sp/><sp/><sp/></highlight></codeline>
+<codeline lineno="36" refid="class_gaussian1_d_1af2709a1460885a19107eb0c47f07077d" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">unsigned</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/><ref refid="class_gaussian1_d_1af2709a1460885a19107eb0c47f07077d" kindref="member">precomputeDim</ref>;<sp/><sp/><sp/><sp/></highlight></codeline>
+<codeline lineno="37" refid="class_gaussian1_d_1a940828562cd0d8f150ea5a1748965463" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/>std::vector&lt;PreciseDouble&gt;<sp/><ref refid="class_gaussian1_d_1a940828562cd0d8f150ea5a1748965463" kindref="member">precomputed</ref>;<sp/></highlight></codeline>
+<codeline lineno="38" refid="class_gaussian1_d_1a43bbb025af792d433a420fc4399b9ffe" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="class_precise_double" kindref="compound">PreciseDouble</ref><sp/><ref refid="class_gaussian1_d_1a43bbb025af792d433a420fc4399b9ffe" kindref="member">precomputeBinWidth</ref>;<sp/></highlight></codeline>
+<codeline lineno="39" refid="class_gaussian1_d_1aacd716ede6f9871f85bfc26df2357b89" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="class_precise_double" kindref="compound">PreciseDouble</ref><sp/><ref refid="class_gaussian1_d_1aacd716ede6f9871f85bfc26df2357b89" kindref="member">inverseSigma</ref>;<sp/><sp/><sp/><sp/></highlight></codeline>
+<codeline lineno="40"><highlight class="normal"></highlight></codeline>
+<codeline lineno="41"><highlight class="normal"></highlight><highlight class="keyword">public</highlight><highlight class="normal">:</highlight></codeline>
+<codeline lineno="43" refid="class_gaussian1_d_1abf7212b4d34e315c576c62dee1cf8b3b" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="class_gaussian1_d_1abf7212b4d34e315c576c62dee1cf8b3b" kindref="member">Gaussian1D</ref>();</highlight></codeline>
+<codeline lineno="44"><highlight class="normal"></highlight></codeline>
+<codeline lineno="46" refid="class_gaussian1_d_1acbc485637efeda8c611e49a81769f775" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="class_gaussian1_d_1acbc485637efeda8c611e49a81769f775" kindref="member">Gaussian1D</ref>(</highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/><ref refid="class_precise_double" kindref="compound">PreciseDouble</ref>&amp;<sp/>newAmplitude,<sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/><ref refid="class_precise_double" kindref="compound">PreciseDouble</ref>&amp;<sp/>newSigma,<sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/><ref refid="class_precise_double" kindref="compound">PreciseDouble</ref>&amp;<sp/>newCenter);</highlight></codeline>
+<codeline lineno="47"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight></codeline>
+<codeline lineno="49" refid="class_gaussian1_d_1a3b1bb047886dd11c7eabdd6526fe4d87" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">virtual</highlight><highlight class="normal"><sp/><ref refid="class_gaussian1_d_1a3b1bb047886dd11c7eabdd6526fe4d87" kindref="member">~Gaussian1D</ref>();</highlight></codeline>
+<codeline lineno="50"><highlight class="normal"></highlight></codeline>
+<codeline lineno="52" refid="class_gaussian1_d_1a4fcae2a6aaf0e245ba1d56e0e5a99338" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/><ref refid="class_precise_double" kindref="compound">PreciseDouble</ref>&amp;<sp/><ref refid="class_gaussian1_d_1a4fcae2a6aaf0e245ba1d56e0e5a99338" kindref="member">getSigma</ref>();</highlight></codeline>
+<codeline lineno="53"><highlight class="normal"></highlight></codeline>
+<codeline lineno="55" refid="class_gaussian1_d_1ab40ddcea7ecdf3767df3dcf829f445e1" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/><ref refid="class_gaussian1_d_1ab40ddcea7ecdf3767df3dcf829f445e1" kindref="member">setSigma</ref>(</highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/><ref refid="class_precise_double" kindref="compound">PreciseDouble</ref>&amp;<sp/>newValue);</highlight></codeline>
+<codeline lineno="56"><highlight class="normal"></highlight></codeline>
+<codeline lineno="58" refid="class_gaussian1_d_1aff13f4b4d69c14345433f52a6dd8e488" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">bool</highlight><highlight class="normal"><sp/><ref refid="class_gaussian1_d_1aff13f4b4d69c14345433f52a6dd8e488" kindref="member">isPrecomputed</ref>();</highlight></codeline>
+<codeline lineno="59"><highlight class="normal"></highlight></codeline>
+<codeline lineno="61" refid="class_gaussian1_d_1adc76ac7b031d3f59c43b1a0860b1d89e" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/><ref refid="class_gaussian1_d_1adc76ac7b031d3f59c43b1a0860b1d89e" kindref="member">setPrecomputed</ref>(</highlight><highlight class="keywordtype">bool</highlight><highlight class="normal"><sp/>doPrecompute);</highlight></codeline>
+<codeline lineno="62"><highlight class="normal"></highlight></codeline>
+<codeline lineno="64" refid="class_gaussian1_d_1a4b00e91269bf4c9c72e749ad22488c02" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/><ref refid="class_precise_double" kindref="compound">PreciseDouble</ref>&amp;<sp/><ref refid="class_gaussian1_d_1a4b00e91269bf4c9c72e749ad22488c02" kindref="member">getAmplitude</ref>();</highlight></codeline>
+<codeline lineno="65"><highlight class="normal"></highlight></codeline>
+<codeline lineno="67" refid="class_gaussian1_d_1ac1f6fc0944d1bdb7b5511049f91ccd73" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/><ref refid="class_gaussian1_d_1ac1f6fc0944d1bdb7b5511049f91ccd73" kindref="member">setAmplitude</ref>(</highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/><ref refid="class_precise_double" kindref="compound">PreciseDouble</ref>&amp;<sp/>newValue);</highlight></codeline>
+<codeline lineno="68"><highlight class="normal"></highlight></codeline>
+<codeline lineno="70" refid="class_gaussian1_d_1a56ce4d776f462dc034bce4c6f1ec50b7" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/><ref refid="class_precise_double" kindref="compound">PreciseDouble</ref>&amp;<sp/><ref refid="class_gaussian1_d_1a56ce4d776f462dc034bce4c6f1ec50b7" kindref="member">getCenter</ref>();</highlight></codeline>
+<codeline lineno="71"><highlight class="normal"></highlight></codeline>
+<codeline lineno="73" refid="class_gaussian1_d_1aef8692fa8a110e139dae618ac510e5c0" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="class_precise_double" kindref="compound">PreciseDouble</ref><sp/><ref refid="class_gaussian1_d_1aef8692fa8a110e139dae618ac510e5c0" kindref="member">getValueAtDistance</ref>(</highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/><ref refid="class_precise_double" kindref="compound">PreciseDouble</ref>&amp;<sp/>distance);</highlight></codeline>
+<codeline lineno="74"><highlight class="normal"></highlight></codeline>
+<codeline lineno="76" refid="class_gaussian1_d_1ab6ab4871d3013127f6aa4048c6810d75" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="class_precise_double" kindref="compound">PreciseDouble</ref><sp/><ref refid="class_gaussian1_d_1ab6ab4871d3013127f6aa4048c6810d75" kindref="member">getValueAtPoint</ref>(</highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/><ref refid="class_precise_double" kindref="compound">PreciseDouble</ref>&amp;<sp/>point);</highlight></codeline>
+<codeline lineno="77"><highlight class="normal">};</highlight></codeline>
+<codeline lineno="78"><highlight class="normal"></highlight></codeline>
+<codeline lineno="79"><highlight class="normal"></highlight></codeline>
+<codeline lineno="87" refid="class_isotropic_gaussian3_d" refkind="compound"><highlight class="normal"></highlight><highlight class="keyword">class<sp/></highlight><highlight class="normal"><ref refid="class_isotropic_gaussian3_d_1a4dd036f55d8edc1a971ab5b6a473b4a1" kindref="member">IsotropicGaussian3D</ref><sp/>{</highlight></codeline>
+<codeline lineno="88"><highlight class="normal"></highlight><highlight class="keyword">protected</highlight><highlight class="normal">:</highlight></codeline>
+<codeline lineno="89" refid="class_isotropic_gaussian3_d_1a6620ffc8d47ab4e91e20c7e44fbd276f" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="class_precise_double" kindref="compound">PreciseDouble</ref><sp/><ref refid="class_isotropic_gaussian3_d_1a6620ffc8d47ab4e91e20c7e44fbd276f" kindref="member">sigma</ref>;<sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight></codeline>
+<codeline lineno="90" refid="class_isotropic_gaussian3_d_1aad06cde431846b523fd7509797c543a4" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="class_precise_double" kindref="compound">PreciseDouble</ref><sp/><ref refid="class_isotropic_gaussian3_d_1aad06cde431846b523fd7509797c543a4" kindref="member">amplitude</ref>;<sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight></codeline>
+<codeline lineno="91" refid="class_isotropic_gaussian3_d_1ab20a8e6f04363e5ac10a92bbfa1d2f85" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/>dPoint3D<sp/><ref refid="class_isotropic_gaussian3_d_1ab20a8e6f04363e5ac10a92bbfa1d2f85" kindref="member">center</ref>;<sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight></codeline>
+<codeline lineno="92" refid="class_isotropic_gaussian3_d_1a6e4a8ecac18948610066a317685bf3ed" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="class_precise_double" kindref="compound">PreciseDouble</ref><sp/><ref refid="class_isotropic_gaussian3_d_1a6e4a8ecac18948610066a317685bf3ed" kindref="member">inverseSquaredSigma</ref>;<sp/></highlight></codeline>
+<codeline lineno="93"><highlight class="normal"></highlight></codeline>
+<codeline lineno="94"><highlight class="normal"></highlight><highlight class="keyword">public</highlight><highlight class="normal">:</highlight></codeline>
+<codeline lineno="96" refid="class_isotropic_gaussian3_d_1a4dd036f55d8edc1a971ab5b6a473b4a1" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="class_isotropic_gaussian3_d_1a4dd036f55d8edc1a971ab5b6a473b4a1" kindref="member">IsotropicGaussian3D</ref>();</highlight></codeline>
+<codeline lineno="97"><highlight class="normal"></highlight></codeline>
+<codeline lineno="99" refid="class_isotropic_gaussian3_d_1a5e988344add90f560523029b6e79df16" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="class_isotropic_gaussian3_d_1a5e988344add90f560523029b6e79df16" kindref="member">IsotropicGaussian3D</ref>(</highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/><ref refid="class_precise_double" kindref="compound">PreciseDouble</ref>&amp;<sp/>newAmplitude,<sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/><ref refid="class_precise_double" kindref="compound">PreciseDouble</ref>&amp;<sp/>newSigma,<sp/>dPoint3D<sp/>newCenter);</highlight></codeline>
+<codeline lineno="100"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight></codeline>
+<codeline lineno="102" refid="class_isotropic_gaussian3_d_1ab6b4c27110e6153f9b805dd8e0f2b6ce" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="class_isotropic_gaussian3_d_1ab6b4c27110e6153f9b805dd8e0f2b6ce" kindref="member">IsotropicGaussian3D</ref>(</highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/><ref refid="class_precise_double" kindref="compound">PreciseDouble</ref>&amp;<sp/>newAmplitude,<sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/><ref refid="class_precise_double" kindref="compound">PreciseDouble</ref>&amp;<sp/>newSigma,<sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/><ref refid="class_precise_double" kindref="compound">PreciseDouble</ref>&amp;<sp/>newCenterX,<sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/><ref refid="class_precise_double" kindref="compound">PreciseDouble</ref>&amp;<sp/>newCenterY,<sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/><ref refid="class_precise_double" kindref="compound">PreciseDouble</ref>&amp;<sp/>newCenterZ);</highlight></codeline>
+<codeline lineno="103"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight></codeline>
+<codeline lineno="105" refid="class_isotropic_gaussian3_d_1a35943d1b16eeefacb288887c8ac0dd63" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">virtual</highlight><highlight class="normal"><sp/><ref refid="class_isotropic_gaussian3_d_1a35943d1b16eeefacb288887c8ac0dd63" kindref="member">~IsotropicGaussian3D</ref>();</highlight></codeline>
+<codeline lineno="106"><highlight class="normal"></highlight></codeline>
+<codeline lineno="108" refid="class_isotropic_gaussian3_d_1a8fce32ab61f46b2d23fbe9bd9eb9bc1c" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/><ref refid="class_precise_double" kindref="compound">PreciseDouble</ref>&amp;<sp/><ref refid="class_isotropic_gaussian3_d_1a8fce32ab61f46b2d23fbe9bd9eb9bc1c" kindref="member">getSigma</ref>()<sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal">;</highlight></codeline>
+<codeline lineno="109"><highlight class="normal"></highlight></codeline>
+<codeline lineno="111" refid="class_isotropic_gaussian3_d_1ab6b7c8e2082ae585f2919f700d914053" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/><ref refid="class_isotropic_gaussian3_d_1ab6b7c8e2082ae585f2919f700d914053" kindref="member">setSigma</ref>(</highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/><ref refid="class_precise_double" kindref="compound">PreciseDouble</ref>&amp;<sp/>newValue);</highlight></codeline>
+<codeline lineno="112"><highlight class="normal"></highlight></codeline>
+<codeline lineno="114" refid="class_isotropic_gaussian3_d_1a4de2770b835be409cbbae2619e5e0e57" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/><ref refid="class_precise_double" kindref="compound">PreciseDouble</ref>&amp;<sp/><ref refid="class_isotropic_gaussian3_d_1a4de2770b835be409cbbae2619e5e0e57" kindref="member">getAmplitude</ref>()<sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal">;</highlight></codeline>
+<codeline lineno="115"><highlight class="normal"></highlight></codeline>
+<codeline lineno="117" refid="class_isotropic_gaussian3_d_1a0fa6f6f81a0a322a43d2f3854bb85402" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/><ref refid="class_isotropic_gaussian3_d_1a0fa6f6f81a0a322a43d2f3854bb85402" kindref="member">setAmplitude</ref>(</highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/><ref refid="class_precise_double" kindref="compound">PreciseDouble</ref>&amp;<sp/>newValue);</highlight></codeline>
+<codeline lineno="118"><highlight class="normal"></highlight></codeline>
+<codeline lineno="120" refid="class_isotropic_gaussian3_d_1a8f9af8f36456d22aab63cb0affc003be" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/>dPoint3D&amp;<sp/><ref refid="class_isotropic_gaussian3_d_1a8f9af8f36456d22aab63cb0affc003be" kindref="member">getCenter</ref>()<sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal">;</highlight></codeline>
+<codeline lineno="121"><highlight class="normal"></highlight></codeline>
+<codeline lineno="123" refid="class_isotropic_gaussian3_d_1a76b13dd66bc3bce15bc8f48e773e3a0d" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="class_precise_double" kindref="compound">PreciseDouble</ref><sp/><ref refid="class_isotropic_gaussian3_d_1a76b13dd66bc3bce15bc8f48e773e3a0d" kindref="member">getValueAtDistance</ref>(</highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/><ref refid="class_precise_double" kindref="compound">PreciseDouble</ref>&amp;<sp/>xDistance,<sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/><ref refid="class_precise_double" kindref="compound">PreciseDouble</ref>&amp;<sp/>yDistance,<sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/><ref refid="class_precise_double" kindref="compound">PreciseDouble</ref>&amp;<sp/>zDistance);</highlight></codeline>
+<codeline lineno="124"><highlight class="normal"></highlight></codeline>
+<codeline lineno="126" refid="class_isotropic_gaussian3_d_1ac4262e5ce0eace02f45e05d5ba5013ab" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="class_precise_double" kindref="compound">PreciseDouble</ref><sp/><ref refid="class_isotropic_gaussian3_d_1ac4262e5ce0eace02f45e05d5ba5013ab" kindref="member">getValueAtPoint</ref>(</highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/><ref refid="class_precise_double" kindref="compound">PreciseDouble</ref>&amp;<sp/>xPoint,<sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/><ref refid="class_precise_double" kindref="compound">PreciseDouble</ref>&amp;<sp/>yPoint,<sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/><ref refid="class_precise_double" kindref="compound">PreciseDouble</ref>&amp;<sp/>zPoint);</highlight></codeline>
+<codeline lineno="127"><highlight class="normal"></highlight></codeline>
+<codeline lineno="129" refid="class_isotropic_gaussian3_d_1a121f925d75069c820ed91ab0f9daab2b" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="class_precise_double" kindref="compound">PreciseDouble</ref><sp/><ref refid="class_isotropic_gaussian3_d_1a121f925d75069c820ed91ab0f9daab2b" kindref="member">getValueAtDistance</ref>(dVector3D<sp/>distance);</highlight></codeline>
+<codeline lineno="130"><highlight class="normal"></highlight></codeline>
+<codeline lineno="132" refid="class_isotropic_gaussian3_d_1a3a6e048a55ef4412a4dbd66a430a4123" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="class_precise_double" kindref="compound">PreciseDouble</ref><sp/><ref refid="class_isotropic_gaussian3_d_1a3a6e048a55ef4412a4dbd66a430a4123" kindref="member">getValueAtPoint</ref>(dPoint3D<sp/>point);</highlight></codeline>
+<codeline lineno="133"><highlight class="normal">};</highlight></codeline>
+<codeline lineno="134"><highlight class="normal"></highlight></codeline>
+<codeline lineno="135"><highlight class="normal"></highlight></codeline>
+<codeline lineno="143" refid="class_anisotropic_gaussian3_d" refkind="compound"><highlight class="normal"></highlight><highlight class="keyword">class<sp/></highlight><highlight class="normal"><ref refid="class_anisotropic_gaussian3_d_1aa668038dadb889d9a13083526e795db4" kindref="member">AnisotropicGaussian3D</ref><sp/>{</highlight></codeline>
+<codeline lineno="144"><highlight class="normal"></highlight><highlight class="keyword">protected</highlight><highlight class="normal">:</highlight></codeline>
+<codeline lineno="145" refid="class_anisotropic_gaussian3_d_1ab9bc2f25824fe42fecdb593827583ad8" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="class_precise_double" kindref="compound">PreciseDouble</ref><sp/><ref refid="class_anisotropic_gaussian3_d_1ab9bc2f25824fe42fecdb593827583ad8" kindref="member">sigmaWidth</ref>;<sp/><sp/><sp/><sp/><sp/><sp/></highlight></codeline>
+<codeline lineno="146" refid="class_anisotropic_gaussian3_d_1a9e775a4db377f45da4f2923779886aa2" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="class_precise_double" kindref="compound">PreciseDouble</ref><sp/><ref refid="class_anisotropic_gaussian3_d_1a9e775a4db377f45da4f2923779886aa2" kindref="member">sigmaLength</ref>;<sp/><sp/><sp/><sp/><sp/></highlight></codeline>
+<codeline lineno="147" refid="class_anisotropic_gaussian3_d_1a7d4ee283d3a8721cb1118f9f681c2103" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="class_precise_double" kindref="compound">PreciseDouble</ref><sp/><ref refid="class_anisotropic_gaussian3_d_1a7d4ee283d3a8721cb1118f9f681c2103" kindref="member">sigmaDepth</ref>;<sp/><sp/><sp/><sp/><sp/><sp/></highlight></codeline>
+<codeline lineno="148" refid="class_anisotropic_gaussian3_d_1ae860883dc0260a816847ff4237c7610e" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="class_precise_double" kindref="compound">PreciseDouble</ref><sp/><ref refid="class_anisotropic_gaussian3_d_1ae860883dc0260a816847ff4237c7610e" kindref="member">amplitude</ref>;<sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight></codeline>
+<codeline lineno="149" refid="class_anisotropic_gaussian3_d_1a16d42644d9edee3d7e76e1f2f244b315" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/>dPoint3D<sp/><ref refid="class_anisotropic_gaussian3_d_1a16d42644d9edee3d7e76e1f2f244b315" kindref="member">center</ref>;<sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight></codeline>
+<codeline lineno="150" refid="class_anisotropic_gaussian3_d_1ad75caa55daf39098491172e4917764f8" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="class_precise_double" kindref="compound">PreciseDouble</ref><sp/><ref refid="class_anisotropic_gaussian3_d_1ad75caa55daf39098491172e4917764f8" kindref="member">inverseSquaredSigmaWidth</ref>;<sp/><sp/></highlight></codeline>
+<codeline lineno="151" refid="class_anisotropic_gaussian3_d_1a27efe5bf0915e85acdcf83e8819a767b" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="class_precise_double" kindref="compound">PreciseDouble</ref><sp/><ref refid="class_anisotropic_gaussian3_d_1a27efe5bf0915e85acdcf83e8819a767b" kindref="member">inverseSquaredSigmaLength</ref>;<sp/></highlight></codeline>
+<codeline lineno="152" refid="class_anisotropic_gaussian3_d_1a3c7a01ca2f0d19d3b3d3da56a19de41f" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="class_precise_double" kindref="compound">PreciseDouble</ref><sp/><ref refid="class_anisotropic_gaussian3_d_1a3c7a01ca2f0d19d3b3d3da56a19de41f" kindref="member">inverseSquaredSigmaDepth</ref>;<sp/><sp/></highlight></codeline>
+<codeline lineno="153"><highlight class="normal"></highlight></codeline>
+<codeline lineno="154"><highlight class="normal"></highlight><highlight class="keyword">public</highlight><highlight class="normal">:</highlight></codeline>
+<codeline lineno="156" refid="class_anisotropic_gaussian3_d_1aa668038dadb889d9a13083526e795db4" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="class_anisotropic_gaussian3_d_1aa668038dadb889d9a13083526e795db4" kindref="member">AnisotropicGaussian3D</ref>();</highlight></codeline>
+<codeline lineno="157"><highlight class="normal"></highlight></codeline>
+<codeline lineno="159" refid="class_anisotropic_gaussian3_d_1a523ceeeebfe93f4ecd2f1b403a308dfa" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="class_anisotropic_gaussian3_d_1a523ceeeebfe93f4ecd2f1b403a308dfa" kindref="member">AnisotropicGaussian3D</ref>(</highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/><ref refid="class_precise_double" kindref="compound">PreciseDouble</ref>&amp;<sp/>newAmplitude,<sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/><ref refid="class_precise_double" kindref="compound">PreciseDouble</ref>&amp;<sp/>newSigmaWidth,<sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/><ref refid="class_precise_double" kindref="compound">PreciseDouble</ref>&amp;<sp/>newSigmaLength,<sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/><ref refid="class_precise_double" kindref="compound">PreciseDouble</ref>&amp;<sp/>newSigmadepth,<sp/>dPoint3D<sp/>newCenter);</highlight></codeline>
+<codeline lineno="160"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight></codeline>
+<codeline lineno="162" refid="class_anisotropic_gaussian3_d_1a5a30435b4eb14009ed53ba0fb21fb877" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="class_anisotropic_gaussian3_d_1a5a30435b4eb14009ed53ba0fb21fb877" kindref="member">AnisotropicGaussian3D</ref>(</highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/><ref refid="class_precise_double" kindref="compound">PreciseDouble</ref>&amp;<sp/>newAmplitude,<sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/><ref refid="class_precise_double" kindref="compound">PreciseDouble</ref>&amp;<sp/>newSigmaWidth,<sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/><ref refid="class_precise_double" kindref="compound">PreciseDouble</ref>&amp;<sp/>newSigmaLength,<sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/><ref refid="class_precise_double" kindref="compound">PreciseDouble</ref>&amp;<sp/>newSigmadepth,<sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/><ref refid="class_precise_double" kindref="compound">PreciseDouble</ref>&amp;<sp/>newCenterX,<sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/><ref refid="class_precise_double" kindref="compound">PreciseDouble</ref>&amp;<sp/>newCenterY,<sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/><ref refid="class_precise_double" kindref="compound">PreciseDouble</ref>&amp;<sp/>newCenterZ);</highlight></codeline>
+<codeline lineno="163"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight></codeline>
+<codeline lineno="165" refid="class_anisotropic_gaussian3_d_1ad379f40ceb5169ef360d6667d21084f4" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">virtual</highlight><highlight class="normal"><sp/><ref refid="class_anisotropic_gaussian3_d_1ad379f40ceb5169ef360d6667d21084f4" kindref="member">~AnisotropicGaussian3D</ref>();</highlight></codeline>
+<codeline lineno="166"><highlight class="normal"></highlight></codeline>
+<codeline lineno="168" refid="class_anisotropic_gaussian3_d_1a7be6860fcd68b7df0426e3bb21648c63" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/><ref refid="class_precise_double" kindref="compound">PreciseDouble</ref>&amp;<sp/><ref refid="class_anisotropic_gaussian3_d_1a7be6860fcd68b7df0426e3bb21648c63" kindref="member">getSigmaWidth</ref>();</highlight></codeline>
+<codeline lineno="169"><highlight class="normal"></highlight></codeline>
+<codeline lineno="171" refid="class_anisotropic_gaussian3_d_1aec71f1ec6b819a56afaeabdb743e690b" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/><ref refid="class_precise_double" kindref="compound">PreciseDouble</ref>&amp;<sp/><ref refid="class_anisotropic_gaussian3_d_1aec71f1ec6b819a56afaeabdb743e690b" kindref="member">getSigmaLength</ref>();</highlight></codeline>
+<codeline lineno="172"><highlight class="normal"></highlight></codeline>
+<codeline lineno="174" refid="class_anisotropic_gaussian3_d_1a4677c9614ef6ca2dee9f2551f26f1550" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/><ref refid="class_precise_double" kindref="compound">PreciseDouble</ref>&amp;<sp/><ref refid="class_anisotropic_gaussian3_d_1a4677c9614ef6ca2dee9f2551f26f1550" kindref="member">getSigmaHeight</ref>();</highlight></codeline>
+<codeline lineno="175"><highlight class="normal"></highlight></codeline>
+<codeline lineno="177" refid="class_anisotropic_gaussian3_d_1ae5cf0dc0cc295c69aff70906c0a9a76e" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/><ref refid="class_anisotropic_gaussian3_d_1ae5cf0dc0cc295c69aff70906c0a9a76e" kindref="member">setSigmas</ref>(</highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/><ref refid="class_precise_double" kindref="compound">PreciseDouble</ref>&amp;<sp/>newSigmaWidth,<sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/><ref refid="class_precise_double" kindref="compound">PreciseDouble</ref>&amp;<sp/>newSigmaLength,<sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/><ref refid="class_precise_double" kindref="compound">PreciseDouble</ref>&amp;<sp/>newSigmadepth<sp/>);</highlight></codeline>
+<codeline lineno="178"><highlight class="normal"></highlight></codeline>
+<codeline lineno="180" refid="class_anisotropic_gaussian3_d_1a8557ff34b1de9c77fd0a36d2beae5a27" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/><ref refid="class_precise_double" kindref="compound">PreciseDouble</ref>&amp;<sp/><ref refid="class_anisotropic_gaussian3_d_1a8557ff34b1de9c77fd0a36d2beae5a27" kindref="member">getAmplitude</ref>();</highlight></codeline>
+<codeline lineno="181"><highlight class="normal"></highlight></codeline>
+<codeline lineno="183" refid="class_anisotropic_gaussian3_d_1a702b84cd00485f71a708363271cc3a51" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/><ref refid="class_anisotropic_gaussian3_d_1a702b84cd00485f71a708363271cc3a51" kindref="member">setAmplitude</ref>(</highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/><ref refid="class_precise_double" kindref="compound">PreciseDouble</ref>&amp;<sp/>newValue);</highlight></codeline>
+<codeline lineno="184"><highlight class="normal"></highlight></codeline>
+<codeline lineno="186" refid="class_anisotropic_gaussian3_d_1a35511ee9cf30f97f9fb73e308e1d285b" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/>dPoint3D<sp/><ref refid="class_anisotropic_gaussian3_d_1a35511ee9cf30f97f9fb73e308e1d285b" kindref="member">getCenter</ref>();</highlight></codeline>
+<codeline lineno="187"><highlight class="normal"></highlight></codeline>
+<codeline lineno="189" refid="class_anisotropic_gaussian3_d_1ab3f697eeb1a5b20a8bc30d64dff331f0" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="class_precise_double" kindref="compound">PreciseDouble</ref><sp/><ref refid="class_anisotropic_gaussian3_d_1ab3f697eeb1a5b20a8bc30d64dff331f0" kindref="member">getValueAtDistance</ref>(</highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/><ref refid="class_precise_double" kindref="compound">PreciseDouble</ref>&amp;<sp/>xDistance,<sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/><ref refid="class_precise_double" kindref="compound">PreciseDouble</ref>&amp;<sp/>yDistance,<sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/><ref refid="class_precise_double" kindref="compound">PreciseDouble</ref>&amp;<sp/>zDistance);</highlight></codeline>
+<codeline lineno="190"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight></codeline>
+<codeline lineno="192" refid="class_anisotropic_gaussian3_d_1ac9029125274a9a8d3dc3fe62d08f3ff0" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="class_precise_double" kindref="compound">PreciseDouble</ref><sp/><ref refid="class_anisotropic_gaussian3_d_1ac9029125274a9a8d3dc3fe62d08f3ff0" kindref="member">getValueAtPoint</ref>(</highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/><ref refid="class_precise_double" kindref="compound">PreciseDouble</ref>&amp;<sp/>xPoint,<sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/><ref refid="class_precise_double" kindref="compound">PreciseDouble</ref>&amp;<sp/>yPoint,<sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/><ref refid="class_precise_double" kindref="compound">PreciseDouble</ref>&amp;<sp/>zPoint);</highlight></codeline>
+<codeline lineno="193"><highlight class="normal"></highlight></codeline>
+<codeline lineno="195" refid="class_anisotropic_gaussian3_d_1a4c59405558095318b9ea5e22b0ad8ae4" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="class_precise_double" kindref="compound">PreciseDouble</ref><sp/><ref refid="class_anisotropic_gaussian3_d_1a4c59405558095318b9ea5e22b0ad8ae4" kindref="member">getValueAtDistance</ref>(dVector3D<sp/>distance<sp/>);</highlight></codeline>
+<codeline lineno="196"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight></codeline>
+<codeline lineno="198" refid="class_anisotropic_gaussian3_d_1a5af5c273f1afedfd9b2364c4dec431bb" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="class_precise_double" kindref="compound">PreciseDouble</ref><sp/><ref refid="class_anisotropic_gaussian3_d_1a5af5c273f1afedfd9b2364c4dec431bb" kindref="member">getValueAtPoint</ref>(dPoint3D<sp/>point);</highlight></codeline>
+<codeline lineno="199"><highlight class="normal">};</highlight></codeline>
+<codeline lineno="200"><highlight class="normal"></highlight></codeline>
+<codeline lineno="201"><highlight class="normal"></highlight><highlight class="preprocessor">#endif<sp/></highlight><highlight class="comment">/*<sp/>GAUSSIAN_DISTRIBUTION_H_<sp/>*/</highlight><highlight class="preprocessor"></highlight></codeline>
+    </programlisting>
+    <location file="App/Model/IBM/Maths/GaussianDistribution.h"/>
+  </compounddef>
+</doxygen>

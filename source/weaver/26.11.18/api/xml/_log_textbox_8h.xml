@@ -1,0 +1,122 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.14.0" xml:lang="en-US">
+  <compounddef id="_log_textbox_8h" kind="file" language="C++">
+    <compoundname>LogTextbox.h</compoundname>
+    <includes local="no">nana/gui.hpp</includes>
+    <includes local="no">nana/gui/widgets/panel.hpp</includes>
+    <includes local="no">nana/gui/widgets/textbox.hpp</includes>
+    <includes local="no">nana/gui/timer.hpp</includes>
+    <includes local="no">nana/gui/place.hpp</includes>
+    <includes local="no">mutex</includes>
+    <includes local="no">queue</includes>
+    <includes local="no">string</includes>
+    <includedby refid="_g_u_i_8h" local="yes">App/View/GUI/GUI.h</includedby>
+    <incdepgraph>
+      <node id="1">
+        <label>App/View/GUI/Widgets/LogTextbox.h</label>
+        <link refid="_log_textbox_8h"/>
+        <childnode refid="2" relation="include">
+        </childnode>
+        <childnode refid="3" relation="include">
+        </childnode>
+        <childnode refid="4" relation="include">
+        </childnode>
+        <childnode refid="5" relation="include">
+        </childnode>
+        <childnode refid="6" relation="include">
+        </childnode>
+        <childnode refid="7" relation="include">
+        </childnode>
+        <childnode refid="8" relation="include">
+        </childnode>
+        <childnode refid="9" relation="include">
+        </childnode>
+      </node>
+      <node id="7">
+        <label>mutex</label>
+      </node>
+      <node id="2">
+        <label>nana/gui.hpp</label>
+      </node>
+      <node id="6">
+        <label>nana/gui/place.hpp</label>
+      </node>
+      <node id="5">
+        <label>nana/gui/timer.hpp</label>
+      </node>
+      <node id="3">
+        <label>nana/gui/widgets/panel.hpp</label>
+      </node>
+      <node id="4">
+        <label>nana/gui/widgets/textbox.hpp</label>
+      </node>
+      <node id="8">
+        <label>queue</label>
+      </node>
+      <node id="9">
+        <label>string</label>
+      </node>
+    </incdepgraph>
+    <invincdepgraph>
+      <node id="2">
+        <label>App/View/GUI/GUI.h</label>
+        <link refid="_g_u_i_8h_source"/>
+      </node>
+      <node id="1">
+        <label>App/View/GUI/Widgets/LogTextbox.h</label>
+        <link refid="_log_textbox_8h"/>
+        <childnode refid="2" relation="include">
+        </childnode>
+      </node>
+    </invincdepgraph>
+    <innerclass refid="class_log_textbox" prot="public">LogTextbox</innerclass>
+    <briefdescription>
+<para>Defines the <ref refid="class_log_textbox" kindref="compound">LogTextbox</ref> widget for displaying log messages. </para>
+    </briefdescription>
+    <detaileddescription>
+<para>This file contains the declaration of the <ref refid="class_log_textbox" kindref="compound">LogTextbox</ref> class, a <ref refid="class_g_u_i" kindref="compound">GUI</ref> widget built using the Nana library. It provides a read-only, multiline textbox for logging messages with thread-safe access. </para>
+    </detaileddescription>
+    <programlisting>
+<codeline lineno="1"><highlight class="normal"></highlight></codeline>
+<codeline lineno="9"><highlight class="normal"></highlight></codeline>
+<codeline lineno="10"><highlight class="normal"></highlight><highlight class="preprocessor">#ifndef<sp/>LOG_TEXTBOX_H_</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="11"><highlight class="normal"></highlight><highlight class="preprocessor">#define<sp/>LOG_TEXTBOX_H_</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="12"><highlight class="normal"></highlight></codeline>
+<codeline lineno="13"><highlight class="normal"></highlight></codeline>
+<codeline lineno="14"><highlight class="normal"></highlight></codeline>
+<codeline lineno="15"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&lt;nana/gui.hpp&gt;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="16"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&lt;nana/gui/widgets/panel.hpp&gt;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="17"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&lt;nana/gui/widgets/textbox.hpp&gt;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="18"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&lt;nana/gui/timer.hpp&gt;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="19"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&lt;nana/gui/place.hpp&gt;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="20"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&lt;mutex&gt;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="21"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&lt;queue&gt;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="22"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&lt;string&gt;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="23"><highlight class="normal"></highlight></codeline>
+<codeline lineno="24"><highlight class="normal"></highlight></codeline>
+<codeline lineno="25"><highlight class="normal"></highlight></codeline>
+<codeline lineno="35" refid="class_log_textbox" refkind="compound"><highlight class="normal"></highlight><highlight class="keyword">class<sp/></highlight><highlight class="normal"><ref refid="class_log_textbox_1abb4a9362248d743c392a7c780072cc9b" kindref="member">LogTextbox</ref><sp/>:<sp/></highlight><highlight class="keyword">public</highlight><highlight class="normal"><sp/>nana::panel&lt;true&gt;<sp/>{</highlight></codeline>
+<codeline lineno="36"><highlight class="normal"></highlight><highlight class="keyword">public</highlight><highlight class="normal">:</highlight></codeline>
+<codeline lineno="41" refid="class_log_textbox_1abb4a9362248d743c392a7c780072cc9b" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="class_log_textbox_1abb4a9362248d743c392a7c780072cc9b" kindref="member">LogTextbox</ref>(nana::window<sp/>parent);</highlight></codeline>
+<codeline lineno="42"><highlight class="normal"></highlight></codeline>
+<codeline lineno="46" refid="class_log_textbox_1ae4fc750cbf809bf1a663739c839fef87" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">virtual</highlight><highlight class="normal"><sp/><ref refid="class_log_textbox_1ae4fc750cbf809bf1a663739c839fef87" kindref="member">~LogTextbox</ref>();</highlight></codeline>
+<codeline lineno="47"><highlight class="normal"></highlight></codeline>
+<codeline lineno="48"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="comment">//<sp/>Disable<sp/>copy<sp/>constructor<sp/>and<sp/>assignment</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="49"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="class_log_textbox_1abb4a9362248d743c392a7c780072cc9b" kindref="member">LogTextbox</ref>(</highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/><ref refid="class_log_textbox_1abb4a9362248d743c392a7c780072cc9b" kindref="member">LogTextbox</ref>&amp;<sp/>other)<sp/>=<sp/></highlight><highlight class="keyword">delete</highlight><highlight class="normal">;</highlight></codeline>
+<codeline lineno="50"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="class_log_textbox_1abb4a9362248d743c392a7c780072cc9b" kindref="member">LogTextbox</ref>&amp;<sp/>operator=(</highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/><ref refid="class_log_textbox_1abb4a9362248d743c392a7c780072cc9b" kindref="member">LogTextbox</ref>&amp;<sp/>other)<sp/>=<sp/></highlight><highlight class="keyword">delete</highlight><highlight class="normal">;</highlight></codeline>
+<codeline lineno="51"><highlight class="normal"></highlight></codeline>
+<codeline lineno="56" refid="class_log_textbox_1ab6c1b47be7f3febb55371d6d0310048d" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/><ref refid="class_log_textbox_1ab6c1b47be7f3febb55371d6d0310048d" kindref="member">append</ref>(</highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/>std::string&amp;<sp/>text);</highlight></codeline>
+<codeline lineno="57"><highlight class="normal"></highlight></codeline>
+<codeline lineno="61" refid="class_log_textbox_1a896c69ec240faa75c463651417212906" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/><ref refid="class_log_textbox_1a896c69ec240faa75c463651417212906" kindref="member">clean</ref>();</highlight></codeline>
+<codeline lineno="62"><highlight class="normal"></highlight></codeline>
+<codeline lineno="63"><highlight class="normal"></highlight><highlight class="keyword">protected</highlight><highlight class="normal">:</highlight></codeline>
+<codeline lineno="64" refid="class_log_textbox_1a99fdc458b0db8ab63f48248a9e1a1c99" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/>nana::place<sp/><ref refid="class_log_textbox_1a99fdc458b0db8ab63f48248a9e1a1c99" kindref="member">layout</ref>{*</highlight><highlight class="keyword">this</highlight><highlight class="normal">};<sp/></highlight></codeline>
+<codeline lineno="65" refid="class_log_textbox_1a5fb58c846ea68159603847b13cbafe3c" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/>nana::textbox<sp/><ref refid="class_log_textbox_1a5fb58c846ea68159603847b13cbafe3c" kindref="member">log</ref>{*</highlight><highlight class="keyword">this</highlight><highlight class="normal">};<sp/><sp/></highlight></codeline>
+<codeline lineno="66"><highlight class="normal">};</highlight></codeline>
+<codeline lineno="67"><highlight class="normal"></highlight></codeline>
+<codeline lineno="68"><highlight class="normal"></highlight></codeline>
+<codeline lineno="69"><highlight class="normal"></highlight><highlight class="preprocessor">#endif<sp/></highlight><highlight class="comment">//<sp/>LOG_TEXTBOX_H_</highlight><highlight class="normal"></highlight></codeline>
+    </programlisting>
+    <location file="App/View/GUI/Widgets/LogTextbox.h"/>
+  </compounddef>
+</doxygen>

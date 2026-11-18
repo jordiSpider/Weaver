@@ -1,0 +1,295 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.14.0" xml:lang="en-US">
+  <compounddef id="class_animal_search_params" kind="class" language="C++" prot="public">
+    <compoundname>AnimalSearchParams</compoundname>
+    <includes refid="_animal_search_params_8h" local="no">AnimalSearchParams.h</includes>
+    <sectiondef kind="protected-attrib">
+      <memberdef kind="variable" id="class_animal_search_params_1a56f0ab3b9787165b211ee5b0a595c7bb" prot="protected" static="no" mutable="no">
+        <type>std::vector&lt; bool &gt;</type>
+        <definition>std::vector&lt;bool&gt; AnimalSearchParams::validSignaturesBitmask</definition>
+        <argsstring></argsstring>
+        <name>validSignaturesBitmask</name>
+        <qualifiedname>AnimalSearchParams::validSignaturesBitmask</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="App/Model/IBM/Landscape/Map/TerrainCells/AnimalSearchParams.h" line="41" column="17" bodyfile="App/Model/IBM/Landscape/Map/TerrainCells/AnimalSearchParams.h" bodystart="41" bodyend="-1"/>
+      </memberdef>
+    </sectiondef>
+    <sectiondef kind="public-func">
+      <memberdef kind="function" id="class_animal_search_params_1a861f671ef9bc5a969715a8be14e15b9d" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type></type>
+        <definition>AnimalSearchParams::AnimalSearchParams</definition>
+        <argsstring>()</argsstring>
+        <name>AnimalSearchParams</name>
+        <qualifiedname>AnimalSearchParams::AnimalSearchParams</qualifiedname>
+        <briefdescription>
+<para>Default constructor, initializes empty search parameters. </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="App/Model/IBM/Landscape/Map/TerrainCells/AnimalSearchParams.h" line="47" column="5"/>
+      </memberdef>
+      <memberdef kind="function" id="class_animal_search_params_1ab32213504c591b446df9241f34b13f80" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type></type>
+        <definition>AnimalSearchParams::AnimalSearchParams</definition>
+        <argsstring>(const AnimalSearchParams &amp;other)</argsstring>
+        <name>AnimalSearchParams</name>
+        <qualifiedname>AnimalSearchParams::AnimalSearchParams</qualifiedname>
+        <param>
+          <type>const <ref refid="class_animal_search_params" kindref="compound">AnimalSearchParams</ref> &amp;</type>
+          <declname>other</declname>
+        </param>
+        <briefdescription>
+<para>Copy constructor. </para>
+        </briefdescription>
+        <detaileddescription>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>other</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Another <ref refid="class_animal_search_params" kindref="compound">AnimalSearchParams</ref> object to copy from </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="App/Model/IBM/Landscape/Map/TerrainCells/AnimalSearchParams.h" line="74" column="5"/>
+      </memberdef>
+      <memberdef kind="function" id="class_animal_search_params_1af12b1ec2aa745cadadfe60d460ded91c" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type></type>
+        <definition>AnimalSearchParams::AnimalSearchParams</definition>
+        <argsstring>(const std::vector&lt; LifeStage &gt; &amp;newSearchableLifeStages, const std::vector&lt; AnimalSpeciesID &gt; &amp;newSearchableAnimalSpecies, const std::vector&lt; Instar &gt; &amp;newSearchableInstars, const std::vector&lt; Gender &gt; &amp;newSearchableGenders)</argsstring>
+        <name>AnimalSearchParams</name>
+        <qualifiedname>AnimalSearchParams::AnimalSearchParams</qualifiedname>
+        <param>
+          <type>const std::vector&lt; LifeStage &gt; &amp;</type>
+          <declname>newSearchableLifeStages</declname>
+        </param>
+        <param>
+          <type>const std::vector&lt; <ref refid="class_animal_species_i_d" kindref="compound">AnimalSpeciesID</ref> &gt; &amp;</type>
+          <declname>newSearchableAnimalSpecies</declname>
+        </param>
+        <param>
+          <type>const std::vector&lt; <ref refid="class_instar" kindref="compound">Instar</ref> &gt; &amp;</type>
+          <declname>newSearchableInstars</declname>
+        </param>
+        <param>
+          <type>const std::vector&lt; Gender &gt; &amp;</type>
+          <declname>newSearchableGenders</declname>
+        </param>
+        <briefdescription>
+<para>Constructor with explicit searchable parameters. </para>
+        </briefdescription>
+        <detaileddescription>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>newSearchableLifeStages</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Life stages to include </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>newSearchableAnimalSpecies</parametername>
+</parameternamelist>
+<parameterdescription>
+<para><ref refid="class_species" kindref="compound">Species</ref> IDs to include </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>newSearchableInstars</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Instars to include </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>newSearchableGenders</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Genders to include </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="App/Model/IBM/Landscape/Map/TerrainCells/AnimalSearchParams.h" line="57" column="5"/>
+      </memberdef>
+      <memberdef kind="function" id="class_animal_search_params_1abb8875ab8340891c9655d893d9b4f1f7" prot="public" static="no" const="no" explicit="no" inline="no" virt="virtual">
+        <type></type>
+        <definition>virtual AnimalSearchParams::~AnimalSearchParams</definition>
+        <argsstring>()</argsstring>
+        <name>~AnimalSearchParams</name>
+        <qualifiedname>AnimalSearchParams::~AnimalSearchParams</qualifiedname>
+        <briefdescription>
+<para>Destructor. </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="App/Model/IBM/Landscape/Map/TerrainCells/AnimalSearchParams.h" line="67" column="13"/>
+      </memberdef>
+      <memberdef kind="function" id="class_animal_search_params_1a4402d0df4ba2712cc0ab4dc072d4094e" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void AnimalSearchParams::addSearchParams</definition>
+        <argsstring>(const std::vector&lt; LifeStage &gt; &amp;newSearchableLifeStages, const std::vector&lt; AnimalSpeciesID &gt; &amp;newSearchableAnimalSpecies, const std::vector&lt; Instar &gt; &amp;newSearchableInstars, const std::vector&lt; Gender &gt; &amp;newSearchableGenders)</argsstring>
+        <name>addSearchParams</name>
+        <qualifiedname>AnimalSearchParams::addSearchParams</qualifiedname>
+        <param>
+          <type>const std::vector&lt; LifeStage &gt; &amp;</type>
+          <declname>newSearchableLifeStages</declname>
+        </param>
+        <param>
+          <type>const std::vector&lt; <ref refid="class_animal_species_i_d" kindref="compound">AnimalSpeciesID</ref> &gt; &amp;</type>
+          <declname>newSearchableAnimalSpecies</declname>
+        </param>
+        <param>
+          <type>const std::vector&lt; <ref refid="class_instar" kindref="compound">Instar</ref> &gt; &amp;</type>
+          <declname>newSearchableInstars</declname>
+        </param>
+        <param>
+          <type>const std::vector&lt; Gender &gt; &amp;</type>
+          <declname>newSearchableGenders</declname>
+        </param>
+        <briefdescription>
+<para>Adds new searchable parameters to the current object. </para>
+        </briefdescription>
+        <detaileddescription>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>newSearchableLifeStages</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Life stages to add </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>newSearchableAnimalSpecies</parametername>
+</parameternamelist>
+<parameterdescription>
+<para><ref refid="class_species" kindref="compound">Species</ref> IDs to add </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>newSearchableInstars</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Instars to add </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>newSearchableGenders</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Genders to add </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="App/Model/IBM/Landscape/Map/TerrainCells/AnimalSearchParams.h" line="92" column="10"/>
+      </memberdef>
+      <memberdef kind="function" id="class_animal_search_params_1a099e0f970ba9578ab8b2cc9ff346e23d" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void AnimalSearchParams::init</definition>
+        <argsstring>()</argsstring>
+        <name>init</name>
+        <qualifiedname>AnimalSearchParams::init</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="App/Model/IBM/Landscape/Map/TerrainCells/AnimalSearchParams.h" line="99" column="10"/>
+      </memberdef>
+      <memberdef kind="function" id="class_animal_search_params_1af101feabcd50720b1ef62f3f71745c52" prot="public" static="no" const="yes" explicit="no" inline="no" noexcept="yes" virt="non-virtual">
+        <type>bool</type>
+        <definition>bool AnimalSearchParams::matches</definition>
+        <argsstring>(const Animal &amp;animal) const noexcept</argsstring>
+        <name>matches</name>
+        <qualifiedname>AnimalSearchParams::matches</qualifiedname>
+        <param>
+          <type>const <ref refid="class_animal" kindref="compound">Animal</ref> &amp;</type>
+          <declname>animal</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="App/Model/IBM/Landscape/Map/TerrainCells/AnimalSearchParams.h" line="101" column="10"/>
+      </memberdef>
+      <memberdef kind="function" id="class_animal_search_params_1a93ade8dad365e6ac369eedaf628321a7" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type><ref refid="class_animal_search_params" kindref="compound">AnimalSearchParams</ref> &amp;</type>
+        <definition>AnimalSearchParams &amp; AnimalSearchParams::operator=</definition>
+        <argsstring>(const AnimalSearchParams &amp;other)</argsstring>
+        <name>operator=</name>
+        <qualifiedname>AnimalSearchParams::operator=</qualifiedname>
+        <param>
+          <type>const <ref refid="class_animal_search_params" kindref="compound">AnimalSearchParams</ref> &amp;</type>
+          <declname>other</declname>
+        </param>
+        <briefdescription>
+<para>Copy assignment operator. </para>
+        </briefdescription>
+        <detaileddescription>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>other</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Another <ref refid="class_animal_search_params" kindref="compound">AnimalSearchParams</ref> object to assign from </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<simplesect kind="return"><para>Reference to this object </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="App/Model/IBM/Landscape/Map/TerrainCells/AnimalSearchParams.h" line="82" column="24"/>
+      </memberdef>
+    </sectiondef>
+    <briefdescription>
+<para>Stores parameters for searching animals within a terrain cell. </para>
+    </briefdescription>
+    <detaileddescription>
+<para>This class encapsulates life stages, species, instars, and genders that are considered searchable. It allows filtering animals according to these attributes during simulations. </para>
+    </detaileddescription>
+    <location file="App/Model/IBM/Landscape/Map/TerrainCells/AnimalSearchParams.h" line="38" column="1" bodyfile="App/Model/IBM/Landscape/Map/TerrainCells/AnimalSearchParams.h" bodystart="39" bodyend="102"/>
+    <listofallmembers>
+      <member refid="class_animal_search_params_1a4402d0df4ba2712cc0ab4dc072d4094e" prot="public" virt="non-virtual"><scope>AnimalSearchParams</scope><name>addSearchParams</name></member>
+      <member refid="class_animal_search_params_1a861f671ef9bc5a969715a8be14e15b9d" prot="public" virt="non-virtual"><scope>AnimalSearchParams</scope><name>AnimalSearchParams</name></member>
+      <member refid="class_animal_search_params_1af12b1ec2aa745cadadfe60d460ded91c" prot="public" virt="non-virtual"><scope>AnimalSearchParams</scope><name>AnimalSearchParams</name></member>
+      <member refid="class_animal_search_params_1ab32213504c591b446df9241f34b13f80" prot="public" virt="non-virtual"><scope>AnimalSearchParams</scope><name>AnimalSearchParams</name></member>
+      <member refid="class_animal_search_params_1a099e0f970ba9578ab8b2cc9ff346e23d" prot="public" virt="non-virtual"><scope>AnimalSearchParams</scope><name>init</name></member>
+      <member refid="class_animal_search_params_1af101feabcd50720b1ef62f3f71745c52" prot="public" virt="non-virtual"><scope>AnimalSearchParams</scope><name>matches</name></member>
+      <member refid="class_animal_search_params_1a93ade8dad365e6ac369eedaf628321a7" prot="public" virt="non-virtual"><scope>AnimalSearchParams</scope><name>operator=</name></member>
+      <member refid="class_animal_search_params_1a56f0ab3b9787165b211ee5b0a595c7bb" prot="protected" virt="non-virtual"><scope>AnimalSearchParams</scope><name>validSignaturesBitmask</name></member>
+      <member refid="class_animal_search_params_1abb8875ab8340891c9655d893d9b4f1f7" prot="public" virt="virtual"><scope>AnimalSearchParams</scope><name>~AnimalSearchParams</name></member>
+    </listofallmembers>
+  </compounddef>
+</doxygen>

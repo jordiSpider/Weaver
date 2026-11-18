@@ -1,0 +1,47 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.14.0" xml:lang="en-US">
+  <compounddef id="structfmt_1_1formatter_3_01_allele_01_4" kind="struct" language="C++" prot="public">
+    <compoundname>fmt::formatter&lt; Allele &gt;</compoundname>
+    <basecompoundref prot="public" virt="non-virtual">fmt::formatter&lt; PreciseDouble &gt;</basecompoundref>
+    <templateparamlist>
+    </templateparamlist>
+    <sectiondef kind="public-func">
+      <memberdef kind="function" id="structfmt_1_1formatter_3_01_allele_01_4_1a5ee4b437fc443c7bb054bc3935b89be9" prot="public" static="no" const="yes" explicit="no" inline="yes" virt="non-virtual">
+        <templateparamlist>
+          <param>
+            <type>typename FormatContext</type>
+          </param>
+        </templateparamlist>
+        <type>auto</type>
+        <definition>auto fmt::formatter&lt; Allele &gt;::format</definition>
+        <argsstring>(const Allele &amp;allele, FormatContext &amp;ctx) const</argsstring>
+        <name>format</name>
+        <qualifiedname>fmt::formatter&lt; Allele &gt;::format</qualifiedname>
+        <param>
+          <type>const <ref refid="class_allele" kindref="compound">Allele</ref> &amp;</type>
+          <declname>allele</declname>
+        </param>
+        <param>
+          <type>FormatContext &amp;</type>
+          <declname>ctx</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="App/Model/IBM/Landscape/LivingBeings/Animals/Species/Genetics/Allele.h" line="95" column="14" bodyfile="App/Model/IBM/Landscape/LivingBeings/Animals/Species/Genetics/Allele.h" bodystart="95" bodyend="102"/>
+      </memberdef>
+    </sectiondef>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+    </detaileddescription>
+    <location file="App/Model/IBM/Landscape/LivingBeings/Animals/Species/Genetics/Allele.h" line="92" column="5" bodyfile="App/Model/IBM/Landscape/LivingBeings/Animals/Species/Genetics/Allele.h" bodystart="92" bodyend="103"/>
+    <listofallmembers>
+      <member refid="structfmt_1_1formatter_3_01_allele_01_4_1a5ee4b437fc443c7bb054bc3935b89be9" prot="public" virt="non-virtual"><scope>fmt::formatter&lt; Allele &gt;</scope><name>format</name></member>
+      <member refid="structfmt_1_1formatter_3_01_precise_double_01_4_1ab2314baf5984779a7eb06a89f271714d" prot="public" virt="non-virtual" ambiguityscope="fmt::formatter&lt; PreciseDouble &gt;::"><scope>fmt::formatter&lt; Allele &gt;</scope><name>format</name></member>
+    </listofallmembers>
+  </compounddef>
+</doxygen>

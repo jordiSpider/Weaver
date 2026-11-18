@@ -1,0 +1,257 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.14.0" xml:lang="en-US">
+  <compounddef id="class_time_step" kind="class" language="C++" prot="public">
+    <compoundname>TimeStep</compoundname>
+    <includes refid="_time_units_8h" local="no">TimeUnits.h</includes>
+    <sectiondef kind="private-attrib">
+      <memberdef kind="variable" id="class_time_step_1a4232fdaa01471a8c6c794823971f3279" prot="private" static="no" mutable="no">
+        <type>unsigned int</type>
+        <definition>unsigned int TimeStep::value</definition>
+        <argsstring></argsstring>
+        <name>value</name>
+        <qualifiedname>TimeStep::value</qualifiedname>
+        <briefdescription>
+<para><ref refid="class_number" kindref="compound">Number</ref> of time steps. </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="App/Model/IBM/Landscape/LivingBeings/TimeUnits.h" line="40" column="18" bodyfile="App/Model/IBM/Landscape/LivingBeings/TimeUnits.h" bodystart="40" bodyend="-1"/>
+      </memberdef>
+    </sectiondef>
+    <sectiondef kind="public-func">
+      <memberdef kind="function" id="class_time_step_1acbe35421ea20479bfa0c2034a8873ed8" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type></type>
+        <definition>TimeStep::TimeStep</definition>
+        <argsstring>()</argsstring>
+        <name>TimeStep</name>
+        <qualifiedname>TimeStep::TimeStep</qualifiedname>
+        <briefdescription>
+<para>Default constructor, initializes value to 0. </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="App/Model/IBM/Landscape/LivingBeings/TimeUnits.h" line="44" column="5"/>
+      </memberdef>
+      <memberdef kind="function" id="class_time_step_1aea4996d7ccb253fb08de6c6b10c56cee" prot="public" static="no" const="no" explicit="yes" inline="no" virt="non-virtual">
+        <type></type>
+        <definition>TimeStep::TimeStep</definition>
+        <argsstring>(const Day &amp;day, const PreciseDouble &amp;timeStepsPerDay)</argsstring>
+        <name>TimeStep</name>
+        <qualifiedname>TimeStep::TimeStep</qualifiedname>
+        <param>
+          <type>const <ref refid="class_day" kindref="compound">Day</ref> &amp;</type>
+          <declname>day</declname>
+        </param>
+        <param>
+          <type>const <ref refid="class_precise_double" kindref="compound">PreciseDouble</ref> &amp;</type>
+          <declname>timeStepsPerDay</declname>
+        </param>
+        <briefdescription>
+<para>Constructor from <ref refid="class_day" kindref="compound">Day</ref> and number of time steps per day. </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="App/Model/IBM/Landscape/LivingBeings/TimeUnits.h" line="50" column="14"/>
+      </memberdef>
+      <memberdef kind="function" id="class_time_step_1a885f46e1c24db035208e8d3e46ee6d3a" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type></type>
+        <definition>TimeStep::TimeStep</definition>
+        <argsstring>(const TimeStep &amp;other)</argsstring>
+        <name>TimeStep</name>
+        <qualifiedname>TimeStep::TimeStep</qualifiedname>
+        <param>
+          <type>const <ref refid="class_time_step" kindref="compound">TimeStep</ref> &amp;</type>
+          <declname>other</declname>
+        </param>
+        <briefdescription>
+<para>Copy constructor. </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="App/Model/IBM/Landscape/LivingBeings/TimeUnits.h" line="56" column="5"/>
+      </memberdef>
+      <memberdef kind="function" id="class_time_step_1ad8cadbbdc974d6c25f708d18a7d09067" prot="public" static="no" const="no" explicit="yes" inline="no" virt="non-virtual">
+        <type></type>
+        <definition>TimeStep::TimeStep</definition>
+        <argsstring>(const unsigned int value)</argsstring>
+        <name>TimeStep</name>
+        <qualifiedname>TimeStep::TimeStep</qualifiedname>
+        <param>
+          <type>const unsigned int</type>
+          <declname>value</declname>
+        </param>
+        <briefdescription>
+<para>Constructor from unsigned int. </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="App/Model/IBM/Landscape/LivingBeings/TimeUnits.h" line="47" column="14"/>
+      </memberdef>
+      <memberdef kind="function" id="class_time_step_1a681fe4c05a89d329028765c153ca96e7" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type></type>
+        <definition>TimeStep::~TimeStep</definition>
+        <argsstring>()</argsstring>
+        <name>~TimeStep</name>
+        <qualifiedname>TimeStep::~TimeStep</qualifiedname>
+        <briefdescription>
+<para>Destructor. </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="App/Model/IBM/Landscape/LivingBeings/TimeUnits.h" line="53" column="5"/>
+      </memberdef>
+      <memberdef kind="function" id="class_time_step_1a38c087740b9160a76dc2a3afa29f3d6e" prot="public" static="no" const="yes" explicit="no" inline="no" virt="non-virtual">
+        <type>unsigned int</type>
+        <definition>unsigned int TimeStep::getValue</definition>
+        <argsstring>() const</argsstring>
+        <name>getValue</name>
+        <qualifiedname>TimeStep::getValue</qualifiedname>
+        <briefdescription>
+<para>Returns the numeric value of the time step. </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="App/Model/IBM/Landscape/LivingBeings/TimeUnits.h" line="62" column="18"/>
+      </memberdef>
+      <memberdef kind="function" id="class_time_step_1aa2c8096d4c2e3c7938de523e77f82a2f" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <type><ref refid="class_time_step" kindref="compound">TimeStep</ref> &amp;</type>
+        <definition>TimeStep &amp; TimeStep::operator++</definition>
+        <argsstring>()</argsstring>
+        <name>operator++</name>
+        <qualifiedname>TimeStep::operator++</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="App/Model/IBM/Landscape/LivingBeings/TimeUnits.h" line="64" column="14" bodyfile="App/Model/IBM/Landscape/LivingBeings/TimeUnits.h" bodystart="64" bodyend="67"/>
+      </memberdef>
+      <memberdef kind="function" id="class_time_step_1a41ed033656946e5bbf14751c28048113" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <type><ref refid="class_time_step" kindref="compound">TimeStep</ref></type>
+        <definition>TimeStep TimeStep::operator++</definition>
+        <argsstring>(int)</argsstring>
+        <name>operator++</name>
+        <qualifiedname>TimeStep::operator++</qualifiedname>
+        <param>
+          <type>int</type>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="App/Model/IBM/Landscape/LivingBeings/TimeUnits.h" line="69" column="14" bodyfile="App/Model/IBM/Landscape/LivingBeings/TimeUnits.h" bodystart="69" bodyend="73"/>
+      </memberdef>
+      <memberdef kind="function" id="class_time_step_1a4c200a4515c31e18320c68bbf78e1ef6" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type><ref refid="class_time_step" kindref="compound">TimeStep</ref> &amp;</type>
+        <definition>TimeStep &amp; TimeStep::operator=</definition>
+        <argsstring>(const TimeStep &amp;other)</argsstring>
+        <name>operator=</name>
+        <qualifiedname>TimeStep::operator=</qualifiedname>
+        <param>
+          <type>const <ref refid="class_time_step" kindref="compound">TimeStep</ref> &amp;</type>
+          <declname>other</declname>
+        </param>
+        <briefdescription>
+<para>Copy assignment. </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="App/Model/IBM/Landscape/LivingBeings/TimeUnits.h" line="59" column="14"/>
+      </memberdef>
+      <memberdef kind="function" id="class_time_step_1a2f35514e7e84ff32c0705ef6ee1eda3f" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <templateparamlist>
+          <param>
+            <type>class Archive</type>
+          </param>
+        </templateparamlist>
+        <type>void</type>
+        <definition>void TimeStep::serialize</definition>
+        <argsstring>(Archive &amp;ar, const unsigned int version)</argsstring>
+        <name>serialize</name>
+        <qualifiedname>TimeStep::serialize</qualifiedname>
+        <param>
+          <type>Archive &amp;</type>
+          <declname>ar</declname>
+        </param>
+        <param>
+          <type>const unsigned int</type>
+          <declname>version</declname>
+        </param>
+        <briefdescription>
+<para>Serializes the object for persistence. </para>
+        </briefdescription>
+        <detaileddescription>
+<para><parameterlist kind="templateparam"><parameteritem>
+<parameternamelist>
+<parametername>Archive</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Serialization archive type. </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>ar</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Archive instance. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>version</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Serialization version. </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="App/Model/IBM/Landscape/LivingBeings/TimeUnits.h" line="83" column="10"/>
+      </memberdef>
+    </sectiondef>
+    <briefdescription>
+<para>Represents a discrete time step in the simulation. </para>
+    </briefdescription>
+    <detaileddescription>
+<para>Encapsulates an unsigned integer value for time steps and provides arithmetic and comparison operators for simulation calculations. </para>
+    </detaileddescription>
+    <location file="App/Model/IBM/Landscape/LivingBeings/TimeUnits.h" line="37" column="1" bodyfile="App/Model/IBM/Landscape/LivingBeings/TimeUnits.h" bodystart="37" bodyend="84"/>
+    <listofallmembers>
+      <member refid="class_time_step_1a38c087740b9160a76dc2a3afa29f3d6e" prot="public" virt="non-virtual"><scope>TimeStep</scope><name>getValue</name></member>
+      <member refid="class_time_step_1aa2c8096d4c2e3c7938de523e77f82a2f" prot="public" virt="non-virtual"><scope>TimeStep</scope><name>operator++</name></member>
+      <member refid="class_time_step_1a41ed033656946e5bbf14751c28048113" prot="public" virt="non-virtual"><scope>TimeStep</scope><name>operator++</name></member>
+      <member refid="class_time_step_1a4c200a4515c31e18320c68bbf78e1ef6" prot="public" virt="non-virtual"><scope>TimeStep</scope><name>operator=</name></member>
+      <member refid="class_time_step_1a2f35514e7e84ff32c0705ef6ee1eda3f" prot="public" virt="non-virtual"><scope>TimeStep</scope><name>serialize</name></member>
+      <member refid="class_time_step_1acbe35421ea20479bfa0c2034a8873ed8" prot="public" virt="non-virtual"><scope>TimeStep</scope><name>TimeStep</name></member>
+      <member refid="class_time_step_1ad8cadbbdc974d6c25f708d18a7d09067" prot="public" virt="non-virtual"><scope>TimeStep</scope><name>TimeStep</name></member>
+      <member refid="class_time_step_1aea4996d7ccb253fb08de6c6b10c56cee" prot="public" virt="non-virtual"><scope>TimeStep</scope><name>TimeStep</name></member>
+      <member refid="class_time_step_1a885f46e1c24db035208e8d3e46ee6d3a" prot="public" virt="non-virtual"><scope>TimeStep</scope><name>TimeStep</name></member>
+      <member refid="class_time_step_1a4232fdaa01471a8c6c794823971f3279" prot="private" virt="non-virtual"><scope>TimeStep</scope><name>value</name></member>
+      <member refid="class_time_step_1a681fe4c05a89d329028765c153ca96e7" prot="public" virt="non-virtual"><scope>TimeStep</scope><name>~TimeStep</name></member>
+    </listofallmembers>
+  </compounddef>
+</doxygen>

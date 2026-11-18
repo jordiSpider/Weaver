@@ -1,0 +1,1612 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.14.0" xml:lang="en-US">
+  <compounddef id="class_precise_double" kind="class" language="C++" prot="public">
+    <compoundname>PreciseDouble</compoundname>
+    <includes refid="_precise_double_8h" local="no">PreciseDouble.h</includes>
+    <sectiondef kind="user-defined">
+      <header>Arithmetic Operators (PreciseDouble)</header>
+      <description><para>Basic arithmetic operations with validation (in DEBUG mode). </para>
+</description>
+      <memberdef kind="function" id="class_precise_double_1ae792edab2c01aad0d719225398d8f1e0" prot="public" static="no" const="yes" explicit="no" inline="yes" noexcept="yes" virt="non-virtual">
+        <type><ref refid="class_precise_double" kindref="compound">PreciseDouble</ref></type>
+        <definition>PreciseDouble PreciseDouble::operator+</definition>
+        <argsstring>(PreciseDouble other) const noexcept</argsstring>
+        <name>operator+</name>
+        <qualifiedname>PreciseDouble::operator+</qualifiedname>
+        <param>
+          <type><ref refid="class_precise_double" kindref="compound">PreciseDouble</ref></type>
+          <declname>other</declname>
+        </param>
+        <briefdescription>
+<para>Addition operator. </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="Misc/Maths/PreciseDouble.h" line="112" column="22" bodyfile="Misc/Maths/PreciseDouble.h" bodystart="112" bodyend="120"/>
+      </memberdef>
+      <memberdef kind="function" id="class_precise_double_1acddbb12e1017711e616d2a2574d52de8" prot="public" static="no" const="yes" explicit="no" inline="yes" noexcept="yes" virt="non-virtual">
+        <type><ref refid="class_precise_double" kindref="compound">PreciseDouble</ref></type>
+        <definition>PreciseDouble PreciseDouble::operator-</definition>
+        <argsstring>(PreciseDouble other) const noexcept</argsstring>
+        <name>operator-</name>
+        <qualifiedname>PreciseDouble::operator-</qualifiedname>
+        <param>
+          <type><ref refid="class_precise_double" kindref="compound">PreciseDouble</ref></type>
+          <declname>other</declname>
+        </param>
+        <briefdescription>
+<para>Subtraction operator. </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="Misc/Maths/PreciseDouble.h" line="123" column="22" bodyfile="Misc/Maths/PreciseDouble.h" bodystart="123" bodyend="131"/>
+      </memberdef>
+      <memberdef kind="function" id="class_precise_double_1a319bfb34dc52e5ccc204bcd5af3f6ce3" prot="public" static="no" const="yes" explicit="no" inline="yes" noexcept="yes" virt="non-virtual">
+        <type><ref refid="class_precise_double" kindref="compound">PreciseDouble</ref></type>
+        <definition>PreciseDouble PreciseDouble::operator*</definition>
+        <argsstring>(PreciseDouble other) const noexcept</argsstring>
+        <name>operator*</name>
+        <qualifiedname>PreciseDouble::operator*</qualifiedname>
+        <param>
+          <type><ref refid="class_precise_double" kindref="compound">PreciseDouble</ref></type>
+          <declname>other</declname>
+        </param>
+        <briefdescription>
+<para>Multiplication operator. </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="Misc/Maths/PreciseDouble.h" line="134" column="22" bodyfile="Misc/Maths/PreciseDouble.h" bodystart="134" bodyend="142"/>
+      </memberdef>
+      <memberdef kind="function" id="class_precise_double_1a8393590673ffbee398aa4dabd9e24335" prot="public" static="no" const="yes" explicit="no" inline="yes" noexcept="yes" virt="non-virtual">
+        <type><ref refid="class_precise_double" kindref="compound">PreciseDouble</ref></type>
+        <definition>PreciseDouble PreciseDouble::operator-</definition>
+        <argsstring>() const noexcept</argsstring>
+        <name>operator-</name>
+        <qualifiedname>PreciseDouble::operator-</qualifiedname>
+        <briefdescription>
+<para>Unary negation operator. </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="Misc/Maths/PreciseDouble.h" line="145" column="26" bodyfile="Misc/Maths/PreciseDouble.h" bodystart="145" bodyend="153"/>
+      </memberdef>
+      <memberdef kind="function" id="class_precise_double_1acd4c79397bc82a5b83f009e4eeded1ff" prot="public" static="no" const="yes" explicit="no" inline="yes" virt="non-virtual">
+        <type><ref refid="class_precise_double" kindref="compound">PreciseDouble</ref></type>
+        <definition>PreciseDouble PreciseDouble::operator/</definition>
+        <argsstring>(PreciseDouble other) const</argsstring>
+        <name>operator/</name>
+        <qualifiedname>PreciseDouble::operator/</qualifiedname>
+        <param>
+          <type><ref refid="class_precise_double" kindref="compound">PreciseDouble</ref></type>
+          <declname>other</declname>
+        </param>
+        <briefdescription>
+<para>Division operator. </para>
+        </briefdescription>
+        <detaileddescription>
+<para><parameterlist kind="exception"><parameteritem>
+<parameternamelist>
+<parametername>Exception</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>in DEBUG mode if dividing by zero. </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="Misc/Maths/PreciseDouble.h" line="159" column="22" bodyfile="Misc/Maths/PreciseDouble.h" bodystart="159" bodyend="167"/>
+      </memberdef>
+    </sectiondef>
+    <sectiondef kind="user-defined">
+      <header>Compound Assignment Operators (PreciseDouble)</header>
+      <description><para>Performs operation and updates the stored value. </para>
+</description>
+      <memberdef kind="function" id="class_precise_double_1adeeb66b655c1e21b5d6ed1de56f16129" prot="public" static="no" const="no" explicit="no" inline="yes" noexcept="yes" virt="non-virtual">
+        <type><ref refid="class_precise_double" kindref="compound">PreciseDouble</ref> &amp;</type>
+        <definition>PreciseDouble &amp; PreciseDouble::operator+=</definition>
+        <argsstring>(PreciseDouble other) noexcept</argsstring>
+        <name>operator+=</name>
+        <qualifiedname>PreciseDouble::operator+=</qualifiedname>
+        <param>
+          <type><ref refid="class_precise_double" kindref="compound">PreciseDouble</ref></type>
+          <declname>other</declname>
+        </param>
+        <briefdescription>
+<para>Adds another <ref refid="class_precise_double" kindref="compound">PreciseDouble</ref> to this one. </para>
+        </briefdescription>
+        <detaileddescription>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>other</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>The <ref refid="class_precise_double" kindref="compound">PreciseDouble</ref> to add. </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<simplesect kind="return"><para>Reference to the updated <ref refid="class_precise_double" kindref="compound">PreciseDouble</ref>. </para>
+</simplesect>
+<simplesect kind="note"><para>In debug mode, validates the internal value after addition. </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="Misc/Maths/PreciseDouble.h" line="180" column="26" bodyfile="Misc/Maths/PreciseDouble.h" bodystart="180" bodyend="188"/>
+      </memberdef>
+      <memberdef kind="function" id="class_precise_double_1acb2ecaf711aa3b145e134a8beffcfa8f" prot="public" static="no" const="no" explicit="no" inline="yes" noexcept="yes" virt="non-virtual">
+        <type><ref refid="class_precise_double" kindref="compound">PreciseDouble</ref> &amp;</type>
+        <definition>PreciseDouble &amp; PreciseDouble::operator-=</definition>
+        <argsstring>(PreciseDouble other) noexcept</argsstring>
+        <name>operator-=</name>
+        <qualifiedname>PreciseDouble::operator-=</qualifiedname>
+        <param>
+          <type><ref refid="class_precise_double" kindref="compound">PreciseDouble</ref></type>
+          <declname>other</declname>
+        </param>
+        <briefdescription>
+<para>Subtracts another <ref refid="class_precise_double" kindref="compound">PreciseDouble</ref> from this one. </para>
+        </briefdescription>
+        <detaileddescription>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>other</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>The <ref refid="class_precise_double" kindref="compound">PreciseDouble</ref> to subtract. </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<simplesect kind="return"><para>Reference to the updated <ref refid="class_precise_double" kindref="compound">PreciseDouble</ref>. </para>
+</simplesect>
+<simplesect kind="note"><para>In debug mode, validates the internal value after subtraction. </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="Misc/Maths/PreciseDouble.h" line="196" column="26" bodyfile="Misc/Maths/PreciseDouble.h" bodystart="196" bodyend="204"/>
+      </memberdef>
+      <memberdef kind="function" id="class_precise_double_1ab06e856b36479c95cb0c7750f7aa4e07" prot="public" static="no" const="no" explicit="no" inline="yes" noexcept="yes" virt="non-virtual">
+        <type><ref refid="class_precise_double" kindref="compound">PreciseDouble</ref> &amp;</type>
+        <definition>PreciseDouble &amp; PreciseDouble::operator*=</definition>
+        <argsstring>(PreciseDouble other) noexcept</argsstring>
+        <name>operator*=</name>
+        <qualifiedname>PreciseDouble::operator*=</qualifiedname>
+        <param>
+          <type><ref refid="class_precise_double" kindref="compound">PreciseDouble</ref></type>
+          <declname>other</declname>
+        </param>
+        <briefdescription>
+<para>Multiplies this <ref refid="class_precise_double" kindref="compound">PreciseDouble</ref> by another. </para>
+        </briefdescription>
+        <detaileddescription>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>other</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>The <ref refid="class_precise_double" kindref="compound">PreciseDouble</ref> to multiply with. </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<simplesect kind="return"><para>Reference to the updated <ref refid="class_precise_double" kindref="compound">PreciseDouble</ref>. </para>
+</simplesect>
+<simplesect kind="note"><para>In debug mode, validates the internal value after multiplication. </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="Misc/Maths/PreciseDouble.h" line="212" column="26" bodyfile="Misc/Maths/PreciseDouble.h" bodystart="212" bodyend="220"/>
+      </memberdef>
+      <memberdef kind="function" id="class_precise_double_1a371ebe74877a476f9591be697695513a" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <type><ref refid="class_precise_double" kindref="compound">PreciseDouble</ref> &amp;</type>
+        <definition>PreciseDouble &amp; PreciseDouble::operator/=</definition>
+        <argsstring>(PreciseDouble other)</argsstring>
+        <name>operator/=</name>
+        <qualifiedname>PreciseDouble::operator/=</qualifiedname>
+        <param>
+          <type><ref refid="class_precise_double" kindref="compound">PreciseDouble</ref></type>
+          <declname>other</declname>
+        </param>
+        <briefdescription>
+<para>Divides this <ref refid="class_precise_double" kindref="compound">PreciseDouble</ref> by another. </para>
+        </briefdescription>
+        <detaileddescription>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>other</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>The <ref refid="class_precise_double" kindref="compound">PreciseDouble</ref> to divide by. </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<simplesect kind="return"><para>Reference to the updated <ref refid="class_precise_double" kindref="compound">PreciseDouble</ref>. </para>
+</simplesect>
+<parameterlist kind="exception"><parameteritem>
+<parameternamelist>
+<parametername><ref refid="class_line_info_exception" kindref="compound">LineInfoException</ref></parametername>
+</parameternamelist>
+<parameterdescription>
+<para>in debug mode if dividing by zero. </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<simplesect kind="note"><para>In debug mode, validates the internal value after division. </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="Misc/Maths/PreciseDouble.h" line="229" column="26" bodyfile="Misc/Maths/PreciseDouble.h" bodystart="229" bodyend="237"/>
+      </memberdef>
+    </sectiondef>
+    <sectiondef kind="user-defined">
+      <header>Arithmetic Operators (double)</header>
+      <description><para>Overloads to work directly with double values. </para>
+</description>
+      <memberdef kind="function" id="class_precise_double_1a879c26b7c5d70bda88850ea2149b6c7a" prot="public" static="no" const="yes" explicit="no" inline="yes" noexcept="yes" virt="non-virtual">
+        <type><ref refid="class_precise_double" kindref="compound">PreciseDouble</ref></type>
+        <definition>PreciseDouble PreciseDouble::operator+</definition>
+        <argsstring>(double other) const noexcept</argsstring>
+        <name>operator+</name>
+        <qualifiedname>PreciseDouble::operator+</qualifiedname>
+        <param>
+          <type>double</type>
+          <declname>other</declname>
+        </param>
+        <briefdescription>
+<para>Adds a double value to this <ref refid="class_precise_double" kindref="compound">PreciseDouble</ref> and returns the result. </para>
+        </briefdescription>
+        <detaileddescription>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>other</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>The double value to add. </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<simplesect kind="return"><para>A new <ref refid="class_precise_double" kindref="compound">PreciseDouble</ref> with the result. </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="Misc/Maths/PreciseDouble.h" line="249" column="19" bodyfile="Misc/Maths/PreciseDouble.h" bodystart="249" bodyend="249"/>
+      </memberdef>
+      <memberdef kind="function" id="class_precise_double_1a172f52ab23f8ff4cebc2eb2344ca8848" prot="public" static="no" const="yes" explicit="no" inline="yes" noexcept="yes" virt="non-virtual">
+        <type><ref refid="class_precise_double" kindref="compound">PreciseDouble</ref></type>
+        <definition>PreciseDouble PreciseDouble::operator-</definition>
+        <argsstring>(double other) const noexcept</argsstring>
+        <name>operator-</name>
+        <qualifiedname>PreciseDouble::operator-</qualifiedname>
+        <param>
+          <type>double</type>
+          <declname>other</declname>
+        </param>
+        <briefdescription>
+<para>Subtracts a double value from this <ref refid="class_precise_double" kindref="compound">PreciseDouble</ref> and returns the result. </para>
+        </briefdescription>
+        <detaileddescription>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>other</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>The double value to subtract. </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<simplesect kind="return"><para>A new <ref refid="class_precise_double" kindref="compound">PreciseDouble</ref> with the result. </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="Misc/Maths/PreciseDouble.h" line="256" column="19" bodyfile="Misc/Maths/PreciseDouble.h" bodystart="256" bodyend="256"/>
+      </memberdef>
+      <memberdef kind="function" id="class_precise_double_1a7f89f6c82c8f0775d5e389457767323e" prot="public" static="no" const="yes" explicit="no" inline="yes" noexcept="yes" virt="non-virtual">
+        <type><ref refid="class_precise_double" kindref="compound">PreciseDouble</ref></type>
+        <definition>PreciseDouble PreciseDouble::operator*</definition>
+        <argsstring>(double other) const noexcept</argsstring>
+        <name>operator*</name>
+        <qualifiedname>PreciseDouble::operator*</qualifiedname>
+        <param>
+          <type>double</type>
+          <declname>other</declname>
+        </param>
+        <briefdescription>
+<para>Multiplies this <ref refid="class_precise_double" kindref="compound">PreciseDouble</ref> by a double value and returns the result. </para>
+        </briefdescription>
+        <detaileddescription>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>other</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>The double value to multiply with. </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<simplesect kind="return"><para>A new <ref refid="class_precise_double" kindref="compound">PreciseDouble</ref> with the result. </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="Misc/Maths/PreciseDouble.h" line="263" column="19" bodyfile="Misc/Maths/PreciseDouble.h" bodystart="263" bodyend="263"/>
+      </memberdef>
+      <memberdef kind="function" id="class_precise_double_1a854da0aee906f17b0f818689497bd8c8" prot="public" static="no" const="yes" explicit="no" inline="yes" noexcept="yes" virt="non-virtual">
+        <type><ref refid="class_precise_double" kindref="compound">PreciseDouble</ref></type>
+        <definition>PreciseDouble PreciseDouble::operator/</definition>
+        <argsstring>(double other) const noexcept</argsstring>
+        <name>operator/</name>
+        <qualifiedname>PreciseDouble::operator/</qualifiedname>
+        <param>
+          <type>double</type>
+          <declname>other</declname>
+        </param>
+        <briefdescription>
+<para>Divides this <ref refid="class_precise_double" kindref="compound">PreciseDouble</ref> by a double value and returns the result. </para>
+        </briefdescription>
+        <detaileddescription>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>other</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>The double value to divide by. </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<simplesect kind="return"><para>A new <ref refid="class_precise_double" kindref="compound">PreciseDouble</ref> with the result. </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="Misc/Maths/PreciseDouble.h" line="270" column="19" bodyfile="Misc/Maths/PreciseDouble.h" bodystart="270" bodyend="270"/>
+      </memberdef>
+      <memberdef kind="function" id="class_precise_double_1a872755f58595c48f06d13b57031a62d4" prot="public" static="no" const="no" explicit="no" inline="yes" noexcept="yes" virt="non-virtual">
+        <type><ref refid="class_precise_double" kindref="compound">PreciseDouble</ref> &amp;</type>
+        <definition>PreciseDouble &amp; PreciseDouble::operator+=</definition>
+        <argsstring>(double other) noexcept</argsstring>
+        <name>operator+=</name>
+        <qualifiedname>PreciseDouble::operator+=</qualifiedname>
+        <param>
+          <type>double</type>
+          <declname>other</declname>
+        </param>
+        <briefdescription>
+<para>Adds a double value to this <ref refid="class_precise_double" kindref="compound">PreciseDouble</ref> in-place. </para>
+        </briefdescription>
+        <detaileddescription>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>other</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>The double value to add. </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<simplesect kind="return"><para>Reference to the updated <ref refid="class_precise_double" kindref="compound">PreciseDouble</ref>. </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="Misc/Maths/PreciseDouble.h" line="277" column="19" bodyfile="Misc/Maths/PreciseDouble.h" bodystart="277" bodyend="277"/>
+      </memberdef>
+      <memberdef kind="function" id="class_precise_double_1a6aec06ba22279c013ffa5150f70d6c04" prot="public" static="no" const="no" explicit="no" inline="yes" noexcept="yes" virt="non-virtual">
+        <type><ref refid="class_precise_double" kindref="compound">PreciseDouble</ref> &amp;</type>
+        <definition>PreciseDouble &amp; PreciseDouble::operator-=</definition>
+        <argsstring>(double other) noexcept</argsstring>
+        <name>operator-=</name>
+        <qualifiedname>PreciseDouble::operator-=</qualifiedname>
+        <param>
+          <type>double</type>
+          <declname>other</declname>
+        </param>
+        <briefdescription>
+<para>Subtracts a double value from this <ref refid="class_precise_double" kindref="compound">PreciseDouble</ref> in-place. </para>
+        </briefdescription>
+        <detaileddescription>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>other</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>The double value to subtract. </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<simplesect kind="return"><para>Reference to the updated <ref refid="class_precise_double" kindref="compound">PreciseDouble</ref>. </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="Misc/Maths/PreciseDouble.h" line="284" column="19" bodyfile="Misc/Maths/PreciseDouble.h" bodystart="284" bodyend="284"/>
+      </memberdef>
+      <memberdef kind="function" id="class_precise_double_1af3c634331ce5cb5c58c5f38be53a99ea" prot="public" static="no" const="no" explicit="no" inline="yes" noexcept="yes" virt="non-virtual">
+        <type><ref refid="class_precise_double" kindref="compound">PreciseDouble</ref> &amp;</type>
+        <definition>PreciseDouble &amp; PreciseDouble::operator*=</definition>
+        <argsstring>(double other) noexcept</argsstring>
+        <name>operator*=</name>
+        <qualifiedname>PreciseDouble::operator*=</qualifiedname>
+        <param>
+          <type>double</type>
+          <declname>other</declname>
+        </param>
+        <briefdescription>
+<para>Multiplies this <ref refid="class_precise_double" kindref="compound">PreciseDouble</ref> by a double value in-place. </para>
+        </briefdescription>
+        <detaileddescription>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>other</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>The double value to multiply with. </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<simplesect kind="return"><para>Reference to the updated <ref refid="class_precise_double" kindref="compound">PreciseDouble</ref>. </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="Misc/Maths/PreciseDouble.h" line="291" column="19" bodyfile="Misc/Maths/PreciseDouble.h" bodystart="291" bodyend="291"/>
+      </memberdef>
+      <memberdef kind="function" id="class_precise_double_1a3f051b9c947cdcce1ca32f0dba6f6485" prot="public" static="no" const="no" explicit="no" inline="yes" noexcept="yes" virt="non-virtual">
+        <type><ref refid="class_precise_double" kindref="compound">PreciseDouble</ref> &amp;</type>
+        <definition>PreciseDouble &amp; PreciseDouble::operator/=</definition>
+        <argsstring>(double other) noexcept</argsstring>
+        <name>operator/=</name>
+        <qualifiedname>PreciseDouble::operator/=</qualifiedname>
+        <param>
+          <type>double</type>
+          <declname>other</declname>
+        </param>
+        <briefdescription>
+<para>Divides this <ref refid="class_precise_double" kindref="compound">PreciseDouble</ref> by a double value in-place. </para>
+        </briefdescription>
+        <detaileddescription>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>other</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>The double value to divide by. </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<simplesect kind="return"><para>Reference to the updated <ref refid="class_precise_double" kindref="compound">PreciseDouble</ref>. </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="Misc/Maths/PreciseDouble.h" line="298" column="19" bodyfile="Misc/Maths/PreciseDouble.h" bodystart="298" bodyend="298"/>
+      </memberdef>
+    </sectiondef>
+    <sectiondef kind="user-defined">
+      <header>Comparison Operators</header>
+      <description><para>Comparison with tolerance handling to avoid floating-point issues. </para>
+</description>
+      <memberdef kind="function" id="class_precise_double_1ae4744ec93e240a6e7785967f53239559" prot="public" static="no" const="yes" explicit="no" inline="yes" noexcept="yes" virt="non-virtual">
+        <type>bool</type>
+        <definition>bool PreciseDouble::operator==</definition>
+        <argsstring>(PreciseDouble other) const noexcept</argsstring>
+        <name>operator==</name>
+        <qualifiedname>PreciseDouble::operator==</qualifiedname>
+        <param>
+          <type><ref refid="class_precise_double" kindref="compound">PreciseDouble</ref></type>
+          <declname>other</declname>
+        </param>
+        <briefdescription>
+<para>Checks if this <ref refid="class_precise_double" kindref="compound">PreciseDouble</ref> is equal to another <ref refid="class_precise_double" kindref="compound">PreciseDouble</ref>. </para>
+        </briefdescription>
+        <detaileddescription>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>other</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>The <ref refid="class_precise_double" kindref="compound">PreciseDouble</ref> to compare with. </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<simplesect kind="return"><para>True if the values are approximately equal, false otherwise. </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="Misc/Maths/PreciseDouble.h" line="310" column="17" bodyfile="Misc/Maths/PreciseDouble.h" bodystart="310" bodyend="310"/>
+      </memberdef>
+      <memberdef kind="function" id="class_precise_double_1a34b0fe6c018269be523f0c53d0a419e8" prot="public" static="no" const="yes" explicit="no" inline="yes" noexcept="yes" virt="non-virtual">
+        <type>bool</type>
+        <definition>bool PreciseDouble::operator!=</definition>
+        <argsstring>(PreciseDouble other) const noexcept</argsstring>
+        <name>operator!=</name>
+        <qualifiedname>PreciseDouble::operator!=</qualifiedname>
+        <param>
+          <type><ref refid="class_precise_double" kindref="compound">PreciseDouble</ref></type>
+          <declname>other</declname>
+        </param>
+        <briefdescription>
+<para>Checks if this <ref refid="class_precise_double" kindref="compound">PreciseDouble</ref> is not equal to another <ref refid="class_precise_double" kindref="compound">PreciseDouble</ref>. </para>
+        </briefdescription>
+        <detaileddescription>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>other</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>The <ref refid="class_precise_double" kindref="compound">PreciseDouble</ref> to compare with. </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<simplesect kind="return"><para>True if the values are not approximately equal, false otherwise. </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="Misc/Maths/PreciseDouble.h" line="317" column="17" bodyfile="Misc/Maths/PreciseDouble.h" bodystart="317" bodyend="317"/>
+      </memberdef>
+      <memberdef kind="function" id="class_precise_double_1a95482d232f84baeb7f9f63e3f53ae0e6" prot="public" static="no" const="yes" explicit="no" inline="yes" noexcept="yes" virt="non-virtual">
+        <type>bool</type>
+        <definition>bool PreciseDouble::operator&lt;</definition>
+        <argsstring>(PreciseDouble other) const noexcept</argsstring>
+        <name>operator&lt;</name>
+        <qualifiedname>PreciseDouble::operator&lt;</qualifiedname>
+        <param>
+          <type><ref refid="class_precise_double" kindref="compound">PreciseDouble</ref></type>
+          <declname>other</declname>
+        </param>
+        <briefdescription>
+<para>Checks if this <ref refid="class_precise_double" kindref="compound">PreciseDouble</ref> is less than another <ref refid="class_precise_double" kindref="compound">PreciseDouble</ref>. </para>
+        </briefdescription>
+        <detaileddescription>
+<para>Uses the same tolerance-based equality as operator== so that ==, &lt;, and &gt; form a consistent total order (no value can be simultaneously &quot;==&quot; and &quot;&lt;&quot; another, which the previous fixed-EPS implementation allowed).</para>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>other</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>The <ref refid="class_precise_double" kindref="compound">PreciseDouble</ref> to compare with. </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<simplesect kind="return"><para>True if this value is less than the other and not almost equal to it. </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="Misc/Maths/PreciseDouble.h" line="329" column="12" bodyfile="Misc/Maths/PreciseDouble.h" bodystart="329" bodyend="329"/>
+      </memberdef>
+      <memberdef kind="function" id="class_precise_double_1a793415f3e92cd91153a049d96fa7c00b" prot="public" static="no" const="yes" explicit="no" inline="yes" noexcept="yes" virt="non-virtual">
+        <type>bool</type>
+        <definition>bool PreciseDouble::operator&gt;</definition>
+        <argsstring>(PreciseDouble other) const noexcept</argsstring>
+        <name>operator&gt;</name>
+        <qualifiedname>PreciseDouble::operator&gt;</qualifiedname>
+        <param>
+          <type><ref refid="class_precise_double" kindref="compound">PreciseDouble</ref></type>
+          <declname>other</declname>
+        </param>
+        <briefdescription>
+<para>Checks if this <ref refid="class_precise_double" kindref="compound">PreciseDouble</ref> is greater than another <ref refid="class_precise_double" kindref="compound">PreciseDouble</ref>. </para>
+        </briefdescription>
+        <detaileddescription>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>other</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>The <ref refid="class_precise_double" kindref="compound">PreciseDouble</ref> to compare with. </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<simplesect kind="return"><para>True if this value is greater than the other and not almost equal to it. </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="Misc/Maths/PreciseDouble.h" line="336" column="17" bodyfile="Misc/Maths/PreciseDouble.h" bodystart="336" bodyend="336"/>
+      </memberdef>
+      <memberdef kind="function" id="class_precise_double_1a883bf9ecc11bfc7da96a627fc60a4993" prot="public" static="no" const="yes" explicit="no" inline="yes" noexcept="yes" virt="non-virtual">
+        <type>bool</type>
+        <definition>bool PreciseDouble::operator&lt;=</definition>
+        <argsstring>(PreciseDouble other) const noexcept</argsstring>
+        <name>operator&lt;=</name>
+        <qualifiedname>PreciseDouble::operator&lt;=</qualifiedname>
+        <param>
+          <type><ref refid="class_precise_double" kindref="compound">PreciseDouble</ref></type>
+          <declname>other</declname>
+        </param>
+        <briefdescription>
+<para>Checks if this <ref refid="class_precise_double" kindref="compound">PreciseDouble</ref> is less than or equal to another <ref refid="class_precise_double" kindref="compound">PreciseDouble</ref>. </para>
+        </briefdescription>
+        <detaileddescription>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>other</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>The <ref refid="class_precise_double" kindref="compound">PreciseDouble</ref> to compare with. </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<simplesect kind="return"><para>True if this value is less than or equal to the other, accounting for tolerance. </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="Misc/Maths/PreciseDouble.h" line="343" column="12" bodyfile="Misc/Maths/PreciseDouble.h" bodystart="343" bodyend="343"/>
+      </memberdef>
+      <memberdef kind="function" id="class_precise_double_1ae5fe141def08b959d96f703168cc7f6d" prot="public" static="no" const="yes" explicit="no" inline="yes" noexcept="yes" virt="non-virtual">
+        <type>bool</type>
+        <definition>bool PreciseDouble::operator&gt;=</definition>
+        <argsstring>(PreciseDouble other) const noexcept</argsstring>
+        <name>operator&gt;=</name>
+        <qualifiedname>PreciseDouble::operator&gt;=</qualifiedname>
+        <param>
+          <type><ref refid="class_precise_double" kindref="compound">PreciseDouble</ref></type>
+          <declname>other</declname>
+        </param>
+        <briefdescription>
+<para>Checks if this <ref refid="class_precise_double" kindref="compound">PreciseDouble</ref> is greater than or equal to another <ref refid="class_precise_double" kindref="compound">PreciseDouble</ref>. </para>
+        </briefdescription>
+        <detaileddescription>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>other</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>The <ref refid="class_precise_double" kindref="compound">PreciseDouble</ref> to compare with. </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<simplesect kind="return"><para>True if this value is greater than or equal to the other, accounting for tolerance. </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="Misc/Maths/PreciseDouble.h" line="350" column="17" bodyfile="Misc/Maths/PreciseDouble.h" bodystart="350" bodyend="350"/>
+      </memberdef>
+      <memberdef kind="function" id="class_precise_double_1a73a0aaa045577e2342682abe71fbd186" prot="public" static="no" const="yes" explicit="no" inline="yes" noexcept="yes" virt="non-virtual">
+        <type>bool</type>
+        <definition>bool PreciseDouble::operator==</definition>
+        <argsstring>(double other) const noexcept</argsstring>
+        <name>operator==</name>
+        <qualifiedname>PreciseDouble::operator==</qualifiedname>
+        <param>
+          <type>double</type>
+          <declname>other</declname>
+        </param>
+        <briefdescription>
+<para>Checks if this <ref refid="class_precise_double" kindref="compound">PreciseDouble</ref> is equal to a double value. </para>
+        </briefdescription>
+        <detaileddescription>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>other</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>The double value to compare with. </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<simplesect kind="return"><para>True if the values are approximately equal, false otherwise. </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="Misc/Maths/PreciseDouble.h" line="357" column="17" bodyfile="Misc/Maths/PreciseDouble.h" bodystart="357" bodyend="357"/>
+      </memberdef>
+      <memberdef kind="function" id="class_precise_double_1abc6d88e91781cc7d1edce4b04ad5c3df" prot="public" static="no" const="yes" explicit="no" inline="yes" noexcept="yes" virt="non-virtual">
+        <type>bool</type>
+        <definition>bool PreciseDouble::operator!=</definition>
+        <argsstring>(double other) const noexcept</argsstring>
+        <name>operator!=</name>
+        <qualifiedname>PreciseDouble::operator!=</qualifiedname>
+        <param>
+          <type>double</type>
+          <declname>other</declname>
+        </param>
+        <briefdescription>
+<para>Checks if this <ref refid="class_precise_double" kindref="compound">PreciseDouble</ref> is not equal to a double value. </para>
+        </briefdescription>
+        <detaileddescription>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>other</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>The double value to compare with. </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<simplesect kind="return"><para>True if the values are not approximately equal, false otherwise. </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="Misc/Maths/PreciseDouble.h" line="364" column="17" bodyfile="Misc/Maths/PreciseDouble.h" bodystart="364" bodyend="364"/>
+      </memberdef>
+      <memberdef kind="function" id="class_precise_double_1a63fd4ccead8f902b4008f3ae4fc9bb12" prot="public" static="no" const="yes" explicit="no" inline="yes" noexcept="yes" virt="non-virtual">
+        <type>bool</type>
+        <definition>bool PreciseDouble::operator&lt;</definition>
+        <argsstring>(double other) const noexcept</argsstring>
+        <name>operator&lt;</name>
+        <qualifiedname>PreciseDouble::operator&lt;</qualifiedname>
+        <param>
+          <type>double</type>
+          <declname>other</declname>
+        </param>
+        <briefdescription>
+<para>Checks if this <ref refid="class_precise_double" kindref="compound">PreciseDouble</ref> is less than a double value. </para>
+        </briefdescription>
+        <detaileddescription>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>other</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>The double value to compare with. </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<simplesect kind="return"><para>True if this value is less than the double and not almost equal to it. </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="Misc/Maths/PreciseDouble.h" line="371" column="12" bodyfile="Misc/Maths/PreciseDouble.h" bodystart="371" bodyend="371"/>
+      </memberdef>
+      <memberdef kind="function" id="class_precise_double_1adc36dddfe1624f661835e6242d56d1ef" prot="public" static="no" const="yes" explicit="no" inline="yes" noexcept="yes" virt="non-virtual">
+        <type>bool</type>
+        <definition>bool PreciseDouble::operator&gt;</definition>
+        <argsstring>(double other) const noexcept</argsstring>
+        <name>operator&gt;</name>
+        <qualifiedname>PreciseDouble::operator&gt;</qualifiedname>
+        <param>
+          <type>double</type>
+          <declname>other</declname>
+        </param>
+        <briefdescription>
+<para>Checks if this <ref refid="class_precise_double" kindref="compound">PreciseDouble</ref> is greater than a double value. </para>
+        </briefdescription>
+        <detaileddescription>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>other</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>The double value to compare with. </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<simplesect kind="return"><para>True if this value is greater than the double and not almost equal to it. </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="Misc/Maths/PreciseDouble.h" line="378" column="17" bodyfile="Misc/Maths/PreciseDouble.h" bodystart="378" bodyend="378"/>
+      </memberdef>
+      <memberdef kind="function" id="class_precise_double_1a197142ba6e7f1a686a8a7a50d1c12b8c" prot="public" static="no" const="yes" explicit="no" inline="yes" noexcept="yes" virt="non-virtual">
+        <type>bool</type>
+        <definition>bool PreciseDouble::operator&lt;=</definition>
+        <argsstring>(double other) const noexcept</argsstring>
+        <name>operator&lt;=</name>
+        <qualifiedname>PreciseDouble::operator&lt;=</qualifiedname>
+        <param>
+          <type>double</type>
+          <declname>other</declname>
+        </param>
+        <briefdescription>
+<para>Checks if this <ref refid="class_precise_double" kindref="compound">PreciseDouble</ref> is less than or equal to a double value. </para>
+        </briefdescription>
+        <detaileddescription>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>other</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>The double value to compare with. </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<simplesect kind="return"><para>True if this value is less than or equal to the double, accounting for tolerance. </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="Misc/Maths/PreciseDouble.h" line="385" column="12" bodyfile="Misc/Maths/PreciseDouble.h" bodystart="385" bodyend="385"/>
+      </memberdef>
+      <memberdef kind="function" id="class_precise_double_1a41c616a0f40c235dfba4ef16ed139439" prot="public" static="no" const="yes" explicit="no" inline="yes" noexcept="yes" virt="non-virtual">
+        <type>bool</type>
+        <definition>bool PreciseDouble::operator&gt;=</definition>
+        <argsstring>(double other) const noexcept</argsstring>
+        <name>operator&gt;=</name>
+        <qualifiedname>PreciseDouble::operator&gt;=</qualifiedname>
+        <param>
+          <type>double</type>
+          <declname>other</declname>
+        </param>
+        <briefdescription>
+<para>Checks if this <ref refid="class_precise_double" kindref="compound">PreciseDouble</ref> is greater than or equal to a double value. </para>
+        </briefdescription>
+        <detaileddescription>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>other</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>The double value to compare with. </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<simplesect kind="return"><para>True if this value is greater than or equal to the double, accounting for tolerance. </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="Misc/Maths/PreciseDouble.h" line="392" column="17" bodyfile="Misc/Maths/PreciseDouble.h" bodystart="392" bodyend="392"/>
+      </memberdef>
+    </sectiondef>
+    <sectiondef kind="user-defined">
+      <header>Mathematical Friend Functions</header>
+      <description><para>Common math operations compatible with <ref refid="class_precise_double" kindref="compound">PreciseDouble</ref>. </para>
+</description>
+      <memberdef kind="friend" id="class_precise_double_1ae1c8bd928781cadeae80f54422bd4687" prot="public" static="no" constexpr="yes" const="no" explicit="no" inline="yes" noexcept="yes" virt="non-virtual">
+        <type><ref refid="class_precise_double" kindref="compound">PreciseDouble</ref></type>
+        <definition>PreciseDouble sqrt</definition>
+        <argsstring>(PreciseDouble r) noexcept</argsstring>
+        <name>sqrt</name>
+        <qualifiedname>PreciseDouble::sqrt</qualifiedname>
+        <param>
+          <type><ref refid="class_precise_double" kindref="compound">PreciseDouble</ref></type>
+          <declname>r</declname>
+        </param>
+        <briefdescription>
+<para>Computes the square root of a <ref refid="class_precise_double" kindref="compound">PreciseDouble</ref>. </para>
+        </briefdescription>
+        <detaileddescription>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>r</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>The input value. </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<simplesect kind="return"><para>A <ref refid="class_precise_double" kindref="compound">PreciseDouble</ref> containing the square root. </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="Misc/Maths/PreciseDouble.h" line="404" column="36" bodyfile="Misc/Maths/PreciseDouble.h" bodystart="404" bodyend="406"/>
+      </memberdef>
+      <memberdef kind="friend" id="class_precise_double_1a0ee63e3ff9106a08d8ecc8a27707a4af" prot="public" static="no" constexpr="yes" const="no" explicit="no" inline="yes" noexcept="yes" virt="non-virtual">
+        <type><ref refid="class_precise_double" kindref="compound">PreciseDouble</ref></type>
+        <definition>PreciseDouble fabs</definition>
+        <argsstring>(PreciseDouble r) noexcept</argsstring>
+        <name>fabs</name>
+        <qualifiedname>PreciseDouble::fabs</qualifiedname>
+        <param>
+          <type><ref refid="class_precise_double" kindref="compound">PreciseDouble</ref></type>
+          <declname>r</declname>
+        </param>
+        <briefdescription>
+<para>Computes the absolute value of a <ref refid="class_precise_double" kindref="compound">PreciseDouble</ref>. </para>
+        </briefdescription>
+        <detaileddescription>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>r</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>The input value. </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<simplesect kind="return"><para>A <ref refid="class_precise_double" kindref="compound">PreciseDouble</ref> containing the absolute value. </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="Misc/Maths/PreciseDouble.h" line="413" column="36" bodyfile="Misc/Maths/PreciseDouble.h" bodystart="413" bodyend="415"/>
+      </memberdef>
+      <memberdef kind="friend" id="class_precise_double_1a7ee131ebd0dfaac659d7135d65b67f33" prot="public" static="no" constexpr="yes" const="no" explicit="no" inline="yes" noexcept="yes" virt="non-virtual">
+        <type><ref refid="class_precise_double" kindref="compound">PreciseDouble</ref></type>
+        <definition>PreciseDouble pow</definition>
+        <argsstring>(PreciseDouble r, PreciseDouble p) noexcept</argsstring>
+        <name>pow</name>
+        <qualifiedname>PreciseDouble::pow</qualifiedname>
+        <param>
+          <type><ref refid="class_precise_double" kindref="compound">PreciseDouble</ref></type>
+          <declname>r</declname>
+        </param>
+        <param>
+          <type><ref refid="class_precise_double" kindref="compound">PreciseDouble</ref></type>
+          <declname>p</declname>
+        </param>
+        <briefdescription>
+<para>Computes r raised to the power of p. </para>
+        </briefdescription>
+        <detaileddescription>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>r</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>The base value. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>p</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>The exponent value. </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<simplesect kind="return"><para>A <ref refid="class_precise_double" kindref="compound">PreciseDouble</ref> containing r^p. </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="Misc/Maths/PreciseDouble.h" line="423" column="36" bodyfile="Misc/Maths/PreciseDouble.h" bodystart="423" bodyend="425"/>
+      </memberdef>
+      <memberdef kind="friend" id="class_precise_double_1a23d99cd2c741bf6b31dbaa51ca9572bc" prot="public" static="no" constexpr="yes" const="no" explicit="no" inline="yes" noexcept="yes" virt="non-virtual">
+        <type><ref refid="class_precise_double" kindref="compound">PreciseDouble</ref></type>
+        <definition>PreciseDouble exp</definition>
+        <argsstring>(PreciseDouble r) noexcept</argsstring>
+        <name>exp</name>
+        <qualifiedname>PreciseDouble::exp</qualifiedname>
+        <param>
+          <type><ref refid="class_precise_double" kindref="compound">PreciseDouble</ref></type>
+          <declname>r</declname>
+        </param>
+        <briefdescription>
+<para>Computes the exponential function of a <ref refid="class_precise_double" kindref="compound">PreciseDouble</ref>. </para>
+        </briefdescription>
+        <detaileddescription>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>r</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>The input value. </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<simplesect kind="return"><para>A <ref refid="class_precise_double" kindref="compound">PreciseDouble</ref> containing e^r. </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="Misc/Maths/PreciseDouble.h" line="432" column="36" bodyfile="Misc/Maths/PreciseDouble.h" bodystart="432" bodyend="434"/>
+      </memberdef>
+      <memberdef kind="friend" id="class_precise_double_1ad15c6a60b3182380f273789f471bb40b" prot="public" static="no" constexpr="yes" const="no" explicit="no" inline="yes" noexcept="yes" virt="non-virtual">
+        <type><ref refid="class_precise_double" kindref="compound">PreciseDouble</ref></type>
+        <definition>PreciseDouble log</definition>
+        <argsstring>(PreciseDouble r) noexcept</argsstring>
+        <name>log</name>
+        <qualifiedname>PreciseDouble::log</qualifiedname>
+        <param>
+          <type><ref refid="class_precise_double" kindref="compound">PreciseDouble</ref></type>
+          <declname>r</declname>
+        </param>
+        <briefdescription>
+<para>Computes the natural logarithm of a <ref refid="class_precise_double" kindref="compound">PreciseDouble</ref>. </para>
+        </briefdescription>
+        <detaileddescription>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>r</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>The input value. </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<simplesect kind="return"><para>A <ref refid="class_precise_double" kindref="compound">PreciseDouble</ref> containing ln(r). </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="Misc/Maths/PreciseDouble.h" line="441" column="36" bodyfile="Misc/Maths/PreciseDouble.h" bodystart="441" bodyend="443"/>
+      </memberdef>
+      <memberdef kind="friend" id="class_precise_double_1a527dc14e2e9d230053b55f4ac39764ac" prot="public" static="no" constexpr="yes" const="no" explicit="no" inline="yes" noexcept="yes" virt="non-virtual">
+        <type><ref refid="class_precise_double" kindref="compound">PreciseDouble</ref></type>
+        <definition>PreciseDouble floor</definition>
+        <argsstring>(PreciseDouble r) noexcept</argsstring>
+        <name>floor</name>
+        <qualifiedname>PreciseDouble::floor</qualifiedname>
+        <param>
+          <type><ref refid="class_precise_double" kindref="compound">PreciseDouble</ref></type>
+          <declname>r</declname>
+        </param>
+        <briefdescription>
+<para>Computes the floor of a <ref refid="class_precise_double" kindref="compound">PreciseDouble</ref>. </para>
+        </briefdescription>
+        <detaileddescription>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>r</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>The input value. </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<simplesect kind="return"><para>A <ref refid="class_precise_double" kindref="compound">PreciseDouble</ref> containing the largest integer not greater than r. </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="Misc/Maths/PreciseDouble.h" line="450" column="36" bodyfile="Misc/Maths/PreciseDouble.h" bodystart="450" bodyend="452"/>
+      </memberdef>
+      <memberdef kind="friend" id="class_precise_double_1ab46767e619e0e979995116ea74c85603" prot="public" static="no" constexpr="yes" const="no" explicit="no" inline="yes" noexcept="yes" virt="non-virtual">
+        <type><ref refid="class_precise_double" kindref="compound">PreciseDouble</ref></type>
+        <definition>PreciseDouble round</definition>
+        <argsstring>(PreciseDouble r) noexcept</argsstring>
+        <name>round</name>
+        <qualifiedname>PreciseDouble::round</qualifiedname>
+        <param>
+          <type><ref refid="class_precise_double" kindref="compound">PreciseDouble</ref></type>
+          <declname>r</declname>
+        </param>
+        <briefdescription>
+<para>Computes the nearest integer to a <ref refid="class_precise_double" kindref="compound">PreciseDouble</ref>, rounding halfway cases away from zero. </para>
+        </briefdescription>
+        <detaileddescription>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>r</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>The input value. </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<simplesect kind="return"><para>A <ref refid="class_precise_double" kindref="compound">PreciseDouble</ref> containing the rounded value. </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="Misc/Maths/PreciseDouble.h" line="459" column="36" bodyfile="Misc/Maths/PreciseDouble.h" bodystart="459" bodyend="461"/>
+      </memberdef>
+      <memberdef kind="friend" id="class_precise_double_1a5122ce2fb091efd210f75d454bffb3b7" prot="public" static="no" constexpr="yes" const="no" explicit="no" inline="yes" noexcept="yes" virt="non-virtual">
+        <type><ref refid="class_precise_double" kindref="compound">PreciseDouble</ref></type>
+        <definition>PreciseDouble sin</definition>
+        <argsstring>(PreciseDouble r) noexcept</argsstring>
+        <name>sin</name>
+        <qualifiedname>PreciseDouble::sin</qualifiedname>
+        <param>
+          <type><ref refid="class_precise_double" kindref="compound">PreciseDouble</ref></type>
+          <declname>r</declname>
+        </param>
+        <briefdescription>
+<para>Computes the sine of a <ref refid="class_precise_double" kindref="compound">PreciseDouble</ref> (angle in radians). </para>
+        </briefdescription>
+        <detaileddescription>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>r</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>The input value in radians. </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<simplesect kind="return"><para>A <ref refid="class_precise_double" kindref="compound">PreciseDouble</ref> containing sin(r). </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="Misc/Maths/PreciseDouble.h" line="468" column="36" bodyfile="Misc/Maths/PreciseDouble.h" bodystart="468" bodyend="470"/>
+      </memberdef>
+      <memberdef kind="friend" id="class_precise_double_1a9735ef2d1c800702f9a003ca63dace13" prot="public" static="no" constexpr="yes" const="no" explicit="no" inline="yes" noexcept="yes" virt="non-virtual">
+        <type><ref refid="class_precise_double" kindref="compound">PreciseDouble</ref></type>
+        <definition>PreciseDouble cos</definition>
+        <argsstring>(PreciseDouble r) noexcept</argsstring>
+        <name>cos</name>
+        <qualifiedname>PreciseDouble::cos</qualifiedname>
+        <param>
+          <type><ref refid="class_precise_double" kindref="compound">PreciseDouble</ref></type>
+          <declname>r</declname>
+        </param>
+        <briefdescription>
+<para>Computes the cosine of a <ref refid="class_precise_double" kindref="compound">PreciseDouble</ref> (angle in radians). </para>
+        </briefdescription>
+        <detaileddescription>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>r</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>The input value in radians. </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<simplesect kind="return"><para>A <ref refid="class_precise_double" kindref="compound">PreciseDouble</ref> containing cos(r). </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="Misc/Maths/PreciseDouble.h" line="477" column="36" bodyfile="Misc/Maths/PreciseDouble.h" bodystart="477" bodyend="479"/>
+      </memberdef>
+      <memberdef kind="friend" id="class_precise_double_1a40daeac1bf32a48146fa6ac8970128d9" prot="public" static="no" constexpr="yes" const="no" explicit="no" inline="yes" noexcept="yes" virt="non-virtual">
+        <type><ref refid="class_precise_double" kindref="compound">PreciseDouble</ref></type>
+        <definition>PreciseDouble tan</definition>
+        <argsstring>(PreciseDouble r) noexcept</argsstring>
+        <name>tan</name>
+        <qualifiedname>PreciseDouble::tan</qualifiedname>
+        <param>
+          <type><ref refid="class_precise_double" kindref="compound">PreciseDouble</ref></type>
+          <declname>r</declname>
+        </param>
+        <briefdescription>
+<para>Computes the tangent of a <ref refid="class_precise_double" kindref="compound">PreciseDouble</ref> (angle in radians). </para>
+        </briefdescription>
+        <detaileddescription>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>r</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>The input value in radians. </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<simplesect kind="return"><para>A <ref refid="class_precise_double" kindref="compound">PreciseDouble</ref> containing tan(r). </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="Misc/Maths/PreciseDouble.h" line="486" column="36" bodyfile="Misc/Maths/PreciseDouble.h" bodystart="486" bodyend="488"/>
+      </memberdef>
+    </sectiondef>
+    <sectiondef kind="public-static-attrib">
+      <memberdef kind="variable" id="class_precise_double_1af81b7fcba09d7289b7d80b5b42864adc" prot="public" static="yes" constexpr="yes" mutable="no">
+        <type>double</type>
+        <definition>double PreciseDouble::EPS</definition>
+        <argsstring></argsstring>
+        <name>EPS</name>
+        <qualifiedname>PreciseDouble::EPS</qualifiedname>
+        <initializer>= 1e-9</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Small epsilon value for strict comparisons </para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="Misc/Maths/PreciseDouble.h" line="43" column="29" bodyfile="Misc/Maths/PreciseDouble.h" bodystart="43" bodyend="-1"/>
+      </memberdef>
+    </sectiondef>
+    <sectiondef kind="private-attrib">
+      <memberdef kind="variable" id="class_precise_double_1ae459812151b728ec3257fcfda93f4c45" prot="private" static="no" mutable="no">
+        <type>double</type>
+        <definition>double PreciseDouble::value</definition>
+        <argsstring></argsstring>
+        <name>value</name>
+        <qualifiedname>PreciseDouble::value</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Stored double value. </para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="Misc/Maths/PreciseDouble.h" line="507" column="12" bodyfile="Misc/Maths/PreciseDouble.h" bodystart="507" bodyend="-1"/>
+      </memberdef>
+    </sectiondef>
+    <sectiondef kind="public-func">
+      <memberdef kind="function" id="class_precise_double_1ac4217ec0917b7ac2ef5aeab571de3c57" prot="public" static="no" constexpr="yes" const="no" explicit="no" inline="yes" noexcept="yes" virt="non-virtual">
+        <type>constexpr</type>
+        <definition>PreciseDouble::PreciseDouble</definition>
+        <argsstring>() noexcept</argsstring>
+        <name>PreciseDouble</name>
+        <qualifiedname>PreciseDouble::PreciseDouble</qualifiedname>
+        <briefdescription>
+<para>Default constructor initializing to zero. </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="Misc/Maths/PreciseDouble.h" line="49" column="15" bodyfile="Misc/Maths/PreciseDouble.h" bodystart="49" bodyend="49"/>
+      </memberdef>
+      <memberdef kind="function" id="class_precise_double_1a264177f8c019c3f192fdb02442d6af2b" prot="public" static="no" const="no" explicit="no" inline="no" noexcept="yes" virt="non-virtual">
+        <type></type>
+        <definition>PreciseDouble::PreciseDouble</definition>
+        <argsstring>(const PreciseDouble &amp;other) noexcept=default</argsstring>
+        <name>PreciseDouble</name>
+        <qualifiedname>PreciseDouble::PreciseDouble</qualifiedname>
+        <param>
+          <type>const <ref refid="class_precise_double" kindref="compound">PreciseDouble</ref> &amp;</type>
+          <declname>other</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="Misc/Maths/PreciseDouble.h" line="68" column="5"/>
+      </memberdef>
+      <memberdef kind="function" id="class_precise_double_1ac13ad524f5e52bc5bb53b06de2f4778b" prot="public" static="no" constexpr="yes" const="no" explicit="no" inline="yes" noexcept="yes" virt="non-virtual">
+        <type>constexpr</type>
+        <definition>PreciseDouble::PreciseDouble</definition>
+        <argsstring>(double v) noexcept</argsstring>
+        <name>PreciseDouble</name>
+        <qualifiedname>PreciseDouble::PreciseDouble</qualifiedname>
+        <param>
+          <type>double</type>
+          <declname>v</declname>
+        </param>
+        <briefdescription>
+<para>Constructor initializing from a double value. </para>
+        </briefdescription>
+        <detaileddescription>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>v</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>The initial double value. </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="Misc/Maths/PreciseDouble.h" line="55" column="15" bodyfile="Misc/Maths/PreciseDouble.h" bodystart="55" bodyend="55"/>
+      </memberdef>
+      <memberdef kind="function" id="class_precise_double_1a09d9da294d070c5b45a5b3423f69a110" prot="public" static="no" const="no" explicit="no" inline="yes" noexcept="yes" virt="non-virtual">
+        <type></type>
+        <definition>PreciseDouble::PreciseDouble</definition>
+        <argsstring>(PreciseDouble &amp;&amp;other) noexcept</argsstring>
+        <name>PreciseDouble</name>
+        <qualifiedname>PreciseDouble::PreciseDouble</qualifiedname>
+        <param>
+          <type><ref refid="class_precise_double" kindref="compound">PreciseDouble</ref> &amp;&amp;</type>
+          <declname>other</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="Misc/Maths/PreciseDouble.h" line="58" column="5" bodyfile="Misc/Maths/PreciseDouble.h" bodystart="58" bodyend="58"/>
+      </memberdef>
+      <memberdef kind="function" id="class_precise_double_1ae4004291b806703ac1b87449dc8d7e14" prot="public" static="no" const="no" explicit="no" inline="yes" noexcept="yes" virt="non-virtual">
+        <type>double &amp;</type>
+        <definition>double &amp; PreciseDouble::getInternalReference</definition>
+        <argsstring>() noexcept</argsstring>
+        <name>getInternalReference</name>
+        <qualifiedname>PreciseDouble::getInternalReference</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="Misc/Maths/PreciseDouble.h" line="77" column="12" bodyfile="Misc/Maths/PreciseDouble.h" bodystart="77" bodyend="77"/>
+      </memberdef>
+      <memberdef kind="function" id="class_precise_double_1aa524800fabc3969fe6fe3f6f588423bd" prot="public" static="no" constexpr="yes" const="yes" explicit="no" inline="yes" noexcept="yes" virt="non-virtual">
+        <type>double</type>
+        <definition>double PreciseDouble::getValue</definition>
+        <argsstring>() const noexcept</argsstring>
+        <name>getValue</name>
+        <qualifiedname>PreciseDouble::getValue</qualifiedname>
+        <briefdescription>
+<para>Returns the stored double value. </para>
+        </briefdescription>
+        <detaileddescription>
+<para><simplesect kind="return"><para>The encapsulated double value. </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="Misc/Maths/PreciseDouble.h" line="75" column="22" bodyfile="Misc/Maths/PreciseDouble.h" bodystart="75" bodyend="75"/>
+      </memberdef>
+      <memberdef kind="function" id="class_precise_double_1aacf878e5e4dde5db3a6e10df7b3626d1" prot="public" static="no" const="no" explicit="no" inline="no" noexcept="yes" virt="non-virtual">
+        <type><ref refid="class_precise_double" kindref="compound">PreciseDouble</ref> &amp;</type>
+        <definition>PreciseDouble &amp; PreciseDouble::operator=</definition>
+        <argsstring>(const PreciseDouble &amp;other) noexcept=default</argsstring>
+        <name>operator=</name>
+        <qualifiedname>PreciseDouble::operator=</qualifiedname>
+        <param>
+          <type>const <ref refid="class_precise_double" kindref="compound">PreciseDouble</ref> &amp;</type>
+          <declname>other</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="Misc/Maths/PreciseDouble.h" line="69" column="19"/>
+      </memberdef>
+      <memberdef kind="function" id="class_precise_double_1a192500e1ed5a11e7d02df5a41e530982" prot="public" static="no" const="no" explicit="no" inline="yes" noexcept="yes" virt="non-virtual">
+        <type><ref refid="class_precise_double" kindref="compound">PreciseDouble</ref> &amp;</type>
+        <definition>PreciseDouble &amp; PreciseDouble::operator=</definition>
+        <argsstring>(PreciseDouble &amp;&amp;other) noexcept</argsstring>
+        <name>operator=</name>
+        <qualifiedname>PreciseDouble::operator=</qualifiedname>
+        <param>
+          <type><ref refid="class_precise_double" kindref="compound">PreciseDouble</ref> &amp;&amp;</type>
+          <declname>other</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="Misc/Maths/PreciseDouble.h" line="61" column="19" bodyfile="Misc/Maths/PreciseDouble.h" bodystart="61" bodyend="66"/>
+      </memberdef>
+      <memberdef kind="function" id="class_precise_double_1aab3eedc78f1b7861427dec7ecce28de7" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <templateparamlist>
+          <param>
+            <type>class Archive</type>
+          </param>
+        </templateparamlist>
+        <type>void</type>
+        <definition>void PreciseDouble::serialize</definition>
+        <argsstring>(Archive &amp;ar, const unsigned int)</argsstring>
+        <name>serialize</name>
+        <qualifiedname>PreciseDouble::serialize</qualifiedname>
+        <param>
+          <type>Archive &amp;</type>
+          <declname>ar</declname>
+        </param>
+        <param>
+          <type>const unsigned int</type>
+        </param>
+        <briefdescription>
+<para>Serialization function for archives. </para>
+        </briefdescription>
+        <detaileddescription>
+<para><parameterlist kind="templateparam"><parameteritem>
+<parameternamelist>
+<parametername>Archive</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Type of the serialization archive. </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>ar</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>The archive to serialize to/from. </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="Misc/Maths/PreciseDouble.h" line="502" column="10" bodyfile="Misc/Maths/PreciseDouble.h" bodystart="502" bodyend="504"/>
+      </memberdef>
+    </sectiondef>
+    <sectiondef kind="public-static-func">
+      <memberdef kind="function" id="class_precise_double_1afca21fe0646ed79cd4b9ac1fc30a4a9c" prot="public" static="yes" const="no" explicit="no" inline="yes" noexcept="yes" virt="non-virtual">
+        <type>bool</type>
+        <definition>static bool PreciseDouble::almost_equal</definition>
+        <argsstring>(double a, double b) noexcept</argsstring>
+        <name>almost_equal</name>
+        <qualifiedname>PreciseDouble::almost_equal</qualifiedname>
+        <param>
+          <type>double</type>
+          <declname>a</declname>
+        </param>
+        <param>
+          <type>double</type>
+          <declname>b</declname>
+        </param>
+        <briefdescription>
+<para>Checks if two double values are approximately equal. </para>
+        </briefdescription>
+        <detaileddescription>
+<para>The comparison considers both relative and absolute tolerances.</para>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>a</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>First value. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>b</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Second value. </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<simplesect kind="return"><para>true if the values are nearly equal, false otherwise. </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="Misc/Maths/PreciseDouble.h" line="88" column="24" bodyfile="Misc/Maths/PreciseDouble.h" bodystart="88" bodyend="90"/>
+      </memberdef>
+      <memberdef kind="function" id="class_precise_double_1ad42a0aaf5bb9cf141c6393a06ec2e135" prot="public" static="yes" const="no" explicit="no" inline="yes" noexcept="yes" virt="non-virtual">
+        <type>double</type>
+        <definition>static double PreciseDouble::snap_zero</definition>
+        <argsstring>(double v) noexcept</argsstring>
+        <name>snap_zero</name>
+        <qualifiedname>PreciseDouble::snap_zero</qualifiedname>
+        <param>
+          <type>double</type>
+          <declname>v</declname>
+        </param>
+        <briefdescription>
+<para>Snaps a value to exact zero if it falls within the absolute tolerance. </para>
+        </briefdescription>
+        <detaileddescription>
+<para>Prevents infinitesimal floating-point residues (e.g. 1e-16) produced by successive additions/subtractions from lingering as &quot;almost zero but not quite&quot; values, which can otherwise cause inconsistent downstream comparisons.</para>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>v</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>The value to normalize. </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<simplesect kind="return"><para>0.0 if |v| &lt;= EPS, otherwise v unchanged. </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="Misc/Maths/PreciseDouble.h" line="102" column="26" bodyfile="Misc/Maths/PreciseDouble.h" bodystart="102" bodyend="104"/>
+      </memberdef>
+    </sectiondef>
+    <sectiondef kind="friend">
+      <memberdef kind="friend" id="class_precise_double_1a58c08444a75611f7cee0a60f1f7ef1ec" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <type>std::ostream &amp;</type>
+        <definition>std::ostream &amp; operator&lt;&lt;</definition>
+        <argsstring>(std::ostream &amp;os, PreciseDouble r)</argsstring>
+        <name>operator&lt;&lt;</name>
+        <qualifiedname>PreciseDouble::operator&lt;&lt;</qualifiedname>
+        <param>
+          <type>std::ostream &amp;</type>
+          <declname>os</declname>
+        </param>
+        <param>
+          <type><ref refid="class_precise_double" kindref="compound">PreciseDouble</ref></type>
+          <declname>r</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="Misc/Maths/PreciseDouble.h" line="491" column="12" bodyfile="Misc/Maths/PreciseDouble.h" bodystart="491" bodyend="494"/>
+      </memberdef>
+    </sectiondef>
+    <briefdescription>
+<para>Class for precise double-precision floating-point arithmetic. </para>
+    </briefdescription>
+    <detaileddescription>
+<para>Provides a wrapper around the native double type with strict validation, tolerance-based comparison, and extended arithmetic operators. </para>
+    </detaileddescription>
+    <location file="Misc/Maths/PreciseDouble.h" line="41" column="1" bodyfile="Misc/Maths/PreciseDouble.h" bodystart="41" bodyend="524"/>
+    <listofallmembers>
+      <member refid="class_precise_double_1afca21fe0646ed79cd4b9ac1fc30a4a9c" prot="public" virt="non-virtual"><scope>PreciseDouble</scope><name>almost_equal</name></member>
+      <member refid="class_precise_double_1a9735ef2d1c800702f9a003ca63dace13" prot="public" virt="non-virtual"><scope>PreciseDouble</scope><name>cos</name></member>
+      <member refid="class_precise_double_1af81b7fcba09d7289b7d80b5b42864adc" prot="public" virt="non-virtual"><scope>PreciseDouble</scope><name>EPS</name></member>
+      <member refid="class_precise_double_1a23d99cd2c741bf6b31dbaa51ca9572bc" prot="public" virt="non-virtual"><scope>PreciseDouble</scope><name>exp</name></member>
+      <member refid="class_precise_double_1a0ee63e3ff9106a08d8ecc8a27707a4af" prot="public" virt="non-virtual"><scope>PreciseDouble</scope><name>fabs</name></member>
+      <member refid="class_precise_double_1a527dc14e2e9d230053b55f4ac39764ac" prot="public" virt="non-virtual"><scope>PreciseDouble</scope><name>floor</name></member>
+      <member refid="class_precise_double_1ae4004291b806703ac1b87449dc8d7e14" prot="public" virt="non-virtual"><scope>PreciseDouble</scope><name>getInternalReference</name></member>
+      <member refid="class_precise_double_1aa524800fabc3969fe6fe3f6f588423bd" prot="public" virt="non-virtual"><scope>PreciseDouble</scope><name>getValue</name></member>
+      <member refid="class_precise_double_1ad15c6a60b3182380f273789f471bb40b" prot="public" virt="non-virtual"><scope>PreciseDouble</scope><name>log</name></member>
+      <member refid="class_precise_double_1a34b0fe6c018269be523f0c53d0a419e8" prot="public" virt="non-virtual"><scope>PreciseDouble</scope><name>operator!=</name></member>
+      <member refid="class_precise_double_1abc6d88e91781cc7d1edce4b04ad5c3df" prot="public" virt="non-virtual"><scope>PreciseDouble</scope><name>operator!=</name></member>
+      <member refid="class_precise_double_1a319bfb34dc52e5ccc204bcd5af3f6ce3" prot="public" virt="non-virtual"><scope>PreciseDouble</scope><name>operator*</name></member>
+      <member refid="class_precise_double_1a7f89f6c82c8f0775d5e389457767323e" prot="public" virt="non-virtual"><scope>PreciseDouble</scope><name>operator*</name></member>
+      <member refid="class_precise_double_1ab06e856b36479c95cb0c7750f7aa4e07" prot="public" virt="non-virtual"><scope>PreciseDouble</scope><name>operator*=</name></member>
+      <member refid="class_precise_double_1af3c634331ce5cb5c58c5f38be53a99ea" prot="public" virt="non-virtual"><scope>PreciseDouble</scope><name>operator*=</name></member>
+      <member refid="class_precise_double_1ae792edab2c01aad0d719225398d8f1e0" prot="public" virt="non-virtual"><scope>PreciseDouble</scope><name>operator+</name></member>
+      <member refid="class_precise_double_1a879c26b7c5d70bda88850ea2149b6c7a" prot="public" virt="non-virtual"><scope>PreciseDouble</scope><name>operator+</name></member>
+      <member refid="class_precise_double_1adeeb66b655c1e21b5d6ed1de56f16129" prot="public" virt="non-virtual"><scope>PreciseDouble</scope><name>operator+=</name></member>
+      <member refid="class_precise_double_1a872755f58595c48f06d13b57031a62d4" prot="public" virt="non-virtual"><scope>PreciseDouble</scope><name>operator+=</name></member>
+      <member refid="class_precise_double_1acddbb12e1017711e616d2a2574d52de8" prot="public" virt="non-virtual"><scope>PreciseDouble</scope><name>operator-</name></member>
+      <member refid="class_precise_double_1a8393590673ffbee398aa4dabd9e24335" prot="public" virt="non-virtual"><scope>PreciseDouble</scope><name>operator-</name></member>
+      <member refid="class_precise_double_1a172f52ab23f8ff4cebc2eb2344ca8848" prot="public" virt="non-virtual"><scope>PreciseDouble</scope><name>operator-</name></member>
+      <member refid="class_precise_double_1acb2ecaf711aa3b145e134a8beffcfa8f" prot="public" virt="non-virtual"><scope>PreciseDouble</scope><name>operator-=</name></member>
+      <member refid="class_precise_double_1a6aec06ba22279c013ffa5150f70d6c04" prot="public" virt="non-virtual"><scope>PreciseDouble</scope><name>operator-=</name></member>
+      <member refid="class_precise_double_1acd4c79397bc82a5b83f009e4eeded1ff" prot="public" virt="non-virtual"><scope>PreciseDouble</scope><name>operator/</name></member>
+      <member refid="class_precise_double_1a854da0aee906f17b0f818689497bd8c8" prot="public" virt="non-virtual"><scope>PreciseDouble</scope><name>operator/</name></member>
+      <member refid="class_precise_double_1a371ebe74877a476f9591be697695513a" prot="public" virt="non-virtual"><scope>PreciseDouble</scope><name>operator/=</name></member>
+      <member refid="class_precise_double_1a3f051b9c947cdcce1ca32f0dba6f6485" prot="public" virt="non-virtual"><scope>PreciseDouble</scope><name>operator/=</name></member>
+      <member refid="class_precise_double_1a95482d232f84baeb7f9f63e3f53ae0e6" prot="public" virt="non-virtual"><scope>PreciseDouble</scope><name>operator&lt;</name></member>
+      <member refid="class_precise_double_1a63fd4ccead8f902b4008f3ae4fc9bb12" prot="public" virt="non-virtual"><scope>PreciseDouble</scope><name>operator&lt;</name></member>
+      <member refid="class_precise_double_1a58c08444a75611f7cee0a60f1f7ef1ec" prot="public" virt="non-virtual"><scope>PreciseDouble</scope><name>operator&lt;&lt;</name></member>
+      <member refid="class_precise_double_1a883bf9ecc11bfc7da96a627fc60a4993" prot="public" virt="non-virtual"><scope>PreciseDouble</scope><name>operator&lt;=</name></member>
+      <member refid="class_precise_double_1a197142ba6e7f1a686a8a7a50d1c12b8c" prot="public" virt="non-virtual"><scope>PreciseDouble</scope><name>operator&lt;=</name></member>
+      <member refid="class_precise_double_1a192500e1ed5a11e7d02df5a41e530982" prot="public" virt="non-virtual"><scope>PreciseDouble</scope><name>operator=</name></member>
+      <member refid="class_precise_double_1aacf878e5e4dde5db3a6e10df7b3626d1" prot="public" virt="non-virtual"><scope>PreciseDouble</scope><name>operator=</name></member>
+      <member refid="class_precise_double_1ae4744ec93e240a6e7785967f53239559" prot="public" virt="non-virtual"><scope>PreciseDouble</scope><name>operator==</name></member>
+      <member refid="class_precise_double_1a73a0aaa045577e2342682abe71fbd186" prot="public" virt="non-virtual"><scope>PreciseDouble</scope><name>operator==</name></member>
+      <member refid="class_precise_double_1a793415f3e92cd91153a049d96fa7c00b" prot="public" virt="non-virtual"><scope>PreciseDouble</scope><name>operator&gt;</name></member>
+      <member refid="class_precise_double_1adc36dddfe1624f661835e6242d56d1ef" prot="public" virt="non-virtual"><scope>PreciseDouble</scope><name>operator&gt;</name></member>
+      <member refid="class_precise_double_1ae5fe141def08b959d96f703168cc7f6d" prot="public" virt="non-virtual"><scope>PreciseDouble</scope><name>operator&gt;=</name></member>
+      <member refid="class_precise_double_1a41c616a0f40c235dfba4ef16ed139439" prot="public" virt="non-virtual"><scope>PreciseDouble</scope><name>operator&gt;=</name></member>
+      <member refid="class_precise_double_1a7ee131ebd0dfaac659d7135d65b67f33" prot="public" virt="non-virtual"><scope>PreciseDouble</scope><name>pow</name></member>
+      <member refid="class_precise_double_1ac4217ec0917b7ac2ef5aeab571de3c57" prot="public" virt="non-virtual"><scope>PreciseDouble</scope><name>PreciseDouble</name></member>
+      <member refid="class_precise_double_1ac13ad524f5e52bc5bb53b06de2f4778b" prot="public" virt="non-virtual"><scope>PreciseDouble</scope><name>PreciseDouble</name></member>
+      <member refid="class_precise_double_1a09d9da294d070c5b45a5b3423f69a110" prot="public" virt="non-virtual"><scope>PreciseDouble</scope><name>PreciseDouble</name></member>
+      <member refid="class_precise_double_1a264177f8c019c3f192fdb02442d6af2b" prot="public" virt="non-virtual"><scope>PreciseDouble</scope><name>PreciseDouble</name></member>
+      <member refid="class_precise_double_1ab46767e619e0e979995116ea74c85603" prot="public" virt="non-virtual"><scope>PreciseDouble</scope><name>round</name></member>
+      <member refid="class_precise_double_1aab3eedc78f1b7861427dec7ecce28de7" prot="public" virt="non-virtual"><scope>PreciseDouble</scope><name>serialize</name></member>
+      <member refid="class_precise_double_1a5122ce2fb091efd210f75d454bffb3b7" prot="public" virt="non-virtual"><scope>PreciseDouble</scope><name>sin</name></member>
+      <member refid="class_precise_double_1ad42a0aaf5bb9cf141c6393a06ec2e135" prot="public" virt="non-virtual"><scope>PreciseDouble</scope><name>snap_zero</name></member>
+      <member refid="class_precise_double_1ae1c8bd928781cadeae80f54422bd4687" prot="public" virt="non-virtual"><scope>PreciseDouble</scope><name>sqrt</name></member>
+      <member refid="class_precise_double_1a40daeac1bf32a48146fa6ac8970128d9" prot="public" virt="non-virtual"><scope>PreciseDouble</scope><name>tan</name></member>
+      <member refid="class_precise_double_1ae459812151b728ec3257fcfda93f4c45" prot="private" virt="non-virtual"><scope>PreciseDouble</scope><name>value</name></member>
+    </listofallmembers>
+  </compounddef>
+</doxygen>

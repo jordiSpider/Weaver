@@ -1,0 +1,476 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.14.0" xml:lang="en-US">
+  <compounddef id="class_escape_probability_weight_trait" kind="class" language="C++" prot="public">
+    <compoundname>EscapeProbabilityWeightTrait</compoundname>
+    <basecompoundref refid="class_decisions_trait" prot="public" virt="non-virtual">DecisionsTrait</basecompoundref>
+    <includes refid="_escape_probability_weight_trait_8h" local="no">EscapeProbabilityWeightTrait.h</includes>
+    <sectiondef kind="public-static-func">
+      <memberdef kind="function" id="class_escape_probability_weight_trait_1a83b64c1b3c7a4792dc30645d41d90004" prot="public" static="yes" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>std::vector&lt; <ref refid="class_trait" kindref="compound">Trait</ref> * &gt;</type>
+        <definition>static std::vector&lt; Trait * &gt; EscapeProbabilityWeightTrait::generateTraits</definition>
+        <argsstring>(std::vector&lt; IndividualLevelTrait * &gt; &amp;individualLevelTraits, const nlohmann::json &amp;definitionConfig, const std::vector&lt; nlohmann::json &gt; &amp;individualLevelTraitsOrder)</argsstring>
+        <name>generateTraits</name>
+        <qualifiedname>EscapeProbabilityWeightTrait::generateTraits</qualifiedname>
+        <param>
+          <type>std::vector&lt; <ref refid="class_individual_level_trait" kindref="compound">IndividualLevelTrait</ref> * &gt; &amp;</type>
+          <declname>individualLevelTraits</declname>
+        </param>
+        <param>
+          <type>const nlohmann::json &amp;</type>
+          <declname>definitionConfig</declname>
+        </param>
+        <param>
+          <type>const std::vector&lt; nlohmann::json &gt; &amp;</type>
+          <declname>individualLevelTraitsOrder</declname>
+        </param>
+        <briefdescription>
+<para>Generate a vector of <ref refid="class_escape_probability_weight_trait" kindref="compound">EscapeProbabilityWeightTrait</ref> objects. </para>
+        </briefdescription>
+        <detaileddescription>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>individualLevelTraits</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Vector of individual-level traits used to construct these traits. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>definitionConfig</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>JSON configuration defining the traits. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>individualLevelTraitsOrder</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Order of individual-level traits in JSON. </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<simplesect kind="return"><para>Vector of generated <ref refid="class_trait" kindref="compound">Trait</ref> pointers. </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="App/Model/IBM/Landscape/LivingBeings/Animals/Species/Genetics/Traits/EscapeProbabilityWeightTrait.h" line="35" column="24"/>
+      </memberdef>
+      <memberdef kind="function" id="class_escape_probability_weight_trait_1a9dbf70ecca16876054fc2e5a92e8a78f" prot="public" static="yes" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>std::vector&lt; std::string &gt;</type>
+        <definition>static std::vector&lt; std::string &gt; EscapeProbabilityWeightTrait::getTraitStrVector</definition>
+        <argsstring>()</argsstring>
+        <name>getTraitStrVector</name>
+        <qualifiedname>EscapeProbabilityWeightTrait::getTraitStrVector</qualifiedname>
+        <briefdescription>
+<para>Get a vector of string identifiers for these traits. </para>
+        </briefdescription>
+        <detaileddescription>
+<para><simplesect kind="return"><para>Vector of trait strings. </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="App/Model/IBM/Landscape/LivingBeings/Animals/Species/Genetics/Traits/EscapeProbabilityWeightTrait.h" line="41" column="24"/>
+      </memberdef>
+    </sectiondef>
+    <sectiondef kind="public-func">
+      <memberdef kind="function" id="class_escape_probability_weight_trait_1af80b4cb9d0500c17d65658912053ea37" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type></type>
+        <definition>EscapeProbabilityWeightTrait::EscapeProbabilityWeightTrait</definition>
+        <argsstring>()</argsstring>
+        <name>EscapeProbabilityWeightTrait</name>
+        <qualifiedname>EscapeProbabilityWeightTrait::EscapeProbabilityWeightTrait</qualifiedname>
+        <briefdescription>
+<para>Default constructor. </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="App/Model/IBM/Landscape/LivingBeings/Animals/Species/Genetics/Traits/EscapeProbabilityWeightTrait.h" line="44" column="5"/>
+      </memberdef>
+      <memberdef kind="function" id="class_escape_probability_weight_trait_1a57ed1bfa9fa42d1eb700056cc497fc81" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type></type>
+        <definition>EscapeProbabilityWeightTrait::EscapeProbabilityWeightTrait</definition>
+        <argsstring>(std::vector&lt; IndividualLevelTrait * &gt; &amp;individualLevelTraits, const EscapeProbabilityWeightType type, const nlohmann::json &amp;config, const std::vector&lt; nlohmann::json &gt; &amp;individualLevelTraitsOrder)</argsstring>
+        <name>EscapeProbabilityWeightTrait</name>
+        <qualifiedname>EscapeProbabilityWeightTrait::EscapeProbabilityWeightTrait</qualifiedname>
+        <param>
+          <type>std::vector&lt; <ref refid="class_individual_level_trait" kindref="compound">IndividualLevelTrait</ref> * &gt; &amp;</type>
+          <declname>individualLevelTraits</declname>
+        </param>
+        <param>
+          <type>const EscapeProbabilityWeightType</type>
+          <declname>type</declname>
+        </param>
+        <param>
+          <type>const nlohmann::json &amp;</type>
+          <declname>config</declname>
+        </param>
+        <param>
+          <type>const std::vector&lt; nlohmann::json &gt; &amp;</type>
+          <declname>individualLevelTraitsOrder</declname>
+        </param>
+        <briefdescription>
+<para>Constructor with type and configuration. </para>
+        </briefdescription>
+        <detaileddescription>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>individualLevelTraits</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Vector of individual-level traits. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>type</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Type of <ref refid="class_escape_probability_weight_trait" kindref="compound">EscapeProbabilityWeightTrait</ref>. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>config</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>JSON configuration. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>individualLevelTraitsOrder</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Order of individual-level traits. </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="App/Model/IBM/Landscape/LivingBeings/Animals/Species/Genetics/Traits/EscapeProbabilityWeightTrait.h" line="53" column="5"/>
+      </memberdef>
+      <memberdef kind="function" id="class_escape_probability_weight_trait_1a2b979a54f5879cf62cdc3bc0c33c017b" prot="public" static="no" const="no" explicit="no" inline="no" virt="virtual">
+        <type></type>
+        <definition>virtual EscapeProbabilityWeightTrait::~EscapeProbabilityWeightTrait</definition>
+        <argsstring>()</argsstring>
+        <name>~EscapeProbabilityWeightTrait</name>
+        <qualifiedname>EscapeProbabilityWeightTrait::~EscapeProbabilityWeightTrait</qualifiedname>
+        <briefdescription>
+<para>Destructor. </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="App/Model/IBM/Landscape/LivingBeings/Animals/Species/Genetics/Traits/EscapeProbabilityWeightTrait.h" line="56" column="13"/>
+      </memberdef>
+      <memberdef kind="function" id="class_escape_probability_weight_trait_1a61733918e42017b248acaf4437218e6e" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <templateparamlist>
+          <param>
+            <type>class Archive</type>
+          </param>
+        </templateparamlist>
+        <type>void</type>
+        <definition>void EscapeProbabilityWeightTrait::serialize</definition>
+        <argsstring>(Archive &amp;ar, const unsigned int version)</argsstring>
+        <name>serialize</name>
+        <qualifiedname>EscapeProbabilityWeightTrait::serialize</qualifiedname>
+        <param>
+          <type>Archive &amp;</type>
+          <declname>ar</declname>
+        </param>
+        <param>
+          <type>const unsigned int</type>
+          <declname>version</declname>
+        </param>
+        <briefdescription>
+<para>Serializes the object for persistence. </para>
+        </briefdescription>
+        <detaileddescription>
+<para><parameterlist kind="templateparam"><parameteritem>
+<parameternamelist>
+<parametername>Archive</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Serialization archive type. </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>ar</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Archive instance. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>version</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Serialization version. </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="App/Model/IBM/Landscape/LivingBeings/Animals/Species/Genetics/Traits/EscapeProbabilityWeightTrait.h" line="66" column="10"/>
+      </memberdef>
+    </sectiondef>
+    <sectiondef kind="protected-static-func">
+      <memberdef kind="function" id="class_escape_probability_weight_trait_1a9c6235f17e4bf4561dbc5354d52909f1" prot="protected" static="yes" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>std::string</type>
+        <definition>static std::string EscapeProbabilityWeightTrait::getJsonFieldName</definition>
+        <argsstring>()</argsstring>
+        <name>getJsonFieldName</name>
+        <qualifiedname>EscapeProbabilityWeightTrait::getJsonFieldName</qualifiedname>
+        <briefdescription>
+<para>Get the JSON field name associated with this trait. </para>
+        </briefdescription>
+        <detaileddescription>
+<para><simplesect kind="return"><para>JSON field name as a string. </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="App/Model/IBM/Landscape/LivingBeings/Animals/Species/Genetics/Traits/EscapeProbabilityWeightTrait.h" line="73" column="24"/>
+      </memberdef>
+    </sectiondef>
+    <sectiondef kind="protected-func">
+      <memberdef kind="function" id="class_escape_probability_weight_trait_1adfdae1eebb8e83f58154a2d769bd6fec" prot="protected" static="no" const="yes" explicit="no" inline="no" virt="virtual">
+        <type>std::string</type>
+        <definition>std::string EscapeProbabilityWeightTrait::getFileName</definition>
+        <argsstring>() const override</argsstring>
+        <name>getFileName</name>
+        <qualifiedname>EscapeProbabilityWeightTrait::getFileName</qualifiedname>
+        <reimplements refid="class_decisions_trait_1ac33fbc2ae84dc1837df112af9ae84b83">getFileName</reimplements>
+        <briefdescription>
+<para>Get the file name associated with this trait. </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="App/Model/IBM/Landscape/LivingBeings/Animals/Species/Genetics/Traits/EscapeProbabilityWeightTrait.h" line="76" column="17"/>
+      </memberdef>
+      <memberdef kind="function" id="class_escape_probability_weight_trait_1acb2ccaf4c5cdf1a199323a45b9a6dbe3" prot="protected" static="no" const="yes" explicit="no" inline="no" virt="virtual">
+        <type>std::string</type>
+        <definition>std::string EscapeProbabilityWeightTrait::getParentTraitStr</definition>
+        <argsstring>() const override</argsstring>
+        <name>getParentTraitStr</name>
+        <qualifiedname>EscapeProbabilityWeightTrait::getParentTraitStr</qualifiedname>
+        <reimplements refid="class_decisions_trait_1a1ce236d3db51e5e26f196525bcfa8801">getParentTraitStr</reimplements>
+        <briefdescription>
+<para>Get the parent trait string identifier. </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="App/Model/IBM/Landscape/LivingBeings/Animals/Species/Genetics/Traits/EscapeProbabilityWeightTrait.h" line="79" column="17"/>
+      </memberdef>
+    </sectiondef>
+    <sectiondef kind="private-static-func">
+      <memberdef kind="function" id="class_escape_probability_weight_trait_1a0aacd3ee71baa4c23dfc0e716830c54f" prot="private" static="yes" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type><ref refid="class_trait_temperature_section" kindref="compound">TraitTemperatureSection</ref> *</type>
+        <definition>static TraitTemperatureSection * EscapeProbabilityWeightTrait::createTemperatureSection</definition>
+        <argsstring>(std::vector&lt; IndividualLevelTrait * &gt; &amp;individualLevelTraits, const nlohmann::json &amp;temperatureConfig, const std::vector&lt; nlohmann::json &gt; &amp;individualLevelTraitsOrder, const std::string &amp;traitStr, const std::string &amp;fileName)</argsstring>
+        <name>createTemperatureSection</name>
+        <qualifiedname>EscapeProbabilityWeightTrait::createTemperatureSection</qualifiedname>
+        <param>
+          <type>std::vector&lt; <ref refid="class_individual_level_trait" kindref="compound">IndividualLevelTrait</ref> * &gt; &amp;</type>
+          <declname>individualLevelTraits</declname>
+        </param>
+        <param>
+          <type>const nlohmann::json &amp;</type>
+          <declname>temperatureConfig</declname>
+        </param>
+        <param>
+          <type>const std::vector&lt; nlohmann::json &gt; &amp;</type>
+          <declname>individualLevelTraitsOrder</declname>
+        </param>
+        <param>
+          <type>const std::string &amp;</type>
+          <declname>traitStr</declname>
+        </param>
+        <param>
+          <type>const std::string &amp;</type>
+          <declname>fileName</declname>
+        </param>
+        <briefdescription>
+<para>Create the temperature section for this trait. </para>
+        </briefdescription>
+        <detaileddescription>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>individualLevelTraits</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Vector of individual-level traits. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>temperatureConfig</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>JSON configuration for temperature section. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>individualLevelTraitsOrder</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Order of individual-level traits. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>traitStr</parametername>
+</parameternamelist>
+<parameterdescription>
+<para><ref refid="class_trait" kindref="compound">Trait</ref> string identifier. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>fileName</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>File name for this trait. </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<simplesect kind="return"><para>Pointer to the created <ref refid="class_trait_temperature_section" kindref="compound">TraitTemperatureSection</ref>. </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="App/Model/IBM/Landscape/LivingBeings/Animals/Species/Genetics/Traits/EscapeProbabilityWeightTrait.h" line="91" column="36"/>
+      </memberdef>
+    </sectiondef>
+    <briefdescription>
+<para>Represents a trait that influences escape probability for behavioral decisions in animal species. </para>
+    </briefdescription>
+    <detaileddescription>
+<para>Inherits from <ref refid="class_decisions_trait" kindref="compound">DecisionsTrait</ref> and provides methods for trait generation, retrieval of trait identifiers, temperature-dependent section creation, and serialization. </para>
+    </detaileddescription>
+    <inheritancegraph>
+      <node id="2">
+        <label>DecisionsTrait</label>
+        <link refid="class_decisions_trait"/>
+        <childnode refid="3" relation="public-inheritance">
+        </childnode>
+      </node>
+      <node id="1">
+        <label>EscapeProbabilityWeightTrait</label>
+        <link refid="class_escape_probability_weight_trait"/>
+        <childnode refid="2" relation="public-inheritance">
+        </childnode>
+      </node>
+      <node id="3">
+        <label>Trait</label>
+        <link refid="class_trait"/>
+      </node>
+    </inheritancegraph>
+    <collaborationgraph>
+      <node id="4">
+        <label>CustomIndexedVector&lt; ExecutionOrder, GenerateTraitsFunc &gt;</label>
+        <link refid="class_custom_indexed_vector"/>
+      </node>
+      <node id="5">
+        <label>CustomIndexedVector&lt; ExecutionOrder, std::function&lt; std::vector&lt; std::string &gt;()&gt; &gt;</label>
+        <link refid="class_custom_indexed_vector"/>
+      </node>
+      <node id="2">
+        <label>DecisionsTrait</label>
+        <link refid="class_decisions_trait"/>
+        <childnode refid="3" relation="public-inheritance">
+        </childnode>
+      </node>
+      <node id="1">
+        <label>EscapeProbabilityWeightTrait</label>
+        <link refid="class_escape_probability_weight_trait"/>
+        <childnode refid="2" relation="public-inheritance">
+        </childnode>
+      </node>
+      <node id="3">
+        <label>Trait</label>
+        <link refid="class_trait"/>
+        <childnode refid="4" relation="usage">
+          <edgelabel>registryGenerateTraits</edgelabel>
+        </childnode>
+        <childnode refid="5" relation="usage">
+          <edgelabel>registryGetTraitStrVector</edgelabel>
+        </childnode>
+        <childnode refid="6" relation="usage">
+          <edgelabel>value</edgelabel>
+        </childnode>
+        <childnode refid="7" relation="usage">
+          <edgelabel>temperatureSection</edgelabel>
+        </childnode>
+      </node>
+      <node id="6">
+        <label>TraitDefinitionSection</label>
+        <link refid="class_trait_definition_section"/>
+      </node>
+      <node id="7">
+        <label>TraitTemperatureSection</label>
+        <link refid="class_trait_temperature_section"/>
+      </node>
+    </collaborationgraph>
+    <location file="App/Model/IBM/Landscape/LivingBeings/Animals/Species/Genetics/Traits/EscapeProbabilityWeightTrait.h" line="26" column="1" bodyfile="App/Model/IBM/Landscape/LivingBeings/Animals/Species/Genetics/Traits/EscapeProbabilityWeightTrait.h" bodystart="26" bodyend="92"/>
+    <listofallmembers>
+      <member refid="class_decisions_trait_1a96a25a09c34d3f0d410933505771f11d" prot="public" virt="virtual"><scope>EscapeProbabilityWeightTrait</scope><name>canBeNegative</name></member>
+      <member refid="class_escape_probability_weight_trait_1a0aacd3ee71baa4c23dfc0e716830c54f" prot="private" virt="non-virtual"><scope>EscapeProbabilityWeightTrait</scope><name>createTemperatureSection</name></member>
+      <member refid="class_decisions_trait_1a881da0fbc6d5f5a6612a5edd5235c284" prot="protected" virt="non-virtual"><scope>EscapeProbabilityWeightTrait</scope><name>DecisionsTrait</name></member>
+      <member refid="class_decisions_trait_1ae00daa1d91e863571867baa496196a06" prot="protected" virt="non-virtual"><scope>EscapeProbabilityWeightTrait</scope><name>DecisionsTrait</name></member>
+      <member refid="class_trait_1a53d74d98ffd1ed386045b0c762cea4f8" prot="public" virt="non-virtual"><scope>EscapeProbabilityWeightTrait</scope><name>defaultGenerateTraits</name></member>
+      <member refid="class_trait_1ae16a0fd5fad5b0cd999da92a6b05b6e9" prot="public" virt="non-virtual"><scope>EscapeProbabilityWeightTrait</scope><name>defaultGetTraitStrVector</name></member>
+      <member refid="class_trait_1a2992bf837cfed940fc725f29a1b89e66" prot="public" virt="non-virtual"><scope>EscapeProbabilityWeightTrait</scope><name>deserializeIndividualLevelTraits</name></member>
+      <member refid="class_escape_probability_weight_trait_1af80b4cb9d0500c17d65658912053ea37" prot="public" virt="non-virtual"><scope>EscapeProbabilityWeightTrait</scope><name>EscapeProbabilityWeightTrait</name></member>
+      <member refid="class_escape_probability_weight_trait_1a57ed1bfa9fa42d1eb700056cc497fc81" prot="public" virt="non-virtual"><scope>EscapeProbabilityWeightTrait</scope><name>EscapeProbabilityWeightTrait</name></member>
+      <member refid="class_trait_1ae6b7272eb7b811a0ffe03525a142d468" prot="public" virt="non-virtual"><scope>EscapeProbabilityWeightTrait</scope><name>ExecutionOrder</name></member>
+      <member refid="class_escape_probability_weight_trait_1a83b64c1b3c7a4792dc30645d41d90004" prot="public" virt="non-virtual"><scope>EscapeProbabilityWeightTrait</scope><name>generateTraits</name></member>
+      <member refid="class_trait_1a309537a3e5fc987ab73b4d4cdec522eb" prot="public" virt="non-virtual"><scope>EscapeProbabilityWeightTrait</scope><name>GenerateTraitsFunc</name></member>
+      <member refid="class_escape_probability_weight_trait_1adfdae1eebb8e83f58154a2d769bd6fec" prot="protected" virt="virtual"><scope>EscapeProbabilityWeightTrait</scope><name>getFileName</name></member>
+      <member refid="class_trait_1a6c95780c171ab8838838c9aa5506169c" prot="public" virt="non-virtual"><scope>EscapeProbabilityWeightTrait</scope><name>getHeader</name></member>
+      <member refid="class_escape_probability_weight_trait_1a9c6235f17e4bf4561dbc5354d52909f1" prot="protected" virt="non-virtual"><scope>EscapeProbabilityWeightTrait</scope><name>getJsonFieldName</name></member>
+      <member refid="class_escape_probability_weight_trait_1acb2ccaf4c5cdf1a199323a45b9a6dbe3" prot="protected" virt="virtual"><scope>EscapeProbabilityWeightTrait</scope><name>getParentTraitStr</name></member>
+      <member refid="class_trait_1a64c797baa9849a467c152c894a93f1a3" prot="public" virt="non-virtual"><scope>EscapeProbabilityWeightTrait</scope><name>getTemperatureSection</name></member>
+      <member refid="class_escape_probability_weight_trait_1a9dbf70ecca16876054fc2e5a92e8a78f" prot="public" virt="non-virtual"><scope>EscapeProbabilityWeightTrait</scope><name>getTraitStrVector</name></member>
+      <member refid="class_trait_1a3bdf5c9cdece115eb4622ee4cb7c4703" prot="public" virt="non-virtual"><scope>EscapeProbabilityWeightTrait</scope><name>getValue</name></member>
+      <member refid="class_trait_1affddb05eaf31887ce88d9dbf773f80a4" prot="public" virt="non-virtual"><scope>EscapeProbabilityWeightTrait</scope><name>getValue</name></member>
+      <member refid="class_trait_1ae067531775e1497fdfb328d8025226b2" prot="public" virt="non-virtual"><scope>EscapeProbabilityWeightTrait</scope><name>isNull</name></member>
+      <member refid="class_trait_1ac881efc740d9065e4d70526afd2e2738" prot="public" virt="non-virtual"><scope>EscapeProbabilityWeightTrait</scope><name>isThermallyDependent</name></member>
+      <member refid="class_trait_1a8dcae044e795a01ef9bee257afbaede6" prot="public" virt="non-virtual"><scope>EscapeProbabilityWeightTrait</scope><name>registryGenerateTraits</name></member>
+      <member refid="class_trait_1a5696bf9ca5fc4350c563053937d3df4e" prot="public" virt="non-virtual"><scope>EscapeProbabilityWeightTrait</scope><name>registryGetTraitStrVector</name></member>
+      <member refid="class_escape_probability_weight_trait_1a61733918e42017b248acaf4437218e6e" prot="public" virt="non-virtual"><scope>EscapeProbabilityWeightTrait</scope><name>serialize</name></member>
+      <member refid="class_trait_1a26018a9144fab74f38336aae605da01d" prot="protected" virt="non-virtual"><scope>EscapeProbabilityWeightTrait</scope><name>temperatureSection</name></member>
+      <member refid="class_trait_1a3d1268015b3d6c8e8c2b8e247ed8c635" prot="protected" virt="non-virtual"><scope>EscapeProbabilityWeightTrait</scope><name>thermallyDependent</name></member>
+      <member refid="class_trait_1aae36b201023c346213c0e5bcc1c7922f" prot="public" virt="non-virtual"><scope>EscapeProbabilityWeightTrait</scope><name>Trait</name></member>
+      <member refid="class_trait_1ab83fed03a389345639441434caef755d" prot="public" virt="non-virtual"><scope>EscapeProbabilityWeightTrait</scope><name>Trait</name></member>
+      <member refid="class_trait_1a4e980cb5b7ac6f59d3462ccec66c3d70" prot="protected" virt="non-virtual"><scope>EscapeProbabilityWeightTrait</scope><name>value</name></member>
+      <member refid="class_decisions_trait_1ace8a969a5f14932f996c133853ada41c" prot="public" virt="virtual"><scope>EscapeProbabilityWeightTrait</scope><name>~DecisionsTrait</name></member>
+      <member refid="class_escape_probability_weight_trait_1a2b979a54f5879cf62cdc3bc0c33c017b" prot="public" virt="virtual"><scope>EscapeProbabilityWeightTrait</scope><name>~EscapeProbabilityWeightTrait</name></member>
+      <member refid="class_trait_1adf5a385491a3eab49ddfd4b80f21b267" prot="public" virt="virtual"><scope>EscapeProbabilityWeightTrait</scope><name>~Trait</name></member>
+    </listofallmembers>
+  </compounddef>
+</doxygen>

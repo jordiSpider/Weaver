@@ -1,0 +1,396 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.14.0" xml:lang="en-US">
+  <compounddef id="class_cell_habitat_domain_interface" kind="class" language="C++" prot="public">
+    <compoundname>CellHabitatDomainInterface</compoundname>
+    <basecompoundref refid="class_cell_element" prot="public" virt="non-virtual">CellElement</basecompoundref>
+    <derivedcompoundref refid="class_branch_cell_habitat_domain" prot="public" virt="non-virtual">BranchCellHabitatDomain</derivedcompoundref>
+    <derivedcompoundref refid="class_cell_habitat_domain" prot="public" virt="non-virtual">CellHabitatDomain</derivedcompoundref>
+    <includes refid="_cell_habitat_domain_interface_8h" local="no">CellHabitatDomainInterface.h</includes>
+    <sectiondef kind="protected-attrib">
+      <memberdef kind="variable" id="class_cell_habitat_domain_interface_1a103ba5bf83ba3345631ac070927adc5d" prot="protected" static="no" mutable="no">
+        <type><ref refid="class_custom_indexed_vector" kindref="compound">CustomIndexedVector</ref>&lt; <ref refid="class_animal_species_i_d" kindref="compound">AnimalSpeciesID</ref>, <ref refid="class_custom_indexed_vector" kindref="compound">CustomIndexedVector</ref>&lt; <ref refid="class_instar" kindref="compound">Instar</ref>, bool &gt; &gt;</type>
+        <definition>CustomIndexedVector&lt;AnimalSpeciesID, CustomIndexedVector&lt;Instar, bool&gt; &gt; CellHabitatDomainInterface::habitatDomainStatus</definition>
+        <argsstring></argsstring>
+        <name>habitatDomainStatus</name>
+        <qualifiedname>CellHabitatDomainInterface::habitatDomainStatus</qualifiedname>
+        <briefdescription>
+<para>Matrix storing habitat-domain flags for all species and instars. </para>
+        </briefdescription>
+        <detaileddescription>
+<para>Structure:<itemizedlist>
+<listitem><para>First index: <ref refid="class_animal_species_i_d" kindref="compound">AnimalSpeciesID</ref></para>
+</listitem><listitem><para>Second index: <ref refid="class_instar" kindref="compound">Instar</ref></para>
+</listitem><listitem><para>Value: bool indicating habitat-domain membership</para>
+</listitem></itemizedlist>
+</para>
+<para>This structure grows when new species are added via <ref refid="class_cell_habitat_domain_interface_1a2e900a2ddc1b5f7cdf4478f8310368be" kindref="member">addAnimalSpecies()</ref>. </para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="App/Model/IBM/Landscape/Map/TerrainCells/PatchApplicator/HabitatDomain/CellHabitatDomainInterface.h" line="154" column="25" bodyfile="App/Model/IBM/Landscape/Map/TerrainCells/PatchApplicator/HabitatDomain/CellHabitatDomainInterface.h" bodystart="154" bodyend="-1"/>
+      </memberdef>
+    </sectiondef>
+    <sectiondef kind="public-func">
+      <memberdef kind="function" id="class_cell_habitat_domain_interface_1ae302b49a4fde4f8a6401148b3e1730e2" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type></type>
+        <definition>CellHabitatDomainInterface::CellHabitatDomainInterface</definition>
+        <argsstring>()</argsstring>
+        <name>CellHabitatDomainInterface</name>
+        <qualifiedname>CellHabitatDomainInterface::CellHabitatDomainInterface</qualifiedname>
+        <briefdescription>
+<para>Default constructor. </para>
+        </briefdescription>
+        <detaileddescription>
+<para>Initializes an empty habitat-domain structure with default patch priority. </para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="App/Model/IBM/Landscape/Map/TerrainCells/PatchApplicator/HabitatDomain/CellHabitatDomainInterface.h" line="59" column="5"/>
+      </memberdef>
+      <memberdef kind="function" id="class_cell_habitat_domain_interface_1a8e7a77dce984afa0441e49cc4a8f739e" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type></type>
+        <definition>CellHabitatDomainInterface::CellHabitatDomainInterface</definition>
+        <argsstring>(const CellHabitatDomainInterface &amp;)=delete</argsstring>
+        <name>CellHabitatDomainInterface</name>
+        <qualifiedname>CellHabitatDomainInterface::CellHabitatDomainInterface</qualifiedname>
+        <param>
+          <type>const <ref refid="class_cell_habitat_domain_interface" kindref="compound">CellHabitatDomainInterface</ref> &amp;</type>
+        </param>
+        <briefdescription>
+<para>Copy constructor (deleted). </para>
+        </briefdescription>
+        <detaileddescription>
+<para>Preventing copying guarantees safe management of patch priority and avoids duplicating cell-state elements in inconsistent ways. </para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="App/Model/IBM/Landscape/Map/TerrainCells/PatchApplicator/HabitatDomain/CellHabitatDomainInterface.h" line="82" column="5"/>
+      </memberdef>
+      <memberdef kind="function" id="class_cell_habitat_domain_interface_1a72a0e8a784d97e09c69e709e868ecf44" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type></type>
+        <definition>CellHabitatDomainInterface::CellHabitatDomainInterface</definition>
+        <argsstring>(const size_t newHabitatDomainPatchPriority)</argsstring>
+        <name>CellHabitatDomainInterface</name>
+        <qualifiedname>CellHabitatDomainInterface::CellHabitatDomainInterface</qualifiedname>
+        <param>
+          <type>const size_t</type>
+          <declname>newHabitatDomainPatchPriority</declname>
+        </param>
+        <briefdescription>
+<para>Constructs the habitat-domain interface with a given patch priority. </para>
+        </briefdescription>
+        <detaileddescription>
+<para>Useful during deserialization or controlled initialization when the element already has a known patch state.</para>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>newHabitatDomainPatchPriority</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>The priority of the patch that last modified the habitat domain. </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="App/Model/IBM/Landscape/Map/TerrainCells/PatchApplicator/HabitatDomain/CellHabitatDomainInterface.h" line="69" column="5"/>
+      </memberdef>
+      <memberdef kind="function" id="class_cell_habitat_domain_interface_1a8872cf77eaca0a85f48440a101674ee6" prot="public" static="no" const="no" explicit="no" inline="no" virt="virtual">
+        <type></type>
+        <definition>virtual CellHabitatDomainInterface::~CellHabitatDomainInterface</definition>
+        <argsstring>()</argsstring>
+        <name>~CellHabitatDomainInterface</name>
+        <qualifiedname>CellHabitatDomainInterface::~CellHabitatDomainInterface</qualifiedname>
+        <briefdescription>
+<para>Virtual destructor. </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="App/Model/IBM/Landscape/Map/TerrainCells/PatchApplicator/HabitatDomain/CellHabitatDomainInterface.h" line="74" column="13"/>
+      </memberdef>
+      <memberdef kind="function" id="class_cell_habitat_domain_interface_1a2e900a2ddc1b5f7cdf4478f8310368be" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void CellHabitatDomainInterface::addAnimalSpecies</definition>
+        <argsstring>(const AnimalSpecies &amp;animalSpecies)</argsstring>
+        <name>addAnimalSpecies</name>
+        <qualifiedname>CellHabitatDomainInterface::addAnimalSpecies</qualifiedname>
+        <param>
+          <type>const <ref refid="class_animal_species" kindref="compound">AnimalSpecies</ref> &amp;</type>
+          <declname>animalSpecies</declname>
+        </param>
+        <briefdescription>
+<para>Ensures capacity for a newly introduced animal species. </para>
+        </briefdescription>
+        <detaileddescription>
+<para>Called when new species are added to the ecosystem. Expands internal structures so that habitat-domain status can be stored for all instars of the new species.</para>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>animalSpecies</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>The species to register within the habitat-domain data. </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="App/Model/IBM/Landscape/Map/TerrainCells/PatchApplicator/HabitatDomain/CellHabitatDomainInterface.h" line="109" column="10"/>
+      </memberdef>
+      <memberdef kind="function" id="class_cell_habitat_domain_interface_1a118a77e09bd60d98f15137bb9ae1aedc" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void CellHabitatDomainInterface::applySource</definition>
+        <argsstring>(const HabitatDomainSource &amp;source, const size_t habitatDomainPatchPriority)</argsstring>
+        <name>applySource</name>
+        <qualifiedname>CellHabitatDomainInterface::applySource</qualifiedname>
+        <param>
+          <type>const <ref refid="class_habitat_domain_source" kindref="compound">HabitatDomainSource</ref> &amp;</type>
+          <declname>source</declname>
+        </param>
+        <param>
+          <type>const size_t</type>
+          <declname>habitatDomainPatchPriority</declname>
+        </param>
+        <briefdescription>
+<para>Applies a habitat-domain patch to the cell. </para>
+        </briefdescription>
+        <detaileddescription>
+<para>Updates the habitat-domain values according to the provided source, if the incoming patch&apos;s priority is high enough to overwrite the current one.</para>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>source</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>The habitat-domain source containing the new values. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>habitatDomainPatchPriority</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>The priority of the patch being applied. </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="App/Model/IBM/Landscape/Map/TerrainCells/PatchApplicator/HabitatDomain/CellHabitatDomainInterface.h" line="98" column="10"/>
+      </memberdef>
+      <memberdef kind="function" id="class_cell_habitat_domain_interface_1aa40901b89b4a9752ff4103a1b3a83601" prot="public" static="no" const="yes" explicit="no" inline="no" virt="non-virtual">
+        <type>const <ref refid="class_custom_indexed_vector" kindref="compound">CustomIndexedVector</ref>&lt; <ref refid="class_animal_species_i_d" kindref="compound">AnimalSpeciesID</ref>, <ref refid="class_custom_indexed_vector" kindref="compound">CustomIndexedVector</ref>&lt; <ref refid="class_instar" kindref="compound">Instar</ref>, bool &gt; &gt; &amp;</type>
+        <definition>const CustomIndexedVector&lt; AnimalSpeciesID, CustomIndexedVector&lt; Instar, bool &gt; &gt; &amp; CellHabitatDomainInterface::getHabitatDomainStatus</definition>
+        <argsstring>() const</argsstring>
+        <name>getHabitatDomainStatus</name>
+        <qualifiedname>CellHabitatDomainInterface::getHabitatDomainStatus</qualifiedname>
+        <briefdescription>
+<para>Returns the full habitat-domain status matrix. </para>
+        </briefdescription>
+        <detaileddescription>
+<para>The structure is indexed first by <ref refid="class_animal_species_i_d" kindref="compound">AnimalSpeciesID</ref>, and then by <ref refid="class_instar" kindref="compound">Instar</ref>. Each boolean value indicates whether that instar of that species is considered to belong to the habitat domain of this cell.</para>
+<para><simplesect kind="return"><para>A read-only reference to the species–instar habitat-domain mapping. </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="App/Model/IBM/Landscape/Map/TerrainCells/PatchApplicator/HabitatDomain/CellHabitatDomainInterface.h" line="120" column="31"/>
+      </memberdef>
+      <memberdef kind="function" id="class_cell_habitat_domain_interface_1ad2af1aa7844d0463bf861c6a5f2d6c5b" prot="public" static="no" const="yes" explicit="no" inline="no" virt="non-virtual">
+        <type>bool</type>
+        <definition>bool CellHabitatDomainInterface::isHabitatDomain</definition>
+        <argsstring>(const AnimalSpeciesID &amp;id, const Instar &amp;instar) const</argsstring>
+        <name>isHabitatDomain</name>
+        <qualifiedname>CellHabitatDomainInterface::isHabitatDomain</qualifiedname>
+        <param>
+          <type>const <ref refid="class_animal_species_i_d" kindref="compound">AnimalSpeciesID</ref> &amp;</type>
+          <declname>id</declname>
+        </param>
+        <param>
+          <type>const <ref refid="class_instar" kindref="compound">Instar</ref> &amp;</type>
+          <declname>instar</declname>
+        </param>
+        <briefdescription>
+<para>Checks whether a given species and instar belongs to the habitat domain. </para>
+        </briefdescription>
+        <detaileddescription>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>id</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>The species identifier. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>instar</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>The instar/stage of the species. </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<simplesect kind="return"><para>True if the species–instar combination is marked as habitat domain; false otherwise. </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="App/Model/IBM/Landscape/Map/TerrainCells/PatchApplicator/HabitatDomain/CellHabitatDomainInterface.h" line="129" column="10"/>
+      </memberdef>
+      <memberdef kind="function" id="class_cell_habitat_domain_interface_1a58dee52409eda6c633750ab9702d8c45" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type><ref refid="class_cell_habitat_domain_interface" kindref="compound">CellHabitatDomainInterface</ref> &amp;</type>
+        <definition>CellHabitatDomainInterface &amp; CellHabitatDomainInterface::operator=</definition>
+        <argsstring>(const CellHabitatDomainInterface &amp;)=delete</argsstring>
+        <name>operator=</name>
+        <qualifiedname>CellHabitatDomainInterface::operator=</qualifiedname>
+        <param>
+          <type>const <ref refid="class_cell_habitat_domain_interface" kindref="compound">CellHabitatDomainInterface</ref> &amp;</type>
+        </param>
+        <briefdescription>
+<para>Copy assignment operator (deleted). </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="App/Model/IBM/Landscape/Map/TerrainCells/PatchApplicator/HabitatDomain/CellHabitatDomainInterface.h" line="87" column="32"/>
+      </memberdef>
+      <memberdef kind="function" id="class_cell_habitat_domain_interface_1a002cb1808b9713099b5aada709962e50" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <templateparamlist>
+          <param>
+            <type>class Archive</type>
+          </param>
+        </templateparamlist>
+        <type>void</type>
+        <definition>void CellHabitatDomainInterface::serialize</definition>
+        <argsstring>(Archive &amp;ar, const unsigned int version)</argsstring>
+        <name>serialize</name>
+        <qualifiedname>CellHabitatDomainInterface::serialize</qualifiedname>
+        <param>
+          <type>Archive &amp;</type>
+          <declname>ar</declname>
+        </param>
+        <param>
+          <type>const unsigned int</type>
+          <declname>version</declname>
+        </param>
+        <briefdescription>
+<para>Serializes the habitat-domain interface. </para>
+        </briefdescription>
+        <detaileddescription>
+<para>Saves and loads habitat-domain status and patch priority.</para>
+<para><parameterlist kind="templateparam"><parameteritem>
+<parameternamelist>
+<parametername>Archive</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>A Boost.Serialization archive type. </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>ar</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>The archive used for serialization. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>version</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Serialization version number (unused). </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="App/Model/IBM/Landscape/Map/TerrainCells/PatchApplicator/HabitatDomain/CellHabitatDomainInterface.h" line="141" column="10"/>
+      </memberdef>
+    </sectiondef>
+    <briefdescription>
+<para>Represents the habitat-domain information associated with a terrain cell. </para>
+    </briefdescription>
+    <detaileddescription>
+<para>This class stores and manages whether each combination of animal species and instar belongs to the habitat domain of the cell. Habitat-domain status affects the behaviour of animals when evaluating a cell, influencing decisions such as occupancy, movement, or suitability assessments.</para>
+<para>Like all cell-modifying components, it inherits from <ref refid="class_cell_element" kindref="compound">CellElement</ref> and uses patch priorities to control whether incoming patches may update habitat-domain values. </para>
+    </detaileddescription>
+    <inheritancegraph>
+      <node id="3">
+        <label>BranchCellHabitatDomain</label>
+        <link refid="class_branch_cell_habitat_domain"/>
+        <childnode refid="1" relation="public-inheritance">
+        </childnode>
+      </node>
+      <node id="2">
+        <label>CellElement</label>
+        <link refid="class_cell_element"/>
+      </node>
+      <node id="4">
+        <label>CellHabitatDomain</label>
+        <link refid="class_cell_habitat_domain"/>
+        <childnode refid="1" relation="public-inheritance">
+        </childnode>
+      </node>
+      <node id="1">
+        <label>CellHabitatDomainInterface</label>
+        <link refid="class_cell_habitat_domain_interface"/>
+        <childnode refid="2" relation="public-inheritance">
+        </childnode>
+      </node>
+    </inheritancegraph>
+    <collaborationgraph>
+      <node id="2">
+        <label>CellElement</label>
+        <link refid="class_cell_element"/>
+      </node>
+      <node id="1">
+        <label>CellHabitatDomainInterface</label>
+        <link refid="class_cell_habitat_domain_interface"/>
+        <childnode refid="2" relation="public-inheritance">
+        </childnode>
+        <childnode refid="3" relation="usage">
+          <edgelabel>habitatDomainStatus</edgelabel>
+        </childnode>
+      </node>
+      <node id="3">
+        <label>CustomIndexedVector&lt; AnimalSpeciesID, CustomIndexedVector&lt; Instar, bool &gt; &gt;</label>
+        <link refid="class_custom_indexed_vector"/>
+      </node>
+    </collaborationgraph>
+    <location file="App/Model/IBM/Landscape/Map/TerrainCells/PatchApplicator/HabitatDomain/CellHabitatDomainInterface.h" line="51" column="1" bodyfile="App/Model/IBM/Landscape/Map/TerrainCells/PatchApplicator/HabitatDomain/CellHabitatDomainInterface.h" bodystart="52" bodyend="155"/>
+    <listofallmembers>
+      <member refid="class_cell_habitat_domain_interface_1a2e900a2ddc1b5f7cdf4478f8310368be" prot="public" virt="non-virtual"><scope>CellHabitatDomainInterface</scope><name>addAnimalSpecies</name></member>
+      <member refid="class_cell_habitat_domain_interface_1a118a77e09bd60d98f15137bb9ae1aedc" prot="public" virt="non-virtual"><scope>CellHabitatDomainInterface</scope><name>applySource</name></member>
+      <member refid="class_cell_element_1a77dc6b9db0633bb7d35df0b547ddf613" prot="public" virt="non-virtual"><scope>CellHabitatDomainInterface</scope><name>CellElement</name></member>
+      <member refid="class_cell_element_1a07008f499b17c5dc792ab20d05dbf471" prot="public" virt="non-virtual"><scope>CellHabitatDomainInterface</scope><name>CellElement</name></member>
+      <member refid="class_cell_element_1a5abb98d6d592c3fc4084fc886106d7c3" prot="public" virt="non-virtual"><scope>CellHabitatDomainInterface</scope><name>CellElement</name></member>
+      <member refid="class_cell_habitat_domain_interface_1ae302b49a4fde4f8a6401148b3e1730e2" prot="public" virt="non-virtual"><scope>CellHabitatDomainInterface</scope><name>CellHabitatDomainInterface</name></member>
+      <member refid="class_cell_habitat_domain_interface_1a72a0e8a784d97e09c69e709e868ecf44" prot="public" virt="non-virtual"><scope>CellHabitatDomainInterface</scope><name>CellHabitatDomainInterface</name></member>
+      <member refid="class_cell_habitat_domain_interface_1a8e7a77dce984afa0441e49cc4a8f739e" prot="public" virt="non-virtual"><scope>CellHabitatDomainInterface</scope><name>CellHabitatDomainInterface</name></member>
+      <member refid="class_cell_habitat_domain_interface_1aa40901b89b4a9752ff4103a1b3a83601" prot="public" virt="non-virtual"><scope>CellHabitatDomainInterface</scope><name>getHabitatDomainStatus</name></member>
+      <member refid="class_cell_element_1aeb03190224c2ff962587e94d8fe0c8b4" prot="public" virt="non-virtual"><scope>CellHabitatDomainInterface</scope><name>getPatchPriority</name></member>
+      <member refid="class_cell_habitat_domain_interface_1a103ba5bf83ba3345631ac070927adc5d" prot="protected" virt="non-virtual"><scope>CellHabitatDomainInterface</scope><name>habitatDomainStatus</name></member>
+      <member refid="class_cell_habitat_domain_interface_1ad2af1aa7844d0463bf861c6a5f2d6c5b" prot="public" virt="non-virtual"><scope>CellHabitatDomainInterface</scope><name>isHabitatDomain</name></member>
+      <member refid="class_cell_habitat_domain_interface_1a58dee52409eda6c633750ab9702d8c45" prot="public" virt="non-virtual"><scope>CellHabitatDomainInterface</scope><name>operator=</name></member>
+      <member refid="class_cell_element_1ac7467d8c95d1a3d3e8b72a3209681ce0" prot="public" virt="non-virtual" ambiguityscope="CellElement::"><scope>CellHabitatDomainInterface</scope><name>operator=</name></member>
+      <member refid="class_cell_element_1ac25808724b01c8f1555c0be37b0f9d6f" prot="protected" virt="non-virtual"><scope>CellHabitatDomainInterface</scope><name>patchPriority</name></member>
+      <member refid="class_cell_habitat_domain_interface_1a002cb1808b9713099b5aada709962e50" prot="public" virt="non-virtual"><scope>CellHabitatDomainInterface</scope><name>serialize</name></member>
+      <member refid="class_cell_element_1a9178746c39e277cc4ac9af2f434ac72e" prot="protected" virt="non-virtual"><scope>CellHabitatDomainInterface</scope><name>setPatchPriority</name></member>
+      <member refid="class_cell_element_1a82b86d53e7e9c50f4c3145be272bd38f" prot="public" virt="virtual"><scope>CellHabitatDomainInterface</scope><name>~CellElement</name></member>
+      <member refid="class_cell_habitat_domain_interface_1a8872cf77eaca0a85f48440a101674ee6" prot="public" virt="virtual"><scope>CellHabitatDomainInterface</scope><name>~CellHabitatDomainInterface</name></member>
+    </listofallmembers>
+  </compounddef>
+</doxygen>

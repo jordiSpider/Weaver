@@ -1,0 +1,129 @@
+{
+  "version": 6,
+  "cmakeMinimumRequired": {
+    "major": 3,
+    "minor": 25,
+    "patch": 0
+  },
+  "configurePresets": [
+    {
+      "name": "docs-base",
+      "hidden": true,
+      "generator": "Ninja",
+      "binaryDir": "${sourceDir}/build/cmake/${presetName}",
+      "cacheVariables": {
+        "DOCS_SOURCE_ROOT": "${sourceDir}/source",
+        "DOCS_BUILD_ROOT": "${sourceDir}/build/html",
+        "DOCS_WORK_ROOT": "${sourceDir}/build/work"
+      }
+    },
+    {
+      "name": "docs-weaver",
+      "inherits": "docs-base",
+      "description": "Configure generation of one version of Weaver documentation.",
+      "cacheVariables": {
+        "DOCS_GENERATION": "weaver",
+        "DOCS_WEAVER_VERSION": "$penv{DOCS_WEAVER_VERSION}"
+      }
+    },
+    {
+      "name": "docs-manager",
+      "inherits": "docs-base",
+      "description": "Configure generation of one version of Weaver Manager documentation.",
+      "cacheVariables": {
+        "DOCS_GENERATION": "manager",
+        "DOCS_MANAGER_VERSION": "$penv{DOCS_MANAGER_VERSION}"
+      }
+    },
+    {
+      "name": "docs-landing",
+      "inherits": "docs-base",
+      "description": "Configure regeneration of the documentation landing page.",
+      "cacheVariables": {
+        "DOCS_GENERATION": "landing"
+      }
+    },
+    {
+      "name": "remove-weaver",
+      "inherits": "docs-base",
+      "description": "Configure removal of one Weaver documentation version.",
+      "cacheVariables": {
+        "DOCS_GENERATION": "remove-weaver",
+        "DOCS_WEAVER_VERSION": "$penv{DOCS_WEAVER_VERSION}"
+      }
+    },
+    {
+      "name": "remove-manager",
+      "inherits": "docs-base",
+      "description": "Configure removal of one Weaver Manager documentation version.",
+      "cacheVariables": {
+        "DOCS_GENERATION": "remove-manager",
+        "DOCS_MANAGER_VERSION": "$penv{DOCS_MANAGER_VERSION}"
+      }
+    }
+  ],
+  "buildPresets": [
+    {
+      "name": "generate-weaver",
+      "configurePreset": "docs-weaver",
+      "targets": [ "generate-weaver" ]
+    },
+    {
+      "name": "generate-manager",
+      "configurePreset": "docs-manager",
+      "targets": [ "generate-manager" ]
+    },
+    {
+      "name": "generate-landing",
+      "configurePreset": "docs-landing",
+      "targets": [ "generate-landing" ]
+    },
+    {
+      "name": "remove-weaver-version",
+      "configurePreset": "remove-weaver",
+      "targets": [ "remove-weaver-version" ]
+    },
+    {
+      "name": "remove-manager-version",
+      "configurePreset": "remove-manager",
+      "targets": [ "remove-manager-version" ]
+    }
+  ],
+  "workflowPresets": [
+    {
+      "name": "generate-weaver",
+      "steps": [
+        { "type": "configure", "name": "docs-weaver" },
+        { "type": "build", "name": "generate-weaver" }
+      ]
+    },
+    {
+      "name": "generate-manager",
+      "steps": [
+        { "type": "configure", "name": "docs-manager" },
+        { "type": "build", "name": "generate-manager" }
+      ]
+    },
+    {
+      "name": "generate-landing",
+      "steps": [
+        { "type": "configure", "name": "docs-landing" },
+        { "type": "build", "name": "generate-landing" }
+      ]
+    },
+    {
+      "name": "remove-weaver-version",
+      "steps": [
+        { "type": "configure", "name": "remove-weaver" },
+        { "type": "build", "name": "remove-weaver-version" }
+      ]
+    },
+    {
+      "name": "remove-manager-version",
+      "steps": [
+        { "type": "configure", "name": "remove-manager" },
+        { "type": "build", "name": "remove-manager-version" }
+      ]
+    }
+  ]
+}

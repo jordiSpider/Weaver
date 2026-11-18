@@ -1,0 +1,301 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.14.0" xml:lang="en-US">
+  <compounddef id="class_lineal_decay" kind="class" language="C++" prot="public">
+    <compoundname>LinealDecay</compoundname>
+    <basecompoundref refid="class_decay" prot="public" virt="non-virtual">Decay</basecompoundref>
+    <includes refid="_lineal_decay_8h" local="no">LinealDecay.h</includes>
+    <sectiondef kind="private-attrib">
+      <memberdef kind="variable" id="class_lineal_decay_1a509b04b9c10c8182caa4d968fc107f58" prot="private" static="no" mutable="no">
+        <type><ref refid="class_precise_double" kindref="compound">PreciseDouble</ref></type>
+        <definition>PreciseDouble LinealDecay::decayOverTime</definition>
+        <argsstring></argsstring>
+        <name>decayOverTime</name>
+        <qualifiedname>LinealDecay::decayOverTime</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Linear decay rate applied per time unit. </para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="App/Model/IBM/Maths/Dynamics/Decay/LinealDecay.h" line="84" column="19" bodyfile="App/Model/IBM/Maths/Dynamics/Decay/LinealDecay.h" bodystart="84" bodyend="-1"/>
+      </memberdef>
+    </sectiondef>
+    <sectiondef kind="public-func">
+      <memberdef kind="function" id="class_lineal_decay_1a197afd24e837ff46b53b68d38b095f33" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type></type>
+        <definition>LinealDecay::LinealDecay</definition>
+        <argsstring>()</argsstring>
+        <name>LinealDecay</name>
+        <qualifiedname>LinealDecay::LinealDecay</qualifiedname>
+        <briefdescription>
+<para>Default constructor. </para>
+        </briefdescription>
+        <detaileddescription>
+<para>Initializes decay with default parameters. </para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="App/Model/IBM/Maths/Dynamics/Decay/LinealDecay.h" line="33" column="5"/>
+      </memberdef>
+      <memberdef kind="function" id="class_lineal_decay_1ac5c65a28508a9dcfc5b9cc8e8b1b6b95" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type></type>
+        <definition>LinealDecay::LinealDecay</definition>
+        <argsstring>(const nlohmann::json &amp;config)</argsstring>
+        <name>LinealDecay</name>
+        <qualifiedname>LinealDecay::LinealDecay</qualifiedname>
+        <param>
+          <type>const nlohmann::json &amp;</type>
+          <declname>config</declname>
+        </param>
+        <briefdescription>
+<para>Constructor from JSON configuration. </para>
+        </briefdescription>
+        <detaileddescription>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>config</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>JSON object containing decay parameters, such as decay rate. </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="App/Model/IBM/Maths/Dynamics/Decay/LinealDecay.h" line="40" column="5"/>
+      </memberdef>
+      <memberdef kind="function" id="class_lineal_decay_1af682db614e8146df78b21b0e190cdd69" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type></type>
+        <definition>LinealDecay::LinealDecay</definition>
+        <argsstring>(const nlohmann::json &amp;config, const PreciseDouble &amp;hyperVolume)</argsstring>
+        <name>LinealDecay</name>
+        <qualifiedname>LinealDecay::LinealDecay</qualifiedname>
+        <param>
+          <type>const nlohmann::json &amp;</type>
+          <declname>config</declname>
+        </param>
+        <param>
+          <type>const <ref refid="class_precise_double" kindref="compound">PreciseDouble</ref> &amp;</type>
+          <declname>hyperVolume</declname>
+        </param>
+        <briefdescription>
+<para>Constructor from JSON configuration with hyper-volume scaling. </para>
+        </briefdescription>
+        <detaileddescription>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>config</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>JSON object containing decay parameters. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>hyperVolume</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Factor to scale decay rate according to hyper-volume. </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="App/Model/IBM/Maths/Dynamics/Decay/LinealDecay.h" line="48" column="5"/>
+      </memberdef>
+      <memberdef kind="function" id="class_lineal_decay_1ae85a18922f53b62a55636e157306ed83" prot="public" static="no" const="no" explicit="no" inline="no" virt="virtual">
+        <type></type>
+        <definition>virtual LinealDecay::~LinealDecay</definition>
+        <argsstring>()</argsstring>
+        <name>~LinealDecay</name>
+        <qualifiedname>LinealDecay::~LinealDecay</qualifiedname>
+        <briefdescription>
+<para>Destructor for <ref refid="class_lineal_decay" kindref="compound">LinealDecay</ref>. </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="App/Model/IBM/Maths/Dynamics/Decay/LinealDecay.h" line="53" column="13"/>
+      </memberdef>
+      <memberdef kind="function" id="class_lineal_decay_1a4bb86af5c8cf6917134dc4c915655a27" prot="public" static="no" const="yes" explicit="no" inline="no" virt="virtual">
+        <type><ref refid="class_precise_double" kindref="compound">PreciseDouble</ref></type>
+        <definition>PreciseDouble LinealDecay::apply</definition>
+        <argsstring>(const PreciseDouble &amp;currentValue) const</argsstring>
+        <name>apply</name>
+        <qualifiedname>LinealDecay::apply</qualifiedname>
+        <reimplements refid="class_decay_1ad0d7164e34c88ecca6a308e80a40cccc">apply</reimplements>
+        <param>
+          <type>const <ref refid="class_precise_double" kindref="compound">PreciseDouble</ref> &amp;</type>
+          <declname>currentValue</declname>
+        </param>
+        <briefdescription>
+<para>Apply the linear decay to a given value. </para>
+        </briefdescription>
+        <detaileddescription>
+<para>The value is reduced linearly according to the decayOverTime parameter.</para>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>currentValue</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>The current value to decay. </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<simplesect kind="return"><para>The decayed value as <ref refid="class_precise_double" kindref="compound">PreciseDouble</ref>. </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="App/Model/IBM/Maths/Dynamics/Decay/LinealDecay.h" line="63" column="19"/>
+      </memberdef>
+      <memberdef kind="function" id="class_lineal_decay_1ac5a7916be8244f341e8073b5ab2573ce" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <templateparamlist>
+          <param>
+            <type>class Archive</type>
+          </param>
+        </templateparamlist>
+        <type>void</type>
+        <definition>void LinealDecay::serialize</definition>
+        <argsstring>(Archive &amp;ar, const unsigned int version)</argsstring>
+        <name>serialize</name>
+        <qualifiedname>LinealDecay::serialize</qualifiedname>
+        <param>
+          <type>Archive &amp;</type>
+          <declname>ar</declname>
+        </param>
+        <param>
+          <type>const unsigned int</type>
+          <declname>version</declname>
+        </param>
+        <briefdescription>
+<para>Serializes the object using Boost serialization. </para>
+        </briefdescription>
+        <detaileddescription>
+<para><parameterlist kind="templateparam"><parameteritem>
+<parameternamelist>
+<parametername>Archive</parametername>
+</parameternamelist>
+<parameterdescription>
+<para><ref refid="class_decay_1af7a0694a0f4844a8d9889a926d75ac70" kindref="member">Type</ref> of archive (binary/text, input/output). </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>ar</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Archive object. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>version</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Version of the serialization format. </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="App/Model/IBM/Maths/Dynamics/Decay/LinealDecay.h" line="81" column="10"/>
+      </memberdef>
+      <memberdef kind="function" id="class_lineal_decay_1ae2ae955a2f837663d26045219dc0d8c6" prot="public" static="no" const="yes" explicit="no" inline="no" virt="virtual">
+        <type>std::string</type>
+        <definition>std::string LinealDecay::showInfo</definition>
+        <argsstring>(const std::string &amp;indentation) const</argsstring>
+        <name>showInfo</name>
+        <qualifiedname>LinealDecay::showInfo</qualifiedname>
+        <reimplements refid="class_decay_1a8f3fe11b373bafc083669965a7012da4">showInfo</reimplements>
+        <param>
+          <type>const std::string &amp;</type>
+          <declname>indentation</declname>
+        </param>
+        <briefdescription>
+<para>Returns a string describing the <ref refid="class_lineal_decay" kindref="compound">LinealDecay</ref> instance. </para>
+        </briefdescription>
+        <detaileddescription>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>indentation</parametername>
+</parameternamelist>
+<parameterdescription>
+<para><ref refid="class_string" kindref="compound">String</ref> used for indentation in the output. </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<simplesect kind="return"><para>Formatted string with decay information. </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="App/Model/IBM/Maths/Dynamics/Decay/LinealDecay.h" line="71" column="17"/>
+      </memberdef>
+    </sectiondef>
+    <briefdescription>
+<para>Implements linear decay dynamics. </para>
+    </briefdescription>
+    <detaileddescription>
+<para>This class decreases a value linearly over time according to a specified decay rate. It is derived from <ref refid="class_decay" kindref="compound">Decay</ref> and overrides the apply method. </para>
+    </detaileddescription>
+    <inheritancegraph>
+      <node id="2">
+        <label>Decay</label>
+        <link refid="class_decay"/>
+      </node>
+      <node id="1">
+        <label>LinealDecay</label>
+        <link refid="class_lineal_decay"/>
+        <childnode refid="2" relation="public-inheritance">
+        </childnode>
+      </node>
+    </inheritancegraph>
+    <collaborationgraph>
+      <node id="2">
+        <label>Decay</label>
+        <link refid="class_decay"/>
+      </node>
+      <node id="1">
+        <label>LinealDecay</label>
+        <link refid="class_lineal_decay"/>
+        <childnode refid="2" relation="public-inheritance">
+        </childnode>
+        <childnode refid="3" relation="usage">
+          <edgelabel>decayOverTime</edgelabel>
+        </childnode>
+      </node>
+      <node id="3">
+        <label>PreciseDouble</label>
+        <link refid="class_precise_double"/>
+      </node>
+    </collaborationgraph>
+    <location file="App/Model/IBM/Maths/Dynamics/Decay/LinealDecay.h" line="26" column="1" bodyfile="App/Model/IBM/Maths/Dynamics/Decay/LinealDecay.h" bodystart="26" bodyend="85"/>
+    <listofallmembers>
+      <member refid="class_lineal_decay_1a4bb86af5c8cf6917134dc4c915655a27" prot="public" virt="virtual"><scope>LinealDecay</scope><name>apply</name></member>
+      <member refid="class_decay_1ac8561a7e55cfd00f952489c8a371b9c7" prot="public" virt="non-virtual"><scope>LinealDecay</scope><name>createInstance</name></member>
+      <member refid="class_decay_1a9a28c814beaf09f7dba745c6a925647b" prot="public" virt="non-virtual"><scope>LinealDecay</scope><name>createInstance</name></member>
+      <member refid="class_decay_1a603fb8ea4172c2c80c8779ad301b6a4f" prot="public" virt="non-virtual"><scope>LinealDecay</scope><name>Decay</name></member>
+      <member refid="class_lineal_decay_1a509b04b9c10c8182caa4d968fc107f58" prot="private" virt="non-virtual"><scope>LinealDecay</scope><name>decayOverTime</name></member>
+      <member refid="class_lineal_decay_1a197afd24e837ff46b53b68d38b095f33" prot="public" virt="non-virtual"><scope>LinealDecay</scope><name>LinealDecay</name></member>
+      <member refid="class_lineal_decay_1ac5c65a28508a9dcfc5b9cc8e8b1b6b95" prot="public" virt="non-virtual"><scope>LinealDecay</scope><name>LinealDecay</name></member>
+      <member refid="class_lineal_decay_1af682db614e8146df78b21b0e190cdd69" prot="public" virt="non-virtual"><scope>LinealDecay</scope><name>LinealDecay</name></member>
+      <member refid="class_lineal_decay_1ac5a7916be8244f341e8073b5ab2573ce" prot="public" virt="non-virtual"><scope>LinealDecay</scope><name>serialize</name></member>
+      <member refid="class_lineal_decay_1ae2ae955a2f837663d26045219dc0d8c6" prot="public" virt="virtual"><scope>LinealDecay</scope><name>showInfo</name></member>
+      <member refid="class_decay_1af7a0694a0f4844a8d9889a926d75ac70" prot="public" virt="non-virtual"><scope>LinealDecay</scope><name>Type</name></member>
+      <member refid="class_decay_1a1e1f9eaf505383a3eb8521ba29f71c97" prot="public" virt="virtual"><scope>LinealDecay</scope><name>~Decay</name></member>
+      <member refid="class_lineal_decay_1ae85a18922f53b62a55636e157306ed83" prot="public" virt="virtual"><scope>LinealDecay</scope><name>~LinealDecay</name></member>
+    </listofallmembers>
+  </compounddef>
+</doxygen>

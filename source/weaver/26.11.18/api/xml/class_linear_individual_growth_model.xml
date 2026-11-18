@@ -1,0 +1,364 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.14.0" xml:lang="en-US">
+  <compounddef id="class_linear_individual_growth_model" kind="class" language="C++" prot="public">
+    <compoundname>LinearIndividualGrowthModel</compoundname>
+    <basecompoundref refid="class_individual_growth_model" prot="public" virt="non-virtual">IndividualGrowthModel</basecompoundref>
+    <includes refid="_linear_individual_growth_model_8h" local="no">LinearIndividualGrowthModel.h</includes>
+    <sectiondef kind="private-attrib">
+      <memberdef kind="variable" id="class_linear_individual_growth_model_1a2ef41432323ba85bf4976c5b101d9569" prot="private" static="no" mutable="no">
+        <type><ref refid="class_length" kindref="compound">Length</ref></type>
+        <definition>Length LinearIndividualGrowthModel::lengthAtBirth</definition>
+        <argsstring></argsstring>
+        <name>lengthAtBirth</name>
+        <qualifiedname>LinearIndividualGrowthModel::lengthAtBirth</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Initial length at birth of the individual. </para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="App/Model/IBM/Landscape/LivingBeings/Animals/Growth/Model/LinearIndividualGrowthModel.h" line="77" column="12" bodyfile="App/Model/IBM/Landscape/LivingBeings/Animals/Growth/Model/LinearIndividualGrowthModel.h" bodystart="77" bodyend="-1"/>
+      </memberdef>
+    </sectiondef>
+    <sectiondef kind="public-func">
+      <memberdef kind="function" id="class_linear_individual_growth_model_1a7bfc2a286b3b26a9f72e1b90c4b632d3" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type></type>
+        <definition>LinearIndividualGrowthModel::LinearIndividualGrowthModel</definition>
+        <argsstring>()</argsstring>
+        <name>LinearIndividualGrowthModel</name>
+        <qualifiedname>LinearIndividualGrowthModel::LinearIndividualGrowthModel</qualifiedname>
+        <briefdescription>
+<para>Default constructor. </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="App/Model/IBM/Landscape/LivingBeings/Animals/Growth/Model/LinearIndividualGrowthModel.h" line="30" column="5"/>
+      </memberdef>
+      <memberdef kind="function" id="class_linear_individual_growth_model_1a6ed257e2e1b9fac4386054967cc1539a" prot="public" static="no" const="no" explicit="no" inline="no" virt="virtual">
+        <type></type>
+        <definition>virtual LinearIndividualGrowthModel::~LinearIndividualGrowthModel</definition>
+        <argsstring>()</argsstring>
+        <name>~LinearIndividualGrowthModel</name>
+        <qualifiedname>LinearIndividualGrowthModel::~LinearIndividualGrowthModel</qualifiedname>
+        <briefdescription>
+<para>Destructor. </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="App/Model/IBM/Landscape/LivingBeings/Animals/Growth/Model/LinearIndividualGrowthModel.h" line="35" column="13"/>
+      </memberdef>
+      <memberdef kind="function" id="class_linear_individual_growth_model_1a6b2971d1bf5514d8df1ce94af42f9dc7" prot="public" static="no" const="no" explicit="no" inline="no" virt="virtual">
+        <type>void</type>
+        <definition>void LinearIndividualGrowthModel::adjust</definition>
+        <argsstring>(const PreciseDouble &amp;growthCoefficient, const Length &amp;Lmax, const Day &amp;Tmax, const Length &amp;lengthAtBirth)</argsstring>
+        <name>adjust</name>
+        <qualifiedname>LinearIndividualGrowthModel::adjust</qualifiedname>
+        <reimplements refid="class_individual_growth_model_1aa88ae5f4c09dab4a5de66b79e2cebdce">adjust</reimplements>
+        <param>
+          <type>const <ref refid="class_precise_double" kindref="compound">PreciseDouble</ref> &amp;</type>
+          <declname>growthCoefficient</declname>
+        </param>
+        <param>
+          <type>const <ref refid="class_length" kindref="compound">Length</ref> &amp;</type>
+          <declname>Lmax</declname>
+        </param>
+        <param>
+          <type>const <ref refid="class_day" kindref="compound">Day</ref> &amp;</type>
+          <declname>Tmax</declname>
+        </param>
+        <param>
+          <type>const <ref refid="class_length" kindref="compound">Length</ref> &amp;</type>
+          <declname>lengthAtBirth</declname>
+        </param>
+        <briefdescription>
+<para>Adjusts the model parameters based on maximum length, maximum age, and length at birth. </para>
+        </briefdescription>
+        <detaileddescription>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>growthCoefficient</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Growth coefficient for scaling. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>Lmax</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Maximum achievable length. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>Tmax</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Maximum age for growth. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>lengthAtBirth</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Initial length at birth. </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="App/Model/IBM/Landscape/LivingBeings/Animals/Growth/Model/LinearIndividualGrowthModel.h" line="58" column="10"/>
+      </memberdef>
+      <memberdef kind="function" id="class_linear_individual_growth_model_1a20e42ad823ea9deffa456ca0e19688b0" prot="public" static="no" const="yes" explicit="no" inline="no" virt="virtual">
+        <type><ref refid="class_length" kindref="compound">Length</ref></type>
+        <definition>Length LinearIndividualGrowthModel::calculateLength</definition>
+        <argsstring>(const Day &amp;age, const PreciseDouble &amp;growthCoefficient) const</argsstring>
+        <name>calculateLength</name>
+        <qualifiedname>LinearIndividualGrowthModel::calculateLength</qualifiedname>
+        <reimplements refid="class_individual_growth_model_1a9423310fe45081bb62aea6f9b162ea86">calculateLength</reimplements>
+        <param>
+          <type>const <ref refid="class_day" kindref="compound">Day</ref> &amp;</type>
+          <declname>age</declname>
+        </param>
+        <param>
+          <type>const <ref refid="class_precise_double" kindref="compound">PreciseDouble</ref> &amp;</type>
+          <declname>growthCoefficient</declname>
+        </param>
+        <briefdescription>
+<para>Calculates the length of an individual at a given age using the linear growth formula. </para>
+        </briefdescription>
+        <detaileddescription>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>age</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Age of the individual. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>growthCoefficient</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Growth coefficient for scaling the model. </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<simplesect kind="return"><para>The length of the individual at the specified age. </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="App/Model/IBM/Landscape/LivingBeings/Animals/Growth/Model/LinearIndividualGrowthModel.h" line="49" column="12"/>
+      </memberdef>
+      <memberdef kind="function" id="class_linear_individual_growth_model_1a37917785cc0c92219a90ac5948f4d6fa" prot="public" static="no" const="yes" explicit="no" inline="no" virt="non-virtual">
+        <type>const <ref refid="class_length" kindref="compound">Length</ref> &amp;</type>
+        <definition>const Length &amp; LinearIndividualGrowthModel::getLengthAtBirth</definition>
+        <argsstring>() const</argsstring>
+        <name>getLengthAtBirth</name>
+        <qualifiedname>LinearIndividualGrowthModel::getLengthAtBirth</qualifiedname>
+        <briefdescription>
+<para>Get the length at birth. </para>
+        </briefdescription>
+        <detaileddescription>
+<para><simplesect kind="return"><para>The initial length of the individual at birth. </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="App/Model/IBM/Landscape/LivingBeings/Animals/Growth/Model/LinearIndividualGrowthModel.h" line="41" column="18"/>
+      </memberdef>
+      <memberdef kind="function" id="class_linear_individual_growth_model_1afc98752d83655d68f9e0ee7e7aed66dc" prot="public" static="no" const="yes" explicit="no" inline="no" virt="virtual">
+        <type><ref refid="class_individual_growth_model_1acadacbdb89e0db3e1ffd490634162459" kindref="member">IndividualGrowthModel::Type</ref></type>
+        <definition>IndividualGrowthModel::Type LinearIndividualGrowthModel::getType</definition>
+        <argsstring>() const</argsstring>
+        <name>getType</name>
+        <qualifiedname>LinearIndividualGrowthModel::getType</qualifiedname>
+        <reimplements refid="class_individual_growth_model_1ad1c08a537cd40bbebb73d89d48a33398">getType</reimplements>
+        <briefdescription>
+<para>Returns the type of the growth model. </para>
+        </briefdescription>
+        <detaileddescription>
+<para><simplesect kind="return"><para><ref refid="class_individual_growth_model_1acadacbdb89e0db3e1ffd490634162459a32a843da6ea40ab3b17a3421ccdf671b" kindref="member">IndividualGrowthModel::Type::Linear</ref> </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="App/Model/IBM/Landscape/LivingBeings/Animals/Growth/Model/LinearIndividualGrowthModel.h" line="64" column="33"/>
+      </memberdef>
+      <memberdef kind="function" id="class_linear_individual_growth_model_1ab82eff388a83426ee48da0d60eced1d4" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <templateparamlist>
+          <param>
+            <type>class Archive</type>
+          </param>
+        </templateparamlist>
+        <type>void</type>
+        <definition>void LinearIndividualGrowthModel::serialize</definition>
+        <argsstring>(Archive &amp;ar, const unsigned int version)</argsstring>
+        <name>serialize</name>
+        <qualifiedname>LinearIndividualGrowthModel::serialize</qualifiedname>
+        <param>
+          <type>Archive &amp;</type>
+          <declname>ar</declname>
+        </param>
+        <param>
+          <type>const unsigned int</type>
+          <declname>version</declname>
+        </param>
+        <briefdescription>
+<para>Serializes the object for persistence. </para>
+        </briefdescription>
+        <detaileddescription>
+<para><parameterlist kind="templateparam"><parameteritem>
+<parameternamelist>
+<parametername>Archive</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Serialization archive type. </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>ar</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Archive instance. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>version</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Serialization version. </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="App/Model/IBM/Landscape/LivingBeings/Animals/Growth/Model/LinearIndividualGrowthModel.h" line="74" column="10"/>
+      </memberdef>
+    </sectiondef>
+    <sectiondef kind="private-func">
+      <memberdef kind="function" id="class_linear_individual_growth_model_1ab5584fe2ab5deff2e26326f4822da1ad" prot="private" static="no" const="yes" explicit="no" inline="no" virt="non-virtual">
+        <type><ref refid="class_precise_double" kindref="compound">PreciseDouble</ref></type>
+        <definition>PreciseDouble LinearIndividualGrowthModel::Linear</definition>
+        <argsstring>(const PreciseDouble &amp;k, const Day &amp;t) const</argsstring>
+        <name>Linear</name>
+        <qualifiedname>LinearIndividualGrowthModel::Linear</qualifiedname>
+        <param>
+          <type>const <ref refid="class_precise_double" kindref="compound">PreciseDouble</ref> &amp;</type>
+          <declname>k</declname>
+        </param>
+        <param>
+          <type>const <ref refid="class_day" kindref="compound">Day</ref> &amp;</type>
+          <declname>t</declname>
+        </param>
+        <briefdescription>
+<para>Computes the linear growth function for a given rate k and time t. </para>
+        </briefdescription>
+        <detaileddescription>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>k</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Growth rate parameter. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>t</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Time (age). </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<simplesect kind="return"><para>Result of the linear growth function. </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="App/Model/IBM/Landscape/LivingBeings/Animals/Growth/Model/LinearIndividualGrowthModel.h" line="85" column="19"/>
+      </memberdef>
+    </sectiondef>
+    <briefdescription>
+<para>Implements a linear individual growth model. </para>
+    </briefdescription>
+    <detaileddescription>
+<para>This class models the growth of an individual using a linear function. It inherits from <ref refid="class_individual_growth_model" kindref="compound">IndividualGrowthModel</ref> and provides methods to adjust parameters, calculate length at a given age, and retrieve the initial length at birth. </para>
+    </detaileddescription>
+    <inheritancegraph>
+      <node id="2">
+        <label>IndividualGrowthModel</label>
+        <link refid="class_individual_growth_model"/>
+      </node>
+      <node id="1">
+        <label>LinearIndividualGrowthModel</label>
+        <link refid="class_linear_individual_growth_model"/>
+        <childnode refid="2" relation="public-inheritance">
+        </childnode>
+      </node>
+    </inheritancegraph>
+    <collaborationgraph>
+      <node id="2">
+        <label>IndividualGrowthModel</label>
+        <link refid="class_individual_growth_model"/>
+      </node>
+      <node id="3">
+        <label>Length</label>
+        <link refid="class_length"/>
+        <childnode refid="4" relation="usage">
+          <edgelabel>value</edgelabel>
+        </childnode>
+      </node>
+      <node id="1">
+        <label>LinearIndividualGrowthModel</label>
+        <link refid="class_linear_individual_growth_model"/>
+        <childnode refid="2" relation="public-inheritance">
+        </childnode>
+        <childnode refid="3" relation="usage">
+          <edgelabel>lengthAtBirth</edgelabel>
+        </childnode>
+      </node>
+      <node id="4">
+        <label>PreciseDouble</label>
+        <link refid="class_precise_double"/>
+      </node>
+    </collaborationgraph>
+    <location file="App/Model/IBM/Landscape/LivingBeings/Animals/Growth/Model/LinearIndividualGrowthModel.h" line="25" column="1" bodyfile="App/Model/IBM/Landscape/LivingBeings/Animals/Growth/Model/LinearIndividualGrowthModel.h" bodystart="25" bodyend="86"/>
+    <listofallmembers>
+      <member refid="class_linear_individual_growth_model_1a6b2971d1bf5514d8df1ce94af42f9dc7" prot="public" virt="virtual"><scope>LinearIndividualGrowthModel</scope><name>adjust</name></member>
+      <member refid="class_linear_individual_growth_model_1a20e42ad823ea9deffa456ca0e19688b0" prot="public" virt="virtual"><scope>LinearIndividualGrowthModel</scope><name>calculateLength</name></member>
+      <member refid="class_individual_growth_model_1a0f4153250f1bfdeda8dd35685293ec2f" prot="public" virt="non-virtual"><scope>LinearIndividualGrowthModel</scope><name>createInstance</name></member>
+      <member refid="class_linear_individual_growth_model_1a37917785cc0c92219a90ac5948f4d6fa" prot="public" virt="non-virtual"><scope>LinearIndividualGrowthModel</scope><name>getLengthAtBirth</name></member>
+      <member refid="class_linear_individual_growth_model_1afc98752d83655d68f9e0ee7e7aed66dc" prot="public" virt="virtual"><scope>LinearIndividualGrowthModel</scope><name>getType</name></member>
+      <member refid="class_individual_growth_model_1a1303c5c34b7cf1231ed4eb964400e228" prot="public" virt="non-virtual"><scope>LinearIndividualGrowthModel</scope><name>IndividualGrowthModel</name></member>
+      <member refid="class_linear_individual_growth_model_1a2ef41432323ba85bf4976c5b101d9569" prot="private" virt="non-virtual"><scope>LinearIndividualGrowthModel</scope><name>lengthAtBirth</name></member>
+      <member refid="class_linear_individual_growth_model_1ab5584fe2ab5deff2e26326f4822da1ad" prot="private" virt="non-virtual"><scope>LinearIndividualGrowthModel</scope><name>Linear</name></member>
+      <member refid="class_linear_individual_growth_model_1a7bfc2a286b3b26a9f72e1b90c4b632d3" prot="public" virt="non-virtual"><scope>LinearIndividualGrowthModel</scope><name>LinearIndividualGrowthModel</name></member>
+      <member refid="class_linear_individual_growth_model_1ab82eff388a83426ee48da0d60eced1d4" prot="public" virt="non-virtual"><scope>LinearIndividualGrowthModel</scope><name>serialize</name></member>
+      <member refid="class_individual_growth_model_1acadacbdb89e0db3e1ffd490634162459" prot="public" virt="non-virtual"><scope>LinearIndividualGrowthModel</scope><name>Type</name></member>
+      <member refid="class_individual_growth_model_1a7737a1e46b20fb23fb68f975babc5fad" prot="public" virt="virtual"><scope>LinearIndividualGrowthModel</scope><name>~IndividualGrowthModel</name></member>
+      <member refid="class_linear_individual_growth_model_1a6ed257e2e1b9fac4386054967cc1539a" prot="public" virt="virtual"><scope>LinearIndividualGrowthModel</scope><name>~LinearIndividualGrowthModel</name></member>
+    </listofallmembers>
+  </compounddef>
+</doxygen>

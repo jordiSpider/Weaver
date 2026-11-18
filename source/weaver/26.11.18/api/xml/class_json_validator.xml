@@ -1,0 +1,148 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.14.0" xml:lang="en-US">
+  <compounddef id="class_json_validator" kind="class" language="C++" prot="public">
+    <compoundname>JsonValidator</compoundname>
+    <includes refid="_validator_8h" local="no">Validator.h</includes>
+    <sectiondef kind="protected-attrib">
+      <memberdef kind="variable" id="class_json_validator_1ad1054e1c6c580b56dc314d6159d6f462" prot="protected" static="no" mutable="no">
+        <type><ref refid="class_object" kindref="compound">Object</ref> *</type>
+        <definition>Object* JsonValidator::root</definition>
+        <argsstring></argsstring>
+        <name>root</name>
+        <qualifiedname>JsonValidator::root</qualifiedname>
+        <briefdescription>
+<para>Root object of the loaded JSON schema. </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="Misc/JsonValidator/Validator.h" line="31" column="12" bodyfile="Misc/JsonValidator/Validator.h" bodystart="31" bodyend="-1"/>
+      </memberdef>
+    </sectiondef>
+    <sectiondef kind="public-func">
+      <memberdef kind="function" id="class_json_validator_1a38826c685d5f43c8cc7d24a2c3e2825f" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type></type>
+        <definition>JsonValidator::JsonValidator</definition>
+        <argsstring>(std::string_view schemaContent, const std::string &amp;schemaName)</argsstring>
+        <name>JsonValidator</name>
+        <qualifiedname>JsonValidator::JsonValidator</qualifiedname>
+        <param>
+          <type>std::string_view</type>
+          <declname>schemaContent</declname>
+        </param>
+        <param>
+          <type>const std::string &amp;</type>
+          <declname>schemaName</declname>
+        </param>
+        <briefdescription>
+<para>Constructs the validator by loading a JSON schema. </para>
+        </briefdescription>
+        <detaileddescription>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>schemaPath</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Path to the JSON schema file.</para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+Loads the schema from the specified path and prepares the validator to validate configuration files against it. </para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="Misc/JsonValidator/Validator.h" line="42" column="5"/>
+      </memberdef>
+      <memberdef kind="function" id="class_json_validator_1a4e25abce6a4784040db1546314867b65" prot="public" static="no" const="no" explicit="no" inline="no" virt="virtual">
+        <type></type>
+        <definition>virtual JsonValidator::~JsonValidator</definition>
+        <argsstring>()</argsstring>
+        <name>~JsonValidator</name>
+        <qualifiedname>JsonValidator::~JsonValidator</qualifiedname>
+        <briefdescription>
+<para>Virtual destructor. </para>
+        </briefdescription>
+        <detaileddescription>
+<para>Ensures proper cleanup of resources associated with the JSON schema. </para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="Misc/JsonValidator/Validator.h" line="49" column="13"/>
+      </memberdef>
+      <memberdef kind="function" id="class_json_validator_1aed56b4418c8ad183ac51952a67b4fa1d" prot="public" static="no" const="yes" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void JsonValidator::validate</definition>
+        <argsstring>(const std::string &amp;configFilename, const nlohmann::json &amp;config) const</argsstring>
+        <name>validate</name>
+        <qualifiedname>JsonValidator::validate</qualifiedname>
+        <param>
+          <type>const std::string &amp;</type>
+          <declname>configFilename</declname>
+        </param>
+        <param>
+          <type>const nlohmann::json &amp;</type>
+          <declname>config</declname>
+        </param>
+        <briefdescription>
+<para>Validates a JSON configuration object against the schema. </para>
+        </briefdescription>
+        <detaileddescription>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>configFilename</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Name of the configuration file (used for reporting errors). </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>config</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>JSON object to validate.</para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+Throws an exception or reports errors if the JSON object does not conform to the loaded schema. </para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="Misc/JsonValidator/Validator.h" line="60" column="10"/>
+      </memberdef>
+    </sectiondef>
+    <briefdescription>
+<para>Validates JSON objects against a predefined JSON Schema. </para>
+    </briefdescription>
+    <detaileddescription>
+<para>This class loads a JSON schema from a file and provides a method to validate JSON configuration files. It is used to ensure that configuration files conform to the expected structure and data types before being used in the simulation. </para>
+    </detaileddescription>
+    <collaborationgraph>
+      <node id="3">
+        <label>Element</label>
+        <link refid="class_element"/>
+      </node>
+      <node id="1">
+        <label>JsonValidator</label>
+        <link refid="class_json_validator"/>
+        <childnode refid="2" relation="usage">
+          <edgelabel>root</edgelabel>
+        </childnode>
+      </node>
+      <node id="2">
+        <label>Object</label>
+        <link refid="class_object"/>
+        <childnode refid="3" relation="public-inheritance">
+        </childnode>
+      </node>
+    </collaborationgraph>
+    <location file="Misc/JsonValidator/Validator.h" line="27" column="1" bodyfile="Misc/JsonValidator/Validator.h" bodystart="28" bodyend="61"/>
+    <listofallmembers>
+      <member refid="class_json_validator_1a38826c685d5f43c8cc7d24a2c3e2825f" prot="public" virt="non-virtual"><scope>JsonValidator</scope><name>JsonValidator</name></member>
+      <member refid="class_json_validator_1ad1054e1c6c580b56dc314d6159d6f462" prot="protected" virt="non-virtual"><scope>JsonValidator</scope><name>root</name></member>
+      <member refid="class_json_validator_1aed56b4418c8ad183ac51952a67b4fa1d" prot="public" virt="non-virtual"><scope>JsonValidator</scope><name>validate</name></member>
+      <member refid="class_json_validator_1a4e25abce6a4784040db1546314867b65" prot="public" virt="virtual"><scope>JsonValidator</scope><name>~JsonValidator</name></member>
+    </listofallmembers>
+  </compounddef>
+</doxygen>

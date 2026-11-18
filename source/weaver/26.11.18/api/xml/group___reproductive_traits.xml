@@ -1,0 +1,161 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.14.0" xml:lang="en-US">
+  <compounddef id="group___reproductive_traits" kind="group">
+    <compoundname>ReproductiveTraits</compoundname>
+    <title>Reproductive Traits</title>
+    <sectiondef kind="func">
+      <memberdef kind="function" id="group___reproductive_traits_1ga4ecd1d866d3c9085f06bff9be5fec22a" prot="public" static="no" const="yes" explicit="no" inline="yes" virt="virtual">
+        <type>unsigned int</type>
+        <definition>virtual unsigned int AnimalSpecies::getFemaleMaxReproductionEvents</definition>
+        <argsstring>() const</argsstring>
+        <name>getFemaleMaxReproductionEvents</name>
+        <qualifiedname>AnimalSpecies::getFemaleMaxReproductionEvents</qualifiedname>
+        <briefdescription>
+<para>Returns maximum reproductive events for females. </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="App/Model/IBM/Landscape/LivingBeings/Animals/Species/AnimalSpecies.h" line="460" column="22" bodyfile="App/Model/IBM/Landscape/LivingBeings/Animals/Species/AnimalSpecies.h" bodystart="460" bodyend="460"/>
+      </memberdef>
+      <memberdef kind="function" id="group___reproductive_traits_1gabc5bcd3e0919cd6bc1b07b6c15f6e716" prot="public" static="no" const="yes" explicit="no" inline="yes" virt="virtual">
+        <type>unsigned int</type>
+        <definition>virtual unsigned int AnimalSpecies::getMaleMaxReproductionEvents</definition>
+        <argsstring>() const</argsstring>
+        <name>getMaleMaxReproductionEvents</name>
+        <qualifiedname>AnimalSpecies::getMaleMaxReproductionEvents</qualifiedname>
+        <briefdescription>
+<para>Returns maximum reproductive events for males. </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="App/Model/IBM/Landscape/LivingBeings/Animals/Species/AnimalSpecies.h" line="465" column="22" bodyfile="App/Model/IBM/Landscape/LivingBeings/Animals/Species/AnimalSpecies.h" bodystart="465" bodyend="465"/>
+      </memberdef>
+      <memberdef kind="function" id="group___reproductive_traits_1ga861f4edd84f63b407d73a1734864f46f" prot="public" static="no" const="yes" explicit="no" inline="no" virt="virtual">
+        <type>Gender</type>
+        <definition>virtual Gender AnimalSpecies::getRandomGender</definition>
+        <argsstring>() const</argsstring>
+        <name>getRandomGender</name>
+        <qualifiedname>AnimalSpecies::getRandomGender</qualifiedname>
+        <briefdescription>
+<para>Generates a random gender according to species&apos; sex ratio. </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="App/Model/IBM/Landscape/LivingBeings/Animals/Species/AnimalSpecies.h" line="445" column="16"/>
+      </memberdef>
+      <memberdef kind="function" id="group___reproductive_traits_1gaab5ea3d012637ad18cf39ba9b391cf20" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>float</type>
+        <definition>float AnimalSpecies::getSexRatio</definition>
+        <argsstring>()</argsstring>
+        <name>getSexRatio</name>
+        <qualifiedname>AnimalSpecies::getSexRatio</qualifiedname>
+        <briefdescription>
+<para>Returns the sex ratio of the species. </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="App/Model/IBM/Landscape/LivingBeings/Animals/Species/AnimalSpecies.h" line="450" column="7"/>
+      </memberdef>
+      <memberdef kind="function" id="group___reproductive_traits_1ga50cd84e82499615731c0a2db2a4a38df" prot="public" static="no" const="yes" explicit="no" inline="yes" virt="virtual">
+        <type>const SexualType &amp;</type>
+        <definition>virtual const SexualType &amp; AnimalSpecies::getSexualType</definition>
+        <argsstring>() const</argsstring>
+        <name>getSexualType</name>
+        <qualifiedname>AnimalSpecies::getSexualType</qualifiedname>
+        <briefdescription>
+<para>Returns the sexual type of the species (diploid, haplodiploid, asexual). </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="App/Model/IBM/Landscape/LivingBeings/Animals/Species/AnimalSpecies.h" line="440" column="26" bodyfile="App/Model/IBM/Landscape/LivingBeings/Animals/Species/AnimalSpecies.h" bodystart="440" bodyend="440"/>
+      </memberdef>
+      <memberdef kind="function" id="group___reproductive_traits_1ga2fc8d9fb7a40a13a452e158b4abfc87a" prot="public" static="no" const="yes" explicit="no" inline="no" virt="non-virtual">
+        <type>const <ref refid="class_precise_double" kindref="compound">PreciseDouble</ref> &amp;</type>
+        <definition>const PreciseDouble &amp; AnimalSpecies::getTotFec</definition>
+        <argsstring>() const</argsstring>
+        <name>getTotFec</name>
+        <qualifiedname>AnimalSpecies::getTotFec</qualifiedname>
+        <briefdescription>
+<para>Returns the total fecundity factor. </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="App/Model/IBM/Landscape/LivingBeings/Animals/Species/AnimalSpecies.h" line="480" column="21"/>
+      </memberdef>
+      <memberdef kind="function" id="group___reproductive_traits_1gae98f4f63d5741e4f23f4aa07b11ec4e1" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void AnimalSpecies::setFemaleMaxReproductionEvents</definition>
+        <argsstring>(const unsigned int &amp;femaleMaxReproductionEventsValue)</argsstring>
+        <name>setFemaleMaxReproductionEvents</name>
+        <qualifiedname>AnimalSpecies::setFemaleMaxReproductionEvents</qualifiedname>
+        <param>
+          <type>const unsigned int &amp;</type>
+          <declname>femaleMaxReproductionEventsValue</declname>
+        </param>
+        <briefdescription>
+<para>Sets maximum reproductive events for females. </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="App/Model/IBM/Landscape/LivingBeings/Animals/Species/AnimalSpecies.h" line="470" column="6"/>
+      </memberdef>
+      <memberdef kind="function" id="group___reproductive_traits_1ga93a6233f1a531f14970e7648e9ea7359" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void AnimalSpecies::setMaleMaxReproductionEvents</definition>
+        <argsstring>(const unsigned int &amp;maleMaxReproductionEventsValue)</argsstring>
+        <name>setMaleMaxReproductionEvents</name>
+        <qualifiedname>AnimalSpecies::setMaleMaxReproductionEvents</qualifiedname>
+        <param>
+          <type>const unsigned int &amp;</type>
+          <declname>maleMaxReproductionEventsValue</declname>
+        </param>
+        <briefdescription>
+<para>Sets maximum reproductive events for males. </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="App/Model/IBM/Landscape/LivingBeings/Animals/Species/AnimalSpecies.h" line="475" column="6"/>
+      </memberdef>
+      <memberdef kind="function" id="group___reproductive_traits_1ga1fd5b6272a448c93ec48656afe392523" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void AnimalSpecies::setSexRatio</definition>
+        <argsstring>(const float &amp;sexRatioValue)</argsstring>
+        <name>setSexRatio</name>
+        <qualifiedname>AnimalSpecies::setSexRatio</qualifiedname>
+        <param>
+          <type>const float &amp;</type>
+          <declname>sexRatioValue</declname>
+        </param>
+        <briefdescription>
+<para>Sets the sex ratio of the species. </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="App/Model/IBM/Landscape/LivingBeings/Animals/Species/AnimalSpecies.h" line="455" column="6"/>
+      </memberdef>
+    </sectiondef>
+    <briefdescription>
+<para>Parameters related to fecundity, sex ratio and sexual system. </para>
+    </briefdescription>
+    <detaileddescription>
+    </detaileddescription>
+  </compounddef>
+</doxygen>

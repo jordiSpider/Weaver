@@ -1,0 +1,332 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.14.0" xml:lang="en-US">
+  <compounddef id="class_cell_element" kind="class" language="C++" prot="public">
+    <compoundname>CellElement</compoundname>
+    <derivedcompoundref refid="class_cell_habitat_domain_interface" prot="public" virt="non-virtual">CellHabitatDomainInterface</derivedcompoundref>
+    <derivedcompoundref refid="class_cell_moisture_interface" prot="public" virt="non-virtual">CellMoistureInterface</derivedcompoundref>
+    <derivedcompoundref refid="class_cell_obstacle_interface" prot="public" virt="non-virtual">CellObstacleInterface</derivedcompoundref>
+    <derivedcompoundref refid="class_cell_resource_interface" prot="public" virt="non-virtual">CellResourceInterface</derivedcompoundref>
+    <includes refid="_cell_element_8h" local="no">CellElement.h</includes>
+    <sectiondef kind="protected-attrib">
+      <memberdef kind="variable" id="class_cell_element_1ac25808724b01c8f1555c0be37b0f9d6f" prot="protected" static="no" mutable="no">
+        <type>size_t</type>
+        <definition>size_t CellElement::patchPriority</definition>
+        <argsstring></argsstring>
+        <name>patchPriority</name>
+        <qualifiedname>CellElement::patchPriority</qualifiedname>
+        <briefdescription>
+<para>The patch priority that last modified this element. </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="App/Model/IBM/Landscape/Map/TerrainCells/PatchApplicator/CellElement.h" line="102" column="12" bodyfile="App/Model/IBM/Landscape/Map/TerrainCells/PatchApplicator/CellElement.h" bodystart="102" bodyend="-1"/>
+      </memberdef>
+    </sectiondef>
+    <sectiondef kind="public-func">
+      <memberdef kind="function" id="class_cell_element_1a77dc6b9db0633bb7d35df0b547ddf613" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type></type>
+        <definition>CellElement::CellElement</definition>
+        <argsstring>()</argsstring>
+        <name>CellElement</name>
+        <qualifiedname>CellElement::CellElement</qualifiedname>
+        <briefdescription>
+<para>Default constructor. </para>
+        </briefdescription>
+        <detaileddescription>
+<para>Initializes the element with a default patch priority (typically zero), meaning no patch has been applied yet. </para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="App/Model/IBM/Landscape/Map/TerrainCells/PatchApplicator/CellElement.h" line="45" column="5"/>
+      </memberdef>
+      <memberdef kind="function" id="class_cell_element_1a5abb98d6d592c3fc4084fc886106d7c3" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type></type>
+        <definition>CellElement::CellElement</definition>
+        <argsstring>(const CellElement &amp;)=delete</argsstring>
+        <name>CellElement</name>
+        <qualifiedname>CellElement::CellElement</qualifiedname>
+        <param>
+          <type>const <ref refid="class_cell_element" kindref="compound">CellElement</ref> &amp;</type>
+        </param>
+        <briefdescription>
+<para>Deleted copy constructor. </para>
+        </briefdescription>
+        <detaileddescription>
+<para>Cell elements are not copyable to avoid inconsistent patch priority propagation across elements. </para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="App/Model/IBM/Landscape/Map/TerrainCells/PatchApplicator/CellElement.h" line="68" column="5"/>
+      </memberdef>
+      <memberdef kind="function" id="class_cell_element_1a07008f499b17c5dc792ab20d05dbf471" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type></type>
+        <definition>CellElement::CellElement</definition>
+        <argsstring>(const size_t patchPriority)</argsstring>
+        <name>CellElement</name>
+        <qualifiedname>CellElement::CellElement</qualifiedname>
+        <param>
+          <type>const size_t</type>
+          <declname>patchPriority</declname>
+        </param>
+        <briefdescription>
+<para>Constructs the element with an explicit patch priority. </para>
+        </briefdescription>
+        <detaileddescription>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>patchPriority</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>The priority of the patch that initialized this element. Higher priorities overwrite lower ones. </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="App/Model/IBM/Landscape/Map/TerrainCells/PatchApplicator/CellElement.h" line="53" column="5"/>
+      </memberdef>
+      <memberdef kind="function" id="class_cell_element_1a82b86d53e7e9c50f4c3145be272bd38f" prot="public" static="no" const="no" explicit="no" inline="no" virt="virtual">
+        <type></type>
+        <definition>virtual CellElement::~CellElement</definition>
+        <argsstring>()</argsstring>
+        <name>~CellElement</name>
+        <qualifiedname>CellElement::~CellElement</qualifiedname>
+        <briefdescription>
+<para>Virtual destructor. </para>
+        </briefdescription>
+        <detaileddescription>
+<para>Ensures proper cleanup when derived cell elements are destroyed. </para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="App/Model/IBM/Landscape/Map/TerrainCells/PatchApplicator/CellElement.h" line="60" column="13"/>
+      </memberdef>
+      <memberdef kind="function" id="class_cell_element_1aeb03190224c2ff962587e94d8fe0c8b4" prot="public" static="no" const="yes" explicit="no" inline="no" virt="non-virtual">
+        <type>size_t</type>
+        <definition>size_t CellElement::getPatchPriority</definition>
+        <argsstring>() const</argsstring>
+        <name>getPatchPriority</name>
+        <qualifiedname>CellElement::getPatchPriority</qualifiedname>
+        <briefdescription>
+<para>Returns the current patch priority of this element. </para>
+        </briefdescription>
+        <detaileddescription>
+<para><ref refid="class_patch" kindref="compound">Patch</ref> priority is used to determine whether a new patch may overwrite this element: a new patch only applies if its priority is greater than the stored priority.</para>
+<para><simplesect kind="return"><para>The stored patch priority. </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="App/Model/IBM/Landscape/Map/TerrainCells/PatchApplicator/CellElement.h" line="86" column="12"/>
+      </memberdef>
+      <memberdef kind="function" id="class_cell_element_1ac7467d8c95d1a3d3e8b72a3209681ce0" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type><ref refid="class_cell_element" kindref="compound">CellElement</ref> &amp;</type>
+        <definition>CellElement &amp; CellElement::operator=</definition>
+        <argsstring>(const CellElement &amp;)=delete</argsstring>
+        <name>operator=</name>
+        <qualifiedname>CellElement::operator=</qualifiedname>
+        <param>
+          <type>const <ref refid="class_cell_element" kindref="compound">CellElement</ref> &amp;</type>
+        </param>
+        <briefdescription>
+<para>Deleted copy assignment operator. </para>
+        </briefdescription>
+        <detaileddescription>
+<para>Prevents copying because patch priority integrity must be maintained. </para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="App/Model/IBM/Landscape/Map/TerrainCells/PatchApplicator/CellElement.h" line="75" column="17"/>
+      </memberdef>
+      <memberdef kind="function" id="class_cell_element_1a1be8cb473a32f4835ccd6b22a9874abe" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <templateparamlist>
+          <param>
+            <type>class Archive</type>
+          </param>
+        </templateparamlist>
+        <type>void</type>
+        <definition>void CellElement::serialize</definition>
+        <argsstring>(Archive &amp;ar, const unsigned int version)</argsstring>
+        <name>serialize</name>
+        <qualifiedname>CellElement::serialize</qualifiedname>
+        <param>
+          <type>Archive &amp;</type>
+          <declname>ar</declname>
+        </param>
+        <param>
+          <type>const unsigned int</type>
+          <declname>version</declname>
+        </param>
+        <briefdescription>
+<para>Serializes this <ref refid="class_cell_element" kindref="compound">CellElement</ref> instance. </para>
+        </briefdescription>
+        <detaileddescription>
+<para>Saves and loads the patch priority for persistence or distributed simulation.</para>
+<para><parameterlist kind="templateparam"><parameteritem>
+<parameternamelist>
+<parametername>Archive</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>The Boost.Serialization archive type. </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>ar</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Serialization archive. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>version</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Serialization version number. </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="App/Model/IBM/Landscape/Map/TerrainCells/PatchApplicator/CellElement.h" line="98" column="10"/>
+      </memberdef>
+    </sectiondef>
+    <sectiondef kind="protected-func">
+      <memberdef kind="function" id="class_cell_element_1a9178746c39e277cc4ac9af2f434ac72e" prot="protected" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void CellElement::setPatchPriority</definition>
+        <argsstring>(const size_t newPatchPriority)</argsstring>
+        <name>setPatchPriority</name>
+        <qualifiedname>CellElement::setPatchPriority</qualifiedname>
+        <param>
+          <type>const size_t</type>
+          <declname>newPatchPriority</declname>
+        </param>
+        <briefdescription>
+<para>Sets a new patch priority for the element. </para>
+        </briefdescription>
+        <detaileddescription>
+<para>This method is typically called by <ref refid="class_patch_applicator" kindref="compound">PatchApplicator</ref> implementations when a patch is successfully applied.</para>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>newPatchPriority</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>The priority assigned by the applied patch. </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="App/Model/IBM/Landscape/Map/TerrainCells/PatchApplicator/CellElement.h" line="112" column="10"/>
+      </memberdef>
+    </sectiondef>
+    <briefdescription>
+<para>Base class for any modifiable element contained within a terrain cell. </para>
+    </briefdescription>
+    <detaileddescription>
+<para>A <ref refid="class_cell_element" kindref="compound">CellElement</ref> represents a component of a <ref refid="class_terrain_cell" kindref="compound">TerrainCell</ref> that can be modified by environmental patches (moisture, resources, obstacles, habitat domain, etc.). Each element stores a patch priority indicating whether a new patch is allowed to overwrite the current state. Derived classes implement the actual element behaviour, while <ref refid="class_cell_element" kindref="compound">CellElement</ref> manages patch priority and serialization. </para>
+    </detaileddescription>
+    <inheritancegraph>
+      <node id="3">
+        <label>BranchCellHabitatDomain</label>
+        <link refid="class_branch_cell_habitat_domain"/>
+        <childnode refid="2" relation="public-inheritance">
+        </childnode>
+      </node>
+      <node id="6">
+        <label>BranchCellMoisture</label>
+        <link refid="class_branch_cell_moisture"/>
+        <childnode refid="5" relation="public-inheritance">
+        </childnode>
+      </node>
+      <node id="9">
+        <label>BranchCellObstacle</label>
+        <link refid="class_branch_cell_obstacle"/>
+        <childnode refid="8" relation="public-inheritance">
+        </childnode>
+      </node>
+      <node id="12">
+        <label>BranchCellResource</label>
+        <link refid="class_branch_cell_resource"/>
+        <childnode refid="11" relation="public-inheritance">
+        </childnode>
+      </node>
+      <node id="1">
+        <label>CellElement</label>
+        <link refid="class_cell_element"/>
+      </node>
+      <node id="4">
+        <label>CellHabitatDomain</label>
+        <link refid="class_cell_habitat_domain"/>
+        <childnode refid="2" relation="public-inheritance">
+        </childnode>
+      </node>
+      <node id="2">
+        <label>CellHabitatDomainInterface</label>
+        <link refid="class_cell_habitat_domain_interface"/>
+        <childnode refid="1" relation="public-inheritance">
+        </childnode>
+      </node>
+      <node id="7">
+        <label>CellMoisture</label>
+        <link refid="class_cell_moisture"/>
+        <childnode refid="5" relation="public-inheritance">
+        </childnode>
+      </node>
+      <node id="5">
+        <label>CellMoistureInterface</label>
+        <link refid="class_cell_moisture_interface"/>
+        <childnode refid="1" relation="public-inheritance">
+        </childnode>
+      </node>
+      <node id="10">
+        <label>CellObstacle</label>
+        <link refid="class_cell_obstacle"/>
+        <childnode refid="8" relation="public-inheritance">
+        </childnode>
+      </node>
+      <node id="8">
+        <label>CellObstacleInterface</label>
+        <link refid="class_cell_obstacle_interface"/>
+        <childnode refid="1" relation="public-inheritance">
+        </childnode>
+      </node>
+      <node id="13">
+        <label>CellResource</label>
+        <link refid="class_cell_resource"/>
+        <childnode refid="11" relation="public-inheritance">
+        </childnode>
+      </node>
+      <node id="11">
+        <label>CellResourceInterface</label>
+        <link refid="class_cell_resource_interface"/>
+        <childnode refid="1" relation="public-inheritance">
+        </childnode>
+      </node>
+    </inheritancegraph>
+    <location file="App/Model/IBM/Landscape/Map/TerrainCells/PatchApplicator/CellElement.h" line="36" column="1" bodyfile="App/Model/IBM/Landscape/Map/TerrainCells/PatchApplicator/CellElement.h" bodystart="37" bodyend="113"/>
+    <listofallmembers>
+      <member refid="class_cell_element_1a77dc6b9db0633bb7d35df0b547ddf613" prot="public" virt="non-virtual"><scope>CellElement</scope><name>CellElement</name></member>
+      <member refid="class_cell_element_1a07008f499b17c5dc792ab20d05dbf471" prot="public" virt="non-virtual"><scope>CellElement</scope><name>CellElement</name></member>
+      <member refid="class_cell_element_1a5abb98d6d592c3fc4084fc886106d7c3" prot="public" virt="non-virtual"><scope>CellElement</scope><name>CellElement</name></member>
+      <member refid="class_cell_element_1aeb03190224c2ff962587e94d8fe0c8b4" prot="public" virt="non-virtual"><scope>CellElement</scope><name>getPatchPriority</name></member>
+      <member refid="class_cell_element_1ac7467d8c95d1a3d3e8b72a3209681ce0" prot="public" virt="non-virtual"><scope>CellElement</scope><name>operator=</name></member>
+      <member refid="class_cell_element_1ac25808724b01c8f1555c0be37b0f9d6f" prot="protected" virt="non-virtual"><scope>CellElement</scope><name>patchPriority</name></member>
+      <member refid="class_cell_element_1a1be8cb473a32f4835ccd6b22a9874abe" prot="public" virt="non-virtual"><scope>CellElement</scope><name>serialize</name></member>
+      <member refid="class_cell_element_1a9178746c39e277cc4ac9af2f434ac72e" prot="protected" virt="non-virtual"><scope>CellElement</scope><name>setPatchPriority</name></member>
+      <member refid="class_cell_element_1a82b86d53e7e9c50f4c3145be272bd38f" prot="public" virt="virtual"><scope>CellElement</scope><name>~CellElement</name></member>
+    </listofallmembers>
+  </compounddef>
+</doxygen>

@@ -1,0 +1,953 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.14.0" xml:lang="en-US">
+  <compounddef id="class_geometry" kind="class" language="C++" prot="public">
+    <compoundname>Geometry</compoundname>
+    <includes refid="_geometry_8h" local="no">Geometry.h</includes>
+    <sectiondef kind="public-static-attrib">
+      <memberdef kind="variable" id="class_geometry_1af693f0bbf82001703d86004e15f96b79" prot="public" static="yes" constexpr="yes" mutable="no">
+        <type>const unsigned int</type>
+        <definition>const unsigned int Geometry::POINTS_PER_CIRCLE</definition>
+        <argsstring></argsstring>
+        <name>POINTS_PER_CIRCLE</name>
+        <qualifiedname>Geometry::POINTS_PER_CIRCLE</qualifiedname>
+        <initializer>= 45</initializer>
+        <briefdescription>
+<para><ref refid="class_number" kindref="compound">Number</ref> of points used to approximate a circle. </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="App/Model/IBM/Landscape/Map/Geometry/Geometry.h" line="99" column="41" bodyfile="App/Model/IBM/Landscape/Map/Geometry/Geometry.h" bodystart="99" bodyend="-1"/>
+      </memberdef>
+    </sectiondef>
+    <sectiondef kind="private-static-func">
+      <memberdef kind="function" id="class_geometry_1ad9cb81ceda6e4d04b878b1c373e680e2" prot="private" static="yes" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type><ref refid="class_precise_double" kindref="compound">PreciseDouble</ref></type>
+        <definition>static PreciseDouble Geometry::calculateArea</definition>
+        <argsstring>(const RingModel &amp;obj)</argsstring>
+        <name>calculateArea</name>
+        <qualifiedname>Geometry::calculateArea</qualifiedname>
+        <param>
+          <type>const RingModel &amp;</type>
+          <declname>obj</declname>
+        </param>
+        <briefdescription>
+<para>Calculates the area of a ring. </para>
+        </briefdescription>
+        <detaileddescription>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>obj</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Pointer to the ring object. </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<simplesect kind="return"><para>Area of the ring. </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="App/Model/IBM/Landscape/Map/Geometry/Geometry.h" line="86" column="26"/>
+      </memberdef>
+      <memberdef kind="function" id="class_geometry_1a5cd4e7b1180b41fa902a1dd071e8bdcb" prot="private" static="yes" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>Coverage</type>
+        <definition>static Coverage Geometry::checkCoverageLevel</definition>
+        <argsstring>(const PreciseDouble &amp;percent)</argsstring>
+        <name>checkCoverageLevel</name>
+        <qualifiedname>Geometry::checkCoverageLevel</qualifiedname>
+        <param>
+          <type>const <ref refid="class_precise_double" kindref="compound">PreciseDouble</ref> &amp;</type>
+          <declname>percent</declname>
+        </param>
+        <briefdescription>
+<para>Determines the coverage level based on a percentage. </para>
+        </briefdescription>
+        <detaileddescription>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>percent</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Coverage percentage (0-100). </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<simplesect kind="return"><para>Coverage enum indicating coverage level. </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="App/Model/IBM/Landscape/Map/Geometry/Geometry.h" line="93" column="21"/>
+      </memberdef>
+      <memberdef kind="function" id="class_geometry_1ab64df9f26501edd5e856bd997df00743" prot="private" static="yes" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>BoxModel</type>
+        <definition>static BoxModel Geometry::makeBox</definition>
+        <argsstring>(const PointMap &amp;position, const PreciseDouble &amp;size, const bool applyEpsilon=false)</argsstring>
+        <name>makeBox</name>
+        <qualifiedname>Geometry::makeBox</qualifiedname>
+        <param>
+          <type>const <ref refid="class_point_map" kindref="compound">PointMap</ref> &amp;</type>
+          <declname>position</declname>
+        </param>
+        <param>
+          <type>const <ref refid="class_precise_double" kindref="compound">PreciseDouble</ref> &amp;</type>
+          <declname>size</declname>
+        </param>
+        <param>
+          <type>const bool</type>
+          <declname>applyEpsilon</declname>
+          <defval>false</defval>
+        </param>
+        <briefdescription>
+<para>Creates a box given a position and size. </para>
+        </briefdescription>
+        <detaileddescription>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>position</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Center position of the box. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>size</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Size of the box along each axis. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>applyEpsilon</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Whether to apply a small epsilon to avoid precision issues. </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<simplesect kind="return"><para>Pointer to the created BoxModel. </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="App/Model/IBM/Landscape/Map/Geometry/Geometry.h" line="79" column="21"/>
+      </memberdef>
+      <memberdef kind="function" id="class_geometry_1a19e9663f3107534172c034ffebee7118" prot="private" static="yes" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>bool</type>
+        <definition>static bool Geometry::pointInCircle</definition>
+        <argsstring>(double circleX, double circleY, double radiusSq, double px, double py)</argsstring>
+        <name>pointInCircle</name>
+        <qualifiedname>Geometry::pointInCircle</qualifiedname>
+        <param>
+          <type>double</type>
+          <declname>circleX</declname>
+        </param>
+        <param>
+          <type>double</type>
+          <declname>circleY</declname>
+        </param>
+        <param>
+          <type>double</type>
+          <declname>radiusSq</declname>
+        </param>
+        <param>
+          <type>double</type>
+          <declname>px</declname>
+        </param>
+        <param>
+          <type>double</type>
+          <declname>py</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="App/Model/IBM/Landscape/Map/Geometry/Geometry.h" line="95" column="17"/>
+      </memberdef>
+    </sectiondef>
+    <sectiondef kind="public-static-func">
+      <memberdef kind="function" id="class_geometry_1aada771fcc9b0b73ccce1bc3828d75773" prot="public" static="yes" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>PointContinuous</type>
+        <definition>static PointContinuous Geometry::calculateClosestPoint</definition>
+        <argsstring>(const RingModel &amp;polygon, const LineStringModel &amp;line)</argsstring>
+        <name>calculateClosestPoint</name>
+        <qualifiedname>Geometry::calculateClosestPoint</qualifiedname>
+        <param>
+          <type>const RingModel &amp;</type>
+          <declname>polygon</declname>
+        </param>
+        <param>
+          <type>const LineStringModel &amp;</type>
+          <declname>line</declname>
+        </param>
+        <briefdescription>
+<para>Finds the closest point on a line to a polygon. </para>
+        </briefdescription>
+        <detaileddescription>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>polygon</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Polygon to check. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>line</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>LineString to check. </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<simplesect kind="return"><para>Closest point on the line to the polygon. </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="App/Model/IBM/Landscape/Map/Geometry/Geometry.h" line="147" column="28"/>
+      </memberdef>
+      <memberdef kind="function" id="class_geometry_1a04ebcb8d2e65f391dd097550ddf9f629" prot="public" static="yes" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type><ref refid="class_precise_double" kindref="compound">PreciseDouble</ref></type>
+        <definition>static PreciseDouble Geometry::calculateCoveragePercentBySphere</definition>
+        <argsstring>(const RingModel &amp;area, const PointContinuous &amp;center, const PreciseDouble &amp;radius)</argsstring>
+        <name>calculateCoveragePercentBySphere</name>
+        <qualifiedname>Geometry::calculateCoveragePercentBySphere</qualifiedname>
+        <param>
+          <type>const RingModel &amp;</type>
+          <declname>area</declname>
+        </param>
+        <param>
+          <type>const PointContinuous &amp;</type>
+          <declname>center</declname>
+        </param>
+        <param>
+          <type>const <ref refid="class_precise_double" kindref="compound">PreciseDouble</ref> &amp;</type>
+          <declname>radius</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="App/Model/IBM/Landscape/Map/Geometry/Geometry.h" line="207" column="26"/>
+      </memberdef>
+      <memberdef kind="function" id="class_geometry_1a79da823ce25632a2f247d686a8dfd6e0" prot="public" static="yes" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type><ref refid="class_precise_double" kindref="compound">PreciseDouble</ref></type>
+        <definition>static PreciseDouble Geometry::calculateDistanceBetweenPointAndPolygon</definition>
+        <argsstring>(const PointContinuous &amp;point, const RingModel &amp;polygon)</argsstring>
+        <name>calculateDistanceBetweenPointAndPolygon</name>
+        <qualifiedname>Geometry::calculateDistanceBetweenPointAndPolygon</qualifiedname>
+        <param>
+          <type>const PointContinuous &amp;</type>
+          <declname>point</declname>
+        </param>
+        <param>
+          <type>const RingModel &amp;</type>
+          <declname>polygon</declname>
+        </param>
+        <briefdescription>
+<para>Calculates the shortest distance from a point to a polygon. </para>
+        </briefdescription>
+        <detaileddescription>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>point</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Point to measure from. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>polygon</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Polygon to measure to. </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<simplesect kind="return"><para>Minimum distance between point and polygon. </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="App/Model/IBM/Landscape/Map/Geometry/Geometry.h" line="139" column="26"/>
+      </memberdef>
+      <memberdef kind="function" id="class_geometry_1a5baf47f504a57b1e901e611773cb4c49" prot="public" static="yes" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type><ref refid="class_precise_double" kindref="compound">PreciseDouble</ref></type>
+        <definition>static PreciseDouble Geometry::calculateDistanceBetweenPoints</definition>
+        <argsstring>(const PointContinuous &amp;pointA, const PointContinuous &amp;pointB)</argsstring>
+        <name>calculateDistanceBetweenPoints</name>
+        <qualifiedname>Geometry::calculateDistanceBetweenPoints</qualifiedname>
+        <param>
+          <type>const PointContinuous &amp;</type>
+          <declname>pointA</declname>
+        </param>
+        <param>
+          <type>const PointContinuous &amp;</type>
+          <declname>pointB</declname>
+        </param>
+        <briefdescription>
+<para>Calculates the Euclidean distance between two points. </para>
+        </briefdescription>
+        <detaileddescription>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>pointA</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>First point. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>pointB</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Second point. </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<simplesect kind="return"><para>Distance between the two points. </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="App/Model/IBM/Landscape/Map/Geometry/Geometry.h" line="131" column="26"/>
+      </memberdef>
+      <memberdef kind="function" id="class_geometry_1a789c477cd4d95e9b08d22f94ea8ca5d5" prot="public" static="yes" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type><ref refid="class_precise_double" kindref="compound">PreciseDouble</ref></type>
+        <definition>static PreciseDouble Geometry::calculateFirstCoveragePercentBySecond</definition>
+        <argsstring>(const RingModel &amp;first, const RingModel &amp;second, const bool applyIntersection)</argsstring>
+        <name>calculateFirstCoveragePercentBySecond</name>
+        <qualifiedname>Geometry::calculateFirstCoveragePercentBySecond</qualifiedname>
+        <param>
+          <type>const RingModel &amp;</type>
+          <declname>first</declname>
+        </param>
+        <param>
+          <type>const RingModel &amp;</type>
+          <declname>second</declname>
+        </param>
+        <param>
+          <type>const bool</type>
+          <declname>applyIntersection</declname>
+        </param>
+        <briefdescription>
+<para>Calculates the coverage percentage of the first ring by the second. </para>
+        </briefdescription>
+        <detaileddescription>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>first</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Pointer to the first ring. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>second</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Pointer to the second ring. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>applyIntersection</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Whether to consider only the intersection area. </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<simplesect kind="return"><para>Coverage percentage (0-100). </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="App/Model/IBM/Landscape/Map/Geometry/Geometry.h" line="227" column="26"/>
+      </memberdef>
+      <memberdef kind="function" id="class_geometry_1a50184c2b27ee9f175e44c0b7ee696367" prot="public" static="yes" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>RingModel</type>
+        <definition>static RingModel Geometry::calculateIntersection</definition>
+        <argsstring>(const RingModel &amp;objA, const RingModel &amp;objB)</argsstring>
+        <name>calculateIntersection</name>
+        <qualifiedname>Geometry::calculateIntersection</qualifiedname>
+        <param>
+          <type>const RingModel &amp;</type>
+          <declname>objA</declname>
+        </param>
+        <param>
+          <type>const RingModel &amp;</type>
+          <declname>objB</declname>
+        </param>
+        <briefdescription>
+<para>Calculates the intersection of two rings. </para>
+        </briefdescription>
+        <detaileddescription>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>objA</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Pointer to the first ring. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>objB</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Pointer to the second ring. </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<simplesect kind="return"><para>Pointer to a RingModel representing the intersection area. </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="App/Model/IBM/Landscape/Map/Geometry/Geometry.h" line="123" column="22"/>
+      </memberdef>
+      <memberdef kind="function" id="class_geometry_1adf74f000cfa57c66952ecfd35ee983d9" prot="public" static="yes" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>PointContinuous</type>
+        <definition>static PointContinuous Geometry::calculateLineStringPointAtDistance</definition>
+        <argsstring>(const PointContinuous &amp;initialPoint, const PointContinuous &amp;finalPoint, const PreciseDouble &amp;distance)</argsstring>
+        <name>calculateLineStringPointAtDistance</name>
+        <qualifiedname>Geometry::calculateLineStringPointAtDistance</qualifiedname>
+        <param>
+          <type>const PointContinuous &amp;</type>
+          <declname>initialPoint</declname>
+        </param>
+        <param>
+          <type>const PointContinuous &amp;</type>
+          <declname>finalPoint</declname>
+        </param>
+        <param>
+          <type>const <ref refid="class_precise_double" kindref="compound">PreciseDouble</ref> &amp;</type>
+          <declname>distance</declname>
+        </param>
+        <briefdescription>
+<para>Calculates a point along a line segment at a given distance from the initial point. </para>
+        </briefdescription>
+        <detaileddescription>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>initialPoint</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Starting point of the line. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>finalPoint</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Ending point of the line. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>distance</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Distance from the initial point along the line. </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<simplesect kind="return"><para>Point at the specified distance along the line. </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="App/Model/IBM/Landscape/Map/Geometry/Geometry.h" line="156" column="28"/>
+      </memberdef>
+      <memberdef kind="function" id="class_geometry_1a93b5a32a698eb7e5dd856fb92c363bbf" prot="public" static="yes" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>Coverage</type>
+        <definition>static Coverage Geometry::checkCoveredLevelBySphere</definition>
+        <argsstring>(const RingModel &amp;area, const PointContinuous &amp;center, const PreciseDouble &amp;radius)</argsstring>
+        <name>checkCoveredLevelBySphere</name>
+        <qualifiedname>Geometry::checkCoveredLevelBySphere</qualifiedname>
+        <param>
+          <type>const RingModel &amp;</type>
+          <declname>area</declname>
+        </param>
+        <param>
+          <type>const PointContinuous &amp;</type>
+          <declname>center</declname>
+        </param>
+        <param>
+          <type>const <ref refid="class_precise_double" kindref="compound">PreciseDouble</ref> &amp;</type>
+          <declname>radius</declname>
+        </param>
+        <briefdescription>
+<para>Determines coverage level of an area by a sphere. </para>
+        </briefdescription>
+        <detaileddescription>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>area</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Pointer to the area polygon. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>center</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Center of the sphere. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>radius</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Sphere radius. </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<simplesect kind="return"><para>Coverage enum representing the coverage level. </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="App/Model/IBM/Landscape/Map/Geometry/Geometry.h" line="205" column="21"/>
+      </memberdef>
+      <memberdef kind="function" id="class_geometry_1ac900d10949a77f24b604ae42f4aebd1f" prot="public" static="yes" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>Coverage</type>
+        <definition>static Coverage Geometry::checkFirstCoverageLevelBySecond</definition>
+        <argsstring>(const RingModel &amp;first, const RingModel &amp;second, const bool applyIntersection)</argsstring>
+        <name>checkFirstCoverageLevelBySecond</name>
+        <qualifiedname>Geometry::checkFirstCoverageLevelBySecond</qualifiedname>
+        <param>
+          <type>const RingModel &amp;</type>
+          <declname>first</declname>
+        </param>
+        <param>
+          <type>const RingModel &amp;</type>
+          <declname>second</declname>
+        </param>
+        <param>
+          <type>const bool</type>
+          <declname>applyIntersection</declname>
+        </param>
+        <briefdescription>
+<para>Determines coverage level of the first ring by the second. </para>
+        </briefdescription>
+        <detaileddescription>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>first</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Pointer to the first ring. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>second</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Pointer to the second ring. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>applyIntersection</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Whether to consider only the intersection area. </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<simplesect kind="return"><para>Coverage enum representing the coverage level. </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="App/Model/IBM/Landscape/Map/Geometry/Geometry.h" line="187" column="21"/>
+      </memberdef>
+      <memberdef kind="function" id="class_geometry_1a720f66b25500d73ad7570cbf9b96733a" prot="public" static="yes" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>bool</type>
+        <definition>static bool Geometry::fullCoveredBySphere</definition>
+        <argsstring>(const RingModel &amp;area, const PointContinuous &amp;center, const PreciseDouble &amp;radius)</argsstring>
+        <name>fullCoveredBySphere</name>
+        <qualifiedname>Geometry::fullCoveredBySphere</qualifiedname>
+        <param>
+          <type>const RingModel &amp;</type>
+          <declname>area</declname>
+        </param>
+        <param>
+          <type>const PointContinuous &amp;</type>
+          <declname>center</declname>
+        </param>
+        <param>
+          <type>const <ref refid="class_precise_double" kindref="compound">PreciseDouble</ref> &amp;</type>
+          <declname>radius</declname>
+        </param>
+        <briefdescription>
+<para>Checks if an area is fully covered by a sphere. </para>
+        </briefdescription>
+        <detaileddescription>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>area</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Pointer to the area polygon. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>center</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Center of the sphere. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>radius</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Sphere radius. </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<simplesect kind="return"><para>True if fully covered. </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="App/Model/IBM/Landscape/Map/Geometry/Geometry.h" line="196" column="17"/>
+      </memberdef>
+      <memberdef kind="function" id="class_geometry_1a6d8ed7f430105acc615e7e6922ce101e" prot="public" static="yes" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>PointContinuous</type>
+        <definition>static PointContinuous Geometry::generateRandomPointOnBox</definition>
+        <argsstring>(const RingModel &amp;box)</argsstring>
+        <name>generateRandomPointOnBox</name>
+        <qualifiedname>Geometry::generateRandomPointOnBox</qualifiedname>
+        <param>
+          <type>const RingModel &amp;</type>
+          <declname>box</declname>
+        </param>
+        <briefdescription>
+<para>Generates a random point within a box. </para>
+        </briefdescription>
+        <detaileddescription>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>box</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Pointer to the box. </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<simplesect kind="return"><para><ref refid="class_random" kindref="compound">Random</ref> point inside the box. </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="App/Model/IBM/Landscape/Map/Geometry/Geometry.h" line="171" column="28"/>
+      </memberdef>
+      <memberdef kind="function" id="class_geometry_1a9972aec9f3d1c9600ed7c52ece7c0d90" prot="public" static="yes" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>PointContinuous</type>
+        <definition>static PointContinuous Geometry::generateRandomPointOnPolygon</definition>
+        <argsstring>(const RingModel &amp;area)</argsstring>
+        <name>generateRandomPointOnPolygon</name>
+        <qualifiedname>Geometry::generateRandomPointOnPolygon</qualifiedname>
+        <param>
+          <type>const RingModel &amp;</type>
+          <declname>area</declname>
+        </param>
+        <briefdescription>
+<para>Generates a random point within a polygon. </para>
+        </briefdescription>
+        <detaileddescription>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>area</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Pointer to the polygon area. </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<simplesect kind="return"><para><ref refid="class_random" kindref="compound">Random</ref> point inside the polygon. </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="App/Model/IBM/Landscape/Map/Geometry/Geometry.h" line="178" column="28"/>
+      </memberdef>
+      <memberdef kind="function" id="class_geometry_1a038ee01a741e01b94fb364f671b8c259" prot="public" static="yes" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>BoxModel</type>
+        <definition>static BoxModel Geometry::makeBoxEffectiveArea</definition>
+        <argsstring>(const PointMap &amp;position, const PreciseDouble &amp;size)</argsstring>
+        <name>makeBoxEffectiveArea</name>
+        <qualifiedname>Geometry::makeBoxEffectiveArea</qualifiedname>
+        <param>
+          <type>const <ref refid="class_point_map" kindref="compound">PointMap</ref> &amp;</type>
+          <declname>position</declname>
+        </param>
+        <param>
+          <type>const <ref refid="class_precise_double" kindref="compound">PreciseDouble</ref> &amp;</type>
+          <declname>size</declname>
+        </param>
+        <briefdescription>
+<para>Creates a box representing an effective area. </para>
+        </briefdescription>
+        <detaileddescription>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>position</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Center position of the box. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>size</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Size of the box. </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<simplesect kind="return"><para>Pointer to the BoxModel representing the effective area. </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="App/Model/IBM/Landscape/Map/Geometry/Geometry.h" line="107" column="21"/>
+      </memberdef>
+      <memberdef kind="function" id="class_geometry_1ad3271456f475189ee7d0d679f42f8552" prot="public" static="yes" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>RingModel</type>
+        <definition>static RingModel Geometry::makeSphere</definition>
+        <argsstring>(const PointContinuous &amp;center, const PreciseDouble &amp;radius)</argsstring>
+        <name>makeSphere</name>
+        <qualifiedname>Geometry::makeSphere</qualifiedname>
+        <param>
+          <type>const PointContinuous &amp;</type>
+          <declname>center</declname>
+        </param>
+        <param>
+          <type>const <ref refid="class_precise_double" kindref="compound">PreciseDouble</ref> &amp;</type>
+          <declname>radius</declname>
+        </param>
+        <briefdescription>
+<para>Creates a spherical ring. </para>
+        </briefdescription>
+        <detaileddescription>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>center</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Center of the sphere. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>radius</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Radius of the sphere. </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<simplesect kind="return"><para>Pointer to a RingModel approximating the sphere. </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="App/Model/IBM/Landscape/Map/Geometry/Geometry.h" line="115" column="22"/>
+      </memberdef>
+      <memberdef kind="function" id="class_geometry_1a33db0833310b861422717bfc838703c2" prot="public" static="yes" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>bool</type>
+        <definition>static bool Geometry::pointInsideBox</definition>
+        <argsstring>(const PointContinuous &amp;point, const RingModel &amp;box)</argsstring>
+        <name>pointInsideBox</name>
+        <qualifiedname>Geometry::pointInsideBox</qualifiedname>
+        <param>
+          <type>const PointContinuous &amp;</type>
+          <declname>point</declname>
+        </param>
+        <param>
+          <type>const RingModel &amp;</type>
+          <declname>box</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="App/Model/IBM/Landscape/Map/Geometry/Geometry.h" line="218" column="17"/>
+      </memberdef>
+      <memberdef kind="function" id="class_geometry_1a3e7e3c2b16bc3de4bd3369afa49e7760" prot="public" static="yes" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>bool</type>
+        <definition>static bool Geometry::pointInsideSphere</definition>
+        <argsstring>(const PointContinuous &amp;point, const PointContinuous &amp;center, const PreciseDouble &amp;radius)</argsstring>
+        <name>pointInsideSphere</name>
+        <qualifiedname>Geometry::pointInsideSphere</qualifiedname>
+        <param>
+          <type>const PointContinuous &amp;</type>
+          <declname>point</declname>
+        </param>
+        <param>
+          <type>const PointContinuous &amp;</type>
+          <declname>center</declname>
+        </param>
+        <param>
+          <type>const <ref refid="class_precise_double" kindref="compound">PreciseDouble</ref> &amp;</type>
+          <declname>radius</declname>
+        </param>
+        <briefdescription>
+<para>Checks if a point is inside a sphere. </para>
+        </briefdescription>
+        <detaileddescription>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>point</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Point to check. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>center</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Sphere center. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>radius</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Sphere radius. </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<simplesect kind="return"><para>True if the point lies inside the sphere. </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="App/Model/IBM/Landscape/Map/Geometry/Geometry.h" line="216" column="17"/>
+      </memberdef>
+      <memberdef kind="function" id="class_geometry_1a7aebfbd10aa1b2044b8ce9573703e89e" prot="public" static="yes" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>bool</type>
+        <definition>static bool Geometry::withinPolygon</definition>
+        <argsstring>(const PointContinuous &amp;point, const RingModel &amp;polygon)</argsstring>
+        <name>withinPolygon</name>
+        <qualifiedname>Geometry::withinPolygon</qualifiedname>
+        <param>
+          <type>const PointContinuous &amp;</type>
+          <declname>point</declname>
+        </param>
+        <param>
+          <type>const RingModel &amp;</type>
+          <declname>polygon</declname>
+        </param>
+        <briefdescription>
+<para>Checks if a point is within a polygon. </para>
+        </briefdescription>
+        <detaileddescription>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>point</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Point to check. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>polygon</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Pointer to the polygon. </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<simplesect kind="return"><para>True if the point lies inside the polygon. </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="App/Model/IBM/Landscape/Map/Geometry/Geometry.h" line="164" column="17"/>
+      </memberdef>
+    </sectiondef>
+    <briefdescription>
+<para>Provides static geometric operations for spatial modeling. </para>
+    </briefdescription>
+    <detaileddescription>
+<para>The <ref refid="class_geometry" kindref="compound">Geometry</ref> class includes methods for creating geometric shapes, calculating distances, intersections, areas, and coverage levels, and generating random points within shapes. All methods are static. </para>
+    </detaileddescription>
+    <location file="App/Model/IBM/Landscape/Map/Geometry/Geometry.h" line="69" column="1" bodyfile="App/Model/IBM/Landscape/Map/Geometry/Geometry.h" bodystart="70" bodyend="228"/>
+    <listofallmembers>
+      <member refid="class_geometry_1ad9cb81ceda6e4d04b878b1c373e680e2" prot="private" virt="non-virtual"><scope>Geometry</scope><name>calculateArea</name></member>
+      <member refid="class_geometry_1aada771fcc9b0b73ccce1bc3828d75773" prot="public" virt="non-virtual"><scope>Geometry</scope><name>calculateClosestPoint</name></member>
+      <member refid="class_geometry_1a04ebcb8d2e65f391dd097550ddf9f629" prot="public" virt="non-virtual"><scope>Geometry</scope><name>calculateCoveragePercentBySphere</name></member>
+      <member refid="class_geometry_1a79da823ce25632a2f247d686a8dfd6e0" prot="public" virt="non-virtual"><scope>Geometry</scope><name>calculateDistanceBetweenPointAndPolygon</name></member>
+      <member refid="class_geometry_1a5baf47f504a57b1e901e611773cb4c49" prot="public" virt="non-virtual"><scope>Geometry</scope><name>calculateDistanceBetweenPoints</name></member>
+      <member refid="class_geometry_1a789c477cd4d95e9b08d22f94ea8ca5d5" prot="public" virt="non-virtual"><scope>Geometry</scope><name>calculateFirstCoveragePercentBySecond</name></member>
+      <member refid="class_geometry_1a50184c2b27ee9f175e44c0b7ee696367" prot="public" virt="non-virtual"><scope>Geometry</scope><name>calculateIntersection</name></member>
+      <member refid="class_geometry_1adf74f000cfa57c66952ecfd35ee983d9" prot="public" virt="non-virtual"><scope>Geometry</scope><name>calculateLineStringPointAtDistance</name></member>
+      <member refid="class_geometry_1a5cd4e7b1180b41fa902a1dd071e8bdcb" prot="private" virt="non-virtual"><scope>Geometry</scope><name>checkCoverageLevel</name></member>
+      <member refid="class_geometry_1a93b5a32a698eb7e5dd856fb92c363bbf" prot="public" virt="non-virtual"><scope>Geometry</scope><name>checkCoveredLevelBySphere</name></member>
+      <member refid="class_geometry_1ac900d10949a77f24b604ae42f4aebd1f" prot="public" virt="non-virtual"><scope>Geometry</scope><name>checkFirstCoverageLevelBySecond</name></member>
+      <member refid="class_geometry_1a720f66b25500d73ad7570cbf9b96733a" prot="public" virt="non-virtual"><scope>Geometry</scope><name>fullCoveredBySphere</name></member>
+      <member refid="class_geometry_1a6d8ed7f430105acc615e7e6922ce101e" prot="public" virt="non-virtual"><scope>Geometry</scope><name>generateRandomPointOnBox</name></member>
+      <member refid="class_geometry_1a9972aec9f3d1c9600ed7c52ece7c0d90" prot="public" virt="non-virtual"><scope>Geometry</scope><name>generateRandomPointOnPolygon</name></member>
+      <member refid="class_geometry_1ab64df9f26501edd5e856bd997df00743" prot="private" virt="non-virtual"><scope>Geometry</scope><name>makeBox</name></member>
+      <member refid="class_geometry_1a038ee01a741e01b94fb364f671b8c259" prot="public" virt="non-virtual"><scope>Geometry</scope><name>makeBoxEffectiveArea</name></member>
+      <member refid="class_geometry_1ad3271456f475189ee7d0d679f42f8552" prot="public" virt="non-virtual"><scope>Geometry</scope><name>makeSphere</name></member>
+      <member refid="class_geometry_1a19e9663f3107534172c034ffebee7118" prot="private" virt="non-virtual"><scope>Geometry</scope><name>pointInCircle</name></member>
+      <member refid="class_geometry_1a33db0833310b861422717bfc838703c2" prot="public" virt="non-virtual"><scope>Geometry</scope><name>pointInsideBox</name></member>
+      <member refid="class_geometry_1a3e7e3c2b16bc3de4bd3369afa49e7760" prot="public" virt="non-virtual"><scope>Geometry</scope><name>pointInsideSphere</name></member>
+      <member refid="class_geometry_1af693f0bbf82001703d86004e15f96b79" prot="public" virt="non-virtual"><scope>Geometry</scope><name>POINTS_PER_CIRCLE</name></member>
+      <member refid="class_geometry_1a7aebfbd10aa1b2044b8ce9573703e89e" prot="public" virt="non-virtual"><scope>Geometry</scope><name>withinPolygon</name></member>
+    </listofallmembers>
+  </compounddef>
+</doxygen>
