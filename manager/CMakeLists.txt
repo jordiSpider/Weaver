@@ -9,7 +9,7 @@ if(DEFINED ENV{VCPKG_DEFAULT_BINARY_CACHE})
 endif()
 
 
-project(WeaverManager VERSION 1.0.0 LANGUAGES CXX)
+project(WeaverManager VERSION 1.0.1 LANGUAGES CXX)
 
 option(ENABLE_TEST "Enable test-only Manager features" OFF)
 
