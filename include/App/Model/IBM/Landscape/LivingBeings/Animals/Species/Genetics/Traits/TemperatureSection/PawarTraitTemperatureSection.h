@@ -23,6 +23,7 @@
 
 /**
  * @class PawarTraitTemperatureSection
+ * @ingroup weaver_landscape
  * @brief Represents a temperature-dependent section of a Pawar metabolic model trait.
  *
  * This class extends TraitTemperatureSection to manage traits based on the Pawar
@@ -33,12 +34,12 @@
 class PawarTraitTemperatureSection : public TraitTemperatureSection {
 public:
     /**
-     * @brief Returns the CSV header for a given trait.
+     * @brief Appends the CSV header for a given trait.
      *
      * @param trait Name of the trait.
-     * @return Header string for CSV or data output.
+     * @param header Header string to append to.
      */
-    static std::string getHeader(const std::string& trait);
+    static void getHeader(const std::string& trait, std::string& header);
 
 
     /**
@@ -89,9 +90,9 @@ public:
      * @param numberOfLociPerTrait Number of loci per trait.
      * @param rhoPerModule Vector of rho values per module.
      * @param rhoRangePerModule Vector of rho ranges per module.
-     * @return Pointer to an IndividualTraitTemperatureSection representing the individual's temperature-dependent trait.
+     * @return Variant holding the individual's temperature-dependent trait section.
      */
-    IndividualTraitTemperatureSection* generateIndividualTraitTemperatureSection(const PreciseDouble& geneticValue, const Genome& genome, const size_t traitsPerModule, const size_t numberOfLociPerTrait, const std::vector<PreciseDouble>& rhoPerModule, const std::vector<size_t>& rhoRangePerModule) const;
+    IndividualTraitTemperatureSectionVariant generateIndividualTraitTemperatureSection(const PreciseDouble& geneticValue, const Genome& genome, const size_t traitsPerModule, const size_t numberOfLociPerTrait, const std::vector<PreciseDouble>& rhoPerModule, const std::vector<size_t>& rhoRangePerModule) const;
 
     /**
      * @brief Deserializes individual-level traits from serialized data.

@@ -146,6 +146,11 @@ void AnimalGrowth::calculateGrowthModel(const std::vector<IndividualTrait>& base
 	}
 }
 
+const TimeStep AnimalGrowth::getAgeOfFirstMaturation(const TimeStep& pupaPeriodTime) const
+{
+	return getInstarAge(getSpeciesGrowth()->getInstarFirstMaturation()) + pupaPeriodTime;
+}
+
 void AnimalGrowth::calculateGrowthCurves(const std::vector<IndividualTrait>& baseIndividualTraits, const unsigned int femaleMaxReproductionEvents, const PreciseDouble& timeStepsPerDay)
 {
     PreciseDouble finalDevTimeProportion;
@@ -192,12 +197,16 @@ void AnimalGrowth::calculateGrowthCurves(const std::vector<IndividualTrait>& bas
 
 	if(getSpeciesGrowth()->hasIndeterminateGrowth())
 	{
-		if(getInstarAge(getSpeciesGrowth()->getInstarFirstReproduction()-1) * baseIndividualTraits[static_cast<size_t>(BaseTraitType::longevitySinceMaturation)].getPhenotypicValue() < getIndividualInstarAgeVector().back())
+		TimeStep pupaPeriodTime(Day(baseIndividualTraits[static_cast<size_t>(BaseTraitType::pupaPeriodTime)].getPhenotypicValue()), timeStepsPerDay);
+
+		TimeStep maturationAge = getAgeOfFirstMaturation(pupaPeriodTime);
+
+		if(maturationAge * baseIndividualTraits[static_cast<size_t>(BaseTraitType::longevitySinceMaturation)].getPhenotypicValue() < getIndividualInstarAgeVector().back())
 		{
 			throwLineInfoException("Item 'longevitySinceMaturation' must be rounded up to a higher value.");
 		}
 
-		if((getInstarAge(getSpeciesGrowth()->getInstarFirstReproduction()-1) * baseIndividualTraits[static_cast<size_t>(BaseTraitType::longevitySinceMaturation)].getPhenotypicValue() - getInstarAge(getSpeciesGrowth()->getInstarFirstReproduction()-1)) / femaleMaxReproductionEvents < TimeStep(1))
+		if(((maturationAge * baseIndividualTraits[static_cast<size_t>(BaseTraitType::longevitySinceMaturation)].getPhenotypicValue() - maturationAge) / femaleMaxReproductionEvents) < TimeStep(1))
 		{
 			throwLineInfoException("Item 'longevitySinceMaturation' must be rounded up to a higher value due to female reproductive events.");
 		}

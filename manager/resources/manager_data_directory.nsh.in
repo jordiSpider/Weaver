@@ -1,0 +1,64 @@
+!include "nsDialogs.nsh"
+!include "LogicLib.nsh"
+
+Var MANAGERDATADIR
+Var MANAGERDATADIRTEXT
+Var MANAGERDATARBROWSEBUTTON
+Var MANAGERDATARBROWSERESULT
+
+Function ManagerDataDirPageCreate
+	!insertmacro MUI_HEADER_TEXT "Application Data Folder" "Choose where Weaver Manager stores logs and installed versions"
+
+	SetShellVarContext all
+	StrCpy $0 "$DOCUMENTS\@WEAVER_MANAGER_DATA_FOLDER@"
+	SetShellVarContext current
+	StrCpy $1 "$DOCUMENTS\@WEAVER_MANAGER_DATA_FOLDER@"
+	SetShellVarContext all
+
+	ReadRegStr $MANAGERDATADIR HKLM "@WEAVER_MANAGER_REGISTRY_KEY@" "DataDirectory"
+	StrCmp $MANAGERDATADIR "" ManagerDataDirUseUserDocuments
+	StrCmp $MANAGERDATADIR $0 ManagerDataDirUseUserDocuments ManagerDataDirPathReady
+ManagerDataDirUseUserDocuments:
+	StrCpy $MANAGERDATADIR $1
+ManagerDataDirPathReady:
+
+	nsDialogs::Create 1018
+	Pop $0
+	${If} $0 == error
+		Abort
+	${EndIf}
+
+	${NSD_CreateLabel} 0 0 100% 24u "Choose the folder for Weaver Manager's mutable data and logs:"
+	Pop $0
+	${NSD_CreateText} 0 32u 75% 12u "$MANAGERDATADIR"
+	Pop $MANAGERDATADIRTEXT
+	${NSD_CreateButton} 78% 32u 22% 12u "Browse..."
+	Pop $MANAGERDATARBROWSEBUTTON
+	${NSD_OnClick} $MANAGERDATARBROWSEBUTTON ManagerDataDirBrowse
+
+	nsDialogs::Show
+FunctionEnd
+
+Function ManagerDataDirBrowse
+	nsDialogs::SelectFolderDialog "Select application data folder" "$MANAGERDATADIR"
+	Pop $MANAGERDATARBROWSERESULT
+	StrCmp $MANAGERDATARBROWSERESULT "" done
+	StrCpy $MANAGERDATADIR $MANAGERDATARBROWSERESULT
+	${NSD_SetText} $MANAGERDATADIRTEXT "$MANAGERDATADIR"
+done:
+FunctionEnd
+
+Function ManagerDataDirPageLeave
+	${NSD_GetText} $MANAGERDATADIRTEXT $MANAGERDATADIR
+	StrCmp $MANAGERDATADIR "" 0 valid
+	MessageBox MB_ICONEXCLAMATION|MB_OK "Please choose an application data folder."
+	Abort
+valid:
+FunctionEnd
+
+!macro ManagerDataDirInstall
+	CreateDirectory "$MANAGERDATADIR"
+	CreateDirectory "$MANAGERDATADIR\installed_versions"
+	CreateDirectory "$MANAGERDATADIR\logs"
+	WriteRegStr HKLM "@WEAVER_MANAGER_REGISTRY_KEY@" "DataDirectory" "$MANAGERDATADIR"
+!macroend

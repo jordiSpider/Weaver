@@ -1,0 +1,377 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.14.0" xml:lang="en-US">
+  <compounddef id="class_patch_shape" kind="class" language="C++" prot="public" abstract="yes">
+    <compoundname>PatchShape</compoundname>
+    <derivedcompoundref refid="class_cubic_patch" prot="public" virt="non-virtual">CubicPatch</derivedcompoundref>
+    <derivedcompoundref refid="class_gaussian_patch" prot="public" virt="non-virtual">GaussianPatch</derivedcompoundref>
+    <derivedcompoundref refid="class_homogeneous_patch" prot="public" virt="non-virtual">HomogeneousPatch</derivedcompoundref>
+    <derivedcompoundref refid="class_random_gaussian_patch" prot="public" virt="non-virtual">RandomGaussianPatch</derivedcompoundref>
+    <derivedcompoundref refid="class_spherical_patch" prot="public" virt="non-virtual">SphericalPatch</derivedcompoundref>
+    <includes refid="_patch_shape_8h" local="no">PatchShape.h</includes>
+    <sectiondef kind="public-type">
+      <memberdef kind="enum" id="class_patch_shape_1aa74e58d28556a3c6158a5d539c320441" prot="public" static="no" strong="no">
+        <type>unsigned char</type>
+        <name>Type</name>
+        <qualifiedname>PatchShape::Type</qualifiedname>
+        <enumvalue id="class_patch_shape_1aa74e58d28556a3c6158a5d539c320441a4d7c12bf9a9b9fae84bc17f544ea7311" prot="public">
+          <name>Homogeneous</name>
+          <briefdescription>
+          </briefdescription>
+          <detaileddescription>
+<para>Uniform patch </para>
+          </detaileddescription>
+        </enumvalue>
+        <enumvalue id="class_patch_shape_1aa74e58d28556a3c6158a5d539c320441a976a1a6657de7d2dc30b59c5bd133878" prot="public">
+          <name>Gaussian</name>
+          <briefdescription>
+          </briefdescription>
+          <detaileddescription>
+<para>Gaussian-shaped patch </para>
+          </detaileddescription>
+        </enumvalue>
+        <enumvalue id="class_patch_shape_1aa74e58d28556a3c6158a5d539c320441ae8954eeee45bf68f46e358d8396bdb1c" prot="public">
+          <name>Spherical</name>
+          <briefdescription>
+          </briefdescription>
+          <detaileddescription>
+<para>Spherical patch </para>
+          </detaileddescription>
+        </enumvalue>
+        <enumvalue id="class_patch_shape_1aa74e58d28556a3c6158a5d539c320441a32db57c81b125b1cc5654fc22b478cd9" prot="public">
+          <name>Cubic</name>
+          <briefdescription>
+          </briefdescription>
+          <detaileddescription>
+<para>Cubic/box-shaped patch </para>
+          </detaileddescription>
+        </enumvalue>
+        <enumvalue id="class_patch_shape_1aa74e58d28556a3c6158a5d539c320441a6bff30f96389f5213af96393be786cc4" prot="public">
+          <name>RandomGaussian</name>
+          <briefdescription>
+          </briefdescription>
+          <detaileddescription>
+<para>Randomly generated Gaussian patch </para>
+          </detaileddescription>
+        </enumvalue>
+        <briefdescription>
+<para>Types of patch shapes. </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="App/Model/IBM/Landscape/Map/Patches/Shape/PatchShape.h" line="60" column="5" bodyfile="App/Model/IBM/Landscape/Map/Patches/Shape/PatchShape.h" bodystart="61" bodyend="67"/>
+      </memberdef>
+    </sectiondef>
+    <sectiondef kind="protected-attrib">
+      <memberdef kind="variable" id="class_patch_shape_1ae5bbe370ec01600f60cb6903b4c540a5" prot="protected" static="no" mutable="no">
+        <type>std::string</type>
+        <definition>std::string PatchShape::description</definition>
+        <argsstring></argsstring>
+        <name>description</name>
+        <qualifiedname>PatchShape::description</qualifiedname>
+        <briefdescription>
+<para>Description of the patch shape. </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="App/Model/IBM/Landscape/Map/Patches/Shape/PatchShape.h" line="37" column="17" bodyfile="App/Model/IBM/Landscape/Map/Patches/Shape/PatchShape.h" bodystart="37" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="class_patch_shape_1a4ef341df39425a0e23c85c98a05aca84" prot="protected" static="no" mutable="no">
+        <type>const RingModel</type>
+        <definition>const RingModel PatchShape::influenceZone</definition>
+        <argsstring></argsstring>
+        <name>influenceZone</name>
+        <qualifiedname>PatchShape::influenceZone</qualifiedname>
+        <briefdescription>
+<para>Influence zone of the patch (geometry used for coverage calculations) </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="App/Model/IBM/Landscape/Map/Patches/Shape/PatchShape.h" line="34" column="21" bodyfile="App/Model/IBM/Landscape/Map/Patches/Shape/PatchShape.h" bodystart="34" bodyend="-1"/>
+      </memberdef>
+    </sectiondef>
+    <sectiondef kind="protected-func">
+      <memberdef kind="function" id="class_patch_shape_1ab47ea0078ccdfb701ea462ca6d12b0fe" prot="protected" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type></type>
+        <definition>PatchShape::PatchShape</definition>
+        <argsstring>(const PatchShape &amp;)=delete</argsstring>
+        <name>PatchShape</name>
+        <qualifiedname>PatchShape::PatchShape</qualifiedname>
+        <param>
+          <type>const <ref refid="class_patch_shape" kindref="compound">PatchShape</ref> &amp;</type>
+        </param>
+        <briefdescription>
+<para>Deleted copy constructor (<ref refid="class_patch_shape" kindref="compound">PatchShape</ref> is non-copyable). </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="App/Model/IBM/Landscape/Map/Patches/Shape/PatchShape.h" line="49" column="5"/>
+      </memberdef>
+      <memberdef kind="function" id="class_patch_shape_1a6255d13bbae3d7e6ecfd336223c9d3dd" prot="protected" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type></type>
+        <definition>PatchShape::PatchShape</definition>
+        <argsstring>(const RingModel &amp;influenceZone, const std::string description)</argsstring>
+        <name>PatchShape</name>
+        <qualifiedname>PatchShape::PatchShape</qualifiedname>
+        <param>
+          <type>const RingModel &amp;</type>
+          <declname>influenceZone</declname>
+        </param>
+        <param>
+          <type>const std::string</type>
+          <declname>description</declname>
+        </param>
+        <briefdescription>
+<para>Protected constructor for derived classes. </para>
+        </briefdescription>
+        <detaileddescription>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>influenceZone</parametername>
+</parameternamelist>
+<parameterdescription>
+<para><ref refid="class_geometry" kindref="compound">Geometry</ref> representing the patch&apos;s influence. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>description</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Textual description of the patch shape. </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="App/Model/IBM/Landscape/Map/Patches/Shape/PatchShape.h" line="44" column="5"/>
+      </memberdef>
+      <memberdef kind="function" id="class_patch_shape_1aaef6f1dfd0973fe114fb43a282ba75f1" prot="protected" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type><ref refid="class_patch_shape" kindref="compound">PatchShape</ref> &amp;</type>
+        <definition>PatchShape &amp; PatchShape::operator=</definition>
+        <argsstring>(const PatchShape &amp;)=delete</argsstring>
+        <name>operator=</name>
+        <qualifiedname>PatchShape::operator=</qualifiedname>
+        <param>
+          <type>const <ref refid="class_patch_shape" kindref="compound">PatchShape</ref> &amp;</type>
+        </param>
+        <briefdescription>
+<para>Deleted copy assignment operator (<ref refid="class_patch_shape" kindref="compound">PatchShape</ref> is non-copyable). </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="App/Model/IBM/Landscape/Map/Patches/Shape/PatchShape.h" line="54" column="16"/>
+      </memberdef>
+    </sectiondef>
+    <sectiondef kind="public-static-func">
+      <memberdef kind="function" id="class_patch_shape_1abecdbf9f1405da6c2f8b962c1cb88b1e" prot="public" static="yes" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type><ref refid="class_patch_shape" kindref="compound">PatchShape</ref> *</type>
+        <definition>static PatchShape * PatchShape::createInstance</definition>
+        <argsstring>(const nlohmann::json &amp;shapeConfig)</argsstring>
+        <name>createInstance</name>
+        <qualifiedname>PatchShape::createInstance</qualifiedname>
+        <param>
+          <type>const nlohmann::json &amp;</type>
+          <declname>shapeConfig</declname>
+        </param>
+        <briefdescription>
+<para>Factory method to create a <ref refid="class_patch_shape" kindref="compound">PatchShape</ref> instance from JSON configuration. </para>
+        </briefdescription>
+        <detaileddescription>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>shapeConfig</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>JSON configuration specifying the shape type and parameters. </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<simplesect kind="return"><para>Pointer to a dynamically allocated <ref refid="class_patch_shape" kindref="compound">PatchShape</ref> object. </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="App/Model/IBM/Landscape/Map/Patches/Shape/PatchShape.h" line="74" column="23"/>
+      </memberdef>
+    </sectiondef>
+    <sectiondef kind="public-func">
+      <memberdef kind="function" id="class_patch_shape_1a4beb99220c496ae32941cf33749ba9e1" prot="public" static="no" const="no" explicit="no" inline="no" virt="virtual">
+        <type></type>
+        <definition>virtual PatchShape::~PatchShape</definition>
+        <argsstring>()</argsstring>
+        <name>~PatchShape</name>
+        <qualifiedname>PatchShape::~PatchShape</qualifiedname>
+        <briefdescription>
+<para>Virtual destructor. </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="App/Model/IBM/Landscape/Map/Patches/Shape/PatchShape.h" line="79" column="13"/>
+      </memberdef>
+      <memberdef kind="function" id="class_patch_shape_1a88136979a26b8c7c70913f1cc3cb3643" prot="public" static="no" const="yes" explicit="no" inline="no" virt="virtual">
+        <type>Coverage</type>
+        <definition>virtual Coverage PatchShape::checkCoverage</definition>
+        <argsstring>(const RingModel &amp;cellBounds) const</argsstring>
+        <name>checkCoverage</name>
+        <qualifiedname>PatchShape::checkCoverage</qualifiedname>
+        <reimplementedby refid="class_homogeneous_patch_1a2fbc55b9e0a4975719cd2f4d59ccd285">checkCoverage</reimplementedby>
+        <param>
+          <type>const RingModel &amp;</type>
+          <declname>cellBounds</declname>
+        </param>
+        <briefdescription>
+<para>Checks the coverage level of a given cell by this patch. </para>
+        </briefdescription>
+        <detaileddescription>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>cellBounds</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Bounds of the landscape cell to check. </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<simplesect kind="return"><para>Coverage enum value indicating how much of the cell is covered. </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="App/Model/IBM/Landscape/Map/Patches/Shape/PatchShape.h" line="86" column="22"/>
+      </memberdef>
+      <memberdef kind="function" id="class_patch_shape_1adcbf4069a38d786fc9fb2012e420b4ae" prot="public" static="no" const="yes" explicit="no" inline="no" virt="non-virtual">
+        <type>const std::string_view</type>
+        <definition>const std::string_view PatchShape::getDescription</definition>
+        <argsstring>() const</argsstring>
+        <name>getDescription</name>
+        <qualifiedname>PatchShape::getDescription</qualifiedname>
+        <briefdescription>
+<para>Returns the textual description of the patch. </para>
+        </briefdescription>
+        <detaileddescription>
+<para><simplesect kind="return"><para>std::string_view containing the patch description. </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="App/Model/IBM/Landscape/Map/Patches/Shape/PatchShape.h" line="94" column="28"/>
+      </memberdef>
+      <memberdef kind="function" id="class_patch_shape_1a044dcdc984871767b0e58447f4bee90e" prot="public" static="no" const="yes" explicit="no" inline="no" virt="non-virtual">
+        <type>const RingModel &amp;</type>
+        <definition>const RingModel &amp; PatchShape::getInfluenceZone</definition>
+        <argsstring>() const</argsstring>
+        <name>getInfluenceZone</name>
+        <qualifiedname>PatchShape::getInfluenceZone</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="App/Model/IBM/Landscape/Map/Patches/Shape/PatchShape.h" line="88" column="21"/>
+      </memberdef>
+      <memberdef kind="function" id="class_patch_shape_1ad3d819b523adfe04097f9d83f1cbaf3b" prot="public" static="no" const="yes" explicit="no" inline="no" virt="pure-virtual">
+        <type><ref refid="class_patch_shape_1aa74e58d28556a3c6158a5d539c320441" kindref="member">Type</ref></type>
+        <definition>virtual Type PatchShape::getType</definition>
+        <argsstring>() const =0</argsstring>
+        <name>getType</name>
+        <qualifiedname>PatchShape::getType</qualifiedname>
+        <reimplementedby refid="class_cubic_patch_1a85ddea5b937af3c4c860bbf6ce493a90">getType</reimplementedby>
+        <reimplementedby refid="class_gaussian_patch_1a4b14dff0ce63011618ef65604bc0724e">getType</reimplementedby>
+        <reimplementedby refid="class_homogeneous_patch_1adb9d2f4216989543c6cbf0ecd02b96af">getType</reimplementedby>
+        <reimplementedby refid="class_random_gaussian_patch_1a641840f23567498c3f9257ad4b06a226">getType</reimplementedby>
+        <reimplementedby refid="class_spherical_patch_1ab37d98ff000eeb29602d351a68ef232b">getType</reimplementedby>
+        <briefdescription>
+<para>Returns the type of the patch shape. </para>
+        </briefdescription>
+        <detaileddescription>
+<para><simplesect kind="return"><para><ref refid="class_patch_shape_1aa74e58d28556a3c6158a5d539c320441" kindref="member">Type</ref> Enum value indicating the patch shape type. </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="App/Model/IBM/Landscape/Map/Patches/Shape/PatchShape.h" line="100" column="18"/>
+      </memberdef>
+    </sectiondef>
+    <briefdescription>
+<para>Abstract base class representing a patch shape. </para>
+    </briefdescription>
+    <detaileddescription>
+<para>The <ref refid="class_patch_shape" kindref="compound">PatchShape</ref> class provides a common interface for all patch shapes, including the influence zone, description, and coverage checks. Derived classes must implement the <ref refid="class_patch_shape_1ad3d819b523adfe04097f9d83f1cbaf3b" kindref="member">getType()</ref> method to specify the shape type. </para>
+    </detaileddescription>
+    <inheritancegraph>
+      <node id="2">
+        <label>CubicPatch</label>
+        <link refid="class_cubic_patch"/>
+        <childnode refid="1" relation="public-inheritance">
+        </childnode>
+      </node>
+      <node id="3">
+        <label>GaussianPatch</label>
+        <link refid="class_gaussian_patch"/>
+        <childnode refid="1" relation="public-inheritance">
+        </childnode>
+      </node>
+      <node id="4">
+        <label>HomogeneousPatch</label>
+        <link refid="class_homogeneous_patch"/>
+        <childnode refid="1" relation="public-inheritance">
+        </childnode>
+      </node>
+      <node id="1">
+        <label>PatchShape</label>
+        <link refid="class_patch_shape"/>
+      </node>
+      <node id="5">
+        <label>RandomGaussianPatch</label>
+        <link refid="class_random_gaussian_patch"/>
+        <childnode refid="1" relation="public-inheritance">
+        </childnode>
+      </node>
+      <node id="6">
+        <label>SphericalPatch</label>
+        <link refid="class_spherical_patch"/>
+        <childnode refid="1" relation="public-inheritance">
+        </childnode>
+      </node>
+    </inheritancegraph>
+    <location file="App/Model/IBM/Landscape/Map/Patches/Shape/PatchShape.h" line="31" column="1" bodyfile="App/Model/IBM/Landscape/Map/Patches/Shape/PatchShape.h" bodystart="31" bodyend="101"/>
+    <listofallmembers>
+      <member refid="class_patch_shape_1a88136979a26b8c7c70913f1cc3cb3643" prot="public" virt="virtual"><scope>PatchShape</scope><name>checkCoverage</name></member>
+      <member refid="class_patch_shape_1abecdbf9f1405da6c2f8b962c1cb88b1e" prot="public" virt="non-virtual"><scope>PatchShape</scope><name>createInstance</name></member>
+      <member refid="class_patch_shape_1aa74e58d28556a3c6158a5d539c320441a32db57c81b125b1cc5654fc22b478cd9" prot="public" virt="non-virtual"><scope>PatchShape</scope><name>Cubic</name></member>
+      <member refid="class_patch_shape_1ae5bbe370ec01600f60cb6903b4c540a5" prot="protected" virt="non-virtual"><scope>PatchShape</scope><name>description</name></member>
+      <member refid="class_patch_shape_1aa74e58d28556a3c6158a5d539c320441a976a1a6657de7d2dc30b59c5bd133878" prot="public" virt="non-virtual"><scope>PatchShape</scope><name>Gaussian</name></member>
+      <member refid="class_patch_shape_1adcbf4069a38d786fc9fb2012e420b4ae" prot="public" virt="non-virtual"><scope>PatchShape</scope><name>getDescription</name></member>
+      <member refid="class_patch_shape_1a044dcdc984871767b0e58447f4bee90e" prot="public" virt="non-virtual"><scope>PatchShape</scope><name>getInfluenceZone</name></member>
+      <member refid="class_patch_shape_1ad3d819b523adfe04097f9d83f1cbaf3b" prot="public" virt="pure-virtual"><scope>PatchShape</scope><name>getType</name></member>
+      <member refid="class_patch_shape_1aa74e58d28556a3c6158a5d539c320441a4d7c12bf9a9b9fae84bc17f544ea7311" prot="public" virt="non-virtual"><scope>PatchShape</scope><name>Homogeneous</name></member>
+      <member refid="class_patch_shape_1a4ef341df39425a0e23c85c98a05aca84" prot="protected" virt="non-virtual"><scope>PatchShape</scope><name>influenceZone</name></member>
+      <member refid="class_patch_shape_1aaef6f1dfd0973fe114fb43a282ba75f1" prot="protected" virt="non-virtual"><scope>PatchShape</scope><name>operator=</name></member>
+      <member refid="class_patch_shape_1a6255d13bbae3d7e6ecfd336223c9d3dd" prot="protected" virt="non-virtual"><scope>PatchShape</scope><name>PatchShape</name></member>
+      <member refid="class_patch_shape_1ab47ea0078ccdfb701ea462ca6d12b0fe" prot="protected" virt="non-virtual"><scope>PatchShape</scope><name>PatchShape</name></member>
+      <member refid="class_patch_shape_1aa74e58d28556a3c6158a5d539c320441a6bff30f96389f5213af96393be786cc4" prot="public" virt="non-virtual"><scope>PatchShape</scope><name>RandomGaussian</name></member>
+      <member refid="class_patch_shape_1aa74e58d28556a3c6158a5d539c320441ae8954eeee45bf68f46e358d8396bdb1c" prot="public" virt="non-virtual"><scope>PatchShape</scope><name>Spherical</name></member>
+      <member refid="class_patch_shape_1aa74e58d28556a3c6158a5d539c320441" prot="public" virt="non-virtual"><scope>PatchShape</scope><name>Type</name></member>
+      <member refid="class_patch_shape_1a4beb99220c496ae32941cf33749ba9e1" prot="public" virt="virtual"><scope>PatchShape</scope><name>~PatchShape</name></member>
+    </listofallmembers>
+  </compounddef>
+</doxygen>

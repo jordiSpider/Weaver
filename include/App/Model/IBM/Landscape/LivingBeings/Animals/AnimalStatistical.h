@@ -17,6 +17,7 @@
 
 /**
  * @class AnimalStatistical
+ * @ingroup weaver_landscape
  * @brief Concrete implementation of Animal for statistical modeling.
  *
  * This class extends Animal to provide a statistical model for animal behavior,
@@ -82,7 +83,10 @@ public:
      * @brief Get the instar to evaluate terrain cells.
      * @return Const reference to Instar.
      */
-    const Instar& getInstarToEvaluateCells() const;
+    inline constexpr Instar getInstarToEvaluateCells() const noexcept
+    {
+        return getInstar();
+    }
 
     /**
      * @brief Increment the count of predation encounters for the animal.
@@ -119,7 +123,7 @@ public:
      * @param predatorId ID of the predator.
      * @param timeStepsPerDay Number of time steps per day.
      */
-    void setNewLifeStage(Landscape* const landscape, const LifeStage newLifeStage, const TimeStep numberOfTimeSteps, EdibleID predatorId, const PreciseDouble& timeStepsPerDay);
+    void setNewLifeStage(Landscape* const landscape, const LifeStage newLifeStage, const TimeStep numberOfTimeSteps, id_type predatorId, const PreciseDouble& timeStepsPerDay);
     
     /**
      * @brief Get the remaining voracity of the animal.

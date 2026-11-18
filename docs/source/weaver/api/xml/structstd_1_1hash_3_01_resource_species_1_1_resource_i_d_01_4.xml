@@ -1,0 +1,52 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.14.0" xml:lang="en-US">
+  <compounddef id="structstd_1_1hash_3_01_resource_species_1_1_resource_i_d_01_4" kind="struct" language="C++" prot="public">
+    <compoundname>std::hash&lt; ResourceSpecies::ResourceID &gt;</compoundname>
+    <includes refid="_resource_species_8h" local="no">ResourceSpecies.h</includes>
+    <templateparamlist>
+    </templateparamlist>
+    <sectiondef kind="public-func">
+      <memberdef kind="function" id="structstd_1_1hash_3_01_resource_species_1_1_resource_i_d_01_4_1abfb201a91c71b5f8f9fe945c8edf3e2c" prot="public" static="no" const="yes" explicit="no" inline="no" virt="non-virtual">
+        <type>std::size_t</type>
+        <definition>std::size_t std::hash&lt; ResourceSpecies::ResourceID &gt;::operator()</definition>
+        <argsstring>(const ResourceSpecies::ResourceID &amp;resourceID) const</argsstring>
+        <name>operator()</name>
+        <qualifiedname>std::hash&lt; ResourceSpecies::ResourceID &gt;::operator()</qualifiedname>
+        <param>
+          <type>const <ref refid="class_resource_species_1_1_resource_i_d" kindref="compound">ResourceSpecies::ResourceID</ref> &amp;</type>
+          <declname>resourceID</declname>
+        </param>
+        <briefdescription>
+<para>Computes the hash value of a ResourceID. </para>
+        </briefdescription>
+        <detaileddescription>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>resourceID</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>The ResourceID to hash. </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<simplesect kind="return"><para>Hash value. </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="App/Model/IBM/Landscape/LivingBeings/Resources/Species/ResourceSpecies.h" line="192" column="13"/>
+      </memberdef>
+    </sectiondef>
+    <briefdescription>
+<para>Hash specialization for <ref refid="class_resource_species_1_1_resource_i_d" kindref="compound">ResourceSpecies::ResourceID</ref>. </para>
+    </briefdescription>
+    <detaileddescription>
+<para>Allows the use of ResourceID in std::unordered_map or std::unordered_set. </para>
+    </detaileddescription>
+    <location file="App/Model/IBM/Landscape/LivingBeings/Resources/Species/ResourceSpecies.h" line="186" column="1" bodyfile="App/Model/IBM/Landscape/LivingBeings/Resources/Species/ResourceSpecies.h" bodystart="186" bodyend="193"/>
+    <listofallmembers>
+      <member refid="structstd_1_1hash_3_01_resource_species_1_1_resource_i_d_01_4_1abfb201a91c71b5f8f9fe945c8edf3e2c" prot="public" virt="non-virtual"><scope>std::hash&lt; ResourceSpecies::ResourceID &gt;</scope><name>operator()</name></member>
+    </listofallmembers>
+  </compounddef>
+</doxygen>

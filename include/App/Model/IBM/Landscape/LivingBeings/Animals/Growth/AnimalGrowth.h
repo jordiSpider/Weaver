@@ -31,6 +31,7 @@
 
 /**
  * @class AnimalGrowth
+ * @ingroup weaver_landscape
  * @brief Manages the growth and mass dynamics of an individual animal.
  *
  * AnimalGrowth tracks the current body size, energy reserves, instar ages, and maturity
@@ -76,6 +77,11 @@ public:
      * @return Age in time steps.
      */
     const TimeStep& getInstarAge(const Instar& instarValue) const;
+
+    /**
+     * @brief Calculates the age of first maturation after pupation.
+     */
+    const TimeStep getAgeOfFirstMaturation(const TimeStep& pupaPeriodTime) const;
 
     /**
      * @brief Get the full vector of individual instar ages.

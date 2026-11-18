@@ -9,11 +9,11 @@ namespace fs = std::filesystem;
 
 
 
-Model* Model::createInstance(Type modelType, View& view)
+Model* Model::createInstance(Type modelType)
 {
     switch(modelType) {
         case Type::IBM: {
-            return new IBM(view);
+            return new IBM();
             break;
         }
         default: {
@@ -25,8 +25,7 @@ Model* Model::createInstance(Type modelType, View& view)
 
 
 
-Model::Model(View& view)
-    : view(view)
+Model::Model()
 {
 
 }

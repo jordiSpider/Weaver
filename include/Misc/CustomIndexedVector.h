@@ -17,12 +17,14 @@
 
 /**
  * @class CustomIndexedVector
+ * @ingroup weaver_model
  * @brief A vector container indexed by a custom type with bounds checking.
  *
  * @tparam IndexType The type used to index the vector (e.g., enum or integer type).
  * @tparam ContentType The type of elements stored in the vector.
  *
  * @note Throws `std::out_of_range` if the index exceeds the vector size.
+ * @note A specialization for `bool` uses `std::vector<bool>` storage.
  */
 template <typename IndexType, typename ContentType>
 class CustomIndexedVector {
@@ -54,6 +56,23 @@ public:
     {
         
     }
+
+    // Constructor de movimiento explícito
+    CustomIndexedVector(CustomIndexedVector&& other) noexcept
+        : data(std::move(other.data))
+    {
+    }
+
+    // Operador de asignación de movimiento explícito
+    CustomIndexedVector& operator=(CustomIndexedVector&& other) noexcept {
+        if (this != &other) {
+            data = std::move(other.data);
+        }
+        return *this;
+    }
+
+    CustomIndexedVector(const CustomIndexedVector& other) = default;
+    CustomIndexedVector& operator=(const CustomIndexedVector& other) = default;
 
     /// Returns a const reference to the internal vector.
     const std::vector<ContentType>& getData() const
@@ -100,20 +119,40 @@ public:
     /**
      * @brief Access element by index (non-const).
      * 
-     * Provides unchecked access to the element at the given index. Throws
-     * std::out_of_range if the index is out of bounds.
+     * Provides unchecked access to the element at the given index.
      * 
      * @param index Index of the element.
      * @return Reference to the element at the specified index.
-     * @throws std::out_of_range if index >= size().
      */
-    ContentType& operator[](const IndexType& index)
+    ContentType& operator[](const IndexType& index) noexcept
     {
-        if(static_cast<size_t>(index) >= data.size())
-        {
-            throw std::out_of_range("The value of the index is greater than the size of the vector");
-        }
+        return data[static_cast<size_t>(index)];
+    }
 
+    /**
+     * @brief Access element by index (non-const).
+     * 
+     * Provides unchecked access to the element at the given index.
+     * 
+     * @param index Index of the element.
+     * @return Reference to the element at the specified index.
+     */
+    ContentType& operator[](size_t index) noexcept
+    {
+        return data[index];
+    }
+
+    /**
+     * @brief Access element by index (const version).
+     * 
+     * Provides unchecked access to the element at the given index for
+     * const objects.
+     * 
+     * @param index Index of the element.
+     * @return Const reference to the element at the specified index.
+     */
+    const ContentType& operator[](const IndexType& index) const noexcept
+    {
         return data[static_cast<size_t>(index)];
     }
 
@@ -121,20 +160,14 @@ public:
      * @brief Access element by index (const version).
      * 
      * Provides unchecked access to the element at the given index for
-     * const objects. Throws std::out_of_range if the index is out of bounds.
+     * const objects.
      * 
      * @param index Index of the element.
      * @return Const reference to the element at the specified index.
-     * @throws std::out_of_range if index >= size().
      */
-    const ContentType& operator[](const IndexType& index) const
+    const ContentType& operator[](size_t index) const noexcept
     {
-        if(static_cast<size_t>(index) >= data.size())
-        {
-            throw std::out_of_range("The value of the index is greater than the size of the vector");
-        }
-
-        return data[static_cast<size_t>(index)];
+        return data[index];
     }
 
     /**
@@ -175,44 +208,6 @@ public:
         }
 
         return data.at(static_cast<size_t>(index));
-    }
-
-    /**
-     * @brief Access element by numeric index (non-const).
-     * 
-     * Provides bounds-checked access using a size_t index.
-     * 
-     * @param index Numeric index of the element.
-     * @return Reference to the element at the specified index.
-     * @throws std::out_of_range if index >= size().
-     */
-    ContentType& getValue(const size_t& index)
-    {
-        if(index >= data.size())
-        {
-            throw std::out_of_range("The value of the index is greater than the size of the vector");
-        }
-
-        return data.at(index);
-    }
-
-    /**
-     * @brief Access element by numeric index (const version).
-     * 
-     * Provides bounds-checked access using a size_t index for const objects.
-     * 
-     * @param index Numeric index of the element.
-     * @return Const reference to the element at the specified index.
-     * @throws std::out_of_range if index >= size().
-     */
-    const ContentType& getValue(const size_t& index) const
-    {
-        if(index >= data.size())
-        {
-            throw std::out_of_range("The value of the index is greater than the size of the vector");
-        }
-
-        return data.at(index);
     }
 
     /// Adds an element to the end of the vector.
@@ -326,6 +321,7 @@ private:
 
 
 
+/** @cond DOXYGEN_SHOULD_SKIP_THIS */
 /**
  * @brief Specialization of CustomIndexedVector for `bool` values.
  *
@@ -410,20 +406,40 @@ public:
     /**
      * @brief Access element by index (non-const).
      * 
-     * Provides unchecked access to the element at the given index. Throws
-     * std::out_of_range if the index is out of bounds.
+     * Provides unchecked access to the element at the given index.
      * 
      * @param index Index of the element.
      * @return Reference to the element at the specified index.
-     * @throws std::out_of_range if index >= size().
      */
-    std::vector<bool>::reference operator[](const IndexType& index)
+    std::vector<bool>::reference operator[](const IndexType& index) noexcept
     {
-        if(static_cast<size_t>(index) >= data.size())
-        {
-            throw std::out_of_range("The value of the index is greater than the size of the vector");
-        }
+        return data[static_cast<size_t>(index)];
+    }
 
+    /**
+     * @brief Access element by index (non-const).
+     * 
+     * Provides unchecked access to the element at the given index.
+     * 
+     * @param index Index of the element.
+     * @return Reference to the element at the specified index.
+     */
+    std::vector<bool>::reference operator[](size_t index) noexcept
+    {
+        return data[index];
+    }
+
+    /**
+     * @brief Access element by index (const version).
+     * 
+     * Provides unchecked access to the element at the given index for
+     * const objects.
+     * 
+     * @param index Index of the element.
+     * @return Const reference to the element at the specified index.
+     */
+    std::vector<bool>::const_reference operator[](const IndexType& index) const noexcept
+    {
         return data[static_cast<size_t>(index)];
     }
 
@@ -431,20 +447,14 @@ public:
      * @brief Access element by index (const version).
      * 
      * Provides unchecked access to the element at the given index for
-     * const objects. Throws std::out_of_range if the index is out of bounds.
+     * const objects.
      * 
      * @param index Index of the element.
      * @return Const reference to the element at the specified index.
-     * @throws std::out_of_range if index >= size().
      */
-    std::vector<bool>::const_reference operator[](const IndexType& index) const
+    std::vector<bool>::const_reference operator[](size_t index) const noexcept
     {
-        if(static_cast<size_t>(index) >= data.size())
-        {
-            throw std::out_of_range("The value of the index is greater than the size of the vector");
-        }
-
-        return data[static_cast<size_t>(index)];
+        return data[index];
     }
 
     /**
@@ -485,44 +495,6 @@ public:
         }
 
         return data.at(static_cast<size_t>(index));
-    }
-
-    /**
-     * @brief Access element by numeric index (non-const).
-     * 
-     * Provides bounds-checked access using a size_t index.
-     * 
-     * @param index Numeric index of the element.
-     * @return Reference to the element at the specified index.
-     * @throws std::out_of_range if index >= size().
-     */
-    std::vector<bool>::reference getValue(const size_t& index)
-    {
-        if(index >= data.size())
-        {
-            throw std::out_of_range("The value of the index is greater than the size of the vector");
-        }
-
-        return data.at(index);
-    }
-
-    /**
-     * @brief Access element by numeric index (const version).
-     * 
-     * Provides bounds-checked access using a size_t index for const objects.
-     * 
-     * @param index Numeric index of the element.
-     * @return Const reference to the element at the specified index.
-     * @throws std::out_of_range if index >= size().
-     */
-    std::vector<bool>::const_reference getValue(const size_t& index) const
-    {
-        if(index >= data.size())
-        {
-            throw std::out_of_range("The value of the index is greater than the size of the vector");
-        }
-
-        return data.at(index);
     }
 
     /**
@@ -623,5 +595,6 @@ public:
 private:
     std::vector<bool> data; /**< Internal storage of bool elements */
 };
+/** @endcond */
 
 #endif // CUSTOM_INDEXED_VECTOR_H_

@@ -27,6 +27,7 @@
 
 /**
 * @class ArthropodsLandscape
+* @ingroup weaver_landscape
 * @brief Specialized landscape model for arthropod ecosystems.
 *
 * This class extends the generic Landscape class with arthropod-specific

@@ -16,13 +16,12 @@
 
 #include "App/Model/IBM/Landscape/LivingBeings/Animals/Genetics/Genome.h"
 #include "App/Model/IBM/Landscape/LivingBeings/Animals/Species/Genetics/Traits/DefinitionSection/IndividualLevelTrait.h"
-
-
-class IndividualTraitTemperatureSection;
+#include "App/Model/IBM/Landscape/LivingBeings/Animals/Genetics/Traits/IndividualTraitTemperatureSectionVariant.h"
 
 
 /**
  * @class TraitTemperatureSection
+ * @ingroup weaver_landscape
  * @brief Represents the temperature-dependent part of a trait.
  *
  * This class provides the interface for managing temperature-specific aspects of traits,
@@ -36,7 +35,7 @@ public:
      * @param trait Name of the trait.
      * @return Header string for CSV or data output.
      */
-    static std::string getHeader(const std::string& trait);
+    static void getHeader(const std::string& trait, std::string& header);
 
 
     /**
@@ -61,9 +60,9 @@ public:
      * @param numberOfLociPerTrait Number of loci per trait.
      * @param rhoPerModule Vector of rho values per module.
      * @param rhoRangePerModule Vector of rho ranges per module.
-     * @return Pointer to an IndividualTraitTemperatureSection representing the individual's temperature-dependent trait.
+     * @return Variant holding the individual's temperature-dependent trait section.
      */
-    virtual IndividualTraitTemperatureSection* generateIndividualTraitTemperatureSection(const PreciseDouble& geneticValue, const Genome& genome, const size_t traitsPerModule, const size_t numberOfLociPerTrait, const std::vector<PreciseDouble>& rhoPerModule, const std::vector<size_t>& rhoRangePerModule) const=0;
+    virtual IndividualTraitTemperatureSectionVariant generateIndividualTraitTemperatureSection(const PreciseDouble& geneticValue, const Genome& genome, const size_t traitsPerModule, const size_t numberOfLociPerTrait, const std::vector<PreciseDouble>& rhoPerModule, const std::vector<size_t>& rhoRangePerModule) const=0;
 
     /**
      * @brief Deserializes individual-level traits.

@@ -51,7 +51,7 @@ Species::Species()
 }
 
 Species::Species(const Species::ID& speciesId, const string& scientificName)
-	: id(speciesId), scientificName(trim(scientificName)), extinguished(false) 
+	: id(speciesId), scientificName(trim(scientificName)), extinguished(false)
 	  
 {
 	

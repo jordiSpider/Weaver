@@ -24,6 +24,7 @@
 
 /**
  * @class Checkbox
+ * @ingroup weaver_model
  * @brief A custom Checkbox widget combining a label and a checkbox in a panel.
  *
  * This class provides a simple checkbox with an associated label.

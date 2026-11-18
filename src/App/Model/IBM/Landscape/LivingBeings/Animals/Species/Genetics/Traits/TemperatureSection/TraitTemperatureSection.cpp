@@ -8,13 +8,9 @@ using json = nlohmann::json;
 
 
 
-string TraitTemperatureSection::getHeader(const string& trait)
+void TraitTemperatureSection::getHeader(const string& trait, std::string& header)
 {
-    ostringstream header;
-
-    header << PawarTraitTemperatureSection::getHeader(trait);
-
-    return header.str();
+    PawarTraitTemperatureSection::getHeader(trait, header);
 }
 
 

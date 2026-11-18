@@ -23,6 +23,7 @@
 
 /**
  * @class CellObstacle
+ * @ingroup weaver_landscape
  * @brief Concrete obstacle element for a terrain cell.
  *
  * Implements the CellObstacleInterface to provide obstacle behavior in a terrain cell.

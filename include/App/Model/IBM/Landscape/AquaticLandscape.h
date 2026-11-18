@@ -27,6 +27,7 @@
 
 /**
 * @class AquaticLandscape
+* @ingroup weaver_landscape
 * @brief Specialized landscape representing aquatic ecosystems.
 *
 * This class extends the base Landscape class and provides all calculations

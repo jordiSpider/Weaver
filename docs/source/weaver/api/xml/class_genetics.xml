@@ -1,0 +1,854 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.14.0" xml:lang="en-US">
+  <compounddef id="class_genetics" kind="class" language="C++" prot="public">
+    <compoundname>Genetics</compoundname>
+    <includes refid="_genetics_8h" local="no">Genetics.h</includes>
+    <sectiondef kind="protected-attrib">
+      <memberdef kind="variable" id="class_genetics_1adb73264e77bd3507c59eacc75472e0e6" prot="protected" static="no" mutable="no">
+        <type><ref refid="class_custom_indexed_vector" kindref="compound">CustomIndexedVector</ref>&lt; <ref refid="class_trait_1ae6b7272eb7b811a0ffe03525a142d468" kindref="member">Trait::ExecutionOrder</ref>, std::vector&lt; <ref refid="class_individual_trait" kindref="compound">IndividualTrait</ref> &gt; &gt;</type>
+        <definition>CustomIndexedVector&lt;Trait::ExecutionOrder, std::vector&lt;IndividualTrait&gt; &gt; Genetics::allIndividualTraits</definition>
+        <argsstring></argsstring>
+        <name>allIndividualTraits</name>
+        <qualifiedname>Genetics::allIndividualTraits</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>All individual traits indexed by execution order. </para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="App/Model/IBM/Landscape/LivingBeings/Animals/Genetics/Genetics.h" line="195" column="25" bodyfile="App/Model/IBM/Landscape/LivingBeings/Animals/Genetics/Genetics.h" bodystart="195" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="class_genetics_1a8183b7b5760c27d1db4df31bff45fade" prot="protected" static="no" mutable="no">
+        <type><ref refid="class_genome" kindref="compound">Genome</ref></type>
+        <definition>Genome Genetics::genome</definition>
+        <argsstring></argsstring>
+        <name>genome</name>
+        <qualifiedname>Genetics::genome</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para><ref refid="class_genome" kindref="compound">Genome</ref> of the individual. </para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="App/Model/IBM/Landscape/LivingBeings/Animals/Genetics/Genetics.h" line="193" column="12" bodyfile="App/Model/IBM/Landscape/LivingBeings/Animals/Genetics/Genetics.h" bodystart="193" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="class_genetics_1a7207b2f9b8da4fcf89c67caf2c72bdcf" prot="protected" static="no" mutable="no">
+        <type><ref refid="class_animal_species_genetics" kindref="compound">AnimalSpeciesGenetics</ref> *</type>
+        <definition>AnimalSpeciesGenetics* Genetics::speciesGenetics</definition>
+        <argsstring></argsstring>
+        <name>speciesGenetics</name>
+        <qualifiedname>Genetics::speciesGenetics</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Pointer to the species genetics. </para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="App/Model/IBM/Landscape/LivingBeings/Animals/Genetics/Genetics.h" line="192" column="27" bodyfile="App/Model/IBM/Landscape/LivingBeings/Animals/Genetics/Genetics.h" bodystart="192" bodyend="-1"/>
+      </memberdef>
+    </sectiondef>
+    <sectiondef kind="public-func">
+      <memberdef kind="function" id="class_genetics_1a7c9a65ee1c7da6bbb4b35d46d1dcf4fa" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type></type>
+        <definition>Genetics::Genetics</definition>
+        <argsstring>()</argsstring>
+        <name>Genetics</name>
+        <qualifiedname>Genetics::Genetics</qualifiedname>
+        <briefdescription>
+<para>Default constructor. </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="App/Model/IBM/Landscape/LivingBeings/Animals/Genetics/Genetics.h" line="49" column="5"/>
+      </memberdef>
+      <memberdef kind="function" id="class_genetics_1ab488951b08a1db5b92e9d6e27bb172d4" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type></type>
+        <definition>Genetics::Genetics</definition>
+        <argsstring>(AnimalSpeciesGenetics *speciesGenetics, const Genome *const initialGenome, const Temperature &amp;temperature, const PreciseDouble &amp;coefficientForMassAforMature, const PreciseDouble &amp;scaleForMassBforMature, const Temperature &amp;tempFromLab)</argsstring>
+        <name>Genetics</name>
+        <qualifiedname>Genetics::Genetics</qualifiedname>
+        <param>
+          <type><ref refid="class_animal_species_genetics" kindref="compound">AnimalSpeciesGenetics</ref> *</type>
+          <declname>speciesGenetics</declname>
+        </param>
+        <param>
+          <type>const <ref refid="class_genome" kindref="compound">Genome</ref> *const</type>
+          <declname>initialGenome</declname>
+        </param>
+        <param>
+          <type>const <ref refid="class_temperature" kindref="compound">Temperature</ref> &amp;</type>
+          <declname>temperature</declname>
+        </param>
+        <param>
+          <type>const <ref refid="class_precise_double" kindref="compound">PreciseDouble</ref> &amp;</type>
+          <declname>coefficientForMassAforMature</declname>
+        </param>
+        <param>
+          <type>const <ref refid="class_precise_double" kindref="compound">PreciseDouble</ref> &amp;</type>
+          <declname>scaleForMassBforMature</declname>
+        </param>
+        <param>
+          <type>const <ref refid="class_temperature" kindref="compound">Temperature</ref> &amp;</type>
+          <declname>tempFromLab</declname>
+        </param>
+        <briefdescription>
+<para>Constructor for a new individual with environmental tuning. </para>
+        </briefdescription>
+        <detaileddescription>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>speciesGenetics</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Pointer to the species genetics configuration. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>temperature</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Current temperature. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>coefficientForMassAforMature</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Coefficient A for mature mass calculation. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>scaleForMassBforMature</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Scale B for mature mass calculation. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>tempFromLab</parametername>
+</parameternamelist>
+<parameterdescription>
+<para><ref refid="class_temperature" kindref="compound">Temperature</ref> data from lab experiments. </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="App/Model/IBM/Landscape/LivingBeings/Animals/Genetics/Genetics.h" line="60" column="5"/>
+      </memberdef>
+      <memberdef kind="function" id="class_genetics_1a5def21e1f4b538de31750b22ca8f85d3" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type></type>
+        <definition>Genetics::Genetics</definition>
+        <argsstring>(AnimalSpeciesGenetics *speciesGenetics, Gamete *const firstParentGamete, Gamete *const secondParentGamete, const Temperature &amp;temperature, const PreciseDouble &amp;coefficientForMassAforMature, const PreciseDouble &amp;scaleForMassBforMature, const Temperature &amp;tempFromLab)</argsstring>
+        <name>Genetics</name>
+        <qualifiedname>Genetics::Genetics</qualifiedname>
+        <param>
+          <type><ref refid="class_animal_species_genetics" kindref="compound">AnimalSpeciesGenetics</ref> *</type>
+          <declname>speciesGenetics</declname>
+        </param>
+        <param>
+          <type><ref refid="class_gamete" kindref="compound">Gamete</ref> *const</type>
+          <declname>firstParentGamete</declname>
+        </param>
+        <param>
+          <type><ref refid="class_gamete" kindref="compound">Gamete</ref> *const</type>
+          <declname>secondParentGamete</declname>
+        </param>
+        <param>
+          <type>const <ref refid="class_temperature" kindref="compound">Temperature</ref> &amp;</type>
+          <declname>temperature</declname>
+        </param>
+        <param>
+          <type>const <ref refid="class_precise_double" kindref="compound">PreciseDouble</ref> &amp;</type>
+          <declname>coefficientForMassAforMature</declname>
+        </param>
+        <param>
+          <type>const <ref refid="class_precise_double" kindref="compound">PreciseDouble</ref> &amp;</type>
+          <declname>scaleForMassBforMature</declname>
+        </param>
+        <param>
+          <type>const <ref refid="class_temperature" kindref="compound">Temperature</ref> &amp;</type>
+          <declname>tempFromLab</declname>
+        </param>
+        <briefdescription>
+<para>Constructor for an individual from parental gametes. </para>
+        </briefdescription>
+        <detaileddescription>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>speciesGenetics</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Pointer to the species genetics configuration. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>firstParentGamete</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Pointer to the first parent&apos;s gamete. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>secondParentGamete</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Pointer to the second parent&apos;s gamete. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>temperature</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Current temperature. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>coefficientForMassAforMature</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Coefficient A for mature mass calculation. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>scaleForMassBforMature</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Scale B for mature mass calculation. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>tempFromLab</parametername>
+</parameternamelist>
+<parameterdescription>
+<para><ref refid="class_temperature" kindref="compound">Temperature</ref> data from lab experiments. </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="App/Model/IBM/Landscape/LivingBeings/Animals/Genetics/Genetics.h" line="73" column="5"/>
+      </memberdef>
+      <memberdef kind="function" id="class_genetics_1ab145583e4a659deb3ea9de552179d270" prot="public" static="no" const="no" explicit="no" inline="no" virt="virtual">
+        <type></type>
+        <definition>virtual Genetics::~Genetics</definition>
+        <argsstring>()</argsstring>
+        <name>~Genetics</name>
+        <qualifiedname>Genetics::~Genetics</qualifiedname>
+        <briefdescription>
+<para>Destructor for the <ref refid="class_genetics" kindref="compound">Genetics</ref> class. </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="App/Model/IBM/Landscape/LivingBeings/Animals/Genetics/Genetics.h" line="78" column="13"/>
+      </memberdef>
+      <memberdef kind="function" id="class_genetics_1ade980d6143812e2d32b822a8cdda000e" prot="public" static="no" const="yes" explicit="no" inline="no" virt="non-virtual">
+        <type><ref refid="class_genome" kindref="compound">Genome</ref> *</type>
+        <definition>Genome * Genetics::cloneGenome</definition>
+        <argsstring>() const</argsstring>
+        <name>cloneGenome</name>
+        <qualifiedname>Genetics::cloneGenome</qualifiedname>
+        <briefdescription>
+<para>Clone the genome. </para>
+        </briefdescription>
+        <detaileddescription>
+<para><simplesect kind="return"><para>Pointer to a cloned <ref refid="class_genome" kindref="compound">Genome</ref> object. </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="App/Model/IBM/Landscape/LivingBeings/Animals/Genetics/Genetics.h" line="160" column="12"/>
+      </memberdef>
+      <memberdef kind="function" id="class_genetics_1ae979ebdfc3d284b6555b768162806d33" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void Genetics::deleteHomologousCorrelosomes</definition>
+        <argsstring>()</argsstring>
+        <name>deleteHomologousCorrelosomes</name>
+        <qualifiedname>Genetics::deleteHomologousCorrelosomes</qualifiedname>
+        <briefdescription>
+<para>Delete homologous correlosomes from the genome. </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="App/Model/IBM/Landscape/LivingBeings/Animals/Genetics/Genetics.h" line="129" column="10"/>
+      </memberdef>
+      <memberdef kind="function" id="class_genetics_1aebfdc391ce9e2c8e043f7e9c501dd888" prot="public" static="no" const="yes" explicit="no" inline="no" noexcept="yes" virt="non-virtual">
+        <type>void</type>
+        <definition>void Genetics::formatToBufferDirect</definition>
+        <argsstring>(fmt::memory_buffer &amp;buf) const noexcept</argsstring>
+        <name>formatToBufferDirect</name>
+        <qualifiedname>Genetics::formatToBufferDirect</qualifiedname>
+        <param>
+          <type>fmt::memory_buffer &amp;</type>
+          <declname>buf</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="App/Model/IBM/Landscape/LivingBeings/Animals/Genetics/Genetics.h" line="142" column="10"/>
+      </memberdef>
+      <memberdef kind="function" id="class_genetics_1aa5c80ca5c33ca47118d0c1bec14439ef" prot="public" static="no" const="yes" explicit="no" inline="no" virt="non-virtual">
+        <type>const std::vector&lt; <ref refid="class_individual_trait" kindref="compound">IndividualTrait</ref> &gt; &amp;</type>
+        <definition>const std::vector&lt; IndividualTrait &gt; &amp; Genetics::getBaseIndividualTraits</definition>
+        <argsstring>() const</argsstring>
+        <name>getBaseIndividualTraits</name>
+        <qualifiedname>Genetics::getBaseIndividualTraits</qualifiedname>
+        <briefdescription>
+<para>Get all base individual traits. </para>
+        </briefdescription>
+        <detaileddescription>
+<para><simplesect kind="return"><para>Vector of base individual traits. </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="App/Model/IBM/Landscape/LivingBeings/Animals/Genetics/Genetics.h" line="84" column="23"/>
+      </memberdef>
+      <memberdef kind="function" id="class_genetics_1a2197618d699e47cdd96863ea6fdbd43e" prot="public" static="no" const="yes" explicit="no" inline="no" virt="non-virtual">
+        <type>const <ref refid="class_individual_trait" kindref="compound">IndividualTrait</ref> &amp;</type>
+        <definition>const IndividualTrait &amp; Genetics::getBaseIndividualTraits</definition>
+        <argsstring>(const BaseTraitType type) const</argsstring>
+        <name>getBaseIndividualTraits</name>
+        <qualifiedname>Genetics::getBaseIndividualTraits</qualifiedname>
+        <param>
+          <type>const BaseTraitType</type>
+          <declname>type</declname>
+        </param>
+        <briefdescription>
+<para>Get a specific base individual trait by type. </para>
+        </briefdescription>
+        <detaileddescription>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>type</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Type of the base trait. </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<simplesect kind="return"><para>Reference to the requested <ref refid="class_individual_trait" kindref="compound">IndividualTrait</ref>. </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="App/Model/IBM/Landscape/LivingBeings/Animals/Genetics/Genetics.h" line="91" column="27"/>
+      </memberdef>
+      <memberdef kind="function" id="class_genetics_1aed6bf61ad60cfc8db0e5a8806140b3ce" prot="public" static="no" const="yes" explicit="no" inline="no" virt="non-virtual">
+        <type>const <ref refid="class_individual_trait" kindref="compound">IndividualTrait</ref> &amp;</type>
+        <definition>const IndividualTrait &amp; Genetics::getCellValueIndividualTraits</definition>
+        <argsstring>(const CellValueTraitType type) const</argsstring>
+        <name>getCellValueIndividualTraits</name>
+        <qualifiedname>Genetics::getCellValueIndividualTraits</qualifiedname>
+        <param>
+          <type>const CellValueTraitType</type>
+          <declname>type</declname>
+        </param>
+        <briefdescription>
+<para>Get trait representing cell value. </para>
+        </briefdescription>
+        <detaileddescription>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>type</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Type of cell value trait. </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="App/Model/IBM/Landscape/LivingBeings/Animals/Genetics/Genetics.h" line="118" column="27"/>
+      </memberdef>
+      <memberdef kind="function" id="class_genetics_1aa602739b8e18a0f09979a8bddcb155fa" prot="public" static="no" const="yes" explicit="no" inline="no" virt="non-virtual">
+        <type>const std::vector&lt; <ref refid="class_individual_trait" kindref="compound">IndividualTrait</ref> &gt; &amp;</type>
+        <definition>const std::vector&lt; IndividualTrait &gt; &amp; Genetics::getEdibilityValueWeightIndividualTraits</definition>
+        <argsstring>() const</argsstring>
+        <name>getEdibilityValueWeightIndividualTraits</name>
+        <qualifiedname>Genetics::getEdibilityValueWeightIndividualTraits</qualifiedname>
+        <briefdescription>
+<para>Get traits used as weights for edibility value. </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="App/Model/IBM/Landscape/LivingBeings/Animals/Genetics/Genetics.h" line="106" column="23"/>
+      </memberdef>
+      <memberdef kind="function" id="class_genetics_1a91ee3cdb1d377ff834bc78f8eac9c26e" prot="public" static="no" const="yes" explicit="no" inline="no" virt="non-virtual">
+        <type>const std::vector&lt; <ref refid="class_individual_trait" kindref="compound">IndividualTrait</ref> &gt; &amp;</type>
+        <definition>const std::vector&lt; IndividualTrait &gt; &amp; Genetics::getEscapeProbabilityWeightIndividualTraits</definition>
+        <argsstring>() const</argsstring>
+        <name>getEscapeProbabilityWeightIndividualTraits</name>
+        <qualifiedname>Genetics::getEscapeProbabilityWeightIndividualTraits</qualifiedname>
+        <briefdescription>
+<para>Get traits used as weights for escape probability. </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="App/Model/IBM/Landscape/LivingBeings/Animals/Genetics/Genetics.h" line="101" column="23"/>
+      </memberdef>
+      <memberdef kind="function" id="class_genetics_1aa0f3333c8cce51edba57c7d185a428ce" prot="public" static="no" const="yes" explicit="no" inline="no" virt="non-virtual">
+        <type>const <ref refid="class_genome" kindref="compound">Genome</ref> &amp;</type>
+        <definition>const Genome &amp; Genetics::getGenome</definition>
+        <argsstring>() const</argsstring>
+        <name>getGenome</name>
+        <qualifiedname>Genetics::getGenome</qualifiedname>
+        <briefdescription>
+<para>Get the genome (const access). </para>
+        </briefdescription>
+        <detaileddescription>
+<para><simplesect kind="return"><para>Reference to the genome. </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="App/Model/IBM/Landscape/LivingBeings/Animals/Genetics/Genetics.h" line="166" column="18"/>
+      </memberdef>
+      <memberdef kind="function" id="class_genetics_1aea74095de7beb79467a0b95ac8c7a7a0" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type><ref refid="class_genome" kindref="compound">Genome</ref> &amp;</type>
+        <definition>Genome &amp; Genetics::getMutableGenome</definition>
+        <argsstring>()</argsstring>
+        <name>getMutableGenome</name>
+        <qualifiedname>Genetics::getMutableGenome</qualifiedname>
+        <briefdescription>
+<para>Get the genome (mutable access). </para>
+        </briefdescription>
+        <detaileddescription>
+<para><simplesect kind="return"><para>Reference to the genome. </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="App/Model/IBM/Landscape/LivingBeings/Animals/Genetics/Genetics.h" line="172" column="12"/>
+      </memberdef>
+      <memberdef kind="function" id="class_genetics_1a6c523b7afa54f741d95d946070504231" prot="public" static="no" const="yes" explicit="no" inline="no" virt="non-virtual">
+        <type>const std::vector&lt; <ref refid="class_individual_trait" kindref="compound">IndividualTrait</ref> &gt; &amp;</type>
+        <definition>const std::vector&lt; IndividualTrait &gt; &amp; Genetics::getPredationProbabilityWeightIndividualTraits</definition>
+        <argsstring>() const</argsstring>
+        <name>getPredationProbabilityWeightIndividualTraits</name>
+        <qualifiedname>Genetics::getPredationProbabilityWeightIndividualTraits</qualifiedname>
+        <briefdescription>
+<para>Get traits used as weights for predation probability. </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="App/Model/IBM/Landscape/LivingBeings/Animals/Genetics/Genetics.h" line="96" column="23"/>
+      </memberdef>
+      <memberdef kind="function" id="class_genetics_1a926c9c288709c1d0a52cfbeec5f867e7" prot="public" static="no" const="yes" explicit="no" inline="no" virt="non-virtual">
+        <type>const <ref refid="class_individual_trait" kindref="compound">IndividualTrait</ref> &amp;</type>
+        <definition>const IndividualTrait &amp; Genetics::getPreferencesIndividualTraits</definition>
+        <argsstring>(const PreferencesTraitType type) const</argsstring>
+        <name>getPreferencesIndividualTraits</name>
+        <qualifiedname>Genetics::getPreferencesIndividualTraits</qualifiedname>
+        <param>
+          <type>const PreferencesTraitType</type>
+          <declname>type</declname>
+        </param>
+        <briefdescription>
+<para>Get trait representing preference values. </para>
+        </briefdescription>
+        <detaileddescription>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>type</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Type of preference trait. </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="App/Model/IBM/Landscape/LivingBeings/Animals/Genetics/Genetics.h" line="124" column="27"/>
+      </memberdef>
+      <memberdef kind="function" id="class_genetics_1a2615f4c32272c2f224008def569dafa5" prot="public" static="no" const="yes" explicit="no" inline="no" virt="non-virtual">
+        <type>const <ref refid="class_individual_trait" kindref="compound">IndividualTrait</ref> &amp;</type>
+        <definition>const IndividualTrait &amp; Genetics::getProbabilityDensityFunctionIndividualTraits</definition>
+        <argsstring>(const ProbabilityDensityFunctionTraitType type) const</argsstring>
+        <name>getProbabilityDensityFunctionIndividualTraits</name>
+        <qualifiedname>Genetics::getProbabilityDensityFunctionIndividualTraits</qualifiedname>
+        <param>
+          <type>const ProbabilityDensityFunctionTraitType</type>
+          <declname>type</declname>
+        </param>
+        <briefdescription>
+<para>Get trait representing a probability density function. </para>
+        </briefdescription>
+        <detaileddescription>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>type</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Type of PDF trait. </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="App/Model/IBM/Landscape/LivingBeings/Animals/Genetics/Genetics.h" line="112" column="27"/>
+      </memberdef>
+      <memberdef kind="function" id="class_genetics_1a1c6a32a78a1b7a159a35f4b8c0fe1e5b" prot="public" static="no" const="yes" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void Genetics::printTraits</definition>
+        <argsstring>(fmt::memory_buffer &amp;traitsText) const</argsstring>
+        <name>printTraits</name>
+        <qualifiedname>Genetics::printTraits</qualifiedname>
+        <param>
+          <type>fmt::memory_buffer &amp;</type>
+          <declname>traitsText</declname>
+        </param>
+        <briefdescription>
+<para>Print all traits as a string. </para>
+        </briefdescription>
+        <detaileddescription>
+<para><simplesect kind="return"><para><ref refid="class_string" kindref="compound">String</ref> with traits information. </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="App/Model/IBM/Landscape/LivingBeings/Animals/Genetics/Genetics.h" line="154" column="10"/>
+      </memberdef>
+      <memberdef kind="function" id="class_genetics_1aafab0694e862d6e694b998188ce71f82" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <templateparamlist>
+          <param>
+            <type>class Archive</type>
+          </param>
+        </templateparamlist>
+        <type>void</type>
+        <definition>void Genetics::serialize</definition>
+        <argsstring>(Archive &amp;ar, const unsigned int version)</argsstring>
+        <name>serialize</name>
+        <qualifiedname>Genetics::serialize</qualifiedname>
+        <param>
+          <type>Archive &amp;</type>
+          <declname>ar</declname>
+        </param>
+        <param>
+          <type>const unsigned int</type>
+          <declname>version</declname>
+        </param>
+        <briefdescription>
+<para>Serializes the object for persistence. </para>
+        </briefdescription>
+        <detaileddescription>
+<para><parameterlist kind="templateparam"><parameteritem>
+<parameternamelist>
+<parametername>Archive</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Serialization archive type. </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>ar</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Archive instance. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>version</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Serialization version. </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="App/Model/IBM/Landscape/LivingBeings/Animals/Genetics/Genetics.h" line="189" column="10"/>
+      </memberdef>
+      <memberdef kind="function" id="class_genetics_1ac76be5d1680e76da066463289cddcd0d" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void Genetics::setAnimalSpeciesGenetics</definition>
+        <argsstring>(AnimalSpeciesGenetics *newSpeciesGenetics)</argsstring>
+        <name>setAnimalSpeciesGenetics</name>
+        <qualifiedname>Genetics::setAnimalSpeciesGenetics</qualifiedname>
+        <param>
+          <type><ref refid="class_animal_species_genetics" kindref="compound">AnimalSpeciesGenetics</ref> *</type>
+          <declname>newSpeciesGenetics</declname>
+        </param>
+        <briefdescription>
+<para>Set the species genetics pointer. </para>
+        </briefdescription>
+        <detaileddescription>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>newSpeciesGenetics</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Pointer to the new species genetics configuration. </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="App/Model/IBM/Landscape/LivingBeings/Animals/Genetics/Genetics.h" line="148" column="10"/>
+      </memberdef>
+      <memberdef kind="function" id="class_genetics_1a7bbe64987f00fa4e3e7da70cb5c4003d" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void Genetics::tune</definition>
+        <argsstring>(const Temperature &amp;temperature, const TimeStep actualTimeStep, const PreciseDouble &amp;coefficientForMassAforMature, const PreciseDouble &amp;scaleForMassBforMature, const Temperature &amp;tempFromLab)</argsstring>
+        <name>tune</name>
+        <qualifiedname>Genetics::tune</qualifiedname>
+        <param>
+          <type>const <ref refid="class_temperature" kindref="compound">Temperature</ref> &amp;</type>
+          <declname>temperature</declname>
+        </param>
+        <param>
+          <type>const <ref refid="class_time_step" kindref="compound">TimeStep</ref></type>
+          <declname>actualTimeStep</declname>
+        </param>
+        <param>
+          <type>const <ref refid="class_precise_double" kindref="compound">PreciseDouble</ref> &amp;</type>
+          <declname>coefficientForMassAforMature</declname>
+        </param>
+        <param>
+          <type>const <ref refid="class_precise_double" kindref="compound">PreciseDouble</ref> &amp;</type>
+          <declname>scaleForMassBforMature</declname>
+        </param>
+        <param>
+          <type>const <ref refid="class_temperature" kindref="compound">Temperature</ref> &amp;</type>
+          <declname>tempFromLab</declname>
+        </param>
+        <briefdescription>
+<para>Tune the individual&apos;s traits based on environmental conditions. </para>
+        </briefdescription>
+        <detaileddescription>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>temperature</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Current temperature. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>actualTimeStep</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Current simulation timestep. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>coefficientForMassAforMature</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Coefficient A for mature mass calculation. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>scaleForMassBforMature</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Scale B for mature mass calculation. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>tempFromLab</parametername>
+</parameternamelist>
+<parameterdescription>
+<para><ref refid="class_temperature" kindref="compound">Temperature</ref> from lab data. </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="App/Model/IBM/Landscape/LivingBeings/Animals/Genetics/Genetics.h" line="140" column="10"/>
+      </memberdef>
+    </sectiondef>
+    <sectiondef kind="protected-func">
+      <memberdef kind="function" id="class_genetics_1acc017a22cd0eee1b0a13eb6835301bba" prot="protected" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void Genetics::initTraits</definition>
+        <argsstring>(const Temperature &amp;temperature, const PreciseDouble &amp;coefficientForMassAforMature, const PreciseDouble &amp;scaleForMassBforMature, const Temperature &amp;tempFromLab)</argsstring>
+        <name>initTraits</name>
+        <qualifiedname>Genetics::initTraits</qualifiedname>
+        <param>
+          <type>const <ref refid="class_temperature" kindref="compound">Temperature</ref> &amp;</type>
+          <declname>temperature</declname>
+        </param>
+        <param>
+          <type>const <ref refid="class_precise_double" kindref="compound">PreciseDouble</ref> &amp;</type>
+          <declname>coefficientForMassAforMature</declname>
+        </param>
+        <param>
+          <type>const <ref refid="class_precise_double" kindref="compound">PreciseDouble</ref> &amp;</type>
+          <declname>scaleForMassBforMature</declname>
+        </param>
+        <param>
+          <type>const <ref refid="class_temperature" kindref="compound">Temperature</ref> &amp;</type>
+          <declname>tempFromLab</declname>
+        </param>
+        <briefdescription>
+<para>Initialize individual traits based on environmental and biological parameters. </para>
+        </briefdescription>
+        <detaileddescription>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>temperature</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Current temperature. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>coefficientForMassAforMature</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Coefficient A for mature mass calculation. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>scaleForMassBforMature</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Scale B for mature mass calculation. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>tempFromLab</parametername>
+</parameternamelist>
+<parameterdescription>
+<para><ref refid="class_temperature" kindref="compound">Temperature</ref> from lab data. </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="App/Model/IBM/Landscape/LivingBeings/Animals/Genetics/Genetics.h" line="205" column="10"/>
+      </memberdef>
+    </sectiondef>
+    <briefdescription>
+<para>Represents the genetic information and traits of an individual. </para>
+    </briefdescription>
+    <detaileddescription>
+<para>The <ref refid="class_genetics" kindref="compound">Genetics</ref> class manages an individual&apos;s genome, traits, and provides functions to tune, clone, and evaluate traits based on environmental conditions such as temperature. It also allows access to base traits, weights for predation, escape, and edibility, as well as preferences. </para>
+    </detaileddescription>
+    <collaborationgraph>
+      <node id="2">
+        <label>AnimalSpeciesGenetics</label>
+        <link refid="class_animal_species_genetics"/>
+        <childnode refid="3" relation="usage">
+          <edgelabel>allTraits</edgelabel>
+        </childnode>
+      </node>
+      <node id="5">
+        <label>CustomIndexedVector&lt; Trait::ExecutionOrder, std::vector&lt; IndividualTrait &gt; &gt;</label>
+        <link refid="class_custom_indexed_vector"/>
+      </node>
+      <node id="3">
+        <label>CustomIndexedVector&lt; Trait::ExecutionOrder, std::vector&lt; Trait * &gt; &gt;</label>
+        <link refid="class_custom_indexed_vector"/>
+      </node>
+      <node id="1">
+        <label>Genetics</label>
+        <link refid="class_genetics"/>
+        <childnode refid="2" relation="usage">
+          <edgelabel>speciesGenetics</edgelabel>
+        </childnode>
+        <childnode refid="4" relation="usage">
+          <edgelabel>genome</edgelabel>
+        </childnode>
+        <childnode refid="5" relation="usage">
+          <edgelabel>allIndividualTraits</edgelabel>
+        </childnode>
+      </node>
+      <node id="4">
+        <label>Genome</label>
+        <link refid="class_genome"/>
+      </node>
+    </collaborationgraph>
+    <location file="App/Model/IBM/Landscape/LivingBeings/Animals/Genetics/Genetics.h" line="43" column="1" bodyfile="App/Model/IBM/Landscape/LivingBeings/Animals/Genetics/Genetics.h" bodystart="44" bodyend="206"/>
+    <listofallmembers>
+      <member refid="class_genetics_1adb73264e77bd3507c59eacc75472e0e6" prot="protected" virt="non-virtual"><scope>Genetics</scope><name>allIndividualTraits</name></member>
+      <member refid="class_genetics_1ade980d6143812e2d32b822a8cdda000e" prot="public" virt="non-virtual"><scope>Genetics</scope><name>cloneGenome</name></member>
+      <member refid="class_genetics_1ae979ebdfc3d284b6555b768162806d33" prot="public" virt="non-virtual"><scope>Genetics</scope><name>deleteHomologousCorrelosomes</name></member>
+      <member refid="class_genetics_1aebfdc391ce9e2c8e043f7e9c501dd888" prot="public" virt="non-virtual"><scope>Genetics</scope><name>formatToBufferDirect</name></member>
+      <member refid="class_genetics_1a7c9a65ee1c7da6bbb4b35d46d1dcf4fa" prot="public" virt="non-virtual"><scope>Genetics</scope><name>Genetics</name></member>
+      <member refid="class_genetics_1ab488951b08a1db5b92e9d6e27bb172d4" prot="public" virt="non-virtual"><scope>Genetics</scope><name>Genetics</name></member>
+      <member refid="class_genetics_1a5def21e1f4b538de31750b22ca8f85d3" prot="public" virt="non-virtual"><scope>Genetics</scope><name>Genetics</name></member>
+      <member refid="class_genetics_1a8183b7b5760c27d1db4df31bff45fade" prot="protected" virt="non-virtual"><scope>Genetics</scope><name>genome</name></member>
+      <member refid="class_genetics_1aa5c80ca5c33ca47118d0c1bec14439ef" prot="public" virt="non-virtual"><scope>Genetics</scope><name>getBaseIndividualTraits</name></member>
+      <member refid="class_genetics_1a2197618d699e47cdd96863ea6fdbd43e" prot="public" virt="non-virtual"><scope>Genetics</scope><name>getBaseIndividualTraits</name></member>
+      <member refid="class_genetics_1aed6bf61ad60cfc8db0e5a8806140b3ce" prot="public" virt="non-virtual"><scope>Genetics</scope><name>getCellValueIndividualTraits</name></member>
+      <member refid="class_genetics_1aa602739b8e18a0f09979a8bddcb155fa" prot="public" virt="non-virtual"><scope>Genetics</scope><name>getEdibilityValueWeightIndividualTraits</name></member>
+      <member refid="class_genetics_1a91ee3cdb1d377ff834bc78f8eac9c26e" prot="public" virt="non-virtual"><scope>Genetics</scope><name>getEscapeProbabilityWeightIndividualTraits</name></member>
+      <member refid="class_genetics_1aa0f3333c8cce51edba57c7d185a428ce" prot="public" virt="non-virtual"><scope>Genetics</scope><name>getGenome</name></member>
+      <member refid="class_genetics_1aea74095de7beb79467a0b95ac8c7a7a0" prot="public" virt="non-virtual"><scope>Genetics</scope><name>getMutableGenome</name></member>
+      <member refid="class_genetics_1a6c523b7afa54f741d95d946070504231" prot="public" virt="non-virtual"><scope>Genetics</scope><name>getPredationProbabilityWeightIndividualTraits</name></member>
+      <member refid="class_genetics_1a926c9c288709c1d0a52cfbeec5f867e7" prot="public" virt="non-virtual"><scope>Genetics</scope><name>getPreferencesIndividualTraits</name></member>
+      <member refid="class_genetics_1a2615f4c32272c2f224008def569dafa5" prot="public" virt="non-virtual"><scope>Genetics</scope><name>getProbabilityDensityFunctionIndividualTraits</name></member>
+      <member refid="class_genetics_1acc017a22cd0eee1b0a13eb6835301bba" prot="protected" virt="non-virtual"><scope>Genetics</scope><name>initTraits</name></member>
+      <member refid="class_genetics_1a1c6a32a78a1b7a159a35f4b8c0fe1e5b" prot="public" virt="non-virtual"><scope>Genetics</scope><name>printTraits</name></member>
+      <member refid="class_genetics_1aafab0694e862d6e694b998188ce71f82" prot="public" virt="non-virtual"><scope>Genetics</scope><name>serialize</name></member>
+      <member refid="class_genetics_1ac76be5d1680e76da066463289cddcd0d" prot="public" virt="non-virtual"><scope>Genetics</scope><name>setAnimalSpeciesGenetics</name></member>
+      <member refid="class_genetics_1a7207b2f9b8da4fcf89c67caf2c72bdcf" prot="protected" virt="non-virtual"><scope>Genetics</scope><name>speciesGenetics</name></member>
+      <member refid="class_genetics_1a7bbe64987f00fa4e3e7da70cb5c4003d" prot="public" virt="non-virtual"><scope>Genetics</scope><name>tune</name></member>
+      <member refid="class_genetics_1ab145583e4a659deb3ea9de552179d270" prot="public" virt="virtual"><scope>Genetics</scope><name>~Genetics</name></member>
+    </listofallmembers>
+  </compounddef>
+</doxygen>

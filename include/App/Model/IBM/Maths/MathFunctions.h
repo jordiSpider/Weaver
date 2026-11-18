@@ -20,11 +20,12 @@
 #include "App/Model/IBM/Physics/Temperature.h"
 #include "App/Model/IBM/Landscape/LivingBeings/StructuralUnits.h"
 #include "App/View/View.h"
-#include "App/Model/IBM/Maths/Constants.h"
+#include "Misc/Maths/Constants.h"
 
 
 /**
  * @class MathFunctions
+ * @ingroup weaver_model
  * @brief Provides static mathematical utilities for traits, temperature responses, and ecological models.
  *
  * This class is not meant to be instantiated. All functions are static and include:

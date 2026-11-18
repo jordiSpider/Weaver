@@ -27,6 +27,7 @@
 
 /**
  * @class String
+ * @ingroup weaver_validation
  * @brief Represents a string-type element in the JSON schema validation system.
  *
  * This class models a JSON string element and provides mechanisms for validating

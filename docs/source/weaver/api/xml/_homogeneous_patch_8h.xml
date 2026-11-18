@@ -1,0 +1,489 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.14.0" xml:lang="en-US">
+  <compounddef id="_homogeneous_patch_8h" kind="file" language="C++">
+    <compoundname>HomogeneousPatch.h</compoundname>
+    <includes refid="_patch_shape_8h" local="yes">App/Model/IBM/Landscape/Map/Patches/Shape/PatchShape.h</includes>
+    <incdepgraph>
+      <node id="64">
+        <label>App/Model/IBM/Landscape/LivingBeings/TimeUnits.h</label>
+        <link refid="_time_units_8h_source"/>
+        <childnode refid="40" relation="include">
+        </childnode>
+        <childnode refid="41" relation="include">
+        </childnode>
+        <childnode refid="42" relation="include">
+        </childnode>
+        <childnode refid="43" relation="include">
+        </childnode>
+        <childnode refid="33" relation="include">
+        </childnode>
+        <childnode refid="47" relation="include">
+        </childnode>
+        <childnode refid="46" relation="include">
+        </childnode>
+      </node>
+      <node id="52">
+        <label>App/Model/IBM/Landscape/Map/Geometry/Coverage.h</label>
+        <link refid="_coverage_8h_source"/>
+      </node>
+      <node id="6">
+        <label>App/Model/IBM/Landscape/Map/Geometry/Geometry.h</label>
+        <link refid="_geometry_8h_source"/>
+        <childnode refid="7" relation="include">
+        </childnode>
+        <childnode refid="8" relation="include">
+        </childnode>
+        <childnode refid="9" relation="include">
+        </childnode>
+        <childnode refid="10" relation="include">
+        </childnode>
+        <childnode refid="11" relation="include">
+        </childnode>
+        <childnode refid="12" relation="include">
+        </childnode>
+        <childnode refid="13" relation="include">
+        </childnode>
+        <childnode refid="14" relation="include">
+        </childnode>
+        <childnode refid="15" relation="include">
+        </childnode>
+        <childnode refid="16" relation="include">
+        </childnode>
+        <childnode refid="17" relation="include">
+        </childnode>
+        <childnode refid="18" relation="include">
+        </childnode>
+        <childnode refid="19" relation="include">
+        </childnode>
+        <childnode refid="20" relation="include">
+        </childnode>
+        <childnode refid="21" relation="include">
+        </childnode>
+        <childnode refid="22" relation="include">
+        </childnode>
+        <childnode refid="23" relation="include">
+        </childnode>
+        <childnode refid="24" relation="include">
+        </childnode>
+        <childnode refid="25" relation="include">
+        </childnode>
+        <childnode refid="26" relation="include">
+        </childnode>
+        <childnode refid="27" relation="include">
+        </childnode>
+        <childnode refid="28" relation="include">
+        </childnode>
+        <childnode refid="29" relation="include">
+        </childnode>
+        <childnode refid="30" relation="include">
+        </childnode>
+        <childnode refid="31" relation="include">
+        </childnode>
+        <childnode refid="32" relation="include">
+        </childnode>
+        <childnode refid="33" relation="include">
+        </childnode>
+        <childnode refid="34" relation="include">
+        </childnode>
+        <childnode refid="52" relation="include">
+        </childnode>
+        <childnode refid="53" relation="include">
+        </childnode>
+        <childnode refid="56" relation="include">
+        </childnode>
+        <childnode refid="65" relation="include">
+        </childnode>
+      </node>
+      <node id="1">
+        <label>App/Model/IBM/Landscape/Map/Patches/Shape/HomogeneousPatch.h</label>
+        <link refid="_homogeneous_patch_8h"/>
+        <childnode refid="2" relation="include">
+        </childnode>
+      </node>
+      <node id="2">
+        <label>App/Model/IBM/Landscape/Map/Patches/Shape/PatchShape.h</label>
+        <link refid="_patch_shape_8h_source"/>
+        <childnode refid="3" relation="include">
+        </childnode>
+        <childnode refid="4" relation="include">
+        </childnode>
+        <childnode refid="5" relation="include">
+        </childnode>
+        <childnode refid="6" relation="include">
+        </childnode>
+        <childnode refid="44" relation="include">
+        </childnode>
+        <childnode refid="69" relation="include">
+        </childnode>
+      </node>
+      <node id="55">
+        <label>App/Model/IBM/Landscape/Map/Points/Axis.h</label>
+        <link refid="_axis_8h_source"/>
+      </node>
+      <node id="34">
+        <label>App/Model/IBM/Landscape/Map/Points/PointContinuous.h</label>
+        <link refid="_point_continuous_8h_source"/>
+        <childnode refid="8" relation="include">
+        </childnode>
+        <childnode refid="35" relation="include">
+        </childnode>
+        <childnode refid="36" relation="include">
+        </childnode>
+        <childnode refid="37" relation="include">
+        </childnode>
+        <childnode refid="38" relation="include">
+        </childnode>
+        <childnode refid="39" relation="include">
+        </childnode>
+        <childnode refid="40" relation="include">
+        </childnode>
+        <childnode refid="41" relation="include">
+        </childnode>
+        <childnode refid="42" relation="include">
+        </childnode>
+        <childnode refid="43" relation="include">
+        </childnode>
+        <childnode refid="44" relation="include">
+        </childnode>
+        <childnode refid="46" relation="include">
+        </childnode>
+      </node>
+      <node id="53">
+        <label>App/Model/IBM/Landscape/Map/Points/PointMap.h</label>
+        <link refid="_point_map_8h_source"/>
+        <childnode refid="4" relation="include">
+        </childnode>
+        <childnode refid="54" relation="include">
+        </childnode>
+        <childnode refid="8" relation="include">
+        </childnode>
+        <childnode refid="49" relation="include">
+        </childnode>
+        <childnode refid="7" relation="include">
+        </childnode>
+        <childnode refid="40" relation="include">
+        </childnode>
+        <childnode refid="41" relation="include">
+        </childnode>
+        <childnode refid="42" relation="include">
+        </childnode>
+        <childnode refid="43" relation="include">
+        </childnode>
+        <childnode refid="55" relation="include">
+        </childnode>
+        <childnode refid="44" relation="include">
+        </childnode>
+      </node>
+      <node id="56">
+        <label>App/Model/IBM/Maths/Random.h</label>
+        <link refid="_random_8h_source"/>
+        <childnode refid="47" relation="include">
+        </childnode>
+        <childnode refid="57" relation="include">
+        </childnode>
+        <childnode refid="49" relation="include">
+        </childnode>
+        <childnode refid="58" relation="include">
+        </childnode>
+        <childnode refid="59" relation="include">
+        </childnode>
+        <childnode refid="8" relation="include">
+        </childnode>
+        <childnode refid="60" relation="include">
+        </childnode>
+        <childnode refid="61" relation="include">
+        </childnode>
+        <childnode refid="48" relation="include">
+        </childnode>
+        <childnode refid="62" relation="include">
+        </childnode>
+        <childnode refid="7" relation="include">
+        </childnode>
+        <childnode refid="44" relation="include">
+        </childnode>
+        <childnode refid="63" relation="include">
+        </childnode>
+        <childnode refid="64" relation="include">
+        </childnode>
+        <childnode refid="65" relation="include">
+        </childnode>
+      </node>
+      <node id="44">
+        <label>Exceptions/LineInfoException.h</label>
+        <link refid="_line_info_exception_8h_source"/>
+        <childnode refid="45" relation="include">
+        </childnode>
+        <childnode refid="4" relation="include">
+        </childnode>
+      </node>
+      <node id="66">
+        <label>Coordinate3D.h</label>
+        <link refid="_coordinate3_d_8h_source"/>
+        <childnode refid="67" relation="include">
+        </childnode>
+        <childnode refid="42" relation="include">
+        </childnode>
+        <childnode refid="43" relation="include">
+        </childnode>
+        <childnode refid="32" relation="include">
+        </childnode>
+      </node>
+      <node id="69">
+        <label>Misc/EnumClass.h</label>
+        <link refid="_enum_class_8h_source"/>
+        <childnode refid="5" relation="include">
+        </childnode>
+        <childnode refid="4" relation="include">
+        </childnode>
+        <childnode refid="70" relation="include">
+        </childnode>
+        <childnode refid="54" relation="include">
+        </childnode>
+        <childnode refid="37" relation="include">
+        </childnode>
+        <childnode refid="44" relation="include">
+        </childnode>
+      </node>
+      <node id="63">
+        <label>Misc/Maths/Constants.h</label>
+        <link refid="_constants_8h_source"/>
+      </node>
+      <node id="46">
+        <label>Misc/Maths/PreciseDouble.h</label>
+        <link refid="_precise_double_8h_source"/>
+        <childnode refid="40" relation="include">
+        </childnode>
+        <childnode refid="41" relation="include">
+        </childnode>
+        <childnode refid="42" relation="include">
+        </childnode>
+        <childnode refid="43" relation="include">
+        </childnode>
+        <childnode refid="37" relation="include">
+        </childnode>
+        <childnode refid="4" relation="include">
+        </childnode>
+        <childnode refid="47" relation="include">
+        </childnode>
+        <childnode refid="48" relation="include">
+        </childnode>
+        <childnode refid="49" relation="include">
+        </childnode>
+        <childnode refid="50" relation="include">
+        </childnode>
+        <childnode refid="51" relation="include">
+        </childnode>
+      </node>
+      <node id="65">
+        <label>Misc/Types.h</label>
+        <link refid="_types_8h_source"/>
+        <childnode refid="66" relation="include">
+        </childnode>
+        <childnode refid="68" relation="include">
+        </childnode>
+        <childnode refid="50" relation="include">
+        </childnode>
+        <childnode refid="46" relation="include">
+        </childnode>
+      </node>
+      <node id="48">
+        <label>algorithm</label>
+      </node>
+      <node id="61">
+        <label>atomic</label>
+      </node>
+      <node id="42">
+        <label>boost/archive/binary_iarchive.hpp</label>
+      </node>
+      <node id="43">
+        <label>boost/archive/binary_oarchive.hpp</label>
+      </node>
+      <node id="40">
+        <label>boost/archive/text_iarchive.hpp</label>
+      </node>
+      <node id="41">
+        <label>boost/archive/text_oarchive.hpp</label>
+      </node>
+      <node id="9">
+        <label>boost/exception/all.hpp</label>
+      </node>
+      <node id="17">
+        <label>boost/geometry/algorithms/area.hpp</label>
+      </node>
+      <node id="24">
+        <label>boost/geometry/algorithms/buffer.hpp</label>
+      </node>
+      <node id="30">
+        <label>boost/geometry/algorithms/closest_points.hpp</label>
+      </node>
+      <node id="25">
+        <label>boost/geometry/algorithms/convert.hpp</label>
+      </node>
+      <node id="29">
+        <label>boost/geometry/algorithms/distance.hpp</label>
+      </node>
+      <node id="27">
+        <label>boost/geometry/algorithms/envelope.hpp</label>
+      </node>
+      <node id="16">
+        <label>boost/geometry/algorithms/intersection.hpp</label>
+      </node>
+      <node id="28">
+        <label>boost/geometry/algorithms/within.hpp</label>
+      </node>
+      <node id="18">
+        <label>boost/geometry/arithmetic/arithmetic.hpp</label>
+      </node>
+      <node id="36">
+        <label>boost/geometry/core/cs.hpp</label>
+      </node>
+      <node id="11">
+        <label>boost/geometry/geometries/box.hpp</label>
+      </node>
+      <node id="14">
+        <label>boost/geometry/geometries/linestring.hpp</label>
+      </node>
+      <node id="26">
+        <label>boost/geometry/geometries/multi_polygon.hpp</label>
+      </node>
+      <node id="35">
+        <label>boost/geometry/geometries/point.hpp</label>
+      </node>
+      <node id="13">
+        <label>boost/geometry/geometries/polygon.hpp</label>
+      </node>
+      <node id="12">
+        <label>boost/geometry/geometries/ring.hpp</label>
+      </node>
+      <node id="15">
+        <label>boost/geometry/geometries/segment.hpp</label>
+      </node>
+      <node id="10">
+        <label>boost/geometry/geometry.hpp</label>
+      </node>
+      <node id="31">
+        <label>boost/geometry/io/dsv/write.hpp</label>
+      </node>
+      <node id="20">
+        <label>boost/geometry/strategies/agnostic/buffer_distance_symmetric.hpp</label>
+      </node>
+      <node id="22">
+        <label>boost/geometry/strategies/cartesian/buffer_end_round.hpp</label>
+      </node>
+      <node id="21">
+        <label>boost/geometry/strategies/cartesian/buffer_join_round.hpp</label>
+      </node>
+      <node id="19">
+        <label>boost/geometry/strategies/cartesian/buffer_point_circle.hpp</label>
+      </node>
+      <node id="23">
+        <label>boost/geometry/strategies/cartesian/buffer_side_straight.hpp</label>
+      </node>
+      <node id="67">
+        <label>boost/serialization/access.hpp</label>
+      </node>
+      <node id="39">
+        <label>boost/serialization/vector.hpp</label>
+      </node>
+      <node id="68">
+        <label>cfloat</label>
+      </node>
+      <node id="47">
+        <label>cmath</label>
+      </node>
+      <node id="45">
+        <label>exception</label>
+      </node>
+      <node id="58">
+        <label>float.h</label>
+      </node>
+      <node id="38">
+        <label>fmt/compile.h</label>
+      </node>
+      <node id="37">
+        <label>fmt/format.h</label>
+      </node>
+      <node id="32">
+        <label>fstream</label>
+      </node>
+      <node id="51">
+        <label>functional</label>
+      </node>
+      <node id="49">
+        <label>iostream</label>
+      </node>
+      <node id="50">
+        <label>limits</label>
+      </node>
+      <node id="59">
+        <label>list</label>
+      </node>
+      <node id="54">
+        <label>magic_enum/magic_enum.hpp</label>
+      </node>
+      <node id="7">
+        <label>memory</label>
+      </node>
+      <node id="3">
+        <label>nlohmann/json.hpp</label>
+      </node>
+      <node id="62">
+        <label>numeric</label>
+      </node>
+      <node id="33">
+        <label>ostream</label>
+      </node>
+      <node id="60">
+        <label>random</label>
+      </node>
+      <node id="5">
+        <label>sstream</label>
+      </node>
+      <node id="57">
+        <label>stdlib.h</label>
+      </node>
+      <node id="4">
+        <label>string</label>
+      </node>
+      <node id="70">
+        <label>unordered_map</label>
+      </node>
+      <node id="8">
+        <label>vector</label>
+      </node>
+    </incdepgraph>
+    <innerclass refid="class_homogeneous_patch" prot="public">HomogeneousPatch</innerclass>
+    <briefdescription>
+<para>Defines the <ref refid="class_homogeneous_patch" kindref="compound">HomogeneousPatch</ref> class, a type of <ref refid="class_patch_shape" kindref="compound">PatchShape</ref> with uniform influence. </para>
+    </briefdescription>
+    <detaileddescription>
+<para>This file contains the declaration of the <ref refid="class_homogeneous_patch" kindref="compound">HomogeneousPatch</ref> class, which represents a patch in the landscape whose influence is uniform across its area. </para>
+    </detaileddescription>
+    <programlisting>
+<codeline lineno="1"><highlight class="normal"></highlight></codeline>
+<codeline lineno="8"><highlight class="normal"></highlight></codeline>
+<codeline lineno="9"><highlight class="normal"></highlight><highlight class="preprocessor">#ifndef<sp/>HOMOGENEOUS_PATCH_H_</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="10"><highlight class="normal"></highlight><highlight class="preprocessor">#define<sp/>HOMOGENEOUS_PATCH_H_</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="11"><highlight class="normal"></highlight></codeline>
+<codeline lineno="12"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&quot;App/Model/IBM/Landscape/Map/Patches/Shape/PatchShape.h&quot;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="13"><highlight class="normal"></highlight></codeline>
+<codeline lineno="23" refid="class_homogeneous_patch" refkind="compound"><highlight class="normal"></highlight><highlight class="keyword">class<sp/></highlight><highlight class="normal"><ref refid="class_homogeneous_patch_1a23c1b0069cb11815e4f5b855637d36d3" kindref="member">HomogeneousPatch</ref><sp/>:<sp/></highlight><highlight class="keyword">public</highlight><highlight class="normal"><sp/><ref refid="class_patch_shape_1a6255d13bbae3d7e6ecfd336223c9d3dd" kindref="member">PatchShape</ref><sp/>{</highlight></codeline>
+<codeline lineno="24"><highlight class="normal"></highlight><highlight class="keyword">public</highlight><highlight class="normal">:</highlight></codeline>
+<codeline lineno="28" refid="class_homogeneous_patch_1a23c1b0069cb11815e4f5b855637d36d3" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="class_homogeneous_patch_1a23c1b0069cb11815e4f5b855637d36d3" kindref="member">HomogeneousPatch</ref>();</highlight></codeline>
+<codeline lineno="29"><highlight class="normal"></highlight></codeline>
+<codeline lineno="33" refid="class_homogeneous_patch_1adbf1d1c19f33018fba32409aaff5a425" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">virtual</highlight><highlight class="normal"><sp/><ref refid="class_homogeneous_patch_1adbf1d1c19f33018fba32409aaff5a425" kindref="member">~HomogeneousPatch</ref>();</highlight></codeline>
+<codeline lineno="34"><highlight class="normal"></highlight></codeline>
+<codeline lineno="38" refid="class_homogeneous_patch_1a1c089b90b0e617d7e888fd6f8bb07c1f" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="class_homogeneous_patch_1a1c089b90b0e617d7e888fd6f8bb07c1f" kindref="member">HomogeneousPatch</ref>(</highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/><ref refid="class_homogeneous_patch_1a23c1b0069cb11815e4f5b855637d36d3" kindref="member">HomogeneousPatch</ref>&amp;)<sp/>=<sp/></highlight><highlight class="keyword">delete</highlight><highlight class="normal">;</highlight></codeline>
+<codeline lineno="39"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight></codeline>
+<codeline lineno="43" refid="class_homogeneous_patch_1a2d2d7a182d4ac24d848bedbe61babdc1" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="class_homogeneous_patch_1a23c1b0069cb11815e4f5b855637d36d3" kindref="member">HomogeneousPatch</ref>&amp;<sp/><ref refid="class_homogeneous_patch_1a2d2d7a182d4ac24d848bedbe61babdc1" kindref="member">operator=</ref>(</highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/><ref refid="class_homogeneous_patch_1a23c1b0069cb11815e4f5b855637d36d3" kindref="member">HomogeneousPatch</ref>&amp;)<sp/>=<sp/></highlight><highlight class="keyword">delete</highlight><highlight class="normal">;</highlight></codeline>
+<codeline lineno="44"><highlight class="normal"></highlight></codeline>
+<codeline lineno="50" refid="class_homogeneous_patch_1a2fbc55b9e0a4975719cd2f4d59ccd285" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/>Coverage<sp/><ref refid="class_homogeneous_patch_1a2fbc55b9e0a4975719cd2f4d59ccd285" kindref="member">checkCoverage</ref>(</highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/>RingModel&amp;<sp/>cellBounds)<sp/></highlight><highlight class="keyword">const<sp/>override</highlight><highlight class="normal">;</highlight></codeline>
+<codeline lineno="51"><highlight class="normal"></highlight></codeline>
+<codeline lineno="56" refid="class_homogeneous_patch_1adb9d2f4216989543c6cbf0ecd02b96af" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="class_patch_shape_1aa74e58d28556a3c6158a5d539c320441" kindref="member">Type</ref><sp/><ref refid="class_homogeneous_patch_1adb9d2f4216989543c6cbf0ecd02b96af" kindref="member">getType</ref>()<sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal">;</highlight></codeline>
+<codeline lineno="57"><highlight class="normal">};</highlight></codeline>
+<codeline lineno="58"><highlight class="normal"></highlight></codeline>
+<codeline lineno="59"><highlight class="normal"></highlight><highlight class="preprocessor">#endif<sp/></highlight><highlight class="comment">/*<sp/>HOMOGENEOUS_PATCH_H_<sp/>*/</highlight><highlight class="preprocessor"></highlight></codeline>
+    </programlisting>
+    <location file="App/Model/IBM/Landscape/Map/Patches/Shape/HomogeneousPatch.h"/>
+  </compounddef>
+</doxygen>

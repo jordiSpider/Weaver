@@ -4,24 +4,10 @@
 using namespace std;
 
 
-AnimalSpeciesID::AnimalSpeciesID()
-{
-
-}
-
-AnimalSpeciesID::AnimalSpeciesID(const id_type& value)
-	: value(value)
-{
-
-}
 
 const id_type& AnimalSpeciesID::getValue() const
 {
 	return value;
-}
-
-AnimalSpeciesID::operator size_t() const {
-	return static_cast<size_t>(value);
 }
 
 size_t hash<AnimalSpeciesID>::operator()(const AnimalSpeciesID& animalSpeciesID) const

@@ -39,7 +39,6 @@
 
 #include "Exceptions/LineInfoException.h"
 #include "Misc/Utilities.h"
-#include "Misc/GlobalVariable.h"
 #include "App/Model/IBM/Maths/Random.h"
 #include "App/Model/IBM/Landscape/Landscape.h"
 #include "App/Model/Model.h"
@@ -47,6 +46,7 @@
 
 /**
  * @class IBM
+ * @ingroup weaver_model
  * @brief Implements an Individual-Based Model (IBM) for ecosystem simulation.
  *
  * The IBM class represents a high-level model that simulates the behavior and
@@ -66,12 +66,11 @@ public:
 	/**
      * @brief Constructs the IBM model and initializes its subsystems.
      *
-     * The constructor links the model with a given `View` instance, which
-     * may be used for visualization or real-time interaction.
+     * The constructor initializes the model's internal state and prepares
+     * its subsystems for simulation.
      *
-     * @param view Reference to the View object associated with the simulation.
      */
-	IBM(View& view);
+	IBM();
 
 	/**
      * @brief Destroys the IBM model.

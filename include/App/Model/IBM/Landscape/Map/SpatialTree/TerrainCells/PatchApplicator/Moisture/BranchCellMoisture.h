@@ -20,6 +20,7 @@ class BranchTerrainCell;
 
 /**
  * @class BranchCellMoisture
+ * @ingroup weaver_landscape
  * @brief Moisture implementation for branch nodes in a spatial tree.
  *
  * This class aggregates moisture information from child cells of a branch

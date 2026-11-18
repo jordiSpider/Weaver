@@ -1,0 +1,259 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.14.0" xml:lang="en-US">
+  <compounddef id="class_tuple" kind="class" language="C++" prot="public">
+    <compoundname>Tuple</compoundname>
+    <basecompoundref refid="class_element" prot="public" virt="non-virtual">Element</basecompoundref>
+    <includes refid="_tuple_8h" local="no">Tuple.h</includes>
+    <sectiondef kind="protected-attrib">
+      <memberdef kind="variable" id="class_tuple_1ae268d1c2b878aa72c1d5b094b1a1133d" prot="protected" static="no" mutable="no">
+        <type>std::vector&lt; <ref refid="class_element" kindref="compound">Element</ref> * &gt;</type>
+        <definition>std::vector&lt;Element*&gt; Tuple::items</definition>
+        <argsstring></argsstring>
+        <name>items</name>
+        <qualifiedname>Tuple::items</qualifiedname>
+        <briefdescription>
+<para>List of element validators corresponding to each position in the tuple. </para>
+        </briefdescription>
+        <detaileddescription>
+<para>Each index of the JSON array must match the schema element stored at the same position inside this vector. </para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="Misc/JsonValidator/Elements/Tuple.h" line="53" column="17" bodyfile="Misc/JsonValidator/Elements/Tuple.h" bodystart="53" bodyend="-1"/>
+      </memberdef>
+    </sectiondef>
+    <sectiondef kind="protected-func">
+      <memberdef kind="function" id="class_tuple_1a247214c632de7c3a73f7d66446a64883" prot="protected" static="no" const="yes" explicit="no" inline="no" virt="virtual">
+        <type>void</type>
+        <definition>void Tuple::validateElement</definition>
+        <argsstring>(const nlohmann::json &amp;config) const</argsstring>
+        <name>validateElement</name>
+        <qualifiedname>Tuple::validateElement</qualifiedname>
+        <reimplements refid="class_element_1a2e31082683027a829ee75a4bd872738a">validateElement</reimplements>
+        <param>
+          <type>const nlohmann::json &amp;</type>
+          <declname>config</declname>
+        </param>
+        <briefdescription>
+<para>Validates the provided JSON value against the tuple structure. </para>
+        </briefdescription>
+        <detaileddescription>
+<para>Validation steps include:<itemizedlist>
+<listitem><para>Checking that the value is an array.</para>
+</listitem><listitem><para>Ensuring that the array length matches the tuple size.</para>
+</listitem><listitem><para>Validating each element at index <emphasis>i</emphasis> with <computeroutput>items[i]</computeroutput>.</para>
+</listitem></itemizedlist>
+</para>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>config</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>JSON value to validate.</para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<parameterlist kind="exception"><parameteritem>
+<parameternamelist>
+<parametername><ref refid="class_validator_config_j_s_o_n_exception" kindref="compound">ValidatorConfigJSONException</ref></parametername>
+</parameternamelist>
+<parameterdescription>
+<para>If the JSON value violates tuple constraints. </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="Misc/JsonValidator/Elements/Tuple.h" line="68" column="10"/>
+      </memberdef>
+    </sectiondef>
+    <sectiondef kind="public-func">
+      <memberdef kind="function" id="class_tuple_1ad8b7869dfaea46846e52fb3e97233d00" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type></type>
+        <definition>Tuple::Tuple</definition>
+        <argsstring>(const nlohmann::json &amp;info)</argsstring>
+        <name>Tuple</name>
+        <qualifiedname>Tuple::Tuple</qualifiedname>
+        <param>
+          <type>const nlohmann::json &amp;</type>
+          <declname>info</declname>
+        </param>
+        <briefdescription>
+<para>Constructs a <ref refid="class_tuple" kindref="compound">Tuple</ref> element from its JSON schema definition. </para>
+        </briefdescription>
+        <detaileddescription>
+<para>Reads the <computeroutput>&quot;items&quot;</computeroutput> field when it is defined as an array of schemas and creates one <ref refid="class_element" kindref="compound">Element</ref> child for each tuple position.</para>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>info</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>JSON schema definition for this tuple. </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="Misc/JsonValidator/Elements/Tuple.h" line="79" column="5"/>
+      </memberdef>
+      <memberdef kind="function" id="class_tuple_1a92b2d535132448ef835895727b6e1d57" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type></type>
+        <definition>Tuple::Tuple</definition>
+        <argsstring>(const Tuple &amp;other, const bool nullProperty)</argsstring>
+        <name>Tuple</name>
+        <qualifiedname>Tuple::Tuple</qualifiedname>
+        <param>
+          <type>const <ref refid="class_tuple" kindref="compound">Tuple</ref> &amp;</type>
+          <declname>other</declname>
+        </param>
+        <param>
+          <type>const bool</type>
+          <declname>nullProperty</declname>
+        </param>
+        <briefdescription>
+<para>Copy constructor used during pattern instantiation. </para>
+        </briefdescription>
+        <detaileddescription>
+<para>Creates a new <ref refid="class_tuple" kindref="compound">Tuple</ref> instance by shallow-copying each <ref refid="class_element" kindref="compound">Element</ref> child, optionally marking the tuple as a nullified property when produced through pattern replacement.</para>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>other</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>The <ref refid="class_tuple" kindref="compound">Tuple</ref> instance to copy. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>nullProperty</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Whether this copy should be marked as a null property. </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="Misc/JsonValidator/Elements/Tuple.h" line="91" column="5"/>
+      </memberdef>
+      <memberdef kind="function" id="class_tuple_1a466cdc7f9bf70c413006d5ae4e90c414" prot="public" static="no" const="no" explicit="no" inline="no" virt="virtual">
+        <type></type>
+        <definition>virtual Tuple::~Tuple</definition>
+        <argsstring>()</argsstring>
+        <name>~Tuple</name>
+        <qualifiedname>Tuple::~Tuple</qualifiedname>
+        <briefdescription>
+<para>Destructor. </para>
+        </briefdescription>
+        <detaileddescription>
+<para>Frees all dynamically allocated child <ref refid="class_element" kindref="compound">Element</ref> instances stored in <computeroutput>items</computeroutput>. </para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="Misc/JsonValidator/Elements/Tuple.h" line="98" column="13"/>
+      </memberdef>
+      <memberdef kind="function" id="class_tuple_1a5f5979ae494e56147776b5cfd1d7b8c8" prot="public" static="no" const="yes" explicit="no" inline="no" virt="non-virtual">
+        <type>const std::vector&lt; <ref refid="class_element" kindref="compound">Element</ref> * &gt; &amp;</type>
+        <definition>const std::vector&lt; Element * &gt; &amp; Tuple::getItems</definition>
+        <argsstring>() const</argsstring>
+        <name>getItems</name>
+        <qualifiedname>Tuple::getItems</qualifiedname>
+        <briefdescription>
+<para>Returns the list of child element validators. </para>
+        </briefdescription>
+        <detaileddescription>
+<para><simplesect kind="return"><para>Vector of Element* representing schema for each tuple index. </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="Misc/JsonValidator/Elements/Tuple.h" line="111" column="23"/>
+      </memberdef>
+      <memberdef kind="function" id="class_tuple_1a8966457d330ac250bd002c719e606a63" prot="public" static="no" const="yes" explicit="no" inline="no" virt="virtual">
+        <type><ref refid="class_element_1a009a3be4c3a037a72e292b2464c9cbc5" kindref="member">Type</ref></type>
+        <definition>Type Tuple::getType</definition>
+        <argsstring>() const</argsstring>
+        <name>getType</name>
+        <qualifiedname>Tuple::getType</qualifiedname>
+        <reimplements refid="class_element_1a00ef06c036d1d4628fcd3586885ca131">getType</reimplements>
+        <briefdescription>
+<para>Returns the element type. </para>
+        </briefdescription>
+        <detaileddescription>
+<para><simplesect kind="return"><para><ref refid="class_element_1a009a3be4c3a037a72e292b2464c9cbc5a0636f7c1e41a18679ab958368587c630" kindref="member">Type::tuple</ref> </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="Misc/JsonValidator/Elements/Tuple.h" line="104" column="10"/>
+      </memberdef>
+    </sectiondef>
+    <briefdescription>
+<para>Represents a JSON Schema tuple-type element with position-dependent validation. </para>
+    </briefdescription>
+    <detaileddescription>
+<para>The <ref refid="class_tuple" kindref="compound">Tuple</ref> class models JSON arrays whose elements are heterogeneous and must match different schema definitions depending on their index (“tuple validation” in JSON Schema). Unlike homogeneous arrays, a <ref refid="class_tuple" kindref="compound">Tuple</ref> enforces:<itemizedlist>
+<listitem><para>A fixed length determined by the number of schema items.</para>
+</listitem><listitem><para>Validation of each position using its corresponding <ref refid="class_element" kindref="compound">Element</ref> schema.</para>
+</listitem></itemizedlist>
+</para>
+<para>This is used when the schema defines <computeroutput>&quot;items&quot;</computeroutput> as an array instead of an object. </para>
+    </detaileddescription>
+    <inheritancegraph>
+      <node id="2">
+        <label>Element</label>
+        <link refid="class_element"/>
+      </node>
+      <node id="1">
+        <label>Tuple</label>
+        <link refid="class_tuple"/>
+        <childnode refid="2" relation="public-inheritance">
+        </childnode>
+      </node>
+    </inheritancegraph>
+    <collaborationgraph>
+      <node id="2">
+        <label>Element</label>
+        <link refid="class_element"/>
+      </node>
+      <node id="1">
+        <label>Tuple</label>
+        <link refid="class_tuple"/>
+        <childnode refid="2" relation="public-inheritance">
+        </childnode>
+      </node>
+    </collaborationgraph>
+    <location file="Misc/JsonValidator/Elements/Tuple.h" line="44" column="1" bodyfile="Misc/JsonValidator/Elements/Tuple.h" bodystart="45" bodyend="112"/>
+    <listofallmembers>
+      <member refid="class_element_1a31838aa329c7380f4395b9c0a4a82cfe" prot="protected" virt="non-virtual"><scope>Tuple</scope><name>description</name></member>
+      <member refid="class_element_1a5ef746a08042747acd608589686df030" prot="public" virt="non-virtual"><scope>Tuple</scope><name>Element</name></member>
+      <member refid="class_element_1a7adf23f4617107ee13fcab2747d8b394" prot="public" virt="non-virtual"><scope>Tuple</scope><name>Element</name></member>
+      <member refid="class_element_1a2eab22dd80bfba5646c6f0e79dec8569" prot="public" virt="non-virtual"><scope>Tuple</scope><name>getDescription</name></member>
+      <member refid="class_tuple_1a5f5979ae494e56147776b5cfd1d7b8c8" prot="public" virt="non-virtual"><scope>Tuple</scope><name>getItems</name></member>
+      <member refid="class_element_1abf6e4f402b616bf7f52166f96c450b36" prot="public" virt="virtual"><scope>Tuple</scope><name>getProperty</name></member>
+      <member refid="class_element_1ae4ee4a9ec97bb054a43aea28d9700f8e" prot="public" virt="non-virtual"><scope>Tuple</scope><name>getProperty</name></member>
+      <member refid="class_tuple_1a8966457d330ac250bd002c719e606a63" prot="public" virt="virtual"><scope>Tuple</scope><name>getType</name></member>
+      <member refid="class_element_1a4e3a7ef1a3b0b42c84c1022a4db94246" prot="public" virt="non-virtual"><scope>Tuple</scope><name>isModified</name></member>
+      <member refid="class_element_1a97d883c0b237ec9e1fe6993825fd0f8c" prot="public" virt="non-virtual"><scope>Tuple</scope><name>isNullProperty</name></member>
+      <member refid="class_tuple_1ae268d1c2b878aa72c1d5b094b1a1133d" prot="protected" virt="non-virtual"><scope>Tuple</scope><name>items</name></member>
+      <member refid="class_element_1a1b0c283200e0e2c16b8713369631214d" prot="protected" virt="non-virtual"><scope>Tuple</scope><name>modified</name></member>
+      <member refid="class_element_1a4318313abfd08feae300a12668cec95a" prot="protected" virt="non-virtual"><scope>Tuple</scope><name>nullProperty</name></member>
+      <member refid="class_tuple_1ad8b7869dfaea46846e52fb3e97233d00" prot="public" virt="non-virtual"><scope>Tuple</scope><name>Tuple</name></member>
+      <member refid="class_tuple_1a92b2d535132448ef835895727b6e1d57" prot="public" virt="non-virtual"><scope>Tuple</scope><name>Tuple</name></member>
+      <member refid="class_element_1a009a3be4c3a037a72e292b2464c9cbc5" prot="public" virt="non-virtual"><scope>Tuple</scope><name>Type</name></member>
+      <member refid="class_element_1a59cc1d05821dd36340deffd7f56add32" prot="public" virt="non-virtual"><scope>Tuple</scope><name>validate</name></member>
+      <member refid="class_tuple_1a247214c632de7c3a73f7d66446a64883" prot="protected" virt="virtual"><scope>Tuple</scope><name>validateElement</name></member>
+      <member refid="class_element_1adbcc49811634a36df5d3830d366ba2b0" prot="public" virt="virtual"><scope>Tuple</scope><name>verifyPropertyPath</name></member>
+      <member refid="class_element_1ab4fc182292f44e46acba9c55662237bf" prot="public" virt="virtual"><scope>Tuple</scope><name>~Element</name></member>
+      <member refid="class_tuple_1a466cdc7f9bf70c413006d5ae4e90c414" prot="public" virt="virtual"><scope>Tuple</scope><name>~Tuple</name></member>
+    </listofallmembers>
+  </compounddef>
+</doxygen>

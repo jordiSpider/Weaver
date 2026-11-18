@@ -1,0 +1,265 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.14.0" xml:lang="en-US">
+  <compounddef id="class_non_dynamics" kind="class" language="C++" prot="public">
+    <compoundname>NonDynamics</compoundname>
+    <basecompoundref refid="class_non_mass_based_dynamics" prot="public" virt="non-virtual">NonMassBasedDynamics</basecompoundref>
+    <includes refid="_non_dynamics_8h" local="no">NonDynamics.h</includes>
+    <sectiondef kind="public-func">
+      <memberdef kind="function" id="class_non_dynamics_1a833a2d2ee4751c7a5d26d21aba2bb8a2" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type></type>
+        <definition>NonDynamics::NonDynamics</definition>
+        <argsstring>()</argsstring>
+        <name>NonDynamics</name>
+        <qualifiedname>NonDynamics::NonDynamics</qualifiedname>
+        <briefdescription>
+<para>Default constructor. </para>
+        </briefdescription>
+        <detaileddescription>
+<para>Initializes a <ref refid="class_non_dynamics" kindref="compound">NonDynamics</ref> object. No parameters are required since the value remains constant. </para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="App/Model/IBM/Maths/Dynamics/NonMassBased/NonDynamics.h" line="52" column="5"/>
+      </memberdef>
+      <memberdef kind="function" id="class_non_dynamics_1a88608c541a4f122cb42c7b4517c7fcb8" prot="public" static="no" const="no" explicit="no" inline="no" virt="virtual">
+        <type></type>
+        <definition>virtual NonDynamics::~NonDynamics</definition>
+        <argsstring>()</argsstring>
+        <name>~NonDynamics</name>
+        <qualifiedname>NonDynamics::~NonDynamics</qualifiedname>
+        <briefdescription>
+<para>Virtual destructor. </para>
+        </briefdescription>
+        <detaileddescription>
+<para>Ensures proper cleanup in derived classes. </para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="App/Model/IBM/Maths/Dynamics/NonMassBased/NonDynamics.h" line="59" column="13"/>
+      </memberdef>
+      <memberdef kind="function" id="class_non_dynamics_1aa67bdf71621df3d090d142686964a31a" prot="public" static="no" const="yes" explicit="no" inline="no" virt="virtual">
+        <type><ref refid="class_precise_double" kindref="compound">PreciseDouble</ref></type>
+        <definition>PreciseDouble NonDynamics::getInitialValue</definition>
+        <argsstring>() const</argsstring>
+        <name>getInitialValue</name>
+        <qualifiedname>NonDynamics::getInitialValue</qualifiedname>
+        <reimplements refid="class_dynamics_1ae9000c3efeec95fe692d45a58ac0edd7">getInitialValue</reimplements>
+        <briefdescription>
+<para>Returns the initial value of the dynamics. </para>
+        </briefdescription>
+        <detaileddescription>
+<para><simplesect kind="return"><para>A <ref refid="class_precise_double" kindref="compound">PreciseDouble</ref> equal to the base value. </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="App/Model/IBM/Maths/Dynamics/NonMassBased/NonDynamics.h" line="66" column="19"/>
+      </memberdef>
+      <memberdef kind="function" id="class_non_dynamics_1a478366a9da6a737dbbe9e4bf2d673ac9" prot="public" static="no" const="yes" explicit="no" inline="no" virt="virtual">
+        <type><ref refid="class_precise_double" kindref="compound">PreciseDouble</ref></type>
+        <definition>PreciseDouble NonDynamics::getValue</definition>
+        <argsstring>(const PreciseDouble &amp;baseValue) const</argsstring>
+        <name>getValue</name>
+        <qualifiedname>NonDynamics::getValue</qualifiedname>
+        <reimplements refid="class_non_mass_based_dynamics_1a2e29d9b3cc6fadd4ffbd79cb3c1634cb">getValue</reimplements>
+        <param>
+          <type>const <ref refid="class_precise_double" kindref="compound">PreciseDouble</ref> &amp;</type>
+          <declname>baseValue</declname>
+        </param>
+        <briefdescription>
+<para>Returns the current value of the dynamics. </para>
+        </briefdescription>
+        <detaileddescription>
+<para>For <ref refid="class_non_dynamics" kindref="compound">NonDynamics</ref>, this method always returns the provided base value.</para>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>baseValue</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Reference value for the process. </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<simplesect kind="return"><para>A <ref refid="class_precise_double" kindref="compound">PreciseDouble</ref> equal to baseValue. </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="App/Model/IBM/Maths/Dynamics/NonMassBased/NonDynamics.h" line="76" column="19"/>
+      </memberdef>
+      <memberdef kind="function" id="class_non_dynamics_1ab37a519f2a1a5c9b2c0dca9d9207ef88" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <templateparamlist>
+          <param>
+            <type>class Archive</type>
+          </param>
+        </templateparamlist>
+        <type>void</type>
+        <definition>void NonDynamics::serialize</definition>
+        <argsstring>(Archive &amp;ar, const unsigned int version)</argsstring>
+        <name>serialize</name>
+        <qualifiedname>NonDynamics::serialize</qualifiedname>
+        <param>
+          <type>Archive &amp;</type>
+          <declname>ar</declname>
+        </param>
+        <param>
+          <type>const unsigned int</type>
+          <declname>version</declname>
+        </param>
+        <briefdescription>
+<para>Serializes the object for Boost serialization. </para>
+        </briefdescription>
+        <detaileddescription>
+<para><parameterlist kind="templateparam"><parameteritem>
+<parameternamelist>
+<parametername>Archive</parametername>
+</parameternamelist>
+<parameterdescription>
+<para><ref refid="class_dynamics_1a3a0aec0c5657efbbb3df85fc244af169" kindref="member">Type</ref> of archive (binary/text, input/output). </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>ar</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Archive object. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>version</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Version of serialization format. </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="App/Model/IBM/Maths/Dynamics/NonMassBased/NonDynamics.h" line="102" column="10"/>
+      </memberdef>
+      <memberdef kind="function" id="class_non_dynamics_1a0b3102b92292185537b00a350617dc16" prot="public" static="no" const="yes" explicit="no" inline="no" virt="virtual">
+        <type>std::string</type>
+        <definition>std::string NonDynamics::showInfo</definition>
+        <argsstring>(const std::string &amp;indentation) const</argsstring>
+        <name>showInfo</name>
+        <qualifiedname>NonDynamics::showInfo</qualifiedname>
+        <reimplements refid="class_dynamics_1a80ea07e58c041f77683f073e34eb403b">showInfo</reimplements>
+        <param>
+          <type>const std::string &amp;</type>
+          <declname>indentation</declname>
+        </param>
+        <briefdescription>
+<para>Returns a string with information about the dynamics. </para>
+        </briefdescription>
+        <detaileddescription>
+<para>Useful for debugging or logging. Indicates that the dynamics is static.</para>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>indentation</parametername>
+</parameternamelist>
+<parameterdescription>
+<para><ref refid="class_string" kindref="compound">String</ref> used for indentation in output. </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<simplesect kind="return"><para>A human-readable description of the dynamics. </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="App/Model/IBM/Maths/Dynamics/NonMassBased/NonDynamics.h" line="93" column="17"/>
+      </memberdef>
+      <memberdef kind="function" id="class_non_dynamics_1adce42044f4fe6e826a0be92778c85682" prot="public" static="no" const="no" explicit="no" inline="no" virt="virtual">
+        <type>void</type>
+        <definition>void NonDynamics::update</definition>
+        <argsstring>()</argsstring>
+        <name>update</name>
+        <qualifiedname>NonDynamics::update</qualifiedname>
+        <reimplements refid="class_dynamics_1a2687d6e20817c0322fe04eb7dc30d3dc">update</reimplements>
+        <briefdescription>
+<para>Updates the internal state of the dynamics. </para>
+        </briefdescription>
+        <detaileddescription>
+<para><ref refid="class_non_dynamics" kindref="compound">NonDynamics</ref> does not evolve over time, so this function performs no action. </para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="App/Model/IBM/Maths/Dynamics/NonMassBased/NonDynamics.h" line="83" column="10"/>
+      </memberdef>
+    </sectiondef>
+    <briefdescription>
+<para>Represents a non-changing dynamic component in the ecosystem model. </para>
+    </briefdescription>
+    <detaileddescription>
+<para>This class implements a dynamics model where the associated value does not change with time. All operations simply return the base value or perform no action on update. It inherits from <ref refid="class_non_mass_based_dynamics" kindref="compound">NonMassBasedDynamics</ref> and implements its virtual interface with constant behavior.</para>
+<para>Typical use cases:<itemizedlist>
+<listitem><para>Traits or parameters that are constant for an individual</para>
+</listitem><listitem><para>Fixed environmental or physiological factors</para>
+</listitem><listitem><para>Default or placeholder dynamics when no temporal evolution is required </para>
+</listitem></itemizedlist>
+</para>
+    </detaileddescription>
+    <inheritancegraph>
+      <node id="3">
+        <label>Dynamics</label>
+        <link refid="class_dynamics"/>
+      </node>
+      <node id="1">
+        <label>NonDynamics</label>
+        <link refid="class_non_dynamics"/>
+        <childnode refid="2" relation="public-inheritance">
+        </childnode>
+      </node>
+      <node id="2">
+        <label>NonMassBasedDynamics</label>
+        <link refid="class_non_mass_based_dynamics"/>
+        <childnode refid="3" relation="public-inheritance">
+        </childnode>
+      </node>
+    </inheritancegraph>
+    <collaborationgraph>
+      <node id="3">
+        <label>Dynamics</label>
+        <link refid="class_dynamics"/>
+      </node>
+      <node id="1">
+        <label>NonDynamics</label>
+        <link refid="class_non_dynamics"/>
+        <childnode refid="2" relation="public-inheritance">
+        </childnode>
+      </node>
+      <node id="2">
+        <label>NonMassBasedDynamics</label>
+        <link refid="class_non_mass_based_dynamics"/>
+        <childnode refid="3" relation="public-inheritance">
+        </childnode>
+      </node>
+    </collaborationgraph>
+    <location file="App/Model/IBM/Maths/Dynamics/NonMassBased/NonDynamics.h" line="44" column="1" bodyfile="App/Model/IBM/Maths/Dynamics/NonMassBased/NonDynamics.h" bodystart="44" bodyend="103"/>
+    <listofallmembers>
+      <member refid="class_non_mass_based_dynamics_1a11550e9f5abcaf15ce2cf1f77f8b5897" prot="public" virt="non-virtual"><scope>NonDynamics</scope><name>createInstance</name></member>
+      <member refid="class_dynamics_1ad09feb0a33b9dbc56f0dab4cb9d4b88e" prot="public" virt="non-virtual"><scope>NonDynamics</scope><name>createInstanceForResource</name></member>
+      <member refid="class_dynamics_1af3e1536fbe0ac872e65d1b0d5b8867a8" prot="public" virt="non-virtual"><scope>NonDynamics</scope><name>Dynamics</name></member>
+      <member refid="class_non_dynamics_1aa67bdf71621df3d090d142686964a31a" prot="public" virt="virtual"><scope>NonDynamics</scope><name>getInitialValue</name></member>
+      <member refid="class_non_dynamics_1a478366a9da6a737dbbe9e4bf2d673ac9" prot="public" virt="virtual"><scope>NonDynamics</scope><name>getValue</name></member>
+      <member refid="class_non_mass_based_dynamics_1a0752ba431b7db3ede797a88663e6412d" prot="protected" virt="virtual" ambiguityscope="NonMassBasedDynamics::"><scope>NonDynamics</scope><name>getValue</name></member>
+      <member refid="class_non_dynamics_1a833a2d2ee4751c7a5d26d21aba2bb8a2" prot="public" virt="non-virtual"><scope>NonDynamics</scope><name>NonDynamics</name></member>
+      <member refid="class_non_mass_based_dynamics_1a2b7d25cd67f9702b9e50bf8c62e38945" prot="public" virt="non-virtual"><scope>NonDynamics</scope><name>NonMassBasedDynamics</name></member>
+      <member refid="class_non_dynamics_1ab37a519f2a1a5c9b2c0dca9d9207ef88" prot="public" virt="non-virtual"><scope>NonDynamics</scope><name>serialize</name></member>
+      <member refid="class_non_dynamics_1a0b3102b92292185537b00a350617dc16" prot="public" virt="virtual"><scope>NonDynamics</scope><name>showInfo</name></member>
+      <member refid="class_dynamics_1a3a0aec0c5657efbbb3df85fc244af169" prot="public" virt="non-virtual"><scope>NonDynamics</scope><name>Type</name></member>
+      <member refid="class_non_dynamics_1adce42044f4fe6e826a0be92778c85682" prot="public" virt="virtual"><scope>NonDynamics</scope><name>update</name></member>
+      <member refid="class_dynamics_1ac8d12beac1e6e1c7895f5360b3800370" prot="public" virt="virtual"><scope>NonDynamics</scope><name>~Dynamics</name></member>
+      <member refid="class_non_dynamics_1a88608c541a4f122cb42c7b4517c7fcb8" prot="public" virt="virtual"><scope>NonDynamics</scope><name>~NonDynamics</name></member>
+      <member refid="class_non_mass_based_dynamics_1a8ca0f767d647cee60ec14d1f817ec39f" prot="public" virt="virtual"><scope>NonDynamics</scope><name>~NonMassBasedDynamics</name></member>
+    </listofallmembers>
+  </compounddef>
+</doxygen>

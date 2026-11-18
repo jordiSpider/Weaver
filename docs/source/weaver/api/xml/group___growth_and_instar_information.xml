@@ -1,0 +1,64 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.14.0" xml:lang="en-US">
+  <compounddef id="group___growth_and_instar_information" kind="group">
+    <compoundname>GrowthAndInstarInformation</compoundname>
+    <title>Growth and Instar Information</title>
+    <sectiondef kind="func">
+      <memberdef kind="function" id="group___growth_and_instar_information_1ga0d0d377ddd32bcd8c41013435b0a7243" prot="public" static="no" const="yes" explicit="no" inline="no" virt="virtual">
+        <type>const <ref refid="class_animal_species_growth" kindref="compound">AnimalSpeciesGrowth</ref> &amp;</type>
+        <definition>const AnimalSpeciesGrowth &amp; AnimalSpecies::getGrowthBuildingBlock</definition>
+        <argsstring>() const</argsstring>
+        <name>getGrowthBuildingBlock</name>
+        <qualifiedname>AnimalSpecies::getGrowthBuildingBlock</qualifiedname>
+        <reimplements refid="class_species_1a10c7ba9085a0b8078c5a6cc6e632d2fd">getGrowthBuildingBlock</reimplements>
+        <briefdescription>
+<para>Returns the immutable growth blueprint object for the species. </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="App/Model/IBM/Landscape/LivingBeings/Animals/Species/AnimalSpecies.h" line="167" column="27"/>
+      </memberdef>
+      <memberdef kind="function" id="group___growth_and_instar_information_1gae1a6988f2b757964476bdcfdcd8fe0ee" prot="public" static="no" const="no" explicit="no" inline="no" virt="virtual">
+        <type><ref refid="class_animal_species_growth" kindref="compound">AnimalSpeciesGrowth</ref> &amp;</type>
+        <definition>AnimalSpeciesGrowth &amp; AnimalSpecies::getMutableGrowthBuildingBlock</definition>
+        <argsstring>()</argsstring>
+        <name>getMutableGrowthBuildingBlock</name>
+        <qualifiedname>AnimalSpecies::getMutableGrowthBuildingBlock</qualifiedname>
+        <reimplements refid="class_species_1a3d26c9d711627dba68fe830f2620fb06">getMutableGrowthBuildingBlock</reimplements>
+        <briefdescription>
+<para>Returns a mutable reference to the growth blueprint object. </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="App/Model/IBM/Landscape/LivingBeings/Animals/Species/AnimalSpecies.h" line="172" column="21"/>
+      </memberdef>
+      <memberdef kind="function" id="group___growth_and_instar_information_1ga030187074066abd70c13c08bbcc54584" prot="public" static="no" const="yes" explicit="no" inline="no" virt="non-virtual">
+        <type>const <ref refid="class_precise_double" kindref="compound">PreciseDouble</ref> &amp;</type>
+        <definition>const PreciseDouble &amp; AnimalSpecies::getPoreUsePerInstar</definition>
+        <argsstring>(const Instar &amp;instar) const</argsstring>
+        <name>getPoreUsePerInstar</name>
+        <qualifiedname>AnimalSpecies::getPoreUsePerInstar</qualifiedname>
+        <param>
+          <type>const <ref refid="class_instar" kindref="compound">Instar</ref> &amp;</type>
+          <declname>instar</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="App/Model/IBM/Landscape/LivingBeings/Animals/Species/AnimalSpecies.h" line="162" column="21"/>
+      </memberdef>
+    </sectiondef>
+    <briefdescription>
+<para>Methods related to growth curves, instar transitions and instar-dependent parameters. </para>
+    </briefdescription>
+    <detaileddescription>
+    </detaileddescription>
+  </compounddef>
+</doxygen>

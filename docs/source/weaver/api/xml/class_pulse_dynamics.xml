@@ -1,0 +1,570 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.14.0" xml:lang="en-US">
+  <compounddef id="class_pulse_dynamics" kind="class" language="C++" prot="public">
+    <compoundname>PulseDynamics</compoundname>
+    <basecompoundref refid="class_non_mass_based_dynamics" prot="public" virt="non-virtual">NonMassBasedDynamics</basecompoundref>
+    <includes refid="_pulse_dynamics_8h" local="no">PulseDynamics.h</includes>
+    <sectiondef kind="protected-attrib">
+      <memberdef kind="variable" id="class_pulse_dynamics_1afd30104ed077bda98fab09ba0f4a145b" prot="protected" static="no" mutable="no">
+        <type><ref refid="class_decay" kindref="compound">Decay</ref> *</type>
+        <definition>Decay* PulseDynamics::decay</definition>
+        <argsstring></argsstring>
+        <name>decay</name>
+        <qualifiedname>PulseDynamics::decay</qualifiedname>
+        <briefdescription>
+<para>Optional decay applied to pulse amplitude. </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="App/Model/IBM/Maths/Dynamics/NonMassBased/PulseDynamics.h" line="140" column="11" bodyfile="App/Model/IBM/Maths/Dynamics/NonMassBased/PulseDynamics.h" bodystart="140" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="class_pulse_dynamics_1a04cee5a2bd2f1e900c20fe66880005fd" prot="protected" static="no" mutable="no">
+        <type>std::pair&lt; <ref refid="class_time_step" kindref="compound">TimeStep</ref>, <ref refid="class_time_step" kindref="compound">TimeStep</ref> &gt;</type>
+        <definition>std::pair&lt;TimeStep, TimeStep&gt; PulseDynamics::distanceBetweenPulsesRange</definition>
+        <argsstring></argsstring>
+        <name>distanceBetweenPulsesRange</name>
+        <qualifiedname>PulseDynamics::distanceBetweenPulsesRange</qualifiedname>
+        <briefdescription>
+<para>Range of time steps between consecutive pulses. </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="App/Model/IBM/Maths/Dynamics/NonMassBased/PulseDynamics.h" line="125" column="15" bodyfile="App/Model/IBM/Maths/Dynamics/NonMassBased/PulseDynamics.h" bodystart="125" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="class_pulse_dynamics_1a5667fe405b0c276258fd81170d7a8307" prot="protected" static="no" mutable="no">
+        <type>bool</type>
+        <definition>bool PulseDynamics::fixedDistanceBetweenPulses</definition>
+        <argsstring></argsstring>
+        <name>fixedDistanceBetweenPulses</name>
+        <qualifiedname>PulseDynamics::fixedDistanceBetweenPulses</qualifiedname>
+        <briefdescription>
+<para>Whether the distance between pulses is fixed. </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="App/Model/IBM/Maths/Dynamics/NonMassBased/PulseDynamics.h" line="128" column="10" bodyfile="App/Model/IBM/Maths/Dynamics/NonMassBased/PulseDynamics.h" bodystart="128" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="class_pulse_dynamics_1a8b6e146b6ba4ddf67ec3c1b19e19c8b3" prot="protected" static="no" mutable="no">
+        <type>bool</type>
+        <definition>bool PulseDynamics::fixedPulsePeakValue</definition>
+        <argsstring></argsstring>
+        <name>fixedPulsePeakValue</name>
+        <qualifiedname>PulseDynamics::fixedPulsePeakValue</qualifiedname>
+        <briefdescription>
+<para>Whether the pulse peak value is fixed. </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="App/Model/IBM/Maths/Dynamics/NonMassBased/PulseDynamics.h" line="137" column="10" bodyfile="App/Model/IBM/Maths/Dynamics/NonMassBased/PulseDynamics.h" bodystart="137" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="class_pulse_dynamics_1ac7e55a6c651538378a648404e3318310" prot="protected" static="no" mutable="no">
+        <type><ref refid="class_time_step" kindref="compound">TimeStep</ref></type>
+        <definition>TimeStep PulseDynamics::nextPulseEventCountdown</definition>
+        <argsstring></argsstring>
+        <name>nextPulseEventCountdown</name>
+        <qualifiedname>PulseDynamics::nextPulseEventCountdown</qualifiedname>
+        <briefdescription>
+<para>Countdown until the next pulse event. </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="App/Model/IBM/Maths/Dynamics/NonMassBased/PulseDynamics.h" line="131" column="14" bodyfile="App/Model/IBM/Maths/Dynamics/NonMassBased/PulseDynamics.h" bodystart="131" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="class_pulse_dynamics_1a3affee267f930d3abbd416915e7f4d00" prot="protected" static="no" mutable="no">
+        <type>std::pair&lt; <ref refid="class_precise_double" kindref="compound">PreciseDouble</ref>, <ref refid="class_precise_double" kindref="compound">PreciseDouble</ref> &gt;</type>
+        <definition>std::pair&lt;PreciseDouble, PreciseDouble&gt; PulseDynamics::pulsePeakValueRange</definition>
+        <argsstring></argsstring>
+        <name>pulsePeakValueRange</name>
+        <qualifiedname>PulseDynamics::pulsePeakValueRange</qualifiedname>
+        <briefdescription>
+<para>Range of peak values for each pulse. </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="App/Model/IBM/Maths/Dynamics/NonMassBased/PulseDynamics.h" line="134" column="15" bodyfile="App/Model/IBM/Maths/Dynamics/NonMassBased/PulseDynamics.h" bodystart="134" bodyend="-1"/>
+      </memberdef>
+    </sectiondef>
+    <sectiondef kind="public-func">
+      <memberdef kind="function" id="class_pulse_dynamics_1a36aed8714725ec0171eafe7c595e7bee" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type></type>
+        <definition>PulseDynamics::PulseDynamics</definition>
+        <argsstring>()</argsstring>
+        <name>PulseDynamics</name>
+        <qualifiedname>PulseDynamics::PulseDynamics</qualifiedname>
+        <briefdescription>
+<para>Default constructor. </para>
+        </briefdescription>
+        <detaileddescription>
+<para>Initializes a <ref refid="class_pulse_dynamics" kindref="compound">PulseDynamics</ref> object with default parameters. </para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="App/Model/IBM/Maths/Dynamics/NonMassBased/PulseDynamics.h" line="55" column="5"/>
+      </memberdef>
+      <memberdef kind="function" id="class_pulse_dynamics_1ad2ccc0a400cf7072d7a9ab741f23e64c" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type></type>
+        <definition>PulseDynamics::PulseDynamics</definition>
+        <argsstring>(const nlohmann::json &amp;config, const PreciseDouble &amp;timeStepsPerDay)</argsstring>
+        <name>PulseDynamics</name>
+        <qualifiedname>PulseDynamics::PulseDynamics</qualifiedname>
+        <param>
+          <type>const nlohmann::json &amp;</type>
+          <declname>config</declname>
+        </param>
+        <param>
+          <type>const <ref refid="class_precise_double" kindref="compound">PreciseDouble</ref> &amp;</type>
+          <declname>timeStepsPerDay</declname>
+        </param>
+        <briefdescription>
+<para>Constructs a <ref refid="class_pulse_dynamics" kindref="compound">PulseDynamics</ref> object from a JSON configuration. </para>
+        </briefdescription>
+        <detaileddescription>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>config</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>JSON object containing pulse dynamics parameters. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>timeStepsPerDay</parametername>
+</parameternamelist>
+<parameterdescription>
+<para><ref refid="class_number" kindref="compound">Number</ref> of simulation time steps in a day. </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="App/Model/IBM/Maths/Dynamics/NonMassBased/PulseDynamics.h" line="63" column="5"/>
+      </memberdef>
+      <memberdef kind="function" id="class_pulse_dynamics_1a1506c0ce53d3868b586085411872fff1" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type></type>
+        <definition>PulseDynamics::PulseDynamics</definition>
+        <argsstring>(const nlohmann::json &amp;config, const PreciseDouble &amp;timeStepsPerDay, const PreciseDouble &amp;hyperVolume)</argsstring>
+        <name>PulseDynamics</name>
+        <qualifiedname>PulseDynamics::PulseDynamics</qualifiedname>
+        <param>
+          <type>const nlohmann::json &amp;</type>
+          <declname>config</declname>
+        </param>
+        <param>
+          <type>const <ref refid="class_precise_double" kindref="compound">PreciseDouble</ref> &amp;</type>
+          <declname>timeStepsPerDay</declname>
+        </param>
+        <param>
+          <type>const <ref refid="class_precise_double" kindref="compound">PreciseDouble</ref> &amp;</type>
+          <declname>hyperVolume</declname>
+        </param>
+        <briefdescription>
+<para>Constructs a <ref refid="class_pulse_dynamics" kindref="compound">PulseDynamics</ref> object from a JSON configuration and hypervolume. </para>
+        </briefdescription>
+        <detaileddescription>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>config</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>JSON object containing pulse dynamics parameters. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>timeStepsPerDay</parametername>
+</parameternamelist>
+<parameterdescription>
+<para><ref refid="class_number" kindref="compound">Number</ref> of simulation time steps in a day. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>hyperVolume</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Scaling factor for the amplitude of pulses. </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="App/Model/IBM/Maths/Dynamics/NonMassBased/PulseDynamics.h" line="72" column="5"/>
+      </memberdef>
+      <memberdef kind="function" id="class_pulse_dynamics_1aba0e5ccc69af901e7492042a38b80c5c" prot="public" static="no" const="no" explicit="no" inline="no" virt="virtual">
+        <type></type>
+        <definition>virtual PulseDynamics::~PulseDynamics</definition>
+        <argsstring>()</argsstring>
+        <name>~PulseDynamics</name>
+        <qualifiedname>PulseDynamics::~PulseDynamics</qualifiedname>
+        <briefdescription>
+<para>Virtual destructor. </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="App/Model/IBM/Maths/Dynamics/NonMassBased/PulseDynamics.h" line="77" column="13"/>
+      </memberdef>
+      <memberdef kind="function" id="class_pulse_dynamics_1a6a27dc7998ea94f2760f9d9cd28e13ff" prot="public" static="no" const="yes" explicit="no" inline="no" virt="virtual">
+        <type><ref refid="class_precise_double" kindref="compound">PreciseDouble</ref></type>
+        <definition>PreciseDouble PulseDynamics::getInitialValue</definition>
+        <argsstring>() const</argsstring>
+        <name>getInitialValue</name>
+        <qualifiedname>PulseDynamics::getInitialValue</qualifiedname>
+        <reimplements refid="class_dynamics_1ae9000c3efeec95fe692d45a58ac0edd7">getInitialValue</reimplements>
+        <briefdescription>
+<para>Returns the initial value before any pulse occurs. </para>
+        </briefdescription>
+        <detaileddescription>
+<para><simplesect kind="return"><para>A <ref refid="class_precise_double" kindref="compound">PreciseDouble</ref> representing the initial state of the dynamics. </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="App/Model/IBM/Maths/Dynamics/NonMassBased/PulseDynamics.h" line="84" column="19"/>
+      </memberdef>
+      <memberdef kind="function" id="class_pulse_dynamics_1a9242fc5ca974db30fe908ba4f1ff3d83" prot="public" static="no" const="yes" explicit="no" inline="no" virt="virtual">
+        <type><ref refid="class_precise_double" kindref="compound">PreciseDouble</ref></type>
+        <definition>PreciseDouble PulseDynamics::getValue</definition>
+        <argsstring>(const PreciseDouble &amp;baseValue) const</argsstring>
+        <name>getValue</name>
+        <qualifiedname>PulseDynamics::getValue</qualifiedname>
+        <reimplements refid="class_non_mass_based_dynamics_1a2e29d9b3cc6fadd4ffbd79cb3c1634cb">getValue</reimplements>
+        <param>
+          <type>const <ref refid="class_precise_double" kindref="compound">PreciseDouble</ref> &amp;</type>
+          <declname>baseValue</declname>
+        </param>
+        <briefdescription>
+<para>Returns the current value of the dynamics. </para>
+        </briefdescription>
+        <detaileddescription>
+<para>The value may include contributions from ongoing pulses.</para>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>baseValue</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Base value to use in calculations. </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<simplesect kind="return"><para>A <ref refid="class_precise_double" kindref="compound">PreciseDouble</ref> representing the current state. </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="App/Model/IBM/Maths/Dynamics/NonMassBased/PulseDynamics.h" line="94" column="19"/>
+      </memberdef>
+      <memberdef kind="function" id="class_pulse_dynamics_1a852b5be21996ab2a98b8fdd6487db7f6" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <templateparamlist>
+          <param>
+            <type>class Archive</type>
+          </param>
+        </templateparamlist>
+        <type>void</type>
+        <definition>void PulseDynamics::serialize</definition>
+        <argsstring>(Archive &amp;ar, const unsigned int version)</argsstring>
+        <name>serialize</name>
+        <qualifiedname>PulseDynamics::serialize</qualifiedname>
+        <param>
+          <type>Archive &amp;</type>
+          <declname>ar</declname>
+        </param>
+        <param>
+          <type>const unsigned int</type>
+          <declname>version</declname>
+        </param>
+        <briefdescription>
+<para>Serializes the object for Boost serialization. </para>
+        </briefdescription>
+        <detaileddescription>
+<para><parameterlist kind="templateparam"><parameteritem>
+<parameternamelist>
+<parametername>Archive</parametername>
+</parameternamelist>
+<parameterdescription>
+<para><ref refid="class_dynamics_1a3a0aec0c5657efbbb3df85fc244af169" kindref="member">Type</ref> of archive (binary/text, input/output). </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>ar</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Archive object. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>version</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Version of serialization format. </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="App/Model/IBM/Maths/Dynamics/NonMassBased/PulseDynamics.h" line="121" column="10"/>
+      </memberdef>
+      <memberdef kind="function" id="class_pulse_dynamics_1a30dd7f9551a3959970c08f5e33985a80" prot="public" static="no" const="yes" explicit="no" inline="no" virt="virtual">
+        <type>std::string</type>
+        <definition>std::string PulseDynamics::showInfo</definition>
+        <argsstring>(const std::string &amp;indentation) const</argsstring>
+        <name>showInfo</name>
+        <qualifiedname>PulseDynamics::showInfo</qualifiedname>
+        <reimplements refid="class_dynamics_1a80ea07e58c041f77683f073e34eb403b">showInfo</reimplements>
+        <param>
+          <type>const std::string &amp;</type>
+          <declname>indentation</declname>
+        </param>
+        <briefdescription>
+<para>Provides a human-readable description of the pulse dynamics. </para>
+        </briefdescription>
+        <detaileddescription>
+<para>Useful for debugging or logging simulation details.</para>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>indentation</parametername>
+</parameternamelist>
+<parameterdescription>
+<para><ref refid="class_string" kindref="compound">String</ref> used to indent the output. </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<simplesect kind="return"><para>A string describing the current state of the dynamics. </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="App/Model/IBM/Maths/Dynamics/NonMassBased/PulseDynamics.h" line="112" column="17"/>
+      </memberdef>
+      <memberdef kind="function" id="class_pulse_dynamics_1abb6d8dab9b53c5cd6ece38a6a7b81eaa" prot="public" static="no" const="no" explicit="no" inline="no" virt="virtual">
+        <type>void</type>
+        <definition>void PulseDynamics::update</definition>
+        <argsstring>()</argsstring>
+        <name>update</name>
+        <qualifiedname>PulseDynamics::update</qualifiedname>
+        <reimplements refid="class_dynamics_1a2687d6e20817c0322fe04eb7dc30d3dc">update</reimplements>
+        <briefdescription>
+<para>Updates the internal state of the dynamics. </para>
+        </briefdescription>
+        <detaileddescription>
+<para>Advances the countdown for the next pulse event and applies pulse changes if a pulse occurs. </para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="App/Model/IBM/Maths/Dynamics/NonMassBased/PulseDynamics.h" line="102" column="10"/>
+      </memberdef>
+    </sectiondef>
+    <sectiondef kind="protected-func">
+      <memberdef kind="function" id="class_pulse_dynamics_1ae88d5d40aa8d01b536875c9b4f4a9c76" prot="protected" static="no" const="yes" explicit="no" inline="no" virt="non-virtual">
+        <type><ref refid="class_time_step" kindref="compound">TimeStep</ref></type>
+        <definition>TimeStep PulseDynamics::getDistanceBetweenPulses</definition>
+        <argsstring>() const</argsstring>
+        <name>getDistanceBetweenPulses</name>
+        <qualifiedname>PulseDynamics::getDistanceBetweenPulses</qualifiedname>
+        <briefdescription>
+<para>Determines the distance (in time steps) until the next pulse. </para>
+        </briefdescription>
+        <detaileddescription>
+<para><simplesect kind="return"><para><ref refid="class_number" kindref="compound">Number</ref> of time steps until the next pulse event. </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="App/Model/IBM/Maths/Dynamics/NonMassBased/PulseDynamics.h" line="162" column="14"/>
+      </memberdef>
+      <memberdef kind="function" id="class_pulse_dynamics_1a659322eed0907796dcbdb226d08307f7" prot="protected" static="no" const="yes" explicit="no" inline="no" virt="non-virtual">
+        <type><ref refid="class_precise_double" kindref="compound">PreciseDouble</ref></type>
+        <definition>PreciseDouble PulseDynamics::getPulsePeakValue</definition>
+        <argsstring>() const</argsstring>
+        <name>getPulsePeakValue</name>
+        <qualifiedname>PulseDynamics::getPulsePeakValue</qualifiedname>
+        <briefdescription>
+<para>Computes the peak value for the current pulse. </para>
+        </briefdescription>
+        <detaileddescription>
+<para><simplesect kind="return"><para>The peak amplitude of the current pulse as <ref refid="class_precise_double" kindref="compound">PreciseDouble</ref>. </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="App/Model/IBM/Maths/Dynamics/NonMassBased/PulseDynamics.h" line="155" column="19"/>
+      </memberdef>
+      <memberdef kind="function" id="class_pulse_dynamics_1aab8e28481af8e41404e3394d7a1404e4" prot="protected" static="no" const="yes" explicit="no" inline="no" virt="non-virtual">
+        <type>bool</type>
+        <definition>bool PulseDynamics::isOnPulseEvent</definition>
+        <argsstring>() const</argsstring>
+        <name>isOnPulseEvent</name>
+        <qualifiedname>PulseDynamics::isOnPulseEvent</qualifiedname>
+        <briefdescription>
+<para>Checks if the current time step corresponds to a pulse event. </para>
+        </briefdescription>
+        <detaileddescription>
+<para><simplesect kind="return"><para>True if a pulse is occurring, false otherwise. </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="App/Model/IBM/Maths/Dynamics/NonMassBased/PulseDynamics.h" line="148" column="10"/>
+      </memberdef>
+      <memberdef kind="function" id="class_pulse_dynamics_1af6a78efe781461029342daa9f2faebbb" prot="protected" static="no" const="yes" explicit="no" inline="no" virt="non-virtual">
+        <type>const std::string</type>
+        <definition>const std::string PulseDynamics::showDistanceBetweenPulsesInfo</definition>
+        <argsstring>() const</argsstring>
+        <name>showDistanceBetweenPulsesInfo</name>
+        <qualifiedname>PulseDynamics::showDistanceBetweenPulsesInfo</qualifiedname>
+        <briefdescription>
+<para>Returns a string describing the current distance between pulses. </para>
+        </briefdescription>
+        <detaileddescription>
+<para><simplesect kind="return"><para>A string with human-readable information. </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="App/Model/IBM/Maths/Dynamics/NonMassBased/PulseDynamics.h" line="176" column="23"/>
+      </memberdef>
+      <memberdef kind="function" id="class_pulse_dynamics_1ad48a47a33862989cab003647eb93bad2" prot="protected" static="no" const="yes" explicit="no" inline="no" virt="non-virtual">
+        <type>const std::string</type>
+        <definition>const std::string PulseDynamics::showPulsePeakValueInfo</definition>
+        <argsstring>() const</argsstring>
+        <name>showPulsePeakValueInfo</name>
+        <qualifiedname>PulseDynamics::showPulsePeakValueInfo</qualifiedname>
+        <briefdescription>
+<para>Returns a string describing the current pulse peak value. </para>
+        </briefdescription>
+        <detaileddescription>
+<para><simplesect kind="return"><para>A string with human-readable information. </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="App/Model/IBM/Maths/Dynamics/NonMassBased/PulseDynamics.h" line="169" column="23"/>
+      </memberdef>
+    </sectiondef>
+    <briefdescription>
+<para>Models dynamics that occur as discrete pulses over time. </para>
+    </briefdescription>
+    <detaileddescription>
+<para><ref refid="class_pulse_dynamics" kindref="compound">PulseDynamics</ref> implements a non-mass-based dynamics where the value changes in episodic pulses rather than continuously. The timing and amplitude of each pulse can be fixed or variable, and the class supports optional decay of pulse effects.</para>
+<para>Key features:<itemizedlist>
+<listitem><para>Configurable pulse interval and peak value ranges</para>
+</listitem><listitem><para>Option for fixed or variable pulses</para>
+</listitem><listitem><para>Integrates with <ref refid="class_decay" kindref="compound">Decay</ref> objects for pulse amplitude changes over time</para>
+</listitem><listitem><para>Provides detailed information for logging and debugging </para>
+</listitem></itemizedlist>
+</para>
+    </detaileddescription>
+    <inheritancegraph>
+      <node id="3">
+        <label>Dynamics</label>
+        <link refid="class_dynamics"/>
+      </node>
+      <node id="2">
+        <label>NonMassBasedDynamics</label>
+        <link refid="class_non_mass_based_dynamics"/>
+        <childnode refid="3" relation="public-inheritance">
+        </childnode>
+      </node>
+      <node id="1">
+        <label>PulseDynamics</label>
+        <link refid="class_pulse_dynamics"/>
+        <childnode refid="2" relation="public-inheritance">
+        </childnode>
+      </node>
+    </inheritancegraph>
+    <collaborationgraph>
+      <node id="5">
+        <label>Decay</label>
+        <link refid="class_decay"/>
+      </node>
+      <node id="3">
+        <label>Dynamics</label>
+        <link refid="class_dynamics"/>
+      </node>
+      <node id="2">
+        <label>NonMassBasedDynamics</label>
+        <link refid="class_non_mass_based_dynamics"/>
+        <childnode refid="3" relation="public-inheritance">
+        </childnode>
+      </node>
+      <node id="1">
+        <label>PulseDynamics</label>
+        <link refid="class_pulse_dynamics"/>
+        <childnode refid="2" relation="public-inheritance">
+        </childnode>
+        <childnode refid="4" relation="usage">
+          <edgelabel>nextPulseEventCountdown</edgelabel>
+        </childnode>
+        <childnode refid="5" relation="usage">
+          <edgelabel>decay</edgelabel>
+        </childnode>
+      </node>
+      <node id="4">
+        <label>TimeStep</label>
+        <link refid="class_time_step"/>
+      </node>
+    </collaborationgraph>
+    <location file="App/Model/IBM/Maths/Dynamics/NonMassBased/PulseDynamics.h" line="48" column="1" bodyfile="App/Model/IBM/Maths/Dynamics/NonMassBased/PulseDynamics.h" bodystart="48" bodyend="177"/>
+    <listofallmembers>
+      <member refid="class_non_mass_based_dynamics_1a11550e9f5abcaf15ce2cf1f77f8b5897" prot="public" virt="non-virtual"><scope>PulseDynamics</scope><name>createInstance</name></member>
+      <member refid="class_dynamics_1ad09feb0a33b9dbc56f0dab4cb9d4b88e" prot="public" virt="non-virtual"><scope>PulseDynamics</scope><name>createInstanceForResource</name></member>
+      <member refid="class_pulse_dynamics_1afd30104ed077bda98fab09ba0f4a145b" prot="protected" virt="non-virtual"><scope>PulseDynamics</scope><name>decay</name></member>
+      <member refid="class_pulse_dynamics_1a04cee5a2bd2f1e900c20fe66880005fd" prot="protected" virt="non-virtual"><scope>PulseDynamics</scope><name>distanceBetweenPulsesRange</name></member>
+      <member refid="class_dynamics_1af3e1536fbe0ac872e65d1b0d5b8867a8" prot="public" virt="non-virtual"><scope>PulseDynamics</scope><name>Dynamics</name></member>
+      <member refid="class_pulse_dynamics_1a5667fe405b0c276258fd81170d7a8307" prot="protected" virt="non-virtual"><scope>PulseDynamics</scope><name>fixedDistanceBetweenPulses</name></member>
+      <member refid="class_pulse_dynamics_1a8b6e146b6ba4ddf67ec3c1b19e19c8b3" prot="protected" virt="non-virtual"><scope>PulseDynamics</scope><name>fixedPulsePeakValue</name></member>
+      <member refid="class_pulse_dynamics_1ae88d5d40aa8d01b536875c9b4f4a9c76" prot="protected" virt="non-virtual"><scope>PulseDynamics</scope><name>getDistanceBetweenPulses</name></member>
+      <member refid="class_pulse_dynamics_1a6a27dc7998ea94f2760f9d9cd28e13ff" prot="public" virt="virtual"><scope>PulseDynamics</scope><name>getInitialValue</name></member>
+      <member refid="class_pulse_dynamics_1a659322eed0907796dcbdb226d08307f7" prot="protected" virt="non-virtual"><scope>PulseDynamics</scope><name>getPulsePeakValue</name></member>
+      <member refid="class_pulse_dynamics_1a9242fc5ca974db30fe908ba4f1ff3d83" prot="public" virt="virtual"><scope>PulseDynamics</scope><name>getValue</name></member>
+      <member refid="class_non_mass_based_dynamics_1a0752ba431b7db3ede797a88663e6412d" prot="protected" virt="virtual" ambiguityscope="NonMassBasedDynamics::"><scope>PulseDynamics</scope><name>getValue</name></member>
+      <member refid="class_pulse_dynamics_1aab8e28481af8e41404e3394d7a1404e4" prot="protected" virt="non-virtual"><scope>PulseDynamics</scope><name>isOnPulseEvent</name></member>
+      <member refid="class_pulse_dynamics_1ac7e55a6c651538378a648404e3318310" prot="protected" virt="non-virtual"><scope>PulseDynamics</scope><name>nextPulseEventCountdown</name></member>
+      <member refid="class_non_mass_based_dynamics_1a2b7d25cd67f9702b9e50bf8c62e38945" prot="public" virt="non-virtual"><scope>PulseDynamics</scope><name>NonMassBasedDynamics</name></member>
+      <member refid="class_pulse_dynamics_1a36aed8714725ec0171eafe7c595e7bee" prot="public" virt="non-virtual"><scope>PulseDynamics</scope><name>PulseDynamics</name></member>
+      <member refid="class_pulse_dynamics_1ad2ccc0a400cf7072d7a9ab741f23e64c" prot="public" virt="non-virtual"><scope>PulseDynamics</scope><name>PulseDynamics</name></member>
+      <member refid="class_pulse_dynamics_1a1506c0ce53d3868b586085411872fff1" prot="public" virt="non-virtual"><scope>PulseDynamics</scope><name>PulseDynamics</name></member>
+      <member refid="class_pulse_dynamics_1a3affee267f930d3abbd416915e7f4d00" prot="protected" virt="non-virtual"><scope>PulseDynamics</scope><name>pulsePeakValueRange</name></member>
+      <member refid="class_pulse_dynamics_1a852b5be21996ab2a98b8fdd6487db7f6" prot="public" virt="non-virtual"><scope>PulseDynamics</scope><name>serialize</name></member>
+      <member refid="class_pulse_dynamics_1af6a78efe781461029342daa9f2faebbb" prot="protected" virt="non-virtual"><scope>PulseDynamics</scope><name>showDistanceBetweenPulsesInfo</name></member>
+      <member refid="class_pulse_dynamics_1a30dd7f9551a3959970c08f5e33985a80" prot="public" virt="virtual"><scope>PulseDynamics</scope><name>showInfo</name></member>
+      <member refid="class_pulse_dynamics_1ad48a47a33862989cab003647eb93bad2" prot="protected" virt="non-virtual"><scope>PulseDynamics</scope><name>showPulsePeakValueInfo</name></member>
+      <member refid="class_dynamics_1a3a0aec0c5657efbbb3df85fc244af169" prot="public" virt="non-virtual"><scope>PulseDynamics</scope><name>Type</name></member>
+      <member refid="class_pulse_dynamics_1abb6d8dab9b53c5cd6ece38a6a7b81eaa" prot="public" virt="virtual"><scope>PulseDynamics</scope><name>update</name></member>
+      <member refid="class_dynamics_1ac8d12beac1e6e1c7895f5360b3800370" prot="public" virt="virtual"><scope>PulseDynamics</scope><name>~Dynamics</name></member>
+      <member refid="class_non_mass_based_dynamics_1a8ca0f767d647cee60ec14d1f817ec39f" prot="public" virt="virtual"><scope>PulseDynamics</scope><name>~NonMassBasedDynamics</name></member>
+      <member refid="class_pulse_dynamics_1aba0e5ccc69af901e7492042a38b80c5c" prot="public" virt="virtual"><scope>PulseDynamics</scope><name>~PulseDynamics</name></member>
+    </listofallmembers>
+  </compounddef>
+</doxygen>

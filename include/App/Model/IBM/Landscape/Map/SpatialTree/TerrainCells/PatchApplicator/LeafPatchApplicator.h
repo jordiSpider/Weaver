@@ -20,6 +20,7 @@
 
 /**
  * @class LeafPatchApplicator
+ * @ingroup weaver_landscape
  * @brief Concrete implementation of SpatialTreePatchApplicator for leaf nodes.
  *
  * LeafPatchApplicator manages the application of patches for leaf cells

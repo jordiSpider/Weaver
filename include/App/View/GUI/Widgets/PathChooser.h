@@ -27,6 +27,7 @@
 
 /**
  * @class PathChooser
+ * @ingroup weaver_model
  * @brief A widget that allows the user to choose a file or directory path.
  *
  * Provides a label, a read-only textbox, and a browse button. Clicking the button

@@ -32,8 +32,8 @@ Genome::Genome(const vector<vector<Locus>> &lociPerTrait, const vector<size_t> &
 
 		for (auto it = lociPerTrait[i].begin(); it < lociPerTrait[i].end(); it++)
 		{
-			homologousCorrelosomes.at(i).first->pushAllele(it->getAlleleRandomly());
-			homologousCorrelosomes.at(i).second->pushAllele(it->getAlleleRandomly());
+			homologousCorrelosomes[i].first->pushAllele(it->getAlleleRandomly());
+			homologousCorrelosomes[i].second->pushAllele(it->getAlleleRandomly());
 		}
 	}
 
@@ -49,16 +49,16 @@ Genome::Genome(const vector<vector<Locus>> &lociPerTrait, const vector<size_t> &
 	//Also the correlosomes are temporary, as they will be cleared after initTraits.
 	for(size_t i = 0; i < randomlyCreatedPositionsForChromosomes.size(); ++i)
 	{
-		size_t positionFromCorrelosomes = randomlyCreatedPositionsForChromosomes.at(i);
+		size_t positionFromCorrelosomes = randomlyCreatedPositionsForChromosomes[i];
 		size_t selectedTraitOnCorrelosome = positionFromCorrelosomes/numberOfLociPerChromosome;
 		size_t selectedLociOnCorrelosome = positionFromCorrelosomes%numberOfLociPerChromosome;
 
 		size_t linkedChromosome = i/numberOfLociPerChromosome;
 
-		const Allele* selectedAllele = homologousCorrelosomes.at(selectedTraitOnCorrelosome).first->getAllele(selectedLociOnCorrelosome);
-		homologousChromosomes.at(linkedChromosome).first->pushAllele(selectedAllele);
-		selectedAllele = homologousCorrelosomes.at(selectedTraitOnCorrelosome).second->getAllele(selectedLociOnCorrelosome);
-		homologousChromosomes.at(linkedChromosome).second->pushAllele(selectedAllele);
+		const Allele* selectedAllele = homologousCorrelosomes[selectedTraitOnCorrelosome].first->getAllele(selectedLociOnCorrelosome);
+		homologousChromosomes[linkedChromosome].first->pushAllele(selectedAllele);
+		selectedAllele = homologousCorrelosomes[selectedTraitOnCorrelosome].second->getAllele(selectedLociOnCorrelosome);
+		homologousChromosomes[linkedChromosome].second->pushAllele(selectedAllele);
 	}
 }
 
@@ -67,7 +67,7 @@ Genome::Genome(const Genome& otherGenome, const vector<size_t> &randomlyCreatedP
 	homologousChromosomes.reserve(otherGenome.getHomologousChromosomes().size());
 	for(size_t i = 0; i < otherGenome.getHomologousChromosomes().size(); i++)
 	{
-		homologousChromosomes.emplace_back(make_pair(otherGenome.getHomologousChromosomes().at(i).first->clone(), otherGenome.getHomologousChromosomes().at(i).second->clone()));
+		homologousChromosomes.emplace_back(make_pair(otherGenome.getHomologousChromosomes()[i].first->clone(), otherGenome.getHomologousChromosomes()[i].second->clone()));
 	}
 
 	createHomologousCorrelosomesFromChromosomes(randomlyCreatedPositionsForChromosomes);
@@ -83,17 +83,17 @@ void Genome::createHomologousCorrelosomesFromChromosomes(const vector<size_t> &r
 
 	for(size_t i = 0; i < randomlyCreatedPositionsForChromosomes.size(); ++i)
 	{
-		size_t positionFromCorrelosomes = randomlyCreatedPositionsForChromosomes.at(i);
+		size_t positionFromCorrelosomes = randomlyCreatedPositionsForChromosomes[i];
 		size_t selectedTraitOnCorrelosome = positionFromCorrelosomes/numberOfLociPerChromosome;
 		size_t selectedLociOnCorrelosome = positionFromCorrelosomes%numberOfLociPerChromosome;
 
 		size_t linkedChromosome = i/numberOfLociPerChromosome;
 		size_t linkedLociOnChromosome = i%numberOfLociPerChromosome;
 
-		const Allele* selectedAllele = homologousChromosomes.at(linkedChromosome).first->getAllele(linkedLociOnChromosome);
-		homologousCorrelosomes.at(selectedTraitOnCorrelosome).first->setAllele(selectedAllele, selectedLociOnCorrelosome);
-		selectedAllele = homologousChromosomes.at(linkedChromosome).second->getAllele(linkedLociOnChromosome);
-		homologousCorrelosomes.at(selectedTraitOnCorrelosome).second->setAllele(selectedAllele, selectedLociOnCorrelosome);
+		const Allele* selectedAllele = homologousChromosomes[linkedChromosome].first->getAllele(linkedLociOnChromosome);
+		homologousCorrelosomes[selectedTraitOnCorrelosome].first->setAllele(selectedAllele, selectedLociOnCorrelosome);
+		selectedAllele = homologousChromosomes[linkedChromosome].second->getAllele(linkedLociOnChromosome);
+		homologousCorrelosomes[selectedTraitOnCorrelosome].second->setAllele(selectedAllele, selectedLociOnCorrelosome);
 	}
 }
 
@@ -127,7 +127,7 @@ void Genome::initFromOther(const Genome& otherGenome, const std::vector<size_t> 
 	homologousChromosomes.reserve(otherGenome.getHomologousChromosomes().size());
 	for(size_t i = 0; i < otherGenome.getHomologousChromosomes().size(); i++)
 	{
-		homologousChromosomes.emplace_back(make_pair(otherGenome.getHomologousChromosomes().at(i).first->clone(), otherGenome.getHomologousChromosomes().at(i).second->clone()));
+		homologousChromosomes.emplace_back(make_pair(otherGenome.getHomologousChromosomes()[i].first->clone(), otherGenome.getHomologousChromosomes()[i].second->clone()));
 	}
 
 	createHomologousCorrelosomesFromChromosomes(randomlyCreatedPositionsForChromosomes);
@@ -154,7 +154,7 @@ Gamete* Genome::getGametesFromMeiosis(const size_t &indexSelectedGamete)
 		vector <size_t> possibleLociPositions(numberOfLociPerChromosome-2);
 		for (size_t i = 1; i < numberOfLociPerChromosome-1; ++i)
 		{
-			possibleLociPositions.at(i-1) = i;
+			possibleLociPositions[i-1] = i;
 		}
 
 		vector <size_t> valuesOfChiasmasPerChromosome;
@@ -165,7 +165,7 @@ Gamete* Genome::getGametesFromMeiosis(const size_t &indexSelectedGamete)
 		{
 			const size_t randomLociIndex = Random::randomIndex(possibleLociPositions.size());
 			//Generate chiasmas only in central positions, excluding initial and last position.
-			valuesOfChiasmasPerChromosome.push_back(possibleLociPositions.at(randomLociIndex));
+			valuesOfChiasmasPerChromosome.push_back(possibleLociPositions[randomLociIndex]);
 			possibleLociPositions.erase(possibleLociPositions.begin() + static_cast<std::ptrdiff_t>(randomLociIndex));
 		}
 		//Add the last position for the algorithm to end.

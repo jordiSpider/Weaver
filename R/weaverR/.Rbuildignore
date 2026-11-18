@@ -1,0 +1,36 @@
+# Files that belong to the Weaver build system, not to the R package
+^CMakeLists\.txt$
+^DESCRIPTION\.in$
+^.*\.ps1$
+^renv\.lock$
+^renv$
+^NAMESPACE\.(core|gui)$
+
+# This file itself
+^\.Rbuildignore$
+
+# Version control and CI
+^\.git$
+^\.gitignore$
+^\.gitattributes$
+^\.github$
+
+# Editors and IDEs
+^\.vscode$
+^\.idea$
+^.*\.Rproj$
+^\.Rproj\.user$
+
+# R session and local configuration files
+^\.Rhistory$
+^\.RData$
+^\.Rdata$
+^\.Renviron$
+^\.Rprofile$
+
+# Logs, build products and OS files
+^.*\.log$
+^.*\.tar\.gz$
+^.*\.zip$
+^\.DS_Store$
+^Thumbs\.db$

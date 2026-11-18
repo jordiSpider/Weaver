@@ -1,0 +1,125 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.14.0" xml:lang="en-US">
+  <compounddef id="class_route_planner" kind="class" language="C++" prot="public" abstract="yes">
+    <compoundname>RoutePlanner</compoundname>
+    <derivedcompoundref refid="class_a_star_route_planner" prot="public" virt="non-virtual">AStarRoutePlanner</derivedcompoundref>
+    <sectiondef kind="public-func">
+      <memberdef kind="function" id="class_route_planner_1ad380be760d785b85fa7a103c39b30294" prot="public" static="no" const="no" explicit="no" inline="no" virt="virtual">
+        <type></type>
+        <definition>virtual RoutePlanner::~RoutePlanner</definition>
+        <argsstring>()=default</argsstring>
+        <name>~RoutePlanner</name>
+        <qualifiedname>RoutePlanner::~RoutePlanner</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="App/Model/IBM/Landscape/Map/Navigation/RoutePlanner.h" line="33" column="9"/>
+      </memberdef>
+      <memberdef kind="function" id="class_route_planner_1a81af370a1576fbd91329c969cfba32cb" prot="public" static="no" const="yes" explicit="no" inline="no" virt="pure-virtual">
+        <type>NavigationRoute</type>
+        <definition>virtual NavigationRoute RoutePlanner::planRoute</definition>
+        <argsstring>(const Map &amp;map, const TerrainCell &amp;start, const TerrainCell &amp;goal, const PointContinuous &amp;startPosition, const PointContinuous &amp;goalPosition, const AnimalNonStatistical &amp;animal, const PreciseDouble &amp;animalBodySection, const RouteCostPolicy &amp;costPolicy) const =0</argsstring>
+        <name>planRoute</name>
+        <qualifiedname>RoutePlanner::planRoute</qualifiedname>
+        <param>
+          <type>const <ref refid="class_map" kindref="compound">Map</ref> &amp;</type>
+          <declname>map</declname>
+        </param>
+        <param>
+          <type>const <ref refid="class_terrain_cell" kindref="compound">TerrainCell</ref> &amp;</type>
+          <declname>start</declname>
+        </param>
+        <param>
+          <type>const <ref refid="class_terrain_cell" kindref="compound">TerrainCell</ref> &amp;</type>
+          <declname>goal</declname>
+        </param>
+        <param>
+          <type>const PointContinuous &amp;</type>
+          <declname>startPosition</declname>
+        </param>
+        <param>
+          <type>const PointContinuous &amp;</type>
+          <declname>goalPosition</declname>
+        </param>
+        <param>
+          <type>const <ref refid="class_animal_non_statistical" kindref="compound">AnimalNonStatistical</ref> &amp;</type>
+          <declname>animal</declname>
+        </param>
+        <param>
+          <type>const <ref refid="class_precise_double" kindref="compound">PreciseDouble</ref> &amp;</type>
+          <declname>animalBodySection</declname>
+        </param>
+        <param>
+          <type>const RouteCostPolicy &amp;</type>
+          <declname>costPolicy</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="App/Model/IBM/Landscape/Map/Navigation/RoutePlanner.h" line="34" column="25"/>
+      </memberdef>
+      <memberdef kind="function" id="class_route_planner_1a7e1d7e90a9e6a9363ef04efb64dd5499" prot="public" static="no" const="yes" explicit="no" inline="no" virt="pure-virtual">
+        <type>RoutePlanResult</type>
+        <definition>virtual RoutePlanResult RoutePlanner::planRouteToBestGoal</definition>
+        <argsstring>(const Map &amp;map, const TerrainCell &amp;start, const PointContinuous &amp;startPosition, const std::vector&lt; RouteGoal &gt; &amp;goals, const AnimalNonStatistical &amp;animal, const PreciseDouble &amp;animalBodySection, const RouteCostPolicy &amp;costPolicy, const RouteDestinationSelectionPolicy &amp;selectionPolicy) const =0</argsstring>
+        <name>planRouteToBestGoal</name>
+        <qualifiedname>RoutePlanner::planRouteToBestGoal</qualifiedname>
+        <param>
+          <type>const <ref refid="class_map" kindref="compound">Map</ref> &amp;</type>
+          <declname>map</declname>
+        </param>
+        <param>
+          <type>const <ref refid="class_terrain_cell" kindref="compound">TerrainCell</ref> &amp;</type>
+          <declname>start</declname>
+        </param>
+        <param>
+          <type>const PointContinuous &amp;</type>
+          <declname>startPosition</declname>
+        </param>
+        <param>
+          <type>const std::vector&lt; RouteGoal &gt; &amp;</type>
+          <declname>goals</declname>
+        </param>
+        <param>
+          <type>const <ref refid="class_animal_non_statistical" kindref="compound">AnimalNonStatistical</ref> &amp;</type>
+          <declname>animal</declname>
+        </param>
+        <param>
+          <type>const <ref refid="class_precise_double" kindref="compound">PreciseDouble</ref> &amp;</type>
+          <declname>animalBodySection</declname>
+        </param>
+        <param>
+          <type>const RouteCostPolicy &amp;</type>
+          <declname>costPolicy</declname>
+        </param>
+        <param>
+          <type>const RouteDestinationSelectionPolicy &amp;</type>
+          <declname>selectionPolicy</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="App/Model/IBM/Landscape/Map/Navigation/RoutePlanner.h" line="35" column="25"/>
+      </memberdef>
+    </sectiondef>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+    </detaileddescription>
+    <location file="App/Model/IBM/Landscape/Map/Navigation/RoutePlanner.h" line="30" column="1" bodyfile="App/Model/IBM/Landscape/Map/Navigation/RoutePlanner.h" bodystart="31" bodyend="36"/>
+    <listofallmembers>
+      <member refid="class_route_planner_1a81af370a1576fbd91329c969cfba32cb" prot="public" virt="pure-virtual"><scope>RoutePlanner</scope><name>planRoute</name></member>
+      <member refid="class_route_planner_1a7e1d7e90a9e6a9363ef04efb64dd5499" prot="public" virt="pure-virtual"><scope>RoutePlanner</scope><name>planRouteToBestGoal</name></member>
+      <member refid="class_route_planner_1ad380be760d785b85fa7a103c39b30294" prot="public" virt="virtual"><scope>RoutePlanner</scope><name>~RoutePlanner</name></member>
+    </listofallmembers>
+  </compounddef>
+</doxygen>

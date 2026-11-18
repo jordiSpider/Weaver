@@ -21,12 +21,13 @@
 
 #include "App/Model/IBM/Maths/Dynamics/MassBasedDynamics.h"
 #include "App/Model/IBM/Maths/Parabola.h"
-#include "App/Model/IBM/Maths/Constants.h"
+#include "Misc/Maths/Constants.h"
 #include "App/Model/IBM/Maths/MathFunctions.h"
 
 
 /**
  * @class GrowthRateDynamics
+ * @ingroup weaver_model
  * @brief Implements mass-based dynamics for growth rate of organisms.
  *
  * GrowthRateDynamics is a subclass of MassBasedDynamics and calculates the growth

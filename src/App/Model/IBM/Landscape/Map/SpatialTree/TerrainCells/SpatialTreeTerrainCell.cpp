@@ -12,9 +12,6 @@ using namespace std;
 
 
 
-const unsigned int SpatialTreeTerrainCell::numberOfChildren = static_cast<unsigned int>(std::pow(SpatialTree::numbreOfSubdivisions, DIMENSIONS));
-
-
 SpatialTreeTerrainCell::SpatialTreeTerrainCell()
     : TerrainCell()
 {
@@ -60,142 +57,12 @@ TerrainCell* SpatialTreeTerrainCell::getCell(const PointMap &dstPos)
 
 
 
-pair<bool, pair<TerrainCell*, PointContinuous>> SpatialTreeTerrainCell::getCellByBearing(
-        Map* const map, const pair<PointMap, PointContinuous> &targetNeighborToTravelTo, const PointContinuous &animalPosition, const PreciseDouble& remainingSearchArea)
-{
-    bool atDestination;
-    pair<TerrainCell*, PointContinuous> cellToMoveTo;
-
-    if(getPosition().getDepth() > 0)
-    {
-        vector<pair<unsigned char, int>> movementAxes;
-        for(unsigned char i = 0; i < DIMENSIONS; i++)
-        {
-            Axis axis = magic_enum::enum_cast<Axis>(i).value();
-
-            if(targetNeighborToTravelTo.first.get(axis) > getPosition().get(axis))
-            {
-                movementAxes.push_back(make_pair(i, 1));
-            }
-            else if(targetNeighborToTravelTo.first.get(axis) < getPosition().get(axis))
-            {
-                movementAxes.push_back(make_pair(i, -1));
-            }
-        }
-
-        vector<unsigned int> axisValues = getPosition().getAxisValues();
-        
-        if(!movementAxes.empty())
-        {
-            size_t randomIndex = Random::randomIndex(movementAxes.size());
-            axisValues[movementAxes[randomIndex].first] += movementAxes[randomIndex].second;
-        }
-
-        PointSpatialTree nextCellPosition(axisValues, getPosition().getDepth());
-        TerrainCell* nextCell = getCell(nextCellPosition);
-
-        //Avoid obstacles using the least bearing difference path
-        if(nextCell->getPatchApplicator().getCellObstacle().isObstacle())
-        {
-            vector<int> initialCoords(DIMENSIONS);
-
-            for(unsigned char i = 0; i < DIMENSIONS; i++)
-            {
-                Axis axis = magic_enum::enum_cast<Axis>(i).value();
-
-                initialCoords[i] = static_cast<int>(getPosition().get(axis)) - 1;
-            }
-
-            vector<PointSpatialTree> neighboursPoints;
-            static_cast<const SpatialTree * const>(map)->generatePoints(neighboursPoints, 3, getPosition(), initialCoords);
-
-            size_t bestBearingDifference = calculateManhattanDistanceToPoint(targetNeighborToTravelTo.first) + 2;
-            vector<pair<TerrainCell*, PointSpatialTree>> surroundingTerrainCells;
-
-            for(size_t i = 0; i < neighboursPoints.size(); i++)
-            {
-                if(calculateManhattanDistanceToPoint(neighboursPoints.at(i)) == 1)
-                {
-                    auto neighbour = getCell(neighboursPoints.at(i));
-                
-                    if(!neighbour->getPatchApplicator().getCellObstacle().isObstacle())
-                    {
-                        size_t bearingDifference = neighbour->calculateManhattanDistanceToPoint(targetNeighborToTravelTo.first);
-
-                        if(bearingDifference < bestBearingDifference)
-                        {
-                            bestBearingDifference = bearingDifference;
-                            surroundingTerrainCells.clear();
-                            surroundingTerrainCells.push_back(make_pair(neighbour, neighboursPoints.at(i)));
-                        }
-                        else if(bearingDifference == bestBearingDifference)
-                        {
-                            surroundingTerrainCells.push_back(make_pair(neighbour, neighboursPoints.at(i)));
-                        }
-                    }
-                }  
-            }
-
-            if(surroundingTerrainCells.empty())
-            {
-                throwLineInfoException("The animal is immobile");
-            }
-
-            size_t index = Random::randomIndex(surroundingTerrainCells.size());
-
-            nextCell = surroundingTerrainCells[index].first;
-            nextCellPosition = surroundingTerrainCells[index].second;
-        }
-
-
-        if(static_cast<PointMap>(nextCellPosition) == targetNeighborToTravelTo.first)
-        {
-            atDestination = true;
-            cellToMoveTo = make_pair(nextCell, targetNeighborToTravelTo.second);
-        }
-        else
-        {
-            BoxModel* boxEffectiveArea = Geometry::makeBoxEffectiveArea(nextCellPosition, getSize());
-
-            RingModel ringEffectiveArea;
-            boost::geometry::convert(*boxEffectiveArea, ringEffectiveArea);
-
-            delete boxEffectiveArea;
-
-            PointContinuous closestPoint = Geometry::calculateClosestPoint(
-                ringEffectiveArea, LineStringModel({animalPosition, targetNeighborToTravelTo.second})
-            );
-
-            atDestination = false;
-            cellToMoveTo = make_pair(nextCell, closestPoint);
-        }
-    }
-    else
-    {
-        atDestination = true;
-        cellToMoveTo = make_pair(this, targetNeighborToTravelTo.second);
-    }
-
-
-    PreciseDouble distanceToCell = Geometry::calculateDistanceBetweenPoints(animalPosition, cellToMoveTo.second);
-
-
-    if(distanceToCell > remainingSearchArea)
-    {
-        atDestination = false;
-        cellToMoveTo = make_pair(this, Geometry::calculateLineStringPointAtDistance(animalPosition, cellToMoveTo.second, remainingSearchArea));
-    }
-    
-
-    return make_pair(atDestination, cellToMoveTo);
-}
-
-AnimalNonStatistical* SpatialTreeTerrainCell::createAnimal(Landscape* const landscape, const Instar &instar, AnimalSpecies* animalSpecies, const Genome* const genome, const bool saveGenetics, const bool saveMassInfo, const TimeStep actualTimeStep, const PreciseDouble& timeStepsPerDay)
+AnimalNonStatistical* SpatialTreeTerrainCell::createAnimal(Landscape* const landscape, const Instar &instar, AnimalSpecies* animalSpecies, const Genome* const genome, const bool saveGenetics, std::vector<fmt::memory_buffer>& geneticsText, const TimeStep actualTimeStep, const PreciseDouble& timeStepsPerDay)
 {
     AnimalNonStatistical* newAnimal = new SpatialTreeAnimal(instar, animalSpecies, this, genome, actualTimeStep, timeStepsPerDay);
 
     // Indicate that the animal created is the final animal, and therefore assign a final ID to it.
-    newAnimal->doDefinitive(landscape, saveGenetics, saveMassInfo);
+    newAnimal->doDefinitive(landscape, saveGenetics, geneticsText);
 
     return newAnimal;
 }
@@ -219,164 +86,24 @@ void SpatialTreeTerrainCell::migrateAnimalTo(Landscape* const landscape, Animal*
     }
 }
 
-
-
-
-/****************/
-/*    Animal    */
-/****************/
-
-void SpatialTreeTerrainCell::applyFunctionToAnimals(const vector<pair<const AnimalSearchParams&, AnimalFunctions>>& animalFunctions)
-{
-    applyUpFunctionToAnimals(
-        [&polygon = getEffectiveArea()](Animal& animal) {
-            return Geometry::withinPolygon(animal.getPosition(), &polygon);
-        }, 
-        animalFunctions
-    );
-
-    TerrainCell::applyFunctionToAnimals(animalFunctions);
-
-    applyDownFunctionToAnimals(animalFunctions);
-}
-
-///////////////////
-
-void SpatialTreeTerrainCell::randomApplyFunctionToAnimals(const vector<pair<const AnimalSearchParams&, AnimalFunctions>>& animalFunctions)
-{
-    vector<size_t> indexVector;
-    Random::createIndicesVector(indexVector, 3);
-
-    for(const auto &index : indexVector)
-    {
-        switch(index) {
-            case 0: {
-                randomApplyUpFunctionToAnimals(
-                    [&polygon = getEffectiveArea()](Animal& animal) {
-                        return Geometry::withinPolygon(animal.getPosition(), &polygon);
-                    },
-                    animalFunctions
-                );
-                break;
-            }
-            case 1: {
-                TerrainCell::randomApplyFunctionToAnimals(animalFunctions);
-                break;
-            }
-            case 2: {
-                randomApplyDownFunctionToAnimals(animalFunctions);
-                break;
-            }
-            default: {
-                throwLineInfoException("Default case");
-                break;
-            }
-        }
-    }
-}
-
-
-    /************/
-    /*    Up    */
-    /************/
-
-void SpatialTreeTerrainCell::applyUpFunctionToAnimals(
-        function<bool(Animal&)> checker,
-        const vector<pair<const AnimalSearchParams&, AnimalFunctions>>& animalFunctions
-    )
-{
-    getMutableParent()->applyUpFunctionToAnimals(checker, animalFunctions);
-
-    getMutableParent()->TerrainCell::applyFunctionToAnimals(checker, animalFunctions);
-}
-
-/////////////////
-
-void SpatialTreeTerrainCell::randomApplyUpFunctionToAnimals(
-        function<bool(Animal&)> checker,
-        const vector<pair<const AnimalSearchParams&, AnimalFunctions>>& animalFunctions
-    )
-{
-    vector<size_t> indexVector;
-    Random::createIndicesVector(indexVector, 2);
-
-    for(const auto &index : indexVector)
-    {
-        switch(index) {
-            case 0: {
-                getMutableParent()->randomApplyUpFunctionToAnimals(checker, animalFunctions);
-                break;
-            }
-            case 1: {
-                getMutableParent()->TerrainCell::randomApplyFunctionToAnimals(checker, animalFunctions);
-                break;
-            }
-            default: {
-                throwLineInfoException("Default case");
-                break;
-            }
-        }
-    }
-}
-
-
-/****************/
-/*    Edible    */
-/****************/
-
-void SpatialTreeTerrainCell::applyFunctionToEdibles(
-        const vector<pair<const AnimalSearchParams&, AnimalFunctions>>& animalFunctions,
-        const vector<pair<const ResourceSearchParams&, ResourceFunctions>>& resourceFunctions
-    )
-{
-    applyUpFunctionToAnimals(
-        [&polygon = getEffectiveArea()](Animal& animal) {
-            return Geometry::withinPolygon(animal.getPosition(), &polygon);
-        },
-        animalFunctions
-    );
-
-    TerrainCell::applyFunctionToEdibles(animalFunctions, resourceFunctions);
-
-    applyDownFunctionToAnimals(animalFunctions);
-}
-
-void SpatialTreeTerrainCell::applyFunctionToEdibles(
-        function<bool(Animal&)> checker, const PointContinuous &sourcePosition, const PreciseDouble &radius, const RingModel* const radiusArea, 
-        const vector<pair<const AnimalSearchParams&, AnimalFunctions>>& animalFunctions,
-        const vector<pair<const ResourceSearchParams&, ResourceFunctions>>& resourceFunctions
-    )
-{   
-    applyUpFunctionToAnimals(
-        [&polygon = getEffectiveArea()](Animal& animal) {
-            return Geometry::withinPolygon(animal.getPosition(), &polygon);
-        }, 
-        animalFunctions
-    );
-
-    TerrainCell::applyFunctionToEdibles(checker, sourcePosition, radius, radiusArea, animalFunctions, resourceFunctions);
-
-    applyDownFunctionToAnimals(checker, sourcePosition, radius, animalFunctions);
-}
-
-
 /**************************/
 /*    Edible in Radius    */
 /**************************/
 
 void SpatialTreeTerrainCell::applyFunctionToEdiblesInRadius(
-        const PointContinuous &sourcePosition, const PreciseDouble &radius, const RingModel* const radiusArea, 
+        const PointContinuous &sourcePosition, const PreciseDouble &radius, 
         const vector<pair<const AnimalSearchParams&, AnimalFunctions>>& animalFunctions,
-        const vector<pair<const ResourceSearchParams&, ResourceFunctions>>& resourceFunctions
+        const vector<pair<const ResourceSearchParams&, ResourceFunctions>>& resourceFunctions,
+        const PreciseDouble& animalBodySection
     )
 {   
-    if(Geometry::fullCoveredBySphere(&getEffectiveArea(), sourcePosition, radius))
+    if(Geometry::fullCoveredBySphere(getEffectiveArea(), sourcePosition, radius))
     {
-        getMutableParent()->applyFunctionToEdiblesInRadius(sourcePosition, radius, radiusArea, animalFunctions, resourceFunctions);
+        getMutableParent()->applyFunctionToEdiblesInRadius(sourcePosition, radius, animalFunctions, resourceFunctions, animalBodySection);
     }
     else
     {
-        applyFunctionToEdiblesInCell(false, sourcePosition, radius, radiusArea, animalFunctions, resourceFunctions);
+        applyFunctionToEdiblesInCell(false, sourcePosition, radius, animalFunctions, resourceFunctions, animalBodySection);
     }
 }
 
@@ -386,28 +113,15 @@ void SpatialTreeTerrainCell::applyFunctionToEdiblesInRadius(
 
 
 void SpatialTreeTerrainCell::getNeighboursCellsOnRadius(
-    vector<CellValue>& bestEvaluations, const PointContinuous &sourcePosition, const PreciseDouble &radius, const RingModel* const radiusArea, const size_t searchDepth, const bool searchNeighborsWithFemales, AnimalNonStatistical* animalWhoIsEvaluating, const std::list<const AnimalNonStatistical*> &animalsHasTriedToPredate)
+    vector<CellValue>& bestEvaluations, const PointContinuous &sourcePosition, const PreciseDouble &radius, const size_t searchDepth, bool searchNeighborsWithFemales, bool searchNeighborsWithMales, AnimalNonStatistical* animalWhoIsEvaluating, CustomIndexedVector<Instar, PreciseDouble>& maximumPatchEdibilityValueGlobal, CustomIndexedVector<Instar, PreciseDouble>& maximumPatchPredationRiskGlobal, CustomIndexedVector<Instar, PreciseDouble>& maximumPatchConspecificBiomassGlobal)
 {
-    if(Geometry::fullCoveredBySphere(&getEffectiveArea(), sourcePosition, radius))
+    if (Geometry::fullCoveredBySphere(getEffectiveArea(), sourcePosition, radius))
     {
-        getMutableParent()->getNeighboursCellsOnRadius(bestEvaluations, sourcePosition, radius, radiusArea, searchDepth, searchNeighborsWithFemales, animalWhoIsEvaluating, animalsHasTriedToPredate);
+        getMutableParent()->getNeighboursCellsOnRadius(bestEvaluations, sourcePosition, radius, searchDepth, searchNeighborsWithFemales, searchNeighborsWithMales, animalWhoIsEvaluating, maximumPatchEdibilityValueGlobal, maximumPatchPredationRiskGlobal, maximumPatchConspecificBiomassGlobal);
     }
     else
     {
-        getRadiusTerrainCells(bestEvaluations, sourcePosition, radius, radiusArea, searchDepth, searchNeighborsWithFemales, false, animalWhoIsEvaluating, animalsHasTriedToPredate);
-    }
-}
-
-void SpatialTreeTerrainCell::getNeighboursCellsOnRadius(
-    vector<CellValue>& bestEvaluations, const PointContinuous &sourcePosition, const PreciseDouble &radius, const size_t searchDepth, const bool searchNeighborsWithFemales, AnimalNonStatistical* animalWhoIsEvaluating, const std::list<const AnimalNonStatistical*> &animalsHasTriedToPredate)
-{
-    if(radius > 0.0)
-    {
-        RingModel* sphere = Geometry::makeSphere(sourcePosition, radius);
-
-        getNeighboursCellsOnRadius(bestEvaluations, sourcePosition, radius, sphere, searchDepth, searchNeighborsWithFemales, animalWhoIsEvaluating, animalsHasTriedToPredate);
-    
-        delete sphere;
+        getRadiusTerrainCells(bestEvaluations, sourcePosition, radius, searchDepth, searchNeighborsWithFemales, searchNeighborsWithMales, false, animalWhoIsEvaluating, maximumPatchEdibilityValueGlobal, maximumPatchPredationRiskGlobal, maximumPatchConspecificBiomassGlobal);
     }
 }
 

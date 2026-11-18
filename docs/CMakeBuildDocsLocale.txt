@@ -37,7 +37,7 @@ include(${DOCS_DIR}/CMakeConfigureSphinxConf.txt)
 # ------------------------------------------------------------
 add_custom_target(clean-docs-locale ALL 
     COMMAND ${CMAKE_COMMAND} -E rm -rf "${SPHINX_BUILD_DIR}"
-    COMMAND ${CMAKE_COMMAND} -E rm -rf "${SPHINX_SOURCE_DIR}/${LATEST_VERSION}/gettext"
+    COMMAND ${CMAKE_COMMAND} -E rm -rf "${WEAVER_DOCS_SOURCE_DIR}/${LATEST_VERSION}/gettext"
     COMMENT "Cleaning Sphinx build locale folders..."
 )
 
@@ -45,11 +45,11 @@ add_custom_target(clean-docs-locale ALL
 # ------------------------------------------------------------
 # 📝 Extract translatable text from documentation
 # ------------------------------------------------------------
-set(GETTEXT_DIR "${SPHINX_SOURCE_DIR}/${LATEST_VERSION}/gettext")
+set(GETTEXT_DIR "${WEAVER_DOCS_SOURCE_DIR}/${LATEST_VERSION}/gettext")
 
 add_custom_target(get-all-text-doc ALL
-    COMMAND python -m sphinx -c ${SPHINX_SOURCE_DIR}/latest -b gettext -d ${SPHINX_BUILD_DIR}/gettext ${SPHINX_SOURCE_DIR}/${LATEST_VERSION} ${GETTEXT_DIR}
-    WORKING_DIRECTORY ${SPHINX_SOURCE_DIR}/latest
+    COMMAND python -m sphinx -c ${WEAVER_DOCS_SOURCE_DIR}/latest -b gettext -d ${SPHINX_BUILD_DIR}/gettext ${WEAVER_DOCS_SOURCE_DIR}/${LATEST_VERSION} ${GETTEXT_DIR}
+    WORKING_DIRECTORY ${WEAVER_DOCS_SOURCE_DIR}/latest
     COMMENT "Extracting all translatable texts from the documentation"
 )
 
@@ -63,7 +63,7 @@ add_dependencies(get-all-text-doc clean-docs-locale)
 foreach(language IN LISTS ALL_LANGUAGES)
     add_custom_target(update-language-${language} ALL
         COMMAND python -m sphinx_intl -c ${SPHINX_CONF_OUTPUT} update -p ${GETTEXT_DIR} -l ${language}
-        WORKING_DIRECTORY ${SPHINX_SOURCE_DIR}/latest
+        WORKING_DIRECTORY ${WEAVER_DOCS_SOURCE_DIR}/latest
         COMMENT "Updating translation texts for language '${language}'"
     )
 

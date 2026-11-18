@@ -29,6 +29,7 @@
 
 /**
  * @class HabitatDomainSource
+ * @ingroup weaver_landscape
  * @brief Represents habitat domain information for animals in the landscape.
  *
  * HabitatDomainSource extends PathSource and contains data on which habitat cells

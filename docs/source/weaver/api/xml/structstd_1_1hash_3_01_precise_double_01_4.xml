@@ -1,0 +1,52 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.14.0" xml:lang="en-US">
+  <compounddef id="structstd_1_1hash_3_01_precise_double_01_4" kind="struct" language="C++" prot="public">
+    <compoundname>std::hash&lt; PreciseDouble &gt;</compoundname>
+    <includes refid="_precise_double_8h" local="no">PreciseDouble.h</includes>
+    <templateparamlist>
+    </templateparamlist>
+    <sectiondef kind="public-func">
+      <memberdef kind="function" id="structstd_1_1hash_3_01_precise_double_01_4_1a3ea772fb0349d5928838c8d4ac217182" prot="public" static="no" const="yes" explicit="no" inline="yes" noexcept="yes" virt="non-virtual">
+        <type>std::size_t</type>
+        <definition>std::size_t std::hash&lt; PreciseDouble &gt;::operator()</definition>
+        <argsstring>(PreciseDouble r) const noexcept</argsstring>
+        <name>operator()</name>
+        <qualifiedname>std::hash&lt; PreciseDouble &gt;::operator()</qualifiedname>
+        <param>
+          <type><ref refid="class_precise_double" kindref="compound">PreciseDouble</ref></type>
+          <declname>r</declname>
+        </param>
+        <briefdescription>
+<para>Computes the hash of a <ref refid="class_precise_double" kindref="compound">PreciseDouble</ref>. </para>
+        </briefdescription>
+        <detaileddescription>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>r</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>The value to hash. </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<simplesect kind="return"><para>A hash value corresponding to the internal double. </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="Misc/Maths/PreciseDouble.h" line="673" column="21" bodyfile="Misc/Maths/PreciseDouble.h" bodystart="673" bodyend="675"/>
+      </memberdef>
+    </sectiondef>
+    <briefdescription>
+<para>Hash specialization for <ref refid="class_precise_double" kindref="compound">PreciseDouble</ref>. </para>
+    </briefdescription>
+    <detaileddescription>
+<para>Implements the hash function required by unordered containers to handle <ref refid="class_precise_double" kindref="compound">PreciseDouble</ref> objects. Uses the internal double representation of <ref refid="class_precise_double" kindref="compound">PreciseDouble</ref> to compute the hash. </para>
+    </detaileddescription>
+    <location file="Misc/Maths/PreciseDouble.h" line="667" column="14" bodyfile="Misc/Maths/PreciseDouble.h" bodystart="667" bodyend="676"/>
+    <listofallmembers>
+      <member refid="structstd_1_1hash_3_01_precise_double_01_4_1a3ea772fb0349d5928838c8d4ac217182" prot="public" virt="non-virtual"><scope>std::hash&lt; PreciseDouble &gt;</scope><name>operator()</name></member>
+    </listofallmembers>
+  </compounddef>
+</doxygen>

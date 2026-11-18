@@ -1,0 +1,35 @@
+# ============================================================
+# 🏠 Assemble the documentation landing page
+# ------------------------------------------------------------
+# Builds the welcome page at the root of the combined GitHub
+# Pages output using the shared Sphinx theme.
+# ============================================================
+
+if(NOT DEFINED DOCS_WEAVER_CATALOG)
+	set(DOCS_WEAVER_CATALOG "${SPHINX_DOCS_OUTPUT_DIR}/versions.json")
+endif()
+
+if(NOT DEFINED DOCS_MANAGER_CATALOG)
+	set(DOCS_MANAGER_CATALOG "${MANAGER_DOCS_OUTPUT_DIR}/versions.json")
+endif()
+
+add_custom_target(build-docs-landing
+	COMMAND "${CMAKE_COMMAND}" -E env
+		"WEAVER_DOCS_CATALOG=${DOCS_WEAVER_CATALOG}"
+		"WEAVER_MANAGER_DOCS_CATALOG=${DOCS_MANAGER_CATALOG}"
+		"${Python3_EXECUTABLE}" -m sphinx
+		-c "${LANDING_DOCS_SOURCE_DIR}"
+		-b html
+		-d "${SPHINX_BUILD_DIR}/doctrees/landing"
+		-q
+		-j 1
+		"${LANDING_DOCS_SOURCE_DIR}"
+		"${DOCS_SITE_OUTPUT_DIR}"
+	WORKING_DIRECTORY "${PROJECT_SOURCE_DIR}"
+	COMMENT "Building the documentation landing page..."
+)
+
+add_dependencies(build-docs-landing update-docs-catalog-weaver update-docs-catalog-manager)
+if(TARGET prepare-docs-site)
+	add_dependencies(build-docs-landing prepare-docs-site)
+endif()

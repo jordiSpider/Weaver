@@ -32,6 +32,7 @@
 
 /**
  * @class PulseDynamics
+ * @ingroup weaver_model
  * @brief Models dynamics that occur as discrete pulses over time.
  *
  * PulseDynamics implements a non-mass-based dynamics where the value changes in

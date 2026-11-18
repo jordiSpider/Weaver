@@ -7,7 +7,7 @@ using json = nlohmann::json;
 
 
 HomogeneousPatch::HomogeneousPatch()
-    : PatchShape(new RingModel(), "")
+    : PatchShape(RingModel(), "")
 {
     
 }
@@ -19,7 +19,7 @@ HomogeneousPatch::~HomogeneousPatch()
 }
 
 
-Coverage HomogeneousPatch::checkCoverage(const RingModel* const) const
+Coverage HomogeneousPatch::checkCoverage(const RingModel&) const
 {
     return Coverage::Full;
 }

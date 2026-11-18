@@ -15,6 +15,7 @@
 
 /**
  * @class VonBertalanffyIndividualGrowthModel
+ * @ingroup weaver_landscape
  * @brief Implements an individual growth model using the von Bertalanffy equation.
  * 
  * This class models the growth of an individual using the von Bertalanffy growth function.

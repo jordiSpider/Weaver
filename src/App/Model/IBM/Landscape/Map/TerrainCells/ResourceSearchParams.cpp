@@ -18,68 +18,44 @@ ResourceSearchParams::~ResourceSearchParams()
 
 ResourceSearchParams::ResourceSearchParams(const ResourceSearchParams &other)
 {
-    searchParams = other.searchParams;
+    validSignaturesBitmask = other.validSignaturesBitmask;
 }
 
 ResourceSearchParams& ResourceSearchParams::operator=(const ResourceSearchParams& other)
 {
     if (this != &other) {
-        searchParams = other.searchParams;
+        validSignaturesBitmask = other.validSignaturesBitmask;
     }
     return *this;
 }
 
-void ResourceSearchParams::addSearchParams(const vector<ResourceSpecies*>& existingResourceSpecies, const vector<ResourceSpecies::ResourceID> &searchableResourceSpecies)
+void ResourceSearchParams::addSearchParams(size_t numberExistingResourceSpecies, const vector<ResourceSpecies::ResourceID> &searchableResourceSpecies)
 {
-    // -------------------------------------------------
-
-    const vector<ResourceSpecies::ResourceID>* finalSearchableResourceSpecies;
-    vector<ResourceSpecies::ResourceID> allSearchableResourceSpecies;
-
     if(searchableResourceSpecies.empty())
     {
-        for(ResourceSpecies *const& resourceSpecies : existingResourceSpecies)
-        {
-            allSearchableResourceSpecies.push_back(resourceSpecies->getResourceSpeciesId());
-        }
-
-        finalSearchableResourceSpecies = &allSearchableResourceSpecies;
+        validSignaturesBitmask.resize(numberExistingResourceSpecies, true);
     }
     else
     {
-        finalSearchableResourceSpecies = &searchableResourceSpecies;
-    }
-
-    // -------------------------------------------------
-
-    for(const auto &resourceSpeciesId : *finalSearchableResourceSpecies)
-    {
-        searchParams.insert(resourceSpeciesId);
+        for (const auto& resourceSpeciesId : searchableResourceSpecies)
+        {
+            validSignaturesBitmask[resourceSpeciesId] = true;
+        }
     }
 }
 
-const SearchableResourceSpecies& ResourceSearchParams::getSearchParams() const
+void ResourceSearchParams::init()
 {
-    return searchParams;
+    if (ResourceSignature::BITMASK_DYNAMIC_SIZE == 0) {
+        throwLineInfoException("ResourceSignature::BITMASK_DYNAMIC_SIZE is not configured. Please call ResourceSignature::configureBits() before initialize ResourceSearchParams.");
+    }
+
+    if (validSignaturesBitmask.size() < ResourceSignature::BITMASK_DYNAMIC_SIZE) {
+        validSignaturesBitmask.resize(ResourceSignature::BITMASK_DYNAMIC_SIZE, false);
+    }
 }
 
-void ResourceSearchParams::clear()
+bool ResourceSearchParams::matches(const CellResourceInterface& resource) const noexcept
 {
-    searchParams.clear();
+    return validSignaturesBitmask[resource.getSignature().getValue()];
 }
-
-
-
-BOOST_CLASS_EXPORT(ResourceSearchParams)
-
-template <class Archive>
-void ResourceSearchParams::serialize(Archive &ar, const unsigned int) {
-    ar & searchParams;
-}
-
-// Specialisation
-template void ResourceSearchParams::serialize<boost::archive::text_iarchive>(boost::archive::text_iarchive&, const unsigned int);
-template void ResourceSearchParams::serialize<boost::archive::text_oarchive>(boost::archive::text_oarchive&, const unsigned int);
-
-template void ResourceSearchParams::serialize<boost::archive::binary_iarchive>(boost::archive::binary_iarchive&, const unsigned int);
-template void ResourceSearchParams::serialize<boost::archive::binary_oarchive>(boost::archive::binary_oarchive&, const unsigned int);

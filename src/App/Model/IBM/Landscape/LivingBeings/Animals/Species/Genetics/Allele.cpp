@@ -35,13 +35,6 @@ unsigned int Allele::getAlphabeticOrder() const
 	return alphabeticOrder; 
 }
 
-//TODO Agregar el ID en esta impresion
-ostream& operator<<(ostream& os, const Allele& allele)
-{
-	os << allele.getValue() << "\t" << allele.getAlphabeticOrder();
-	return os;
-}
-
 
 BOOST_CLASS_EXPORT(Allele)
 

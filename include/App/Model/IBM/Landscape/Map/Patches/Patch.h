@@ -19,6 +19,7 @@
 
 /**
  * @class Patch
+ * @ingroup weaver_landscape
  * @brief Represents a spatial patch in a landscape with a specific shape and priority.
  *
  * The Patch class stores information about an environmental patch, including its
@@ -63,7 +64,7 @@ public:
      * @param cellBounds RingModel representing the bounds of the terrain cell.
      * @return Coverage level of the patch over the cell (Null, Partial, Over50Percent, Full).
      */
-    virtual Coverage checkCoverage(const RingModel* const cellBounds) const;
+    virtual Coverage checkCoverage(const RingModel& cellBounds) const;
 
     /**
      * @brief Returns a description of the patch.
@@ -76,6 +77,10 @@ public:
      * @return Priority as a size_t.
      */
     size_t getPriority() const;
+
+    PatchShape::Type getShapeType() const;
+
+    const RingModel& getInfluenceZone() const;
 
     /**
      * @brief Returns a const reference to the patch's source.
@@ -112,6 +117,7 @@ protected:
 
 /**
  * @struct ComparePatch
+ * @ingroup weaver_landscape
  * @brief Comparison functor for PatchPriorityQueue.
  *
  * This functor compares two patches by their priority for use in a priority queue.

@@ -1,6 +1,9 @@
 #include "App/Model/IBM/Landscape/Map/Patches/Source/HabitatDomainSource.h"
 
 
+#include <fmt/format.h>
+
+
 using namespace std;
 using json = nlohmann::json;
 
@@ -79,7 +82,7 @@ string HabitatDomainSource::showInfo() const
 				info << ", ";
 			}
 
-			info << affectedAnimalSpecies[i].second[j];
+			info << fmt::to_string(affectedAnimalSpecies[i].second[j]);
 		}
 
 		info << "]" << endl;

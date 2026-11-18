@@ -1,0 +1,105 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Wix xmlns="http://schemas.microsoft.com/wix/2006/wi">
+	<Fragment>
+		<Property Id="MANAGERDATADIR" Secure="yes">
+			<RegistrySearch Id="SearchWeaverManagerDataDirectory"
+							Root="HKLM"
+							Key="@WEAVER_MANAGER_REGISTRY_KEY@"
+							Name="DataDirectory"
+							Type="raw" />
+		</Property>
+		<CustomAction Id="SetDefaultManagerDataDirectory" Property="MANAGERDATADIR" Value="[PersonalFolder]@WEAVER_MANAGER_INSTALL_DIRECTORY@" />
+		<InstallUISequence>
+			<Custom Action="SetDefaultManagerDataDirectory" After="AppSearch">NOT MANAGERDATADIR</Custom>
+		</InstallUISequence>
+		<InstallExecuteSequence>
+			<Custom Action="SetDefaultManagerDataDirectory" After="AppSearch">NOT MANAGERDATADIR</Custom>
+		</InstallExecuteSequence>
+		<UI Id="WixUI_ManagerInstallDir">
+			<TextStyle Id="WixUI_Font_Normal" FaceName="Tahoma" Size="8" />
+			<TextStyle Id="WixUI_Font_Bigger" FaceName="Tahoma" Size="12" />
+			<TextStyle Id="WixUI_Font_Title" FaceName="Tahoma" Size="9" Bold="yes" />
+			<Property Id="DefaultUIFont" Value="WixUI_Font_Normal" />
+			<UIRef Id="WixUI_Common" />
+			<UIRef Id="WixUI_ErrorProgressText" />
+			<DialogRef Id="BrowseDlg" />
+			<DialogRef Id="CancelDlg" />
+			<DialogRef Id="ErrorDlg" />
+			<DialogRef Id="FatalError" />
+			<DialogRef Id="ExitDialog" />
+			<DialogRef Id="FilesInUse" />
+			<DialogRef Id="MsiRMFilesInUse" />
+			<DialogRef Id="PrepareDlg" />
+			<DialogRef Id="ProgressDlg" />
+			<DialogRef Id="ResumeDlg" />
+			<DialogRef Id="UserExit" />
+			<DialogRef Id="WelcomeDlg" />
+			<DialogRef Id="LicenseAgreementDlg" />
+			<DialogRef Id="InstallDirDlg" />
+			<DialogRef Id="DiskCostDlg" />
+			<DialogRef Id="VerifyReadyDlg" />
+			<DialogRef Id="MaintenanceWelcomeDlg" />
+			<DialogRef Id="MaintenanceTypeDlg" />
+			<Publish Dialog="WelcomeDlg" Control="Next" Event="NewDialog" Value="LicenseAgreementDlg" Order="1">NOT Installed</Publish>
+			<Publish Dialog="WelcomeDlg" Control="Next" Event="NewDialog" Value="MaintenanceWelcomeDlg" Order="2">Installed AND NOT PATCH</Publish>
+			<Publish Dialog="LicenseAgreementDlg" Control="Back" Event="NewDialog" Value="WelcomeDlg">1</Publish>
+			<Publish Dialog="LicenseAgreementDlg" Control="Next" Event="NewDialog" Value="InstallDirDlg">LicenseAccepted = "1"</Publish>
+			<Publish Dialog="InstallDirDlg" Control="Back" Event="NewDialog" Value="LicenseAgreementDlg">1</Publish>
+			<Publish Dialog="InstallDirDlg" Control="Next" Event="SetTargetPath" Value="[WIXUI_INSTALLDIR]" Order="1">1</Publish>
+			<Publish Dialog="InstallDirDlg" Control="Next" Event="NewDialog" Value="ManagerDataDirDlg" Order="2">1</Publish>
+			<Publish Dialog="InstallDirDlg" Control="ChangeFolder" Property="_BrowseProperty" Value="[WIXUI_INSTALLDIR]" Order="1">1</Publish>
+			<Publish Dialog="InstallDirDlg" Control="ChangeFolder" Event="SpawnDialog" Value="BrowseDlg" Order="2">1</Publish>
+			<Publish Dialog="ManagerDataDirDlg" Control="Back" Event="NewDialog" Value="InstallDirDlg">1</Publish>
+			<Publish Dialog="ManagerDataDirDlg" Control="Next" Event="SetTargetPath" Value="MANAGERDATADIR" Order="1">1</Publish>
+			<Publish Dialog="ManagerDataDirDlg" Control="Next" Event="NewDialog" Value="VerifyReadyDlg" Order="2">1</Publish>
+			<Publish Dialog="ManagerDataDirDlg" Control="ChangeFolder" Property="_BrowseProperty" Value="MANAGERDATADIR" Order="1">1</Publish>
+			<Publish Dialog="ManagerDataDirDlg" Control="ChangeFolder" Event="SpawnDialog" Value="BrowseDlg" Order="2">1</Publish>
+			<Publish Dialog="ManagerDataDirDlg" Control="Cancel" Event="SpawnDialog" Value="CancelDlg">1</Publish>
+			<Publish Dialog="VerifyReadyDlg" Control="Back" Event="NewDialog" Value="ManagerDataDirDlg">NOT Installed</Publish>
+			<Publish Dialog="VerifyReadyDlg" Control="Back" Event="NewDialog" Value="MaintenanceTypeDlg">Installed AND NOT PATCH</Publish>
+			<Publish Dialog="MaintenanceWelcomeDlg" Control="Next" Event="NewDialog" Value="MaintenanceTypeDlg">1</Publish>
+			<Publish Dialog="MaintenanceWelcomeDlg" Control="Back" Event="NewDialog" Value="WelcomeDlg">1</Publish>
+			<Publish Dialog="MaintenanceTypeDlg" Control="Back" Event="NewDialog" Value="MaintenanceWelcomeDlg">1</Publish>
+			<Publish Dialog="MaintenanceTypeDlg" Control="RepairButton" Event="NewDialog" Value="VerifyReadyDlg">1</Publish>
+			<Publish Dialog="MaintenanceTypeDlg" Control="RemoveButton" Event="NewDialog" Value="VerifyReadyDlg">1</Publish>
+			<Publish Dialog="ExitDialog" Control="Finish" Event="EndDialog" Value="Return">1</Publish>
+			<Dialog Id="ManagerDataDirDlg" Width="370" Height="270" Title="[ProductName] Setup" NoMinimize="yes">
+				<Control Id="BannerBitmap" Type="Bitmap" X="0" Y="0" Width="370" Height="44" TabSkip="no" Text="WixUI_Bmp_Banner" />
+				<Control Id="BannerLine" Type="Line" X="0" Y="44" Width="370" Height="0" />
+				<Control Id="BottomLine" Type="Line" X="0" Y="234" Width="370" Height="0" />
+				<Control Id="Title" Type="Text" X="15" Y="6" Width="330" Height="18" Transparent="yes" NoPrefix="yes" Text="Application Data Folder" />
+				<Control Id="Description" Type="Text" X="20" Y="55" Width="330" Height="35" NoPrefix="yes" Text="Choose where [ProductName] stores mutable simulator data and diagnostic logs." />
+				<Control Id="PathLabel" Type="Text" X="20" Y="100" Width="320" Height="15" NoPrefix="yes" Text="Store application data in:" />
+				<Control Id="DataPath" Type="PathEdit" X="20" Y="120" Width="320" Height="18" Property="MANAGERDATADIR" />
+				<Control Id="ChangeFolder" Type="PushButton" X="20" Y="145" Width="72" Height="17" Text="Change..." />
+				<Control Id="Back" Type="PushButton" X="180" Y="243" Width="56" Height="17" Text="!(loc.WixUIBack)" />
+				<Control Id="Next" Type="PushButton" X="236" Y="243" Width="56" Height="17" Default="yes" Text="!(loc.WixUINext)" />
+				<Control Id="Cancel" Type="PushButton" X="304" Y="243" Width="56" Height="17" Cancel="yes" Text="!(loc.WixUICancel)" />
+			</Dialog>
+		</UI>
+
+		<DirectoryRef Id="TARGETDIR">
+			<Directory Id="MANAGERDATADIR" Name=".">
+				<Component Id="WeaverManagerDataDirectoryComponent" Guid="@WEAVER_MANAGER_DATA_COMPONENT_GUID@">
+					<CreateFolder />
+					<RegistryValue Root="HKLM" Key="@WEAVER_MANAGER_REGISTRY_KEY@" Name="DataDirectory" Type="string" Value="[MANAGERDATADIR]" KeyPath="yes" />
+				</Component>
+				<Directory Id="WeaverManagerInstalledVersionsDirectory" Name="installed_versions">
+				<Component Id="WeaverManagerInstalledVersionsComponent" Guid="@WEAVER_MANAGER_VERSIONS_COMPONENT_GUID@">
+						<CreateFolder />
+					</Component>
+				</Directory>
+				<Directory Id="WeaverManagerLogsDirectory" Name="logs">
+				<Component Id="WeaverManagerLogsComponent" Guid="@WEAVER_MANAGER_LOGS_COMPONENT_GUID@">
+						<CreateFolder />
+					</Component>
+				</Directory>
+			</Directory>
+		</DirectoryRef>
+		<FeatureRef Id="ProductFeature">
+			<ComponentRef Id="WeaverManagerDataDirectoryComponent" />
+			<ComponentRef Id="WeaverManagerInstalledVersionsComponent" />
+			<ComponentRef Id="WeaverManagerLogsComponent" />
+		</FeatureRef>
+	</Fragment>
+</Wix>

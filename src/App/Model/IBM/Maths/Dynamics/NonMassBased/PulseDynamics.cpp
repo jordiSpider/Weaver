@@ -1,6 +1,9 @@
 #include "App/Model/IBM/Maths/Dynamics/NonMassBased/PulseDynamics.h"
 
 
+#include <fmt/format.h>
+
+
 using namespace std;
 using json = nlohmann::json;
 
@@ -127,11 +130,11 @@ const std::string PulseDynamics::showDistanceBetweenPulsesInfo() const
 
     if(fixedDistanceBetweenPulses)
     {
-        info << distanceBetweenPulsesRange.first;
+        info << fmt::to_string(distanceBetweenPulsesRange.first);
     }
     else
     {
-        info << "[" << distanceBetweenPulsesRange.first << ", " << distanceBetweenPulsesRange.second << "]";
+        info << "[" << fmt::to_string(distanceBetweenPulsesRange.first) << ", " << fmt::to_string(distanceBetweenPulsesRange.second) << "]";
     }
 
     return info.str();

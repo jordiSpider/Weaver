@@ -12,11 +12,14 @@
 
 #include <ostream>
 
+#include <fmt/format.h>
+
 #include "App/Model/IBM/Maths/Random.h"
 
 
 /**
  * @class Allele
+ * @ingroup weaver_landscape
  * @brief Represents a genetic allele with a value and an alphabetic order.
  *
  * The Allele class stores a numerical value representing the strength or effect of the allele,
@@ -82,5 +85,23 @@ private:
      PreciseDouble value; /**< Numerical value of the allele */
      unsigned int alphabeticOrder; /**< Alphabetic order for sorting alleles */
 };
+
+
+namespace fmt {
+    template <>
+    struct formatter<Allele> : formatter<PreciseDouble> {
+        // Heredamos la lógica de parseo de especificaciones de double (ej. {:.6f})
+        template <typename FormatContext>
+        auto format(const Allele& allele, FormatContext& ctx) const {
+            return fmt::format_to(
+                ctx.out(),
+                "{}\t{}",
+                allele.getValue(),
+                allele.getAlphabeticOrder()
+            );
+        }
+    };
+}
+
 
 #endif /* ALLELE_H_ */

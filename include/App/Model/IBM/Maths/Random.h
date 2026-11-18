@@ -17,18 +17,20 @@
 #include <list>
 #include <vector>
 #include <random>
+#include <atomic>
 #include <algorithm>
+#include <numeric>
 #include <memory>
-#include <nlohmann/json.hpp>
 
 #include "Exceptions/LineInfoException.h"
-#include "App/Model/IBM/Maths/Constants.h"
+#include "Misc/Maths/Constants.h"
 #include "App/Model/IBM/Landscape/LivingBeings/TimeUnits.h"
 #include "Misc/Types.h"
 
 
 /**
  * @brief Utility class providing random number generation functionalities.
+ * @ingroup weaver_model
  *
  * This class maintains a shared Mersenne Twister random number generator for reproducible and
  * thread-safe random generation. It supports generation of doubles, integers, time steps, indices,
@@ -39,10 +41,15 @@
 class Random
 {
 private:
-	static std::mt19937 rng;     /**< 32-bit Mersenne Twister random number generator. */
-    static std::mt19937_64 rng_64; /**< 64-bit Mersenne Twister random number generator. */
-    static bool hasBeenInitialized; /**< Flag indicating whether the random generator has been initialized. */
+    static bool hasBeenInitialized;
+    static unsigned int masterSeed;
+    static std::atomic<unsigned int> seedOffset;
+
 public:
+    static std::mt19937& getEngine();
+    static std::mt19937_64& getEngine64();
+
+
 	/**
      * @brief Initializes the random number generator with a given seed.
      *
@@ -111,6 +118,13 @@ public:
      */
 	static void createIndicesVector(std::vector<size_t>& indicesVector, size_t size);
 
+    template <size_t N>
+    static void createIndicesArray(std::array<size_t, N>& indicesArray)
+    {
+        std::iota(indicesArray.begin(), indicesArray.end(), 0u);
+        std::shuffle(indicesArray.begin(), indicesArray.end(), getEngine());
+    }
+
 	/**
      * @brief Shuffles the given vector in place using the shared random generator.
      *
@@ -157,11 +171,6 @@ public:
 };
 
 
-template<typename T>
-void Random::shuffleVector(std::vector<T>& vectorToShuffle)
-{
-	shuffle(vectorToShuffle.begin(), vectorToShuffle.end(), rng);
-}
 
 template<typename T>
 void Random::createUniqueVector(std::vector<T>& resultVector, std::vector<T>& range, size_t numberOfValues)

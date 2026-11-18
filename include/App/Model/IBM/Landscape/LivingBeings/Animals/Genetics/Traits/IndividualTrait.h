@@ -16,13 +16,19 @@
 #include <boost/archive/binary_iarchive.hpp>
 #include <boost/archive/binary_oarchive.hpp>
 
+#include <variant>
+
 
 #include "App/Model/IBM/Landscape/LivingBeings/Animals/Species/Genetics/Traits/Trait.h"
-#include "App/Model/IBM/Landscape/LivingBeings/Animals/Genetics/Traits/IndividualTraitTemperatureSection.h"
+
+#include "App/Model/IBM/Landscape/LivingBeings/Animals/Genetics/Traits/IndividualTraitTemperatureSectionVariant.h"
+#include "App/IO/StorageBridge.h"
+
 
 
 /**
  * @class IndividualTrait
+ * @ingroup weaver_landscape
  * @brief Represents an individual trait of an animal.
  * 
  * This class encapsulates a single trait of an individual animal. It holds both the
@@ -47,12 +53,11 @@ public:
      * @param rhoPerModule Vector of correlation values per module.
      * @param rhoRangePerModule Vector of correlation range indices per module.
      * @param temperature Current environmental temperature.
-     * @param actualTimeStep Current simulation timestep.
      * @param coefficientForMassAforMature Coefficient A for mature mass calculation.
      * @param scaleForMassBforMature Scale B for mature mass calculation.
      * @param tempFromLab Temperature data from lab experiments.
      */
-    IndividualTrait(Trait* trait, const Genome& genome, const size_t traitsPerModule, const size_t numberOfLociPerTrait, const std::vector<PreciseDouble>& rhoPerModule, const std::vector<size_t>& rhoRangePerModule, const Temperature& temperature, const TimeStep actualTimeStep, const PreciseDouble &coefficientForMassAforMature, const PreciseDouble &scaleForMassBforMature, const Temperature& tempFromLab);
+    IndividualTrait(Trait* trait, const Genome& genome, const size_t traitsPerModule, const size_t numberOfLociPerTrait, const std::vector<PreciseDouble>& rhoPerModule, const std::vector<size_t>& rhoRangePerModule, const Temperature& temperature, const PreciseDouble &coefficientForMassAforMature, const PreciseDouble &scaleForMassBforMature, const Temperature& tempFromLab);
     
     /**
      * @brief Constructor for testing without environmental tuning.
@@ -75,13 +80,19 @@ public:
      * @brief Get the constitutive (genetic) value of the trait.
      * @return Reference to the constitutive value.
      */
-    const PreciseDouble& getConstitutiveValue() const;
+    inline const PreciseDouble& getConstitutiveValue() const noexcept
+    {
+        return constitutiveValue;
+    }
 
     /**
      * @brief Get the phenotypic (expressed) value of the trait.
      * @return Reference to the phenotypic value.
      */
-    const PreciseDouble& getPhenotypicValue() const;
+    inline const PreciseDouble& getPhenotypicValue() const noexcept
+    {
+        return phenotypicValue;
+    }
 
     /**
      * @brief Tune the trait according to environmental conditions.
@@ -93,11 +104,7 @@ public:
      */
     void tune(const Temperature& temperature, const TimeStep actualTimeStep, const PreciseDouble &coefficientForMassAforMature, const PreciseDouble &scaleForMassBforMature, const Temperature& tempFromLab);
 
-    /**
-     * @brief Convert the trait to a string representation.
-     * @return String containing trait information.
-     */
-    std::string to_string() const;
+    void formatTraitDirect(fmt::memory_buffer& buf) const noexcept;
 
     /**
      * @brief Get the trait type.
@@ -132,7 +139,7 @@ protected:
     Trait* trait; /**< Pointer to the trait definition. */
     PreciseDouble constitutiveValue; /**< Genetic value of the trait. */
     PreciseDouble phenotypicValue; /**< Expressed (phenotypic) value of the trait. */
-    IndividualTraitTemperatureSection* temperatureSection; /**< Temperature-dependent tuning section. */
+    IndividualTraitTemperatureSectionVariant temperatureSection; /**< Temperature-dependent tuning section. */
 
     #ifdef DEBUG
         TimeStep phenotypicValueLastTimeStep; /**< Last timestep when phenotypic value was updated (debug). */

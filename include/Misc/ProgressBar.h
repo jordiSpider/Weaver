@@ -1,10 +1,10 @@
 /**
  * @file ProgressBar.h
- * @brief Lightweight textual progress bar utility for console or View output.
+ * @brief Lightweight textual progress bar utility for console output.
  *
  * This file defines the ProgressBar class, which displays a textual progress bar
  * that updates as a process advances. It is intended for tracking iterations over
- * a sequence or tasks in console-based or custom View-based environments.
+ * a sequence or tasks in console-based environments.
  */
 
 #ifndef PROGRESS_BAR_H_
@@ -14,16 +14,14 @@
 #include <string>
 #include <cmath>
 
-#include "App/View/View.h"
-
 
 /**
  * @class ProgressBar
+ * @ingroup weaver_model
  * @brief Displays a textual progress bar that updates as a process advances.
  *
  * The progress bar can be used to monitor operations iterating over a vector
- * or any process with a known number of steps. The output is sent through
- * a View interface, allowing flexible redirection to GUI, log file, or console.
+ * or any process with a known number of steps. The output is sent to the console.
  */
 class ProgressBar {
 public:
@@ -32,10 +30,9 @@ public:
      *
      * Initializes internal counters and determines step sizes for the visual bar.
      *
-     * @param view Pointer to a View object for outputting progress.
      * @param maxCounter Total number of iterations or maximum progress count.
      */
-    explicit ProgressBar(View* view, const size_t maxCounter);
+    explicit ProgressBar(const size_t maxCounter);
 
     /// Deleted copy constructor.
     ProgressBar(const ProgressBar&) = delete;
@@ -44,15 +41,14 @@ public:
     ProgressBar& operator=(const ProgressBar&) = delete;
 
     /**
-     * @brief Advances the progress bar by one iteration.
-     *
-     * Increments the internal counter and updates the visual display if a
-     * new threshold is reached. When the maximum is reached, the bar completes
-     * and prints a newline.
-     *
+     * @brief Advances the progress bar.
+     * @param increment Number of iterations completed. Default is 1.
+     * Allows batching for extreme multithreaded performance.
      * @throws LineInfoException (in DEBUG mode) if progress exceeds maxCounter.
      */
-    void update();
+    void update(size_t increment = 1);
+
+	bool finished() const { return counter >= maxCounter; }
 
 private:
     static constexpr char fill = '#';   /**< Character representing completed progress */
@@ -60,7 +56,6 @@ private:
     static constexpr unsigned char width = 50; /**< Total visual width of the bar */
 
     const size_t maxCounter; /**< Maximum iteration count representing 100% progress */
-    View* view;              /**< Output interface for printing the progress bar */
     size_t maxSteps;         /**< Maximum number of visual steps (<= width) */
     size_t stepProgress;     /**< Number of characters filled per progress step */
     size_t iterationsPerStep; /**< Number of iterations represented by one step */

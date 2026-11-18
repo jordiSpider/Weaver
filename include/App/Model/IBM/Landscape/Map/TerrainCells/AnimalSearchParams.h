@@ -11,10 +11,6 @@
 #include <algorithm>
 
 
-#include <boost/serialization/export.hpp>
-#include <boost/serialization/vector.hpp>
-
-
 #include <fstream>
 #include <ostream>
 
@@ -27,8 +23,12 @@
 #include "App/Model/IBM/Landscape/LivingBeings/Species/Growth/Instar.h"
 
 
+class Animal;
+
+
 /**
  * @class AnimalSearchParams
+ * @ingroup weaver_landscape
  * @brief Stores parameters for searching animals within a terrain cell.
  *
  * This class encapsulates life stages, species, instars, and genders
@@ -38,27 +38,7 @@
 class AnimalSearchParams
 {
 protected:
-    /// Vector of life stages that can be searched
-    std::vector<LifeStage> searchableLifeStages;
-
-    /// Indexed vector mapping life stage to searchable animal species IDs
-    CustomIndexedVector<LifeStage, std::vector<AnimalSpeciesID>> searchableAnimalSpecies;
-
-    /// Indexed vector mapping life stage to searchable instars per species
-    CustomIndexedVector<LifeStage, std::vector<std::vector<Instar>>> searchableInstars;
-
-    /// Indexed vector mapping life stage to searchable genders per species and instar
-    CustomIndexedVector<LifeStage, std::vector<CustomIndexedVector<Instar, std::vector<Gender>>>> searchableGenders;
-
-    /**
-     * @brief Helper function to insert an element into a vector if it is not already present.
-     * 
-     * @tparam T Type of element
-     * @param uniqueVector Vector to insert into
-     * @param elementToInsert Element to insert
-     */
-    template<typename T>
-    void insertElement(std::vector<T>& uniqueVector, const T& elementToInsert);
+    std::vector<bool> validSignaturesBitmask;
 
 public:
     /**
@@ -116,62 +96,9 @@ public:
         const std::vector<Gender> &newSearchableGenders
     );
 
-    /**
-     * @brief Returns the list of searchable life stages.
-     * 
-     * @return Vector of searchable life stages
-     */
-    const std::vector<LifeStage>& getSearchableLifeStages() const;
+    void init();
 
-    /**
-     * @brief Returns the list of searchable species IDs for a given life stage.
-     * 
-     * @param lifeStage Life stage to query
-     * @return Vector of searchable species IDs
-     */
-    const std::vector<AnimalSpeciesID>& getSearchableAnimalSpecies(
-        const LifeStage &lifeStage
-    ) const;
-
-    /**
-     * @brief Returns the list of searchable instars for a given life stage and species.
-     * 
-     * @param lifeStage Life stage to query
-     * @param animalSpeciesId Species ID to query
-     * @return Vector of searchable instars
-     */
-    const std::vector<Instar>& getSearchableInstars(
-        const LifeStage &lifeStage,
-        const AnimalSpeciesID &animalSpeciesId
-    ) const;
-
-    /**
-     * @brief Returns the list of searchable genders for a given life stage, species, and instar.
-     * 
-     * @param lifeStage Life stage to query
-     * @param animalSpeciesId Species ID to query
-     * @param instar Instar to query
-     * @return Vector of searchable genders
-     */
-    const std::vector<Gender>& getSearchableGenders(
-        const LifeStage &lifeStage,
-        const AnimalSpeciesID &animalSpeciesId, const Instar &instar
-    ) const;
-
-    /**
-     * @brief Clears all stored searchable parameters.
-     */
-    void clear();
-
-    /**
-     * @brief Serialization function for AnimalSearchParams.
-     * 
-     * @tparam Archive Type of archive
-     * @param ar Archive object
-     * @param version Version of the serialization
-     */
-    template <class Archive>
-    void serialize(Archive &ar, const unsigned int version);
+    bool matches(const Animal& animal) const noexcept;
 };
 
 #endif /* ANIMAL_SEARCH_PARAMS_H_ */

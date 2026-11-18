@@ -25,7 +25,9 @@
 #include <chrono>
 #include <numeric>
 #include <unordered_set>
+#include <atomic>
 #include <nlohmann/json.hpp>
+#include <tbb/enumerable_thread_specific.h>
 
 
 #include <boost/serialization/map.hpp>
@@ -41,6 +43,7 @@
 #include <filesystem>
 #include <sstream>
 #include <algorithm>
+#include <future>
 
 #include "rapidcsv.h"
 
@@ -66,19 +69,20 @@
 #include "App/Model/IBM/Landscape/Map/Patches/Source/HabitatDomainSource.h"
 #include "Misc/EnumClass.h"
 #include "App/Model/IBM/Landscape/LivingBeings/Animals/AnimalNonStatistical.h"
-#include "App/View/View.h"
 #include "App/Model/IBM/Landscape/LivingBeings/TimeUnits.h"
-#include "App/Model/IBM/Landscape/LivingBeings/EdibleID.h"
 #include "App/Model/IBM/Maths/Dynamics/NonMassBased/NonDynamics.h"
-#include "App/Model/IBM/Maths/PreciseDouble.h"
+#include "Misc/Maths/PreciseDouble.h"
 #include "Misc/ProgressBar.h"
 #include "App/Model/IBM/Landscape/Map/Patches/Shape/CubicPatch.h"
 
 
 
 
+
+
 /**
-* @brief Abstract base class that represents the simulation landscape.
+ * @brief Abstract base class that represents the simulation landscape.
+ * @ingroup weaver_landscape
 *
 * Landscape is responsible for managing the map, resources, species and animals,
 * updating sources, advancing simulation time-steps, saving outputs and
@@ -118,13 +122,6 @@ public:
     Landscape& operator=(const Landscape&) = delete;
 
 	/**
-	* @brief Attach a view object used for visualization or UI callbacks.
-	*
-	* @param newView Pointer to a View instance. Can be nullptr to detach.
-	*/
-	void setView(View* newView);
-
-	/**
 	* @brief Obtain a mutable pointer to the internal Map object.
 	*
 	* @return Pointer to the Map that can be modified by the caller.
@@ -141,12 +138,11 @@ public:
 	/**
 	* @brief Initialize the landscape from configuration files and options.
 	*
-	* @param newView View pointer to attach during initialization.
 	* @param configPath Filesystem path to configuration folder or file.
 	* @param newOutputFolder Path where simulation outputs must be written.
 	* @param fromCheckpoint True if initialization should restore state from a checkpoint.
 	*/
-	void init(View* newView, std::filesystem::path configPath, std::filesystem::path newOutputFolder, bool fromCheckpoint);
+	void init(std::filesystem::path configPath, std::filesystem::path newOutputFolder, bool fromCheckpoint);
 
 	/**
 	* @brief Calculate statistics related to predation/attack for each species.
@@ -179,7 +175,7 @@ public:
 	*
 	* @return A newly generated EdibleID (project-specific type alias).
 	*/
-	EdibleID generateEdibleId();
+	id_type generateEdibleId();
 
 	/** @brief Reset the internal edible identifier counter to its initial state. */
 	void resetEdibleIdCounter();
@@ -255,7 +251,7 @@ public:
 	void setOutputFolder(std::filesystem::path newOutputFolder, const std::string& configName);
 
 	/** @brief Print predation events matrix showing how species prey on others. */
-	void printPredationEventsOnOtherSpeciesMatrix();
+	void printPredationEventsOnOtherSpeciesMatrix(const TimeStep numberOfTimeSteps);
 
 	/**
 	* @brief Query whether resources species compete among themselves.
@@ -263,6 +259,8 @@ public:
 	* @return True if competition among resource species is enabled.
 	*/
 	bool getCompetitionAmongResourceSpecies() const;
+
+	PreciseDouble getMinExploitableResource() const;
 
 	/**
 	* @brief Register a non-statistical animal instance with the landscape.
@@ -358,6 +356,45 @@ public:
 	*/
 	virtual DryMass calculateMetabolicDryMassLossPerDay(const WetMass &wetMass, const PreciseDouble&proportionOfTimeTheAnimalWasMoving, const PreciseDouble& actE_metValue, const bool actE_metThermallyDependent, const PreciseDouble& met_rateValue, const bool met_rateThermallyDependent, const PreciseDouble& search_areaValue, const Temperature& tempFromLab, const Temperature& terrainCellTemperature, const PreciseDouble& conversionToWetMass) const=0;
 	
+	/** @brief Get a const reference to the active non-statistical animals in the landscape. */
+	const std::vector<AnimalNonStatistical*>& getLandscapeAnimals() const;
+
+	std::vector<AnimalNonStatistical*>& getLandscapeAnimals();
+
+	const std::vector<TerrainCell*>& getLandscapeTerrainCells() const;
+
+	std::vector<TerrainCell*>& getLandscapeTerrainCells();
+
+	/** @brief Get a const reference to the vector of loaded animal species. */
+	const std::vector<AnimalSpecies*>& getExistingAnimalSpecies() const;
+
+	/** @brief Get a mutable reference to the vector of animal species. */
+	std::vector<AnimalSpecies*>& getMutableExistingAnimalSpecies();
+
+	inline bool getSaveAnimalsEachDayPredationProbabilities() const {
+		return saveAnimalsEachDayPredationProbabilities;
+	}
+
+	inline bool getSaveActivity() const {
+		return saveActivity;
+	}
+
+	inline bool getSaveMovements() const {
+		return saveMovements;
+	}
+
+	inline bool getSaveAnimalsEachDayVoracities() const {
+		return saveAnimalsEachDayVoracities;
+	}
+
+	inline bool getSaveGenetics() const {
+		return saveGenetics;
+	}
+
+	inline bool getSaveMassInfo() const {
+		return saveMassInfo;
+	}
+
 	/**
 	* @brief Calculate a new voracity value (wet/dry conversion aware).
 	*
@@ -366,6 +403,16 @@ public:
 	* @return New voracity expressed as a PreciseDouble.
 	*/
 	PreciseDouble calculateNewVoracity(const PreciseDouble&wetMass, const PreciseDouble&conversionToWetMass) const;
+
+	/** @brief Get a const reference to the vector of all species. */
+	const std::vector<Species*>& getExistingSpecies() const;
+
+	/**
+	* @brief Get a const reference to the list of resource species currently loaded.
+	*
+	* @return Vector of pointers to ResourceSpecies objects.
+	*/
+	const std::vector<ResourceSpecies*>& getExistingResourceSpecies() const;
 
 	/**
 	* @brief Get the landscape type enum of this instance.
@@ -383,9 +430,15 @@ public:
     void serialize(Archive &ar, const unsigned int version);
 
 protected:
-	View* view;	/**< Visualization / UI view attached to the landscape (may be null). */
-
 	unsigned int fixedSeedValue; /**< Fixed RNG seed value for deterministic runs (when used). */
+
+	std::string printAnimalsAlongCellsHeader; /**< Header string for printing animals along cells. */
+
+	std::string printCellAlongCellsHeader;
+
+
+
+	tbb::enumerable_thread_specific<size_t> localProgressBarCounter;
 
 	Day runDays;				/**< Number of days to simulate. */
 	unsigned int recordEach;	/**< Frequency (in time-steps) to record checkpoints or outputs. */
@@ -397,29 +450,28 @@ protected:
 	std::vector<std::vector<std::pair<size_t, ResourceSource*>>> appliedResource; /**< Resource sources grouped by priority. */
 
 	std::vector<AnimalNonStatistical*> landscapeAnimals; /**< Non-statistical animals present in the landscape. */
+	mutable std::mutex landscapeAnimalsMutex;
 
 	std::vector<std::vector<std::vector<CellResource*>>> landscapeResources; /**< Resources by cell and species. */
+
+	std::vector<TerrainCell*> terrainCells; /**< All terrain cells in the landscape. */
 
 	std::filesystem::path outputFolder; /**< Base folder for output files during a run. */
 	std::filesystem::path resultFolder; /**< Final result folder for the simulation run. */
 
-	CustomIndexedVector<AnimalSpeciesID, std::ofstream*> animalConstitutiveTraitsFile; /**< Per-species files for constitutive traits. */
-	std::ofstream dailySummaryFile; /**< Stream for daily summary outputs. */
-	std::ofstream extendedDailySummaryFile; /**< Stream for extended daily summary outputs. */
-	std::ofstream movementsFile; /**< Stream for recorded movements. */
-	std::ofstream edibilitiesFile; /**< Stream describing edible links / edibilities. */
+	CustomIndexedVector<AnimalSpeciesID, std::filesystem::path> animalConstitutiveTraitsFilePath; /**< Per-species file paths for constitutive traits. */
 	bool saveEdibilitiesFile; /**< Whether to produce the edibilities file. */
 	
 	bool competitionAmongResourceSpecies; /**< Whether resource species compete for the same resource. */
 	float exitTimeThreshold; /**< Threshold used to determine early simulation exit. */
+
+	PreciseDouble minExploitableResource; /**< Minimum exploitable resource threshold for animals. */
 
 	bool savePredationEventsOnOtherSpecies; /**< Whether predation events matrix should be saved. */
 
 	bool saveAnimalConstitutiveTraits; /**< Whether to save animal constitutive trait files. */
 
 	bool saveGenetics; /**< Whether genetic data should be saved. */
-
-	bool saveDailySummary; /**< Whether daily summary should be written. */
 
 	bool saveExtendedDailySummary; /**< Whether extended daily summary should be written. */
 
@@ -439,8 +491,8 @@ protected:
 
 	bool saveMassInfo; /**< Whether to save mass/energetics information. */
 
-	bool saveIntermidiateVolumes; /**< Whether intermediate volume snapshots are saved. */
-	unsigned int saveIntermidiateVolumesPeriodicity; /**< Periodicity for intermediate volumes. */
+	bool saveSnapshots; /**< Whether intermediate volume snapshots are saved. */
+	unsigned int saveSnapshotsPeriodicity; /**< Periodicity for intermediate volumes. */
 
 	std::vector<float> heatingCodeTemperatureCycle;	/**< Optional heating code cycle defining temperatures through time. */
 
@@ -490,14 +542,6 @@ protected:
 	
 	/** @brief Remove dead animals from internal containers and free resources. */
 	void purgeDeadAnimals();
-
-	/**
-	* @brief Validate the headers of ontogenetic links CSVs read via rapidcsv.
-	*
-	* @param ontogeneticLinksPreference rapidcsv document representing preference links.
-	* @param ontogeneticLinksProfitability rapidcsv document representing profitability links.
-	*/
-	void checkOntogeneticLinksHeaders(const rapidcsv::Document& ontogeneticLinksPreference, const rapidcsv::Document& ontogeneticLinksProfitability) const;
 
 	/**
 	* @brief Allometric scaling formula by Yodzis (helper).
@@ -646,18 +690,17 @@ protected:
 	* @param numberOfTimeSteps Time-step index.
 	* @param simulationPoint Simulation point index if required by multi-point runs.
 	*/
-	void printAnimalsAlongCells(const TimeStep numberOfTimeSteps, const int simulationPoint) const;
+	void printAnimalsAlongCells(const TimeStep numberOfTimeSteps, const int simulationPoint);
 	
 	/** @brief Print cell values along cells at the provided time-step (debug output). */
-	void printCellAlongCells(const TimeStep numberOfTimeSteps) const;
+	void printCellAlongCells(const TimeStep numberOfTimeSteps);
 
 	/**
 	* @brief Append extended daily summary information to a provided stream.
 	*
-	* @param os Output stream to append to.
 	* @param numberOfTimeSteps Current time-step index for timestamping.
 	*/
-	void printExtendedDailySummary(std::ostream& os, const TimeStep numberOfTimeSteps) const;
+	void printExtendedDailySummary(const TimeStep numberOfTimeSteps);
 	
 	/**
 	* @brief Save a snapshot of a specific animal species to disk.
@@ -686,35 +729,19 @@ protected:
 	* @param numberOfTimeSteps Time-step used as reference for stabilisation check.
 	*/
 	bool isSimulationStabilised(const TimeStep& numberOfTimeSteps);
-
-	/**
-	* @brief Get a const reference to the list of resource species currently loaded.
-	*
-	* @return Vector of pointers to ResourceSpecies objects.
-	*/
-	const std::vector<ResourceSpecies*>& getExistingResourceSpecies() const;
 	
 	/** @brief Get a mutable reference to the vector of resource species. */
 	std::vector<ResourceSpecies*>& getMutableExistingResourceSpecies();
 
-	/** @brief Get a mutable reference to the vector of animal species. */
-	std::vector<AnimalSpecies*>& getMutableExistingAnimalSpecies();
-	
-	/** @brief Get a const reference to the vector of loaded animal species. */
-	const std::vector<AnimalSpecies*>& getExistingAnimalSpecies() const;
-
 	/** @brief Get a mutable reference to the vector of all species. */
 	std::vector<Species*>& getMutableExistingSpecies();
 
-	/** @brief Get a const reference to the vector of all species. */
-	const std::vector<Species*>& getExistingSpecies() const;
-
 private:
-	const std::filesystem::path RESOURCE_FOLDER_NAME = "resource"; /**< Name of the resource folder. */
+	const std::filesystem::path RESOURCE_FOLDER_NAME = "resources"; /**< Name of the resource folder. */
 	const std::filesystem::path SPECIES_FOLDER_NAME = "species"; /**< Name of the species folder. */
-	const std::filesystem::path OBSTACLE_FOLDER_NAME = "obstacle"; /**< Name of the obstacle folder. */
-	const std::filesystem::path HABITAT_DOMAIN_FOLDER_NAME = "habitat_domain"; /**< Habitat domain folder name. */
-	const std::filesystem::path MOISTURE_FOLDER_NAME = "moisture"; /**< Moisture folder name. */
+	const std::filesystem::path OBSTACLE_FOLDER_NAME = std::filesystem::path("patches") / "obstacle"; /**< Name of the obstacle folder. */
+	const std::filesystem::path HABITAT_DOMAIN_FOLDER_NAME = std::filesystem::path("patches") / "habitat_domain"; /**< Habitat domain folder name. */
+	const std::filesystem::path MOISTURE_FOLDER_NAME = std::filesystem::path("patches") / "moisture"; /**< Moisture folder name. */
 
 	std::string serializationVersion; /**< Serialization version used for checkpoints. */
 
@@ -727,6 +754,27 @@ private:
 	unsigned int checkpointsRecordEach; /**< Frequency for writing checkpoints. */
 
 	PreciseDouble pdfThreshold; /**< Threshold used for PDF-based filtering. */
+
+
+	tbb::enumerable_thread_specific<fmt::memory_buffer> localBuffersAnimalsStart;
+	tbb::enumerable_thread_specific<fmt::memory_buffer> localBuffersAnimalsEnd;
+	tbb::enumerable_thread_specific<fmt::memory_buffer> localBuffersCells;
+	tbb::enumerable_thread_specific<fmt::memory_buffer> localBuffersMassInfo;
+	tbb::enumerable_thread_specific<fmt::memory_buffer> localBuffersEdibilities;
+	tbb::enumerable_thread_specific<fmt::memory_buffer> localBuffersActivities;
+	tbb::enumerable_thread_specific<fmt::memory_buffer> localBuffersVoracities;
+	tbb::enumerable_thread_specific<fmt::memory_buffer> localBuffersMovements;
+	tbb::enumerable_thread_specific<fmt::memory_buffer> localBuffersPredationProbabilities;
+	tbb::enumerable_thread_specific<CustomIndexedVector<AnimalSpeciesID, fmt::memory_buffer>> localBuffersAnimalConstitutiveTraits;
+	tbb::enumerable_thread_specific<CustomIndexedVector<AnimalSpeciesID, std::vector<fmt::memory_buffer>>> localBuffersGenetics;
+
+
+	fmt::memory_buffer extendedDailySummaryBuffer;
+	fmt::memory_buffer executionTimeBuffer;
+	fmt::memory_buffer timeSpentBuffer;
+	fmt::memory_buffer predationEventsOnOtherSpeciesMatrixBuffer;
+	fmt::memory_buffer versionsBuffer;
+
 
 	/**
 	* @brief Checks whether simulation checkpoints are enabled.
@@ -754,60 +802,16 @@ private:
 	void saveCheckpoint(const TimeStep& numberOfTimeSteps);
 
 	/**
-	* @brief Extracts landscape resource biomass and animal population counts.
-	*
-	* @param landscapeResourceBiomass Output vector with biomass per cell.
-	* @param landscapeAnimalsPopulation Output nested structure with counts of animals per species and instar.
-	*/
-	void obtainLandscapeResourceBiomassAndAnimalsPopulation(std::vector<WetMass> &landscapeResourceBiomass, CustomIndexedVector<AnimalSpeciesID, CustomIndexedVector<LifeStage, unsigned int>> &landscapeAnimalsPopulation) const;
-	
-	/**
-	* @brief Moves all animals according to their movement rules.
+	* @brief Executes all actions of animals in the landscape for the current timestep.
 	* @param numberOfTimeSteps Current timestep number.
 	*/
-	void moveAnimals(const TimeStep& numberOfTimeSteps);
+	void executingActions(const TimeStep& numberOfTimeSteps);
 
 	/**
 	* @brief Executes all behavioural actions (feeding, interactions, etc.) of animals.
 	* @param numberOfTimeSteps Current timestep number.
 	*/
 	void performAnimalsActions(const TimeStep numberOfTimeSteps);
-
-	/**
-	* @brief Prints (or logs) voracity values for all animals in the landscape.
-	* @param numberOfTimeSteps Current timestep number.
-	*/
-	void printAnimalsVoracities(const TimeStep& numberOfTimeSteps);
-
-	/**
-	* @brief Removes animals that die from background mortality.
-	* @param numberOfTimeSteps Current timestep.
-	*/
-    void dieFromBackground(const TimeStep& numberOfTimeSteps);
-
-	/**
-	* @brief Transfers assimilated food into the internal energy tanks of animals.
-	* @param numberOfTimeSteps Current timestep.
-	*/
-    void transferAssimilatedFoodToEnergyTank(const TimeStep& numberOfTimeSteps);
-    
-	/**
-	* @brief Applies metabolic costs to animals for the current timestep.
-	* @param numberOfTimeSteps Current timestep.
-	*/
-	void metabolizeAnimals(const TimeStep numberOfTimeSteps);
-
-	/**
-	* @brief Applies growth processes to animals.
-	* @param numberOfTimeSteps Current timestep.
-	*/
-    void growAnimals(const TimeStep& numberOfTimeSteps);
-
-	/**
-	* @brief Performs breeding and reproduction actions.
-	* @param numberOfTimeSteps Current timestep.
-	*/
-    void breedAnimals(const TimeStep& numberOfTimeSteps);
 
 	/**
 	* @brief Evaluates simulation break conditions.
@@ -861,6 +865,7 @@ private:
 };
 
 
+
 /**
  * @brief Boost library namespace.
  */
@@ -872,12 +877,12 @@ namespace boost {
 		/**
 		* @brief Boost.Serialization free function overload to (de)serialize Landscape pointers.
 		*
-		* Specialization to assist in (de)serializing polymorphic Landscape* pointers
-		* while providing a View pointer during restoration.
+		* Specialization to assist in (de)serializing polymorphic Landscape* pointers.
 		*/
         template<class Archive>
-        void serialize(Archive &ar, Landscape* &landscapePtr, const unsigned int version, View* view);
+        void serialize(Archive &ar, Landscape* &landscapePtr, const unsigned int version);
     }
 }
 
 #endif // LANDSCAPE_H_
+

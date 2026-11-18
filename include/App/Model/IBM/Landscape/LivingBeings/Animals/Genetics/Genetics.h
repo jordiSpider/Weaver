@@ -27,8 +27,12 @@
 #include "App/Model/IBM/Landscape/LivingBeings/Animals/Species/Genetics/AnimalSpeciesGenetics.h"
 
 
+
+
+
 /**
  * @class Genetics
+ * @ingroup weaver_landscape
  * @brief Represents the genetic information and traits of an individual.
  * 
  * The Genetics class manages an individual's genome, traits, and provides
@@ -49,12 +53,11 @@ public:
      * 
      * @param speciesGenetics Pointer to the species genetics configuration.
      * @param temperature Current temperature.
-     * @param actualTimeStep Current timestep in the simulation.
      * @param coefficientForMassAforMature Coefficient A for mature mass calculation.
      * @param scaleForMassBforMature Scale B for mature mass calculation.
      * @param tempFromLab Temperature data from lab experiments.
      */
-    Genetics(AnimalSpeciesGenetics* speciesGenetics, const Genome* const initialGenome, const Temperature& temperature, const TimeStep actualTimeStep, const PreciseDouble &coefficientForMassAforMature, const PreciseDouble &scaleForMassBforMature, const Temperature& tempFromLab);
+    Genetics(AnimalSpeciesGenetics* speciesGenetics, const Genome* const initialGenome, const Temperature& temperature, const PreciseDouble &coefficientForMassAforMature, const PreciseDouble &scaleForMassBforMature, const Temperature& tempFromLab);
     
     /**
      * @brief Constructor for an individual from parental gametes.
@@ -63,12 +66,11 @@ public:
      * @param firstParentGamete Pointer to the first parent's gamete.
      * @param secondParentGamete Pointer to the second parent's gamete.
      * @param temperature Current temperature.
-     * @param actualTimeStep Current timestep in the simulation.
      * @param coefficientForMassAforMature Coefficient A for mature mass calculation.
      * @param scaleForMassBforMature Scale B for mature mass calculation.
      * @param tempFromLab Temperature data from lab experiments.
      */
-    Genetics(AnimalSpeciesGenetics* speciesGenetics, Gamete* const firstParentGamete, Gamete* const secondParentGamete, const Temperature& temperature, const TimeStep actualTimeStep, const PreciseDouble &coefficientForMassAforMature, const PreciseDouble &scaleForMassBforMature, const Temperature& tempFromLab);
+    Genetics(AnimalSpeciesGenetics* speciesGenetics, Gamete* const firstParentGamete, Gamete* const secondParentGamete, const Temperature& temperature, const PreciseDouble &coefficientForMassAforMature, const PreciseDouble &scaleForMassBforMature, const Temperature& tempFromLab);
 
     /**
      * @brief Destructor for the Genetics class.
@@ -137,11 +139,7 @@ public:
      */
     void tune(const Temperature& temperature, const TimeStep actualTimeStep, const PreciseDouble &coefficientForMassAforMature, const PreciseDouble &scaleForMassBforMature, const Temperature& tempFromLab);
 
-    /**
-     * @brief Convert the genetics information to a string representation.
-     * @return String describing traits and genome.
-     */
-    std::string to_string() const;
+    void formatToBufferDirect(fmt::memory_buffer& buf) const noexcept;
 
     /**
      * @brief Set the species genetics pointer.
@@ -153,7 +151,7 @@ public:
      * @brief Print all traits as a string.
      * @return String with traits information.
      */
-    std::string printTraits() const;
+    void printTraits(fmt::memory_buffer& traitsText) const;
 
     /**
      * @brief Clone the genome.
@@ -200,12 +198,11 @@ protected:
     /**
      * @brief Initialize individual traits based on environmental and biological parameters.
      * @param temperature Current temperature.
-     * @param actualTimeStep Current simulation timestep.
      * @param coefficientForMassAforMature Coefficient A for mature mass calculation.
      * @param scaleForMassBforMature Scale B for mature mass calculation.
      * @param tempFromLab Temperature from lab data.
      */
-    void initTraits(const Temperature& temperature, const TimeStep actualTimeStep, const PreciseDouble &coefficientForMassAforMature, const PreciseDouble &scaleForMassBforMature, const Temperature& tempFromLab);
+    void initTraits(const Temperature& temperature, const PreciseDouble &coefficientForMassAforMature, const PreciseDouble &scaleForMassBforMature, const Temperature& tempFromLab);
 };
 
 #endif // GENETICS_H_

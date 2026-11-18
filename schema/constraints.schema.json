@@ -1,0 +1,48 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://raw.githubusercontent.com/jordiSpider/Weaver/main/schema/constraints.schema.json",
+  "title": "Weaver cross-file constraints",
+  "description": "Defines assertions over values in one or more JSON documents in a configuration directory.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["$schema", "version", "constraints"],
+  "properties": {
+    "$schema": {"const": "https://raw.githubusercontent.com/jordiSpider/Weaver/main/schema/constraints.schema.json", "description": "Identifier of this constraint language meta-schema."},
+    "$id": {"type": "string", "format": "uri", "description": "Stable identifier for this versioned constraint set."},
+    "version": {"type": "string", "pattern": "^[0-9]+\\.[0-9]+\\.[0-9]+$", "description": "Version of the constraint document format."},
+    "description": {"type": "string", "description": "Summary of the cross-file validation rules."},
+    "constraints": {"type": "array", "items": {"$ref": "#/$defs/constraint"}, "description": "Assertions evaluated against the complete set of configuration documents."}
+  },
+  "$defs": {
+    "expression": {"description": "Expression AST. Operator arguments are nested expressions or JSON literals. Arithmetic: add, sub, mul, div, mod, pow, min, max, abs, neg, sqrt, log, floor, ceil, round, sum, mean, between. Logic: and, or, all, any, every, some, not, xor, implies, if, coalesce. Comparison and type checks: eq, ne, lt, lte, gt, gte, in, contains, matches, startsWith, endsWith, isNull, isNumber, isInteger, isString, isBoolean, isArray, isObject. Arrays: count, length, unique, adjacent. A ref selects a document by relative path or glob and a value by JSON Pointer; '*' selects array elements or object values. Inside forEachPath and where, file '$item' refers to the current selected value.", "oneOf": [
+      {"type": ["string", "number", "integer", "boolean", "null"]},
+      {"type": "array", "items": {"$ref": "#/$defs/expression"}},
+      {"type": "object", "required": ["ref"], "additionalProperties": false, "properties": {
+        "ref": {"type": "object", "additionalProperties": false, "required": ["file"], "properties": {
+          "file": {"type": "string", "minLength": 1, "description": "Configuration-relative file path or glob, for example species/*.json."},
+          "path": {"type": "string", "description": "JSON Pointer into each matching document; '*' selects array elements or object values."}
+        }}
+      }},
+      {"type": "object", "minProperties": 1, "maxProperties": 1,
+       "propertyNames": {"enum": ["add","sub","mul","div","mod","pow","min","max","abs","neg","sqrt","log","floor","ceil","round","sum","mean","between","and","or","all","any","every","some","not","xor","implies","if","coalesce","eq","ne","lt","lte","gt","gte","in","contains","matches","startsWith","endsWith","isNull","isNumber","isInteger","isString","isBoolean","isArray","isObject","unique","count","length","adjacent"]},
+       "additionalProperties": {"oneOf": [{"$ref": "#/$defs/expression"},{"type":"object","description":"Options object for adjacent array comparisons."}]}}
+      ]},
+    "constraint": {
+      "type": "object", "additionalProperties": false, "required": ["assert"],
+      "properties": {
+        "id": {"type": "string", "description": "Stable identifier for this rule."},
+        "description": {"type": "string", "minLength": 1, "description": "Human-readable explanation shown when the assertion fails."},
+        "code": {"type": "string", "description": "Stable diagnostic code emitted for this failure."},
+        "forEachFile": {"type": "string", "description": "Optional configuration-relative glob; evaluate the assertion independently for every matching file. Use a '$current' reference for that file."},
+        "forEachPath": {"type": "string", "description": "Optional JSON Pointer selecting candidate values within each matching file. Supports '*' for one level and '**' for any number of descendant levels; each selected value becomes the '$item' scope."},
+        "where": {"$ref": "#/$defs/expression", "description": "Optional boolean filter evaluated for each selected '$item'; only matching items are checked by assert."},
+        "severity": {"enum": ["error", "warning"], "description": "Whether a failed assertion invalidates the configuration or emits a warning."},
+        "file": {"type": "string", "description": "Optional configuration file associated with the diagnostic."},
+        "path": {"type": "string", "description": "Optional JSON Pointer to the value associated with the diagnostic."},
+        "assert": {"$ref": "#/$defs/expression", "description": "Boolean expression that must evaluate to true."}
+      },
+      "dependentRequired": {"forEachPath": ["forEachFile"], "where": ["forEachPath"]}
+    }
+  }
+}
+

@@ -1,0 +1,34 @@
+set(REQUIRED_LOCAL_SITE_VARS
+	DOCS_SITE_BASELINE
+	DOCS_GHPAGES_REMOTE
+	DOCS_GHPAGES_BRANCH
+	SPHINX_BUILD_DIR
+	DOCS_SITE_OUTPUT_DIR
+)
+
+foreach(var_name IN LISTS REQUIRED_LOCAL_SITE_VARS)
+	if(NOT DEFINED ${var_name} OR "${${var_name}}" STREQUAL "")
+		message(FATAL_ERROR "Missing local documentation setting: ${var_name}")
+	endif()
+endforeach()
+
+if(NOT DOCS_SITE_BASELINE STREQUAL "gh-pages" AND NOT DOCS_SITE_BASELINE STREQUAL "empty")
+	message(FATAL_ERROR "DOCS_SITE_BASELINE must be 'gh-pages' or 'empty'.")
+endif()
+
+find_package(Git REQUIRED)
+
+set(DOCS_GHPAGES_CHECKOUT_DIR "${SPHINX_BUILD_DIR}/gh-pages-checkout")
+
+add_custom_target(prepare-docs-site
+	COMMAND "${CMAKE_COMMAND}"
+		"-DDOCS_SITE_BASELINE=${DOCS_SITE_BASELINE}"
+		"-DDOCS_GHPAGES_REMOTE=${DOCS_GHPAGES_REMOTE}"
+		"-DDOCS_GHPAGES_BRANCH=${DOCS_GHPAGES_BRANCH}"
+		"-DDOCS_SOURCE_DIR=${PROJECT_SOURCE_DIR}"
+		"-DGIT_EXECUTABLE=${GIT_EXECUTABLE}"
+		"-DDOCS_GHPAGES_CHECKOUT_DIR=${DOCS_GHPAGES_CHECKOUT_DIR}"
+		"-DDOCS_SITE_OUTPUT_DIR=${DOCS_SITE_OUTPUT_DIR}"
+		-P "${DOCS_DIR}/PrepareDocsSite.cmake"
+	COMMENT "Preparing local documentation site staging..."
+)

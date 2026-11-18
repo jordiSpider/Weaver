@@ -1,0 +1,61 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://raw.githubusercontent.com/jordiSpider/Weaver/main/schema/configuration_structure.schema.json",
+  "title": "Weaver configuration directory structure",
+  "description": "Defines required directories, JSON file patterns, minimum counts, and the schema used for each file group.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["$schema", "version", "root"],
+  "properties": {
+    "$schema": {"const": "https://raw.githubusercontent.com/jordiSpider/Weaver/main/schema/configuration_structure.schema.json", "description": "Identifier of this manifest's meta-schema."},
+    "$id": {"type": "string", "format": "uri", "description": "Stable identifier for this versioned manifest."},
+    "version": {"type": "string", "pattern": "^[0-9]+\\.[0-9]+\\.[0-9]+$", "description": "Version of the directory-structure manifest format."},
+    "root": {"$ref": "#/$defs/level", "description": "Expected contents at the configuration directory root."}
+  },
+  "$defs": {
+    "fileGroup": {
+      "type": "object", "additionalProperties": false, "required": ["pattern", "schema"],
+      "properties": {
+        "pattern": {"type": "string", "minLength": 1, "description": "Glob pattern selecting files in this directory."},
+        "schema": {"type": "string", "minLength": 1, "description": "Schema path relative to the versioned schema directory."},
+        "minCount": {"type": "integer", "minimum": 0, "description": "Minimum number of matching files."}
+      }
+    },
+    "directory": {
+      "type": "object", "additionalProperties": false, "required": ["name"],
+      "properties": {
+        "name": {"type": "string", "minLength": 1, "description": "Directory name relative to its parent."},
+        "required": {"type": "boolean", "default": false, "description": "Whether the directory must exist."},
+        "files": {"$ref": "#/$defs/fileGroup", "description": "File selection and validation rule for this directory."},
+        "namedFiles": {"type": "array", "items": {"$ref": "#/$defs/namedFile"}, "description": "Specific files expected directly inside this directory."},
+        "directories": {"type": "array", "items": {"$ref": "#/$defs/directory"}, "description": "Nested directory definitions."}
+      },
+      "anyOf": [{"required": ["files"]}, {"required": ["namedFiles"]}, {"required": ["directories"]}]
+    },
+    "namedFile": {
+      "type": "object", "additionalProperties": false, "required": ["name"],
+      "properties": {
+        "name": {"type": "string", "minLength": 1, "description": "Exact file name relative to its containing directory."},
+        "required": {"type": "boolean", "default": false, "description": "Whether this file must exist."},
+        "type": {"enum": ["csv"], "description": "Format of the named data file; validation rules are implemented by the configuration validator."}
+      }
+    },
+    "rootFile": {
+      "type": "object", "additionalProperties": false, "required": ["name", "schema"],
+      "properties": {
+        "name": {"type": "string", "minLength": 1, "description": "File name relative to the containing directory."},
+        "required": {"type": "boolean", "default": false, "description": "Whether this file must exist."},
+        "schema": {"type": "string", "minLength": 1, "description": "Schema path relative to the versioned schema directory."}
+      }
+    },
+    "level": {
+      "type": "object", "additionalProperties": false,
+      "anyOf": [{"required": ["directories"]}, {"required": ["files"]}],
+      "properties": {
+        "directories": {"type": "array", "items": {"$ref": "#/$defs/directory"}, "description": "Directories defined at this level."},
+        "files": {"type": "array", "items": {"$ref": "#/$defs/rootFile"}, "description": "Named files defined at this level."}
+      }
+    }
+  }
+}
+

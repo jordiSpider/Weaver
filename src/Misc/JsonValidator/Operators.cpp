@@ -143,7 +143,7 @@ void verifyLogicalOperator(const json& condition, const unordered_map<string, El
 		}
 
 
-        if(EnumClass<LogicalType>::stringToEnumValue(condition["type"]) == LogicalType::negation)
+        if(EnumClass<LogicalType>::stringToEnumValue(condition["logicalType"]) == LogicalType::negation)
         {
             if(condition["operands"].size() > 1)
             {

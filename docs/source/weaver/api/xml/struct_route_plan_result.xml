@@ -1,0 +1,45 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.14.0" xml:lang="en-US">
+  <compounddef id="struct_route_plan_result" kind="struct" language="C++" prot="public">
+    <compoundname>RoutePlanResult</compoundname>
+    <sectiondef kind="public-attrib">
+      <memberdef kind="variable" id="struct_route_plan_result_1a93645969d063d2e613e87050c0ed0210" prot="public" static="no" mutable="no">
+        <type>size_t</type>
+        <definition>size_t RoutePlanResult::goalIndex</definition>
+        <argsstring></argsstring>
+        <name>goalIndex</name>
+        <qualifiedname>RoutePlanResult::goalIndex</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="App/Model/IBM/Landscape/Map/Navigation/RoutePlanner.h" line="27" column="8" bodyfile="App/Model/IBM/Landscape/Map/Navigation/RoutePlanner.h" bodystart="27" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="struct_route_plan_result_1a6934eb671bc225d1c71acc08cd421c9a" prot="public" static="no" mutable="no">
+        <type>NavigationRoute</type>
+        <definition>NavigationRoute RoutePlanResult::route</definition>
+        <argsstring></argsstring>
+        <name>route</name>
+        <qualifiedname>RoutePlanResult::route</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="App/Model/IBM/Landscape/Map/Navigation/RoutePlanner.h" line="26" column="17" bodyfile="App/Model/IBM/Landscape/Map/Navigation/RoutePlanner.h" bodystart="26" bodyend="-1"/>
+      </memberdef>
+    </sectiondef>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+    </detaileddescription>
+    <location file="App/Model/IBM/Landscape/Map/Navigation/RoutePlanner.h" line="24" column="1" bodyfile="App/Model/IBM/Landscape/Map/Navigation/RoutePlanner.h" bodystart="25" bodyend="28"/>
+    <listofallmembers>
+      <member refid="struct_route_plan_result_1a93645969d063d2e613e87050c0ed0210" prot="public" virt="non-virtual"><scope>RoutePlanResult</scope><name>goalIndex</name></member>
+      <member refid="struct_route_plan_result_1a6934eb671bc225d1c71acc08cd421c9a" prot="public" virt="non-virtual"><scope>RoutePlanResult</scope><name>route</name></member>
+    </listofallmembers>
+  </compounddef>
+</doxygen>

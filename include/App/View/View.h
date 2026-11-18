@@ -21,7 +21,7 @@
 #include <ctime> 
 
 
-#include "App/View/RunMode.h"
+#include "App/Model/RunMode.h"
 #include "Misc/EnumClass.h"
 #include "Misc/CustomIndexedVector.h"
 #include "Misc/PathUtils.h"
@@ -33,13 +33,14 @@ class Model;
 
 /**
  * @class View
+ * @ingroup weaver_model
  * @brief Abstract base class representing a view in the MVC pattern.
  *
  * The `View` class is responsible for managing logs and providing
  * human-readable titles for simulation `RunMode`s. Derived classes
  * must implement methods to handle normal and error log messages.
  *
- * ### Responsibilities
+ * @par Responsibilities
  * - Maintain a reference to the associated `Model`.
  * - Provide mapping from `RunMode` enum values to string titles.
  * - Provide logging interface for normal and error messages.
@@ -52,7 +53,7 @@ public:
      *
      * Initializes internal data structures, including the run modes titles vector.
      */
-    View();
+    View(Model* newModel);
 
     /**
      * @brief Destructor for View.
@@ -62,54 +63,11 @@ public:
     virtual ~View();
 
     /**
-     * @brief Sets the model associated with this view.
-     *
-     * @param newModel Reference to the Model object to associate.
-     */
-    void setModel(Model& newModel);
-
-    /**
      * @brief Returns a mapping of RunMode enum values to their display titles.
      *
      * @return Const reference to a CustomIndexedVector containing RunMode titles.
      */
     const CustomIndexedVector<RunMode, std::string>& getRunModesTitles() const;
-
-    /**
-     * @brief Updates the log with multiple messages.
-     *
-     * @param messages List of messages to append to the log.
-     * @param ignoreSilentMode If true, the message will be logged even in silent mode.
-     */
-    void updateLog(std::initializer_list<std::string> messages, bool ignoreSilentMode = false);
-
-    /**
-     * @brief Updates the log with multiple error messages.
-     *
-     * @param messages List of error messages to append to the log.
-     * @param ignoreSilentMode If true, the message will be logged even in silent mode.
-     */
-    void updateLogError(std::initializer_list<std::string> messages, bool ignoreSilentMode = false);
-
-    /**
-     * @brief Updates the log with a single message.
-     *
-     * This is a pure virtual function that must be implemented by derived classes.
-     *
-     * @param message Message to append to the log.
-     * @param ignoreSilentMode If true, the message will be logged even in silent mode.
-     */
-    virtual void updateLog(const std::string& message, bool ignoreSilentMode = false)=0;
-
-    /**
-     * @brief Updates the log with a single error message.
-     *
-     * This is a pure virtual function that must be implemented by derived classes.
-     *
-     * @param message Error message to append to the log.
-     * @param ignoreSilentMode If true, the message will be logged even in silent mode.
-     */
-    virtual void updateLogError(const std::string& message, bool ignoreSilentMode = false)=0;
 
 protected:
     static const std::filesystem::path DEFAULT_OUTPUT_FOLDER; /**< Default output folder path */

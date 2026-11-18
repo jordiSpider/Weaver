@@ -2,6 +2,11 @@
 
 #include "App/Model/IBM/Landscape/Landscape.h"
 #include "App/Model/IBM/Landscape/Map/SpatialTree/TerrainCells/SpatialTreeTerrainCell.h"
+#include "App/Manager/LogManager.h"
+
+#include <fmt/compile.h>
+#include <fmt/format.h>
+#include <iterator>
 
 
 using namespace std;
@@ -10,8 +15,10 @@ namespace fs = std::filesystem;
 
 
 
-bool compareByEdibilityValue(const tuple<PreciseDouble, Edible*, DryMass>& firstElem, const tuple<PreciseDouble, Edible*, DryMass>& secondElem) {
-  	return get<0>(firstElem) > get<0>(secondElem);
+
+
+bool compareByEdibilityValue(const pair<PreciseDouble, vector<tuple<Edible*, DryMass, bool>>>& firstElem, const pair<PreciseDouble, vector<tuple<Edible*, DryMass, bool>>>& secondElem) {
+  	return firstElem.first > secondElem.first;
 }
 
 bool compareByPredationProbability(const pair<PreciseDouble, AnimalNonStatistical*>& firstElem, const pair<PreciseDouble, AnimalNonStatistical*>& secondElem) {
@@ -27,7 +34,7 @@ AnimalNonStatistical::AnimalNonStatistical()
 }
 
 AnimalNonStatistical::AnimalNonStatistical(const Instar &instar, AnimalSpecies* const mySpecies, TerrainCell* terrainCell, const Genome* const genome, const TimeStep actualTimeStep, const PreciseDouble& timeStepsPerDay)
-	: Animal(EdibleID(0), mySpecies, terrainCell, genome, LifeStage::ACTIVE, actualTimeStep),
+	: Animal(id_type(0), mySpecies, terrainCell, genome, LifeStage::ACTIVE),
 	  growthBuildingBlock( 
 		&getMutableSpecies()->getMutableGrowthBuildingBlock(), instar, 
 		getSpecies()->getGenetics().isGrowthTraitsThermallyDependent(), 
@@ -40,16 +47,18 @@ AnimalNonStatistical::AnimalNonStatistical(const Instar &instar, AnimalSpecies* 
 	  inBreedingZone(false), inHabitatShiftBeforeBreeding(false), inHabitatShiftAfterBreeding(false), atDestination(true), 
 	  instarToEvaluateCells(instar)
 {
-	setOtherAttributes(Generation(0), Generation(0), EdibleID(), EdibleID());
+	setOtherAttributes(Generation(0), Generation(0), id_type(), id_type());
 
 	// Check that the value of growth is in the valid value range
 	checkGrowthMinimumValue();
+
+	updateSignature();
 }
 
 
 AnimalNonStatistical::AnimalNonStatistical(Gamete* const firstParentGamete, Gamete* const secondParentGamete, TerrainCell* parentTerrainCell, const PreciseDouble& newFactorEggMassFromMom, const Generation& g_numb_prt_female,
-		const Generation& g_numb_prt_male, EdibleID ID_prt_female, EdibleID ID_prt_male, AnimalSpecies* const mySpecies, Gender gender, const TimeStep actualTimeStep, const PreciseDouble& timeStepsPerDay)
-	: Animal(EdibleID(0), mySpecies, parentTerrainCell, LifeStage::UNBORN, firstParentGamete, secondParentGamete, gender, actualTimeStep), 
+		const Generation& g_numb_prt_male, id_type ID_prt_female, id_type ID_prt_male, AnimalSpecies* const mySpecies, Gender gender, const TimeStep actualTimeStep, const PreciseDouble& timeStepsPerDay)
+	: Animal(id_type(0), mySpecies, parentTerrainCell, LifeStage::UNBORN, firstParentGamete, secondParentGamete, gender), 
 	  growthBuildingBlock(
 		&getMutableSpecies()->getMutableGrowthBuildingBlock(), Instar(), 
 		getSpecies()->getGenetics().isGrowthTraitsThermallyDependent(), 
@@ -65,17 +74,17 @@ AnimalNonStatistical::AnimalNonStatistical(Gamete* const firstParentGamete, Game
 
 	// Check that the value of growth is in the valid value range
 	checkGrowthMinimumValue();
+
+	updateSignature();
 }
 
 
-void AnimalNonStatistical::setOtherAttributes(const Generation& g_numb_prt_female, const Generation& g_numb_prt_male, EdibleID ID_prt_female, EdibleID ID_prt_male)
+void AnimalNonStatistical::setOtherAttributes(const Generation& g_numb_prt_female, const Generation& g_numb_prt_male, id_type ID_prt_female, id_type ID_prt_male)
 {
-	getMutableSpecies()->increasePopulation();
-
 	mated = false;
 	genomeFromMatedMale = nullptr;
 
-	steps = 0.0;
+	distanceTravelled = 0.0;
 	exhausted = false;
 	stepsAttempted = 0;
 	sated = false;
@@ -83,6 +92,7 @@ void AnimalNonStatistical::setOtherAttributes(const Generation& g_numb_prt_femal
 
 	totalPredationEncounters = 0u;
 	predationEncountersCurrentDay = 0u;
+	actionsCurrentTimeStep = 0u;
 
 	timeStepsWithoutFood = TimeStep(0);
 
@@ -91,8 +101,6 @@ void AnimalNonStatistical::setOtherAttributes(const Generation& g_numb_prt_femal
 
 	setAgeOfLastMoultOrReproduction(TimeStep(0));
 	dateOfDeath = Day(-1);
-	lastDayMoved = TimeStep(0);
-	firstMovement = true;
 	
 
 	eatenToday = 0;
@@ -104,28 +112,11 @@ void AnimalNonStatistical::setOtherAttributes(const Generation& g_numb_prt_femal
 	reproCounter = 0;
 	fecundity = 0;
 	ageOfFirstReproduction = TimeStep(0);
-
-
-	const CustomIndexedVector<Species::ID, CustomIndexedVector<Instar, OntogeneticLink>>* const ontogeneticLinks = &getSpecies()->getOntogeneticLinksPerInstar(getGrowthBuildingBlock().getInstar());
-
-	foodMassAssimilatedCurrentTimeStepPerSpecies.resize(ontogeneticLinks->size());
-	foodMassEatenCurrentTimeStepPerSpecies.resize(ontogeneticLinks->size());
-
-	for(size_t speciesId = 0; speciesId < ontogeneticLinks->size(); speciesId++)
-	{
-		foodMassAssimilatedCurrentTimeStepPerSpecies.getValue(speciesId).resize(ontogeneticLinks->getValue(speciesId).size(), DryMass(0.0));
-		foodMassEatenCurrentTimeStepPerSpecies.getValue(speciesId).resize(ontogeneticLinks->getValue(speciesId).size(), DryMass(0.0));
-	}
-
-	foodMassAssimilatedCurrentTimeStep = DryMass(0.0);
-	foodMassEatenCurrentTimeStep = DryMass(0.0);
 }
 
 
 AnimalNonStatistical::~AnimalNonStatistical()
 {
-	getMutableSpecies()->decreasePopulation();
-
 	if(genomeFromMatedMale != nullptr) delete genomeFromMatedMale;
 }
 
@@ -154,7 +145,7 @@ void AnimalNonStatistical::checkEnergyTank(Landscape* const landscape, const Tim
 	}
 }
 
-void AnimalNonStatistical::tune(Landscape* const landscape, const bool saveMassInfo, const TimeStep numberOfTimeSteps, const PreciseDouble& timeStepsPerDay)
+void AnimalNonStatistical::tune(Landscape* const landscape, const bool saveMassInfo, fmt::memory_buffer& infoMassText, const TimeStep numberOfTimeSteps, const PreciseDouble& timeStepsPerDay, CustomIndexedVector<Instar, PreciseDouble>& maximumInteractionArea, CustomIndexedVector<Instar, PreciseDouble>& maximumVoracity)
 {
 	const Temperature temperature = getTerrainCell()->getPatchApplicator().getCellMoisture().getTemperature();
 	const PreciseDouble relativeHumidity = getTerrainCell()->getPatchApplicator().getCellMoisture().getMoisture();
@@ -200,7 +191,7 @@ void AnimalNonStatistical::tune(Landscape* const landscape, const bool saveMassI
 
 		if(preFinalVoracity < 0.0)
 		{
-			throwLineInfoException("Animal " + string(getId()) + ": Maximum voracity timeStep is negative.");
+			throwLineInfoException("Animal " + std::to_string(getId()) + ": Maximum voracity timeStep is negative.");
 		}
 
 
@@ -209,34 +200,56 @@ void AnimalNonStatistical::tune(Landscape* const landscape, const bool saveMassI
 
 
 		// enhanced h
-		PreciseDouble h;
-
 		if(getGrowthBuildingBlock().hasCapitalBreeding())
 		{
-			h = 0.0;
+			enhancedH = 0.0;
 		}
 		else
 		{
-			if(nextTarget == previousTarget)
-			{
-				h = 0.0;
+			if (getGender() == Gender::MALE && getGrowthBuildingBlock().isMature()) {
+				enhancedH = 1.0;
 			}
-			else
-			{
-				h = 1-(getGrowthBuildingBlock().getCurrentTotalDryMass()-previousTarget).getValue()/(nextTarget-previousTarget).getValue();
-
-				if(h < 0)
+			else {
+				if (nextTarget == previousTarget)
 				{
-					h = 0.0;
+					enhancedH = 0.0;
+				}
+				else
+				{
+					enhancedH = 1 - (getGrowthBuildingBlock().getCurrentTotalDryMass() - previousTarget).getValue() / (nextTarget - previousTarget).getValue();
+
+					if (getEnhancedH() < 0)
+					{
+						enhancedH = 0.0;
+					}
 				}
 			}
 		}
 
 			
-		PreciseDouble voracityAfterApplyProportion = preFinalVoracity.getValue() * getGenetics().getBaseIndividualTraits(BaseTraitType::voracityProportion).getPhenotypicValue();
+		DryMass deficit = getGrowthBuildingBlock().getNextMassPredicted() - getGrowthBuildingBlock().getCurrentTotalDryMass();
 
-		
-		voracityAfterApplyProportion = fmax(voracityAfterApplyProportion, 0.0);
+		PreciseDouble voracityAfterApplyProportion;
+
+		if (getLifeStage() == LifeStage::PUPA) {
+			preFinalVoracity = DryMass(0.0);
+			predVor = DryMass(0.0);
+			voracityAfterApplyProportion = 0.0;
+		}
+		else {
+			const PreciseDouble& voracityProportion = getGenetics().getBaseIndividualTraits(BaseTraitType::voracityProportion).getPhenotypicValue();
+			
+			if (deficit < 0.0) {
+				voracityAfterApplyProportion = preFinalVoracity.getValue() * getEnhancedH() * voracityProportion;
+			}
+			else {
+				const PreciseDouble& assim = getGenetics().getBaseIndividualTraits(BaseTraitType::assim).getPhenotypicValue();
+
+				voracityAfterApplyProportion = (preFinalVoracity.getValue() + (deficit.getValue() / assim)) * voracityProportion;
+			}
+
+			voracityAfterApplyProportion = fmax(voracityAfterApplyProportion, 0.0);
+		}
 
 
 		scopeAreaRadius = applyAllometricModel(
@@ -254,7 +267,7 @@ void AnimalNonStatistical::tune(Landscape* const landscape, const bool saveMassI
 			getGenetics().getBaseIndividualTraits(BaseTraitType::coeffMassForSearchRadius).getPhenotypicValue(),
 			getGenetics().getBaseIndividualTraits(BaseTraitType::scaleMassForSearchRadius).getPhenotypicValue()
 		);
-		PreciseDouble searchAfterPlasticity = applyPlasticityDueToConditionToTrait(searchAfterAllometric, getSpecies()->getPlasticityDueToConditionSearch(), h);
+		PreciseDouble searchAfterPlasticity = applyPlasticityDueToConditionToTrait(searchAfterAllometric, getSpecies()->getPlasticityDueToConditionSearch(), getEnhancedH());
 		
 
 		PreciseDouble speedAfterAllometric = applyAllometricModel(
@@ -263,14 +276,14 @@ void AnimalNonStatistical::tune(Landscape* const landscape, const bool saveMassI
 		);
 		
 		PreciseDouble postTspeed = landscape->calculatePostTSpeed(speedAfterAllometric, getGrowthBuildingBlock().getCurrentTotalWetMass());
-		PreciseDouble speedAfterPlasticity = applyPlasticityDueToConditionToTrait(postTspeed, getSpecies()->getPlasticityDueToConditionSpeed(), h);
+		PreciseDouble speedAfterPlasticity = applyPlasticityDueToConditionToTrait(postTspeed, getSpecies()->getPlasticityDueToConditionSpeed(), getEnhancedH());
 
 
 		
 		PreciseDouble searchAfterEncounters;
 		PreciseDouble vorAfterEncounters;
 
-		if(getPredationEncountersCurrentDay() > 0)
+		if(getPredationEncountersCurrentDay() > 0u)
 		{
 			PreciseDouble hEnc = 1.0-(static_cast<double>(getPredationEncountersCurrentDay())/static_cast<double>(getSpecies()->getMaximumPredationEncountersPerDay()));
 		
@@ -344,7 +357,7 @@ void AnimalNonStatistical::tune(Landscape* const landscape, const bool saveMassI
 
 	getMutableGrowthBuildingBlock().tune(
 		getGenetics().getBaseIndividualTraits(), 
-		numberOfTimeSteps, getSpecies()->getFemaleMaxReproductionEvents(), 
+		getSpecies()->getFemaleMaxReproductionEvents(), 
 		temperature, getSpecies()->getTempFromLab(), timeStepsPerDay
 	);
 
@@ -373,17 +386,12 @@ void AnimalNonStatistical::tune(Landscape* const landscape, const bool saveMassI
 
 	if(saveMassInfo)
 	{
-		std::ofstream infoMassFile;
-
-		createOutputFile(infoMassFile, landscape->getResultFolder() / fs::path("massInfo") / fs::path("animal_" + string(getId()) + ".txt"), ios::app);
-
-		ostringstream infoMassContent;
-
-		infoMassContent << numberOfTimeSteps << "\t" << getGrowthBuildingBlock().getCurrentTotalDryMass() << "\t" << instarTargetMass << "\t" << getGrowthBuildingBlock().getMassForNextReproduction() << "\t" << growthCurveMass << "\t" << getGrowthBuildingBlock().getNextMassPredicted() << "\t" << getGrowthBuildingBlock().getCurrentAge() << "\t" << instarTargetAge << "\t" << getGrowthBuildingBlock().getAgeForNextReproduction() << endl;
-
-		infoMassFile << infoMassContent.str();
-
-		infoMassFile.close();
+		fmt::format_to(fmt::appender(infoMassText), FMT_COMPILE("{}\t{}\t{}\t{}\t{}\t{}\t{}\t{}\t{}\t{}\n"),
+			numberOfTimeSteps, getId(), getGrowthBuildingBlock().getCurrentTotalDryMass(), instarTargetMass, 
+			getGrowthBuildingBlock().getMassForNextReproduction(), growthCurveMass, 
+			getGrowthBuildingBlock().getNextMassPredicted(), getGrowthBuildingBlock().getCurrentAge(),
+			instarTargetAge, getGrowthBuildingBlock().getAgeForNextReproduction()
+		);
 	}
 
 
@@ -391,11 +399,12 @@ void AnimalNonStatistical::tune(Landscape* const landscape, const bool saveMassI
 
 
 
-	getMutableSpecies()->getMutableDecisionsBuildingBlock()->updateMaximumVoracity(getGrowthBuildingBlock().getInstar(), getVoracity());
+	PreciseDouble& instarMaximumVoracity = maximumVoracity[getGrowthBuildingBlock().getInstar()];
+	instarMaximumVoracity = fmax(instarMaximumVoracity, getVoracity());
+	
 
-	getMutableSpecies()->updateMaximumInteractionArea(getGrowthBuildingBlock().getInstar(), getInteractionAreaRadius());
-
-
+	PreciseDouble& instarMaximumInteractionArea = maximumInteractionArea[getGrowthBuildingBlock().getInstar()];
+	instarMaximumInteractionArea = fmax(instarMaximumInteractionArea, getInteractionAreaRadius());
 
 
 
@@ -420,7 +429,7 @@ void AnimalNonStatistical::setScopeAreaRadius(const PreciseDouble& newValue)
 }
 
 
-const size_t& AnimalNonStatistical::getPredationEncountersCurrentDay() const
+const uint64_t& AnimalNonStatistical::getPredationEncountersCurrentDay() const
 {
 	return predationEncountersCurrentDay;
 }
@@ -437,10 +446,10 @@ void AnimalNonStatistical::transferAssimilatedFoodToEnergyTank(const TimeStep ac
 
 PreciseDouble AnimalNonStatistical::calculateProportionOfTimeWasMoving() const
 {
-	return (getSearchAreaRadius() > 0.0) ? steps/getSearchAreaRadius() : 0.0;
+	return (getSearchAreaRadius() > 0.0) ? distanceTravelled/getSearchAreaRadius() : 0.0;
 }
 
-void AnimalNonStatistical::metabolize(View* view, const Landscape* const landscape, const TimeStep& actualTimeStep)
+void AnimalNonStatistical::metabolize(const Landscape* const landscape, const TimeStep& actualTimeStep)
 {
 	DryMass lastEnergyTank = getGrowthBuildingBlock().getCurrentEnergyTank();
 
@@ -472,10 +481,10 @@ void AnimalNonStatistical::metabolize(View* view, const Landscape* const landsca
 	DryMass afterLossEnergyTank = getGrowthBuildingBlock().getCurrentEnergyTank();
 	if(afterLossEnergyTank >= lastEnergyTank)
 	{
-		view->updateLog("The metabolic loss was 0 or positive:\n");
-		view->updateLog({" - Animal: ", to_string(getId()), "(", getSpecies()->getScientificName(), ")\n"});
-		view->updateLog({" - Last energy tank: ", lastEnergyTank.getValue().to_string(), "\n"});
-		view->updateLog({" - After loss energy tank: ", afterLossEnergyTank.getValue().to_string(), "\n"});
+		LogManager::emit("The metabolic loss was 0 or positive:\n");
+		LogManager::emit(fmt::format(" - Animal: {}({})\n", getId(), getSpecies()->getScientificName()));
+		LogManager::emit(fmt::format(" - Last energy tank: {}\n", lastEnergyTank));
+		LogManager::emit(fmt::format(" - After loss energy tank: {}\n", afterLossEnergyTank));
 	}
 }
 
@@ -510,11 +519,13 @@ PreciseDouble AnimalNonStatistical::calculateLogMassRatio(DryMass preyDryMass) c
 }
 
 
-void AnimalNonStatistical::increasePredationEncounters()
+void AnimalNonStatistical::increasePredationEncounters(CustomIndexedVector<AnimalSpeciesID, uint64_t>& animalSpeciesMaximumPredationEncountersPerDay)
 {
 	totalPredationEncounters++;
 	predationEncountersCurrentDay++;
-	getMutableSpecies()->updateMaximumPredationEncountersPerDay(getPredationEncountersCurrentDay());
+
+	uint64_t& maximumPredationEncountersPerDay = animalSpeciesMaximumPredationEncountersPerDay[getSpecies()->getAnimalSpeciesId()];
+	maximumPredationEncountersPerDay = max(maximumPredationEncountersPerDay, getPredationEncountersCurrentDay());
 }
 
 const TimeStep& AnimalNonStatistical::getAgeOfFirstReproduction() const 
@@ -552,74 +563,97 @@ const Generation& AnimalNonStatistical::getGenerationNumberFromMaleParent() cons
 	return generationNumberFromMaleParent;
 }
 
-const EdibleID& AnimalNonStatistical::getIdFromFemaleParent() const
+id_type AnimalNonStatistical::getIdFromFemaleParent() const
 {
 	return idFromFemaleParent;
 }
 
-const EdibleID& AnimalNonStatistical::getIdFromMaleParent() const
+id_type AnimalNonStatistical::getIdFromMaleParent() const
 {
 	return idFromMaleParent;
 }
 
-AnimalNonStatistical::operator std::string() const 
+void AnimalNonStatistical::formatToBufferDirect(fmt::memory_buffer& out) const noexcept
 {
-    std::ostringstream oss;
+	const AnimalNonStatisticalGrowth& growthBB = getGrowthBuildingBlock();
+	const Genetics& geneticsBB = getGenetics();
 
-	oss << getId() << "\t"
-	<< getSpecies()->getScientificName() << "\t"
-	<< EnumClass<Gender>::to_string(getGender());
+	const IndividualTrait& eggDevTrait = geneticsBB.getBaseIndividualTraits(BaseTraitType::eggDevTime);
+	const IndividualTrait& energyTankTrait = geneticsBB.getBaseIndividualTraits(BaseTraitType::energy_tank);
 
-	for(unsigned char axis = 0; axis < DIMENSIONS; axis++)
-	{
-		oss << "\t" << getPositionAxisValue(getPosition(), axis);
+	const size_t estimatedAnimalLineSize = 2000u;
+	// Reuse per-animal memory buffer to minimize per-call allocations and
+	// to allow fmt to write contiguously into a buffer.
+	fmt::memory_buffer& buf = formatBuffer;
+
+	// Ensure initial reservation is large enough to hold a full line
+	if (buf.capacity() < estimatedAnimalLineSize) {
+		buf.reserve(estimatedAnimalLineSize);
 	}
 
-	oss << "\t" << EnumClass<LifeStage>::to_string(getLifeStage()) << "\t"
-	<< getGrowthBuildingBlock().getInstar() << "\t"
-	<< getGrowthBuildingBlock().getCurrentAge() << "\t"
-	<< getGenetics().getBaseIndividualTraits(BaseTraitType::eggDevTime).getConstitutiveValue() << "\t"
-	<< getGrowthBuildingBlock().getDateEgg() << "\t"
-	<< getAgeOfFirstReproduction() << "\t"
-	<< getReproCounter() << "\t"
-	<< getFecundity() << "\t"
-	<< getDateOfDeath() << "\t"
-	<< getGenerationNumberFromFemaleParent() << "\t"
-	<< getGenerationNumberFromMaleParent() << "\t"
-	<< getIdFromFemaleParent() << "\t"
-	<< getIdFromMaleParent() << "\t"
-	<< getPredationEncountersCurrentDay() << "\t"
-	<< getTotalPredationEncounters() << "\t"
-	<< getVoracity() << "\t"
-	<< getSearchAreaRadius()<< "\t"
-	<< getSpeed() << "\t"
-	<< getGenetics().getBaseIndividualTraits(BaseTraitType::energy_tank).getConstitutiveValue() << "\t"
-	<< getGenetics().getBaseIndividualTraits(BaseTraitType::eggDevTime).getConstitutiveValue() << "\t"
-	<< getGrowthBuildingBlock().getCurrentBodySize() << "\t"
-	<< getGrowthBuildingBlock().getCurrentTotalDryMass() << "\t"
-	<< getGrowthBuildingBlock().getCurrentEnergyTank();
+	// Clear previous content but keep reserved capacity
+	buf.clear();
 
-	oss << "\t" << getGenetics().to_string();
+	// Single format_to writing the main fixed fields and the trailing newline
+	fmt::format_to(fmt::appender(buf), FMT_COMPILE("{}\t{}\t{}\t{}\t{}\t{}\t{}\t{}\t{}\t{}\t{}\t{}\t{}\t{}\t{}\t{}\t{}\t{}\t{}\t{}\t{}\t{}\t{}\t{}\t{}\t{}\t{}\t{}"),
+		getId(),
+		getSpecies()->getScientificName(),
+		getGender(),
+		getPosition(),
+		lifeStage,
+		growthBB.getInstar(),
+		growthBB.getCurrentAge(),
+		eggDevTrait.getConstitutiveValue(),
+		growthBB.getDateEgg(),
+		getAgeOfFirstReproduction(),
+		getReproCounter(),
+		getFecundity(),
+		getDateOfDeath(),
+		getSpecies()->getPoreUsePerInstar(getInstar()),
+		getGenerationNumberFromFemaleParent(),
+		getGenerationNumberFromMaleParent(),
+		getIdFromFemaleParent(),
+		getIdFromMaleParent(),
+		getPredationEncountersCurrentDay(),
+		getTotalPredationEncounters(),
+		getVoracity(),
+		getSearchAreaRadius(),
+		getSpeed(),
+		energyTankTrait.getConstitutiveValue(),
+		eggDevTrait.getConstitutiveValue(),
+		growthBB.getCurrentBodySize(),
+		growthBB.getCurrentTotalDryMass(),
+		growthBB.getCurrentEnergyTank()
+	);
 
-	return oss.str();
+	// Append genetics directly into the same buffer
+	geneticsBB.formatToBufferDirect(buf);
+
+	buf.push_back('\n');
+
+	out.append(buf.data(), buf.data() + buf.size());
 }
 
-void AnimalNonStatistical::addSpecies(const unsigned int numberOfInstars, const PreciseDouble& timeStepsPerDay)
+void AnimalNonStatistical::formatToBufferDirect(std::string& out) const noexcept
 {
-	foodMassAssimilatedCurrentTimeStepPerSpecies.emplace_back(numberOfInstars, DryMass(0.0));
-	foodMassEatenCurrentTimeStepPerSpecies.emplace_back(numberOfInstars, DryMass(0.0));
+	fmt::memory_buffer localOut;
+	formatToBufferDirect(localOut);
 
-	decisions.addSpecies(numberOfInstars, timeStepsPerDay);
+	out.append(localOut.data(), localOut.size());
 }
 
-void AnimalNonStatistical::addAnimalSpecies(const unsigned int numberOfInstars, const PreciseDouble& timeStepsPerDay)
+void AnimalNonStatistical::getHeader(std::string& header)
 {
-	addSpecies(numberOfInstars, timeStepsPerDay);
-}
+	header.append("id\tspecies\tgender");
 
-void AnimalNonStatistical::addResourceSpecies(const unsigned int numberOfInstars, const PreciseDouble& timeStepsPerDay)
-{
-	addSpecies(numberOfInstars, timeStepsPerDay);
+	for(unsigned int axis = 0; axis < DIMENSIONS; axis++)
+	{
+		fmt::format_to(std::back_inserter(header), "\t{}", magic_enum::enum_names<Axis>()[axis]);
+	}
+
+	header.append("\tstate\tinstar\tage\tpheno_ini\tdateEgg\tage_first_rep\treproCounter\tfecundity\tdate_death\tporeUse\tg_numb_prt1\tg_numb_prt2\tID_prt1\tID_prt2\tencounters_pred\tglobal_pred_encs\tvor_ini\tsearch_ini\tspeed_ini\ttank_ini\tpheno_ini\tcurrentBodySize\tcurrentDryMass\tcurrentEnergyTank");
+			
+	Trait::getHeader(header);
 }
 
 PreciseDouble AnimalNonStatistical::getRemainingVoracity() const
@@ -634,7 +668,7 @@ void AnimalNonStatistical::setSpecies(Species* newSpecies)
 	decisions.setAnimalSpeciesDecisions(getMutableSpecies()->getMutableDecisionsBuildingBlock());
 }
 
-void AnimalNonStatistical::printVoracities(const Landscape* const landscape, ostringstream& voracitiesContent, const PreciseDouble& timeStepsPerDay)
+void AnimalNonStatistical::printVoracities(const Landscape* const landscape, fmt::memory_buffer& voracitiesText, const PreciseDouble& timeStepsPerDay)
 {
 	DryMass totalMetabolicDryMassLossAfterAssim = landscape->getMetabolicDryMassLossPerTimeStep(
 		getGrowthBuildingBlock().getCurrentTotalWetMass(), calculateProportionOfTimeWasMoving(), 
@@ -673,48 +707,23 @@ void AnimalNonStatistical::printVoracities(const Landscape* const landscape, ost
 	TimeStep pupaPeriodTime(Day(getGenetics().getBaseIndividualTraits(BaseTraitType::pupaPeriodTime).getPhenotypicValue()), timeStepsPerDay);
 
 
-	voracitiesContent << this->getId() << "\t"
-	<< getSpecies()->getScientificName() << "\t"
-	<< EnumClass<LifeStage>::to_string(lifeStage) << "\t"
-	<< getGrowthBuildingBlock().getCurrentAge()-TimeStep(1) << "\t"
-	<< getGrowthBuildingBlock().getInstar() << "\t"
-	<< getGrowthBuildingBlock().isMature() << "\t"
-	<< getGrowthBuildingBlock().getCurrentBodySize() << "\t"
-	<< getGrowthBuildingBlock().getCurrentEnergyTank() << "\t"
-	<< getGrowthBuildingBlock().getCurrentTotalDryMass() << "\t"
-	<< getGrowthBuildingBlock().getCurrentTotalWetMass() << "\t"
-	<< getGrowthBuildingBlock().getTankAtGrowth() << "\t"
-	<< getGrowthBuildingBlock().getNextMassPredicted() << "\t"
-	<< maxVoracityTimeStep << "\t"
-	<< minMassAtCurrentAge << "\t"
-	<< getVoracity() << "\t"
-	<< getSearchAreaRadius() << "\t"
-	<< getSpeed() << "\t"
-	<< getVoracity() << "\t"
-	<< getSearchAreaRadius() << "\t"
-	<< getSpeed() << "\t"
-	<< getGrowthBuildingBlock().getCurrentTotalDryMass()+getVoracity() << "\t"
-	<< foodMassEatenCurrentTimeStep << "\t"
-	<< getGrowthBuildingBlock().getCurrentTotalDryMass() + foodMassAssimilatedCurrentTimeStep << "\t"
-	<< totalMetabolicDryMassLossAfterAssim << "\t"
-	<< getSearchAreaRadius() << "\t"
-	<< eatenToday << "\t"
-	<< steps << "\t"
-	<< stepsAttempted << "\t"
-	<< getSearchAreaRadius() << "\t"
-	<< sated << "\t"
-	<< calculateProportionOfTimeWasMoving().to_string() << "\t"
-	<< getVoracity() / getGrowthBuildingBlock().getCurrentTotalDryMass().getValue() << "\t"
-	<< EnumClass<Gender>::to_string(getGender()) << "\t"
-	<< mated << "\t"
-	<< getGrowthBuildingBlock().getEggDryMassAtBirth() << "\t"
-	<< getGenetics().getBaseIndividualTraits(BaseTraitType::growth).getPhenotypicValue() << "\t"
-	<< getGenetics().getBaseIndividualTraits(BaseTraitType::factorEggMass).getPhenotypicValue() << "\t"
-	<< getDateOfDeath() << "\t"
-	<< getGrowthBuildingBlock().getAgeOfFirstMaturation(pupaPeriodTime) << "\t"
-	<< reproCounter << "\t";
-
-	voracitiesContent << "\n";
+	fmt::format_to(fmt::appender(voracitiesText), FMT_COMPILE("{}\t{}\t{}\t{}\t{}\t{}\t{}\t{}\t{}\t{}\t{}\t{}\t{}\t{}\t{}\t{}\t{}\t{}\t{}\t{}\t{}\t{}\t{}\t{}\t{}\t{}\t{}\t{}\t{}\t{}\t{}\t{}\t{}\t{}\t{}\t{}\t{}\t{}\t{}\t{}\t{}\n"),
+		getId(), getSpecies()->getScientificName(), lifeStage, getGrowthBuildingBlock().getCurrentAge() - TimeStep(1),
+		getGrowthBuildingBlock().getInstar(), getGrowthBuildingBlock().isMature(), getGrowthBuildingBlock().getCurrentBodySize(),
+		getGrowthBuildingBlock().getCurrentEnergyTank(), getGrowthBuildingBlock().getCurrentTotalDryMass(),
+		getGrowthBuildingBlock().getCurrentTotalWetMass(), getGrowthBuildingBlock().getTankAtGrowth(),
+		getGrowthBuildingBlock().getNextMassPredicted(), maxVoracityTimeStep, minMassAtCurrentAge, getVoracity(),
+		getSearchAreaRadius(), getSpeed(), getVoracity(), getSearchAreaRadius(), getSpeed(), 
+		getGrowthBuildingBlock().getCurrentTotalDryMass() + getVoracity(), foodMassEatenCurrentTimeStep,
+		getGrowthBuildingBlock().getCurrentTotalDryMass() + foodMassAssimilatedCurrentTimeStep,
+		totalMetabolicDryMassLossAfterAssim, getSearchAreaRadius(), eatenToday, getEnhancedH(), distanceTravelled, stepsAttempted,
+		getSearchAreaRadius(), sated, calculateProportionOfTimeWasMoving(), 
+		getVoracity() / getGrowthBuildingBlock().getCurrentTotalDryMass().getValue(),
+		getGender(), mated, getGrowthBuildingBlock().getEggDryMassAtBirth(), 
+		getGenetics().getBaseIndividualTraits(BaseTraitType::growth).getPhenotypicValue(),
+		getGenetics().getBaseIndividualTraits(BaseTraitType::factorEggMass).getPhenotypicValue(),
+		getDateOfDeath(), getGrowthBuildingBlock().getAgeOfFirstMaturation(pupaPeriodTime), reproCounter
+	);
 }
 
 PreciseDouble AnimalNonStatistical::applyPlasticityDueToConditionToTrait(const PreciseDouble& traitValue, const PreciseDouble& plasticityDueToCondition, const PreciseDouble& h) const
@@ -723,24 +732,29 @@ PreciseDouble AnimalNonStatistical::applyPlasticityDueToConditionToTrait(const P
 }
 
 
-void AnimalNonStatistical::printTraits(ostringstream& traitsContent)
+void AnimalNonStatistical::printTraits(fmt::memory_buffer& traitsText)
 {
-	traitsContent << getId() << "\t" << getSpecies()->getScientificName();
+	fmt::format_to(fmt::appender(traitsText), FMT_COMPILE("{}\t{}"),
+		getId(), getSpecies()->getScientificNameReplaced()
+	);
 
 	for(unsigned char axis = 0; axis < DIMENSIONS; axis++)
 	{
-		traitsContent << "\t" << getPositionAxisValue(getPosition(), axis);
+		fmt::format_to(fmt::appender(traitsText), FMT_COMPILE("\t{}"),
+			getPositionAxisValue(getPosition(), axis)
+		);
 	}
 
-	traitsContent << "\t" << generationNumberFromFemaleParent 
-	<< "\t" << generationNumberFromMaleParent 
-	<< "\t" << getIdFromFemaleParent() 
-	<< "\t" << getIdFromMaleParent() 
-	<< "\t" << getGrowthBuildingBlock().getDateEgg();
+	fmt::format_to(fmt::appender(traitsText), FMT_COMPILE("\t{}\t{}\t{}\t{}\t{}"),
+		generationNumberFromFemaleParent, generationNumberFromMaleParent, getIdFromFemaleParent(),
+		getIdFromMaleParent(), getGrowthBuildingBlock().getDateEgg()
+	);
 
-	traitsContent << "\t" << getGenetics().printTraits();
+	traitsText.push_back('\t');
 
-	traitsContent << "\n";
+	getGenetics().printTraits(traitsText);
+
+	traitsText.push_back('\n');
 }
 
 void AnimalNonStatistical::setNewLifeStage(Landscape* const landscape, const LifeStage newLifeStage)
@@ -774,16 +788,6 @@ void AnimalNonStatistical::setNewLifeStage(Landscape* const landscape, const Lif
 		break;
 	}
 
-	if(getLifeStage() == LifeStage::ACTIVE && getLifeStage() != newLifeStage)
-	{
-		landscape->getMutableMap()->decreaseTotalNumberOfActiveAnimals();
-	}
-	
-	if(getLifeStage() != LifeStage::ACTIVE && newLifeStage == LifeStage::ACTIVE)
-	{
-		landscape->getMutableMap()->increaseTotalNumberOfActiveAnimals();
-	}
-
 	if(getLifeStage() == LifeStage::REPRODUCING && getLifeStage() != newLifeStage)
 	{
 		setInstarToEvaluateCells(getGrowthBuildingBlock().getInstar());
@@ -793,6 +797,8 @@ void AnimalNonStatistical::setNewLifeStage(Landscape* const landscape, const Lif
 	getMutableTerrainCell()->eraseAnimal(this);
 
 	lifeStage = newLifeStage;
+
+	updateSignature();
 
 	getMutableTerrainCell()->insertAnimal(landscape, this);
 }
@@ -804,21 +810,31 @@ void AnimalNonStatistical::setNewLifeStage(Landscape* const landscape, const Lif
 
 	switch (newLifeStage)
 	{
-	case LifeStage::STARVED:
+	case LifeStage::STARVED: {
 		setDateOfDeath(Day(numberOfTimeSteps, timeStepsPerDay));
+		nextAction = Action::DEAD;
 		break;
-	case LifeStage::PREDATED:
+	}
+	case LifeStage::PREDATED: {
 		setDateOfDeath(Day(numberOfTimeSteps, timeStepsPerDay));
+		nextAction = Action::DEAD;
 		break;
-	case LifeStage::BACKGROUND:
+	}
+	case LifeStage::BACKGROUND: {
 		setDateOfDeath(Day(numberOfTimeSteps, timeStepsPerDay));
+		nextAction = Action::DEAD;
 		break;
-	case LifeStage::SENESCED:
+	}
+	case LifeStage::SENESCED: {
 		setDateOfDeath(Day(numberOfTimeSteps, timeStepsPerDay));
+		nextAction = Action::DEAD;
 		break;
-	case LifeStage::SHOCKED:
+	}
+	case LifeStage::SHOCKED: {
 		setDateOfDeath(Day(numberOfTimeSteps, timeStepsPerDay));
+		nextAction = Action::DEAD;
 		break;
+	}
 	case LifeStage::UNBORN:
 	case LifeStage::ACTIVE:
 	case LifeStage::REPRODUCING:
@@ -833,7 +849,7 @@ void AnimalNonStatistical::setNewLifeStage(Landscape* const landscape, const Lif
 }
 
 
-void AnimalNonStatistical::setNewLifeStage(Landscape* const landscape, const LifeStage newLifeStage, const TimeStep numberOfTimeSteps, EdibleID predatorId, const PreciseDouble& timeStepsPerDay)
+void AnimalNonStatistical::setNewLifeStage(Landscape* const landscape, const LifeStage newLifeStage, const TimeStep numberOfTimeSteps, id_type predatorId, const PreciseDouble& timeStepsPerDay)
 {
 	setNewLifeStage(landscape, newLifeStage, numberOfTimeSteps, timeStepsPerDay);
 
@@ -919,28 +935,9 @@ const std::pair<PointMap, PointContinuous>& AnimalNonStatistical::getTargetNeigh
 	return targetNeighborToTravelTo;
 }
 
-void AnimalNonStatistical::setPredatedByID(EdibleID predatorId) 
+void AnimalNonStatistical::setPredatedByID(id_type predatorId) 
 { 
 	predatedByID = predatorId; 
-}
-
-void AnimalNonStatistical::updateDepth(const PreciseDouble& timeStepsPerDay)
-{
-	TerrainCell* terrainCellToMigrate = getMutableTerrainCell();
-
-	while(static_cast<const PointSpatialTree &>(terrainCellToMigrate->getPosition()).getDepth() != getCellDepthOnActualInstar())
-	{
-		TerrainCell* newTerrainCellToMigrate = static_cast<SpatialTreeTerrainCell *const>(terrainCellToMigrate)->getMutableParent();
-	
-		if(newTerrainCellToMigrate == nullptr && getGrowthBuildingBlock().getIndividualGrowthModel()->calculateLength(Day(getGrowthBuildingBlock().getCurrentAge(), timeStepsPerDay), getGenetics().getBaseIndividualTraits(BaseTraitType::growth).getPhenotypicValue()) > newTerrainCellToMigrate->getSize())
-		{
-			throwLineInfoException("The animal's dimensions are greater than those of the map");
-		}
-		
-		terrainCellToMigrate = newTerrainCellToMigrate;
-	}
-
-	setTerrainCell(terrainCellToMigrate);
 }
 
 
@@ -965,302 +962,459 @@ bool AnimalNonStatistical::checkStepCellLeaving() const
 	return false;
 }
 
-ostringstream AnimalNonStatistical::printPreferenceInfo(const Species::ID &preySpeciesId, const Instar &preyInstar) const
+void AnimalNonStatistical::doInitialCellEvaluation(Landscape* const landscape, CustomIndexedVector<Instar, PreciseDouble>& maximumPatchEdibilityValueGlobal, CustomIndexedVector<Instar, PreciseDouble>& maximumPatchPredationRiskGlobal, CustomIndexedVector<Instar, PreciseDouble>& maximumPatchConspecificBiomassGlobal)
 {
-	ostringstream preferenceInfo;
-
-	preferenceInfo << decisions.getPreference(preySpeciesId, preyInstar) << "\t"
-		<< decisions.getMeanExperience(preySpeciesId, preyInstar);
-
-	return preferenceInfo;
-}
-
-void AnimalNonStatistical::evaluateExposedAttacks(Landscape* const landscape, const TimeStep numberOfTimeSteps, const PreciseDouble& timeStepsPerDay, ostringstream& edibilitiesContent, const bool saveAnimalsEachDayPredationProbabilities, std::ostringstream& predationProbabilitiesContent, const bool saveActivity, std::ostringstream& activityContent, const bool competitionAmongResourceSpecies)
-{
-	vector<pair<PreciseDouble, AnimalNonStatistical*>> predators;
-
-
-	vector<pair<const AnimalSearchParams&, AnimalFunctions>> animalFunctions;
-
-    animalFunctions.emplace_back(
-        getSpecies()->getPredatorSearchParams(getGrowthBuildingBlock().getInstar()),
-        AnimalFunctions{
-            PreviousAnimalFunctions{},
-            IndividualFunctions{
-                [this, &predators](Animal& animal) { 
-					AnimalNonStatistical* animalCast = static_cast<AnimalNonStatistical*>(&animal);
-
-					const PreciseDouble predationProbability = animalCast->calculatePredationProbability(*this);
-
-					if(predationProbability > 0.0)
-					{
-						predators.push_back(make_pair<>(predationProbability, animalCast));
-					}
-				}
-            },
-            PostAnimalFunctions{}
-        }
-    );
-
-	vector<pair<const ResourceSearchParams&, ResourceFunctions>> resourceFunctions;
-
-
-	getMutableTerrainCell()->applyFunctionToEdiblesInRadius(
-		getPosition(), getSpecies()->getDecisionsBuildingBlock()->getMaximumPredatorInteractionArea(getGrowthBuildingBlock().getInstar()), 
-		animalFunctions, resourceFunctions
-	);
-
-
-	for(const auto& [predationProbability, predator] : predators)
-	{
-		edibilitiesContent
-			<< numberOfTimeSteps << "\t"
-			<< predator->getId() << "\t"
-			<< predator->getSpecies()->getScientificName() << "\t"
-			<< foodMassEatenCurrentTimeStep.getValue() << "\t"
-			<< predator->getId() << "\t"
-			<< predator->getSpecies()->getScientificName() << "\t"
-			<< predator->getGrowthBuildingBlock().getCurrentTotalDryMass() << "\t"
-			<< getId() << "\t"
-			<< getSpecies()->getScientificName() << "\t"
-			<< getGrowthBuildingBlock().getCurrentTotalDryMass() << "\t"
-			<< predationProbability << "\t"
-			<< 1.0 << "\t"
-			<< predator->printPreferenceInfo(getSpecies()->getId(), getGrowthBuildingBlock().getInstar()).str() << endl;
-	}
-
-
-	std::sort(predators.begin(), predators.end(), compareByPredationProbability);
-
-	for(size_t i = 0; i < predators.size() && getLifeStage() != LifeStage::PREDATED; i++)
-	{
-		const PreciseDouble randomPredationProbability = Random::randomUniform();
-
-		const PreciseDouble predationProbability = predators[i].first;
-
-		list<const AnimalNonStatistical*> exposedAttackAnimalsHasTriedToPredate;
-
-		predators[i].second->predateEdible(randomPredationProbability, predationProbability, false, true, landscape, *this, getGrowthBuildingBlock().getCurrentTotalDryMass(), numberOfTimeSteps, timeStepsPerDay, exposedAttackAnimalsHasTriedToPredate, saveAnimalsEachDayPredationProbabilities, predationProbabilitiesContent, saveActivity, activityContent, competitionAmongResourceSpecies);
-	}
-}
-
-
-void AnimalNonStatistical::doInitialCellEvaluation()
-{
-	searchTargetToTravelTo(getScopeAreaRadius(), list<const AnimalNonStatistical*>());
+	searchTargetToTravelTo(landscape, getScopeAreaRadius(), maximumPatchEdibilityValueGlobal, maximumPatchPredationRiskGlobal, maximumPatchConspecificBiomassGlobal);
 	setAtDestination(true);
 }
 
 
-void AnimalNonStatistical::moveAnimal(View* view, Landscape* const landscape, const TimeStep numberOfTimeSteps, const PreciseDouble& timeStepsPerDay, const bool saveAnimalsEachDayPredationProbabilities, ostringstream& predationProbabilitiesContent, bool, ostringstream& edibilitiesContent, const bool saveActivity, ostringstream& activityContent, const bool saveMovements, ostringstream& movementsContent, const bool competitionAmongResourceSpecies)
+bool AnimalNonStatistical::mustDoHabitatShift() const
 {
-	// This condition checks if the animal has already been moved in the current timeStep
-	if (lastDayMoved < numberOfTimeSteps || firstMovement)
-	{
-		list<const AnimalNonStatistical*> animalsHasTriedToPredate;
+	return getGrowthBuildingBlock().isInHabitatShift() || isInHabitatShiftBeforeBreeding() || isInHabitatShiftAfterBreeding();
+}
 
+
+AnimalNonStatistical::Action AnimalNonStatistical::getNextAction() const
+{
+	return nextAction;
+}
+
+
+void AnimalNonStatistical::actionPlanning(Landscape* const landscape, const TimeStep numberOfTimeSteps, const PreciseDouble& timeStepsPerDay,
+		bool saveEdibilitiesFile, fmt::memory_buffer& edibilitiesText, CustomIndexedVector<Instar, PreciseDouble>& maximumPatchEdibilityValueGlobal,
+		CustomIndexedVector<Instar, PreciseDouble>& maximumPatchPredationRiskGlobal, 
+		CustomIndexedVector<Instar, PreciseDouble>& maximumPatchConspecificBiomassGlobal)
+{
+	if (!(getLifeStage() == LifeStage::ACTIVE || getLifeStage() == LifeStage::REPRODUCING))
+	{
+		nextAction = Action::NONE;
+		return;
+	}
+
+
+	if (mustDoHabitatShift())
+	{
+		if (getGrowthBuildingBlock().isInHabitatShift() && (isInHabitatShiftBeforeBreeding() || isInHabitatShiftAfterBreeding()))
+		{
+			getMutableGrowthBuildingBlock().setInHabitatShift(false);
+		}
+
+
+		PreciseDouble currentScopeAreaRadius = getScopeAreaRadius();
+
+		if (getGrowthBuildingBlock().isInHabitatShift())
+		{
+			setScopeAreaRadius(getScopeAreaRadius() * getSpecies()->getGrowthBuildingBlock().getHabitatShiftFactor());
+
+			getMutableGrowthBuildingBlock().setInHabitatShift(false);
+		}
+		else if (isInHabitatShiftBeforeBreeding())
+		{
+			setScopeAreaRadius(getScopeAreaRadius() * getSpecies()->getHabitatShiftBeforeBreedingFactor());
+
+			setInHabitatShiftBeforeBreeding(false);
+		}
+		else if (isInHabitatShiftAfterBreeding())
+		{
+			setScopeAreaRadius(getScopeAreaRadius() * getSpecies()->getHabitatShiftAfterBreedingFactor());
+
+			setInHabitatShiftAfterBreeding(false);
+		}
+
+
+		searchTargetToTravelTo(landscape, getScopeAreaRadius(), maximumPatchEdibilityValueGlobal, maximumPatchPredationRiskGlobal, maximumPatchConspecificBiomassGlobal);
+
+
+		setScopeAreaRadius(currentScopeAreaRadius);
+
+
+		nextAction = Action::HABITAT_SHIFT;
+		return;
+	}
+
+	
+	if (isExhausted()) {
+		nextAction = Action::NONE;
+		return;
+	}
+
+	if (lifeStage == LifeStage::REPRODUCING && getSpecies()->occursHabitatShiftBeforeBreeding() && inBreedingZone)
+	{
+		nextAction = Action::NONE;
+		return;
+	}
+
+	/*
+	if (!(!sated || // If it is not satisfied, it will have to look for food
+		(sated && getGrowthBuildingBlock().isMature() && getGender() == Gender::MALE) || // If it is sated, mature and a male, so it will look for a mate to breed with
+		(sated && getGrowthBuildingBlock().isMature() && getGender() == Gender::FEMALE && lifeStage == LifeStage::REPRODUCING && getSpecies()->occursHabitatShiftBeforeBreeding())))
+	{
+		nextAction = Action::NONE;
+		return;
+	}
+	*/
+
+	
+	vector<pair<PreciseDouble, vector<tuple<Edible*, DryMass, bool>>>> ediblesByEdibility;
+
+
+	if(numberOfTimeSteps == TimeStep(0) && actionsCurrentTimeStep == 0u) {
+		doInitialCellEvaluation(landscape, maximumPatchEdibilityValueGlobal, maximumPatchPredationRiskGlobal, maximumPatchConspecificBiomassGlobal);
+	}
+
+	if(actionsCurrentTimeStep == 0u && checkInitialMovementCellLeaving()) {
+		bool withoutDestinations = searchTargetToTravelTo(landscape, getScopeAreaRadius(), maximumPatchEdibilityValueGlobal, maximumPatchPredationRiskGlobal, maximumPatchConspecificBiomassGlobal);
+				
+		if(!withoutDestinations) {
+			nextAction = Action::MOVEMENT;
+			return;
+		}
+	}
+
+	if (!isSated()) {
+		if (getCurrentPrey().isThereLeftoverFood()) {
+			nextAction = Action::FEED;
+			return;
+		}
+		else {
+			searchAnimalsAndResourceToEat(landscape, ediblesByEdibility, numberOfTimeSteps, saveEdibilitiesFile, edibilitiesText);
+		}
+	}
+
+	if(getGrowthBuildingBlock().isMature() && !isMated())
+	{
+		searchAnimalToBreed(landscape, numberOfTimeSteps, timeStepsPerDay);
+	}
+
+	if(!ediblesByEdibility.empty() && !isSated())
+	{
+		auto ediblesIt = ediblesByEdibility.begin();
+
+		potencialPrey = ediblesIt->second;
+		nextAction = Action::PREDATE;
+		return;
+	}
+	else
+	{
 		bool withoutDestinations = false;
 
-		bool completedReproductionInTheArea = false;
-
-		if(getGrowthBuildingBlock().isInHabitatShift() || isInHabitatShiftBeforeBreeding() || isInHabitatShiftAfterBreeding())
+		if(isAtDestination())
 		{
-			if(getGrowthBuildingBlock().isInHabitatShift() && (isInHabitatShiftBeforeBreeding() || isInHabitatShiftAfterBreeding()))
-			{
-				getMutableGrowthBuildingBlock().setInHabitatShift(false);
-			}
+			withoutDestinations = searchTargetToTravelTo(landscape, getScopeAreaRadius(), maximumPatchEdibilityValueGlobal, maximumPatchPredationRiskGlobal, maximumPatchConspecificBiomassGlobal);
+		}
+
+		if(withoutDestinations)
+		{
+			nextAction = Action::NONE;
+			return;
+		}
+		else
+		{
+			nextAction = Action::MOVEMENT;
+			return;
+		}
+	}
+}
 
 
-			PreciseDouble currentScopeAreaRadius = getScopeAreaRadius();
+void AnimalNonStatistical::actionExecution(Landscape* const landscape, const bool saveActivity, fmt::memory_buffer& activitiesText,
+		const TimeStep numberOfTimeSteps, const PreciseDouble& timeStepsPerDay,
+		const bool saveMovements, 
+		fmt::memory_buffer& movementsText)
+{
+	switch (nextAction) {
+	case Action::MOVEMENT:
+		move(landscape, numberOfTimeSteps, timeStepsPerDay, saveMovements, movementsText, saveActivity, activitiesText);
+		break;
+	case Action::FEED:
+		feed(saveActivity, activitiesText, numberOfTimeSteps, timeStepsPerDay);
+		break;
+	case Action::HABITAT_SHIFT:
+		habitatShift(landscape);
+		break;
+	case Action::RETALIATION:
+		return;
+		break;
+	case Action::DEAD:
+		return;
+		break;
+	case Action::NONE:
+		throwLineInfoException("Parallel execution is not supported for this action type");
+		break;
+	case Action::PREDATE:
+		throwLineInfoException("Parallel execution is not supported for this action type");
+		break;
+	default:
+		throwLineInfoException("Default case");
+		break;
+	}
 
-			if(getGrowthBuildingBlock().isInHabitatShift())
-			{
-				setScopeAreaRadius(getScopeAreaRadius() * getSpecies()->getGrowthBuildingBlock().getHabitatShiftFactor());
+	increaseActionsCounter();
+}
 
-				getMutableGrowthBuildingBlock().setInHabitatShift(false);
-			}
-			else if(isInHabitatShiftBeforeBreeding())
-			{
-				setScopeAreaRadius(getScopeAreaRadius() * getSpecies()->getHabitatShiftBeforeBreedingFactor());
+void AnimalNonStatistical::increaseActionsCounter()
+{
+	actionsCurrentTimeStep++;
+}
 
-				setInHabitatShiftBeforeBreeding(false);
-			}
-			else if(isInHabitatShiftAfterBreeding())
-			{
-				setScopeAreaRadius(getScopeAreaRadius() * getSpecies()->getHabitatShiftAfterBreedingFactor());
+void AnimalNonStatistical::habitatShift(Landscape* const landscape)
+{
+	PointSpatialTree cellPosition(getTargetNeighborToTravelTo().first.getAxisValues(), static_cast<const PointSpatialTree &>(getTerrainCell()->getPosition()).getDepth());
 
-				setInHabitatShiftAfterBreeding(false);
-			}
+	TerrainCell * targetCell = getMutableTerrainCell()->getCell(cellPosition);
 
-				
-			searchTargetToTravelTo(getScopeAreaRadius(), animalsHasTriedToPredate);
+	if(getMutableTerrainCell() != targetCell)
+	{
+		getMutableTerrainCell()->migrateAnimalTo(landscape, this, targetCell, getTargetNeighborToTravelTo().second);
+	}
+	else
+	{
+		setPosition(getTargetNeighborToTravelTo().second);
+	}
+
+	setAtDestination(true);
+
+	if(getLifeStage() == LifeStage::REPRODUCING)
+	{
+		setInBreedingZone(true);
+	}
+}
+
+void AnimalNonStatistical::feed(const bool saveActivity, fmt::memory_buffer& activitiesText, const TimeStep numberOfTimeSteps,
+		const PreciseDouble& timeStepsPerDay)
+{
+	DryMass foodMass = computeHandlingFoodMass();
 		
 
-			PointSpatialTree cellPosition(getTargetNeighborToTravelTo().first.getAxisValues(), static_cast<const PointSpatialTree &>(getTerrainCell()->getPosition()).getDepth());
-
-			TerrainCell * targetCell = getMutableTerrainCell()->getCell(cellPosition);
+	getCurrentPrey().decreaseFoodMass(foodMass);
 
 
-			if(getMutableTerrainCell() != targetCell)
+	if(getSpecies()->getActivatedHandling())
+	{
+		applyHandlingTime(foodMass, saveActivity, activitiesText, numberOfTimeSteps, timeStepsPerDay);
+	}
+
+
+	assimilateFoodMass(foodMass);
+
+
+	if(!getSpecies()->getPreserveLeftovers() || !getCurrentPrey().isThereLeftoverFood()) 
+	{
+		removeCurrentPrey();
+	}
+}
+
+DryMass AnimalNonStatistical::computeHandlingFoodMass() const
+{
+	if(getSpecies()->getActivatedHandling())
+	{
+		return DryMass(fmin((getDistanceTravelled() / getSearchAreaRadius()) * getCurrentPrey().getFoodDryMassPerTimeStep().getValue(), getRemainingVoracity()));
+	}
+	else
+	{
+		return DryMass(fmin(getCurrentPrey().getFoodDryMass().getValue(), getRemainingVoracity()));
+	}
+}
+
+void AnimalNonStatistical::applyHandlingTime(const DryMass& foodMass, const bool saveActivity, fmt::memory_buffer& activitiesText, const TimeStep actualTimeStep, const PreciseDouble& timeStepsPerDay)
+{
+	Day initialDay = Day(actualTimeStep, timeStepsPerDay) + Day((getDistanceTravelled() / getSearchAreaRadius()) * timeStepsPerDay);
+
+	PreciseDouble distanceToAdd = (foodMass.getValue() / getCurrentPrey().getFoodDryMassPerTimeStep().getValue()) * getSearchAreaRadius();
+
+	increaseDistanceTravelled(distanceToAdd);
+
+	Day finalDay = Day(actualTimeStep, timeStepsPerDay) + Day((getDistanceTravelled() / getSearchAreaRadius()) * timeStepsPerDay);
+
+	if(saveActivity)
+	{
+		fmt::format_to(fmt::appender(activitiesText), "{}\t{}\t{}\t{}\t{}\t{}\n",
+			getId(), getSpecies()->getScientificName(), EnumClass<ActivityType>::to_string(ActivityType::HANDLING),
+			initialDay.getValue().getValue(), finalDay.getValue().getValue(), (finalDay - initialDay).getValue().getValue()
+		);
+	}
+}
+
+const std::vector<std::tuple<Edible*, DryMass, bool>>& AnimalNonStatistical::getPotencialPrey() const
+{
+	return potencialPrey;
+}
+
+std::vector<std::tuple<Edible*, DryMass, bool>>& AnimalNonStatistical::getPotencialPrey()
+{
+	return potencialPrey;
+}
+
+bool AnimalNonStatistical::predate(const bool retaliation, const bool saveAnimalsEachDayPredationProbabilities, 
+		fmt::memory_buffer& predationProbabilitiesText, Landscape* const landscape, const TimeStep numberOfTimeSteps, 
+		const PreciseDouble& timeStepsPerDay, const bool competitionAmongResourceSpecies, 
+		CustomIndexedVector<Species::ID, unsigned int>& predationEventsOnOtherSpecies,
+		CustomIndexedVector<AnimalSpeciesID, uint64_t>& animalSpeciesMaximumPredationEncountersPerDay)
+{
+	increaseActionsCounter();
+
+	auto currentPotencialPrey = getPotencialPrey();
+
+	if (get<0>(currentPotencialPrey[0])->getSpecies()->isMobile()) {
+		auto potencialPreyLifeStage = static_cast<AnimalNonStatistical&>(*get<0>(currentPotencialPrey[0])).getLifeStage();
+
+		if (potencialPreyLifeStage != LifeStage::ACTIVE && potencialPreyLifeStage != LifeStage::REPRODUCING) {
+			return false;
+		}
+	}
+	else {
+		auto it = currentPotencialPrey.begin();
+
+		while (it != currentPotencialPrey.end()) {
+			const DryMass dryMassAvailable = static_cast<CellResourceInterface&>(*get<0>(*it)).calculateDryMassAvailable(get<2>(*it), &getPosition(), getInteractionAreaRadius());
+
+			if (dryMassAvailable >= landscape->getMinExploitableResource())
 			{
-				getMutableTerrainCell()->migrateAnimalTo(landscape, this, targetCell, getTargetNeighborToTravelTo().second);
+				std::get<1>(*it) = dryMassAvailable;
+				++it;
 			}
 			else
 			{
-				setPosition(getTargetNeighborToTravelTo().second);
+				it = currentPotencialPrey.erase(it);
 			}
-			
-			setAtDestination(true);
+		}
+
+		if (currentPotencialPrey.empty()) {
+			return false;
+		}
+	}
 
 
-			if(isAtDestination() && getLifeStage() == LifeStage::REPRODUCING)
-			{
-				setInBreedingZone(true);
-			}
+	PreciseDouble randomProbability = Random::randomUniform();
+
+	PreciseDouble probabilityToCompare = getSpecies()->getDecisionsBuildingBlock()->getKillProbability();
+
+	if(retaliation) {
+		probabilityToCompare = getSpecies()->getDecisionsBuildingBlock()->getKillProbability();
+	}
+	else {
+		probabilityToCompare = calculatePredationProbability(*get<0>(currentPotencialPrey[0]), get<1>(currentPotencialPrey[0]));
+	}
 
 
-			setScopeAreaRadius(currentScopeAreaRadius);
+	if(saveAnimalsEachDayPredationProbabilities)
+	{
+		for (auto& elem : currentPotencialPrey) {
+			fmt::format_to(fmt::appender(predationProbabilitiesText), "{}\t{}\t{}\t{}\t{}\t{}\t{}\t{}\t{}\t{}",
+				randomProbability.getValue(),
+				probabilityToCompare.getValue(),
+				static_cast<unsigned int>(retaliation),
+				getId(),
+				get<0>(elem)->getId(),
+				getSpecies()->getScientificName(),
+				get<0>(elem)->getSpecies()->getScientificName(),
+				static_cast<unsigned int>(get<0>(elem)->isHunting()),
+				getGrowthBuildingBlock().getCurrentTotalDryMass().getValue().getValue(),
+				get<1>(elem).getValue().getValue()
+			);
+		}
+	}
+
+
+	if (get<0>(currentPotencialPrey[0])->getSpecies()->isMobile()) {
+		static_cast<AnimalNonStatistical&>(*get<0>(currentPotencialPrey[0])).increasePredationEncounters(animalSpeciesMaximumPredationEncountersPerDay);
+	}
+
+
+	if(probabilityToCompare >= randomProbability)
+	{
+		decisions.addToCumulativePredationProbability(probabilityToCompare);
+
+
+		if(saveAnimalsEachDayPredationProbabilities)
+		{
+			fmt::format_to(fmt::appender(predationProbabilitiesText), "\t{}\n", static_cast<unsigned int>(true));
 		}
 
 
+		DryMass totalDryMass(0.0);
+
+		for (auto& elem : currentPotencialPrey) {
+			totalDryMass += get<1>(elem);
+		}
+
+		if (!retaliation || (retaliation && getCurrentPrey().getFoodDryMass() <= totalDryMass))
+		{
+			setCurrentPrey(currentPotencialPrey, landscape, numberOfTimeSteps, timeStepsPerDay, competitionAmongResourceSpecies, predationEventsOnOtherSpecies);
+		}
+	
 		
-		if(!isExhausted())
+		return true;
+	}
+	else
+	{
+		if(saveAnimalsEachDayPredationProbabilities)
 		{
-			if(numberOfTimeSteps == TimeStep(0))
-			{
-				doInitialCellEvaluation();
-			}
+			fmt::format_to(fmt::appender(predationProbabilitiesText), "\t{}\n", static_cast<unsigned int>(false));
+		}
 
-			if(checkInitialMovementCellLeaving())
-			{
-				searchTargetToTravelTo(getScopeAreaRadius(), animalsHasTriedToPredate, withoutDestinations);
 
-				if(!withoutDestinations)
-				{
-					moveOneStep(landscape, saveActivity, activityContent, saveMovements, movementsContent, numberOfTimeSteps, timeStepsPerDay, edibilitiesContent, saveAnimalsEachDayPredationProbabilities, predationProbabilitiesContent, competitionAmongResourceSpecies);
-				}
+		if(!retaliation && get<0>(currentPotencialPrey[0])->getSpecies()->isMobile())
+		{
+			const PreciseDouble edibilityValue = static_cast<AnimalNonStatistical&>(*get<0>(currentPotencialPrey[0])).calculateEdibilityValue(*this);
+
+			if(edibilityValue > 0.0)
+			{
+				static_cast<AnimalNonStatistical&>(*get<0>(currentPotencialPrey[0])).activateRetaliation(this,
+					getGrowthBuildingBlock().getCurrentTotalDryMass(), saveAnimalsEachDayPredationProbabilities, 
+					predationProbabilitiesText, landscape, numberOfTimeSteps, timeStepsPerDay, 
+					competitionAmongResourceSpecies, predationEventsOnOtherSpecies, animalSpeciesMaximumPredationEncountersPerDay);
 			}
 		}
 
 
+		return false;
+	}
+}
 
-		vector<tuple<PreciseDouble, Edible*, DryMass>> ediblesByEdibility;
+void AnimalNonStatistical::activateRetaliation(Edible* prey, const DryMass &targetDryMass, const bool saveAnimalsEachDayPredationProbabilities,
+		fmt::memory_buffer& predationProbabilitiesText, Landscape* const landscape, const TimeStep numberOfTimeSteps,
+		const PreciseDouble& timeStepsPerDay, const bool competitionAmongResourceSpecies, 
+		CustomIndexedVector<Species::ID, unsigned int>& predationEventsOnOtherSpecies,
+		CustomIndexedVector<AnimalSpeciesID, uint64_t>& animalSpeciesMaximumPredationEncountersPerDay)
+{
+	auto currentPotencialPrey = getPotencialPrey();
 
-		if(getLifeStage() != LifeStage::PREDATED)
-		{
-			if(!isExhausted())
-			{
-				// Assimilate leftover food
-				assimilateCurrentPrey(saveActivity, activityContent, numberOfTimeSteps, timeStepsPerDay);
+	potencialPrey = { make_tuple<>(prey, targetDryMass, true) };
 
-				searchAnimalsAndResourceToEat(ediblesByEdibility, numberOfTimeSteps, animalsHasTriedToPredate, edibilitiesContent);
-			}
+	bool success = predate(true, saveAnimalsEachDayPredationProbabilities, predationProbabilitiesText, landscape, numberOfTimeSteps,
+		timeStepsPerDay, competitionAmongResourceSpecies, predationEventsOnOtherSpecies, animalSpeciesMaximumPredationEncountersPerDay);
 
-			if(getGrowthBuildingBlock().isMature() && !isMated())
-			{
-				searchAnimalToBreed(landscape, numberOfTimeSteps, timeStepsPerDay);
-			}
+	if (success) {
+		nextAction = Action::RETALIATION;
+	}
+	else {
+		potencialPrey = currentPotencialPrey;
+	}
+}
+
+void AnimalNonStatistical::updateTimeStepsWithoutFood()
+{
+	switch (getHuntingMode()) {
+		case HuntingMode::does_not_hunt: {
+			break;
 		}
-		
-
-		while(
-				!isExhausted() &&
-				(
-					lifeStage == LifeStage::ACTIVE ||
-					(lifeStage == LifeStage::REPRODUCING && getSpecies()->occursHabitatShiftBeforeBreeding() && !inBreedingZone)
-				) && // If it is active
-				(
-					!sated || // If it is not satisfied, it will have to look for food
-					(sated && getGrowthBuildingBlock().isMature() && getGender() == Gender::MALE) || // If it is sated, mature and a male, so it will look for a mate to breed with
-					(sated && getGrowthBuildingBlock().isMature() && getGender() == Gender::FEMALE && lifeStage == LifeStage::REPRODUCING && getSpecies()->occursHabitatShiftBeforeBreeding())
-				) &&
-				(!withoutDestinations)
-			)
-		{
-			if(!completedReproductionInTheArea)
+		case HuntingMode::sit_and_wait:
+		case HuntingMode::grazer: {
+			if(foodMassEatenCurrentTimeStep > 0.0)
 			{
-				if(getGrowthBuildingBlock().isMature() && !isMated())
-				{
-					searchAnimalToBreed(landscape, numberOfTimeSteps, timeStepsPerDay);
-				}
-
-				completedReproductionInTheArea = true;
+				timeStepsWithoutFood = TimeStep(0);
 			}
 			else
 			{
-				if(ediblesByEdibility.empty() || isSated())
-				{
-					if(isAtDestination())
-					{
-						searchTargetToTravelTo(getScopeAreaRadius(), animalsHasTriedToPredate, withoutDestinations);
-					}
-
-
-					if(!withoutDestinations)
-					{
-						moveOneStep(landscape, saveActivity, activityContent, saveMovements, movementsContent, numberOfTimeSteps, timeStepsPerDay, edibilitiesContent, saveAnimalsEachDayPredationProbabilities, predationProbabilitiesContent, competitionAmongResourceSpecies);
-						ediblesByEdibility.clear();
-
-
-						if(lifeStage == LifeStage::ACTIVE || lifeStage == LifeStage::REPRODUCING)
-						{
-							if(isAtDestination() && getLifeStage() == LifeStage::REPRODUCING)
-							{
-								setInBreedingZone(true);
-							}
-
-
-							if(!isExhausted())
-							{
-								searchAnimalsAndResourceToEat(ediblesByEdibility, numberOfTimeSteps, animalsHasTriedToPredate, edibilitiesContent);
-							}
-						}
-					}
-				}
-				else
-				{
-					decisions.tryToEatEdible(landscape, ediblesByEdibility, numberOfTimeSteps, timeStepsPerDay, animalsHasTriedToPredate, saveAnimalsEachDayPredationProbabilities, predationProbabilitiesContent, saveActivity, activityContent, competitionAmongResourceSpecies);
-				
-					if(foodMassEatenCurrentTimeStep > getVoracity())
-					{
-						view->updateLog("The food mass eaten was higher than the voracity value:\n");
-						view->updateLog({" - Animal: ", to_string(getId()), "(", getSpecies()->getScientificName(), ")\n"});
-						view->updateLog({" - Food mass eaten: ", foodMassEatenCurrentTimeStep.getValue().to_string(), "\n"});
-						view->updateLog({" - Voracity value: ", getVoracity().to_string(), "\n"});
-					}
-				}
+				timeStepsWithoutFood = timeStepsWithoutFood + TimeStep(1);
 			}
+			break;
 		}
-
-
-		// Update the number of days the animal has been without food
-		switch (getHuntingMode()) {
-			case HuntingMode::does_not_hunt: {
-				break;
-			}
-			case HuntingMode::sit_and_wait:
-			case HuntingMode::grazer: {
-				if(foodMassEatenCurrentTimeStep > 0.0)
-				{
-					timeStepsWithoutFood = TimeStep(0);
-				}
-				else
-				{
-					timeStepsWithoutFood = timeStepsWithoutFood + TimeStep(1);
-				}
-				break;
-			}
-			default: {
-				throwLineInfoException("Default case");
-				break;
-			}
-		}
-
-		// It indicates that the animal has already moved in this timestep.
-		lastDayMoved = numberOfTimeSteps;
-
-		if(firstMovement) {
-			firstMovement = false;
+		default: {
+			throwLineInfoException("Default case");
+			break;
 		}
 	}
 }
@@ -1326,8 +1480,11 @@ void AnimalNonStatistical::searchAnimalToBreed(Landscape* const landscape, const
 
 	vector<pair<const ResourceSearchParams&, ResourceFunctions>> resourceFunctions;
 
+	const PreciseDouble sectionSize = getSpecies()->getPoreUsePerInstar(getInstar());
 
-	getMutableTerrainCell()->applyFunctionToEdiblesInRadius(getPosition(), getInteractionAreaRadius(), animalFunctions, resourceFunctions);
+	if (getInteractionAreaRadius() > 0.0) {
+		getMutableTerrainCell()->applyFunctionToEdiblesInRadius(getPosition(), getInteractionAreaRadius(), animalFunctions, resourceFunctions, sectionSize);
+	}
 }
 
 bool AnimalNonStatistical::isSated() const
@@ -1345,85 +1502,108 @@ DryMass AnimalNonStatistical::calculateMassLoad() const
 	return getGrowthBuildingBlock().calculateMassLoad(getGender(), getReproCounter());
 }
 
-const Instar& AnimalNonStatistical::getInstarToEvaluateCells() const
-{
-	return instarToEvaluateCells;
-}
-
 void AnimalNonStatistical::setInstarToEvaluateCells(const Instar& newInstarToEvaluateCells)
 {
 	instarToEvaluateCells = newInstarToEvaluateCells;
 }
 
-void AnimalNonStatistical::searchAnimalsAndResourceToEat(vector<tuple<PreciseDouble, Edible*, DryMass>>& ediblesByEdibility, const TimeStep numberOfTimeSteps, list<const AnimalNonStatistical*> &animalsHasTriedToPredate, ostringstream& edibilitiesContent)
+void AnimalNonStatistical::searchAnimalsAndResourceToEat(Landscape* const landscape, vector<pair<PreciseDouble, vector<tuple<Edible*, DryMass, bool>>>>& ediblesByEdibility, const TimeStep numberOfTimeSteps, bool saveEdibilitiesFile, fmt::memory_buffer& edibilitiesText)
 {
-	if(!isSated())
-	{
-		vector<pair<const AnimalSearchParams&, AnimalFunctions>> animalFunctions;
+	vector<pair<const AnimalSearchParams&, AnimalFunctions>> animalFunctions;
 
-		animalFunctions.emplace_back(
-			getSpecies()->getPreySearchParams(getGrowthBuildingBlock().getInstar()).getAnimalSearchParams(),
-			AnimalFunctions{
-				PreviousAnimalFunctions{},
-				IndividualFunctions{
-					[this, &ediblesByEdibility, &animalsHasTriedToPredate](Animal& animal) { 
-						AnimalNonStatistical* animalCast = static_cast<AnimalNonStatistical*>(&animal);
+	animalFunctions.emplace_back(
+		getSpecies()->getPreySearchParams(getGrowthBuildingBlock().getInstar()).getAnimalSearchParams(),
+		AnimalFunctions{
+			PreviousAnimalFunctions{},
+			IndividualFunctions{
+				[this, &ediblesByEdibility](Animal& animal) { 
+					AnimalNonStatistical* animalCast = static_cast<AnimalNonStatistical*>(&animal);
 
-						const PreciseDouble edibilityValue = calculateEdibilityValue(*animalCast, animalsHasTriedToPredate);
-
-						if(edibilityValue > 0.0)
-						{
-							ediblesByEdibility.push_back(tuple<PreciseDouble, Edible*, DryMass>(edibilityValue, animalCast, animalCast->getGrowthBuildingBlock().getCurrentTotalDryMass()));
-						}
-					}
-				},
-				PostAnimalFunctions{}
-			}
-		);
-
-		vector<pair<const ResourceSearchParams&, ResourceFunctions>> resourceFunctions;
-
-		resourceFunctions.emplace_back(
-			getSpecies()->getPreySearchParams(getGrowthBuildingBlock().getInstar()).getResourceSearchParams(),
-			ResourceFunctions{
-				[this, &ediblesByEdibility](CellResourceInterface& resource, bool fullCoverage, const PointContinuous* const sourcePosition, const PreciseDouble &radius, const RingModel* const radiusArea) {
-					const DryMass dryMassAvailable = resource.calculateDryMassAvailable(fullCoverage, sourcePosition, radius, radiusArea);
-
-					const PreciseDouble edibilityValue = calculateEdibilityValue(resource, dryMassAvailable);
+					const PreciseDouble edibilityValue = calculateEdibilityValue(*animalCast);
 
 					if(edibilityValue > 0.0)
 					{
-						ediblesByEdibility.push_back(tuple<PreciseDouble, Edible*, DryMass>(edibilityValue, &resource, dryMassAvailable));
+						ediblesByEdibility.push_back({
+							edibilityValue,
+							{{ animalCast, animalCast->getGrowthBuildingBlock().getCurrentTotalDryMass(), true }}
+						});
+					}
+				}
+			},
+			PostAnimalFunctions{}
+		}
+	);
+
+	vector<pair<const ResourceSearchParams&, ResourceFunctions>> resourceFunctions;
+
+	vector<vector<pair<PreciseDouble, tuple<Edible*, DryMass, bool>>>> resourcesSearched(landscape->getExistingResourceSpecies().size());
+
+	resourceFunctions.emplace_back(
+		getSpecies()->getPreySearchParams(getGrowthBuildingBlock().getInstar()).getResourceSearchParams(),
+		ResourceFunctions{
+			[this, &landscape, &resourcesSearched](CellResourceInterface& resource, bool fullCoverage, const PointContinuous* const sourcePosition, const PreciseDouble &radius) {
+				const DryMass dryMassAvailable = resource.calculateDryMassAvailable(fullCoverage, sourcePosition, radius);
+
+				if (dryMassAvailable >= landscape->getMinExploitableResource())
+				{
+					const PreciseDouble edibilityValue = calculateEdibilityValue(resource, dryMassAvailable);
+
+					if (edibilityValue > 0.0)
+					{
+						resourcesSearched[resource.getSpecies()->getResourceSpeciesId()].push_back({
+							edibilityValue,
+							{ &resource, dryMassAvailable, fullCoverage }
+						});
 					}
 				}
 			}
-		);
+		}
+	);
 		
 
-		getMutableTerrainCell()->applyFunctionToEdiblesInRadius(getPosition(), getInteractionAreaRadius(), animalFunctions, resourceFunctions);
-		
+	if (getInteractionAreaRadius() > 0.0) {
+		const PreciseDouble sectionSize = getSpecies()->getPoreUsePerInstar(getInstar());
+
+		getMutableTerrainCell()->applyFunctionToEdiblesInRadius(getPosition(), getInteractionAreaRadius(), animalFunctions, resourceFunctions, sectionSize);
+	
+		if (!resourcesSearched.empty()) {
+			for (auto& resource : resourcesSearched) {
+				PreciseDouble edibilityValue = 0.0;
+				vector<tuple<Edible*, DryMass, bool>> resourcesInfo;
+
+				for (auto& elem : resource) {
+					edibilityValue += elem.first;
+					resourcesInfo.push_back(elem.second);
+				}
+
+				if (edibilityValue > 0.0)
+				{
+					ediblesByEdibility.push_back({ edibilityValue, resourcesInfo });
+				}
+			}
+		}
+	}
 
 
-		// Sorting the elements by edibility
-		std::sort(ediblesByEdibility.begin(), ediblesByEdibility.end(), compareByEdibilityValue);
+	// Sorting the elements by edibility
+	std::sort(ediblesByEdibility.begin(), ediblesByEdibility.end(), compareByEdibilityValue);
 
-		// Print interaction information
-		for(auto ediblesIt = ediblesByEdibility.begin(); ediblesIt != ediblesByEdibility.end(); ediblesIt++)
+	// Print interaction information
+	if (saveEdibilitiesFile) {
+		for (auto ediblesIt = ediblesByEdibility.begin(); ediblesIt != ediblesByEdibility.end(); ediblesIt++)
 		{
-			edibilitiesContent
-			<< numberOfTimeSteps << "\t"
-			<< getId() << "\t"
-			<< getSpecies()->getScientificName() << "\t"
-			<< foodMassEatenCurrentTimeStep.getValue() << "\t"
-			<< getId() << "\t"
-			<< getSpecies()->getScientificName() << "\t"
-			<< getGrowthBuildingBlock().getCurrentTotalDryMass() << "\t"
-			<< get<1>(*ediblesIt)->getId() << "\t"
-			<< get<1>(*ediblesIt)->getSpecies()->getScientificName() << "\t"
-			<< get<2>(*ediblesIt) << "\t"
-			<< decisions.calculatePredationProbability(*get<1>(*ediblesIt), get<2>(*ediblesIt)) << "\t"
-			<< get<0>(*ediblesIt) << "\t"
-			<< printPreferenceInfo(get<1>(*ediblesIt)->getSpecies()->getId(), get<1>(*ediblesIt)->getGrowthBuildingBlock().getInstar()).str() << endl;
+			for (auto& elem : ediblesIt->second) {
+				fmt::format_to(fmt::appender(edibilitiesText), "{}\t{}\t{}\t{}\t{}\t{}\t{}\t{}\t{}\t{}\t{}\t{}\t{}\t{}\n",
+					numberOfTimeSteps.getValue(), getId(), getSpecies()->getScientificName(),
+					foodMassEatenCurrentTimeStep.getValue().getValue(), getId(), getSpecies()->getScientificName(),
+					getGrowthBuildingBlock().getCurrentTotalDryMass().getValue().getValue(), get<0>(elem)->getId(),
+					get<0>(elem)->getSpecies()->getScientificName(), get<1>(elem).getValue().getValue(),
+					decisions.calculatePredationProbability(*get<0>(elem), get<1>(elem)).getValue(),
+					ediblesIt->first.getValue(),
+					decisions.getPreference(get<0>(elem)->getSpecies()->getId(), get<0>(elem)->getGrowthBuildingBlock().getInstar()).getValue(),
+					decisions.getMeanExperience(get<0>(elem)->getSpecies()->getId(), get<0>(elem)->getGrowthBuildingBlock().getInstar()).getValue()
+				);
+			}
 		}
 	}
 }
@@ -1437,33 +1617,24 @@ void AnimalNonStatistical::setGenomeFromMatedMale(const AnimalNonStatistical* ma
 	generationNumberFromMatedMale = matedMale->getGenerationNumberFromMaleParent();
 }
 
-void AnimalNonStatistical::doDefinitive(Landscape* const landscape, const bool saveGenetics, const bool saveMassInfo) { 
+void AnimalNonStatistical::doDefinitive(Landscape* const landscape, const bool saveGenetics, std::vector<fmt::memory_buffer>& geneticsText) {
 	id = landscape->generateEdibleId();
 
 	landscape->generateAnimalId();
-	
-	setInfoMassFileHeader(landscape->getResultFolder(), saveMassInfo);
 
 	if(saveGenetics)
 	{
-		ostringstream animalInfo;
+		std::string animalInfo;
 
-		animalInfo << getId() << "\t"
-			<< getSpecies()->getScientificName() << "\t"
-			<< generationNumberFromFemaleParent << "\t"
-			<< generationNumberFromMaleParent << "\t"
-			<< getIdFromFemaleParent() << "\t"
-			<< getIdFromMaleParent();
+		fmt::format_to(std::back_inserter(animalInfo), "{}\t{}\t{}\t{}\t{}\t{}",
+			getId(), getSpecies()->getScientificName(), generationNumberFromFemaleParent,
+			generationNumberFromMaleParent, getIdFromFemaleParent(), getIdFromMaleParent()
+			);
 
-		getMutableSpecies()->getMutableGenetics().printGenetics(animalInfo, getGenetics().getGenome());
+		getMutableSpecies()->getMutableGenetics().printGenetics(animalInfo, getGenetics().getGenome(), geneticsText);
 	}
 
 	getMutableGenetics().deleteHomologousCorrelosomes();
-
-	if(getLifeStage() == LifeStage::ACTIVE)
-	{
-		landscape->getMutableMap()->increaseTotalNumberOfActiveAnimals();
-	}
 
 
 	landscape->registerAnimal(this);
@@ -1507,7 +1678,7 @@ void AnimalNonStatistical::setAgeOfLastMoultOrReproduction(const TimeStep newAge
 	ageOfLastMoultOrReproduction = newAgeOfLastMoultOrReproduction;
 }
 
-void AnimalNonStatistical::breedAsexually(list<AnimalNonStatistical*>& offspring, View* view, Landscape* const landscape, unsigned int objectiveEggsNumber, const TimeStep numberOfTimeSteps, const bool saveGenetics, const bool saveMassInfo, const PreciseDouble& timeStepsPerDay)
+unsigned int AnimalNonStatistical::breedAsexually(Landscape* const landscape, unsigned int objectiveEggsNumber, const TimeStep numberOfTimeSteps, const bool saveGenetics, std::vector<fmt::memory_buffer>& geneticsText, const PreciseDouble& timeStepsPerDay, bool saveAnimalConstitutiveTraits, fmt::memory_buffer& traitsText)
 {
 	DryMass offspringDryMass = getSpecies()->getGrowthBuildingBlock().getEggDryMass() + getSpecies()->getGrowthBuildingBlock().getEggDryMass().getValue()*getGenetics().getBaseIndividualTraits(BaseTraitType::factorEggMass).getPhenotypicValue();
 
@@ -1529,8 +1700,8 @@ void AnimalNonStatistical::breedAsexually(list<AnimalNonStatistical*>& offspring
 			Generation generationFemale(generationNumberFromFemaleParent.getValue() + 1);
 			Generation generationMale;
 
-			EdibleID idFemale = getId();
-			EdibleID idMale;
+			id_type idFemale = getId();
+			id_type idMale = 0u;
 
 			AnimalNonStatistical* newOffspring = createOffspring(femaleGameteSelected, maleGameteSelected, getMutableTerrainCell(), getGenetics().getBaseIndividualTraits(BaseTraitType::factorEggMass).getPhenotypicValue(), generationFemale, generationMale, idFemale, idMale, getMutableSpecies(), offSpringGender, numberOfTimeSteps, timeStepsPerDay);
 
@@ -1539,11 +1710,19 @@ void AnimalNonStatistical::breedAsexually(list<AnimalNonStatistical*>& offspring
 				newOffspring->getGenetics().getBaseIndividualTraits(BaseTraitType::energy_tank).getPhenotypicValue(), false, newOffspring->getGender(), false, numberOfTimeSteps
 			);
 
-			offspring.push_back(newOffspring);
-
-			newOffspring->doDefinitive(landscape, saveGenetics, saveMassInfo);
+			newOffspring->doDefinitive(landscape, saveGenetics, geneticsText);
 
 			totalOffspringDryMass = totalOffspringDryMass + newOffspring->getGrowthBuildingBlock().getEggDryMassAtBirth();
+
+			newOffspring->setPosition(getPosition());
+			getMutableTerrainCell()->insertAnimal(landscape, newOffspring);
+
+			if (saveAnimalConstitutiveTraits)
+			{
+				newOffspring->printTraits(traitsText);
+			}
+
+			newOffspring->initControlVariables(landscape->getExistingSpecies());
 
 			delete femaleGameteSelected;
 			delete maleGameteSelected;
@@ -1556,12 +1735,12 @@ void AnimalNonStatistical::breedAsexually(list<AnimalNonStatistical*>& offspring
 
 	if(createdEggsNumber != objectiveEggsNumber)
 	{
-		view->updateLog({" - Animal: ", to_string(getId()), ": Partial breed ", to_string(createdEggsNumber), "/", to_string(objectiveEggsNumber), ".\n"});
+		LogManager::emit(fmt::format(" - Animal: {}: Partial breed {}/{}.\n", getId(), createdEggsNumber, objectiveEggsNumber));
 	}
 
 	
 		
-	fecundity += static_cast<unsigned int>(offspring.size());
+	fecundity += createdEggsNumber;
 
 	getMutableGrowthBuildingBlock().modifyEnergyTank(getGrowthBuildingBlock().getCurrentEnergyTank() - totalOffspringDryMass, numberOfTimeSteps);
 
@@ -1573,10 +1752,13 @@ void AnimalNonStatistical::breedAsexually(list<AnimalNonStatistical*>& offspring
 	{
 		setNewLifeStage(landscape, LifeStage::ACTIVE);
 	}
+
+
+	return createdEggsNumber;
 }
 
 
-void AnimalNonStatistical::breedSexually(list<AnimalNonStatistical*>& offspring, View* view, Landscape* const landscape, unsigned int objectiveEggsNumber, const TimeStep numberOfTimeSteps, const bool saveGenetics, const bool saveMassInfo, const PreciseDouble& timeStepsPerDay)
+unsigned int AnimalNonStatistical::breedSexually(Landscape* const landscape, unsigned int objectiveEggsNumber, const TimeStep numberOfTimeSteps, const bool saveGenetics, std::vector<fmt::memory_buffer>& geneticsText, const PreciseDouble& timeStepsPerDay, bool saveAnimalConstitutiveTraits, fmt::memory_buffer& traitsText)
 {
 	DryMass offspringDryMass = getSpecies()->getGrowthBuildingBlock().getEggDryMass() + getSpecies()->getGrowthBuildingBlock().getEggDryMass().getValue()*getGenetics().getBaseIndividualTraits(BaseTraitType::factorEggMass).getPhenotypicValue();
 
@@ -1588,8 +1770,8 @@ void AnimalNonStatistical::breedSexually(list<AnimalNonStatistical*>& offspring,
 	Generation generationFemale;
 	Generation generationMale;
 
-	EdibleID idFemale;
-	EdibleID idMale;
+	id_type idFemale = 0u;
+	id_type idMale = 0u;
 
 	while( createdEggsNumber < objectiveEggsNumber && getGrowthBuildingBlock().getCurrentEnergyTank() > (totalOffspringDryMass+offspringDryMass) )
 	{
@@ -1667,12 +1849,20 @@ void AnimalNonStatistical::breedSexually(list<AnimalNonStatistical*>& offspring,
 				newOffspring->getGrowthBuildingBlock().getEggDryMassAtBirth(), newOffspring->getGrowthBuildingBlock().getEggDryMassAtBirth(), 
 				newOffspring->getGenetics().getBaseIndividualTraits(BaseTraitType::energy_tank).getPhenotypicValue(), false, newOffspring->getGender(), false, numberOfTimeSteps
 			);
-		
-			offspring.push_back(newOffspring);
 			
-			newOffspring->doDefinitive(landscape, saveGenetics, saveMassInfo);
+			newOffspring->doDefinitive(landscape, saveGenetics, geneticsText);
 
 			totalOffspringDryMass = totalOffspringDryMass + newOffspring->getGrowthBuildingBlock().getEggDryMassAtBirth();
+
+			newOffspring->setPosition(getPosition());
+			getMutableTerrainCell()->insertAnimal(landscape, newOffspring);
+
+			if (saveAnimalConstitutiveTraits)
+			{
+				newOffspring->printTraits(traitsText);
+			}
+
+			newOffspring->initControlVariables(landscape->getExistingSpecies());
 
 			delete femaleGameteSelected;
 			delete maleGameteSelected;
@@ -1685,12 +1875,12 @@ void AnimalNonStatistical::breedSexually(list<AnimalNonStatistical*>& offspring,
 
 	if(createdEggsNumber != objectiveEggsNumber)
 	{
-		view->updateLog({" - Animal: ", to_string(getId()), ": Partial breed ", to_string(createdEggsNumber), "/", to_string(objectiveEggsNumber), ".\n"});
+		LogManager::emit(fmt::format(" - Animal: {}: Partial breed {}/{}.\n", getId(), createdEggsNumber, objectiveEggsNumber));
 	}
 
 
 
-	fecundity += static_cast<unsigned int>(offspring.size());
+	fecundity += createdEggsNumber;
 
 	getMutableGrowthBuildingBlock().modifyEnergyTank(getGrowthBuildingBlock().getCurrentEnergyTank() - totalOffspringDryMass, numberOfTimeSteps);
 
@@ -1702,6 +1892,9 @@ void AnimalNonStatistical::breedSexually(list<AnimalNonStatistical*>& offspring,
 	{
 		setNewLifeStage(landscape, LifeStage::ACTIVE);
 	}
+
+
+	return createdEggsNumber;
 }
 
 void AnimalNonStatistical::setSpeciesGrowth(SpeciesGrowth* newSpeciesGrowth)
@@ -1873,20 +2066,22 @@ void AnimalNonStatistical::grow(Landscape* const landscape, const TimeStep actua
 	}
 }
 
-void AnimalNonStatistical::breed(list<AnimalNonStatistical*>& offspring, View* view, Landscape* const landscape, const TimeStep numberOfTimeSteps, const bool saveGenetics, const bool saveMassInfo, const PreciseDouble& timeStepsPerDay)
+unsigned int AnimalNonStatistical::breed(Landscape* const landscape, const TimeStep numberOfTimeSteps, const bool saveGenetics, std::vector<fmt::memory_buffer>& geneticsText, const PreciseDouble& timeStepsPerDay, bool saveAnimalConstitutiveTraits, fmt::memory_buffer& traitsText)
 {
 	unsigned int currentEggBatchNumber = getGrowthBuildingBlock().computeEggBatchNumber(getGenetics().getBaseIndividualTraits(BaseTraitType::factorEggMass).getPhenotypicValue());
+
+	unsigned int createdEggsNumber = 0u;
 
 	switch (getSpecies()->getSexualType())
 	{
 		case SexualType::asexual:
-			breedAsexually(offspring, view, landscape, currentEggBatchNumber, numberOfTimeSteps, saveGenetics, saveMassInfo, timeStepsPerDay);
+			createdEggsNumber = breedAsexually(landscape, currentEggBatchNumber, numberOfTimeSteps, saveGenetics, geneticsText, timeStepsPerDay, saveAnimalConstitutiveTraits, traitsText);
 			break;
 		case SexualType::diploid:
-			breedSexually(offspring, view, landscape, currentEggBatchNumber, numberOfTimeSteps, saveGenetics, saveMassInfo, timeStepsPerDay);
+			createdEggsNumber = breedSexually(landscape, currentEggBatchNumber, numberOfTimeSteps, saveGenetics, geneticsText, timeStepsPerDay, saveAnimalConstitutiveTraits, traitsText);
 			break;
 		case SexualType::haplodiploid:
-			breedSexually(offspring, view, landscape, currentEggBatchNumber, numberOfTimeSteps, saveGenetics, saveMassInfo, timeStepsPerDay);
+			createdEggsNumber = breedSexually(landscape, currentEggBatchNumber, numberOfTimeSteps, saveGenetics, geneticsText, timeStepsPerDay, saveAnimalConstitutiveTraits, traitsText);
 			break;
 		default:
 			throwLineInfoException("Default case");
@@ -1897,6 +2092,8 @@ void AnimalNonStatistical::breed(list<AnimalNonStatistical*>& offspring, View* v
 	{
 		setInHabitatShiftAfterBreeding(true);
 	}
+
+	return createdEggsNumber;
 }
 
 
@@ -1915,10 +2112,10 @@ void AnimalNonStatistical::assimilateFoodMass(const DryMass& foodMass)
 {
 	DryMass assimilatedMass = calculateAssimilatedMass(foodMass, getCurrentPrey().getId(), getCurrentPrey().getInstar());
 
-	foodMassAssimilatedCurrentTimeStepPerSpecies.at(getCurrentPrey().getId()).at(getCurrentPrey().getInstar()) += assimilatedMass;
+	foodMassAssimilatedCurrentTimeStepPerSpecies[getCurrentPrey().getId()][getCurrentPrey().getInstar()] += assimilatedMass;
 	foodMassAssimilatedCurrentTimeStep += assimilatedMass;
 
-	foodMassEatenCurrentTimeStepPerSpecies.at(getCurrentPrey().getId()).at(getCurrentPrey().getInstar()) += foodMass;
+	foodMassEatenCurrentTimeStepPerSpecies[getCurrentPrey().getId()][getCurrentPrey().getInstar()] += foodMass;
 	foodMassEatenCurrentTimeStep += foodMass;
 		
 	sated = getRemainingVoracity() <= 0.0;
@@ -1938,7 +2135,7 @@ unsigned int AnimalNonStatistical::getMaxReproductionEvents() const
 }
 
 
-const size_t& AnimalNonStatistical::getTotalPredationEncounters() const
+const uint64_t& AnimalNonStatistical::getTotalPredationEncounters() const
 {
 	return totalPredationEncounters;
 }
@@ -1955,104 +2152,51 @@ DryMass AnimalNonStatistical::turnIntoDryMass(const DryMass &targetDryMass, cons
 	return targetDryMass;
 }
 
-const Prey& AnimalNonStatistical::getCurrentPrey() const
-{
-	return currentPrey;
-}
+void AnimalNonStatistical::setCurrentPrey(const std::vector<std::tuple<Edible*, DryMass, bool>>& prey, Landscape* const landscape, const TimeStep numberOfTimeSteps, const PreciseDouble& timeStepsPerDay, const bool competitionAmongResourceSpecies, CustomIndexedVector<Species::ID, unsigned int>& predationEventsOnOtherSpecies)
+{	
+	DryMass totalPreyDryMass(0.0);
 
-void AnimalNonStatistical::setCurrentPrey(Edible& prey, Landscape* const landscape, const DryMass &targetDryMass, const TimeStep numberOfTimeSteps, const PreciseDouble& timeStepsPerDay, const bool competitionAmongResourceSpecies)
-{
-	DryMass preyDryMass = prey.turnIntoDryMass(targetDryMass, getRemainingVoracity());
+	for (auto& elem : prey) {
+		DryMass preyDryMass = get<0>(elem)->turnIntoDryMass(get<1>(elem), getRemainingVoracity());
 
-
-	if(prey.getSpecies()->isMobile())
-	{
-        static_cast<Animal&>(prey).setNewLifeStage(landscape, LifeStage::PREDATED, numberOfTimeSteps, getId(), timeStepsPerDay);
-	}
-	else
-	{
-        static_cast<CellResourceInterface&>(prey).substractBiomass(preyDryMass, getPosition(), getInteractionAreaRadius(), competitionAmongResourceSpecies);
-	}
-
-
-	currentPrey = Prey(prey.getSpecies()->getId(), prey.getGrowthBuildingBlock().getInstar(), preyDryMass, computeHandlingTime(preyDryMass, timeStepsPerDay), timeStepsPerDay);
-
-
-	getMutableSpecies()->addPredationEventOnOtherSpecies(prey.getSpecies()->getId());
-	eatenToday++;
-}
-
-void AnimalNonStatistical::predateEdible(const PreciseDouble& randomProbability, const PreciseDouble& probabilityToCompare, const bool retaliation, const bool exposedAttack, Landscape* const landscape, Edible &prey, const DryMass &targetDryMass, const TimeStep numberOfTimeSteps, const PreciseDouble& timeStepsPerDay, list<const AnimalNonStatistical*> &animalsHasTriedToPredate, const bool saveAnimalsEachDayPredationProbabilities, ostringstream& predationProbabilitiesContent, const bool saveActivity, ostringstream& activityContent, const bool competitionAmongResourceSpecies)
-{
-	if(saveAnimalsEachDayPredationProbabilities)
-	{
-		predationProbabilitiesContent << randomProbability << "\t"
-			<< probabilityToCompare << "\t"
-			<< ((retaliation) ? 1 : 0) << "\t"
-			<< ((exposedAttack) ? 1 : 0) << "\t"
-			<< getId() << "\t"
-			<< prey.getId() << "\t"
-			<< getSpecies()->getScientificName() << "\t"
-			<< prey.getSpecies()->getScientificName() << "\t"
-			<< ((prey.isHunting()) ? 1 : 0) << "\t"
-			<< getGrowthBuildingBlock().getCurrentTotalDryMass() << "\t"
-			<< targetDryMass << "\t";
-	}
-
-
-	if(prey.getSpecies()->isMobile())
-	{
-		animalsHasTriedToPredate.push_back(&static_cast<AnimalNonStatistical&>(prey));
-	}
-
-
-	prey.increasePredationEncounters();
-
-
-	if(probabilityToCompare >= randomProbability)
-	{
-		if(!retaliation && !exposedAttack)
+		if (get<0>(elem)->getSpecies()->isMobile())
 		{
-			decisions.addToCumulativePredationProbability(decisions.calculatePredationProbability(prey, targetDryMass));
+			static_cast<Animal&>(*get<0>(elem)).setNewLifeStage(landscape, LifeStage::PREDATED, numberOfTimeSteps, getId(), timeStepsPerDay);
 		}
 		else
 		{
-			decisions.addToCumulativePredationProbability(probabilityToCompare);
+			static_cast<CellResourceInterface&>(*get<0>(elem)).substractBiomass(preyDryMass, get<2>(elem), getPosition(), getInteractionAreaRadius(), competitionAmongResourceSpecies);
 		}
 
-
-		if(saveAnimalsEachDayPredationProbabilities)
-		{
-			predationProbabilitiesContent << 1 << "\n";
-		}
-
-
-		setCurrentPrey(prey, landscape, targetDryMass, numberOfTimeSteps, timeStepsPerDay, competitionAmongResourceSpecies);
-
-		assimilateCurrentPrey(saveActivity, activityContent, numberOfTimeSteps, timeStepsPerDay);
+		totalPreyDryMass += preyDryMass;
 	}
-	else
-	{
-		if(saveAnimalsEachDayPredationProbabilities)
-		{
-			predationProbabilitiesContent << 0 << "\n";
-		}
 
 
-		if(!retaliation && !exposedAttack && prey.getSpecies()->isMobile())
-		{
-			const PreciseDouble predationProbability = static_cast<AnimalNonStatistical&>(prey).calculatePredationProbability(*this);
+	currentPrey = Prey(get<0>(prey[0])->getSpecies()->getId(), get<0>(prey[0])->getGrowthBuildingBlock().getInstar(), totalPreyDryMass, computeHandlingTime(totalPreyDryMass, timeStepsPerDay), timeStepsPerDay);
 
-			if(predationProbability > 0.0)
-			{
-				const PreciseDouble randomPredationProbability = Random::randomUniform();
 
-				list<const AnimalNonStatistical*> retaliationAnimalsHasTriedToPredate;
+	++predationEventsOnOtherSpecies[get<0>(prey[0])->getSpecies()->getId()];
+	++eatenToday;
+}
 
-				static_cast<AnimalNonStatistical&>(prey).predateEdible(randomPredationProbability, predationProbability, true, false, landscape, *this, getGrowthBuildingBlock().getCurrentTotalDryMass(), numberOfTimeSteps, timeStepsPerDay, retaliationAnimalsHasTriedToPredate, saveAnimalsEachDayPredationProbabilities, predationProbabilitiesContent, saveActivity, activityContent, competitionAmongResourceSpecies);
-			}
-		}
+void AnimalNonStatistical::setInitialPreferences(const PreciseDouble& timeStepsPerDay)
+{
+	decisions.setInitialPreferences(timeStepsPerDay);
+}
+
+void AnimalNonStatistical::initControlVariables(const vector<Species*>& existingSpecies)
+{
+	foodMassAssimilatedCurrentTimeStepPerSpecies.resize(existingSpecies.size());
+	foodMassEatenCurrentTimeStepPerSpecies.resize(existingSpecies.size());
+
+	for (const Species* const species : existingSpecies) {
+		foodMassAssimilatedCurrentTimeStepPerSpecies[species->getId()].resize(species->getGrowthBuildingBlock().getNumberOfInstars(), DryMass(0.0));
+		foodMassEatenCurrentTimeStepPerSpecies[species->getId()].resize(species->getGrowthBuildingBlock().getNumberOfInstars(), DryMass(0.0));
 	}
+
+
+	foodMassAssimilatedCurrentTimeStep = DryMass(0.0);
+	foodMassEatenCurrentTimeStep = DryMass(0.0);
 }
 
 void AnimalNonStatistical::resetControlVariables(const TimeStep numberOfTimeSteps, const PreciseDouble& timeStepsPerDay)
@@ -2067,10 +2211,10 @@ void AnimalNonStatistical::resetControlVariables(const TimeStep numberOfTimeStep
 
 	for(size_t speciesId = 0; speciesId < foodMassAssimilatedCurrentTimeStepPerSpecies.size(); speciesId++)
 	{
-		for(size_t preyInstar = 0; preyInstar < foodMassAssimilatedCurrentTimeStepPerSpecies.getValue(speciesId).size(); preyInstar++)
+		for(size_t preyInstar = 0; preyInstar < foodMassAssimilatedCurrentTimeStepPerSpecies[speciesId].size(); preyInstar++)
 		{
-			foodMassAssimilatedCurrentTimeStepPerSpecies.getValue(speciesId).getValue(preyInstar) = DryMass(0.0);
-			foodMassEatenCurrentTimeStepPerSpecies.getValue(speciesId).getValue(preyInstar) = DryMass(0.0);
+			foodMassAssimilatedCurrentTimeStepPerSpecies[speciesId][preyInstar] = DryMass(0.0);
+			foodMassEatenCurrentTimeStepPerSpecies[speciesId][preyInstar] = DryMass(0.0);
 		}
 	}
 
@@ -2087,9 +2231,10 @@ void AnimalNonStatistical::resetControlVariables(const TimeStep numberOfTimeStep
 		predationEncountersCurrentDay = 0u;
 	}
 
+	actionsCurrentTimeStep = 0u;
 
 	eatenToday = 0;
-	steps = 0.0;
+	distanceTravelled = 0.0;
 	stepsAttempted = 0;
 	exhausted = false;
 
@@ -2098,71 +2243,11 @@ void AnimalNonStatistical::resetControlVariables(const TimeStep numberOfTimeStep
 	sated = false;
 }
 
-
-void AnimalNonStatistical::assimilateCurrentPrey(const bool saveActivity, ostringstream& activityContent, const TimeStep actualTimeStep, const PreciseDouble& timeStepsPerDay)
+void AnimalNonStatistical::increaseDistanceTravelled(const PreciseDouble& distanceToAdd)
 {
-	if(getCurrentPrey().isThereLeftoverFood() && !isSated())
-	{
-		DryMass foodMass = computeHandlingFoodMass();
-		
+	distanceTravelled += distanceToAdd;
 
-		currentPrey.decreaseFoodMass(foodMass);
-
-
-		if(getSpecies()->getActivatedHandling())
-		{
-			applyHandlingTime(foodMass, saveActivity, activityContent, actualTimeStep, timeStepsPerDay);
-		}
-
-
-		assimilateFoodMass(foodMass);
-
-
-		if(!getSpecies()->getPreserveLeftovers() || !currentPrey.isThereLeftoverFood()) 
-		{
-			currentPrey = Prey();
-		}
-	}
-}
-
-DryMass AnimalNonStatistical::computeHandlingFoodMass() const
-{
-	if(getSpecies()->getActivatedHandling())
-	{
-		return DryMass(fmin((steps / getSearchAreaRadius()) * currentPrey.getFoodDryMassPerTimeStep().getValue(), getRemainingVoracity()));
-	}
-	else
-	{
-		return DryMass(fmin(getCurrentPrey().getFoodDryMass().getValue(), getRemainingVoracity()));
-	}
-}
-
-void AnimalNonStatistical::applyHandlingTime(const DryMass& foodMass, const bool saveActivity, ostringstream& activityContent, const TimeStep actualTimeStep, const PreciseDouble& timeStepsPerDay)
-{
-	Day initialDay = Day(actualTimeStep, timeStepsPerDay) + Day((steps / getSearchAreaRadius()) * timeStepsPerDay);
-
-	PreciseDouble distanceToAdd = (foodMass.getValue() / currentPrey.getFoodDryMassPerTimeStep().getValue()) * getSearchAreaRadius();
-
-	increaseSteps(distanceToAdd);
-
-	Day finalDay = Day(actualTimeStep, timeStepsPerDay) + Day((steps / getSearchAreaRadius()) * timeStepsPerDay);
-
-	if(saveActivity)
-	{
-		activityContent << getId() << "\t"
-			<< getSpecies()->getScientificName() << "\t"
-			<< "Handling" << "\t"
-			<< initialDay << "\t"
-			<< finalDay << "\t"
-			<< (finalDay-initialDay) << "\n";
-	}
-}
-
-void AnimalNonStatistical::increaseSteps(const PreciseDouble& stepsToAdd)
-{
-	steps += stepsToAdd;
-
-	exhausted = (steps >= getSearchAreaRadius());
+	exhausted = (distanceTravelled >= getSearchAreaRadius());
 }
 
 Day AnimalNonStatistical::computeHandlingTime(const DryMass& preyDryMass, const PreciseDouble& timeStepsPerDay) const
@@ -2208,21 +2293,6 @@ const PreciseDouble& AnimalNonStatistical::getInteractionAreaRadius() const
 	return interactionAreaRadius;
 }
 
-
-void AnimalNonStatistical::setInfoMassFileHeader(const fs::path& resultFolder, const bool saveMassInfo) const
-{
-	if(saveMassInfo)
-	{
-		std::ofstream infoMassFile;
-
-		createOutputFile(infoMassFile, resultFolder / fs::path("massInfo") / fs::path("animal_" + string(getId()) + ".txt"));
-
-		infoMassFile << "TimeStep\tCurrentMass\tMoltingMassTarget\tReproductionMassTarget\tGrowthCurve\tMassPredicted\tCurrentAge\tMoltingAgeTarget\tReproductionAgeTarget\n";
-
-		infoMassFile.close();
-	}
-}
-
 const PreciseDouble& AnimalNonStatistical::getPreference(const Species::ID &preySpeciesId, const Instar &preyInstar) const
 {
 	return decisions.getPreference(preySpeciesId, preyInstar);
@@ -2260,13 +2330,13 @@ PreciseDouble AnimalNonStatistical::calculatePredationRisk(AnimalNonStatistical&
 	return decisions.calculatePredationRisk(predator);
 }
 
-PreciseDouble AnimalNonStatistical::calculatePredationProbability(const AnimalNonStatistical& prey)
+PreciseDouble AnimalNonStatistical::calculatePredationProbability(const Edible& prey, const DryMass& preyDryMass)
 {
 	if(getId() != prey.getId())
 	{
 		if(!isSated() && !isExhausted())
 		{
-			return decisions.calculatePredationProbability(prey);
+			return decisions.calculatePredationProbability(prey, preyDryMass);
 		}
 	}
 
@@ -2285,9 +2355,9 @@ DryMass AnimalNonStatistical::calculateConspecificBiomass(const AnimalNonStatist
 	}
 }
 
-PreciseDouble AnimalNonStatistical::calculateCellQuality(const AnimalNonStatistical& prey, const std::list<const AnimalNonStatistical*> &animalsHasTriedToPredate)
+PreciseDouble AnimalNonStatistical::calculateCellQuality(const AnimalNonStatistical& prey)
 {
-	if(getId() != prey.getId() && canEatAnimal(prey, animalsHasTriedToPredate))
+	if(getId() != prey.getId())
 	{
 		return decisions.calculateCellQuality(prey);
 	}
@@ -2309,9 +2379,9 @@ PreciseDouble AnimalNonStatistical::calculateCellQuality(const CellResourceInter
 	}
 }
 
-PreciseDouble AnimalNonStatistical::calculateEdibilityValue(const AnimalNonStatistical& prey, const std::list<const AnimalNonStatistical*> &animalsHasTriedToPredate)
+PreciseDouble AnimalNonStatistical::calculateEdibilityValue(const AnimalNonStatistical& prey)
 {
-	if(getId() != prey.getId() && canEatAnimal(prey, animalsHasTriedToPredate))
+	if(getId() != prey.getId())
 	{
 		return decisions.calculateEdibilityValue(prey);
 	}
@@ -2331,16 +2401,6 @@ PreciseDouble AnimalNonStatistical::calculateEdibilityValue(const CellResourceIn
 	{
 		return 0.0;
 	}
-}
-
-bool AnimalNonStatistical::hasTriedToHunt(const AnimalNonStatistical& prey, const list<const AnimalNonStatistical*> &animalsHasTriedToPredate) const
-{
-	return find(animalsHasTriedToPredate.cbegin(), animalsHasTriedToPredate.cend(), &prey) != animalsHasTriedToPredate.cend();
-}
-
-bool AnimalNonStatistical::canEatAnimal(const AnimalNonStatistical& prey, const std::list<const AnimalNonStatistical*> &animalsHasTriedToPredate) const
-{
-	return !hasTriedToHunt(prey, animalsHasTriedToPredate);
 }
 
 bool AnimalNonStatistical::canEatResource(const DryMass &dryMass) const
@@ -2399,7 +2459,7 @@ void AnimalNonStatistical::serialize(Archive &ar, const unsigned int) {
 
 	ar & exhausted;
 
-	ar & steps;
+	ar & distanceTravelled;
 
 	ar & stepsAttempted;
 
@@ -2408,12 +2468,14 @@ void AnimalNonStatistical::serialize(Archive &ar, const unsigned int) {
 
 	ar & predationEncountersCurrentDay;
 
+	ar & nextAction;
+
+	ar & actionsCurrentTimeStep;
+
 	ar & timeStepsWithoutFood;
 	ar & sated;
 	ar & ageOfLastMoultOrReproduction;
 	ar & dateOfDeath;
-	ar & lastDayMoved;
-	ar & firstMovement;
 
 	ar & generationNumberFromFemaleParent;
 	ar & generationNumberFromMaleParent;

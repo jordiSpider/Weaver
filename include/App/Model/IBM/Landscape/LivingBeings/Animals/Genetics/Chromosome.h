@@ -24,6 +24,7 @@
 
 /**
  * @class Chromosome
+ * @ingroup weaver_landscape
  * @brief Represents a chromosome in the genetic model.
  * 
  * A chromosome is composed of a sequence of loci, where each locus contains
@@ -107,16 +108,6 @@ public:
      */
 	void swapAlleles(const size_t lociPosition, Chromosome* const otherChromosome, const size_t otherLociPosition);
 
-	/**
-     * @brief Stream output operator.
-     * 
-     * Prints the chromosome to an output stream.
-     * 
-     * @param os Output stream.
-     * @param chromosome Chromosome to print.
-     * @return Reference to the output stream.
-     */
-	friend std::ostream& operator<<(std::ostream& os, const Chromosome &chromosome);
 
 	/**
      * @brief Serializes the chromosome for persistence.

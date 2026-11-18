@@ -1,0 +1,31 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.14.0" xml:lang="en-US">
+  <compounddef id="group___life_stage_parameters" kind="group">
+    <compoundname>LifeStageParameters</compoundname>
+    <title>Life Stage Parameters</title>
+    <sectiondef kind="func">
+      <memberdef kind="function" id="group___life_stage_parameters_1gaea2dac9505bd45e63869597248da4abe" prot="protected" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void AnimalSpecies::obtainLifeStageSearchParams</definition>
+        <argsstring>()</argsstring>
+        <name>obtainLifeStageSearchParams</name>
+        <qualifiedname>AnimalSpecies::obtainLifeStageSearchParams</qualifiedname>
+        <briefdescription>
+<para>Computes the search parameters associated with detecting individuals in different life stages. </para>
+        </briefdescription>
+        <detaileddescription>
+<para>These parameters influence interactions such as predation, competition, cannibalism, facilitation, and kin recognition, depending on the species’ ecology. </para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="App/Model/IBM/Landscape/LivingBeings/Animals/Species/AnimalSpecies.h" line="936" column="6"/>
+      </memberdef>
+    </sectiondef>
+    <briefdescription>
+<para>Methods related to detecting and interacting with individuals at different life stages. </para>
+    </briefdescription>
+    <detaileddescription>
+<para>This group includes methods that compute search parameters or behavioral rules depending on the life stage of the individuals. It influences interactions such as predation, competition, cannibalism, facilitation, and kin recognition. </para>
+    </detaileddescription>
+  </compounddef>
+</doxygen>

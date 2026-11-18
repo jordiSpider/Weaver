@@ -21,6 +21,7 @@ class Animal;
 
 /**
  * @class PredationProbability
+ * @ingroup weaver_landscape
  * @brief Manages predation probability functions for species across different instars.
  *
  * This class computes the probability of predation events using multiple components,

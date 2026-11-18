@@ -1,0 +1,42 @@
+{
+  "metadata": {
+    "schema_version": "2026.08.05",
+    "export_timestamp": "2026-10-09 19:45:45.184339"
+  },
+  "genetic_algorithm_settings": {
+    "population_size": 10,
+    "max_generations": 3,
+    "tournament_size": 3,
+    "crossover_prob": 0.8,
+    "mutation_rate": 0.05,
+    "keep_best": false
+  },
+  "computing_environment": {
+    "fitness_class": "MultiObjectiveFitness",
+    "priority_ranking": "objective_1",
+    "assigned_weights": {},
+    "objectives": {
+      "1": {
+        "name": "objective_1",
+        "criteria": "MAX",
+        "fitness_func_name": "coefficientOfVariation",
+        "custom_code_raw": {}
+      }
+    }
+  },
+  "optimization_variables_allocation": {
+    "YodzisA_Cricotopus": {
+      "parameter_class": "RealValued",
+      "tied_destinations_coordinates": [
+        {
+          "target_json_file": "species/Cricotopus spx.json",
+          "internal_json_path": "animal$YodzisA"
+        }
+      ],
+      "min_bound": 0,
+      "max_bound": 1,
+      "boolean_toggle": {},
+      "selected_enums": {}
+    }
+  }
+}

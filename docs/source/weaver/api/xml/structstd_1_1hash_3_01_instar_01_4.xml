@@ -1,0 +1,52 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.14.0" xml:lang="en-US">
+  <compounddef id="structstd_1_1hash_3_01_instar_01_4" kind="struct" language="C++" prot="public">
+    <compoundname>std::hash&lt; Instar &gt;</compoundname>
+    <includes refid="_instar_8h" local="no">Instar.h</includes>
+    <templateparamlist>
+    </templateparamlist>
+    <sectiondef kind="public-func">
+      <memberdef kind="function" id="structstd_1_1hash_3_01_instar_01_4_1ae198d7fc9a727bc618dd30786e04098f" prot="public" static="no" const="yes" explicit="no" inline="no" virt="non-virtual">
+        <type>std::size_t</type>
+        <definition>std::size_t std::hash&lt; Instar &gt;::operator()</definition>
+        <argsstring>(const Instar &amp;instar) const</argsstring>
+        <name>operator()</name>
+        <qualifiedname>std::hash&lt; Instar &gt;::operator()</qualifiedname>
+        <param>
+          <type>const <ref refid="class_instar" kindref="compound">Instar</ref> &amp;</type>
+          <declname>instar</declname>
+        </param>
+        <briefdescription>
+<para>Computes a hash value for the given <ref refid="class_instar" kindref="compound">Instar</ref>. </para>
+        </briefdescription>
+        <detaileddescription>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>instar</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>The <ref refid="class_instar" kindref="compound">Instar</ref> object to hash. </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<simplesect kind="return"><para>A hash value corresponding to the internal representation of <ref refid="class_instar" kindref="compound">Instar</ref>. </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="App/Model/IBM/Landscape/LivingBeings/Species/Growth/Instar.h" line="329" column="17"/>
+      </memberdef>
+    </sectiondef>
+    <briefdescription>
+<para>Hash specialization for <ref refid="class_instar" kindref="compound">Instar</ref> to allow usage in unordered containers. </para>
+    </briefdescription>
+    <detaileddescription>
+<para>This enables <ref refid="class_instar" kindref="compound">Instar</ref> objects to be used as keys in containers such as std::unordered_map or std::unordered_set by providing a hash function. </para>
+    </detaileddescription>
+    <location file="App/Model/IBM/Landscape/LivingBeings/Species/Growth/Instar.h" line="323" column="1" bodyfile="App/Model/IBM/Landscape/LivingBeings/Species/Growth/Instar.h" bodystart="323" bodyend="330"/>
+    <listofallmembers>
+      <member refid="structstd_1_1hash_3_01_instar_01_4_1ae198d7fc9a727bc618dd30786e04098f" prot="public" virt="non-virtual"><scope>std::hash&lt; Instar &gt;</scope><name>operator()</name></member>
+    </listofallmembers>
+  </compounddef>
+</doxygen>

@@ -5,7 +5,7 @@ using json = nlohmann::json;
 
 
 GaussianPatch::GaussianPatch(const json &)
-    : PatchShape(new RingModel(), "")
+    : PatchShape(RingModel(), "")
 {
     
 }

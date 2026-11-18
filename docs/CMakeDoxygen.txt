@@ -8,9 +8,8 @@
 # Steps performed:
 #   1. Validate required variables.
 #   2. Prepare clean output directories.
-#   3. Fetch and include the Doxygen Awesome CSS theme.
-#   4. Configure the Doxyfile template.
-#   5. Run the Doxygen build target.
+#   3. Configure the Doxyfile template.
+#   4. Run the Doxygen XML build target.
 # ============================================================
 
 
@@ -28,7 +27,7 @@ set(REQUIRED_VARS
 set(MISSING_VARS "")
 
 foreach(var_name IN LISTS REQUIRED_VARS)
-    if(NOT DEFINED ${var_name} OR ${var_name} STREQUAL "")
+    if(NOT DEFINED ${var_name} OR "${${var_name}}" STREQUAL "")
         list(APPEND MISSING_VARS "${var_name}")
     endif()
 endforeach()
@@ -43,9 +42,10 @@ endif()
 # ------------------------------------------------------------
 # 📂 Define output directories
 # ------------------------------------------------------------
-# The Doxygen HTML output will be placed under the versioned
-# Sphinx documentation source directory.
-set(DOXYGEN_OUTPUT_DIR "${SPHINX_SOURCE_DIR}/${LATEST_VERSION}/${API_DIR_NAME}")
+# Doxygen XML is written under the canonical Weaver Sphinx source.
+set(DOXYGEN_OUTPUT_DIR "${WEAVER_DOCS_SOURCE_DIR}/latest/${API_DIR_NAME}")
+get_filename_component(DOXYGEN_OUTPUT_DIR "${DOXYGEN_OUTPUT_DIR}" ABSOLUTE)
+file(TO_CMAKE_PATH "${DOXYGEN_OUTPUT_DIR}" DOXYGEN_OUTPUT_DIR)
 
 
 # ------------------------------------------------------------
@@ -53,35 +53,20 @@ set(DOXYGEN_OUTPUT_DIR "${SPHINX_SOURCE_DIR}/${LATEST_VERSION}/${API_DIR_NAME}")
 # ------------------------------------------------------------
 # This target removes the previous Doxygen output directory
 # before generating new documentation to ensure a clean build.
-add_custom_target(clean-doxygen ALL 
+add_custom_target(clean-doxygen
     COMMAND ${CMAKE_COMMAND} -E rm -rf "${DOXYGEN_OUTPUT_DIR}"
     COMMENT "Cleaning Doxygen output folders..."
 )
 
 
-# ------------------------------------------------------------
-# 🎨 Fetch and configure Doxygen Awesome CSS
-# ------------------------------------------------------------
-# This theme improves the default Doxygen HTML output with a
-# modern, responsive design. The theme files are downloaded
-# automatically using CMake’s FetchContent module.
-include(FetchContent)
-FetchContent_Declare(
-    doxygen-awesome-css
-    URL https://github.com/jothepro/doxygen-awesome-css/archive/refs/heads/main.zip
-)
-FetchContent_MakeAvailable(doxygen-awesome-css)
-
-# Retrieve the local path to the downloaded theme files.
-FetchContent_GetProperties(doxygen-awesome-css SOURCE_DIR AWESOME_CSS_DIR)
-
-
-# ------------------------------------------------------------
 # ⚙️ Configure Doxygen input and output
 # ------------------------------------------------------------
 # The Doxyfile.in template is configured using project variables
 # and stored as Doxyfile for the actual Doxygen build.
-set(DOXYGEN_INPUT_DIR "${INCLUDE_DIR}")
+get_filename_component(DOXYGEN_INPUT_DIR "${INCLUDE_DIR}" ABSOLUTE BASE_DIR "${PROJECT_SOURCE_DIR}")
+file(TO_CMAKE_PATH "${DOXYGEN_INPUT_DIR}" DOXYGEN_INPUT_DIR)
+get_filename_component(DOXYGEN_DOCS_DIR "${DOCS_DIR}" ABSOLUTE)
+file(TO_CMAKE_PATH "${DOXYGEN_DOCS_DIR}" DOXYGEN_DOCS_DIR)
 set(DOXYFILE_INPUT "${DOCS_DIR}/Doxyfile.in")
 set(DOXYFILE_OUTPUT "${DOCS_DIR}/Doxyfile")
 
@@ -91,9 +76,8 @@ configure_file("${DOXYFILE_INPUT}" "${DOXYFILE_OUTPUT}" @ONLY)
 # ------------------------------------------------------------
 # 🔍 Locate Doxygen
 # ------------------------------------------------------------
-# Ensures Doxygen (and Graphviz's dot component if available)
-# is installed and meets the minimum required version.
-find_package(Doxygen ${DOXYGEN_VERSION} COMPONENTS dot)
+# Ensures Doxygen is installed and meets the minimum required version.
+find_package(Doxygen ${DOXYGEN_VERSION})
 
 if(NOT DOXYGEN_FOUND)
     message(FATAL_ERROR "Doxygen (v${DOXYGEN_VERSION}+) must be installed to generate API documentation.")
@@ -103,12 +87,12 @@ endif()
 # ------------------------------------------------------------
 # 🏗️ Build Doxygen target
 # ------------------------------------------------------------
-# Defines the main Doxygen build step. The output is generated
-# into the versioned documentation directory.
+# Defines the main Doxygen XML generation step.
 add_custom_target(
-    build-doxygen ALL
+    build-doxygen
     COMMAND ${CMAKE_COMMAND} -E make_directory "${DOXYGEN_OUTPUT_DIR}" 
     COMMAND ${DOXYGEN_EXECUTABLE} "${DOXYFILE_OUTPUT}"
+    COMMAND "${Python3_EXECUTABLE}" "${DOCS_DIR}/NormalizeDoxygenXmlPaths.py" "${DOXYGEN_OUTPUT_DIR}/xml"
     WORKING_DIRECTORY ${DOCS_DIR}
     COMMENT "Generating API reference documentation with Doxygen..."
 )

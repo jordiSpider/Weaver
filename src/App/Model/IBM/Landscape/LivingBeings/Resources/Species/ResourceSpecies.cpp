@@ -21,10 +21,6 @@ const id_type& ResourceSpecies::ResourceID::getValue() const
 	return value;
 }
 
-ResourceSpecies::ResourceID::operator size_t() const {
-	return static_cast<size_t>(value);
-}
-
 size_t hash<ResourceSpecies::ResourceID>::operator()(const ResourceSpecies::ResourceID& resourceID) const
 {
     return hash<size_t>{}(resourceID.getValue());

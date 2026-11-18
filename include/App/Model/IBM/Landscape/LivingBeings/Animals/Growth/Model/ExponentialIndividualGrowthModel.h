@@ -15,6 +15,7 @@
 
 /**
  * @class ExponentialIndividualGrowthModel
+ * @ingroup weaver_landscape
  * @brief Implements an exponential individual growth model.
  * 
  * This class models the growth of an individual using an exponential function. It inherits from

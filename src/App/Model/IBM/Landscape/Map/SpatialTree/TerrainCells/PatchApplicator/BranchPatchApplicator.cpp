@@ -68,7 +68,7 @@ BranchCellHabitatDomain& BranchPatchApplicator::getMutableCellHabitatDomain()
 
 pair<bool, bool> BranchPatchApplicator::applyPatch(Landscape* const landscape, const Patch &patch)
 {
-    auto coverage = patch.checkCoverage(&owner->getEffectiveArea());
+    auto coverage = patch.checkCoverage(owner->getEffectiveArea());
 
     if(coverage == Coverage::Full)
     {

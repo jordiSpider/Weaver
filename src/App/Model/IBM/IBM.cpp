@@ -1,14 +1,20 @@
 
 #include "App/Model/IBM/IBM.h"
 
+#include "Misc/JsonValidator/ConfigurationValidator.h"
+#include "Misc/JsonValidator/EmbeddedConfigurationSchemas.h"
+
+#include "App/Manager/LogManager.h"
+
+
 
 using namespace std;
 using json = nlohmann::json;
 namespace fs = std::filesystem;
 
 
-IBM::IBM(View& view)
-	: Model(view)
+IBM::IBM()
+	: Model()
 {
 
 }
@@ -43,35 +49,41 @@ pair<bool,fs::path> IBM::existsCheckpoint(const fs::path& checkpointFolderPath, 
 
 void IBM::run(const RunMode runMode, const fs::path& inputConfigPath, const fs::path& outputFolderPath)
 {
-    #ifdef USE_CPU_PROFILER
-		ProfilerStart("./profiler/cpuProfiler.txt");
-	#endif
-	
-	#ifdef USE_HEAP_PROFILER
-		HeapProfilerStart("./profiler/heapProfiler");
-	#endif
-
-
 	Landscape* myLandscape = nullptr;
 
 	if(runMode == RunMode::FromConfig)
 	{
-		view.updateLog("===================================================\n");
-		view.updateLog("Reading configuration and initializing landscape...\n");
-		view.updateLog("===================================================\n");
+		ConfigurationValidator validator(WeaverEmbeddedSchemas::configurationStructure,
+			WeaverEmbeddedSchemas::configurationConstraints, WeaverEmbeddedSchemas::jsonSchemas());
+		auto validation = validator.validate(inputConfigPath, WEAVER_SCHEMA_VERSION);
+		if (!validation.valid()) throwLineInfoException("Configuration validation failed:\n" + validation.toPrettyString());
+		if (validation.hasWarnings()) {
+			std::string warningMessage = "Configuration validation produced warnings:\n";
+			for (const auto& warning : validation.warnings) {
+				warningMessage += " - ";
+				if (!warning.file.empty()) warningMessage += warning.file;
+				if (!warning.instancePath.empty()) warningMessage += warning.instancePath;
+				if (!warning.file.empty() || !warning.instancePath.empty()) warningMessage += ": ";
+				warningMessage += warning.message;
+				if (warningMessage.back() != '\n') warningMessage += '\n';
+			}
+			LogManager::emitWarning(std::move(warningMessage));
+		}
+
+		LogManager::emit("===================================================\n");
+		LogManager::emit("Reading configuration and initializing landscape...\n");
+		LogManager::emit("===================================================\n");
 
 
-		JsonValidator landscapeValidator(LANDSCAPE_PARAMS_SCHEMA);
-
-		json landscapeConfig = readConfigFile(inputConfigPath / "landscape_params.json", landscapeValidator);
+		json landscapeConfig = readConfigFile(inputConfigPath / "landscape_params.json");
 		
 		myLandscape = Landscape::createInstance(landscapeConfig["landscape"]["simulationType"]);
 	}
 	else
 	{
-		view.updateLog("============================================\n");
-		view.updateLog("Reading checkpoint and resuming landscape...\n");
-		view.updateLog("============================================\n\n");
+		LogManager::emit("============================================\n");
+		LogManager::emit("Reading checkpoint and resuming landscape...\n");
+		LogManager::emit("============================================\n\n");
 
 
 		bool isBinaryCheckpoint = (runMode == RunMode::FromBinaryCheckpoint);
@@ -100,32 +112,20 @@ void IBM::run(const RunMode runMode, const fs::path& inputConfigPath, const fs::
 	}
 
 
-	myLandscape->init(&view, inputConfigPath, outputFolderPath, (runMode != RunMode::FromConfig));
-
-    #ifdef USE_HEAP_PROFILER
-		HeapProfilerDump("prueba");
-	#endif
+	myLandscape->init(inputConfigPath, outputFolderPath, (runMode != RunMode::FromConfig));
 
 
-	view.updateLog("DONE\n\n");
+	LogManager::emit("DONE\n\n");
 
-	view.updateLog("======================\n");
-	view.updateLog("Running simulation ...\n");
-	view.updateLog("======================\n\n");
+	LogManager::emit("======================\n");
+	LogManager::emit("Running simulation ...\n");
+	LogManager::emit("======================\n\n");
 
 	myLandscape->evolveLandscape();
 
-	view.updateLog("DONE\n");
+	LogManager::emit("DONE\n");
 
-	#ifdef USE_CPU_PROFILER
-		ProfilerStop();
-	#endif
-
-	#ifdef USE_HEAP_PROFILER
-		HeapProfilerStop();
-	#endif
-
-	view.updateLog("Result folder: " + myLandscape->getResultFolder().string() + "\n", true);
+	LogManager::emit("Result folder: " + myLandscape->getResultFolder().string() + "\n", true);
 
 	delete myLandscape;
 }

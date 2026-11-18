@@ -1,0 +1,586 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.14.0" xml:lang="en-US">
+  <compounddef id="group___species_modifiers" kind="group">
+    <compoundname>SpeciesModifiers</compoundname>
+    <title>Setters and Change Operations</title>
+    <sectiondef kind="func">
+      <memberdef kind="function" id="group___species_modifiers_1ga87c153be67c5aa0a8f8e22e7ad6ca011" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void AnimalSpecies::addAnimalSpecies</definition>
+        <argsstring>()</argsstring>
+        <name>addAnimalSpecies</name>
+        <qualifiedname>AnimalSpecies::addAnimalSpecies</qualifiedname>
+        <briefdescription>
+<para>Adds an animal species record. </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="App/Model/IBM/Landscape/LivingBeings/Animals/Species/AnimalSpecies.h" line="560" column="6"/>
+      </memberdef>
+      <memberdef kind="function" id="group___species_modifiers_1gaded78ec26a930ca6f77dec778c7fe75b" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void AnimalSpecies::addResourceSpecies</definition>
+        <argsstring>()</argsstring>
+        <name>addResourceSpecies</name>
+        <qualifiedname>AnimalSpecies::addResourceSpecies</qualifiedname>
+        <briefdescription>
+<para>Adds a resource species record. </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="App/Model/IBM/Landscape/LivingBeings/Animals/Species/AnimalSpecies.h" line="563" column="6"/>
+      </memberdef>
+      <memberdef kind="function" id="group___species_modifiers_1ga850cf83acc582c716a961db0557748be" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void AnimalSpecies::generateInitialGenomesPool</definition>
+        <argsstring>(const CustomIndexedVector&lt; Instar, unsigned int &gt; &amp;population, std::vector&lt; Genome &gt; &amp;initialGenomesPool)</argsstring>
+        <name>generateInitialGenomesPool</name>
+        <qualifiedname>AnimalSpecies::generateInitialGenomesPool</qualifiedname>
+        <param>
+          <type>const <ref refid="class_custom_indexed_vector" kindref="compound">CustomIndexedVector</ref>&lt; <ref refid="class_instar" kindref="compound">Instar</ref>, unsigned int &gt; &amp;</type>
+          <declname>population</declname>
+        </param>
+        <param>
+          <type>std::vector&lt; <ref refid="class_genome" kindref="compound">Genome</ref> &gt; &amp;</type>
+          <declname>initialGenomesPool</declname>
+        </param>
+        <briefdescription>
+<para>Generates the initial genomes pool for this species. </para>
+        </briefdescription>
+        <detaileddescription>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>initialPopulation</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Initial population per instar. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>initialGenomesPool</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Output vector to be filled with initial genomes. </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="App/Model/IBM/Landscape/LivingBeings/Animals/Species/AnimalSpecies.h" line="571" column="6"/>
+      </memberdef>
+      <memberdef kind="function" id="group___species_modifiers_1ga3761cca8bd0d2e6d309406086e34c6da" prot="public" static="no" const="yes" explicit="no" inline="no" virt="non-virtual">
+        <type>const std::unordered_map&lt; <ref refid="class_species_1_1_i_d" kindref="compound">Species::ID</ref>, std::vector&lt; <ref refid="class_instar" kindref="compound">Instar</ref> &gt; &gt; &amp;</type>
+        <definition>const std::unordered_map&lt; Species::ID, std::vector&lt; Instar &gt; &gt; &amp; AnimalSpecies::getInstarEdibleAnimalSpecies</definition>
+        <argsstring>(const Instar &amp;instar) const</argsstring>
+        <name>getInstarEdibleAnimalSpecies</name>
+        <qualifiedname>AnimalSpecies::getInstarEdibleAnimalSpecies</qualifiedname>
+        <param>
+          <type>const <ref refid="class_instar" kindref="compound">Instar</ref> &amp;</type>
+          <declname>instar</declname>
+        </param>
+        <briefdescription>
+<para>Returns instar-edible animal species. </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="App/Model/IBM/Landscape/LivingBeings/Animals/Species/AnimalSpecies.h" line="595" column="26"/>
+      </memberdef>
+      <memberdef kind="function" id="group___species_modifiers_1ga903c8e9df7b611d28db4b13929d4d1c4" prot="public" static="no" const="yes" explicit="no" inline="no" virt="non-virtual">
+        <type>const std::unordered_map&lt; <ref refid="class_species_1_1_i_d" kindref="compound">Species::ID</ref>, std::vector&lt; <ref refid="class_instar" kindref="compound">Instar</ref> &gt; &gt; &amp;</type>
+        <definition>const std::unordered_map&lt; Species::ID, std::vector&lt; Instar &gt; &gt; &amp; AnimalSpecies::getInstarEdibleResourceSpecies</definition>
+        <argsstring>(const Instar &amp;instar) const</argsstring>
+        <name>getInstarEdibleResourceSpecies</name>
+        <qualifiedname>AnimalSpecies::getInstarEdibleResourceSpecies</qualifiedname>
+        <param>
+          <type>const <ref refid="class_instar" kindref="compound">Instar</ref> &amp;</type>
+          <declname>instar</declname>
+        </param>
+        <briefdescription>
+<para>Returns instar-edible resource species. </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="App/Model/IBM/Landscape/LivingBeings/Animals/Species/AnimalSpecies.h" line="598" column="26"/>
+      </memberdef>
+      <memberdef kind="function" id="group___species_modifiers_1ga3de7a0e4527f639e94f69ac6835339d2" prot="public" static="no" const="yes" explicit="no" inline="no" virt="non-virtual">
+        <type>const <ref refid="class_custom_indexed_vector" kindref="compound">CustomIndexedVector</ref>&lt; SpeciesType, std::unordered_map&lt; <ref refid="class_species_1_1_i_d" kindref="compound">Species::ID</ref>, std::vector&lt; <ref refid="class_instar" kindref="compound">Instar</ref> &gt; &gt; &gt; &amp;</type>
+        <definition>const CustomIndexedVector&lt; SpeciesType, std::unordered_map&lt; Species::ID, std::vector&lt; Instar &gt; &gt; &gt; &amp; AnimalSpecies::getInstarEdibleSpecies</definition>
+        <argsstring>(const Instar &amp;instar) const</argsstring>
+        <name>getInstarEdibleSpecies</name>
+        <qualifiedname>AnimalSpecies::getInstarEdibleSpecies</qualifiedname>
+        <param>
+          <type>const <ref refid="class_instar" kindref="compound">Instar</ref> &amp;</type>
+          <declname>instar</declname>
+        </param>
+        <briefdescription>
+<para>Returns instar-edible species structure. </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="App/Model/IBM/Landscape/LivingBeings/Animals/Species/AnimalSpecies.h" line="592" column="27"/>
+      </memberdef>
+      <memberdef kind="function" id="group___species_modifiers_1gaec137ae891d2f7feca7873739954be28" prot="public" static="no" const="yes" explicit="no" inline="no" virt="non-virtual">
+        <type>const size_t &amp;</type>
+        <definition>const size_t &amp; AnimalSpecies::getMaximumPredationEncountersPerDay</definition>
+        <argsstring>() const</argsstring>
+        <name>getMaximumPredationEncountersPerDay</name>
+        <qualifiedname>AnimalSpecies::getMaximumPredationEncountersPerDay</qualifiedname>
+        <briefdescription>
+<para>Returns max predation encounters per day. </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="App/Model/IBM/Landscape/LivingBeings/Animals/Species/AnimalSpecies.h" line="619" column="14"/>
+      </memberdef>
+      <memberdef kind="function" id="group___species_modifiers_1ga2b93143ea25879035fc24815e626d33c" prot="public" static="no" const="yes" explicit="no" inline="yes" virt="virtual">
+        <type><ref refid="class_precise_double" kindref="compound">PreciseDouble</ref></type>
+        <definition>virtual PreciseDouble AnimalSpecies::getMinRelativeHumidityThreshold</definition>
+        <argsstring>(const Instar &amp;instar) const</argsstring>
+        <name>getMinRelativeHumidityThreshold</name>
+        <qualifiedname>AnimalSpecies::getMinRelativeHumidityThreshold</qualifiedname>
+        <param>
+          <type>const <ref refid="class_instar" kindref="compound">Instar</ref> &amp;</type>
+          <declname>instar</declname>
+        </param>
+        <briefdescription>
+<para>Returns humidity threshold per instar. </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="App/Model/IBM/Landscape/LivingBeings/Animals/Species/AnimalSpecies.h" line="574" column="23" bodyfile="App/Model/IBM/Landscape/LivingBeings/Animals/Species/AnimalSpecies.h" bodystart="574" bodyend="574"/>
+      </memberdef>
+      <memberdef kind="function" id="group___species_modifiers_1ga2255089873f3b93d2fa311eb26fca680" prot="public" static="no" const="yes" explicit="no" inline="yes" virt="virtual">
+        <type>float</type>
+        <definition>virtual float AnimalSpecies::getPercentageCostForMetabolicDownregulationSearchArea</definition>
+        <argsstring>() const</argsstring>
+        <name>getPercentageCostForMetabolicDownregulationSearchArea</name>
+        <qualifiedname>AnimalSpecies::getPercentageCostForMetabolicDownregulationSearchArea</qualifiedname>
+        <briefdescription>
+<para>Returns cost for downregulation affecting search area. </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="App/Model/IBM/Landscape/LivingBeings/Animals/Species/AnimalSpecies.h" line="604" column="15" bodyfile="App/Model/IBM/Landscape/LivingBeings/Animals/Species/AnimalSpecies.h" bodystart="604" bodyend="604"/>
+      </memberdef>
+      <memberdef kind="function" id="group___species_modifiers_1ga8f28e87596e1a98957308e89d1884623" prot="public" static="no" const="yes" explicit="no" inline="yes" virt="virtual">
+        <type>float</type>
+        <definition>virtual float AnimalSpecies::getPercentageCostForMetabolicDownregulationSpeed</definition>
+        <argsstring>() const</argsstring>
+        <name>getPercentageCostForMetabolicDownregulationSpeed</name>
+        <qualifiedname>AnimalSpecies::getPercentageCostForMetabolicDownregulationSpeed</qualifiedname>
+        <briefdescription>
+<para>Returns cost for downregulation affecting speed. </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="App/Model/IBM/Landscape/LivingBeings/Animals/Species/AnimalSpecies.h" line="607" column="15" bodyfile="App/Model/IBM/Landscape/LivingBeings/Animals/Species/AnimalSpecies.h" bodystart="607" bodyend="607"/>
+      </memberdef>
+      <memberdef kind="function" id="group___species_modifiers_1ga2a74fc3b977cec53d9d01f7018be7156" prot="public" static="no" const="yes" explicit="no" inline="yes" virt="virtual">
+        <type>float</type>
+        <definition>virtual float AnimalSpecies::getPercentageCostForMetabolicDownregulationVoracity</definition>
+        <argsstring>() const</argsstring>
+        <name>getPercentageCostForMetabolicDownregulationVoracity</name>
+        <qualifiedname>AnimalSpecies::getPercentageCostForMetabolicDownregulationVoracity</qualifiedname>
+        <briefdescription>
+<para>Returns cost for metabolic downregulation affecting voracity. </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="App/Model/IBM/Landscape/LivingBeings/Animals/Species/AnimalSpecies.h" line="601" column="15" bodyfile="App/Model/IBM/Landscape/LivingBeings/Animals/Species/AnimalSpecies.h" bodystart="601" bodyend="601"/>
+      </memberdef>
+      <memberdef kind="function" id="group___species_modifiers_1ga583afe83e93a486f831970a61963a6a6" prot="public" static="no" const="yes" explicit="no" inline="yes" virt="virtual">
+        <type>float</type>
+        <definition>virtual float AnimalSpecies::getPercentageMetabolicDownregulation</definition>
+        <argsstring>() const</argsstring>
+        <name>getPercentageMetabolicDownregulation</name>
+        <qualifiedname>AnimalSpecies::getPercentageMetabolicDownregulation</qualifiedname>
+        <briefdescription>
+<para>Returns percentage metabolic downregulation. </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="App/Model/IBM/Landscape/LivingBeings/Animals/Species/AnimalSpecies.h" line="586" column="15" bodyfile="App/Model/IBM/Landscape/LivingBeings/Animals/Species/AnimalSpecies.h" bodystart="586" bodyend="586"/>
+      </memberdef>
+      <memberdef kind="function" id="group___species_modifiers_1ga39488f55a06b49846a5ac5865a2b6d5c" prot="public" static="no" const="yes" explicit="no" inline="yes" virt="virtual">
+        <type>const <ref refid="class_precise_double" kindref="compound">PreciseDouble</ref> &amp;</type>
+        <definition>virtual const PreciseDouble &amp; AnimalSpecies::getProbabilityDeathFromBackground</definition>
+        <argsstring>(const Instar &amp;instar) const</argsstring>
+        <name>getProbabilityDeathFromBackground</name>
+        <qualifiedname>AnimalSpecies::getProbabilityDeathFromBackground</qualifiedname>
+        <param>
+          <type>const <ref refid="class_instar" kindref="compound">Instar</ref> &amp;</type>
+          <declname>instar</declname>
+        </param>
+        <briefdescription>
+<para>Returns probability of background mortality. </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="App/Model/IBM/Landscape/LivingBeings/Animals/Species/AnimalSpecies.h" line="610" column="29" bodyfile="App/Model/IBM/Landscape/LivingBeings/Animals/Species/AnimalSpecies.h" bodystart="610" bodyend="610"/>
+      </memberdef>
+      <memberdef kind="function" id="group___species_modifiers_1gaf0b95405da7c0d71b235333a9b9522c0" prot="public" static="no" const="yes" explicit="no" inline="yes" virt="non-virtual">
+        <type><ref refid="class_time_step" kindref="compound">TimeStep</ref></type>
+        <definition>TimeStep AnimalSpecies::getTimeStepsWithoutFoodForMetabolicDownregulation</definition>
+        <argsstring>() const</argsstring>
+        <name>getTimeStepsWithoutFoodForMetabolicDownregulation</name>
+        <qualifiedname>AnimalSpecies::getTimeStepsWithoutFoodForMetabolicDownregulation</qualifiedname>
+        <briefdescription>
+<para>Returns time without food before downregulation. </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="App/Model/IBM/Landscape/LivingBeings/Animals/Species/AnimalSpecies.h" line="580" column="10" bodyfile="App/Model/IBM/Landscape/LivingBeings/Animals/Species/AnimalSpecies.h" bodystart="580" bodyend="580"/>
+      </memberdef>
+      <memberdef kind="function" id="group___species_modifiers_1gafafa057168f94d895b903fe9f432dc1d" prot="public" static="no" const="no" explicit="no" inline="no" virt="virtual">
+        <type>void</type>
+        <definition>virtual void AnimalSpecies::interactionRanges</definition>
+        <argsstring>(Animal &amp;predator, Animal &amp;prey, CustomIndexedVector&lt; Instar, PreciseDouble &gt; &amp;maximumInteractionArea)</argsstring>
+        <name>interactionRanges</name>
+        <qualifiedname>AnimalSpecies::interactionRanges</qualifiedname>
+        <param>
+          <type><ref refid="class_animal" kindref="compound">Animal</ref> &amp;</type>
+          <declname>predator</declname>
+        </param>
+        <param>
+          <type><ref refid="class_animal" kindref="compound">Animal</ref> &amp;</type>
+          <declname>prey</declname>
+        </param>
+        <param>
+          <type><ref refid="class_custom_indexed_vector" kindref="compound">CustomIndexedVector</ref>&lt; <ref refid="class_instar" kindref="compound">Instar</ref>, <ref refid="class_precise_double" kindref="compound">PreciseDouble</ref> &gt; &amp;</type>
+          <declname>maximumInteractionArea</declname>
+        </param>
+        <briefdescription>
+<para>Computes interaction ranges between predator and prey. </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="App/Model/IBM/Landscape/LivingBeings/Animals/Species/AnimalSpecies.h" line="613" column="14"/>
+      </memberdef>
+      <memberdef kind="function" id="group___species_modifiers_1ga949fd11102b631f126f7cf9c6925955b" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void AnimalSpecies::setActivityUnderPredationRisk</definition>
+        <argsstring>(const float &amp;activityUnderPredationRiskValue)</argsstring>
+        <name>setActivityUnderPredationRisk</name>
+        <qualifiedname>AnimalSpecies::setActivityUnderPredationRisk</qualifiedname>
+        <param>
+          <type>const float &amp;</type>
+          <declname>activityUnderPredationRiskValue</declname>
+        </param>
+        <briefdescription>
+<para>Sets activity under predation risk. </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="App/Model/IBM/Landscape/LivingBeings/Animals/Species/AnimalSpecies.h" line="643" column="6"/>
+      </memberdef>
+      <memberdef kind="function" id="group___species_modifiers_1ga47c135a8f3dd1d19a9410071512cd3ac" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void AnimalSpecies::setIndividualsPerInstar</definition>
+        <argsstring>(const std::vector&lt; unsigned int &gt; &amp;newIndividualsPerInstar)</argsstring>
+        <name>setIndividualsPerInstar</name>
+        <qualifiedname>AnimalSpecies::setIndividualsPerInstar</qualifiedname>
+        <param>
+          <type>const std::vector&lt; unsigned int &gt; &amp;</type>
+          <declname>newIndividualsPerInstar</declname>
+        </param>
+        <briefdescription>
+<para>Sets individuals per instar. </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="App/Model/IBM/Landscape/LivingBeings/Animals/Species/AnimalSpecies.h" line="649" column="6"/>
+      </memberdef>
+      <memberdef kind="function" id="group___species_modifiers_1gab296fb4507dc50d80555cae507d7f70a" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void AnimalSpecies::setMaleMobility</definition>
+        <argsstring>(const PreciseDouble &amp;maleMobilityValue)</argsstring>
+        <name>setMaleMobility</name>
+        <qualifiedname>AnimalSpecies::setMaleMobility</qualifiedname>
+        <param>
+          <type>const <ref refid="class_precise_double" kindref="compound">PreciseDouble</ref> &amp;</type>
+          <declname>maleMobilityValue</declname>
+        </param>
+        <briefdescription>
+<para>Sets male mobility parameter. </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="App/Model/IBM/Landscape/LivingBeings/Animals/Species/AnimalSpecies.h" line="637" column="6"/>
+      </memberdef>
+      <memberdef kind="function" id="group___species_modifiers_1ga48943d27e6ad3c067d58721be68afe6a" prot="public" static="no" const="no" explicit="no" inline="no" virt="virtual">
+        <type>void</type>
+        <definition>virtual void AnimalSpecies::setMinRelativeHumidityThreshold</definition>
+        <argsstring>(const std::vector&lt; double &gt; &amp;newMinRelativeHumidityThreshold)</argsstring>
+        <name>setMinRelativeHumidityThreshold</name>
+        <qualifiedname>AnimalSpecies::setMinRelativeHumidityThreshold</qualifiedname>
+        <param>
+          <type>const std::vector&lt; double &gt; &amp;</type>
+          <declname>newMinRelativeHumidityThreshold</declname>
+        </param>
+        <briefdescription>
+<para>Sets humidity thresholds. </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="App/Model/IBM/Landscape/LivingBeings/Animals/Species/AnimalSpecies.h" line="577" column="14"/>
+      </memberdef>
+      <memberdef kind="function" id="group___species_modifiers_1ga278ec20fc084884b0fd152ea2c9fa779" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void AnimalSpecies::setPercentageCostForMetabolicDownregulationSearchArea</definition>
+        <argsstring>(const float &amp;percentageCostForMetabolicDownregulationSearchAreaValue)</argsstring>
+        <name>setPercentageCostForMetabolicDownregulationSearchArea</name>
+        <qualifiedname>AnimalSpecies::setPercentageCostForMetabolicDownregulationSearchArea</qualifiedname>
+        <param>
+          <type>const float &amp;</type>
+          <declname>percentageCostForMetabolicDownregulationSearchAreaValue</declname>
+        </param>
+        <briefdescription>
+<para>Sets cost for metabolic downregulation (search area). </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="App/Model/IBM/Landscape/LivingBeings/Animals/Species/AnimalSpecies.h" line="631" column="6"/>
+      </memberdef>
+      <memberdef kind="function" id="group___species_modifiers_1gacc5b5f19947781a66c8cd79da7372c3c" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void AnimalSpecies::setPercentageCostForMetabolicDownregulationSpeed</definition>
+        <argsstring>(const float &amp;percentageCostForMetabolicDownregulationSpeedValue)</argsstring>
+        <name>setPercentageCostForMetabolicDownregulationSpeed</name>
+        <qualifiedname>AnimalSpecies::setPercentageCostForMetabolicDownregulationSpeed</qualifiedname>
+        <param>
+          <type>const float &amp;</type>
+          <declname>percentageCostForMetabolicDownregulationSpeedValue</declname>
+        </param>
+        <briefdescription>
+<para>Sets cost for metabolic downregulation (speed). </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="App/Model/IBM/Landscape/LivingBeings/Animals/Species/AnimalSpecies.h" line="634" column="6"/>
+      </memberdef>
+      <memberdef kind="function" id="group___species_modifiers_1gad9a9ae81315dbaf1b8243b7e5ed62db8" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void AnimalSpecies::setPercentageCostForMetabolicDownregulationVoracity</definition>
+        <argsstring>(const float &amp;percentageCostForMetabolicDownregulationVoracityValue)</argsstring>
+        <name>setPercentageCostForMetabolicDownregulationVoracity</name>
+        <qualifiedname>AnimalSpecies::setPercentageCostForMetabolicDownregulationVoracity</qualifiedname>
+        <param>
+          <type>const float &amp;</type>
+          <declname>percentageCostForMetabolicDownregulationVoracityValue</declname>
+        </param>
+        <briefdescription>
+<para>Sets cost for metabolic downregulation (voracity). </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="App/Model/IBM/Landscape/LivingBeings/Animals/Species/AnimalSpecies.h" line="628" column="6"/>
+      </memberdef>
+      <memberdef kind="function" id="group___species_modifiers_1ga19fa21161620e1ec0892c377e7df3afd" prot="public" static="no" const="no" explicit="no" inline="yes" virt="virtual">
+        <type>void</type>
+        <definition>virtual void AnimalSpecies::setPercentageMetabolicDownregulation</definition>
+        <argsstring>(const float &amp;percentageMetabolicDownregulationValue)</argsstring>
+        <name>setPercentageMetabolicDownregulation</name>
+        <qualifiedname>AnimalSpecies::setPercentageMetabolicDownregulation</qualifiedname>
+        <param>
+          <type>const float &amp;</type>
+          <declname>percentageMetabolicDownregulationValue</declname>
+        </param>
+        <briefdescription>
+<para>Sets percentage metabolic downregulation. </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="App/Model/IBM/Landscape/LivingBeings/Animals/Species/AnimalSpecies.h" line="589" column="21" bodyfile="App/Model/IBM/Landscape/LivingBeings/Animals/Species/AnimalSpecies.h" bodystart="589" bodyend="589"/>
+      </memberdef>
+      <memberdef kind="function" id="group___species_modifiers_1ga4abf4e86537c60e5c69077cbbb8c559a" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void AnimalSpecies::setPlasticityDueToConditionSearch</definition>
+        <argsstring>(const PreciseDouble &amp;plasticityDueToConditionSearchValue)</argsstring>
+        <name>setPlasticityDueToConditionSearch</name>
+        <qualifiedname>AnimalSpecies::setPlasticityDueToConditionSearch</qualifiedname>
+        <param>
+          <type>const <ref refid="class_precise_double" kindref="compound">PreciseDouble</ref> &amp;</type>
+          <declname>plasticityDueToConditionSearchValue</declname>
+        </param>
+        <briefdescription>
+<para>Sets search plasticity. </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="App/Model/IBM/Landscape/LivingBeings/Animals/Species/AnimalSpecies.h" line="622" column="6"/>
+      </memberdef>
+      <memberdef kind="function" id="group___species_modifiers_1ga163e423630308b2ccecdcec286409396" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void AnimalSpecies::setPlasticityDueToConditionSpeed</definition>
+        <argsstring>(const PreciseDouble &amp;plasticityDueToConditionSpeedValue)</argsstring>
+        <name>setPlasticityDueToConditionSpeed</name>
+        <qualifiedname>AnimalSpecies::setPlasticityDueToConditionSpeed</qualifiedname>
+        <param>
+          <type>const <ref refid="class_precise_double" kindref="compound">PreciseDouble</ref> &amp;</type>
+          <declname>plasticityDueToConditionSpeedValue</declname>
+        </param>
+        <briefdescription>
+<para>Sets speed plasticity. </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="App/Model/IBM/Landscape/LivingBeings/Animals/Species/AnimalSpecies.h" line="625" column="6"/>
+      </memberdef>
+      <memberdef kind="function" id="group___species_modifiers_1gad41306e65eb57703fdfc6746c386f03a" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void AnimalSpecies::setProbabilityDeathFromBackground</definition>
+        <argsstring>(const std::vector&lt; double &gt; &amp;newProbabilityDeathFromBackground)</argsstring>
+        <name>setProbabilityDeathFromBackground</name>
+        <qualifiedname>AnimalSpecies::setProbabilityDeathFromBackground</qualifiedname>
+        <param>
+          <type>const std::vector&lt; double &gt; &amp;</type>
+          <declname>newProbabilityDeathFromBackground</declname>
+        </param>
+        <briefdescription>
+<para>Sets background mortality probability. </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="App/Model/IBM/Landscape/LivingBeings/Animals/Species/AnimalSpecies.h" line="646" column="6"/>
+      </memberdef>
+      <memberdef kind="function" id="group___species_modifiers_1ga0f09adf8a462f6739fa8253735fc24fe" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void AnimalSpecies::setStatisticsIndividualsPerInstar</definition>
+        <argsstring>(const unsigned int &amp;statisticsIndividualsPerInstarValue)</argsstring>
+        <name>setStatisticsIndividualsPerInstar</name>
+        <qualifiedname>AnimalSpecies::setStatisticsIndividualsPerInstar</qualifiedname>
+        <param>
+          <type>const unsigned int &amp;</type>
+          <declname>statisticsIndividualsPerInstarValue</declname>
+        </param>
+        <briefdescription>
+<para>Sets statistics-individuals-per-instar. </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="App/Model/IBM/Landscape/LivingBeings/Animals/Species/AnimalSpecies.h" line="652" column="6"/>
+      </memberdef>
+      <memberdef kind="function" id="group___species_modifiers_1gac222248628a59b805f8723e4769142f1" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void AnimalSpecies::setSurviveWithoutFood</definition>
+        <argsstring>(const bool surviveWithoutFoodValue)</argsstring>
+        <name>setSurviveWithoutFood</name>
+        <qualifiedname>AnimalSpecies::setSurviveWithoutFood</qualifiedname>
+        <param>
+          <type>const bool</type>
+          <declname>surviveWithoutFoodValue</declname>
+        </param>
+        <briefdescription>
+<para>Sets survival-without-food option. </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="App/Model/IBM/Landscape/LivingBeings/Animals/Species/AnimalSpecies.h" line="640" column="6"/>
+      </memberdef>
+      <memberdef kind="function" id="group___species_modifiers_1gac59d8a69353133e3a561ffd82b4b3327" prot="public" static="no" const="no" explicit="no" inline="no" virt="virtual">
+        <type>void</type>
+        <definition>virtual void AnimalSpecies::setTimeStepsWithoutFoodForMetabolicDownregulation</definition>
+        <argsstring>(const PreciseDouble &amp;daysWithoutFoodForMetabolicDownregulation, const PreciseDouble &amp;timeStepsPerDay)</argsstring>
+        <name>setTimeStepsWithoutFoodForMetabolicDownregulation</name>
+        <qualifiedname>AnimalSpecies::setTimeStepsWithoutFoodForMetabolicDownregulation</qualifiedname>
+        <param>
+          <type>const <ref refid="class_precise_double" kindref="compound">PreciseDouble</ref> &amp;</type>
+          <declname>daysWithoutFoodForMetabolicDownregulation</declname>
+        </param>
+        <param>
+          <type>const <ref refid="class_precise_double" kindref="compound">PreciseDouble</ref> &amp;</type>
+          <declname>timeStepsPerDay</declname>
+        </param>
+        <briefdescription>
+<para>Sets time without food before downregulation. </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="App/Model/IBM/Landscape/LivingBeings/Animals/Species/AnimalSpecies.h" line="583" column="14"/>
+      </memberdef>
+      <memberdef kind="function" id="group___species_modifiers_1ga46825b6070e23103095f245118afdbd2" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void AnimalSpecies::updateMaximumPredationEncountersPerDay</definition>
+        <argsstring>(const size_t &amp;predationEncountersPerDay)</argsstring>
+        <name>updateMaximumPredationEncountersPerDay</name>
+        <qualifiedname>AnimalSpecies::updateMaximumPredationEncountersPerDay</qualifiedname>
+        <param>
+          <type>const size_t &amp;</type>
+          <declname>predationEncountersPerDay</declname>
+        </param>
+        <briefdescription>
+<para>Updates max predation encounters per day. </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="App/Model/IBM/Landscape/LivingBeings/Animals/Species/AnimalSpecies.h" line="616" column="6"/>
+      </memberdef>
+    </sectiondef>
+    <briefdescription>
+<para>Setters for mobility, metabolism, mortality and population. </para>
+    </briefdescription>
+    <detaileddescription>
+    </detaileddescription>
+  </compounddef>
+</doxygen>

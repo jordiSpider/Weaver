@@ -22,6 +22,7 @@
 
 /**
  * @class IndividualGrowthModel
+ * @ingroup weaver_landscape
  * @brief Abstract base class for representing an individual animal growth model.
  * 
  * This class provides an interface for various growth models (linear, von Bertalanffy, logistic, exponential, 4-parameter logistic)

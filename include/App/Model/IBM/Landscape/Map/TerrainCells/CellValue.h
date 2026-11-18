@@ -20,6 +20,7 @@
 
 /**
  * @struct CellValue
+ * @ingroup weaver_landscape
  * @brief Stores the evaluation of a terrain cell from the perspective of an animal.
  *
  * This struct is used to compare terrain cells based on perceived value, coverage,
@@ -45,8 +46,16 @@ struct CellValue {
     /// Number of mature females in the cell
     unsigned int numberOfFemales;
 
+    unsigned int numberOfMales;
+
     /// Whether the cell belongs to the habitat domain of the evaluating animal
     bool habitatDomain;
+
+	PreciseDouble totalEdibilityValue;
+	PreciseDouble totalPredatoryRiskEdibilityValue;
+    PreciseDouble totalConspecificBiomass;
+
+    PointContinuous cellCenter;
 
     /**
      * @brief Constructor that evaluates a cell for a given animal.
@@ -63,7 +72,7 @@ struct CellValue {
      * @param numberOfFemales Number of mature females present in the cell
      * @param habitatDomain Whether the cell belongs to the habitat domain
      */
-    CellValue(const AnimalNonStatistical& animalWhoIsEvaluating, const Edible* bestEdibility, bool fullCoverage, const RingModel* cellEffectiveArea, const PointMap* const cellPosition, const PointContinuous& cellCenter, const PreciseDouble &edibilityValue, const PreciseDouble &predatoryRiskEdibilityValue, const PreciseDouble &conspecificBiomass, const unsigned int numberOfFemales, const bool habitatDomain);
+    CellValue(const Edible* bestEdibility, bool fullCoverage, const RingModel* cellEffectiveArea, const PointMap* const cellPosition, const PointContinuous& cellCenter, const PreciseDouble & totalEdibilityValue, const PreciseDouble & totalPredatoryRiskEdibilityValue, const PreciseDouble & totalConspecificBiomass, unsigned int numberOfFemales, unsigned int numberOfMales, const bool habitatDomain);
     
     /**
      * @brief Destructor.
@@ -81,6 +90,8 @@ struct CellValue {
      * @brief Copy assignment operator is deleted.
      */
     CellValue& operator=(const CellValue&) = delete;
+
+    void calculateValuePerceived(const AnimalNonStatistical& animalWhoIsEvaluating);
 
     /**
      * @brief Greater-than operator based on perceived value and other criteria.

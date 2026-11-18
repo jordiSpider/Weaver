@@ -14,9 +14,12 @@
 #include <fstream>
 #include <vector>
 #include <memory>
+#include <optional>
 #include <functional>
 #include <utility>
 #include <boost/geometry/arithmetic/arithmetic.hpp>
+#include <mutex>
+#include <algorithm>
 
 
 #include <boost/serialization/serialization.hpp>
@@ -54,7 +57,9 @@
 #include "App/Model/IBM/Landscape/Map/TerrainCells/PatchApplicator/PatchApplicator.h"
 #include "App/Model/IBM/Landscape/Map/TerrainCells/CellValue.h"
 #include "App/Model/IBM/Landscape/Map/TerrainCells/PatchApplicator/Resources/CellResource.h"
-#include "App/Model/IBM/Maths/PreciseDouble.h"
+#include "Misc/Maths/PreciseDouble.h"
+
+class Map;
 
 
 
@@ -69,30 +74,6 @@ typedef std::vector<const Animal*> ConstAnimalVector;
  * @brief Vector of pointers to Animal.
  */
 typedef std::vector<Animal*> AnimalVector;
-
-/**
- * @typedef GenderVector
- * @brief Indexed vector of animals grouped by gender.
- */
-typedef CustomIndexedVector<Gender, AnimalVector> GenderVector;
-
-/**
- * @typedef InstarVector
- * @brief Indexed vector of animals grouped by instar and gender.
- */
-typedef CustomIndexedVector<Instar, GenderVector> InstarVector;
-
-/**
- * @typedef AnimalSpeciesVector
- * @brief Indexed vector of animals grouped by species, instar, and gender.
- */
-typedef CustomIndexedVector<AnimalSpeciesID, InstarVector> AnimalSpeciesVector;
-
-/**
- * @typedef LifeStageVector
- * @brief Indexed vector of animals grouped by life stage, species, instar, and gender.
- */
-typedef CustomIndexedVector<LifeStage, AnimalSpeciesVector> LifeStageVector;
 
 /**
  * @typedef PartialCoverageAnimals
@@ -164,11 +145,12 @@ using AnimalFunctions = std::tuple<PreviousAnimalFunctions, IndividualFunctions,
  * @typedef ResourceFunctions
  * @brief Vector of functions to apply to resources.
  */
-using ResourceFunctions = std::vector<std::function<void(CellResourceInterface&, bool, const PointContinuous* const, const PreciseDouble&, const RingModel* const)>>;
+using ResourceFunctions = std::vector<std::function<void(CellResourceInterface&, bool, const PointContinuous* const, const PreciseDouble&)>>;
 
 
 /**
  * @class TerrainCell
+ * @ingroup weaver_landscape
  * @brief Represents a single cell in the landscape.
  *
  * TerrainCell stores animals and resources within a discrete spatial cell.
@@ -183,7 +165,7 @@ protected:
     PreciseDouble size;                ///< Size of the cell.
     PreciseDouble hyperVolume;         ///< Hypervolume of the cell.
     PointContinuous* center;           ///< Continuous center position.
-    const RingModel* effectiveArea;    ///< Effective area for calculations.
+    RingModel effectiveArea;    ///< Effective area for calculations.
 
     #ifdef DEBUG
         TimeStep updateLastTimeStep;   ///< Last update time step (debug).
@@ -207,7 +189,9 @@ protected:
      * @param timeStepsPerDay Number of simulation steps per day.
      * @return Created animal.
      */
-    virtual AnimalNonStatistical* createAnimal(Landscape* const landscape, const Instar &instar, AnimalSpecies* animalSpecies, const Genome* const genome, const bool saveGenetics, const bool saveMassInfo, const TimeStep actualTimeStep, const PreciseDouble& timeStepsPerDay)=0;
+    virtual AnimalNonStatistical* createAnimal(Landscape* const landscape, const Instar &instar, AnimalSpecies* animalSpecies, const Genome* const genome, const bool saveGenetics, std::vector<fmt::memory_buffer>& geneticsText, const TimeStep actualTimeStep, const PreciseDouble& timeStepsPerDay)=0;
+
+    virtual std::optional<PointContinuous> generateAnimalPosition(const AnimalSpecies* animalSpecies, const Instar &instar, const Map& map) const;
     
     /**
      * @brief Generates the continuous center point of the cell.
@@ -221,7 +205,8 @@ protected:
      */
     void setPatchApplicator(PatchApplicator* newPatchApplicator);
 
-    LifeStageVector* animals; ///< Stores all the animals in this cell.
+    std::vector<Animal*> animals; ///< Stores all the animals in this cell.
+    mutable std::mutex animalsMutex; ///< Mutex to protect access to animals vector.
 
 public:
     /**
@@ -235,6 +220,11 @@ public:
      * @param size Cell size
      */
     TerrainCell(PointMap* const &position, const PreciseDouble &size);
+
+    TerrainCell(const TerrainCell&) = delete;
+    TerrainCell& operator=(const TerrainCell&) = delete;
+    TerrainCell(TerrainCell&&) = delete;
+    TerrainCell& operator=(TerrainCell&&) = delete;
 
     /**
      * @brief Destructor.
@@ -269,13 +259,13 @@ public:
      * @brief Returns all animals in the cell.
      * @return Reference to the animals vector
      */
-    const LifeStageVector& getAnimals() const;
+    const std::vector<Animal*>& getAnimals() const;
 
     /**
      * @brief Returns a mutable reference to all animals in the cell.
      * @return Mutable reference to the animals vector
      */
-    LifeStageVector& getMutableAnimals() const;
+    std::vector<Animal*>& getMutableAnimals();
     
     /**
      * @brief Returns the effective area polygon of the cell.
@@ -285,9 +275,11 @@ public:
 
     /**
      * @brief Generates the effective area polygon for the cell.
-     * @return Pointer to effective area polygon
+     * @return Effective area polygon
      */
-    const RingModel* makeEffectiveArea() const;
+    RingModel makeEffectiveArea() const;
+
+    bool isAnimalInside(const PointContinuous& animalPos) const;
 
     /**
      * @brief Changes an animal to senesced status.
@@ -314,7 +306,7 @@ public:
      * @param allAnimalsSearchParams Search parameters for which life stages, instars, and genders are relevant
      * @param timeStepsPerDay Simulation time steps per day
      */
-    virtual void addAnimalSpecies(const AnimalSpecies& animalSpecies, const AnimalSearchParams& allAnimalsSearchParams, const PreciseDouble& timeStepsPerDay);
+    virtual void addAnimalSpecies(const AnimalSpecies& animalSpecies);
     
     /**
      * @brief Adds a resource species to the terrain cell.
@@ -328,7 +320,7 @@ public:
      * @param allAnimalsSearchParams Search parameters for animals (needed for interactions)
      * @param timeStepsPerDay Simulation time steps per day
      */
-    virtual void addResourceSpecies(Landscape* const landscape, std::vector<std::vector<std::vector<CellResource*>>>& landscapeResources, ResourceSpecies& resourceSpecies, ResourceSource* const resourceBaseSource, const AnimalSearchParams& allAnimalsSearchParams, const PreciseDouble& timeStepsPerDay);
+    virtual void addResourceSpecies(Landscape* const landscape, std::vector<std::vector<std::vector<CellResource*>>>& landscapeResources, ResourceSpecies& resourceSpecies, ResourceSource* const resourceBaseSource);
 
     /**
      * @brief Deserializes and restores sources applied to this terrain cell.
@@ -376,24 +368,26 @@ public:
      */
     const PointContinuous& getCenter() const;
 
+    virtual void registerCells(std::vector<TerrainCell*>& terrainCells, unsigned int numberOfCellsPerAxis);
+
     /**
      * @brief Applies a series of functions to all resources in the cell.
      * 
      * @param resourceFunctions Vector of pairs of resource search parameters and functions to apply
      */
-    void applyFunctionToResources(const std::vector<std::pair<const ResourceSearchParams&, ResourceFunctions>>& resourceFunctions);
+    void applyFunctionToResources(const std::vector<std::pair<const ResourceSearchParams&, ResourceFunctions>>& resourceFunctions, const PreciseDouble& animalBodySection);
 
     /**
      * @brief Applies a series of functions to resources within a specific radius.
      * 
      * @param sourcePosition Center of the radius
      * @param radius Radius of the area to apply the functions
-     * @param radiusArea Optional precomputed polygon representing the area
      * @param resourceFunctions Vector of resource search parameters and functions to apply
      */
     void applyFunctionToResources(
-        const PointContinuous &sourcePosition, const PreciseDouble &radius, const RingModel* const radiusArea, 
-        const std::vector<std::pair<const ResourceSearchParams&, ResourceFunctions>>& resourceFunctions
+        const PointContinuous &sourcePosition, const PreciseDouble &radius, 
+        const std::vector<std::pair<const ResourceSearchParams&, ResourceFunctions>>& resourceFunctions, 
+        const PreciseDouble& animalBodySection
     );
 
     /**
@@ -401,7 +395,7 @@ public:
      * 
      * @param animalFunctions Vector of pairs of animal search parameters and functions to apply
      */
-    virtual void applyFunctionToAnimals(const std::vector<std::pair<const AnimalSearchParams&, AnimalFunctions>>& animalFunctions);
+    virtual void applyFunctionToAnimals(const std::vector<std::pair<const AnimalSearchParams&, AnimalFunctions>>& animalFunctions, const PreciseDouble& animalBodySection);
 
     /**
      * @brief Applies functions to animals that satisfy a custom checker.
@@ -409,9 +403,10 @@ public:
      * @param checker Function to determine which animals to process
      * @param animalFunctions Vector of animal search parameters and functions to apply
      */
-    void applyFunctionToAnimals(
-        std::function<bool(Animal&)> checker, 
-        const std::vector<std::pair<const AnimalSearchParams&, AnimalFunctions>>& animalFunctions
+    virtual void applyFunctionToAnimals(
+        std::function<bool(Animal&)> checker, const PointContinuous& sourcePosition, const PreciseDouble& radius,
+        const std::vector<std::pair<const AnimalSearchParams&, AnimalFunctions>>& animalFunctions,
+        const PreciseDouble& animalBodySection
     );
 
     /**
@@ -419,7 +414,7 @@ public:
      * 
      * @param animalFunctions Vector of pairs of animal search parameters and functions to apply
      */
-    virtual void randomApplyFunctionToAnimals(const std::vector<std::pair<const AnimalSearchParams&, AnimalFunctions>>& animalFunctions);
+    virtual void randomApplyFunctionToAnimals(const std::vector<std::pair<const AnimalSearchParams&, AnimalFunctions>>& animalFunctions, const PreciseDouble& animalBodySection);
 
     /**
      * @brief Randomly applies functions to animals that satisfy a custom checker.
@@ -427,9 +422,10 @@ public:
      * @param checker Function to determine which animals to process
      * @param animalFunctions Vector of animal search parameters and functions to apply
      */
-    void randomApplyFunctionToAnimals(
-        std::function<bool(Animal&)> checker, 
-        const std::vector<std::pair<const AnimalSearchParams&, AnimalFunctions>>& animalFunctions
+    virtual void randomApplyFunctionToAnimals(
+        std::function<bool(Animal&)> checker, const PointContinuous& sourcePosition, const PreciseDouble& radius,
+        const std::vector<std::pair<const AnimalSearchParams&, AnimalFunctions>>& animalFunctions,
+        const PreciseDouble& animalBodySection
     );
 
     /**
@@ -440,7 +436,8 @@ public:
      */
     virtual void applyFunctionToEdibles(
         const std::vector<std::pair<const AnimalSearchParams&, AnimalFunctions>>& animalFunctions,
-        const std::vector<std::pair<const ResourceSearchParams&, ResourceFunctions>>& resourceFunctions
+        const std::vector<std::pair<const ResourceSearchParams&, ResourceFunctions>>& resourceFunctions,
+        const PreciseDouble& animalBodySection
     );
 
     /**
@@ -449,14 +446,14 @@ public:
      * @param checker Function to filter animals
      * @param sourcePosition Center of the area
      * @param radius Radius of the area
-     * @param radiusArea Optional precomputed polygon
      * @param animalFunctions Vector of animal search parameters and functions
      * @param resourceFunctions Vector of resource search parameters and functions
      */
     virtual void applyFunctionToEdibles(
-        std::function<bool(Animal&)> checker, const PointContinuous &sourcePosition, const PreciseDouble &radius, const RingModel* const radiusArea, 
+        std::function<bool(Animal&)> checker, const PointContinuous &sourcePosition, const PreciseDouble &radius, 
         const std::vector<std::pair<const AnimalSearchParams&, AnimalFunctions>>& animalFunctions,
-        const std::vector<std::pair<const ResourceSearchParams&, ResourceFunctions>>& resourceFunctions
+        const std::vector<std::pair<const ResourceSearchParams&, ResourceFunctions>>& resourceFunctions,
+        const PreciseDouble& animalBodySection
     );
 
     /**
@@ -465,14 +462,14 @@ public:
      * @param fullCoverage Whether the cell is fully covered
      * @param sourcePosition Center of the area
      * @param radius Radius to consider
-     * @param radiusArea Optional precomputed polygon
      * @param animalFunctions Vector of animal search parameters and functions
      * @param resourceFunctions Vector of resource search parameters and functions
      */
     void applyFunctionToEdiblesInCell(bool fullCoverage, 
-        const PointContinuous &sourcePosition, const PreciseDouble &radius, const RingModel* const radiusArea, 
+        const PointContinuous &sourcePosition, const PreciseDouble &radius, 
         const std::vector<std::pair<const AnimalSearchParams&, AnimalFunctions>>& animalFunctions,
-        const std::vector<std::pair<const ResourceSearchParams&, ResourceFunctions>>& resourceFunctions
+        const std::vector<std::pair<const ResourceSearchParams&, ResourceFunctions>>& resourceFunctions,
+        const PreciseDouble& animalBodySection
     );
 
     /**
@@ -483,38 +480,11 @@ public:
      * @param animalFunctions Vector of animal search parameters and functions
      * @param resourceFunctions Vector of resource search parameters and functions
      */
-    void applyFunctionToEdiblesInRadius(
+    virtual void applyFunctionToEdiblesInRadius(
         const PointContinuous &sourcePosition, const PreciseDouble &radius, 
         const std::vector<std::pair<const AnimalSearchParams&, AnimalFunctions>>& animalFunctions,
-        const std::vector<std::pair<const ResourceSearchParams&, ResourceFunctions>>& resourceFunctions
-    );
-
-    /**
-     * @brief Applies functions to animals and resources within a circular radius with optional polygon area.
-     * 
-     * @param sourcePosition Center point
-     * @param radius Radius to consider
-     * @param radiusArea Optional precomputed polygon
-     * @param animalFunctions Vector of animal search parameters and functions
-     * @param resourceFunctions Vector of resource search parameters and functions
-     */
-    virtual void applyFunctionToEdiblesInRadius(
-        const PointContinuous &sourcePosition, const PreciseDouble &radius, const RingModel* const radiusArea, 
-        const std::vector<std::pair<const AnimalSearchParams&, AnimalFunctions>>& animalFunctions,
-        const std::vector<std::pair<const ResourceSearchParams&, ResourceFunctions>>& resourceFunctions
-    )=0;
-
-    /**
-     * @brief Finds a cell and position in a given bearing direction from this cell.
-     * 
-     * @param map Pointer to the map
-     * @param targetNeighborToTravelTo Target cell and position to reach
-     * @param animalPosition Current position of the animal
-     * @param remainingSearchArea Remaining search radius
-     * @return Pair indicating if a cell was found and the resulting cell and position
-     */
-    virtual std::pair<bool, std::pair<TerrainCell*, PointContinuous>> getCellByBearing(
-        Map* const map, const std::pair<PointMap, PointContinuous> &targetNeighborToTravelTo, const PointContinuous &animalPosition, const PreciseDouble& remainingSearchArea
+        const std::vector<std::pair<const ResourceSearchParams&, ResourceFunctions>>& resourceFunctions,
+        const PreciseDouble& animalBodySection
     )=0;
 
     /**
@@ -531,7 +501,7 @@ public:
      * @param landscape Pointer to the landscape
      * @param newAnimal Pointer to the new animal
      */
-    virtual void insertAnimal(Landscape* const landscape, Animal* const newAnimal);
+    void insertAnimal(Landscape* const landscape, Animal* const newAnimal);
     
     /**
      * @brief Inserts a new animal randomly into the cell.
@@ -546,18 +516,14 @@ public:
      * @param timeStepsPerDay Simulation time steps per day
      * @return Tuple containing success, old cell, new cell, pointer to animal, and index
      */
-    virtual std::tuple<bool, TerrainCell*, TerrainCell*, Animal*> randomInsertAnimal(Landscape* const landscape, const Instar &instar, AnimalSpecies* animalSpecies, const bool isStatistical, const Genome* const genome, const bool saveGenetics, const bool saveMassInfo, const TimeStep actualTimeStep, const PreciseDouble& timeStepsPerDay);
+    std::tuple<bool, TerrainCell*, TerrainCell*, Animal*> randomInsertAnimal(Landscape* const landscape, const Instar &instar, AnimalSpecies* animalSpecies, const bool isStatistical, const Genome* const genome, const bool saveGenetics, std::vector<fmt::memory_buffer>& geneticsText, const TimeStep actualTimeStep, const PreciseDouble& timeStepsPerDay);
     
     /**
      * @brief Adds an animal to internal storage structures.
      * 
-     * @param lifeStage Life stage of the animal
-     * @param animalSpeciesId Species ID
-     * @param instar Instar of the animal
-     * @param gender Gender of the animal
      * @param newAnimal Pointer to the animal
      */
-    void addAnimal(const LifeStage &lifeStage, const size_t animalSpeciesId, const Instar &instar, const Gender &gender, Animal* const newAnimal);
+    void addAnimal(Animal* const newAnimal);
     
     /**
      * @brief Removes a specific animal from the cell.
@@ -565,17 +531,6 @@ public:
      * @param animalToRemove Pointer to the animal to remove
      */
     void eraseAnimal(Animal* const animalToRemove);
-    
-    /**
-     * @brief Removes a specific animal from the cell with full specification.
-     * 
-     * @param lifeStage Life stage of the animal
-     * @param animalSpeciesId Species ID
-     * @param instar Instar
-     * @param gender Gender
-     * @param animalToRemove Pointer to the animal
-     */
-    void eraseAnimal(const LifeStage &lifeStage, const size_t animalSpeciesId, const Instar &instar, const Gender &gender, Animal* const animalToRemove);
     
     /**
      * @brief Removes all animals from the cell.
@@ -594,7 +549,7 @@ public:
      * 
      * @param numberOfTimeSteps Number of time steps to update
      */
-    virtual void update(const TimeStep& numberOfTimeSteps);
+    virtual void update(const TimeStep& numberOfTimeSteps, unsigned int maxParallelDepth);
 
     /**
      * @brief Gets the neighboring cells within a radius for a specific animal evaluation.
@@ -605,10 +560,9 @@ public:
      * @param searchDepth Maximum search depth
      * @param searchNeighborsWithFemales Whether to prioritize neighbors with females
      * @param animalWhoIsEvaluating Pointer to the evaluating animal
-     * @param animalsHasTriedToPredate List of animals that have already attempted predation
      */
     virtual void getNeighboursCellsOnRadius(
-        std::vector<CellValue>& bestEvaluations, const PointContinuous &sourcePosition, const PreciseDouble &radius, const size_t searchDepth, const bool searchNeighborsWithFemales, AnimalNonStatistical* animalWhoIsEvaluating, const std::list<const AnimalNonStatistical*> &animalsHasTriedToPredate
+        std::vector<CellValue>& bestEvaluations, const PointContinuous &sourcePosition, const PreciseDouble &radius, const size_t searchDepth, bool searchNeighborsWithFemales, bool searchNeighborsWithMales, AnimalNonStatistical* animalWhoIsEvaluating, CustomIndexedVector<Instar, PreciseDouble>& maximumPatchEdibilityValueGlobal, CustomIndexedVector<Instar, PreciseDouble>& maximumPatchPredationRiskGlobal, CustomIndexedVector<Instar, PreciseDouble>& maximumPatchConspecificBiomassGlobal
     )=0;
 
     /**
@@ -646,7 +600,9 @@ public:
      * @param animalSpecies Pointer to the animal species
      * @return Number of mature females
      */
-    unsigned int getNumberOfMatureFemales(AnimalSpecies *const animalSpecies);
+    unsigned int getNumberOfMatureFemales(AnimalSpecies *const animalSpecies, const PreciseDouble& animalBodySection);
+
+    unsigned int getNumberOfMatureMales(AnimalSpecies* const animalSpecies, const PreciseDouble& animalBodySection);
     
     /**
      * @brief Performs a detailed evaluation of the cell for a given animal.
@@ -655,12 +611,10 @@ public:
      * @param animalWhoIsEvaluating Pointer to the animal performing the evaluation
      * @param sourcePosition Center of evaluation
      * @param radius Radius of evaluation
-     * @param radiusArea Optional precomputed area
      * @param searchNeighborsWithFemales Whether to prioritize neighbors with females
      * @param parentFullCoverage Whether parent area has full coverage
-     * @param animalsHasTriedToPredate List of animals that already attempted predation
      */
-    void getCellEvaluation(std::vector<CellValue>& bestEvaluations, AnimalNonStatistical* animalWhoIsEvaluating, const PointContinuous &sourcePosition, const PreciseDouble &radius, const RingModel* const radiusArea, const bool searchNeighborsWithFemales, const bool parentFullCoverage, const std::list<const AnimalNonStatistical*> &animalsHasTriedToPredate);
+    void getCellEvaluation(std::vector<CellValue>& bestEvaluations, AnimalNonStatistical* animalWhoIsEvaluating, const PointContinuous &sourcePosition, const PreciseDouble &radius, bool searchNeighborsWithFemales, bool searchNeighborsWithMales, const bool parentFullCoverage, CustomIndexedVector<Instar, PreciseDouble>& maximumPatchEdibilityValueGlobal, CustomIndexedVector<Instar, PreciseDouble>& maximumPatchPredationRiskGlobal, CustomIndexedVector<Instar, PreciseDouble>& maximumPatchConspecificBiomassGlobal);
 
     /**
      * @brief Serialization function for TerrainCell.

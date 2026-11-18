@@ -23,25 +23,6 @@
  */
 std::filesystem::path getDefaultOutputFolderPath();
 
-/**
- * @brief Returns the current working directory.
- *
- * @return std::filesystem::path Current working directory path.
- */
-std::filesystem::path getWorkingDirectory();
-
-/**
- * @brief Resolves a path relative to a given working directory.
- *
- * If the input path is relative, it is resolved with respect to the
- * specified working directory. Absolute paths are returned as-is.
- *
- * @param workingDirectory Base directory for resolving relative paths.
- * @param input Path to resolve.
- * @return std::filesystem::path Resolved absolute path.
- */
-std::filesystem::path resolvePath(const std::filesystem::path& workingDirectory, const std::filesystem::path& input);
-
 #ifdef _WIN32
 /**
  * @brief Safely retrieves the value of an environment variable.

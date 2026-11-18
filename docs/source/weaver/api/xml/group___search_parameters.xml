@@ -1,0 +1,150 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.14.0" xml:lang="en-US">
+  <compounddef id="group___search_parameters" kind="group">
+    <compoundname>SearchParameters</compoundname>
+    <title>Search Parameters</title>
+    <sectiondef kind="func">
+      <memberdef kind="function" id="group___search_parameters_1gaf23cf57acb6f36c2a6301ff3a7ed263d" prot="public" static="no" const="yes" explicit="no" inline="no" virt="non-virtual">
+        <type>const <ref refid="class_animal_search_params" kindref="compound">AnimalSearchParams</ref> &amp;</type>
+        <definition>const AnimalSearchParams &amp; AnimalSpecies::getBreedSearchParams</definition>
+        <argsstring>(const Gender &amp;gender) const</argsstring>
+        <name>getBreedSearchParams</name>
+        <qualifiedname>AnimalSpecies::getBreedSearchParams</qualifiedname>
+        <param>
+          <type>const Gender &amp;</type>
+          <declname>gender</declname>
+        </param>
+        <briefdescription>
+<para>Returns search parameters for locating mates of the given gender. </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="App/Model/IBM/Landscape/LivingBeings/Animals/Species/AnimalSpecies.h" line="223" column="26"/>
+      </memberdef>
+      <memberdef kind="function" id="group___search_parameters_1ga3c794ce930e2562aa0da4aba70b70df1" prot="public" static="no" const="yes" explicit="no" inline="no" virt="non-virtual">
+        <type>const <ref refid="class_animal_search_params" kindref="compound">AnimalSearchParams</ref> &amp;</type>
+        <definition>const AnimalSearchParams &amp; AnimalSpecies::getConspecificSearchParams</definition>
+        <argsstring>() const</argsstring>
+        <name>getConspecificSearchParams</name>
+        <qualifiedname>AnimalSpecies::getConspecificSearchParams</qualifiedname>
+        <briefdescription>
+<para>Returns search parameters for conspecific detection. </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="App/Model/IBM/Landscape/LivingBeings/Animals/Species/AnimalSpecies.h" line="218" column="26"/>
+      </memberdef>
+      <memberdef kind="function" id="group___search_parameters_1ga06ee5c8df9a86a8918cae829af114bea" prot="public" static="no" const="yes" explicit="no" inline="no" virt="non-virtual">
+        <type>const <ref refid="class_animal_search_params" kindref="compound">AnimalSearchParams</ref> &amp;</type>
+        <definition>const AnimalSearchParams &amp; AnimalSpecies::getLifeStageSearchParams</definition>
+        <argsstring>(const LifeStage &amp;lifeStage) const</argsstring>
+        <name>getLifeStageSearchParams</name>
+        <qualifiedname>AnimalSpecies::getLifeStageSearchParams</qualifiedname>
+        <param>
+          <type>const LifeStage &amp;</type>
+          <declname>lifeStage</declname>
+        </param>
+        <briefdescription>
+<para>Returns search parameters for detecting individuals in a given life stage. </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="App/Model/IBM/Landscape/LivingBeings/Animals/Species/AnimalSpecies.h" line="243" column="26"/>
+      </memberdef>
+      <memberdef kind="function" id="group___search_parameters_1ga52a6f2f88a8e997b4bef9c4d4d67b1be" prot="public" static="no" const="yes" explicit="no" inline="no" virt="non-virtual">
+        <type>const <ref refid="class_animal_search_params" kindref="compound">AnimalSearchParams</ref> &amp;</type>
+        <definition>const AnimalSearchParams &amp; AnimalSpecies::getMatureFemalesSearchParams</definition>
+        <argsstring>() const</argsstring>
+        <name>getMatureFemalesSearchParams</name>
+        <qualifiedname>AnimalSpecies::getMatureFemalesSearchParams</qualifiedname>
+        <briefdescription>
+<para>Returns search parameters for detecting mature females. </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="App/Model/IBM/Landscape/LivingBeings/Animals/Species/AnimalSpecies.h" line="228" column="26"/>
+      </memberdef>
+      <memberdef kind="function" id="group___search_parameters_1gaf593c126fb9d9d9e95868a73ecd828a6" prot="public" static="no" const="yes" explicit="no" inline="no" virt="non-virtual">
+        <type>const <ref refid="class_animal_search_params" kindref="compound">AnimalSearchParams</ref> &amp;</type>
+        <definition>const AnimalSearchParams &amp; AnimalSpecies::getMatureMalesSearchParams</definition>
+        <argsstring>() const</argsstring>
+        <name>getMatureMalesSearchParams</name>
+        <qualifiedname>AnimalSpecies::getMatureMalesSearchParams</qualifiedname>
+        <briefdescription>
+<para>Returns search parameters for detecting mature males. </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="App/Model/IBM/Landscape/LivingBeings/Animals/Species/AnimalSpecies.h" line="233" column="26"/>
+      </memberdef>
+      <memberdef kind="function" id="group___search_parameters_1ga95e8d1a4e91d9e9afc60415262cb594b" prot="public" static="no" const="yes" explicit="no" inline="no" virt="non-virtual">
+        <type>const <ref refid="class_animal_search_params" kindref="compound">AnimalSearchParams</ref> &amp;</type>
+        <definition>const AnimalSearchParams &amp; AnimalSpecies::getPopulationSearchParams</definition>
+        <argsstring>() const</argsstring>
+        <name>getPopulationSearchParams</name>
+        <qualifiedname>AnimalSpecies::getPopulationSearchParams</qualifiedname>
+        <briefdescription>
+<para>Returns search parameters related to population-level detection. </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="App/Model/IBM/Landscape/LivingBeings/Animals/Species/AnimalSpecies.h" line="238" column="26"/>
+      </memberdef>
+      <memberdef kind="function" id="group___search_parameters_1ga790b83b7a0c0fbd0e8b00fc490a6bb01" prot="public" static="no" const="yes" explicit="no" inline="no" virt="non-virtual">
+        <type>const <ref refid="class_animal_search_params" kindref="compound">AnimalSearchParams</ref> &amp;</type>
+        <definition>const AnimalSearchParams &amp; AnimalSpecies::getPredatorSearchParams</definition>
+        <argsstring>(const Instar &amp;instar) const</argsstring>
+        <name>getPredatorSearchParams</name>
+        <qualifiedname>AnimalSpecies::getPredatorSearchParams</qualifiedname>
+        <param>
+          <type>const <ref refid="class_instar" kindref="compound">Instar</ref> &amp;</type>
+          <declname>instar</declname>
+        </param>
+        <briefdescription>
+<para>Returns predation search parameters for the given instar. </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="App/Model/IBM/Landscape/LivingBeings/Animals/Species/AnimalSpecies.h" line="213" column="26"/>
+      </memberdef>
+      <memberdef kind="function" id="group___search_parameters_1gaa1768fddb0db147685cb76f37263603e" prot="public" static="no" const="yes" explicit="no" inline="no" virt="non-virtual">
+        <type>const <ref refid="class_edible_search_params" kindref="compound">EdibleSearchParams</ref> &amp;</type>
+        <definition>const EdibleSearchParams &amp; AnimalSpecies::getPreySearchParams</definition>
+        <argsstring>(const Instar &amp;instar) const</argsstring>
+        <name>getPreySearchParams</name>
+        <qualifiedname>AnimalSpecies::getPreySearchParams</qualifiedname>
+        <param>
+          <type>const <ref refid="class_instar" kindref="compound">Instar</ref> &amp;</type>
+          <declname>instar</declname>
+        </param>
+        <briefdescription>
+<para>Returns search parameters for prey detection for the given instar. </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="App/Model/IBM/Landscape/LivingBeings/Animals/Species/AnimalSpecies.h" line="208" column="26"/>
+      </memberdef>
+    </sectiondef>
+    <briefdescription>
+<para>Parameters used to evaluate search ranges, prey availability and predator interactions. </para>
+    </briefdescription>
+    <detaileddescription>
+    </detaileddescription>
+  </compounddef>
+</doxygen>

@@ -1,5 +1,7 @@
 #include "Misc/ProgressBar.h"
 
+#include "App/Manager/LogManager.h"
+
 
 using namespace std;
 
@@ -8,7 +10,7 @@ using namespace std;
  * @brief ProgressBar constructor.
  *
  * Initializes progress thresholds and prints the initial empty bar:
- * 
+ *
  * Example output:
  * ```
  * 0%|                                                  |100%
@@ -18,13 +20,26 @@ using namespace std;
  * The configuration automatically adjusts for cases where `maxCounter` is smaller
  * or larger than the display width (50 characters).
  *
- * @param view Pointer to a View instance used for rendering the bar.
  * @param maxCounter The total number of iterations to complete.
  */
-ProgressBar::ProgressBar(View* view, const size_t maxCounter)
-    : maxCounter(maxCounter), view(view), nextStep(1u), counter(0u)
+ProgressBar::ProgressBar(const size_t maxCounter)
+	: maxCounter(maxCounter), nextStep(1u), counter(0u)
 {
-	if(maxCounter < width)
+	// CASO BORDE: Si maxCounter es 0, el progreso ya está completado al 100%
+	if (maxCounter == 0)
+	{
+		maxSteps = width;
+		stepProgress = 1u;
+		iterationsPerStep = 1u;
+		thresholdToNextStep = 0u;
+		nextStep = maxSteps + 1; // Evita que update entre al bucle while
+
+		// Imprime la barra completamente llena desde el inicio
+		LogManager::emit("0%|" + std::string(width, fill) + "|100%\n");
+		return;
+	}
+
+	if (maxCounter < width)
 	{
 		// Small number of iterations: each iteration fills multiple characters.
 		maxSteps = maxCounter;
@@ -42,52 +57,35 @@ ProgressBar::ProgressBar(View* view, const size_t maxCounter)
 	thresholdToNextStep = iterationsPerStep;
 
 	// Initialize the bar in the output view.
-	view->updateLog("0%|" + string(width, empty) + "|100%\n   ");
+	LogManager::emit("0%|" + std::string(width, empty) + "|100%\n");
 }
 
-/**
- * @brief Advances the counter by one unit.
- *
- * Each call increments the progress counter. When the accumulated progress exceeds
- * the next step threshold, new filled characters are printed to the output view.
- *
- * The function prints only the necessary characters instead of redrawing the full
- * bar for efficiency.
- *
- * @note This function is designed for high-frequency updates, such as loops over
- * vector elements, where `maxCounter` corresponds to the vector’s size.
- */
-void ProgressBar::update() {
-	#ifdef DEBUG
-	if(counter > maxCounter)
+void ProgressBar::update(size_t increment) {
+#ifdef DEBUG
+	if (counter > maxCounter)
 	{
 		throwLineInfoException("Error: ProgressBar overflow.");
 	}
-	#endif
+#endif
 
-	counter++;
+	counter += increment;
 
-	string progress = "";
+	// Si el contador superó el máximo por redondeos o lotes, lo capamos al tope
+	if (counter > maxCounter) {
+		counter = maxCounter;
+	}
 
-	// Fill segments as thresholds are reached.
-	while(counter >= thresholdToNextStep)
+	size_t stepsToPrint = 0;
+
+	// Calcular cuántos pasos visuales se han superado en esta actualización
+	while (counter >= thresholdToNextStep && nextStep <= maxSteps)
 	{
+		// Cada paso completado equivale a 'stepProgress' caracteres en la barra
+		stepsToPrint += stepProgress;
 		nextStep++;
-		progress += string(stepProgress, fill);
 
-		// When reaching the end, complete the bar and add a newline.
-		if(nextStep > maxSteps)
-		{
-			if(maxCounter < width)
-			{
-				progress += string(width - (stepProgress * maxSteps), fill);
-			}
-
-			progress += "\n";
-		}
-
-		// Update the threshold for the next step.
-		if(nextStep == maxSteps)
+		// Actualizar el umbral para el siguiente paso
+		if (nextStep > maxSteps)
 		{
 			thresholdToNextStep = maxCounter;
 		}
@@ -97,9 +95,24 @@ void ProgressBar::update() {
 		}
 	}
 
-	// Output only when progress has advanced.
-	if(!progress.empty())
+	// Emitir salida solo si la barra realmente avanzó visualmente
+	if (stepsToPrint > 0)
 	{
-		view->updateLog(progress);
+		// Construimos la porción rellena basándonos en los pasos completados hasta ahora
+		// 'nextStep - 1' nos da la cantidad de pasos totales completados con éxito
+		size_t currentFillWidth = (nextStep - 1) * stepProgress;
+
+		// Si ya llegamos al final del proceso por completo, forzamos el rellenado al ancho máximo
+		if (counter >= maxCounter) {
+			currentFillWidth = width;
+		}
+
+		// Asegurar de manera segura que nunca desborde el ancho visual configurado
+		if (currentFillWidth > width) {
+			currentFillWidth = width;
+		}
+
+		std::string progress(currentFillWidth, fill);
+		LogManager::emit("0%|" + progress + std::string(width - currentFillWidth, empty) + "|100%\n");
 	}
 }

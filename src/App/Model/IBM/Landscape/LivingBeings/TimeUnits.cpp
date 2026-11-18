@@ -52,6 +52,12 @@ TimeStep operator+(const TimeStep& lhs, const TimeStep& rhs)
 
 TimeStep operator-(const TimeStep& lhs, const TimeStep& rhs)
 {
+#ifdef DEBUG
+    if (lhs == TimeStep(0)) {
+		throwLineInfoException("'lhs' must be greater than 0.");
+    }
+#endif
+
     return TimeStep(lhs.getValue() - rhs.getValue());
 }
 

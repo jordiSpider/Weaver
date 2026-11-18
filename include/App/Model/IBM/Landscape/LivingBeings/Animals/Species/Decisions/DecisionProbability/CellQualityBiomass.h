@@ -20,6 +20,7 @@
 
 /**
  * @class CellQualityBiomass
+ * @ingroup weaver_landscape
  * @brief Computes the quality of a cell for a predator based on prey biomass and edibility.
  *
  * This class uses the EdibilityValue object to assess how valuable the resources in a cell

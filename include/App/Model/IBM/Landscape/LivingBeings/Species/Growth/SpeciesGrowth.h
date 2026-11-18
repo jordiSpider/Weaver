@@ -20,7 +20,7 @@
 #include "App/Model/IBM/Landscape/LivingBeings/Species/Growth/Instar.h"
 #include "Misc/CustomIndexedVector.h"
 
-#include "App/Model/IBM/Maths/PreciseDouble.h"
+#include "Misc/Maths/PreciseDouble.h"
 
 #ifdef DEBUG
 #include "Exceptions/LineInfoException.h"
@@ -29,6 +29,7 @@
 
 /**
  * @class SpeciesGrowth
+ * @ingroup weaver_landscape
  * @brief Represents the growth characteristics of a species across its instars.
  *
  * This class encapsulates information about the number of instars, the range of instars,

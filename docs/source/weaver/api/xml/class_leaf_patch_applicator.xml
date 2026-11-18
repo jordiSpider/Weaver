@@ -1,0 +1,1195 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.14.0" xml:lang="en-US">
+  <compounddef id="class_leaf_patch_applicator" kind="class" language="C++" prot="public">
+    <compoundname>LeafPatchApplicator</compoundname>
+    <basecompoundref refid="class_spatial_tree_patch_applicator" prot="public" virt="non-virtual">SpatialTreePatchApplicator</basecompoundref>
+    <includes refid="_leaf_patch_applicator_8h" local="no">LeafPatchApplicator.h</includes>
+    <sectiondef kind="protected-attrib">
+      <memberdef kind="variable" id="class_leaf_patch_applicator_1a196aad0f2fba64f85e094afdf4fb08c8" prot="protected" static="no" mutable="no">
+        <type>bool</type>
+        <definition>bool LeafPatchApplicator::totalFullCapacity</definition>
+        <argsstring></argsstring>
+        <name>totalFullCapacity</name>
+        <qualifiedname>LeafPatchApplicator::totalFullCapacity</qualifiedname>
+        <briefdescription>
+<para>Flag indicating if the cell reached total resource capacity. </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="App/Model/IBM/Landscape/Map/SpatialTree/TerrainCells/PatchApplicator/LeafPatchApplicator.h" line="170" column="10" bodyfile="App/Model/IBM/Landscape/Map/SpatialTree/TerrainCells/PatchApplicator/LeafPatchApplicator.h" bodystart="170" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="class_leaf_patch_applicator_1ace443809a59abe1b90fa3500c85f5cd5" prot="protected" static="no" mutable="no">
+        <type><ref refid="class_wet_mass" kindref="compound">WetMass</ref></type>
+        <definition>WetMass LeafPatchApplicator::totalResourceBiomass</definition>
+        <argsstring></argsstring>
+        <name>totalResourceBiomass</name>
+        <qualifiedname>LeafPatchApplicator::totalResourceBiomass</qualifiedname>
+        <briefdescription>
+<para>Total biomass of resources in the leaf cell. </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="App/Model/IBM/Landscape/Map/SpatialTree/TerrainCells/PatchApplicator/LeafPatchApplicator.h" line="169" column="13" bodyfile="App/Model/IBM/Landscape/Map/SpatialTree/TerrainCells/PatchApplicator/LeafPatchApplicator.h" bodystart="169" bodyend="-1"/>
+      </memberdef>
+    </sectiondef>
+    <sectiondef kind="public-func">
+      <memberdef kind="function" id="class_leaf_patch_applicator_1a00299c0e3e2c596c9be504bdf261ffe2" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type></type>
+        <definition>LeafPatchApplicator::LeafPatchApplicator</definition>
+        <argsstring>()</argsstring>
+        <name>LeafPatchApplicator</name>
+        <qualifiedname>LeafPatchApplicator::LeafPatchApplicator</qualifiedname>
+        <briefdescription>
+<para>Default constructor. </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="App/Model/IBM/Landscape/Map/SpatialTree/TerrainCells/PatchApplicator/LeafPatchApplicator.h" line="35" column="5"/>
+      </memberdef>
+      <memberdef kind="function" id="class_leaf_patch_applicator_1a44bb87a6bbbab23a45569b5d18af20b7" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type></type>
+        <definition>LeafPatchApplicator::LeafPatchApplicator</definition>
+        <argsstring>(const LeafPatchApplicator &amp;)=delete</argsstring>
+        <name>LeafPatchApplicator</name>
+        <qualifiedname>LeafPatchApplicator::LeafPatchApplicator</qualifiedname>
+        <param>
+          <type>const <ref refid="class_leaf_patch_applicator" kindref="compound">LeafPatchApplicator</ref> &amp;</type>
+        </param>
+        <briefdescription>
+<para>Deleted copy constructor. </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="App/Model/IBM/Landscape/Map/SpatialTree/TerrainCells/PatchApplicator/LeafPatchApplicator.h" line="48" column="5"/>
+      </memberdef>
+      <memberdef kind="function" id="class_leaf_patch_applicator_1af47e26fddd28030938c11c24b53317f8" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type></type>
+        <definition>LeafPatchApplicator::LeafPatchApplicator</definition>
+        <argsstring>(TerrainCell *cell, MoistureSource *const moistureBaseSource)</argsstring>
+        <name>LeafPatchApplicator</name>
+        <qualifiedname>LeafPatchApplicator::LeafPatchApplicator</qualifiedname>
+        <param>
+          <type><ref refid="class_terrain_cell" kindref="compound">TerrainCell</ref> *</type>
+          <declname>cell</declname>
+        </param>
+        <param>
+          <type><ref refid="class_moisture_source" kindref="compound">MoistureSource</ref> *const</type>
+          <declname>moistureBaseSource</declname>
+        </param>
+        <briefdescription>
+<para>Constructor initializing the leaf patch applicator with a terrain cell and a moisture source. </para>
+        </briefdescription>
+        <detaileddescription>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>cell</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Pointer to the leaf terrain cell. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>moistureBaseSource</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Pointer to the base moisture source. </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="App/Model/IBM/Landscape/Map/SpatialTree/TerrainCells/PatchApplicator/LeafPatchApplicator.h" line="42" column="5"/>
+      </memberdef>
+      <memberdef kind="function" id="class_leaf_patch_applicator_1ad435ee6b2b62e476beccd46a9b8932aa" prot="public" static="no" const="no" explicit="no" inline="no" virt="virtual">
+        <type></type>
+        <definition>virtual LeafPatchApplicator::~LeafPatchApplicator</definition>
+        <argsstring>()</argsstring>
+        <name>~LeafPatchApplicator</name>
+        <qualifiedname>LeafPatchApplicator::~LeafPatchApplicator</qualifiedname>
+        <briefdescription>
+<para>Destructor. </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="App/Model/IBM/Landscape/Map/SpatialTree/TerrainCells/PatchApplicator/LeafPatchApplicator.h" line="45" column="13"/>
+      </memberdef>
+      <memberdef kind="function" id="class_leaf_patch_applicator_1ac459770e0755b0e87b0e03f5adbbc704" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void LeafPatchApplicator::addResourceBiomass</definition>
+        <argsstring>(const WetMass &amp;biomassToAdd)</argsstring>
+        <name>addResourceBiomass</name>
+        <qualifiedname>LeafPatchApplicator::addResourceBiomass</qualifiedname>
+        <param>
+          <type>const <ref refid="class_wet_mass" kindref="compound">WetMass</ref> &amp;</type>
+          <declname>biomassToAdd</declname>
+        </param>
+        <briefdescription>
+<para>Adds resource biomass to the cell. </para>
+        </briefdescription>
+        <detaileddescription>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>biomassToAdd</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Biomass amount to add. </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="App/Model/IBM/Landscape/Map/SpatialTree/TerrainCells/PatchApplicator/LeafPatchApplicator.h" line="124" column="10"/>
+      </memberdef>
+      <memberdef kind="function" id="class_leaf_patch_applicator_1a154a48701876657ef1e3b8652a8664ab" prot="public" static="no" const="no" explicit="no" inline="no" virt="virtual">
+        <type>void</type>
+        <definition>void LeafPatchApplicator::addResourceSpecies</definition>
+        <argsstring>(Landscape *const landscape, std::vector&lt; std::vector&lt; std::vector&lt; CellResource * &gt; &gt; &gt; &amp;landscapeResources, ResourceSpecies &amp;resourceSpecies, ResourceSource *const resourceBaseSource)</argsstring>
+        <name>addResourceSpecies</name>
+        <qualifiedname>LeafPatchApplicator::addResourceSpecies</qualifiedname>
+        <reimplements refid="class_patch_applicator_1a5bbdb162b44bde6a329f8e8b9c1ed244">addResourceSpecies</reimplements>
+        <param>
+          <type><ref refid="class_landscape" kindref="compound">Landscape</ref> *const</type>
+          <declname>landscape</declname>
+        </param>
+        <param>
+          <type>std::vector&lt; std::vector&lt; std::vector&lt; <ref refid="class_cell_resource" kindref="compound">CellResource</ref> * &gt; &gt; &gt; &amp;</type>
+          <declname>landscapeResources</declname>
+        </param>
+        <param>
+          <type><ref refid="class_resource_species" kindref="compound">ResourceSpecies</ref> &amp;</type>
+          <declname>resourceSpecies</declname>
+        </param>
+        <param>
+          <type><ref refid="class_resource_source" kindref="compound">ResourceSource</ref> *const</type>
+          <declname>resourceBaseSource</declname>
+        </param>
+        <briefdescription>
+<para>Adds a resource species to the leaf cell. </para>
+        </briefdescription>
+        <detaileddescription>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>landscape</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Pointer to the landscape. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>landscapeResources</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Reference to the landscape&apos;s 3D vector of resources. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>resourceSpecies</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Resource species to add. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>resourceBaseSource</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Base resource source. </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="App/Model/IBM/Landscape/Map/SpatialTree/TerrainCells/PatchApplicator/LeafPatchApplicator.h" line="110" column="10"/>
+      </memberdef>
+      <memberdef kind="function" id="class_leaf_patch_applicator_1a1c37d1076115a16db0eada41b043c204" prot="public" static="no" const="no" explicit="no" inline="no" virt="virtual">
+        <type>std::pair&lt; bool, bool &gt;</type>
+        <definition>std::pair&lt; bool, bool &gt; LeafPatchApplicator::applyPatch</definition>
+        <argsstring>(Landscape *const landscape, const Patch &amp;patch)</argsstring>
+        <name>applyPatch</name>
+        <qualifiedname>LeafPatchApplicator::applyPatch</qualifiedname>
+        <reimplements refid="class_patch_applicator_1a573912ec6ec9b2e15836da20de87b5a0">applyPatch</reimplements>
+        <param>
+          <type><ref refid="class_landscape" kindref="compound">Landscape</ref> *const</type>
+          <declname>landscape</declname>
+        </param>
+        <param>
+          <type>const <ref refid="class_patch" kindref="compound">Patch</ref> &amp;</type>
+          <declname>patch</declname>
+        </param>
+        <briefdescription>
+<para>Applies a patch to the leaf terrain cell. </para>
+        </briefdescription>
+        <detaileddescription>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>landscape</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Pointer to the landscape. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>patch</parametername>
+</parameternamelist>
+<parameterdescription>
+<para><ref refid="class_patch" kindref="compound">Patch</ref> to apply. </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<simplesect kind="return"><para>Pair of booleans indicating whether the patch was applied and whether full coverage was achieved. </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="App/Model/IBM/Landscape/Map/SpatialTree/TerrainCells/PatchApplicator/LeafPatchApplicator.h" line="118" column="15"/>
+      </memberdef>
+      <memberdef kind="function" id="class_leaf_patch_applicator_1ab229d034f275cabaaeaee8247096cbc0" prot="public" static="no" const="yes" explicit="no" inline="no" virt="virtual">
+        <type>const <ref refid="class_cell_habitat_domain" kindref="compound">CellHabitatDomain</ref> &amp;</type>
+        <definition>const CellHabitatDomain &amp; LeafPatchApplicator::getCellHabitatDomain</definition>
+        <argsstring>() const override</argsstring>
+        <name>getCellHabitatDomain</name>
+        <qualifiedname>LeafPatchApplicator::getCellHabitatDomain</qualifiedname>
+        <reimplements refid="class_patch_applicator_1ae7e11ad858cbf06b5efb77d7c8964714">getCellHabitatDomain</reimplements>
+        <briefdescription>
+<para>Get a const reference to the cell&apos;s habitat domain interface. </para>
+        </briefdescription>
+        <detaileddescription>
+<para><simplesect kind="return"><para>const reference to <ref refid="class_cell_habitat_domain_interface" kindref="compound">CellHabitatDomainInterface</ref> </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="App/Model/IBM/Landscape/Map/SpatialTree/TerrainCells/PatchApplicator/LeafPatchApplicator.h" line="95" column="29"/>
+      </memberdef>
+      <memberdef kind="function" id="class_leaf_patch_applicator_1aa51c80c376b0eabb48993378bcc8ae0c" prot="public" static="no" const="yes" explicit="no" inline="no" virt="virtual">
+        <type>const <ref refid="class_cell_moisture" kindref="compound">CellMoisture</ref> &amp;</type>
+        <definition>const CellMoisture &amp; LeafPatchApplicator::getCellMoisture</definition>
+        <argsstring>() const override</argsstring>
+        <name>getCellMoisture</name>
+        <qualifiedname>LeafPatchApplicator::getCellMoisture</qualifiedname>
+        <reimplements refid="class_patch_applicator_1a2e03fbbe7f8adb26df4f89ca91896261">getCellMoisture</reimplements>
+        <briefdescription>
+<para>Get a const reference to the cell&apos;s moisture interface. </para>
+        </briefdescription>
+        <detaileddescription>
+<para><simplesect kind="return"><para>const reference to <ref refid="class_cell_moisture_interface" kindref="compound">CellMoistureInterface</ref> </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="App/Model/IBM/Landscape/Map/SpatialTree/TerrainCells/PatchApplicator/LeafPatchApplicator.h" line="57" column="24"/>
+      </memberdef>
+      <memberdef kind="function" id="class_leaf_patch_applicator_1a959b5e2709bcd4d65f4ad7315f170030" prot="public" static="no" const="yes" explicit="no" inline="no" virt="virtual">
+        <type>const <ref refid="class_cell_obstacle" kindref="compound">CellObstacle</ref> &amp;</type>
+        <definition>const CellObstacle &amp; LeafPatchApplicator::getCellObstacle</definition>
+        <argsstring>() const override</argsstring>
+        <name>getCellObstacle</name>
+        <qualifiedname>LeafPatchApplicator::getCellObstacle</qualifiedname>
+        <reimplements refid="class_patch_applicator_1a1db070de32eb06630a9d620cc2abd2de">getCellObstacle</reimplements>
+        <briefdescription>
+<para>Get a const reference to the cell&apos;s obstacle interface. </para>
+        </briefdescription>
+        <detaileddescription>
+<para><simplesect kind="return"><para>const reference to <ref refid="class_cell_obstacle_interface" kindref="compound">CellObstacleInterface</ref> </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="App/Model/IBM/Landscape/Map/SpatialTree/TerrainCells/PatchApplicator/LeafPatchApplicator.h" line="83" column="24"/>
+      </memberdef>
+      <memberdef kind="function" id="class_leaf_patch_applicator_1aad3640fc6f86fb771a0b671040a62893" prot="public" static="no" const="yes" explicit="no" inline="no" virt="virtual">
+        <type>const <ref refid="class_cell_resource" kindref="compound">CellResource</ref> &amp;</type>
+        <definition>const CellResource &amp; LeafPatchApplicator::getCellResource</definition>
+        <argsstring>(const size_t resourceSpeciesId) const override</argsstring>
+        <name>getCellResource</name>
+        <qualifiedname>LeafPatchApplicator::getCellResource</qualifiedname>
+        <reimplements refid="class_patch_applicator_1a400033dfe4655013bc8399a1d6761b60">getCellResource</reimplements>
+        <param>
+          <type>const size_t</type>
+          <declname>resourceSpeciesId</declname>
+        </param>
+        <briefdescription>
+<para>Get a const reference to a resource interface by resource species ID. </para>
+        </briefdescription>
+        <detaileddescription>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>resourceSpeciesId</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>ID of the resource species </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<simplesect kind="return"><para>const reference to <ref refid="class_cell_resource_interface" kindref="compound">CellResourceInterface</ref> </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="App/Model/IBM/Landscape/Map/SpatialTree/TerrainCells/PatchApplicator/LeafPatchApplicator.h" line="70" column="24"/>
+      </memberdef>
+      <memberdef kind="function" id="class_leaf_patch_applicator_1a2dbc277d28721a29dd5479bfeb5fb8d7" prot="public" static="no" const="no" explicit="no" inline="no" virt="virtual">
+        <type><ref refid="class_cell_habitat_domain" kindref="compound">CellHabitatDomain</ref> &amp;</type>
+        <definition>CellHabitatDomain &amp; LeafPatchApplicator::getMutableCellHabitatDomain</definition>
+        <argsstring>() override</argsstring>
+        <name>getMutableCellHabitatDomain</name>
+        <qualifiedname>LeafPatchApplicator::getMutableCellHabitatDomain</qualifiedname>
+        <reimplements refid="class_patch_applicator_1a459d13e8deaefc630eac1d6ff97163b3">getMutableCellHabitatDomain</reimplements>
+        <briefdescription>
+<para>Get a mutable reference to the cell&apos;s habitat domain interface. </para>
+        </briefdescription>
+        <detaileddescription>
+<para><simplesect kind="return"><para>mutable reference to <ref refid="class_cell_habitat_domain_interface" kindref="compound">CellHabitatDomainInterface</ref> </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="App/Model/IBM/Landscape/Map/SpatialTree/TerrainCells/PatchApplicator/LeafPatchApplicator.h" line="101" column="23"/>
+      </memberdef>
+      <memberdef kind="function" id="class_leaf_patch_applicator_1aeda958c2a83db7757ed33a9a329968b8" prot="public" static="no" const="no" explicit="no" inline="no" virt="virtual">
+        <type><ref refid="class_cell_moisture" kindref="compound">CellMoisture</ref> &amp;</type>
+        <definition>CellMoisture &amp; LeafPatchApplicator::getMutableCellMoisture</definition>
+        <argsstring>() override</argsstring>
+        <name>getMutableCellMoisture</name>
+        <qualifiedname>LeafPatchApplicator::getMutableCellMoisture</qualifiedname>
+        <reimplements refid="class_patch_applicator_1a56cdd3fa2b12e62db2e687e657daace2">getMutableCellMoisture</reimplements>
+        <briefdescription>
+<para>Get a mutable reference to the cell&apos;s moisture interface. </para>
+        </briefdescription>
+        <detaileddescription>
+<para><simplesect kind="return"><para>mutable reference to <ref refid="class_cell_moisture_interface" kindref="compound">CellMoistureInterface</ref> </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="App/Model/IBM/Landscape/Map/SpatialTree/TerrainCells/PatchApplicator/LeafPatchApplicator.h" line="63" column="18"/>
+      </memberdef>
+      <memberdef kind="function" id="class_leaf_patch_applicator_1a3fcaa4f8b0f837ca3cb50edb8a7e3c20" prot="public" static="no" const="no" explicit="no" inline="no" virt="virtual">
+        <type><ref refid="class_cell_obstacle" kindref="compound">CellObstacle</ref> &amp;</type>
+        <definition>CellObstacle &amp; LeafPatchApplicator::getMutableCellObstacle</definition>
+        <argsstring>() override</argsstring>
+        <name>getMutableCellObstacle</name>
+        <qualifiedname>LeafPatchApplicator::getMutableCellObstacle</qualifiedname>
+        <reimplements refid="class_patch_applicator_1ad3bda75c267fd8d69242d7bcab04d5fd">getMutableCellObstacle</reimplements>
+        <briefdescription>
+<para>Get a mutable reference to the cell&apos;s obstacle interface. </para>
+        </briefdescription>
+        <detaileddescription>
+<para><simplesect kind="return"><para>mutable reference to <ref refid="class_cell_obstacle_interface" kindref="compound">CellObstacleInterface</ref> </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="App/Model/IBM/Landscape/Map/SpatialTree/TerrainCells/PatchApplicator/LeafPatchApplicator.h" line="89" column="18"/>
+      </memberdef>
+      <memberdef kind="function" id="class_leaf_patch_applicator_1a7edeb3fa96af342e0e5d5ad425ad3f8f" prot="public" static="no" const="no" explicit="no" inline="no" virt="virtual">
+        <type><ref refid="class_cell_resource" kindref="compound">CellResource</ref> &amp;</type>
+        <definition>CellResource &amp; LeafPatchApplicator::getMutableCellResource</definition>
+        <argsstring>(const size_t resourceSpeciesId) override</argsstring>
+        <name>getMutableCellResource</name>
+        <qualifiedname>LeafPatchApplicator::getMutableCellResource</qualifiedname>
+        <reimplements refid="class_patch_applicator_1a22c066c80a2ec6f69b5ae8a60c225cfc">getMutableCellResource</reimplements>
+        <param>
+          <type>const size_t</type>
+          <declname>resourceSpeciesId</declname>
+        </param>
+        <briefdescription>
+<para>Get a mutable reference to a resource interface by resource species ID. </para>
+        </briefdescription>
+        <detaileddescription>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>resourceSpeciesId</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>ID of the resource species </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<simplesect kind="return"><para>mutable reference to <ref refid="class_cell_resource_interface" kindref="compound">CellResourceInterface</ref> </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="App/Model/IBM/Landscape/Map/SpatialTree/TerrainCells/PatchApplicator/LeafPatchApplicator.h" line="77" column="18"/>
+      </memberdef>
+      <memberdef kind="function" id="class_leaf_patch_applicator_1a36d6eeafda0d28fa72b1ad5acaa0e485" prot="public" static="no" const="yes" explicit="no" inline="no" virt="non-virtual">
+        <type>const <ref refid="class_wet_mass" kindref="compound">WetMass</ref> &amp;</type>
+        <definition>const WetMass &amp; LeafPatchApplicator::getTotalResourceBiomass</definition>
+        <argsstring>() const</argsstring>
+        <name>getTotalResourceBiomass</name>
+        <qualifiedname>LeafPatchApplicator::getTotalResourceBiomass</qualifiedname>
+        <briefdescription>
+<para>Returns the total resource biomass in the cell. </para>
+        </briefdescription>
+        <detaileddescription>
+<para><simplesect kind="return"><para>Reference to total biomass. </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="App/Model/IBM/Landscape/Map/SpatialTree/TerrainCells/PatchApplicator/LeafPatchApplicator.h" line="145" column="19"/>
+      </memberdef>
+      <memberdef kind="function" id="class_leaf_patch_applicator_1acde742f39c2a292efa4484b295c9c351" prot="public" static="no" const="yes" explicit="no" inline="no" virt="non-virtual">
+        <type>bool</type>
+        <definition>bool LeafPatchApplicator::isTotalFullCapacity</definition>
+        <argsstring>() const</argsstring>
+        <name>isTotalFullCapacity</name>
+        <qualifiedname>LeafPatchApplicator::isTotalFullCapacity</qualifiedname>
+        <briefdescription>
+<para>Checks if the cell has reached total full capacity. </para>
+        </briefdescription>
+        <detaileddescription>
+<para><simplesect kind="return"><para>True if total capacity is full. </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="App/Model/IBM/Landscape/Map/SpatialTree/TerrainCells/PatchApplicator/LeafPatchApplicator.h" line="151" column="10"/>
+      </memberdef>
+      <memberdef kind="function" id="class_leaf_patch_applicator_1a2ae751eaaedb19018909ed51007fb00c" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type><ref refid="class_leaf_patch_applicator" kindref="compound">LeafPatchApplicator</ref> &amp;</type>
+        <definition>LeafPatchApplicator &amp; LeafPatchApplicator::operator=</definition>
+        <argsstring>(const LeafPatchApplicator &amp;)=delete</argsstring>
+        <name>operator=</name>
+        <qualifiedname>LeafPatchApplicator::operator=</qualifiedname>
+        <param>
+          <type>const <ref refid="class_leaf_patch_applicator" kindref="compound">LeafPatchApplicator</ref> &amp;</type>
+        </param>
+        <briefdescription>
+<para>Deleted copy assignment. </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="App/Model/IBM/Landscape/Map/SpatialTree/TerrainCells/PatchApplicator/LeafPatchApplicator.h" line="51" column="25"/>
+      </memberdef>
+      <memberdef kind="function" id="class_leaf_patch_applicator_1a449dc096b97cf30443f5e2d13b658d03" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void LeafPatchApplicator::registerResources</definition>
+        <argsstring>(std::vector&lt; std::vector&lt; std::vector&lt; CellResource * &gt; &gt; &gt; &amp;landscapeResources)</argsstring>
+        <name>registerResources</name>
+        <qualifiedname>LeafPatchApplicator::registerResources</qualifiedname>
+        <param>
+          <type>std::vector&lt; std::vector&lt; std::vector&lt; <ref refid="class_cell_resource" kindref="compound">CellResource</ref> * &gt; &gt; &gt; &amp;</type>
+          <declname>landscapeResources</declname>
+        </param>
+        <briefdescription>
+<para>Registers resources in the landscape vector. </para>
+        </briefdescription>
+        <detaileddescription>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>landscapeResources</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Reference to the landscape&apos;s 3D vector of resources. </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="App/Model/IBM/Landscape/Map/SpatialTree/TerrainCells/PatchApplicator/LeafPatchApplicator.h" line="157" column="10"/>
+      </memberdef>
+      <memberdef kind="function" id="class_leaf_patch_applicator_1a60ea9e5c017b706cea829f1d2cd89278" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void LeafPatchApplicator::removeResourceBiomass</definition>
+        <argsstring>(const WetMass &amp;biomassToRemove)</argsstring>
+        <name>removeResourceBiomass</name>
+        <qualifiedname>LeafPatchApplicator::removeResourceBiomass</qualifiedname>
+        <param>
+          <type>const <ref refid="class_wet_mass" kindref="compound">WetMass</ref> &amp;</type>
+          <declname>biomassToRemove</declname>
+        </param>
+        <briefdescription>
+<para>Removes a specified amount of resource biomass from the cell. </para>
+        </briefdescription>
+        <detaileddescription>
+<para>Decreases the internal resource biomass of the cell by the given amount.</para>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>biomassToRemove</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Amount of biomass to remove. </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="App/Model/IBM/Landscape/Map/SpatialTree/TerrainCells/PatchApplicator/LeafPatchApplicator.h" line="133" column="10"/>
+      </memberdef>
+      <memberdef kind="function" id="class_leaf_patch_applicator_1ac0f50ad1be8c79317b780259e4cb1ab0" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <templateparamlist>
+          <param>
+            <type>class Archive</type>
+          </param>
+        </templateparamlist>
+        <type>void</type>
+        <definition>void LeafPatchApplicator::serialize</definition>
+        <argsstring>(Archive &amp;ar, const unsigned int version)</argsstring>
+        <name>serialize</name>
+        <qualifiedname>LeafPatchApplicator::serialize</qualifiedname>
+        <param>
+          <type>Archive &amp;</type>
+          <declname>ar</declname>
+        </param>
+        <param>
+          <type>const unsigned int</type>
+          <declname>version</declname>
+        </param>
+        <briefdescription>
+<para>Serialization function. </para>
+        </briefdescription>
+        <detaileddescription>
+<para><parameterlist kind="templateparam"><parameteritem>
+<parameternamelist>
+<parametername>Archive</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Type of the archive. </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>ar</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Archive object. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>version</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Version of serialization. </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="App/Model/IBM/Landscape/Map/SpatialTree/TerrainCells/PatchApplicator/LeafPatchApplicator.h" line="166" column="10"/>
+      </memberdef>
+      <memberdef kind="function" id="class_leaf_patch_applicator_1a749a058846a53d9c4463463007678d37" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void LeafPatchApplicator::setTotalFullCapacity</definition>
+        <argsstring>(const bool newTotalFullCapacityValue)</argsstring>
+        <name>setTotalFullCapacity</name>
+        <qualifiedname>LeafPatchApplicator::setTotalFullCapacity</qualifiedname>
+        <param>
+          <type>const bool</type>
+          <declname>newTotalFullCapacityValue</declname>
+        </param>
+        <briefdescription>
+<para>Sets whether the total resource capacity is fully reached. </para>
+        </briefdescription>
+        <detaileddescription>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>newTotalFullCapacityValue</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>True if full capacity, false otherwise. </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="App/Model/IBM/Landscape/Map/SpatialTree/TerrainCells/PatchApplicator/LeafPatchApplicator.h" line="139" column="10"/>
+      </memberdef>
+    </sectiondef>
+    <sectiondef kind="protected-func">
+      <memberdef kind="function" id="class_leaf_patch_applicator_1a210eb62c4c07de91c7cd4c4094338cf7" prot="protected" static="no" const="no" explicit="no" inline="no" virt="virtual">
+        <type>void</type>
+        <definition>void LeafPatchApplicator::applyDown</definition>
+        <argsstring>(Landscape *const landscape, const PathSource &amp;source, const size_t newPatchPriority)</argsstring>
+        <name>applyDown</name>
+        <qualifiedname>LeafPatchApplicator::applyDown</qualifiedname>
+        <reimplements refid="class_spatial_tree_patch_applicator_1a61c39fbb14124aecddb65b6ff084730f">applyDown</reimplements>
+        <param>
+          <type><ref refid="class_landscape" kindref="compound">Landscape</ref> *const</type>
+          <declname>landscape</declname>
+        </param>
+        <param>
+          <type>const <ref refid="class_path_source" kindref="compound">PathSource</ref> &amp;</type>
+          <declname>source</declname>
+        </param>
+        <param>
+          <type>const size_t</type>
+          <declname>newPatchPriority</declname>
+        </param>
+        <briefdescription>
+<para>Applies the downward effect of a patch on the leaf cell. </para>
+        </briefdescription>
+        <detaileddescription>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>landscape</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Pointer to the landscape. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>source</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Source to apply. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>newPatchPriority</parametername>
+</parameternamelist>
+<parameterdescription>
+<para><ref refid="class_patch" kindref="compound">Patch</ref> priority. </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="App/Model/IBM/Landscape/Map/SpatialTree/TerrainCells/PatchApplicator/LeafPatchApplicator.h" line="194" column="10"/>
+      </memberdef>
+      <memberdef kind="function" id="class_leaf_patch_applicator_1a0b92bbf84b70ec6fba3df90e6fc2b184" prot="protected" static="no" const="no" explicit="no" inline="no" virt="virtual">
+        <type>std::pair&lt; bool, bool &gt;</type>
+        <definition>std::pair&lt; bool, bool &gt; LeafPatchApplicator::applyPartialCoveragePatch</definition>
+        <argsstring>(Landscape *const landscape, const Patch &amp;patch)</argsstring>
+        <name>applyPartialCoveragePatch</name>
+        <qualifiedname>LeafPatchApplicator::applyPartialCoveragePatch</qualifiedname>
+        <reimplements refid="class_spatial_tree_patch_applicator_1ab02ec3ddb12b148d14415b0e97f5fb0c">applyPartialCoveragePatch</reimplements>
+        <param>
+          <type><ref refid="class_landscape" kindref="compound">Landscape</ref> *const</type>
+          <declname>landscape</declname>
+        </param>
+        <param>
+          <type>const <ref refid="class_patch" kindref="compound">Patch</ref> &amp;</type>
+          <declname>patch</declname>
+        </param>
+        <briefdescription>
+<para>Applies a patch partially covering the leaf cell. </para>
+        </briefdescription>
+        <detaileddescription>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>landscape</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Pointer to the landscape. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>patch</parametername>
+</parameternamelist>
+<parameterdescription>
+<para><ref refid="class_patch" kindref="compound">Patch</ref> to apply. </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<simplesect kind="return"><para>Pair of booleans indicating partial coverage success. </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="App/Model/IBM/Landscape/Map/SpatialTree/TerrainCells/PatchApplicator/LeafPatchApplicator.h" line="178" column="15"/>
+      </memberdef>
+      <memberdef kind="function" id="class_leaf_patch_applicator_1a7a8d038568050c76848ef4cb5287f3b7" prot="protected" static="no" const="no" explicit="no" inline="no" virt="virtual">
+        <type>void</type>
+        <definition>void LeafPatchApplicator::applySource</definition>
+        <argsstring>(Landscape *const landscape, const PathSource &amp;source, const size_t newPatchPriority)</argsstring>
+        <name>applySource</name>
+        <qualifiedname>LeafPatchApplicator::applySource</qualifiedname>
+        <reimplements refid="class_patch_applicator_1a6ad8fd71f237437dd5513d5a50684c88">applySource</reimplements>
+        <param>
+          <type><ref refid="class_landscape" kindref="compound">Landscape</ref> *const</type>
+          <declname>landscape</declname>
+        </param>
+        <param>
+          <type>const <ref refid="class_path_source" kindref="compound">PathSource</ref> &amp;</type>
+          <declname>source</declname>
+        </param>
+        <param>
+          <type>const size_t</type>
+          <declname>newPatchPriority</declname>
+        </param>
+        <briefdescription>
+<para>Applies a path source to the leaf cell. </para>
+        </briefdescription>
+        <detaileddescription>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>landscape</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Pointer to the landscape. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>source</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Source to apply. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>newPatchPriority</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Priority of the patch. </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="App/Model/IBM/Landscape/Map/SpatialTree/TerrainCells/PatchApplicator/LeafPatchApplicator.h" line="186" column="10"/>
+      </memberdef>
+      <memberdef kind="function" id="class_leaf_patch_applicator_1a11844dc0df166b092cdd7a0ea5123eb0" prot="protected" static="no" const="no" explicit="no" inline="no" virt="virtual">
+        <type>void</type>
+        <definition>void LeafPatchApplicator::setCellHabitatDomain</definition>
+        <argsstring>(Landscape *const landscape, const HabitatDomainSource &amp;source, const size_t newHabitatDomainPatchPriority)</argsstring>
+        <name>setCellHabitatDomain</name>
+        <qualifiedname>LeafPatchApplicator::setCellHabitatDomain</qualifiedname>
+        <reimplements refid="class_patch_applicator_1a89aaa7f04fd346f9ee12db4b14458d25">setCellHabitatDomain</reimplements>
+        <param>
+          <type><ref refid="class_landscape" kindref="compound">Landscape</ref> *const</type>
+          <declname>landscape</declname>
+        </param>
+        <param>
+          <type>const <ref refid="class_habitat_domain_source" kindref="compound">HabitatDomainSource</ref> &amp;</type>
+          <declname>source</declname>
+        </param>
+        <param>
+          <type>const size_t</type>
+          <declname>newHabitatDomainPatchPriority</declname>
+        </param>
+        <briefdescription>
+<para>Updates the cell habitat domain from a source. </para>
+        </briefdescription>
+        <detaileddescription>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>landscape</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Pointer to the landscape. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>source</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Habitat domain source. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>newHabitatDomainPatchPriority</parametername>
+</parameternamelist>
+<parameterdescription>
+<para><ref refid="class_patch" kindref="compound">Patch</ref> priority. </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="App/Model/IBM/Landscape/Map/SpatialTree/TerrainCells/PatchApplicator/LeafPatchApplicator.h" line="226" column="10"/>
+      </memberdef>
+      <memberdef kind="function" id="class_leaf_patch_applicator_1adc7a0868a20ca49bec4ebf9ea9cc4e7c" prot="protected" static="no" const="no" explicit="no" inline="no" virt="virtual">
+        <type>void</type>
+        <definition>void LeafPatchApplicator::setCellMoisture</definition>
+        <argsstring>(Landscape *const landscape, const MoistureSource &amp;source, const size_t newMoisturePatchPriority)</argsstring>
+        <name>setCellMoisture</name>
+        <qualifiedname>LeafPatchApplicator::setCellMoisture</qualifiedname>
+        <reimplements refid="class_patch_applicator_1a747884f68689a26437f21aefdfdec923">setCellMoisture</reimplements>
+        <param>
+          <type><ref refid="class_landscape" kindref="compound">Landscape</ref> *const</type>
+          <declname>landscape</declname>
+        </param>
+        <param>
+          <type>const <ref refid="class_moisture_source" kindref="compound">MoistureSource</ref> &amp;</type>
+          <declname>source</declname>
+        </param>
+        <param>
+          <type>const size_t</type>
+          <declname>newMoisturePatchPriority</declname>
+        </param>
+        <briefdescription>
+<para>Updates the cell moisture from a source. </para>
+        </briefdescription>
+        <detaileddescription>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>landscape</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Pointer to the landscape. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>source</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Moisture source. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>newMoisturePatchPriority</parametername>
+</parameternamelist>
+<parameterdescription>
+<para><ref refid="class_patch" kindref="compound">Patch</ref> priority. </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="App/Model/IBM/Landscape/Map/SpatialTree/TerrainCells/PatchApplicator/LeafPatchApplicator.h" line="202" column="10"/>
+      </memberdef>
+      <memberdef kind="function" id="class_leaf_patch_applicator_1abddd4e39c7c83c28a98b204323ed174f" prot="protected" static="no" const="no" explicit="no" inline="no" virt="virtual">
+        <type>void</type>
+        <definition>void LeafPatchApplicator::setCellObstacle</definition>
+        <argsstring>(Landscape *const landscape, const ObstacleSource &amp;source, const size_t newObstaclePatchPriority)</argsstring>
+        <name>setCellObstacle</name>
+        <qualifiedname>LeafPatchApplicator::setCellObstacle</qualifiedname>
+        <reimplements refid="class_patch_applicator_1a94e22eace4f6c686afc66e2953ea0da9">setCellObstacle</reimplements>
+        <param>
+          <type><ref refid="class_landscape" kindref="compound">Landscape</ref> *const</type>
+          <declname>landscape</declname>
+        </param>
+        <param>
+          <type>const <ref refid="class_obstacle_source" kindref="compound">ObstacleSource</ref> &amp;</type>
+          <declname>source</declname>
+        </param>
+        <param>
+          <type>const size_t</type>
+          <declname>newObstaclePatchPriority</declname>
+        </param>
+        <briefdescription>
+<para>Updates the cell obstacle from a source. </para>
+        </briefdescription>
+        <detaileddescription>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>landscape</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Pointer to the landscape. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>source</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Obstacle source. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>newObstaclePatchPriority</parametername>
+</parameternamelist>
+<parameterdescription>
+<para><ref refid="class_patch" kindref="compound">Patch</ref> priority. </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="App/Model/IBM/Landscape/Map/SpatialTree/TerrainCells/PatchApplicator/LeafPatchApplicator.h" line="218" column="10"/>
+      </memberdef>
+      <memberdef kind="function" id="class_leaf_patch_applicator_1ad11b678117f7d7fed4d66dcfd0514cab" prot="protected" static="no" const="no" explicit="no" inline="no" virt="virtual">
+        <type>void</type>
+        <definition>void LeafPatchApplicator::setCellResource</definition>
+        <argsstring>(Landscape *const landscape, const ResourceSource &amp;source, const size_t newResourcePatchPriority)</argsstring>
+        <name>setCellResource</name>
+        <qualifiedname>LeafPatchApplicator::setCellResource</qualifiedname>
+        <reimplements refid="class_patch_applicator_1a0d841872bc9c78ba8c177bd85c8ae2cc">setCellResource</reimplements>
+        <param>
+          <type><ref refid="class_landscape" kindref="compound">Landscape</ref> *const</type>
+          <declname>landscape</declname>
+        </param>
+        <param>
+          <type>const <ref refid="class_resource_source" kindref="compound">ResourceSource</ref> &amp;</type>
+          <declname>source</declname>
+        </param>
+        <param>
+          <type>const size_t</type>
+          <declname>newResourcePatchPriority</declname>
+        </param>
+        <briefdescription>
+<para>Updates the cell resource from a source. </para>
+        </briefdescription>
+        <detaileddescription>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>landscape</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Pointer to the landscape. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>source</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Resource source. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>newResourcePatchPriority</parametername>
+</parameternamelist>
+<parameterdescription>
+<para><ref refid="class_patch" kindref="compound">Patch</ref> priority. </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="App/Model/IBM/Landscape/Map/SpatialTree/TerrainCells/PatchApplicator/LeafPatchApplicator.h" line="210" column="10"/>
+      </memberdef>
+    </sectiondef>
+    <briefdescription>
+<para>Concrete implementation of <ref refid="class_spatial_tree_patch_applicator" kindref="compound">SpatialTreePatchApplicator</ref> for leaf nodes. </para>
+    </briefdescription>
+    <detaileddescription>
+<para><ref refid="class_leaf_patch_applicator" kindref="compound">LeafPatchApplicator</ref> manages the application of patches for leaf cells in the spatial tree. It handles moisture, resources, obstacles, and habitat domains at the finest terrain resolution. The class supports full and partial patch coverage and resource biomass management. </para>
+    </detaileddescription>
+    <inheritancegraph>
+      <node id="1">
+        <label>LeafPatchApplicator</label>
+        <link refid="class_leaf_patch_applicator"/>
+        <childnode refid="2" relation="public-inheritance">
+        </childnode>
+      </node>
+      <node id="3">
+        <label>PatchApplicator</label>
+        <link refid="class_patch_applicator"/>
+      </node>
+      <node id="2">
+        <label>SpatialTreePatchApplicator</label>
+        <link refid="class_spatial_tree_patch_applicator"/>
+        <childnode refid="3" relation="public-inheritance">
+        </childnode>
+      </node>
+    </inheritancegraph>
+    <collaborationgraph>
+      <node id="8">
+        <label>CellElement</label>
+        <link refid="class_cell_element"/>
+      </node>
+      <node id="11">
+        <label>CellHabitatDomainInterface</label>
+        <link refid="class_cell_habitat_domain_interface"/>
+        <childnode refid="8" relation="public-inheritance">
+        </childnode>
+        <childnode refid="12" relation="usage">
+          <edgelabel>habitatDomainStatus</edgelabel>
+        </childnode>
+      </node>
+      <node id="7">
+        <label>CellMoistureInterface</label>
+        <link refid="class_cell_moisture_interface"/>
+        <childnode refid="8" relation="public-inheritance">
+        </childnode>
+        <childnode refid="9" relation="usage">
+          <edgelabel>totalMaximumResourceCapacity</edgelabel>
+        </childnode>
+      </node>
+      <node id="10">
+        <label>CellObstacleInterface</label>
+        <link refid="class_cell_obstacle_interface"/>
+        <childnode refid="8" relation="public-inheritance">
+        </childnode>
+      </node>
+      <node id="12">
+        <label>CustomIndexedVector&lt; AnimalSpeciesID, CustomIndexedVector&lt; Instar, bool &gt; &gt;</label>
+        <link refid="class_custom_indexed_vector"/>
+      </node>
+      <node id="1">
+        <label>LeafPatchApplicator</label>
+        <link refid="class_leaf_patch_applicator"/>
+        <childnode refid="2" relation="public-inheritance">
+        </childnode>
+        <childnode refid="9" relation="usage">
+          <edgelabel>totalResourceBiomass</edgelabel>
+        </childnode>
+      </node>
+      <node id="3">
+        <label>PatchApplicator</label>
+        <link refid="class_patch_applicator"/>
+        <childnode refid="4" relation="usage">
+          <edgelabel>owner</edgelabel>
+        </childnode>
+        <childnode refid="7" relation="usage">
+          <edgelabel>cellMoisture</edgelabel>
+        </childnode>
+        <childnode refid="10" relation="usage">
+          <edgelabel>cellObstacle</edgelabel>
+        </childnode>
+        <childnode refid="11" relation="usage">
+          <edgelabel>cellHabitatDomain</edgelabel>
+        </childnode>
+      </node>
+      <node id="5">
+        <label>PointMap</label>
+        <link refid="class_point_map"/>
+      </node>
+      <node id="6">
+        <label>PreciseDouble</label>
+        <link refid="class_precise_double"/>
+      </node>
+      <node id="2">
+        <label>SpatialTreePatchApplicator</label>
+        <link refid="class_spatial_tree_patch_applicator"/>
+        <childnode refid="3" relation="public-inheritance">
+        </childnode>
+      </node>
+      <node id="4">
+        <label>TerrainCell</label>
+        <link refid="class_terrain_cell"/>
+        <childnode refid="3" relation="usage">
+          <edgelabel>patchApplicator</edgelabel>
+        </childnode>
+        <childnode refid="5" relation="usage">
+          <edgelabel>position</edgelabel>
+        </childnode>
+        <childnode refid="6" relation="usage">
+          <edgelabel>hyperVolume</edgelabel>
+          <edgelabel>size</edgelabel>
+        </childnode>
+      </node>
+      <node id="9">
+        <label>WetMass</label>
+        <link refid="class_wet_mass"/>
+        <childnode refid="6" relation="usage">
+          <edgelabel>value</edgelabel>
+        </childnode>
+      </node>
+    </collaborationgraph>
+    <location file="App/Model/IBM/Landscape/Map/SpatialTree/TerrainCells/PatchApplicator/LeafPatchApplicator.h" line="31" column="1" bodyfile="App/Model/IBM/Landscape/Map/SpatialTree/TerrainCells/PatchApplicator/LeafPatchApplicator.h" bodystart="32" bodyend="227"/>
+    <listofallmembers>
+      <member refid="class_patch_applicator_1aca94b40e80615c1a0058a4b61ada5549" prot="public" virt="non-virtual"><scope>LeafPatchApplicator</scope><name>addAnimalSpecies</name></member>
+      <member refid="class_leaf_patch_applicator_1ac459770e0755b0e87b0e03f5adbbc704" prot="public" virt="non-virtual"><scope>LeafPatchApplicator</scope><name>addResourceBiomass</name></member>
+      <member refid="class_leaf_patch_applicator_1a154a48701876657ef1e3b8652a8664ab" prot="public" virt="virtual"><scope>LeafPatchApplicator</scope><name>addResourceSpecies</name></member>
+      <member refid="class_leaf_patch_applicator_1a210eb62c4c07de91c7cd4c4094338cf7" prot="protected" virt="virtual"><scope>LeafPatchApplicator</scope><name>applyDown</name></member>
+      <member refid="class_leaf_patch_applicator_1a0b92bbf84b70ec6fba3df90e6fc2b184" prot="protected" virt="virtual"><scope>LeafPatchApplicator</scope><name>applyPartialCoveragePatch</name></member>
+      <member refid="class_leaf_patch_applicator_1a1c37d1076115a16db0eada41b043c204" prot="public" virt="virtual"><scope>LeafPatchApplicator</scope><name>applyPatch</name></member>
+      <member refid="class_leaf_patch_applicator_1a7a8d038568050c76848ef4cb5287f3b7" prot="protected" virt="virtual"><scope>LeafPatchApplicator</scope><name>applySource</name></member>
+      <member refid="class_patch_applicator_1ad0079632516b530b1f24c30562d89bee" prot="protected" virt="non-virtual"><scope>LeafPatchApplicator</scope><name>canApplyFullCoverage</name></member>
+      <member refid="class_patch_applicator_1a851b689aa29ccd29d353797058156552" prot="private" virt="non-virtual"><scope>LeafPatchApplicator</scope><name>canApplyFullCoverageHabitatDomain</name></member>
+      <member refid="class_patch_applicator_1a036eb5e683fb515afae6048790fa517d" prot="private" virt="non-virtual"><scope>LeafPatchApplicator</scope><name>canApplyFullCoverageMoisture</name></member>
+      <member refid="class_patch_applicator_1a42e3efe5814ee4f5a3e57ee981bfc92b" prot="private" virt="non-virtual"><scope>LeafPatchApplicator</scope><name>canApplyFullCoverageObstacle</name></member>
+      <member refid="class_patch_applicator_1a30f4d4544e1e151de8e8907def8dd3b1" prot="private" virt="non-virtual"><scope>LeafPatchApplicator</scope><name>canApplyFullCoverageResource</name></member>
+      <member refid="class_patch_applicator_1af0b25a02b5a1d4c8c526a05b356ddaa4" prot="protected" virt="non-virtual"><scope>LeafPatchApplicator</scope><name>cellHabitatDomain</name></member>
+      <member refid="class_patch_applicator_1ac3a5cfeafd0f361d2e7452c4f3c9a6c9" prot="protected" virt="non-virtual"><scope>LeafPatchApplicator</scope><name>cellMoisture</name></member>
+      <member refid="class_patch_applicator_1ac7d2889435a8f30ea487348cfae0d188" prot="protected" virt="non-virtual"><scope>LeafPatchApplicator</scope><name>cellObstacle</name></member>
+      <member refid="class_patch_applicator_1a0a40921ab5b649609b203f855822f529" prot="protected" virt="non-virtual"><scope>LeafPatchApplicator</scope><name>cellResources</name></member>
+      <member refid="class_patch_applicator_1a0a8c04762c9f9c16ee69a8408f7e3278" prot="public" virt="non-virtual"><scope>LeafPatchApplicator</scope><name>deserializeSources</name></member>
+      <member refid="class_patch_applicator_1a604cc3e102feacfc9b2ef4376ed63dd7" prot="public" virt="non-virtual"><scope>LeafPatchApplicator</scope><name>deserializeSpecies</name></member>
+      <member refid="class_leaf_patch_applicator_1ab229d034f275cabaaeaee8247096cbc0" prot="public" virt="virtual"><scope>LeafPatchApplicator</scope><name>getCellHabitatDomain</name></member>
+      <member refid="class_leaf_patch_applicator_1aa51c80c376b0eabb48993378bcc8ae0c" prot="public" virt="virtual"><scope>LeafPatchApplicator</scope><name>getCellMoisture</name></member>
+      <member refid="class_leaf_patch_applicator_1a959b5e2709bcd4d65f4ad7315f170030" prot="public" virt="virtual"><scope>LeafPatchApplicator</scope><name>getCellObstacle</name></member>
+      <member refid="class_leaf_patch_applicator_1aad3640fc6f86fb771a0b671040a62893" prot="public" virt="virtual"><scope>LeafPatchApplicator</scope><name>getCellResource</name></member>
+      <member refid="class_patch_applicator_1a4d76c0fd0e2d738fc5c495ffb194da26" prot="public" virt="non-virtual"><scope>LeafPatchApplicator</scope><name>getCellResourcePatchPriority</name></member>
+      <member refid="class_leaf_patch_applicator_1a2dbc277d28721a29dd5479bfeb5fb8d7" prot="public" virt="virtual"><scope>LeafPatchApplicator</scope><name>getMutableCellHabitatDomain</name></member>
+      <member refid="class_leaf_patch_applicator_1aeda958c2a83db7757ed33a9a329968b8" prot="public" virt="virtual"><scope>LeafPatchApplicator</scope><name>getMutableCellMoisture</name></member>
+      <member refid="class_leaf_patch_applicator_1a3fcaa4f8b0f837ca3cb50edb8a7e3c20" prot="public" virt="virtual"><scope>LeafPatchApplicator</scope><name>getMutableCellObstacle</name></member>
+      <member refid="class_leaf_patch_applicator_1a7edeb3fa96af342e0e5d5ad425ad3f8f" prot="public" virt="virtual"><scope>LeafPatchApplicator</scope><name>getMutableCellResource</name></member>
+      <member refid="class_patch_applicator_1a82b7efade93d47b29e3f0b33fe3d8c56" prot="public" virt="non-virtual"><scope>LeafPatchApplicator</scope><name>getNumberOfResources</name></member>
+      <member refid="class_leaf_patch_applicator_1a36d6eeafda0d28fa72b1ad5acaa0e485" prot="public" virt="non-virtual"><scope>LeafPatchApplicator</scope><name>getTotalResourceBiomass</name></member>
+      <member refid="class_leaf_patch_applicator_1acde742f39c2a292efa4484b295c9c351" prot="public" virt="non-virtual"><scope>LeafPatchApplicator</scope><name>isTotalFullCapacity</name></member>
+      <member refid="class_leaf_patch_applicator_1a00299c0e3e2c596c9be504bdf261ffe2" prot="public" virt="non-virtual"><scope>LeafPatchApplicator</scope><name>LeafPatchApplicator</name></member>
+      <member refid="class_leaf_patch_applicator_1af47e26fddd28030938c11c24b53317f8" prot="public" virt="non-virtual"><scope>LeafPatchApplicator</scope><name>LeafPatchApplicator</name></member>
+      <member refid="class_leaf_patch_applicator_1a44bb87a6bbbab23a45569b5d18af20b7" prot="public" virt="non-virtual"><scope>LeafPatchApplicator</scope><name>LeafPatchApplicator</name></member>
+      <member refid="class_leaf_patch_applicator_1a2ae751eaaedb19018909ed51007fb00c" prot="public" virt="non-virtual"><scope>LeafPatchApplicator</scope><name>operator=</name></member>
+      <member refid="class_spatial_tree_patch_applicator_1a06e3a862b4a08defc9b33905ff329406" prot="public" virt="non-virtual" ambiguityscope="SpatialTreePatchApplicator::"><scope>LeafPatchApplicator</scope><name>operator=</name></member>
+      <member refid="class_patch_applicator_1a3bd6e65fbaab4ff95d67b67e3718e2ff" prot="public" virt="non-virtual" ambiguityscope="PatchApplicator::"><scope>LeafPatchApplicator</scope><name>operator=</name></member>
+      <member refid="class_patch_applicator_1a7c4c616f9b363efb023348c98475da24" prot="protected" virt="non-virtual"><scope>LeafPatchApplicator</scope><name>owner</name></member>
+      <member refid="class_patch_applicator_1afb734f2184326f3d595c3ece1d824729" prot="public" virt="non-virtual"><scope>LeafPatchApplicator</scope><name>PatchApplicator</name></member>
+      <member refid="class_patch_applicator_1a1c0b4fc546f3d8a7a271fbb23e105224" prot="public" virt="non-virtual"><scope>LeafPatchApplicator</scope><name>PatchApplicator</name></member>
+      <member refid="class_patch_applicator_1ab572659a018152fe7f953eacd8e733ee" prot="public" virt="non-virtual"><scope>LeafPatchApplicator</scope><name>PatchApplicator</name></member>
+      <member refid="class_leaf_patch_applicator_1a449dc096b97cf30443f5e2d13b658d03" prot="public" virt="non-virtual"><scope>LeafPatchApplicator</scope><name>registerResources</name></member>
+      <member refid="class_leaf_patch_applicator_1a60ea9e5c017b706cea829f1d2cd89278" prot="public" virt="non-virtual"><scope>LeafPatchApplicator</scope><name>removeResourceBiomass</name></member>
+      <member refid="class_leaf_patch_applicator_1ac0f50ad1be8c79317b780259e4cb1ab0" prot="public" virt="non-virtual"><scope>LeafPatchApplicator</scope><name>serialize</name></member>
+      <member refid="class_patch_applicator_1ad2576a378ec9bc993ef55ea3556b91b2" prot="protected" virt="non-virtual"><scope>LeafPatchApplicator</scope><name>setCellElement</name></member>
+      <member refid="class_leaf_patch_applicator_1a11844dc0df166b092cdd7a0ea5123eb0" prot="protected" virt="virtual"><scope>LeafPatchApplicator</scope><name>setCellHabitatDomain</name></member>
+      <member refid="class_leaf_patch_applicator_1adc7a0868a20ca49bec4ebf9ea9cc4e7c" prot="protected" virt="virtual"><scope>LeafPatchApplicator</scope><name>setCellMoisture</name></member>
+      <member refid="class_leaf_patch_applicator_1abddd4e39c7c83c28a98b204323ed174f" prot="protected" virt="virtual"><scope>LeafPatchApplicator</scope><name>setCellObstacle</name></member>
+      <member refid="class_leaf_patch_applicator_1ad11b678117f7d7fed4d66dcfd0514cab" prot="protected" virt="virtual"><scope>LeafPatchApplicator</scope><name>setCellResource</name></member>
+      <member refid="class_patch_applicator_1a72c65104fea1b2c72c54a92818c2e330" prot="public" virt="non-virtual"><scope>LeafPatchApplicator</scope><name>setOwner</name></member>
+      <member refid="class_leaf_patch_applicator_1a749a058846a53d9c4463463007678d37" prot="public" virt="non-virtual"><scope>LeafPatchApplicator</scope><name>setTotalFullCapacity</name></member>
+      <member refid="class_spatial_tree_patch_applicator_1af71926fd1bafaf7a07b866a3db58ba83" prot="public" virt="non-virtual"><scope>LeafPatchApplicator</scope><name>SpatialTreePatchApplicator</name></member>
+      <member refid="class_spatial_tree_patch_applicator_1a4077924488f6122f3cd53a99d0239045" prot="public" virt="non-virtual"><scope>LeafPatchApplicator</scope><name>SpatialTreePatchApplicator</name></member>
+      <member refid="class_spatial_tree_patch_applicator_1adc5ea3a66a116526bda03236027549cb" prot="public" virt="non-virtual"><scope>LeafPatchApplicator</scope><name>SpatialTreePatchApplicator</name></member>
+      <member refid="class_leaf_patch_applicator_1a196aad0f2fba64f85e094afdf4fb08c8" prot="protected" virt="non-virtual"><scope>LeafPatchApplicator</scope><name>totalFullCapacity</name></member>
+      <member refid="class_leaf_patch_applicator_1ace443809a59abe1b90fa3500c85f5cd5" prot="protected" virt="non-virtual"><scope>LeafPatchApplicator</scope><name>totalResourceBiomass</name></member>
+      <member refid="class_patch_applicator_1ae3a2ba870458e3833f8c146736d1fbd6" prot="public" virt="non-virtual"><scope>LeafPatchApplicator</scope><name>update</name></member>
+      <member refid="class_leaf_patch_applicator_1ad435ee6b2b62e476beccd46a9b8932aa" prot="public" virt="virtual"><scope>LeafPatchApplicator</scope><name>~LeafPatchApplicator</name></member>
+      <member refid="class_patch_applicator_1a08e1ee7e3cff7bbd60a65663c9dff8e1" prot="public" virt="virtual"><scope>LeafPatchApplicator</scope><name>~PatchApplicator</name></member>
+      <member refid="class_spatial_tree_patch_applicator_1aaf0bfb6d200523611492c428d604c269" prot="public" virt="virtual"><scope>LeafPatchApplicator</scope><name>~SpatialTreePatchApplicator</name></member>
+    </listofallmembers>
+  </compounddef>
+</doxygen>

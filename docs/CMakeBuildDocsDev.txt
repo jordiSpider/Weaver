@@ -15,13 +15,19 @@
 # ------------------------------------------------------------
 # 🌟 Define the "latest" version for development builds
 # ------------------------------------------------------------
-set(LATEST_VERSION "latest")
+set(LATEST_VERSION "${DOCS_WEAVER_VERSION}")
 
 
 # ------------------------------------------------------------
 # 🌐 Gather all available documentation versions and languages
 # ------------------------------------------------------------
 include(${DOCS_DIR}/CMakeGetAllVersionsAndLanguages.txt)
+
+
+# ------------------------------------------------------------
+# 🌐 Prepare the local GitHub Pages staging directory
+# ------------------------------------------------------------
+include(${DOCS_DIR}/CMakePrepareDocsSite.txt)
 
 
 # ------------------------------------------------------------
@@ -38,5 +44,4 @@ include(${DOCS_DIR}/CMakeDoxygen.txt)
 # ------------------------------------------------------------
 include(${DOCS_DIR}/CMakeBuildDocs.txt)
 
-# Ensure that Doxygen builds before Sphinx documentation
-add_dependencies(build-docs build-doxygen)
+add_dependencies(build-docs-weaver prev-clean-docs)

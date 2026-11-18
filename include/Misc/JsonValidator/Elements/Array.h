@@ -15,12 +15,12 @@
 #include <nlohmann/json.hpp>
 
 #include "Misc/JsonValidator/Elements/Element.h"
-#include "Misc/JsonValidator/Elements/ElementFactory.h"
 #include "Misc/JsonValidator/Exceptions.h"
 
 
 /**
  * @class Array
+ * @ingroup weaver_validation
  * @brief Represents an array element in a JSON configuration.
  *
  * Inherits from Element. Provides mechanisms to define constraints on array size,

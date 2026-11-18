@@ -10,11 +10,12 @@
 #define PARABOLA_H_
 
 
-#include "App/Model/IBM/Maths/PreciseDouble.h"
+#include "Misc/Maths/PreciseDouble.h"
 
 
 /**
  * @class Parabola
+ * @ingroup weaver_model
  * @brief Represents a parabola of the form y = ax^2 + bx + c.
  *
  * The parabola can be defined by specifying its two zeros and the value of its

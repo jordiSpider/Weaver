@@ -15,6 +15,7 @@
 
 /**
  * @class Logistic4PIndividualGrowthModel
+ * @ingroup weaver_landscape
  * @brief Implements a 4-parameter logistic individual growth model.
  * 
  * This class models the growth of an individual using a four-parameter logistic function.

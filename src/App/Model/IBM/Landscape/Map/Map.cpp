@@ -29,6 +29,7 @@ Map* Map::createInstance(const json &mapInfo, MoistureSource* const moistureBase
 
 
 Map::Map()
+    : numberOfCellsPerAxis(0u), numberOfCellsByAxis(DIMENSIONS, 0u)
 {
 
 }
@@ -43,11 +44,13 @@ unsigned int nextPowerOf2(const unsigned int n) {
 }
 
 Map::Map(const json &mapConfig)
-	: minCellSize(mapConfig["minCellSize"].get<double>()), minHyperVolume(pow(minCellSize, DIMENSIONS)),
-      lifeStageSearchParams(EnumClass<LifeStage>::size())
+	: minCellSize(mapConfig["minCellSize"].get<double>()), minHyperVolume(pow(minCellSize, DIMENSIONS))
 {
     unsigned int numberOfCellsAxisX = mapConfig["numberOfCellsAxisX"].get<unsigned int>();
     unsigned int numberOfCellsAxisY = mapConfig["numberOfCellsAxisY"].get<unsigned int>();
+    numberOfCellsByAxis = vector<unsigned int>(DIMENSIONS, 0u);
+    numberOfCellsByAxis[0] = numberOfCellsAxisX;
+    numberOfCellsByAxis[1] = numberOfCellsAxisY;
 
     unsigned int maxNumberOfCellsAxis = (numberOfCellsAxisX > numberOfCellsAxisY) ? numberOfCellsAxisX : numberOfCellsAxisY;
 
@@ -88,6 +91,11 @@ unsigned int Map::getNumberOfCellsPerAxis() const
     return numberOfCellsPerAxis;
 }
 
+unsigned int Map::getNumberOfCellsByAxis(const unsigned char axis) const
+{
+    return numberOfCellsByAxis[axis];
+}
+
 const vector<TerrainCell*>& Map::getInhabitableTerrainCells() const
 {
     return inhabitableTerrainCells;
@@ -101,16 +109,6 @@ vector<TerrainCell*>& Map::getMutableInhabitableTerrainCells()
 TerrainCell*& Map::getMutableInhabitableTerrainCell(const unsigned int index)
 {
     return inhabitableTerrainCells[index];
-}
-
-const AnimalSearchParams& Map::getLifeStageSearchParams(const LifeStage &lifeStage) const
-{
-    return lifeStageSearchParams[lifeStage];
-}
-
-const AnimalSearchParams& Map::getAllAnimalsSearchParams() const
-{
-    return allAnimalsSearchParams;
 }
 
 bool Map::isSpeciesInhabitableTerrainCell(const AnimalSpecies &animalSpecies, const TerrainCell* const potentialInhabitableTerrainCell, const std::vector<ResourceSpecies::ResourceID>& involvedResourceSpecies)
@@ -172,8 +170,7 @@ void Map::serialize(Archive &ar, const unsigned int) {
     ar & minCellSize;
     ar & minHyperVolume;
     ar & numberOfCellsPerAxis;
-    ar & lifeStageSearchParams;
-    ar & allAnimalsSearchParams;
+    ar & numberOfCellsByAxis;
 }
 
 // // Specialisation

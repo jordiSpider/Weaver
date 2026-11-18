@@ -22,6 +22,7 @@
 
 /**
  * @class DecisionsTrait
+ * @ingroup weaver_landscape
  * @brief Represents a trait that affects decision-making of individuals.
  *
  * DecisionsTrait inherits from Trait and may contain individual-level traits.

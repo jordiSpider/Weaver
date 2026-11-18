@@ -1,0 +1,217 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.14.0" xml:lang="en-US">
+  <compounddef id="_element_8h" kind="file" language="C++">
+    <compoundname>Element.h</compoundname>
+    <includes local="no">vector</includes>
+    <includes local="no">string</includes>
+    <includes local="no">utility</includes>
+    <includes local="no">nlohmann/json.hpp</includes>
+    <includes refid="_exceptions_8h" local="yes">Misc/JsonValidator/Exceptions.h</includes>
+    <includedby refid="_array_8h" local="yes">Misc/JsonValidator/Elements/Array.h</includedby>
+    <includedby refid="_boolean_8h" local="yes">Misc/JsonValidator/Elements/Boolean.h</includedby>
+    <includedby refid="_element_factory_8h" local="yes">Misc/JsonValidator/Elements/ElementFactory.h</includedby>
+    <includedby refid="_integer_8h" local="yes">Misc/JsonValidator/Elements/Integer.h</includedby>
+    <includedby refid="_number_8h" local="yes">Misc/JsonValidator/Elements/Number.h</includedby>
+    <includedby refid="_object_8h" local="yes">Misc/JsonValidator/Elements/Object.h</includedby>
+    <includedby refid="_string_8h" local="yes">Misc/JsonValidator/Elements/String.h</includedby>
+    <includedby refid="_tuple_8h" local="yes">Misc/JsonValidator/Elements/Tuple.h</includedby>
+    <includedby refid="_operators_8h" local="yes">Misc/JsonValidator/Operators.h</includedby>
+    <incdepgraph>
+      <node id="7">
+        <label>Exceptions/LineInfoException.h</label>
+        <link refid="_line_info_exception_8h_source"/>
+        <childnode refid="8" relation="include">
+        </childnode>
+        <childnode refid="3" relation="include">
+        </childnode>
+      </node>
+      <node id="1">
+        <label>Misc/JsonValidator/Elements/Element.h</label>
+        <link refid="_element_8h"/>
+        <childnode refid="2" relation="include">
+        </childnode>
+        <childnode refid="3" relation="include">
+        </childnode>
+        <childnode refid="4" relation="include">
+        </childnode>
+        <childnode refid="5" relation="include">
+        </childnode>
+        <childnode refid="6" relation="include">
+        </childnode>
+      </node>
+      <node id="6">
+        <label>Misc/JsonValidator/Exceptions.h</label>
+        <link refid="_exceptions_8h_source"/>
+        <childnode refid="3" relation="include">
+        </childnode>
+        <childnode refid="7" relation="include">
+        </childnode>
+      </node>
+      <node id="8">
+        <label>exception</label>
+      </node>
+      <node id="5">
+        <label>nlohmann/json.hpp</label>
+      </node>
+      <node id="3">
+        <label>string</label>
+      </node>
+      <node id="4">
+        <label>utility</label>
+      </node>
+      <node id="2">
+        <label>vector</label>
+      </node>
+    </incdepgraph>
+    <invincdepgraph>
+      <node id="2">
+        <label>Misc/JsonValidator/Elements/Array.h</label>
+        <link refid="_array_8h_source"/>
+        <childnode refid="3" relation="include">
+        </childnode>
+      </node>
+      <node id="4">
+        <label>Misc/JsonValidator/Elements/Boolean.h</label>
+        <link refid="_boolean_8h_source"/>
+        <childnode refid="3" relation="include">
+        </childnode>
+      </node>
+      <node id="1">
+        <label>Misc/JsonValidator/Elements/Element.h</label>
+        <link refid="_element_8h"/>
+        <childnode refid="2" relation="include">
+        </childnode>
+        <childnode refid="4" relation="include">
+        </childnode>
+        <childnode refid="3" relation="include">
+        </childnode>
+        <childnode refid="5" relation="include">
+        </childnode>
+        <childnode refid="6" relation="include">
+        </childnode>
+        <childnode refid="7" relation="include">
+        </childnode>
+        <childnode refid="9" relation="include">
+        </childnode>
+        <childnode refid="10" relation="include">
+        </childnode>
+        <childnode refid="11" relation="include">
+        </childnode>
+      </node>
+      <node id="3">
+        <label>Misc/JsonValidator/Elements/ElementFactory.h</label>
+        <link refid="_element_factory_8h_source"/>
+      </node>
+      <node id="5">
+        <label>Misc/JsonValidator/Elements/Integer.h</label>
+        <link refid="_integer_8h_source"/>
+        <childnode refid="3" relation="include">
+        </childnode>
+      </node>
+      <node id="6">
+        <label>Misc/JsonValidator/Elements/Number.h</label>
+        <link refid="_number_8h_source"/>
+        <childnode refid="3" relation="include">
+        </childnode>
+      </node>
+      <node id="7">
+        <label>Misc/JsonValidator/Elements/Object.h</label>
+        <link refid="_object_8h_source"/>
+        <childnode refid="3" relation="include">
+        </childnode>
+        <childnode refid="8" relation="include">
+        </childnode>
+      </node>
+      <node id="9">
+        <label>Misc/JsonValidator/Elements/String.h</label>
+        <link refid="_string_8h_source"/>
+        <childnode refid="3" relation="include">
+        </childnode>
+      </node>
+      <node id="10">
+        <label>Misc/JsonValidator/Elements/Tuple.h</label>
+        <link refid="_tuple_8h_source"/>
+        <childnode refid="3" relation="include">
+        </childnode>
+      </node>
+      <node id="11">
+        <label>Misc/JsonValidator/Operators.h</label>
+        <link refid="_operators_8h_source"/>
+        <childnode refid="7" relation="include">
+        </childnode>
+      </node>
+      <node id="8">
+        <label>Misc/JsonValidator/Validator.h</label>
+        <link refid="_validator_8h_source"/>
+      </node>
+    </invincdepgraph>
+    <innerclass refid="class_element" prot="public">Element</innerclass>
+    <briefdescription>
+<para>Abstract base class representing a configurable element in JSON-based configurations. </para>
+    </briefdescription>
+    <detaileddescription>
+    </detaileddescription>
+    <programlisting>
+<codeline lineno="1"><highlight class="normal"></highlight></codeline>
+<codeline lineno="5"><highlight class="normal"></highlight></codeline>
+<codeline lineno="6"><highlight class="normal"></highlight><highlight class="preprocessor">#ifndef<sp/>ELEMENT_H_</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="7"><highlight class="normal"></highlight><highlight class="preprocessor">#define<sp/>ELEMENT_H_</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="8"><highlight class="normal"></highlight></codeline>
+<codeline lineno="9"><highlight class="normal"></highlight></codeline>
+<codeline lineno="10"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&lt;vector&gt;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="11"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&lt;string&gt;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="12"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&lt;utility&gt;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="13"><highlight class="normal"></highlight></codeline>
+<codeline lineno="14"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&lt;nlohmann/json.hpp&gt;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="15"><highlight class="normal"></highlight></codeline>
+<codeline lineno="16"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&quot;Misc/JsonValidator/Exceptions.h&quot;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="17"><highlight class="normal"></highlight></codeline>
+<codeline lineno="18"><highlight class="normal"></highlight></codeline>
+<codeline lineno="28" refid="class_element" refkind="compound"><highlight class="normal"></highlight><highlight class="keyword">class<sp/></highlight><highlight class="normal"><ref refid="class_element_1a5ef746a08042747acd608589686df030" kindref="member">Element</ref></highlight></codeline>
+<codeline lineno="29"><highlight class="normal">{</highlight></codeline>
+<codeline lineno="30"><highlight class="normal"></highlight><highlight class="keyword">protected</highlight><highlight class="normal">:</highlight></codeline>
+<codeline lineno="31" refid="class_element_1a1b0c283200e0e2c16b8713369631214d" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">bool</highlight><highlight class="normal"><sp/><ref refid="class_element_1a1b0c283200e0e2c16b8713369631214d" kindref="member">modified</ref>;<sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight></codeline>
+<codeline lineno="32" refid="class_element_1a4318313abfd08feae300a12668cec95a" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">bool</highlight><highlight class="normal"><sp/><ref refid="class_element_1a4318313abfd08feae300a12668cec95a" kindref="member">nullProperty</ref>;<sp/><sp/><sp/><sp/><sp/><sp/></highlight></codeline>
+<codeline lineno="33" refid="class_element_1a31838aa329c7380f4395b9c0a4a82cfe" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/>std::string<sp/><ref refid="class_element_1a31838aa329c7380f4395b9c0a4a82cfe" kindref="member">description</ref>;</highlight></codeline>
+<codeline lineno="34"><highlight class="normal"></highlight></codeline>
+<codeline lineno="42" refid="class_element_1a2e31082683027a829ee75a4bd872738a" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">virtual</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/><ref refid="class_element_1a2e31082683027a829ee75a4bd872738a" kindref="member">validateElement</ref>(</highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/>nlohmann::json&amp;<sp/>config)<sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal">=0;</highlight></codeline>
+<codeline lineno="43"><highlight class="normal"></highlight></codeline>
+<codeline lineno="44"><highlight class="normal"></highlight><highlight class="keyword">public</highlight><highlight class="normal">:</highlight></codeline>
+<codeline lineno="48" refid="class_element_1a009a3be4c3a037a72e292b2464c9cbc5" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">enum<sp/>class</highlight><highlight class="normal"><sp/><ref refid="class_element_1a009a3be4c3a037a72e292b2464c9cbc5" kindref="member">Type</ref><sp/>{</highlight></codeline>
+<codeline lineno="49" refid="class_element_1a009a3be4c3a037a72e292b2464c9cbc5aa8cfde6331bd59eb2ac96f8911c4b666" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><ref refid="class_element_1a009a3be4c3a037a72e292b2464c9cbc5aa8cfde6331bd59eb2ac96f8911c4b666" kindref="member">object</ref>,<sp/><sp/><sp/></highlight></codeline>
+<codeline lineno="50" refid="class_element_1a009a3be4c3a037a72e292b2464c9cbc5af1f713c9e000f5d3f280adbd124df4f5" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><ref refid="class_element_1a009a3be4c3a037a72e292b2464c9cbc5af1f713c9e000f5d3f280adbd124df4f5" kindref="member">array</ref>,<sp/><sp/><sp/><sp/></highlight></codeline>
+<codeline lineno="51" refid="class_element_1a009a3be4c3a037a72e292b2464c9cbc5a0636f7c1e41a18679ab958368587c630" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><ref refid="class_element_1a009a3be4c3a037a72e292b2464c9cbc5a0636f7c1e41a18679ab958368587c630" kindref="member">tuple</ref>,<sp/><sp/><sp/><sp/></highlight></codeline>
+<codeline lineno="52" refid="class_element_1a009a3be4c3a037a72e292b2464c9cbc5ab45cffe084dd3d20d928bee85e7b0f21" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><ref refid="class_element_1a009a3be4c3a037a72e292b2464c9cbc5ab45cffe084dd3d20d928bee85e7b0f21" kindref="member">string</ref>,<sp/><sp/><sp/></highlight></codeline>
+<codeline lineno="53" refid="class_element_1a009a3be4c3a037a72e292b2464c9cbc5a157db7df530023575515d366c9b672e8" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><ref refid="class_element_1a009a3be4c3a037a72e292b2464c9cbc5a157db7df530023575515d366c9b672e8" kindref="member">integer</ref>,<sp/><sp/></highlight></codeline>
+<codeline lineno="54" refid="class_element_1a009a3be4c3a037a72e292b2464c9cbc5ab1bc248a7ff2b2e95569f56de68615df" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><ref refid="class_element_1a009a3be4c3a037a72e292b2464c9cbc5ab1bc248a7ff2b2e95569f56de68615df" kindref="member">number</ref>,<sp/><sp/><sp/></highlight></codeline>
+<codeline lineno="55" refid="class_element_1a009a3be4c3a037a72e292b2464c9cbc5a84e2c64f38f78ba3ea5c905ab5a2da27" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">boolean</highlight><highlight class="normal"><sp/><sp/><sp/></highlight></codeline>
+<codeline lineno="56"><highlight class="normal"><sp/><sp/><sp/><sp/>};</highlight></codeline>
+<codeline lineno="57"><highlight class="normal"></highlight></codeline>
+<codeline lineno="62" refid="class_element_1a5ef746a08042747acd608589686df030" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="class_element_1a5ef746a08042747acd608589686df030" kindref="member">Element</ref>(</highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/>nlohmann::json&amp;<sp/>info);</highlight></codeline>
+<codeline lineno="63"><highlight class="normal"></highlight></codeline>
+<codeline lineno="69" refid="class_element_1a7adf23f4617107ee13fcab2747d8b394" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="class_element_1a7adf23f4617107ee13fcab2747d8b394" kindref="member">Element</ref>(</highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordtype">bool</highlight><highlight class="normal"><sp/><ref refid="class_element_1a4318313abfd08feae300a12668cec95a" kindref="member">nullProperty</ref>,<sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/>std::string&amp;<sp/><ref refid="class_element_1a31838aa329c7380f4395b9c0a4a82cfe" kindref="member">description</ref>);</highlight></codeline>
+<codeline lineno="70"><highlight class="normal"></highlight></codeline>
+<codeline lineno="74" refid="class_element_1ab4fc182292f44e46acba9c55662237bf" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">virtual</highlight><highlight class="normal"><sp/><ref refid="class_element_1ab4fc182292f44e46acba9c55662237bf" kindref="member">~Element</ref>();</highlight></codeline>
+<codeline lineno="75"><highlight class="normal"></highlight></codeline>
+<codeline lineno="80" refid="class_element_1a97d883c0b237ec9e1fe6993825fd0f8c" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">bool</highlight><highlight class="normal"><sp/><ref refid="class_element_1a97d883c0b237ec9e1fe6993825fd0f8c" kindref="member">isNullProperty</ref>()<sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal">;</highlight></codeline>
+<codeline lineno="81"><highlight class="normal"></highlight></codeline>
+<codeline lineno="86" refid="class_element_1a4e3a7ef1a3b0b42c84c1022a4db94246" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">bool</highlight><highlight class="normal"><sp/><ref refid="class_element_1a4e3a7ef1a3b0b42c84c1022a4db94246" kindref="member">isModified</ref>()<sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal">;</highlight></codeline>
+<codeline lineno="87"><highlight class="normal"></highlight></codeline>
+<codeline lineno="92" refid="class_element_1a2eab22dd80bfba5646c6f0e79dec8569" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/>std::string&amp;<sp/><ref refid="class_element_1a2eab22dd80bfba5646c6f0e79dec8569" kindref="member">getDescription</ref>()<sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal">;</highlight></codeline>
+<codeline lineno="93"><highlight class="normal"></highlight></codeline>
+<codeline lineno="100" refid="class_element_1a59cc1d05821dd36340deffd7f56add32" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/><ref refid="class_element_1a59cc1d05821dd36340deffd7f56add32" kindref="member">validate</ref>(</highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/>nlohmann::json&amp;<sp/>config)<sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal">;</highlight></codeline>
+<codeline lineno="101"><highlight class="normal"></highlight></codeline>
+<codeline lineno="109" refid="class_element_1adbcc49811634a36df5d3830d366ba2b0" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">virtual</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/><ref refid="class_element_1adbcc49811634a36df5d3830d366ba2b0" kindref="member">verifyPropertyPath</ref>(</highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/>std::vector&lt;std::string&gt;&amp;<sp/>path,<sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordtype">unsigned</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>currentIndex)<sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal">;</highlight></codeline>
+<codeline lineno="110"><highlight class="normal"></highlight></codeline>
+<codeline lineno="120" refid="class_element_1abf6e4f402b616bf7f52166f96c450b36" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">virtual</highlight><highlight class="normal"><sp/>std::pair&lt;const<sp/>Element*<sp/>const,<sp/>std::string&gt;<sp/><ref refid="class_element_1abf6e4f402b616bf7f52166f96c450b36" kindref="member">getProperty</ref>(</highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/>std::string&amp;<sp/>propertyName,<sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordtype">bool</highlight><highlight class="normal"><sp/>patternReplacement,<sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/>std::string&amp;<sp/>replacementValue)<sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal">;</highlight></codeline>
+<codeline lineno="121"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight></codeline>
+<codeline lineno="127" refid="class_element_1ae4ee4a9ec97bb054a43aea28d9700f8e" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/>std::pair&lt;const<sp/>Element*<sp/>const,<sp/>std::string&gt;<sp/><ref refid="class_element_1ae4ee4a9ec97bb054a43aea28d9700f8e" kindref="member">getProperty</ref>(</highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/>std::string&amp;<sp/>propertyName)<sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal">;</highlight></codeline>
+<codeline lineno="128"><highlight class="normal"></highlight></codeline>
+<codeline lineno="135" refid="class_element_1a00ef06c036d1d4628fcd3586885ca131" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">virtual</highlight><highlight class="normal"><sp/><ref refid="class_element_1a009a3be4c3a037a72e292b2464c9cbc5" kindref="member">Type</ref><sp/><ref refid="class_element_1a00ef06c036d1d4628fcd3586885ca131" kindref="member">getType</ref>()<sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal">=0;</highlight></codeline>
+<codeline lineno="136"><highlight class="normal">};</highlight></codeline>
+<codeline lineno="137"><highlight class="normal"></highlight></codeline>
+<codeline lineno="138"><highlight class="normal"></highlight><highlight class="preprocessor">#endif<sp/></highlight><highlight class="comment">/*<sp/>ELEMENT_H_<sp/>*/</highlight><highlight class="preprocessor"></highlight></codeline>
+    </programlisting>
+    <location file="Misc/JsonValidator/Elements/Element.h"/>
+  </compounddef>
+</doxygen>

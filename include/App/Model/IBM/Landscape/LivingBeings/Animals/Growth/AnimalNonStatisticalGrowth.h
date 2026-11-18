@@ -22,6 +22,7 @@ class AnimalNonStatistical;
 
 /**
  * @class AnimalNonStatisticalGrowth
+ * @ingroup weaver_landscape
  * @brief Represents the growth dynamics of individual animals in a non-statistical simulation.
  * 
  * This class handles growth, maturation, reproduction, molting, diapause, and energy tank management
@@ -65,7 +66,7 @@ public:
     /**
      * @brief Tunes growth parameters based on individual traits, reproduction events, and temperature.
      */
-    void tune(const std::vector<IndividualTrait>& baseIndividualTraits, const TimeStep actualTimeStep, const unsigned int femaleMaxReproductionEvents, const Temperature& actualTemperature, const Temperature& tempFromLab, const PreciseDouble &timeStepsPerDay);
+    void tune(const std::vector<IndividualTrait>& baseIndividualTraits, const unsigned int femaleMaxReproductionEvents, const Temperature& actualTemperature, const Temperature& tempFromLab, const PreciseDouble &timeStepsPerDay);
 
     /**
      * @brief Gets the complete vector of lengths for each instar.
@@ -96,11 +97,6 @@ public:
      * @return Constant reference to the mass of the specified instar.
      */
     const DryMass& getInstarMass(const Instar& instarValue) const;
-
-    /**
-     * @brief Calculates the age of first maturation after pupation.
-     */
-    const TimeStep getAgeOfFirstMaturation(const TimeStep& pupaPeriodTime) const;
 
     /**
      * @brief Executes the growth step for the animal.

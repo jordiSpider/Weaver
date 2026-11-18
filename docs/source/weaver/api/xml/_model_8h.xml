@@ -1,0 +1,123 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.14.0" xml:lang="en-US">
+  <compounddef id="_model_8h" kind="file" language="C++">
+    <compoundname>Model.h</compoundname>
+    <includes local="no">string</includes>
+    <includes local="no">filesystem</includes>
+    <includes refid="_custom_indexed_vector_8h" local="yes">Misc/CustomIndexedVector.h</includes>
+    <includes refid="_run_mode_8h" local="yes">App/Model/RunMode.h</includes>
+    <includes refid="_line_info_exception_8h" local="yes">Exceptions/LineInfoException.h</includes>
+    <includedby refid="_i_b_m_8h" local="yes">App/Model/IBM/IBM.h</includedby>
+    <incdepgraph>
+      <node id="1">
+        <label>App/Model/Model.h</label>
+        <link refid="_model_8h"/>
+        <childnode refid="2" relation="include">
+        </childnode>
+        <childnode refid="3" relation="include">
+        </childnode>
+        <childnode refid="4" relation="include">
+        </childnode>
+        <childnode refid="7" relation="include">
+        </childnode>
+        <childnode refid="8" relation="include">
+        </childnode>
+      </node>
+      <node id="7">
+        <label>App/Model/RunMode.h</label>
+        <link refid="_run_mode_8h_source"/>
+      </node>
+      <node id="8">
+        <label>Exceptions/LineInfoException.h</label>
+        <link refid="_line_info_exception_8h_source"/>
+        <childnode refid="9" relation="include">
+        </childnode>
+        <childnode refid="2" relation="include">
+        </childnode>
+      </node>
+      <node id="4">
+        <label>Misc/CustomIndexedVector.h</label>
+        <link refid="_custom_indexed_vector_8h_source"/>
+        <childnode refid="5" relation="include">
+        </childnode>
+        <childnode refid="6" relation="include">
+        </childnode>
+      </node>
+      <node id="6">
+        <label>boost/serialization/vector.hpp</label>
+      </node>
+      <node id="9">
+        <label>exception</label>
+      </node>
+      <node id="3">
+        <label>filesystem</label>
+      </node>
+      <node id="2">
+        <label>string</label>
+      </node>
+      <node id="5">
+        <label>vector</label>
+      </node>
+    </incdepgraph>
+    <invincdepgraph>
+      <node id="2">
+        <label>App/Model/IBM/IBM.h</label>
+        <link refid="_i_b_m_8h_source"/>
+      </node>
+      <node id="1">
+        <label>App/Model/Model.h</label>
+        <link refid="_model_8h"/>
+        <childnode refid="2" relation="include">
+        </childnode>
+      </node>
+    </invincdepgraph>
+    <innerclass refid="class_model" prot="public">Model</innerclass>
+    <briefdescription>
+<para>Definition of the abstract base class for all simulation models in Weaver. </para>
+    </briefdescription>
+    <detaileddescription>
+<para>The <computeroutput><ref refid="class_model" kindref="compound">Model</ref></computeroutput> class defines the common interface for all simulation models used within the Weaver ecosystem framework. It provides a base for specialized models such as individual-based (<ref refid="class_i_b_m" kindref="compound">IBM</ref>) simulations and offers a factory method for dynamic model instantiation.</para>
+<para>This class acts as the bridge between the simulation logic and the graphical or textual visualization layer. </para>
+    </detaileddescription>
+    <programlisting>
+<codeline lineno="1"><highlight class="normal"></highlight></codeline>
+<codeline lineno="13"><highlight class="normal"></highlight></codeline>
+<codeline lineno="14"><highlight class="normal"></highlight><highlight class="preprocessor">#ifndef<sp/>MODEL_H_</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="15"><highlight class="normal"></highlight><highlight class="preprocessor">#define<sp/>MODEL_H_</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="16"><highlight class="normal"></highlight></codeline>
+<codeline lineno="17"><highlight class="normal"></highlight></codeline>
+<codeline lineno="18"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&lt;string&gt;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="19"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&lt;filesystem&gt;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="20"><highlight class="normal"></highlight></codeline>
+<codeline lineno="21"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&quot;Misc/CustomIndexedVector.h&quot;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="22"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&quot;App/Model/RunMode.h&quot;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="23"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&quot;Exceptions/LineInfoException.h&quot;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="24"><highlight class="normal"></highlight></codeline>
+<codeline lineno="25"><highlight class="normal"></highlight></codeline>
+<codeline lineno="42" refid="class_model" refkind="compound"><highlight class="normal"></highlight><highlight class="keyword">class<sp/></highlight><highlight class="normal"><ref refid="class_model_1ae3b375de5f6df4faf74a95d64748e048" kindref="member">Model</ref></highlight></codeline>
+<codeline lineno="43"><highlight class="normal">{</highlight></codeline>
+<codeline lineno="44"><highlight class="normal"></highlight><highlight class="keyword">public</highlight><highlight class="normal">:</highlight></codeline>
+<codeline lineno="51" refid="class_model_1a704990bea21287d993439d3bdf1755bf" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">enum<sp/>class</highlight><highlight class="normal"><sp/><ref refid="class_model_1a704990bea21287d993439d3bdf1755bf" kindref="member">Type</ref><sp/>{</highlight></codeline>
+<codeline lineno="52" refid="class_model_1a704990bea21287d993439d3bdf1755bfacbf44511d041dc6d1dd73cc0c033122c" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><ref refid="class_model_1a704990bea21287d993439d3bdf1755bfacbf44511d041dc6d1dd73cc0c033122c" kindref="member">IBM</ref><sp/><sp/></highlight></codeline>
+<codeline lineno="53"><highlight class="normal"><sp/><sp/><sp/><sp/>};</highlight></codeline>
+<codeline lineno="54"><highlight class="normal"></highlight></codeline>
+<codeline lineno="55"><highlight class="normal"></highlight></codeline>
+<codeline lineno="64" refid="class_model_1a3843378ad7df408a7411b8ee2ac0e8a9" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">static</highlight><highlight class="normal"><sp/><ref refid="class_model_1ae3b375de5f6df4faf74a95d64748e048" kindref="member">Model</ref>*<sp/><ref refid="class_model_1a3843378ad7df408a7411b8ee2ac0e8a9" kindref="member">createInstance</ref>(<ref refid="class_model_1a704990bea21287d993439d3bdf1755bf" kindref="member">Type</ref><sp/>modelType);</highlight></codeline>
+<codeline lineno="65"><highlight class="normal"></highlight></codeline>
+<codeline lineno="66"><highlight class="normal"></highlight></codeline>
+<codeline lineno="70" refid="class_model_1ae3b375de5f6df4faf74a95d64748e048" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="class_model_1ae3b375de5f6df4faf74a95d64748e048" kindref="member">Model</ref>();</highlight></codeline>
+<codeline lineno="71"><highlight class="normal"></highlight></codeline>
+<codeline lineno="78" refid="class_model_1af032d8433c87a0a3a431faf6563a1f03" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">virtual</highlight><highlight class="normal"><sp/><ref refid="class_model_1af032d8433c87a0a3a431faf6563a1f03" kindref="member">~Model</ref>();</highlight></codeline>
+<codeline lineno="79"><highlight class="normal"></highlight></codeline>
+<codeline lineno="85" refid="class_model_1aa7d701bbc2af44488e12c5f9b68c671d" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="class_model_1aa7d701bbc2af44488e12c5f9b68c671d" kindref="member">Model</ref>(</highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/><ref refid="class_model_1ae3b375de5f6df4faf74a95d64748e048" kindref="member">Model</ref>&amp;<sp/>other)<sp/>=<sp/></highlight><highlight class="keyword">delete</highlight><highlight class="normal">;</highlight></codeline>
+<codeline lineno="86"><highlight class="normal"></highlight></codeline>
+<codeline lineno="95" refid="class_model_1a2d794533f5836646d32d24c13da3b83d" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="class_model_1ae3b375de5f6df4faf74a95d64748e048" kindref="member">Model</ref>&amp;<sp/><ref refid="class_model_1a2d794533f5836646d32d24c13da3b83d" kindref="member">operator=</ref>(</highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/><ref refid="class_model_1ae3b375de5f6df4faf74a95d64748e048" kindref="member">Model</ref>&amp;<sp/>other)<sp/>=<sp/></highlight><highlight class="keyword">delete</highlight><highlight class="normal">;</highlight></codeline>
+<codeline lineno="96"><highlight class="normal"></highlight></codeline>
+<codeline lineno="108" refid="class_model_1a210ea22c73a3a9fadecfb151760a3f9e" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">virtual</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/><ref refid="class_model_1a210ea22c73a3a9fadecfb151760a3f9e" kindref="member">run</ref>(</highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/>RunMode<sp/>runMode,<sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/>std::filesystem::path&amp;<sp/>inputConfigPath,<sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/>std::filesystem::path&amp;<sp/>outputFolderPath)=0;</highlight></codeline>
+<codeline lineno="109"><highlight class="normal">};</highlight></codeline>
+<codeline lineno="110"><highlight class="normal"></highlight></codeline>
+<codeline lineno="111"><highlight class="normal"></highlight><highlight class="preprocessor">#endif<sp/></highlight><highlight class="comment">//<sp/>MODEL_H_</highlight><highlight class="normal"></highlight></codeline>
+    </programlisting>
+    <location file="App/Model/Model.h"/>
+  </compounddef>
+</doxygen>

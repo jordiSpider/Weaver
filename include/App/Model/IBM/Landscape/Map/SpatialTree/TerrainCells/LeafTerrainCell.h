@@ -31,6 +31,7 @@ class BranchTerrainCell;
 
 /**
  * @class LeafTerrainCell
+ * @ingroup weaver_landscape
  * @brief Represents a leaf terrain cell in a spatial tree.
  *
  * Leaf cells are the terminal nodes of the spatial tree. They store animals
@@ -53,6 +54,11 @@ public:
      */
     LeafTerrainCell(const std::vector<PreciseDouble>& cellSizes, BranchTerrainCell* const parentTerrainCell, PointSpatialTree* const position, MoistureSource* const moistureBaseSource);
     
+    LeafTerrainCell(const LeafTerrainCell&) = delete;
+    LeafTerrainCell& operator=(const LeafTerrainCell&) = delete;
+    LeafTerrainCell(LeafTerrainCell&&) = delete;
+    LeafTerrainCell& operator=(LeafTerrainCell&&) = delete;
+
     /// Virtual destructor.
     virtual ~LeafTerrainCell();
 
@@ -83,10 +89,9 @@ public:
      * @param searchNeighborsWithFemales Whether to prioritize cells with females.
      * @param parentFullCoverage Flag indicating if parent has full coverage.
      * @param animalWhoIsEvaluating Pointer to the animal performing evaluation.
-     * @param animalsHasTriedToPredate List of animals already considered.
      */
     void getRadiusTerrainCells(
-        std::vector<CellValue>& bestEvaluations, const PointContinuous &sourcePosition, const PreciseDouble &radius, const RingModel* const radiusArea, const size_t searchDepth, const bool searchNeighborsWithFemales, const bool parentFullCoverage, AnimalNonStatistical* animalWhoIsEvaluating, const std::list<const AnimalNonStatistical*> &animalsHasTriedToPredate
+        std::vector<CellValue>& bestEvaluations, const PointContinuous &sourcePosition, const PreciseDouble &radius, const size_t searchDepth, bool searchNeighborsWithFemales, bool searchNeighborsWithMales, const bool parentFullCoverage, AnimalNonStatistical* animalWhoIsEvaluating, CustomIndexedVector<Instar, PreciseDouble>& maximumPatchEdibilityValueGlobal, CustomIndexedVector<Instar, PreciseDouble>& maximumPatchPredationRiskGlobal, CustomIndexedVector<Instar, PreciseDouble>& maximumPatchConspecificBiomassGlobal
     );
 
     /**
@@ -113,17 +118,6 @@ public:
 
     /// Check if this cell is a leaf.
     bool isLeaf() const;
-
-    /** @name Downward traversal functions
-     */
-    ///@{
-    void applyDownFunctionToAnimals(const std::vector<std::pair<const AnimalSearchParams&, AnimalFunctions>>& animalFunctions) override;
-    void applyDownFunctionToAnimals(
-        std::function<bool(Animal&)> checker, const PointContinuous &sourcePosition, const PreciseDouble &radius,
-        const std::vector<std::pair<const AnimalSearchParams&, AnimalFunctions>>& animalFunctions
-    ) override;
-    void randomApplyDownFunctionToAnimals(const std::vector<std::pair<const AnimalSearchParams&, AnimalFunctions>>& animalFunctions) override;
-    ///@}
 
     /**
      * @brief Serialization method for persistence.

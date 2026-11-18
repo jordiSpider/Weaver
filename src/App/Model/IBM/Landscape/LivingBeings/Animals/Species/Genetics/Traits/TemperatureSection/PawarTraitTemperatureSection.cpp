@@ -2,6 +2,8 @@
 
 #include "App/Model/IBM/Landscape/LivingBeings/Animals/Genetics/Traits/PawarIndividualTraitTemperatureSection.h"
 
+#include <fmt/format.h>
+#include <iterator>
 
 using namespace std;
 using json = nlohmann::json;
@@ -10,21 +12,18 @@ namespace fs = std::filesystem;
 
 
 
-string PawarTraitTemperatureSection::getHeader(const string& trait)
+void PawarTraitTemperatureSection::getHeader(const string& trait, std::string& header)
 {
-	ostringstream header;
-
-	header << "constitutive_" << trait << "_" << EnumClass<PawarElement>::to_string(EnumClass<PawarElement>::getEnumValues().at(0));
-
-	for(size_t i = 1; i < EnumClass<PawarElement>::size(); i++)
+	for(const PawarElement i : EnumClass<PawarElement>::getEnumValues())
 	{
-		header << "\t" << "constitutive_" << trait << "_" << EnumClass<PawarElement>::to_string(EnumClass<PawarElement>::getEnumValues().at(i));
+		fmt::format_to(std::back_inserter(header), "\tconstitutive_{}_{}", 
+			trait, EnumClass<PawarElement>::to_string(i)
+		);
 	}
 
-	header << "\t" << "constitutive_" << trait << "_Tmin";
-    header << "\t" << "constitutive_" << trait << "_Tmax";
-
-	return header.str();
+	fmt::format_to(std::back_inserter(header), "\tconstitutive_{}_Tmin\tconstitutive_{}_Tmax", 
+		trait, trait
+	);
 }
 
 
@@ -42,7 +41,7 @@ PawarTraitTemperatureSection::PawarTraitTemperatureSection(std::vector<Individua
 
 	for(const PawarElement& elem : EnumClass<PawarElement>::getEnumValues())
 	{
-		elements[elem] = TraitDefinitionSection::createInstance(individualLevelTraits, config[EnumClass<PawarElement>::to_string(elem)], individualLevelTraitsOrder, trait, EnumClass<PawarElement>::to_string(elem), fileName);
+		elements[elem] = TraitDefinitionSection::createInstance(individualLevelTraits, config[fmt::to_string(elem)], individualLevelTraitsOrder, trait, fmt::to_string(elem), fileName);
 	}
 }
 
@@ -64,7 +63,7 @@ bool PawarTraitTemperatureSection::isStrictlyPositive() const
 	return strictlyPositive;
 }
 
-IndividualTraitTemperatureSection* PawarTraitTemperatureSection::generateIndividualTraitTemperatureSection(const PreciseDouble& geneticValue, const Genome& genome, const size_t traitsPerModule, const size_t numberOfLociPerTrait, const std::vector<PreciseDouble>& rhoPerModule, const std::vector<size_t>& rhoRangePerModule) const
+IndividualTraitTemperatureSectionVariant PawarTraitTemperatureSection::generateIndividualTraitTemperatureSection(const PreciseDouble& geneticValue, const Genome& genome, const size_t traitsPerModule, const size_t numberOfLociPerTrait, const std::vector<PreciseDouble>& rhoPerModule, const std::vector<size_t>& rhoRangePerModule) const
 {
 	CustomIndexedVector<PawarElement, PreciseDouble> elementsValue(EnumClass<PawarElement>::size(), 0.0);
 
@@ -73,7 +72,7 @@ IndividualTraitTemperatureSection* PawarTraitTemperatureSection::generateIndivid
 		elementsValue[elem] = elements[elem]->getValue(genome, traitsPerModule, numberOfLociPerTrait, rhoPerModule, rhoRangePerModule);
 	}
 
-	return new PawarIndividualTraitTemperatureSection(this, elementsValue, geneticValue, isInverse(), isStrictlyPositive());
+	return PawarIndividualTraitTemperatureSection(elementsValue, geneticValue, isInverse(), isStrictlyPositive());
 }
 
 void PawarTraitTemperatureSection::deserializeIndividualLevelTraits(std::vector<IndividualLevelTrait*>& individualLevelTraits)

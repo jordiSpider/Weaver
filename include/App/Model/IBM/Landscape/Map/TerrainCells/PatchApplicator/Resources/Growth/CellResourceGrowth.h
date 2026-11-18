@@ -21,6 +21,7 @@ class Landscape;
 
 /**
  * @class CellResourceGrowth
+ * @ingroup weaver_landscape
  * @brief Concrete growth handler for a resource in a terrain cell.
  *
  * This class implements growth logic for a resource cell. It tracks

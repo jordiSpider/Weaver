@@ -21,7 +21,7 @@ Correlosome::~Correlosome()
 
 const Allele* Correlosome::getAllele(const size_t lociPosition) const 
 { 
-	return alleles.at(lociPosition); 
+	return alleles[lociPosition]; 
 }
 
 size_t Correlosome::size() const 
@@ -31,7 +31,7 @@ size_t Correlosome::size() const
 
 void Correlosome::setAllele(const Allele* allele, const size_t lociPosition) 
 { 
-	alleles.at(lociPosition) = allele; 
+	alleles[lociPosition] = allele; 
 }
 
 void Correlosome::pushAllele(const Allele* allele) 

@@ -21,6 +21,7 @@
 
 /**
  * @class EdibleGrowth
+ * @ingroup weaver_landscape
  * @brief Represents the growth characteristics and current biomasses of an edible object.
  *
  * This class models the growth state of an edible entity (resource or animal) by storing:
@@ -51,7 +52,10 @@ public:
      * @brief Returns the current instar of the edible entity.
      * @return Instar object.
      */
-	const Instar& getInstar() const;
+	inline constexpr Instar getInstar() const noexcept
+     { 
+          return instar; 
+     }
 
 	/**
      * @brief Updates the instar of the edible entity.

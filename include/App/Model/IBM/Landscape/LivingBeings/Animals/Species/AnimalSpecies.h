@@ -13,6 +13,7 @@
 #include <cmath>
 #include <numeric>
 #include <nlohmann/json.hpp>
+#include <atomic>
 
 
 #include <boost/serialization/export.hpp>
@@ -26,7 +27,7 @@
 
 #include "App/Model/IBM/Landscape/LivingBeings/Species/Species.h"
 #include "App/Model/IBM/Landscape/LivingBeings/Resources/Species/ResourceSpecies.h"
-#include "Misc/OntogeneticLink.h"
+#include "App/Model/IBM/Landscape/LivingBeings/Animals/Species/OntogeneticLink.h"
 #include "Exceptions/LineInfoException.h"
 #include "App/Model/IBM/Maths/Random.h"
 #include "App/Model/IBM/Maths/MathFunctions.h"
@@ -79,6 +80,7 @@ class Animal;
 
 /**
  * @class AnimalSpecies
+  * @ingroup weaver_landscape
  * @brief Represents a specific animal species in the ecosystem.
  * 
  * Contains information about genetics, growth, decisions, ontogenetic links, 
@@ -157,20 +159,7 @@ public:
 	 * @{
 	 */
 
-	/**
-	 * @brief Computes cell depth per instar using the provided map.
-	 */
-	void calculateCellDepthPerInstar(const Map* const map);
-
-	/**
-	 * @brief Returns the mapping of instars to their cell depths.
-	 */
-	const CustomIndexedVector<Instar, unsigned int>& getCellDepthPerInstar() const;
-
-	/**
-	 * @brief Returns the cell depth corresponding to a given instar.
-	 */
-	unsigned int getInstarCellDepth(const Instar &instar) const;
+	const PreciseDouble& getPoreUsePerInstar(const Instar &instar) const;
 
 	/**
 	 * @brief Returns the immutable growth blueprint object for the species.
@@ -203,7 +192,7 @@ public:
 	/**
 	 * @brief Initializes ontogenetic link structures using external tables of preferences and profitability.
 	 */
-	void setOntogeneticLinks(View* view, const std::vector<Species*>& existingSpecies, rapidcsv::Document& ontogeneticLinksPreference, rapidcsv::Document& ontogeneticLinksProfitability);
+	void setOntogeneticLinks(const std::vector<Species*>& existingSpecies, rapidcsv::Document& ontogeneticLinksPreference, rapidcsv::Document& ontogeneticLinksProfitability);
 	
 	///@}
 
@@ -213,11 +202,6 @@ public:
 	 * @{
 	 */
 
-	/**
-	 * @brief Computes search parameters for prey, predators and conspecifics.
-	 */
-	void obtainPreyAndPredatorSearchParams(const std::vector<Species*>& existingSpecies, const std::vector<AnimalSpecies*>& existingAnimalSpecies, const std::vector<ResourceSpecies*>& existingResourceSpecies);
-	
 	/**
 	 * @brief Returns search parameters for prey detection for the given instar.
 	 */
@@ -242,6 +226,11 @@ public:
 	 * @brief Returns search parameters for detecting mature females.
 	 */
 	const AnimalSearchParams& getMatureFemalesSearchParams() const;
+
+	/**
+	 * @brief Returns search parameters for detecting mature males.
+	 */
+	const AnimalSearchParams& getMatureMalesSearchParams() const;
 	
 	/**
 	 * @brief Returns search parameters related to population-level detection.
@@ -317,7 +306,7 @@ public:
 	/**
 	 * @brief Updates the maximum interaction area for individuals of a given instar.
 	 */
-	void updateMaximumInteractionArea(const Instar& instar, const PreciseDouble& newValue);
+	void updateMaximumInteractionArea(const CustomIndexedVector<Instar, PreciseDouble>& newMaximumInteractionArea);
 	
 	/**
 	 * @brief Returns the maximum interaction area for individuals of an instar.
@@ -327,7 +316,7 @@ public:
 	/**
 	 * @brief Registers a predation event on another species.
 	 */
-	void addPredationEventOnOtherSpecies(Species::ID predatedSpeciesId);
+	void addPredationEventOnOtherSpecies(const CustomIndexedVector<Species::ID, unsigned int>& newEvents);
 	
 	/**
 	 * @brief Returns total predation events on a specific species.
@@ -335,6 +324,8 @@ public:
 	const unsigned int& getPredationEventsOnOtherSpecies(Species::ID predatedSpeciesId) const;
 	
 	///@}
+
+	void obtainSearchParams(const std::vector<Species*>& existingSpecies, const std::vector<AnimalSpecies*>& existingAnimalSpecies, size_t numberExistingResourceSpecies);
 
 	/**
 	 * @defgroup MobilityTraits Mobility and Behavioral Traits
@@ -411,14 +402,14 @@ public:
 	unsigned int getPopulation() const;
 	
 	/**
-	 * @brief Increases population by one.
+	 * @brief Increases population by a specified increment.
 	 */
-	void increasePopulation();
+	void increasePopulation(unsigned int increment);
 	
 	/**
-	 * @brief Decreases population by one.
+	 * @brief Decreases population by a specified decrement.
 	 */
-	void decreasePopulation();
+	void decreasePopulation(unsigned int decrement);
 	
 	/**
 	 * @brief Updates history of population values for stability analysis.
@@ -527,7 +518,10 @@ public:
 	void generateInvolvedResourceSpecies(const std::vector<Species*> &existingSpecies, const std::vector<AnimalSpecies*>& existingAnimalSpecies, CustomIndexedVector<AnimalSpeciesID, CustomIndexedVector<Instar, std::vector<ResourceSpecies::ResourceID>>>& involvedResourceSpecies) const;
 
 	/// Returns species identifier.
-	const AnimalSpeciesID& getAnimalSpeciesId() const;
+	inline constexpr AnimalSpeciesID getAnimalSpeciesId() const noexcept 
+	{ 
+		return animalSpeciesId; 
+	}
 
 	/// Initializes genetic files.
 	void initializeGeneticFiles(const std::filesystem::path& geneticsFolder);
@@ -616,7 +610,7 @@ public:
 	virtual const PreciseDouble& getProbabilityDeathFromBackground(const Instar& instar) const { return probabilityDeathFromBackground[instar]; };
 	
 	/// Computes interaction ranges between predator and prey.
-	virtual void interactionRanges(Animal& predator, Animal& prey);
+	virtual void interactionRanges(Animal& predator, Animal& prey, CustomIndexedVector<Instar, PreciseDouble>& maximumInteractionArea);
 
 	/// Updates max predation encounters per day.
 	void updateMaximumPredationEncountersPerDay(const size_t& predationEncountersPerDay);
@@ -740,10 +734,13 @@ protected:
 	CustomIndexedVector<Gender, AnimalSearchParams> breedSearchParams;
 
 	/// Search parameters for locating mature females.
-	AnimalSearchParams* matureFemalesSearchParams;
+	AnimalSearchParams matureFemalesSearchParams;
+
+	/// Search parameters for locating mature males.
+	AnimalSearchParams matureMalesSearchParams;
 
 	/// Search parameters for population-level interactions.
-	AnimalSearchParams* populationSearchParams;
+	AnimalSearchParams populationSearchParams;
 
 	/// Search parameters depending on the individual's life stage.
 	CustomIndexedVector<LifeStage, AnimalSearchParams> lifeStageSearchParams;
@@ -860,9 +857,6 @@ protected:
 	/// Pore usage per instar (soil or substrate penetration).
 	CustomIndexedVector<Instar, PreciseDouble> poreUsePerInstar;
 
-	/// Depth per instar inside the spatial cell.
-	CustomIndexedVector<Instar, unsigned int> cellDepthPerInstar;
-
 	/// @}
 
 	/** @defgroup SpeciesResourceHandlingAttributes Resource Handling Behaviour
@@ -921,6 +915,8 @@ protected:
 	 */
 	void obtainMatureFemalesSearchParams();
 
+	void obtainMatureMalesSearchParams();
+
 	/**
 	 * @ingroup PopulationParameters
 	 * @brief Computes and stores the search parameters for detecting conspecific individuals.
@@ -947,6 +943,11 @@ protected:
 	 * estimation, such as cooperative behaviors, territoriality, or social signaling.
 	 */
 	void obtainConspecificSearchParams();
+
+	/**
+	 * @brief Computes search parameters for prey, predators and conspecifics.
+	 */
+	void obtainPreyAndPredatorSearchParams(const std::vector<Species*>& existingSpecies, const std::vector<AnimalSpecies*>& existingAnimalSpecies, size_t numberExistingResourceSpecies);
 
 	/**
 	 * @ingroup MorphologyAndPhysiology

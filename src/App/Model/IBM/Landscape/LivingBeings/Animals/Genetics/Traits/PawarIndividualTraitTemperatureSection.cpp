@@ -1,38 +1,22 @@
 #include "App/Model/IBM/Landscape/LivingBeings/Animals/Genetics/Traits/PawarIndividualTraitTemperatureSection.h"
 
+#include "App/Model/IBM/Maths/MathFunctions.h"
+#include "Misc/EnumClass.h"
+
+#include <fmt/compile.h>
+#include <fmt/format.h>
+#include <iterator>
 
 using namespace std;
 
 
 
 
-string PawarIndividualTraitTemperatureSection::to_string_NA()
-{
-    ostringstream content;
 
-    content << "NA";
+PawarIndividualTraitTemperatureSection::PawarIndividualTraitTemperatureSection() = default;
 
-    for(size_t i = 1; i < EnumClass<PawarElement>::size(); i++)
-    {
-        content << "\t" << "NA";
-    }
-
-    content << "\t" << "NA";
-    content << "\t" << "NA";
-
-    return content.str();
-}
-
-
-
-PawarIndividualTraitTemperatureSection::PawarIndividualTraitTemperatureSection()
-    : IndividualTraitTemperatureSection()
-{
-	
-}
-
-PawarIndividualTraitTemperatureSection::PawarIndividualTraitTemperatureSection(const TraitTemperatureSection* traitTemperatureSection, const CustomIndexedVector<PawarElement, PreciseDouble>& elements, const PreciseDouble& geneticValue, bool inverse, bool strictlyPositive)
-    : IndividualTraitTemperatureSection(traitTemperatureSection), elements(elements), inverse(inverse), strictlyPositive(strictlyPositive)
+PawarIndividualTraitTemperatureSection::PawarIndividualTraitTemperatureSection(const CustomIndexedVector<PawarElement, PreciseDouble>& elements, const PreciseDouble& geneticValue, bool inverse, bool strictlyPositive)
+    : elements(elements), inverse(inverse), strictlyPositive(strictlyPositive)
 {
     temperatureRangeTPC = MathFunctions::calculateTemperatureRangePawar(
         geneticValue, Temperature(elements[PawarElement::temperatureOptimal]),
@@ -58,37 +42,23 @@ PreciseDouble PawarIndividualTraitTemperatureSection::applyTemperatureDependency
 	);
 }
 
-const PawarTraitTemperatureSection* PawarIndividualTraitTemperatureSection::getTraitTemperatureSection() const
+void PawarIndividualTraitTemperatureSection::formatTraitDirect(fmt::memory_buffer& buf) const noexcept
 {
-    return static_cast<const PawarTraitTemperatureSection*>(IndividualTraitTemperatureSection::getTraitTemperatureSection());
-}
-
-string PawarIndividualTraitTemperatureSection::to_string() const
-{
-    ostringstream content;
-
-    content << elements[static_cast<PawarElement>(0)];
-
-    for(size_t i = 1; i < elements.size(); i++)
-    {
-        content << "\t" << elements[static_cast<PawarElement>(i)];
-    }
-
-    content << "\t" << temperatureRangeTPC.first.getTemperatureCelsius();
-    content << "\t" << temperatureRangeTPC.second.getTemperatureCelsius();
-
-    return content.str();
+    fmt::format_to(fmt::appender(buf), FMT_COMPILE("\t{}\t{}\t{}\t{}\t{}\t{}"),
+        elements[PawarElement::activationEnergy],
+        elements[PawarElement::energyDecay],
+        elements[PawarElement::temperatureOptimal],
+        elements[PawarElement::temperatureRef],
+        temperatureRangeTPC.first.getTemperatureCelsius(),
+        temperatureRangeTPC.second.getTemperatureCelsius()
+    );
 }
 
 
-
-BOOST_CLASS_EXPORT(PawarIndividualTraitTemperatureSection)
 
 template <class Archive>
 void PawarIndividualTraitTemperatureSection::serialize(Archive &ar, const unsigned int) {
-	ar & boost::serialization::base_object<IndividualTraitTemperatureSection>(*this);
-
-    ar & elements;
+	ar & elements;
 
     ar & inverse;
     ar & strictlyPositive;

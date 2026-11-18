@@ -1,0 +1,134 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.14.0" xml:lang="en-US">
+  <compounddef id="group___species_search_attributes" kind="group">
+    <compoundname>SpeciesSearchAttributes</compoundname>
+    <title>Search Parameters</title>
+    <sectiondef kind="var">
+      <memberdef kind="variable" id="group___species_search_attributes_1gae3e2d95b7f5dbe43b1e9332cc74e4bc4" prot="protected" static="no" mutable="no">
+        <type><ref refid="class_custom_indexed_vector" kindref="compound">CustomIndexedVector</ref>&lt; Gender, <ref refid="class_animal_search_params" kindref="compound">AnimalSearchParams</ref> &gt;</type>
+        <definition>CustomIndexedVector&lt;Gender, AnimalSearchParams&gt; AnimalSpecies::breedSearchParams</definition>
+        <argsstring></argsstring>
+        <name>breedSearchParams</name>
+        <qualifiedname>AnimalSpecies::breedSearchParams</qualifiedname>
+        <briefdescription>
+<para>Search parameters associated to each gender during mating. </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="App/Model/IBM/Landscape/LivingBeings/Animals/Species/AnimalSpecies.h" line="734" column="21" bodyfile="App/Model/IBM/Landscape/LivingBeings/Animals/Species/AnimalSpecies.h" bodystart="734" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="group___species_search_attributes_1gaaa82ea088cfd33c0d867e46dc72e9748" prot="protected" static="no" mutable="no">
+        <type><ref refid="class_animal_search_params" kindref="compound">AnimalSearchParams</ref></type>
+        <definition>AnimalSearchParams AnimalSpecies::conspecificSearchParams</definition>
+        <argsstring></argsstring>
+        <name>conspecificSearchParams</name>
+        <qualifiedname>AnimalSpecies::conspecificSearchParams</qualifiedname>
+        <briefdescription>
+<para>Search parameters for conspecific encounters. </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="App/Model/IBM/Landscape/LivingBeings/Animals/Species/AnimalSpecies.h" line="731" column="20" bodyfile="App/Model/IBM/Landscape/LivingBeings/Animals/Species/AnimalSpecies.h" bodystart="731" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="group___species_search_attributes_1ga840d2ca385dafd5c54598b7336fa8f1c" prot="protected" static="no" mutable="no">
+        <type><ref refid="class_custom_indexed_vector" kindref="compound">CustomIndexedVector</ref>&lt; LifeStage, <ref refid="class_animal_search_params" kindref="compound">AnimalSearchParams</ref> &gt;</type>
+        <definition>CustomIndexedVector&lt;LifeStage, AnimalSearchParams&gt; AnimalSpecies::lifeStageSearchParams</definition>
+        <argsstring></argsstring>
+        <name>lifeStageSearchParams</name>
+        <qualifiedname>AnimalSpecies::lifeStageSearchParams</qualifiedname>
+        <briefdescription>
+<para>Search parameters depending on the individual&apos;s life stage. </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="App/Model/IBM/Landscape/LivingBeings/Animals/Species/AnimalSpecies.h" line="746" column="21" bodyfile="App/Model/IBM/Landscape/LivingBeings/Animals/Species/AnimalSpecies.h" bodystart="746" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="group___species_search_attributes_1ga064d62dbaefbba3551a2ea38663fc8a8" prot="protected" static="no" mutable="no">
+        <type><ref refid="class_animal_search_params" kindref="compound">AnimalSearchParams</ref></type>
+        <definition>AnimalSearchParams AnimalSpecies::matureFemalesSearchParams</definition>
+        <argsstring></argsstring>
+        <name>matureFemalesSearchParams</name>
+        <qualifiedname>AnimalSpecies::matureFemalesSearchParams</qualifiedname>
+        <briefdescription>
+<para>Search parameters for locating mature females. </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="App/Model/IBM/Landscape/LivingBeings/Animals/Species/AnimalSpecies.h" line="737" column="20" bodyfile="App/Model/IBM/Landscape/LivingBeings/Animals/Species/AnimalSpecies.h" bodystart="737" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="group___species_search_attributes_1ga617cd2b6c93c2f97bd73ca4659138a0e" prot="protected" static="no" mutable="no">
+        <type><ref refid="class_animal_search_params" kindref="compound">AnimalSearchParams</ref></type>
+        <definition>AnimalSearchParams AnimalSpecies::matureMalesSearchParams</definition>
+        <argsstring></argsstring>
+        <name>matureMalesSearchParams</name>
+        <qualifiedname>AnimalSpecies::matureMalesSearchParams</qualifiedname>
+        <briefdescription>
+<para>Search parameters for locating mature males. </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="App/Model/IBM/Landscape/LivingBeings/Animals/Species/AnimalSpecies.h" line="740" column="20" bodyfile="App/Model/IBM/Landscape/LivingBeings/Animals/Species/AnimalSpecies.h" bodystart="740" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="group___species_search_attributes_1gab8a7033e65cd3bf2cc812bb42db9b2c9" prot="protected" static="no" mutable="no">
+        <type><ref refid="class_animal_search_params" kindref="compound">AnimalSearchParams</ref></type>
+        <definition>AnimalSearchParams AnimalSpecies::populationSearchParams</definition>
+        <argsstring></argsstring>
+        <name>populationSearchParams</name>
+        <qualifiedname>AnimalSpecies::populationSearchParams</qualifiedname>
+        <briefdescription>
+<para>Search parameters for population-level interactions. </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="App/Model/IBM/Landscape/LivingBeings/Animals/Species/AnimalSpecies.h" line="743" column="20" bodyfile="App/Model/IBM/Landscape/LivingBeings/Animals/Species/AnimalSpecies.h" bodystart="743" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="group___species_search_attributes_1ga2d5f71ae76312b2a1203e9e84d549869" prot="protected" static="no" mutable="no">
+        <type><ref refid="class_custom_indexed_vector" kindref="compound">CustomIndexedVector</ref>&lt; <ref refid="class_instar" kindref="compound">Instar</ref>, <ref refid="class_animal_search_params" kindref="compound">AnimalSearchParams</ref> &gt;</type>
+        <definition>CustomIndexedVector&lt;Instar, AnimalSearchParams&gt; AnimalSpecies::predatorSearchParams</definition>
+        <argsstring></argsstring>
+        <name>predatorSearchParams</name>
+        <qualifiedname>AnimalSpecies::predatorSearchParams</qualifiedname>
+        <briefdescription>
+<para>Search parameters when detecting predators at every instar. </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="App/Model/IBM/Landscape/LivingBeings/Animals/Species/AnimalSpecies.h" line="728" column="21" bodyfile="App/Model/IBM/Landscape/LivingBeings/Animals/Species/AnimalSpecies.h" bodystart="728" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="group___species_search_attributes_1gaf36d0d800dc9f3f28e768ae0d7b21f45" prot="protected" static="no" mutable="no">
+        <type><ref refid="class_custom_indexed_vector" kindref="compound">CustomIndexedVector</ref>&lt; <ref refid="class_instar" kindref="compound">Instar</ref>, <ref refid="class_edible_search_params" kindref="compound">EdibleSearchParams</ref> &gt;</type>
+        <definition>CustomIndexedVector&lt;Instar, EdibleSearchParams&gt; AnimalSpecies::preySearchParams</definition>
+        <argsstring></argsstring>
+        <name>preySearchParams</name>
+        <qualifiedname>AnimalSpecies::preySearchParams</qualifiedname>
+        <briefdescription>
+<para>Search parameters when looking for prey at every instar. </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="App/Model/IBM/Landscape/LivingBeings/Animals/Species/AnimalSpecies.h" line="725" column="21" bodyfile="App/Model/IBM/Landscape/LivingBeings/Animals/Species/AnimalSpecies.h" bodystart="725" bodyend="-1"/>
+      </memberdef>
+    </sectiondef>
+    <briefdescription>
+<para>Search radii and probabilities for prey, predators, conspecifics and reproduction. </para>
+    </briefdescription>
+    <detaileddescription>
+    </detaileddescription>
+  </compounddef>
+</doxygen>

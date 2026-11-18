@@ -15,6 +15,7 @@
 
 /**
  * @class LinearIndividualGrowthModel
+ * @ingroup weaver_landscape
  * @brief Implements a linear individual growth model.
  * 
  * This class models the growth of an individual using a linear function. It inherits from 

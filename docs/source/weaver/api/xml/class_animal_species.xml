@@ -1,0 +1,987 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.14.0" xml:lang="en-US">
+  <compounddef id="class_animal_species" kind="class" language="C++" prot="public">
+    <compoundname>AnimalSpecies</compoundname>
+    <basecompoundref refid="class_species" prot="public" virt="non-virtual">Species</basecompoundref>
+    <includes refid="_animal_species_8h" local="no">AnimalSpecies.h</includes>
+    <sectiondef kind="protected-attrib">
+      <member refid="group___species_population_attributes_1gaf5bd519d0a679c5a32747f217385d1e8" kind="variable"><name>activatedHandling</name></member>
+      <member refid="group___species_reproduction_attributes_1ga787a46c7199bbb6435aafecb59fc3160" kind="variable"><name>activityUnderPredationRisk</name></member>
+      <member refid="group___species_genetics_attributes_1gae021e316ed4881d851f4dab57128e988" kind="variable"><name>animalSpeciesGrowth</name></member>
+      <member refid="group___species_identity_attributes_1ga3bd17cecc005f35547ed37334479016c" kind="variable"><name>animalSpeciesId</name></member>
+      <member refid="group___species_search_attributes_1gae3e2d95b7f5dbe43b1e9332cc74e4bc4" kind="variable"><name>breedSearchParams</name></member>
+      <member refid="group___species_population_attributes_1ga940288bf81475646b3e0ae214ad17519" kind="variable"><name>coefficientOfVariation</name></member>
+      <member refid="group___species_search_attributes_1gaaa82ea088cfd33c0d867e46dc72e9748" kind="variable"><name>conspecificSearchParams</name></member>
+      <member refid="group___species_decision_attributes_1gab9ed8eab9199a2a17c9a264c0f1192c6" kind="variable"><name>decisions</name></member>
+      <member refid="group___species_identity_attributes_1ga79d741c71e258dacf3a0d18f629a63b8" kind="variable"><name>defaultHuntingMode</name></member>
+      <member refid="group___species_edibility_attributes_1ga0596e8e852a271038c33ec39d6b30c48" kind="variable"><name>edibleOntogeneticLink</name></member>
+      <member refid="group___species_edibility_attributes_1ga677542fe080d2ed01a1706e26d22cc27" kind="variable"><name>edibleSpecies</name></member>
+      <member refid="group___species_reproduction_attributes_1ga023912b5329f6a39b4832f67b3aa7dad" kind="variable"><name>femaleMaxReproductionEvents</name></member>
+      <member refid="group___species_resource_handling_attributes_1ga2f07cfaa3e85f5046ffc186f5acbaa69" kind="variable"><name>forcePresenceAllResourcesInvolved</name></member>
+      <member refid="group___species_genetics_attributes_1gaa0a878c0fde6e2fcd4494367c363439e" kind="variable"><name>genetics</name></member>
+      <member refid="group___species_habitat_attributes_1ga10c6e1b6f2f29cfd026864da087edcd6" kind="variable"><name>habitatShiftAfterBreeding</name></member>
+      <member refid="group___species_habitat_attributes_1ga4655899459d38580a8ac039929d76b3c" kind="variable"><name>habitatShiftAfterBreedingFactor</name></member>
+      <member refid="group___species_habitat_attributes_1ga1aa0552e9e51216fa904741fcaf14523" kind="variable"><name>habitatShiftBeforeBreeding</name></member>
+      <member refid="group___species_habitat_attributes_1gab6b57afe3fc4cfa99816a4217ce6a4d5" kind="variable"><name>habitatShiftBeforeBreedingFactor</name></member>
+      <member refid="group___species_population_attributes_1gab8243883cc7e2b240722d2947dc45bd6" kind="variable"><name>individualsPerInstar</name></member>
+      <member refid="group___species_search_attributes_1ga840d2ca385dafd5c54598b7336fa8f1c" kind="variable"><name>lifeStageSearchParams</name></member>
+      <member refid="group___species_reproduction_attributes_1ga5244b8f6df31f7ca5619d5a7aa3eec15" kind="variable"><name>maleMaxReproductionEvents</name></member>
+      <member refid="group___species_reproduction_attributes_1ga2c77afc1bcdc575e1f376c48d8ae4200" kind="variable"><name>maleMobility</name></member>
+      <member refid="group___species_search_attributes_1ga064d62dbaefbba3551a2ea38663fc8a8" kind="variable"><name>matureFemalesSearchParams</name></member>
+      <member refid="group___species_search_attributes_1ga617cd2b6c93c2f97bd73ca4659138a0e" kind="variable"><name>matureMalesSearchParams</name></member>
+      <member refid="group___species_misc_attributes_1gaf60f355714c2f7afc91462c4b775106d" kind="variable"><name>maximumInteractionArea</name></member>
+      <member refid="group___species_misc_attributes_1gac3a0e84140915111b102019ed18c27b2" kind="variable"><name>maximumPredationEncountersPerDay</name></member>
+      <member refid="group___species_metabolism_attributes_1ga5bf3ac1a3e08f00a30a739c0ab3ebb07" kind="variable"><name>minRelativeHumidityThreshold</name></member>
+      <member refid="group___species_metabolism_attributes_1gacb44311044c129ecfbc4f71e0c198fe5" kind="variable"><name>percentageCostForMetabolicDownregulationSearchArea</name></member>
+      <member refid="group___species_metabolism_attributes_1ga50d704383d0876a09828b3af7acbd87f" kind="variable"><name>percentageCostForMetabolicDownregulationSpeed</name></member>
+      <member refid="group___species_metabolism_attributes_1ga8ced02d1caf0c31fe96bc62c8a26b81c" kind="variable"><name>percentageCostForMetabolicDownregulationVoracity</name></member>
+      <member refid="group___species_metabolism_attributes_1ga6ef4549d3847c15480a25316a4e9f852" kind="variable"><name>percentageMetabolicDownregulation</name></member>
+      <member refid="group___species_metabolism_attributes_1gab740fd826e725285dcf41158f3cedf29" kind="variable"><name>plasticityDueToConditionSearch</name></member>
+      <member refid="group___species_metabolism_attributes_1ga14a3d09bb566755eed5c37834ddcf677" kind="variable"><name>plasticityDueToConditionSpeed</name></member>
+      <member refid="group___species_population_attributes_1ga25cd71268f2e553f539ecf9bf55d10ae" kind="variable"><name>population</name></member>
+      <member refid="group___species_population_attributes_1ga0c674b92e06f24fe799eb1046992345b" kind="variable"><name>populationHistory</name></member>
+      <member refid="group___species_search_attributes_1gab8a7033e65cd3bf2cc812bb42db9b2c9" kind="variable"><name>populationSearchParams</name></member>
+      <member refid="group___species_habitat_attributes_1ga27b306487d29453c611f7bc491089e5a" kind="variable"><name>poreUsePerInstar</name></member>
+      <member refid="group___species_edibility_attributes_1gafce41e886c7562cdd8c50b992f7e534c" kind="variable"><name>predationEventsOnOtherSpecies</name></member>
+      <member refid="group___species_search_attributes_1ga2d5f71ae76312b2a1203e9e84d549869" kind="variable"><name>predatorSearchParams</name></member>
+      <member refid="group___species_resource_handling_attributes_1ga63165190f7cbad46bfc5e1dff494801f" kind="variable"><name>preserveLeftovers</name></member>
+      <member refid="group___species_search_attributes_1gaf36d0d800dc9f3f28e768ae0d7b21f45" kind="variable"><name>preySearchParams</name></member>
+      <member refid="group___species_habitat_attributes_1gac7c2bae36c6ba8691f782e710e744962" kind="variable"><name>probabilityDeathFromBackground</name></member>
+      <member refid="group___species_reproduction_attributes_1ga64de33bc63cfcdf03851e6754c2cd8a4" kind="variable"><name>sexRatio</name></member>
+      <member refid="group___species_reproduction_attributes_1ga0aeaa04a323d6d4d2b8139801d3bb6ca" kind="variable"><name>sexualType</name></member>
+      <member refid="group___species_population_attributes_1ga9d2725435e592bcd228c0a88e70da067" kind="variable"><name>statisticsIndividualsPerInstar</name></member>
+      <member refid="group___species_reproduction_attributes_1ga94776426e05cde8fa8a57df1d4db66bc" kind="variable"><name>surviveWithoutFood</name></member>
+      <member refid="group___species_misc_attributes_1gabf3d5c24868b385f1899df56950cd80a" kind="variable"><name>tempFromLab</name></member>
+      <member refid="group___species_metabolism_attributes_1gab30956895483bbc15202f6fed810d0cc" kind="variable"><name>timeStepsWithoutFoodForMetabolicDownregulation</name></member>
+      <member refid="group___species_reproduction_attributes_1gafc131dd3cb03b135a0b32c3ae7c206b6" kind="variable"><name>totFec</name></member>
+      <member refid="group___species_misc_attributes_1gab12a9e742cbf67fb544796938221a43b" kind="variable"><name>YodzisA</name></member>
+      <member refid="group___species_misc_attributes_1gaf0c59f76b7e34a3db9bcf655ed0a352d" kind="variable"><name>YodzisB</name></member>
+    </sectiondef>
+    <sectiondef kind="public-func">
+      <memberdef kind="function" id="class_animal_species_1a4f45350d499f7d428a9132f4075439e8" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type></type>
+        <definition>AnimalSpecies::AnimalSpecies</definition>
+        <argsstring>()</argsstring>
+        <name>AnimalSpecies</name>
+        <qualifiedname>AnimalSpecies::AnimalSpecies</qualifiedname>
+        <briefdescription>
+<para>Default constructor. </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="App/Model/IBM/Landscape/LivingBeings/Animals/Species/AnimalSpecies.h" line="95" column="1"/>
+      </memberdef>
+      <memberdef kind="function" id="class_animal_species_1af2c896d39dd42129a156a7fd29607416" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type></type>
+        <definition>AnimalSpecies::AnimalSpecies</definition>
+        <argsstring>(const AnimalSpecies &amp;)=delete</argsstring>
+        <name>AnimalSpecies</name>
+        <qualifiedname>AnimalSpecies::AnimalSpecies</qualifiedname>
+        <param>
+          <type>const <ref refid="class_animal_species" kindref="compound">AnimalSpecies</ref> &amp;</type>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="App/Model/IBM/Landscape/LivingBeings/Animals/Species/AnimalSpecies.h" line="115" column="1"/>
+      </memberdef>
+      <memberdef kind="function" id="class_animal_species_1a9c29d9faa925d9ef5d1ac0168e6251a1" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type></type>
+        <definition>AnimalSpecies::AnimalSpecies</definition>
+        <argsstring>(const AnimalSpecies::ID &amp;speciesId, const AnimalSpeciesID &amp;animalSpeciesId, const nlohmann::json &amp;info, const PreciseDouble &amp;timeStepsPerDay, const PreciseDouble &amp;pdfThreshold, const size_t numberOfExistingSpecies)</argsstring>
+        <name>AnimalSpecies</name>
+        <qualifiedname>AnimalSpecies::AnimalSpecies</qualifiedname>
+        <param>
+          <type>const <ref refid="class_species_1_1_i_d" kindref="compound">AnimalSpecies::ID</ref> &amp;</type>
+          <declname>speciesId</declname>
+        </param>
+        <param>
+          <type>const <ref refid="class_animal_species_i_d" kindref="compound">AnimalSpeciesID</ref> &amp;</type>
+          <declname>animalSpeciesId</declname>
+        </param>
+        <param>
+          <type>const nlohmann::json &amp;</type>
+          <declname>info</declname>
+        </param>
+        <param>
+          <type>const <ref refid="class_precise_double" kindref="compound">PreciseDouble</ref> &amp;</type>
+          <declname>timeStepsPerDay</declname>
+        </param>
+        <param>
+          <type>const <ref refid="class_precise_double" kindref="compound">PreciseDouble</ref> &amp;</type>
+          <declname>pdfThreshold</declname>
+        </param>
+        <param>
+          <type>const size_t</type>
+          <declname>numberOfExistingSpecies</declname>
+        </param>
+        <briefdescription>
+<para>Constructor to initialize an animal species. </para>
+        </briefdescription>
+        <detaileddescription>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>speciesId</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Unique identifier within the <ref refid="class_species" kindref="compound">Species</ref> system. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>animalSpeciesId</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Unique identifier for this <ref refid="class_animal_species" kindref="compound">AnimalSpecies</ref>. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>info</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>JSON object containing species-specific parameters. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>timeStepsPerDay</parametername>
+</parameternamelist>
+<parameterdescription>
+<para><ref refid="class_number" kindref="compound">Number</ref> of simulation time steps per day. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>pdfThreshold</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Threshold for probability density functions. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>numberOfExistingSpecies</parametername>
+</parameternamelist>
+<parameterdescription>
+<para><ref refid="class_number" kindref="compound">Number</ref> of existing species for initialization purposes. </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="App/Model/IBM/Landscape/LivingBeings/Animals/Species/AnimalSpecies.h" line="107" column="1"/>
+      </memberdef>
+      <memberdef kind="function" id="class_animal_species_1afcb50d294df623a4bd6902cb7a399d62" prot="public" static="no" const="no" explicit="no" inline="no" virt="virtual">
+        <type></type>
+        <definition>virtual AnimalSpecies::~AnimalSpecies</definition>
+        <argsstring>()</argsstring>
+        <name>~AnimalSpecies</name>
+        <qualifiedname>AnimalSpecies::~AnimalSpecies</qualifiedname>
+        <briefdescription>
+<para>Destructor. </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="App/Model/IBM/Landscape/LivingBeings/Animals/Species/AnimalSpecies.h" line="112" column="9"/>
+      </memberdef>
+      <member refid="group___species_modifiers_1ga87c153be67c5aa0a8f8e22e7ad6ca011" kind="function"><name>addAnimalSpecies</name></member>
+      <member refid="group___predation_1ga8d9239fa4763fdae19c4675a660b8ed7" kind="function"><name>addPredationEventOnOtherSpecies</name></member>
+      <member refid="group___species_modifiers_1gaded78ec26a930ca6f77dec778c7fe75b" kind="function"><name>addResourceSpecies</name></member>
+      <member refid="group___population_and_statistics_1gaa57a0c0387d9396f283960d83da720f6" kind="function"><name>calculateCoefficientOfVariation</name></member>
+      <member refid="group___predation_1ga70b08d2c597977fa5627ad20327d7d97" kind="function"><name>canEatEdible</name></member>
+      <member refid="group___population_and_statistics_1ga2eec600ab0a400189a1e9a65246b81fb" kind="function"><name>decreasePopulation</name></member>
+      <member refid="group___predation_1ga81da867dd0e662a59d08ee8f2cbaa634" kind="function"><name>eatsAnimalSpecies</name></member>
+      <member refid="group___species_modifiers_1ga850cf83acc582c716a961db0557748be" kind="function"><name>generateInitialGenomesPool</name></member>
+      <member refid="group___species_resource_generation_1ga2b3c7f18eed0433c831e4518cafeb20e" kind="function"><name>generateInstarInvolvedResourceSpecies</name></member>
+      <member refid="group___species_resource_generation_1ga0f0b55034914692a5792f227ad2ce8d0" kind="function"><name>generateInvolvedResourceSpecies</name></member>
+      <member refid="group___misc_species_parameters_1gaedc8ba5fd7a904530ddc9cf824e6e92d" kind="function"><name>getActivatedHandling</name></member>
+      <member refid="group___mobility_traits_1gaf81a33f0d5918080b08586dc2919495d" kind="function"><name>getActivityUnderPredationRisk</name></member>
+      <member refid="group___species_resource_generation_1ga2930865844ac55e63c38343b3c456f34" kind="function"><name>getAnimalSpeciesId</name></member>
+      <member refid="group___search_parameters_1gaf23cf57acb6f36c2a6301ff3a7ed263d" kind="function"><name>getBreedSearchParams</name></member>
+      <member refid="group___population_and_statistics_1ga20826764fd1cbb411f548fbe0d5fb480" kind="function"><name>getCoefficientOfVariation</name></member>
+      <member refid="group___search_parameters_1ga3c794ce930e2562aa0da4aba70b70df1" kind="function"><name>getConspecificSearchParams</name></member>
+      <member refid="group___species_decision_blocks_1ga5d94bec809e835624c60aa4ad2abf72a" kind="function"><name>getDecisionsBuildingBlock</name></member>
+      <member refid="group___misc_species_parameters_1ga2d2e4fbe324d0df40f04891ef3aa1450" kind="function"><name>getDefaultHuntingMode</name></member>
+      <member refid="group___ontogenetic_links_1ga6a2b5b6022242efe678332c94b8dd1a4" kind="function"><name>getEdibleOntogeneticLink</name></member>
+      <member refid="group___predation_1ga9b5494292f7a30d8fa291f9f6ace2bc1" kind="function"><name>getEdibleProfitability</name></member>
+      <member refid="group___reproductive_traits_1ga4ecd1d866d3c9085f06bff9be5fec22a" kind="function"><name>getFemaleMaxReproductionEvents</name></member>
+      <member refid="group___resource_handling_options_1ga458da66b01ba551cb0caecfdd8074f63" kind="function"><name>getForcePresenceAllResourcesInvolved</name></member>
+      <member refid="group___genetics_accessors_1ga59915cc4e1f220d19ba4414fb4fa5b64" kind="function"><name>getGenetics</name></member>
+      <member refid="group___growth_and_instar_information_1ga0d0d377ddd32bcd8c41013435b0a7243" kind="function"><name>getGrowthBuildingBlock</name></member>
+      <member refid="group___reproduction_and_habitat_shift_1ga5fa356278577949b799d6bad33d1312f" kind="function"><name>getHabitatShiftAfterBreedingFactor</name></member>
+      <member refid="group___reproduction_and_habitat_shift_1ga60581e02d179eb84f5bb6af8a48560ff" kind="function"><name>getHabitatShiftBeforeBreedingFactor</name></member>
+      <member refid="group___population_and_statistics_1ga7d4b768c36a5ac9f608dc3c8cd5633c5" kind="function"><name>getIndividualsPerInstar</name></member>
+      <member refid="group___species_modifiers_1ga3761cca8bd0d2e6d309406086e34c6da" kind="function"><name>getInstarEdibleAnimalSpecies</name></member>
+      <member refid="group___species_modifiers_1ga903c8e9df7b611d28db4b13929d4d1c4" kind="function"><name>getInstarEdibleResourceSpecies</name></member>
+      <member refid="group___species_modifiers_1ga3de7a0e4527f639e94f69ac6835339d2" kind="function"><name>getInstarEdibleSpecies</name></member>
+      <member refid="group___search_parameters_1ga06ee5c8df9a86a8918cae829af114bea" kind="function"><name>getLifeStageSearchParams</name></member>
+      <member refid="group___reproductive_traits_1gabc5bcd3e0919cd6bc1b07b6c15f6e716" kind="function"><name>getMaleMaxReproductionEvents</name></member>
+      <member refid="group___mobility_traits_1gad667fe8d551518d6229b09c1228b4375" kind="function"><name>getMaleMobility</name></member>
+      <member refid="group___search_parameters_1ga52a6f2f88a8e997b4bef9c4d4d67b1be" kind="function"><name>getMatureFemalesSearchParams</name></member>
+      <member refid="group___search_parameters_1gaf593c126fb9d9d9e95868a73ecd828a6" kind="function"><name>getMatureMalesSearchParams</name></member>
+      <member refid="group___predation_1ga356c42b0559fe1dd9285c42e03b05755" kind="function"><name>getMaximumInteractionArea</name></member>
+      <member refid="group___species_modifiers_1gaec137ae891d2f7feca7873739954be28" kind="function"><name>getMaximumPredationEncountersPerDay</name></member>
+      <member refid="group___species_modifiers_1ga2b93143ea25879035fc24815e626d33c" kind="function"><name>getMinRelativeHumidityThreshold</name></member>
+      <member refid="group___species_decision_blocks_1ga0a04108ae5fb9c5746f8d82a98a24a97" kind="function"><name>getMutableDecisionsBuildingBlock</name></member>
+      <member refid="group___genetics_accessors_1ga0a97af75cb04a7d654bdf83db5238891" kind="function"><name>getMutableGenetics</name></member>
+      <member refid="group___growth_and_instar_information_1gae1a6988f2b757964476bdcfdcd8fe0ee" kind="function"><name>getMutableGrowthBuildingBlock</name></member>
+      <member refid="group___ontogenetic_links_1ga1d71d4b4fac13baf731ae3e16a58b134" kind="function"><name>getOntogeneticLinksPerInstar</name></member>
+      <member refid="group___species_modifiers_1ga2255089873f3b93d2fa311eb26fca680" kind="function"><name>getPercentageCostForMetabolicDownregulationSearchArea</name></member>
+      <member refid="group___species_modifiers_1ga8f28e87596e1a98957308e89d1884623" kind="function"><name>getPercentageCostForMetabolicDownregulationSpeed</name></member>
+      <member refid="group___species_modifiers_1ga2a74fc3b977cec53d9d01f7018be7156" kind="function"><name>getPercentageCostForMetabolicDownregulationVoracity</name></member>
+      <member refid="group___species_modifiers_1ga583afe83e93a486f831970a61963a6a6" kind="function"><name>getPercentageMetabolicDownregulation</name></member>
+      <member refid="group___mobility_traits_1gaddf0b153f37c72945c44bc600329bb34" kind="function"><name>getPlasticityDueToConditionSearch</name></member>
+      <member refid="group___mobility_traits_1ga239ff0a340b3510606423cb294710a9b" kind="function"><name>getPlasticityDueToConditionSpeed</name></member>
+      <member refid="group___population_and_statistics_1gaf001df0078a62385cf4f4d0a3d0f8f14" kind="function"><name>getPopulation</name></member>
+      <member refid="group___search_parameters_1ga95e8d1a4e91d9e9afc60415262cb594b" kind="function"><name>getPopulationSearchParams</name></member>
+      <member refid="group___growth_and_instar_information_1ga030187074066abd70c13c08bbcc54584" kind="function"><name>getPoreUsePerInstar</name></member>
+      <member refid="group___predation_1ga907bab93bde90c4b6061898cc880d5fc" kind="function"><name>getPredationEventsOnOtherSpecies</name></member>
+      <member refid="group___search_parameters_1ga790b83b7a0c0fbd0e8b00fc490a6bb01" kind="function"><name>getPredatorSearchParams</name></member>
+      <member refid="group___resource_handling_options_1gadabfa957e5141d71919c1c06077e5724" kind="function"><name>getPreserveLeftovers</name></member>
+      <member refid="group___search_parameters_1gaa1768fddb0db147685cb76f37263603e" kind="function"><name>getPreySearchParams</name></member>
+      <member refid="group___species_modifiers_1ga39488f55a06b49846a5ac5865a2b6d5c" kind="function"><name>getProbabilityDeathFromBackground</name></member>
+      <member refid="group___reproductive_traits_1ga861f4edd84f63b407d73a1734864f46f" kind="function"><name>getRandomGender</name></member>
+      <member refid="group___reproductive_traits_1gaab5ea3d012637ad18cf39ba9b391cf20" kind="function"><name>getSexRatio</name></member>
+      <member refid="group___reproductive_traits_1ga50cd84e82499615731c0a2db2a4a38df" kind="function"><name>getSexualType</name></member>
+      <member refid="group___population_and_statistics_1ga38c2420474d691ed6c91092b03e0338a" kind="function"><name>getStatisticsIndividualsPerInstar</name></member>
+      <member refid="group___mobility_traits_1ga02e278f8b0712d2221162418fd0b42a0" kind="function"><name>getTempFromLab</name></member>
+      <member refid="group___species_modifiers_1gaf0b95405da7c0d71b235333a9b9522c0" kind="function"><name>getTimeStepsWithoutFoodForMetabolicDownregulation</name></member>
+      <member refid="group___population_and_statistics_1ga0000b19fc15ee5a575f3a9edd394e369" kind="function"><name>getTotalInitialPopulation</name></member>
+      <member refid="group___population_and_statistics_1ga9ddd33ff801eac920185e090eebaa746" kind="function"><name>getTotalInitialStatisticsPopulation</name></member>
+      <member refid="group___reproductive_traits_1ga2fc8d9fb7a40a13a452e158b4abfc87a" kind="function"><name>getTotFec</name></member>
+      <member refid="group___species_resource_generation_1gaad4573fcc6dc6332a7221da536c14ab3" kind="function"><name>getType</name></member>
+      <member refid="group___misc_species_parameters_1ga0c3d41674d21edb9a2475dcecb8408db" kind="function"><name>getYodzisA</name></member>
+      <member refid="group___misc_species_parameters_1ga97865aa8b6c31e50a44d84a8f50ae011" kind="function"><name>getYodzisB</name></member>
+      <member refid="group___population_and_statistics_1ga28577ee660d6f493ce756a643ef7b03f" kind="function"><name>increasePopulation</name></member>
+      <member refid="group___species_resource_generation_1ga2d99cbef11a84248e4fa9c9b7a7b80ed" kind="function"><name>initializeGeneticFiles</name></member>
+      <member refid="group___species_modifiers_1gafafa057168f94d895b903fe9f432dc1d" kind="function"><name>interactionRanges</name></member>
+      <member refid="group___mobility_traits_1ga7a3aab0f045e37d18009cee7329810d6" kind="function"><name>isMobile</name></member>
+      <member refid="group___mobility_traits_1gac4c2c2c7f96685d795254bf59793de37" kind="function"><name>isSurviveWithoutFood</name></member>
+      <memberdef kind="function" id="class_animal_species_1af743cb8847bb3b8d6242a1b9a1442650" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void AnimalSpecies::obtainSearchParams</definition>
+        <argsstring>(const std::vector&lt; Species * &gt; &amp;existingSpecies, const std::vector&lt; AnimalSpecies * &gt; &amp;existingAnimalSpecies, size_t numberExistingResourceSpecies)</argsstring>
+        <name>obtainSearchParams</name>
+        <qualifiedname>AnimalSpecies::obtainSearchParams</qualifiedname>
+        <param>
+          <type>const std::vector&lt; <ref refid="class_species" kindref="compound">Species</ref> * &gt; &amp;</type>
+          <declname>existingSpecies</declname>
+        </param>
+        <param>
+          <type>const std::vector&lt; <ref refid="class_animal_species" kindref="compound">AnimalSpecies</ref> * &gt; &amp;</type>
+          <declname>existingAnimalSpecies</declname>
+        </param>
+        <param>
+          <type>size_t</type>
+          <declname>numberExistingResourceSpecies</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="App/Model/IBM/Landscape/LivingBeings/Animals/Species/AnimalSpecies.h" line="328" column="6"/>
+      </memberdef>
+      <member refid="group___reproduction_and_habitat_shift_1gad6b9e91adb1c6f6068b40ee885f03d6b" kind="function"><name>occursHabitatShiftAfterBreeding</name></member>
+      <member refid="group___reproduction_and_habitat_shift_1gaf180872c36c870194c36169163a5a40a" kind="function"><name>occursHabitatShiftBeforeBreeding</name></member>
+      <memberdef kind="function" id="class_animal_species_1ae548af8159c6869fc36a4d430ea2a089" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type><ref refid="class_animal_species" kindref="compound">AnimalSpecies</ref> &amp;</type>
+        <definition>AnimalSpecies &amp; AnimalSpecies::operator=</definition>
+        <argsstring>(const AnimalSpecies &amp;)=delete</argsstring>
+        <name>operator=</name>
+        <qualifiedname>AnimalSpecies::operator=</qualifiedname>
+        <param>
+          <type>const <ref refid="class_animal_species" kindref="compound">AnimalSpecies</ref> &amp;</type>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="App/Model/IBM/Landscape/LivingBeings/Animals/Species/AnimalSpecies.h" line="118" column="15"/>
+      </memberdef>
+      <memberdef kind="function" id="class_animal_species_1aa170c6f9b7ab9e9a954948d0e6045d13" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <templateparamlist>
+          <param>
+            <type>class Archive</type>
+          </param>
+        </templateparamlist>
+        <type>void</type>
+        <definition>void AnimalSpecies::serialize</definition>
+        <argsstring>(Archive &amp;ar, const unsigned int version)</argsstring>
+        <name>serialize</name>
+        <qualifiedname>AnimalSpecies::serialize</qualifiedname>
+        <param>
+          <type>Archive &amp;</type>
+          <declname>ar</declname>
+        </param>
+        <param>
+          <type>const unsigned int</type>
+          <declname>version</declname>
+        </param>
+        <briefdescription>
+<para>Serializes the object for persistence. </para>
+        </briefdescription>
+        <detaileddescription>
+<para><parameterlist kind="templateparam"><parameteritem>
+<parameternamelist>
+<parametername>Archive</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Serialization archive type. </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>ar</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Archive instance. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>version</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Serialization version. </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="App/Model/IBM/Landscape/LivingBeings/Animals/Species/AnimalSpecies.h" line="664" column="10"/>
+      </memberdef>
+      <member refid="group___species_modifiers_1ga949fd11102b631f126f7cf9c6925955b" kind="function"><name>setActivityUnderPredationRisk</name></member>
+      <member refid="group___reproductive_traits_1gae98f4f63d5741e4f23f4aa07b11ec4e1" kind="function"><name>setFemaleMaxReproductionEvents</name></member>
+      <member refid="group___reproduction_and_habitat_shift_1gab68605cae025d082e49352b8a34b064c" kind="function"><name>setHabitatShiftAfterBreeding</name></member>
+      <member refid="group___reproduction_and_habitat_shift_1gafe10e99ff4d359313e9bc8793f6cc67c" kind="function"><name>setHabitatShiftBeforeBreeding</name></member>
+      <member refid="group___species_modifiers_1ga47c135a8f3dd1d19a9410071512cd3ac" kind="function"><name>setIndividualsPerInstar</name></member>
+      <member refid="group___reproductive_traits_1ga93a6233f1a531f14970e7648e9ea7359" kind="function"><name>setMaleMaxReproductionEvents</name></member>
+      <member refid="group___species_modifiers_1gab296fb4507dc50d80555cae507d7f70a" kind="function"><name>setMaleMobility</name></member>
+      <member refid="group___species_modifiers_1ga48943d27e6ad3c067d58721be68afe6a" kind="function"><name>setMinRelativeHumidityThreshold</name></member>
+      <member refid="group___ontogenetic_links_1ga4d049ce1f50306aa33c62ed645944208" kind="function"><name>setOntogeneticLinks</name></member>
+      <member refid="group___species_modifiers_1ga278ec20fc084884b0fd152ea2c9fa779" kind="function"><name>setPercentageCostForMetabolicDownregulationSearchArea</name></member>
+      <member refid="group___species_modifiers_1gacc5b5f19947781a66c8cd79da7372c3c" kind="function"><name>setPercentageCostForMetabolicDownregulationSpeed</name></member>
+      <member refid="group___species_modifiers_1gad9a9ae81315dbaf1b8243b7e5ed62db8" kind="function"><name>setPercentageCostForMetabolicDownregulationVoracity</name></member>
+      <member refid="group___species_modifiers_1ga19fa21161620e1ec0892c377e7df3afd" kind="function"><name>setPercentageMetabolicDownregulation</name></member>
+      <member refid="group___species_modifiers_1ga4abf4e86537c60e5c69077cbbb8c559a" kind="function"><name>setPlasticityDueToConditionSearch</name></member>
+      <member refid="group___species_modifiers_1ga163e423630308b2ccecdcec286409396" kind="function"><name>setPlasticityDueToConditionSpeed</name></member>
+      <member refid="group___species_modifiers_1gad41306e65eb57703fdfc6746c386f03a" kind="function"><name>setProbabilityDeathFromBackground</name></member>
+      <member refid="group___reproductive_traits_1ga1fd5b6272a448c93ec48656afe392523" kind="function"><name>setSexRatio</name></member>
+      <member refid="group___species_modifiers_1ga0f09adf8a462f6739fa8253735fc24fe" kind="function"><name>setStatisticsIndividualsPerInstar</name></member>
+      <member refid="group___species_modifiers_1gac222248628a59b805f8723e4769142f1" kind="function"><name>setSurviveWithoutFood</name></member>
+      <member refid="group___species_modifiers_1gac59d8a69353133e3a561ffd82b4b3327" kind="function"><name>setTimeStepsWithoutFoodForMetabolicDownregulation</name></member>
+      <member refid="group___predation_1ga5930e5b84647e88665baab1c8bb7c363" kind="function"><name>updateMaximumInteractionArea</name></member>
+      <member refid="group___species_modifiers_1ga46825b6070e23103095f245118afdbd2" kind="function"><name>updateMaximumPredationEncountersPerDay</name></member>
+      <member refid="group___population_and_statistics_1gaf750c7448207ed27e4be22bcb484fb06" kind="function"><name>updatePopulationHistory</name></member>
+    </sectiondef>
+    <sectiondef kind="protected-func">
+      <member refid="group___behavioral_parameters_1gaab5c43bc116b6a9095327bff06a12430" kind="function"><name>obtainBreedSearchParams</name></member>
+      <member refid="group___behavioral_parameters_1gaefbd1e3b3aef9c80a85ff14fa1bc75bc" kind="function"><name>obtainConspecificSearchParams</name></member>
+      <member refid="group___life_stage_parameters_1gaea2dac9505bd45e63869597248da4abe" kind="function"><name>obtainLifeStageSearchParams</name></member>
+      <member refid="group___behavioral_parameters_1ga78ef58bddaea97c3a3a9aade36984995" kind="function"><name>obtainMatureFemalesSearchParams</name></member>
+      <memberdef kind="function" id="class_animal_species_1a8e3d07e0f89ed79fa54c7fb3e7e2ab10" prot="protected" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void AnimalSpecies::obtainMatureMalesSearchParams</definition>
+        <argsstring>()</argsstring>
+        <name>obtainMatureMalesSearchParams</name>
+        <qualifiedname>AnimalSpecies::obtainMatureMalesSearchParams</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="App/Model/IBM/Landscape/LivingBeings/Animals/Species/AnimalSpecies.h" line="918" column="6"/>
+      </memberdef>
+      <member refid="group___population_parameters_1ga3e2155cdaa422a3467a8748da269f755" kind="function"><name>obtainPopulationSearchParams</name></member>
+      <memberdef kind="function" id="class_animal_species_1aea6ac0fdcdce7e6f6f7e9036dde6cdfd" prot="protected" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void AnimalSpecies::obtainPreyAndPredatorSearchParams</definition>
+        <argsstring>(const std::vector&lt; Species * &gt; &amp;existingSpecies, const std::vector&lt; AnimalSpecies * &gt; &amp;existingAnimalSpecies, size_t numberExistingResourceSpecies)</argsstring>
+        <name>obtainPreyAndPredatorSearchParams</name>
+        <qualifiedname>AnimalSpecies::obtainPreyAndPredatorSearchParams</qualifiedname>
+        <param>
+          <type>const std::vector&lt; <ref refid="class_species" kindref="compound">Species</ref> * &gt; &amp;</type>
+          <declname>existingSpecies</declname>
+        </param>
+        <param>
+          <type>const std::vector&lt; <ref refid="class_animal_species" kindref="compound">AnimalSpecies</ref> * &gt; &amp;</type>
+          <declname>existingAnimalSpecies</declname>
+        </param>
+        <param>
+          <type>size_t</type>
+          <declname>numberExistingResourceSpecies</declname>
+        </param>
+        <briefdescription>
+<para>Computes search parameters for prey, predators and conspecifics. </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="App/Model/IBM/Landscape/LivingBeings/Animals/Species/AnimalSpecies.h" line="950" column="6"/>
+      </memberdef>
+      <memberdef kind="function" id="class_animal_species_1af3a14998e964abf3fe6755bdc6900851" prot="protected" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void AnimalSpecies::setPoreUsePerInstar</definition>
+        <argsstring>(const std::vector&lt; double &gt; &amp;newPoreUsePerInstar)</argsstring>
+        <name>setPoreUsePerInstar</name>
+        <qualifiedname>AnimalSpecies::setPoreUsePerInstar</qualifiedname>
+        <param>
+          <type>const std::vector&lt; double &gt; &amp;</type>
+          <declname>newPoreUsePerInstar</declname>
+        </param>
+        <briefdescription>
+<para>Sets the pore usage fraction for each instar. </para>
+        </briefdescription>
+        <detaileddescription>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>newPoreUsePerInstar</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Vector containing the new pore use value for each instar.</para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+Pore use affects how individuals interact physically with the environment, influencing traits such as diffusion-based respiration, water balance, and habitat occupancy within porous substrates.</para>
+<para>The size of the vector must match the number of instars defined for the species. </para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="App/Model/IBM/Landscape/LivingBeings/Animals/Species/AnimalSpecies.h" line="964" column="6"/>
+      </memberdef>
+    </sectiondef>
+    <briefdescription>
+<para>Represents a specific animal species in the ecosystem. </para>
+    </briefdescription>
+    <detaileddescription>
+<para>Contains information about genetics, growth, decisions, ontogenetic links, prey and predator search parameters, and reproductive strategies. </para>
+    </detaileddescription>
+    <inheritancegraph>
+      <node id="1">
+        <label>AnimalSpecies</label>
+        <link refid="class_animal_species"/>
+        <childnode refid="2" relation="public-inheritance">
+        </childnode>
+      </node>
+      <node id="2">
+        <label>Species</label>
+        <link refid="class_species"/>
+      </node>
+    </inheritancegraph>
+    <collaborationgraph>
+      <node id="21">
+        <label>AnimalDecisionProbability</label>
+        <link refid="class_animal_decision_probability"/>
+        <childnode refid="19" relation="public-inheritance">
+        </childnode>
+      </node>
+      <node id="30">
+        <label>AnimalSearchParams</label>
+        <link refid="class_animal_search_params"/>
+      </node>
+      <node id="1">
+        <label>AnimalSpecies</label>
+        <link refid="class_animal_species"/>
+        <childnode refid="2" relation="public-inheritance">
+        </childnode>
+        <childnode refid="4" relation="usage">
+          <edgelabel>genetics</edgelabel>
+        </childnode>
+        <childnode refid="6" relation="usage">
+          <edgelabel>animalSpeciesGrowth</edgelabel>
+        </childnode>
+        <childnode refid="15" relation="usage">
+          <edgelabel>decisions</edgelabel>
+        </childnode>
+        <childnode refid="24" relation="usage">
+          <edgelabel>animalSpeciesId</edgelabel>
+        </childnode>
+        <childnode refid="25" relation="usage">
+          <edgelabel>edibleSpecies</edgelabel>
+        </childnode>
+        <childnode refid="26" relation="usage">
+          <edgelabel>edibleOntogeneticLink</edgelabel>
+        </childnode>
+        <childnode refid="27" relation="usage">
+          <edgelabel>predationEventsOnOtherSpecies</edgelabel>
+        </childnode>
+        <childnode refid="28" relation="usage">
+          <edgelabel>preySearchParams</edgelabel>
+        </childnode>
+        <childnode refid="29" relation="usage">
+          <edgelabel>predatorSearchParams</edgelabel>
+        </childnode>
+        <childnode refid="30" relation="usage">
+          <edgelabel>conspecificSearchParams</edgelabel>
+          <edgelabel>matureFemalesSearchParams</edgelabel>
+          <edgelabel>matureMalesSearchParams</edgelabel>
+          <edgelabel>populationSearchParams</edgelabel>
+        </childnode>
+        <childnode refid="31" relation="usage">
+          <edgelabel>breedSearchParams</edgelabel>
+        </childnode>
+        <childnode refid="32" relation="usage">
+          <edgelabel>lifeStageSearchParams</edgelabel>
+        </childnode>
+        <childnode refid="11" relation="usage">
+          <edgelabel>YodzisA</edgelabel>
+          <edgelabel>YodzisB</edgelabel>
+          <edgelabel>coefficientOfVariation</edgelabel>
+          <edgelabel>habitatShiftAfterBreedingFactor</edgelabel>
+          <edgelabel>habitatShiftBeforeBreedingFactor</edgelabel>
+          <edgelabel>maleMobility</edgelabel>
+          <edgelabel>plasticityDueToConditionSearch</edgelabel>
+          <edgelabel>plasticityDueToConditionSpeed</edgelabel>
+          <edgelabel>totFec</edgelabel>
+        </childnode>
+        <childnode refid="33" relation="usage">
+          <edgelabel>individualsPerInstar</edgelabel>
+        </childnode>
+        <childnode refid="9" relation="usage">
+          <edgelabel>maximumInteractionArea</edgelabel>
+          <edgelabel>minRelativeHumidityThreshold</edgelabel>
+          <edgelabel>poreUsePerInstar</edgelabel>
+          <edgelabel>probabilityDeathFromBackground</edgelabel>
+        </childnode>
+        <childnode refid="14" relation="usage">
+          <edgelabel>timeStepsWithoutFoodForMetabolicDownregulation</edgelabel>
+        </childnode>
+        <childnode refid="34" relation="usage">
+          <edgelabel>tempFromLab</edgelabel>
+        </childnode>
+      </node>
+      <node id="15">
+        <label>AnimalSpeciesDecisions</label>
+        <link refid="class_animal_species_decisions"/>
+        <childnode refid="16" relation="usage">
+          <edgelabel>sensoryModel</edgelabel>
+        </childnode>
+        <childnode refid="17" relation="usage">
+          <edgelabel>predationProbability</edgelabel>
+        </childnode>
+        <childnode refid="22" relation="usage">
+          <edgelabel>edibilityValue</edgelabel>
+        </childnode>
+        <childnode refid="23" relation="usage">
+          <edgelabel>cellQuality</edgelabel>
+        </childnode>
+        <childnode refid="9" relation="usage">
+          <edgelabel>maximumPatchConspecificBiomassGlobal</edgelabel>
+          <edgelabel>maximumPatchEdibilityValueGlobal</edgelabel>
+          <edgelabel>maximumPatchPredationRiskGlobal</edgelabel>
+          <edgelabel>maximumPredatorInteractionArea</edgelabel>
+          <edgelabel>maximumPreyVoracity</edgelabel>
+          <edgelabel>maximumVoracity</edgelabel>
+        </childnode>
+        <childnode refid="11" relation="usage">
+          <edgelabel>killProbability</edgelabel>
+          <edgelabel>weightIndividualToGlobalAssessment</edgelabel>
+        </childnode>
+      </node>
+      <node id="4">
+        <label>AnimalSpeciesGenetics</label>
+        <link refid="class_animal_species_genetics"/>
+        <childnode refid="5" relation="usage">
+          <edgelabel>allTraits</edgelabel>
+        </childnode>
+      </node>
+      <node id="6">
+        <label>AnimalSpeciesGrowth</label>
+        <link refid="class_animal_species_growth"/>
+        <childnode refid="7" relation="public-inheritance">
+        </childnode>
+        <childnode refid="10" relation="usage">
+          <edgelabel>femaleWetMass</edgelabel>
+        </childnode>
+        <childnode refid="12" relation="usage">
+          <edgelabel>eggDryMass</edgelabel>
+        </childnode>
+        <childnode refid="8" relation="usage">
+          <edgelabel>instarFirstReproduction</edgelabel>
+        </childnode>
+        <childnode refid="13" relation="usage">
+          <edgelabel>instarAgeVector</edgelabel>
+        </childnode>
+        <childnode refid="11" relation="usage">
+          <edgelabel>assignedForMolt</edgelabel>
+          <edgelabel>betaScaleTank</edgelabel>
+          <edgelabel>coefficientForMassA</edgelabel>
+          <edgelabel>coefficientForMassAforMature</edgelabel>
+          <edgelabel>eggsPerBatch</edgelabel>
+          <edgelabel>excessInvestInSize</edgelabel>
+          <edgelabel>habitatShiftFactor</edgelabel>
+          <edgelabel>interceptForEggBatchFromEquation</edgelabel>
+          <edgelabel>maxPlasticityKVonBertalanffy</edgelabel>
+          <edgelabel>minPlasticityKVonBertalanffy</edgelabel>
+          <edgelabel>  ...</edgelabel>
+        </childnode>
+        <childnode refid="14" relation="usage">
+          <edgelabel>timeOfReproEventDuringCapitalBreeding</edgelabel>
+        </childnode>
+      </node>
+      <node id="24">
+        <label>AnimalSpeciesID</label>
+        <link refid="class_animal_species_i_d"/>
+      </node>
+      <node id="23">
+        <label>CellQualityBiomass</label>
+        <link refid="class_cell_quality_biomass"/>
+        <childnode refid="22" relation="usage">
+          <edgelabel>edibilityValue</edgelabel>
+        </childnode>
+      </node>
+      <node id="31">
+        <label>CustomIndexedVector&lt; Gender, AnimalSearchParams &gt;</label>
+        <link refid="class_custom_indexed_vector"/>
+      </node>
+      <node id="29">
+        <label>CustomIndexedVector&lt; Instar, AnimalSearchParams &gt;</label>
+        <link refid="class_custom_indexed_vector"/>
+      </node>
+      <node id="26">
+        <label>CustomIndexedVector&lt; Instar, CustomIndexedVector&lt; Species::ID, CustomIndexedVector&lt; Instar, OntogeneticLink &gt; &gt; &gt;</label>
+        <link refid="class_custom_indexed_vector"/>
+      </node>
+      <node id="25">
+        <label>CustomIndexedVector&lt; Instar, CustomIndexedVector&lt; SpeciesType, std::unordered_map&lt; ID, std::vector&lt; Instar &gt; &gt; &gt; &gt;</label>
+        <link refid="class_custom_indexed_vector"/>
+      </node>
+      <node id="13">
+        <label>CustomIndexedVector&lt; Instar, Day &gt;</label>
+        <link refid="class_custom_indexed_vector"/>
+      </node>
+      <node id="28">
+        <label>CustomIndexedVector&lt; Instar, EdibleSearchParams &gt;</label>
+        <link refid="class_custom_indexed_vector"/>
+      </node>
+      <node id="9">
+        <label>CustomIndexedVector&lt; Instar, PreciseDouble &gt;</label>
+        <link refid="class_custom_indexed_vector"/>
+      </node>
+      <node id="33">
+        <label>CustomIndexedVector&lt; Instar, unsigned int &gt;</label>
+        <link refid="class_custom_indexed_vector"/>
+      </node>
+      <node id="32">
+        <label>CustomIndexedVector&lt; LifeStage, AnimalSearchParams &gt;</label>
+        <link refid="class_custom_indexed_vector"/>
+      </node>
+      <node id="27">
+        <label>CustomIndexedVector&lt; Species::ID, unsigned int &gt;</label>
+        <link refid="class_custom_indexed_vector"/>
+      </node>
+      <node id="5">
+        <label>CustomIndexedVector&lt; Trait::ExecutionOrder, std::vector&lt; Trait * &gt; &gt;</label>
+        <link refid="class_custom_indexed_vector"/>
+      </node>
+      <node id="19">
+        <label>DecisionProbability</label>
+        <link refid="class_decision_probability"/>
+      </node>
+      <node id="12">
+        <label>DryMass</label>
+        <link refid="class_dry_mass"/>
+        <childnode refid="11" relation="usage">
+          <edgelabel>value</edgelabel>
+        </childnode>
+      </node>
+      <node id="22">
+        <label>EdibilityValue</label>
+        <link refid="class_edibility_value"/>
+        <childnode refid="18" relation="public-inheritance">
+        </childnode>
+        <childnode refid="17" relation="usage">
+          <edgelabel>predationProbability</edgelabel>
+        </childnode>
+      </node>
+      <node id="18">
+        <label>EdibleDecisionProbability</label>
+        <link refid="class_edible_decision_probability"/>
+        <childnode refid="19" relation="public-inheritance">
+        </childnode>
+      </node>
+      <node id="20">
+        <label>EscapeProbability</label>
+        <link refid="class_escape_probability"/>
+        <childnode refid="21" relation="public-inheritance">
+        </childnode>
+        <childnode refid="16" relation="usage">
+          <edgelabel>sensoryModel</edgelabel>
+        </childnode>
+        <childnode refid="11" relation="usage">
+          <edgelabel>cVelocity</edgelabel>
+        </childnode>
+      </node>
+      <node id="8">
+        <label>Instar</label>
+        <link refid="class_instar"/>
+      </node>
+      <node id="11">
+        <label>PreciseDouble</label>
+        <link refid="class_precise_double"/>
+      </node>
+      <node id="17">
+        <label>PredationProbability</label>
+        <link refid="class_predation_probability"/>
+        <childnode refid="18" relation="public-inheritance">
+        </childnode>
+        <childnode refid="20" relation="usage">
+          <edgelabel>escapeProbability</edgelabel>
+        </childnode>
+        <childnode refid="9" relation="usage">
+          <edgelabel>maximumPDF</edgelabel>
+        </childnode>
+        <childnode refid="11" relation="usage">
+          <edgelabel>pdfThreshold</edgelabel>
+        </childnode>
+      </node>
+      <node id="16">
+        <label>SensoryModel</label>
+        <link refid="class_sensory_model"/>
+        <childnode refid="11" relation="usage">
+          <edgelabel>beta</edgelabel>
+        </childnode>
+      </node>
+      <node id="2">
+        <label>Species</label>
+        <link refid="class_species"/>
+        <childnode refid="3" relation="usage">
+          <edgelabel>id</edgelabel>
+        </childnode>
+      </node>
+      <node id="3">
+        <label>Species::ID</label>
+        <link refid="class_species_1_1_i_d"/>
+      </node>
+      <node id="7">
+        <label>SpeciesGrowth</label>
+        <link refid="class_species_growth"/>
+        <childnode refid="8" relation="usage">
+          <edgelabel>lastInstar</edgelabel>
+        </childnode>
+        <childnode refid="9" relation="usage">
+          <edgelabel>conversionToWetMass</edgelabel>
+        </childnode>
+      </node>
+      <node id="34">
+        <label>Temperature</label>
+        <link refid="class_temperature"/>
+        <childnode refid="11" relation="usage">
+          <edgelabel>temperatureCelsius</edgelabel>
+          <edgelabel>temperatureFahrenheit</edgelabel>
+          <edgelabel>temperatureKelvin</edgelabel>
+        </childnode>
+      </node>
+      <node id="14">
+        <label>TimeStep</label>
+        <link refid="class_time_step"/>
+      </node>
+      <node id="10">
+        <label>WetMass</label>
+        <link refid="class_wet_mass"/>
+        <childnode refid="11" relation="usage">
+          <edgelabel>value</edgelabel>
+        </childnode>
+      </node>
+    </collaborationgraph>
+    <location file="App/Model/IBM/Landscape/LivingBeings/Animals/Species/AnimalSpecies.h" line="89" column="1" bodyfile="App/Model/IBM/Landscape/LivingBeings/Animals/Species/AnimalSpecies.h" bodystart="90" bodyend="965"/>
+    <listofallmembers>
+      <member refid="group___species_population_attributes_1gaf5bd519d0a679c5a32747f217385d1e8" prot="protected" virt="non-virtual"><scope>AnimalSpecies</scope><name>activatedHandling</name></member>
+      <member refid="group___species_reproduction_attributes_1ga787a46c7199bbb6435aafecb59fc3160" prot="protected" virt="non-virtual"><scope>AnimalSpecies</scope><name>activityUnderPredationRisk</name></member>
+      <member refid="group___species_modifiers_1ga87c153be67c5aa0a8f8e22e7ad6ca011" prot="public" virt="non-virtual"><scope>AnimalSpecies</scope><name>addAnimalSpecies</name></member>
+      <member refid="group___predation_1ga8d9239fa4763fdae19c4675a660b8ed7" prot="public" virt="non-virtual"><scope>AnimalSpecies</scope><name>addPredationEventOnOtherSpecies</name></member>
+      <member refid="group___species_modifiers_1gaded78ec26a930ca6f77dec778c7fe75b" prot="public" virt="non-virtual"><scope>AnimalSpecies</scope><name>addResourceSpecies</name></member>
+      <member refid="class_animal_species_1a4f45350d499f7d428a9132f4075439e8" prot="public" virt="non-virtual"><scope>AnimalSpecies</scope><name>AnimalSpecies</name></member>
+      <member refid="class_animal_species_1a9c29d9faa925d9ef5d1ac0168e6251a1" prot="public" virt="non-virtual"><scope>AnimalSpecies</scope><name>AnimalSpecies</name></member>
+      <member refid="class_animal_species_1af2c896d39dd42129a156a7fd29607416" prot="public" virt="non-virtual"><scope>AnimalSpecies</scope><name>AnimalSpecies</name></member>
+      <member refid="group___species_genetics_attributes_1gae021e316ed4881d851f4dab57128e988" prot="protected" virt="non-virtual"><scope>AnimalSpecies</scope><name>animalSpeciesGrowth</name></member>
+      <member refid="group___species_identity_attributes_1ga3bd17cecc005f35547ed37334479016c" prot="protected" virt="non-virtual"><scope>AnimalSpecies</scope><name>animalSpeciesId</name></member>
+      <member refid="group___species_search_attributes_1gae3e2d95b7f5dbe43b1e9332cc74e4bc4" prot="protected" virt="non-virtual"><scope>AnimalSpecies</scope><name>breedSearchParams</name></member>
+      <member refid="group___population_and_statistics_1gaa57a0c0387d9396f283960d83da720f6" prot="public" virt="non-virtual"><scope>AnimalSpecies</scope><name>calculateCoefficientOfVariation</name></member>
+      <member refid="group___predation_1ga70b08d2c597977fa5627ad20327d7d97" prot="public" virt="non-virtual"><scope>AnimalSpecies</scope><name>canEatEdible</name></member>
+      <member refid="group___species_population_attributes_1ga940288bf81475646b3e0ae214ad17519" prot="protected" virt="non-virtual"><scope>AnimalSpecies</scope><name>coefficientOfVariation</name></member>
+      <member refid="group___species_search_attributes_1gaaa82ea088cfd33c0d867e46dc72e9748" prot="protected" virt="non-virtual"><scope>AnimalSpecies</scope><name>conspecificSearchParams</name></member>
+      <member refid="group___species_decision_attributes_1gab9ed8eab9199a2a17c9a264c0f1192c6" prot="protected" virt="non-virtual"><scope>AnimalSpecies</scope><name>decisions</name></member>
+      <member refid="group___population_and_statistics_1ga2eec600ab0a400189a1e9a65246b81fb" prot="public" virt="non-virtual"><scope>AnimalSpecies</scope><name>decreasePopulation</name></member>
+      <member refid="group___species_identity_attributes_1ga79d741c71e258dacf3a0d18f629a63b8" prot="protected" virt="non-virtual"><scope>AnimalSpecies</scope><name>defaultHuntingMode</name></member>
+      <member refid="group___predation_1ga81da867dd0e662a59d08ee8f2cbaa634" prot="public" virt="non-virtual"><scope>AnimalSpecies</scope><name>eatsAnimalSpecies</name></member>
+      <member refid="group___species_edibility_attributes_1ga0596e8e852a271038c33ec39d6b30c48" prot="protected" virt="non-virtual"><scope>AnimalSpecies</scope><name>edibleOntogeneticLink</name></member>
+      <member refid="group___species_edibility_attributes_1ga677542fe080d2ed01a1706e26d22cc27" prot="protected" virt="non-virtual"><scope>AnimalSpecies</scope><name>edibleSpecies</name></member>
+      <member refid="class_species_1aeb2fe36a2c93e78f4e508843d8355111" prot="private" virt="non-virtual"><scope>AnimalSpecies</scope><name>extinguished</name></member>
+      <member refid="group___species_reproduction_attributes_1ga023912b5329f6a39b4832f67b3aa7dad" prot="protected" virt="non-virtual"><scope>AnimalSpecies</scope><name>femaleMaxReproductionEvents</name></member>
+      <member refid="group___species_resource_handling_attributes_1ga2f07cfaa3e85f5046ffc186f5acbaa69" prot="protected" virt="non-virtual"><scope>AnimalSpecies</scope><name>forcePresenceAllResourcesInvolved</name></member>
+      <member refid="group___species_modifiers_1ga850cf83acc582c716a961db0557748be" prot="public" virt="non-virtual"><scope>AnimalSpecies</scope><name>generateInitialGenomesPool</name></member>
+      <member refid="group___species_resource_generation_1ga2b3c7f18eed0433c831e4518cafeb20e" prot="public" virt="non-virtual"><scope>AnimalSpecies</scope><name>generateInstarInvolvedResourceSpecies</name></member>
+      <member refid="group___species_resource_generation_1ga0f0b55034914692a5792f227ad2ce8d0" prot="public" virt="non-virtual"><scope>AnimalSpecies</scope><name>generateInvolvedResourceSpecies</name></member>
+      <member refid="group___species_genetics_attributes_1gaa0a878c0fde6e2fcd4494367c363439e" prot="protected" virt="non-virtual"><scope>AnimalSpecies</scope><name>genetics</name></member>
+      <member refid="group___misc_species_parameters_1gaedc8ba5fd7a904530ddc9cf824e6e92d" prot="public" virt="non-virtual"><scope>AnimalSpecies</scope><name>getActivatedHandling</name></member>
+      <member refid="group___mobility_traits_1gaf81a33f0d5918080b08586dc2919495d" prot="public" virt="virtual"><scope>AnimalSpecies</scope><name>getActivityUnderPredationRisk</name></member>
+      <member refid="group___species_resource_generation_1ga2930865844ac55e63c38343b3c456f34" prot="public" virt="non-virtual"><scope>AnimalSpecies</scope><name>getAnimalSpeciesId</name></member>
+      <member refid="group___search_parameters_1gaf23cf57acb6f36c2a6301ff3a7ed263d" prot="public" virt="non-virtual"><scope>AnimalSpecies</scope><name>getBreedSearchParams</name></member>
+      <member refid="group___population_and_statistics_1ga20826764fd1cbb411f548fbe0d5fb480" prot="public" virt="non-virtual"><scope>AnimalSpecies</scope><name>getCoefficientOfVariation</name></member>
+      <member refid="group___search_parameters_1ga3c794ce930e2562aa0da4aba70b70df1" prot="public" virt="non-virtual"><scope>AnimalSpecies</scope><name>getConspecificSearchParams</name></member>
+      <member refid="group___species_decision_blocks_1ga5d94bec809e835624c60aa4ad2abf72a" prot="public" virt="non-virtual"><scope>AnimalSpecies</scope><name>getDecisionsBuildingBlock</name></member>
+      <member refid="group___misc_species_parameters_1ga2d2e4fbe324d0df40f04891ef3aa1450" prot="public" virt="virtual"><scope>AnimalSpecies</scope><name>getDefaultHuntingMode</name></member>
+      <member refid="group___ontogenetic_links_1ga6a2b5b6022242efe678332c94b8dd1a4" prot="public" virt="non-virtual"><scope>AnimalSpecies</scope><name>getEdibleOntogeneticLink</name></member>
+      <member refid="group___predation_1ga9b5494292f7a30d8fa291f9f6ace2bc1" prot="public" virt="non-virtual"><scope>AnimalSpecies</scope><name>getEdibleProfitability</name></member>
+      <member refid="group___reproductive_traits_1ga4ecd1d866d3c9085f06bff9be5fec22a" prot="public" virt="virtual"><scope>AnimalSpecies</scope><name>getFemaleMaxReproductionEvents</name></member>
+      <member refid="group___resource_handling_options_1ga458da66b01ba551cb0caecfdd8074f63" prot="public" virt="non-virtual"><scope>AnimalSpecies</scope><name>getForcePresenceAllResourcesInvolved</name></member>
+      <member refid="group___genetics_accessors_1ga59915cc4e1f220d19ba4414fb4fa5b64" prot="public" virt="non-virtual"><scope>AnimalSpecies</scope><name>getGenetics</name></member>
+      <member refid="group___growth_and_instar_information_1ga0d0d377ddd32bcd8c41013435b0a7243" prot="public" virt="virtual"><scope>AnimalSpecies</scope><name>getGrowthBuildingBlock</name></member>
+      <member refid="group___reproduction_and_habitat_shift_1ga5fa356278577949b799d6bad33d1312f" prot="public" virt="non-virtual"><scope>AnimalSpecies</scope><name>getHabitatShiftAfterBreedingFactor</name></member>
+      <member refid="group___reproduction_and_habitat_shift_1ga60581e02d179eb84f5bb6af8a48560ff" prot="public" virt="non-virtual"><scope>AnimalSpecies</scope><name>getHabitatShiftBeforeBreedingFactor</name></member>
+      <member refid="class_species_1a1c30ab19d12550a3aa0aa6011c001615" prot="public" virt="non-virtual"><scope>AnimalSpecies</scope><name>getId</name></member>
+      <member refid="group___population_and_statistics_1ga7d4b768c36a5ac9f608dc3c8cd5633c5" prot="public" virt="virtual"><scope>AnimalSpecies</scope><name>getIndividualsPerInstar</name></member>
+      <member refid="group___species_modifiers_1ga3761cca8bd0d2e6d309406086e34c6da" prot="public" virt="non-virtual"><scope>AnimalSpecies</scope><name>getInstarEdibleAnimalSpecies</name></member>
+      <member refid="group___species_modifiers_1ga903c8e9df7b611d28db4b13929d4d1c4" prot="public" virt="non-virtual"><scope>AnimalSpecies</scope><name>getInstarEdibleResourceSpecies</name></member>
+      <member refid="group___species_modifiers_1ga3de7a0e4527f639e94f69ac6835339d2" prot="public" virt="non-virtual"><scope>AnimalSpecies</scope><name>getInstarEdibleSpecies</name></member>
+      <member refid="group___search_parameters_1ga06ee5c8df9a86a8918cae829af114bea" prot="public" virt="non-virtual"><scope>AnimalSpecies</scope><name>getLifeStageSearchParams</name></member>
+      <member refid="group___reproductive_traits_1gabc5bcd3e0919cd6bc1b07b6c15f6e716" prot="public" virt="virtual"><scope>AnimalSpecies</scope><name>getMaleMaxReproductionEvents</name></member>
+      <member refid="group___mobility_traits_1gad667fe8d551518d6229b09c1228b4375" prot="public" virt="virtual"><scope>AnimalSpecies</scope><name>getMaleMobility</name></member>
+      <member refid="group___search_parameters_1ga52a6f2f88a8e997b4bef9c4d4d67b1be" prot="public" virt="non-virtual"><scope>AnimalSpecies</scope><name>getMatureFemalesSearchParams</name></member>
+      <member refid="group___search_parameters_1gaf593c126fb9d9d9e95868a73ecd828a6" prot="public" virt="non-virtual"><scope>AnimalSpecies</scope><name>getMatureMalesSearchParams</name></member>
+      <member refid="group___predation_1ga356c42b0559fe1dd9285c42e03b05755" prot="public" virt="non-virtual"><scope>AnimalSpecies</scope><name>getMaximumInteractionArea</name></member>
+      <member refid="group___species_modifiers_1gaec137ae891d2f7feca7873739954be28" prot="public" virt="non-virtual"><scope>AnimalSpecies</scope><name>getMaximumPredationEncountersPerDay</name></member>
+      <member refid="group___species_modifiers_1ga2b93143ea25879035fc24815e626d33c" prot="public" virt="virtual"><scope>AnimalSpecies</scope><name>getMinRelativeHumidityThreshold</name></member>
+      <member refid="group___species_decision_blocks_1ga0a04108ae5fb9c5746f8d82a98a24a97" prot="public" virt="non-virtual"><scope>AnimalSpecies</scope><name>getMutableDecisionsBuildingBlock</name></member>
+      <member refid="group___genetics_accessors_1ga0a97af75cb04a7d654bdf83db5238891" prot="public" virt="non-virtual"><scope>AnimalSpecies</scope><name>getMutableGenetics</name></member>
+      <member refid="group___growth_and_instar_information_1gae1a6988f2b757964476bdcfdcd8fe0ee" prot="public" virt="virtual"><scope>AnimalSpecies</scope><name>getMutableGrowthBuildingBlock</name></member>
+      <member refid="group___ontogenetic_links_1ga1d71d4b4fac13baf731ae3e16a58b134" prot="public" virt="non-virtual"><scope>AnimalSpecies</scope><name>getOntogeneticLinksPerInstar</name></member>
+      <member refid="group___species_modifiers_1ga2255089873f3b93d2fa311eb26fca680" prot="public" virt="virtual"><scope>AnimalSpecies</scope><name>getPercentageCostForMetabolicDownregulationSearchArea</name></member>
+      <member refid="group___species_modifiers_1ga8f28e87596e1a98957308e89d1884623" prot="public" virt="virtual"><scope>AnimalSpecies</scope><name>getPercentageCostForMetabolicDownregulationSpeed</name></member>
+      <member refid="group___species_modifiers_1ga2a74fc3b977cec53d9d01f7018be7156" prot="public" virt="virtual"><scope>AnimalSpecies</scope><name>getPercentageCostForMetabolicDownregulationVoracity</name></member>
+      <member refid="group___species_modifiers_1ga583afe83e93a486f831970a61963a6a6" prot="public" virt="virtual"><scope>AnimalSpecies</scope><name>getPercentageMetabolicDownregulation</name></member>
+      <member refid="group___mobility_traits_1gaddf0b153f37c72945c44bc600329bb34" prot="public" virt="virtual"><scope>AnimalSpecies</scope><name>getPlasticityDueToConditionSearch</name></member>
+      <member refid="group___mobility_traits_1ga239ff0a340b3510606423cb294710a9b" prot="public" virt="virtual"><scope>AnimalSpecies</scope><name>getPlasticityDueToConditionSpeed</name></member>
+      <member refid="group___population_and_statistics_1gaf001df0078a62385cf4f4d0a3d0f8f14" prot="public" virt="non-virtual"><scope>AnimalSpecies</scope><name>getPopulation</name></member>
+      <member refid="group___search_parameters_1ga95e8d1a4e91d9e9afc60415262cb594b" prot="public" virt="non-virtual"><scope>AnimalSpecies</scope><name>getPopulationSearchParams</name></member>
+      <member refid="group___growth_and_instar_information_1ga030187074066abd70c13c08bbcc54584" prot="public" virt="non-virtual"><scope>AnimalSpecies</scope><name>getPoreUsePerInstar</name></member>
+      <member refid="group___predation_1ga907bab93bde90c4b6061898cc880d5fc" prot="public" virt="non-virtual"><scope>AnimalSpecies</scope><name>getPredationEventsOnOtherSpecies</name></member>
+      <member refid="group___search_parameters_1ga790b83b7a0c0fbd0e8b00fc490a6bb01" prot="public" virt="non-virtual"><scope>AnimalSpecies</scope><name>getPredatorSearchParams</name></member>
+      <member refid="group___resource_handling_options_1gadabfa957e5141d71919c1c06077e5724" prot="public" virt="non-virtual"><scope>AnimalSpecies</scope><name>getPreserveLeftovers</name></member>
+      <member refid="group___search_parameters_1gaa1768fddb0db147685cb76f37263603e" prot="public" virt="non-virtual"><scope>AnimalSpecies</scope><name>getPreySearchParams</name></member>
+      <member refid="group___species_modifiers_1ga39488f55a06b49846a5ac5865a2b6d5c" prot="public" virt="virtual"><scope>AnimalSpecies</scope><name>getProbabilityDeathFromBackground</name></member>
+      <member refid="group___reproductive_traits_1ga861f4edd84f63b407d73a1734864f46f" prot="public" virt="virtual"><scope>AnimalSpecies</scope><name>getRandomGender</name></member>
+      <member refid="class_species_1aaa05b287401411088ef456109a911d8e" prot="public" virt="non-virtual"><scope>AnimalSpecies</scope><name>getScientificName</name></member>
+      <member refid="class_species_1a14a0f601c0bc86ca37fc66bdbe6bdd54" prot="public" virt="non-virtual"><scope>AnimalSpecies</scope><name>getScientificNameReplaced</name></member>
+      <member refid="group___reproductive_traits_1gaab5ea3d012637ad18cf39ba9b391cf20" prot="public" virt="non-virtual"><scope>AnimalSpecies</scope><name>getSexRatio</name></member>
+      <member refid="group___reproductive_traits_1ga50cd84e82499615731c0a2db2a4a38df" prot="public" virt="virtual"><scope>AnimalSpecies</scope><name>getSexualType</name></member>
+      <member refid="group___population_and_statistics_1ga38c2420474d691ed6c91092b03e0338a" prot="public" virt="virtual"><scope>AnimalSpecies</scope><name>getStatisticsIndividualsPerInstar</name></member>
+      <member refid="group___mobility_traits_1ga02e278f8b0712d2221162418fd0b42a0" prot="public" virt="virtual"><scope>AnimalSpecies</scope><name>getTempFromLab</name></member>
+      <member refid="group___species_modifiers_1gaf0b95405da7c0d71b235333a9b9522c0" prot="public" virt="non-virtual"><scope>AnimalSpecies</scope><name>getTimeStepsWithoutFoodForMetabolicDownregulation</name></member>
+      <member refid="group___population_and_statistics_1ga0000b19fc15ee5a575f3a9edd394e369" prot="public" virt="virtual"><scope>AnimalSpecies</scope><name>getTotalInitialPopulation</name></member>
+      <member refid="group___population_and_statistics_1ga9ddd33ff801eac920185e090eebaa746" prot="public" virt="virtual"><scope>AnimalSpecies</scope><name>getTotalInitialStatisticsPopulation</name></member>
+      <member refid="group___reproductive_traits_1ga2fc8d9fb7a40a13a452e158b4abfc87a" prot="public" virt="non-virtual"><scope>AnimalSpecies</scope><name>getTotFec</name></member>
+      <member refid="group___species_resource_generation_1gaad4573fcc6dc6332a7221da536c14ab3" prot="public" virt="virtual"><scope>AnimalSpecies</scope><name>getType</name></member>
+      <member refid="group___misc_species_parameters_1ga0c3d41674d21edb9a2475dcecb8408db" prot="public" virt="non-virtual"><scope>AnimalSpecies</scope><name>getYodzisA</name></member>
+      <member refid="group___misc_species_parameters_1ga97865aa8b6c31e50a44d84a8f50ae011" prot="public" virt="non-virtual"><scope>AnimalSpecies</scope><name>getYodzisB</name></member>
+      <member refid="group___species_habitat_attributes_1ga10c6e1b6f2f29cfd026864da087edcd6" prot="protected" virt="non-virtual"><scope>AnimalSpecies</scope><name>habitatShiftAfterBreeding</name></member>
+      <member refid="group___species_habitat_attributes_1ga4655899459d38580a8ac039929d76b3c" prot="protected" virt="non-virtual"><scope>AnimalSpecies</scope><name>habitatShiftAfterBreedingFactor</name></member>
+      <member refid="group___species_habitat_attributes_1ga1aa0552e9e51216fa904741fcaf14523" prot="protected" virt="non-virtual"><scope>AnimalSpecies</scope><name>habitatShiftBeforeBreeding</name></member>
+      <member refid="group___species_habitat_attributes_1gab6b57afe3fc4cfa99816a4217ce6a4d5" prot="protected" virt="non-virtual"><scope>AnimalSpecies</scope><name>habitatShiftBeforeBreedingFactor</name></member>
+      <member refid="class_species_1a3bf95c7ef0760ef5a4c0083c87dc49ca" prot="private" virt="non-virtual"><scope>AnimalSpecies</scope><name>id</name></member>
+      <member refid="group___population_and_statistics_1ga28577ee660d6f493ce756a643ef7b03f" prot="public" virt="non-virtual"><scope>AnimalSpecies</scope><name>increasePopulation</name></member>
+      <member refid="group___species_population_attributes_1gab8243883cc7e2b240722d2947dc45bd6" prot="protected" virt="non-virtual"><scope>AnimalSpecies</scope><name>individualsPerInstar</name></member>
+      <member refid="group___species_resource_generation_1ga2d99cbef11a84248e4fa9c9b7a7b80ed" prot="public" virt="non-virtual"><scope>AnimalSpecies</scope><name>initializeGeneticFiles</name></member>
+      <member refid="group___species_modifiers_1gafafa057168f94d895b903fe9f432dc1d" prot="public" virt="virtual"><scope>AnimalSpecies</scope><name>interactionRanges</name></member>
+      <member refid="class_species_1a3b926ede189346c0e15cf1f7012a182b" prot="public" virt="virtual"><scope>AnimalSpecies</scope><name>isExtinguished</name></member>
+      <member refid="group___mobility_traits_1ga7a3aab0f045e37d18009cee7329810d6" prot="public" virt="virtual"><scope>AnimalSpecies</scope><name>isMobile</name></member>
+      <member refid="group___mobility_traits_1gac4c2c2c7f96685d795254bf59793de37" prot="public" virt="virtual"><scope>AnimalSpecies</scope><name>isSurviveWithoutFood</name></member>
+      <member refid="group___species_search_attributes_1ga840d2ca385dafd5c54598b7336fa8f1c" prot="protected" virt="non-virtual"><scope>AnimalSpecies</scope><name>lifeStageSearchParams</name></member>
+      <member refid="group___species_reproduction_attributes_1ga5244b8f6df31f7ca5619d5a7aa3eec15" prot="protected" virt="non-virtual"><scope>AnimalSpecies</scope><name>maleMaxReproductionEvents</name></member>
+      <member refid="group___species_reproduction_attributes_1ga2c77afc1bcdc575e1f376c48d8ae4200" prot="protected" virt="non-virtual"><scope>AnimalSpecies</scope><name>maleMobility</name></member>
+      <member refid="group___species_search_attributes_1ga064d62dbaefbba3551a2ea38663fc8a8" prot="protected" virt="non-virtual"><scope>AnimalSpecies</scope><name>matureFemalesSearchParams</name></member>
+      <member refid="group___species_search_attributes_1ga617cd2b6c93c2f97bd73ca4659138a0e" prot="protected" virt="non-virtual"><scope>AnimalSpecies</scope><name>matureMalesSearchParams</name></member>
+      <member refid="group___species_misc_attributes_1gaf60f355714c2f7afc91462c4b775106d" prot="protected" virt="non-virtual"><scope>AnimalSpecies</scope><name>maximumInteractionArea</name></member>
+      <member refid="group___species_misc_attributes_1gac3a0e84140915111b102019ed18c27b2" prot="protected" virt="non-virtual"><scope>AnimalSpecies</scope><name>maximumPredationEncountersPerDay</name></member>
+      <member refid="group___species_metabolism_attributes_1ga5bf3ac1a3e08f00a30a739c0ab3ebb07" prot="protected" virt="non-virtual"><scope>AnimalSpecies</scope><name>minRelativeHumidityThreshold</name></member>
+      <member refid="group___behavioral_parameters_1gaab5c43bc116b6a9095327bff06a12430" prot="protected" virt="non-virtual"><scope>AnimalSpecies</scope><name>obtainBreedSearchParams</name></member>
+      <member refid="group___behavioral_parameters_1gaefbd1e3b3aef9c80a85ff14fa1bc75bc" prot="protected" virt="non-virtual"><scope>AnimalSpecies</scope><name>obtainConspecificSearchParams</name></member>
+      <member refid="group___life_stage_parameters_1gaea2dac9505bd45e63869597248da4abe" prot="protected" virt="non-virtual"><scope>AnimalSpecies</scope><name>obtainLifeStageSearchParams</name></member>
+      <member refid="group___behavioral_parameters_1ga78ef58bddaea97c3a3a9aade36984995" prot="protected" virt="non-virtual"><scope>AnimalSpecies</scope><name>obtainMatureFemalesSearchParams</name></member>
+      <member refid="class_animal_species_1a8e3d07e0f89ed79fa54c7fb3e7e2ab10" prot="protected" virt="non-virtual"><scope>AnimalSpecies</scope><name>obtainMatureMalesSearchParams</name></member>
+      <member refid="group___population_parameters_1ga3e2155cdaa422a3467a8748da269f755" prot="protected" virt="non-virtual"><scope>AnimalSpecies</scope><name>obtainPopulationSearchParams</name></member>
+      <member refid="class_animal_species_1aea6ac0fdcdce7e6f6f7e9036dde6cdfd" prot="protected" virt="non-virtual"><scope>AnimalSpecies</scope><name>obtainPreyAndPredatorSearchParams</name></member>
+      <member refid="class_animal_species_1af743cb8847bb3b8d6242a1b9a1442650" prot="public" virt="non-virtual"><scope>AnimalSpecies</scope><name>obtainSearchParams</name></member>
+      <member refid="group___reproduction_and_habitat_shift_1gad6b9e91adb1c6f6068b40ee885f03d6b" prot="public" virt="non-virtual"><scope>AnimalSpecies</scope><name>occursHabitatShiftAfterBreeding</name></member>
+      <member refid="group___reproduction_and_habitat_shift_1gaf180872c36c870194c36169163a5a40a" prot="public" virt="non-virtual"><scope>AnimalSpecies</scope><name>occursHabitatShiftBeforeBreeding</name></member>
+      <member refid="class_species_1a146675161d63c44fe89948afc47d3c3e" prot="public" virt="non-virtual"><scope>AnimalSpecies</scope><name>operator&lt;</name></member>
+      <member refid="class_animal_species_1ae548af8159c6869fc36a4d430ea2a089" prot="public" virt="non-virtual"><scope>AnimalSpecies</scope><name>operator=</name></member>
+      <member refid="class_species_1a1f352cfbf865a8d96d23cbfcf923d2e0" prot="public" virt="non-virtual"><scope>AnimalSpecies</scope><name>operator==</name></member>
+      <member refid="group___species_metabolism_attributes_1gacb44311044c129ecfbc4f71e0c198fe5" prot="protected" virt="non-virtual"><scope>AnimalSpecies</scope><name>percentageCostForMetabolicDownregulationSearchArea</name></member>
+      <member refid="group___species_metabolism_attributes_1ga50d704383d0876a09828b3af7acbd87f" prot="protected" virt="non-virtual"><scope>AnimalSpecies</scope><name>percentageCostForMetabolicDownregulationSpeed</name></member>
+      <member refid="group___species_metabolism_attributes_1ga8ced02d1caf0c31fe96bc62c8a26b81c" prot="protected" virt="non-virtual"><scope>AnimalSpecies</scope><name>percentageCostForMetabolicDownregulationVoracity</name></member>
+      <member refid="group___species_metabolism_attributes_1ga6ef4549d3847c15480a25316a4e9f852" prot="protected" virt="non-virtual"><scope>AnimalSpecies</scope><name>percentageMetabolicDownregulation</name></member>
+      <member refid="group___species_metabolism_attributes_1gab740fd826e725285dcf41158f3cedf29" prot="protected" virt="non-virtual"><scope>AnimalSpecies</scope><name>plasticityDueToConditionSearch</name></member>
+      <member refid="group___species_metabolism_attributes_1ga14a3d09bb566755eed5c37834ddcf677" prot="protected" virt="non-virtual"><scope>AnimalSpecies</scope><name>plasticityDueToConditionSpeed</name></member>
+      <member refid="group___species_population_attributes_1ga25cd71268f2e553f539ecf9bf55d10ae" prot="protected" virt="non-virtual"><scope>AnimalSpecies</scope><name>population</name></member>
+      <member refid="group___species_population_attributes_1ga0c674b92e06f24fe799eb1046992345b" prot="protected" virt="non-virtual"><scope>AnimalSpecies</scope><name>populationHistory</name></member>
+      <member refid="group___species_search_attributes_1gab8a7033e65cd3bf2cc812bb42db9b2c9" prot="protected" virt="non-virtual"><scope>AnimalSpecies</scope><name>populationSearchParams</name></member>
+      <member refid="group___species_habitat_attributes_1ga27b306487d29453c611f7bc491089e5a" prot="protected" virt="non-virtual"><scope>AnimalSpecies</scope><name>poreUsePerInstar</name></member>
+      <member refid="group___species_edibility_attributes_1gafce41e886c7562cdd8c50b992f7e534c" prot="protected" virt="non-virtual"><scope>AnimalSpecies</scope><name>predationEventsOnOtherSpecies</name></member>
+      <member refid="group___species_search_attributes_1ga2d5f71ae76312b2a1203e9e84d549869" prot="protected" virt="non-virtual"><scope>AnimalSpecies</scope><name>predatorSearchParams</name></member>
+      <member refid="group___species_resource_handling_attributes_1ga63165190f7cbad46bfc5e1dff494801f" prot="protected" virt="non-virtual"><scope>AnimalSpecies</scope><name>preserveLeftovers</name></member>
+      <member refid="group___species_search_attributes_1gaf36d0d800dc9f3f28e768ae0d7b21f45" prot="protected" virt="non-virtual"><scope>AnimalSpecies</scope><name>preySearchParams</name></member>
+      <member refid="group___species_habitat_attributes_1gac7c2bae36c6ba8691f782e710e744962" prot="protected" virt="non-virtual"><scope>AnimalSpecies</scope><name>probabilityDeathFromBackground</name></member>
+      <member refid="class_species_1a590f04f7c07ac8b5b1b9f4f13f1eb978" prot="private" virt="non-virtual"><scope>AnimalSpecies</scope><name>scientificName</name></member>
+      <member refid="class_animal_species_1aa170c6f9b7ab9e9a954948d0e6045d13" prot="public" virt="non-virtual"><scope>AnimalSpecies</scope><name>serialize</name></member>
+      <member refid="group___species_modifiers_1ga949fd11102b631f126f7cf9c6925955b" prot="public" virt="non-virtual"><scope>AnimalSpecies</scope><name>setActivityUnderPredationRisk</name></member>
+      <member refid="class_species_1ab291ab4acfca922261ab4f7a2c42633b" prot="public" virt="virtual"><scope>AnimalSpecies</scope><name>setExtinguished</name></member>
+      <member refid="group___reproductive_traits_1gae98f4f63d5741e4f23f4aa07b11ec4e1" prot="public" virt="non-virtual"><scope>AnimalSpecies</scope><name>setFemaleMaxReproductionEvents</name></member>
+      <member refid="group___reproduction_and_habitat_shift_1gab68605cae025d082e49352b8a34b064c" prot="public" virt="non-virtual"><scope>AnimalSpecies</scope><name>setHabitatShiftAfterBreeding</name></member>
+      <member refid="group___reproduction_and_habitat_shift_1gafe10e99ff4d359313e9bc8793f6cc67c" prot="public" virt="non-virtual"><scope>AnimalSpecies</scope><name>setHabitatShiftBeforeBreeding</name></member>
+      <member refid="group___species_modifiers_1ga47c135a8f3dd1d19a9410071512cd3ac" prot="public" virt="non-virtual"><scope>AnimalSpecies</scope><name>setIndividualsPerInstar</name></member>
+      <member refid="group___reproductive_traits_1ga93a6233f1a531f14970e7648e9ea7359" prot="public" virt="non-virtual"><scope>AnimalSpecies</scope><name>setMaleMaxReproductionEvents</name></member>
+      <member refid="group___species_modifiers_1gab296fb4507dc50d80555cae507d7f70a" prot="public" virt="non-virtual"><scope>AnimalSpecies</scope><name>setMaleMobility</name></member>
+      <member refid="group___species_modifiers_1ga48943d27e6ad3c067d58721be68afe6a" prot="public" virt="virtual"><scope>AnimalSpecies</scope><name>setMinRelativeHumidityThreshold</name></member>
+      <member refid="group___ontogenetic_links_1ga4d049ce1f50306aa33c62ed645944208" prot="public" virt="non-virtual"><scope>AnimalSpecies</scope><name>setOntogeneticLinks</name></member>
+      <member refid="group___species_modifiers_1ga278ec20fc084884b0fd152ea2c9fa779" prot="public" virt="non-virtual"><scope>AnimalSpecies</scope><name>setPercentageCostForMetabolicDownregulationSearchArea</name></member>
+      <member refid="group___species_modifiers_1gacc5b5f19947781a66c8cd79da7372c3c" prot="public" virt="non-virtual"><scope>AnimalSpecies</scope><name>setPercentageCostForMetabolicDownregulationSpeed</name></member>
+      <member refid="group___species_modifiers_1gad9a9ae81315dbaf1b8243b7e5ed62db8" prot="public" virt="non-virtual"><scope>AnimalSpecies</scope><name>setPercentageCostForMetabolicDownregulationVoracity</name></member>
+      <member refid="group___species_modifiers_1ga19fa21161620e1ec0892c377e7df3afd" prot="public" virt="virtual"><scope>AnimalSpecies</scope><name>setPercentageMetabolicDownregulation</name></member>
+      <member refid="group___species_modifiers_1ga4abf4e86537c60e5c69077cbbb8c559a" prot="public" virt="non-virtual"><scope>AnimalSpecies</scope><name>setPlasticityDueToConditionSearch</name></member>
+      <member refid="group___species_modifiers_1ga163e423630308b2ccecdcec286409396" prot="public" virt="non-virtual"><scope>AnimalSpecies</scope><name>setPlasticityDueToConditionSpeed</name></member>
+      <member refid="class_animal_species_1af3a14998e964abf3fe6755bdc6900851" prot="protected" virt="non-virtual"><scope>AnimalSpecies</scope><name>setPoreUsePerInstar</name></member>
+      <member refid="group___species_modifiers_1gad41306e65eb57703fdfc6746c386f03a" prot="public" virt="non-virtual"><scope>AnimalSpecies</scope><name>setProbabilityDeathFromBackground</name></member>
+      <member refid="group___reproductive_traits_1ga1fd5b6272a448c93ec48656afe392523" prot="public" virt="non-virtual"><scope>AnimalSpecies</scope><name>setSexRatio</name></member>
+      <member refid="group___species_modifiers_1ga0f09adf8a462f6739fa8253735fc24fe" prot="public" virt="non-virtual"><scope>AnimalSpecies</scope><name>setStatisticsIndividualsPerInstar</name></member>
+      <member refid="group___species_modifiers_1gac222248628a59b805f8723e4769142f1" prot="public" virt="non-virtual"><scope>AnimalSpecies</scope><name>setSurviveWithoutFood</name></member>
+      <member refid="group___species_modifiers_1gac59d8a69353133e3a561ffd82b4b3327" prot="public" virt="virtual"><scope>AnimalSpecies</scope><name>setTimeStepsWithoutFoodForMetabolicDownregulation</name></member>
+      <member refid="group___species_reproduction_attributes_1ga64de33bc63cfcdf03851e6754c2cd8a4" prot="protected" virt="non-virtual"><scope>AnimalSpecies</scope><name>sexRatio</name></member>
+      <member refid="group___species_reproduction_attributes_1ga0aeaa04a323d6d4d2b8139801d3bb6ca" prot="protected" virt="non-virtual"><scope>AnimalSpecies</scope><name>sexualType</name></member>
+      <member refid="class_species_1abb0f8e3208b0cc676157b7dff837c0be" prot="public" virt="non-virtual"><scope>AnimalSpecies</scope><name>Species</name></member>
+      <member refid="class_species_1a69690937fd5116f0c381d06f399dad7f" prot="public" virt="non-virtual"><scope>AnimalSpecies</scope><name>Species</name></member>
+      <member refid="group___species_population_attributes_1ga9d2725435e592bcd228c0a88e70da067" prot="protected" virt="non-virtual"><scope>AnimalSpecies</scope><name>statisticsIndividualsPerInstar</name></member>
+      <member refid="group___species_reproduction_attributes_1ga94776426e05cde8fa8a57df1d4db66bc" prot="protected" virt="non-virtual"><scope>AnimalSpecies</scope><name>surviveWithoutFood</name></member>
+      <member refid="group___species_misc_attributes_1gabf3d5c24868b385f1899df56950cd80a" prot="protected" virt="non-virtual"><scope>AnimalSpecies</scope><name>tempFromLab</name></member>
+      <member refid="group___species_metabolism_attributes_1gab30956895483bbc15202f6fed810d0cc" prot="protected" virt="non-virtual"><scope>AnimalSpecies</scope><name>timeStepsWithoutFoodForMetabolicDownregulation</name></member>
+      <member refid="group___species_reproduction_attributes_1gafc131dd3cb03b135a0b32c3ae7c206b6" prot="protected" virt="non-virtual"><scope>AnimalSpecies</scope><name>totFec</name></member>
+      <member refid="group___predation_1ga5930e5b84647e88665baab1c8bb7c363" prot="public" virt="non-virtual"><scope>AnimalSpecies</scope><name>updateMaximumInteractionArea</name></member>
+      <member refid="group___species_modifiers_1ga46825b6070e23103095f245118afdbd2" prot="public" virt="non-virtual"><scope>AnimalSpecies</scope><name>updateMaximumPredationEncountersPerDay</name></member>
+      <member refid="group___population_and_statistics_1gaf750c7448207ed27e4be22bcb484fb06" prot="public" virt="non-virtual"><scope>AnimalSpecies</scope><name>updatePopulationHistory</name></member>
+      <member refid="group___species_misc_attributes_1gab12a9e742cbf67fb544796938221a43b" prot="protected" virt="non-virtual"><scope>AnimalSpecies</scope><name>YodzisA</name></member>
+      <member refid="group___species_misc_attributes_1gaf0c59f76b7e34a3db9bcf655ed0a352d" prot="protected" virt="non-virtual"><scope>AnimalSpecies</scope><name>YodzisB</name></member>
+      <member refid="class_animal_species_1afcb50d294df623a4bd6902cb7a399d62" prot="public" virt="virtual"><scope>AnimalSpecies</scope><name>~AnimalSpecies</name></member>
+      <member refid="class_species_1aca0af288111e0fdddc4af8aa14b1358f" prot="public" virt="virtual"><scope>AnimalSpecies</scope><name>~Species</name></member>
+    </listofallmembers>
+  </compounddef>
+</doxygen>

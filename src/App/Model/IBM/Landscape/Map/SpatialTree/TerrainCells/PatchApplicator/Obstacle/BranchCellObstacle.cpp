@@ -10,26 +10,24 @@ using namespace std;
 
 bool BranchCellObstacle::calculateFullObstacleValue(BranchTerrainCell* const summaryTerrainCell)
 {
-    size_t numberOfObstacles = 0u;
+    size_t numberOfFullObstacles = 0u;
 
     for(const auto &child : summaryTerrainCell->getChildrenTerrainCells())
     {
-        numberOfObstacles += (child->getPatchApplicator().getCellObstacle().isObstacle()) ? 1u : 0u;
+        numberOfFullObstacles += (child->getPatchApplicator().getCellObstacle().isFullObstacle()) ? 1u : 0u;
     }
 
-    return numberOfObstacles == summaryTerrainCell->getChildrenTerrainCells().size();
+    return numberOfFullObstacles == summaryTerrainCell->getChildrenTerrainCells().size();
 }
 
 bool BranchCellObstacle::calculateObstacleValue(BranchTerrainCell* const summaryTerrainCell)
 {
-    size_t numberOfObstacles = 0u;
-
     for(const auto &child : summaryTerrainCell->getChildrenTerrainCells())
     {
-        numberOfObstacles += (child->getPatchApplicator().getCellObstacle().isObstacle()) ? 1u : 0u;
+        if (child->getPatchApplicator().getCellObstacle().isObstacle()) return true;
     }
 
-    return PreciseDouble(static_cast<double>(numberOfObstacles))/PreciseDouble(static_cast<double>(summaryTerrainCell->getChildrenTerrainCells().size())) > 0.5;
+    return false;
 }
 
 size_t BranchCellObstacle::calculateObstaclePatchPriority(BranchTerrainCell* const summaryTerrainCell)

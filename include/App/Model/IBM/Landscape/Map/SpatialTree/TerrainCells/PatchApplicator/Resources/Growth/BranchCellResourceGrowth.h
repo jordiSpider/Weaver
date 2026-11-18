@@ -17,6 +17,7 @@
 
 /**
  * @class BranchCellResourceGrowth
+ * @ingroup weaver_landscape
  * @brief Aggregates the growth information of resources for branch terrain cells.
  *
  * This class summarizes the growth of all child resources under a branch terrain cell.

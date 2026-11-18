@@ -12,39 +12,44 @@ Animal::Animal()
 
 }
 
-Animal::Animal(const EdibleID id, AnimalSpecies* const mySpecies, TerrainCell* terrainCell, const Genome* const genome, 
-		const LifeStage& lifeStage, const TimeStep actualTimeStep)
+Animal::Animal(id_type id, AnimalSpecies* const mySpecies, TerrainCell* terrainCell, const Genome* const genome,
+		const LifeStage& lifeStage)
 	: Edible(id, mySpecies, terrainCell), 
 	  genetics(
-		&getMutableSpecies()->getMutableGenetics(), genome, getTerrainCell()->getPatchApplicator().getCellMoisture().getTemperature(), actualTimeStep,
+		&getMutableSpecies()->getMutableGenetics(), genome, getTerrainCell()->getPatchApplicator().getCellMoisture().getTemperature(),
 		getSpecies()->getGrowthBuildingBlock().getCoefficientForMassAforMature(), 
 		getSpecies()->getGrowthBuildingBlock().getScaleForMassBforMature(),
 		getSpecies()->getTempFromLab()
 	  ), 
 	  lifeStage(lifeStage), gender(getSpecies()->getRandomGender())
 {
-	
+	animalSpeciesId = getSpecies()->getAnimalSpeciesId();
 }
 
-Animal::Animal(const EdibleID id, AnimalSpecies* const mySpecies, TerrainCell* terrainCell, 
+Animal::Animal(id_type id, AnimalSpecies* const mySpecies, TerrainCell* terrainCell,
 		const LifeStage& lifeStage, Gamete* const firstParentGamete, Gamete* const secondParentGamete, 
-		const Gender& gender, const TimeStep actualTimeStep)
+		const Gender& gender)
 	: Edible(id, mySpecies, terrainCell), 
 	  genetics(
 		&getMutableSpecies()->getMutableGenetics(), firstParentGamete, secondParentGamete,
-		getTerrainCell()->getPatchApplicator().getCellMoisture().getTemperature(), actualTimeStep,
+		getTerrainCell()->getPatchApplicator().getCellMoisture().getTemperature(),
 		getSpecies()->getGrowthBuildingBlock().getCoefficientForMassAforMature(), 
 		getSpecies()->getGrowthBuildingBlock().getScaleForMassBforMature(),
 		getSpecies()->getTempFromLab()
 	  ), 
 	  lifeStage(lifeStage), gender(gender)
 {
-	
+	animalSpeciesId = getSpecies()->getAnimalSpeciesId();
 }
 
 Animal::~Animal()
 {
 	
+}
+
+void Animal::updateSignature()
+{
+	signature = AnimalSignature(getLifeStage(), getAnimalSpeciesId(), getInstar(), getGender());
 }
 
 const AnimalSpecies* Animal::getSpecies() const 
@@ -55,11 +60,6 @@ const AnimalSpecies* Animal::getSpecies() const
 AnimalSpecies* Animal::getMutableSpecies() 
 { 
 	return static_cast<AnimalSpecies*>(Edible::getMutableSpecies()); 
-}
-
-unsigned int Animal::getCellDepthOnActualInstar() const
-{
-	return getSpecies()->getCellDepthPerInstar()[getGrowthBuildingBlock().getInstar()];
 }
 
 const PointContinuous& Animal::getPosition() const
@@ -95,19 +95,9 @@ void Animal::setPosition(const vector<PreciseDouble> &newPosition)
 	}
 }
 
-const LifeStage& Animal::getLifeStage() const 
-{ 
-	return lifeStage; 
-}
-
 PreciseDouble Animal::applyAllometricModel(const PreciseDouble& coefficient, const PreciseDouble& scale) const
 {
 	return coefficient * pow(getGrowthBuildingBlock().getCurrentTotalDryMass().getValue(), scale);
-}
-
-Gender Animal::getGender() const 
-{ 
-	return gender; 
 }
 
 #ifdef DEBUG
@@ -203,6 +193,10 @@ void Animal::serialize(Archive &ar, const unsigned int)
     ar & gender;
 
     ar & position;
+
+	ar & animalSpeciesId;
+
+	ar & signature;
 }
 
 // // Specialisation

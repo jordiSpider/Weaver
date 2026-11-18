@@ -1,0 +1,219 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.14.0" xml:lang="en-US">
+  <compounddef id="class_resource_signature" kind="class" language="C++" prot="public">
+    <compoundname>ResourceSignature</compoundname>
+    <sectiondef kind="private-static-attrib">
+      <memberdef kind="variable" id="class_resource_signature_1af763c3dca99abf14065c40595705ff7b" prot="private" static="yes" mutable="no">
+        <type>size_t</type>
+        <definition>size_t ResourceSignature::BITS_RESOURCE_SP_ID</definition>
+        <argsstring></argsstring>
+        <name>BITS_RESOURCE_SP_ID</name>
+        <qualifiedname>ResourceSignature::BITS_RESOURCE_SP_ID</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="App/Model/IBM/Landscape/Map/TerrainCells/PatchApplicator/Resources/ResourceSignature.h" line="17" column="19" bodyfile="App/Model/IBM/Landscape/Map/TerrainCells/PatchApplicator/Resources/ResourceSignature.h" bodystart="17" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="class_resource_signature_1a7c551bbc85969418aa901a4e6826d7c2" prot="private" static="yes" mutable="no">
+        <type>size_t</type>
+        <definition>size_t ResourceSignature::TOTAL_SIGNATURE_BITS</definition>
+        <argsstring></argsstring>
+        <name>TOTAL_SIGNATURE_BITS</name>
+        <qualifiedname>ResourceSignature::TOTAL_SIGNATURE_BITS</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="App/Model/IBM/Landscape/Map/TerrainCells/PatchApplicator/Resources/ResourceSignature.h" line="19" column="19" bodyfile="App/Model/IBM/Landscape/Map/TerrainCells/PatchApplicator/Resources/ResourceSignature.h" bodystart="19" bodyend="-1"/>
+      </memberdef>
+    </sectiondef>
+    <sectiondef kind="private-attrib">
+      <memberdef kind="variable" id="class_resource_signature_1a0ff0208c78b1b3f2a48d8fd33f424f12" prot="private" static="no" mutable="no">
+        <type>uint8_t</type>
+        <definition>uint8_t ResourceSignature::value</definition>
+        <argsstring></argsstring>
+        <name>value</name>
+        <qualifiedname>ResourceSignature::value</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="App/Model/IBM/Landscape/Map/TerrainCells/PatchApplicator/Resources/ResourceSignature.h" line="22" column="13" bodyfile="App/Model/IBM/Landscape/Map/TerrainCells/PatchApplicator/Resources/ResourceSignature.h" bodystart="22" bodyend="-1"/>
+      </memberdef>
+    </sectiondef>
+    <sectiondef kind="public-static-attrib">
+      <memberdef kind="variable" id="class_resource_signature_1a0a81a66846857f5b1a6581bec5a66616" prot="public" static="yes" mutable="no">
+        <type>size_t</type>
+        <definition>size_t ResourceSignature::BITMASK_DYNAMIC_SIZE</definition>
+        <argsstring></argsstring>
+        <name>BITMASK_DYNAMIC_SIZE</name>
+        <qualifiedname>ResourceSignature::BITMASK_DYNAMIC_SIZE</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="App/Model/IBM/Landscape/Map/TerrainCells/PatchApplicator/Resources/ResourceSignature.h" line="28" column="19" bodyfile="App/Model/IBM/Landscape/Map/TerrainCells/PatchApplicator/Resources/ResourceSignature.h" bodystart="28" bodyend="-1"/>
+      </memberdef>
+    </sectiondef>
+    <sectiondef kind="private-static-func">
+      <memberdef kind="function" id="class_resource_signature_1ace3f92ca04983b8b23075fd0d8b8ecf7" prot="private" static="yes" const="no" explicit="no" inline="no" noexcept="yes" virt="non-virtual">
+        <type>size_t</type>
+        <definition>static size_t ResourceSignature::bitsNeeded</definition>
+        <argsstring>(size_t count) noexcept</argsstring>
+        <name>bitsNeeded</name>
+        <qualifiedname>ResourceSignature::bitsNeeded</qualifiedname>
+        <param>
+          <type>size_t</type>
+          <declname>count</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="App/Model/IBM/Landscape/Map/TerrainCells/PatchApplicator/Resources/ResourceSignature.h" line="25" column="19"/>
+      </memberdef>
+    </sectiondef>
+    <sectiondef kind="public-static-func">
+      <memberdef kind="function" id="class_resource_signature_1a479290a1745ba19edc4be26586aced37" prot="public" static="yes" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>static void ResourceSignature::configureBits</definition>
+        <argsstring>(size_t numberOfResourceSpecies)</argsstring>
+        <name>configureBits</name>
+        <qualifiedname>ResourceSignature::configureBits</qualifiedname>
+        <param>
+          <type>size_t</type>
+          <declname>numberOfResourceSpecies</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="App/Model/IBM/Landscape/Map/TerrainCells/PatchApplicator/Resources/ResourceSignature.h" line="36" column="17"/>
+      </memberdef>
+      <memberdef kind="function" id="class_resource_signature_1aecb907892bf4c4a1998ab9145363dc5c" prot="public" static="yes" constexpr="yes" const="no" explicit="no" inline="yes" noexcept="yes" virt="non-virtual">
+        <type>uint8_t</type>
+        <definition>static constexpr uint8_t ResourceSignature::packSignature</definition>
+        <argsstring>(const ResourceSpecies::ResourceID &amp;rs) noexcept</argsstring>
+        <name>packSignature</name>
+        <qualifiedname>ResourceSignature::packSignature</qualifiedname>
+        <param>
+          <type>const <ref refid="class_resource_species_1_1_resource_i_d" kindref="compound">ResourceSpecies::ResourceID</ref> &amp;</type>
+          <declname>rs</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="App/Model/IBM/Landscape/Map/TerrainCells/PatchApplicator/Resources/ResourceSignature.h" line="31" column="30" bodyfile="App/Model/IBM/Landscape/Map/TerrainCells/PatchApplicator/Resources/ResourceSignature.h" bodystart="31" bodyend="34"/>
+      </memberdef>
+    </sectiondef>
+    <sectiondef kind="public-func">
+      <memberdef kind="function" id="class_resource_signature_1a427af02498a27767fe1b08355ad68eeb" prot="public" static="no" const="no" explicit="no" inline="yes" noexcept="yes" virt="non-virtual">
+        <type></type>
+        <definition>ResourceSignature::ResourceSignature</definition>
+        <argsstring>() noexcept</argsstring>
+        <name>ResourceSignature</name>
+        <qualifiedname>ResourceSignature::ResourceSignature</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="App/Model/IBM/Landscape/Map/TerrainCells/PatchApplicator/Resources/ResourceSignature.h" line="39" column="1" bodyfile="App/Model/IBM/Landscape/Map/TerrainCells/PatchApplicator/Resources/ResourceSignature.h" bodystart="39" bodyend="39"/>
+      </memberdef>
+      <memberdef kind="function" id="class_resource_signature_1a0dad0e3ae42e4a1f6c9ab862041e4ea6" prot="public" static="no" const="no" explicit="no" inline="yes" noexcept="yes" virt="non-virtual">
+        <type></type>
+        <definition>ResourceSignature::ResourceSignature</definition>
+        <argsstring>(const ResourceSpecies::ResourceID &amp;rs) noexcept</argsstring>
+        <name>ResourceSignature</name>
+        <qualifiedname>ResourceSignature::ResourceSignature</qualifiedname>
+        <param>
+          <type>const <ref refid="class_resource_species_1_1_resource_i_d" kindref="compound">ResourceSpecies::ResourceID</ref> &amp;</type>
+          <declname>rs</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="App/Model/IBM/Landscape/Map/TerrainCells/PatchApplicator/Resources/ResourceSignature.h" line="41" column="5" bodyfile="App/Model/IBM/Landscape/Map/TerrainCells/PatchApplicator/Resources/ResourceSignature.h" bodystart="41" bodyend="43"/>
+      </memberdef>
+      <memberdef kind="function" id="class_resource_signature_1a6e89fdefbc171733bc2ba73f4e7292d1" prot="public" static="no" const="yes" explicit="no" inline="yes" noexcept="yes" virt="non-virtual">
+        <type>uint8_t</type>
+        <definition>uint8_t ResourceSignature::getValue</definition>
+        <argsstring>() const noexcept</argsstring>
+        <name>getValue</name>
+        <qualifiedname>ResourceSignature::getValue</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="App/Model/IBM/Landscape/Map/TerrainCells/PatchApplicator/Resources/ResourceSignature.h" line="46" column="20" bodyfile="App/Model/IBM/Landscape/Map/TerrainCells/PatchApplicator/Resources/ResourceSignature.h" bodystart="46" bodyend="48"/>
+      </memberdef>
+      <memberdef kind="function" id="class_resource_signature_1a878a468bad929d46b264d4f2abdcf2be" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <templateparamlist>
+          <param>
+            <type>class Archive</type>
+          </param>
+        </templateparamlist>
+        <type>void</type>
+        <definition>void ResourceSignature::serialize</definition>
+        <argsstring>(Archive &amp;ar, const unsigned int version)</argsstring>
+        <name>serialize</name>
+        <qualifiedname>ResourceSignature::serialize</qualifiedname>
+        <param>
+          <type>Archive &amp;</type>
+          <declname>ar</declname>
+        </param>
+        <param>
+          <type>const unsigned int</type>
+          <declname>version</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="App/Model/IBM/Landscape/Map/TerrainCells/PatchApplicator/Resources/ResourceSignature.h" line="52" column="10"/>
+      </memberdef>
+    </sectiondef>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+    </detaileddescription>
+    <location file="App/Model/IBM/Landscape/Map/TerrainCells/PatchApplicator/Resources/ResourceSignature.h" line="14" column="1" bodyfile="App/Model/IBM/Landscape/Map/TerrainCells/PatchApplicator/Resources/ResourceSignature.h" bodystart="15" bodyend="53"/>
+    <listofallmembers>
+      <member refid="class_resource_signature_1a0a81a66846857f5b1a6581bec5a66616" prot="public" virt="non-virtual"><scope>ResourceSignature</scope><name>BITMASK_DYNAMIC_SIZE</name></member>
+      <member refid="class_resource_signature_1af763c3dca99abf14065c40595705ff7b" prot="private" virt="non-virtual"><scope>ResourceSignature</scope><name>BITS_RESOURCE_SP_ID</name></member>
+      <member refid="class_resource_signature_1ace3f92ca04983b8b23075fd0d8b8ecf7" prot="private" virt="non-virtual"><scope>ResourceSignature</scope><name>bitsNeeded</name></member>
+      <member refid="class_resource_signature_1a479290a1745ba19edc4be26586aced37" prot="public" virt="non-virtual"><scope>ResourceSignature</scope><name>configureBits</name></member>
+      <member refid="class_resource_signature_1a6e89fdefbc171733bc2ba73f4e7292d1" prot="public" virt="non-virtual"><scope>ResourceSignature</scope><name>getValue</name></member>
+      <member refid="class_resource_signature_1aecb907892bf4c4a1998ab9145363dc5c" prot="public" virt="non-virtual"><scope>ResourceSignature</scope><name>packSignature</name></member>
+      <member refid="class_resource_signature_1a427af02498a27767fe1b08355ad68eeb" prot="public" virt="non-virtual"><scope>ResourceSignature</scope><name>ResourceSignature</name></member>
+      <member refid="class_resource_signature_1a0dad0e3ae42e4a1f6c9ab862041e4ea6" prot="public" virt="non-virtual"><scope>ResourceSignature</scope><name>ResourceSignature</name></member>
+      <member refid="class_resource_signature_1a878a468bad929d46b264d4f2abdcf2be" prot="public" virt="non-virtual"><scope>ResourceSignature</scope><name>serialize</name></member>
+      <member refid="class_resource_signature_1a7c551bbc85969418aa901a4e6826d7c2" prot="private" virt="non-virtual"><scope>ResourceSignature</scope><name>TOTAL_SIGNATURE_BITS</name></member>
+      <member refid="class_resource_signature_1a0ff0208c78b1b3f2a48d8fd33f424f12" prot="private" virt="non-virtual"><scope>ResourceSignature</scope><name>value</name></member>
+    </listofallmembers>
+  </compounddef>
+</doxygen>

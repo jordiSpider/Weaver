@@ -1,0 +1,98 @@
+<CPackWiXPatch>
+	<!-- Ensure the PATH component is always installed with the root feature -->
+	<CPackWiXFragment Id="#PRODUCTFEATURE">
+		<ComponentRef Id="setEnviroment"/>
+		<ComponentRef Id="rememberAppDataPath"/>
+		<ComponentRef Id="removeVersionedInstallTree"/>
+	</CPackWiXFragment>
+
+	<!-- Installer-log cleanup, installed only with the "R packages" feature -->
+	<CPackWiXFragment Id="CM_C_RPackages">
+		<ComponentRef Id="removeRInstallerLogs"/>
+	</CPackWiXFragment>
+
+	<CPackWiXFragment Id="#PRODUCT">
+		<!-- Public property holding the application data folder chosen by the user -->
+		<Property Id="APPDATADIR" Secure="yes">
+			<RegistrySearch Id="SearchWeaverAppDataPath"
+				Root="HKLM"
+				Key="Software\Weaver\@PROGRAM_VERSION_PADDED@\@WEAVER_EDITION@"
+				Name="AppDataPath"
+				Type="raw" />
+		</Property>
+		<Property Id="WEAVER_INSTALL_VERSION_PARENT" Secure="yes">
+			<RegistrySearch Id="SearchWeaverInstallVersionParent"
+				Root="HKLM"
+				Key="Software\Weaver\@PROGRAM_VERSION_PADDED@\@WEAVER_EDITION@"
+				Name="InstallVersionParentDir"
+				Type="raw" />
+		</Property>
+		<!-- Recover the complete installed version/edition directory for cleanup. -->
+		<Property Id="WEAVER_INSTALL_VERSION_DIR" Secure="yes">
+			<RegistrySearch Id="SearchWeaverInstallVersionDir"
+				Root="HKLM"
+				Key="Software\Weaver\@PROGRAM_VERSION_PADDED@\@WEAVER_EDITION@"
+				Name="InstallVersionDir"
+				Type="raw" />
+		</Property>
+		<!-- RemoveFolderEx accepts environment variables in its path property. -->
+		<Property Id="WEAVER_INSTALL_LOG_DIR" Value="%ProgramData%\@WEAVER_INSTALLER_ID@\logs" />
+		<Property Id="WEAVER_INSTALL_ROOT" Secure="yes" />
+		<Property Id="WEAVER_MANAGER_INSTALL" Secure="yes" />
+		<Property Id="INSTALLRENVIRONMENT" Secure="yes" />
+		<CustomAction Id="SetWeaverInstallRoot"
+			Property="INSTALL_ROOT"
+			Value="[WEAVER_INSTALL_ROOT]" />
+		<CustomAction Id="SetRemoveEmptyVersionDirectory"
+			Property="RemoveEmptyVersionDirectory"
+			Value="[WEAVER_INSTALL_VERSION_PARENT]" />
+		<CustomAction Id="SetRemoveRLibraryData"
+			Property="RemoveRLibrary"
+			Value="[WEAVER_INSTALL_VERSION_DIR]" />
+
+		<!-- The folder chooser selects Documents\Weaver; version and edition are
+		     appended by this install directory's child path. -->
+		<CustomAction Id="SetDefaultAppDataDir"
+			Property="APPDATADIR"
+			Value="[PersonalFolder]@PROJECT_NAME@" />
+
+		<!--
+			In component-based installs CPack names directories CM_DP_<component>.<path>.
+			"config" is installed by the Unspecified component.
+		-->
+		<CustomAction Id="SetAppDataDirUnspecified"
+			Property="CM_DP_Unspecified.AppData"
+			Value="[APPDATADIR]" />
+
+		<!--
+			WeaverRSetup.exe (no window) finds R and installs weaverR and its
+			dependencies in this version and edition's private R library. If R is not
+			installed or anything fails, the installation is rolled back; the reason
+			is written to %ProgramData%\<version-edition>\logs\install_r_env.log,
+			or to %TEMP%\<version-edition>\logs\install_r_env.log if ProgramData is unavailable.
+		-->
+		<CustomAction Id="SetInstallREnvironmentCommand"
+			Property="INSTALLRENVIRONMENT"
+			Value="[@WEAVER_R_PAYLOAD_DIR_ID@]WeaverRSetup.exe|[PersonalFolder]" />
+		<!-- Actions are chained with After= so their order is deterministic -->
+		<InstallUISequence>
+			<Custom Action="SetWeaverInstallRoot" Before="CostFinalize">WEAVER_INSTALL_ROOT</Custom>
+			<Custom Action="SetDefaultAppDataDir" Before="CostFinalize">NOT APPDATADIR</Custom>
+			<Custom Action="SetAppDataDirUnspecified" After="SetDefaultAppDataDir">APPDATADIR</Custom>
+		</InstallUISequence>
+
+		<InstallExecuteSequence>
+			<Custom Action="SetWeaverInstallRoot" Before="CostFinalize">WEAVER_INSTALL_ROOT</Custom>
+			<Custom Action="SetDefaultAppDataDir" Before="CostFinalize">NOT APPDATADIR</Custom>
+			<Custom Action="SetAppDataDirUnspecified" After="SetDefaultAppDataDir">APPDATADIR</Custom>
+			<Custom Action="SetRemoveEmptyVersionDirectory" Before="RemoveEmptyVersionDirectory">REMOVE="ALL" AND WEAVER_INSTALL_VERSION_PARENT</Custom>
+			<Custom Action="RemoveEmptyVersionDirectory" After="RemoveFiles">REMOVE="ALL" AND WEAVER_INSTALL_VERSION_PARENT</Custom>
+			<Custom Action="SetRemoveRLibraryData" Before="RemoveFiles">&amp;CM_C_RPackages = 2 AND !CM_C_RPackages = 3 AND NOT REMOVE="ALL"</Custom>
+			<Custom Action="RemoveRLibrary" After="RemoveFiles">&amp;CM_C_RPackages = 2 AND !CM_C_RPackages = 3 AND NOT REMOVE="ALL"</Custom>
+			<!-- Run after the previous MSI is removed so the current R package setup
+				 uses the final installed payload. -->
+			<Custom Action="SetInstallREnvironmentCommand" After="RemoveExistingProducts">&amp;CM_C_RPackages = 3</Custom>
+			<Custom Action="INSTALLRENVIRONMENT" After="SetInstallREnvironmentCommand">&amp;CM_C_RPackages = 3</Custom>
+		</InstallExecuteSequence>
+	</CPackWiXFragment>
+</CPackWiXPatch>

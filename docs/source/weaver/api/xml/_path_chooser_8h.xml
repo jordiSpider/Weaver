@@ -1,0 +1,129 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.14.0" xml:lang="en-US">
+  <compounddef id="_path_chooser_8h" kind="file" language="C++">
+    <compoundname>PathChooser.h</compoundname>
+    <includes local="no">nana/gui.hpp</includes>
+    <includes local="no">nana/gui/widgets/label.hpp</includes>
+    <includes local="no">nana/gui/widgets/textbox.hpp</includes>
+    <includes local="no">nana/gui/widgets/button.hpp</includes>
+    <includes local="no">nana/gui/filebox.hpp</includes>
+    <includes local="no">nana/gui/widgets/panel.hpp</includes>
+    <includes local="no">nana/gui/place.hpp</includes>
+    <includes local="no">filesystem</includes>
+    <includedby refid="_g_u_i_8h" local="yes">App/View/GUI/GUI.h</includedby>
+    <incdepgraph>
+      <node id="1">
+        <label>App/View/GUI/Widgets/PathChooser.h</label>
+        <link refid="_path_chooser_8h"/>
+        <childnode refid="2" relation="include">
+        </childnode>
+        <childnode refid="3" relation="include">
+        </childnode>
+        <childnode refid="4" relation="include">
+        </childnode>
+        <childnode refid="5" relation="include">
+        </childnode>
+        <childnode refid="6" relation="include">
+        </childnode>
+        <childnode refid="7" relation="include">
+        </childnode>
+        <childnode refid="8" relation="include">
+        </childnode>
+        <childnode refid="9" relation="include">
+        </childnode>
+      </node>
+      <node id="9">
+        <label>filesystem</label>
+      </node>
+      <node id="2">
+        <label>nana/gui.hpp</label>
+      </node>
+      <node id="6">
+        <label>nana/gui/filebox.hpp</label>
+      </node>
+      <node id="8">
+        <label>nana/gui/place.hpp</label>
+      </node>
+      <node id="5">
+        <label>nana/gui/widgets/button.hpp</label>
+      </node>
+      <node id="3">
+        <label>nana/gui/widgets/label.hpp</label>
+      </node>
+      <node id="7">
+        <label>nana/gui/widgets/panel.hpp</label>
+      </node>
+      <node id="4">
+        <label>nana/gui/widgets/textbox.hpp</label>
+      </node>
+    </incdepgraph>
+    <invincdepgraph>
+      <node id="2">
+        <label>App/View/GUI/GUI.h</label>
+        <link refid="_g_u_i_8h_source"/>
+      </node>
+      <node id="1">
+        <label>App/View/GUI/Widgets/PathChooser.h</label>
+        <link refid="_path_chooser_8h"/>
+        <childnode refid="2" relation="include">
+        </childnode>
+      </node>
+    </invincdepgraph>
+    <innerclass refid="class_path_chooser" prot="public">PathChooser</innerclass>
+    <briefdescription>
+<para>Defines the <ref refid="class_path_chooser" kindref="compound">PathChooser</ref> widget for selecting files or directories. </para>
+    </briefdescription>
+    <detaileddescription>
+<para>This file contains the declaration of the <ref refid="class_path_chooser" kindref="compound">PathChooser</ref> class, a <ref refid="class_g_u_i" kindref="compound">GUI</ref> widget built using the Nana library. It allows the user to choose a file or directory path via a read-only textbox and a browse button. The selected path is displayed in the textbox. </para>
+    </detaileddescription>
+    <programlisting>
+<codeline lineno="1"><highlight class="normal"></highlight></codeline>
+<codeline lineno="10"><highlight class="normal"></highlight></codeline>
+<codeline lineno="11"><highlight class="normal"></highlight><highlight class="preprocessor">#ifndef<sp/>PATH_CHOOSER_H_</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="12"><highlight class="normal"></highlight><highlight class="preprocessor">#define<sp/>PATH_CHOOSER_H_</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="13"><highlight class="normal"></highlight></codeline>
+<codeline lineno="14"><highlight class="normal"></highlight></codeline>
+<codeline lineno="15"><highlight class="normal"></highlight></codeline>
+<codeline lineno="16"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&lt;nana/gui.hpp&gt;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="17"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&lt;nana/gui/widgets/label.hpp&gt;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="18"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&lt;nana/gui/widgets/textbox.hpp&gt;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="19"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&lt;nana/gui/widgets/button.hpp&gt;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="20"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&lt;nana/gui/filebox.hpp&gt;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="21"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&lt;nana/gui/widgets/panel.hpp&gt;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="22"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&lt;nana/gui/place.hpp&gt;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="23"><highlight class="normal"></highlight></codeline>
+<codeline lineno="24"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&lt;filesystem&gt;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="25"><highlight class="normal"></highlight></codeline>
+<codeline lineno="26"><highlight class="normal"></highlight></codeline>
+<codeline lineno="27"><highlight class="normal"></highlight></codeline>
+<codeline lineno="36" refid="class_path_chooser" refkind="compound"><highlight class="normal"></highlight><highlight class="keyword">class<sp/></highlight><highlight class="normal"><ref refid="class_path_chooser_1a0f9357bb8187834c33cc1a137d0cfda9" kindref="member">PathChooser</ref><sp/>:<sp/></highlight><highlight class="keyword">public</highlight><highlight class="normal"><sp/>nana::panel&lt;true&gt;<sp/>{</highlight></codeline>
+<codeline lineno="37"><highlight class="normal"></highlight><highlight class="keyword">public</highlight><highlight class="normal">:</highlight></codeline>
+<codeline lineno="44" refid="class_path_chooser_1a0f9357bb8187834c33cc1a137d0cfda9" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="class_path_chooser_1a0f9357bb8187834c33cc1a137d0cfda9" kindref="member">PathChooser</ref>(nana::window<sp/>parent,<sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/>std::string&amp;<sp/>labelText,<sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordtype">bool</highlight><highlight class="normal"><sp/><ref refid="class_path_chooser_1a4c02ab759e7582411f4b731687e143b4" kindref="member">isDirectory</ref>);</highlight></codeline>
+<codeline lineno="45"><highlight class="normal"></highlight></codeline>
+<codeline lineno="49" refid="class_path_chooser_1a0f26554e815f0d266d122ced07ae8e1e" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">virtual</highlight><highlight class="normal"><sp/><ref refid="class_path_chooser_1a0f26554e815f0d266d122ced07ae8e1e" kindref="member">~PathChooser</ref>();</highlight></codeline>
+<codeline lineno="50"><highlight class="normal"></highlight></codeline>
+<codeline lineno="51"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="comment">//<sp/>Disable<sp/>copy<sp/>constructor<sp/>and<sp/>assignment</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="52"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="class_path_chooser_1a0f9357bb8187834c33cc1a137d0cfda9" kindref="member">PathChooser</ref>(</highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/><ref refid="class_path_chooser_1a0f9357bb8187834c33cc1a137d0cfda9" kindref="member">PathChooser</ref>&amp;<sp/>other)<sp/>=<sp/></highlight><highlight class="keyword">delete</highlight><highlight class="normal">;</highlight></codeline>
+<codeline lineno="53"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="class_path_chooser_1a0f9357bb8187834c33cc1a137d0cfda9" kindref="member">PathChooser</ref>&amp;<sp/>operator=(</highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/><ref refid="class_path_chooser_1a0f9357bb8187834c33cc1a137d0cfda9" kindref="member">PathChooser</ref>&amp;<sp/>other)<sp/>=<sp/></highlight><highlight class="keyword">delete</highlight><highlight class="normal">;</highlight></codeline>
+<codeline lineno="54"><highlight class="normal"></highlight></codeline>
+<codeline lineno="59" refid="class_path_chooser_1a4c04f57f220793bc9ec55f818f98dcc7" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/>std::filesystem::path<sp/><ref refid="class_path_chooser_1a4c04f57f220793bc9ec55f818f98dcc7" kindref="member">getPath</ref>()<sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal">;</highlight></codeline>
+<codeline lineno="60"><highlight class="normal"></highlight></codeline>
+<codeline lineno="65" refid="class_path_chooser_1a3f2d91c61f93e1323089a0aa7a3b14d3" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/><ref refid="class_path_chooser_1a3f2d91c61f93e1323089a0aa7a3b14d3" kindref="member">setPath</ref>(</highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/>std::filesystem::path&amp;<sp/>newPath);</highlight></codeline>
+<codeline lineno="66"><highlight class="normal"></highlight></codeline>
+<codeline lineno="67"><highlight class="normal"></highlight><highlight class="keyword">protected</highlight><highlight class="normal">:</highlight></codeline>
+<codeline lineno="68" refid="class_path_chooser_1aa7ab79e87ee2ee96733f574111c80729" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/>nana::place<sp/><ref refid="class_path_chooser_1aa7ab79e87ee2ee96733f574111c80729" kindref="member">layout</ref>{*</highlight><highlight class="keyword">this</highlight><highlight class="normal">};<sp/><sp/><sp/><sp/></highlight></codeline>
+<codeline lineno="69" refid="class_path_chooser_1ab3e7015ad4ea0e8185c9599f505e6cbb" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/>nana::label<sp/><ref refid="class_path_chooser_1ab3e7015ad4ea0e8185c9599f505e6cbb" kindref="member">label</ref>{*</highlight><highlight class="keyword">this</highlight><highlight class="normal">};<sp/><sp/><sp/><sp/><sp/></highlight></codeline>
+<codeline lineno="70" refid="class_path_chooser_1a11a04719d5d39e3f69d1714698a86cd6" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/>nana::textbox<sp/><ref refid="class_path_chooser_1a11a04719d5d39e3f69d1714698a86cd6" kindref="member">textbox</ref>{*</highlight><highlight class="keyword">this</highlight><highlight class="normal">};<sp/></highlight></codeline>
+<codeline lineno="71" refid="class_path_chooser_1a3df5e1854bebed6c928d2ecb51c9fec0" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/>nana::button<sp/><ref refid="class_path_chooser_1a3df5e1854bebed6c928d2ecb51c9fec0" kindref="member">button</ref>{*</highlight><highlight class="keyword">this</highlight><highlight class="normal">};<sp/><sp/><sp/></highlight></codeline>
+<codeline lineno="72"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight></codeline>
+<codeline lineno="73" refid="class_path_chooser_1a4c02ab759e7582411f4b731687e143b4" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">bool</highlight><highlight class="normal"><sp/><ref refid="class_path_chooser_1a4c02ab759e7582411f4b731687e143b4" kindref="member">isDirectory</ref>;<sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight></codeline>
+<codeline lineno="74"><highlight class="normal"></highlight></codeline>
+<codeline lineno="80" refid="class_path_chooser_1add206f90549848afebfb5d2f100bd572" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/><ref refid="class_path_chooser_1add206f90549848afebfb5d2f100bd572" kindref="member">browsePath</ref>();</highlight></codeline>
+<codeline lineno="81"><highlight class="normal">};</highlight></codeline>
+<codeline lineno="82"><highlight class="normal"></highlight></codeline>
+<codeline lineno="83"><highlight class="normal"></highlight></codeline>
+<codeline lineno="84"><highlight class="normal"></highlight><highlight class="preprocessor">#endif<sp/></highlight><highlight class="comment">//<sp/>PATH_CHOOSER_H_</highlight><highlight class="normal"></highlight></codeline>
+    </programlisting>
+    <location file="App/View/GUI/Widgets/PathChooser.h"/>
+  </compounddef>
+</doxygen>

@@ -26,6 +26,7 @@ class Landscape;
 
 /**
  * @class Decisions
+ * @ingroup weaver_landscape
  * @brief Encapsulates the decision-making logic of an animal, including predation probabilities, feeding, and movement.
  * 
  * This class stores information about the animal's experience, preferences, and recent feeding activity.
@@ -69,13 +70,6 @@ public:
      * @param newOwner Pointer to the animal owner.
      */
     void setOwner(AnimalNonStatistical* newOwner);
-
-    /**
-     * @brief Calculates predation probability for a prey animal.
-     * @param prey Reference to the prey animal.
-     * @return Predation probability as PreciseDouble.
-     */
-    PreciseDouble calculatePredationProbability(const AnimalNonStatistical& prey);
 
     /**
      * @brief Calculates predation probability for an edible resource.
@@ -172,21 +166,6 @@ public:
     void setNewDestination();
 
     /**
-     * @brief Attempts to eat edibles in the landscape according to the animal's decisions.
-     * @param landscape Pointer to the landscape.
-     * @param ediblesByEdibility Vector of tuples (edibility value, Edible*, dry mass) sorted by preference.
-     * @param numberOfTimeSteps Number of time steps.
-     * @param timeStepsPerDay Number of time steps per day.
-     * @param animalsHasTriedToPredate List of animals that have already been targeted.
-     * @param saveAnimalsEachDayPredationProbabilities Flag to save daily predation probabilities.
-     * @param predationProbabilitiesContent Stream to store predation probability data.
-     * @param saveActivity Flag to save activity data.
-     * @param activityContent Stream to store activity information.
-     * @param competitionAmongResourceSpecies Flag indicating competition among resource species.
-     */
-    void tryToEatEdible(Landscape* const landscape, std::vector<std::tuple<PreciseDouble, Edible*, DryMass>>& ediblesByEdibility, const TimeStep numberOfTimeSteps, const PreciseDouble& timeStepsPerDay, std::list<const AnimalNonStatistical*> &animalsHasTriedToPredate, const bool saveAnimalsEachDayPredationProbabilities, std::ostringstream& predationProbabilitiesContent, const bool saveActivity, std::ostringstream& activityContent, const bool competitionAmongResourceSpecies);
-
-    /**
      * @brief Returns the preference value for a given species and instar.
      * @param preySpeciesId ID of the prey species.
      * @param preyInstar Instar of the prey.
@@ -236,13 +215,12 @@ public:
      * @brief Updates variables associated with the current instar.
      */
     void updateVariablesAssociatedWithInstar();
-    
+
     /**
-     * @brief Adds a new species to the decision-making system.
-     * @param numberOfInstars Number of instars for the species.
-     * @param timeStepsPerDay Number of time steps per day.
+     * @brief Initializes the animal's preferences at the start of simulation or after reset.
+     * @param timeStepsPerDay Number of time steps per day to scale initial preferences.
      */
-    void addSpecies(const unsigned int numberOfInstars, const PreciseDouble& timeStepsPerDay);
+    void setInitialPreferences(const PreciseDouble& timeStepsPerDay);
 
     /**
       * @brief Serializes the object for persistence.
@@ -327,12 +305,6 @@ protected:
      * cumulative predation probability, and other ecological factors.
      */
     void updatePreferences();
-
-    /**
-     * @brief Initializes the animal's preferences at the start of simulation or after reset.
-     * @param timeStepsPerDay Number of time steps per day to scale initial preferences.
-     */
-    void setInitialPreferences(const PreciseDouble& timeStepsPerDay);
 
     /**
      * @brief Updates preferences based on the most recent feeding events.

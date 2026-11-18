@@ -18,7 +18,7 @@
 #include <cmath>
 
 
-#include "App/Model/IBM/Maths/PreciseDouble.h"
+#include "Misc/Maths/PreciseDouble.h"
 
 
 class DryMass;
@@ -28,6 +28,7 @@ class Length;
 
 /**
  * @class DryMass
+ * @ingroup weaver_landscape
  * @brief Represents dry mass in the ecosystem simulation.
  *
  * Encapsulates a PreciseDouble value for dry mass, provides arithmetic operations,
@@ -68,9 +69,6 @@ public:
 
     /// Division by scalar
     DryMass operator/(const PreciseDouble& scalar) const;
-    
-    /// Stream output operator
-    friend std::ostream& operator<<(std::ostream& os, const DryMass& dryMass);
 
     /**
     * @brief Serializes the object for persistence.
@@ -82,6 +80,22 @@ public:
     template <class Archive>
     void serialize(Archive &ar, const unsigned int version);
 };
+
+
+
+namespace fmt {
+    template <>
+    struct formatter<DryMass> : formatter<PreciseDouble> {
+        // Heredamos la lógica de parseo de especificaciones de double (ej. {:.6f})
+        template <typename FormatContext>
+        auto format(const DryMass& dryMass, FormatContext& ctx) const {
+            // Pasamos el double primitivo puro directamente al motor máquina de fmt
+            return formatter<PreciseDouble>::format(dryMass.getValue(), ctx);
+        }
+    };
+}
+
+
 
 /** @name Arithmetic Operators for DryMass
  */
@@ -286,6 +300,7 @@ bool operator!=(const PreciseDouble& lhs, const DryMass& rhs);
 
 /**
  * @class WetMass
+ * @ingroup weaver_landscape
  * @brief Represents wet mass in the ecosystem simulation.
  *
  * Encapsulates a PreciseDouble value for wet mass and provides arithmetic operations,
@@ -317,9 +332,6 @@ public:
 
     /// Returns the numeric value of the wet mass
     const PreciseDouble& getValue() const;
-    
-    /// Stream output operator
-    friend std::ostream& operator<<(std::ostream& os, const WetMass& wetMass);
 
     /**
     * @brief Serializes the object for persistence.
@@ -331,6 +343,20 @@ public:
     template <class Archive>
     void serialize(Archive &ar, const unsigned int version);
 };
+
+
+
+namespace fmt {
+    template <>
+    struct formatter<WetMass> : formatter<PreciseDouble> {
+        // Heredamos la lógica de parseo de especificaciones de double (ej. {:.6f})
+        template <typename FormatContext>
+        auto format(const WetMass& wetMass, FormatContext& ctx) const {
+            // Pasamos el double primitivo puro directamente al motor máquina de fmt
+            return formatter<PreciseDouble>::format(wetMass.getValue(), ctx);
+        }
+    };
+}
 
 
 /** @name Arithmetic Operators for WetMass
@@ -536,6 +562,7 @@ bool operator!=(const PreciseDouble& lhs, const WetMass& rhs);
 
 /**
  * @class Length
+ * @ingroup weaver_landscape
  * @brief Represents length in the ecosystem simulation.
  *
  * Encapsulates a PreciseDouble value for length and provides arithmetic operations,
@@ -567,9 +594,6 @@ public:
 
     /// Returns the numeric value of the length
     const PreciseDouble& getValue() const;
-    
-    /// Stream output operator
-    friend std::ostream& operator<<(std::ostream& os, const Length& length);
 
     /**
     * @brief Serializes the object for persistence.
@@ -581,6 +605,20 @@ public:
     template <class Archive>
     void serialize(Archive &ar, const unsigned int version);
 };
+
+
+
+namespace fmt {
+    template <>
+    struct formatter<Length> : formatter<PreciseDouble> {
+        // Heredamos la lógica de parseo de especificaciones de double (ej. {:.6f})
+        template <typename FormatContext>
+        auto format(const Length& length, FormatContext& ctx) const {
+            // Pasamos el double primitivo puro directamente al motor máquina de fmt
+            return formatter<PreciseDouble>::format(length.getValue(), ctx);
+        }
+    };
+}
 
 
 /** @name Arithmetic Operators for Length

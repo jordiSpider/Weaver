@@ -45,9 +45,12 @@ void AnimalSpeciesDecisions::deserializeProbabilityFunctions()
 
 
 
-void AnimalSpeciesDecisions::updateMaximumVoracity(const Instar& instar, const PreciseDouble& newValue)
+void AnimalSpeciesDecisions::updateMaximumVoracity(const CustomIndexedVector<Instar, PreciseDouble>& newMaximumVoracity)
 {
-    maximumVoracity[instar] = fmax(maximumVoracity[instar], newValue);
+    for (size_t i = 0; i < newMaximumVoracity.size(); ++i)
+    {
+        maximumVoracity[i] = fmax(maximumVoracity[i], newMaximumVoracity[i]);
+    }
 }
 
 
@@ -91,19 +94,28 @@ const PreciseDouble& AnimalSpeciesDecisions::getMaximumPatchConspecificBiomassGl
 }
 
 
-void AnimalSpeciesDecisions::setMaximumPatchEdibilityValueGlobal(const Instar& instar, const PreciseDouble& newValue)
+void AnimalSpeciesDecisions::updateMaximumPatchEdibilityValueGlobal(const CustomIndexedVector<Instar, PreciseDouble>& newMaximumPatchEdibilityValueGlobal)
 {
-    maximumPatchEdibilityValueGlobal[instar] = fmax(maximumPatchEdibilityValueGlobal[instar], newValue);
+	for (size_t i = 0; i < newMaximumPatchEdibilityValueGlobal.size(); ++i)
+	{
+		maximumPatchEdibilityValueGlobal[i] = fmax(maximumPatchEdibilityValueGlobal[i], newMaximumPatchEdibilityValueGlobal[i]);
+	}
 }
 
-void AnimalSpeciesDecisions::setMaximumPatchPredationRiskGlobal(const Instar& instar, const PreciseDouble& newValue)
+void AnimalSpeciesDecisions::updateMaximumPatchPredationRiskGlobal(const CustomIndexedVector<Instar, PreciseDouble>& newMaximumPatchPredationRiskGlobal)
 {
-    maximumPatchPredationRiskGlobal[instar] = fmax(maximumPatchPredationRiskGlobal[instar], newValue);
+	for (size_t i = 0; i < newMaximumPatchPredationRiskGlobal.size(); ++i)
+	{
+		maximumPatchPredationRiskGlobal[i] = fmax(maximumPatchPredationRiskGlobal[i], newMaximumPatchPredationRiskGlobal[i]);
+	}
 }
 
-void AnimalSpeciesDecisions::setMaximumPatchConspecificBiomassGlobal(const Instar& instar, const PreciseDouble& newValue)
+void AnimalSpeciesDecisions::updateMaximumPatchConspecificBiomassGlobal(const CustomIndexedVector<Instar, PreciseDouble>& newMaximumPatchConspecificBiomassGlobal)
 {
-    maximumPatchConspecificBiomassGlobal[instar] = fmax(maximumPatchConspecificBiomassGlobal[instar], newValue);
+	for (size_t i = 0; i < newMaximumPatchConspecificBiomassGlobal.size(); ++i)
+	{
+		maximumPatchConspecificBiomassGlobal[i] = fmax(maximumPatchConspecificBiomassGlobal[i], newMaximumPatchConspecificBiomassGlobal[i]);
+	}
 }
 
 

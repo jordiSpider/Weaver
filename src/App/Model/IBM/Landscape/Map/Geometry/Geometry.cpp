@@ -6,7 +6,7 @@ using namespace std;
 
 
 
-BoxModel* Geometry::makeBox(const PointMap &position, const PreciseDouble &size, const bool applyEpsilon)
+BoxModel Geometry::makeBox(const PointMap &position, const PreciseDouble &size, const bool applyEpsilon)
 {
     PointContinuous minCorner;
     boost::geometry::assign_zero(minCorner);
@@ -20,7 +20,7 @@ BoxModel* Geometry::makeBox(const PointMap &position, const PreciseDouble &size,
     PointContinuous maxCorner = minCorner;
     boost::geometry::add_value(maxCorner, ((applyEpsilon) ? size-PreciseDouble::EPS : size).getValue());
 
-    return new BoxModel(minCorner, maxCorner);
+    return BoxModel(minCorner, maxCorner);
 }
 
 PreciseDouble Geometry::calculateDistanceBetweenPoints(const PointContinuous& pointA, const PointContinuous& pointB)
@@ -30,7 +30,7 @@ PreciseDouble Geometry::calculateDistanceBetweenPoints(const PointContinuous& po
 
 PreciseDouble Geometry::calculateDistanceBetweenPointAndPolygon(const PointContinuous& point, const RingModel& polygon)
 {
-    if(Geometry::withinPolygon(point, &polygon))
+    if(Geometry::withinPolygon(point, polygon))
     {
         return 0.0;
     }
@@ -42,12 +42,12 @@ PreciseDouble Geometry::calculateDistanceBetweenPointAndPolygon(const PointConti
 
 
 
-BoxModel* Geometry::makeBoxEffectiveArea(const PointMap &position, const PreciseDouble &size)
+BoxModel Geometry::makeBoxEffectiveArea(const PointMap &position, const PreciseDouble &size)
 {
     return makeBox(position, size, true);
 }
 
-RingModel* Geometry::makeSphere(const PointContinuous &center, const PreciseDouble &radius)
+RingModel Geometry::makeSphere(const PointContinuous &center, const PreciseDouble &radius)
 {
     boost::geometry::strategy::buffer::point_circle point_strategy(POINTS_PER_CIRCLE);
     boost::geometry::strategy::buffer::distance_symmetric<double> distance_strategy(radius.getValue());
@@ -61,21 +61,21 @@ RingModel* Geometry::makeSphere(const PointContinuous &center, const PreciseDoub
         join_strategy, end_strategy, point_strategy
     );
 
-    return new RingModel(result[0].outer());;
+    return RingModel(result[0].outer());;
 }
 
-RingModel* Geometry::calculateIntersection(const RingModel* const objA, const RingModel* const objB)
+RingModel Geometry::calculateIntersection(const RingModel& objA, const RingModel& objB)
 {
     vector<PolygonModel> intersection;
-	boost::geometry::intersection(*objA, *objB, intersection);
+	boost::geometry::intersection(objA, objB, intersection);
 
     if(intersection.empty())
     {
-        return nullptr;
+        return RingModel();
     }
     else
     {
-        return new RingModel(intersection[0].outer());
+        return RingModel(intersection[0].outer());
     }
 }
 
@@ -105,9 +105,9 @@ PointContinuous Geometry::calculateClosestPoint(const RingModel& polygon, const 
     return closestPoint;
 }
 
-bool Geometry::withinPolygon(const PointContinuous &point, const RingModel* const polygon)
+bool Geometry::withinPolygon(const PointContinuous &point, const RingModel& polygon)
 {
-    return boost::geometry::within(point, *polygon);
+    return boost::geometry::within(point, polygon);
 }
 
 PointContinuous Geometry::calculateLineStringPointAtDistance(const PointContinuous &initialPoint, const PointContinuous &finalPoint, const PreciseDouble& distance)
@@ -151,13 +151,13 @@ PointContinuous Geometry::calculateLineStringPointAtDistance(const PointContinuo
     return newPoint;
 }
 
-PointContinuous Geometry::generateRandomPointOnBox(const RingModel* const box)
+PointContinuous Geometry::generateRandomPointOnBox(const RingModel& box)
 {
     #if DIMENSIONS == 3
     throwLineInfoException("Not implemented method for 3D");
     #endif
 
-    auto boundingBox = boost::geometry::return_envelope<BoxModel>(*box);
+    auto boundingBox = boost::geometry::return_envelope<BoxModel>(box);
 
     PreciseDouble randomX = Random::randomUniform(boost::geometry::get<0>(boundingBox.min_corner()), (boost::geometry::get<0>(boundingBox.max_corner())));
     PreciseDouble randomY = Random::randomUniform(boost::geometry::get<1>(boundingBox.min_corner()), (boost::geometry::get<1>(boundingBox.max_corner())));
@@ -165,13 +165,13 @@ PointContinuous Geometry::generateRandomPointOnBox(const RingModel* const box)
     return PointContinuous(randomX.getValue(), randomY.getValue());
 }
 
-PointContinuous Geometry::generateRandomPointOnPolygon(const RingModel* const area)
+PointContinuous Geometry::generateRandomPointOnPolygon(const RingModel& area)
 {
     #if DIMENSIONS == 3
     throwLineInfoException("Not implemented method for 3D");
     #endif
 
-    auto boundingBox = boost::geometry::return_envelope<BoxModel>(*area);
+    auto boundingBox = boost::geometry::return_envelope<BoxModel>(area);
 
     PointContinuous randomPoint;
     do 
@@ -180,34 +180,36 @@ PointContinuous Geometry::generateRandomPointOnPolygon(const RingModel* const ar
         PreciseDouble randomY = Random::randomUniform(boost::geometry::get<1>(boundingBox.min_corner()), (boost::geometry::get<1>(boundingBox.max_corner())));
         randomPoint = PointContinuous(randomX.getValue(), randomY.getValue());
     } 
-    while(!boost::geometry::within(randomPoint, *area));
+    while(!boost::geometry::within(randomPoint, area));
 
     return randomPoint;
 }
 
-Coverage Geometry::checkFirstCoverageLevelBySecond(const RingModel* const first, const RingModel* const second, const bool applyIntersection)
+Coverage Geometry::checkFirstCoverageLevelBySecond(const RingModel& first, const RingModel& second, const bool applyIntersection)
 {
     return checkCoverageLevel(calculateFirstCoveragePercentBySecond(first, second, applyIntersection));
 }
 
-bool Geometry::fullCoveredBySphere(const RingModel* const area, const PointContinuous &center, const PreciseDouble &radius)
+bool Geometry::fullCoveredBySphere(const RingModel& area, const PointContinuous &center, const PreciseDouble &radius)
 {
-    for(const auto &corner : *area)
+    const double radiusSq = radius.getValue() * radius.getValue();
+
+    for(const auto &corner : area)
     {
-        if(calculateDistanceBetweenPoints(center, corner) > radius)
-        {
-            return false;
-        }
+		if (!pointInCircle(center.get<0>(), center.get<1>(), radiusSq, corner.get<0>(), corner.get<1>()))
+		{
+			return false;
+		}
     }
 
     return true;
 }
 
-Coverage Geometry::checkCoveredLevelBySphere(const RingModel* const area, const PointContinuous &center, const PreciseDouble &radius)
+Coverage Geometry::checkCoveredLevelBySphere(const RingModel& area, const PointContinuous &center, const PreciseDouble &radius)
 {
     unsigned char pointsInsideSphere = 0u;
 
-    for(const auto &corner : *area)
+    for(const auto &corner : area)
     {
         if(Geometry::pointInsideSphere(corner, center, radius))
         {
@@ -226,7 +228,7 @@ Coverage Geometry::checkCoveredLevelBySphere(const RingModel* const area, const 
             return Coverage::Null;
         }
     }
-    else if(pointsInsideSphere == area->size())
+    else if(pointsInsideSphere == area.size())
     {
         return Coverage::Full;
     }
@@ -236,38 +238,119 @@ Coverage Geometry::checkCoveredLevelBySphere(const RingModel* const area, const 
     }
 }
 
+PreciseDouble Geometry::calculateCoveragePercentBySphere(const RingModel& area, const PointContinuous& center, const PreciseDouble& radius)
+{
+    if (area.empty())
+    {
+        return 0.0;
+    }
+
+    // 1. Obtener los límites del cuadrado (celda) de forma rápida
+    auto boxFirst = boost::geometry::return_envelope<BoxModel>(area);
+    const double minX = boxFirst.min_corner().get<0>();
+    const double maxX = boxFirst.max_corner().get<0>();
+    const double minY = boxFirst.min_corner().get<1>();
+    const double maxY = boxFirst.max_corner().get<1>();
+
+    const double cellWidth = maxX - minX;
+    const double cellHeight = maxY - minY;
+
+    // 2. Obtener el centro y el radio del círculo de interacción
+    const double circleX = center.get<0>();
+    const double circleY = center.get<1>();
+    const double radiusSq = radius.getValue() * radius.getValue();
+
+    // 3. Test de colisión rápido AABB vs Círculo (Fase ancha)
+    // Encontrar el punto más cercano del cuadrado al centro del círculo
+    const double closestX = std::max(minX, std::min(circleX, maxX));
+    const double closestY = std::max(minY, std::min(circleY, maxY));
+
+    const double distXSq = (circleX - closestX) * (circleX - closestX);
+    const double distYSq = (circleY - closestY) * (circleY - closestY);
+
+    // Si el punto más cercano está fuera del radio, la intersección es 0
+    if ((distXSq + distYSq) > radiusSq)
+    {
+        return 0.0;
+    }
+
+    // Test de contención total (Si las 4 esquinas de la celda están dentro, cobertura 100%)
+    if (pointInCircle(circleX, circleY, radiusSq, minX, minY) && pointInCircle(circleX, circleY, radiusSq, maxX, minY) &&
+        pointInCircle(circleX, circleY, radiusSq, minX, maxY) && pointInCircle(circleX, circleY, radiusSq, maxX, maxY))
+    {
+        return 1.0;
+    }
+
+    // 4. Fase Estrecha: Muestreo por Rejilla (8x8 = 64 puntos distribuidos uniformemente)
+    // Esto da una resolución de pasos del 1.5625% muy precisa y ultra veloz.
+    constexpr int GRID_SIZE = 8;
+    constexpr double INV_TOTAL_POINTS = 1.0 / (GRID_SIZE * GRID_SIZE);
+    int pointsInside = 0;
+
+    // Calculamos los saltos de la rejilla para que queden centrados en sus micro-cuadrantes
+    const double stepX = cellWidth / GRID_SIZE;
+    const double stepY = cellHeight / GRID_SIZE;
+    const double startX = minX + stepX * 0.5;
+    const double startY = minY + stepY * 0.5;
+
+    for (int i = 0; i < GRID_SIZE; ++i)
+    {
+        const double px = startX + i * stepX;
+        for (int j = 0; j < GRID_SIZE; ++j)
+        {
+            const double py = startY + j * stepY;
+            if (((px - circleX) * (px - circleX) + (py - circleY) * (py - circleY)) <= radiusSq)
+            {
+                pointsInside++;
+            }
+        }
+    }
+
+    return static_cast<double>(pointsInside) * INV_TOTAL_POINTS;
+}
+
+bool Geometry::pointInsideBox(const PointContinuous& point, const RingModel& obj)
+{
+    auto box = boost::geometry::return_envelope<BoxModel>(obj);
+
+    const double x = point.get<0>();
+    const double y = point.get<1>();
+    const double minX = box.min_corner().get<0>();
+    const double maxX = box.max_corner().get<0>();
+    const double minY = box.min_corner().get<1>();
+    const double maxY = box.max_corner().get<1>();
+    return (x >= minX && x <= maxX && y >= minY && y <= maxY);
+}
+
 bool Geometry::pointInsideSphere(const PointContinuous& point, const PointContinuous &center, const PreciseDouble &radius)
 {
-    return Geometry::calculateDistanceBetweenPoints(point, center) <= radius;
+	double radiusSq = radius.getValue() * radius.getValue();
+	return pointInCircle(center.get<0>(), center.get<1>(), radiusSq, point.get<0>(), point.get<1>());
 }
 
-PreciseDouble Geometry::calculateArea(const RingModel* const obj)
+PreciseDouble Geometry::calculateArea(const RingModel& obj)
 {
-    return boost::geometry::area(*obj);
+    return boost::geometry::area(obj);
 }
 
-PreciseDouble Geometry::calculateFirstCoveragePercentBySecond(const RingModel* const first, const RingModel* const second, const bool applyIntersection)
+PreciseDouble Geometry::calculateFirstCoveragePercentBySecond(const RingModel& first, const RingModel& second, const bool applyIntersection)
 {
-    if(first == nullptr || second == nullptr)
+    if(first.empty() || second.empty())
     {
         return 0.0;
     }
 
     if(applyIntersection)
     {
-        RingModel* intersection = calculateIntersection(first, second);
+        RingModel intersection = calculateIntersection(first, second);
 
-        if(intersection == nullptr)
+        if(intersection.empty())
         {
             return 0.0;
         }
         else
         {
-            PreciseDouble coveragePercent = calculateArea(intersection) / calculateArea(first);
-
-            delete intersection;
-
-            return coveragePercent;
+            return calculateArea(intersection) / calculateArea(first);
         }
     }
     else
@@ -300,4 +383,8 @@ Coverage Geometry::checkCoverageLevel(const PreciseDouble& percent)
 			}
 		}
 	}
+}
+
+bool Geometry::pointInCircle(double circleX, double circleY, double radiusSq, double px, double py) {
+    return ((px - circleX) * (px - circleX) + (py - circleY) * (py - circleY)) <= radiusSq;
 }

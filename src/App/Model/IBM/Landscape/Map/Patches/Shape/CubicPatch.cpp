@@ -62,7 +62,7 @@ const string CubicPatch::generateDescription(const vector<double> &bottomLeftCor
     return newDescription.str();
 }
 
-const RingModel* CubicPatch::generateInfluenceZone(const vector<double> &bottomLeftCorner, const vector<double> &topRightCorner)
+RingModel CubicPatch::generateInfluenceZone(const vector<double> &bottomLeftCorner, const vector<double> &topRightCorner)
 {
     PointContinuous minCorner, maxCorner;
 
@@ -77,7 +77,7 @@ const RingModel* CubicPatch::generateInfluenceZone(const vector<double> &bottomL
     RingModel ringInfluenceZone;
 	boost::geometry::convert(boxInfluenceZone, ringInfluenceZone);
     
-    return new RingModel(ringInfluenceZone);
+    return RingModel(ringInfluenceZone);
 }
 
 PatchShape::Type CubicPatch::getType() const

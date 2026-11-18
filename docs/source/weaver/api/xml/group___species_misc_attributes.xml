@@ -1,0 +1,89 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.14.0" xml:lang="en-US">
+  <compounddef id="group___species_misc_attributes" kind="group">
+    <compoundname>SpeciesMiscAttributes</compoundname>
+    <title>Miscellaneous Ecophysiological Attributes</title>
+    <sectiondef kind="var">
+      <memberdef kind="variable" id="group___species_misc_attributes_1gaf60f355714c2f7afc91462c4b775106d" prot="protected" static="no" mutable="no">
+        <type><ref refid="class_custom_indexed_vector" kindref="compound">CustomIndexedVector</ref>&lt; <ref refid="class_instar" kindref="compound">Instar</ref>, <ref refid="class_precise_double" kindref="compound">PreciseDouble</ref> &gt;</type>
+        <definition>CustomIndexedVector&lt;Instar, PreciseDouble&gt; AnimalSpecies::maximumInteractionArea</definition>
+        <argsstring></argsstring>
+        <name>maximumInteractionArea</name>
+        <qualifiedname>AnimalSpecies::maximumInteractionArea</qualifiedname>
+        <briefdescription>
+<para>Maximum interaction area per instar. </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="App/Model/IBM/Landscape/LivingBeings/Animals/Species/AnimalSpecies.h" line="890" column="21" bodyfile="App/Model/IBM/Landscape/LivingBeings/Animals/Species/AnimalSpecies.h" bodystart="890" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="group___species_misc_attributes_1gac3a0e84140915111b102019ed18c27b2" prot="protected" static="no" mutable="no">
+        <type>size_t</type>
+        <definition>size_t AnimalSpecies::maximumPredationEncountersPerDay</definition>
+        <argsstring></argsstring>
+        <name>maximumPredationEncountersPerDay</name>
+        <qualifiedname>AnimalSpecies::maximumPredationEncountersPerDay</qualifiedname>
+        <briefdescription>
+<para>Maximum number of predation encounters allowed per da. </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="App/Model/IBM/Landscape/LivingBeings/Animals/Species/AnimalSpecies.h" line="887" column="8" bodyfile="App/Model/IBM/Landscape/LivingBeings/Animals/Species/AnimalSpecies.h" bodystart="887" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="group___species_misc_attributes_1gabf3d5c24868b385f1899df56950cd80a" prot="protected" static="no" mutable="no">
+        <type><ref refid="class_temperature" kindref="compound">Temperature</ref></type>
+        <definition>Temperature AnimalSpecies::tempFromLab</definition>
+        <argsstring></argsstring>
+        <name>tempFromLab</name>
+        <qualifiedname>AnimalSpecies::tempFromLab</qualifiedname>
+        <briefdescription>
+<para>Laboratory-reference temperature. </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="App/Model/IBM/Landscape/LivingBeings/Animals/Species/AnimalSpecies.h" line="893" column="13" bodyfile="App/Model/IBM/Landscape/LivingBeings/Animals/Species/AnimalSpecies.h" bodystart="893" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="group___species_misc_attributes_1gab12a9e742cbf67fb544796938221a43b" prot="protected" static="no" mutable="no">
+        <type><ref refid="class_precise_double" kindref="compound">PreciseDouble</ref></type>
+        <definition>PreciseDouble AnimalSpecies::YodzisA</definition>
+        <argsstring></argsstring>
+        <name>YodzisA</name>
+        <qualifiedname>AnimalSpecies::YodzisA</qualifiedname>
+        <briefdescription>
+<para>Yodzis–Innes metabolic parameter A. </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="App/Model/IBM/Landscape/LivingBeings/Animals/Species/AnimalSpecies.h" line="881" column="15" bodyfile="App/Model/IBM/Landscape/LivingBeings/Animals/Species/AnimalSpecies.h" bodystart="881" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="group___species_misc_attributes_1gaf0c59f76b7e34a3db9bcf655ed0a352d" prot="protected" static="no" mutable="no">
+        <type><ref refid="class_precise_double" kindref="compound">PreciseDouble</ref></type>
+        <definition>PreciseDouble AnimalSpecies::YodzisB</definition>
+        <argsstring></argsstring>
+        <name>YodzisB</name>
+        <qualifiedname>AnimalSpecies::YodzisB</qualifiedname>
+        <briefdescription>
+<para>Yodzis–Innes metabolic parameter B. </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="App/Model/IBM/Landscape/LivingBeings/Animals/Species/AnimalSpecies.h" line="884" column="15" bodyfile="App/Model/IBM/Landscape/LivingBeings/Animals/Species/AnimalSpecies.h" bodystart="884" bodyend="-1"/>
+      </memberdef>
+    </sectiondef>
+    <briefdescription>
+<para>Additional functional parameters not belonging to previous groups. </para>
+    </briefdescription>
+    <detaileddescription>
+    </detaileddescription>
+  </compounddef>
+</doxygen>

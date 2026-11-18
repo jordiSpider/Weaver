@@ -1,5 +1,7 @@
 #include "App/Model/IBM/Landscape/Map/Patches/Source/MoistureSource.h"
 
+#include <fmt/format.h>
+
 
 using namespace std;
 using json = nlohmann::json;
@@ -36,7 +38,7 @@ string MoistureSource::showInfo() const
 
     info << " - Moisture parameters:\n";
 
-    info << "   - Maximum resource capacity density = " << maximumResourceCapacityDensity << "\n";
+    info << "   - Maximum resource capacity density = " << fmt::to_string(maximumResourceCapacityDensity) << "\n";
 
     info << "   - Temperature dynamics:\n";
 

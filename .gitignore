@@ -34,13 +34,13 @@
 # Sphinx documentation
 docs/build
 docs/Doxyfile
-docs/source/latest/api
-docs/source/latest/gettext
-docs/source/*/conf.py
-docs/source/*/_static
-!docs/source/latest/_static
-docs/source/*/_templates
-!docs/source/latest/_templates
+docs/source/weaver/*/api
+docs/source/weaver/*/gettext
+docs/source/weaver/*/conf.py
+docs/source/weaver/*/_static
+!docs/source/weaver/latest/_static
+docs/source/weaver/*/_templates
+!docs/source/weaver/latest/_templates
 
 # Simulation's results
 output/*
@@ -61,6 +61,7 @@ compile_commands.json
 CTestTestfile.cmake
 _deps
 build/*
+manager/build/*
 CMakeUserPresets.json
 
 bin
@@ -214,6 +215,8 @@ cython_debug/
 #.idea/
 
 
+lib/
+
 
 tags
 
@@ -233,3 +236,9 @@ R/packages/*.tar.gz
 
 
 .vs
+*.diagsession
+*.pdb
+/THIRD-PARTY-NOTICES.md
+/.github
+/manager/signature.bin
+/manager/releases/26.11.18

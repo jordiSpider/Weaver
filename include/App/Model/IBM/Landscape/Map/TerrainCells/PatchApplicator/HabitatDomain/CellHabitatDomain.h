@@ -28,6 +28,7 @@
 
 /**
  * @class CellHabitatDomain
+ * @ingroup weaver_landscape
  * @brief Concrete implementation of CellHabitatDomainInterface representing 
  *        the habitat-domain properties of a terrain cell.
  *

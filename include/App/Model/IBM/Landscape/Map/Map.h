@@ -29,17 +29,18 @@
 #include <fstream>
 #include <ostream>
 #include <unordered_set>
+#include <vector>
 
 #include "Misc/Types.h"
 #include "App/Model/IBM/Landscape/Map/TerrainCells/TerrainCell.h"
+#include "App/Model/IBM/Landscape/Map/Points/PointContinuous.h"
 #include "Misc/EnumClass.h"
 #include "App/Model/IBM/Landscape/LivingBeings/Animals/AnimalStatistical.h"
 #include "Misc/CustomIndexedVector.h"
 #include "App/Model/IBM/Landscape/LivingBeings/Animals/Species/LifeStage.h"
 #include "App/Model/IBM/Landscape/LivingBeings/Animals/Species/AnimalSpeciesID.h"
-#include "App/View/View.h"
 #include "App/Model/IBM/Landscape/LivingBeings/Animals/Species/HuntingMode.h"
-#include "App/Model/IBM/Maths/PreciseDouble.h"
+#include "Misc/Maths/PreciseDouble.h"
 
 
 class Landscape;
@@ -48,6 +49,7 @@ class AnimalSearchParams;
 
 /**
  * @class Map
+ * @ingroup weaver_landscape
  * @brief Abstract base class for spatial landscape representations.
  *
  * The Map interface defines methods for managing terrain cells, animals, and resources
@@ -59,9 +61,8 @@ protected:
     PreciseDouble minCellSize; /**< Minimum cell size in the map */
     PreciseDouble minHyperVolume; /**< Minimum hypervolume of a cell */
     unsigned int numberOfCellsPerAxis; /**< Number of cells along each axis */
+    std::vector<unsigned int> numberOfCellsByAxis; /**< Number of configured cells along each axis */
     std::vector<TerrainCell*> inhabitableTerrainCells; /**< Cells that can be inhabited by animals */
-    CustomIndexedVector<LifeStage, AnimalSearchParams> lifeStageSearchParams; /**< Search parameters per life stage */
-    AnimalSearchParams allAnimalsSearchParams; /**< Search parameters for all animals */
 
     /**
     * @brief Checks if a species can inhabit a given terrain cell.
@@ -127,7 +128,14 @@ public:
     * @param patch Patch to apply.
     * @return True if applied successfully.
     */
-    virtual bool applyPatch(Landscape* const landscape, const Patch& patch)=0;
+    virtual bool applyPatch(Landscape* const landscape, const Patch& patch, unsigned int seed)=0;
+    virtual void prepareObstacleGeometry()=0;
+    virtual bool isTraversable(const PointContinuous& position, const PreciseDouble& animalBodySection) const=0;
+    virtual bool isTraversable(const PointContinuous& start, const PointContinuous& end, const PreciseDouble& animalBodySection) const=0;
+    virtual std::vector<PointContinuous> generateRouteCandidatePositions(const PreciseDouble& animalBodySection) const=0;
+
+    virtual TerrainCell* getCell(const PointContinuous& position) const = 0;
+    virtual TerrainCell* getCell(const PointMap& position) const = 0;
 
     /**
     * @brief Adds a terrain cell that can be inhabited.
@@ -152,6 +160,7 @@ public:
      * @return Number of cells per axis.
      */
     unsigned int getNumberOfCellsPerAxis() const;
+    unsigned int getNumberOfCellsByAxis(const unsigned char axis) const;
 
     /**
      * @brief Returns all inhabitable terrain cells.
@@ -173,26 +182,6 @@ public:
     TerrainCell*& getMutableInhabitableTerrainCell(const unsigned int index);
     
     /**
-     * @brief Returns the search parameters for a given life stage.
-     * @param lifeStage Life stage to retrieve parameters for.
-     * @return Const reference to the AnimalSearchParams.
-     */
-    const AnimalSearchParams& getLifeStageSearchParams(const LifeStage &lifeStage) const;
-    
-    /**
-     * @brief Returns the search parameters for all animals.
-     * @return Const reference to the AnimalSearchParams.
-     */
-    const AnimalSearchParams& getAllAnimalsSearchParams() const;
-    
-    /**
-     * @brief Inserts a new animal into the map.
-     * @param landscape Pointer to the Landscape object.
-     * @param newAnimal Pointer to the new Animal object.
-     */
-    virtual void insertAnimal(Landscape* const landscape, Animal* const newAnimal)=0;
-    
-    /**
      * @brief Updates the map and all its entities for a timestep.
      * @param numberOfTimeSteps Current timestep.
      */
@@ -206,12 +195,12 @@ public:
     /**
      * @brief Adds a new animal species to the map.
      */
-    virtual void addAnimalSpecies(const AnimalSpecies& animalSpecies, const PreciseDouble& timeStepsPerDay)=0;
+    virtual void addAnimalSpecies(const AnimalSpecies& animalSpecies)=0;
     
     /**
      * @brief Adds a new resource species to the map.
      */
-    virtual void addResourceSpecies(Landscape* const landscape, std::vector<std::vector<std::vector<CellResource*>>>& landscapeResources, ResourceSpecies& resourceSpecies, ResourceSource* const resourceBaseSource, const PreciseDouble& timeStepsPerDay)=0;
+    virtual void addResourceSpecies(Landscape* const landscape, std::vector<std::vector<std::vector<CellResource*>>>& landscapeResources, ResourceSpecies& resourceSpecies, ResourceSource* const resourceBaseSource)=0;
 
     /**
      * @brief Deserializes moisture and resource sources.
@@ -225,16 +214,6 @@ public:
      * @brief Deserializes existing animal and resource species.
      */
     virtual void deserializeSpecies(std::vector<ResourceSpecies*>& existingResourceSpecies, std::vector<AnimalSpecies*>& existingAnimalSpecies)=0;
-
-    /**
-     * @brief Increments the total number of active animals.
-     */
-    virtual void increaseTotalNumberOfActiveAnimals()=0;
-
-    /**
-     * @brief Decrements the total number of active animals.
-     */
-    virtual void decreaseTotalNumberOfActiveAnimals()=0;
 
     /**
      * @brief Returns a discrete map point corresponding to a continuous point.
@@ -257,12 +236,7 @@ public:
     /**
      * @brief Generates a statistical population for analysis.
      */
-    virtual unsigned int generateStatisticsPopulation(std::vector<CustomIndexedVector<Instar, std::vector<AnimalStatistical*>>>& animalsPopulation, View* view, Landscape* const landscape, std::vector<AnimalSpecies*>& existingAnimalSpecies, std::vector<CustomIndexedVector<Instar, std::vector<std::vector<TerrainCell*>::iterator>>> &mapSpeciesInhabitableTerrainCells, const TimeStep actualTimeStep, const PreciseDouble& timeStepsPerDay)=0;
-    
-    /**
-     * @brief Generates the actual animal population in the landscape.
-     */
-    virtual void generatePopulation(View* view, Landscape* const landscape, AnimalSpecies* currentAnimalSpecies, const CustomIndexedVector<Instar, unsigned int>& population, const std::vector<Genome>& initialGenomesPool, const CustomIndexedVector<Instar, std::vector<std::vector<TerrainCell*>::iterator>> &speciesInhabitableTerrainCells, const bool saveAnimalConstitutiveTraits, std::ostringstream& animalConstitutiveTraitsFile, const bool saveGenetics, const bool saveMassInfo, const TimeStep actualTimeStep, const PreciseDouble& timeStepsPerDay)=0;
+    virtual unsigned int generateStatisticsPopulation(std::vector<CustomIndexedVector<Instar, std::vector<AnimalStatistical*>>>& animalsPopulation, Landscape* const landscape, std::vector<AnimalSpecies*>& existingAnimalSpecies, std::vector<CustomIndexedVector<Instar, std::vector<std::vector<TerrainCell*>::iterator>>> &mapSpeciesInhabitableTerrainCells, const TimeStep actualTimeStep, const PreciseDouble& timeStepsPerDay)=0;
     
     /**
      * @brief Returns the header string for map position outputs.
@@ -270,11 +244,7 @@ public:
      */
     virtual std::string getMapPositionHeader() const=0;
 
-    /**
-     * @brief Obtains total resource biomass.
-     * @param landscapeResourceBiomass Vector to store wet mass per resource.
-     */
-    virtual void obtainResourceBiomass(std::vector<WetMass> &landscapeResourceBiomass) const=0;
+    virtual void obtainResourcesBiomass(std::vector<double> &resourcesBiomass) const=0;
     
     /**
      * @brief Saves a snapshot of a resource species to a file.
@@ -287,11 +257,6 @@ public:
     virtual void saveWaterSnapshot(std::ofstream &file) const=0;
 
     /**
-     * @brief Returns total number of active animals.
-     */
-    virtual const unsigned int& getTotalNumberOfActiveAnimals() const=0;
-
-    /**
      * @brief Obtains the global temperature range across all terrain cells.
      */
     virtual void obtainGlobalTemperatureRange(std::unordered_set<Temperature>& globalTemperatureRange) const=0;
@@ -301,6 +266,8 @@ public:
      * @return Map::Type
      */
     virtual Type getType() const=0;
+
+    virtual void registerCells(std::vector<TerrainCell*>& terrainCells)=0;
 
     /**
     * @brief Serializes the Map object.

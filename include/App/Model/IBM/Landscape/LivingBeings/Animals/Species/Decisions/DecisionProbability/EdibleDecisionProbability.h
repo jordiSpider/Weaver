@@ -19,6 +19,7 @@
 
 /**
  * @class EdibleDecisionProbability
+ * @ingroup weaver_landscape
  * @brief Base class for computing probabilities related to edible prey decisions.
  *
  * This class manages probability functions for predator-prey interactions where

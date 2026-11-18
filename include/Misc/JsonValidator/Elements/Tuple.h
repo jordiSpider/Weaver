@@ -25,12 +25,12 @@
 #include <nlohmann/json.hpp>
 
 #include "Misc/JsonValidator/Elements/Element.h"
-#include "Misc/JsonValidator/Elements/ElementFactory.h"
 #include "Misc/JsonValidator/Exceptions.h"
 
 
 /**
  * @class Tuple
+ * @ingroup weaver_validation
  * @brief Represents a JSON Schema tuple-type element with position-dependent validation.
  *
  * The Tuple class models JSON arrays whose elements are heterogeneous and must match

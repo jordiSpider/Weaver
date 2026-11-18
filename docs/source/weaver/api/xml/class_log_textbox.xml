@@ -1,0 +1,185 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.14.0" xml:lang="en-US">
+  <compounddef id="class_log_textbox" kind="class" language="C++" prot="public">
+    <compoundname>LogTextbox</compoundname>
+    <basecompoundref prot="public" virt="non-virtual">nana::panel&lt; true &gt;</basecompoundref>
+    <includes refid="_log_textbox_8h" local="no">LogTextbox.h</includes>
+    <sectiondef kind="protected-attrib">
+      <memberdef kind="variable" id="class_log_textbox_1a99fdc458b0db8ab63f48248a9e1a1c99" prot="protected" static="no" mutable="no">
+        <type>nana::place</type>
+        <definition>nana::place LogTextbox::layout</definition>
+        <argsstring></argsstring>
+        <name>layout</name>
+        <qualifiedname>LogTextbox::layout</qualifiedname>
+        <initializer>{*this}</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Layout manager for arranging the textbox </para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="App/View/GUI/Widgets/LogTextbox.h" line="64" column="17" bodyfile="App/View/GUI/Widgets/LogTextbox.h" bodystart="64" bodyend="64"/>
+      </memberdef>
+      <memberdef kind="variable" id="class_log_textbox_1a5fb58c846ea68159603847b13cbafe3c" prot="protected" static="no" mutable="no">
+        <type>nana::textbox</type>
+        <definition>nana::textbox LogTextbox::log</definition>
+        <argsstring></argsstring>
+        <name>log</name>
+        <qualifiedname>LogTextbox::log</qualifiedname>
+        <initializer>{*this}</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Textbox widget displaying log messages </para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="App/View/GUI/Widgets/LogTextbox.h" line="65" column="19" bodyfile="App/View/GUI/Widgets/LogTextbox.h" bodystart="65" bodyend="65"/>
+      </memberdef>
+    </sectiondef>
+    <sectiondef kind="public-func">
+      <memberdef kind="function" id="class_log_textbox_1a708b55675d8bd0c024fc3acb2b28a038" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type></type>
+        <definition>LogTextbox::LogTextbox</definition>
+        <argsstring>(const LogTextbox &amp;other)=delete</argsstring>
+        <name>LogTextbox</name>
+        <qualifiedname>LogTextbox::LogTextbox</qualifiedname>
+        <param>
+          <type>const <ref refid="class_log_textbox" kindref="compound">LogTextbox</ref> &amp;</type>
+          <declname>other</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="App/View/GUI/Widgets/LogTextbox.h" line="49" column="5"/>
+      </memberdef>
+      <memberdef kind="function" id="class_log_textbox_1abb4a9362248d743c392a7c780072cc9b" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type></type>
+        <definition>LogTextbox::LogTextbox</definition>
+        <argsstring>(nana::window parent)</argsstring>
+        <name>LogTextbox</name>
+        <qualifiedname>LogTextbox::LogTextbox</qualifiedname>
+        <param>
+          <type>nana::window</type>
+          <declname>parent</declname>
+        </param>
+        <briefdescription>
+<para>Constructs the <ref refid="class_log_textbox" kindref="compound">LogTextbox</ref> widget. </para>
+        </briefdescription>
+        <detaileddescription>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>parent</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>The parent window. </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="App/View/GUI/Widgets/LogTextbox.h" line="41" column="5"/>
+      </memberdef>
+      <memberdef kind="function" id="class_log_textbox_1ae4fc750cbf809bf1a663739c839fef87" prot="public" static="no" const="no" explicit="no" inline="no" virt="virtual">
+        <type></type>
+        <definition>virtual LogTextbox::~LogTextbox</definition>
+        <argsstring>()</argsstring>
+        <name>~LogTextbox</name>
+        <qualifiedname>LogTextbox::~LogTextbox</qualifiedname>
+        <briefdescription>
+<para>Destructor for <ref refid="class_log_textbox" kindref="compound">LogTextbox</ref>. </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="App/View/GUI/Widgets/LogTextbox.h" line="46" column="13"/>
+      </memberdef>
+      <memberdef kind="function" id="class_log_textbox_1ab6c1b47be7f3febb55371d6d0310048d" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void LogTextbox::append</definition>
+        <argsstring>(const std::string &amp;text)</argsstring>
+        <name>append</name>
+        <qualifiedname>LogTextbox::append</qualifiedname>
+        <param>
+          <type>const std::string &amp;</type>
+          <declname>text</declname>
+        </param>
+        <briefdescription>
+<para>Appends a new line of text to the log. </para>
+        </briefdescription>
+        <detaileddescription>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>text</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>The text to append. </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="App/View/GUI/Widgets/LogTextbox.h" line="56" column="10"/>
+      </memberdef>
+      <memberdef kind="function" id="class_log_textbox_1a896c69ec240faa75c463651417212906" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void LogTextbox::clean</definition>
+        <argsstring>()</argsstring>
+        <name>clean</name>
+        <qualifiedname>LogTextbox::clean</qualifiedname>
+        <briefdescription>
+<para>Clears all the text in the log. </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="App/View/GUI/Widgets/LogTextbox.h" line="61" column="10"/>
+      </memberdef>
+      <memberdef kind="function" id="class_log_textbox_1aacdde2f7ec6aeb73fbc768925f85afb0" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type><ref refid="class_log_textbox" kindref="compound">LogTextbox</ref> &amp;</type>
+        <definition>LogTextbox &amp; LogTextbox::operator=</definition>
+        <argsstring>(const LogTextbox &amp;other)=delete</argsstring>
+        <name>operator=</name>
+        <qualifiedname>LogTextbox::operator=</qualifiedname>
+        <param>
+          <type>const <ref refid="class_log_textbox" kindref="compound">LogTextbox</ref> &amp;</type>
+          <declname>other</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="App/View/GUI/Widgets/LogTextbox.h" line="50" column="12"/>
+      </memberdef>
+    </sectiondef>
+    <briefdescription>
+<para>A read-only multiline textbox widget for logging messages. </para>
+    </briefdescription>
+    <detaileddescription>
+<para>This class provides a simple logging panel with a non-editable, line-wrapped, and multi-line textbox. It allows appending messages and clearing the log content. </para>
+    </detaileddescription>
+    <location file="App/View/GUI/Widgets/LogTextbox.h" line="35" column="1" bodyfile="App/View/GUI/Widgets/LogTextbox.h" bodystart="35" bodyend="66"/>
+    <listofallmembers>
+      <member refid="class_log_textbox_1ab6c1b47be7f3febb55371d6d0310048d" prot="public" virt="non-virtual"><scope>LogTextbox</scope><name>append</name></member>
+      <member refid="class_log_textbox_1a896c69ec240faa75c463651417212906" prot="public" virt="non-virtual"><scope>LogTextbox</scope><name>clean</name></member>
+      <member refid="class_log_textbox_1a99fdc458b0db8ab63f48248a9e1a1c99" prot="protected" virt="non-virtual"><scope>LogTextbox</scope><name>layout</name></member>
+      <member refid="class_log_textbox_1a5fb58c846ea68159603847b13cbafe3c" prot="protected" virt="non-virtual"><scope>LogTextbox</scope><name>log</name></member>
+      <member refid="class_log_textbox_1abb4a9362248d743c392a7c780072cc9b" prot="public" virt="non-virtual"><scope>LogTextbox</scope><name>LogTextbox</name></member>
+      <member refid="class_log_textbox_1a708b55675d8bd0c024fc3acb2b28a038" prot="public" virt="non-virtual"><scope>LogTextbox</scope><name>LogTextbox</name></member>
+      <member refid="class_log_textbox_1aacdde2f7ec6aeb73fbc768925f85afb0" prot="public" virt="non-virtual"><scope>LogTextbox</scope><name>operator=</name></member>
+      <member refid="class_log_textbox_1ae4fc750cbf809bf1a663739c839fef87" prot="public" virt="virtual"><scope>LogTextbox</scope><name>~LogTextbox</name></member>
+    </listofallmembers>
+  </compounddef>
+</doxygen>

@@ -1,0 +1,111 @@
+
+Secuencial Puro: -> Resto de paralelización con 4 hebras
+-------------------
+Running on timeStep 0 out of 1000
+ - Updating map ...
+Time: 0.023619 secs.
+DONE
+ - Printing animals along cells ...
+Time: 0.916686 secs.
+DONE
+ - Executing actions ...
+0%|                                                  |100%
+   ##################################################
+Time: 4.165195 secs.
+DONE
+ - Background, assimilating food and reproducing ...
+Time: 0.103159 secs.
+DONE
+ - Printing animals along cells ...
+Time: 0.834045 secs.
+DONE
+ - Printing summary file ...
+Time: 0.000555 secs.
+DONE
+ - Purging dead animals ...
+Time: 0.001076 secs.
+DONE
+
+
+Paralelización actionPlanning: 71% mejor que el secuencial puro en "Executing actions"
+-------------------
+Running on timeStep 0 out of 1000
+ - Updating map ...
+Time: 0.022648 secs.
+DONE
+ - Printing animals along cells ...
+Time: 1.046574 secs.
+DONE
+ - Executing actions ...
+0%|                                                  |100%
+   ##################################################
+Time: 1.203450 secs.
+DONE
+ - Background, assimilating food and reproducing ...
+Time: 0.108734 secs.
+DONE
+ - Printing animals along cells ...
+Time: 0.903114 secs.
+DONE
+ - Printing summary file ...
+Time: 0.000421 secs.
+DONE
+ - Purging dead animals ...
+Time: 0.000718 secs.
+DONE
+
+
+Paralelización printAnimalsAlongCells: 50% mejor que el secuencial puro en "Printing animals along cells"
+-------------------
+Running on timeStep 0 out of 1000
+ - Updating map ...
+Time: 0.018905 secs.
+DONE
+ - Printing animals along cells ...
+Time: 0.519169 secs.
+DONE
+ - Executing actions ...
+0%|                                                  |100%
+   ##################################################
+Time: 1.183136 secs.
+DONE
+ - Background, assimilating food and reproducing ...
+Time: 0.120617 secs.
+DONE
+ - Printing animals along cells ...
+Time: 0.491306 secs.
+DONE
+ - Printing summary file ...
+Time: 0.000381 secs.
+DONE
+ - Purging dead animals ...
+Time: 0.000854 secs.
+DONE
+
+
+Paralelización actionExecution: 16% mejor que el Paralelización actionPlanning
+-------------------
+Running on timeStep 0 out of 1000
+ - Updating map ...
+Time: 0.021671 secs.
+DONE
+ - Printing animals along cells ...
+Time: 0.466112 secs.
+DONE
+ - Executing actions ...
+0%|                                                  |100%
+   ##################################################
+Time: 0.986186 secs.
+DONE
+ - Background, assimilating food and reproducing ...
+Time: 0.100931 secs.
+DONE
+ - Printing animals along cells ...
+Time: 0.475542 secs.
+DONE
+ - Printing summary file ...
+Time: 0.000406 secs.
+DONE
+ - Purging dead animals ...
+Time: 0.000659 secs.
+DONE

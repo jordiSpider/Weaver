@@ -28,6 +28,7 @@
 
 /**
  * @class NonDynamics
+ * @ingroup weaver_model
  * @brief Represents a non-changing dynamic component in the ecosystem model.
  *
  * This class implements a dynamics model where the associated value does not

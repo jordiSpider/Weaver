@@ -1,0 +1,12 @@
+#!/bin/sh
+# Removes only this installation's private R library.
+set -e
+
+R_LIBRARY_DIR="@WEAVER_R_LIBRARY_DIR@"
+case "$1" in
+    remove|purge)
+        rm -rf "$R_LIBRARY_DIR"
+        ;;
+esac
+
+exit 0

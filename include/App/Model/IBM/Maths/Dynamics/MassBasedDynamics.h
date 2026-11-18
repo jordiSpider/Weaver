@@ -28,6 +28,7 @@
 
 /**
  * @class MassBasedDynamics
+ * @ingroup weaver_model
  * @brief Represents dynamics based on mass for living beings or resources.
  *
  * MassBasedDynamics is a specialized subclass of Dynamics. Its behavior

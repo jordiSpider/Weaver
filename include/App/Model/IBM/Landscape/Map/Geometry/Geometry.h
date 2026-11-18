@@ -59,6 +59,7 @@ using SegmentModel = boost::geometry::model::segment<PointContinuous>;
 
 /**
  * @class Geometry
+ * @ingroup weaver_landscape
  * @brief Provides static geometric operations for spatial modeling.
  *
  * The Geometry class includes methods for creating geometric shapes,
@@ -75,14 +76,14 @@ private:
      * @param applyEpsilon Whether to apply a small epsilon to avoid precision issues.
      * @return Pointer to the created BoxModel.
      */
-    static BoxModel* makeBox(const PointMap &position, const PreciseDouble &size, const bool applyEpsilon=false);
+    static BoxModel makeBox(const PointMap &position, const PreciseDouble &size, const bool applyEpsilon=false);
 
     /**
      * @brief Calculates the area of a ring.
      * @param obj Pointer to the ring object.
      * @return Area of the ring.
      */
-    static PreciseDouble calculateArea(const RingModel* const obj);
+    static PreciseDouble calculateArea(const RingModel& obj);
 
     /**
      * @brief Determines the coverage level based on a percentage.
@@ -90,6 +91,8 @@ private:
      * @return Coverage enum indicating coverage level.
      */
     static Coverage checkCoverageLevel(const PreciseDouble& percent);
+
+    static bool pointInCircle(double circleX, double circleY, double radiusSq, double px, double py);
 
 public:
     /// @brief Number of points used to approximate a circle.
@@ -101,7 +104,7 @@ public:
      * @param size Size of the box.
      * @return Pointer to the BoxModel representing the effective area.
      */
-    static BoxModel* makeBoxEffectiveArea(const PointMap &position, const PreciseDouble &size);
+    static BoxModel makeBoxEffectiveArea(const PointMap &position, const PreciseDouble &size);
     
     /**
      * @brief Creates a spherical ring.
@@ -109,7 +112,7 @@ public:
      * @param radius Radius of the sphere.
      * @return Pointer to a RingModel approximating the sphere.
      */
-    static RingModel* makeSphere(const PointContinuous &center, const PreciseDouble &radius);
+    static RingModel makeSphere(const PointContinuous &center, const PreciseDouble &radius);
 
     /**
      * @brief Calculates the intersection of two rings.
@@ -117,7 +120,7 @@ public:
      * @param objB Pointer to the second ring.
      * @return Pointer to a RingModel representing the intersection area.
      */
-    static RingModel* calculateIntersection(const RingModel* const objA, const RingModel* const objB);
+    static RingModel calculateIntersection(const RingModel& objA, const RingModel& objB);
 
     /**
      * @brief Calculates the Euclidean distance between two points.
@@ -158,21 +161,21 @@ public:
      * @param polygon Pointer to the polygon.
      * @return True if the point lies inside the polygon.
      */
-    static bool withinPolygon(const PointContinuous &point, const RingModel* const polygon);
+    static bool withinPolygon(const PointContinuous &point, const RingModel& polygon);
 
     /**
      * @brief Generates a random point within a box.
      * @param box Pointer to the box.
      * @return Random point inside the box.
      */
-    static PointContinuous generateRandomPointOnBox(const RingModel* const box);
+    static PointContinuous generateRandomPointOnBox(const RingModel& box);
     
     /**
      * @brief Generates a random point within a polygon.
      * @param area Pointer to the polygon area.
      * @return Random point inside the polygon.
      */
-    static PointContinuous generateRandomPointOnPolygon(const RingModel* const area);
+    static PointContinuous generateRandomPointOnPolygon(const RingModel& area);
 
     /**
      * @brief Determines coverage level of the first ring by the second.
@@ -181,7 +184,7 @@ public:
      * @param applyIntersection Whether to consider only the intersection area.
      * @return Coverage enum representing the coverage level.
      */
-    static Coverage checkFirstCoverageLevelBySecond(const RingModel* const first, const RingModel* const second, const bool applyIntersection);
+    static Coverage checkFirstCoverageLevelBySecond(const RingModel& first, const RingModel& second, const bool applyIntersection);
     
     /**
      * @brief Checks if an area is fully covered by a sphere.
@@ -190,7 +193,7 @@ public:
      * @param radius Sphere radius.
      * @return True if fully covered.
      */
-    static bool fullCoveredBySphere(const RingModel* const area, const PointContinuous &center, const PreciseDouble &radius);
+    static bool fullCoveredBySphere(const RingModel& area, const PointContinuous &center, const PreciseDouble &radius);
     
     /**
      * @brief Determines coverage level of an area by a sphere.
@@ -199,7 +202,9 @@ public:
      * @param radius Sphere radius.
      * @return Coverage enum representing the coverage level.
      */
-    static Coverage checkCoveredLevelBySphere(const RingModel* const area, const PointContinuous &center, const PreciseDouble &radius);
+    static Coverage checkCoveredLevelBySphere(const RingModel& area, const PointContinuous &center, const PreciseDouble &radius);
+
+    static PreciseDouble calculateCoveragePercentBySphere(const RingModel& area, const PointContinuous& center, const PreciseDouble& radius);
     
     /**
      * @brief Checks if a point is inside a sphere.
@@ -210,6 +215,8 @@ public:
      */
     static bool pointInsideSphere(const PointContinuous& point, const PointContinuous &center, const PreciseDouble &radius);
 
+    static bool pointInsideBox(const PointContinuous& point, const RingModel& box);
+
     /**
      * @brief Calculates the coverage percentage of the first ring by the second.
      * @param first Pointer to the first ring.
@@ -217,7 +224,7 @@ public:
      * @param applyIntersection Whether to consider only the intersection area.
      * @return Coverage percentage (0-100).
      */
-    static PreciseDouble calculateFirstCoveragePercentBySecond(const RingModel* const first, const RingModel* const second, const bool applyIntersection);
+    static PreciseDouble calculateFirstCoveragePercentBySecond(const RingModel& first, const RingModel& second, const bool applyIntersection);
 };
 
 #endif /* GEOMETRY_H_ */

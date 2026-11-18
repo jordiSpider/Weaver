@@ -28,6 +28,7 @@
 
 /**
  * @class ResourceSpecies
+  * @ingroup weaver_landscape
  * @brief Represents a species that acts as a resource in the ecosystem.
  *
  * ResourceSpecies describes biological resources available to consumers in the simulation.
@@ -39,6 +40,7 @@ class ResourceSpecies: public Species
 public:
 	/**
 	 * @class ResourceSpecies::ResourceID
+	 * @ingroup weaver_landscape
 	 * @brief Unique identifier for a resource species.
 	 *
 	 * This class encapsulates a value of type id_type used to distinguish resource
@@ -73,7 +75,9 @@ public:
 		 * Enables use of ResourceID as a key in hash-based containers.
 		 * @return Identifier value converted to size_t.
 		 */
-		operator size_t() const;
+		constexpr operator size_t() const noexcept {
+			return static_cast<size_t>(value);
+		}
 
 		/**
 		 * @brief Serializes the object for persistence.

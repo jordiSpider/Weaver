@@ -1,0 +1,25 @@
+{
+  "$schema": "https://raw.githubusercontent.com/jordiSpider/Weaver/main/schema/configuration_structure.schema.json",
+  "$id": "https://raw.githubusercontent.com/jordiSpider/Weaver/main/schema/2026.10.21/configuration_structure.json",
+  "version": "1.0.0",
+  "root": {
+    "directories": [
+      {"name":"species","required":true,"files":{"pattern":"*.json","schema":"json/species_schema.json","minCount":1},"namedFiles":[
+        {"name":"ontogeneticLinksPreference.csv","required":true,"type":"csv"},
+        {"name":"ontogeneticLinksProfitability.csv","required":true,"type":"csv"}
+      ]},
+      {"name":"resources","required":true,"files":{"pattern":"*.json","schema":"json/resource_schema.json","minCount":1}},
+      {"name":"patches","required":true,"directories":[
+        {"name":"habitat_domain","files":{"pattern":"*.json","schema":"json/habitat_domain_patch_schema.json"}},
+        {"name":"moisture","files":{"pattern":"*.json","schema":"json/moisture_patch_schema.json"}},
+        {"name":"obstacle","files":{"pattern":"*.json","schema":"json/obstacle_patch_schema.json"}},
+        {"name":"resource","files":{"pattern":"*.json","schema":"json/resource_patch_schema.json"}}
+      ]}
+    ],
+    "files": [
+      {"name":"simulation_params.json","required":true,"schema":"json/simulation_params_schema.json"},
+      {"name":"landscape_params.json","required":true,"schema":"json/landscape_params_schema.json"}
+    ]
+  }
+}
+

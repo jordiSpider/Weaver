@@ -1,0 +1,1179 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.14.0" xml:lang="en-US">
+  <compounddef id="class_branch_patch_applicator" kind="class" language="C++" prot="public">
+    <compoundname>BranchPatchApplicator</compoundname>
+    <basecompoundref refid="class_spatial_tree_patch_applicator" prot="public" virt="non-virtual">SpatialTreePatchApplicator</basecompoundref>
+    <includes refid="_branch_patch_applicator_8h" local="no">BranchPatchApplicator.h</includes>
+    <sectiondef kind="public-func">
+      <memberdef kind="function" id="class_branch_patch_applicator_1afc9861125b08c47085883fdc08dbc071" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type></type>
+        <definition>BranchPatchApplicator::BranchPatchApplicator</definition>
+        <argsstring>()</argsstring>
+        <name>BranchPatchApplicator</name>
+        <qualifiedname>BranchPatchApplicator::BranchPatchApplicator</qualifiedname>
+        <briefdescription>
+<para>Default constructor. </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="App/Model/IBM/Landscape/Map/SpatialTree/TerrainCells/PatchApplicator/BranchPatchApplicator.h" line="38" column="5"/>
+      </memberdef>
+      <memberdef kind="function" id="class_branch_patch_applicator_1a9971657d09a83a3f8c24ef1a6893f9b0" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type></type>
+        <definition>BranchPatchApplicator::BranchPatchApplicator</definition>
+        <argsstring>(const BranchPatchApplicator &amp;)=delete</argsstring>
+        <name>BranchPatchApplicator</name>
+        <qualifiedname>BranchPatchApplicator::BranchPatchApplicator</qualifiedname>
+        <param>
+          <type>const <ref refid="class_branch_patch_applicator" kindref="compound">BranchPatchApplicator</ref> &amp;</type>
+        </param>
+        <briefdescription>
+<para>Deleted copy constructor. </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="App/Model/IBM/Landscape/Map/SpatialTree/TerrainCells/PatchApplicator/BranchPatchApplicator.h" line="51" column="5"/>
+      </memberdef>
+      <memberdef kind="function" id="class_branch_patch_applicator_1a178a3ea5632ec9ec40a35ebc08bcd3f8" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type></type>
+        <definition>BranchPatchApplicator::BranchPatchApplicator</definition>
+        <argsstring>(TerrainCell *cell, MoistureSource *const moistureBaseSource)</argsstring>
+        <name>BranchPatchApplicator</name>
+        <qualifiedname>BranchPatchApplicator::BranchPatchApplicator</qualifiedname>
+        <param>
+          <type><ref refid="class_terrain_cell" kindref="compound">TerrainCell</ref> *</type>
+          <declname>cell</declname>
+        </param>
+        <param>
+          <type><ref refid="class_moisture_source" kindref="compound">MoistureSource</ref> *const</type>
+          <declname>moistureBaseSource</declname>
+        </param>
+        <briefdescription>
+<para>Constructor initializing the branch patch applicator with a terrain cell and a moisture source. </para>
+        </briefdescription>
+        <detaileddescription>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>cell</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Pointer to the branch terrain cell. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>moistureBaseSource</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Pointer to the base moisture source. </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="App/Model/IBM/Landscape/Map/SpatialTree/TerrainCells/PatchApplicator/BranchPatchApplicator.h" line="45" column="5"/>
+      </memberdef>
+      <memberdef kind="function" id="class_branch_patch_applicator_1a59f58331b9786fdd94523e7d7a0757a6" prot="public" static="no" const="no" explicit="no" inline="no" virt="virtual">
+        <type></type>
+        <definition>virtual BranchPatchApplicator::~BranchPatchApplicator</definition>
+        <argsstring>()</argsstring>
+        <name>~BranchPatchApplicator</name>
+        <qualifiedname>BranchPatchApplicator::~BranchPatchApplicator</qualifiedname>
+        <briefdescription>
+<para>Destructor. </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="App/Model/IBM/Landscape/Map/SpatialTree/TerrainCells/PatchApplicator/BranchPatchApplicator.h" line="48" column="13"/>
+      </memberdef>
+      <memberdef kind="function" id="class_branch_patch_applicator_1aecb4361cc857168b7fae26e0c973a61c" prot="public" static="no" const="no" explicit="no" inline="no" virt="virtual">
+        <type>void</type>
+        <definition>void BranchPatchApplicator::addResourceSpecies</definition>
+        <argsstring>(Landscape *const landscape, std::vector&lt; std::vector&lt; std::vector&lt; CellResource * &gt; &gt; &gt; &amp;landscapeResources, ResourceSpecies &amp;resourceSpecies, ResourceSource *const resourceBaseSource)</argsstring>
+        <name>addResourceSpecies</name>
+        <qualifiedname>BranchPatchApplicator::addResourceSpecies</qualifiedname>
+        <reimplements refid="class_patch_applicator_1a5bbdb162b44bde6a329f8e8b9c1ed244">addResourceSpecies</reimplements>
+        <param>
+          <type><ref refid="class_landscape" kindref="compound">Landscape</ref> *const</type>
+          <declname>landscape</declname>
+        </param>
+        <param>
+          <type>std::vector&lt; std::vector&lt; std::vector&lt; <ref refid="class_cell_resource" kindref="compound">CellResource</ref> * &gt; &gt; &gt; &amp;</type>
+          <declname>landscapeResources</declname>
+        </param>
+        <param>
+          <type><ref refid="class_resource_species" kindref="compound">ResourceSpecies</ref> &amp;</type>
+          <declname>resourceSpecies</declname>
+        </param>
+        <param>
+          <type><ref refid="class_resource_source" kindref="compound">ResourceSource</ref> *const</type>
+          <declname>resourceBaseSource</declname>
+        </param>
+        <briefdescription>
+<para>Adds a resource species to the branch cell and propagates it to children. </para>
+        </briefdescription>
+        <detaileddescription>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>landscape</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Pointer to the landscape. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>landscapeResources</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Reference to the landscape&apos;s 3D vector of resources. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>resourceSpecies</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Resource species to add. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>resourceBaseSource</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Base resource source. </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="App/Model/IBM/Landscape/Map/SpatialTree/TerrainCells/PatchApplicator/BranchPatchApplicator.h" line="113" column="10"/>
+      </memberdef>
+      <memberdef kind="function" id="class_branch_patch_applicator_1a954a78976f50bcce8566adaa5aa81f02" prot="public" static="no" const="no" explicit="no" inline="no" virt="virtual">
+        <type>std::pair&lt; bool, bool &gt;</type>
+        <definition>std::pair&lt; bool, bool &gt; BranchPatchApplicator::applyPatch</definition>
+        <argsstring>(Landscape *const landscape, const Patch &amp;patch)</argsstring>
+        <name>applyPatch</name>
+        <qualifiedname>BranchPatchApplicator::applyPatch</qualifiedname>
+        <reimplements refid="class_patch_applicator_1a573912ec6ec9b2e15836da20de87b5a0">applyPatch</reimplements>
+        <param>
+          <type><ref refid="class_landscape" kindref="compound">Landscape</ref> *const</type>
+          <declname>landscape</declname>
+        </param>
+        <param>
+          <type>const <ref refid="class_patch" kindref="compound">Patch</ref> &amp;</type>
+          <declname>patch</declname>
+        </param>
+        <briefdescription>
+<para>Applies a patch to the branch cell and propagates it downwards to children. </para>
+        </briefdescription>
+        <detaileddescription>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>landscape</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Pointer to the landscape. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>patch</parametername>
+</parameternamelist>
+<parameterdescription>
+<para><ref refid="class_patch" kindref="compound">Patch</ref> to apply. </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<simplesect kind="return"><para>Pair of booleans indicating whether the patch was applied and whether full coverage was achieved. </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="App/Model/IBM/Landscape/Map/SpatialTree/TerrainCells/PatchApplicator/BranchPatchApplicator.h" line="121" column="15"/>
+      </memberdef>
+      <memberdef kind="function" id="class_branch_patch_applicator_1a753ca51bf372cadc0f8732dae3dbc8dd" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void BranchPatchApplicator::applyUp</definition>
+        <argsstring>(const PathSource &amp;source)</argsstring>
+        <name>applyUp</name>
+        <qualifiedname>BranchPatchApplicator::applyUp</qualifiedname>
+        <param>
+          <type>const <ref refid="class_path_source" kindref="compound">PathSource</ref> &amp;</type>
+          <declname>source</declname>
+        </param>
+        <briefdescription>
+<para>Applies a patch upwards from children to this branch cell. </para>
+        </briefdescription>
+        <detaileddescription>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>source</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Path source to apply. </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="App/Model/IBM/Landscape/Map/SpatialTree/TerrainCells/PatchApplicator/BranchPatchApplicator.h" line="127" column="10"/>
+      </memberdef>
+      <memberdef kind="function" id="class_branch_patch_applicator_1aa8cc6d89c643f5fe47c195d2910761f4" prot="public" static="no" const="yes" explicit="no" inline="no" virt="virtual">
+        <type>const <ref refid="class_branch_cell_habitat_domain" kindref="compound">BranchCellHabitatDomain</ref> &amp;</type>
+        <definition>const BranchCellHabitatDomain &amp; BranchPatchApplicator::getCellHabitatDomain</definition>
+        <argsstring>() const override</argsstring>
+        <name>getCellHabitatDomain</name>
+        <qualifiedname>BranchPatchApplicator::getCellHabitatDomain</qualifiedname>
+        <reimplements refid="class_patch_applicator_1ae7e11ad858cbf06b5efb77d7c8964714">getCellHabitatDomain</reimplements>
+        <briefdescription>
+<para>Get a const reference to the cell&apos;s habitat domain interface. </para>
+        </briefdescription>
+        <detaileddescription>
+<para><simplesect kind="return"><para>const reference to <ref refid="class_cell_habitat_domain_interface" kindref="compound">CellHabitatDomainInterface</ref> </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="App/Model/IBM/Landscape/Map/SpatialTree/TerrainCells/PatchApplicator/BranchPatchApplicator.h" line="98" column="35"/>
+      </memberdef>
+      <memberdef kind="function" id="class_branch_patch_applicator_1a60481ca26e6a66df2a2dfd825b9b68b3" prot="public" static="no" const="yes" explicit="no" inline="no" virt="virtual">
+        <type>const <ref refid="class_branch_cell_moisture" kindref="compound">BranchCellMoisture</ref> &amp;</type>
+        <definition>const BranchCellMoisture &amp; BranchPatchApplicator::getCellMoisture</definition>
+        <argsstring>() const override</argsstring>
+        <name>getCellMoisture</name>
+        <qualifiedname>BranchPatchApplicator::getCellMoisture</qualifiedname>
+        <reimplements refid="class_patch_applicator_1a2e03fbbe7f8adb26df4f89ca91896261">getCellMoisture</reimplements>
+        <briefdescription>
+<para>Get a const reference to the cell&apos;s moisture interface. </para>
+        </briefdescription>
+        <detaileddescription>
+<para><simplesect kind="return"><para>const reference to <ref refid="class_cell_moisture_interface" kindref="compound">CellMoistureInterface</ref> </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="App/Model/IBM/Landscape/Map/SpatialTree/TerrainCells/PatchApplicator/BranchPatchApplicator.h" line="60" column="30"/>
+      </memberdef>
+      <memberdef kind="function" id="class_branch_patch_applicator_1ac01441c733715a0708b8fbcd10b10556" prot="public" static="no" const="yes" explicit="no" inline="no" virt="virtual">
+        <type>const <ref refid="class_branch_cell_obstacle" kindref="compound">BranchCellObstacle</ref> &amp;</type>
+        <definition>const BranchCellObstacle &amp; BranchPatchApplicator::getCellObstacle</definition>
+        <argsstring>() const override</argsstring>
+        <name>getCellObstacle</name>
+        <qualifiedname>BranchPatchApplicator::getCellObstacle</qualifiedname>
+        <reimplements refid="class_patch_applicator_1a1db070de32eb06630a9d620cc2abd2de">getCellObstacle</reimplements>
+        <briefdescription>
+<para>Get a const reference to the cell&apos;s obstacle interface. </para>
+        </briefdescription>
+        <detaileddescription>
+<para><simplesect kind="return"><para>const reference to <ref refid="class_cell_obstacle_interface" kindref="compound">CellObstacleInterface</ref> </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="App/Model/IBM/Landscape/Map/SpatialTree/TerrainCells/PatchApplicator/BranchPatchApplicator.h" line="86" column="30"/>
+      </memberdef>
+      <memberdef kind="function" id="class_branch_patch_applicator_1a7d37dced71a137e8087757a2cdd59b9a" prot="public" static="no" const="yes" explicit="no" inline="no" virt="virtual">
+        <type>const <ref refid="class_branch_cell_resource" kindref="compound">BranchCellResource</ref> &amp;</type>
+        <definition>const BranchCellResource &amp; BranchPatchApplicator::getCellResource</definition>
+        <argsstring>(const size_t resourceSpeciesId) const override</argsstring>
+        <name>getCellResource</name>
+        <qualifiedname>BranchPatchApplicator::getCellResource</qualifiedname>
+        <reimplements refid="class_patch_applicator_1a400033dfe4655013bc8399a1d6761b60">getCellResource</reimplements>
+        <param>
+          <type>const size_t</type>
+          <declname>resourceSpeciesId</declname>
+        </param>
+        <briefdescription>
+<para>Get a const reference to a resource interface by resource species ID. </para>
+        </briefdescription>
+        <detaileddescription>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>resourceSpeciesId</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>ID of the resource species </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<simplesect kind="return"><para>const reference to <ref refid="class_cell_resource_interface" kindref="compound">CellResourceInterface</ref> </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="App/Model/IBM/Landscape/Map/SpatialTree/TerrainCells/PatchApplicator/BranchPatchApplicator.h" line="73" column="30"/>
+      </memberdef>
+      <memberdef kind="function" id="class_branch_patch_applicator_1abdcc5f54eb7e7ba70b7815907cfc3d71" prot="public" static="no" const="no" explicit="no" inline="no" virt="virtual">
+        <type><ref refid="class_branch_cell_habitat_domain" kindref="compound">BranchCellHabitatDomain</ref> &amp;</type>
+        <definition>BranchCellHabitatDomain &amp; BranchPatchApplicator::getMutableCellHabitatDomain</definition>
+        <argsstring>() override</argsstring>
+        <name>getMutableCellHabitatDomain</name>
+        <qualifiedname>BranchPatchApplicator::getMutableCellHabitatDomain</qualifiedname>
+        <reimplements refid="class_patch_applicator_1a459d13e8deaefc630eac1d6ff97163b3">getMutableCellHabitatDomain</reimplements>
+        <briefdescription>
+<para>Get a mutable reference to the cell&apos;s habitat domain interface. </para>
+        </briefdescription>
+        <detaileddescription>
+<para><simplesect kind="return"><para>mutable reference to <ref refid="class_cell_habitat_domain_interface" kindref="compound">CellHabitatDomainInterface</ref> </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="App/Model/IBM/Landscape/Map/SpatialTree/TerrainCells/PatchApplicator/BranchPatchApplicator.h" line="104" column="29"/>
+      </memberdef>
+      <memberdef kind="function" id="class_branch_patch_applicator_1a3d0ef61cb939cc580f1b65158aea6b4c" prot="public" static="no" const="no" explicit="no" inline="no" virt="virtual">
+        <type><ref refid="class_branch_cell_moisture" kindref="compound">BranchCellMoisture</ref> &amp;</type>
+        <definition>BranchCellMoisture &amp; BranchPatchApplicator::getMutableCellMoisture</definition>
+        <argsstring>() override</argsstring>
+        <name>getMutableCellMoisture</name>
+        <qualifiedname>BranchPatchApplicator::getMutableCellMoisture</qualifiedname>
+        <reimplements refid="class_patch_applicator_1a56cdd3fa2b12e62db2e687e657daace2">getMutableCellMoisture</reimplements>
+        <briefdescription>
+<para>Get a mutable reference to the cell&apos;s moisture interface. </para>
+        </briefdescription>
+        <detaileddescription>
+<para><simplesect kind="return"><para>mutable reference to <ref refid="class_cell_moisture_interface" kindref="compound">CellMoistureInterface</ref> </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="App/Model/IBM/Landscape/Map/SpatialTree/TerrainCells/PatchApplicator/BranchPatchApplicator.h" line="66" column="24"/>
+      </memberdef>
+      <memberdef kind="function" id="class_branch_patch_applicator_1a3d40174a3798027c2287bef62f66dbcd" prot="public" static="no" const="no" explicit="no" inline="no" virt="virtual">
+        <type><ref refid="class_branch_cell_obstacle" kindref="compound">BranchCellObstacle</ref> &amp;</type>
+        <definition>BranchCellObstacle &amp; BranchPatchApplicator::getMutableCellObstacle</definition>
+        <argsstring>() override</argsstring>
+        <name>getMutableCellObstacle</name>
+        <qualifiedname>BranchPatchApplicator::getMutableCellObstacle</qualifiedname>
+        <reimplements refid="class_patch_applicator_1ad3bda75c267fd8d69242d7bcab04d5fd">getMutableCellObstacle</reimplements>
+        <briefdescription>
+<para>Get a mutable reference to the cell&apos;s obstacle interface. </para>
+        </briefdescription>
+        <detaileddescription>
+<para><simplesect kind="return"><para>mutable reference to <ref refid="class_cell_obstacle_interface" kindref="compound">CellObstacleInterface</ref> </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="App/Model/IBM/Landscape/Map/SpatialTree/TerrainCells/PatchApplicator/BranchPatchApplicator.h" line="92" column="24"/>
+      </memberdef>
+      <memberdef kind="function" id="class_branch_patch_applicator_1a0255aeee1e19e8cd4be56a027caa8efe" prot="public" static="no" const="no" explicit="no" inline="no" virt="virtual">
+        <type><ref refid="class_branch_cell_resource" kindref="compound">BranchCellResource</ref> &amp;</type>
+        <definition>BranchCellResource &amp; BranchPatchApplicator::getMutableCellResource</definition>
+        <argsstring>(const size_t resourceSpeciesId) override</argsstring>
+        <name>getMutableCellResource</name>
+        <qualifiedname>BranchPatchApplicator::getMutableCellResource</qualifiedname>
+        <reimplements refid="class_patch_applicator_1a22c066c80a2ec6f69b5ae8a60c225cfc">getMutableCellResource</reimplements>
+        <param>
+          <type>const size_t</type>
+          <declname>resourceSpeciesId</declname>
+        </param>
+        <briefdescription>
+<para>Get a mutable reference to a resource interface by resource species ID. </para>
+        </briefdescription>
+        <detaileddescription>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>resourceSpeciesId</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>ID of the resource species </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<simplesect kind="return"><para>mutable reference to <ref refid="class_cell_resource_interface" kindref="compound">CellResourceInterface</ref> </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="App/Model/IBM/Landscape/Map/SpatialTree/TerrainCells/PatchApplicator/BranchPatchApplicator.h" line="80" column="24"/>
+      </memberdef>
+      <memberdef kind="function" id="class_branch_patch_applicator_1a82b0e0ea08c74b1c449537d320480eb7" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type><ref refid="class_branch_patch_applicator" kindref="compound">BranchPatchApplicator</ref> &amp;</type>
+        <definition>BranchPatchApplicator &amp; BranchPatchApplicator::operator=</definition>
+        <argsstring>(const BranchPatchApplicator &amp;)=delete</argsstring>
+        <name>operator=</name>
+        <qualifiedname>BranchPatchApplicator::operator=</qualifiedname>
+        <param>
+          <type>const <ref refid="class_branch_patch_applicator" kindref="compound">BranchPatchApplicator</ref> &amp;</type>
+        </param>
+        <briefdescription>
+<para>Deleted copy assignment. </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="App/Model/IBM/Landscape/Map/SpatialTree/TerrainCells/PatchApplicator/BranchPatchApplicator.h" line="54" column="27"/>
+      </memberdef>
+      <memberdef kind="function" id="class_branch_patch_applicator_1a20e213440d1020e4d4d0ea48ab7769a5" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <templateparamlist>
+          <param>
+            <type>class Archive</type>
+          </param>
+        </templateparamlist>
+        <type>void</type>
+        <definition>void BranchPatchApplicator::serialize</definition>
+        <argsstring>(Archive &amp;ar, const unsigned int version)</argsstring>
+        <name>serialize</name>
+        <qualifiedname>BranchPatchApplicator::serialize</qualifiedname>
+        <param>
+          <type>Archive &amp;</type>
+          <declname>ar</declname>
+        </param>
+        <param>
+          <type>const unsigned int</type>
+          <declname>version</declname>
+        </param>
+        <briefdescription>
+<para>Serialization function. </para>
+        </briefdescription>
+        <detaileddescription>
+<para><parameterlist kind="templateparam"><parameteritem>
+<parameternamelist>
+<parametername>Archive</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Type of the archive. </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>ar</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Archive object. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>version</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Version of serialization. </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="App/Model/IBM/Landscape/Map/SpatialTree/TerrainCells/PatchApplicator/BranchPatchApplicator.h" line="136" column="10"/>
+      </memberdef>
+    </sectiondef>
+    <sectiondef kind="protected-func">
+      <memberdef kind="function" id="class_branch_patch_applicator_1aff5617ac8015f341df751a8ec07a3592" prot="protected" static="no" const="no" explicit="no" inline="no" virt="virtual">
+        <type>void</type>
+        <definition>void BranchPatchApplicator::applyDown</definition>
+        <argsstring>(Landscape *const landscape, const PathSource &amp;source, const size_t newPatchPriority)</argsstring>
+        <name>applyDown</name>
+        <qualifiedname>BranchPatchApplicator::applyDown</qualifiedname>
+        <reimplements refid="class_spatial_tree_patch_applicator_1a61c39fbb14124aecddb65b6ff084730f">applyDown</reimplements>
+        <param>
+          <type><ref refid="class_landscape" kindref="compound">Landscape</ref> *const</type>
+          <declname>landscape</declname>
+        </param>
+        <param>
+          <type>const <ref refid="class_path_source" kindref="compound">PathSource</ref> &amp;</type>
+          <declname>source</declname>
+        </param>
+        <param>
+          <type>const size_t</type>
+          <declname>newPatchPriority</declname>
+        </param>
+        <briefdescription>
+<para>Applies the downward effect of a patch on the branch cell. </para>
+        </briefdescription>
+        <detaileddescription>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>landscape</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Pointer to the landscape. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>source</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Path source to apply. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>newPatchPriority</parametername>
+</parameternamelist>
+<parameterdescription>
+<para><ref refid="class_patch" kindref="compound">Patch</ref> priority. </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="App/Model/IBM/Landscape/Map/SpatialTree/TerrainCells/PatchApplicator/BranchPatchApplicator.h" line="161" column="10"/>
+      </memberdef>
+      <memberdef kind="function" id="class_branch_patch_applicator_1a0207ce71b477677740eb3f45b69ae3ab" prot="protected" static="no" const="no" explicit="no" inline="no" virt="virtual">
+        <type>std::pair&lt; bool, bool &gt;</type>
+        <definition>std::pair&lt; bool, bool &gt; BranchPatchApplicator::applyPartialCoveragePatch</definition>
+        <argsstring>(Landscape *const landscape, const Patch &amp;patch)</argsstring>
+        <name>applyPartialCoveragePatch</name>
+        <qualifiedname>BranchPatchApplicator::applyPartialCoveragePatch</qualifiedname>
+        <reimplements refid="class_spatial_tree_patch_applicator_1ab02ec3ddb12b148d14415b0e97f5fb0c">applyPartialCoveragePatch</reimplements>
+        <param>
+          <type><ref refid="class_landscape" kindref="compound">Landscape</ref> *const</type>
+          <declname>landscape</declname>
+        </param>
+        <param>
+          <type>const <ref refid="class_patch" kindref="compound">Patch</ref> &amp;</type>
+          <declname>patch</declname>
+        </param>
+        <briefdescription>
+<para>Applies a patch partially covering the branch cell. </para>
+        </briefdescription>
+        <detaileddescription>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>landscape</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Pointer to the landscape. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>patch</parametername>
+</parameternamelist>
+<parameterdescription>
+<para><ref refid="class_patch" kindref="compound">Patch</ref> to apply. </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<simplesect kind="return"><para>Pair of booleans indicating partial coverage success. </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="App/Model/IBM/Landscape/Map/SpatialTree/TerrainCells/PatchApplicator/BranchPatchApplicator.h" line="145" column="15"/>
+      </memberdef>
+      <memberdef kind="function" id="class_branch_patch_applicator_1a2bdef5cc2e2723c03d5b251bf1aa4aea" prot="protected" static="no" const="no" explicit="no" inline="no" virt="virtual">
+        <type>void</type>
+        <definition>void BranchPatchApplicator::applySource</definition>
+        <argsstring>(Landscape *const landscape, const PathSource &amp;source, const size_t newPatchPriority)</argsstring>
+        <name>applySource</name>
+        <qualifiedname>BranchPatchApplicator::applySource</qualifiedname>
+        <reimplements refid="class_patch_applicator_1a6ad8fd71f237437dd5513d5a50684c88">applySource</reimplements>
+        <param>
+          <type><ref refid="class_landscape" kindref="compound">Landscape</ref> *const</type>
+          <declname>landscape</declname>
+        </param>
+        <param>
+          <type>const <ref refid="class_path_source" kindref="compound">PathSource</ref> &amp;</type>
+          <declname>source</declname>
+        </param>
+        <param>
+          <type>const size_t</type>
+          <declname>newPatchPriority</declname>
+        </param>
+        <briefdescription>
+<para>Applies a path source downwards to this branch cell and its children. </para>
+        </briefdescription>
+        <detaileddescription>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>landscape</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Pointer to the landscape. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>source</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Path source to apply. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>newPatchPriority</parametername>
+</parameternamelist>
+<parameterdescription>
+<para><ref refid="class_patch" kindref="compound">Patch</ref> priority. </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="App/Model/IBM/Landscape/Map/SpatialTree/TerrainCells/PatchApplicator/BranchPatchApplicator.h" line="153" column="10"/>
+      </memberdef>
+      <memberdef kind="function" id="class_branch_patch_applicator_1a37fcb50db5b1094be931102e43485dc3" prot="protected" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void BranchPatchApplicator::setCellElement</definition>
+        <argsstring>(const PathSource &amp;source)</argsstring>
+        <name>setCellElement</name>
+        <qualifiedname>BranchPatchApplicator::setCellElement</qualifiedname>
+        <param>
+          <type>const <ref refid="class_path_source" kindref="compound">PathSource</ref> &amp;</type>
+          <declname>source</declname>
+        </param>
+        <briefdescription>
+<para>Sets the cell&apos;s path element using a <ref refid="class_path_source" kindref="compound">PathSource</ref>. </para>
+        </briefdescription>
+        <detaileddescription>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>source</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Source defining the path properties. </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="App/Model/IBM/Landscape/Map/SpatialTree/TerrainCells/PatchApplicator/BranchPatchApplicator.h" line="165" column="10"/>
+      </memberdef>
+      <memberdef kind="function" id="class_branch_patch_applicator_1aabf32318ed04776fb32c92b4f2df403a" prot="protected" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void BranchPatchApplicator::setCellHabitatDomain</definition>
+        <argsstring>(const HabitatDomainSource &amp;source)</argsstring>
+        <name>setCellHabitatDomain</name>
+        <qualifiedname>BranchPatchApplicator::setCellHabitatDomain</qualifiedname>
+        <param>
+          <type>const <ref refid="class_habitat_domain_source" kindref="compound">HabitatDomainSource</ref> &amp;</type>
+          <declname>source</declname>
+        </param>
+        <briefdescription>
+<para>Sets the cell&apos;s habitat domain from a <ref refid="class_habitat_domain_source" kindref="compound">HabitatDomainSource</ref>. </para>
+        </briefdescription>
+        <detaileddescription>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>source</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Source defining the habitat domain properties. </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="App/Model/IBM/Landscape/Map/SpatialTree/TerrainCells/PatchApplicator/BranchPatchApplicator.h" line="199" column="10"/>
+      </memberdef>
+      <memberdef kind="function" id="class_branch_patch_applicator_1ac4a582137dbe9dc433d7f0331f43556d" prot="protected" static="no" const="no" explicit="no" inline="no" virt="virtual">
+        <type>void</type>
+        <definition>void BranchPatchApplicator::setCellHabitatDomain</definition>
+        <argsstring>(Landscape *const landscape, const HabitatDomainSource &amp;source, const size_t newHabitatDomainPatchPriority)</argsstring>
+        <name>setCellHabitatDomain</name>
+        <qualifiedname>BranchPatchApplicator::setCellHabitatDomain</qualifiedname>
+        <reimplements refid="class_patch_applicator_1a89aaa7f04fd346f9ee12db4b14458d25">setCellHabitatDomain</reimplements>
+        <param>
+          <type><ref refid="class_landscape" kindref="compound">Landscape</ref> *const</type>
+          <declname>landscape</declname>
+        </param>
+        <param>
+          <type>const <ref refid="class_habitat_domain_source" kindref="compound">HabitatDomainSource</ref> &amp;</type>
+          <declname>source</declname>
+        </param>
+        <param>
+          <type>const size_t</type>
+          <declname>newHabitatDomainPatchPriority</declname>
+        </param>
+        <briefdescription>
+<para>Sets the cell&apos;s habitat domain in a specific landscape with priority handling. </para>
+        </briefdescription>
+        <detaileddescription>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>landscape</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Pointer to the landscape to modify. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>source</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Source defining the habitat domain properties. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>newHabitatDomainPatchPriority</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Priority of the new habitat domain patch. </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="App/Model/IBM/Landscape/Map/SpatialTree/TerrainCells/PatchApplicator/BranchPatchApplicator.h" line="205" column="10"/>
+      </memberdef>
+      <memberdef kind="function" id="class_branch_patch_applicator_1a6853fbbe1acac5c7c4288218145addad" prot="protected" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void BranchPatchApplicator::setCellMoisture</definition>
+        <argsstring>(const MoistureSource &amp;source)</argsstring>
+        <name>setCellMoisture</name>
+        <qualifiedname>BranchPatchApplicator::setCellMoisture</qualifiedname>
+        <param>
+          <type>const <ref refid="class_moisture_source" kindref="compound">MoistureSource</ref> &amp;</type>
+          <declname>source</declname>
+        </param>
+        <briefdescription>
+<para>Sets the cell&apos;s moisture value from a <ref refid="class_moisture_source" kindref="compound">MoistureSource</ref>. </para>
+        </briefdescription>
+        <detaileddescription>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>source</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Source defining the moisture properties. </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="App/Model/IBM/Landscape/Map/SpatialTree/TerrainCells/PatchApplicator/BranchPatchApplicator.h" line="169" column="10"/>
+      </memberdef>
+      <memberdef kind="function" id="class_branch_patch_applicator_1a2435e7c77c7e9af5544d7181b9ec18ec" prot="protected" static="no" const="no" explicit="no" inline="no" virt="virtual">
+        <type>void</type>
+        <definition>void BranchPatchApplicator::setCellMoisture</definition>
+        <argsstring>(Landscape *const landscape, const MoistureSource &amp;source, const size_t newMoisturePatchPriority)</argsstring>
+        <name>setCellMoisture</name>
+        <qualifiedname>BranchPatchApplicator::setCellMoisture</qualifiedname>
+        <reimplements refid="class_patch_applicator_1a747884f68689a26437f21aefdfdec923">setCellMoisture</reimplements>
+        <param>
+          <type><ref refid="class_landscape" kindref="compound">Landscape</ref> *const</type>
+          <declname>landscape</declname>
+        </param>
+        <param>
+          <type>const <ref refid="class_moisture_source" kindref="compound">MoistureSource</ref> &amp;</type>
+          <declname>source</declname>
+        </param>
+        <param>
+          <type>const size_t</type>
+          <declname>newMoisturePatchPriority</declname>
+        </param>
+        <briefdescription>
+<para>Sets the cell&apos;s moisture in a specific landscape with priority handling. </para>
+        </briefdescription>
+        <detaileddescription>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>landscape</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Pointer to the landscape to modify. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>source</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Source defining the moisture properties. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>newMoisturePatchPriority</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Priority of the new moisture patch. </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="App/Model/IBM/Landscape/Map/SpatialTree/TerrainCells/PatchApplicator/BranchPatchApplicator.h" line="175" column="10"/>
+      </memberdef>
+      <memberdef kind="function" id="class_branch_patch_applicator_1a32e7b97fee1b66b196f647addeafffe2" prot="protected" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void BranchPatchApplicator::setCellObstacle</definition>
+        <argsstring>(const ObstacleSource &amp;source)</argsstring>
+        <name>setCellObstacle</name>
+        <qualifiedname>BranchPatchApplicator::setCellObstacle</qualifiedname>
+        <param>
+          <type>const <ref refid="class_obstacle_source" kindref="compound">ObstacleSource</ref> &amp;</type>
+          <declname>source</declname>
+        </param>
+        <briefdescription>
+<para>Sets the cell&apos;s obstacle from an <ref refid="class_obstacle_source" kindref="compound">ObstacleSource</ref>. </para>
+        </briefdescription>
+        <detaileddescription>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>source</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Source defining the obstacle properties. </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="App/Model/IBM/Landscape/Map/SpatialTree/TerrainCells/PatchApplicator/BranchPatchApplicator.h" line="189" column="10"/>
+      </memberdef>
+      <memberdef kind="function" id="class_branch_patch_applicator_1aef6c4f03756e04892b775504f44f2d23" prot="protected" static="no" const="no" explicit="no" inline="no" virt="virtual">
+        <type>void</type>
+        <definition>void BranchPatchApplicator::setCellObstacle</definition>
+        <argsstring>(Landscape *const landscape, const ObstacleSource &amp;source, const size_t newObstaclePatchPriority)</argsstring>
+        <name>setCellObstacle</name>
+        <qualifiedname>BranchPatchApplicator::setCellObstacle</qualifiedname>
+        <reimplements refid="class_patch_applicator_1a94e22eace4f6c686afc66e2953ea0da9">setCellObstacle</reimplements>
+        <param>
+          <type><ref refid="class_landscape" kindref="compound">Landscape</ref> *const</type>
+          <declname>landscape</declname>
+        </param>
+        <param>
+          <type>const <ref refid="class_obstacle_source" kindref="compound">ObstacleSource</ref> &amp;</type>
+          <declname>source</declname>
+        </param>
+        <param>
+          <type>const size_t</type>
+          <declname>newObstaclePatchPriority</declname>
+        </param>
+        <briefdescription>
+<para>Sets the cell&apos;s obstacle in a specific landscape with priority handling. </para>
+        </briefdescription>
+        <detaileddescription>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>landscape</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Pointer to the landscape to modify. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>source</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Source defining the obstacle properties. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>newObstaclePatchPriority</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Priority of the new obstacle patch. </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="App/Model/IBM/Landscape/Map/SpatialTree/TerrainCells/PatchApplicator/BranchPatchApplicator.h" line="195" column="10"/>
+      </memberdef>
+      <memberdef kind="function" id="class_branch_patch_applicator_1a509bf3b014b4f13728bd65a35141a9e1" prot="protected" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void BranchPatchApplicator::setCellResource</definition>
+        <argsstring>(const ResourceSource &amp;source)</argsstring>
+        <name>setCellResource</name>
+        <qualifiedname>BranchPatchApplicator::setCellResource</qualifiedname>
+        <param>
+          <type>const <ref refid="class_resource_source" kindref="compound">ResourceSource</ref> &amp;</type>
+          <declname>source</declname>
+        </param>
+        <briefdescription>
+<para>Sets the cell&apos;s resource value from a <ref refid="class_resource_source" kindref="compound">ResourceSource</ref>. </para>
+        </briefdescription>
+        <detaileddescription>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>source</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Source defining the resource properties. </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="App/Model/IBM/Landscape/Map/SpatialTree/TerrainCells/PatchApplicator/BranchPatchApplicator.h" line="179" column="10"/>
+      </memberdef>
+      <memberdef kind="function" id="class_branch_patch_applicator_1af285de5356f7a3b44b279ec9092d7a3b" prot="protected" static="no" const="no" explicit="no" inline="no" virt="virtual">
+        <type>void</type>
+        <definition>void BranchPatchApplicator::setCellResource</definition>
+        <argsstring>(Landscape *const landscape, const ResourceSource &amp;source, const size_t newResourcePatchPriority)</argsstring>
+        <name>setCellResource</name>
+        <qualifiedname>BranchPatchApplicator::setCellResource</qualifiedname>
+        <reimplements refid="class_patch_applicator_1a0d841872bc9c78ba8c177bd85c8ae2cc">setCellResource</reimplements>
+        <param>
+          <type><ref refid="class_landscape" kindref="compound">Landscape</ref> *const</type>
+          <declname>landscape</declname>
+        </param>
+        <param>
+          <type>const <ref refid="class_resource_source" kindref="compound">ResourceSource</ref> &amp;</type>
+          <declname>source</declname>
+        </param>
+        <param>
+          <type>const size_t</type>
+          <declname>newResourcePatchPriority</declname>
+        </param>
+        <briefdescription>
+<para>Sets the cell&apos;s resource in a specific landscape with priority handling. </para>
+        </briefdescription>
+        <detaileddescription>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>landscape</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Pointer to the landscape to modify. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>source</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Source defining the resource properties. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>newResourcePatchPriority</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Priority of the new resource patch. </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="App/Model/IBM/Landscape/Map/SpatialTree/TerrainCells/PatchApplicator/BranchPatchApplicator.h" line="185" column="10"/>
+      </memberdef>
+    </sectiondef>
+    <briefdescription>
+<para>Concrete implementation of <ref refid="class_spatial_tree_patch_applicator" kindref="compound">SpatialTreePatchApplicator</ref> for branch nodes. </para>
+    </briefdescription>
+    <detaileddescription>
+<para><ref refid="class_branch_patch_applicator" kindref="compound">BranchPatchApplicator</ref> manages the application of patches for branch cells in the spatial tree. It handles moisture, resources, obstacles, and habitat domains for cells that have children. It provides mechanisms for applying patches both downwards (to children) and upwards (from children to parent branch). </para>
+    </detaileddescription>
+    <inheritancegraph>
+      <node id="1">
+        <label>BranchPatchApplicator</label>
+        <link refid="class_branch_patch_applicator"/>
+        <childnode refid="2" relation="public-inheritance">
+        </childnode>
+      </node>
+      <node id="3">
+        <label>PatchApplicator</label>
+        <link refid="class_patch_applicator"/>
+      </node>
+      <node id="2">
+        <label>SpatialTreePatchApplicator</label>
+        <link refid="class_spatial_tree_patch_applicator"/>
+        <childnode refid="3" relation="public-inheritance">
+        </childnode>
+      </node>
+    </inheritancegraph>
+    <collaborationgraph>
+      <node id="1">
+        <label>BranchPatchApplicator</label>
+        <link refid="class_branch_patch_applicator"/>
+        <childnode refid="2" relation="public-inheritance">
+        </childnode>
+      </node>
+      <node id="8">
+        <label>CellElement</label>
+        <link refid="class_cell_element"/>
+      </node>
+      <node id="11">
+        <label>CellHabitatDomainInterface</label>
+        <link refid="class_cell_habitat_domain_interface"/>
+        <childnode refid="8" relation="public-inheritance">
+        </childnode>
+        <childnode refid="12" relation="usage">
+          <edgelabel>habitatDomainStatus</edgelabel>
+        </childnode>
+      </node>
+      <node id="7">
+        <label>CellMoistureInterface</label>
+        <link refid="class_cell_moisture_interface"/>
+        <childnode refid="8" relation="public-inheritance">
+        </childnode>
+        <childnode refid="9" relation="usage">
+          <edgelabel>totalMaximumResourceCapacity</edgelabel>
+        </childnode>
+      </node>
+      <node id="10">
+        <label>CellObstacleInterface</label>
+        <link refid="class_cell_obstacle_interface"/>
+        <childnode refid="8" relation="public-inheritance">
+        </childnode>
+      </node>
+      <node id="12">
+        <label>CustomIndexedVector&lt; AnimalSpeciesID, CustomIndexedVector&lt; Instar, bool &gt; &gt;</label>
+        <link refid="class_custom_indexed_vector"/>
+      </node>
+      <node id="3">
+        <label>PatchApplicator</label>
+        <link refid="class_patch_applicator"/>
+        <childnode refid="4" relation="usage">
+          <edgelabel>owner</edgelabel>
+        </childnode>
+        <childnode refid="7" relation="usage">
+          <edgelabel>cellMoisture</edgelabel>
+        </childnode>
+        <childnode refid="10" relation="usage">
+          <edgelabel>cellObstacle</edgelabel>
+        </childnode>
+        <childnode refid="11" relation="usage">
+          <edgelabel>cellHabitatDomain</edgelabel>
+        </childnode>
+      </node>
+      <node id="5">
+        <label>PointMap</label>
+        <link refid="class_point_map"/>
+      </node>
+      <node id="6">
+        <label>PreciseDouble</label>
+        <link refid="class_precise_double"/>
+      </node>
+      <node id="2">
+        <label>SpatialTreePatchApplicator</label>
+        <link refid="class_spatial_tree_patch_applicator"/>
+        <childnode refid="3" relation="public-inheritance">
+        </childnode>
+      </node>
+      <node id="4">
+        <label>TerrainCell</label>
+        <link refid="class_terrain_cell"/>
+        <childnode refid="3" relation="usage">
+          <edgelabel>patchApplicator</edgelabel>
+        </childnode>
+        <childnode refid="5" relation="usage">
+          <edgelabel>position</edgelabel>
+        </childnode>
+        <childnode refid="6" relation="usage">
+          <edgelabel>hyperVolume</edgelabel>
+          <edgelabel>size</edgelabel>
+        </childnode>
+      </node>
+      <node id="9">
+        <label>WetMass</label>
+        <link refid="class_wet_mass"/>
+        <childnode refid="6" relation="usage">
+          <edgelabel>value</edgelabel>
+        </childnode>
+      </node>
+    </collaborationgraph>
+    <location file="App/Model/IBM/Landscape/Map/SpatialTree/TerrainCells/PatchApplicator/BranchPatchApplicator.h" line="34" column="1" bodyfile="App/Model/IBM/Landscape/Map/SpatialTree/TerrainCells/PatchApplicator/BranchPatchApplicator.h" bodystart="35" bodyend="206"/>
+    <listofallmembers>
+      <member refid="class_patch_applicator_1aca94b40e80615c1a0058a4b61ada5549" prot="public" virt="non-virtual"><scope>BranchPatchApplicator</scope><name>addAnimalSpecies</name></member>
+      <member refid="class_branch_patch_applicator_1aecb4361cc857168b7fae26e0c973a61c" prot="public" virt="virtual"><scope>BranchPatchApplicator</scope><name>addResourceSpecies</name></member>
+      <member refid="class_branch_patch_applicator_1aff5617ac8015f341df751a8ec07a3592" prot="protected" virt="virtual"><scope>BranchPatchApplicator</scope><name>applyDown</name></member>
+      <member refid="class_branch_patch_applicator_1a0207ce71b477677740eb3f45b69ae3ab" prot="protected" virt="virtual"><scope>BranchPatchApplicator</scope><name>applyPartialCoveragePatch</name></member>
+      <member refid="class_branch_patch_applicator_1a954a78976f50bcce8566adaa5aa81f02" prot="public" virt="virtual"><scope>BranchPatchApplicator</scope><name>applyPatch</name></member>
+      <member refid="class_branch_patch_applicator_1a2bdef5cc2e2723c03d5b251bf1aa4aea" prot="protected" virt="virtual"><scope>BranchPatchApplicator</scope><name>applySource</name></member>
+      <member refid="class_branch_patch_applicator_1a753ca51bf372cadc0f8732dae3dbc8dd" prot="public" virt="non-virtual"><scope>BranchPatchApplicator</scope><name>applyUp</name></member>
+      <member refid="class_branch_patch_applicator_1afc9861125b08c47085883fdc08dbc071" prot="public" virt="non-virtual"><scope>BranchPatchApplicator</scope><name>BranchPatchApplicator</name></member>
+      <member refid="class_branch_patch_applicator_1a178a3ea5632ec9ec40a35ebc08bcd3f8" prot="public" virt="non-virtual"><scope>BranchPatchApplicator</scope><name>BranchPatchApplicator</name></member>
+      <member refid="class_branch_patch_applicator_1a9971657d09a83a3f8c24ef1a6893f9b0" prot="public" virt="non-virtual"><scope>BranchPatchApplicator</scope><name>BranchPatchApplicator</name></member>
+      <member refid="class_patch_applicator_1ad0079632516b530b1f24c30562d89bee" prot="protected" virt="non-virtual"><scope>BranchPatchApplicator</scope><name>canApplyFullCoverage</name></member>
+      <member refid="class_patch_applicator_1a851b689aa29ccd29d353797058156552" prot="private" virt="non-virtual"><scope>BranchPatchApplicator</scope><name>canApplyFullCoverageHabitatDomain</name></member>
+      <member refid="class_patch_applicator_1a036eb5e683fb515afae6048790fa517d" prot="private" virt="non-virtual"><scope>BranchPatchApplicator</scope><name>canApplyFullCoverageMoisture</name></member>
+      <member refid="class_patch_applicator_1a42e3efe5814ee4f5a3e57ee981bfc92b" prot="private" virt="non-virtual"><scope>BranchPatchApplicator</scope><name>canApplyFullCoverageObstacle</name></member>
+      <member refid="class_patch_applicator_1a30f4d4544e1e151de8e8907def8dd3b1" prot="private" virt="non-virtual"><scope>BranchPatchApplicator</scope><name>canApplyFullCoverageResource</name></member>
+      <member refid="class_patch_applicator_1af0b25a02b5a1d4c8c526a05b356ddaa4" prot="protected" virt="non-virtual"><scope>BranchPatchApplicator</scope><name>cellHabitatDomain</name></member>
+      <member refid="class_patch_applicator_1ac3a5cfeafd0f361d2e7452c4f3c9a6c9" prot="protected" virt="non-virtual"><scope>BranchPatchApplicator</scope><name>cellMoisture</name></member>
+      <member refid="class_patch_applicator_1ac7d2889435a8f30ea487348cfae0d188" prot="protected" virt="non-virtual"><scope>BranchPatchApplicator</scope><name>cellObstacle</name></member>
+      <member refid="class_patch_applicator_1a0a40921ab5b649609b203f855822f529" prot="protected" virt="non-virtual"><scope>BranchPatchApplicator</scope><name>cellResources</name></member>
+      <member refid="class_patch_applicator_1a0a8c04762c9f9c16ee69a8408f7e3278" prot="public" virt="non-virtual"><scope>BranchPatchApplicator</scope><name>deserializeSources</name></member>
+      <member refid="class_patch_applicator_1a604cc3e102feacfc9b2ef4376ed63dd7" prot="public" virt="non-virtual"><scope>BranchPatchApplicator</scope><name>deserializeSpecies</name></member>
+      <member refid="class_branch_patch_applicator_1aa8cc6d89c643f5fe47c195d2910761f4" prot="public" virt="virtual"><scope>BranchPatchApplicator</scope><name>getCellHabitatDomain</name></member>
+      <member refid="class_branch_patch_applicator_1a60481ca26e6a66df2a2dfd825b9b68b3" prot="public" virt="virtual"><scope>BranchPatchApplicator</scope><name>getCellMoisture</name></member>
+      <member refid="class_branch_patch_applicator_1ac01441c733715a0708b8fbcd10b10556" prot="public" virt="virtual"><scope>BranchPatchApplicator</scope><name>getCellObstacle</name></member>
+      <member refid="class_branch_patch_applicator_1a7d37dced71a137e8087757a2cdd59b9a" prot="public" virt="virtual"><scope>BranchPatchApplicator</scope><name>getCellResource</name></member>
+      <member refid="class_patch_applicator_1a4d76c0fd0e2d738fc5c495ffb194da26" prot="public" virt="non-virtual"><scope>BranchPatchApplicator</scope><name>getCellResourcePatchPriority</name></member>
+      <member refid="class_branch_patch_applicator_1abdcc5f54eb7e7ba70b7815907cfc3d71" prot="public" virt="virtual"><scope>BranchPatchApplicator</scope><name>getMutableCellHabitatDomain</name></member>
+      <member refid="class_branch_patch_applicator_1a3d0ef61cb939cc580f1b65158aea6b4c" prot="public" virt="virtual"><scope>BranchPatchApplicator</scope><name>getMutableCellMoisture</name></member>
+      <member refid="class_branch_patch_applicator_1a3d40174a3798027c2287bef62f66dbcd" prot="public" virt="virtual"><scope>BranchPatchApplicator</scope><name>getMutableCellObstacle</name></member>
+      <member refid="class_branch_patch_applicator_1a0255aeee1e19e8cd4be56a027caa8efe" prot="public" virt="virtual"><scope>BranchPatchApplicator</scope><name>getMutableCellResource</name></member>
+      <member refid="class_patch_applicator_1a82b7efade93d47b29e3f0b33fe3d8c56" prot="public" virt="non-virtual"><scope>BranchPatchApplicator</scope><name>getNumberOfResources</name></member>
+      <member refid="class_branch_patch_applicator_1a82b0e0ea08c74b1c449537d320480eb7" prot="public" virt="non-virtual"><scope>BranchPatchApplicator</scope><name>operator=</name></member>
+      <member refid="class_spatial_tree_patch_applicator_1a06e3a862b4a08defc9b33905ff329406" prot="public" virt="non-virtual" ambiguityscope="SpatialTreePatchApplicator::"><scope>BranchPatchApplicator</scope><name>operator=</name></member>
+      <member refid="class_patch_applicator_1a3bd6e65fbaab4ff95d67b67e3718e2ff" prot="public" virt="non-virtual" ambiguityscope="PatchApplicator::"><scope>BranchPatchApplicator</scope><name>operator=</name></member>
+      <member refid="class_patch_applicator_1a7c4c616f9b363efb023348c98475da24" prot="protected" virt="non-virtual"><scope>BranchPatchApplicator</scope><name>owner</name></member>
+      <member refid="class_patch_applicator_1afb734f2184326f3d595c3ece1d824729" prot="public" virt="non-virtual"><scope>BranchPatchApplicator</scope><name>PatchApplicator</name></member>
+      <member refid="class_patch_applicator_1a1c0b4fc546f3d8a7a271fbb23e105224" prot="public" virt="non-virtual"><scope>BranchPatchApplicator</scope><name>PatchApplicator</name></member>
+      <member refid="class_patch_applicator_1ab572659a018152fe7f953eacd8e733ee" prot="public" virt="non-virtual"><scope>BranchPatchApplicator</scope><name>PatchApplicator</name></member>
+      <member refid="class_branch_patch_applicator_1a20e213440d1020e4d4d0ea48ab7769a5" prot="public" virt="non-virtual"><scope>BranchPatchApplicator</scope><name>serialize</name></member>
+      <member refid="class_branch_patch_applicator_1a37fcb50db5b1094be931102e43485dc3" prot="protected" virt="non-virtual"><scope>BranchPatchApplicator</scope><name>setCellElement</name></member>
+      <member refid="class_patch_applicator_1ad2576a378ec9bc993ef55ea3556b91b2" prot="protected" virt="non-virtual" ambiguityscope="SpatialTreePatchApplicator::"><scope>BranchPatchApplicator</scope><name>setCellElement</name></member>
+      <member refid="class_branch_patch_applicator_1aabf32318ed04776fb32c92b4f2df403a" prot="protected" virt="non-virtual"><scope>BranchPatchApplicator</scope><name>setCellHabitatDomain</name></member>
+      <member refid="class_branch_patch_applicator_1ac4a582137dbe9dc433d7f0331f43556d" prot="protected" virt="virtual"><scope>BranchPatchApplicator</scope><name>setCellHabitatDomain</name></member>
+      <member refid="class_branch_patch_applicator_1a6853fbbe1acac5c7c4288218145addad" prot="protected" virt="non-virtual"><scope>BranchPatchApplicator</scope><name>setCellMoisture</name></member>
+      <member refid="class_branch_patch_applicator_1a2435e7c77c7e9af5544d7181b9ec18ec" prot="protected" virt="virtual"><scope>BranchPatchApplicator</scope><name>setCellMoisture</name></member>
+      <member refid="class_branch_patch_applicator_1a32e7b97fee1b66b196f647addeafffe2" prot="protected" virt="non-virtual"><scope>BranchPatchApplicator</scope><name>setCellObstacle</name></member>
+      <member refid="class_branch_patch_applicator_1aef6c4f03756e04892b775504f44f2d23" prot="protected" virt="virtual"><scope>BranchPatchApplicator</scope><name>setCellObstacle</name></member>
+      <member refid="class_branch_patch_applicator_1a509bf3b014b4f13728bd65a35141a9e1" prot="protected" virt="non-virtual"><scope>BranchPatchApplicator</scope><name>setCellResource</name></member>
+      <member refid="class_branch_patch_applicator_1af285de5356f7a3b44b279ec9092d7a3b" prot="protected" virt="virtual"><scope>BranchPatchApplicator</scope><name>setCellResource</name></member>
+      <member refid="class_patch_applicator_1a72c65104fea1b2c72c54a92818c2e330" prot="public" virt="non-virtual"><scope>BranchPatchApplicator</scope><name>setOwner</name></member>
+      <member refid="class_spatial_tree_patch_applicator_1af71926fd1bafaf7a07b866a3db58ba83" prot="public" virt="non-virtual"><scope>BranchPatchApplicator</scope><name>SpatialTreePatchApplicator</name></member>
+      <member refid="class_spatial_tree_patch_applicator_1a4077924488f6122f3cd53a99d0239045" prot="public" virt="non-virtual"><scope>BranchPatchApplicator</scope><name>SpatialTreePatchApplicator</name></member>
+      <member refid="class_spatial_tree_patch_applicator_1adc5ea3a66a116526bda03236027549cb" prot="public" virt="non-virtual"><scope>BranchPatchApplicator</scope><name>SpatialTreePatchApplicator</name></member>
+      <member refid="class_patch_applicator_1ae3a2ba870458e3833f8c146736d1fbd6" prot="public" virt="non-virtual"><scope>BranchPatchApplicator</scope><name>update</name></member>
+      <member refid="class_branch_patch_applicator_1a59f58331b9786fdd94523e7d7a0757a6" prot="public" virt="virtual"><scope>BranchPatchApplicator</scope><name>~BranchPatchApplicator</name></member>
+      <member refid="class_patch_applicator_1a08e1ee7e3cff7bbd60a65663c9dff8e1" prot="public" virt="virtual"><scope>BranchPatchApplicator</scope><name>~PatchApplicator</name></member>
+      <member refid="class_spatial_tree_patch_applicator_1aaf0bfb6d200523611492c428d604c269" prot="public" virt="virtual"><scope>BranchPatchApplicator</scope><name>~SpatialTreePatchApplicator</name></member>
+    </listofallmembers>
+  </compounddef>
+</doxygen>

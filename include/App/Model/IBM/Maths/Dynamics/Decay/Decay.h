@@ -20,11 +20,12 @@
 #include <nlohmann/json.hpp>
 
 #include "Misc/EnumClass.h"
-#include "App/Model/IBM/Maths/PreciseDouble.h"
+#include "Misc/Maths/PreciseDouble.h"
 
 
 /**
  * @class Decay
+ * @ingroup weaver_model
  * @brief Abstract base class for different decay models.
  *
  * Decay models define how a quantity decreases over time. Subclasses implement specific

@@ -1,0 +1,353 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.14.0" xml:lang="en-US">
+  <compounddef id="class_pawar_individual_trait_temperature_section" kind="class" language="C++" prot="public">
+    <compoundname>PawarIndividualTraitTemperatureSection</compoundname>
+    <includes refid="_pawar_individual_trait_temperature_section_8h" local="no">PawarIndividualTraitTemperatureSection.h</includes>
+    <sectiondef kind="private-attrib">
+      <memberdef kind="variable" id="class_pawar_individual_trait_temperature_section_1a0c373a18c1d9e33b6019e7fde556e1eb" prot="private" static="no" mutable="no">
+        <type><ref refid="class_custom_indexed_vector" kindref="compound">CustomIndexedVector</ref>&lt; PawarElement, <ref refid="class_precise_double" kindref="compound">PreciseDouble</ref> &gt;</type>
+        <definition>CustomIndexedVector&lt;PawarElement, PreciseDouble&gt; PawarIndividualTraitTemperatureSection::elements</definition>
+        <argsstring></argsstring>
+        <name>elements</name>
+        <qualifiedname>PawarIndividualTraitTemperatureSection::elements</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Vector of Pawar elements defining the TPC. </para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="App/Model/IBM/Landscape/LivingBeings/Animals/Genetics/Traits/PawarIndividualTraitTemperatureSection.h" line="90" column="25" bodyfile="App/Model/IBM/Landscape/LivingBeings/Animals/Genetics/Traits/PawarIndividualTraitTemperatureSection.h" bodystart="90" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="class_pawar_individual_trait_temperature_section_1ad82adcf58f3f4ff95806d9dcd9bd948b" prot="private" static="no" mutable="no">
+        <type>bool</type>
+        <definition>bool PawarIndividualTraitTemperatureSection::inverse</definition>
+        <argsstring></argsstring>
+        <name>inverse</name>
+        <qualifiedname>PawarIndividualTraitTemperatureSection::inverse</qualifiedname>
+        <initializer>= false</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Whether the temperature response curve should be inverted. </para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="App/Model/IBM/Landscape/LivingBeings/Animals/Genetics/Traits/PawarIndividualTraitTemperatureSection.h" line="91" column="10" bodyfile="App/Model/IBM/Landscape/LivingBeings/Animals/Genetics/Traits/PawarIndividualTraitTemperatureSection.h" bodystart="91" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="class_pawar_individual_trait_temperature_section_1ace99a6d8c43576ab8aab6dbf1facb2dd" prot="private" static="no" mutable="no">
+        <type>bool</type>
+        <definition>bool PawarIndividualTraitTemperatureSection::strictlyPositive</definition>
+        <argsstring></argsstring>
+        <name>strictlyPositive</name>
+        <qualifiedname>PawarIndividualTraitTemperatureSection::strictlyPositive</qualifiedname>
+        <initializer>= false</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Whether phenotypic values must remain strictly positive. </para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="App/Model/IBM/Landscape/LivingBeings/Animals/Genetics/Traits/PawarIndividualTraitTemperatureSection.h" line="92" column="10" bodyfile="App/Model/IBM/Landscape/LivingBeings/Animals/Genetics/Traits/PawarIndividualTraitTemperatureSection.h" bodystart="92" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="class_pawar_individual_trait_temperature_section_1a8f62d9f089e2c31f5b113b6f046d2a46" prot="private" static="no" mutable="no">
+        <type>std::pair&lt; <ref refid="class_temperature" kindref="compound">Temperature</ref>, <ref refid="class_temperature" kindref="compound">Temperature</ref> &gt;</type>
+        <definition>std::pair&lt;Temperature, Temperature&gt; PawarIndividualTraitTemperatureSection::temperatureRangeTPC</definition>
+        <argsstring></argsstring>
+        <name>temperatureRangeTPC</name>
+        <qualifiedname>PawarIndividualTraitTemperatureSection::temperatureRangeTPC</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para><ref refid="class_temperature" kindref="compound">Temperature</ref> range of the performance curve. </para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="App/Model/IBM/Landscape/LivingBeings/Animals/Genetics/Traits/PawarIndividualTraitTemperatureSection.h" line="93" column="15" bodyfile="App/Model/IBM/Landscape/LivingBeings/Animals/Genetics/Traits/PawarIndividualTraitTemperatureSection.h" bodystart="93" bodyend="-1"/>
+      </memberdef>
+    </sectiondef>
+    <sectiondef kind="public-func">
+      <memberdef kind="function" id="class_pawar_individual_trait_temperature_section_1af8aecc9d6976b5ef6bcb47c1e6412742" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type></type>
+        <definition>PawarIndividualTraitTemperatureSection::PawarIndividualTraitTemperatureSection</definition>
+        <argsstring>()</argsstring>
+        <name>PawarIndividualTraitTemperatureSection</name>
+        <qualifiedname>PawarIndividualTraitTemperatureSection::PawarIndividualTraitTemperatureSection</qualifiedname>
+        <briefdescription>
+<para>Default constructor. </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="App/Model/IBM/Landscape/LivingBeings/Animals/Genetics/Traits/PawarIndividualTraitTemperatureSection.h" line="44" column="5"/>
+      </memberdef>
+      <memberdef kind="function" id="class_pawar_individual_trait_temperature_section_1a992d79a5ded74501a714308515b01d49" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type></type>
+        <definition>PawarIndividualTraitTemperatureSection::PawarIndividualTraitTemperatureSection</definition>
+        <argsstring>(const CustomIndexedVector&lt; PawarElement, PreciseDouble &gt; &amp;elements, const PreciseDouble &amp;geneticValue, bool inverse, bool strictlyPositive)</argsstring>
+        <name>PawarIndividualTraitTemperatureSection</name>
+        <qualifiedname>PawarIndividualTraitTemperatureSection::PawarIndividualTraitTemperatureSection</qualifiedname>
+        <param>
+          <type>const <ref refid="class_custom_indexed_vector" kindref="compound">CustomIndexedVector</ref>&lt; PawarElement, <ref refid="class_precise_double" kindref="compound">PreciseDouble</ref> &gt; &amp;</type>
+          <declname>elements</declname>
+        </param>
+        <param>
+          <type>const <ref refid="class_precise_double" kindref="compound">PreciseDouble</ref> &amp;</type>
+          <declname>geneticValue</declname>
+        </param>
+        <param>
+          <type>bool</type>
+          <declname>inverse</declname>
+        </param>
+        <param>
+          <type>bool</type>
+          <declname>strictlyPositive</declname>
+        </param>
+        <briefdescription>
+<para>Constructor with initialization. </para>
+        </briefdescription>
+        <detaileddescription>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>elements</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Vector of Pawar elements defining the temperature response curve. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>geneticValue</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Constitutive genetic value of the trait. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>inverse</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Whether the temperature response curve should be inverted. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>strictlyPositive</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Whether the resulting phenotypic values must remain strictly positive. </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="App/Model/IBM/Landscape/LivingBeings/Animals/Genetics/Traits/PawarIndividualTraitTemperatureSection.h" line="53" column="5"/>
+      </memberdef>
+      <memberdef kind="function" id="class_pawar_individual_trait_temperature_section_1a793e01a633b7a379ab39c21aa72d1a3a" prot="public" static="no" const="no" explicit="no" inline="no" virt="virtual">
+        <type></type>
+        <definition>virtual PawarIndividualTraitTemperatureSection::~PawarIndividualTraitTemperatureSection</definition>
+        <argsstring>()</argsstring>
+        <name>~PawarIndividualTraitTemperatureSection</name>
+        <qualifiedname>PawarIndividualTraitTemperatureSection::~PawarIndividualTraitTemperatureSection</qualifiedname>
+        <briefdescription>
+<para>Destructor. </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="App/Model/IBM/Landscape/LivingBeings/Animals/Genetics/Traits/PawarIndividualTraitTemperatureSection.h" line="58" column="13"/>
+      </memberdef>
+      <memberdef kind="function" id="class_pawar_individual_trait_temperature_section_1ae4504eb48ea1a7d91c688e354e9b00cd" prot="public" static="no" const="yes" explicit="no" inline="no" virt="non-virtual">
+        <type><ref refid="class_precise_double" kindref="compound">PreciseDouble</ref></type>
+        <definition>PreciseDouble PawarIndividualTraitTemperatureSection::applyTemperatureDependency</definition>
+        <argsstring>(const Temperature &amp;temperature, const PreciseDouble &amp;traitValue, const PreciseDouble &amp;coefficientForMassAforMature, const PreciseDouble &amp;scaleForMassBforMature, const Temperature &amp;tempFromLab) const</argsstring>
+        <name>applyTemperatureDependency</name>
+        <qualifiedname>PawarIndividualTraitTemperatureSection::applyTemperatureDependency</qualifiedname>
+        <param>
+          <type>const <ref refid="class_temperature" kindref="compound">Temperature</ref> &amp;</type>
+          <declname>temperature</declname>
+        </param>
+        <param>
+          <type>const <ref refid="class_precise_double" kindref="compound">PreciseDouble</ref> &amp;</type>
+          <declname>traitValue</declname>
+        </param>
+        <param>
+          <type>const <ref refid="class_precise_double" kindref="compound">PreciseDouble</ref> &amp;</type>
+          <declname>coefficientForMassAforMature</declname>
+        </param>
+        <param>
+          <type>const <ref refid="class_precise_double" kindref="compound">PreciseDouble</ref> &amp;</type>
+          <declname>scaleForMassBforMature</declname>
+        </param>
+        <param>
+          <type>const <ref refid="class_temperature" kindref="compound">Temperature</ref> &amp;</type>
+          <declname>tempFromLab</declname>
+        </param>
+        <briefdescription>
+<para>Apply the temperature dependency to a trait value. </para>
+        </briefdescription>
+        <detaileddescription>
+<para>Computes the phenotypic value of a trait under the current environmental temperature using the Pawar temperature performance curve.</para>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>temperature</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Current environmental temperature. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>traitValue</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Current trait value. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>coefficientForMassAforMature</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Coefficient A for mature mass calculation. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>scaleForMassBforMature</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Scale B for mature mass calculation. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>tempFromLab</parametername>
+</parameternamelist>
+<parameterdescription>
+<para><ref refid="class_temperature" kindref="compound">Temperature</ref> from lab experiments. </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<simplesect kind="return"><para>Modified trait value considering temperature effects. </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="App/Model/IBM/Landscape/LivingBeings/Animals/Genetics/Traits/PawarIndividualTraitTemperatureSection.h" line="73" column="19"/>
+      </memberdef>
+      <memberdef kind="function" id="class_pawar_individual_trait_temperature_section_1a894a7d3cc1b171a9f4e20f941e058751" prot="public" static="no" const="yes" explicit="no" inline="no" noexcept="yes" virt="non-virtual">
+        <type>void</type>
+        <definition>void PawarIndividualTraitTemperatureSection::formatTraitDirect</definition>
+        <argsstring>(fmt::memory_buffer &amp;buf) const noexcept</argsstring>
+        <name>formatTraitDirect</name>
+        <qualifiedname>PawarIndividualTraitTemperatureSection::formatTraitDirect</qualifiedname>
+        <param>
+          <type>fmt::memory_buffer &amp;</type>
+          <declname>buf</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="App/Model/IBM/Landscape/LivingBeings/Animals/Genetics/Traits/PawarIndividualTraitTemperatureSection.h" line="77" column="10"/>
+      </memberdef>
+      <memberdef kind="function" id="class_pawar_individual_trait_temperature_section_1ab4eeceac0636a7ae27600451c0237abc" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <templateparamlist>
+          <param>
+            <type>class Archive</type>
+          </param>
+        </templateparamlist>
+        <type>void</type>
+        <definition>void PawarIndividualTraitTemperatureSection::serialize</definition>
+        <argsstring>(Archive &amp;ar, const unsigned int version)</argsstring>
+        <name>serialize</name>
+        <qualifiedname>PawarIndividualTraitTemperatureSection::serialize</qualifiedname>
+        <param>
+          <type>Archive &amp;</type>
+          <declname>ar</declname>
+        </param>
+        <param>
+          <type>const unsigned int</type>
+          <declname>version</declname>
+        </param>
+        <briefdescription>
+<para>Serializes the object for persistence. </para>
+        </briefdescription>
+        <detaileddescription>
+<para><parameterlist kind="templateparam"><parameteritem>
+<parameternamelist>
+<parametername>Archive</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Serialization archive type. </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>ar</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Archive instance. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>version</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Serialization version. </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="App/Model/IBM/Landscape/LivingBeings/Animals/Genetics/Traits/PawarIndividualTraitTemperatureSection.h" line="87" column="10"/>
+      </memberdef>
+    </sectiondef>
+    <briefdescription>
+<para>Temperature-dependent section of an individual trait using the Pawar model. </para>
+    </briefdescription>
+    <detaileddescription>
+<para>This class modifies an individual trait according to environmental temperature, using a Pawar-based temperature performance curve. It allows optional inversion of the curve and enforces strictly positive trait values if required. </para>
+    </detaileddescription>
+    <collaborationgraph>
+      <node id="2">
+        <label>CustomIndexedVector&lt; PawarElement, PreciseDouble &gt;</label>
+        <link refid="class_custom_indexed_vector"/>
+      </node>
+      <node id="1">
+        <label>PawarIndividualTraitTemperatureSection</label>
+        <link refid="class_pawar_individual_trait_temperature_section"/>
+        <childnode refid="2" relation="usage">
+          <edgelabel>elements</edgelabel>
+        </childnode>
+      </node>
+    </collaborationgraph>
+    <location file="App/Model/IBM/Landscape/LivingBeings/Animals/Genetics/Traits/PawarIndividualTraitTemperatureSection.h" line="39" column="1" bodyfile="App/Model/IBM/Landscape/LivingBeings/Animals/Genetics/Traits/PawarIndividualTraitTemperatureSection.h" bodystart="39" bodyend="94"/>
+    <listofallmembers>
+      <member refid="class_pawar_individual_trait_temperature_section_1ae4504eb48ea1a7d91c688e354e9b00cd" prot="public" virt="non-virtual"><scope>PawarIndividualTraitTemperatureSection</scope><name>applyTemperatureDependency</name></member>
+      <member refid="class_pawar_individual_trait_temperature_section_1a0c373a18c1d9e33b6019e7fde556e1eb" prot="private" virt="non-virtual"><scope>PawarIndividualTraitTemperatureSection</scope><name>elements</name></member>
+      <member refid="class_pawar_individual_trait_temperature_section_1a894a7d3cc1b171a9f4e20f941e058751" prot="public" virt="non-virtual"><scope>PawarIndividualTraitTemperatureSection</scope><name>formatTraitDirect</name></member>
+      <member refid="class_pawar_individual_trait_temperature_section_1ad82adcf58f3f4ff95806d9dcd9bd948b" prot="private" virt="non-virtual"><scope>PawarIndividualTraitTemperatureSection</scope><name>inverse</name></member>
+      <member refid="class_pawar_individual_trait_temperature_section_1af8aecc9d6976b5ef6bcb47c1e6412742" prot="public" virt="non-virtual"><scope>PawarIndividualTraitTemperatureSection</scope><name>PawarIndividualTraitTemperatureSection</name></member>
+      <member refid="class_pawar_individual_trait_temperature_section_1a992d79a5ded74501a714308515b01d49" prot="public" virt="non-virtual"><scope>PawarIndividualTraitTemperatureSection</scope><name>PawarIndividualTraitTemperatureSection</name></member>
+      <member refid="class_pawar_individual_trait_temperature_section_1ab4eeceac0636a7ae27600451c0237abc" prot="public" virt="non-virtual"><scope>PawarIndividualTraitTemperatureSection</scope><name>serialize</name></member>
+      <member refid="class_pawar_individual_trait_temperature_section_1ace99a6d8c43576ab8aab6dbf1facb2dd" prot="private" virt="non-virtual"><scope>PawarIndividualTraitTemperatureSection</scope><name>strictlyPositive</name></member>
+      <member refid="class_pawar_individual_trait_temperature_section_1a8f62d9f089e2c31f5b113b6f046d2a46" prot="private" virt="non-virtual"><scope>PawarIndividualTraitTemperatureSection</scope><name>temperatureRangeTPC</name></member>
+      <member refid="class_pawar_individual_trait_temperature_section_1a793e01a633b7a379ab39c21aa72d1a3a" prot="public" virt="virtual"><scope>PawarIndividualTraitTemperatureSection</scope><name>~PawarIndividualTraitTemperatureSection</name></member>
+    </listofallmembers>
+  </compounddef>
+</doxygen>

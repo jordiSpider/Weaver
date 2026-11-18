@@ -27,6 +27,7 @@
 
 /**
  * @class Genome
+ * @ingroup weaver_landscape
  * @brief Represents a genome with homologous chromosomes and correlosomes.
  */
 class Genome

@@ -21,6 +21,7 @@ class Landscape;
 
 /**
  * @class PathSource
+ * @ingroup weaver_landscape
  * @brief Abstract base class for landscape data sources.
  *
  * PathSource represents any source of information used to define landscape features,

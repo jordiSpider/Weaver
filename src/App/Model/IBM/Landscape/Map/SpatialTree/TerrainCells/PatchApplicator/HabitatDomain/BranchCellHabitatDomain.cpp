@@ -61,7 +61,7 @@ void BranchCellHabitatDomain::applyBranch(BranchTerrainCell* const summaryTerrai
 
             for(const auto &child : summaryTerrainCell->getChildrenTerrainCells())
             {
-                numberOfHabitatDomain += (child->getPatchApplicator().getCellHabitatDomain().getHabitatDomainStatus().at(id).at(instar)) ? 1u : 0u;
+                numberOfHabitatDomain += (child->getPatchApplicator().getCellHabitatDomain().getHabitatDomainStatus()[id][instar]) ? 1u : 0u;
             }
 
             habitatDomainStatus[id][instar] = PreciseDouble(static_cast<double>(numberOfHabitatDomain))/PreciseDouble(static_cast<double>(summaryTerrainCell->getChildrenTerrainCells().size())) > 0.5;

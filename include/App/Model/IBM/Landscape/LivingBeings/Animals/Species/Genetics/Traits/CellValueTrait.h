@@ -21,6 +21,7 @@
 
 /**
  * @class CellValueTrait
+ * @ingroup weaver_landscape
  * @brief Represents a trait storing values in a cell for individual-based simulations.
  *
  * This class extends the Trait base class and includes functionality to:

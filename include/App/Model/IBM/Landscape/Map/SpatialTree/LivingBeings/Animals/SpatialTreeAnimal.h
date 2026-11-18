@@ -15,10 +15,18 @@
 #include "App/Model/IBM/Landscape/Map/SpatialTree/Points/PointSpatialTree.h"
 #include "App/Model/IBM/Landscape/Map/TerrainCells/CellValue.h"
 #include "App/Model/IBM/Landscape/LivingBeings/Animals/Species/Gender.h"
+#include "App/Model/IBM/Landscape/Map/Navigation/NavigationRoute.h"
+
+class DestinationSelectionPolicy;
+class RouteCostPolicy;
+class RouteDestinationSelectionPolicy;
+class RoutePlanner;
+class RouteFollowingPolicy;
 
 
 /**
  * @class SpatialTreeAnimal
+ * @ingroup weaver_landscape
  * @brief Represents a non-statistical animal located in a spatial tree terrain.
  *
  * Extends AnimalNonStatistical to provide movement, target search, and reproduction
@@ -27,37 +35,26 @@
 class SpatialTreeAnimal : public AnimalNonStatistical
 {
 protected:
-    /**
-     * @brief Searches for a target cell to travel to within a given scope area.
-     * @param scopeArea Maximum area the animal can travel.
-     * @param animalsHasTriedToPredate List of animals already attempted for predation.
-     */
-    void searchTargetToTravelTo(const PreciseDouble &scopeArea, const std::list<const AnimalNonStatistical*> &animalsHasTriedToPredate);
-    
+    std::shared_ptr<const DestinationSelectionPolicy> destinationSelectionPolicy;
+    std::shared_ptr<const RouteCostPolicy> routeCostPolicy;
+    std::shared_ptr<const RouteDestinationSelectionPolicy> routeDestinationSelectionPolicy;
+    std::shared_ptr<const RoutePlanner> routePlanner;
+    std::shared_ptr<const RouteFollowingPolicy> routeFollowingPolicy;
+    NavigationRoute navigationRoute;
+    size_t nextRouteCellIndex;
+
+    void initializeNavigationPolicies();
+
     /**
      * @brief Searches for a target cell to travel to, with an output flag indicating
      *        if no destinations are available.
      * @param scopeArea Maximum area the animal can travel.
-     * @param animalsHasTriedToPredate List of animals already attempted for predation.
-     * @param withoutDestinations Flag set to true if no valid destinations are found.
      */
-    void searchTargetToTravelTo(const PreciseDouble &scopeArea, const std::list<const AnimalNonStatistical*> &animalsHasTriedToPredate, bool& withoutDestinations);
+    bool searchTargetToTravelTo(Landscape* const landscape, const PreciseDouble &scopeArea, CustomIndexedVector<Instar, PreciseDouble>& maximumPatchEdibilityValueGlobal, CustomIndexedVector<Instar, PreciseDouble>& maximumPatchPredationRiskGlobal, CustomIndexedVector<Instar, PreciseDouble>& maximumPatchConspecificBiomassGlobal);
     
-    /**
-     * @brief Moves the animal one step in the landscape.
-     * @param landscape Pointer to the landscape.
-     * @param saveActivity Whether to save activity logs.
-     * @param activityContent Stream to store activity data.
-     * @param saveMovements Whether to save movement logs.
-     * @param movementsContent Stream to store movement data.
-     * @param actualTimeStep Current time step.
-     * @param timeStepsPerDay Number of time steps per day.
-     * @param edibilitiesContent Stream to store edible-related logs.
-     * @param saveAnimalsEachDayPredationProbabilities Whether to save predation probability logs.
-     * @param predationProbabilitiesContent Stream to store predation probabilities.
-     * @param competitionAmongResourceSpecies Whether to consider competition among resources.
-     */
-    void moveOneStep(Landscape* const landscape, const bool saveActivity, std::ostringstream& activityContent, const bool saveMovements, std::ostringstream& movementsContent, const TimeStep actualTimeStep, const PreciseDouble& timeStepsPerDay, std::ostringstream& edibilitiesContent, const bool saveAnimalsEachDayPredationProbabilities, std::ostringstream& predationProbabilitiesContent, const bool competitionAmongResourceSpecies);
+    void move(Landscape* const landscape, const TimeStep numberOfTimeSteps, const PreciseDouble& timeStepsPerDay, 
+        const bool saveMovements, fmt::memory_buffer& movementsText, const bool saveActivity,
+        fmt::memory_buffer& activitiesText) override;
     
     /**
      * @brief Creates an offspring from two parent gametes.
@@ -67,8 +64,8 @@ protected:
      * @param factorEggMassFromMom Factor of egg mass contributed by the mother.
      * @param g_numb_prt_female Generation number of the female parent.
      * @param g_numb_prt_male Generation number of the male parent.
-     * @param ID_prt_female EdibleID of the female parent.
-     * @param ID_prt_male EdibleID of the male parent.
+     * @param ID_prt_female id_type of the female parent.
+     * @param ID_prt_male id_type of the male parent.
      * @param parentSpecies Pointer to the parent species.
      * @param genderValue Gender of the offspring.
      * @param actualTimeStep Current time step.
@@ -76,7 +73,7 @@ protected:
      * @return Pointer to the newly created offspring.
      */
     AnimalNonStatistical* createOffspring(Gamete* const firstParentGamete, Gamete* const secondParentGamete, TerrainCell* parentTerrainCell, const PreciseDouble& factorEggMassFromMom, const Generation& g_numb_prt_female,
-		const Generation& g_numb_prt_male, EdibleID ID_prt_female, EdibleID ID_prt_male, AnimalSpecies* const parentSpecies, Gender genderValue, const TimeStep actualTimeStep, const PreciseDouble& timeStepsPerDay);
+		const Generation& g_numb_prt_male, id_type ID_prt_female, id_type ID_prt_male, AnimalSpecies* const parentSpecies, Gender genderValue, const TimeStep actualTimeStep, const PreciseDouble& timeStepsPerDay);
 
 public:
     /// Default constructor
@@ -102,18 +99,24 @@ public:
      * @param eggMassAtBirth Egg mass at birth.
      * @param g_numb_prt_female Generation number of the female parent.
      * @param g_numb_prt_male Generation number of the male parent.
-     * @param ID_prt_female EdibleID of the female parent.
-     * @param ID_prt_male EdibleID of the male parent.
+     * @param ID_prt_female id_type of the female parent.
+     * @param ID_prt_male id_type of the male parent.
      * @param mySpecies Pointer to the species.
      * @param genderValue Gender of the offspring.
      * @param actualTimeStep Current time step.
      * @param timeStepsPerDay Number of time steps per day.
      */
     SpatialTreeAnimal(Gamete* const firstParentGamete, Gamete* const secondParentGamete, TerrainCell* parentTerrainCell, const PreciseDouble& eggMassAtBirth, const Generation& g_numb_prt_female,
-			const Generation& g_numb_prt_male, EdibleID ID_prt_female, EdibleID ID_prt_male, AnimalSpecies* const mySpecies, Gender genderValue, const TimeStep actualTimeStep, const PreciseDouble& timeStepsPerDay);
+			const Generation& g_numb_prt_male, id_type ID_prt_female, id_type ID_prt_male, AnimalSpecies* const mySpecies, Gender genderValue, const TimeStep actualTimeStep, const PreciseDouble& timeStepsPerDay);
     
     /// Destructor
     virtual ~SpatialTreeAnimal();
+
+    void setDestinationSelectionPolicy(std::shared_ptr<const DestinationSelectionPolicy> policy);
+    void setRouteCostPolicy(std::shared_ptr<const RouteCostPolicy> policy);
+    void setRouteDestinationSelectionPolicy(std::shared_ptr<const RouteDestinationSelectionPolicy> policy);
+    void setRoutePlanner(std::shared_ptr<const RoutePlanner> planner);
+    void setRouteFollowingPolicy(std::shared_ptr<const RouteFollowingPolicy> policy);
 
     /// Deleted copy constructor
     SpatialTreeAnimal(const SpatialTreeAnimal&) = delete;

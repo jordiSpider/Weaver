@@ -1,0 +1,297 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.14.0" xml:lang="en-US">
+  <compounddef id="class_allele" kind="class" language="C++" prot="public">
+    <compoundname>Allele</compoundname>
+    <includes refid="_allele_8h" local="no">Allele.h</includes>
+    <sectiondef kind="private-attrib">
+      <memberdef kind="variable" id="class_allele_1a8984cc882cf6a984c0337b238dc9c39f" prot="private" static="no" mutable="no">
+        <type>unsigned int</type>
+        <definition>unsigned int Allele::alphabeticOrder</definition>
+        <argsstring></argsstring>
+        <name>alphabeticOrder</name>
+        <qualifiedname>Allele::alphabeticOrder</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Alphabetic order for sorting alleles </para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="App/Model/IBM/Landscape/LivingBeings/Animals/Species/Genetics/Allele.h" line="86" column="19" bodyfile="App/Model/IBM/Landscape/LivingBeings/Animals/Species/Genetics/Allele.h" bodystart="86" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="class_allele_1a9d648e6c2270495055ba38bc473e020c" prot="private" static="no" mutable="no">
+        <type><ref refid="class_precise_double" kindref="compound">PreciseDouble</ref></type>
+        <definition>PreciseDouble Allele::value</definition>
+        <argsstring></argsstring>
+        <name>value</name>
+        <qualifiedname>Allele::value</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Numerical value of the allele </para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="App/Model/IBM/Landscape/LivingBeings/Animals/Species/Genetics/Allele.h" line="85" column="20" bodyfile="App/Model/IBM/Landscape/LivingBeings/Animals/Species/Genetics/Allele.h" bodystart="85" bodyend="-1"/>
+      </memberdef>
+    </sectiondef>
+    <sectiondef kind="public-func">
+      <memberdef kind="function" id="class_allele_1a87564f929af80246f54a02676c0b9b70" prot="public" static="no" const="no" explicit="yes" inline="no" virt="non-virtual">
+        <type></type>
+        <definition>Allele::Allele</definition>
+        <argsstring>()</argsstring>
+        <name>Allele</name>
+        <qualifiedname>Allele::Allele</qualifiedname>
+        <briefdescription>
+<para>Default constructor. Initializes the allele with default values. </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="App/Model/IBM/Landscape/LivingBeings/Animals/Species/Genetics/Allele.h" line="35" column="15"/>
+      </memberdef>
+      <memberdef kind="function" id="class_allele_1a0d27ab68e44889bdf6464cba81a22903" prot="public" static="no" const="no" explicit="yes" inline="no" virt="non-virtual">
+        <type></type>
+        <definition>Allele::Allele</definition>
+        <argsstring>(const unsigned int alphabeticOrder)</argsstring>
+        <name>Allele</name>
+        <qualifiedname>Allele::Allele</qualifiedname>
+        <param>
+          <type>const unsigned int</type>
+          <declname>alphabeticOrder</declname>
+        </param>
+        <briefdescription>
+<para>Constructor with alphabetic order. </para>
+        </briefdescription>
+        <detaileddescription>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>alphabeticOrder</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>The alphabetic order of the allele. </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="App/Model/IBM/Landscape/LivingBeings/Animals/Species/Genetics/Allele.h" line="41" column="15"/>
+      </memberdef>
+      <memberdef kind="function" id="class_allele_1a69ccd29ce9fd7e58ed253de2a6d16610" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type></type>
+        <definition>Allele::~Allele</definition>
+        <argsstring>()</argsstring>
+        <name>~Allele</name>
+        <qualifiedname>Allele::~Allele</qualifiedname>
+        <briefdescription>
+<para>Destructor for the <ref refid="class_allele" kindref="compound">Allele</ref> class. </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="App/Model/IBM/Landscape/LivingBeings/Animals/Species/Genetics/Allele.h" line="46" column="1"/>
+      </memberdef>
+      <memberdef kind="function" id="class_allele_1a538d2205f770feb2a97a0019a737fbdb" prot="public" static="no" const="yes" explicit="no" inline="no" virt="non-virtual">
+        <type>unsigned int</type>
+        <definition>unsigned int Allele::getAlphabeticOrder</definition>
+        <argsstring>() const</argsstring>
+        <name>getAlphabeticOrder</name>
+        <qualifiedname>Allele::getAlphabeticOrder</qualifiedname>
+        <briefdescription>
+<para>Get the alphabetic order of the allele. </para>
+        </briefdescription>
+        <detaileddescription>
+<para><simplesect kind="return"><para>The alphabetic order (unsigned int). </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="App/Model/IBM/Landscape/LivingBeings/Animals/Species/Genetics/Allele.h" line="64" column="14"/>
+      </memberdef>
+      <memberdef kind="function" id="class_allele_1abc5348fb2239683e6730df3e881c64d6" prot="public" static="no" const="yes" explicit="no" inline="no" virt="non-virtual">
+        <type>const <ref refid="class_precise_double" kindref="compound">PreciseDouble</ref> &amp;</type>
+        <definition>const PreciseDouble &amp; Allele::getValue</definition>
+        <argsstring>() const</argsstring>
+        <name>getValue</name>
+        <qualifiedname>Allele::getValue</qualifiedname>
+        <briefdescription>
+<para>Get the numerical value of the allele. </para>
+        </briefdescription>
+        <detaileddescription>
+<para><simplesect kind="return"><para>The numerical value as a <ref refid="class_precise_double" kindref="compound">PreciseDouble</ref>. </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="App/Model/IBM/Landscape/LivingBeings/Animals/Species/Genetics/Allele.h" line="52" column="21"/>
+      </memberdef>
+      <memberdef kind="function" id="class_allele_1a92b55c5f1fe9642ab3514d5dd2535f0c" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void Allele::modifyValue</definition>
+        <argsstring>(const PreciseDouble &amp;timesAlleles)</argsstring>
+        <name>modifyValue</name>
+        <qualifiedname>Allele::modifyValue</qualifiedname>
+        <param>
+          <type>const <ref refid="class_precise_double" kindref="compound">PreciseDouble</ref> &amp;</type>
+          <declname>timesAlleles</declname>
+        </param>
+        <briefdescription>
+<para>Modify the value of the allele by multiplying it by a given factor. </para>
+        </briefdescription>
+        <detaileddescription>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>timesAlleles</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Factor to multiply the allele&apos;s value by. </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="App/Model/IBM/Landscape/LivingBeings/Animals/Species/Genetics/Allele.h" line="58" column="11"/>
+      </memberdef>
+      <memberdef kind="function" id="class_allele_1acff91e040c819619992c2597deef9f5f" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <templateparamlist>
+          <param>
+            <type>class Archive</type>
+          </param>
+        </templateparamlist>
+        <type>void</type>
+        <definition>void Allele::serialize</definition>
+        <argsstring>(Archive &amp;ar, const unsigned int version)</argsstring>
+        <name>serialize</name>
+        <qualifiedname>Allele::serialize</qualifiedname>
+        <param>
+          <type>Archive &amp;</type>
+          <declname>ar</declname>
+        </param>
+        <param>
+          <type>const unsigned int</type>
+          <declname>version</declname>
+        </param>
+        <briefdescription>
+<para>Serializes the object for persistence. </para>
+        </briefdescription>
+        <detaileddescription>
+<para><parameterlist kind="templateparam"><parameteritem>
+<parameternamelist>
+<parametername>Archive</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Serialization archive type. </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>ar</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Archive instance. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>version</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Serialization version. </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="App/Model/IBM/Landscape/LivingBeings/Animals/Species/Genetics/Allele.h" line="82" column="11"/>
+      </memberdef>
+    </sectiondef>
+    <sectiondef kind="friend">
+      <memberdef kind="friend" id="class_allele_1afa9f850d1e7557e4d7f5108d4d1760ef" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>std::ostream &amp;</type>
+        <definition>std::ostream &amp; operator&lt;&lt;</definition>
+        <argsstring>(std::ostream &amp;os, const Allele &amp;allele)</argsstring>
+        <name>operator&lt;&lt;</name>
+        <qualifiedname>Allele::operator&lt;&lt;</qualifiedname>
+        <param>
+          <type>std::ostream &amp;</type>
+          <declname>os</declname>
+        </param>
+        <param>
+          <type>const <ref refid="class_allele" kindref="compound">Allele</ref> &amp;</type>
+          <declname>allele</declname>
+        </param>
+        <briefdescription>
+<para>Overloaded output stream operator for easy printing of <ref refid="class_allele" kindref="compound">Allele</ref> objects. </para>
+        </briefdescription>
+        <detaileddescription>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>os</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Output stream. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>allele</parametername>
+</parameternamelist>
+<parameterdescription>
+<para><ref refid="class_allele" kindref="compound">Allele</ref> object to print. </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<simplesect kind="return"><para>Reference to the modified output stream. </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="App/Model/IBM/Landscape/LivingBeings/Animals/Species/Genetics/Allele.h" line="72" column="8"/>
+      </memberdef>
+    </sectiondef>
+    <briefdescription>
+<para>Represents a genetic allele with a value and an alphabetic order. </para>
+    </briefdescription>
+    <detaileddescription>
+<para>The <ref refid="class_allele" kindref="compound">Allele</ref> class stores a numerical value representing the strength or effect of the allele, and an alphabetic order used for ordering or comparison tasks in genetic algorithms or species genetics. </para>
+    </detaileddescription>
+    <collaborationgraph>
+      <node id="1">
+        <label>Allele</label>
+        <link refid="class_allele"/>
+        <childnode refid="2" relation="usage">
+          <edgelabel>value</edgelabel>
+        </childnode>
+      </node>
+      <node id="2">
+        <label>PreciseDouble</label>
+        <link refid="class_precise_double"/>
+      </node>
+    </collaborationgraph>
+    <location file="App/Model/IBM/Landscape/LivingBeings/Animals/Species/Genetics/Allele.h" line="28" column="1" bodyfile="App/Model/IBM/Landscape/LivingBeings/Animals/Species/Genetics/Allele.h" bodystart="29" bodyend="87"/>
+    <listofallmembers>
+      <member refid="class_allele_1a87564f929af80246f54a02676c0b9b70" prot="public" virt="non-virtual"><scope>Allele</scope><name>Allele</name></member>
+      <member refid="class_allele_1a0d27ab68e44889bdf6464cba81a22903" prot="public" virt="non-virtual"><scope>Allele</scope><name>Allele</name></member>
+      <member refid="class_allele_1a8984cc882cf6a984c0337b238dc9c39f" prot="private" virt="non-virtual"><scope>Allele</scope><name>alphabeticOrder</name></member>
+      <member refid="class_allele_1a538d2205f770feb2a97a0019a737fbdb" prot="public" virt="non-virtual"><scope>Allele</scope><name>getAlphabeticOrder</name></member>
+      <member refid="class_allele_1abc5348fb2239683e6730df3e881c64d6" prot="public" virt="non-virtual"><scope>Allele</scope><name>getValue</name></member>
+      <member refid="class_allele_1a92b55c5f1fe9642ab3514d5dd2535f0c" prot="public" virt="non-virtual"><scope>Allele</scope><name>modifyValue</name></member>
+      <member refid="class_allele_1afa9f850d1e7557e4d7f5108d4d1760ef" prot="public" virt="non-virtual"><scope>Allele</scope><name>operator&lt;&lt;</name></member>
+      <member refid="class_allele_1acff91e040c819619992c2597deef9f5f" prot="public" virt="non-virtual"><scope>Allele</scope><name>serialize</name></member>
+      <member refid="class_allele_1a9d648e6c2270495055ba38bc473e020c" prot="private" virt="non-virtual"><scope>Allele</scope><name>value</name></member>
+      <member refid="class_allele_1a69ccd29ce9fd7e58ed253de2a6d16610" prot="public" virt="non-virtual"><scope>Allele</scope><name>~Allele</name></member>
+    </listofallmembers>
+  </compounddef>
+</doxygen>

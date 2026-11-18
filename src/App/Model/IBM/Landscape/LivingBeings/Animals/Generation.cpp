@@ -8,13 +8,12 @@ using namespace std;
 
 
 Generation::Generation()
-	: set(false)
 {
 
 }
 
 Generation::Generation(const unsigned int& value)
-	: value(value), set(true)
+	: value(value)
 {
 	
 }
@@ -27,14 +26,12 @@ Generation::~Generation()
 Generation::Generation(const Generation &other)
 {
     value = other.value;
-	set = other.set;
 }
 
 // Overloaded copy operator
 Generation& Generation::operator=(const Generation& other) {
     if (this != &other) {
         value = other.value;
-		set = other.set;
     }
     return *this;
 }
@@ -48,25 +45,9 @@ Generation::operator size_t() const {
 	return static_cast<size_t>(value);
 }
 
-Generation::operator std::string() const {
-    if(set) {
-		return std::to_string(value);
-	}
-	else {
-		return "-1";
-	}
-}
-
-std::ostream& operator<<(std::ostream& os, const Generation& gen) {
-	os << string(gen);
-    
-    return os;
-}
-
 template <class Archive>
 void Generation::serialize(Archive &ar, const unsigned int) {
 	ar & value;
-	ar & set;
 }
 
 // // Specialisation

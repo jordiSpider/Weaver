@@ -13,6 +13,8 @@
 
 
 #include <vector>
+#include <cstddef>
+#include <cstdint>
 #include <nlohmann/json.hpp>
 #include <magic_enum/magic_enum.hpp>
 #include <cmath>
@@ -40,9 +42,15 @@
 
 
 
+constexpr size_t constexpr_pow(size_t base, size_t exp) {
+    return exp == 0 ? 1 : base * constexpr_pow(base, exp - 1);
+}
+
+
 
 /**
  * @class SpatialTree
+ * @ingroup weaver_landscape
  * @brief SpatialTree map implementation for hierarchical spatial organization.
  *
  * The SpatialTree class extends Map and provides a recursive spatial partitioning
@@ -52,17 +60,26 @@
 class SpatialTree : public Map
 {
 protected:
+    struct ObstacleBoundarySegment
+    {
+        size_t fixedCoordinate;
+        size_t startCoordinate;
+        size_t endCoordinate;
+        bool horizontal;
+        bool obstacleOnPositiveSide;
+    };
+
     unsigned int mapDepth; ///< Depth of the spatial tree
+    unsigned int MAX_PARALLEL_DEPTH;
     std::vector<PreciseDouble> cellSizes; ///< Sizes of cells at each depth
     std::vector<unsigned int> axisSizes; ///< Number of cells along each axis
-    unsigned int totalNumberOfActiveAnimals; ///< Total active animals in the tree
     RootTerrainCell* rootTerrainCell; ///< Pointer to the root cell of the tree
+    mutable std::vector<std::uint8_t> obstacleCellMask;
+    mutable std::vector<ObstacleBoundarySegment> obstacleBoundarySegments;
+    mutable std::vector<size_t> obstacleEdgeOffsets;
+    mutable std::vector<size_t> obstacleEdgeIndices;
+    mutable bool obstacleGeometryValid = false;
 
-    /**
-     * @brief Obtains iterators to leaf and branch inhabitable terrain cells.
-     */
-    void obtainLeafAndBranchInhabitableTerrainCells(std::vector<std::vector<std::vector<TerrainCell*>::iterator>>& leafInhabitableTerrainCells, std::vector<std::vector<std::vector<TerrainCell*>::iterator>>& branchInhabitableTerrainCells);
-    
     /**
      * @brief Calculates the depth of the spatial tree.
      * @return Depth of the tree.
@@ -87,6 +104,9 @@ protected:
      * @return Logarithmically scaled value.
      */
     PreciseDouble logMap(const PreciseDouble& value) const;
+
+    void ensureObstacleGeometry() const;
+    void invalidateObstacleGeometry();
     
     /**
      * @brief Calculates the center position of a given spatial tree cell.
@@ -98,6 +118,10 @@ protected:
 
 public:
     static constexpr const size_t numbreOfSubdivisions = 2; ///< Number of subdivisions per axis
+    static constexpr const size_t numberOfChildren = constexpr_pow(numbreOfSubdivisions, DIMENSIONS); ///< Total number of children per cell
+
+    TerrainCell* getCell(const PointContinuous& position) const;
+    TerrainCell* getCell(const PointMap& position) const;
 
     /**
      * @brief Default constructor.
@@ -121,22 +145,12 @@ public:
     SpatialTree& operator=(const SpatialTree&) = delete; ///< Deleted assignment operator
 
     /**
-     * @brief Increments the total number of active animals in the tree.
-     */
-    void increaseTotalNumberOfActiveAnimals(); 
-
-    /**
-     * @brief Decrements the total number of active animals in the tree.
-     */
-    void decreaseTotalNumberOfActiveAnimals(); 
-
-    /**
      * @brief Applies a patch to the landscape within the spatial tree.
      * @param landscape Pointer to the Landscape object.
      * @param patch Reference to the Patch object to apply.
      * @return True if the patch was applied successfully, false otherwise.
      */
-    bool applyPatch(Landscape* const landscape, const Patch& patch);
+    bool applyPatch(Landscape* const landscape, const Patch& patch, unsigned int seed);
 
     /**
      * @brief Returns the depth of the spatial tree.
@@ -157,13 +171,6 @@ public:
      * @return Axis size at the given depth.
      */
     const unsigned int& getAxisSize(const unsigned int depth) const;
-
-    /**
-     * @brief Inserts a new animal into the spatial tree.
-     * @param landscape Pointer to the Landscape object.
-     * @param newAnimal Pointer to the Animal object to insert.
-     */
-    void insertAnimal(Landscape* const landscape, Animal* const newAnimal);
     
     /**
      * @brief Updates all terrain cells and animals in the spatial tree.
@@ -178,12 +185,6 @@ public:
      * @return PointMap representing the discrete cell coordinates.
      */
     PointMap obtainPointMap(const PointContinuous &point, const unsigned int depth) const;
-    
-    /**
-     * @brief Returns the total number of active animals in the tree.
-     * @return Total active animals as unsigned int.
-     */
-    const unsigned int& getTotalNumberOfActiveAnimals() const;
 
     /**
      * @brief Registers resources and non-statistical animals in the tree.
@@ -197,7 +198,7 @@ public:
      * @param animalSpecies Reference to the AnimalSpecies object.
      * @param timeStepsPerDay Number of timesteps per day for this species.
      */
-    void addAnimalSpecies(const AnimalSpecies& animalSpecies, const PreciseDouble& timeStepsPerDay);
+    void addAnimalSpecies(const AnimalSpecies& animalSpecies);
     
     /**
      * @brief Adds a new resource species to the tree.
@@ -207,7 +208,12 @@ public:
      * @param resourceBaseSource Pointer to the base resource source.
      * @param timeStepsPerDay Number of timesteps per day.
      */
-    void addResourceSpecies(Landscape* const landscape, std::vector<std::vector<std::vector<CellResource*>>>& landscapeResources, ResourceSpecies& resourceSpecies, ResourceSource* const resourceBaseSource, const PreciseDouble& timeStepsPerDay);
+    void addResourceSpecies(Landscape* const landscape, std::vector<std::vector<std::vector<CellResource*>>>& landscapeResources, ResourceSpecies& resourceSpecies, ResourceSource* const resourceBaseSource);
+
+    void prepareObstacleGeometry() override;
+    bool isTraversable(const PointContinuous& position, const PreciseDouble& animalBodySection) const override;
+    bool isTraversable(const PointContinuous& start, const PointContinuous& end, const PreciseDouble& animalBodySection) const override;
+    std::vector<PointContinuous> generateRouteCandidatePositions(const PreciseDouble& animalBodySection) const override;
 
     /**
      * @brief Deserializes moisture and resource sources.
@@ -259,12 +265,7 @@ public:
     /**
      * @brief Generates statistics population for visualization or analysis.
      */
-    unsigned int generateStatisticsPopulation(std::vector<CustomIndexedVector<Instar, std::vector<AnimalStatistical*>>>& animalsPopulation, View* view, Landscape* const landscape, std::vector<AnimalSpecies*>& existingAnimalSpecies, std::vector<CustomIndexedVector<Instar, std::vector<std::vector<TerrainCell*>::iterator>>> &mapSpeciesInhabitableTerrainCells, const TimeStep actualTimeStep, const PreciseDouble& timeStepsPerDay);
-    
-    /**
-     * @brief Generates actual animal population in the landscape.
-     */
-    void generatePopulation(View* view, Landscape* const landscape, AnimalSpecies* currentAnimalSpecies, const CustomIndexedVector<Instar, unsigned int>& population, const std::vector<Genome>& initialGenomesPool, const CustomIndexedVector<Instar, std::vector<std::vector<TerrainCell*>::iterator>> &speciesInhabitableTerrainCells, const bool saveAnimalConstitutiveTraits, std::ostringstream& animalConstitutiveTraitsFile, const bool saveGenetics, const bool saveMassInfo, const TimeStep actualTimeStep, const PreciseDouble& timeStepsPerDay);
+    unsigned int generateStatisticsPopulation(std::vector<CustomIndexedVector<Instar, std::vector<AnimalStatistical*>>>& animalsPopulation, Landscape* const landscape, std::vector<AnimalSpecies*>& existingAnimalSpecies, std::vector<CustomIndexedVector<Instar, std::vector<std::vector<TerrainCell*>::iterator>>> &mapSpeciesInhabitableTerrainCells, const TimeStep actualTimeStep, const PreciseDouble& timeStepsPerDay);
     
     /**
      * @brief Returns the header string for map position outputs.
@@ -272,10 +273,7 @@ public:
      */
     std::string getMapPositionHeader() const;
 
-    /**
-     * @brief Obtains the total resource biomass for the landscape.
-     */
-    void obtainResourceBiomass(std::vector<WetMass> &landscapeResourceBiomass) const;
+    void obtainResourcesBiomass(std::vector<double> &resourcesBiomass) const;
     
     /**
      * @brief Saves a snapshot of a resource species to file.
@@ -298,6 +296,8 @@ public:
      * @return Map::Type
      */
     Type getType() const;
+
+    void registerCells(std::vector<TerrainCell*>& terrainCells);
 
     /**
      * @brief Serializes the SpatialTree object.

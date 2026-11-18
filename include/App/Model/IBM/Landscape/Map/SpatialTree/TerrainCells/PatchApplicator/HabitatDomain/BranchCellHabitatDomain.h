@@ -21,6 +21,7 @@ class BranchTerrainCell;
 
 /**
  * @class BranchCellHabitatDomain
+ * @ingroup weaver_landscape
  * @brief Habitat domain implementation for branch nodes in a spatial tree.
  *
  * This class manages habitat domain information for a branch terrain cell.

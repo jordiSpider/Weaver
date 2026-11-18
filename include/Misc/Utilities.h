@@ -27,9 +27,6 @@
 
 #include "Types.h"
 #include "Exceptions/LineInfoException.h"
-#include "Misc/JsonValidator/Validator.h"
-#include "GlobalVariable.h"
-#include "App/Model/IBM/Landscape/LivingBeings/TimeUnits.h"
 
 /**
  * @brief Creates an output file at the specified path.
@@ -60,22 +57,21 @@ std::string createOutputFile(std::ofstream &file, std::filesystem::path filename
  * @param filenameRoot Root path where the file will be created.
  * @param filename Name of the file without extension.
  * @param extension File extension (e.g., ".txt", ".csv").
- * @param numberOfTimeSteps Total number of simulation time steps.
+ * @param numberOfTimeSteps Total number of simulation time steps, already converted to its raw numeric value.
  * @param recordEach Interval of time steps to record.
  * @param openMode File open mode (default is std::ofstream::out).
  * @return The full path of the created file as a string.
  */
-std::string createOutputFile(std::ofstream &file, std::filesystem::path filenameRoot, std::string filename, std::string extension, const TimeStep numberOfTimeSteps, unsigned int recordEach, std::ios_base::openmode openMode = std::ofstream::out);
+std::string createOutputFile(std::ofstream &file, std::filesystem::path filenameRoot, std::string filename, std::string extension, unsigned int numberOfTimeSteps, unsigned int recordEach, std::ios_base::openmode openMode = std::ofstream::out);
 
 /**
- * @brief Reads a JSON configuration file and validates it.
+ * @brief Reads a JSON configuration file already validated by ConfigurationValidator.
  *
  * @param configPath Path to the JSON configuration file.
- * @param validator JsonValidator object used to validate the JSON structure.
  * @return The content of the configuration file as a nlohmann::json object.
  * @throws LineInfoException if the file cannot be read or is invalid.
  */
-nlohmann::json readConfigFile(std::filesystem::path configPath, const JsonValidator& validator);
+nlohmann::json readConfigFile(std::filesystem::path configPath);
 
 /**
  * @brief Saves a JSON object to a configuration file.

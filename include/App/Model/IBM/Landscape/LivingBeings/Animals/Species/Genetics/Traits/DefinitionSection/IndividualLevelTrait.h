@@ -22,6 +22,7 @@
 
 /**
  * @class IndividualLevelTrait
+ * @ingroup weaver_landscape
  * @brief Represents a trait defined at the individual level within a species.
  *
  * This class extends TraitDefinitionSection and handles traits that vary
@@ -87,6 +88,8 @@ public:
      */
     const PreciseDouble& getMaxTraitRestrictedRange() const;
 
+    const PreciseDouble& getMinTraitLimit() const;
+
     /**
      * @brief Initializes a genetics file for storing individual trait values.
      *
@@ -117,7 +120,7 @@ public:
      * @param rhoPerModule Vector of rho values per module.
      * @param rhoRangePerModule Vector of rho ranges per module.
      */
-    void printGenetics(const std::ostringstream& animalInfo, const Genome& genome, const size_t traitsPerModule, const size_t numberOfLociPerTrait, const std::vector<PreciseDouble>& rhoPerModule, const std::vector<size_t>& rhoRangePerModule);
+    void printGenetics(const std::string& animalInfo, const Genome& genome, fmt::memory_buffer& traitText, const size_t traitsPerModule, const size_t numberOfLociPerTrait, const std::vector<PreciseDouble>& rhoPerModule, const std::vector<size_t>& rhoRangePerModule);
 
     /**
      * @brief Gets the trait value for a given genome.
@@ -179,6 +182,8 @@ public:
      */
     Type getType() const;
 
+	inline const std::string& getFileName() const { return fileName; }
+
     /**
       * @brief Serializes the object for persistence.
       *
@@ -238,8 +243,6 @@ protected:
 
     /// Returns maximum pseudo-value range.
     const PreciseDouble& getMaxPseudoValueRange() const;
-
-    const PreciseDouble& getMinTraitLimit() const;
 
     const PreciseDouble& getMaxTraitLimit() const;
 };

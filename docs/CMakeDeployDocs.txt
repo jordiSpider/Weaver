@@ -17,34 +17,7 @@
 # ------------------------------------------------------------
 # The documentation version corresponds to the current project
 # version as defined in the root CMakeLists.txt file.
-set(LATEST_VERSION "${CMAKE_PROJECT_VERSION}")
-
-
-# ------------------------------------------------------------
-# 📁 Copy the 'latest' Sphinx source into a versioned directory
-# ------------------------------------------------------------
-# This duplicates the contents of the `latest` documentation
-# folder into a directory named after the current version.
-# This ensures that each release maintains its own snapshot
-# of the documentation for versioned publishing.
-file(COPY "${SPHINX_SOURCE_DIR}/latest/." DESTINATION "${SPHINX_SOURCE_DIR}/${LATEST_VERSION}")
-
-
-# ------------------------------------------------------------
-# 🧹 Remove unnecessary files and folders from the versioned source
-# ------------------------------------------------------------
-# The following files and directories are removed to avoid
-# conflicts and redundant data before building:
-#   - Configuration templates
-#   - Locale sources
-#   - Static assets and template placeholders
-file(REMOVE
-    "${SPHINX_SOURCE_DIR}/${LATEST_VERSION}/conf.py"
-    "${SPHINX_SOURCE_DIR}/${LATEST_VERSION}/conf.in.py"
-)
-file(REMOVE_RECURSE "${SPHINX_SOURCE_DIR}/${LATEST_VERSION}/gettext")
-file(REMOVE_RECURSE "${SPHINX_SOURCE_DIR}/${LATEST_VERSION}/_static")
-file(REMOVE_RECURSE "${SPHINX_SOURCE_DIR}/${LATEST_VERSION}/_templates")
+set(LATEST_VERSION "${DOCS_WEAVER_VERSION}")
 
 
 # ------------------------------------------------------------
@@ -78,6 +51,4 @@ include(${DOCS_DIR}/CMakeBuildDocs.txt)
 # ------------------------------------------------------------
 # 🔗 Define build dependency between Sphinx and Doxygen
 # ------------------------------------------------------------
-# Ensures that the Doxygen documentation is built before
-# the main Sphinx HTML documentation.
-add_dependencies(build-docs build-doxygen)
+# The build-docs-weaver target already depends on build-doxygen.

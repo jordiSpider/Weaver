@@ -26,7 +26,7 @@ Patch::~Patch()
 	delete shape;
 }
 
-Coverage Patch::checkCoverage(const RingModel* const cellBounds) const
+Coverage Patch::checkCoverage(const RingModel& cellBounds) const
 {
 	return shape->checkCoverage(cellBounds);
 }
@@ -34,6 +34,16 @@ Coverage Patch::checkCoverage(const RingModel* const cellBounds) const
 size_t Patch::getPriority() const
 {
 	return priority;
+}
+
+PatchShape::Type Patch::getShapeType() const
+{
+	return shape->getType();
+}
+
+const RingModel& Patch::getInfluenceZone() const
+{
+	return shape->getInfluenceZone();
 }
 
 const PathSource& Patch::getSource() const

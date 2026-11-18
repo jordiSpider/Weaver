@@ -16,6 +16,8 @@
 
 #include <functional>
 #include <vector>
+#include <atomic>
+#include <algorithm>
 
 
 #include "App/Model/IBM/Landscape/LivingBeings/Animals/Species/Genetics/Traits/Trait.h"
@@ -42,6 +44,7 @@ class AnimalNonStatistical;
 
 /**
  * @class AnimalSpeciesDecisions
+ * @ingroup weaver_landscape
  * @brief Represents the decision-making traits of a species across different instars.
  *
  * This class manages species-level behavioral traits such as predation probability,
@@ -82,7 +85,7 @@ public:
      * @param instar Instar stage.
      * @param newValue New maximum voracity.
      */
-    void updateMaximumVoracity(const Instar& instar, const PreciseDouble& newValue);
+    void updateMaximumVoracity(const CustomIndexedVector<Instar, PreciseDouble>& newMaximumVoracity);
 
     /**
      * @brief Updates the maximum PDF value for a given instar.
@@ -221,7 +224,7 @@ public:
      * @param instar Instar stage.
      * @param newValue New maximum value.
      */
-    void setMaximumPatchEdibilityValueGlobal(const Instar& instar, const PreciseDouble& newValue);
+    void updateMaximumPatchEdibilityValueGlobal(const CustomIndexedVector<Instar, PreciseDouble>& newMaximumPatchEdibilityValueGlobal);
 
     /**
      * @brief Sets the maximum global patch predation risk for an instar.
@@ -229,7 +232,7 @@ public:
      * @param instar Instar stage.
      * @param newValue New maximum value.
      */
-    void setMaximumPatchPredationRiskGlobal(const Instar& instar, const PreciseDouble& newValue);
+    void updateMaximumPatchPredationRiskGlobal(const CustomIndexedVector<Instar, PreciseDouble>& newMaximumPatchPredationRiskGlobal);
 
     /**
      * @brief Sets the maximum global patch conspecific biomass for an instar.
@@ -237,7 +240,7 @@ public:
      * @param instar Instar stage.
      * @param newValue New maximum value.
      */
-    void setMaximumPatchConspecificBiomassGlobal(const Instar& instar, const PreciseDouble& newValue);
+    void updateMaximumPatchConspecificBiomassGlobal(const CustomIndexedVector<Instar, PreciseDouble>& newMaximumPatchConspecificBiomassGlobal);
 
 	/**
       * @brief Serializes the object for persistence.

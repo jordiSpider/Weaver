@@ -19,6 +19,7 @@
 
 /**
  * @class AnimalDecisionProbability
+ * @ingroup weaver_landscape
  * @brief Abstract class for decision probabilities specific to animal interactions.
  *
  * This class extends DecisionProbability to handle probabilities that depend on

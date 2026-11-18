@@ -1,0 +1,240 @@
+{
+  "type": "object",
+  "properties": {
+    "version": {
+      "type": "string",
+      "description": "Configuration parameter: version."
+    },
+    "simulation": {
+      "type": "object",
+      "properties": {
+        "checkpoints": {
+          "type": "object",
+          "properties": {
+            "enabled": {
+              "type": "boolean",
+              "description": "Configuration parameter: enabled."
+            },
+            "recordEach": {
+              "type": "integer",
+              "minimum": 0,
+              "nullProperty": true,
+              "description": "Configuration parameter: record each."
+            },
+            "binaryEnabled": {
+              "type": "boolean",
+              "nullProperty": true,
+              "description": "Configuration parameter: binary enabled."
+            }
+          },
+          "conditionals": [
+            {
+              "condition": {
+                "operatorType": "property",
+                "propertyElement": "value",
+                "relativePath": [
+                  "enabled"
+                ]
+              },
+              "then": [
+                {
+                  "remove": {
+                    "nullProperty": [
+                      "recordEach",
+                      "binaryEnabled"
+                    ]
+                  }
+                }
+              ]
+            }
+          ],
+          "description": "Configuration parameter: checkpoints."
+        },
+        "numberOfCombinations": {
+          "type": "integer",
+          "minimum": 1,
+          "description": "Configuration parameter: number of combinations."
+        },
+        "breakConditions": {
+          "type": "object",
+          "properties": {
+            "exitAtFirstExtinction": {
+              "type": "boolean",
+              "description": "Configuration parameter: exit at first extinction."
+            },
+            "stability": {
+              "type": "object",
+              "properties": {
+                "enabled": {
+                  "type": "boolean",
+                  "description": "Configuration parameter: enabled."
+                },
+                "coefficientOfVariationThreshold": {
+                  "type": "number",
+                  "minimum": 0.0,
+                  "nullProperty": true,
+                  "description": "Configuration parameter: coefficient of variation threshold."
+                },
+                "stabilityCalculationInterval": {
+                  "type": "number",
+                  "minimum": 0.0,
+                  "exclusiveMinimum": true,
+                  "nullProperty": true,
+                  "description": "Configuration parameter: stability calculation interval."
+                }
+              },
+              "conditionals": [
+                {
+                  "condition": {
+                    "operatorType": "property",
+                    "propertyElement": "value",
+                    "relativePath": [
+                      "enabled"
+                    ]
+                  },
+                  "then": [
+                    {
+                      "remove": {
+                        "nullProperty": [
+                          "coefficientOfVariationThreshold",
+                          "stabilityCalculationInterval"
+                        ]
+                      }
+                    }
+                  ]
+                }
+              ],
+              "description": "Configuration parameter: stability."
+            }
+          },
+          "description": "Configuration parameter: break conditions."
+        },
+        "growthAndReproTest": {
+          "type": "boolean",
+          "description": "Configuration parameter: growth and repro test."
+        },
+        "runDays": {
+          "type": "integer",
+          "minimum": 1,
+          "description": "Configuration parameter: run days."
+        },
+        "timeStepsPerDay": {
+          "type": "number",
+          "exclusiveMinimum": true,
+          "minimum": 0.0,
+          "description": "Configuration parameter: time steps per day."
+        },
+        "initFromFixedSeed": {
+          "type": "object",
+          "properties": {
+            "enabled": {
+              "type": "boolean",
+              "description": "Configuration parameter: enabled."
+            },
+            "fixedSeedValue": {
+              "type": "integer",
+              "nullProperty": true,
+              "description": "Configuration parameter: fixed seed value."
+            }
+          },
+          "conditionals": [
+            {
+              "condition": {
+                "operatorType": "property",
+                "propertyElement": "value",
+                "relativePath": [
+                  "enabled"
+                ]
+              },
+              "then": [
+                {
+                  "remove": {
+                    "nullProperty": [
+                      "fixedSeedValue"
+                    ]
+                  }
+                }
+              ]
+            }
+          ],
+          "description": "Configuration parameter: init from fixed seed."
+        },
+        "outputs": {
+          "type": "object",
+          "properties": {
+            "saveAnimalConstitutiveTraits": {
+              "type": "boolean",
+              "description": "Configuration parameter: save animal constitutive traits."
+            },
+            "saveGenetics": {
+              "type": "boolean",
+              "description": "Configuration parameter: save genetics."
+            },
+            "saveExtendedDailySummary": {
+              "type": "boolean",
+              "description": "Configuration parameter: save extended daily summary."
+            },
+            "saveMovements": {
+              "type": "boolean",
+              "description": "Configuration parameter: save movements."
+            },
+            "saveEdibilitiesFile": {
+              "type": "boolean",
+              "description": "Configuration parameter: save edibilities file."
+            },
+            "savePredationEventsOnOtherSpecies": {
+              "type": "boolean",
+              "description": "Configuration parameter: save predation events on other species."
+            },
+            "recordEach": {
+              "type": "integer",
+              "minimum": 0,
+              "description": "Configuration parameter: record each."
+            },
+            "saveSnapshots": {
+              "type": "boolean",
+              "description": "Configuration parameter: save snapshots."
+            },
+            "saveSnapshotsPeriodicity": {
+              "type": "integer",
+              "minimum": 0,
+              "description": "Configuration parameter: save snapshots periodicity."
+            },
+            "saveAnimalsEachDayStart": {
+              "type": "boolean",
+              "description": "Configuration parameter: save animals each day start."
+            },
+            "saveAnimalsEachDayEnd": {
+              "type": "boolean",
+              "description": "Configuration parameter: save animals each day end."
+            },
+            "saveCellsEachDay": {
+              "type": "boolean",
+              "description": "Configuration parameter: save cells each day."
+            },
+            "saveAnimalsEachDayVoracities": {
+              "type": "boolean",
+              "description": "Configuration parameter: save animals each day voracities."
+            },
+            "saveAnimalsEachDayPredationProbabilities": {
+              "type": "boolean",
+              "description": "Configuration parameter: save animals each day predation probabilities."
+            },
+            "saveActivity": {
+              "type": "boolean",
+              "description": "Configuration parameter: save activity."
+            },
+            "saveMassInfo": {
+              "type": "boolean",
+              "description": "Configuration parameter: save mass info."
+            }
+          },
+          "description": "Configuration parameter: outputs."
+        }
+      },
+      "description": "Configuration parameter: simulation."
+    }
+  },
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://raw.githubusercontent.com/jordiSpider/Weaver/main/schema/2026.10.21/json/simulation_params_schema.json"
+}

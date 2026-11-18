@@ -1,0 +1,425 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.14.0" xml:lang="en-US">
+  <compounddef id="class_g_u_i" kind="class" language="C++" prot="public">
+    <compoundname>GUI</compoundname>
+    <basecompoundref refid="class_view" prot="public" virt="non-virtual">View</basecompoundref>
+    <includes refid="_g_u_i_8h" local="no">GUI.h</includes>
+    <sectiondef kind="protected-attrib">
+      <memberdef kind="variable" id="class_g_u_i_1a43f7aad0a5d7b6743893cf38d4f7f84c" prot="protected" static="no" mutable="no">
+        <type><ref refid="class_checkbox" kindref="compound">Checkbox</ref></type>
+        <definition>Checkbox GUI::enableDiskOutputMockCheckbox</definition>
+        <argsstring></argsstring>
+        <name>enableDiskOutputMockCheckbox</name>
+        <qualifiedname>GUI::enableDiskOutputMockCheckbox</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para><ref refid="class_checkbox" kindref="compound">Checkbox</ref> to enable disk output mock </para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="App/View/GUI/GUI.h" line="122" column="14" bodyfile="App/View/GUI/GUI.h" bodystart="122" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="class_g_u_i_1a9d09d3b41f963d44f0b6aed421b6cd7b" prot="protected" static="no" mutable="no">
+        <type>nana::form</type>
+        <definition>nana::form GUI::fm</definition>
+        <argsstring></argsstring>
+        <name>fm</name>
+        <qualifiedname>GUI::fm</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Main form window </para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="App/View/GUI/GUI.h" line="115" column="16" bodyfile="App/View/GUI/GUI.h" bodystart="115" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="class_g_u_i_1ac9da1858d8e297eebba7d05204251e48" prot="protected" static="no" mutable="no">
+        <type><ref refid="class_path_chooser" kindref="compound">PathChooser</ref></type>
+        <definition>PathChooser GUI::inputConfigPathChooser</definition>
+        <argsstring></argsstring>
+        <name>inputConfigPathChooser</name>
+        <qualifiedname>GUI::inputConfigPathChooser</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Widget to select input config path </para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="App/View/GUI/GUI.h" line="119" column="17" bodyfile="App/View/GUI/GUI.h" bodystart="119" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="class_g_u_i_1aed8ccd74ee377bd1e35e8cdc4415cc01" prot="protected" static="no" mutable="no">
+        <type>nana::place</type>
+        <definition>nana::place GUI::layout</definition>
+        <argsstring></argsstring>
+        <name>layout</name>
+        <qualifiedname>GUI::layout</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Layout manager for arranging widgets </para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="App/View/GUI/GUI.h" line="116" column="17" bodyfile="App/View/GUI/GUI.h" bodystart="116" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="class_g_u_i_1a376253f4b4d63dfe204a2f726ff00dea" prot="protected" static="no" mutable="no">
+        <type><ref refid="class_log_textbox" kindref="compound">LogTextbox</ref></type>
+        <definition>LogTextbox GUI::log</definition>
+        <argsstring></argsstring>
+        <name>log</name>
+        <qualifiedname>GUI::log</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Textbox displaying logs </para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="App/View/GUI/GUI.h" line="125" column="16" bodyfile="App/View/GUI/GUI.h" bodystart="125" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="class_g_u_i_1a5616cef7626127f93328aa36b9e7ccfc" prot="protected" static="no" mutable="no">
+        <type>nana::timer</type>
+        <definition>nana::timer GUI::logUpdateTimer</definition>
+        <argsstring></argsstring>
+        <name>logUpdateTimer</name>
+        <qualifiedname>GUI::logUpdateTimer</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Timer to periodically update log display </para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="App/View/GUI/GUI.h" line="128" column="17" bodyfile="App/View/GUI/GUI.h" bodystart="128" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="class_g_u_i_1a8e6f1e0312c6c50679d412c955b768b9" prot="protected" static="no" mutable="no">
+        <type><ref refid="class_path_chooser" kindref="compound">PathChooser</ref></type>
+        <definition>PathChooser GUI::outputFolderPathChooser</definition>
+        <argsstring></argsstring>
+        <name>outputFolderPathChooser</name>
+        <qualifiedname>GUI::outputFolderPathChooser</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Widget to select output folder path </para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="App/View/GUI/GUI.h" line="120" column="17" bodyfile="App/View/GUI/GUI.h" bodystart="120" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="class_g_u_i_1a6aba39f292010ad3bf8630561901ffe6" prot="protected" static="no" mutable="no">
+        <type>SafeQueue</type>
+        <definition>SafeQueue GUI::pendingLogs</definition>
+        <argsstring></argsstring>
+        <name>pendingLogs</name>
+        <qualifiedname>GUI::pendingLogs</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Thread-safe queue of pending log messages </para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="App/View/GUI/GUI.h" line="127" column="15" bodyfile="App/View/GUI/GUI.h" bodystart="127" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="class_g_u_i_1a3d4d1512564f51b6eb769a1dbaa2be88" prot="protected" static="no" mutable="no">
+        <type><ref refid="class_option_selector" kindref="compound">OptionSelector</ref></type>
+        <definition>OptionSelector GUI::runModeSelector</definition>
+        <argsstring></argsstring>
+        <name>runModeSelector</name>
+        <qualifiedname>GUI::runModeSelector</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Dropdown for selecting run mode </para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="App/View/GUI/GUI.h" line="118" column="20" bodyfile="App/View/GUI/GUI.h" bodystart="118" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="class_g_u_i_1ab2cc93daba660d4daa8e4458f7f82fb5" prot="protected" static="no" mutable="no">
+        <type>std::atomic&lt; bool &gt;</type>
+        <definition>std::atomic&lt;bool&gt; GUI::simulationRunning</definition>
+        <argsstring></argsstring>
+        <name>simulationRunning</name>
+        <qualifiedname>GUI::simulationRunning</qualifiedname>
+        <initializer>{ false }</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="App/View/GUI/GUI.h" line="129" column="17" bodyfile="App/View/GUI/GUI.h" bodystart="129" bodyend="129"/>
+      </memberdef>
+      <memberdef kind="variable" id="class_g_u_i_1a0fd081270ea64ea5317363b08709d42b" prot="protected" static="no" mutable="no">
+        <type>nana::button</type>
+        <definition>nana::button GUI::startSimulationButton</definition>
+        <argsstring></argsstring>
+        <name>startSimulationButton</name>
+        <qualifiedname>GUI::startSimulationButton</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Button to start the simulation </para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="App/View/GUI/GUI.h" line="124" column="18" bodyfile="App/View/GUI/GUI.h" bodystart="124" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="class_g_u_i_1a305d6e17c32eb5923b65fcef4a072401" prot="protected" static="no" mutable="no">
+        <type>Spinbox</type>
+        <definition>Spinbox GUI::threadsSpinbox</definition>
+        <argsstring></argsstring>
+        <name>threadsSpinbox</name>
+        <qualifiedname>GUI::threadsSpinbox</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Spinbox to select number of threads </para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="App/View/GUI/GUI.h" line="123" column="9" bodyfile="App/View/GUI/GUI.h" bodystart="123" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="class_g_u_i_1acc746e80938f354f354ec44b8a28b73d" prot="protected" static="no" mutable="no">
+        <type><ref refid="class_checkbox" kindref="compound">Checkbox</ref></type>
+        <definition>Checkbox GUI::verboseCheckbox</definition>
+        <argsstring></argsstring>
+        <name>verboseCheckbox</name>
+        <qualifiedname>GUI::verboseCheckbox</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para><ref refid="class_checkbox" kindref="compound">Checkbox</ref> to verbose simulation output </para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="App/View/GUI/GUI.h" line="121" column="14" bodyfile="App/View/GUI/GUI.h" bodystart="121" bodyend="-1"/>
+      </memberdef>
+    </sectiondef>
+    <sectiondef kind="public-func">
+      <memberdef kind="function" id="class_g_u_i_1af0d0a57148f4b39515a7af8c3c31cc74" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type></type>
+        <definition>GUI::GUI</definition>
+        <argsstring>(const GUI &amp;other)=delete</argsstring>
+        <name>GUI</name>
+        <qualifiedname>GUI::GUI</qualifiedname>
+        <param>
+          <type>const <ref refid="class_g_u_i" kindref="compound">GUI</ref> &amp;</type>
+          <declname>other</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="App/View/GUI/GUI.h" line="105" column="5"/>
+      </memberdef>
+      <memberdef kind="function" id="class_g_u_i_1a2da106c96eee9fb1d3ca2441de8e44f0" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type></type>
+        <definition>GUI::GUI</definition>
+        <argsstring>(Model *newModel)</argsstring>
+        <name>GUI</name>
+        <qualifiedname>GUI::GUI</qualifiedname>
+        <param>
+          <type><ref refid="class_model" kindref="compound">Model</ref> *</type>
+          <declname>newModel</declname>
+        </param>
+        <briefdescription>
+<para>Constructs the <ref refid="class_g_u_i" kindref="compound">GUI</ref> object and initializes all widgets. </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="App/View/GUI/GUI.h" line="97" column="5"/>
+      </memberdef>
+      <memberdef kind="function" id="class_g_u_i_1a9d4a79ac057b6731349c16b9261df173" prot="public" static="no" const="no" explicit="no" inline="no" virt="virtual">
+        <type></type>
+        <definition>virtual GUI::~GUI</definition>
+        <argsstring>()</argsstring>
+        <name>~GUI</name>
+        <qualifiedname>GUI::~GUI</qualifiedname>
+        <briefdescription>
+<para>Destructor for <ref refid="class_g_u_i" kindref="compound">GUI</ref>. </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="App/View/GUI/GUI.h" line="102" column="13"/>
+      </memberdef>
+      <memberdef kind="function" id="class_g_u_i_1aa7146b6086b9840622bbcf559236dab6" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type><ref refid="class_g_u_i" kindref="compound">GUI</ref> &amp;</type>
+        <definition>GUI &amp; GUI::operator=</definition>
+        <argsstring>(const GUI &amp;other)=delete</argsstring>
+        <name>operator=</name>
+        <qualifiedname>GUI::operator=</qualifiedname>
+        <param>
+          <type>const <ref refid="class_g_u_i" kindref="compound">GUI</ref> &amp;</type>
+          <declname>other</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="App/View/GUI/GUI.h" line="106" column="5"/>
+      </memberdef>
+      <memberdef kind="function" id="class_g_u_i_1a3b3d12af824cca433795692e1ca50e81" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void GUI::run</definition>
+        <argsstring>(const std::string &amp;runMode)</argsstring>
+        <name>run</name>
+        <qualifiedname>GUI::run</qualifiedname>
+        <param>
+          <type>const std::string &amp;</type>
+          <declname>runMode</declname>
+        </param>
+        <briefdescription>
+<para>Runs the <ref refid="class_g_u_i" kindref="compound">GUI</ref> main loop and optionally selects a run mode. </para>
+        </briefdescription>
+        <detaileddescription>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>runMode</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Name of the run mode to pre-select. </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="App/View/GUI/GUI.h" line="112" column="10"/>
+      </memberdef>
+    </sectiondef>
+    <sectiondef kind="protected-func">
+      <memberdef kind="function" id="class_g_u_i_1a24492a0e1b22955ef2dabec0583303ff" prot="protected" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void GUI::startSimulation</definition>
+        <argsstring>()</argsstring>
+        <name>startSimulation</name>
+        <qualifiedname>GUI::startSimulation</qualifiedname>
+        <briefdescription>
+<para>Starts the simulation in a separate thread. </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="App/View/GUI/GUI.h" line="134" column="10"/>
+      </memberdef>
+    </sectiondef>
+    <briefdescription>
+<para>Graphical User Interface class derived from <ref refid="class_view" kindref="compound">View</ref>. </para>
+    </briefdescription>
+    <detaileddescription>
+<para>Implements a <ref refid="class_g_u_i" kindref="compound">GUI</ref> using the Nana library. Allows selection of run mode, input/output paths, toggling simulation output visibility, starting simulations, and displaying logs. </para>
+    </detaileddescription>
+    <inheritancegraph>
+      <node id="1">
+        <label>GUI</label>
+        <link refid="class_g_u_i"/>
+        <childnode refid="2" relation="public-inheritance">
+        </childnode>
+      </node>
+      <node id="2">
+        <label>View</label>
+        <link refid="class_view"/>
+      </node>
+    </inheritancegraph>
+    <collaborationgraph>
+      <node id="7">
+        <label>Checkbox</label>
+        <link refid="class_checkbox"/>
+      </node>
+      <node id="4">
+        <label>CustomIndexedVector&lt; RunMode, std::string &gt;</label>
+        <link refid="class_custom_indexed_vector"/>
+      </node>
+      <node id="1">
+        <label>GUI</label>
+        <link refid="class_g_u_i"/>
+        <childnode refid="2" relation="public-inheritance">
+        </childnode>
+        <childnode refid="5" relation="usage">
+          <edgelabel>runModeSelector</edgelabel>
+        </childnode>
+        <childnode refid="6" relation="usage">
+          <edgelabel>inputConfigPathChooser</edgelabel>
+          <edgelabel>outputFolderPathChooser</edgelabel>
+        </childnode>
+        <childnode refid="7" relation="usage">
+          <edgelabel>enableDiskOutputMockCheckbox</edgelabel>
+          <edgelabel>verboseCheckbox</edgelabel>
+        </childnode>
+        <childnode refid="8" relation="usage">
+          <edgelabel>log</edgelabel>
+        </childnode>
+      </node>
+      <node id="8">
+        <label>LogTextbox</label>
+        <link refid="class_log_textbox"/>
+      </node>
+      <node id="3">
+        <label>Model</label>
+        <link refid="class_model"/>
+      </node>
+      <node id="5">
+        <label>OptionSelector</label>
+        <link refid="class_option_selector"/>
+      </node>
+      <node id="6">
+        <label>PathChooser</label>
+        <link refid="class_path_chooser"/>
+      </node>
+      <node id="2">
+        <label>View</label>
+        <link refid="class_view"/>
+        <childnode refid="3" relation="usage">
+          <edgelabel>model</edgelabel>
+        </childnode>
+        <childnode refid="4" relation="usage">
+          <edgelabel>runModesTitles</edgelabel>
+        </childnode>
+      </node>
+    </collaborationgraph>
+    <location file="App/View/GUI/GUI.h" line="92" column="1" bodyfile="App/View/GUI/GUI.h" bodystart="92" bodyend="135"/>
+    <listofallmembers>
+      <member refid="class_view_1ad1a8ef02c09ce17ea66439c93213488e" prot="protected" virt="non-virtual"><scope>GUI</scope><name>DEFAULT_OUTPUT_FOLDER</name></member>
+      <member refid="class_g_u_i_1a43f7aad0a5d7b6743893cf38d4f7f84c" prot="protected" virt="non-virtual"><scope>GUI</scope><name>enableDiskOutputMockCheckbox</name></member>
+      <member refid="class_g_u_i_1a9d09d3b41f963d44f0b6aed421b6cd7b" prot="protected" virt="non-virtual"><scope>GUI</scope><name>fm</name></member>
+      <member refid="class_view_1a23f11aac467cbd7a5682b5ecb44cd01c" prot="public" virt="non-virtual"><scope>GUI</scope><name>getRunModesTitles</name></member>
+      <member refid="class_g_u_i_1a2da106c96eee9fb1d3ca2441de8e44f0" prot="public" virt="non-virtual"><scope>GUI</scope><name>GUI</name></member>
+      <member refid="class_g_u_i_1af0d0a57148f4b39515a7af8c3c31cc74" prot="public" virt="non-virtual"><scope>GUI</scope><name>GUI</name></member>
+      <member refid="class_g_u_i_1ac9da1858d8e297eebba7d05204251e48" prot="protected" virt="non-virtual"><scope>GUI</scope><name>inputConfigPathChooser</name></member>
+      <member refid="class_g_u_i_1aed8ccd74ee377bd1e35e8cdc4415cc01" prot="protected" virt="non-virtual"><scope>GUI</scope><name>layout</name></member>
+      <member refid="class_g_u_i_1a376253f4b4d63dfe204a2f726ff00dea" prot="protected" virt="non-virtual"><scope>GUI</scope><name>log</name></member>
+      <member refid="class_g_u_i_1a5616cef7626127f93328aa36b9e7ccfc" prot="protected" virt="non-virtual"><scope>GUI</scope><name>logUpdateTimer</name></member>
+      <member refid="class_view_1af9f5eea17223c374879af02bd02dfdfb" prot="protected" virt="non-virtual"><scope>GUI</scope><name>model</name></member>
+      <member refid="class_g_u_i_1aa7146b6086b9840622bbcf559236dab6" prot="public" virt="non-virtual"><scope>GUI</scope><name>operator=</name></member>
+      <member refid="class_g_u_i_1a8e6f1e0312c6c50679d412c955b768b9" prot="protected" virt="non-virtual"><scope>GUI</scope><name>outputFolderPathChooser</name></member>
+      <member refid="class_g_u_i_1a6aba39f292010ad3bf8630561901ffe6" prot="protected" virt="non-virtual"><scope>GUI</scope><name>pendingLogs</name></member>
+      <member refid="class_g_u_i_1a3b3d12af824cca433795692e1ca50e81" prot="public" virt="non-virtual"><scope>GUI</scope><name>run</name></member>
+      <member refid="class_g_u_i_1a3d4d1512564f51b6eb769a1dbaa2be88" prot="protected" virt="non-virtual"><scope>GUI</scope><name>runModeSelector</name></member>
+      <member refid="class_view_1a7fc6c69717b600c8cafc9d782bec1180" prot="protected" virt="non-virtual"><scope>GUI</scope><name>runModesTitles</name></member>
+      <member refid="class_g_u_i_1ab2cc93daba660d4daa8e4458f7f82fb5" prot="protected" virt="non-virtual"><scope>GUI</scope><name>simulationRunning</name></member>
+      <member refid="class_g_u_i_1a24492a0e1b22955ef2dabec0583303ff" prot="protected" virt="non-virtual"><scope>GUI</scope><name>startSimulation</name></member>
+      <member refid="class_g_u_i_1a0fd081270ea64ea5317363b08709d42b" prot="protected" virt="non-virtual"><scope>GUI</scope><name>startSimulationButton</name></member>
+      <member refid="class_g_u_i_1a305d6e17c32eb5923b65fcef4a072401" prot="protected" virt="non-virtual"><scope>GUI</scope><name>threadsSpinbox</name></member>
+      <member refid="class_g_u_i_1acc746e80938f354f354ec44b8a28b73d" prot="protected" virt="non-virtual"><scope>GUI</scope><name>verboseCheckbox</name></member>
+      <member refid="class_view_1ae3b6ee9f5e261ca2cf8115f531d033e8" prot="public" virt="non-virtual"><scope>GUI</scope><name>View</name></member>
+      <member refid="class_g_u_i_1a9d4a79ac057b6731349c16b9261df173" prot="public" virt="virtual"><scope>GUI</scope><name>~GUI</name></member>
+      <member refid="class_view_1aa02a820358e1a7bf7e34d205212ae8f3" prot="public" virt="virtual"><scope>GUI</scope><name>~View</name></member>
+    </listofallmembers>
+  </compounddef>
+</doxygen>

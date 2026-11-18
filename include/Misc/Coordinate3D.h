@@ -20,6 +20,7 @@
 
 /**
  * @class Coordinate3D
+ * @ingroup weaver_model
  * @brief Represents a 3D coordinate with x, y, and z values.
  *
  * @tparam T Type of the coordinate values (e.g., int, float, double, or custom numeric type).

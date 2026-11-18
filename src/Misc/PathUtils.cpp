@@ -22,37 +22,14 @@ fs::path getDefaultOutputFolderPath() {
 		if (_dupenv_s(&buffer, &len, "USERPROFILE") == 0 && buffer != nullptr) {
 			fs::path home(buffer);
 			free(buffer);
-			return home / "Documents" / PROJECT_NAME / "output";
+			return home / "Documents" / WEAVER_PROGRAM_NAME
+				/ WEAVER_PROGRAM_VERSION_DISPLAY / WEAVER_PROGRAM_EDITION / "output";
 		}
 		throw std::runtime_error("USERPROFILE environment variable not found.");
 	#else
-		return fs::path(std::getenv("HOME")) / PROJECT_NAME / "output";
+		return fs::path(std::getenv("HOME")) / "Documents" / WEAVER_PROGRAM_NAME
+			/ WEAVER_PROGRAM_VERSION_DISPLAY / WEAVER_PROGRAM_EDITION / "output";
 	#endif
-}
-
-fs::path getWorkingDirectory()
-{
-#ifdef _WIN32
-	wchar_t buffer[MAX_PATH];
-
-	GetModuleFileNameW(nullptr, buffer, MAX_PATH);
-#else
-	char buffer[4096];
-
-	ssize_t len = readlink("/proc/self/exe", buffer, sizeof(buffer) - 1);
-	if (len == -1)
-		throw runtime_error("No se pudo obtener la ruta del ejecutable");
-	buffer[len] = '\0';
-#endif
-
-	return fs::path(buffer).parent_path().parent_path();
-}
-
-fs::path resolvePath(const fs::path& workingDirectory, const fs::path& input)
-{
-	if (input.is_absolute())
-		return fs::weakly_canonical(input);
-	return fs::weakly_canonical(workingDirectory / input);
 }
 
 #ifdef _WIN32

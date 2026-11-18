@@ -1,0 +1,1185 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.14.0" xml:lang="en-US">
+  <compounddef id="class_spatial_tree_terrain_cell" kind="class" language="C++" prot="public" abstract="yes">
+    <compoundname>SpatialTreeTerrainCell</compoundname>
+    <basecompoundref refid="class_terrain_cell" prot="public" virt="non-virtual">TerrainCell</basecompoundref>
+    <derivedcompoundref refid="class_branch_terrain_cell" prot="public" virt="non-virtual">BranchTerrainCell</derivedcompoundref>
+    <derivedcompoundref refid="class_leaf_terrain_cell" prot="public" virt="non-virtual">LeafTerrainCell</derivedcompoundref>
+    <includes refid="_spatial_tree_terrain_cell_8h" local="no">SpatialTreeTerrainCell.h</includes>
+    <sectiondef kind="user-defined">
+      <header>Edibles operations</header>
+      <memberdef kind="function" id="class_spatial_tree_terrain_cell_1ae168fb156a3198f7e8ab050c00ed6280" prot="public" static="no" const="no" explicit="no" inline="no" virt="virtual">
+        <type>void</type>
+        <definition>virtual void SpatialTreeTerrainCell::applyFunctionToEdiblesInRadius</definition>
+        <argsstring>(const PointContinuous &amp;sourcePosition, const PreciseDouble &amp;radius, const std::vector&lt; std::pair&lt; const AnimalSearchParams &amp;, AnimalFunctions &gt; &gt; &amp;animalFunctions, const std::vector&lt; std::pair&lt; const ResourceSearchParams &amp;, ResourceFunctions &gt; &gt; &amp;resourceFunctions, const PreciseDouble &amp;animalBodySection)</argsstring>
+        <name>applyFunctionToEdiblesInRadius</name>
+        <qualifiedname>SpatialTreeTerrainCell::applyFunctionToEdiblesInRadius</qualifiedname>
+        <reimplements refid="class_terrain_cell_1a93073f99de7a11ba85f37d1931c18be7">applyFunctionToEdiblesInRadius</reimplements>
+        <reimplementedby refid="class_root_terrain_cell_1ac442601ef1a7bcb185f3e6c1110cec7f">applyFunctionToEdiblesInRadius</reimplementedby>
+        <param>
+          <type>const PointContinuous &amp;</type>
+          <declname>sourcePosition</declname>
+        </param>
+        <param>
+          <type>const <ref refid="class_precise_double" kindref="compound">PreciseDouble</ref> &amp;</type>
+          <declname>radius</declname>
+        </param>
+        <param>
+          <type>const std::vector&lt; std::pair&lt; const <ref refid="class_animal_search_params" kindref="compound">AnimalSearchParams</ref> &amp;, AnimalFunctions &gt; &gt; &amp;</type>
+          <declname>animalFunctions</declname>
+        </param>
+        <param>
+          <type>const std::vector&lt; std::pair&lt; const <ref refid="class_resource_search_params" kindref="compound">ResourceSearchParams</ref> &amp;, ResourceFunctions &gt; &gt; &amp;</type>
+          <declname>resourceFunctions</declname>
+        </param>
+        <param>
+          <type>const <ref refid="class_precise_double" kindref="compound">PreciseDouble</ref> &amp;</type>
+          <declname>animalBodySection</declname>
+        </param>
+        <briefdescription>
+<para>Applies functions to edible animals and resources within a radius. </para>
+        </briefdescription>
+        <detaileddescription>
+<para>This method allows applying effects to all animals and resources within a given radius around <computeroutput>sourcePosition</computeroutput>. Unlike the previous methods, it does not require a custom checker.</para>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>sourcePosition</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Center point for the radius check. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>radius</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Radius around the source position to consider. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>animalFunctions</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Vector of pairs containing animal search parameters and the functions to apply. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>resourceFunctions</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Vector of pairs containing resource search parameters and the functions to apply. </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="App/Model/IBM/Landscape/Map/SpatialTree/TerrainCells/SpatialTreeTerrainCell.h" line="197" column="18"/>
+      </memberdef>
+    </sectiondef>
+    <sectiondef kind="protected-attrib">
+      <memberdef kind="variable" id="class_spatial_tree_terrain_cell_1aad1f990d5abd7b6ffc7a149ba33728a4" prot="protected" static="no" mutable="no">
+        <type><ref refid="class_branch_terrain_cell" kindref="compound">BranchTerrainCell</ref> *</type>
+        <definition>BranchTerrainCell* SpatialTreeTerrainCell::parentTerrainCell</definition>
+        <argsstring></argsstring>
+        <name>parentTerrainCell</name>
+        <qualifiedname>SpatialTreeTerrainCell::parentTerrainCell</qualifiedname>
+        <briefdescription>
+<para>Pointer to the parent branch terrain cell. </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="App/Model/IBM/Landscape/Map/SpatialTree/TerrainCells/SpatialTreeTerrainCell.h" line="50" column="23" bodyfile="App/Model/IBM/Landscape/Map/SpatialTree/TerrainCells/SpatialTreeTerrainCell.h" bodystart="50" bodyend="-1"/>
+      </memberdef>
+    </sectiondef>
+    <sectiondef kind="protected-func">
+      <memberdef kind="function" id="class_spatial_tree_terrain_cell_1a74b498ac0a05e9e1ff790a0b4ab3aef3" prot="protected" static="no" const="no" explicit="no" inline="no" virt="virtual">
+        <type><ref refid="class_animal_non_statistical" kindref="compound">AnimalNonStatistical</ref> *</type>
+        <definition>AnimalNonStatistical * SpatialTreeTerrainCell::createAnimal</definition>
+        <argsstring>(Landscape *const landscape, const Instar &amp;instar, AnimalSpecies *animalSpecies, const Genome *const genome, const bool saveGenetics, std::vector&lt; fmt::memory_buffer &gt; &amp;geneticsText, const TimeStep actualTimeStep, const PreciseDouble &amp;timeStepsPerDay)</argsstring>
+        <name>createAnimal</name>
+        <qualifiedname>SpatialTreeTerrainCell::createAnimal</qualifiedname>
+        <reimplements refid="class_terrain_cell_1ad78f878edfd0edfe0cd5902a8277073a">createAnimal</reimplements>
+        <param>
+          <type><ref refid="class_landscape" kindref="compound">Landscape</ref> *const</type>
+          <declname>landscape</declname>
+        </param>
+        <param>
+          <type>const <ref refid="class_instar" kindref="compound">Instar</ref> &amp;</type>
+          <declname>instar</declname>
+        </param>
+        <param>
+          <type><ref refid="class_animal_species" kindref="compound">AnimalSpecies</ref> *</type>
+          <declname>animalSpecies</declname>
+        </param>
+        <param>
+          <type>const <ref refid="class_genome" kindref="compound">Genome</ref> *const</type>
+          <declname>genome</declname>
+        </param>
+        <param>
+          <type>const bool</type>
+          <declname>saveGenetics</declname>
+        </param>
+        <param>
+          <type>std::vector&lt; fmt::memory_buffer &gt; &amp;</type>
+          <declname>geneticsText</declname>
+        </param>
+        <param>
+          <type>const <ref refid="class_time_step" kindref="compound">TimeStep</ref></type>
+          <declname>actualTimeStep</declname>
+        </param>
+        <param>
+          <type>const <ref refid="class_precise_double" kindref="compound">PreciseDouble</ref> &amp;</type>
+          <declname>timeStepsPerDay</declname>
+        </param>
+        <briefdescription>
+<para>Create a new animal in the cell. </para>
+        </briefdescription>
+        <detaileddescription>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>landscape</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Pointer to the landscape. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>instar</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Life stage of the animal. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>animalSpecies</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Pointer to the species of the animal. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>saveGenetics</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Whether to save genetics data. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>saveMassInfo</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Whether to save mass information. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>actualTimeStep</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Current timestep. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>timeStepsPerDay</parametername>
+</parameternamelist>
+<parameterdescription>
+<para><ref refid="class_number" kindref="compound">Number</ref> of timesteps per day. </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<simplesect kind="return"><para>Created animal. </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="App/Model/IBM/Landscape/Map/SpatialTree/TerrainCells/SpatialTreeTerrainCell.h" line="64" column="26"/>
+      </memberdef>
+    </sectiondef>
+    <sectiondef kind="public-func">
+      <memberdef kind="function" id="class_spatial_tree_terrain_cell_1a6f5c94ded62142a827cf50fb636ad54a" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type></type>
+        <definition>SpatialTreeTerrainCell::SpatialTreeTerrainCell</definition>
+        <argsstring>()</argsstring>
+        <name>SpatialTreeTerrainCell</name>
+        <qualifiedname>SpatialTreeTerrainCell::SpatialTreeTerrainCell</qualifiedname>
+        <briefdescription>
+<para>Default constructor. </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="App/Model/IBM/Landscape/Map/SpatialTree/TerrainCells/SpatialTreeTerrainCell.h" line="68" column="5"/>
+      </memberdef>
+      <memberdef kind="function" id="class_spatial_tree_terrain_cell_1afefbf5112ea13484b2f5e3339dce8e7e" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type></type>
+        <definition>SpatialTreeTerrainCell::SpatialTreeTerrainCell</definition>
+        <argsstring>(BranchTerrainCell *const parentTerrainCell, PointSpatialTree *const position, const PreciseDouble &amp;size)</argsstring>
+        <name>SpatialTreeTerrainCell</name>
+        <qualifiedname>SpatialTreeTerrainCell::SpatialTreeTerrainCell</qualifiedname>
+        <param>
+          <type><ref refid="class_branch_terrain_cell" kindref="compound">BranchTerrainCell</ref> *const</type>
+          <declname>parentTerrainCell</declname>
+        </param>
+        <param>
+          <type><ref refid="class_point_spatial_tree" kindref="compound">PointSpatialTree</ref> *const</type>
+          <declname>position</declname>
+        </param>
+        <param>
+          <type>const <ref refid="class_precise_double" kindref="compound">PreciseDouble</ref> &amp;</type>
+          <declname>size</declname>
+        </param>
+        <briefdescription>
+<para>Constructor with parent, position, and size. </para>
+        </briefdescription>
+        <detaileddescription>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>parentTerrainCell</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Pointer to the parent branch terrain cell. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>position</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Pointer to the spatial position. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>size</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Size of the cell. </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="App/Model/IBM/Landscape/Map/SpatialTree/TerrainCells/SpatialTreeTerrainCell.h" line="77" column="5"/>
+      </memberdef>
+      <memberdef kind="function" id="class_spatial_tree_terrain_cell_1a41058b28785bb97a2adb93910e706e1d" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type></type>
+        <definition>SpatialTreeTerrainCell::SpatialTreeTerrainCell</definition>
+        <argsstring>(const SpatialTreeTerrainCell &amp;)=delete</argsstring>
+        <name>SpatialTreeTerrainCell</name>
+        <qualifiedname>SpatialTreeTerrainCell::SpatialTreeTerrainCell</qualifiedname>
+        <param>
+          <type>const <ref refid="class_spatial_tree_terrain_cell" kindref="compound">SpatialTreeTerrainCell</ref> &amp;</type>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="App/Model/IBM/Landscape/Map/SpatialTree/TerrainCells/SpatialTreeTerrainCell.h" line="79" column="5"/>
+      </memberdef>
+      <memberdef kind="function" id="class_spatial_tree_terrain_cell_1a77b0b9e2bea1b6308d0a60fd93329cea" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type></type>
+        <definition>SpatialTreeTerrainCell::SpatialTreeTerrainCell</definition>
+        <argsstring>(SpatialTreeTerrainCell &amp;&amp;)=delete</argsstring>
+        <name>SpatialTreeTerrainCell</name>
+        <qualifiedname>SpatialTreeTerrainCell::SpatialTreeTerrainCell</qualifiedname>
+        <param>
+          <type><ref refid="class_spatial_tree_terrain_cell" kindref="compound">SpatialTreeTerrainCell</ref> &amp;&amp;</type>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="App/Model/IBM/Landscape/Map/SpatialTree/TerrainCells/SpatialTreeTerrainCell.h" line="81" column="5"/>
+      </memberdef>
+      <memberdef kind="function" id="class_spatial_tree_terrain_cell_1a23a8486de54d8bff4235f6c705b5b72a" prot="public" static="no" const="no" explicit="no" inline="no" virt="virtual">
+        <type></type>
+        <definition>virtual SpatialTreeTerrainCell::~SpatialTreeTerrainCell</definition>
+        <argsstring>()</argsstring>
+        <name>~SpatialTreeTerrainCell</name>
+        <qualifiedname>SpatialTreeTerrainCell::~SpatialTreeTerrainCell</qualifiedname>
+        <briefdescription>
+<para>Virtual destructor. </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="App/Model/IBM/Landscape/Map/SpatialTree/TerrainCells/SpatialTreeTerrainCell.h" line="85" column="13"/>
+      </memberdef>
+      <memberdef kind="function" id="class_spatial_tree_terrain_cell_1a8e8d14a8af67dbb13029459a2540ce0d" prot="public" static="no" const="no" explicit="no" inline="no" virt="virtual">
+        <type><ref refid="class_terrain_cell" kindref="compound">TerrainCell</ref> *</type>
+        <definition>TerrainCell * SpatialTreeTerrainCell::getCell</definition>
+        <argsstring>(const PointMap &amp;dstPos)</argsstring>
+        <name>getCell</name>
+        <qualifiedname>SpatialTreeTerrainCell::getCell</qualifiedname>
+        <reimplements refid="class_terrain_cell_1a4e15c899c3d790efd43b3a8966b31cca">getCell</reimplements>
+        <param>
+          <type>const <ref refid="class_point_map" kindref="compound">PointMap</ref> &amp;</type>
+          <declname>dstPos</declname>
+        </param>
+        <briefdescription>
+<para>Get a child cell by map position. </para>
+        </briefdescription>
+        <detaileddescription>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>dstPos</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Destination map position. </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<simplesect kind="return"><para>Pointer to the terrain cell at that position. </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="App/Model/IBM/Landscape/Map/SpatialTree/TerrainCells/SpatialTreeTerrainCell.h" line="128" column="17"/>
+      </memberdef>
+      <memberdef kind="function" id="class_spatial_tree_terrain_cell_1a63a502f8730d28002f763ce50fc2ae1f" prot="public" static="no" const="no" explicit="no" inline="no" virt="pure-virtual">
+        <type><ref refid="class_spatial_tree_terrain_cell" kindref="compound">SpatialTreeTerrainCell</ref> *</type>
+        <definition>virtual SpatialTreeTerrainCell * SpatialTreeTerrainCell::getCell</definition>
+        <argsstring>(const PointSpatialTree &amp;dstPos)=0</argsstring>
+        <name>getCell</name>
+        <qualifiedname>SpatialTreeTerrainCell::getCell</qualifiedname>
+        <reimplementedby refid="class_branch_terrain_cell_1a4cf0913e5d984f4f3f3013bc87a75ccb">getCell</reimplementedby>
+        <reimplementedby refid="class_leaf_terrain_cell_1a35739b24c76213bbe12bbda4b160c821">getCell</reimplementedby>
+        <reimplementedby refid="class_root_terrain_cell_1a3407ac333fac639e3f310010cfe213e2">getCell</reimplementedby>
+        <param>
+          <type>const <ref refid="class_point_spatial_tree" kindref="compound">PointSpatialTree</ref> &amp;</type>
+          <declname>dstPos</declname>
+        </param>
+        <briefdescription>
+<para>Get a child cell by spatial position (pure virtual). </para>
+        </briefdescription>
+        <detaileddescription>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>dstPos</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Destination spatial position. </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<simplesect kind="return"><para>Pointer to the spatial tree terrain cell at that position. </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="App/Model/IBM/Landscape/Map/SpatialTree/TerrainCells/SpatialTreeTerrainCell.h" line="136" column="36"/>
+      </memberdef>
+      <memberdef kind="function" id="class_spatial_tree_terrain_cell_1af683eeddb74295fb0eeae699c822ff64" prot="public" static="no" const="yes" explicit="no" inline="no" virt="virtual">
+        <type><ref refid="class_branch_terrain_cell" kindref="compound">BranchTerrainCell</ref> *</type>
+        <definition>virtual BranchTerrainCell * SpatialTreeTerrainCell::getMutableParent</definition>
+        <argsstring>() const</argsstring>
+        <name>getMutableParent</name>
+        <qualifiedname>SpatialTreeTerrainCell::getMutableParent</qualifiedname>
+        <reimplementedby refid="class_root_terrain_cell_1a7293fa1761d176cfdceb4b89cd27824c">getMutableParent</reimplementedby>
+        <briefdescription>
+<para>Get the parent branch (mutable). </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="App/Model/IBM/Landscape/Map/SpatialTree/TerrainCells/SpatialTreeTerrainCell.h" line="98" column="31"/>
+      </memberdef>
+      <memberdef kind="function" id="class_spatial_tree_terrain_cell_1a4c4556631f0c8397bd38cfb74a2a8535" prot="public" static="no" const="no" explicit="no" inline="no" virt="virtual">
+        <type><ref refid="class_spatial_tree_patch_applicator" kindref="compound">SpatialTreePatchApplicator</ref> &amp;</type>
+        <definition>virtual SpatialTreePatchApplicator &amp; SpatialTreeTerrainCell::getMutablePatchApplicator</definition>
+        <argsstring>() override</argsstring>
+        <name>getMutablePatchApplicator</name>
+        <qualifiedname>SpatialTreeTerrainCell::getMutablePatchApplicator</qualifiedname>
+        <reimplements refid="class_terrain_cell_1a3edfbc29d065ed7c96326336c8c3fa13">getMutablePatchApplicator</reimplements>
+        <reimplementedby refid="class_leaf_terrain_cell_1aa014446021c34749d3a7becb70a05905">getMutablePatchApplicator</reimplementedby>
+        <briefdescription>
+<para>Get mutable patch applicator for this cell. </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="App/Model/IBM/Landscape/Map/SpatialTree/TerrainCells/SpatialTreeTerrainCell.h" line="117" column="40"/>
+      </memberdef>
+      <memberdef kind="function" id="class_spatial_tree_terrain_cell_1a79acf28cd98e9edd926bce6711e06d69" prot="public" static="no" const="yes" explicit="no" inline="no" virt="virtual">
+        <type><ref refid="class_point_spatial_tree" kindref="compound">PointSpatialTree</ref> &amp;</type>
+        <definition>PointSpatialTree &amp; SpatialTreeTerrainCell::getMutablePosition</definition>
+        <argsstring>() const override</argsstring>
+        <name>getMutablePosition</name>
+        <qualifiedname>SpatialTreeTerrainCell::getMutablePosition</qualifiedname>
+        <reimplements refid="class_terrain_cell_1a27ca455274424c2dd4941830d62dc39e">getMutablePosition</reimplements>
+        <briefdescription>
+<para>Get the spatial position (mutable). </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="App/Model/IBM/Landscape/Map/SpatialTree/TerrainCells/SpatialTreeTerrainCell.h" line="114" column="22"/>
+      </memberdef>
+      <memberdef kind="function" id="class_spatial_tree_terrain_cell_1a986aae96e4f78e31e47afeef9f912dcb" prot="public" static="no" const="no" explicit="no" inline="no" virt="virtual">
+        <type>void</type>
+        <definition>virtual void SpatialTreeTerrainCell::getNeighboursCellsOnRadius</definition>
+        <argsstring>(std::vector&lt; CellValue &gt; &amp;bestEvaluations, const PointContinuous &amp;sourcePosition, const PreciseDouble &amp;radius, const size_t searchDepth, bool searchNeighborsWithFemales, bool searchNeighborsWithMales, AnimalNonStatistical *animalWhoIsEvaluating, CustomIndexedVector&lt; Instar, PreciseDouble &gt; &amp;maximumPatchEdibilityValueGlobal, CustomIndexedVector&lt; Instar, PreciseDouble &gt; &amp;maximumPatchPredationRiskGlobal, CustomIndexedVector&lt; Instar, PreciseDouble &gt; &amp;maximumPatchConspecificBiomassGlobal)</argsstring>
+        <name>getNeighboursCellsOnRadius</name>
+        <qualifiedname>SpatialTreeTerrainCell::getNeighboursCellsOnRadius</qualifiedname>
+        <reimplements refid="class_terrain_cell_1af6f89a59f4ff056baefba63eb8e46f48">getNeighboursCellsOnRadius</reimplements>
+        <reimplementedby refid="class_root_terrain_cell_1ae6ad2ec43879cc19335d45afef9fbeed">getNeighboursCellsOnRadius</reimplementedby>
+        <param>
+          <type>std::vector&lt; <ref refid="struct_cell_value" kindref="compound">CellValue</ref> &gt; &amp;</type>
+          <declname>bestEvaluations</declname>
+        </param>
+        <param>
+          <type>const PointContinuous &amp;</type>
+          <declname>sourcePosition</declname>
+        </param>
+        <param>
+          <type>const <ref refid="class_precise_double" kindref="compound">PreciseDouble</ref> &amp;</type>
+          <declname>radius</declname>
+        </param>
+        <param>
+          <type>const size_t</type>
+          <declname>searchDepth</declname>
+        </param>
+        <param>
+          <type>bool</type>
+          <declname>searchNeighborsWithFemales</declname>
+        </param>
+        <param>
+          <type>bool</type>
+          <declname>searchNeighborsWithMales</declname>
+        </param>
+        <param>
+          <type><ref refid="class_animal_non_statistical" kindref="compound">AnimalNonStatistical</ref> *</type>
+          <declname>animalWhoIsEvaluating</declname>
+        </param>
+        <param>
+          <type><ref refid="class_custom_indexed_vector" kindref="compound">CustomIndexedVector</ref>&lt; <ref refid="class_instar" kindref="compound">Instar</ref>, <ref refid="class_precise_double" kindref="compound">PreciseDouble</ref> &gt; &amp;</type>
+          <declname>maximumPatchEdibilityValueGlobal</declname>
+        </param>
+        <param>
+          <type><ref refid="class_custom_indexed_vector" kindref="compound">CustomIndexedVector</ref>&lt; <ref refid="class_instar" kindref="compound">Instar</ref>, <ref refid="class_precise_double" kindref="compound">PreciseDouble</ref> &gt; &amp;</type>
+          <declname>maximumPatchPredationRiskGlobal</declname>
+        </param>
+        <param>
+          <type><ref refid="class_custom_indexed_vector" kindref="compound">CustomIndexedVector</ref>&lt; <ref refid="class_instar" kindref="compound">Instar</ref>, <ref refid="class_precise_double" kindref="compound">PreciseDouble</ref> &gt; &amp;</type>
+          <declname>maximumPatchConspecificBiomassGlobal</declname>
+        </param>
+        <briefdescription>
+<para>Retrieve neighbor cells within a radius. </para>
+        </briefdescription>
+        <detaileddescription>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>bestEvaluations</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Vector to store evaluated cell values. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>sourcePosition</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Position from which to measure the radius. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>radius</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Radius of search. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>radiusArea</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Optional ring model area. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>searchDepth</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Depth of search in the tree. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>searchNeighborsWithFemales</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Whether to prioritize neighbors with females. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>animalWhoIsEvaluating</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Pointer to the animal performing evaluation. </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="App/Model/IBM/Landscape/Map/SpatialTree/TerrainCells/SpatialTreeTerrainCell.h" line="176" column="18"/>
+      </memberdef>
+      <memberdef kind="function" id="class_spatial_tree_terrain_cell_1a19b815420f104cacea2ae6aadeb2f56a" prot="public" static="no" const="yes" explicit="no" inline="no" virt="virtual">
+        <type>const <ref refid="class_branch_terrain_cell" kindref="compound">BranchTerrainCell</ref> *</type>
+        <definition>virtual const BranchTerrainCell * SpatialTreeTerrainCell::getParent</definition>
+        <argsstring>() const</argsstring>
+        <name>getParent</name>
+        <qualifiedname>SpatialTreeTerrainCell::getParent</qualifiedname>
+        <reimplementedby refid="class_root_terrain_cell_1af0daefd5391a201570cbbae08f738b4d">getParent</reimplementedby>
+        <briefdescription>
+<para>Get the parent branch (const). </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="App/Model/IBM/Landscape/Map/SpatialTree/TerrainCells/SpatialTreeTerrainCell.h" line="95" column="37"/>
+      </memberdef>
+      <memberdef kind="function" id="class_spatial_tree_terrain_cell_1a1144857a67012ced006c2d18b3adcd2c" prot="public" static="no" const="yes" explicit="no" inline="no" virt="virtual">
+        <type>const <ref refid="class_spatial_tree_patch_applicator" kindref="compound">SpatialTreePatchApplicator</ref> &amp;</type>
+        <definition>virtual const SpatialTreePatchApplicator &amp; SpatialTreeTerrainCell::getPatchApplicator</definition>
+        <argsstring>() const override</argsstring>
+        <name>getPatchApplicator</name>
+        <qualifiedname>SpatialTreeTerrainCell::getPatchApplicator</qualifiedname>
+        <reimplements refid="class_terrain_cell_1a47da5b93407e6e8c62ed7d61916fc69a">getPatchApplicator</reimplements>
+        <reimplementedby refid="class_leaf_terrain_cell_1a630a52c1afd227bfed89c86dbd2a8d6f">getPatchApplicator</reimplementedby>
+        <briefdescription>
+<para>Get patch applicator (const). </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="App/Model/IBM/Landscape/Map/SpatialTree/TerrainCells/SpatialTreeTerrainCell.h" line="120" column="46"/>
+      </memberdef>
+      <memberdef kind="function" id="class_spatial_tree_terrain_cell_1a21a599bff464e52dcd0be5efb57242fa" prot="public" static="no" const="yes" explicit="no" inline="no" virt="virtual">
+        <type>const <ref refid="class_point_spatial_tree" kindref="compound">PointSpatialTree</ref> &amp;</type>
+        <definition>const PointSpatialTree &amp; SpatialTreeTerrainCell::getPosition</definition>
+        <argsstring>() const override</argsstring>
+        <name>getPosition</name>
+        <qualifiedname>SpatialTreeTerrainCell::getPosition</qualifiedname>
+        <reimplements refid="class_terrain_cell_1acff0e25622222194264d33aca0e22eb7">getPosition</reimplements>
+        <briefdescription>
+<para>Get the spatial position (const). </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="App/Model/IBM/Landscape/Map/SpatialTree/TerrainCells/SpatialTreeTerrainCell.h" line="111" column="28"/>
+      </memberdef>
+      <memberdef kind="function" id="class_spatial_tree_terrain_cell_1ad1e1d020cb24004f150c6ab43bf9b2c5" prot="public" static="no" const="no" explicit="no" inline="no" virt="pure-virtual">
+        <type>void</type>
+        <definition>virtual void SpatialTreeTerrainCell::getRadiusTerrainCells</definition>
+        <argsstring>(std::vector&lt; CellValue &gt; &amp;bestEvaluations, const PointContinuous &amp;sourcePosition, const PreciseDouble &amp;radius, const size_t searchDepth, bool searchNeighborsWithFemales, bool searchNeighborsWithMales, const bool parentFullCoverage, AnimalNonStatistical *animalWhoIsEvaluating, CustomIndexedVector&lt; Instar, PreciseDouble &gt; &amp;maximumPatchEdibilityValueGlobal, CustomIndexedVector&lt; Instar, PreciseDouble &gt; &amp;maximumPatchPredationRiskGlobal, CustomIndexedVector&lt; Instar, PreciseDouble &gt; &amp;maximumPatchConspecificBiomassGlobal)=0</argsstring>
+        <name>getRadiusTerrainCells</name>
+        <qualifiedname>SpatialTreeTerrainCell::getRadiusTerrainCells</qualifiedname>
+        <reimplementedby refid="class_branch_terrain_cell_1aa5ac0f15f90c6b8902a5dd3dcf11ec00">getRadiusTerrainCells</reimplementedby>
+        <reimplementedby refid="class_leaf_terrain_cell_1a986591e2cf8d2ff3ab3579a91eea7995">getRadiusTerrainCells</reimplementedby>
+        <param>
+          <type>std::vector&lt; <ref refid="struct_cell_value" kindref="compound">CellValue</ref> &gt; &amp;</type>
+          <declname>bestEvaluations</declname>
+        </param>
+        <param>
+          <type>const PointContinuous &amp;</type>
+          <declname>sourcePosition</declname>
+        </param>
+        <param>
+          <type>const <ref refid="class_precise_double" kindref="compound">PreciseDouble</ref> &amp;</type>
+          <declname>radius</declname>
+        </param>
+        <param>
+          <type>const size_t</type>
+          <declname>searchDepth</declname>
+        </param>
+        <param>
+          <type>bool</type>
+          <declname>searchNeighborsWithFemales</declname>
+        </param>
+        <param>
+          <type>bool</type>
+          <declname>searchNeighborsWithMales</declname>
+        </param>
+        <param>
+          <type>const bool</type>
+          <declname>parentFullCoverage</declname>
+        </param>
+        <param>
+          <type><ref refid="class_animal_non_statistical" kindref="compound">AnimalNonStatistical</ref> *</type>
+          <declname>animalWhoIsEvaluating</declname>
+        </param>
+        <param>
+          <type><ref refid="class_custom_indexed_vector" kindref="compound">CustomIndexedVector</ref>&lt; <ref refid="class_instar" kindref="compound">Instar</ref>, <ref refid="class_precise_double" kindref="compound">PreciseDouble</ref> &gt; &amp;</type>
+          <declname>maximumPatchEdibilityValueGlobal</declname>
+        </param>
+        <param>
+          <type><ref refid="class_custom_indexed_vector" kindref="compound">CustomIndexedVector</ref>&lt; <ref refid="class_instar" kindref="compound">Instar</ref>, <ref refid="class_precise_double" kindref="compound">PreciseDouble</ref> &gt; &amp;</type>
+          <declname>maximumPatchPredationRiskGlobal</declname>
+        </param>
+        <param>
+          <type><ref refid="class_custom_indexed_vector" kindref="compound">CustomIndexedVector</ref>&lt; <ref refid="class_instar" kindref="compound">Instar</ref>, <ref refid="class_precise_double" kindref="compound">PreciseDouble</ref> &gt; &amp;</type>
+          <declname>maximumPatchConspecificBiomassGlobal</declname>
+        </param>
+        <briefdescription>
+<para>Retrieve terrain cells within a radius for evaluation. </para>
+        </briefdescription>
+        <detaileddescription>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>bestEvaluations</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Vector to store evaluated cell values. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>sourcePosition</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Position from which to measure the radius. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>radius</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Radius of search. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>radiusArea</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Optional ring model area. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>searchDepth</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Depth of search in the tree. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>searchNeighborsWithFemales</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Whether to prioritize neighbors with females. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>parentFullCoverage</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Parent coverage flag. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>animalWhoIsEvaluating</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Pointer to the animal performing evaluation. </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="App/Model/IBM/Landscape/Map/SpatialTree/TerrainCells/SpatialTreeTerrainCell.h" line="161" column="18"/>
+      </memberdef>
+      <memberdef kind="function" id="class_spatial_tree_terrain_cell_1ad939f29cd31868ed6503e8f1c6ec0245" prot="public" static="no" const="yes" explicit="no" inline="no" virt="pure-virtual">
+        <type>bool</type>
+        <definition>virtual bool SpatialTreeTerrainCell::isChild</definition>
+        <argsstring>(const PointSpatialTree &amp;childPos) const =0</argsstring>
+        <name>isChild</name>
+        <qualifiedname>SpatialTreeTerrainCell::isChild</qualifiedname>
+        <reimplementedby refid="class_branch_terrain_cell_1a732393d8d83c2b6b1843d5508f1ce511">isChild</reimplementedby>
+        <reimplementedby refid="class_leaf_terrain_cell_1ac8a38e351e3fc4f74e2ced998b5988f0">isChild</reimplementedby>
+        <param>
+          <type>const <ref refid="class_point_spatial_tree" kindref="compound">PointSpatialTree</ref> &amp;</type>
+          <declname>childPos</declname>
+        </param>
+        <briefdescription>
+<para>Check if a position corresponds to a child of this cell. </para>
+        </briefdescription>
+        <detaileddescription>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>childPos</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Spatial position to check. </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<simplesect kind="return"><para>True if the position is a child, false otherwise. </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="App/Model/IBM/Landscape/Map/SpatialTree/TerrainCells/SpatialTreeTerrainCell.h" line="144" column="18"/>
+      </memberdef>
+      <memberdef kind="function" id="class_spatial_tree_terrain_cell_1ada778c1b97136340ff39ec6f78ebd1f8" prot="public" static="no" const="yes" explicit="no" inline="no" virt="pure-virtual">
+        <type>bool</type>
+        <definition>virtual bool SpatialTreeTerrainCell::isLeaf</definition>
+        <argsstring>() const =0</argsstring>
+        <name>isLeaf</name>
+        <qualifiedname>SpatialTreeTerrainCell::isLeaf</qualifiedname>
+        <reimplementedby refid="class_branch_terrain_cell_1a940d7d6c312714de1eac7f661444aec0">isLeaf</reimplementedby>
+        <reimplementedby refid="class_leaf_terrain_cell_1ac17ccdeebe4b6c17ee8dbb5ca7c5971d">isLeaf</reimplementedby>
+        <briefdescription>
+<para>Check if this cell is a leaf (pure virtual). </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="App/Model/IBM/Landscape/Map/SpatialTree/TerrainCells/SpatialTreeTerrainCell.h" line="147" column="18"/>
+      </memberdef>
+      <memberdef kind="function" id="class_spatial_tree_terrain_cell_1a4a2beaf8a6254675ee85dba4d790e5e1" prot="public" static="no" const="no" explicit="no" inline="no" virt="virtual">
+        <type>void</type>
+        <definition>void SpatialTreeTerrainCell::migrateAnimalTo</definition>
+        <argsstring>(Landscape *const landscape, Animal *animalToMigrate, TerrainCell *newTerrainCell, const PointContinuous &amp;newPosition)</argsstring>
+        <name>migrateAnimalTo</name>
+        <qualifiedname>SpatialTreeTerrainCell::migrateAnimalTo</qualifiedname>
+        <reimplements refid="class_terrain_cell_1ad90164845f1acd3100e7fe47b73b8563">migrateAnimalTo</reimplements>
+        <param>
+          <type><ref refid="class_landscape" kindref="compound">Landscape</ref> *const</type>
+          <declname>landscape</declname>
+        </param>
+        <param>
+          <type><ref refid="class_animal" kindref="compound">Animal</ref> *</type>
+          <declname>animalToMigrate</declname>
+        </param>
+        <param>
+          <type><ref refid="class_terrain_cell" kindref="compound">TerrainCell</ref> *</type>
+          <declname>newTerrainCell</declname>
+        </param>
+        <param>
+          <type>const PointContinuous &amp;</type>
+          <declname>newPosition</declname>
+        </param>
+        <briefdescription>
+<para>Migrate an animal from this cell to a new terrain cell. </para>
+        </briefdescription>
+        <detaileddescription>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>landscape</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Pointer to the landscape. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>animalToMigrate</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Pointer to the animal to migrate. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>newTerrainCell</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Pointer to the destination cell. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>newPosition</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>New position in the destination cell. </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="App/Model/IBM/Landscape/Map/SpatialTree/TerrainCells/SpatialTreeTerrainCell.h" line="108" column="10"/>
+      </memberdef>
+      <memberdef kind="function" id="class_spatial_tree_terrain_cell_1ad5ecb7a51d191f71bf3b7342e5dfa9b0" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type><ref refid="class_spatial_tree_terrain_cell" kindref="compound">SpatialTreeTerrainCell</ref> &amp;</type>
+        <definition>SpatialTreeTerrainCell &amp; SpatialTreeTerrainCell::operator=</definition>
+        <argsstring>(const SpatialTreeTerrainCell &amp;)=delete</argsstring>
+        <name>operator=</name>
+        <qualifiedname>SpatialTreeTerrainCell::operator=</qualifiedname>
+        <param>
+          <type>const <ref refid="class_spatial_tree_terrain_cell" kindref="compound">SpatialTreeTerrainCell</ref> &amp;</type>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="App/Model/IBM/Landscape/Map/SpatialTree/TerrainCells/SpatialTreeTerrainCell.h" line="80" column="28"/>
+      </memberdef>
+      <memberdef kind="function" id="class_spatial_tree_terrain_cell_1afc6a064a9695b5d7c541af4a295019a6" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type><ref refid="class_spatial_tree_terrain_cell" kindref="compound">SpatialTreeTerrainCell</ref> &amp;</type>
+        <definition>SpatialTreeTerrainCell &amp; SpatialTreeTerrainCell::operator=</definition>
+        <argsstring>(SpatialTreeTerrainCell &amp;&amp;)=delete</argsstring>
+        <name>operator=</name>
+        <qualifiedname>SpatialTreeTerrainCell::operator=</qualifiedname>
+        <param>
+          <type><ref refid="class_spatial_tree_terrain_cell" kindref="compound">SpatialTreeTerrainCell</ref> &amp;&amp;</type>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="App/Model/IBM/Landscape/Map/SpatialTree/TerrainCells/SpatialTreeTerrainCell.h" line="82" column="28"/>
+      </memberdef>
+      <memberdef kind="function" id="class_spatial_tree_terrain_cell_1a728dde6fc395ff733be00ae3223a339f" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <templateparamlist>
+          <param>
+            <type>class Archive</type>
+          </param>
+        </templateparamlist>
+        <type>void</type>
+        <definition>void SpatialTreeTerrainCell::serialize</definition>
+        <argsstring>(Archive &amp;ar, const unsigned int version)</argsstring>
+        <name>serialize</name>
+        <qualifiedname>SpatialTreeTerrainCell::serialize</qualifiedname>
+        <param>
+          <type>Archive &amp;</type>
+          <declname>ar</declname>
+        </param>
+        <param>
+          <type>const unsigned int</type>
+          <declname>version</declname>
+        </param>
+        <briefdescription>
+<para>Serialization method for persistence. </para>
+        </briefdescription>
+        <detaileddescription>
+<para><parameterlist kind="templateparam"><parameteritem>
+<parameternamelist>
+<parametername>Archive</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Archive type. </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>ar</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Archive object. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>version</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Version number of the class. </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="App/Model/IBM/Landscape/Map/SpatialTree/TerrainCells/SpatialTreeTerrainCell.h" line="213" column="10"/>
+      </memberdef>
+      <memberdef kind="function" id="class_spatial_tree_terrain_cell_1ae7cb4e11d40dbbd77c4d0b5833f84430" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void SpatialTreeTerrainCell::setParent</definition>
+        <argsstring>(BranchTerrainCell *newParentTerrainCell)</argsstring>
+        <name>setParent</name>
+        <qualifiedname>SpatialTreeTerrainCell::setParent</qualifiedname>
+        <param>
+          <type><ref refid="class_branch_terrain_cell" kindref="compound">BranchTerrainCell</ref> *</type>
+          <declname>newParentTerrainCell</declname>
+        </param>
+        <briefdescription>
+<para>Set the parent branch of this cell. </para>
+        </briefdescription>
+        <detaileddescription>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>newParentTerrainCell</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Pointer to the new parent cell. </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="App/Model/IBM/Landscape/Map/SpatialTree/TerrainCells/SpatialTreeTerrainCell.h" line="92" column="10"/>
+      </memberdef>
+    </sectiondef>
+    <briefdescription>
+<para>Represents a terrain cell in a spatial tree structure. </para>
+    </briefdescription>
+    <detaileddescription>
+<para>Each spatial tree cell may have a parent branch and contains methods to manage animals, resources, and hierarchical traversal. </para>
+    </detaileddescription>
+    <inheritancegraph>
+      <node id="3">
+        <label>BranchTerrainCell</label>
+        <link refid="class_branch_terrain_cell"/>
+        <childnode refid="1" relation="public-inheritance">
+        </childnode>
+      </node>
+      <node id="5">
+        <label>LeafTerrainCell</label>
+        <link refid="class_leaf_terrain_cell"/>
+        <childnode refid="1" relation="public-inheritance">
+        </childnode>
+      </node>
+      <node id="4">
+        <label>RootTerrainCell</label>
+        <link refid="class_root_terrain_cell"/>
+        <childnode refid="3" relation="public-inheritance">
+        </childnode>
+      </node>
+      <node id="1">
+        <label>SpatialTreeTerrainCell</label>
+        <link refid="class_spatial_tree_terrain_cell"/>
+        <childnode refid="2" relation="public-inheritance">
+        </childnode>
+      </node>
+      <node id="2">
+        <label>TerrainCell</label>
+        <link refid="class_terrain_cell"/>
+      </node>
+    </inheritancegraph>
+    <collaborationgraph>
+      <node id="12">
+        <label>BranchTerrainCell</label>
+        <link refid="class_branch_terrain_cell"/>
+        <childnode refid="1" relation="public-inheritance">
+        </childnode>
+      </node>
+      <node id="5">
+        <label>CellElement</label>
+        <link refid="class_cell_element"/>
+      </node>
+      <node id="9">
+        <label>CellHabitatDomainInterface</label>
+        <link refid="class_cell_habitat_domain_interface"/>
+        <childnode refid="5" relation="public-inheritance">
+        </childnode>
+        <childnode refid="10" relation="usage">
+          <edgelabel>habitatDomainStatus</edgelabel>
+        </childnode>
+      </node>
+      <node id="4">
+        <label>CellMoistureInterface</label>
+        <link refid="class_cell_moisture_interface"/>
+        <childnode refid="5" relation="public-inheritance">
+        </childnode>
+        <childnode refid="6" relation="usage">
+          <edgelabel>totalMaximumResourceCapacity</edgelabel>
+        </childnode>
+      </node>
+      <node id="8">
+        <label>CellObstacleInterface</label>
+        <link refid="class_cell_obstacle_interface"/>
+        <childnode refid="5" relation="public-inheritance">
+        </childnode>
+      </node>
+      <node id="10">
+        <label>CustomIndexedVector&lt; AnimalSpeciesID, CustomIndexedVector&lt; Instar, bool &gt; &gt;</label>
+        <link refid="class_custom_indexed_vector"/>
+      </node>
+      <node id="3">
+        <label>PatchApplicator</label>
+        <link refid="class_patch_applicator"/>
+        <childnode refid="2" relation="usage">
+          <edgelabel>owner</edgelabel>
+        </childnode>
+        <childnode refid="4" relation="usage">
+          <edgelabel>cellMoisture</edgelabel>
+        </childnode>
+        <childnode refid="8" relation="usage">
+          <edgelabel>cellObstacle</edgelabel>
+        </childnode>
+        <childnode refid="9" relation="usage">
+          <edgelabel>cellHabitatDomain</edgelabel>
+        </childnode>
+      </node>
+      <node id="11">
+        <label>PointMap</label>
+        <link refid="class_point_map"/>
+      </node>
+      <node id="7">
+        <label>PreciseDouble</label>
+        <link refid="class_precise_double"/>
+      </node>
+      <node id="1">
+        <label>SpatialTreeTerrainCell</label>
+        <link refid="class_spatial_tree_terrain_cell"/>
+        <childnode refid="2" relation="public-inheritance">
+        </childnode>
+        <childnode refid="12" relation="usage">
+          <edgelabel>parentTerrainCell</edgelabel>
+        </childnode>
+      </node>
+      <node id="2">
+        <label>TerrainCell</label>
+        <link refid="class_terrain_cell"/>
+        <childnode refid="3" relation="usage">
+          <edgelabel>patchApplicator</edgelabel>
+        </childnode>
+        <childnode refid="11" relation="usage">
+          <edgelabel>position</edgelabel>
+        </childnode>
+        <childnode refid="7" relation="usage">
+          <edgelabel>hyperVolume</edgelabel>
+          <edgelabel>size</edgelabel>
+        </childnode>
+      </node>
+      <node id="6">
+        <label>WetMass</label>
+        <link refid="class_wet_mass"/>
+        <childnode refid="7" relation="usage">
+          <edgelabel>value</edgelabel>
+        </childnode>
+      </node>
+    </collaborationgraph>
+    <location file="App/Model/IBM/Landscape/Map/SpatialTree/TerrainCells/SpatialTreeTerrainCell.h" line="46" column="1" bodyfile="App/Model/IBM/Landscape/Map/SpatialTree/TerrainCells/SpatialTreeTerrainCell.h" bodystart="47" bodyend="214"/>
+    <listofallmembers>
+      <member refid="class_terrain_cell_1a5ec3d17d2e52dc075182676939a0b164" prot="public" virt="non-virtual"><scope>SpatialTreeTerrainCell</scope><name>addAnimal</name></member>
+      <member refid="class_terrain_cell_1a5590d602ef09673b94e5debb82bd3f5d" prot="public" virt="virtual"><scope>SpatialTreeTerrainCell</scope><name>addAnimalSpecies</name></member>
+      <member refid="class_terrain_cell_1a403fdf6094df0e66ea2c1e5c6178e555" prot="public" virt="virtual"><scope>SpatialTreeTerrainCell</scope><name>addResourceSpecies</name></member>
+      <member refid="class_terrain_cell_1ac7161932f1f5c67e38d894654ad5a725" prot="protected" virt="non-virtual"><scope>SpatialTreeTerrainCell</scope><name>animals</name></member>
+      <member refid="class_terrain_cell_1a0292eb8b386565fa9d1b59e86224b9ba" prot="protected" virt="non-virtual"><scope>SpatialTreeTerrainCell</scope><name>animalsMutex</name></member>
+      <member refid="class_terrain_cell_1a0a3139d4e6f8d8944a489127a1ef115b" prot="public" virt="virtual"><scope>SpatialTreeTerrainCell</scope><name>applyFunctionToAnimals</name></member>
+      <member refid="class_terrain_cell_1a53341072b6eba6ca53f73890eede6579" prot="public" virt="virtual"><scope>SpatialTreeTerrainCell</scope><name>applyFunctionToAnimals</name></member>
+      <member refid="class_terrain_cell_1ab2a9911d710b143dbe4f2c9d274bd4a0" prot="public" virt="virtual"><scope>SpatialTreeTerrainCell</scope><name>applyFunctionToEdibles</name></member>
+      <member refid="class_terrain_cell_1acf38b1bca2d1bf43fe5934f4eeb4dd46" prot="public" virt="virtual"><scope>SpatialTreeTerrainCell</scope><name>applyFunctionToEdibles</name></member>
+      <member refid="class_terrain_cell_1aab9cbc4ee5cb2dbd8158bf8728fd471f" prot="public" virt="non-virtual"><scope>SpatialTreeTerrainCell</scope><name>applyFunctionToEdiblesInCell</name></member>
+      <member refid="class_spatial_tree_terrain_cell_1ae168fb156a3198f7e8ab050c00ed6280" prot="public" virt="virtual"><scope>SpatialTreeTerrainCell</scope><name>applyFunctionToEdiblesInRadius</name></member>
+      <member refid="class_terrain_cell_1a9cf6cfdabf255c5a46cc27812aa3a2a6" prot="public" virt="non-virtual"><scope>SpatialTreeTerrainCell</scope><name>applyFunctionToResources</name></member>
+      <member refid="class_terrain_cell_1a20385f781b76ea0bd49940cc9c96e80a" prot="public" virt="non-virtual"><scope>SpatialTreeTerrainCell</scope><name>applyFunctionToResources</name></member>
+      <member refid="class_terrain_cell_1a75c80780bba9c9015da79978f7b18c55" prot="public" virt="non-virtual"><scope>SpatialTreeTerrainCell</scope><name>calculateManhattanDistanceToPoint</name></member>
+      <member refid="class_terrain_cell_1a4a34807965738774c995905dfa14e67f" prot="protected" virt="non-virtual"><scope>SpatialTreeTerrainCell</scope><name>center</name></member>
+      <member refid="class_terrain_cell_1a436c2bb0f1bbb3c3bf497f4f2ef59271" prot="public" virt="non-virtual"><scope>SpatialTreeTerrainCell</scope><name>changeAnimalToSenesced</name></member>
+      <member refid="class_spatial_tree_terrain_cell_1a74b498ac0a05e9e1ff790a0b4ab3aef3" prot="protected" virt="virtual"><scope>SpatialTreeTerrainCell</scope><name>createAnimal</name></member>
+      <member refid="class_terrain_cell_1ad561f9971c36651958d6f09da269bc2e" prot="public" virt="virtual"><scope>SpatialTreeTerrainCell</scope><name>deserializeSources</name></member>
+      <member refid="class_terrain_cell_1a6d3e7b71599589525938699015943063" prot="public" virt="virtual"><scope>SpatialTreeTerrainCell</scope><name>deserializeSpecies</name></member>
+      <member refid="class_terrain_cell_1abed59fce90f35195cef27b9a1979d098" prot="protected" virt="non-virtual"><scope>SpatialTreeTerrainCell</scope><name>effectiveArea</name></member>
+      <member refid="class_terrain_cell_1a424f6c09b7cc6308f6f8064ead0a177d" prot="public" virt="non-virtual"><scope>SpatialTreeTerrainCell</scope><name>eraseAllAnimals</name></member>
+      <member refid="class_terrain_cell_1a9677f7750bf98ffee5f62af9d7525391" prot="public" virt="non-virtual"><scope>SpatialTreeTerrainCell</scope><name>eraseAnimal</name></member>
+      <member refid="class_terrain_cell_1a8faff2289fbc57d51e4170dc63f2b2e1" prot="protected" virt="virtual"><scope>SpatialTreeTerrainCell</scope><name>generateAnimalPosition</name></member>
+      <member refid="class_terrain_cell_1a3e4909b64ff479b889d4bcc1dc10a08d" prot="public" virt="non-virtual"><scope>SpatialTreeTerrainCell</scope><name>getAnimals</name></member>
+      <member refid="class_spatial_tree_terrain_cell_1a8e8d14a8af67dbb13029459a2540ce0d" prot="public" virt="virtual"><scope>SpatialTreeTerrainCell</scope><name>getCell</name></member>
+      <member refid="class_spatial_tree_terrain_cell_1a63a502f8730d28002f763ce50fc2ae1f" prot="public" virt="pure-virtual"><scope>SpatialTreeTerrainCell</scope><name>getCell</name></member>
+      <member refid="class_terrain_cell_1a5549cca7fc9b7fe6e320b1a115a81cf4" prot="public" virt="non-virtual"><scope>SpatialTreeTerrainCell</scope><name>getCellEvaluation</name></member>
+      <member refid="class_terrain_cell_1a68297cecaa3caf49e70804c8f95f4541" prot="public" virt="non-virtual"><scope>SpatialTreeTerrainCell</scope><name>getCenter</name></member>
+      <member refid="class_terrain_cell_1ad36dfe3c28e02de19ad1e2117c4b4188" prot="public" virt="non-virtual"><scope>SpatialTreeTerrainCell</scope><name>getEffectiveArea</name></member>
+      <member refid="class_terrain_cell_1adfc53e620e9c9b2bc00c9b7c530b5782" prot="public" virt="non-virtual"><scope>SpatialTreeTerrainCell</scope><name>getHyperVolume</name></member>
+      <member refid="class_terrain_cell_1a33c69737e6ffeca69932155a8c71d080" prot="public" virt="non-virtual"><scope>SpatialTreeTerrainCell</scope><name>getMutableAnimals</name></member>
+      <member refid="class_spatial_tree_terrain_cell_1af683eeddb74295fb0eeae699c822ff64" prot="public" virt="virtual"><scope>SpatialTreeTerrainCell</scope><name>getMutableParent</name></member>
+      <member refid="class_spatial_tree_terrain_cell_1a4c4556631f0c8397bd38cfb74a2a8535" prot="public" virt="virtual"><scope>SpatialTreeTerrainCell</scope><name>getMutablePatchApplicator</name></member>
+      <member refid="class_spatial_tree_terrain_cell_1a79acf28cd98e9edd926bce6711e06d69" prot="public" virt="virtual"><scope>SpatialTreeTerrainCell</scope><name>getMutablePosition</name></member>
+      <member refid="class_spatial_tree_terrain_cell_1a986aae96e4f78e31e47afeef9f912dcb" prot="public" virt="virtual"><scope>SpatialTreeTerrainCell</scope><name>getNeighboursCellsOnRadius</name></member>
+      <member refid="class_terrain_cell_1aeac95fd5ae2df3533235dcb36ec8a783" prot="public" virt="non-virtual"><scope>SpatialTreeTerrainCell</scope><name>getNumberOfMatureFemales</name></member>
+      <member refid="class_terrain_cell_1a41da24dc2f46389c779030701282918f" prot="public" virt="non-virtual"><scope>SpatialTreeTerrainCell</scope><name>getNumberOfMatureMales</name></member>
+      <member refid="class_spatial_tree_terrain_cell_1a19b815420f104cacea2ae6aadeb2f56a" prot="public" virt="virtual"><scope>SpatialTreeTerrainCell</scope><name>getParent</name></member>
+      <member refid="class_spatial_tree_terrain_cell_1a1144857a67012ced006c2d18b3adcd2c" prot="public" virt="virtual"><scope>SpatialTreeTerrainCell</scope><name>getPatchApplicator</name></member>
+      <member refid="class_spatial_tree_terrain_cell_1a21a599bff464e52dcd0be5efb57242fa" prot="public" virt="virtual"><scope>SpatialTreeTerrainCell</scope><name>getPosition</name></member>
+      <member refid="class_spatial_tree_terrain_cell_1ad1e1d020cb24004f150c6ab43bf9b2c5" prot="public" virt="pure-virtual"><scope>SpatialTreeTerrainCell</scope><name>getRadiusTerrainCells</name></member>
+      <member refid="class_terrain_cell_1ac9f9db224639dc29effa7a1feceafa80" prot="public" virt="non-virtual"><scope>SpatialTreeTerrainCell</scope><name>getSize</name></member>
+      <member refid="class_terrain_cell_1a7e6f1a764e9cb38e12c4d1d7b9a75f75" prot="protected" virt="non-virtual"><scope>SpatialTreeTerrainCell</scope><name>hyperVolume</name></member>
+      <member refid="class_terrain_cell_1ade31ec3bc618ae58c15f4403cc8e78c6" prot="public" virt="non-virtual"><scope>SpatialTreeTerrainCell</scope><name>insertAnimal</name></member>
+      <member refid="class_terrain_cell_1a3cce7ea243870bd09918be3959480172" prot="public" virt="non-virtual"><scope>SpatialTreeTerrainCell</scope><name>isAnimalInside</name></member>
+      <member refid="class_spatial_tree_terrain_cell_1ad939f29cd31868ed6503e8f1c6ec0245" prot="public" virt="pure-virtual"><scope>SpatialTreeTerrainCell</scope><name>isChild</name></member>
+      <member refid="class_spatial_tree_terrain_cell_1ada778c1b97136340ff39ec6f78ebd1f8" prot="public" virt="pure-virtual"><scope>SpatialTreeTerrainCell</scope><name>isLeaf</name></member>
+      <member refid="class_terrain_cell_1a1f5f63c36a840cb691fa9b2067c8c01f" prot="protected" virt="non-virtual"><scope>SpatialTreeTerrainCell</scope><name>makeCenter</name></member>
+      <member refid="class_terrain_cell_1a75e513d3765cf2b6cf0be0b634e96da8" prot="public" virt="non-virtual"><scope>SpatialTreeTerrainCell</scope><name>makeEffectiveArea</name></member>
+      <member refid="class_spatial_tree_terrain_cell_1a4a2beaf8a6254675ee85dba4d790e5e1" prot="public" virt="virtual"><scope>SpatialTreeTerrainCell</scope><name>migrateAnimalTo</name></member>
+      <member refid="class_terrain_cell_1ac60c719585e1c33da92cd1e7d43f34ab" prot="public" virt="virtual"><scope>SpatialTreeTerrainCell</scope><name>obtainInhabitableTerrainCells</name></member>
+      <member refid="class_spatial_tree_terrain_cell_1ad5ecb7a51d191f71bf3b7342e5dfa9b0" prot="public" virt="non-virtual"><scope>SpatialTreeTerrainCell</scope><name>operator=</name></member>
+      <member refid="class_spatial_tree_terrain_cell_1afc6a064a9695b5d7c541af4a295019a6" prot="public" virt="non-virtual"><scope>SpatialTreeTerrainCell</scope><name>operator=</name></member>
+      <member refid="class_terrain_cell_1a4b274c425fa15d4a6d5ac1ffa827d02a" prot="public" virt="non-virtual" ambiguityscope="TerrainCell::"><scope>SpatialTreeTerrainCell</scope><name>operator=</name></member>
+      <member refid="class_terrain_cell_1a7d443cdb42afcb5fed74e5d54f5c28c3" prot="public" virt="non-virtual" ambiguityscope="TerrainCell::"><scope>SpatialTreeTerrainCell</scope><name>operator=</name></member>
+      <member refid="class_spatial_tree_terrain_cell_1aad1f990d5abd7b6ffc7a149ba33728a4" prot="protected" virt="non-virtual"><scope>SpatialTreeTerrainCell</scope><name>parentTerrainCell</name></member>
+      <member refid="class_terrain_cell_1ad942db9f70d704df1a95040f9721ba0d" prot="protected" virt="non-virtual"><scope>SpatialTreeTerrainCell</scope><name>patchApplicator</name></member>
+      <member refid="class_terrain_cell_1a62a5c0cf9c445385a9696ad89b02b080" prot="protected" virt="non-virtual"><scope>SpatialTreeTerrainCell</scope><name>position</name></member>
+      <member refid="class_terrain_cell_1a29d4338fe994734edc1d5d2f8bd80f7e" prot="public" virt="virtual"><scope>SpatialTreeTerrainCell</scope><name>randomApplyFunctionToAnimals</name></member>
+      <member refid="class_terrain_cell_1a786671c806aa431496a83782b44ddcad" prot="public" virt="virtual"><scope>SpatialTreeTerrainCell</scope><name>randomApplyFunctionToAnimals</name></member>
+      <member refid="class_terrain_cell_1af626b20ec6452c5319f637efc93285f6" prot="public" virt="non-virtual"><scope>SpatialTreeTerrainCell</scope><name>randomInsertAnimal</name></member>
+      <member refid="class_terrain_cell_1aa296af6532720e3d6502413a2d6f069c" prot="protected" virt="non-virtual"><scope>SpatialTreeTerrainCell</scope><name>registerAnimals</name></member>
+      <member refid="class_terrain_cell_1a9c7ae3794c5107c173ba8b1bef7c5c01" prot="public" virt="virtual"><scope>SpatialTreeTerrainCell</scope><name>registerCells</name></member>
+      <member refid="class_terrain_cell_1a3a20ffe867f78a9834c543e03d692bdf" prot="public" virt="pure-virtual"><scope>SpatialTreeTerrainCell</scope><name>registerEdibles</name></member>
+      <member refid="class_terrain_cell_1a61fc82f05e2aeb05b5f5e35d0a4ba7ca" prot="public" virt="virtual"><scope>SpatialTreeTerrainCell</scope><name>saveResourceSpeciesSnapshot</name></member>
+      <member refid="class_terrain_cell_1a5255797bd38aefe80e6586392dc17026" prot="public" virt="virtual"><scope>SpatialTreeTerrainCell</scope><name>saveWaterSnapshot</name></member>
+      <member refid="class_spatial_tree_terrain_cell_1a728dde6fc395ff733be00ae3223a339f" prot="public" virt="non-virtual"><scope>SpatialTreeTerrainCell</scope><name>serialize</name></member>
+      <member refid="class_spatial_tree_terrain_cell_1ae7cb4e11d40dbbd77c4d0b5833f84430" prot="public" virt="non-virtual"><scope>SpatialTreeTerrainCell</scope><name>setParent</name></member>
+      <member refid="class_terrain_cell_1acf5ae7c6e19ef241fcee6cbeb894b4ca" prot="protected" virt="non-virtual"><scope>SpatialTreeTerrainCell</scope><name>setPatchApplicator</name></member>
+      <member refid="class_terrain_cell_1a907f5265de6f37f4ecddc211575b2b7a" prot="protected" virt="non-virtual"><scope>SpatialTreeTerrainCell</scope><name>size</name></member>
+      <member refid="class_spatial_tree_terrain_cell_1a6f5c94ded62142a827cf50fb636ad54a" prot="public" virt="non-virtual"><scope>SpatialTreeTerrainCell</scope><name>SpatialTreeTerrainCell</name></member>
+      <member refid="class_spatial_tree_terrain_cell_1afefbf5112ea13484b2f5e3339dce8e7e" prot="public" virt="non-virtual"><scope>SpatialTreeTerrainCell</scope><name>SpatialTreeTerrainCell</name></member>
+      <member refid="class_spatial_tree_terrain_cell_1a41058b28785bb97a2adb93910e706e1d" prot="public" virt="non-virtual"><scope>SpatialTreeTerrainCell</scope><name>SpatialTreeTerrainCell</name></member>
+      <member refid="class_spatial_tree_terrain_cell_1a77b0b9e2bea1b6308d0a60fd93329cea" prot="public" virt="non-virtual"><scope>SpatialTreeTerrainCell</scope><name>SpatialTreeTerrainCell</name></member>
+      <member refid="class_terrain_cell_1a76e01e951f674388c687cc9f480c2aad" prot="public" virt="non-virtual"><scope>SpatialTreeTerrainCell</scope><name>TerrainCell</name></member>
+      <member refid="class_terrain_cell_1a28d90e71a1ca200057a907e1f3603bcd" prot="public" virt="non-virtual"><scope>SpatialTreeTerrainCell</scope><name>TerrainCell</name></member>
+      <member refid="class_terrain_cell_1a39689c507d71fdafea8e2d54b760b3a9" prot="public" virt="non-virtual"><scope>SpatialTreeTerrainCell</scope><name>TerrainCell</name></member>
+      <member refid="class_terrain_cell_1a9b4a724a826865b0ecfa0bbd8b0ceb42" prot="public" virt="non-virtual"><scope>SpatialTreeTerrainCell</scope><name>TerrainCell</name></member>
+      <member refid="class_terrain_cell_1a6f5177b6a5e26edd8af8a1e3f949d92d" prot="public" virt="virtual"><scope>SpatialTreeTerrainCell</scope><name>update</name></member>
+      <member refid="class_spatial_tree_terrain_cell_1a23a8486de54d8bff4235f6c705b5b72a" prot="public" virt="virtual"><scope>SpatialTreeTerrainCell</scope><name>~SpatialTreeTerrainCell</name></member>
+      <member refid="class_terrain_cell_1ae41509021fd431d13948599843274d8e" prot="public" virt="virtual"><scope>SpatialTreeTerrainCell</scope><name>~TerrainCell</name></member>
+    </listofallmembers>
+  </compounddef>
+</doxygen>

@@ -37,7 +37,7 @@ void CellHabitatDomainInterface::applySource(const HabitatDomainSource &source, 
         {
             Instar instar = Instar::convertToIndex(static_cast<unsigned int>(instarIndex));
 
-            habitatDomainStatus[id][instar] = habitatDomainStatus[id][instar] || source.getHabitatDomainStatus().at(id).at(instar);
+            habitatDomainStatus[id][instar] = habitatDomainStatus[id][instar] || source.getHabitatDomainStatus()[id][instar];
         }
     }
 }

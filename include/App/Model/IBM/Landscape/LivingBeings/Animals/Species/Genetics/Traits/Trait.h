@@ -27,6 +27,7 @@
 
 /**
  * @class Trait
+ * @ingroup weaver_landscape
  * @brief Represents a trait of an animal species or individual.
  *
  * Traits can be base traits, weights for escape probability, predation probability,
@@ -89,7 +90,7 @@ public:
      * @brief Get the header string for traits.
      * @return Header string.
      */
-    static std::string getHeader();
+    static void getHeader(std::string& header);
 
     /** @brief Default constructor. */
     Trait();
@@ -110,6 +111,8 @@ public:
 
     /** @brief Get the value section of the trait. */
     TraitDefinitionSection* getValue();
+
+    const TraitDefinitionSection* const getValue() const;
 
     /** @brief Get the temperature section of the trait. */
     TraitTemperatureSection* getTemperatureSection();

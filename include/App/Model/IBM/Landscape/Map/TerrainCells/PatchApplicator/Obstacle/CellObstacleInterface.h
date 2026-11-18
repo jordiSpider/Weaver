@@ -33,6 +33,7 @@
 
 /**
  * @class CellObstacleInterface
+ * @ingroup weaver_landscape
  * @brief Interface for managing obstacles in a terrain cell.
  *
  * Provides functionality to apply obstacle patches, query obstacle state,
@@ -74,7 +75,7 @@ public:
      *
      * @param obstaclePatchPriority Patch priority of the applied obstacle.
      */
-    void applySource(const size_t obstaclePatchPriority);
+    void applySource(const size_t obstaclePatchPriority, const bool obstacleValue = true);
 
     /**
      * @brief Checks if the cell contains any obstacle.

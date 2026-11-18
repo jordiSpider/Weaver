@@ -1,0 +1,193 @@
+{
+  "type": "object",
+  "properties": {
+    "version": {
+      "type": "string",
+      "description": "Configuration parameter: version."
+    },
+    "patch": {
+      "type": "object",
+      "properties": {
+        "priority": {
+          "type": "integer",
+          "minimum": 1,
+          "description": "Configuration parameter: priority."
+        },
+        "shape": {
+          "type": "object",
+          "properties": {
+            "type": {
+              "type": "string",
+              "enum": [
+                "Homogeneous",
+                "Gaussian",
+                "Spherical",
+                "Cubic",
+                "RandomGaussian"
+              ],
+              "description": "Configuration parameter: type."
+            },
+            "cubicParams": {
+              "type": "object",
+              "properties": {
+                "bottomLeftCorner": {
+                  "type": "array",
+                  "items": {
+                    "type": "number"
+                  },
+                  "nullProperty": true,
+                  "description": "Configuration parameter: bottom left corner."
+                },
+                "topRightCorner": {
+                  "type": "array",
+                  "items": {
+                    "type": "number"
+                  },
+                  "nullProperty": true,
+                  "description": "Configuration parameter: top right corner."
+                }
+              },
+              "description": "Configuration parameter: cubic params."
+            },
+            "sphericalParams": {
+              "type": "object",
+              "properties": {
+                "center": {
+                  "type": "array",
+                  "items": {
+                    "type": "number"
+                  },
+                  "nullProperty": true,
+                  "description": "Configuration parameter: center."
+                },
+                "radius": {
+                  "type": "number",
+                  "minimum": 0.0,
+                  "nullProperty": true,
+                  "description": "Configuration parameter: radius."
+                }
+              },
+              "description": "Configuration parameter: spherical params."
+            },
+            "homogeneousParams": {
+              "type": "object",
+              "properties": {},
+              "description": "Configuration parameter: homogeneous params."
+            },
+            "gaussianParams": {
+              "type": "object",
+              "properties": {},
+              "description": "Configuration parameter: gaussian params."
+            },
+            "randomGaussianParams": {
+              "type": "object",
+              "properties": {},
+              "description": "Configuration parameter: random gaussian params."
+            }
+          },
+          "conditionals": [
+            {
+              "condition": {
+                "operatorType": "comparison",
+                "comparisonType": "equal",
+                "lhs": {
+                  "operatorType": "property",
+                  "propertyElement": "value",
+                  "relativePath": [
+                    "type"
+                  ]
+                },
+                "rhs": {
+                  "operatorType": "constant",
+                  "value": "spherical"
+                }
+              },
+              "then": [
+                {
+                  "workingPath": [
+                    "sphericalParams"
+                  ],
+                  "remove": {
+                    "nullProperty": [
+                      "center",
+                      "radius"
+                    ]
+                  }
+                }
+              ]
+            },
+            {
+              "condition": {
+                "operatorType": "comparison",
+                "comparisonType": "equal",
+                "lhs": {
+                  "operatorType": "property",
+                  "propertyElement": "value",
+                  "relativePath": [
+                    "type"
+                  ]
+                },
+                "rhs": {
+                  "operatorType": "constant",
+                  "value": "cubic"
+                }
+              },
+              "then": [
+                {
+                  "workingPath": [
+                    "cubicParams"
+                  ],
+                  "remove": {
+                    "nullProperty": [
+                      "bottomLeftCorner",
+                      "topRightCorner"
+                    ]
+                  }
+                }
+              ]
+            }
+          ],
+          "description": "Configuration parameter: shape."
+        },
+        "porosity": {
+          "type": "object",
+          "properties": {
+            "fraction": {
+              "type": "number",
+              "minimum": 0.0,
+              "maximum": 1.0,
+              "nullProperty": true,
+              "description": "Configuration parameter: fraction."
+            },
+            "minimumPoreWidth": {
+              "type": "number",
+              "minimum": 0.0,
+              "exclusiveMinimum": true,
+              "nullProperty": true,
+              "description": "Configuration parameter: minimum pore width."
+            },
+            "featureSize": {
+              "type": "number",
+              "minimum": 0.0,
+              "exclusiveMinimum": true,
+              "nullProperty": true,
+              "description": "Configuration parameter: feature size."
+            },
+            "octaves": {
+              "type": "integer",
+              "minimum": 1,
+              "maximum": 8,
+              "nullProperty": true,
+              "description": "Configuration parameter: octaves."
+            }
+          },
+          "description": "Configuration parameter: porosity."
+        }
+      },
+      "description": "Configuration parameter: patch."
+    }
+  },
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://raw.githubusercontent.com/jordiSpider/Weaver/main/schema/2026.10.21/json/obstacle_patch_schema.json"
+}
+

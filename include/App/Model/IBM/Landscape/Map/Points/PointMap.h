@@ -32,6 +32,7 @@ class Map;
 
 /**
  * @class PointMap
+ * @ingroup weaver_landscape
  * @brief Represents a point in a discrete map coordinate system.
  *
  * The PointMap class stores the position along each axis as unsigned integers.

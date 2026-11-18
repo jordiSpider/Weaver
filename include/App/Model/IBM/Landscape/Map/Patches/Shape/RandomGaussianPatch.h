@@ -13,6 +13,7 @@
 
 /**
  * @class RandomGaussianPatch
+ * @ingroup weaver_landscape
  * @brief Represents a patch with stochastic Gaussian influence.
  *
  * The RandomGaussianPatch class is a concrete implementation of PatchShape.

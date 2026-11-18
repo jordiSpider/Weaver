@@ -1,0 +1,162 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.14.0" xml:lang="en-US">
+  <compounddef id="class_gamete" kind="class" language="C++" prot="public">
+    <compoundname>Gamete</compoundname>
+    <includes refid="_gamete_8h" local="no">Gamete.h</includes>
+    <sectiondef kind="private-attrib">
+      <memberdef kind="variable" id="class_gamete_1a42105eea5d7efdb2c1344372806538e6" prot="private" static="no" mutable="no">
+        <type>std::vector&lt; <ref refid="class_chromosome" kindref="compound">Chromosome</ref> * &gt;</type>
+        <definition>std::vector&lt;Chromosome *&gt; Gamete::chromosomes</definition>
+        <argsstring></argsstring>
+        <name>chromosomes</name>
+        <qualifiedname>Gamete::chromosomes</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Vector of pointers to <ref refid="class_chromosome" kindref="compound">Chromosome</ref> objects. </para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="App/Model/IBM/Landscape/LivingBeings/Animals/Genetics/Gamete.h" line="57" column="17" bodyfile="App/Model/IBM/Landscape/LivingBeings/Animals/Genetics/Gamete.h" bodystart="57" bodyend="-1"/>
+      </memberdef>
+    </sectiondef>
+    <sectiondef kind="public-func">
+      <memberdef kind="function" id="class_gamete_1ab0f8855f36682f4d10a040cceb2f40d9" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type></type>
+        <definition>Gamete::Gamete</definition>
+        <argsstring>(const size_t &amp;numberOfChromosomes)</argsstring>
+        <name>Gamete</name>
+        <qualifiedname>Gamete::Gamete</qualifiedname>
+        <param>
+          <type>const size_t &amp;</type>
+          <declname>numberOfChromosomes</declname>
+        </param>
+        <briefdescription>
+<para>Constructor for the <ref refid="class_gamete" kindref="compound">Gamete</ref> class. </para>
+        </briefdescription>
+        <detaileddescription>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>numberOfChromosomes</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>The initial number of chromosomes in the gamete. </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="App/Model/IBM/Landscape/LivingBeings/Animals/Genetics/Gamete.h" line="30" column="5"/>
+      </memberdef>
+      <memberdef kind="function" id="class_gamete_1a3bd47b1af9bb8e7790a64e52cf69fc4a" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type></type>
+        <definition>Gamete::~Gamete</definition>
+        <argsstring>()</argsstring>
+        <name>~Gamete</name>
+        <qualifiedname>Gamete::~Gamete</qualifiedname>
+        <briefdescription>
+<para>Destructor for the <ref refid="class_gamete" kindref="compound">Gamete</ref> class. </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="App/Model/IBM/Landscape/LivingBeings/Animals/Genetics/Gamete.h" line="35" column="5"/>
+      </memberdef>
+      <memberdef kind="function" id="class_gamete_1a74b80f2750c79b3a43cd19373f4b4ed2" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type><ref refid="class_chromosome" kindref="compound">Chromosome</ref> *</type>
+        <definition>Chromosome * Gamete::getChromosome</definition>
+        <argsstring>(const size_t &amp;position)</argsstring>
+        <name>getChromosome</name>
+        <qualifiedname>Gamete::getChromosome</qualifiedname>
+        <param>
+          <type>const size_t &amp;</type>
+          <declname>position</declname>
+        </param>
+        <briefdescription>
+<para>Get a chromosome at a specific position in the gamete. </para>
+        </briefdescription>
+        <detaileddescription>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>position</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>The position of the chromosome. </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<simplesect kind="return"><para>A pointer to the chromosome at the specified position. </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="App/Model/IBM/Landscape/LivingBeings/Animals/Genetics/Gamete.h" line="54" column="16"/>
+      </memberdef>
+      <memberdef kind="function" id="class_gamete_1a84a54cb9e99279ea6b2d8175b08ad830" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void Gamete::pushChromosome</definition>
+        <argsstring>(Chromosome *newChromosome)</argsstring>
+        <name>pushChromosome</name>
+        <qualifiedname>Gamete::pushChromosome</qualifiedname>
+        <param>
+          <type><ref refid="class_chromosome" kindref="compound">Chromosome</ref> *</type>
+          <declname>newChromosome</declname>
+        </param>
+        <briefdescription>
+<para>Add a new chromosome to the gamete. </para>
+        </briefdescription>
+        <detaileddescription>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>newChromosome</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>The chromosome to add. </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="App/Model/IBM/Landscape/LivingBeings/Animals/Genetics/Gamete.h" line="47" column="10"/>
+      </memberdef>
+      <memberdef kind="function" id="class_gamete_1af4041464ac969c53847cf0830e643fb5" prot="public" static="no" const="yes" explicit="no" inline="no" virt="non-virtual">
+        <type>size_t</type>
+        <definition>size_t Gamete::size</definition>
+        <argsstring>() const</argsstring>
+        <name>size</name>
+        <qualifiedname>Gamete::size</qualifiedname>
+        <briefdescription>
+<para>Get the size (number of chromosomes) of the gamete. </para>
+        </briefdescription>
+        <detaileddescription>
+<para><simplesect kind="return"><para>The size of the gamete. </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="App/Model/IBM/Landscape/LivingBeings/Animals/Genetics/Gamete.h" line="41" column="12"/>
+      </memberdef>
+    </sectiondef>
+    <briefdescription>
+<para>Represents a gamete with a variable number of chromosomes. </para>
+    </briefdescription>
+    <detaileddescription>
+    </detaileddescription>
+    <location file="App/Model/IBM/Landscape/LivingBeings/Animals/Genetics/Gamete.h" line="23" column="1" bodyfile="App/Model/IBM/Landscape/LivingBeings/Animals/Genetics/Gamete.h" bodystart="24" bodyend="58"/>
+    <listofallmembers>
+      <member refid="class_gamete_1a42105eea5d7efdb2c1344372806538e6" prot="private" virt="non-virtual"><scope>Gamete</scope><name>chromosomes</name></member>
+      <member refid="class_gamete_1ab0f8855f36682f4d10a040cceb2f40d9" prot="public" virt="non-virtual"><scope>Gamete</scope><name>Gamete</name></member>
+      <member refid="class_gamete_1a74b80f2750c79b3a43cd19373f4b4ed2" prot="public" virt="non-virtual"><scope>Gamete</scope><name>getChromosome</name></member>
+      <member refid="class_gamete_1a84a54cb9e99279ea6b2d8175b08ad830" prot="public" virt="non-virtual"><scope>Gamete</scope><name>pushChromosome</name></member>
+      <member refid="class_gamete_1af4041464ac969c53847cf0830e643fb5" prot="public" virt="non-virtual"><scope>Gamete</scope><name>size</name></member>
+      <member refid="class_gamete_1a3bd47b1af9bb8e7790a64e52cf69fc4a" prot="public" virt="non-virtual"><scope>Gamete</scope><name>~Gamete</name></member>
+    </listofallmembers>
+  </compounddef>
+</doxygen>

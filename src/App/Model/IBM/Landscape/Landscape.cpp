@@ -3,20 +3,36 @@
 #include "tbb/tbb.h"
 */
 #include <thread>
+#include <utility>
 #include <algorithm> // transform
+#include <oneapi/tbb/parallel_for.h>
+#include <tbb/spin_mutex.h>
+
+#include "App/Manager/TbbAdaptiveWrapper.h"
 
 #include "App/Model/IBM/Landscape/Landscape.h"
 
 #include "Misc/Utilities.h"
-#include "Misc/GlobalVariable.h"
 #include "App/Model/IBM/Landscape/ArthropodsLandscape.h"
 #include "App/Model/IBM/Landscape/DinosaursLandscape.h"
 #include "App/Model/IBM/Landscape/AquaticLandscape.h"
+#include "App/Model/IBM/Landscape/LivingBeings/Animals/AnimalSignature.h"
+#include "App/Model/IBM/Landscape/Map/TerrainCells/PatchApplicator/Resources/ResourceSignature.h"
 
+#include "App/Manager/LogManager.h"
+#include "App/IO/StorageBridge.h"
+
+
+#include <fmt/compile.h>
+#include <fmt/format.h>
+#include <iterator>
 
 using namespace std;
 using json = nlohmann::json;
 namespace fs = std::filesystem;
+
+
+
 
 
 
@@ -45,27 +61,24 @@ Landscape* Landscape::createInstance(const std::string& simulationType) {
 
 
 Landscape::Landscape()
-	: serializationVersion(SERIALIZATION_VERSION)
+	: localProgressBarCounter(0), serializationVersion(WEAVER_SERIALIZATION_VERSION)
 {
 	
 }
 
-void Landscape::init(View* newView, fs::path configPath, fs::path newOutputFolder, bool fromCheckpoint)
+void Landscape::init(fs::path configPath, fs::path newOutputFolder, bool fromCheckpoint)
 {
 	if(!fromCheckpoint) {
-		edibleIdCounter = 0;
-		resourceIdCounter = 0;
-		animalIdCounter = 0;
+		edibleIdCounter = 1;
+		resourceIdCounter = 1;
+		animalIdCounter = 1;
 	}
 
 
-	setView(newView);
+	setSimulationParams(configPath);
 
 
 	setOutputFolder(newOutputFolder, configPath.filename().string());
-
-
-	setSimulationParams(configPath);
 
 
 	setLandscapeParams(configPath, fromCheckpoint);
@@ -84,11 +97,6 @@ void Landscape::init(View* newView, fs::path configPath, fs::path newOutputFolde
 		);
 
 		landscapeMap->registerEdibles(landscapeResources, landscapeAnimals);
-
-		for(AnimalNonStatistical* animal : landscapeAnimals)
-		{
-			animal->setInfoMassFileHeader(getResultFolder(), saveMassInfo);
-		}
 
 		landscapeMap->deserializeSpecies(existingResourceSpecies, existingAnimalSpecies);
 
@@ -114,10 +122,46 @@ void Landscape::init(View* newView, fs::path configPath, fs::path newOutputFolde
 
 	bool newResourceSpecies = readResourceSpeciesFromJSONFiles(configPath);
 
+	ResourceSignature::configureBits(getExistingResourceSpecies().size());
+
 
 	CustomIndexedVector<AnimalSpeciesID, CustomIndexedVector<Instar, unsigned int>> initialPopulation(getExistingAnimalSpecies().size());
 
 	bool newAnimalSpecies = readAnimalSpeciesFromJSONFiles(configPath, initialPopulation);
+
+
+	size_t maxNumberOfInstar = 0;
+
+	for (const AnimalSpecies* const& animalSpecies : getExistingAnimalSpecies())
+	{
+		if (animalSpecies->getGrowthBuildingBlock().getNumberOfInstars() > maxNumberOfInstar)
+		{
+			maxNumberOfInstar = animalSpecies->getGrowthBuildingBlock().getNumberOfInstars();
+		}
+	}
+
+	AnimalSignature::configureBits(maxNumberOfInstar, getExistingAnimalSpecies().size());
+
+
+	this->localBuffersAnimalConstitutiveTraits = tbb::enumerable_thread_specific<CustomIndexedVector<AnimalSpeciesID, fmt::memory_buffer>>([&]() {
+		CustomIndexedVector<AnimalSpeciesID, fmt::memory_buffer> newVector;
+		newVector.resize(getExistingAnimalSpecies().size());
+		return newVector;
+		});
+
+
+	this->localBuffersGenetics = tbb::enumerable_thread_specific<CustomIndexedVector<AnimalSpeciesID, std::vector<fmt::memory_buffer>>>([&]() {
+		CustomIndexedVector<AnimalSpeciesID, std::vector<fmt::memory_buffer>> newVector;
+		newVector.resize(getExistingAnimalSpecies().size());
+
+		for (auto& animalSpecies : getExistingAnimalSpecies()) {
+			newVector[animalSpecies->getAnimalSpeciesId()].resize(animalSpecies->getGenetics().getIndividualLevelTraits().size());
+		}
+
+		return newVector;
+		});
+	
+
 
 	CustomIndexedVector<AnimalSpeciesID, std::vector<Genome>> initialGenomesPool(getExistingAnimalSpecies().size());
 
@@ -129,6 +173,10 @@ void Landscape::init(View* newView, fs::path configPath, fs::path newOutputFolde
 	}
 
 	readObstaclePatchesFromJSONFiles(configPath);
+
+
+	landscapeMap->prepareObstacleGeometry();
+
 
 	readHabitatDomainPatchesFromJSONFiles(configPath);
 
@@ -150,8 +198,14 @@ void Landscape::init(View* newView, fs::path configPath, fs::path newOutputFolde
 	bool newEcosystem = newResourceSpecies || newAnimalSpecies || newOntogeneticLinks;
 
 
-	if(newEcosystem) {
+	if (newEcosystem) {
 		setOntogeneticLinks(configPath);
+	}
+
+
+	for (AnimalSpecies* animalSpecies : getMutableExistingAnimalSpecies())
+	{
+		animalSpecies->obtainSearchParams(getExistingSpecies(), getExistingAnimalSpecies(), getExistingResourceSpecies().size());
 	}
 
 
@@ -174,7 +228,7 @@ void Landscape::init(View* newView, fs::path configPath, fs::path newOutputFolde
 		}
 	}
 
-	view->updateLog({" - Total initial ecosystem size from input: ", to_string(actualEcosystemSize), " individuals.\n"});
+	LogManager::emit(fmt::format(" - Total initial ecosystem size from input: {} individuals.\n", actualEcosystemSize));
 
 	if(newEcosystem || newResourcePatches || actualEcosystemSize > 0) {
 		CustomIndexedVector<AnimalSpeciesID, CustomIndexedVector<Instar, std::vector<ResourceSpecies::ResourceID>>> involvedResourceSpecies;
@@ -201,13 +255,33 @@ void Landscape::init(View* newView, fs::path configPath, fs::path newOutputFolde
 			initializeAnimals(initialPopulation, initialGenomesPool, mapSpeciesInhabitableTerrainCells);
 		}
 	}
+
+
+
+	AnimalNonStatistical::getHeader(printAnimalsAlongCellsHeader);
+
+
+
+	printCellAlongCellsHeader.append(landscapeMap->getMapPositionHeader());
+
+	printCellAlongCellsHeader.append("\tobstacle");
+
+	for(const auto &resourceSpecies : existingResourceSpecies)
+	{
+		printCellAlongCellsHeader.append("\t" + resourceSpecies->getScientificName());
+		printCellAlongCellsHeader.append("\t" + resourceSpecies->getScientificName() + "_available_dry_mass");
+	}
+
+	for(const AnimalSpecies* const& animalSpecies : getExistingAnimalSpecies())
+	{
+		printCellAlongCellsHeader.append("\t" + animalSpecies->getScientificName());
+	}
 }
 
 void Landscape::setSimulationParams(const fs::path& configPath)
 {
-	JsonValidator simulationValidator(SIMULATION_PARAMS_SCHEMA);
 
-	json simulationConfiguration = readConfigFile(configPath / fs::path("simulation_params.json"), simulationValidator);
+	json simulationConfiguration = readConfigFile(configPath / fs::path("simulation_params.json"));
 
 
 	if(simulationConfiguration["simulation"]["initFromFixedSeed"]["enabled"].get<bool>())
@@ -260,8 +334,6 @@ void Landscape::setSimulationParams(const fs::path& configPath)
 
 	saveGenetics = simulationConfiguration["simulation"]["outputs"]["saveGenetics"].get<bool>();
 
-	saveDailySummary = simulationConfiguration["simulation"]["outputs"]["saveDailySummary"].get<bool>();
-
 	saveExtendedDailySummary = simulationConfiguration["simulation"]["outputs"]["saveExtendedDailySummary"].get<bool>();
 
 	saveMovements = simulationConfiguration["simulation"]["outputs"]["saveMovements"].get<bool>();
@@ -281,19 +353,20 @@ void Landscape::setSimulationParams(const fs::path& configPath)
 	saveMassInfo = simulationConfiguration["simulation"]["outputs"]["saveMassInfo"].get<bool>();
 
 
-	saveIntermidiateVolumes = simulationConfiguration["simulation"]["outputs"]["saveIntermidiateVolumes"].get<bool>();
-	if(saveIntermidiateVolumes)
+	saveSnapshots = simulationConfiguration["simulation"]["outputs"]["saveSnapshots"].get<bool>();
+	if(saveSnapshots)
 	{
-		saveIntermidiateVolumesPeriodicity = simulationConfiguration["simulation"]["outputs"]["saveIntermidiateVolumesPeriodicity"].get<unsigned int>();
+		saveSnapshotsPeriodicity = simulationConfiguration["simulation"]["outputs"]["saveSnapshotsPeriodicity"].get<unsigned int>();
 	}
 }
 
 void Landscape::setLandscapeParams(const fs::path& configPath, bool fromCheckpoint)
 {
-	JsonValidator landscapeValidator(LANDSCAPE_PARAMS_SCHEMA);
 
-	json landscapeConfig = readConfigFile(configPath / fs::path("landscape_params.json"), landscapeValidator);
+	json landscapeConfig = readConfigFile(configPath / fs::path("landscape_params.json"));
 
+
+	minExploitableResource = landscapeConfig["landscape"]["life"]["minExploitableResource"].get<double>();
 
 	competitionAmongResourceSpecies = landscapeConfig["landscape"]["life"]["competitionAmongResourceSpecies"].get<bool>();
 
@@ -308,6 +381,10 @@ void Landscape::setLandscapeParams(const fs::path& configPath, bool fromCheckpoi
 	{
 		initializeMap(landscapeConfig["landscape"]["mapConfig"]);
 	}
+
+	terrainCells.resize(static_cast<size_t>(pow(landscapeMap->getNumberOfCellsPerAxis(), DIMENSIONS)), nullptr);
+
+	landscapeMap->registerCells(terrainCells);
 }
 
 
@@ -332,12 +409,12 @@ fs::path Landscape::getResultFolderName(const fs::path& outputFolder, const stri
 
 	string filename = configName + "__";
 
-    filename += to_string(1900 + tmLocal.tm_year) + "-"; // Año
-    filename += to_string(1 + tmLocal.tm_mon) + "-";    	// Mes
-    filename += to_string(tmLocal.tm_mday) + "_";       	// Día
-    filename += to_string(tmLocal.tm_hour) + "-";       	// Hora
-    filename += to_string(tmLocal.tm_min) + "-";        	// Minuto
-    filename += to_string(tmLocal.tm_sec);        		// Segundo
+    filename.append(to_string(1900 + tmLocal.tm_year) + "-");	// Año
+    filename.append(to_string(1 + tmLocal.tm_mon) + "-");		// Mes
+    filename.append(to_string(tmLocal.tm_mday) + "_");       	// Día
+    filename.append(to_string(tmLocal.tm_hour) + "-");       	// Hora
+    filename.append(to_string(tmLocal.tm_min) + "-");        	// Minuto
+    filename.append(to_string(tmLocal.tm_sec));        			// Segundo
 
 	return outputFolder / fs::path(filename);
 }
@@ -365,15 +442,50 @@ void Landscape::setOutputFolder(fs::path newOutputFolder, const string& configNa
 
 	fs::create_directories(resultFolder);
 
-	fs::create_directories(resultFolder / fs::path("Snapshots"));
-	fs::create_directories(resultFolder / fs::path("Matrices"));
-	fs::create_directories(resultFolder / fs::path("animals_each_day_start"));
-	fs::create_directories(resultFolder / fs::path("animals_each_day_end"));
-	fs::create_directories(resultFolder / fs::path("cells_each_day"));
-	fs::create_directories(resultFolder / fs::path("animals_each_day_voracities"));
-	fs::create_directories(resultFolder / fs::path("animals_each_day_predationProbabilities"));
-	fs::create_directories(resultFolder / fs::path("animals_each_day_activity"));
-	fs::create_directories(resultFolder / fs::path("massInfo"));
+	if (saveSnapshots)
+	{
+		fs::create_directories(resultFolder / fs::path("Snapshots"));
+	}
+
+	if (savePredationEventsOnOtherSpecies)
+	{
+		fs::create_directories(resultFolder / fs::path("Matrices"));
+	}
+
+	if (saveAnimalsEachDayStart)
+	{
+		fs::create_directories(resultFolder / fs::path("animals_each_day_start"));
+	}
+
+	if (saveAnimalsEachDayEnd)
+	{
+		fs::create_directories(resultFolder / fs::path("animals_each_day_end"));
+	}
+
+	if (saveCellsEachDay)
+	{
+		fs::create_directories(resultFolder / fs::path("cells_each_day"));
+	}
+
+	if (saveAnimalsEachDayVoracities)
+	{
+		fs::create_directories(resultFolder / fs::path("animals_each_day_voracities"));
+	}
+
+	if (saveAnimalsEachDayPredationProbabilities) 
+	{
+		fs::create_directories(resultFolder / fs::path("animals_each_day_predationProbabilities"));
+	}
+
+	if (saveActivity)
+	{
+		fs::create_directories(resultFolder / fs::path("animals_each_day_activity"));
+	}
+
+	if (saveMassInfo)
+	{
+		fs::create_directories(resultFolder / fs::path("massInfo"));
+	}
 
 	if(isCheckpointsEnabled())
 	{
@@ -408,21 +520,11 @@ Landscape::~Landscape()
 			delete resource;
 		}
 	}
-
-	for(auto& animalSpeciesFile : animalConstitutiveTraitsFile)
-	{
-		delete animalSpeciesFile;
-	}
-}
-
-void Landscape::setView(View* newView)
-{
-	view = newView;
 }
 
 bool Landscape::readAnimalSpeciesFromJSONFiles(const fs::path& configPath, CustomIndexedVector<AnimalSpeciesID, CustomIndexedVector<Instar, unsigned int>>& initialPopulation)
 {
-	view->updateLog("Reading all animal species from JSON files ... \n");
+	LogManager::emit("Reading all animal species from JSON files ... \n");
 
 	fs::path speciesFolder = configPath / SPECIES_FOLDER_NAME;
 	
@@ -430,15 +532,13 @@ bool Landscape::readAnimalSpeciesFromJSONFiles(const fs::path& configPath, Custo
 	{
 		bool newAnimalSpecies = false;
 
-		JsonValidator animalSpeciesValidator(SPECIES_SCHEMA);
-
 		for (const auto& entry : fs::directory_iterator(speciesFolder))
 		{
 			if (entry.path().extension() == ".json")
 			{
-				json ptMain = readConfigFile(entry.path(), animalSpeciesValidator);
+				json ptMain = readConfigFile(entry.path());
 
-				view->updateLog({" - Animal scientific name: ", ptMain["animal"]["name"].get<string>(), "\n"});
+				LogManager::emit(fmt::format(" - Animal scientific name: {}\n", ptMain["animal"]["name"].get<string>()));
 
 				addAnimalSpecies(ptMain, initialPopulation);
 
@@ -446,7 +546,7 @@ bool Landscape::readAnimalSpeciesFromJSONFiles(const fs::path& configPath, Custo
 			}
 		}
 
-		view->updateLog("DONE\n\n");
+		LogManager::emit("DONE\n\n");
 
 		return newAnimalSpecies;
 	}
@@ -456,90 +556,43 @@ bool Landscape::readAnimalSpeciesFromJSONFiles(const fs::path& configPath, Custo
 	}
 }
 
-void Landscape::checkOntogeneticLinksHeaders(const rapidcsv::Document& ontogeneticLinksPreference, const rapidcsv::Document& ontogeneticLinksProfitability) const
-{
-	unsigned int numRows = 0, numCols = 0;
-
-	for(const AnimalSpecies* const animalSpecies : getExistingAnimalSpecies())
-	{
-		numCols += animalSpecies->getGrowthBuildingBlock().getNumberOfInstars();
-		numRows += animalSpecies->getGrowthBuildingBlock().getNumberOfInstars();
-	}
-
-	for(const ResourceSpecies* const resourceSpecies : getExistingResourceSpecies())
-	{
-		numRows += resourceSpecies->getGrowthBuildingBlock().getNumberOfInstars();
-	}
-
-	if(numRows != ontogeneticLinksPreference.GetRowCount())
-	{
-		throwLineInfoException("Error: Incorrect 'ontogeneticLinksPreference.csv' row headers.");
-	}
-
-	if(numCols != ontogeneticLinksPreference.GetColumnCount())
-	{
-		throwLineInfoException("Error: Incorrect 'ontogeneticLinksPreference.csv' column headers.");
-	}
-
-	if(numRows != ontogeneticLinksProfitability.GetRowCount())
-	{
-		throwLineInfoException("Error: Incorrect 'ontogeneticLinksProfitability.csv' row headers.");
-	}
-
-	if(numCols != ontogeneticLinksProfitability.GetColumnCount())
-	{
-		throwLineInfoException("Error: Incorrect 'ontogeneticLinksProfitability.csv' column headers.");
-	}
-}
-
 void Landscape::setOntogeneticLinks(const fs::path& configPath)
 {
 	rapidcsv::Document ontogeneticLinksPreference((configPath / SPECIES_FOLDER_NAME / "ontogeneticLinksPreference.csv").string(), rapidcsv::LabelParams(0, 0));
 	rapidcsv::Document ontogeneticLinksProfitability((configPath / SPECIES_FOLDER_NAME / "ontogeneticLinksProfitability.csv").string(), rapidcsv::LabelParams(0, 0));
 
 
-	checkOntogeneticLinksHeaders(ontogeneticLinksPreference, ontogeneticLinksProfitability);
-
-
 	for(AnimalSpecies* animalSpecies : getMutableExistingAnimalSpecies())
 	{
-		view->updateLog({"Animal species ", animalSpecies->getScientificName(), " eats: \n"});
+		LogManager::emit(fmt::format("Animal species {} eats: \n", animalSpecies->getScientificName()));
 
-		animalSpecies->setOntogeneticLinks(view, getExistingSpecies(), ontogeneticLinksPreference, ontogeneticLinksProfitability);
-	}
-
-
-	for(auto &animalSpecies : getMutableExistingAnimalSpecies())
-	{
-		animalSpecies->obtainPreyAndPredatorSearchParams(getExistingSpecies(), getExistingAnimalSpecies(), getExistingResourceSpecies());
+		animalSpecies->setOntogeneticLinks(getExistingSpecies(), ontogeneticLinksPreference, ontogeneticLinksProfitability);
 	}
 
 
 	for(size_t i = 0; i < landscapeAnimals.size(); i++)
 	{
-		landscapeAnimals[i]->updateVariablesAssociatedWithInstar();
+		landscapeAnimals[i]->setInitialPreferences(getTimeStepsPerDay());
 	}
 }
 
 bool Landscape::readResourceSpeciesFromJSONFiles(const fs::path& configPath)
 {
-	view->updateLog("Reading all resource species from JSON files ... \n");
+	LogManager::emit("Reading all resource species from JSON files ... \n");
 	
-	fs::path resourceFolder = configPath / RESOURCE_FOLDER_NAME;
+	fs::path resourceFolder = (configPath / RESOURCE_FOLDER_NAME);
 	
 	if (fs::exists(resourceFolder) && fs::is_directory(resourceFolder))
 	{
 		bool newResourceSpecies = false;
 
-		JsonValidator resourceSpeciesValidator(RESOURCE_SCHEMA);
-
 		for (const auto& entry : fs::directory_iterator(resourceFolder))
 		{
 			if (entry.path().extension() == ".json")
 			{
-				json ptMain = readConfigFile(entry.path(), resourceSpeciesValidator);
+				json ptMain = readConfigFile(entry.path());
 
-				view->updateLog({" - Resource scientific name: ", ptMain["resource"]["name"].get<string>(), "\n\n"});
+				LogManager::emit(fmt::format(" - Resource scientific name: {}\n\n", ptMain["resource"]["name"].get<string>()));
 
 				addResourceSpecies(ptMain);
 
@@ -560,21 +613,20 @@ bool Landscape::readResourcePatchesFromJSONFiles(const fs::path& configPath)
 {
 	bool newResourcePatches = false;
 
-	view->updateLog("Reading all resource patches from JSON files ... \n");
+	LogManager::emit("Reading all resource patches from JSON files ... \n");
 	
 	vector<PatchPriorityQueue> resourcePatchesToAplly(getExistingResourceSpecies().size());
 
-	fs::path resourcePatchesFolder = configPath / RESOURCE_FOLDER_NAME / RESOURCE_PATCH_FOLDER;
+	fs::path resourcePatchesFolder = (configPath / "patches" / "resource");
 
 	if(fs::exists(resourcePatchesFolder) && fs::is_directory(resourcePatchesFolder))
 	{
-		JsonValidator resourcePatchesValidator(RESOURCE_PATCH_SCHEMA);
 
 		for (const auto& entry : fs::directory_iterator(resourcePatchesFolder))
 		{
 			if(entry.path().extension() == ".json")
 			{
-				json ptMain = readConfigFile(entry.path(), resourcePatchesValidator);
+				json ptMain = readConfigFile(entry.path());
 
 				bool foundResourceSpecies = false;
 				size_t resourceSpeciesId = 0u;
@@ -594,7 +646,7 @@ bool Landscape::readResourcePatchesFromJSONFiles(const fs::path& configPath)
 
 				resourcePatchesToAplly[resourceSpeciesId].push(make_unique<Patch>(
 					new ResourceSource(
-						ptMain["patch"]["source"], getMutableExistingResourceSpecies().at(resourceSpeciesId), 
+						ptMain["patch"]["source"], getMutableExistingResourceSpecies()[resourceSpeciesId], 
 						getMap()->getMinHyperVolume(), getScaleMass(), getTimeStepsPerDay()
 					),
 					ptMain["patch"], entry.path().string()
@@ -612,7 +664,7 @@ bool Landscape::readResourcePatchesFromJSONFiles(const fs::path& configPath)
 
 	for(const ResourceSpecies* const &resourceSpecies : getExistingResourceSpecies())
 	{
-		view->updateLog({" - Resource scientific name: ", resourceSpecies->getScientificName(), "\n\n"});
+		LogManager::emit(fmt::format(" - Resource scientific name: {}\n\n", resourceSpecies->getScientificName()));
 
 		while(!resourcePatchesToAplly[resourceSpecies->getResourceSpeciesId()].empty())
 		{
@@ -656,7 +708,7 @@ void Landscape::addResourceSpecies(const json &resourceSpeciesInfo)
 
 	ResourceSource* resourceBaseSource = new ResourceSource(getMutableExistingResourceSpecies().back());
 
-	landscapeMap->addResourceSpecies(this, landscapeResources, *getMutableExistingResourceSpecies().back(), resourceBaseSource, getTimeStepsPerDay());
+	landscapeMap->addResourceSpecies(this, landscapeResources, *getMutableExistingResourceSpecies().back(), resourceBaseSource);
 
 
 	appliedResource.emplace_back();
@@ -701,15 +753,12 @@ void Landscape::addAnimalSpecies(const json &animalSpeciesInfo, CustomIndexedVec
 	}
 
 
-	getMutableExistingAnimalSpecies().back()->calculateCellDepthPerInstar(landscapeMap);
-
-
-	landscapeMap->addAnimalSpecies(*getExistingAnimalSpecies().back(), getTimeStepsPerDay());
+	landscapeMap->addAnimalSpecies(*getExistingAnimalSpecies().back());
 }
 
 void Landscape::addSpecies(Species* newSpecies)
 {
-	view->updateLog({"numberOfInstars: ", to_string(newSpecies->getGrowthBuildingBlock().getNumberOfInstars()), "\n"});
+	LogManager::emit(fmt::format("numberOfInstars: {}\n", newSpecies->getGrowthBuildingBlock().getNumberOfInstars()));
 
 	existingSpecies.push_back(newSpecies);
 }
@@ -742,184 +791,235 @@ AnimalSpecies* Landscape::getAnimalSpecies(const string& name)
 }
 
 
-void Landscape::printAnimalsAlongCells(const TimeStep numberOfTimeSteps, const int simulationPoint) const
+void Landscape::printAnimalsAlongCells(const TimeStep numberOfTimeSteps, const int simulationPoint)
 {
-	if((saveAnimalsEachDayStart && simulationPoint == 0) ||
-		(saveAnimalsEachDayEnd && simulationPoint == 1)
-	)
+	if((saveAnimalsEachDayStart && simulationPoint == 0) || (saveAnimalsEachDayEnd && simulationPoint == 1))
 	{
 		if(((numberOfTimeSteps % recordEach) == 0) || (numberOfTimeSteps == TimeStep(0)))
 		{
-			ostringstream header;
+			string pathBySimulationPoint = (simulationPoint == 0) ? "animals_each_day_start" : "animals_each_day_end";
+			string timeStepStr = string(MAX_NUM_DIGITS_DAY - to_string(numberOfTimeSteps.getValue()).length(), '0') + to_string(numberOfTimeSteps.getValue());
+			fs::path filePath = resultFolder / fs::path(pathBySimulationPoint) / (std::string("animals_day_") + timeStepStr + ".txt");
 
-			header << "id\tspecies\tgender";
+			StorageBridge::writeHeaderPackToDisk(filePath, printAnimalsAlongCellsHeader);
 
-			for(unsigned int axis = 0; axis < DIMENSIONS; axis++)
-			{
-				header << "\t" << magic_enum::enum_names<Axis>()[axis];
+
+			// 1. Obtener de forma segura el límite máximo de hilos concurrentes de la arena actual
+			size_t maxThreadsInArena = static_cast<size_t>(tbb::this_task_arena::max_concurrency());
+			constexpr size_t estimatedAnimalLineSize = 2000u;
+
+			size_t estimatedSize = landscapeAnimals.size() * estimatedAnimalLineSize;
+
+			// 2. Calcular la estimación del búfer basada en la concurrencia real de la arena
+			size_t estimatedPerThreadSize = estimatedSize / maxThreadsInArena;
+
+			auto& persistentBuffers = (simulationPoint == 0) ? localBuffersAnimalsStart : localBuffersAnimalsEnd;
+
+
+			TbbAdaptiveWrapper::Execute(landscapeAnimals, 0, landscapeAnimals.size(), 3u,
+				[&](auto& animals, size_t start, size_t end) {
+					fmt::memory_buffer& localStr = persistentBuffers.local();
+					localStr.reserve(estimatedSize);
+
+					for (size_t i = start; i < end; ++i) {
+						animals[i]->formatToBufferDirect(localStr);
+					}
+				},
+				[&](auto& animals, size_t start, size_t end) {
+					tbb::parallel_for(tbb::blocked_range<size_t>(start, end),
+						[&](const tbb::blocked_range<size_t>& r) {
+							fmt::memory_buffer& localStr = persistentBuffers.local();
+							localStr.reserve(estimatedPerThreadSize);
+
+							for (size_t i = r.begin(); i < r.end(); ++i) {
+								animals[i]->formatToBufferDirect(localStr);
+							}
+						}
+					);
+				}
+			);
+
+
+			// 4. Enviar un paquete por cada hebra usando std::move (Cero copias, contención mínima)
+			for (fmt::memory_buffer& threadBuffer : persistentBuffers) {
+				if (threadBuffer.size() != 0) {
+					StorageBridge::writeContentPackToDisk(filePath, threadBuffer);
+				}
 			}
-			
-			header << "\tstate\tinstar\tage\tpheno_ini\tdateEgg\tage_first_rep\treproCounter\tfecundity\tdate_death\tg_numb_prt1\tg_numb_prt2\tID_prt1\tID_prt2\tencounters_pred\tglobal_pred_encs\tvor_ini\tsearch_ini\tspeed_ini\ttank_ini\tpheno_ini\tcurrentBodySize\tcurrentDryMass\tcurrentEnergyTank";
-			
-			header << "\t" << Trait::getHeader();
 
-			header << "\n";
-
-			ostringstream content;
-
-			for(size_t i = 0; i < landscapeAnimals.size(); i++)
-			{
-				content << static_cast<string>(*static_cast<AnimalNonStatistical*>(landscapeAnimals[i])) << "\n";
-			}
-
-
-
-			string pathBySimulationPoint;
-			if (simulationPoint == 0)
-			{
-				pathBySimulationPoint = "animals_each_day_start";
-			}
-			else if (simulationPoint == 1)
-			{
-				pathBySimulationPoint = "animals_each_day_end";
-			}
-			
-			std::ofstream file;
-
-			createOutputFile(file, resultFolder / fs::path(pathBySimulationPoint), "animals_day_", "txt", numberOfTimeSteps, recordEach);
-			if (!file.is_open())
-			{
-				throwLineInfoException("Error opening the file");
-			}
-
-			file << header.str() + content.str();
-
-			file.close();
+			StorageBridge::writeClosePackToDisk(filePath);
 		}
 	}
 }
 
-void Landscape::printCellAlongCells(const TimeStep numberOfTimeSteps) const
+void Landscape::printCellAlongCells(const TimeStep numberOfTimeSteps)
 {
 	if(saveCellsEachDay)
 	{
 		if(((numberOfTimeSteps % recordEach) == 0) || (numberOfTimeSteps == TimeStep(0)))
 		{
-			ostringstream header;
+			string timeStepStr = string(MAX_NUM_DIGITS_DAY - to_string(numberOfTimeSteps.getValue()).length(), '0') + to_string(numberOfTimeSteps.getValue());
 
-			header << landscapeMap->getMapPositionHeader();
+			fs::path filePath = resultFolder / fs::path("cells_each_day") / (std::string("cells_day_") + timeStepStr + ".txt");
 
-			for(const auto &resourceSpecies : existingResourceSpecies)
-			{
-				header << "\t" << resourceSpecies->getScientificName();
-				header << "\t" << resourceSpecies->getScientificName() << "_available_dry_mass";
-			}
+			StorageBridge::writeHeaderPackToDisk(filePath, printCellAlongCellsHeader);
 
-			for(const AnimalSpecies* const& animalSpecies : getExistingAnimalSpecies())
-			{
-				header << "\t" << animalSpecies->getScientificName();
-			}
+			const size_t numAnimalSpecies = existingAnimalSpecies.size();
 
-			header << "\n";
+			size_t estimatedSize = terrainCells.size() * 256;
+
+			// 1. Obtener de forma segura el límite máximo de hilos concurrentes de la arena actual
+			size_t maxThreadsInArena = static_cast<size_t>(tbb::this_task_arena::max_concurrency());
+
+			// 2. Calcular la estimación del búfer basada en la concurrencia real de la arena
+			size_t estimatedPerThreadSize = estimatedSize / maxThreadsInArena;
 
 
-			ostringstream content;
+			TbbAdaptiveWrapper::Execute(terrainCells, 0, terrainCells.size(), 1u,
+				[&](auto& cells, size_t start, size_t end) {
+					fmt::memory_buffer& localStr = localBuffersCells.local();
+					localStr.reserve(estimatedSize);
 
-			vector<vector<vector<size_t>>> animalsCellsInfo(
-				landscapeMap->getNumberOfCellsPerAxis(),
-				vector<vector<size_t>>(
-					landscapeMap->getNumberOfCellsPerAxis(),
-					vector<size_t>(getExistingAnimalSpecies().size(), 0u)
-				)
+					for (size_t i = start; i < end; ++i) {
+						const auto& cell = cells[i];
+
+						const PointMap& position = cell->getPosition();
+
+						fmt::format_to(fmt::appender(localStr), "{}", position.get(magic_enum::enum_cast<Axis>(0).value()));
+
+						for (unsigned int axis = 1; axis < DIMENSIONS; axis++)
+						{
+							fmt::format_to(fmt::appender(localStr), "\t{}", position.get(magic_enum::enum_cast<Axis>(axis).value()));
+						}
+
+						fmt::format_to(fmt::appender(localStr), "\t{}", static_cast<unsigned int>(cell->getPatchApplicator().getCellObstacle().isObstacle()));
+
+						for (size_t j = 0; j < cell->getPatchApplicator().getNumberOfResources(); j++)
+						{
+							const CellResourceInterface& resource = cell->getPatchApplicator().getCellResource(j);
+
+							fmt::format_to(fmt::appender(localStr), "\t{}\t{}",
+								resource.getGrowthBuildingBlock().getCurrentTotalWetMass().getValue().getValue(),
+								resource.calculateDryMassAvailable(true, nullptr, 0.0).getValue().getValue()
+							);
+						}
+
+
+						std::vector<uint32_t> animalCounts(numAnimalSpecies, 0u);
+
+						for (const auto* animal : landscapeAnimals) {
+							if (cell->isAnimalInside(animal->getPosition())) {
+								animalCounts[animal->getAnimalSpeciesId()]++;
+							}
+						}
+
+						for (uint32_t count : animalCounts)
+						{
+							fmt::format_to(fmt::appender(localStr), "\t{}", count);
+						}
+
+
+						localStr.push_back('\n');
+					}
+				},
+				[&](auto& cells, size_t start, size_t end) {
+					tbb::parallel_for(tbb::blocked_range<size_t>(start, end),
+						[&](const tbb::blocked_range<size_t>& r) {
+							fmt::memory_buffer& localStr = localBuffersCells.local();
+							localStr.reserve(estimatedPerThreadSize);
+
+							for (size_t i = r.begin(); i < r.end(); ++i) {
+								const auto& cell = cells[i];
+
+								const PointMap& position = cell->getPosition();
+
+								fmt::format_to(fmt::appender(localStr), "{}", position.get(magic_enum::enum_cast<Axis>(0).value()));
+
+								for (unsigned int axis = 1; axis < DIMENSIONS; axis++)
+								{
+									fmt::format_to(fmt::appender(localStr), "\t{}", position.get(magic_enum::enum_cast<Axis>(axis).value()));
+								}
+
+								fmt::format_to(fmt::appender(localStr), "\t{}", static_cast<unsigned int>(cell->getPatchApplicator().getCellObstacle().isObstacle()));
+
+								for (size_t j = 0; j < cell->getPatchApplicator().getNumberOfResources(); j++)
+								{
+									const CellResourceInterface& resource = cell->getPatchApplicator().getCellResource(j);
+
+									fmt::format_to(fmt::appender(localStr), "\t{}\t{}",
+										resource.getGrowthBuildingBlock().getCurrentTotalWetMass().getValue().getValue(),
+										resource.calculateDryMassAvailable(true, nullptr, 0.0).getValue().getValue()
+									);
+								}
+
+
+								std::vector<uint32_t> animalCounts(numAnimalSpecies, 0u);
+
+								for (const auto* animal : landscapeAnimals) {
+									if (cell->isAnimalInside(animal->getPosition())) {
+										animalCounts[animal->getAnimalSpeciesId()]++;
+									}
+								}
+
+								for (uint32_t count : animalCounts)
+								{
+									fmt::format_to(fmt::appender(localStr), "\t{}", count);
+								}
+
+
+								localStr.push_back('\n');
+							}
+						}
+					);
+				}
 			);
 
 
-			for(size_t i = 0; i < landscapeAnimals.size(); i++)
-			{
-				size_t x = static_cast<size_t>((getPositionAxisValue(landscapeAnimals[i]->getPosition(),0u) / landscapeMap->getMinCellSize()).getValue());
-				size_t y = static_cast<size_t>((getPositionAxisValue(landscapeAnimals[i]->getPosition(),1u) / landscapeMap->getMinCellSize()).getValue());
-
-				animalsCellsInfo[x][y][landscapeAnimals[i]->getSpecies()->getAnimalSpeciesId()]++;
-			}
-
-
-			for(unsigned int x = 0u; x < landscapeMap->getNumberOfCellsPerAxis(); x++)
-			{
-				for(unsigned int y = 0u; y < landscapeMap->getNumberOfCellsPerAxis(); y++)
-				{
-					content << x << "\t" << y;
-
-					for(const CellResource* const resource : landscapeResources[x][y])
-					{
-						content << "\t" << resource->getGrowthBuildingBlock().getCurrentTotalWetMass() << "\t" << resource->calculateDryMassAvailable(true, nullptr, 0.0, nullptr).getValue();
-					}
-
-					for(const size_t &animalSpeciesValue : animalsCellsInfo[x][y])
-					{
-						content << "\t" << animalSpeciesValue;
-					}
-
-					content << "\n";
+			// 4. Enviar un paquete por cada hebra usando std::move (Cero copias, contención mínima)
+			for (fmt::memory_buffer& threadBuffer : localBuffersCells) {
+				if (threadBuffer.size() != 0) {
+					StorageBridge::writeContentPackToDisk(filePath, threadBuffer);
 				}
 			}
 
 
-
-			std::ofstream file;
-
-			createOutputFile(file, resultFolder / fs::path("cells_each_day"), "cells_day_", "txt", numberOfTimeSteps, recordEach);
-			if (!file.is_open())
-			{
-				throwLineInfoException("Error opening the file");
-			}
-
-			file << header.str() + content.str();
-
-			file.close();
+			StorageBridge::writeClosePackToDisk(filePath);
 		}
 	}
 }
 
-void Landscape::obtainLandscapeResourceBiomassAndAnimalsPopulation(vector<WetMass> &landscapeResourceBiomass, CustomIndexedVector<AnimalSpeciesID, CustomIndexedVector<LifeStage, unsigned int>> &landscapeAnimalsPopulation) const
+void Landscape::printExtendedDailySummary(const TimeStep numberOfTimeSteps)
 {
+	vector<double> landscapeResourceBiomass(getExistingResourceSpecies().size());
+	CustomIndexedVector<AnimalSpeciesID, CustomIndexedVector<LifeStage, unsigned int>> landscapeAnimalsPopulation(getExistingAnimalSpecies().size(), CustomIndexedVector<LifeStage, unsigned int>(EnumClass<LifeStage>::size(), 0));
+
+	landscapeMap->obtainResourcesBiomass(landscapeResourceBiomass);
+
 	for(size_t i = 0; i < landscapeAnimals.size(); i++)
 	{
 		landscapeAnimalsPopulation[landscapeAnimals[i]->getSpecies()->getAnimalSpeciesId()][landscapeAnimals[i]->getLifeStage()]++;
 	}
+	
 
+	fmt::format_to(fmt::appender(extendedDailySummaryBuffer), FMT_COMPILE("{}"), numberOfTimeSteps);
 
-	landscapeMap->obtainResourceBiomass(landscapeResourceBiomass);
-}
-
-void Landscape::printExtendedDailySummary(ostream& os, const TimeStep numberOfTimeSteps) const
-{
-	vector<WetMass> landscapeResourceBiomass(getExistingResourceSpecies().size());
-	CustomIndexedVector<AnimalSpeciesID, CustomIndexedVector<LifeStage, unsigned int>> landscapeAnimalsPopulation(getExistingAnimalSpecies().size(), CustomIndexedVector<LifeStage, unsigned int>(EnumClass<LifeStage>::size(), 0));
-
-	obtainLandscapeResourceBiomassAndAnimalsPopulation(landscapeResourceBiomass, landscapeAnimalsPopulation);
-
-	ostringstream content;
-
-	content << numberOfTimeSteps;
-
-	for(const WetMass &resourceBiomass : landscapeResourceBiomass)
+	for (const double& resourceBiomass : landscapeResourceBiomass)
 	{
-		content << "\t" << resourceBiomass.getValue();
+		fmt::format_to(fmt::appender(extendedDailySummaryBuffer), FMT_COMPILE("\t{}"), resourceBiomass);
 	}
 
-	for(const auto &animalSpeciesPopulation : landscapeAnimalsPopulation)
+	for (const auto& animalSpeciesPopulation : landscapeAnimalsPopulation)
 	{
-		for(const auto &lifeStagePopulation : animalSpeciesPopulation)
+		for (const auto& lifeStagePopulation : animalSpeciesPopulation)
 		{
-			content << "\t" << lifeStagePopulation;
+			fmt::format_to(fmt::appender(extendedDailySummaryBuffer), FMT_COMPILE("\t{}"), lifeStagePopulation);
 		}
 	}
-	
-	content << "\n";
+
+	extendedDailySummaryBuffer.push_back('\n');
 
 
-	os << content.str();
-	os.flush();
+	StorageBridge::writeContentPackToDisk(resultFolder / fs::path("extendedDailySummary.txt"), extendedDailySummaryBuffer);
 }
 
 
@@ -936,9 +1036,9 @@ void Landscape::saveAnimalSpeciesSnapshot(fs::path filenameRoot, string filename
 		std::replace(scientificName.begin(), scientificName.end(), ' ', '_');
 
 		std::ofstream file;
-		string fullPath = createOutputFile(file, filenameRoot, filename + "_" + scientificName + "_day_", "dat", numberOfTimeSteps, recordEach, ios::out | ios::binary);
+		string fullPath = createOutputFile(file, filenameRoot, filename + "_" + scientificName + "_day_", "dat", numberOfTimeSteps.getValue(), recordEach, ios::out | ios::binary);
 
-		view->updateLog({"Saving Animal as ", fullPath, "... "});
+		LogManager::emit(fmt::format("Saving Animal as {}... ", fullPath));
 
 
 		unsigned int value = 0;
@@ -954,7 +1054,7 @@ void Landscape::saveAnimalSpeciesSnapshot(fs::path filenameRoot, string filename
 		file.write((char *) &value, sizeof(unsigned int));
 
 
-		view->updateLog("DONE\n");
+		LogManager::emit("DONE\n");
 
 		file.close();
 	}
@@ -981,13 +1081,13 @@ void Landscape::saveResourceSpeciesSnapshot(fs::path filenameRoot, string filena
 	std::replace(scientificName.begin(), scientificName.end(), ' ', '_');
 
 	std::ofstream file;
-	string fullPath = createOutputFile(file, filenameRoot, filename + "_" + scientificName + "_day_", "dat", numberOfTimeSteps, recordEach, ios::out | ios::binary);
+	string fullPath = createOutputFile(file, filenameRoot, filename + "_" + scientificName + "_day_", "dat", numberOfTimeSteps.getValue(), recordEach, ios::out | ios::binary);
 
-	view->updateLog({"Saving Resource as ", fullPath, "... "});
+	LogManager::emit(fmt::format("Saving Resource as {}... ", fullPath));
 
 	landscapeMap->saveResourceSpeciesSnapshot(file, species);
 
-	view->updateLog("DONE\n");
+	LogManager::emit("DONE\n");
 
 	file.close();
 }
@@ -996,54 +1096,42 @@ void Landscape::saveResourceSpeciesSnapshot(fs::path filenameRoot, string filena
 void Landscape::saveWaterSnapshot(fs::path filenameRoot, string filename, const TimeStep numberOfTimeSteps)
 {
 	std::ofstream file;
-	string fullPath = createOutputFile(file, filenameRoot, filename + "_day_", "dat", numberOfTimeSteps, recordEach, ios::out | ios::binary);
+	string fullPath = createOutputFile(file, filenameRoot, filename + "_day_", "dat", numberOfTimeSteps.getValue(), recordEach, ios::out | ios::binary);
 
-	view->updateLog({"Saving Water volume as ", fullPath, "... "});
+	LogManager::emit(fmt::format("Saving Water volume as {}... ", fullPath));
 
 	landscapeMap->saveWaterSnapshot(file);
 
 	file.close();
-	view->updateLog("DONE\n");
+	LogManager::emit("DONE\n");
 }
 
 
-void Landscape::printPredationEventsOnOtherSpeciesMatrix()
+void Landscape::printPredationEventsOnOtherSpeciesMatrix(const TimeStep numberOfTimeSteps)
 {
-	ostringstream content;
+	std::string header;
+	header.reserve(256);
 
-	content << "prey\\predator";
-
-	for(const auto& predatorAnimalSpecies : getExistingAnimalSpecies())
+	header = "prey\\predator";
+	for (const auto& predatorAnimalSpecies : getExistingAnimalSpecies())
 	{
-		content << "\t" << predatorAnimalSpecies->getScientificName();
+		fmt::format_to(std::back_inserter(header), FMT_COMPILE("\t{}"), predatorAnimalSpecies->getScientificName());
 	}
 
-	content << "\n";
-
-	for(const auto& preySpecies : getExistingSpecies())
+	for (const auto& preySpecies : getExistingSpecies())
 	{
-		content << preySpecies->getScientificName();
+		const std::string& preyScientificName = preySpecies->getScientificName();
+		predationEventsOnOtherSpeciesMatrixBuffer.append(preyScientificName.data(), preyScientificName.data() + preyScientificName.size());
 
-		for(const auto& predatorAnimalSpecies : getExistingAnimalSpecies())
+		for (const auto& predatorAnimalSpecies : getExistingAnimalSpecies())
 		{
-			content << "\t" << predatorAnimalSpecies->getPredationEventsOnOtherSpecies(preySpecies->getId());
+			fmt::format_to(std::back_inserter(predationEventsOnOtherSpeciesMatrixBuffer), FMT_COMPILE("\t{}"), predatorAnimalSpecies->getPredationEventsOnOtherSpecies(preySpecies->getId()));
 		}
 
-		content << "\n";
+		predationEventsOnOtherSpeciesMatrixBuffer.push_back('\n');
 	}
 
-
-
-	std::ofstream predationEventsOnOtherSpeciesFile;
-	createOutputFile(predationEventsOnOtherSpeciesFile, resultFolder / fs::path("Matrices"), "predationOnSpecies", "txt");
-	if (!predationEventsOnOtherSpeciesFile.is_open())
-	{
-		throwLineInfoException("Error opening the file");
-	}
-
-	predationEventsOnOtherSpeciesFile << content.str();
-
-	predationEventsOnOtherSpeciesFile.close();
+	StorageBridge::writeFullFilePackToDisk(resultFolder / fs::path("Matrices") / fmt::format("predationOnSpecies_{}.txt", numberOfTimeSteps), header, predationEventsOnOtherSpeciesMatrixBuffer);
 }
 
 void Landscape::updateMap(const TimeStep numberOfTimeSteps)
@@ -1055,67 +1143,177 @@ void Landscape::updateMap(const TimeStep numberOfTimeSteps)
 	}
 
 
-	// resetAnimalControlVariables;
-	for(size_t i = 0; i < landscapeAnimals.size(); i++)
-	{
-		static_cast<AnimalNonStatistical*>(landscapeAnimals[i])->resetControlVariables(numberOfTimeSteps, getTimeStepsPerDay());
-	}
+
+	// 1. Obtener de forma segura el límite máximo de hilos concurrentes de la arena actual
+	size_t maxThreadsInArena = static_cast<size_t>(tbb::this_task_arena::max_concurrency());
+
+	size_t estimatedSize = (landscapeAnimals.size() * 256);
+
+	// 2. Calcular la estimación del búfer basada en la concurrencia real de la arena
+	size_t estimatedPerThreadSize = estimatedSize / maxThreadsInArena;
+
+
+	tbb::enumerable_thread_specific<CustomIndexedVector<AnimalSpeciesID, CustomIndexedVector<Instar, PreciseDouble>>> maximumInteractionAreaLocal(
+		[&]() {
+			CustomIndexedVector<AnimalSpeciesID, CustomIndexedVector<Instar, PreciseDouble>> localVector(getExistingAnimalSpecies().size());
+
+			for (size_t i = 0; i < getExistingAnimalSpecies().size(); ++i) {
+				localVector[i] = CustomIndexedVector<Instar, PreciseDouble>(getExistingAnimalSpecies()[i]->getGrowthBuildingBlock().getNumberOfInstars(), 0.0);
+			}
+
+			return localVector;
+		}
+	);
+
+	tbb::enumerable_thread_specific<CustomIndexedVector<AnimalSpeciesID, CustomIndexedVector<Instar, PreciseDouble>>> maximumVoracityLocal(
+		[&]() {
+			CustomIndexedVector<AnimalSpeciesID, CustomIndexedVector<Instar, PreciseDouble>> localVector(getExistingAnimalSpecies().size());
+
+			for (size_t i = 0; i < getExistingAnimalSpecies().size(); ++i) {
+				localVector[i] = CustomIndexedVector<Instar, PreciseDouble>(getExistingAnimalSpecies()[i]->getGrowthBuildingBlock().getNumberOfInstars(), 0.0);
+			}
+
+			return localVector;
+		}
+	);
 
 
 
-	for(size_t i = 0; i < landscapeAnimals.size(); i++)
-	{
-		if(landscapeAnimals[i]->getLifeStage() != LifeStage::UNBORN)
-		{
-			static_cast<AnimalNonStatistical*>(landscapeAnimals[i])->increaseAge(this, numberOfTimeSteps, getTimeStepsPerDay());	
+	TbbAdaptiveWrapper::Execute(landscapeAnimals, 0, landscapeAnimals.size(), 8u,
+		[&](auto& animals, size_t start, size_t end) {
+			fmt::memory_buffer& localStr = localBuffersMassInfo.local();
+			if (saveMassInfo) {
+				localStr.reserve(estimatedSize);
+			}
+
+			CustomIndexedVector<AnimalSpeciesID, CustomIndexedVector<Instar, PreciseDouble>>& animalSpeciesMaximumInteractionArea = maximumInteractionAreaLocal.local();
+			CustomIndexedVector<AnimalSpeciesID, CustomIndexedVector<Instar, PreciseDouble>>& animalSpeciesMaximumVoracity = maximumVoracityLocal.local();
+
+
+			for (size_t i = start; i < end; ++i) {
+				auto animalPtr = animals[i];
+
+				AnimalSpeciesID id = animalPtr->getSpecies()->getAnimalSpeciesId();
+
+				CustomIndexedVector<Instar, PreciseDouble>& maximumInteractionArea = animalSpeciesMaximumInteractionArea[id];
+				CustomIndexedVector<Instar, PreciseDouble>& maximumVoracity = animalSpeciesMaximumVoracity[id];
+
+
+				animalPtr->resetControlVariables(numberOfTimeSteps, getTimeStepsPerDay());
+
+				if (animalPtr->getLifeStage() != LifeStage::UNBORN)
+				{
+					animalPtr->increaseAge(this, numberOfTimeSteps, getTimeStepsPerDay());
+				}
+
+				if (animalPtr->getLifeStage() == LifeStage::UNBORN)
+				{
+					animalPtr->isReadyToBeBorn(this, getTimeStepsPerDay());
+				}
+
+				if (animalPtr->getLifeStage() == LifeStage::DIAPAUSE)
+				{
+					animalPtr->isReadyToResumeFromDiapauseOrIncreaseDiapauseTimeSteps(this);
+				}
+
+				if (animalPtr->getLifeStage() == LifeStage::PUPA)
+				{
+					animalPtr->isReadyToResumeFromPupaOrDecreasePupaTimer(this);
+				}
+
+				if (animalPtr->getLifeStage() != LifeStage::UNBORN)
+				{
+					animalPtr->tune(this, saveMassInfo, localStr, numberOfTimeSteps, getTimeStepsPerDay(), maximumInteractionArea, maximumVoracity);
+				}
+
+				if (animalPtr->getLifeStage() == LifeStage::ACTIVE)
+				{
+					animalPtr->grow(this, numberOfTimeSteps, getTimeStepsPerDay());
+				}
+			}
+		},
+		[&](auto& animals, size_t start, size_t end) {
+			tbb::parallel_for(tbb::blocked_range<size_t>(start, end),
+				[&](const tbb::blocked_range<size_t>& r) {
+					fmt::memory_buffer& localStr = localBuffersMassInfo.local();
+					if (saveMassInfo) {
+						localStr.reserve(estimatedPerThreadSize);
+					}
+
+					CustomIndexedVector<AnimalSpeciesID, CustomIndexedVector<Instar, PreciseDouble>>& animalSpeciesMaximumInteractionArea = maximumInteractionAreaLocal.local();
+					CustomIndexedVector<AnimalSpeciesID, CustomIndexedVector<Instar, PreciseDouble>>& animalSpeciesMaximumVoracity = maximumVoracityLocal.local();
+
+					for (size_t i = r.begin(); i < r.end(); ++i) {
+						auto animalPtr = animals[i];
+
+						AnimalSpeciesID id = animalPtr->getSpecies()->getAnimalSpeciesId();
+
+						CustomIndexedVector<Instar, PreciseDouble>& maximumInteractionArea = animalSpeciesMaximumInteractionArea[id];
+						CustomIndexedVector<Instar, PreciseDouble>& maximumVoracity = animalSpeciesMaximumVoracity[id];
+
+
+						animalPtr->resetControlVariables(numberOfTimeSteps, getTimeStepsPerDay());
+
+						if (animalPtr->getLifeStage() != LifeStage::UNBORN)
+						{
+							animalPtr->increaseAge(this, numberOfTimeSteps, getTimeStepsPerDay());
+						}
+
+						if (animalPtr->getLifeStage() == LifeStage::UNBORN)
+						{
+							animalPtr->isReadyToBeBorn(this, getTimeStepsPerDay());
+						}
+
+						if (animalPtr->getLifeStage() == LifeStage::DIAPAUSE)
+						{
+							animalPtr->isReadyToResumeFromDiapauseOrIncreaseDiapauseTimeSteps(this);
+						}
+
+						if (animalPtr->getLifeStage() == LifeStage::PUPA)
+						{
+							animalPtr->isReadyToResumeFromPupaOrDecreasePupaTimer(this);
+						}
+
+						if (animalPtr->getLifeStage() != LifeStage::UNBORN)
+						{
+							animalPtr->tune(this, saveMassInfo, localStr, numberOfTimeSteps, getTimeStepsPerDay(), maximumInteractionArea, maximumVoracity);
+						}
+
+						if (animalPtr->getLifeStage() == LifeStage::ACTIVE)
+						{
+							animalPtr->grow(this, numberOfTimeSteps, getTimeStepsPerDay());
+						}
+					}
+				}
+			);
+		}
+	);
+
+
+	if (saveMassInfo) {
+		// 4. Enviar un paquete por cada hebra usando std::move (Cero copias, contención mínima)
+		for (fmt::memory_buffer& threadBuffer : localBuffersMassInfo) {
+			if (threadBuffer.size() != 0) {
+				StorageBridge::writeContentPackToDisk(resultFolder / fs::path("massInfo") / fmt::format("mass_info_{}.txt", numberOfTimeSteps), threadBuffer);
+			}
 		}
 	}
 
-	for(size_t i = 0; i < landscapeAnimals.size(); i++)
-	{
-		if(landscapeAnimals[i]->getLifeStage() == LifeStage::UNBORN)
-		{
-			static_cast<AnimalNonStatistical*>(landscapeAnimals[i])->isReadyToBeBorn(this, getTimeStepsPerDay());
+
+	for (auto& animalSpeciesMaximumInteractionArea : maximumInteractionAreaLocal) {
+		for (size_t i = 0; i < animalSpeciesMaximumInteractionArea.size(); ++i) {
+			getMutableExistingAnimalSpecies()[i]->updateMaximumInteractionArea(animalSpeciesMaximumInteractionArea[i]);
 		}
 	}
 
-	
-
-
-	// activateAndResumeAnimals;
-	for(size_t i = 0; i < landscapeAnimals.size(); i++)
-	{
-		if(landscapeAnimals[i]->getLifeStage() == LifeStage::DIAPAUSE)
-		{
-			static_cast<AnimalNonStatistical*>(landscapeAnimals[i])->isReadyToResumeFromDiapauseOrIncreaseDiapauseTimeSteps(this);
+	for (auto& animalSpeciesMaximumVoracity : maximumVoracityLocal) {
+		for (size_t i = 0; i < animalSpeciesMaximumVoracity.size(); ++i) {
+			getMutableExistingAnimalSpecies()[i]->getMutableDecisionsBuildingBlock()->updateMaximumVoracity(animalSpeciesMaximumVoracity[i]);
 		}
 	}
-
-	for(size_t i = 0; i < landscapeAnimals.size(); i++)
-	{
-		if(landscapeAnimals[i]->getLifeStage() == LifeStage::PUPA)
-		{
-			static_cast<AnimalNonStatistical*>(landscapeAnimals[i])->isReadyToResumeFromPupaOrDecreasePupaTimer(this);
-		}
-	}
-
-
-	// tuneAnimals
-	for(size_t i = 0; i < landscapeAnimals.size(); i++)
-	{
-		if(landscapeAnimals[i]->getLifeStage() != LifeStage::UNBORN)
-		{
-			static_cast<AnimalNonStatistical*>(landscapeAnimals[i])->tune(this, saveMassInfo, numberOfTimeSteps, getTimeStepsPerDay());
-		}
-	}
-
 
 
 	updateAnimalSpeciesGlobalMaximum();
-
-
-
-    growAnimals(numberOfTimeSteps);
 }
 
 
@@ -1129,9 +1327,9 @@ void Landscape::updateAnimalSpeciesGlobalMaximum()
 			{
 				for(const Instar& preyInstar : preyInstars)
 				{
-					static_cast<AnimalSpecies*>(getMutableExistingSpecies().at(preySpeciesId))->getMutableDecisionsBuildingBlock()->updateMaximumPredatorInteractionArea(preyInstar, predatorAnimalSpecies->getMaximumInteractionArea(predatorInstar));
+					static_cast<AnimalSpecies*>(getMutableExistingSpecies()[preySpeciesId])->getMutableDecisionsBuildingBlock()->updateMaximumPredatorInteractionArea(preyInstar, predatorAnimalSpecies->getMaximumInteractionArea(predatorInstar));
 
-					predatorAnimalSpecies->getMutableDecisionsBuildingBlock()->updateMaximumPreyVoracity(predatorInstar, static_cast<AnimalSpecies*>(getMutableExistingSpecies().at(preySpeciesId))->getDecisionsBuildingBlock()->getMaximumVoracity(preyInstar));
+					predatorAnimalSpecies->getMutableDecisionsBuildingBlock()->updateMaximumPreyVoracity(predatorInstar, static_cast<AnimalSpecies*>(getMutableExistingSpecies()[preySpeciesId])->getDecisionsBuildingBlock()->getMaximumVoracity(preyInstar));
 				}
 			}
 		}
@@ -1202,105 +1400,137 @@ void Landscape::evolveLandscape()
 {
 	auto start = std::chrono::high_resolution_clock::now();
 
-	
-	saveWaterSnapshot(resultFolder / fs::path("Snapshots"), "Water_initial", TimeStep(0));
-
-	for(ResourceSpecies*& resourceSpecies : existingResourceSpecies)
+	if (saveSnapshots)
 	{
-		saveResourceSpeciesSnapshot(resultFolder / fs::path("Snapshots"), "Resource_initial", TimeStep(0), resourceSpecies);
+		saveWaterSnapshot(resultFolder / fs::path("Snapshots"), "Water_initial", TimeStep(0));
+
+		for(ResourceSpecies*& resourceSpecies : existingResourceSpecies)
+		{
+			saveResourceSpeciesSnapshot(resultFolder / fs::path("Snapshots"), "Resource_initial", TimeStep(0), resourceSpecies);
+		}
 	}
 
-
-	std::ofstream timeSpentFile;
-
-	createOutputFile(timeSpentFile, resultFolder, "time_spent", "txt");
-	if (!timeSpentFile.is_open())
-	{
-		throwLineInfoException("Error opening the file");
-	}
 
 	TimeStep numberOfTimeSteps = TimeStep(0);
 
 	const TimeStep totalNumberOfTimeSteps(getRunDays(), getTimeStepsPerDay());
 
+
+	TbbAdaptiveWrapper::Execute(landscapeAnimals, 0, landscapeAnimals.size(), 45u,
+		[this](auto& animals, size_t start, size_t end) {
+			for (size_t i = start; i < end; ++i) {
+				animals[i]->initControlVariables(getExistingSpecies());
+			}
+		},
+		[this](auto& animals, size_t start, size_t end) {
+			tbb::parallel_for(tbb::blocked_range<size_t>(start, end),
+				[this, &animals](const tbb::blocked_range<size_t>& r) {
+					for (size_t i = r.begin(); i < r.end(); ++i) {
+						animals[i]->initControlVariables(getExistingSpecies());
+					}
+				}
+			);
+		}
+	);
+
+
 	while(numberOfTimeSteps < totalNumberOfTimeSteps)
 	{
-		view->updateLog({"Running on timeStep ", to_string(numberOfTimeSteps.getValue()), " out of ", to_string(totalNumberOfTimeSteps.getValue()), "\n"});
+		LogManager::emit(fmt::format("Running on timeStep {} out of {}\n", numberOfTimeSteps.getValue(), totalNumberOfTimeSteps.getValue()));
+
+		if (saveMassInfo) {
+			StorageBridge::writeHeaderPackToDisk(resultFolder / fs::path("massInfo") / fmt::format("mass_info_{}.txt", numberOfTimeSteps), "TimeStep\tId\tCurrentMass\tMoltingMassTarget\tReproductionMassTarget\tGrowthCurve\tMassPredicted\tCurrentAge\tMoltingAgeTarget\tReproductionAgeTarget");
+		}
 
 //#####################################################################
 //##########################  UPDATING MAP   ##########################
 //#####################################################################
 
-		view->updateLog(" - Updating map ... \n");
+		LogManager::emit(" - Updating map ... \n");
 		
 		auto t0 = chrono::high_resolution_clock::now();
 		updateMap(numberOfTimeSteps);
 		auto t1 = chrono::high_resolution_clock::now();
 
-		view->updateLog({"Time: ", to_string(chrono::duration<double>(t1-t0).count()), " secs.\n"});
-		timeSpentFile << chrono::duration<double>(t1-t0).count() << "\t";
+		LogManager::emit(fmt::format("Time: {} secs.\n", chrono::duration<double>(t1 - t0).count()));
+
+		fmt::format_to(fmt::appender(timeSpentBuffer), FMT_COMPILE("{}\t"),
+			chrono::duration<double>(t1 - t0).count()
+		);
 		
-		view->updateLog("DONE\n");
+		LogManager::emit("DONE\n");
 
 //#####################################################################
 //#################  PRINTING ANIMALS ALONG CELLS   ###################
 //#####################################################################
 
-		view->updateLog(" - Printing animals along cells ... \n");
+		LogManager::emit(" - Printing animals along cells ... \n");
 
 		t0 = chrono::high_resolution_clock::now();
 		printAnimalsAlongCells(numberOfTimeSteps, 0);
 		t1 = chrono::high_resolution_clock::now();
 
-		view->updateLog({"Time: ", to_string(chrono::duration<double>(t1-t0).count()), " secs.\n"});
-		timeSpentFile << chrono::duration<double>(t1-t0).count() << "\t";
+		LogManager::emit(fmt::format("Time: {} secs.\n", chrono::duration<double>(t1 - t0).count()));
 
-		view->updateLog("DONE\n");
+		fmt::format_to(fmt::appender(timeSpentBuffer), FMT_COMPILE("{}\t"),
+			chrono::duration<double>(t1 - t0).count()
+		);
+
+		LogManager::emit("DONE\n");
 
 //#####################################################################
-//#########################  MOVING ANIMALS   #########################
+//#######################  EXECUTING ACTIONS   ########################
 //#####################################################################
-
-		view->updateLog(" - Moving animals ... \n");
+		
+		LogManager::emit(" - Executing actions ... \n");
 
 		t0 = chrono::high_resolution_clock::now();
-		moveAnimals(numberOfTimeSteps);
+		executingActions(numberOfTimeSteps);
 		t1 = chrono::high_resolution_clock::now();
 		
-		view->updateLog({"Time: ", to_string(chrono::duration<double>(t1-t0).count()), " secs.\n"});
-		timeSpentFile << chrono::duration<double>(t1-t0).count() << "\t";
+		LogManager::emit(fmt::format("Time: {} secs.\n", chrono::duration<double>(t1 - t0).count()));
 
-		view->updateLog("DONE\n");
+		fmt::format_to(fmt::appender(timeSpentBuffer), FMT_COMPILE("{}\t"),
+			chrono::duration<double>(t1 - t0).count()
+		);
+
+		LogManager::emit("DONE\n");
 
 //#####################################################################
 //##########  BACKGROUND, ASSIMILATING FOOD & REPRODUCING   ###########
 //#####################################################################
 
-		view->updateLog(" - Background, assimilating food and reproducing ... \n");
+		LogManager::emit(" - Background, assimilating food and reproducing ... \n");
 		
 		t0 = chrono::high_resolution_clock::now();
 		performAnimalsActions(numberOfTimeSteps);
 		t1 = chrono::high_resolution_clock::now();
 
-		view->updateLog({"Time: ", to_string(chrono::duration<double>(t1-t0).count()), " secs.\n"});
-		timeSpentFile << chrono::duration<double>(t1-t0).count() << "\t";
+		LogManager::emit(fmt::format("Time: {} secs.\n", chrono::duration<double>(t1 - t0).count()));
 
-		view->updateLog("DONE\n");
+		fmt::format_to(fmt::appender(timeSpentBuffer), FMT_COMPILE("{}\t"),
+			chrono::duration<double>(t1 - t0).count()
+		);
+
+		LogManager::emit("DONE\n");
 
 //#####################################################################
 //#################  PRINTING ANIMALS ALONG CELLS   ###################
 //#####################################################################
 
-		view->updateLog(" - Printing animals along cells ... \n");
+		LogManager::emit(" - Printing animals along cells ... \n");
 
 		t0 = chrono::high_resolution_clock::now();
 		printAnimalsAlongCells(numberOfTimeSteps, 1);
 		t1 = chrono::high_resolution_clock::now();
 
-		view->updateLog({"Time: ", to_string(chrono::duration<double>(t1-t0).count()), " secs.\n"});
-		timeSpentFile << chrono::duration<double>(t1-t0).count() << "\t";
+		LogManager::emit(fmt::format("Time: {} secs.\n", chrono::duration<double>(t1 - t0).count()));
 
-		view->updateLog("DONE\n");
+		fmt::format_to(fmt::appender(timeSpentBuffer), FMT_COMPILE("{}\t"),
+			chrono::duration<double>(t1 - t0).count()
+		);
+
+		LogManager::emit("DONE\n");
 
 //#####################################################################
 //##################  PRINTING EXTENDED SUMMARY   #####################
@@ -1308,43 +1538,49 @@ void Landscape::evolveLandscape()
 
 		if(saveExtendedDailySummary)
 		{
-			view->updateLog(" - Printing summary file ... \n");
+			LogManager::emit(" - Printing summary file ... \n");
 
 			t0 = chrono::high_resolution_clock::now();
-			printExtendedDailySummary(extendedDailySummaryFile, numberOfTimeSteps);
+			printExtendedDailySummary(numberOfTimeSteps);
 			t1 = chrono::high_resolution_clock::now();
 
-			view->updateLog({"Time: ", to_string(chrono::duration<double>(t1-t0).count()), " secs.\n"});
-			timeSpentFile << chrono::duration<double>(t1-t0).count() << "\t";
+			LogManager::emit(fmt::format("Time: {} secs.\n", chrono::duration<double>(t1 - t0).count()));
 
-			view->updateLog("DONE\n");
+			fmt::format_to(fmt::appender(timeSpentBuffer), FMT_COMPILE("{}\t"),
+				chrono::duration<double>(t1 - t0).count()
+			);
+
+			LogManager::emit("DONE\n");
 		}
 
 //#####################################################################
 //####################  PURGING DEAD ANIMALS   ########################
 //#####################################################################
 
-		view->updateLog(" - Purging dead animals ... \n");
+		LogManager::emit(" - Purging dead animals ... \n");
 
 		t0 = chrono::high_resolution_clock::now();
 		purgeDeadAnimals();
 		t1 = chrono::high_resolution_clock::now();
 
-		view->updateLog({"Time: ", to_string(chrono::duration<double>(t1-t0).count()), " secs.\n"});
-		timeSpentFile << chrono::duration<double>(t1-t0).count() << "\t" << endl;
+		LogManager::emit(fmt::format("Time: {} secs.\n", chrono::duration<double>(t1 - t0).count()));
 
-		view->updateLog("DONE\n");
+		fmt::format_to(fmt::appender(timeSpentBuffer), FMT_COMPILE("{}"),
+			chrono::duration<double>(t1 - t0).count()
+		);
+
+		LogManager::emit("DONE\n");
 
 		printCellAlongCells(numberOfTimeSteps);
 
 		
 		if(savePredationEventsOnOtherSpecies)
 		{
-			printPredationEventsOnOtherSpeciesMatrix();
+			printPredationEventsOnOtherSpeciesMatrix(numberOfTimeSteps);
 		}
 
 
-		if (saveIntermidiateVolumes && (((numberOfTimeSteps + TimeStep(1)) % saveIntermidiateVolumesPeriodicity) == 0))
+		if (saveSnapshots && (((numberOfTimeSteps + TimeStep(1)) % saveSnapshotsPeriodicity) == 0))
 		{
 			saveWaterSnapshot(resultFolder / fs::path("Snapshots"), "Water", numberOfTimeSteps);
 
@@ -1364,7 +1600,16 @@ void Landscape::evolveLandscape()
 			break;
 		}
 
-		numberOfTimeSteps = numberOfTimeSteps + TimeStep(1);
+
+		timeSpentBuffer.push_back('\n');
+
+
+		if (saveMassInfo) {
+			StorageBridge::writeClosePackToDisk(resultFolder / fs::path("massInfo") / fmt::format("mass_info_{}.txt", numberOfTimeSteps));
+		}
+
+
+		++numberOfTimeSteps;
 
 
 		if(isCheckpointsEnabled() && (numberOfTimeSteps % getCheckpointsRecordEach())==0)
@@ -1386,53 +1631,42 @@ void Landscape::evolveLandscape()
 	}
 
 
-	saveWaterSnapshot(resultFolder / fs::path("Snapshots"), "Water_final", numberOfTimeSteps);
-
-	for(auto &resourceSpecies : existingResourceSpecies)
+	if (saveSnapshots)
 	{
-		saveResourceSpeciesSnapshot(resultFolder / fs::path("Snapshots"), "Resource_final", numberOfTimeSteps, resourceSpecies);
+		saveWaterSnapshot(resultFolder / fs::path("Snapshots"), "Water_final", numberOfTimeSteps);
+
+		for(auto &resourceSpecies : existingResourceSpecies)
+		{
+			saveResourceSpeciesSnapshot(resultFolder / fs::path("Snapshots"), "Resource_final", numberOfTimeSteps, resourceSpecies);
+		}
+
+		for (AnimalSpecies*& animalSpecies : getMutableExistingAnimalSpecies())
+		{
+			saveAnimalSpeciesSnapshot(resultFolder / fs::path("Snapshots"), "Animal_final", numberOfTimeSteps, animalSpecies);
+		}
 	}
 
-	for(AnimalSpecies*& animalSpecies : getMutableExistingAnimalSpecies())
-	{
-		saveAnimalSpeciesSnapshot(resultFolder / fs::path("Snapshots"), "Animal_final", numberOfTimeSteps, animalSpecies);
-	}
-
-	for(auto& animalSpeciesFile : animalConstitutiveTraitsFile)
-	{
-		animalSpeciesFile->close();
-	}
-
-	if(getSaveEdibilitiesFile())
-	{
-		edibilitiesFile.close();
-	}
-
-	timeSpentFile.close();
-
-	if(saveDailySummary)
-	{
-		dailySummaryFile.close();
-	}
-	
-	if(saveExtendedDailySummary)
-	{
-		extendedDailySummaryFile.close();
-	}
-
-	if(saveMovements)
-	{
-		movementsFile.close();
-	}
 
 
 	auto end = std::chrono::high_resolution_clock::now();
 
 	std::chrono::duration<double> elapsed = end - start;
 
-	ofstream timeFile((resultFolder / fs::path("executionTime.txt")).string());
-	timeFile << elapsed.count() << " segs" << endl;
-	timeFile.close();
+	fmt::format_to(fmt::appender(executionTimeBuffer), FMT_COMPILE("{} segs\n"), elapsed.count());
+
+	StorageBridge::writeFullFilePackToDisk(resultFolder / "executionTime.txt", "", executionTimeBuffer);
+
+
+	string timeStepHeader = "updateMap\tinitialPrintAnimalsAlongCells\texecutingActions\tperformAnimalsActions\tfinalPrintAnimalsAlongCells";
+
+	if (saveExtendedDailySummary)
+	{
+		timeStepHeader.append("\tprintExtendedDailySummary");
+	}
+
+	timeStepHeader.append("\tpurgeDeadAnimals");
+
+	StorageBridge::writeFullFilePackToDisk(resultFolder / "time_spent.txt", timeStepHeader, timeSpentBuffer);
 }
 
 bool Landscape::checkBreakConditions(const TimeStep& numberOfTimeSteps)
@@ -1483,7 +1717,7 @@ void Landscape::saveBreakConditionsInfo(const TimeStep& numberOfTimeSteps)
 		coefficientOfVariation = DBL_MAX;
 	}
 
-	breakConditionsInfo << coefficientOfVariation << "\t" << numberOfTimeSteps << "\n";
+	breakConditionsInfo << fmt::to_string(coefficientOfVariation) << "\t" << fmt::to_string(numberOfTimeSteps) << "\n";
 
 	breakConditionsInfo.close();
 }
@@ -1503,7 +1737,7 @@ void Landscape::saveCheckpoint(const TimeStep& numberOfTimeSteps)
 
 	if(isBinaryCheckpointEnabled())
 	{
-		checkpointFilename += ".bin";
+		checkpointFilename.append(".bin");
 		std::ofstream ofs((resultFolder / fs::path("checkpoints") / checkpointFilename).string());
 		boost::archive::binary_oarchive oa(ofs);
 		oa << this;
@@ -1511,7 +1745,7 @@ void Landscape::saveCheckpoint(const TimeStep& numberOfTimeSteps)
 	}
 	else
 	{
-		checkpointFilename += ".txt";
+		checkpointFilename.append(".txt");
 		std::ofstream ofs((resultFolder / fs::path("checkpoints") / checkpointFilename).string());
 		boost::archive::text_oarchive oa(ofs);
 		oa << this;
@@ -1521,6 +1755,8 @@ void Landscape::saveCheckpoint(const TimeStep& numberOfTimeSteps)
 
 void Landscape::registerAnimal(AnimalNonStatistical* animal)
 {
+	std::lock_guard<std::mutex> lock(landscapeAnimalsMutex);
+
 	landscapeAnimals.push_back(animal);
 }
 
@@ -1550,228 +1786,613 @@ bool Landscape::isGrowthAndReproTest() const
 	return growthAndReproTest; 
 }
 
-void Landscape::moveAnimals(const TimeStep& numberOfTimeSteps)
+void Landscape::executingActions(const TimeStep& numberOfTimeSteps)
 {
-	ostringstream predationProbabilitiesContent, activityContent, edibilitiesContent, movementsContent;
+	auto& localRng = Random::getEngine();
+	std::shuffle(landscapeAnimals.begin(), landscapeAnimals.end(), localRng);
 
-	vector<size_t> randomIndexLandscapeAnimals;
-	Random::createIndicesVector(randomIndexLandscapeAnimals, landscapeAnimals.size());
 
-	ProgressBar progressBar(view, randomIndexLandscapeAnimals.size());
+	size_t totalElements = landscapeAnimals.size();
 
-	for(const size_t pos : randomIndexLandscapeAnimals)
+	ProgressBar progressBar(totalElements);
+
+	chrono::duration<double> actionPlanningTime(0.0);
+	chrono::duration<double> actionExecutionTime(0.0);
+
+
+	string timeStepStr = string(MAX_NUM_DIGITS_DAY - to_string(numberOfTimeSteps.getValue()).length(), '0') + to_string(numberOfTimeSteps.getValue());
+
+
+	if (saveActivity) {
+		StorageBridge::writeHeaderPackToDisk(resultFolder / fs::path("animals_each_day_activity") / (std::string("animals_activity_day_") + timeStepStr + ".txt"), "id\tspecies\tactivityType\tinitialDay\tfinalDay\tactivityDuration");
+	}
+	
+
+	if (saveAnimalsEachDayPredationProbabilities) {
+		StorageBridge::writeHeaderPackToDisk(resultFolder / fs::path("animals_each_day_predationProbabilities") / (std::string("animals_predationProbabilities_day_") + timeStepStr + ".txt"), "randomProbability\tprobabilityToCompare\tretaliation\tidHunter\tidHunted\tspeciesHunter\tspeciesHunted\thuntedIsPredator\tmassHunter\tmassHunted\tsuccessfulKill");
+	}
+
+
+	tbb::enumerable_thread_specific<CustomIndexedVector<AnimalSpeciesID, CustomIndexedVector<Species::ID, unsigned int>>> predationEventsOnOtherSpeciesLocal(getExistingAnimalSpecies().size(), CustomIndexedVector<Species::ID, unsigned int>(getExistingSpecies().size(), 0u));
+
+	tbb::enumerable_thread_specific<CustomIndexedVector<AnimalSpeciesID, CustomIndexedVector<Instar, PreciseDouble>>> maximumPatchEdibilityValueGlobalLocal(
+		[&]() {
+			CustomIndexedVector<AnimalSpeciesID, CustomIndexedVector<Instar, PreciseDouble>> localVector(getExistingAnimalSpecies().size());
+
+			for (size_t i = 0; i < getExistingAnimalSpecies().size(); ++i) {
+				localVector[i] = CustomIndexedVector<Instar, PreciseDouble>(getExistingAnimalSpecies()[i]->getGrowthBuildingBlock().getNumberOfInstars(), 0.0);
+			}
+
+			return localVector;
+		}
+	);
+
+	tbb::enumerable_thread_specific<CustomIndexedVector<AnimalSpeciesID, CustomIndexedVector<Instar, PreciseDouble>>> maximumPatchPredationRiskGlobalLocal(
+		[&]() {
+			CustomIndexedVector<AnimalSpeciesID, CustomIndexedVector<Instar, PreciseDouble>> localVector(getExistingAnimalSpecies().size());
+
+			for (size_t i = 0; i < getExistingAnimalSpecies().size(); ++i) {
+				localVector[i] = CustomIndexedVector<Instar, PreciseDouble>(getExistingAnimalSpecies()[i]->getGrowthBuildingBlock().getNumberOfInstars(), 0.0);
+			}
+
+			return localVector;
+		}
+	);
+
+	tbb::enumerable_thread_specific<CustomIndexedVector<AnimalSpeciesID, CustomIndexedVector<Instar, PreciseDouble>>> maximumPatchConspecificBiomassGlobalLocal(
+		[&]() {
+			CustomIndexedVector<AnimalSpeciesID, CustomIndexedVector<Instar, PreciseDouble>> localVector(getExistingAnimalSpecies().size());
+
+			for (size_t i = 0; i < getExistingAnimalSpecies().size(); ++i) {
+				localVector[i] = CustomIndexedVector<Instar, PreciseDouble>(getExistingAnimalSpecies()[i]->getGrowthBuildingBlock().getNumberOfInstars(), 0.0);
+			}
+
+			return localVector;
+		}
+	);
+
+
+	// 1. Obtener de forma segura el límite máximo de hilos concurrentes de la arena actual
+	size_t maxThreadsInArena = static_cast<size_t>(tbb::this_task_arena::max_concurrency());
+
+
+	// Reemplazamos el vector de booleanos por un contador de elementos activos
+	size_t activeElements = totalElements;
+
+
+	while (!progressBar.finished())
 	{
-		if(landscapeAnimals[pos]->getLifeStage() == LifeStage::ACTIVE ||
-	       landscapeAnimals[pos]->getLifeStage() == LifeStage::REPRODUCING)
-		{
-			auto t0 = chrono::high_resolution_clock::now();
-					
-			static_cast<AnimalNonStatistical*>(landscapeAnimals[pos])->moveAnimal(view, this, numberOfTimeSteps, getTimeStepsPerDay(), saveAnimalsEachDayPredationProbabilities, predationProbabilitiesContent, getSaveEdibilitiesFile(), edibilitiesContent, saveActivity, activityContent, saveMovements, movementsContent, getCompetitionAmongResourceSpecies());
-		
-			auto t1 = chrono::high_resolution_clock::now();
+		auto t0_actionPlanning = chrono::high_resolution_clock::now();
 
-			if(chrono::duration<double>(t1-t0).count() > exitTimeThreshold)
-			{
-				throwLineInfoException("too many animals for too little food!!!");
+		// 2. Usamos enumerable_thread_specific solo para mantener vivo el búfer de cada hebra
+		maximumPatchEdibilityValueGlobalLocal.clear();
+		maximumPatchPredationRiskGlobalLocal.clear();
+		maximumPatchConspecificBiomassGlobalLocal.clear();
+
+		size_t estimatedSize = activeElements * 256;
+
+		size_t estimatedPerThreadSize = estimatedSize / maxThreadsInArena;
+
+
+		TbbAdaptiveWrapper::Execute(landscapeAnimals, 0, activeElements, 48u,
+			[&](auto& animals, size_t start, size_t end) {
+				fmt::memory_buffer& localStr = localBuffersEdibilities.local();
+
+				if (getSaveEdibilitiesFile()) {
+					localStr.reserve(estimatedSize);
+				}
+
+				CustomIndexedVector<AnimalSpeciesID, CustomIndexedVector<Instar, PreciseDouble>>& animalSpeciesMaximumPatchEdibilityValueGlobal = maximumPatchEdibilityValueGlobalLocal.local();
+				CustomIndexedVector<AnimalSpeciesID, CustomIndexedVector<Instar, PreciseDouble>>& animalSpeciesMaximumPatchPredationRiskGlobal = maximumPatchPredationRiskGlobalLocal.local();
+				CustomIndexedVector<AnimalSpeciesID, CustomIndexedVector<Instar, PreciseDouble>>& animalSpeciesMaximumPatchConspecificBiomassGlobal = maximumPatchConspecificBiomassGlobalLocal.local();
+
+				const bool saveEd = getSaveEdibilitiesFile();
+				const auto& timeStepsPerDay = getTimeStepsPerDay();
+
+				for (size_t i = start; i < end; ++i) {
+#ifdef DEBUG
+					auto t0 = chrono::high_resolution_clock::now();
+#endif
+
+					auto animalPtr = animals[i];
+
+					auto speciesId = animalPtr->getAnimalSpeciesId();
+					auto& maxEd = animalSpeciesMaximumPatchEdibilityValueGlobal[speciesId];
+					auto& maxPred = animalSpeciesMaximumPatchPredationRiskGlobal[speciesId];
+					auto& maxCons = animalSpeciesMaximumPatchConspecificBiomassGlobal[speciesId];
+
+					animalPtr->actionPlanning(
+						this,
+						numberOfTimeSteps,
+						timeStepsPerDay,
+						saveEd,
+						localStr,
+						maxEd,
+						maxPred,
+						maxCons
+					);
+
+#ifdef DEBUG
+					auto t1 = chrono::high_resolution_clock::now();
+
+					if (chrono::duration<double>(t1 - t0).count() > exitTimeThreshold)
+					{
+						throwLineInfoException("too many animals for too little food!!!");
+					}
+#endif
+				}
+			},
+			[&](auto& animals, size_t start, size_t end) {
+				tbb::parallel_for(tbb::blocked_range<size_t>(start, end),
+					[&](const tbb::blocked_range<size_t>& r) {
+						fmt::memory_buffer& localStr = localBuffersEdibilities.local();
+
+						if (getSaveEdibilitiesFile()) {
+							localStr.reserve(estimatedPerThreadSize);
+						}
+
+						CustomIndexedVector<AnimalSpeciesID, CustomIndexedVector<Instar, PreciseDouble>>& animalSpeciesMaximumPatchEdibilityValueGlobal = maximumPatchEdibilityValueGlobalLocal.local();
+						CustomIndexedVector<AnimalSpeciesID, CustomIndexedVector<Instar, PreciseDouble>>& animalSpeciesMaximumPatchPredationRiskGlobal = maximumPatchPredationRiskGlobalLocal.local();
+						CustomIndexedVector<AnimalSpeciesID, CustomIndexedVector<Instar, PreciseDouble>>& animalSpeciesMaximumPatchConspecificBiomassGlobal = maximumPatchConspecificBiomassGlobalLocal.local();
+
+						const bool saveEd = getSaveEdibilitiesFile();
+						const auto& timeStepsPerDay = getTimeStepsPerDay();
+
+						for (size_t i = r.begin(); i < r.end(); ++i) {
+#ifdef DEBUG
+							auto t0 = chrono::high_resolution_clock::now();
+#endif
+
+							auto animalPtr = animals[i];
+
+							auto speciesId = animalPtr->getAnimalSpeciesId();
+							auto& maxEd = animalSpeciesMaximumPatchEdibilityValueGlobal[speciesId];
+							auto& maxPred = animalSpeciesMaximumPatchPredationRiskGlobal[speciesId];
+							auto& maxCons = animalSpeciesMaximumPatchConspecificBiomassGlobal[speciesId];
+
+							animalPtr->actionPlanning(
+								this,
+								numberOfTimeSteps,
+								timeStepsPerDay,
+								saveEd,
+								localStr,
+								maxEd,
+								maxPred,
+								maxCons
+							);
+
+#ifdef DEBUG
+							auto t1 = chrono::high_resolution_clock::now();
+
+							if (chrono::duration<double>(t1 - t0).count() > exitTimeThreshold)
+							{
+								throwLineInfoException("too many animals for too little food!!!");
+							}
+#endif
+						}
+					}
+				);
+			}
+		);
+
+
+		for (auto& animalSpeciesMaximumPatchEdibilityValueGlobal : maximumPatchEdibilityValueGlobalLocal) {
+			for (size_t i = 0; i < animalSpeciesMaximumPatchEdibilityValueGlobal.size(); ++i) {
+				getMutableExistingAnimalSpecies()[i]->getMutableDecisionsBuildingBlock()->updateMaximumPatchEdibilityValueGlobal(animalSpeciesMaximumPatchEdibilityValueGlobal[i]);
 			}
 		}
 
-		progressBar.update();
-	}
-
-
-	if(getSaveEdibilitiesFile())
-	{
-		edibilitiesFile << edibilitiesContent.str();
-		edibilitiesFile.flush();
-	}
-
-	if(saveMovements)
-	{
-		movementsFile << movementsContent.str();
-		movementsFile.flush();
-	}
-
-
-
-	if(saveAnimalsEachDayPredationProbabilities)
-	{
-		std::ofstream predationProbabilitiesFile;
-		
-		createOutputFile(predationProbabilitiesFile, resultFolder / fs::path("animals_each_day_predationProbabilities"), "animals_predationProbabilities_day_", "txt", numberOfTimeSteps, recordEach);
-		if(!predationProbabilitiesFile.is_open())
-		{
-			throwLineInfoException("Error opening the file");
+		for (auto& animalSpeciesMaximumPatchPredationRiskGlobal : maximumPatchPredationRiskGlobalLocal) {
+			for (size_t i = 0; i < animalSpeciesMaximumPatchPredationRiskGlobal.size(); ++i) {
+				getMutableExistingAnimalSpecies()[i]->getMutableDecisionsBuildingBlock()->updateMaximumPatchPredationRiskGlobal(animalSpeciesMaximumPatchPredationRiskGlobal[i]);
+			}
 		}
 
-		ostringstream predationProbabilitiesHeader;
-
-		predationProbabilitiesHeader << "randomProbability\tprobabilityToCompare\tretaliation\texposedAttack\tidHunter\tidHunted\tspeciesHunter\tspeciesHunted\thuntedIsPredator\tmassHunter\tmassHunted\tsuccessfulKill\n";
-
-		predationProbabilitiesFile << predationProbabilitiesHeader.str() + predationProbabilitiesContent.str();
-
-		predationProbabilitiesFile.close();
-	}
-		
-
-	if(saveActivity)
-	{
-		std::ofstream activityFile;
-
-		createOutputFile(activityFile, resultFolder / fs::path("animals_each_day_activity"), "animals_activity_day_", "txt", numberOfTimeSteps, recordEach);
-		if (!activityFile.is_open())
-		{
-			throwLineInfoException("Error opening the file");
+		for (auto& animalSpeciesMaximumPatchConspecificBiomassGlobal : maximumPatchConspecificBiomassGlobalLocal) {
+			for (size_t i = 0; i < animalSpeciesMaximumPatchConspecificBiomassGlobal.size(); ++i) {
+				getMutableExistingAnimalSpecies()[i]->getMutableDecisionsBuildingBlock()->updateMaximumPatchConspecificBiomassGlobal(animalSpeciesMaximumPatchConspecificBiomassGlobal[i]);
+			}
 		}
 
-		ostringstream activityHeader;
+		auto t1_actionPlanning = chrono::high_resolution_clock::now();
 
-		activityHeader << "id\tspecies\tactivityTipe\tinitialDay\tfinalDay\tactivityDuration\n"; 
+		actionPlanningTime += chrono::duration<double>(t1_actionPlanning - t0_actionPlanning);
 
-		activityFile << activityHeader.str() + activityContent.str();
-		
-		activityFile.close();
+
+		auto t0_actionExecution = chrono::high_resolution_clock::now();
+
+
+		// =================================================================
+		// 2. EL ALGORITMO CLAVE: PARTICIONADO TRIPLE (Three-Way Partition)
+		// =================================================================
+		// Reorganizamos la zona activa en 3 bloques contiguos:
+		// [0, predateEnd) => PREDATE
+		// [predateEnd, parallelEnd) => resto de acciones ejecutables
+		// [parallelEnd, activeElements) => NONE
+		size_t predateEnd = 0;
+		size_t parallelEnd = activeElements;
+		size_t i = 0;
+
+		while (i < parallelEnd) {
+			auto action = landscapeAnimals[i]->getNextAction();
+
+			if (action == AnimalNonStatistical::Action::PREDATE) {
+				if (i != predateEnd) {
+					std::swap(landscapeAnimals[i], landscapeAnimals[predateEnd]);
+				}
+				++predateEnd;
+				++i;
+				continue;
+			}
+
+			if (action == AnimalNonStatistical::Action::NONE) {
+				// Evitamos swaps innecesarios con NONE ya agrupados al final.
+				do {
+					--parallelEnd;
+				} while (i < parallelEnd &&
+					landscapeAnimals[parallelEnd]->getNextAction() == AnimalNonStatistical::Action::NONE);
+
+				if (i < parallelEnd) {
+					std::swap(landscapeAnimals[i], landscapeAnimals[parallelEnd]);
+				}
+
+				// No incrementamos i: hay que evaluar el elemento recién traído desde el final.
+				continue;
+			}
+
+			// Es una acción común paralelizable
+			++i;
+		}
+
+		// Calculamos cuántos terminaron sin hacer nada (NONE) en esta iteración
+		size_t nonesCount = activeElements - parallelEnd;
+		if (nonesCount > 0) {
+			progressBar.update(nonesCount);
+		}
+
+
+		if (predateEnd > 0) {
+			// =================================================================
+			// 3. FASE SECUENCIAL: Ejecución de Predación
+			// =================================================================
+			// Eliminado el 'if' dentro del bucle. Iteramos estrictamente sobre el Bloque 1 [0 ... predateEnd)
+			CustomIndexedVector<AnimalSpeciesID, uint64_t> animalSpeciesMaximumPredationEncountersPerDay(getExistingAnimalSpecies().size(), 0u);
+
+			size_t predateEstimatedPerThreadSize = predateEnd * 256;
+
+
+			for (size_t k = 0; k < predateEnd; k++) {
+				fmt::memory_buffer& predationProbabilitiesLocalStr = localBuffersPredationProbabilities.local();
+				CustomIndexedVector<Species::ID, unsigned int>& predationEventsOnOtherSpecies = predationEventsOnOtherSpeciesLocal.local()[landscapeAnimals[k]->getSpecies()->getAnimalSpeciesId()];
+
+				if (saveAnimalsEachDayPredationProbabilities) {
+					predationProbabilitiesLocalStr.reserve(predateEstimatedPerThreadSize);
+				}
+
+				landscapeAnimals[k]->predate(false, saveAnimalsEachDayPredationProbabilities, predationProbabilitiesLocalStr,
+					this, numberOfTimeSteps, getTimeStepsPerDay(), getCompetitionAmongResourceSpecies(), predationEventsOnOtherSpecies,
+					animalSpeciesMaximumPredationEncountersPerDay);
+			}
+
+			for (size_t idx = 0; idx < animalSpeciesMaximumPredationEncountersPerDay.size(); ++idx) {
+				getExistingAnimalSpecies()[idx]->updateMaximumPredationEncountersPerDay(animalSpeciesMaximumPredationEncountersPerDay[idx]);
+			}
+		}
+
+
+		if (predateEnd < parallelEnd) {
+			// =================================================================
+			// 4. FASE PARALELA: Ejecución de Acciones Propias
+			// =================================================================
+			// Eliminado el 'if' de predicado. Iteramos estrictamente sobre el Bloque 2 [predateEnd ... parallelEnd)
+
+			size_t nonPredateEstimatedSize = ((parallelEnd - predateEnd) * 256);
+
+			size_t nonPredateEstimatedPerThreadSize = nonPredateEstimatedSize / maxThreadsInArena;
+
+
+			TbbAdaptiveWrapper::Execute(landscapeAnimals, predateEnd, parallelEnd, 3u,
+				[&](auto& animals, size_t start, size_t end) {
+					fmt::memory_buffer& activitiesLocalStr = localBuffersActivities.local();
+					fmt::memory_buffer& movementsLocalStr = localBuffersMovements.local();
+
+					if (saveActivity) {
+						activitiesLocalStr.reserve(nonPredateEstimatedSize);
+					}
+
+					if (saveMovements) {
+						movementsLocalStr.reserve(nonPredateEstimatedSize);
+					}
+
+					for (size_t k = start; k < end; ++k) {
+						animals[k]->actionExecution(this, saveActivity, activitiesLocalStr,
+							numberOfTimeSteps, getTimeStepsPerDay(), saveMovements, movementsLocalStr);
+					}
+				},
+				[&](auto& animals, size_t start, size_t end) {
+					tbb::parallel_for(tbb::blocked_range<size_t>(start, end),
+						[&](const tbb::blocked_range<size_t>& r) {
+							fmt::memory_buffer& activitiesLocalStr = localBuffersActivities.local();
+							fmt::memory_buffer& movementsLocalStr = localBuffersMovements.local();
+
+							if (saveActivity) {
+								activitiesLocalStr.reserve(nonPredateEstimatedPerThreadSize);
+							}
+
+							if (saveMovements) {
+								movementsLocalStr.reserve(nonPredateEstimatedPerThreadSize);
+							}
+
+							for (size_t k = r.begin(); k < r.end(); ++k) {
+								animals[k]->actionExecution(this, saveActivity, activitiesLocalStr,
+									numberOfTimeSteps, getTimeStepsPerDay(), saveMovements, movementsLocalStr);
+							}
+						}
+					);
+				}
+			);
+		}
+
+
+		// El nuevo límite de animales activos es igual a los que NO terminaron
+		activeElements = parallelEnd;
+
+
+		auto t1_actionExecution = chrono::high_resolution_clock::now();
+
+		actionExecutionTime += chrono::duration<double>(t1_actionExecution - t0_actionExecution);
 	}
+
+
+	if (getSaveEdibilitiesFile()) {
+		// 4. Enviar un paquete por cada hebra usando std::move (Cero copias, contención mínima)
+		for (fmt::memory_buffer& threadBuffer : localBuffersEdibilities) {
+			if (threadBuffer.size() != 0) {
+				StorageBridge::writeContentPackToDisk(resultFolder / std::string("edibilities.txt"), threadBuffer);
+			}
+		}
+	}
+
+
+
+	if (saveActivity) {
+		// 4. Enviar un paquete por cada hebra usando std::move (Cero copias, contención mínima)
+		for (fmt::memory_buffer& threadBuffer : localBuffersActivities) {
+			if (threadBuffer.size() != 0) {
+				StorageBridge::writeContentPackToDisk(resultFolder / fs::path("animals_each_day_activity") / (std::string("animals_activity_day_") + timeStepStr + ".txt"), threadBuffer);
+			}
+		}
+	}
+
+	if (saveMovements) {
+		// 4. Enviar un paquete por cada hebra usando std::move (Cero copias, contención mínima)
+		for (fmt::memory_buffer& threadBuffer : localBuffersMovements) {
+			if (threadBuffer.size() != 0) {
+				StorageBridge::writeContentPackToDisk(resultFolder / (std::string("movements.txt")), threadBuffer);
+			}
+		}
+	}
+
+	if (saveAnimalsEachDayPredationProbabilities) {
+		// 4. Enviar un paquete por cada hebra usando std::move (Cero copias, contención mínima)
+		for (fmt::memory_buffer& threadBuffer : localBuffersPredationProbabilities) {
+			if (threadBuffer.size() != 0) {
+				StorageBridge::writeContentPackToDisk(resultFolder / fs::path("animals_each_day_predationProbabilities") / (std::string("animals_predationProbabilities_day_") + timeStepStr + ".txt"), threadBuffer);
+			}
+		}
+	}
+
+
+	TbbAdaptiveWrapper::Execute(landscapeAnimals, 0, landscapeAnimals.size(), 1321u,
+		[](auto& animals, size_t start, size_t end) {
+			for (size_t i = start; i < end; ++i) {
+				animals[i]->updateTimeStepsWithoutFood();
+			}
+		},
+		[](auto& animals, size_t start, size_t end) {
+			tbb::parallel_for(tbb::blocked_range<size_t>(start, end),
+				[&](const tbb::blocked_range<size_t>& r) {
+					for (size_t i = r.begin(); i < r.end(); ++i) {
+						animals[i]->updateTimeStepsWithoutFood();
+					}
+				}
+			);
+		}
+	);
+
+
+
+	if (saveActivity) {
+		StorageBridge::writeClosePackToDisk(resultFolder / fs::path("animals_each_day_activity") / (std::string("animals_activity_day_") + timeStepStr + ".txt"));
+	}
+
+	if (saveAnimalsEachDayPredationProbabilities) {
+		StorageBridge::writeClosePackToDisk(resultFolder / fs::path("animals_each_day_predationProbabilities") / (std::string("animals_predationProbabilities_day_") + timeStepStr + ".txt"));
+	}
+
+
+	for (const auto& threadPredationEventsOnOtherSpecies : predationEventsOnOtherSpeciesLocal) {
+		for (size_t i = 0; i < threadPredationEventsOnOtherSpecies.size(); ++i) {
+			getExistingAnimalSpecies()[i]->addPredationEventOnOtherSpecies(threadPredationEventsOnOtherSpecies[i]);
+		}
+	}
+
+
+	LogManager::emit("   - Action planning ... \n");
+	LogManager::emit(fmt::format("Time: {} secs.\n", actionPlanningTime.count()));
+
+	LogManager::emit("   - Action execution ... \n");
+	LogManager::emit(fmt::format("Time: {} secs.\n", actionExecutionTime.count()));
 }
 
 void Landscape::performAnimalsActions(const TimeStep numberOfTimeSteps)
 {
-    printAnimalsVoracities(numberOfTimeSteps);
-    dieFromBackground(numberOfTimeSteps);
-    transferAssimilatedFoodToEnergyTank(numberOfTimeSteps);
-    metabolizeAnimals(numberOfTimeSteps);
-	breedAnimals(numberOfTimeSteps);
+	fs::path voracitiesFilePath = resultFolder / fs::path("animals_each_day_voracities") / fmt::format("animals_voracities_day_{}.txt", numberOfTimeSteps);
 
-
-
-	for(size_t i = 0; i < landscapeAnimals.size(); i++)
+	if (saveAnimalsEachDayVoracities)
 	{
-		if(landscapeAnimals[i]->getLifeStage() == LifeStage::ACTIVE)
-		{
-			static_cast<AnimalNonStatistical*>(landscapeAnimals[i])->checkEnergyTank(this, numberOfTimeSteps, getTimeStepsPerDay());
-		}
+		StorageBridge::writeHeaderPackToDisk(voracitiesFilePath, "id\tspecies\tstate\tcurrentAge\tinstar\tmature\tbody_size\tenergy_tank\tdryMass\tcurrentWetMass\ttankAtGrowth\tnextDinoMass\tmaxVoracityTimeStep\tmin_mass_for_death\tvoracity_ini\tpreT_search\tpreT_speed\tafter_encounters_voracity\tafter_encounters_search\tfinal_speed\texpectedDryMassFromMaxVor\tfood_mass\tdryMassAfterAssim\ttotalMetabolicDryMassLossAfterAssim\tmaxSearchArea\teatenToday\th\tsteps\tstepsAttempted\tafter_encounters_search\tsated\tpercentMoving\tvoracity_body_mass_ratio\tgender\tmated\teggDryMass\tK\tfactorEggMass\tdeath_date\tageOfFirstMaturation\treproCounter");
 	}
-}
 
-void Landscape::printAnimalsVoracities(const TimeStep& numberOfTimeSteps)
-{
-	if(saveAnimalsEachDayVoracities)
-	{
-		ostringstream voracitiesHeader;
+	size_t maxThreadsInArena = static_cast<size_t>(tbb::this_task_arena::max_concurrency());
+	size_t estimatedSize = (landscapeAnimals.size() * 256);
+	size_t estimatedPerThreadSize = estimatedSize / maxThreadsInArena;
 
-		voracitiesHeader << "id\tspecies\tstate\tcurrentAge\tinstar\tmature\tbody_size\tenergy_tank\tdryMass\tcurrentWetMass\ttankAtGrowth\tnextDinoMass\tmaxVoracityTimeStep\tmin_mass_for_death\tvoracity_ini\tpreT_search\tpreT_speed\tafter_encounters_voracity\tafter_encounters_search\tfinal_speed\texpectedDryMassFromMaxVor\tfood_mass\tdryMassAfterAssim\ttotalMetabolicDryMassLossAfterAssim\tmaxSearchArea\teatenToday\tsteps\tstepsAttempted\tafter_encounters_search\tsated\tpercentMoving\tvoracity_body_mass_ratio\tgender\tmated\teggDryMass\tK\tfactorEggMass\tdeath_date\tageOfFirstMaturation\treproCounter\n";
+	tbb::enumerable_thread_specific<CustomIndexedVector<AnimalSpeciesID, unsigned int>> animalSpeciesPopulationLocal(getExistingAnimalSpecies().size(), 0u);
 
+	// Invocamos el Wrapper adaptativo
+	TbbAdaptiveWrapper::Execute(landscapeAnimals, 0, landscapeAnimals.size(), 19u,
+		// === OPERACIÓN SECUENCIAL (SeqOp) ===
+		[&](auto& animals, size_t start, size_t end) {
+			// En entorno puramente secuencial, accedemos directamente de forma segura
+			fmt::memory_buffer& voracitiesLocalStr = localBuffersVoracities.local();
+			CustomIndexedVector<AnimalSpeciesID, unsigned int>& animalSpeciesPopulation = animalSpeciesPopulationLocal.local();
+			CustomIndexedVector<AnimalSpeciesID, fmt::memory_buffer>& animalConstitutiveTraitsLocalStr = localBuffersAnimalConstitutiveTraits.local();
+			CustomIndexedVector<AnimalSpeciesID, std::vector<fmt::memory_buffer>>& animalSpeciesGeneticsLocalStr = localBuffersGenetics.local();
 
-		ostringstream voracitiesContent;
-
-		for(size_t i = 0; i < landscapeAnimals.size(); i++)
-		{
-			if(landscapeAnimals[i]->getLifeStage() == LifeStage::ACTIVE)
-			{
-				static_cast<AnimalNonStatistical*>(landscapeAnimals[i])->printVoracities(this, voracitiesContent, getTimeStepsPerDay());
+			if (saveAnimalsEachDayVoracities) {
+				voracitiesLocalStr.reserve(estimatedSize);
 			}
-		}
 
+			for (size_t i = start; i < end; ++i) {
+				auto animalPtr = animals[i];
 
+				AnimalSpeciesID id = animalPtr->getSpecies()->getAnimalSpeciesId();
+				fmt::memory_buffer& animalSpeciesTraitsLocalStr = animalConstitutiveTraitsLocalStr[id];
+				std::vector<fmt::memory_buffer>& geneticsLocalStr = animalSpeciesGeneticsLocalStr[id];
+				unsigned int& population = animalSpeciesPopulation[id];
 
-		std::ofstream voracitiesFile;
-		createOutputFile(voracitiesFile, resultFolder / fs::path("animals_each_day_voracities"), "animals_voracities_day_", "txt", numberOfTimeSteps, recordEach);
-		if (!voracitiesFile.is_open())
-		{
-			throwLineInfoException("Error opening the file");
-		}
-
-		voracitiesFile << voracitiesHeader.str() + voracitiesContent.str();
-
-		voracitiesFile.close();
-	}
-}
-
-void Landscape::dieFromBackground(const TimeStep& numberOfTimeSteps)
-{
-	for(size_t i = 0; i < landscapeAnimals.size(); i++)
-	{
-		if(landscapeAnimals[i]->getLifeStage() == LifeStage::ACTIVE)
-		{
-			static_cast<AnimalNonStatistical*>(landscapeAnimals[i])->dieFromBackground(this, numberOfTimeSteps, getTimeStepsPerDay(), isGrowthAndReproTest());
-		}
-	}
-}
-
-void Landscape::transferAssimilatedFoodToEnergyTank(const TimeStep& numberOfTimeSteps)
-{
-	for(size_t i = 0; i < landscapeAnimals.size(); i++)
-	{
-		if(landscapeAnimals[i]->getLifeStage() == LifeStage::ACTIVE)
-		{
-			static_cast<AnimalNonStatistical*>(landscapeAnimals[i])->transferAssimilatedFoodToEnergyTank(numberOfTimeSteps);
-		}
-	}
-}
-
-void Landscape::metabolizeAnimals(const TimeStep numberOfTimeSteps)
-{
-	for(size_t i = 0; i < landscapeAnimals.size(); i++)
-	{
-		if(landscapeAnimals[i]->getLifeStage() == LifeStage::ACTIVE)
-		{
-			static_cast<AnimalNonStatistical*>(landscapeAnimals[i])->metabolize(view, this, numberOfTimeSteps);
-		}
-	}
-}
-
-void Landscape::growAnimals(const TimeStep& numberOfTimeSteps)
-{
-	for(size_t i = 0; i < landscapeAnimals.size(); i++)
-	{
-		if(landscapeAnimals[i]->getLifeStage() == LifeStage::ACTIVE)
-		{
-			static_cast<AnimalNonStatistical*>(landscapeAnimals[i])->grow(this, numberOfTimeSteps, getTimeStepsPerDay());
-		}
-	}
-}
-
-void Landscape::breedAnimals(const TimeStep& numberOfTimeSteps)
-{
-	for(size_t i = 0; i < landscapeAnimals.size(); i++)
-	{
-		if(landscapeAnimals[i]->getLifeStage() == LifeStage::REPRODUCING)
-		{
-			if(static_cast<AnimalNonStatistical*>(landscapeAnimals[i])->isInBreedingZone())
-			{
-				ostringstream animalConstitutiveTraitsContent;
-
-				list<AnimalNonStatistical*> offspring;
-				static_cast<AnimalNonStatistical*>(landscapeAnimals[i])->breed(offspring, view, this, numberOfTimeSteps, saveGenetics, saveMassInfo, getTimeStepsPerDay());
-
-				for(auto &newAnimal : offspring)
-				{
-					newAnimal->setPosition(landscapeAnimals[i]->getPosition());
-					landscapeAnimals[i]->getMutableTerrainCell()->insertAnimal(this, newAnimal);
-
-					if(getSaveAnimalConstitutiveTraits())
-					{
-						newAnimal->printTraits(animalConstitutiveTraitsContent);
-					}
+				if (getSaveAnimalConstitutiveTraits()) {
+					animalSpeciesTraitsLocalStr.reserve(estimatedSize);
+				}
+				if (saveGenetics) {
+					geneticsLocalStr.reserve(estimatedSize);
 				}
 
-				static_cast<AnimalNonStatistical*>(landscapeAnimals[i])->setInBreedingZone(false);
+				if (animalPtr->getLifeStage() == LifeStage::ACTIVE) {
+					animalPtr->printVoracities(this, voracitiesLocalStr, getTimeStepsPerDay());
+					animalPtr->dieFromBackground(this, numberOfTimeSteps, getTimeStepsPerDay(), isGrowthAndReproTest());
+				}
+				if (animalPtr->getLifeStage() == LifeStage::ACTIVE) {
+					animalPtr->transferAssimilatedFoodToEnergyTank(numberOfTimeSteps);
+					animalPtr->metabolize(this, numberOfTimeSteps);
+				}
+				if (animalPtr->getLifeStage() == LifeStage::REPRODUCING) {
+					if (animalPtr->isInBreedingZone()) {
+						population += animalPtr->breed(this, numberOfTimeSteps, saveGenetics, geneticsLocalStr, getTimeStepsPerDay(), getSaveAnimalConstitutiveTraits(), animalSpeciesTraitsLocalStr);
+						animalPtr->setInBreedingZone(false);
+					}
+				}
+				if (animalPtr->getLifeStage() == LifeStage::ACTIVE) {
+					animalPtr->checkEnergyTank(this, numberOfTimeSteps, getTimeStepsPerDay());
+				}
+			}
+		},
+		// === OPERACIÓN PARALELA (ParOp) ===
+		[&](auto& animals, size_t start, size_t end) {
+			tbb::parallel_for(tbb::blocked_range<size_t>(start, end),
+				[&](const tbb::blocked_range<size_t>& r) {
+					// CADA HILO obtiene su propia referencia local de forma segura dentro del rango asignado
+					fmt::memory_buffer& voracitiesLocalStr = localBuffersVoracities.local();
+					CustomIndexedVector<AnimalSpeciesID, unsigned int>& animalSpeciesPopulation = animalSpeciesPopulationLocal.local();
+					CustomIndexedVector<AnimalSpeciesID, fmt::memory_buffer>& animalConstitutiveTraitsLocalStr = localBuffersAnimalConstitutiveTraits.local();
+					CustomIndexedVector<AnimalSpeciesID, std::vector<fmt::memory_buffer>>& animalSpeciesGeneticsLocalStr = localBuffersGenetics.local();
 
-				if(getSaveAnimalConstitutiveTraits())
-				{
-					if(getSaveAnimalConstitutiveTraits())
-					{
-						*animalConstitutiveTraitsFile[landscapeAnimals[i]->getSpecies()->getAnimalSpeciesId()] << animalConstitutiveTraitsContent.str();
-						animalConstitutiveTraitsFile[landscapeAnimals[i]->getSpecies()->getAnimalSpeciesId()]->flush();
+					if (saveAnimalsEachDayVoracities) {
+						voracitiesLocalStr.reserve(estimatedPerThreadSize);
+					}
+
+					for (size_t i = r.begin(); i < r.end(); ++i) {
+						auto animalPtr = animals[i];
+
+						AnimalSpeciesID id = animalPtr->getSpecies()->getAnimalSpeciesId();
+						fmt::memory_buffer& animalSpeciesTraitsLocalStr = animalConstitutiveTraitsLocalStr[id];
+						std::vector<fmt::memory_buffer>& geneticsLocalStr = animalSpeciesGeneticsLocalStr[id];
+						unsigned int& population = animalSpeciesPopulation[id];
+
+						if (getSaveAnimalConstitutiveTraits()) {
+							animalSpeciesTraitsLocalStr.reserve(estimatedPerThreadSize);
+						}
+						if (saveGenetics) {
+							geneticsLocalStr.reserve(estimatedPerThreadSize);
+						}
+
+						if (animalPtr->getLifeStage() == LifeStage::ACTIVE) {
+							animalPtr->printVoracities(this, voracitiesLocalStr, getTimeStepsPerDay());
+							animalPtr->dieFromBackground(this, numberOfTimeSteps, getTimeStepsPerDay(), isGrowthAndReproTest());
+						}
+						if (animalPtr->getLifeStage() == LifeStage::ACTIVE) {
+							animalPtr->transferAssimilatedFoodToEnergyTank(numberOfTimeSteps);
+							animalPtr->metabolize(this, numberOfTimeSteps);
+						}
+						if (animalPtr->getLifeStage() == LifeStage::REPRODUCING) {
+							if (animalPtr->isInBreedingZone()) {
+								population += animalPtr->breed(this, numberOfTimeSteps, saveGenetics, geneticsLocalStr, getTimeStepsPerDay(), getSaveAnimalConstitutiveTraits(), animalSpeciesTraitsLocalStr);
+								animalPtr->setInBreedingZone(false);
+							}
+						}
+						if (animalPtr->getLifeStage() == LifeStage::ACTIVE) {
+							animalPtr->checkEnergyTank(this, numberOfTimeSteps, getTimeStepsPerDay());
+						}
+					}
+				}
+			);
+		}
+	);
+
+
+	// Reducción y escritura a disco (se mantiene igual a tu lógica original)
+	if (saveAnimalsEachDayVoracities)
+	{
+		for (fmt::memory_buffer& threadBuffer : localBuffersVoracities) {
+			if (threadBuffer.size() != 0) {
+				StorageBridge::writeContentPackToDisk(voracitiesFilePath, threadBuffer);
+			}
+		}
+		StorageBridge::writeClosePackToDisk(voracitiesFilePath);
+	}
+
+	if (getSaveAnimalConstitutiveTraits())
+	{
+		for (CustomIndexedVector<AnimalSpeciesID, fmt::memory_buffer>& threadBuffer : localBuffersAnimalConstitutiveTraits) {
+			for (unsigned int i = 0; i < threadBuffer.size(); ++i) {
+				if (threadBuffer[i].size() != 0) {
+					StorageBridge::writeContentPackToDisk(animalConstitutiveTraitsFilePath[i], threadBuffer[i]);
+				}
+			}
+		}
+	}
+
+	if (saveGenetics)
+	{
+		for (auto& threadBuffer : localBuffersGenetics) {
+			for (size_t i = 0; i < threadBuffer.size(); ++i) {
+				std::vector<fmt::memory_buffer>& traitBuffer = threadBuffer[i];
+				AnimalSpecies* animalSpecies = getExistingAnimalSpecies()[i];
+				std::string scientificNameReplaced = animalSpecies->getScientificNameReplaced();
+				const std::vector<IndividualLevelTrait*>& individualLevelTraits = animalSpecies->getGenetics().getIndividualLevelTraits();
+
+				for (size_t j = 0; j < traitBuffer.size(); ++j) {
+					if (traitBuffer[j].size() != 0) {
+						IndividualLevelTrait* trait = individualLevelTraits[j];
+						StorageBridge::writeContentPackToDisk(resultFolder / fs::path("genetics") / scientificNameReplaced / (trait->getFileName() + ".txt"), traitBuffer[j]);
 					}
 				}
 			}
+		}
+	}
+
+	for (const auto& threadAnimalSpeciesPopulation : animalSpeciesPopulationLocal) {
+		for (size_t i = 0; i < threadAnimalSpeciesPopulation.size(); ++i) {
+			getExistingAnimalSpecies()[i]->increasePopulation(threadAnimalSpeciesPopulation[i]);
 		}
 	}
 }
 
 void Landscape::purgeDeadAnimals()
 {
+	CustomIndexedVector<AnimalSpeciesID, unsigned int> animalSpeciesDeadPopulation(getExistingAnimalSpecies().size(), 0u);
+
 	auto it = landscapeAnimals.begin();
 
 	while(it != landscapeAnimals.end())
@@ -1780,6 +2401,7 @@ void Landscape::purgeDeadAnimals()
 			(*it)->getLifeStage() == LifeStage::BACKGROUND || (*it)->getLifeStage() == LifeStage::SENESCED ||
 			(*it)->getLifeStage() == LifeStage::SHOCKED)
 		{
+			++animalSpeciesDeadPopulation[(*it)->getSpecies()->getAnimalSpeciesId()];
 			(*it)->getMutableTerrainCell()->eraseAnimal((*it));
 			delete (*it);
 
@@ -1790,16 +2412,27 @@ void Landscape::purgeDeadAnimals()
 			it++;
 		}
 	}
+
+	for (size_t i = 0; i < animalSpeciesDeadPopulation.size(); ++i) {
+		getExistingAnimalSpecies()[i]->decreasePopulation(animalSpeciesDeadPopulation[i]);
+	}
 }
 
 bool Landscape::isExtinguished() const
 {
 	bool extinctionStatus = false; 
 
-	vector<WetMass> landscapeResourceBiomass(getExistingResourceSpecies().size());
+	vector<double> landscapeResourceBiomass(getExistingResourceSpecies().size());
 	CustomIndexedVector<AnimalSpeciesID, CustomIndexedVector<LifeStage, unsigned int>> landscapeAnimalsPopulation(getExistingAnimalSpecies().size(), CustomIndexedVector<LifeStage, unsigned int>(EnumClass<LifeStage>::size(), 0));
 
-	obtainLandscapeResourceBiomassAndAnimalsPopulation(landscapeResourceBiomass, landscapeAnimalsPopulation);
+
+	landscapeMap->obtainResourcesBiomass(landscapeResourceBiomass);
+
+	for(size_t i = 0; i < landscapeAnimals.size(); i++)
+	{
+		landscapeAnimalsPopulation[landscapeAnimals[i]->getSpecies()->getAnimalSpeciesId()][landscapeAnimals[i]->getLifeStage()]++;
+	}
+
 
 	for(ResourceSpecies* const resourceSpecies : getExistingResourceSpecies())
 	{
@@ -1860,7 +2493,7 @@ bool Landscape::isSimulationStabilised(const TimeStep& numberOfTimeSteps)
 
 void Landscape::initializeMap(const json &mapConfig)
 {
-	view->updateLog("Initializing terrain voxels ... ");
+	LogManager::emit("Initializing terrain voxels ...\n");
 
 	MoistureSource* moistureBaseSource = new MoistureSource(mapConfig["moistureBasePatch"], getTimeStepsPerDay());
 
@@ -1885,7 +2518,7 @@ void Landscape::initializeMap(const json &mapConfig)
 			)
 		);
 
-		landscapeMap->applyPatch(this, edgeObstacles);
+		landscapeMap->applyPatch(this, edgeObstacles, fixedSeedValue);
 	}
 
 	unsigned int numberOfCellsAxisY = mapConfig["landscapeWideParams"]["numberOfCellsAxisY"].get<unsigned int>();
@@ -1902,10 +2535,10 @@ void Landscape::initializeMap(const json &mapConfig)
 			)
 		);
 
-		landscapeMap->applyPatch(this, edgeObstacles);
+		landscapeMap->applyPatch(this, edgeObstacles, fixedSeedValue);
 	}
 
-	view->updateLog("DONE\n");
+	LogManager::emit("DONE\n");
 }
 
 bool Landscape::isDinosaurs() const
@@ -1915,23 +2548,22 @@ bool Landscape::isDinosaurs() const
 
 void Landscape::readObstaclePatchesFromJSONFiles(const fs::path& configPath)
 {
-	view->updateLog("Reading obstacle patches from JSON files ... \n");
+	LogManager::emit("Reading obstacle patches from JSON files ... \n");
 
 	PatchPriorityQueue obstaclePatchesToAplly;
 
-	fs::path obstacleFolder = configPath / OBSTACLE_FOLDER_NAME;
+	fs::path obstacleFolder = (configPath / OBSTACLE_FOLDER_NAME);
 
 	if (fs::exists(obstacleFolder) && fs::is_directory(obstacleFolder))
 	{
-		JsonValidator obstaclePatchesValidator(OBSTACLE_PATCH_SCHEMA);
 
 		for (const auto& entry : fs::directory_iterator(obstacleFolder))
 		{
 			if (entry.path().extension() == ".json")
 			{
-				json ptMain = readConfigFile(entry.path(), obstaclePatchesValidator);
+				json ptMain = readConfigFile(entry.path());
 
-				obstaclePatchesToAplly.push(make_unique<Patch>(new ObstacleSource(), ptMain["patch"], entry.path().string()));
+				obstaclePatchesToAplly.push(make_unique<Patch>(new ObstacleSource(ptMain["patch"]["porosity"]), ptMain["patch"], entry.path().string()));
 			}
 		}
 	}
@@ -1949,21 +2581,20 @@ void Landscape::readObstaclePatchesFromJSONFiles(const fs::path& configPath)
 
 void Landscape::readHabitatDomainPatchesFromJSONFiles(const fs::path& configPath)
 {
-	view->updateLog("Reading habitat domain patches from JSON files ... \n");
+	LogManager::emit("Reading habitat domain patches from JSON files ... \n");
 
 	PatchPriorityQueue habitatDomainPatchesToAplly;
 
-	fs::path habitatDomainFolder = configPath / HABITAT_DOMAIN_FOLDER_NAME;
+	fs::path habitatDomainFolder = (configPath / HABITAT_DOMAIN_FOLDER_NAME);
 
 	if (fs::exists(habitatDomainFolder) && fs::is_directory(habitatDomainFolder))
 	{
-		JsonValidator habitatDomainPatchesValidator(HABITAT_DOMAIN_PATCH_SCHEMA);
 
 		for (const auto& entry : fs::directory_iterator(habitatDomainFolder))
 		{
 			if (entry.path().extension() == ".json")
 			{
-				json ptMain = readConfigFile(entry.path(), habitatDomainPatchesValidator);
+				json ptMain = readConfigFile(entry.path());
 
 				habitatDomainPatchesToAplly.push(make_unique<Patch>(new HabitatDomainSource(ptMain["patch"]["source"], getExistingAnimalSpecies()), ptMain["patch"], entry.path().string()));
 			}
@@ -1993,21 +2624,20 @@ void Landscape::calculateAnimalSpeciesStatistics()
 
 void Landscape::readMoisturePatchesFromJSONFiles(const fs::path& configPath)
 {
-	view->updateLog("Reading moisture patches from JSON files ... \n");
+	LogManager::emit("Reading moisture patches from JSON files ... \n");
 
 	PatchPriorityQueue moisturePatchesToAplly;
 
-	fs::path moistureFolder = configPath / MOISTURE_FOLDER_NAME;
+	fs::path moistureFolder = (configPath / MOISTURE_FOLDER_NAME);
 
 	if (fs::exists(moistureFolder) && fs::is_directory(moistureFolder))
 	{
-		JsonValidator moisturePatchesValidator(MOISTURE_PATCH_SCHEMA);
 
 		for (const auto& entry : fs::directory_iterator(moistureFolder))
 		{
 			if (entry.path().extension() == ".json")
 			{
-				json ptMain = readConfigFile(entry.path(), moisturePatchesValidator);
+				json ptMain = readConfigFile(entry.path());
 
 				moisturePatchesToAplly.push(make_unique<Patch>(new MoistureSource(ptMain["patch"]["source"], getTimeStepsPerDay()), ptMain["patch"], entry.path().string()));
 			}
@@ -2035,9 +2665,9 @@ void Landscape::readMoisturePatchesFromJSONFiles(const fs::path& configPath)
 
 bool Landscape::applyPatch(Patch& patch)
 {
-	view->updateLog({patch.getDescription(), "\n\n"});
+	LogManager::emit(fmt::format("{}\n\n", patch.getDescription()));
 
-	return landscapeMap->applyPatch(this, patch);
+	return landscapeMap->applyPatch(this, patch, fixedSeedValue);
 }
 
 
@@ -2058,6 +2688,11 @@ bool Landscape::getCompetitionAmongResourceSpecies() const
 	return competitionAmongResourceSpecies;
 }
 
+PreciseDouble Landscape::getMinExploitableResource() const
+{
+	return minExploitableResource;
+}
+
 const vector<ResourceSpecies*>& Landscape::getExistingResourceSpecies() const
 {
 	return existingResourceSpecies;
@@ -2076,6 +2711,26 @@ vector<AnimalSpecies*>& Landscape::getMutableExistingAnimalSpecies()
 const vector<AnimalSpecies*>& Landscape::getExistingAnimalSpecies() const
 {
 	return existingAnimalSpecies;
+}
+
+const vector<AnimalNonStatistical*>& Landscape::getLandscapeAnimals() const
+{
+	return landscapeAnimals;
+}
+
+vector<AnimalNonStatistical*>& Landscape::getLandscapeAnimals()
+{
+	return landscapeAnimals;
+}
+
+const std::vector<TerrainCell*>& Landscape::getLandscapeTerrainCells() const
+{
+	return terrainCells;
+}
+
+std::vector<TerrainCell*>& Landscape::getLandscapeTerrainCells() 
+{
+	return terrainCells;
 }
 
 const vector<Species*>& Landscape::getExistingSpecies() const
@@ -2393,7 +3048,7 @@ pair<AnimalStatistical*, Instar> Landscape::getRandomPredator(const size_t numbe
 			if(predatorIndex < potentialPredators[predatorInstar]->size())
 			{
 				foundPredator = true;
-				predator = potentialPredators[predatorInstar]->at(predatorIndex);
+				predator = (*potentialPredators[predatorInstar])[predatorIndex];
 			}
 			else
 			{
@@ -2427,7 +3082,7 @@ AnimalStatistical* Landscape::getRandomPrey(const CustomIndexedVector<Instar, si
 			if(preyIndex < animalsPopulation[static_cast<AnimalSpecies*>(getExistingSpecies()[speciesIt->first])->getAnimalSpeciesId()][preyInstar].size())
 			{
 				foundPrey = true;
-				prey = animalsPopulation[static_cast<AnimalSpecies*>(getExistingSpecies()[speciesIt->first])->getAnimalSpeciesId()][preyInstar].at(preyIndex);
+				prey = animalsPopulation[static_cast<AnimalSpecies*>(getExistingSpecies()[speciesIt->first])->getAnimalSpeciesId()][preyInstar][preyIndex];
 			}
 			else
 			{
@@ -2446,22 +3101,22 @@ AnimalStatistical* Landscape::getRandomPrey(const CustomIndexedVector<Instar, si
 
 void Landscape::calculateAttackStatistics(vector<CustomIndexedVector<Instar, vector<vector<TerrainCell*>::iterator>>> &mapSpeciesInhabitableTerrainCells)
 {
-	view->updateLog({"Size of the Animal class: ", to_string(sizeof(Animal)), "\n"});
-	view->updateLog({"Size of the Genome class: ", to_string(sizeof(Genome)), "\n"});
-	view->updateLog({"Size of the TerrainCell class: ", to_string(sizeof(TerrainCell)), "\n"});
-	view->updateLog("Creating heating code individuals... \n");
+	LogManager::emit(fmt::format("Size of the Animal class: {}\n", sizeof(Animal)));
+	LogManager::emit(fmt::format("Size of the Genome class: {}\n", sizeof(Genome)));
+	LogManager::emit(fmt::format("Size of the TerrainCell class: {}\n", sizeof(TerrainCell)));
+	LogManager::emit("Creating heating code individuals... \n");
 
 	vector<CustomIndexedVector<Instar, vector<AnimalStatistical*>>> animalsPopulation;
-	unsigned int populationSize = landscapeMap->generateStatisticsPopulation(animalsPopulation, view, this, getMutableExistingAnimalSpecies(), mapSpeciesInhabitableTerrainCells, TimeStep(0), getTimeStepsPerDay());
+	unsigned int populationSize = landscapeMap->generateStatisticsPopulation(animalsPopulation, this, getMutableExistingAnimalSpecies(), mapSpeciesInhabitableTerrainCells, TimeStep(0), getTimeStepsPerDay());
 	
-	view->updateLog({"A total of ", to_string(populationSize), " heating code individuals have been created.\n"});
+	LogManager::emit(fmt::format("A total of {} heating code individuals have been created.\n", populationSize));
 
 	//Only for predators. The experiment is carried out for every predator species and its linked species, up until the specified numberOfCombinations.
 
-	view->updateLog("Calculating attack statistics: \n");
+	LogManager::emit("Calculating attack statistics: \n");
 	for(AnimalSpecies*& predatorAnimalSpecies : getMutableExistingAnimalSpecies())
 	{
-		view->updateLog({">> Simulating ", to_string(numberOfCombinations), " attacks from the species \"", predatorAnimalSpecies->getScientificName(), "\"... \n"});
+		LogManager::emit(fmt::format(">> Simulating {} attacks from the species \"{}\"... \n", numberOfCombinations, predatorAnimalSpecies->getScientificName()));
 
 		size_t numberOfTotalPotentialPredators = 0u;
 		CustomIndexedVector<Instar, vector<AnimalStatistical*>*> potentialPredators(predatorAnimalSpecies->getGrowthBuildingBlock().getNumberOfInstars(), nullptr);
@@ -2472,14 +3127,14 @@ void Landscape::calculateAttackStatistics(vector<CustomIndexedVector<Instar, vec
 		{
 			if(predatorAnimalSpecies->eatsAnimalSpecies(predatorInstar))
 			{
-				potentialPredators[predatorInstar] = &animalsPopulation.at(predatorAnimalSpecies->getAnimalSpeciesId())[predatorInstar];
+				potentialPredators[predatorInstar] = &animalsPopulation[predatorAnimalSpecies->getAnimalSpeciesId()][predatorInstar];
 				numberOfTotalPotentialPredators += potentialPredators[predatorInstar]->size();
 
 				for(const auto &[preySpecies, speciesInstars] : predatorAnimalSpecies->getInstarEdibleAnimalSpecies(predatorInstar))
 				{
 					for(const Instar &preyInstar : speciesInstars)
 					{
-						numberOfPotentialPreysPerInstar[predatorInstar] += animalsPopulation.at(static_cast<AnimalSpecies*>(getExistingSpecies()[preySpecies])->getAnimalSpeciesId())[preyInstar].size();
+						numberOfPotentialPreysPerInstar[predatorInstar] += animalsPopulation[static_cast<AnimalSpecies*>(getExistingSpecies()[preySpecies])->getAnimalSpeciesId()][preyInstar].size();
 					}
 				}
 			}
@@ -2487,7 +3142,9 @@ void Landscape::calculateAttackStatistics(vector<CustomIndexedVector<Instar, vec
 
 		if(numberOfTotalPotentialPredators > 0)
 		{
-			ProgressBar progressBar(view, numberOfCombinations);
+			CustomIndexedVector<Instar, PreciseDouble> maximumInteractionArea(predatorAnimalSpecies->getGrowthBuildingBlock().getNumberOfInstars(), 0.0);
+
+			ProgressBar progressBar(numberOfCombinations);
 
 			vector<pair<AnimalStatistical*, AnimalStatistical*>> vectorOfAttacks;
 			vectorOfAttacks.reserve(numberOfCombinations);
@@ -2508,16 +3165,18 @@ void Landscape::calculateAttackStatistics(vector<CustomIndexedVector<Instar, vec
 						vectorOfAttacks.push_back(currentAttack);
 
 						//Computing the total mean values.
-						predatorAnimalSpecies->interactionRanges(*predator, *prey);
+						predatorAnimalSpecies->interactionRanges(*predator, *prey, maximumInteractionArea);
 
 						progressBar.update();
 					}
 				}
 			}
+
+			predatorAnimalSpecies->updateMaximumInteractionArea(maximumInteractionArea);
 		}
 		else
 		{
-			ProgressBar progressBar(view, 1u);
+			ProgressBar progressBar(1u);
 
 			progressBar.update();
 		}
@@ -2525,7 +3184,7 @@ void Landscape::calculateAttackStatistics(vector<CustomIndexedVector<Instar, vec
 
 	eraseStatisticsPopulation(animalsPopulation);
 
-	view->updateLog("Calculating attack statistics DONE\n");
+	LogManager::emit("Calculating attack statistics DONE\n");
 }
 
 void Landscape::eraseStatisticsPopulation(std::vector<CustomIndexedVector<Instar, std::vector<AnimalStatistical *>>>& population)
@@ -2537,6 +3196,8 @@ void Landscape::eraseStatisticsPopulation(std::vector<CustomIndexedVector<Instar
 			for(AnimalStatistical *& animal : instar)
 			{
 				animal->getMutableTerrainCell()->eraseAnimal((animal));
+
+				delete animal;
 			}
 		}
 	}
@@ -2572,41 +3233,161 @@ const Map* Landscape::getMap() const
 
 void Landscape::initializeAnimals(const CustomIndexedVector<AnimalSpeciesID, CustomIndexedVector<Instar, unsigned int>>& initialPopulation, const CustomIndexedVector<AnimalSpeciesID, std::vector<Genome>>& initialGenomesPool, std::vector<CustomIndexedVector<Instar, std::vector<std::vector<TerrainCell*>::iterator>>>& mapSpeciesInhabitableTerrainCells)
 {
-	view->updateLog("Giving life to animals... \n");
+	LogManager::emit("Giving life to animals... \n");
 
 	for(AnimalSpecies*& animalSpecies : getMutableExistingAnimalSpecies())
 	{
 		if(initialPopulation[animalSpecies->getAnimalSpeciesId()].size() > 0)
     	{
-			ostringstream animalConstitutiveTraitsContent;
-
-			landscapeMap->generatePopulation(view, this, animalSpecies, initialPopulation[animalSpecies->getAnimalSpeciesId()], initialGenomesPool[animalSpecies->getAnimalSpeciesId()], mapSpeciesInhabitableTerrainCells[animalSpecies->getAnimalSpeciesId()], getSaveAnimalConstitutiveTraits(), animalConstitutiveTraitsContent, saveGenetics, saveMassInfo, TimeStep(0), getTimeStepsPerDay());
-		
-			if(getSaveAnimalConstitutiveTraits())
+			unsigned int totalInitialPopulation = 0;
+			for(const auto& instarPopulation : initialPopulation[animalSpecies->getAnimalSpeciesId()])
 			{
-				if(getSaveAnimalConstitutiveTraits())
+				totalInitialPopulation += instarPopulation;
+			}
+
+
+			// 1. Obtener de forma segura el límite máximo de hilos concurrentes de la arena actual
+			size_t maxThreadsInArena = static_cast<size_t>(tbb::this_task_arena::max_concurrency());
+
+			// 2. Calcular la estimación del búfer basada en la concurrencia real de la arena
+			size_t estimatedPerThreadSize = (totalInitialPopulation * 256) / std::max<size_t>(1, maxThreadsInArena);
+
+
+			LogManager::emit(fmt::format("Creating {} individuals of the species \"{}\"...\n", totalInitialPopulation, animalSpecies->getScientificName()));
+
+
+			AnimalSpeciesID id = animalSpecies->getAnimalSpeciesId();
+
+			fmt::memory_buffer& animalConstitutiveTraitsLocalStr = localBuffersAnimalConstitutiveTraits.local()[id];
+
+			std::vector<fmt::memory_buffer>& geneticsLocalStr = localBuffersGenetics.local()[id];
+
+			if (getSaveAnimalConstitutiveTraits())
+			{
+				if (animalConstitutiveTraitsLocalStr.capacity() == 0) {
+					animalConstitutiveTraitsLocalStr.reserve(estimatedPerThreadSize + (totalInitialPopulation * 256));
+				}
+				else if (animalConstitutiveTraitsLocalStr.capacity() < animalConstitutiveTraitsLocalStr.size() + (totalInitialPopulation * 256)) {
+					// Salvaguarda por si un hilo recibe más carga de la estimada promedialmente
+					animalConstitutiveTraitsLocalStr.reserve(animalConstitutiveTraitsLocalStr.size() + (totalInitialPopulation * 256));
+				}
+			}
+
+			if (saveGenetics) {
+				if (geneticsLocalStr.capacity() == 0) {
+					geneticsLocalStr.reserve(estimatedPerThreadSize + (totalInitialPopulation * 256));
+				}
+				else if (geneticsLocalStr.capacity() < geneticsLocalStr.size() + (totalInitialPopulation * 256)) {
+					// Salvaguarda por si un hilo recibe más carga de la estimada promedialmente
+					geneticsLocalStr.reserve(geneticsLocalStr.size() + (totalInitialPopulation * 256));
+				}
+			}
+
+			size_t currentGenomeIndex = 0;
+			unsigned int createdPopulation = 0u;
+
+			for (Instar instar : animalSpecies->getGrowthBuildingBlock().getInstarsRange())
+			{
+				const auto& inhabitableCells = mapSpeciesInhabitableTerrainCells[animalSpecies->getAnimalSpeciesId()][instar];
+				const size_t requestedPopulation = initialPopulation[animalSpecies->getAnimalSpeciesId()][instar];
+				for (size_t individual = 0u; individual < requestedPopulation; ++individual)
 				{
-					*animalConstitutiveTraitsFile[animalSpecies->getAnimalSpeciesId()] << animalConstitutiveTraitsContent.str();
-					animalConstitutiveTraitsFile[animalSpecies->getAnimalSpeciesId()]->flush();
+					auto candidateCells = inhabitableCells;
+					AnimalNonStatistical* newAnimal = nullptr;
+					while (!candidateCells.empty() && newAnimal == nullptr)
+					{
+						const size_t randomCellIndex = Random::randomIndex(candidateCells.size());
+
+						const Genome* genome;
+
+						if (initialGenomesPool.empty()) {
+							genome = nullptr;
+						}
+						else {
+							genome = &initialGenomesPool[animalSpecies->getAnimalSpeciesId()][currentGenomeIndex];
+						}
+
+
+						auto newTerrainCell = (*candidateCells[randomCellIndex])->randomInsertAnimal(this, instar, animalSpecies, false, genome, saveGenetics, geneticsLocalStr, TimeStep(0), timeStepsPerDay);
+						newAnimal = static_cast<AnimalNonStatistical*>(get<3>(newTerrainCell));
+
+						if (newAnimal == nullptr)
+						{
+							candidateCells.erase(candidateCells.begin() + randomCellIndex);
+						}
+					}
+
+					if (newAnimal == nullptr)
+					{
+						LogManager::emit(fmt::format("Generation omitted: No valid initialization position for {} ({} instar).\n", animalSpecies->getScientificName(), instar));
+						++currentGenomeIndex;
+						continue;
+					}
+
+					newAnimal->calculateGrowthCurves(timeStepsPerDay);
+					newAnimal->forceMolting(this, TimeStep(0), timeStepsPerDay);
+
+					if (saveAnimalConstitutiveTraits)
+					{
+						newAnimal->printTraits(animalConstitutiveTraitsLocalStr);
+					}
+					++currentGenomeIndex;
+					++createdPopulation;
+				}
+			}
+
+
+			animalSpecies->increasePopulation(createdPopulation);
+		}
+	}
+
+
+	if (getSaveAnimalConstitutiveTraits())
+	{
+		for (CustomIndexedVector<AnimalSpeciesID, fmt::memory_buffer>& threadBuffer : localBuffersAnimalConstitutiveTraits) {
+			for (unsigned int i = 0; i < threadBuffer.size(); ++i) {
+				if (threadBuffer[i].size() != 0) {
+					StorageBridge::writeContentPackToDisk(animalConstitutiveTraitsFilePath[i], threadBuffer[i]);
 				}
 			}
 		}
 	}
 
-	view->updateLog("DONE\n");
+
+	if (saveGenetics)
+	{
+		for (auto& threadBuffer : localBuffersGenetics) {
+			for (size_t i = 0; i < threadBuffer.size(); ++i) {
+				std::vector<fmt::memory_buffer>& traitBuffer = threadBuffer[i];
+				AnimalSpecies* animalSpecies = getExistingAnimalSpecies()[i];
+
+				std::string scientificNameReplaced = animalSpecies->getScientificNameReplaced();
+
+				const std::vector<IndividualLevelTrait*>& individualLevelTraits = animalSpecies->getGenetics().getIndividualLevelTraits();
+
+				for (size_t j = 0; j < traitBuffer.size(); ++j) {
+					if (traitBuffer[j].size() != 0) {
+						IndividualLevelTrait* trait = individualLevelTraits[j];
+
+
+						StorageBridge::writeContentPackToDisk(resultFolder / fs::path("genetics") / scientificNameReplaced / (trait->getFileName() + ".txt"), traitBuffer[j]);
+					}
+				}
+			}
+		}
+	}
+
+	LogManager::emit("DONE\n");
 }
 
 void Landscape::initializeOutputFiles(fs::path configPath)
 {
-	std::ofstream versionsFile;
+	fmt::format_to(fmt::appender(versionsBuffer),
+		"PROGRAM_VERSION:{}\nSCHEMA_VERSION:{}\nSERIALIZATION_VERSION:{}\n",
+		WEAVER_PROGRAM_VERSION, WEAVER_SCHEMA_VERSION, WEAVER_SERIALIZATION_VERSION
+	);
 
-	versionsFile.open((resultFolder / fs::path("versions.txt")).string());
-
-	versionsFile << "PROGRAM_VERSION:" << PROGRAM_VERSION << endl; 
-	versionsFile << "SCHEMA_VERSION:" << SCHEMA_VERSION << endl; 
-	versionsFile << "SERIALIZATION_VERSION:" << SERIALIZATION_VERSION << endl;
-
-	versionsFile.close();
+	StorageBridge::writeFullFilePackToDisk(resultFolder / fs::path("versions.txt"), "", versionsBuffer);
 
 	///////////////////////////////////////////////////////////////////////////
 
@@ -2629,48 +3410,43 @@ void Landscape::initializeOutputFiles(fs::path configPath)
 	{
 		fs::create_directories(resultFolder / fs::path("animal_constitutive_traits"));
 
-		animalConstitutiveTraitsFile.resize(getExistingAnimalSpecies().size());
+		animalConstitutiveTraitsFilePath.resize(getExistingAnimalSpecies().size());
 
-		ostringstream animalConstitutiveTraitsHeader;
 
-		animalConstitutiveTraitsHeader << "id\tspecies";
+		std::string animalConstitutiveTraitsHeader;
+
+		animalConstitutiveTraitsHeader.append("id\tspecies");
 
 		for(unsigned int axis = 0; axis < DIMENSIONS; axis++)
 		{
-			animalConstitutiveTraitsHeader << "\t" << magic_enum::enum_names<Axis>()[axis];
+			animalConstitutiveTraitsHeader.append(fmt::format("\t{}", magic_enum::enum_names<Axis>()[axis]));
 		}
 
-		animalConstitutiveTraitsHeader << "\tg_numb_prt1\tg_numb_prt2\tID_prt1\tID_prt2\tdateEgg";
+		animalConstitutiveTraitsHeader.append("\tg_numb_prt1\tg_numb_prt2\tID_prt1\tID_prt2\tdateEgg");
+
 
 		for(const auto &animalSpecies : getExistingAnimalSpecies())
 		{
-			string scientificName = animalSpecies->getScientificNameReplaced();
+			std::string header = animalConstitutiveTraitsHeader;
 
-			animalConstitutiveTraitsFile[animalSpecies->getAnimalSpeciesId()] = new std::ofstream();
-
-			string filename = createOutputFile(*animalConstitutiveTraitsFile[animalSpecies->getAnimalSpeciesId()], resultFolder / fs::path("animal_constitutive_traits"), scientificName, "txt");
-
-			if(!animalConstitutiveTraitsFile[animalSpecies->getAnimalSpeciesId()]->is_open())
+			for (Trait::ExecutionOrder order : EnumClass<Trait::ExecutionOrder>::getEnumValues())
 			{
-				throwLineInfoException("Error opening the file '" + scientificName + " constitutive traits'");
-			}
-
-			*animalConstitutiveTraitsFile[animalSpecies->getAnimalSpeciesId()] << animalConstitutiveTraitsHeader.str();
-
-			for(Trait::ExecutionOrder order : EnumClass<Trait::ExecutionOrder>::getEnumValues())
-			{
-				for(Trait* trait : animalSpecies->getMutableGenetics().getAllTraits()[order])
+				for (Trait* trait : animalSpecies->getMutableGenetics().getAllTraits()[order])
 				{
-					if(trait->getValue()->getType() == IndividualLevelTrait::Type::IndividualLevel)
+					if (trait->getValue()->getType() == IndividualLevelTrait::Type::IndividualLevel)
 					{
-						*animalConstitutiveTraitsFile[animalSpecies->getAnimalSpeciesId()] << "\t" << static_cast<IndividualLevelTrait*>(trait->getValue())->getTraitStr();
+						fmt::format_to(std::back_inserter(header), "\t{}",
+							static_cast<IndividualLevelTrait*>(trait->getValue())->getTraitStr()
+						);
 					}
 				}
 			}
 
-			*animalConstitutiveTraitsFile[animalSpecies->getAnimalSpeciesId()] << endl;
+			std::filesystem::path filePath = resultFolder / fs::path("animal_constitutive_traits") / (animalSpecies->getScientificNameReplaced() + ".txt");
 
-			animalConstitutiveTraitsFile[animalSpecies->getAnimalSpeciesId()]->flush();
+			animalConstitutiveTraitsFilePath[animalSpecies->getAnimalSpeciesId()] = filePath;
+
+			StorageBridge::writeHeaderPackToDisk(filePath, header);
 		}
 	}
 
@@ -2686,80 +3462,43 @@ void Landscape::initializeOutputFiles(fs::path configPath)
 
 	///////////////////////////////////////////////////////////////////////////
 
-	if(saveDailySummary)
-	{
-		dailySummaryFile.open((resultFolder / fs::path("dailySummary.txt")).string());
-
-		if (!dailySummaryFile.is_open())
-		{
-			throwLineInfoException("Error opening the dailySummaryFile.");
-		}
-		else
-		{
-			dailySummaryFile << "DAY\tBIOMASS\tPREY_UNBORN\tPREY_ACTIVE\tPREY_STARVED\tPREY_PREDATED\tPREY_REPRODUCING\tPREY_SENESCED\tPREY_SHOCKED\tPREDATOR_UNBORN\tPREDATOR_ACTIVE\tPREDATOR_STARVED\tPREDATOR_PREDATED\tPREDATOR_REPRODUCING\tPREDATOR_BACKGROUND\tPREDATOR_SENESCED\tPREDATOR_SHOCKED" << endl;
-		}
-	}
-
-	///////////////////////////////////////////////////////////////////////////
-
 	if(saveExtendedDailySummary)
 	{
-		extendedDailySummaryFile.open((resultFolder / fs::path("extendedDailySummary.txt")).string());
+		std::string header = "day";
 
-		if (!extendedDailySummaryFile.is_open())
+		for (auto itResourceSpecies = existingResourceSpecies.begin(); itResourceSpecies != existingResourceSpecies.end(); itResourceSpecies++)
 		{
-			throwLineInfoException("Error opening the extendedDailySummaryFile.");
+			fmt::format_to(std::back_inserter(header), "\t{}_biomass",
+				(*itResourceSpecies)->getScientificNameReplaced()
+			);
 		}
-		else
+
+		for (const AnimalSpecies* const& animalSpecies : getExistingAnimalSpecies())
 		{
-			ostringstream extendedDailySummaryHeader;
-
-			extendedDailySummaryHeader << "day";
-
-			for (auto itResourceSpecies = existingResourceSpecies.begin(); itResourceSpecies != existingResourceSpecies.end(); itResourceSpecies++)
+			for (const LifeStage& lifeStage : EnumClass<LifeStage>::getEnumValues())
 			{
-				extendedDailySummaryHeader << "\t" << (*itResourceSpecies)->getScientificName() << "_biomass";
+				fmt::format_to(std::back_inserter(header), "\t{}_{}",
+					animalSpecies->getScientificNameReplaced(),
+					EnumClass<LifeStage>::to_string(lifeStage)
+				);
 			}
-
-			for(const AnimalSpecies* const&animalSpecies : getExistingAnimalSpecies())
-			{
-				for(const LifeStage &lifeStage : EnumClass<LifeStage>::getEnumValues())
-				{
-					extendedDailySummaryHeader << "\t" << animalSpecies->getScientificName() << "_" << EnumClass<LifeStage>::to_string(lifeStage);
-				}
-			}
-
-			extendedDailySummaryHeader << "\n";
-
-
-			extendedDailySummaryFile << extendedDailySummaryHeader.str();
-			extendedDailySummaryFile.flush();
 		}
+
+		StorageBridge::writeHeaderPackToDisk(resultFolder / fs::path("extendedDailySummary.txt"), header);
 	}
 
 	///////////////////////////////////////////////////////////////////////////
 
 	if(saveMovements)
 	{
-		movementsFile.open((resultFolder / fs::path("movements.txt")).string());
-
-		if (!movementsFile.is_open())
-		{
-			throwLineInfoException("Error opening the movementsFile.");
-		}
-		else
-		{
-			movementsFile << "timeStep\tid\tstartPointX\tstartPointY\tendPointX\tendPointY" << endl;
-		}
+		StorageBridge::writeHeaderPackToDisk(resultFolder / (std::string("movements.txt")), "timeStep\tid\tstartPointX\tstartPointY\tendPointX\tendPointY\tdistanceTravelled\tsearchAreaRadius\texhausted");
 	}
 
 	///////////////////////////////////////////////////////////////////////////
 		
 	if(saveEdibilitiesFile)
 	{
-		createOutputFile(edibilitiesFile, resultFolder, "edibilities", "txt", std::ofstream::out | std::ofstream::trunc);
-	
-		edibilitiesFile << "timeStep\tsearcherId\tsearcherSpecies\tfoodMass\tpredatorId\tpredatorSpecies\tpredatorDryMass\tpredatedId\tpredatedSpecies\tpredatedDryMass\tpredationProbability\tedibility\tpreference\texperience\n";
+		StorageBridge::writeHeaderPackToDisk(resultFolder / (std::string("edibilities.txt")), "timeStep\tsearcherId\tsearcherSpecies\tfoodMass\tpredatorId\tpredatorSpecies\tpredatorDryMass\tpredatedId\tpredatedSpecies\tpredatedDryMass\tpredationProbability\tedibility\tpreference\texperience");
 	}
 
 	///////////////////////////////////////////////////////////////////////////
@@ -2770,9 +3509,9 @@ void Landscape::initializeOutputFiles(fs::path configPath)
 	}
 }
 
-EdibleID Landscape::generateEdibleId()
+id_type Landscape::generateEdibleId()
 {
-	return EdibleID(edibleIdCounter++);
+	return edibleIdCounter++;
 }
 
 id_type Landscape::generateResourceId()
@@ -2794,10 +3533,10 @@ void Landscape::serialize(Archive &ar, const unsigned int) {
 	ar & serializationVersion;
 
 	if (Archive::is_loading::value) {
-		if (serializationVersion != SERIALIZATION_VERSION) {
+		if (serializationVersion != WEAVER_SERIALIZATION_VERSION) {
 			throwLineInfoException(
 				"Version mismatch: serialized data was created with version " + serializationVersion +
-				", but current serialization version is " + SERIALIZATION_VERSION + "."
+				", but current serialization version is " + WEAVER_SERIALIZATION_VERSION + "."
 			);
 		}
 	}
@@ -2807,6 +3546,10 @@ void Landscape::serialize(Archive &ar, const unsigned int) {
 	ar & animalIdCounter;
 
 	ar & appliedMoisture;
+
+	ar & printAnimalsAlongCellsHeader;
+
+	ar & printCellAlongCellsHeader;
 
 	ar & appliedResource;
 
@@ -2843,5 +3586,6 @@ template void Landscape::serialize<boost::archive::text_oarchive>(boost::archive
 template void Landscape::serialize<boost::archive::text_iarchive>(boost::archive::text_iarchive &, const unsigned int);
 template void Landscape::serialize<boost::archive::binary_oarchive>(boost::archive::binary_oarchive &, const unsigned int);
 template void Landscape::serialize<boost::archive::binary_iarchive>(boost::archive::binary_iarchive &, const unsigned int);
+
 
 

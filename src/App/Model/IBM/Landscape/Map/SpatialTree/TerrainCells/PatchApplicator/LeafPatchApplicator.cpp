@@ -85,7 +85,7 @@ pair<bool, bool> LeafPatchApplicator::applyPatch(Landscape* const landscape, con
 {
     if(canApplyFullCoverage(patch))
     {
-        auto coverage = patch.checkCoverage(&owner->getEffectiveArea());
+        auto coverage = patch.checkCoverage(owner->getEffectiveArea());
 
         if(coverage >= Coverage::Over50Percent)
         {

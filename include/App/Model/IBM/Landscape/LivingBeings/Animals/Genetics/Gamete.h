@@ -17,6 +17,7 @@
 
 /**
  * @class Gamete
+ * @ingroup weaver_landscape
  * @brief Represents a gamete with a variable number of chromosomes.
  */
 class Gamete

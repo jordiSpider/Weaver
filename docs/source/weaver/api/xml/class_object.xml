@@ -1,0 +1,636 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.14.0" xml:lang="en-US">
+  <compounddef id="class_object" kind="class" language="C++" prot="public">
+    <compoundname>Object</compoundname>
+    <basecompoundref refid="class_element" prot="public" virt="non-virtual">Element</basecompoundref>
+    <includes refid="_object_8h" local="no">Object.h</includes>
+    <sectiondef kind="protected-attrib">
+      <memberdef kind="variable" id="class_object_1a44821cca10d3901d829f53b6c08fb858" prot="protected" static="no" mutable="no">
+        <type>std::vector&lt; nlohmann::json &gt;</type>
+        <definition>std::vector&lt;nlohmann::json&gt; Object::conditionals</definition>
+        <argsstring></argsstring>
+        <name>conditionals</name>
+        <qualifiedname>Object::conditionals</qualifiedname>
+        <briefdescription>
+<para>Conditional blocks applied to this object. </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="Misc/JsonValidator/Elements/Object.h" line="41" column="17" bodyfile="Misc/JsonValidator/Elements/Object.h" bodystart="41" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="class_object_1a13572b2b97d8bb41c0f1a41ccd97a3c3" prot="protected" static="no" mutable="no">
+        <type>std::vector&lt; nlohmann::json &gt;</type>
+        <definition>std::vector&lt;nlohmann::json&gt; Object::patternConditionals</definition>
+        <argsstring></argsstring>
+        <name>patternConditionals</name>
+        <qualifiedname>Object::patternConditionals</qualifiedname>
+        <briefdescription>
+<para>Conditional blocks applied to pattern properties. </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="Misc/JsonValidator/Elements/Object.h" line="44" column="17" bodyfile="Misc/JsonValidator/Elements/Object.h" bodystart="44" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="class_object_1a86c640617bfd94be6d8c154854ab0f7e" prot="protected" static="no" mutable="no">
+        <type>std::unordered_map&lt; std::string, <ref refid="class_element" kindref="compound">Element</ref> * &gt;</type>
+        <definition>std::unordered_map&lt;std::string, Element*&gt; Object::patternProperties</definition>
+        <argsstring></argsstring>
+        <name>patternProperties</name>
+        <qualifiedname>Object::patternProperties</qualifiedname>
+        <briefdescription>
+<para>Pattern-based properties mapped by regex or pattern keys. </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="Misc/JsonValidator/Elements/Object.h" line="38" column="24" bodyfile="Misc/JsonValidator/Elements/Object.h" bodystart="38" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="class_object_1a9a4ee9d6b715a38b1195f5ab88717f58" prot="protected" static="no" mutable="no">
+        <type>std::unordered_map&lt; std::string, <ref refid="class_element" kindref="compound">Element</ref> * &gt;</type>
+        <definition>std::unordered_map&lt;std::string, Element*&gt; Object::properties</definition>
+        <argsstring></argsstring>
+        <name>properties</name>
+        <qualifiedname>Object::properties</qualifiedname>
+        <briefdescription>
+<para>Standard properties of the object mapped by property name. </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="Misc/JsonValidator/Elements/Object.h" line="35" column="24" bodyfile="Misc/JsonValidator/Elements/Object.h" bodystart="35" bodyend="-1"/>
+      </memberdef>
+    </sectiondef>
+    <sectiondef kind="protected-func">
+      <memberdef kind="function" id="class_object_1a33f9ceaa13bd6e3f0e63a474fa5ba043" prot="protected" static="no" const="yes" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void Object::applyConditionalBlock</definition>
+        <argsstring>(const nlohmann::json &amp;conditionalBlock, std::unordered_map&lt; std::string, Element * &gt; &amp;modifiedProperties) const</argsstring>
+        <name>applyConditionalBlock</name>
+        <qualifiedname>Object::applyConditionalBlock</qualifiedname>
+        <param>
+          <type>const nlohmann::json &amp;</type>
+          <declname>conditionalBlock</declname>
+        </param>
+        <param>
+          <type>std::unordered_map&lt; std::string, <ref refid="class_element" kindref="compound">Element</ref> * &gt; &amp;</type>
+          <declname>modifiedProperties</declname>
+        </param>
+        <briefdescription>
+<para>Applies a conditional block without pattern replacement. </para>
+        </briefdescription>
+        <detaileddescription>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>conditionalBlock</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>JSON map representing the conditional block. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>modifiedProperties</parametername>
+</parameternamelist>
+<parameterdescription>
+<para><ref refid="class_map" kindref="compound">Map</ref> of properties to be modified by the conditional. </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="Misc/JsonValidator/Elements/Object.h" line="62" column="10"/>
+      </memberdef>
+      <memberdef kind="function" id="class_object_1a739ebf797c3cbfad5295488182b6609c" prot="protected" static="no" const="yes" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void Object::applyConditionalBlock</definition>
+        <argsstring>(const nlohmann::json &amp;conditionalBlock, std::unordered_map&lt; std::string, Element * &gt; &amp;modifiedProperties, const bool patternReplacement, const std::string &amp;replacementValue) const</argsstring>
+        <name>applyConditionalBlock</name>
+        <qualifiedname>Object::applyConditionalBlock</qualifiedname>
+        <param>
+          <type>const nlohmann::json &amp;</type>
+          <declname>conditionalBlock</declname>
+        </param>
+        <param>
+          <type>std::unordered_map&lt; std::string, <ref refid="class_element" kindref="compound">Element</ref> * &gt; &amp;</type>
+          <declname>modifiedProperties</declname>
+        </param>
+        <param>
+          <type>const bool</type>
+          <declname>patternReplacement</declname>
+        </param>
+        <param>
+          <type>const std::string &amp;</type>
+          <declname>replacementValue</declname>
+        </param>
+        <briefdescription>
+<para>Applies a conditional block to modify object properties. </para>
+        </briefdescription>
+        <detaileddescription>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>conditionalBlock</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>JSON map representing the conditional block. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>modifiedProperties</parametername>
+</parameternamelist>
+<parameterdescription>
+<para><ref refid="class_map" kindref="compound">Map</ref> of properties to be modified by the conditional. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>patternReplacement</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Whether to replace patterns in property names. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>replacementValue</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Replacement string for pattern keys. </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="Misc/JsonValidator/Elements/Object.h" line="55" column="10"/>
+      </memberdef>
+      <memberdef kind="function" id="class_object_1a353ce1d7d61fb2411e88aa12d7526b81" prot="protected" static="no" const="yes" explicit="no" inline="no" virt="virtual">
+        <type>void</type>
+        <definition>void Object::validateElement</definition>
+        <argsstring>(const nlohmann::json &amp;config) const</argsstring>
+        <name>validateElement</name>
+        <qualifiedname>Object::validateElement</qualifiedname>
+        <reimplements refid="class_element_1a2e31082683027a829ee75a4bd872738a">validateElement</reimplements>
+        <param>
+          <type>const nlohmann::json &amp;</type>
+          <declname>config</declname>
+        </param>
+        <briefdescription>
+<para>Validates that the object conforms to its schema and constraints. </para>
+        </briefdescription>
+        <detaileddescription>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>config</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>JSON object to validate.</para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+Overrides <ref refid="class_element_1a2e31082683027a829ee75a4bd872738a" kindref="member">Element::validateElement</ref>. Checks property types, required fields, conditional rules, and pattern properties. </para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="Misc/JsonValidator/Elements/Object.h" line="71" column="10"/>
+      </memberdef>
+      <memberdef kind="function" id="class_object_1afde2e7b3119395f4dafb1f16ad51e522" prot="protected" static="no" const="yes" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void Object::verifyConditional</definition>
+        <argsstring>(const nlohmann::json &amp;conditional) const</argsstring>
+        <name>verifyConditional</name>
+        <qualifiedname>Object::verifyConditional</qualifiedname>
+        <param>
+          <type>const nlohmann::json &amp;</type>
+          <declname>conditional</declname>
+        </param>
+        <briefdescription>
+<para>Verifies a single conditional within a block. </para>
+        </briefdescription>
+        <detaileddescription>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>conditional</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>JSON object representing a single conditional.</para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+This method checks the validity of a single conditional expression, including operator types, operand types, and proper syntax. Throws an exception if any part of the conditional is invalid. </para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="Misc/JsonValidator/Elements/Object.h" line="102" column="10"/>
+      </memberdef>
+      <memberdef kind="function" id="class_object_1a8156ee00007f814d0e1b88ad70bc2b90" prot="protected" static="no" const="yes" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void Object::verifyConditionalBlock</definition>
+        <argsstring>(const nlohmann::json &amp;conditionBlock) const</argsstring>
+        <name>verifyConditionalBlock</name>
+        <qualifiedname>Object::verifyConditionalBlock</qualifiedname>
+        <param>
+          <type>const nlohmann::json &amp;</type>
+          <declname>conditionBlock</declname>
+        </param>
+        <briefdescription>
+<para>Verifies an entire conditional block. </para>
+        </briefdescription>
+        <detaileddescription>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>conditionBlock</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>JSON object representing the conditional block.</para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+This method validates the conditional block as a whole, ensuring that all conditions, property references, and logical/arithmetic operators are correctly specified. It also delegates validation of the block&apos;s content to <ref refid="class_object_1af67dd0059048f6971939e2d90583358a" kindref="member">verifyConditionalBlockContent()</ref>. </para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="Misc/JsonValidator/Elements/Object.h" line="92" column="10"/>
+      </memberdef>
+      <memberdef kind="function" id="class_object_1af67dd0059048f6971939e2d90583358a" prot="protected" static="no" const="yes" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void Object::verifyConditionalBlockContent</definition>
+        <argsstring>(const nlohmann::json &amp;content) const</argsstring>
+        <name>verifyConditionalBlockContent</name>
+        <qualifiedname>Object::verifyConditionalBlockContent</qualifiedname>
+        <param>
+          <type>const nlohmann::json &amp;</type>
+          <declname>content</declname>
+        </param>
+        <briefdescription>
+<para>Verifies the content of a conditional block. </para>
+        </briefdescription>
+        <detaileddescription>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>content</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>JSON object representing the content of the conditional block.</para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+This method checks that the content of the conditional block is valid, including the structure, allowed operators, and references to existing properties. Throws an exception if the content does not meet the expected schema or rules. </para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="Misc/JsonValidator/Elements/Object.h" line="81" column="10"/>
+      </memberdef>
+    </sectiondef>
+    <sectiondef kind="public-func">
+      <memberdef kind="function" id="class_object_1a9a98ae11d825e2d883cfe8ba954e026c" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type></type>
+        <definition>Object::Object</definition>
+        <argsstring>(const nlohmann::json &amp;info)</argsstring>
+        <name>Object</name>
+        <qualifiedname>Object::Object</qualifiedname>
+        <param>
+          <type>const nlohmann::json &amp;</type>
+          <declname>info</declname>
+        </param>
+        <briefdescription>
+<para>Constructs an <ref refid="class_object" kindref="compound">Object</ref> element from a JSON configuration. </para>
+        </briefdescription>
+        <detaileddescription>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>info</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>JSON object describing properties, patterns, and conditionals. </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="Misc/JsonValidator/Elements/Object.h" line="110" column="5"/>
+      </memberdef>
+      <memberdef kind="function" id="class_object_1a51d92e895f3e897d13e0adbd89f55b23" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type></type>
+        <definition>Object::Object</definition>
+        <argsstring>(const Object &amp;other, const bool nullProperty)</argsstring>
+        <name>Object</name>
+        <qualifiedname>Object::Object</qualifiedname>
+        <param>
+          <type>const <ref refid="class_object" kindref="compound">Object</ref> &amp;</type>
+          <declname>other</declname>
+        </param>
+        <param>
+          <type>const bool</type>
+          <declname>nullProperty</declname>
+        </param>
+        <briefdescription>
+<para>Copy constructor with optional null property flag. </para>
+        </briefdescription>
+        <detaileddescription>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>other</parametername>
+</parameternamelist>
+<parameterdescription>
+<para><ref refid="class_object" kindref="compound">Object</ref> to copy from. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>nullProperty</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Whether the new object should represent a null property. </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="Misc/JsonValidator/Elements/Object.h" line="117" column="5"/>
+      </memberdef>
+      <memberdef kind="function" id="class_object_1aa3e791419d84c4c346ef9499513b8e00" prot="public" static="no" const="no" explicit="no" inline="no" virt="virtual">
+        <type></type>
+        <definition>virtual Object::~Object</definition>
+        <argsstring>()</argsstring>
+        <name>~Object</name>
+        <qualifiedname>Object::~Object</qualifiedname>
+        <briefdescription>
+<para>Virtual destructor. </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="Misc/JsonValidator/Elements/Object.h" line="122" column="13"/>
+      </memberdef>
+      <memberdef kind="function" id="class_object_1a63339892607f18fd98b286369e63de07" prot="public" static="no" const="yes" explicit="no" inline="no" virt="non-virtual">
+        <type>const std::vector&lt; nlohmann::json &gt; &amp;</type>
+        <definition>const std::vector&lt; nlohmann::json &gt; &amp; Object::getConditionals</definition>
+        <argsstring>() const</argsstring>
+        <name>getConditionals</name>
+        <qualifiedname>Object::getConditionals</qualifiedname>
+        <briefdescription>
+<para>Returns the conditional blocks applied to this object. </para>
+        </briefdescription>
+        <detaileddescription>
+<para><simplesect kind="return"><para>Vector of JSON conditionals. </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="Misc/JsonValidator/Elements/Object.h" line="166" column="23"/>
+      </memberdef>
+      <memberdef kind="function" id="class_object_1a58c1bbd531f10ef4a298874dcc06c493" prot="public" static="no" const="yes" explicit="no" inline="no" virt="non-virtual">
+        <type>const std::vector&lt; nlohmann::json &gt; &amp;</type>
+        <definition>const std::vector&lt; nlohmann::json &gt; &amp; Object::getPatternConditionals</definition>
+        <argsstring>() const</argsstring>
+        <name>getPatternConditionals</name>
+        <qualifiedname>Object::getPatternConditionals</qualifiedname>
+        <briefdescription>
+<para>Returns the conditional blocks applied to pattern properties. </para>
+        </briefdescription>
+        <detaileddescription>
+<para><simplesect kind="return"><para>Vector of JSON pattern conditionals. </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="Misc/JsonValidator/Elements/Object.h" line="172" column="23"/>
+      </memberdef>
+      <memberdef kind="function" id="class_object_1aa976091b1118da888501528243dc7040" prot="public" static="no" const="yes" explicit="no" inline="no" virt="non-virtual">
+        <type>const std::unordered_map&lt; std::string, <ref refid="class_element" kindref="compound">Element</ref> * &gt; &amp;</type>
+        <definition>const std::unordered_map&lt; std::string, Element * &gt; &amp; Object::getPatternProperties</definition>
+        <argsstring>() const</argsstring>
+        <name>getPatternProperties</name>
+        <qualifiedname>Object::getPatternProperties</qualifiedname>
+        <briefdescription>
+<para>Returns the pattern-based properties of the object. </para>
+        </briefdescription>
+        <detaileddescription>
+<para><simplesect kind="return"><para><ref refid="class_map" kindref="compound">Map</ref> of pattern keys to <ref refid="class_element" kindref="compound">Element</ref> pointers. </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="Misc/JsonValidator/Elements/Object.h" line="160" column="30"/>
+      </memberdef>
+      <memberdef kind="function" id="class_object_1a97cb6aa35f2af0c46fff04cb7fa147d6" prot="public" static="no" const="yes" explicit="no" inline="no" virt="non-virtual">
+        <type>const std::unordered_map&lt; std::string, <ref refid="class_element" kindref="compound">Element</ref> * &gt; &amp;</type>
+        <definition>const std::unordered_map&lt; std::string, Element * &gt; &amp; Object::getProperties</definition>
+        <argsstring>() const</argsstring>
+        <name>getProperties</name>
+        <qualifiedname>Object::getProperties</qualifiedname>
+        <briefdescription>
+<para>Returns the standard properties of the object. </para>
+        </briefdescription>
+        <detaileddescription>
+<para><simplesect kind="return"><para><ref refid="class_map" kindref="compound">Map</ref> of property names to <ref refid="class_element" kindref="compound">Element</ref> pointers. </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="Misc/JsonValidator/Elements/Object.h" line="154" column="30"/>
+      </memberdef>
+      <memberdef kind="function" id="class_object_1a2c78ed0c6df8d496465d086565f624f6" prot="public" static="no" const="yes" explicit="no" inline="no" virt="virtual">
+        <type>std::pair&lt; const <ref refid="class_element" kindref="compound">Element</ref> *const, std::string &gt;</type>
+        <definition>std::pair&lt; const Element *const, std::string &gt; Object::getProperty</definition>
+        <argsstring>(const std::string &amp;propertyName, const bool patternReplacement, const std::string &amp;replacementValue) const override</argsstring>
+        <name>getProperty</name>
+        <qualifiedname>Object::getProperty</qualifiedname>
+        <reimplements refid="class_element_1abf6e4f402b616bf7f52166f96c450b36">getProperty</reimplements>
+        <param>
+          <type>const std::string &amp;</type>
+          <declname>propertyName</declname>
+        </param>
+        <param>
+          <type>const bool</type>
+          <declname>patternReplacement</declname>
+        </param>
+        <param>
+          <type>const std::string &amp;</type>
+          <declname>replacementValue</declname>
+        </param>
+        <briefdescription>
+<para>Retrieves a property by name with optional pattern replacement. </para>
+        </briefdescription>
+        <detaileddescription>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>propertyName</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Name of the property to retrieve. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>patternReplacement</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Whether to perform pattern replacement. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>replacementValue</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Replacement string for pattern keys. </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<simplesect kind="return"><para>Pair of pointer to the <ref refid="class_element" kindref="compound">Element</ref> and resolved property name.</para>
+</simplesect>
+Overrides <ref refid="class_element_1abf6e4f402b616bf7f52166f96c450b36" kindref="member">Element::getProperty</ref>. </para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="Misc/JsonValidator/Elements/Object.h" line="142" column="15"/>
+      </memberdef>
+      <memberdef kind="function" id="class_object_1a9bb97ab8fe1c83ce6dbbb19cba53a578" prot="public" static="no" const="yes" explicit="no" inline="no" virt="virtual">
+        <type><ref refid="class_element_1a009a3be4c3a037a72e292b2464c9cbc5" kindref="member">Type</ref></type>
+        <definition>Type Object::getType</definition>
+        <argsstring>() const</argsstring>
+        <name>getType</name>
+        <qualifiedname>Object::getType</qualifiedname>
+        <reimplements refid="class_element_1a00ef06c036d1d4628fcd3586885ca131">getType</reimplements>
+        <briefdescription>
+<para>Returns the type of the element. </para>
+        </briefdescription>
+        <detaileddescription>
+<para><simplesect kind="return"><para><ref refid="class_element_1a009a3be4c3a037a72e292b2464c9cbc5aa8cfde6331bd59eb2ac96f8911c4b666" kindref="member">Type::object</ref> </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="Misc/JsonValidator/Elements/Object.h" line="148" column="10"/>
+      </memberdef>
+      <memberdef kind="function" id="class_object_1a85d295101b9c3d5b6ba7eae776344dc3" prot="public" static="no" const="yes" explicit="no" inline="no" virt="virtual">
+        <type>void</type>
+        <definition>void Object::verifyPropertyPath</definition>
+        <argsstring>(const std::vector&lt; std::string &gt; &amp;path, const unsigned int currentIndex) const override</argsstring>
+        <name>verifyPropertyPath</name>
+        <qualifiedname>Object::verifyPropertyPath</qualifiedname>
+        <reimplements refid="class_element_1adbcc49811634a36df5d3830d366ba2b0">verifyPropertyPath</reimplements>
+        <param>
+          <type>const std::vector&lt; std::string &gt; &amp;</type>
+          <declname>path</declname>
+        </param>
+        <param>
+          <type>const unsigned int</type>
+          <declname>currentIndex</declname>
+        </param>
+        <briefdescription>
+<para>Verifies that a property path exists within this object. </para>
+        </briefdescription>
+        <detaileddescription>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>path</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Vector of property names forming the path. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>currentIndex</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Current index in the path vector.</para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+Overrides <ref refid="class_element_1adbcc49811634a36df5d3830d366ba2b0" kindref="member">Element::verifyPropertyPath</ref>. Checks nested properties and pattern properties. </para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="Misc/JsonValidator/Elements/Object.h" line="131" column="10"/>
+      </memberdef>
+    </sectiondef>
+    <briefdescription>
+<para>Represents a JSON object element with nested properties and conditional rules. </para>
+    </briefdescription>
+    <detaileddescription>
+<para>Inherits from <ref refid="class_element" kindref="compound">Element</ref>. Supports standard properties, pattern-based properties, and conditional rules (required, warning, or pattern-based). Provides methods for property retrieval and validation against JSON configuration. </para>
+    </detaileddescription>
+    <inheritancegraph>
+      <node id="2">
+        <label>Element</label>
+        <link refid="class_element"/>
+      </node>
+      <node id="1">
+        <label>Object</label>
+        <link refid="class_object"/>
+        <childnode refid="2" relation="public-inheritance">
+        </childnode>
+      </node>
+    </inheritancegraph>
+    <collaborationgraph>
+      <node id="2">
+        <label>Element</label>
+        <link refid="class_element"/>
+      </node>
+      <node id="1">
+        <label>Object</label>
+        <link refid="class_object"/>
+        <childnode refid="2" relation="public-inheritance">
+        </childnode>
+      </node>
+    </collaborationgraph>
+    <location file="Misc/JsonValidator/Elements/Object.h" line="31" column="1" bodyfile="Misc/JsonValidator/Elements/Object.h" bodystart="32" bodyend="175"/>
+    <listofallmembers>
+      <member refid="class_object_1a739ebf797c3cbfad5295488182b6609c" prot="protected" virt="non-virtual"><scope>Object</scope><name>applyConditionalBlock</name></member>
+      <member refid="class_object_1a33f9ceaa13bd6e3f0e63a474fa5ba043" prot="protected" virt="non-virtual"><scope>Object</scope><name>applyConditionalBlock</name></member>
+      <member refid="class_object_1a44821cca10d3901d829f53b6c08fb858" prot="protected" virt="non-virtual"><scope>Object</scope><name>conditionals</name></member>
+      <member refid="class_element_1a31838aa329c7380f4395b9c0a4a82cfe" prot="protected" virt="non-virtual"><scope>Object</scope><name>description</name></member>
+      <member refid="class_element_1a5ef746a08042747acd608589686df030" prot="public" virt="non-virtual"><scope>Object</scope><name>Element</name></member>
+      <member refid="class_element_1a7adf23f4617107ee13fcab2747d8b394" prot="public" virt="non-virtual"><scope>Object</scope><name>Element</name></member>
+      <member refid="class_object_1a63339892607f18fd98b286369e63de07" prot="public" virt="non-virtual"><scope>Object</scope><name>getConditionals</name></member>
+      <member refid="class_element_1a2eab22dd80bfba5646c6f0e79dec8569" prot="public" virt="non-virtual"><scope>Object</scope><name>getDescription</name></member>
+      <member refid="class_object_1a58c1bbd531f10ef4a298874dcc06c493" prot="public" virt="non-virtual"><scope>Object</scope><name>getPatternConditionals</name></member>
+      <member refid="class_object_1aa976091b1118da888501528243dc7040" prot="public" virt="non-virtual"><scope>Object</scope><name>getPatternProperties</name></member>
+      <member refid="class_object_1a97cb6aa35f2af0c46fff04cb7fa147d6" prot="public" virt="non-virtual"><scope>Object</scope><name>getProperties</name></member>
+      <member refid="class_object_1a2c78ed0c6df8d496465d086565f624f6" prot="public" virt="virtual"><scope>Object</scope><name>getProperty</name></member>
+      <member refid="class_element_1ae4ee4a9ec97bb054a43aea28d9700f8e" prot="public" virt="non-virtual" ambiguityscope="Element::"><scope>Object</scope><name>getProperty</name></member>
+      <member refid="class_object_1a9bb97ab8fe1c83ce6dbbb19cba53a578" prot="public" virt="virtual"><scope>Object</scope><name>getType</name></member>
+      <member refid="class_element_1a4e3a7ef1a3b0b42c84c1022a4db94246" prot="public" virt="non-virtual"><scope>Object</scope><name>isModified</name></member>
+      <member refid="class_element_1a97d883c0b237ec9e1fe6993825fd0f8c" prot="public" virt="non-virtual"><scope>Object</scope><name>isNullProperty</name></member>
+      <member refid="class_element_1a1b0c283200e0e2c16b8713369631214d" prot="protected" virt="non-virtual"><scope>Object</scope><name>modified</name></member>
+      <member refid="class_element_1a4318313abfd08feae300a12668cec95a" prot="protected" virt="non-virtual"><scope>Object</scope><name>nullProperty</name></member>
+      <member refid="class_object_1a9a98ae11d825e2d883cfe8ba954e026c" prot="public" virt="non-virtual"><scope>Object</scope><name>Object</name></member>
+      <member refid="class_object_1a51d92e895f3e897d13e0adbd89f55b23" prot="public" virt="non-virtual"><scope>Object</scope><name>Object</name></member>
+      <member refid="class_object_1a13572b2b97d8bb41c0f1a41ccd97a3c3" prot="protected" virt="non-virtual"><scope>Object</scope><name>patternConditionals</name></member>
+      <member refid="class_object_1a86c640617bfd94be6d8c154854ab0f7e" prot="protected" virt="non-virtual"><scope>Object</scope><name>patternProperties</name></member>
+      <member refid="class_object_1a9a4ee9d6b715a38b1195f5ab88717f58" prot="protected" virt="non-virtual"><scope>Object</scope><name>properties</name></member>
+      <member refid="class_element_1a009a3be4c3a037a72e292b2464c9cbc5" prot="public" virt="non-virtual"><scope>Object</scope><name>Type</name></member>
+      <member refid="class_element_1a59cc1d05821dd36340deffd7f56add32" prot="public" virt="non-virtual"><scope>Object</scope><name>validate</name></member>
+      <member refid="class_object_1a353ce1d7d61fb2411e88aa12d7526b81" prot="protected" virt="virtual"><scope>Object</scope><name>validateElement</name></member>
+      <member refid="class_object_1afde2e7b3119395f4dafb1f16ad51e522" prot="protected" virt="non-virtual"><scope>Object</scope><name>verifyConditional</name></member>
+      <member refid="class_object_1a8156ee00007f814d0e1b88ad70bc2b90" prot="protected" virt="non-virtual"><scope>Object</scope><name>verifyConditionalBlock</name></member>
+      <member refid="class_object_1af67dd0059048f6971939e2d90583358a" prot="protected" virt="non-virtual"><scope>Object</scope><name>verifyConditionalBlockContent</name></member>
+      <member refid="class_object_1a85d295101b9c3d5b6ba7eae776344dc3" prot="public" virt="virtual"><scope>Object</scope><name>verifyPropertyPath</name></member>
+      <member refid="class_element_1ab4fc182292f44e46acba9c55662237bf" prot="public" virt="virtual"><scope>Object</scope><name>~Element</name></member>
+      <member refid="class_object_1aa3e791419d84c4c346ef9499513b8e00" prot="public" virt="virtual"><scope>Object</scope><name>~Object</name></member>
+    </listofallmembers>
+  </compounddef>
+</doxygen>
