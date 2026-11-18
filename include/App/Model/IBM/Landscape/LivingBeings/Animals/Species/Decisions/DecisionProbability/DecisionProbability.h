@@ -31,6 +31,7 @@ class AnimalNonStatistical;
 
 /**
  * @class DecisionProbability
+ * @ingroup weaver_landscape
  * @brief Abstract base class for probability calculations in predator-prey decisions.
  *
  * This class provides a common interface for all decision probability computations,

@@ -2,5 +2,7 @@
 	<Fragment>
 		<Binary Id="WeaverRSetupCA" SourceFile="@WEAVER_R_SETUP_CA_DLL@" />
 		<CustomAction Id="INSTALLRENVIRONMENT" BinaryKey="WeaverRSetupCA" DllEntry="InstallREnvironment" Execute="deferred" Impersonate="no" Return="check" />
+		<CustomAction Id="RemoveEmptyVersionDirectory" BinaryKey="WeaverRSetupCA" DllEntry="RemoveEmptyVersionDirectory" Execute="deferred" Impersonate="no" Return="ignore" />
+		<CustomAction Id="RemoveRLibrary" BinaryKey="WeaverRSetupCA" DllEntry="RemoveRLibrary" Execute="deferred" Impersonate="no" Return="check" />
 	</Fragment>
 </Wix>

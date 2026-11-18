@@ -1,0 +1,89 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.14.0" xml:lang="en-US">
+  <compounddef id="_log_manager_8h" kind="file" language="C++">
+    <compoundname>LogManager.h</compoundname>
+    <includes local="no">functional</includes>
+    <includes local="no">mutex</includes>
+    <includes local="no">string</includes>
+    <incdepgraph>
+      <node id="1">
+        <label>App/Manager/LogManager.h</label>
+        <link refid="_log_manager_8h"/>
+        <childnode refid="2" relation="include">
+        </childnode>
+        <childnode refid="3" relation="include">
+        </childnode>
+        <childnode refid="4" relation="include">
+        </childnode>
+      </node>
+      <node id="2">
+        <label>functional</label>
+      </node>
+      <node id="3">
+        <label>mutex</label>
+      </node>
+      <node id="4">
+        <label>string</label>
+      </node>
+    </incdepgraph>
+    <innerclass refid="struct_log_manager_1_1_log_message" prot="public">LogManager::LogMessage</innerclass>
+    <innernamespace refid="namespace_log_manager">LogManager</innernamespace>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+    </detaileddescription>
+    <programlisting>
+<codeline lineno="1"><highlight class="normal"></highlight></codeline>
+<codeline lineno="2"><highlight class="normal"></highlight><highlight class="preprocessor">#pragma<sp/>once</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="3"><highlight class="normal"></highlight></codeline>
+<codeline lineno="4"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&lt;functional&gt;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="5"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&lt;mutex&gt;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="6"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&lt;string&gt;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="7"><highlight class="normal"></highlight></codeline>
+<codeline lineno="8"><highlight class="normal"></highlight><highlight class="keyword">namespace<sp/></highlight><highlight class="normal">LogManager<sp/>{</highlight></codeline>
+<codeline lineno="9"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="comment">//<sp/>Definición<sp/>de<sp/>códigos<sp/>ANSI<sp/>estándar</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="10"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">inline</highlight><highlight class="normal"><sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/>std::string<sp/>RESET<sp/>=<sp/></highlight><highlight class="stringliteral">&quot;\033[0m&quot;</highlight><highlight class="normal">;</highlight></codeline>
+<codeline lineno="11"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">inline</highlight><highlight class="normal"><sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/>std::string<sp/>RED<sp/>=<sp/></highlight><highlight class="stringliteral">&quot;\033[31m&quot;</highlight><highlight class="normal">;<sp/></highlight><highlight class="comment">//<sp/>Errores</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="12"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">inline</highlight><highlight class="normal"><sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/>std::string<sp/>GREEN<sp/>=<sp/></highlight><highlight class="stringliteral">&quot;\033[32m&quot;</highlight><highlight class="normal">;<sp/></highlight><highlight class="comment">//<sp/>Simulación<sp/>(Información)</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="13"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">inline</highlight><highlight class="normal"><sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/>std::string<sp/>CYAN<sp/>=<sp/></highlight><highlight class="stringliteral">&quot;\033[36m&quot;</highlight><highlight class="normal">;<sp/></highlight><highlight class="comment">//<sp/>IO<sp/>/<sp/>Disco</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="14"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">inline</highlight><highlight class="normal"><sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/>std::string<sp/>YELLOW<sp/>=<sp/></highlight><highlight class="stringliteral">&quot;\033[33m&quot;</highlight><highlight class="normal">;<sp/></highlight><highlight class="comment">//<sp/>Advertencias</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="15"><highlight class="normal"></highlight></codeline>
+<codeline lineno="16"><highlight class="normal"></highlight></codeline>
+<codeline lineno="17"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">enum<sp/>class</highlight><highlight class="normal"><sp/>Subsystem<sp/>:<sp/></highlight><highlight class="keywordtype">unsigned</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordtype">char</highlight><highlight class="normal"><sp/>{</highlight></codeline>
+<codeline lineno="18"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>Simulation,</highlight></codeline>
+<codeline lineno="19"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>IO</highlight></codeline>
+<codeline lineno="20"><highlight class="normal"><sp/><sp/><sp/><sp/>};</highlight></codeline>
+<codeline lineno="21"><highlight class="normal"></highlight></codeline>
+<codeline lineno="22"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">struct<sp/></highlight><highlight class="normal">LogMessage<sp/>{</highlight></codeline>
+<codeline lineno="23"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>std::string<sp/>message;</highlight></codeline>
+<codeline lineno="24"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">bool</highlight><highlight class="normal"><sp/>is_error<sp/>=<sp/></highlight><highlight class="keyword">false</highlight><highlight class="normal">;</highlight></codeline>
+<codeline lineno="25"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">bool</highlight><highlight class="normal"><sp/>ignore_silent<sp/>=<sp/></highlight><highlight class="keyword">false</highlight><highlight class="normal">;</highlight></codeline>
+<codeline lineno="26"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>Subsystem<sp/>subsystem<sp/>=<sp/>Subsystem::Simulation;</highlight></codeline>
+<codeline lineno="27"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">bool</highlight><highlight class="normal"><sp/>is_warning<sp/>=<sp/></highlight><highlight class="keyword">false</highlight><highlight class="normal">;</highlight></codeline>
+<codeline lineno="28"><highlight class="normal"><sp/><sp/><sp/><sp/>};</highlight></codeline>
+<codeline lineno="29"><highlight class="normal"></highlight></codeline>
+<codeline lineno="30"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">using<sp/></highlight><highlight class="normal">LogHandler<sp/>=<sp/>std::function&lt;void(</highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/>LogMessage&amp;)&gt;;</highlight></codeline>
+<codeline lineno="31"><highlight class="normal"></highlight></codeline>
+<codeline lineno="32"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">inline</highlight><highlight class="normal"><sp/>LogHandler<sp/>handler;</highlight></codeline>
+<codeline lineno="33"><highlight class="normal"></highlight></codeline>
+<codeline lineno="34"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">inline</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/>setHandler(LogHandler<sp/>newHandler)<sp/>{</highlight></codeline>
+<codeline lineno="35"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>handler<sp/>=<sp/>std::move(newHandler);</highlight></codeline>
+<codeline lineno="36"><highlight class="normal"><sp/><sp/><sp/><sp/>}</highlight></codeline>
+<codeline lineno="37"><highlight class="normal"></highlight></codeline>
+<codeline lineno="38"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="comment">//<sp/>Métodos<sp/>globales<sp/>que<sp/>usará<sp/>el<sp/>Modelo<sp/>(No<sp/>conocen<sp/>a<sp/>la<sp/>Vista)</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="39"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">inline</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/>emit(std::string<sp/>msg,<sp/></highlight><highlight class="keywordtype">bool</highlight><highlight class="normal"><sp/>ignore_silent<sp/>=<sp/></highlight><highlight class="keyword">false</highlight><highlight class="normal">,<sp/>Subsystem<sp/>sub<sp/>=<sp/>Subsystem::Simulation)<sp/>{</highlight></codeline>
+<codeline lineno="40"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>handler(LogMessage{<sp/>std::move(msg),<sp/></highlight><highlight class="keyword">false</highlight><highlight class="normal">,<sp/>ignore_silent,<sp/>sub<sp/>});</highlight></codeline>
+<codeline lineno="41"><highlight class="normal"><sp/><sp/><sp/><sp/>}</highlight></codeline>
+<codeline lineno="42"><highlight class="normal"></highlight></codeline>
+<codeline lineno="43"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">inline</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/>emitError(std::string<sp/>msg,<sp/></highlight><highlight class="keywordtype">bool</highlight><highlight class="normal"><sp/>ignore_silent<sp/>=<sp/></highlight><highlight class="keyword">false</highlight><highlight class="normal">,<sp/>Subsystem<sp/>sub<sp/>=<sp/>Subsystem::Simulation)<sp/>{</highlight></codeline>
+<codeline lineno="44"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>handler(LogMessage{<sp/>std::move(msg),<sp/></highlight><highlight class="keyword">true</highlight><highlight class="normal">,<sp/>ignore_silent,<sp/>sub<sp/>});</highlight></codeline>
+<codeline lineno="45"><highlight class="normal"><sp/><sp/><sp/><sp/>}</highlight></codeline>
+<codeline lineno="46"><highlight class="normal"></highlight></codeline>
+<codeline lineno="47"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">inline</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/>emitWarning(std::string<sp/>msg,<sp/></highlight><highlight class="keywordtype">bool</highlight><highlight class="normal"><sp/>ignore_silent<sp/>=<sp/></highlight><highlight class="keyword">false</highlight><highlight class="normal">,<sp/>Subsystem<sp/>sub<sp/>=<sp/>Subsystem::Simulation)<sp/>{</highlight></codeline>
+<codeline lineno="48"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>handler(LogMessage{<sp/>std::move(msg),<sp/></highlight><highlight class="keyword">false</highlight><highlight class="normal">,<sp/>ignore_silent,<sp/>sub,<sp/></highlight><highlight class="keyword">true</highlight><highlight class="normal"><sp/>});</highlight></codeline>
+<codeline lineno="49"><highlight class="normal"><sp/><sp/><sp/><sp/>}</highlight></codeline>
+<codeline lineno="50"><highlight class="normal">}</highlight></codeline>
+    </programlisting>
+    <location file="App/Manager/LogManager.h"/>
+  </compounddef>
+</doxygen>

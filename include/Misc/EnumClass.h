@@ -22,6 +22,7 @@
 
 /**
  * @class EnumClass
+  * @ingroup weaver_model
  * @brief Provides utility functions for enum reflection and conversion.
  *
  * This template class allows converting enum values to strings and vice versa,

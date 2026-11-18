@@ -1,0 +1,284 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.14.0" xml:lang="en-US">
+  <compounddef id="class_temp_size_rule_individual_trait_temperature_section" kind="class" language="C++" prot="public">
+    <compoundname>TempSizeRuleIndividualTraitTemperatureSection</compoundname>
+    <includes refid="_temp_size_rule_individual_trait_temperature_section_8h" local="no">TempSizeRuleIndividualTraitTemperatureSection.h</includes>
+    <sectiondef kind="private-attrib">
+      <memberdef kind="variable" id="class_temp_size_rule_individual_trait_temperature_section_1af6f8e2b4aa3f4e8af2f72e81a2473cbb" prot="private" static="no" mutable="no">
+        <type>const <ref refid="class_temp_size_rule_trait_temperature_section" kindref="compound">TempSizeRuleTraitTemperatureSection</ref> *</type>
+        <definition>const TempSizeRuleTraitTemperatureSection* TempSizeRuleIndividualTraitTemperatureSection::traitTemperatureSection</definition>
+        <argsstring></argsstring>
+        <name>traitTemperatureSection</name>
+        <qualifiedname>TempSizeRuleIndividualTraitTemperatureSection::traitTemperatureSection</qualifiedname>
+        <initializer>= nullptr</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="App/Model/IBM/Landscape/LivingBeings/Animals/Genetics/Traits/TempSizeRuleIndividualTraitTemperatureSection.h" line="86" column="47" bodyfile="App/Model/IBM/Landscape/LivingBeings/Animals/Genetics/Traits/TempSizeRuleIndividualTraitTemperatureSection.h" bodystart="86" bodyend="-1"/>
+      </memberdef>
+    </sectiondef>
+    <sectiondef kind="public-func">
+      <memberdef kind="function" id="class_temp_size_rule_individual_trait_temperature_section_1a0ba194cc9deb9f60795174014fe38162" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type></type>
+        <definition>TempSizeRuleIndividualTraitTemperatureSection::TempSizeRuleIndividualTraitTemperatureSection</definition>
+        <argsstring>()</argsstring>
+        <name>TempSizeRuleIndividualTraitTemperatureSection</name>
+        <qualifiedname>TempSizeRuleIndividualTraitTemperatureSection::TempSizeRuleIndividualTraitTemperatureSection</qualifiedname>
+        <briefdescription>
+<para>Default constructor. </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="App/Model/IBM/Landscape/LivingBeings/Animals/Genetics/Traits/TempSizeRuleIndividualTraitTemperatureSection.h" line="40" column="5"/>
+      </memberdef>
+      <memberdef kind="function" id="class_temp_size_rule_individual_trait_temperature_section_1a936490b00c672b623b6790aba4815b41" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type></type>
+        <definition>TempSizeRuleIndividualTraitTemperatureSection::TempSizeRuleIndividualTraitTemperatureSection</definition>
+        <argsstring>(const TempSizeRuleTraitTemperatureSection *traitTemperatureSection)</argsstring>
+        <name>TempSizeRuleIndividualTraitTemperatureSection</name>
+        <qualifiedname>TempSizeRuleIndividualTraitTemperatureSection::TempSizeRuleIndividualTraitTemperatureSection</qualifiedname>
+        <param>
+          <type>const <ref refid="class_temp_size_rule_trait_temperature_section" kindref="compound">TempSizeRuleTraitTemperatureSection</ref> *</type>
+          <declname>traitTemperatureSection</declname>
+        </param>
+        <briefdescription>
+<para>Constructor with initialization. </para>
+        </briefdescription>
+        <detaileddescription>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>traitTemperatureSection</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Pointer to the corresponding <ref refid="class_temp_size_rule_trait_temperature_section" kindref="compound">TempSizeRuleTraitTemperatureSection</ref>. </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="App/Model/IBM/Landscape/LivingBeings/Animals/Genetics/Traits/TempSizeRuleIndividualTraitTemperatureSection.h" line="46" column="5"/>
+      </memberdef>
+      <memberdef kind="function" id="class_temp_size_rule_individual_trait_temperature_section_1a9ceebbae2895b65b916c93b38c18bb69" prot="public" static="no" const="no" explicit="no" inline="no" virt="virtual">
+        <type></type>
+        <definition>virtual TempSizeRuleIndividualTraitTemperatureSection::~TempSizeRuleIndividualTraitTemperatureSection</definition>
+        <argsstring>()</argsstring>
+        <name>~TempSizeRuleIndividualTraitTemperatureSection</name>
+        <qualifiedname>TempSizeRuleIndividualTraitTemperatureSection::~TempSizeRuleIndividualTraitTemperatureSection</qualifiedname>
+        <briefdescription>
+<para>Destructor. </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="App/Model/IBM/Landscape/LivingBeings/Animals/Genetics/Traits/TempSizeRuleIndividualTraitTemperatureSection.h" line="51" column="13"/>
+      </memberdef>
+      <memberdef kind="function" id="class_temp_size_rule_individual_trait_temperature_section_1a6b1376db120238d7849aa712c948b864" prot="public" static="no" const="yes" explicit="no" inline="no" virt="non-virtual">
+        <type><ref refid="class_precise_double" kindref="compound">PreciseDouble</ref></type>
+        <definition>PreciseDouble TempSizeRuleIndividualTraitTemperatureSection::applyTemperatureDependency</definition>
+        <argsstring>(const Temperature &amp;temperature, const PreciseDouble &amp;traitValue, const PreciseDouble &amp;coefficientForMassAforMature, const PreciseDouble &amp;scaleForMassBforMature, const Temperature &amp;tempFromLab) const</argsstring>
+        <name>applyTemperatureDependency</name>
+        <qualifiedname>TempSizeRuleIndividualTraitTemperatureSection::applyTemperatureDependency</qualifiedname>
+        <param>
+          <type>const <ref refid="class_temperature" kindref="compound">Temperature</ref> &amp;</type>
+          <declname>temperature</declname>
+        </param>
+        <param>
+          <type>const <ref refid="class_precise_double" kindref="compound">PreciseDouble</ref> &amp;</type>
+          <declname>traitValue</declname>
+        </param>
+        <param>
+          <type>const <ref refid="class_precise_double" kindref="compound">PreciseDouble</ref> &amp;</type>
+          <declname>coefficientForMassAforMature</declname>
+        </param>
+        <param>
+          <type>const <ref refid="class_precise_double" kindref="compound">PreciseDouble</ref> &amp;</type>
+          <declname>scaleForMassBforMature</declname>
+        </param>
+        <param>
+          <type>const <ref refid="class_temperature" kindref="compound">Temperature</ref> &amp;</type>
+          <declname>tempFromLab</declname>
+        </param>
+        <briefdescription>
+<para>Apply temperature dependency to a trait value following the Temperature-Size Rule. </para>
+        </briefdescription>
+        <detaileddescription>
+<para>Modifies the phenotypic trait value according to environmental temperature.</para>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>temperature</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Current environmental temperature. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>traitValue</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Current trait value. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>coefficientForMassAforMature</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Coefficient A for mature mass calculation. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>scaleForMassBforMature</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Scale B for mature mass calculation. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>tempFromLab</parametername>
+</parameternamelist>
+<parameterdescription>
+<para><ref refid="class_temperature" kindref="compound">Temperature</ref> from laboratory experiments. </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<simplesect kind="return"><para>Modified trait value considering temperature effects. </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="App/Model/IBM/Landscape/LivingBeings/Animals/Genetics/Traits/TempSizeRuleIndividualTraitTemperatureSection.h" line="65" column="19"/>
+      </memberdef>
+      <memberdef kind="function" id="class_temp_size_rule_individual_trait_temperature_section_1a5094d584f3baa8354831c012b7607ad5" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <templateparamlist>
+          <param>
+            <type>class Archive</type>
+          </param>
+        </templateparamlist>
+        <type>void</type>
+        <definition>void TempSizeRuleIndividualTraitTemperatureSection::serialize</definition>
+        <argsstring>(Archive &amp;ar, const unsigned int version)</argsstring>
+        <name>serialize</name>
+        <qualifiedname>TempSizeRuleIndividualTraitTemperatureSection::serialize</qualifiedname>
+        <param>
+          <type>Archive &amp;</type>
+          <declname>ar</declname>
+        </param>
+        <param>
+          <type>const unsigned int</type>
+          <declname>version</declname>
+        </param>
+        <briefdescription>
+<para>Serializes the object for persistence. </para>
+        </briefdescription>
+        <detaileddescription>
+<para><parameterlist kind="templateparam"><parameteritem>
+<parameternamelist>
+<parametername>Archive</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Serialization archive type. </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>ar</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Archive instance. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>version</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Serialization version. </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="App/Model/IBM/Landscape/LivingBeings/Animals/Genetics/Traits/TempSizeRuleIndividualTraitTemperatureSection.h" line="83" column="10"/>
+      </memberdef>
+      <memberdef kind="function" id="class_temp_size_rule_individual_trait_temperature_section_1a9ad6a8642a5de493cb35124cf2508603" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void TempSizeRuleIndividualTraitTemperatureSection::setTraitTemperatureSection</definition>
+        <argsstring>(const TempSizeRuleTraitTemperatureSection *newTraitTemperatureSection)</argsstring>
+        <name>setTraitTemperatureSection</name>
+        <qualifiedname>TempSizeRuleIndividualTraitTemperatureSection::setTraitTemperatureSection</qualifiedname>
+        <param>
+          <type>const <ref refid="class_temp_size_rule_trait_temperature_section" kindref="compound">TempSizeRuleTraitTemperatureSection</ref> *</type>
+          <declname>newTraitTemperatureSection</declname>
+        </param>
+        <briefdescription>
+<para>Update the species-level temperature section this individual trait refers to. </para>
+        </briefdescription>
+        <detaileddescription>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>newTraitTemperatureSection</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Pointer to the new <ref refid="class_temp_size_rule_trait_temperature_section" kindref="compound">TempSizeRuleTraitTemperatureSection</ref>. </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="App/Model/IBM/Landscape/LivingBeings/Animals/Genetics/Traits/TempSizeRuleIndividualTraitTemperatureSection.h" line="73" column="10"/>
+      </memberdef>
+    </sectiondef>
+    <briefdescription>
+<para>Temperature-dependent section of an individual trait following the Temperature-Size Rule. </para>
+    </briefdescription>
+    <detaileddescription>
+<para>This class modifies an individual trait according to the Temperature-Size Rule, which generally describes how ectotherms grow smaller at higher temperatures. </para>
+    </detaileddescription>
+    <collaborationgraph>
+      <node id="1">
+        <label>TempSizeRuleIndividualTraitTemperatureSection</label>
+        <link refid="class_temp_size_rule_individual_trait_temperature_section"/>
+        <childnode refid="2" relation="usage">
+          <edgelabel>traitTemperatureSection</edgelabel>
+        </childnode>
+      </node>
+      <node id="2">
+        <label>TempSizeRuleTraitTemperatureSection</label>
+        <link refid="class_temp_size_rule_trait_temperature_section"/>
+        <childnode refid="3" relation="public-inheritance">
+        </childnode>
+      </node>
+      <node id="3">
+        <label>TraitTemperatureSection</label>
+        <link refid="class_trait_temperature_section"/>
+      </node>
+    </collaborationgraph>
+    <location file="App/Model/IBM/Landscape/LivingBeings/Animals/Genetics/Traits/TempSizeRuleIndividualTraitTemperatureSection.h" line="35" column="1" bodyfile="App/Model/IBM/Landscape/LivingBeings/Animals/Genetics/Traits/TempSizeRuleIndividualTraitTemperatureSection.h" bodystart="35" bodyend="87"/>
+    <listofallmembers>
+      <member refid="class_temp_size_rule_individual_trait_temperature_section_1a6b1376db120238d7849aa712c948b864" prot="public" virt="non-virtual"><scope>TempSizeRuleIndividualTraitTemperatureSection</scope><name>applyTemperatureDependency</name></member>
+      <member refid="class_temp_size_rule_individual_trait_temperature_section_1a5094d584f3baa8354831c012b7607ad5" prot="public" virt="non-virtual"><scope>TempSizeRuleIndividualTraitTemperatureSection</scope><name>serialize</name></member>
+      <member refid="class_temp_size_rule_individual_trait_temperature_section_1a9ad6a8642a5de493cb35124cf2508603" prot="public" virt="non-virtual"><scope>TempSizeRuleIndividualTraitTemperatureSection</scope><name>setTraitTemperatureSection</name></member>
+      <member refid="class_temp_size_rule_individual_trait_temperature_section_1a0ba194cc9deb9f60795174014fe38162" prot="public" virt="non-virtual"><scope>TempSizeRuleIndividualTraitTemperatureSection</scope><name>TempSizeRuleIndividualTraitTemperatureSection</name></member>
+      <member refid="class_temp_size_rule_individual_trait_temperature_section_1a936490b00c672b623b6790aba4815b41" prot="public" virt="non-virtual"><scope>TempSizeRuleIndividualTraitTemperatureSection</scope><name>TempSizeRuleIndividualTraitTemperatureSection</name></member>
+      <member refid="class_temp_size_rule_individual_trait_temperature_section_1af6f8e2b4aa3f4e8af2f72e81a2473cbb" prot="private" virt="non-virtual"><scope>TempSizeRuleIndividualTraitTemperatureSection</scope><name>traitTemperatureSection</name></member>
+      <member refid="class_temp_size_rule_individual_trait_temperature_section_1a9ceebbae2895b65b916c93b38c18bb69" prot="public" virt="virtual"><scope>TempSizeRuleIndividualTraitTemperatureSection</scope><name>~TempSizeRuleIndividualTraitTemperatureSection</name></member>
+    </listofallmembers>
+  </compounddef>
+</doxygen>

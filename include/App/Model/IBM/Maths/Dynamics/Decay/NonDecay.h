@@ -17,6 +17,7 @@
 
 /**
  * @class NonDecay
+ * @ingroup weaver_model
  * @brief Represents a decay model with no decay effect.
  *
  * This class models a situation where the value remains constant over time.

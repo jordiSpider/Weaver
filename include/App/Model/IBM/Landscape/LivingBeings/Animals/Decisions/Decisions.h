@@ -26,6 +26,7 @@ class Landscape;
 
 /**
  * @class Decisions
+ * @ingroup weaver_landscape
  * @brief Encapsulates the decision-making logic of an animal, including predation probabilities, feeding, and movement.
  * 
  * This class stores information about the animal's experience, preferences, and recent feeding activity.

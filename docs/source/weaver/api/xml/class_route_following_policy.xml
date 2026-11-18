@@ -1,0 +1,74 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.14.0" xml:lang="en-US">
+  <compounddef id="class_route_following_policy" kind="class" language="C++" prot="public" abstract="yes">
+    <compoundname>RouteFollowingPolicy</compoundname>
+    <derivedcompoundref refid="class_waypoint_route_following_policy" prot="public" virt="non-virtual">WaypointRouteFollowingPolicy</derivedcompoundref>
+    <sectiondef kind="public-func">
+      <memberdef kind="function" id="class_route_following_policy_1a570d6cd9b8a3240aeb8840d68d6a7fe4" prot="public" static="no" const="no" explicit="no" inline="no" virt="virtual">
+        <type></type>
+        <definition>virtual RouteFollowingPolicy::~RouteFollowingPolicy</definition>
+        <argsstring>()=default</argsstring>
+        <name>~RouteFollowingPolicy</name>
+        <qualifiedname>RouteFollowingPolicy::~RouteFollowingPolicy</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="App/Model/IBM/Landscape/Map/Navigation/RouteFollowingPolicy.h" line="25" column="9"/>
+      </memberdef>
+      <memberdef kind="function" id="class_route_following_policy_1ac0078370a72d0ade7b8bb6867bacc2f7" prot="public" static="no" const="yes" explicit="no" inline="no" virt="pure-virtual">
+        <type>RouteFollowingResult</type>
+        <definition>virtual RouteFollowingResult RouteFollowingPolicy::advance</definition>
+        <argsstring>(const NavigationRoute &amp;route, size_t nextCellIndex, const Map &amp;map, const PointContinuous &amp;currentPosition, const PointContinuous &amp;destination, const PreciseDouble &amp;remainingDistance, const PreciseDouble &amp;animalBodySection) const =0</argsstring>
+        <name>advance</name>
+        <qualifiedname>RouteFollowingPolicy::advance</qualifiedname>
+        <param>
+          <type>const NavigationRoute &amp;</type>
+          <declname>route</declname>
+        </param>
+        <param>
+          <type>size_t</type>
+          <declname>nextCellIndex</declname>
+        </param>
+        <param>
+          <type>const <ref refid="class_map" kindref="compound">Map</ref> &amp;</type>
+          <declname>map</declname>
+        </param>
+        <param>
+          <type>const PointContinuous &amp;</type>
+          <declname>currentPosition</declname>
+        </param>
+        <param>
+          <type>const PointContinuous &amp;</type>
+          <declname>destination</declname>
+        </param>
+        <param>
+          <type>const <ref refid="class_precise_double" kindref="compound">PreciseDouble</ref> &amp;</type>
+          <declname>remainingDistance</declname>
+        </param>
+        <param>
+          <type>const <ref refid="class_precise_double" kindref="compound">PreciseDouble</ref> &amp;</type>
+          <declname>animalBodySection</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="App/Model/IBM/Landscape/Map/Navigation/RouteFollowingPolicy.h" line="26" column="30"/>
+      </memberdef>
+    </sectiondef>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+    </detaileddescription>
+    <location file="App/Model/IBM/Landscape/Map/Navigation/RouteFollowingPolicy.h" line="22" column="1" bodyfile="App/Model/IBM/Landscape/Map/Navigation/RouteFollowingPolicy.h" bodystart="23" bodyend="27"/>
+    <listofallmembers>
+      <member refid="class_route_following_policy_1ac0078370a72d0ade7b8bb6867bacc2f7" prot="public" virt="pure-virtual"><scope>RouteFollowingPolicy</scope><name>advance</name></member>
+      <member refid="class_route_following_policy_1a570d6cd9b8a3240aeb8840d68d6a7fe4" prot="public" virt="virtual"><scope>RouteFollowingPolicy</scope><name>~RouteFollowingPolicy</name></member>
+    </listofallmembers>
+  </compounddef>
+</doxygen>

@@ -1,0 +1,510 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.14.0" xml:lang="en-US">
+  <compounddef id="trim_8h" kind="file" language="C++">
+    <compoundname>trim.h</compoundname>
+    <includes local="no">algorithm</includes>
+    <includes local="no">cctype</includes>
+    <includes local="no">locale</includes>
+    <includedby refid="_species_2_species_8h" local="yes">App/Model/IBM/Landscape/LivingBeings/Species/Species.h</includedby>
+    <incdepgraph>
+      <node id="1">
+        <label>Misc/string/trim.h</label>
+        <link refid="trim_8h"/>
+        <childnode refid="2" relation="include">
+        </childnode>
+        <childnode refid="3" relation="include">
+        </childnode>
+        <childnode refid="4" relation="include">
+        </childnode>
+      </node>
+      <node id="2">
+        <label>algorithm</label>
+      </node>
+      <node id="3">
+        <label>cctype</label>
+      </node>
+      <node id="4">
+        <label>locale</label>
+      </node>
+    </incdepgraph>
+    <invincdepgraph>
+      <node id="6">
+        <label>App/Model/IBM/IBM.h</label>
+        <link refid="_i_b_m_8h_source"/>
+      </node>
+      <node id="7">
+        <label>App/Model/IBM/Landscape/AquaticLandscape.h</label>
+        <link refid="_aquatic_landscape_8h_source"/>
+      </node>
+      <node id="8">
+        <label>App/Model/IBM/Landscape/ArthropodsLandscape.h</label>
+        <link refid="_arthropods_landscape_8h_source"/>
+      </node>
+      <node id="9">
+        <label>App/Model/IBM/Landscape/DinosaursLandscape.h</label>
+        <link refid="_dinosaurs_landscape_8h_source"/>
+      </node>
+      <node id="5">
+        <label>App/Model/IBM/Landscape/Landscape.h</label>
+        <link refid="_landscape_8h_source"/>
+        <childnode refid="6" relation="include">
+        </childnode>
+        <childnode refid="7" relation="include">
+        </childnode>
+        <childnode refid="8" relation="include">
+        </childnode>
+        <childnode refid="9" relation="include">
+        </childnode>
+      </node>
+      <node id="22">
+        <label>App/Model/IBM/Landscape/LivingBeings/Animals/Animal.h</label>
+        <link refid="_animal_8h_source"/>
+        <childnode refid="4" relation="include">
+        </childnode>
+        <childnode refid="23" relation="include">
+        </childnode>
+        <childnode refid="18" relation="include">
+        </childnode>
+        <childnode refid="14" relation="include">
+        </childnode>
+      </node>
+      <node id="4">
+        <label>App/Model/IBM/Landscape/LivingBeings/Animals/AnimalNonStatistical.h</label>
+        <link refid="_animal_non_statistical_8h_source"/>
+        <childnode refid="5" relation="include">
+        </childnode>
+        <childnode refid="10" relation="include">
+        </childnode>
+        <childnode refid="12" relation="include">
+        </childnode>
+        <childnode refid="14" relation="include">
+        </childnode>
+      </node>
+      <node id="23">
+        <label>App/Model/IBM/Landscape/LivingBeings/Animals/AnimalStatistical.h</label>
+        <link refid="_animal_statistical_8h_source"/>
+        <childnode refid="15" relation="include">
+        </childnode>
+        <childnode refid="11" relation="include">
+        </childnode>
+      </node>
+      <node id="3">
+        <label>App/Model/IBM/Landscape/LivingBeings/Animals/Decisions/Decisions.h</label>
+        <link refid="_decisions_8h_source"/>
+        <childnode refid="4" relation="include">
+        </childnode>
+      </node>
+      <node id="20">
+        <label>App/Model/IBM/Landscape/LivingBeings/Animals/Prey.h</label>
+        <link refid="_prey_8h_source"/>
+        <childnode refid="4" relation="include">
+        </childnode>
+      </node>
+      <node id="21">
+        <label>App/Model/IBM/Landscape/LivingBeings/Animals/Species/AnimalSpecies.h</label>
+        <link refid="_animal_species_8h_source"/>
+        <childnode refid="5" relation="include">
+        </childnode>
+        <childnode refid="22" relation="include">
+        </childnode>
+        <childnode refid="24" relation="include">
+        </childnode>
+        <childnode refid="11" relation="include">
+        </childnode>
+        <childnode refid="14" relation="include">
+        </childnode>
+      </node>
+      <node id="32">
+        <label>App/Model/IBM/Landscape/LivingBeings/Edible.h</label>
+        <link refid="_edible_8h_source"/>
+        <childnode refid="5" relation="include">
+        </childnode>
+        <childnode refid="22" relation="include">
+        </childnode>
+        <childnode refid="12" relation="include">
+        </childnode>
+        <childnode refid="33" relation="include">
+        </childnode>
+      </node>
+      <node id="38">
+        <label>App/Model/IBM/Landscape/LivingBeings/Resources/Species/ResourceSpecies.h</label>
+        <link refid="_resource_species_8h_source"/>
+        <childnode refid="5" relation="include">
+        </childnode>
+        <childnode refid="21" relation="include">
+        </childnode>
+        <childnode refid="39" relation="include">
+        </childnode>
+        <childnode refid="11" relation="include">
+        </childnode>
+        <childnode refid="33" relation="include">
+        </childnode>
+        <childnode refid="43" relation="include">
+        </childnode>
+        <childnode refid="36" relation="include">
+        </childnode>
+      </node>
+      <node id="2">
+        <label>App/Model/IBM/Landscape/LivingBeings/Species/Species.h</label>
+        <link refid="_species_2_species_8h_source"/>
+        <childnode refid="3" relation="include">
+        </childnode>
+        <childnode refid="20" relation="include">
+        </childnode>
+        <childnode refid="21" relation="include">
+        </childnode>
+        <childnode refid="32" relation="include">
+        </childnode>
+        <childnode refid="38" relation="include">
+        </childnode>
+      </node>
+      <node id="15">
+        <label>App/Model/IBM/Landscape/Map/Map.h</label>
+        <link refid="_map_8h_source"/>
+        <childnode refid="5" relation="include">
+        </childnode>
+        <childnode refid="11" relation="include">
+        </childnode>
+      </node>
+      <node id="13">
+        <label>App/Model/IBM/Landscape/Map/Navigation/DestinationSelectionPolicy.h</label>
+        <link refid="_destination_selection_policy_8h_source"/>
+      </node>
+      <node id="24">
+        <label>App/Model/IBM/Landscape/Map/Patches/Source/HabitatDomainSource.h</label>
+        <link refid="_habitat_domain_source_8h_source"/>
+        <childnode refid="5" relation="include">
+        </childnode>
+        <childnode refid="25" relation="include">
+        </childnode>
+        <childnode refid="27" relation="include">
+        </childnode>
+        <childnode refid="30" relation="include">
+        </childnode>
+      </node>
+      <node id="39">
+        <label>App/Model/IBM/Landscape/Map/Patches/Source/ResourceSource.h</label>
+        <link refid="_resource_source_8h_source"/>
+        <childnode refid="5" relation="include">
+        </childnode>
+        <childnode refid="30" relation="include">
+        </childnode>
+        <childnode refid="33" relation="include">
+        </childnode>
+        <childnode refid="40" relation="include">
+        </childnode>
+      </node>
+      <node id="11">
+        <label>App/Model/IBM/Landscape/Map/SpatialTree.h</label>
+        <link refid="_spatial_tree_8h_source"/>
+        <childnode refid="5" relation="include">
+        </childnode>
+      </node>
+      <node id="10">
+        <label>App/Model/IBM/Landscape/Map/SpatialTree/LivingBeings/Animals/SpatialTreeAnimal.h</label>
+        <link refid="_spatial_tree_animal_8h_source"/>
+        <childnode refid="11" relation="include">
+        </childnode>
+      </node>
+      <node id="17">
+        <label>App/Model/IBM/Landscape/Map/SpatialTree/TerrainCells/BranchTerrainCell.h</label>
+        <link refid="_branch_terrain_cell_8h_source"/>
+        <childnode refid="18" relation="include">
+        </childnode>
+      </node>
+      <node id="19">
+        <label>App/Model/IBM/Landscape/Map/SpatialTree/TerrainCells/LeafTerrainCell.h</label>
+        <link refid="_leaf_terrain_cell_8h_source"/>
+        <childnode refid="17" relation="include">
+        </childnode>
+      </node>
+      <node id="26">
+        <label>App/Model/IBM/Landscape/Map/SpatialTree/TerrainCells/PatchApplicator/BranchPatchApplicator.h</label>
+        <link refid="_branch_patch_applicator_8h_source"/>
+        <childnode refid="17" relation="include">
+        </childnode>
+      </node>
+      <node id="25">
+        <label>App/Model/IBM/Landscape/Map/SpatialTree/TerrainCells/PatchApplicator/HabitatDomain/BranchCellHabitatDomain.h</label>
+        <link refid="_branch_cell_habitat_domain_8h_source"/>
+        <childnode refid="26" relation="include">
+        </childnode>
+      </node>
+      <node id="29">
+        <label>App/Model/IBM/Landscape/Map/SpatialTree/TerrainCells/PatchApplicator/LeafPatchApplicator.h</label>
+        <link refid="_leaf_patch_applicator_8h_source"/>
+        <childnode refid="19" relation="include">
+        </childnode>
+      </node>
+      <node id="34">
+        <label>App/Model/IBM/Landscape/Map/SpatialTree/TerrainCells/PatchApplicator/Resources/BranchCellResource.h</label>
+        <link refid="_branch_cell_resource_8h_source"/>
+        <childnode refid="17" relation="include">
+        </childnode>
+        <childnode refid="26" relation="include">
+        </childnode>
+      </node>
+      <node id="41">
+        <label>App/Model/IBM/Landscape/Map/SpatialTree/TerrainCells/PatchApplicator/Resources/Growth/BranchCellResourceGrowth.h</label>
+        <link refid="_branch_cell_resource_growth_8h_source"/>
+        <childnode refid="34" relation="include">
+        </childnode>
+      </node>
+      <node id="31">
+        <label>App/Model/IBM/Landscape/Map/SpatialTree/TerrainCells/PatchApplicator/SpatialTreePatchApplicator.h</label>
+        <link refid="_spatial_tree_patch_applicator_8h_source"/>
+        <childnode refid="26" relation="include">
+        </childnode>
+        <childnode refid="29" relation="include">
+        </childnode>
+        <childnode refid="16" relation="include">
+        </childnode>
+      </node>
+      <node id="18">
+        <label>App/Model/IBM/Landscape/Map/SpatialTree/TerrainCells/RootTerrainCell.h</label>
+        <link refid="_root_terrain_cell_8h_source"/>
+        <childnode refid="11" relation="include">
+        </childnode>
+      </node>
+      <node id="16">
+        <label>App/Model/IBM/Landscape/Map/SpatialTree/TerrainCells/SpatialTreeTerrainCell.h</label>
+        <link refid="_spatial_tree_terrain_cell_8h_source"/>
+        <childnode refid="11" relation="include">
+        </childnode>
+        <childnode refid="17" relation="include">
+        </childnode>
+        <childnode refid="19" relation="include">
+        </childnode>
+      </node>
+      <node id="12">
+        <label>App/Model/IBM/Landscape/Map/TerrainCells/CellValue.h</label>
+        <link refid="_cell_value_8h_source"/>
+        <childnode refid="13" relation="include">
+        </childnode>
+        <childnode refid="10" relation="include">
+        </childnode>
+        <childnode refid="14" relation="include">
+        </childnode>
+      </node>
+      <node id="37">
+        <label>App/Model/IBM/Landscape/Map/TerrainCells/EdibleSearchParams.h</label>
+        <link refid="_edible_search_params_8h_source"/>
+        <childnode refid="21" relation="include">
+        </childnode>
+      </node>
+      <node id="28">
+        <label>App/Model/IBM/Landscape/Map/TerrainCells/PatchApplicator/HabitatDomain/CellHabitatDomain.h</label>
+        <link refid="_cell_habitat_domain_8h_source"/>
+        <childnode refid="29" relation="include">
+        </childnode>
+      </node>
+      <node id="27">
+        <label>App/Model/IBM/Landscape/Map/TerrainCells/PatchApplicator/HabitatDomain/CellHabitatDomainInterface.h</label>
+        <link refid="_cell_habitat_domain_interface_8h_source"/>
+        <childnode refid="25" relation="include">
+        </childnode>
+        <childnode refid="28" relation="include">
+        </childnode>
+        <childnode refid="30" relation="include">
+        </childnode>
+      </node>
+      <node id="30">
+        <label>App/Model/IBM/Landscape/Map/TerrainCells/PatchApplicator/PatchApplicator.h</label>
+        <link refid="_patch_applicator_8h_source"/>
+        <childnode refid="31" relation="include">
+        </childnode>
+        <childnode refid="14" relation="include">
+        </childnode>
+      </node>
+      <node id="35">
+        <label>App/Model/IBM/Landscape/Map/TerrainCells/PatchApplicator/Resources/CellResource.h</label>
+        <link refid="_cell_resource_8h_source"/>
+        <childnode refid="5" relation="include">
+        </childnode>
+        <childnode refid="29" relation="include">
+        </childnode>
+        <childnode refid="30" relation="include">
+        </childnode>
+        <childnode refid="14" relation="include">
+        </childnode>
+      </node>
+      <node id="33">
+        <label>App/Model/IBM/Landscape/Map/TerrainCells/PatchApplicator/Resources/CellResourceInterface.h</label>
+        <link refid="_cell_resource_interface_8h_source"/>
+        <childnode refid="34" relation="include">
+        </childnode>
+        <childnode refid="30" relation="include">
+        </childnode>
+        <childnode refid="35" relation="include">
+        </childnode>
+        <childnode refid="36" relation="include">
+        </childnode>
+      </node>
+      <node id="42">
+        <label>App/Model/IBM/Landscape/Map/TerrainCells/PatchApplicator/Resources/Growth/CellResourceGrowth.h</label>
+        <link refid="_cell_resource_growth_8h_source"/>
+        <childnode refid="35" relation="include">
+        </childnode>
+      </node>
+      <node id="40">
+        <label>App/Model/IBM/Landscape/Map/TerrainCells/PatchApplicator/Resources/Growth/CellResourceInterfaceGrowth.h</label>
+        <link refid="_cell_resource_interface_growth_8h_source"/>
+        <childnode refid="41" relation="include">
+        </childnode>
+        <childnode refid="33" relation="include">
+        </childnode>
+        <childnode refid="42" relation="include">
+        </childnode>
+      </node>
+      <node id="43">
+        <label>App/Model/IBM/Landscape/Map/TerrainCells/PatchApplicator/Resources/ResourceSignature.h</label>
+        <link refid="_resource_signature_8h_source"/>
+        <childnode refid="33" relation="include">
+        </childnode>
+      </node>
+      <node id="36">
+        <label>App/Model/IBM/Landscape/Map/TerrainCells/ResourceSearchParams.h</label>
+        <link refid="_resource_search_params_8h_source"/>
+        <childnode refid="37" relation="include">
+        </childnode>
+        <childnode refid="14" relation="include">
+        </childnode>
+      </node>
+      <node id="14">
+        <label>App/Model/IBM/Landscape/Map/TerrainCells/TerrainCell.h</label>
+        <link refid="_terrain_cell_8h_source"/>
+        <childnode refid="5" relation="include">
+        </childnode>
+        <childnode refid="15" relation="include">
+        </childnode>
+        <childnode refid="11" relation="include">
+        </childnode>
+        <childnode refid="16" relation="include">
+        </childnode>
+      </node>
+      <node id="1">
+        <label>Misc/string/trim.h</label>
+        <link refid="trim_8h"/>
+        <childnode refid="2" relation="include">
+        </childnode>
+      </node>
+    </invincdepgraph>
+    <sectiondef kind="func">
+      <memberdef kind="function" id="trim_8h_1ad43a4a97af0218124c6f1343dd27a295" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void ltrim</definition>
+        <argsstring>(std::string &amp;s)</argsstring>
+        <name>ltrim</name>
+        <param>
+          <type>std::string &amp;</type>
+          <declname>s</declname>
+        </param>
+        <briefdescription>
+<para>Trims whitespace from the start (left) of the string in-place. </para>
+        </briefdescription>
+        <detaileddescription>
+<para>Removes all leading whitespace characters (spaces, tabs, etc.) from the provided string.</para>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>s</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>The string to trim. </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="Misc/string/trim.h" line="25" column="6" declfile="Misc/string/trim.h" declline="25" declcolumn="6"/>
+      </memberdef>
+      <memberdef kind="function" id="trim_8h_1aa09e1d628a7971037572fa4ed3f3e43b" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void rtrim</definition>
+        <argsstring>(std::string &amp;s)</argsstring>
+        <name>rtrim</name>
+        <param>
+          <type>std::string &amp;</type>
+          <declname>s</declname>
+        </param>
+        <briefdescription>
+<para>Trims whitespace from the end (right) of the string in-place. </para>
+        </briefdescription>
+        <detaileddescription>
+<para>Removes all trailing whitespace characters (spaces, tabs, etc.) from the provided string.</para>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>s</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>The string to trim. </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="Misc/string/trim.h" line="34" column="6" declfile="Misc/string/trim.h" declline="34" declcolumn="6"/>
+      </memberdef>
+      <memberdef kind="function" id="trim_8h_1a9de43e600ebc3a0f919582b007c25322" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>std::string</type>
+        <definition>std::string trim</definition>
+        <argsstring>(std::string s)</argsstring>
+        <name>trim</name>
+        <param>
+          <type>std::string</type>
+          <declname>s</declname>
+        </param>
+        <briefdescription>
+<para>Trims whitespace from both ends of the string. </para>
+        </briefdescription>
+        <detaileddescription>
+<para>Returns a new string with leading and trailing whitespace removed.</para>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>s</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>The input string to trim. </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<simplesect kind="return"><para>A trimmed copy of the input string. </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="Misc/string/trim.h" line="44" column="13" declfile="Misc/string/trim.h" declline="44" declcolumn="13"/>
+      </memberdef>
+    </sectiondef>
+    <briefdescription>
+<para>Provides utility functions to trim whitespace from strings. </para>
+    </briefdescription>
+    <detaileddescription>
+<para>This header defines functions to remove leading, trailing, or both leading and trailing whitespace characters from std::string objects. The trimming functions modify the string in-place where applicable or return a trimmed copy. </para>
+    </detaileddescription>
+    <programlisting>
+<codeline lineno="1"><highlight class="normal"></highlight></codeline>
+<codeline lineno="9"><highlight class="normal"></highlight></codeline>
+<codeline lineno="10"><highlight class="normal"></highlight><highlight class="preprocessor">#ifndef<sp/>TRIM_H_</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="11"><highlight class="normal"></highlight><highlight class="preprocessor">#define<sp/>TRIM_H_</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="12"><highlight class="normal"></highlight></codeline>
+<codeline lineno="13"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&lt;algorithm&gt;</highlight><highlight class="normal"><sp/></highlight></codeline>
+<codeline lineno="14"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&lt;cctype&gt;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="15"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&lt;locale&gt;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="16"><highlight class="normal"></highlight></codeline>
+<codeline lineno="17"><highlight class="normal"></highlight></codeline>
+<codeline lineno="25"><highlight class="normal"></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/>ltrim(std::string<sp/>&amp;s);</highlight></codeline>
+<codeline lineno="26"><highlight class="normal"></highlight></codeline>
+<codeline lineno="34"><highlight class="normal"></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/>rtrim(std::string<sp/>&amp;s);</highlight></codeline>
+<codeline lineno="35"><highlight class="normal"></highlight></codeline>
+<codeline lineno="44"><highlight class="normal">std::string<sp/>trim(std::string<sp/>s);</highlight></codeline>
+<codeline lineno="45"><highlight class="normal"></highlight></codeline>
+<codeline lineno="46"><highlight class="normal"></highlight><highlight class="preprocessor">#endif<sp/></highlight><highlight class="comment">/*<sp/>TRIM_H_<sp/>*/</highlight><highlight class="preprocessor"></highlight></codeline>
+    </programlisting>
+    <location file="Misc/string/trim.h"/>
+  </compounddef>
+</doxygen>

@@ -26,6 +26,7 @@
 
 /**
 * @class DinosaursLandscape
+* @ingroup weaver_landscape
 * @brief Specialized landscape model representing dinosaur ecosystems.
 *
 * This class extends the generic Landscape class with rules and calculations

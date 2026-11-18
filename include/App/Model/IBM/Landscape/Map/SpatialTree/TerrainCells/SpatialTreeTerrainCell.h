@@ -37,6 +37,7 @@ class BranchTerrainCell;
 
 /**
  * @class SpatialTreeTerrainCell
+ * @ingroup weaver_landscape
  * @brief Represents a terrain cell in a spatial tree structure.
  *
  * Each spatial tree cell may have a parent branch and contains methods 

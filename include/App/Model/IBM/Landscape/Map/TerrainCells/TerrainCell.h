@@ -150,6 +150,7 @@ using ResourceFunctions = std::vector<std::function<void(CellResourceInterface&,
 
 /**
  * @class TerrainCell
+ * @ingroup weaver_landscape
  * @brief Represents a single cell in the landscape.
  *
  * TerrainCell stores animals and resources within a discrete spatial cell.

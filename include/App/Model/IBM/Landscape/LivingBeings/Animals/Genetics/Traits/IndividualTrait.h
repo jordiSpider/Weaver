@@ -28,6 +28,7 @@
 
 /**
  * @class IndividualTrait
+ * @ingroup weaver_landscape
  * @brief Represents an individual trait of an animal.
  * 
  * This class encapsulates a single trait of an individual animal. It holds both the

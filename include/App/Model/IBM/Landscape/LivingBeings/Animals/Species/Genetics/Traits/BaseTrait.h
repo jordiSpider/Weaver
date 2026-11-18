@@ -22,6 +22,7 @@
 
 /**
  * @class BaseTrait
+ * @ingroup weaver_landscape
  * @brief Represents a fundamental trait for individuals in the simulation.
  *
  * BaseTrait inherits from Trait and includes functionality to:

@@ -26,6 +26,7 @@ class RouteFollowingPolicy;
 
 /**
  * @class SpatialTreeAnimal
+ * @ingroup weaver_landscape
  * @brief Represents a non-statistical animal located in a spatial tree terrain.
  *
  * Extends AnimalNonStatistical to provide movement, target search, and reproduction

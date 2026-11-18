@@ -25,7 +25,7 @@ set(REQUIRED_VARS
 set(MISSING_VARS "")
 
 foreach(var_name IN LISTS REQUIRED_VARS)
-    if(NOT DEFINED ${var_name} OR ${var_name} STREQUAL "")
+    if(NOT DEFINED ${var_name} OR "${${var_name}}" STREQUAL "")
         list(APPEND MISSING_VARS "${var_name}")
     endif()
 endforeach()
@@ -42,7 +42,7 @@ endif()
 # ------------------------------------------------------------
 # Convert the conf.in.py template into a conf.py file
 # using CMake's configure_file functionality.
-set(SPHINX_CONF_INPUT "${SPHINX_SOURCE_DIR}/latest/conf.in.py")
-set(SPHINX_CONF_OUTPUT "${SPHINX_SOURCE_DIR}/latest/conf.py")
+set(SPHINX_CONF_INPUT "${WEAVER_DOCS_SOURCE_DIR}/latest/conf.in.py")
+set(SPHINX_CONF_OUTPUT "${WEAVER_DOCS_SOURCE_DIR}/latest/conf.py")
 
-configure_file(${SPHINX_CONF_INPUT} ${SPHINX_CONF_OUTPUT} @ONLY)
+configure_file("${SPHINX_CONF_INPUT}" "${SPHINX_CONF_OUTPUT}" @ONLY)

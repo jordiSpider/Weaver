@@ -1,0 +1,881 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.14.0" xml:lang="en-US">
+  <compounddef id="class_branch_cell_resource" kind="class" language="C++" prot="public">
+    <compoundname>BranchCellResource</compoundname>
+    <basecompoundref refid="class_cell_resource_interface" prot="public" virt="non-virtual">CellResourceInterface</basecompoundref>
+    <includes refid="_branch_cell_resource_8h" local="no">BranchCellResource.h</includes>
+    <sectiondef kind="protected-attrib">
+      <memberdef kind="variable" id="class_branch_cell_resource_1aa58236bcb8919792b7a7c97fbce97012" prot="protected" static="no" mutable="no">
+        <type><ref refid="class_branch_cell_resource_growth" kindref="compound">BranchCellResourceGrowth</ref></type>
+        <definition>BranchCellResourceGrowth BranchCellResource::growthBuildingBlock</definition>
+        <argsstring></argsstring>
+        <name>growthBuildingBlock</name>
+        <qualifiedname>BranchCellResource::growthBuildingBlock</qualifiedname>
+        <briefdescription>
+<para>Growth building block for this resource. </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="App/Model/IBM/Landscape/Map/SpatialTree/TerrainCells/PatchApplicator/Resources/BranchCellResource.h" line="127" column="30" bodyfile="App/Model/IBM/Landscape/Map/SpatialTree/TerrainCells/PatchApplicator/Resources/BranchCellResource.h" bodystart="127" bodyend="-1"/>
+      </memberdef>
+    </sectiondef>
+    <sectiondef kind="public-func">
+      <memberdef kind="function" id="class_branch_cell_resource_1ad7d51cfcf5515a6d77d1cf975221d30e" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type></type>
+        <definition>BranchCellResource::BranchCellResource</definition>
+        <argsstring>()</argsstring>
+        <name>BranchCellResource</name>
+        <qualifiedname>BranchCellResource::BranchCellResource</qualifiedname>
+        <briefdescription>
+<para>Default constructor. </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="App/Model/IBM/Landscape/Map/SpatialTree/TerrainCells/PatchApplicator/Resources/BranchCellResource.h" line="36" column="5"/>
+      </memberdef>
+      <memberdef kind="function" id="class_branch_cell_resource_1a37097b9dab49f18b58c29bf44acb0920" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type></type>
+        <definition>BranchCellResource::BranchCellResource</definition>
+        <argsstring>(BranchTerrainCell *const summaryTerrainCell, const size_t newResourcePatchPriority, ResourceSpecies &amp;resourceSpecies)</argsstring>
+        <name>BranchCellResource</name>
+        <qualifiedname>BranchCellResource::BranchCellResource</qualifiedname>
+        <param>
+          <type><ref refid="class_branch_terrain_cell" kindref="compound">BranchTerrainCell</ref> *const</type>
+          <declname>summaryTerrainCell</declname>
+        </param>
+        <param>
+          <type>const size_t</type>
+          <declname>newResourcePatchPriority</declname>
+        </param>
+        <param>
+          <type><ref refid="class_resource_species" kindref="compound">ResourceSpecies</ref> &amp;</type>
+          <declname>resourceSpecies</declname>
+        </param>
+        <briefdescription>
+<para>Constructor with resource species and patch priority. </para>
+        </briefdescription>
+        <detaileddescription>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>summaryTerrainCell</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Pointer to the branch terrain cell to summarize. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>newResourcePatchPriority</parametername>
+</parameternamelist>
+<parameterdescription>
+<para><ref refid="class_patch" kindref="compound">Patch</ref> priority for resource updates. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>resourceSpecies</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Reference to the resource species represented by this cell. </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="App/Model/IBM/Landscape/Map/SpatialTree/TerrainCells/PatchApplicator/Resources/BranchCellResource.h" line="44" column="5"/>
+      </memberdef>
+      <memberdef kind="function" id="class_branch_cell_resource_1a6d25138ebe7e309a7060577097b3f2db" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type></type>
+        <definition>BranchCellResource::BranchCellResource</definition>
+        <argsstring>(const BranchCellResource &amp;)=delete</argsstring>
+        <name>BranchCellResource</name>
+        <qualifiedname>BranchCellResource::BranchCellResource</qualifiedname>
+        <param>
+          <type>const <ref refid="class_branch_cell_resource" kindref="compound">BranchCellResource</ref> &amp;</type>
+        </param>
+        <briefdescription>
+<para>Deleted copy constructor. </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="App/Model/IBM/Landscape/Map/SpatialTree/TerrainCells/PatchApplicator/Resources/BranchCellResource.h" line="50" column="5"/>
+      </memberdef>
+      <memberdef kind="function" id="class_branch_cell_resource_1aac57f7be466841df25a55706d907210b" prot="public" static="no" const="no" explicit="no" inline="no" virt="virtual">
+        <type></type>
+        <definition>virtual BranchCellResource::~BranchCellResource</definition>
+        <argsstring>()</argsstring>
+        <name>~BranchCellResource</name>
+        <qualifiedname>BranchCellResource::~BranchCellResource</qualifiedname>
+        <briefdescription>
+<para>Destructor. </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="App/Model/IBM/Landscape/Map/SpatialTree/TerrainCells/PatchApplicator/Resources/BranchCellResource.h" line="47" column="13"/>
+      </memberdef>
+      <memberdef kind="function" id="class_branch_cell_resource_1a5d1e7626bc100085f3c348c789871777" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void BranchCellResource::applyBranch</definition>
+        <argsstring>()</argsstring>
+        <name>applyBranch</name>
+        <qualifiedname>BranchCellResource::applyBranch</qualifiedname>
+        <briefdescription>
+<para>Apply the aggregated data from child cells to the branch-level resource. </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="App/Model/IBM/Landscape/Map/SpatialTree/TerrainCells/PatchApplicator/Resources/BranchCellResource.h" line="71" column="10"/>
+      </memberdef>
+      <memberdef kind="function" id="class_branch_cell_resource_1a8e4189a193368e1b59d30d2a3eae02da" prot="public" static="no" const="yes" explicit="no" inline="no" virt="virtual">
+        <type><ref refid="class_dry_mass" kindref="compound">DryMass</ref></type>
+        <definition>DryMass BranchCellResource::calculateDryMassAvailable</definition>
+        <argsstring>(const bool fullCoverage, const PointContinuous *const sourcePosition, const PreciseDouble &amp;radius) const</argsstring>
+        <name>calculateDryMassAvailable</name>
+        <qualifiedname>BranchCellResource::calculateDryMassAvailable</qualifiedname>
+        <reimplements refid="class_cell_resource_interface_1a10b3d57ed8d7cf2b50115587a8b340c0">calculateDryMassAvailable</reimplements>
+        <param>
+          <type>const bool</type>
+          <declname>fullCoverage</declname>
+        </param>
+        <param>
+          <type>const PointContinuous *const</type>
+          <declname>sourcePosition</declname>
+        </param>
+        <param>
+          <type>const <ref refid="class_precise_double" kindref="compound">PreciseDouble</ref> &amp;</type>
+          <declname>radius</declname>
+        </param>
+        <briefdescription>
+<para>Calculate the available dry mass for this resource. </para>
+        </briefdescription>
+        <detaileddescription>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>fullCoverage</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>If true, consider full coverage of the cell. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>sourcePosition</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Optional source position for distance-based calculations. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>radius</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Radius to consider for the calculation. </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<simplesect kind="return"><para>Available dry mass. </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="App/Model/IBM/Landscape/Map/SpatialTree/TerrainCells/PatchApplicator/Resources/BranchCellResource.h" line="92" column="13"/>
+      </memberdef>
+      <memberdef kind="function" id="class_branch_cell_resource_1abfc22636b08b58bdd3f7593d3a582620" prot="public" static="no" const="no" explicit="no" inline="no" virt="virtual">
+        <type>void</type>
+        <definition>void BranchCellResource::deserializeCellResource</definition>
+        <argsstring>(std::vector&lt; std::pair&lt; size_t, ResourceSource * &gt; &gt; &amp;appliedResource)</argsstring>
+        <name>deserializeCellResource</name>
+        <qualifiedname>BranchCellResource::deserializeCellResource</qualifiedname>
+        <reimplements refid="class_cell_resource_interface_1ae42af26dc8d4686eb693bf4d4c44722e">deserializeCellResource</reimplements>
+        <param>
+          <type>std::vector&lt; std::pair&lt; size_t, <ref refid="class_resource_source" kindref="compound">ResourceSource</ref> * &gt; &gt; &amp;</type>
+          <declname>appliedResource</declname>
+        </param>
+        <briefdescription>
+<para>Deserialize resource data from applied resource sources. </para>
+        </briefdescription>
+        <detaileddescription>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>appliedResource</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Vector of pairs containing resource patch IDs and pointers to resource sources. </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="App/Model/IBM/Landscape/Map/SpatialTree/TerrainCells/PatchApplicator/Resources/BranchCellResource.h" line="83" column="10"/>
+      </memberdef>
+      <memberdef kind="function" id="class_branch_cell_resource_1ae7ceb13ae866aba9e23f386780f35fbb" prot="public" static="no" const="yes" explicit="no" inline="no" virt="virtual">
+        <type>const <ref refid="class_branch_cell_resource_growth" kindref="compound">BranchCellResourceGrowth</ref> &amp;</type>
+        <definition>const BranchCellResourceGrowth &amp; BranchCellResource::getGrowthBuildingBlock</definition>
+        <argsstring>() const override</argsstring>
+        <name>getGrowthBuildingBlock</name>
+        <qualifiedname>BranchCellResource::getGrowthBuildingBlock</qualifiedname>
+        <reimplements refid="class_cell_resource_interface_1a8d831aaf96365e20807577e946aeb4bc">getGrowthBuildingBlock</reimplements>
+        <briefdescription>
+<para>Get the immutable growth building block for this resource. </para>
+        </briefdescription>
+        <detaileddescription>
+<para><simplesect kind="return"><para>Reference to the growth building block. </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="App/Model/IBM/Landscape/Map/SpatialTree/TerrainCells/PatchApplicator/Resources/BranchCellResource.h" line="59" column="36"/>
+      </memberdef>
+      <memberdef kind="function" id="class_branch_cell_resource_1ac9036380b1ae91b00fb9ca18495b07ad" prot="public" static="no" const="no" explicit="no" inline="no" virt="virtual">
+        <type><ref refid="class_branch_cell_resource_growth" kindref="compound">BranchCellResourceGrowth</ref> &amp;</type>
+        <definition>BranchCellResourceGrowth &amp; BranchCellResource::getMutableGrowthBuildingBlock</definition>
+        <argsstring>() override</argsstring>
+        <name>getMutableGrowthBuildingBlock</name>
+        <qualifiedname>BranchCellResource::getMutableGrowthBuildingBlock</qualifiedname>
+        <reimplements refid="class_cell_resource_interface_1a2869771900d7794d44d3b8067d3551e4">getMutableGrowthBuildingBlock</reimplements>
+        <briefdescription>
+<para>Get a mutable growth building block for this resource. </para>
+        </briefdescription>
+        <detaileddescription>
+<para><simplesect kind="return"><para>Reference to the growth building block. </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="App/Model/IBM/Landscape/Map/SpatialTree/TerrainCells/PatchApplicator/Resources/BranchCellResource.h" line="65" column="26"/>
+      </memberdef>
+      <memberdef kind="function" id="class_branch_cell_resource_1a42a3d9b23cda1713bf1b2134c490274c" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type><ref refid="class_branch_cell_resource" kindref="compound">BranchCellResource</ref> &amp;</type>
+        <definition>BranchCellResource &amp; BranchCellResource::operator=</definition>
+        <argsstring>(const BranchCellResource &amp;)=delete</argsstring>
+        <name>operator=</name>
+        <qualifiedname>BranchCellResource::operator=</qualifiedname>
+        <param>
+          <type>const <ref refid="class_branch_cell_resource" kindref="compound">BranchCellResource</ref> &amp;</type>
+        </param>
+        <briefdescription>
+<para>Deleted copy assignment. </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="App/Model/IBM/Landscape/Map/SpatialTree/TerrainCells/PatchApplicator/Resources/BranchCellResource.h" line="53" column="20"/>
+      </memberdef>
+      <memberdef kind="function" id="class_branch_cell_resource_1ad9484948e5033f9f06f904d99f38ed4e" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <templateparamlist>
+          <param>
+            <type>class Archive</type>
+          </param>
+        </templateparamlist>
+        <type>void</type>
+        <definition>void BranchCellResource::serialize</definition>
+        <argsstring>(Archive &amp;ar, const unsigned int version)</argsstring>
+        <name>serialize</name>
+        <qualifiedname>BranchCellResource::serialize</qualifiedname>
+        <param>
+          <type>Archive &amp;</type>
+          <declname>ar</declname>
+        </param>
+        <param>
+          <type>const unsigned int</type>
+          <declname>version</declname>
+        </param>
+        <briefdescription>
+<para>Serialization function. </para>
+        </briefdescription>
+        <detaileddescription>
+<para><parameterlist kind="templateparam"><parameteritem>
+<parameternamelist>
+<parametername>Archive</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Type of the archive. </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>ar</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Archive object. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>version</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Version of serialization. </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="App/Model/IBM/Landscape/Map/SpatialTree/TerrainCells/PatchApplicator/Resources/BranchCellResource.h" line="123" column="10"/>
+      </memberdef>
+      <memberdef kind="function" id="class_branch_cell_resource_1a56aa6b70d5a3dfbcf76830be91fe9e8c" prot="public" static="no" const="no" explicit="no" inline="no" virt="virtual">
+        <type>void</type>
+        <definition>void BranchCellResource::setTerrainCell</definition>
+        <argsstring>(TerrainCell *newTerrainCell) override</argsstring>
+        <name>setTerrainCell</name>
+        <qualifiedname>BranchCellResource::setTerrainCell</qualifiedname>
+        <reimplements refid="class_edible_1aacd97af4f965dadd80be8cc711829f77">setTerrainCell</reimplements>
+        <param>
+          <type><ref refid="class_terrain_cell" kindref="compound">TerrainCell</ref> *</type>
+          <declname>newTerrainCell</declname>
+        </param>
+        <briefdescription>
+<para>Set the terrain cell for this resource. </para>
+        </briefdescription>
+        <detaileddescription>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>newTerrainCell</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Pointer to the terrain cell to set. </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="App/Model/IBM/Landscape/Map/SpatialTree/TerrainCells/PatchApplicator/Resources/BranchCellResource.h" line="77" column="10"/>
+      </memberdef>
+      <memberdef kind="function" id="class_branch_cell_resource_1af84b4248b52ef841c647162d2cbc7aaf" prot="public" static="no" const="no" explicit="no" inline="no" virt="virtual">
+        <type>void</type>
+        <definition>void BranchCellResource::substractBiomass</definition>
+        <argsstring>(const DryMass &amp;dryMassToBeSubstracted, bool fullCoverage, const PointContinuous &amp;sourcePosition, const PreciseDouble &amp;radius, const bool competitionAmongResourceSpecies)</argsstring>
+        <name>substractBiomass</name>
+        <qualifiedname>BranchCellResource::substractBiomass</qualifiedname>
+        <reimplements refid="class_cell_resource_interface_1aeaca053737103bca5068ea73ce786e7e">substractBiomass</reimplements>
+        <param>
+          <type>const <ref refid="class_dry_mass" kindref="compound">DryMass</ref> &amp;</type>
+          <declname>dryMassToBeSubstracted</declname>
+        </param>
+        <param>
+          <type>bool</type>
+          <declname>fullCoverage</declname>
+        </param>
+        <param>
+          <type>const PointContinuous &amp;</type>
+          <declname>sourcePosition</declname>
+        </param>
+        <param>
+          <type>const <ref refid="class_precise_double" kindref="compound">PreciseDouble</ref> &amp;</type>
+          <declname>radius</declname>
+        </param>
+        <param>
+          <type>const bool</type>
+          <declname>competitionAmongResourceSpecies</declname>
+        </param>
+        <briefdescription>
+<para>Subtract biomass from this resource within a given radius. </para>
+        </briefdescription>
+        <detaileddescription>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>dryMassToBeSubstracted</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Amount of biomass to subtract. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>sourcePosition</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Position of the source. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>radius</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Radius over which biomass is subtracted. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>competitionAmongResourceSpecies</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Flag indicating if competition should be considered. </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="App/Model/IBM/Landscape/Map/SpatialTree/TerrainCells/PatchApplicator/Resources/BranchCellResource.h" line="101" column="10"/>
+      </memberdef>
+      <memberdef kind="function" id="class_branch_cell_resource_1afa66b4bd4708e9eaea619da4583a9e13" prot="public" static="no" const="no" explicit="no" inline="no" virt="virtual">
+        <type>void</type>
+        <definition>void BranchCellResource::substractBiomassDown</definition>
+        <argsstring>(const DryMass &amp;dryMassToBeSubstracted, const bool fullCoverage, const PointContinuous &amp;sourcePosition, const PreciseDouble &amp;radius, const bool competitionAmongResourceSpecies)</argsstring>
+        <name>substractBiomassDown</name>
+        <qualifiedname>BranchCellResource::substractBiomassDown</qualifiedname>
+        <reimplements refid="class_cell_resource_interface_1a8813596e925d89ef65ab9bfc9f80a2a0">substractBiomassDown</reimplements>
+        <param>
+          <type>const <ref refid="class_dry_mass" kindref="compound">DryMass</ref> &amp;</type>
+          <declname>dryMassToBeSubstracted</declname>
+        </param>
+        <param>
+          <type>const bool</type>
+          <declname>fullCoverage</declname>
+        </param>
+        <param>
+          <type>const PointContinuous &amp;</type>
+          <declname>sourcePosition</declname>
+        </param>
+        <param>
+          <type>const <ref refid="class_precise_double" kindref="compound">PreciseDouble</ref> &amp;</type>
+          <declname>radius</declname>
+        </param>
+        <param>
+          <type>const bool</type>
+          <declname>competitionAmongResourceSpecies</declname>
+        </param>
+        <briefdescription>
+<para>Subtract biomass with optional full coverage and radius area. </para>
+        </briefdescription>
+        <detaileddescription>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>dryMassToBeSubstracted</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Amount of biomass to subtract. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>fullCoverage</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Whether to consider full coverage. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>sourcePosition</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Position of the source. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>radius</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Radius over which biomass is subtracted. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>competitionAmongResourceSpecies</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Flag indicating if competition should be considered. </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="App/Model/IBM/Landscape/Map/SpatialTree/TerrainCells/PatchApplicator/Resources/BranchCellResource.h" line="111" column="10"/>
+      </memberdef>
+      <memberdef kind="function" id="class_branch_cell_resource_1aa222af9e3440e2b26c2e0ade6c1b0421" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void BranchCellResource::substractBiomassUp</definition>
+        <argsstring>(const DryMass &amp;dryMassToBeSubstracted)</argsstring>
+        <name>substractBiomassUp</name>
+        <qualifiedname>BranchCellResource::substractBiomassUp</qualifiedname>
+        <param>
+          <type>const <ref refid="class_dry_mass" kindref="compound">DryMass</ref> &amp;</type>
+          <declname>dryMassToBeSubstracted</declname>
+        </param>
+        <briefdescription>
+<para>Subtract biomass aggregated upwards in the tree. </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="App/Model/IBM/Landscape/Map/SpatialTree/TerrainCells/PatchApplicator/Resources/BranchCellResource.h" line="114" column="10"/>
+      </memberdef>
+      <memberdef kind="function" id="class_branch_cell_resource_1a3eae592bffc551c0359bbd2737df37ce" prot="public" static="no" const="no" explicit="no" inline="no" virt="virtual">
+        <type>void</type>
+        <definition>void BranchCellResource::update</definition>
+        <argsstring>()</argsstring>
+        <name>update</name>
+        <qualifiedname>BranchCellResource::update</qualifiedname>
+        <reimplements refid="class_cell_resource_interface_1aa5291fac5000c8785ce44445b465cc14">update</reimplements>
+        <briefdescription>
+<para>Update the resource state by aggregating child cell data. </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="App/Model/IBM/Landscape/Map/SpatialTree/TerrainCells/PatchApplicator/Resources/BranchCellResource.h" line="68" column="10"/>
+      </memberdef>
+    </sectiondef>
+    <sectiondef kind="protected-func">
+      <memberdef kind="function" id="class_branch_cell_resource_1a7d0b937482e258a350a45638591586fd" prot="protected" static="no" const="no" explicit="no" inline="no" virt="virtual">
+        <type>void</type>
+        <definition>void BranchCellResource::setSpeciesGrowth</definition>
+        <argsstring>(SpeciesGrowth *newSpeciesGrowth)</argsstring>
+        <name>setSpeciesGrowth</name>
+        <qualifiedname>BranchCellResource::setSpeciesGrowth</qualifiedname>
+        <reimplements refid="class_edible_1a42f012c8bd16e3c9b1c48f774527d9f0">setSpeciesGrowth</reimplements>
+        <param>
+          <type><ref refid="class_species_growth" kindref="compound">SpeciesGrowth</ref> *</type>
+          <declname>newSpeciesGrowth</declname>
+        </param>
+        <briefdescription>
+<para>Set the species growth object. </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="App/Model/IBM/Landscape/Map/SpatialTree/TerrainCells/PatchApplicator/Resources/BranchCellResource.h" line="130" column="10"/>
+      </memberdef>
+    </sectiondef>
+    <sectiondef kind="private-static-func">
+      <memberdef kind="function" id="class_branch_cell_resource_1a61d6f3e9065ed5148dfec70479be1e46" prot="private" static="yes" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>size_t</type>
+        <definition>static size_t BranchCellResource::calculateResourcePatchPriority</definition>
+        <argsstring>(const BranchTerrainCell *const summaryTerrainCell, const ResourceSpecies::ResourceID &amp;resourceSpeciesId)</argsstring>
+        <name>calculateResourcePatchPriority</name>
+        <qualifiedname>BranchCellResource::calculateResourcePatchPriority</qualifiedname>
+        <param>
+          <type>const <ref refid="class_branch_terrain_cell" kindref="compound">BranchTerrainCell</ref> *const</type>
+          <declname>summaryTerrainCell</declname>
+        </param>
+        <param>
+          <type>const <ref refid="class_resource_species_1_1_resource_i_d" kindref="compound">ResourceSpecies::ResourceID</ref> &amp;</type>
+          <declname>resourceSpeciesId</declname>
+        </param>
+        <briefdescription>
+<para>Calculate the patch priority for a specific resource in the branch. </para>
+        </briefdescription>
+        <detaileddescription>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>summaryTerrainCell</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Pointer to the branch terrain cell. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>resourceSpeciesId</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>ID of the resource species. </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<simplesect kind="return"><para><ref refid="class_patch" kindref="compound">Patch</ref> priority. </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="App/Model/IBM/Landscape/Map/SpatialTree/TerrainCells/PatchApplicator/Resources/BranchCellResource.h" line="139" column="19"/>
+      </memberdef>
+    </sectiondef>
+    <briefdescription>
+<para>Resource representation for branch nodes in a spatial tree. </para>
+    </briefdescription>
+    <detaileddescription>
+<para>This class aggregates the resource data from child terrain cells in a branch. It provides methods to update biomass, calculate available dry mass, apply branch-level updates, and deserialize resource information from applied sources. </para>
+    </detaileddescription>
+    <inheritancegraph>
+      <node id="1">
+        <label>BranchCellResource</label>
+        <link refid="class_branch_cell_resource"/>
+        <childnode refid="2" relation="public-inheritance">
+        </childnode>
+      </node>
+      <node id="4">
+        <label>CellElement</label>
+        <link refid="class_cell_element"/>
+      </node>
+      <node id="2">
+        <label>CellResourceInterface</label>
+        <link refid="class_cell_resource_interface"/>
+        <childnode refid="3" relation="public-inheritance">
+        </childnode>
+        <childnode refid="4" relation="public-inheritance">
+        </childnode>
+      </node>
+      <node id="3">
+        <label>Edible</label>
+        <link refid="class_edible"/>
+      </node>
+    </inheritancegraph>
+    <collaborationgraph>
+      <node id="1">
+        <label>BranchCellResource</label>
+        <link refid="class_branch_cell_resource"/>
+        <childnode refid="2" relation="public-inheritance">
+        </childnode>
+        <childnode refid="16" relation="usage">
+          <edgelabel>growthBuildingBlock</edgelabel>
+        </childnode>
+      </node>
+      <node id="16">
+        <label>BranchCellResourceGrowth</label>
+        <link refid="class_branch_cell_resource_growth"/>
+        <childnode refid="17" relation="public-inheritance">
+        </childnode>
+        <childnode refid="10" relation="usage">
+          <edgelabel>minimumEdibleBiomass</edgelabel>
+        </childnode>
+      </node>
+      <node id="9">
+        <label>CellElement</label>
+        <link refid="class_cell_element"/>
+      </node>
+      <node id="13">
+        <label>CellHabitatDomainInterface</label>
+        <link refid="class_cell_habitat_domain_interface"/>
+        <childnode refid="9" relation="public-inheritance">
+        </childnode>
+        <childnode refid="14" relation="usage">
+          <edgelabel>habitatDomainStatus</edgelabel>
+        </childnode>
+      </node>
+      <node id="8">
+        <label>CellMoistureInterface</label>
+        <link refid="class_cell_moisture_interface"/>
+        <childnode refid="9" relation="public-inheritance">
+        </childnode>
+        <childnode refid="10" relation="usage">
+          <edgelabel>totalMaximumResourceCapacity</edgelabel>
+        </childnode>
+      </node>
+      <node id="12">
+        <label>CellObstacleInterface</label>
+        <link refid="class_cell_obstacle_interface"/>
+        <childnode refid="9" relation="public-inheritance">
+        </childnode>
+      </node>
+      <node id="2">
+        <label>CellResourceInterface</label>
+        <link refid="class_cell_resource_interface"/>
+        <childnode refid="3" relation="public-inheritance">
+        </childnode>
+        <childnode refid="9" relation="public-inheritance">
+        </childnode>
+      </node>
+      <node id="17">
+        <label>CellResourceInterfaceGrowth</label>
+        <link refid="class_cell_resource_interface_growth"/>
+        <childnode refid="18" relation="public-inheritance">
+        </childnode>
+        <childnode refid="2" relation="usage">
+          <edgelabel>owner</edgelabel>
+        </childnode>
+      </node>
+      <node id="14">
+        <label>CustomIndexedVector&lt; AnimalSpeciesID, CustomIndexedVector&lt; Instar, bool &gt; &gt;</label>
+        <link refid="class_custom_indexed_vector"/>
+      </node>
+      <node id="21">
+        <label>CustomIndexedVector&lt; Instar, PreciseDouble &gt;</label>
+        <link refid="class_custom_indexed_vector"/>
+      </node>
+      <node id="22">
+        <label>DryMass</label>
+        <link refid="class_dry_mass"/>
+        <childnode refid="11" relation="usage">
+          <edgelabel>value</edgelabel>
+        </childnode>
+      </node>
+      <node id="3">
+        <label>Edible</label>
+        <link refid="class_edible"/>
+        <childnode refid="4" relation="usage">
+          <edgelabel>mySpecies</edgelabel>
+        </childnode>
+        <childnode refid="6" relation="usage">
+          <edgelabel>terrainCell</edgelabel>
+        </childnode>
+      </node>
+      <node id="18">
+        <label>EdibleGrowth</label>
+        <link refid="class_edible_growth"/>
+        <childnode refid="19" relation="usage">
+          <edgelabel>instar</edgelabel>
+        </childnode>
+        <childnode refid="20" relation="usage">
+          <edgelabel>speciesGrowth</edgelabel>
+        </childnode>
+        <childnode refid="22" relation="usage">
+          <edgelabel>currentTotalDryMass</edgelabel>
+        </childnode>
+        <childnode refid="10" relation="usage">
+          <edgelabel>currentTotalWetMass</edgelabel>
+        </childnode>
+      </node>
+      <node id="19">
+        <label>Instar</label>
+        <link refid="class_instar"/>
+      </node>
+      <node id="7">
+        <label>PatchApplicator</label>
+        <link refid="class_patch_applicator"/>
+        <childnode refid="6" relation="usage">
+          <edgelabel>owner</edgelabel>
+        </childnode>
+        <childnode refid="8" relation="usage">
+          <edgelabel>cellMoisture</edgelabel>
+        </childnode>
+        <childnode refid="12" relation="usage">
+          <edgelabel>cellObstacle</edgelabel>
+        </childnode>
+        <childnode refid="13" relation="usage">
+          <edgelabel>cellHabitatDomain</edgelabel>
+        </childnode>
+      </node>
+      <node id="15">
+        <label>PointMap</label>
+        <link refid="class_point_map"/>
+      </node>
+      <node id="11">
+        <label>PreciseDouble</label>
+        <link refid="class_precise_double"/>
+      </node>
+      <node id="4">
+        <label>Species</label>
+        <link refid="class_species"/>
+        <childnode refid="5" relation="usage">
+          <edgelabel>id</edgelabel>
+        </childnode>
+      </node>
+      <node id="5">
+        <label>Species::ID</label>
+        <link refid="class_species_1_1_i_d"/>
+      </node>
+      <node id="20">
+        <label>SpeciesGrowth</label>
+        <link refid="class_species_growth"/>
+        <childnode refid="19" relation="usage">
+          <edgelabel>lastInstar</edgelabel>
+        </childnode>
+        <childnode refid="21" relation="usage">
+          <edgelabel>conversionToWetMass</edgelabel>
+        </childnode>
+      </node>
+      <node id="6">
+        <label>TerrainCell</label>
+        <link refid="class_terrain_cell"/>
+        <childnode refid="7" relation="usage">
+          <edgelabel>patchApplicator</edgelabel>
+        </childnode>
+        <childnode refid="15" relation="usage">
+          <edgelabel>position</edgelabel>
+        </childnode>
+        <childnode refid="11" relation="usage">
+          <edgelabel>hyperVolume</edgelabel>
+          <edgelabel>size</edgelabel>
+        </childnode>
+      </node>
+      <node id="10">
+        <label>WetMass</label>
+        <link refid="class_wet_mass"/>
+        <childnode refid="11" relation="usage">
+          <edgelabel>value</edgelabel>
+        </childnode>
+      </node>
+    </collaborationgraph>
+    <location file="App/Model/IBM/Landscape/Map/SpatialTree/TerrainCells/PatchApplicator/Resources/BranchCellResource.h" line="32" column="1" bodyfile="App/Model/IBM/Landscape/Map/SpatialTree/TerrainCells/PatchApplicator/Resources/BranchCellResource.h" bodystart="33" bodyend="140"/>
+    <listofallmembers>
+      <member refid="class_branch_cell_resource_1a5d1e7626bc100085f3c348c789871777" prot="public" virt="non-virtual"><scope>BranchCellResource</scope><name>applyBranch</name></member>
+      <member refid="class_branch_cell_resource_1ad7d51cfcf5515a6d77d1cf975221d30e" prot="public" virt="non-virtual"><scope>BranchCellResource</scope><name>BranchCellResource</name></member>
+      <member refid="class_branch_cell_resource_1a37097b9dab49f18b58c29bf44acb0920" prot="public" virt="non-virtual"><scope>BranchCellResource</scope><name>BranchCellResource</name></member>
+      <member refid="class_branch_cell_resource_1a6d25138ebe7e309a7060577097b3f2db" prot="public" virt="non-virtual"><scope>BranchCellResource</scope><name>BranchCellResource</name></member>
+      <member refid="class_branch_cell_resource_1a8e4189a193368e1b59d30d2a3eae02da" prot="public" virt="virtual"><scope>BranchCellResource</scope><name>calculateDryMassAvailable</name></member>
+      <member refid="class_branch_cell_resource_1a61d6f3e9065ed5148dfec70479be1e46" prot="private" virt="non-virtual"><scope>BranchCellResource</scope><name>calculateResourcePatchPriority</name></member>
+      <member refid="class_cell_element_1a77dc6b9db0633bb7d35df0b547ddf613" prot="public" virt="non-virtual"><scope>BranchCellResource</scope><name>CellElement</name></member>
+      <member refid="class_cell_element_1a07008f499b17c5dc792ab20d05dbf471" prot="public" virt="non-virtual"><scope>BranchCellResource</scope><name>CellElement</name></member>
+      <member refid="class_cell_element_1a5abb98d6d592c3fc4084fc886106d7c3" prot="public" virt="non-virtual"><scope>BranchCellResource</scope><name>CellElement</name></member>
+      <member refid="class_cell_resource_interface_1a08c00ca593798dcb7829f9730ea09fe0" prot="public" virt="non-virtual"><scope>BranchCellResource</scope><name>CellResourceInterface</name></member>
+      <member refid="class_cell_resource_interface_1a2a7655b660f0c2b9f0b424a13950221c" prot="public" virt="non-virtual"><scope>BranchCellResource</scope><name>CellResourceInterface</name></member>
+      <member refid="class_cell_resource_interface_1a4e68b9b866ee09c02391e229735c75d1" prot="public" virt="non-virtual"><scope>BranchCellResource</scope><name>CellResourceInterface</name></member>
+      <member refid="class_branch_cell_resource_1abfc22636b08b58bdd3f7593d3a582620" prot="public" virt="virtual"><scope>BranchCellResource</scope><name>deserializeCellResource</name></member>
+      <member refid="class_edible_1ad2bd330d8bddee1968a782c8c7417f6c" prot="public" virt="non-virtual"><scope>BranchCellResource</scope><name>Edible</name></member>
+      <member refid="class_edible_1a6eeeb715ddf2707990356e169cbc3ab6" prot="public" virt="non-virtual"><scope>BranchCellResource</scope><name>Edible</name></member>
+      <member refid="class_edible_1aead81535b712265418ab786a8ada4f51" prot="public" virt="non-virtual"><scope>BranchCellResource</scope><name>Edible</name></member>
+      <member refid="class_branch_cell_resource_1ae7ceb13ae866aba9e23f386780f35fbb" prot="public" virt="virtual"><scope>BranchCellResource</scope><name>getGrowthBuildingBlock</name></member>
+      <member refid="class_edible_1a89223f30f79d20181aa5e5e477f4a96a" prot="public" virt="non-virtual"><scope>BranchCellResource</scope><name>getId</name></member>
+      <member refid="class_edible_1ac0ad9e1a6d3049f445cd78f1eb7da95d" prot="public" virt="non-virtual"><scope>BranchCellResource</scope><name>getInstar</name></member>
+      <member refid="class_branch_cell_resource_1ac9036380b1ae91b00fb9ca18495b07ad" prot="public" virt="virtual"><scope>BranchCellResource</scope><name>getMutableGrowthBuildingBlock</name></member>
+      <member refid="class_cell_resource_interface_1a752f2976ac75f00003cd0b15b8cfde87" prot="public" virt="virtual"><scope>BranchCellResource</scope><name>getMutableSpecies</name></member>
+      <member refid="class_edible_1ae8427bf3b3cced2e4c10dabbf7d25bb9" prot="public" virt="non-virtual"><scope>BranchCellResource</scope><name>getMutableTerrainCell</name></member>
+      <member refid="class_cell_element_1aeb03190224c2ff962587e94d8fe0c8b4" prot="public" virt="non-virtual"><scope>BranchCellResource</scope><name>getPatchPriority</name></member>
+      <member refid="class_cell_resource_interface_1a4e40ec110f5373ae4900902eb6e7fbab" prot="public" virt="non-virtual"><scope>BranchCellResource</scope><name>getSignature</name></member>
+      <member refid="class_cell_resource_interface_1a1de3da0bea43a61ec6dd20e9f2aa4d99" prot="public" virt="virtual"><scope>BranchCellResource</scope><name>getSpecies</name></member>
+      <member refid="class_edible_1a40371658641bb50c113dcced827247ac" prot="public" virt="non-virtual"><scope>BranchCellResource</scope><name>getTerrainCell</name></member>
+      <member refid="class_cell_resource_interface_1a3a72c3a4d3cc0424d9964212d32128ff" prot="public" virt="non-virtual"><scope>BranchCellResource</scope><name>getVoracity</name></member>
+      <member refid="class_branch_cell_resource_1aa58236bcb8919792b7a7c97fbce97012" prot="protected" virt="non-virtual"><scope>BranchCellResource</scope><name>growthBuildingBlock</name></member>
+      <member refid="class_edible_1a54e4c51c58f7126ec542f2a41dd1467e" prot="protected" virt="non-virtual"><scope>BranchCellResource</scope><name>id</name></member>
+      <member refid="class_cell_resource_interface_1a7212e7df1698df3d51e3b42724b4ea80" prot="public" virt="virtual"><scope>BranchCellResource</scope><name>isHunting</name></member>
+      <member refid="class_edible_1a2ee0ce7e08eee8fc76858a05398152ec" prot="protected" virt="non-virtual"><scope>BranchCellResource</scope><name>mySpecies</name></member>
+      <member refid="class_branch_cell_resource_1a42a3d9b23cda1713bf1b2134c490274c" prot="public" virt="non-virtual"><scope>BranchCellResource</scope><name>operator=</name></member>
+      <member refid="class_cell_resource_interface_1a4ca4bcf09be71384005030d67231cc00" prot="public" virt="non-virtual" ambiguityscope="CellResourceInterface::"><scope>BranchCellResource</scope><name>operator=</name></member>
+      <member refid="class_edible_1a8c112449263b7f7c057718102c0e56f8" prot="public" virt="non-virtual" ambiguityscope="CellResourceInterface::Edible::"><scope>BranchCellResource</scope><name>operator=</name></member>
+      <member refid="class_cell_element_1ac7467d8c95d1a3d3e8b72a3209681ce0" prot="public" virt="non-virtual" ambiguityscope="CellElement::"><scope>BranchCellResource</scope><name>operator=</name></member>
+      <member refid="class_cell_element_1ac25808724b01c8f1555c0be37b0f9d6f" prot="protected" virt="non-virtual"><scope>BranchCellResource</scope><name>patchPriority</name></member>
+      <member refid="class_branch_cell_resource_1ad9484948e5033f9f06f904d99f38ed4e" prot="public" virt="non-virtual"><scope>BranchCellResource</scope><name>serialize</name></member>
+      <member refid="class_cell_element_1a9178746c39e277cc4ac9af2f434ac72e" prot="protected" virt="non-virtual"><scope>BranchCellResource</scope><name>setPatchPriority</name></member>
+      <member refid="class_edible_1a1e12758142353ed756c4b74b35913c62" prot="public" virt="virtual"><scope>BranchCellResource</scope><name>setSpecies</name></member>
+      <member refid="class_branch_cell_resource_1a7d0b937482e258a350a45638591586fd" prot="protected" virt="virtual"><scope>BranchCellResource</scope><name>setSpeciesGrowth</name></member>
+      <member refid="class_branch_cell_resource_1a56aa6b70d5a3dfbcf76830be91fe9e8c" prot="public" virt="virtual"><scope>BranchCellResource</scope><name>setTerrainCell</name></member>
+      <member refid="class_cell_resource_interface_1aea60ad423213770608903745688f8d13" prot="protected" virt="non-virtual"><scope>BranchCellResource</scope><name>signature</name></member>
+      <member refid="class_branch_cell_resource_1af84b4248b52ef841c647162d2cbc7aaf" prot="public" virt="virtual"><scope>BranchCellResource</scope><name>substractBiomass</name></member>
+      <member refid="class_branch_cell_resource_1afa66b4bd4708e9eaea619da4583a9e13" prot="public" virt="virtual"><scope>BranchCellResource</scope><name>substractBiomassDown</name></member>
+      <member refid="class_branch_cell_resource_1aa222af9e3440e2b26c2e0ade6c1b0421" prot="public" virt="non-virtual"><scope>BranchCellResource</scope><name>substractBiomassUp</name></member>
+      <member refid="class_edible_1a035e2c46b32ea4e77f457a8c114106c7" prot="protected" virt="non-virtual"><scope>BranchCellResource</scope><name>terrainCell</name></member>
+      <member refid="class_cell_resource_interface_1a7655b227cc0e745cbf05981236432191" prot="public" virt="virtual"><scope>BranchCellResource</scope><name>turnIntoDryMass</name></member>
+      <member refid="class_branch_cell_resource_1a3eae592bffc551c0359bbd2737df37ce" prot="public" virt="virtual"><scope>BranchCellResource</scope><name>update</name></member>
+      <member refid="class_branch_cell_resource_1aac57f7be466841df25a55706d907210b" prot="public" virt="virtual"><scope>BranchCellResource</scope><name>~BranchCellResource</name></member>
+      <member refid="class_cell_element_1a82b86d53e7e9c50f4c3145be272bd38f" prot="public" virt="virtual"><scope>BranchCellResource</scope><name>~CellElement</name></member>
+      <member refid="class_cell_resource_interface_1aec73d9cc7e0a39ea37c5892a015a3a49" prot="public" virt="virtual"><scope>BranchCellResource</scope><name>~CellResourceInterface</name></member>
+      <member refid="class_edible_1a8645217fd9d754597e5398be80f03094" prot="public" virt="virtual"><scope>BranchCellResource</scope><name>~Edible</name></member>
+    </listofallmembers>
+  </compounddef>
+</doxygen>

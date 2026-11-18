@@ -20,6 +20,7 @@
 
 /**
  * @struct CellValue
+ * @ingroup weaver_landscape
  * @brief Stores the evaluation of a terrain cell from the perspective of an animal.
  *
  * This struct is used to compare terrain cells based on perceived value, coverage,

@@ -17,6 +17,7 @@
 
 /**
  * @class PredationProbabilityWeightTrait
+ * @ingroup weaver_landscape
  * @brief Represents a trait that influences predation probability for behavioral decisions in animal species.
  *
  * Inherits from DecisionsTrait and provides methods for trait generation, retrieval of trait identifiers,

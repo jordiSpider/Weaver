@@ -26,6 +26,7 @@
 
 /**
  * @class Instar
+ * @ingroup weaver_landscape
  * @brief Represents a developmental stage (instar) of an animal in the simulation.
  *
  * This class encapsulates the concept of an instar, which is a discrete developmental

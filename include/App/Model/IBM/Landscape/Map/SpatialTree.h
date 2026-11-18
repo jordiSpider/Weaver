@@ -50,6 +50,7 @@ constexpr size_t constexpr_pow(size_t base, size_t exp) {
 
 /**
  * @class SpatialTree
+ * @ingroup weaver_landscape
  * @brief SpatialTree map implementation for hierarchical spatial organization.
  *
  * The SpatialTree class extends Map and provides a recursive spatial partitioning

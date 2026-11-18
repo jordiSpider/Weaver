@@ -18,6 +18,7 @@
 
 /**
  * @class Element
+ * @ingroup weaver_validation
  * @brief Abstract base class for elements that can be validated and accessed in a configuration.
  *
  * Elements represent structured or primitive data in a JSON configuration. This class provides

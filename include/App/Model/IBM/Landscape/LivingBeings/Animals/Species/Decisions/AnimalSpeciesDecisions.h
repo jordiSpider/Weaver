@@ -44,6 +44,7 @@ class AnimalNonStatistical;
 
 /**
  * @class AnimalSpeciesDecisions
+ * @ingroup weaver_landscape
  * @brief Represents the decision-making traits of a species across different instars.
  *
  * This class manages species-level behavioral traits such as predation probability,

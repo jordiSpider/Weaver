@@ -22,6 +22,7 @@ class BranchTerrainCell;
 
 /**
  * @class BranchCellResource
+ * @ingroup weaver_landscape
  * @brief Resource representation for branch nodes in a spatial tree.
  *
  * This class aggregates the resource data from child terrain cells in a branch.

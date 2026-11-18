@@ -18,6 +18,7 @@
 
 /**
  * @class Boolean
+ * @ingroup weaver_validation
  * @brief Represents a boolean element in a JSON configuration.
  *
  * Inherits from Element. Provides validation for JSON boolean values.

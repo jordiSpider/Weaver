@@ -17,6 +17,7 @@
 
 /**
  * @class AnimalSpeciesID
+ * @ingroup weaver_landscape
  * @brief Represents a unique identifier for an animal species.
  */
 class AnimalSpeciesID

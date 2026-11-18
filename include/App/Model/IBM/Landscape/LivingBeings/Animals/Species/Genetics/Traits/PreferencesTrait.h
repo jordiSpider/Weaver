@@ -17,6 +17,7 @@
 
 /**
  * @class PreferencesTrait
+ * @ingroup weaver_landscape
  * @brief Represents a trait encoding animal preferences used in behavioral decisions.
  *
  * This class inherits from DecisionsTrait and provides methods to generate traits,

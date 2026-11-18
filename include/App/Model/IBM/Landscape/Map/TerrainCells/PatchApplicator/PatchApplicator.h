@@ -38,6 +38,7 @@ class Landscape;
 
 /**
  * @class PatchApplicator
+ * @ingroup weaver_landscape
  * @brief Applies patches to a TerrainCell including moisture, resources, obstacles, and habitat domains.
  *
  * This class handles the application of different patch types to the terrain cell.

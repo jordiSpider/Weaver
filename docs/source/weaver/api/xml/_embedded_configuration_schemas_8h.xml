@@ -1,0 +1,152 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.14.0" xml:lang="en-US">
+  <compounddef id="_embedded_configuration_schemas_8h" kind="file" language="C++">
+    <compoundname>EmbeddedConfigurationSchemas.h</compoundname>
+    <includes local="yes">validator_schemas/configuration_structure_json.h</includes>
+    <includes local="yes">validator_schemas/constraints_json.h</includes>
+    <includes local="yes">validator_schemas/species_schema_json.h</includes>
+    <includes local="yes">validator_schemas/resource_schema_json.h</includes>
+    <includes local="yes">validator_schemas/simulation_params_schema_json.h</includes>
+    <includes local="yes">validator_schemas/landscape_params_schema_json.h</includes>
+    <includes local="yes">validator_schemas/habitat_domain_patch_schema_json.h</includes>
+    <includes local="yes">validator_schemas/moisture_patch_schema_json.h</includes>
+    <includes local="yes">validator_schemas/obstacle_patch_schema_json.h</includes>
+    <includes local="yes">validator_schemas/resource_patch_schema_json.h</includes>
+    <includes local="yes">validator_schemas/configuration_structure_schema_json.h</includes>
+    <includes local="yes">validator_schemas/constraints_schema_json.h</includes>
+    <includes local="no">string</includes>
+    <includes local="no">string_view</includes>
+    <includes local="no">unordered_map</includes>
+    <incdepgraph>
+      <node id="1">
+        <label>Misc/JsonValidator/EmbeddedConfigurationSchemas.h</label>
+        <link refid="_embedded_configuration_schemas_8h"/>
+        <childnode refid="2" relation="include">
+        </childnode>
+        <childnode refid="3" relation="include">
+        </childnode>
+        <childnode refid="4" relation="include">
+        </childnode>
+        <childnode refid="5" relation="include">
+        </childnode>
+        <childnode refid="6" relation="include">
+        </childnode>
+        <childnode refid="7" relation="include">
+        </childnode>
+        <childnode refid="8" relation="include">
+        </childnode>
+        <childnode refid="9" relation="include">
+        </childnode>
+        <childnode refid="10" relation="include">
+        </childnode>
+        <childnode refid="11" relation="include">
+        </childnode>
+        <childnode refid="12" relation="include">
+        </childnode>
+        <childnode refid="13" relation="include">
+        </childnode>
+        <childnode refid="14" relation="include">
+        </childnode>
+        <childnode refid="15" relation="include">
+        </childnode>
+        <childnode refid="16" relation="include">
+        </childnode>
+      </node>
+      <node id="14">
+        <label>string</label>
+      </node>
+      <node id="15">
+        <label>string_view</label>
+      </node>
+      <node id="16">
+        <label>unordered_map</label>
+      </node>
+      <node id="2">
+        <label>validator_schemas/configuration_structure_json.h</label>
+      </node>
+      <node id="12">
+        <label>validator_schemas/configuration_structure_schema_json.h</label>
+      </node>
+      <node id="3">
+        <label>validator_schemas/constraints_json.h</label>
+      </node>
+      <node id="13">
+        <label>validator_schemas/constraints_schema_json.h</label>
+      </node>
+      <node id="8">
+        <label>validator_schemas/habitat_domain_patch_schema_json.h</label>
+      </node>
+      <node id="7">
+        <label>validator_schemas/landscape_params_schema_json.h</label>
+      </node>
+      <node id="9">
+        <label>validator_schemas/moisture_patch_schema_json.h</label>
+      </node>
+      <node id="10">
+        <label>validator_schemas/obstacle_patch_schema_json.h</label>
+      </node>
+      <node id="11">
+        <label>validator_schemas/resource_patch_schema_json.h</label>
+      </node>
+      <node id="5">
+        <label>validator_schemas/resource_schema_json.h</label>
+      </node>
+      <node id="6">
+        <label>validator_schemas/simulation_params_schema_json.h</label>
+      </node>
+      <node id="4">
+        <label>validator_schemas/species_schema_json.h</label>
+      </node>
+    </incdepgraph>
+    <innernamespace refid="namespace_weaver_embedded_schemas">WeaverEmbeddedSchemas</innernamespace>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+    </detaileddescription>
+    <programlisting>
+<codeline lineno="1"><highlight class="preprocessor">#ifndef<sp/>EMBEDDED_CONFIGURATION_SCHEMAS_H_</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="2"><highlight class="normal"></highlight><highlight class="preprocessor">#define<sp/>EMBEDDED_CONFIGURATION_SCHEMAS_H_</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="3"><highlight class="normal"></highlight></codeline>
+<codeline lineno="4"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&quot;validator_schemas/configuration_structure_json.h&quot;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="5"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&quot;validator_schemas/constraints_json.h&quot;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="6"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&quot;validator_schemas/species_schema_json.h&quot;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="7"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&quot;validator_schemas/resource_schema_json.h&quot;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="8"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&quot;validator_schemas/simulation_params_schema_json.h&quot;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="9"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&quot;validator_schemas/landscape_params_schema_json.h&quot;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="10"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&quot;validator_schemas/habitat_domain_patch_schema_json.h&quot;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="11"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&quot;validator_schemas/moisture_patch_schema_json.h&quot;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="12"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&quot;validator_schemas/obstacle_patch_schema_json.h&quot;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="13"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&quot;validator_schemas/resource_patch_schema_json.h&quot;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="14"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&quot;validator_schemas/configuration_structure_schema_json.h&quot;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="15"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&quot;validator_schemas/constraints_schema_json.h&quot;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="16"><highlight class="normal"></highlight></codeline>
+<codeline lineno="17"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&lt;string&gt;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="18"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&lt;string_view&gt;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="19"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&lt;unordered_map&gt;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="20"><highlight class="normal"></highlight></codeline>
+<codeline lineno="21"><highlight class="normal"></highlight><highlight class="keyword">namespace<sp/></highlight><highlight class="normal">WeaverEmbeddedSchemas<sp/>{</highlight></codeline>
+<codeline lineno="22"><highlight class="normal"></highlight><highlight class="keyword">inline</highlight><highlight class="normal"><sp/></highlight><highlight class="keyword">constexpr</highlight><highlight class="normal"><sp/>std::string_view<sp/>configurationStructure<sp/>=<sp/>EmbeddedResources::configuration_structure_json;</highlight></codeline>
+<codeline lineno="23"><highlight class="normal"></highlight><highlight class="keyword">inline</highlight><highlight class="normal"><sp/></highlight><highlight class="keyword">constexpr</highlight><highlight class="normal"><sp/>std::string_view<sp/>configurationConstraints<sp/>=<sp/>EmbeddedResources::constraints_json;</highlight></codeline>
+<codeline lineno="24"><highlight class="normal"></highlight></codeline>
+<codeline lineno="25"><highlight class="normal"></highlight><highlight class="keyword">inline</highlight><highlight class="normal"><sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/>std::unordered_map&lt;std::string,<sp/>std::string_view&gt;&amp;<sp/>jsonSchemas()<sp/>{</highlight></codeline>
+<codeline lineno="26"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">static</highlight><highlight class="normal"><sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/>std::unordered_map&lt;std::string,<sp/>std::string_view&gt;<sp/>schemas<sp/>=<sp/>{</highlight></codeline>
+<codeline lineno="27"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>{</highlight><highlight class="stringliteral">&quot;json/species_schema.json&quot;</highlight><highlight class="normal">,<sp/>EmbeddedResources::species_schema_json},</highlight></codeline>
+<codeline lineno="28"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>{</highlight><highlight class="stringliteral">&quot;json/resource_schema.json&quot;</highlight><highlight class="normal">,<sp/>EmbeddedResources::resource_schema_json},</highlight></codeline>
+<codeline lineno="29"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>{</highlight><highlight class="stringliteral">&quot;json/simulation_params_schema.json&quot;</highlight><highlight class="normal">,<sp/>EmbeddedResources::simulation_params_schema_json},</highlight></codeline>
+<codeline lineno="30"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>{</highlight><highlight class="stringliteral">&quot;json/landscape_params_schema.json&quot;</highlight><highlight class="normal">,<sp/>EmbeddedResources::landscape_params_schema_json},</highlight></codeline>
+<codeline lineno="31"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>{</highlight><highlight class="stringliteral">&quot;json/habitat_domain_patch_schema.json&quot;</highlight><highlight class="normal">,<sp/>EmbeddedResources::habitat_domain_patch_schema_json},</highlight></codeline>
+<codeline lineno="32"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>{</highlight><highlight class="stringliteral">&quot;json/moisture_patch_schema.json&quot;</highlight><highlight class="normal">,<sp/>EmbeddedResources::moisture_patch_schema_json},</highlight></codeline>
+<codeline lineno="33"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>{</highlight><highlight class="stringliteral">&quot;json/obstacle_patch_schema.json&quot;</highlight><highlight class="normal">,<sp/>EmbeddedResources::obstacle_patch_schema_json},</highlight></codeline>
+<codeline lineno="34"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>{</highlight><highlight class="stringliteral">&quot;json/resource_patch_schema.json&quot;</highlight><highlight class="normal">,<sp/>EmbeddedResources::resource_patch_schema_json},</highlight></codeline>
+<codeline lineno="35"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>{</highlight><highlight class="stringliteral">&quot;configuration_structure.schema.json&quot;</highlight><highlight class="normal">,<sp/>EmbeddedResources::configuration_structure_schema_json},</highlight></codeline>
+<codeline lineno="36"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>{</highlight><highlight class="stringliteral">&quot;constraints.schema.json&quot;</highlight><highlight class="normal">,<sp/>EmbeddedResources::constraints_schema_json}</highlight></codeline>
+<codeline lineno="37"><highlight class="normal"><sp/><sp/><sp/><sp/>};</highlight></codeline>
+<codeline lineno="38"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/>schemas;</highlight></codeline>
+<codeline lineno="39"><highlight class="normal">}</highlight></codeline>
+<codeline lineno="40"><highlight class="normal">}</highlight></codeline>
+<codeline lineno="41"><highlight class="normal"></highlight></codeline>
+<codeline lineno="42"><highlight class="normal"></highlight><highlight class="preprocessor">#endif</highlight></codeline>
+    </programlisting>
+    <location file="Misc/JsonValidator/EmbeddedConfigurationSchemas.h"/>
+  </compounddef>
+</doxygen>

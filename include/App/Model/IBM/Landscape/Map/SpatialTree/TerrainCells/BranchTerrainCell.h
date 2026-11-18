@@ -38,6 +38,7 @@
 
 /**
  * @class BranchTerrainCell
+ * @ingroup weaver_landscape
  * @brief Represents an internal node (branch) of the spatial tree in the landscape.
  *
  * A BranchTerrainCell is a non-leaf node that contains child cells, which

@@ -1,0 +1,179 @@
+{
+  "version": 6,
+  "cmakeMinimumRequired": { "major": 3, "minor": 25, "patch": 0 },
+  "configurePresets": [
+    {
+      "name": "manager-base",
+      "hidden": true,
+      "binaryDir": "${sourceDir}/build/${hostSystemName}/${presetName}",
+      "cacheVariables": {
+        "CMAKE_CXX_STANDARD": "20",
+        "CMAKE_CXX_STANDARD_REQUIRED": "ON",
+        "CMAKE_EXPORT_COMPILE_COMMANDS": "ON",
+        "CMAKE_RUNTIME_OUTPUT_DIRECTORY": "${sourceDir}/bin/${hostSystemName}/$<CONFIG>",
+        "CMAKE_LIBRARY_OUTPUT_DIRECTORY": "${sourceDir}/lib/${hostSystemName}/$<CONFIG>",
+        "CMAKE_ARCHIVE_OUTPUT_DIRECTORY": "${sourceDir}/lib/${hostSystemName}/$<CONFIG>",
+        "CPACK_PACKAGE_DIRECTORY": "${sourceDir}/installer",
+        "CMAKE_TOOLCHAIN_FILE": "${sourceDir}/../external/vcpkg/scripts/buildsystems/vcpkg.cmake",
+        "VCPKG_MANIFEST_MODE": "ON",
+        "VCPKG_MANIFEST_DIR": "${sourceDir}",
+        "VCPKG_INSTALLED_DIR": "${sourceDir}/build/${hostSystemName}/vcpkg_installed",
+        "X_VCPKG_APPLOCAL_DEPS_INSTALL": "ON",
+        "VCPKG_INSTALL_OPTIONS": "--clean-after-build"
+      },
+      "environment": {
+        "VCPKG_DEFAULT_BINARY_CACHE": "${sourceDir}/build/${hostSystemName}/vcpkg_cache"
+      }
+    },
+    {
+      "name": "manager-windows",
+      "hidden": true,
+      "inherits": "manager-base",
+      "condition": { "type": "equals", "lhs": "${hostSystemName}", "rhs": "Windows" },
+      "generator": "Visual Studio 18 2026",
+      "architecture": { "value": "x64", "strategy": "set" },
+      "cacheVariables": {
+        "VCPKG_TARGET_TRIPLET": "x64-windows",
+        "VCPKG_HOST_TRIPLET": "x64-windows"
+      }
+    },
+    {
+      "name": "manager-linux",
+      "hidden": true,
+      "inherits": "manager-base",
+      "condition": { "type": "equals", "lhs": "${hostSystemName}", "rhs": "Linux" },
+      "generator": "Ninja"
+    },
+    {
+      "name": "manager-macos",
+      "hidden": true,
+      "inherits": "manager-base",
+      "condition": { "type": "equals", "lhs": "${hostSystemName}", "rhs": "Darwin" },
+      "generator": "Ninja"
+    },
+    {
+      "name": "manager-windows-release",
+      "inherits": "manager-windows",
+      "displayName": "Weaver Manager Release (Windows x64)"
+    },
+    {
+      "name": "manager-windows-test-release",
+      "inherits": "manager-windows",
+      "displayName": "Weaver Manager Test Release (Windows x64)",
+      "cacheVariables": {
+        "WEAVER_MANAGER_EXECUTABLE_NAME": "Weaver Manager Test",
+        "WEAVER_MANAGER_INSTALLER_SUFFIX": "-Test",
+        "WEAVER_MANAGER_DIRECTORY_SUFFIX": " Test",
+        "ENABLE_TEST": "ON"
+      }
+    },
+    {
+      "name": "manager-linux-release",
+      "inherits": "manager-linux",
+      "displayName": "Weaver Manager Release (Linux)",
+      "cacheVariables": { "CMAKE_BUILD_TYPE": "Release" }
+    },
+    {
+      "name": "manager-macos-release",
+      "inherits": "manager-macos",
+      "displayName": "Weaver Manager Release (macOS)",
+      "cacheVariables": { "CMAKE_BUILD_TYPE": "Release" }
+    }
+  ],
+  "buildPresets": [
+    { "name": "manager-windows-release", "configurePreset": "manager-windows-release", "configuration": "Release" },
+    { "name": "manager-windows-test-release", "configurePreset": "manager-windows-test-release", "configuration": "Release" },
+    { "name": "manager-linux-release", "configurePreset": "manager-linux-release" },
+    { "name": "manager-macos-release", "configurePreset": "manager-macos-release" }
+  ],
+  "packagePresets": [
+    {
+      "name": "manager-windows-release",
+      "configurePreset": "manager-windows-release",
+      "configurations": [ "Release" ]
+    },
+    {
+      "name": "manager-windows-test-release",
+      "configurePreset": "manager-windows-test-release",
+      "configurations": [ "Release" ]
+    },
+    {
+      "name": "manager-linux-release",
+      "configurePreset": "manager-linux-release"
+    },
+    {
+      "name": "manager-macos-release",
+      "configurePreset": "manager-macos-release"
+    }
+  ],
+  "workflowPresets": [
+    {
+      "name": "manager-windows-release-pack",
+      "steps": [
+        {
+          "type": "configure",
+          "name": "manager-windows-release"
+        },
+        {
+          "type": "build",
+          "name": "manager-windows-release"
+        },
+        {
+          "type": "package",
+          "name": "manager-windows-release"
+        }
+      ]
+    },
+    {
+      "name": "manager-windows-test-release-pack",
+      "steps": [
+        {
+          "type": "configure",
+          "name": "manager-windows-test-release"
+        },
+        {
+          "type": "build",
+          "name": "manager-windows-test-release"
+        },
+        {
+          "type": "package",
+          "name": "manager-windows-test-release"
+        }
+      ]
+    },
+    {
+      "name": "manager-linux-release-pack",
+      "steps": [
+        {
+          "type": "configure",
+          "name": "manager-linux-release"
+        },
+        {
+          "type": "build",
+          "name": "manager-linux-release"
+        },
+        {
+          "type": "package",
+          "name": "manager-linux-release"
+        }
+      ]
+    },
+    {
+      "name": "manager-macos-release-pack",
+      "steps": [
+        {
+          "type": "configure",
+          "name": "manager-macos-release"
+        },
+        {
+          "type": "build",
+          "name": "manager-macos-release"
+        },
+        {
+          "type": "package",
+          "name": "manager-macos-release"
+        }
+      ]
+    }
+  ]
+}

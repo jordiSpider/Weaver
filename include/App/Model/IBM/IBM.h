@@ -46,6 +46,7 @@
 
 /**
  * @class IBM
+ * @ingroup weaver_model
  * @brief Implements an Individual-Based Model (IBM) for ecosystem simulation.
  *
  * The IBM class represents a high-level model that simulates the behavior and

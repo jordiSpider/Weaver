@@ -3,6 +3,7 @@
 #include <msiquery.h>
 
 #include <cwctype>
+#include <cwchar>
 #include <string>
 #include <vector>
 
@@ -110,6 +111,63 @@ UINT fail(MSIHANDLE install, const std::wstring& details, const std::wstring& ou
 	return ERROR_INSTALL_FAILURE;
 }
 
+bool removeRLibraryTree(const std::wstring& directory, DWORD& error) {
+	const DWORD attributes = GetFileAttributesW(directory.c_str());
+	if (attributes == INVALID_FILE_ATTRIBUTES) {
+		error = GetLastError();
+		return error == ERROR_FILE_NOT_FOUND || error == ERROR_PATH_NOT_FOUND;
+	}
+	if (!(attributes & FILE_ATTRIBUTE_DIRECTORY) || (attributes & FILE_ATTRIBUTE_REPARSE_POINT)) {
+		if (RemoveDirectoryW(directory.c_str())) return true;
+		error = GetLastError();
+		return error == ERROR_PATH_NOT_FOUND || error == ERROR_FILE_NOT_FOUND;
+	}
+
+	WIN32_FIND_DATAW entry{};
+	const std::wstring pattern = directory + L"\\*";
+	HANDLE search = FindFirstFileW(pattern.c_str(), &entry);
+	if (search == INVALID_HANDLE_VALUE) {
+		error = GetLastError();
+		return false;
+	}
+
+	bool success = true;
+	do {
+		if (wcscmp(entry.cFileName, L".") == 0 || wcscmp(entry.cFileName, L"..") == 0) continue;
+		const std::wstring child = directory + L"\\" + entry.cFileName;
+		if ((entry.dwFileAttributes & FILE_ATTRIBUTE_DIRECTORY)
+			&& !(entry.dwFileAttributes & FILE_ATTRIBUTE_REPARSE_POINT)) {
+			if (!removeRLibraryTree(child, error)) success = false;
+		} else if (entry.dwFileAttributes & FILE_ATTRIBUTE_DIRECTORY) {
+			if (!RemoveDirectoryW(child.c_str())) {
+				error = GetLastError();
+				success = false;
+			}
+		} else {
+			if ((entry.dwFileAttributes & FILE_ATTRIBUTE_READONLY)
+				&& !SetFileAttributesW(child.c_str(), entry.dwFileAttributes & ~FILE_ATTRIBUTE_READONLY)) {
+				error = GetLastError();
+				success = false;
+			} else if (!DeleteFileW(child.c_str())) {
+				error = GetLastError();
+				success = false;
+			}
+		}
+	} while (FindNextFileW(search, &entry));
+
+	const DWORD enumerationError = GetLastError();
+	FindClose(search);
+	if (enumerationError != ERROR_NO_MORE_FILES) {
+		error = enumerationError;
+		success = false;
+	}
+	if (success && !RemoveDirectoryW(directory.c_str())) {
+		error = GetLastError();
+		success = false;
+	}
+	return success;
+}
+
 void displayFailure(MSIHANDLE install, const std::wstring& details, const std::wstring& logPath) {
 	MSIHANDLE record = MsiCreateRecord(3);
 	if (!record) return;
@@ -121,6 +179,31 @@ void displayFailure(MSIHANDLE install, const std::wstring& details, const std::w
 }
 
 } // namespace
+
+extern "C" __declspec(dllexport) UINT __stdcall RemoveEmptyVersionDirectory(MSIHANDLE install) {
+	const std::wstring directory = getMsiProperty(install, L"CustomActionData");
+	if (directory.empty() || RemoveDirectoryW(directory.c_str())) return ERROR_SUCCESS;
+
+	const DWORD error = GetLastError();
+	if (error == ERROR_DIR_NOT_EMPTY || error == ERROR_PATH_NOT_FOUND || error == ERROR_FILE_NOT_FOUND) {
+		return ERROR_SUCCESS;
+	}
+	logText(install, L"Could not remove the empty version directory (Windows error " + std::to_wstring(error) + L").");
+	return ERROR_INSTALL_FAILURE;
+}
+
+extern "C" __declspec(dllexport) UINT __stdcall RemoveRLibrary(MSIHANDLE install) {
+	const std::wstring versionDirectory = getMsiProperty(install, L"CustomActionData");
+	if (versionDirectory.empty()) {
+		logText(install, L"Could not resolve the installed version directory for R library cleanup.");
+		return ERROR_INSTALL_FAILURE;
+	}
+	const std::wstring rLibrary = versionDirectory + L"\\lib\\R";
+	DWORD error = ERROR_SUCCESS;
+	if (removeRLibraryTree(rLibrary, error)) return ERROR_SUCCESS;
+	logText(install, L"Could not completely remove the version-specific R library (Windows error " + std::to_wstring(error) + L").");
+	return ERROR_INSTALL_FAILURE;
+}
 
 extern "C" __declspec(dllexport) UINT __stdcall InstallREnvironment(MSIHANDLE install) {
 	const std::wstring customActionData = getMsiProperty(install, L"CustomActionData");

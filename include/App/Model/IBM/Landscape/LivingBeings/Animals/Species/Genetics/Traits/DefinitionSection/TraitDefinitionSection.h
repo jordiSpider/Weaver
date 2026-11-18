@@ -29,6 +29,7 @@ class IndividualLevelTrait;
 
 /**
  * @class TraitDefinitionSection
+ * @ingroup weaver_landscape
  * @brief Represents the definition of a trait, either at the species or individual level.
  *
  * This class provides an interface for trait definitions, including:

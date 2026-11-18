@@ -17,6 +17,7 @@
 
 /**
  * @class EdibilityValue
+ * @ingroup weaver_landscape
  * @brief Calculates the edibility value of prey for a predator.
  *
  * This class extends EdibleDecisionProbability and integrates predation probability

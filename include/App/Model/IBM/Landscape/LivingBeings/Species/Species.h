@@ -28,6 +28,7 @@
 
 /**
  * @class Species
+  * @ingroup weaver_landscape
  * @brief Represents a generic species in the ecosystem.
  *
  * The Species class encapsulates common properties of all species, including a unique identifier,
@@ -39,6 +40,7 @@ class Species
 public:
 	/**
      * @class Species::ID
+	   * @ingroup weaver_landscape
      * @brief Unique identifier for a Species.
      *
      * Provides type-safe identification for species instances within the simulation.

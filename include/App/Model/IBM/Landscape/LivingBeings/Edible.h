@@ -31,6 +31,7 @@ class Landscape;
 
 /**
  * @class Edible
+ * @ingroup weaver_landscape
  * @brief Represents a generic edible entity within a terrain cell.
  *
  * The Edible class serves as a base class for all resources or prey that animals

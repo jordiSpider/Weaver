@@ -21,6 +21,7 @@ class BranchTerrainCell;
 
 /**
  * @class BranchCellObstacle
+ * @ingroup weaver_landscape
  * @brief Obstacle representation for branch nodes in a spatial tree.
  *
  * This class aggregates obstacle information from child terrain cells of a branch

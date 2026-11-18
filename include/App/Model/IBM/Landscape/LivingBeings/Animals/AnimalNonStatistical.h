@@ -51,6 +51,7 @@ class TerrainCell;
 
 /**
  * @class AnimalNonStatistical
+  * @ingroup weaver_landscape
  * @brief Concrete subclass of Animal implementing detailed individual-based behavior.
  *
  * This class models each animal explicitly rather than statistically. It handles

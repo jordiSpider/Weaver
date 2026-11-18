@@ -25,6 +25,7 @@
 
 /**
  * @class Decay
+ * @ingroup weaver_model
  * @brief Abstract base class for different decay models.
  *
  * Decay models define how a quantity decreases over time. Subclasses implement specific

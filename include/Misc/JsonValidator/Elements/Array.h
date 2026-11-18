@@ -20,6 +20,7 @@
 
 /**
  * @class Array
+ * @ingroup weaver_validation
  * @brief Represents an array element in a JSON configuration.
  *
  * Inherits from Element. Provides mechanisms to define constraints on array size,

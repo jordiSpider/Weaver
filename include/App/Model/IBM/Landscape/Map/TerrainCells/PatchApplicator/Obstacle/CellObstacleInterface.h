@@ -33,6 +33,7 @@
 
 /**
  * @class CellObstacleInterface
+ * @ingroup weaver_landscape
  * @brief Interface for managing obstacles in a terrain cell.
  *
  * Provides functionality to apply obstacle patches, query obstacle state,

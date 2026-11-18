@@ -23,6 +23,7 @@
 
 /**
  * @class PawarTraitTemperatureSection
+ * @ingroup weaver_landscape
  * @brief Represents a temperature-dependent section of a Pawar metabolic model trait.
  *
  * This class extends TraitTemperatureSection to manage traits based on the Pawar

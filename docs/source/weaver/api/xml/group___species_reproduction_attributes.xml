@@ -1,0 +1,134 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.14.0" xml:lang="en-US">
+  <compounddef id="group___species_reproduction_attributes" kind="group">
+    <compoundname>SpeciesReproductionAttributes</compoundname>
+    <title>Reproduction Attributes</title>
+    <sectiondef kind="var">
+      <memberdef kind="variable" id="group___species_reproduction_attributes_1ga787a46c7199bbb6435aafecb59fc3160" prot="protected" static="no" mutable="no">
+        <type>float</type>
+        <definition>float AnimalSpecies::activityUnderPredationRisk</definition>
+        <argsstring></argsstring>
+        <name>activityUnderPredationRisk</name>
+        <qualifiedname>AnimalSpecies::activityUnderPredationRisk</qualifiedname>
+        <briefdescription>
+<para>Activity multiplier when under predation risk. </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="App/Model/IBM/Landscape/LivingBeings/Animals/Species/AnimalSpecies.h" line="833" column="7" bodyfile="App/Model/IBM/Landscape/LivingBeings/Animals/Species/AnimalSpecies.h" bodystart="833" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="group___species_reproduction_attributes_1ga023912b5329f6a39b4832f67b3aa7dad" prot="protected" static="no" mutable="no">
+        <type>unsigned int</type>
+        <definition>unsigned int AnimalSpecies::femaleMaxReproductionEvents</definition>
+        <argsstring></argsstring>
+        <name>femaleMaxReproductionEvents</name>
+        <qualifiedname>AnimalSpecies::femaleMaxReproductionEvents</qualifiedname>
+        <briefdescription>
+<para>Maximum number of reproduction events for females. </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="App/Model/IBM/Landscape/LivingBeings/Animals/Species/AnimalSpecies.h" line="818" column="14" bodyfile="App/Model/IBM/Landscape/LivingBeings/Animals/Species/AnimalSpecies.h" bodystart="818" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="group___species_reproduction_attributes_1ga5244b8f6df31f7ca5619d5a7aa3eec15" prot="protected" static="no" mutable="no">
+        <type>unsigned int</type>
+        <definition>unsigned int AnimalSpecies::maleMaxReproductionEvents</definition>
+        <argsstring></argsstring>
+        <name>maleMaxReproductionEvents</name>
+        <qualifiedname>AnimalSpecies::maleMaxReproductionEvents</qualifiedname>
+        <briefdescription>
+<para>Maximum number of reproduction events for males. </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="App/Model/IBM/Landscape/LivingBeings/Animals/Species/AnimalSpecies.h" line="824" column="14" bodyfile="App/Model/IBM/Landscape/LivingBeings/Animals/Species/AnimalSpecies.h" bodystart="824" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="group___species_reproduction_attributes_1ga2c77afc1bcdc575e1f376c48d8ae4200" prot="protected" static="no" mutable="no">
+        <type><ref refid="class_precise_double" kindref="compound">PreciseDouble</ref></type>
+        <definition>PreciseDouble AnimalSpecies::maleMobility</definition>
+        <argsstring></argsstring>
+        <name>maleMobility</name>
+        <qualifiedname>AnimalSpecies::maleMobility</qualifiedname>
+        <briefdescription>
+<para>Mobility coefficient of males. </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="App/Model/IBM/Landscape/LivingBeings/Animals/Species/AnimalSpecies.h" line="827" column="15" bodyfile="App/Model/IBM/Landscape/LivingBeings/Animals/Species/AnimalSpecies.h" bodystart="827" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="group___species_reproduction_attributes_1ga64de33bc63cfcdf03851e6754c2cd8a4" prot="protected" static="no" mutable="no">
+        <type>float</type>
+        <definition>float AnimalSpecies::sexRatio</definition>
+        <argsstring></argsstring>
+        <name>sexRatio</name>
+        <qualifiedname>AnimalSpecies::sexRatio</qualifiedname>
+        <briefdescription>
+<para>Fraction of females at birth or emergence. </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="App/Model/IBM/Landscape/LivingBeings/Animals/Species/AnimalSpecies.h" line="815" column="7" bodyfile="App/Model/IBM/Landscape/LivingBeings/Animals/Species/AnimalSpecies.h" bodystart="815" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="group___species_reproduction_attributes_1ga0aeaa04a323d6d4d2b8139801d3bb6ca" prot="protected" static="no" mutable="no">
+        <type>SexualType</type>
+        <definition>SexualType AnimalSpecies::sexualType</definition>
+        <argsstring></argsstring>
+        <name>sexualType</name>
+        <qualifiedname>AnimalSpecies::sexualType</qualifiedname>
+        <briefdescription>
+<para>Sexual reproduction type (diploid, haplodiploid, asexual). </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="App/Model/IBM/Landscape/LivingBeings/Animals/Species/AnimalSpecies.h" line="812" column="12" bodyfile="App/Model/IBM/Landscape/LivingBeings/Animals/Species/AnimalSpecies.h" bodystart="812" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="group___species_reproduction_attributes_1ga94776426e05cde8fa8a57df1d4db66bc" prot="protected" static="no" mutable="no">
+        <type>bool</type>
+        <definition>bool AnimalSpecies::surviveWithoutFood</definition>
+        <argsstring></argsstring>
+        <name>surviveWithoutFood</name>
+        <qualifiedname>AnimalSpecies::surviveWithoutFood</qualifiedname>
+        <briefdescription>
+<para>Whether individuals can survive without food. </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="App/Model/IBM/Landscape/LivingBeings/Animals/Species/AnimalSpecies.h" line="830" column="6" bodyfile="App/Model/IBM/Landscape/LivingBeings/Animals/Species/AnimalSpecies.h" bodystart="830" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="group___species_reproduction_attributes_1gafc131dd3cb03b135a0b32c3ae7c206b6" prot="protected" static="no" mutable="no">
+        <type><ref refid="class_precise_double" kindref="compound">PreciseDouble</ref></type>
+        <definition>PreciseDouble AnimalSpecies::totFec</definition>
+        <argsstring></argsstring>
+        <name>totFec</name>
+        <qualifiedname>AnimalSpecies::totFec</qualifiedname>
+        <briefdescription>
+<para>Total lifetime fecundity. </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="App/Model/IBM/Landscape/LivingBeings/Animals/Species/AnimalSpecies.h" line="821" column="15" bodyfile="App/Model/IBM/Landscape/LivingBeings/Animals/Species/AnimalSpecies.h" bodystart="821" bodyend="-1"/>
+      </memberdef>
+    </sectiondef>
+    <briefdescription>
+<para>Sexual structure, fecundity, reproduction limits and gender distribution. </para>
+    </briefdescription>
+    <detaileddescription>
+    </detaileddescription>
+  </compounddef>
+</doxygen>

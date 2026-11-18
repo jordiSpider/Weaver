@@ -26,6 +26,7 @@ class TempSizeRuleTraitTemperatureSection;
 
 /**
  * @class TempSizeRuleIndividualTraitTemperatureSection
+ * @ingroup weaver_landscape
  * @brief Temperature-dependent section of an individual trait following the Temperature-Size Rule.
  *
  * This class modifies an individual trait according to the Temperature-Size Rule,

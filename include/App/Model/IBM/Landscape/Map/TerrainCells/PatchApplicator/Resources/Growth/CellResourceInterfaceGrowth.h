@@ -27,6 +27,7 @@ class CellResourceInterface;
 
 /**
  * @class CellResourceInterfaceGrowth
+ * @ingroup weaver_landscape
  * @brief Manages growth and biomass for a resource cell.
  *
  * This class extends EdibleGrowth and provides methods to update,

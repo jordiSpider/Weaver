@@ -1,0 +1,79 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.14.0" xml:lang="en-US">
+  <compounddef id="struct_obstacle_source_1_1_porosity_parameters" kind="struct" language="C++" prot="public">
+    <compoundname>ObstacleSource::PorosityParameters</compoundname>
+    <sectiondef kind="public-attrib">
+      <memberdef kind="variable" id="struct_obstacle_source_1_1_porosity_parameters_1a3adeb7abb8e7ad090b4d1b42c093cf42" prot="public" static="no" mutable="no">
+        <type>double</type>
+        <definition>double ObstacleSource::PorosityParameters::featureSize</definition>
+        <argsstring></argsstring>
+        <name>featureSize</name>
+        <qualifiedname>ObstacleSource::PorosityParameters::featureSize</qualifiedname>
+        <initializer>= 0.0</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="App/Model/IBM/Landscape/Map/Patches/Source/ObstacleSource.h" line="36" column="16" bodyfile="App/Model/IBM/Landscape/Map/Patches/Source/ObstacleSource.h" bodystart="36" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="struct_obstacle_source_1_1_porosity_parameters_1aca5c1b0727059574be9e6ec434edded8" prot="public" static="no" mutable="no">
+        <type>double</type>
+        <definition>double ObstacleSource::PorosityParameters::fraction</definition>
+        <argsstring></argsstring>
+        <name>fraction</name>
+        <qualifiedname>ObstacleSource::PorosityParameters::fraction</qualifiedname>
+        <initializer>= 0.0</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="App/Model/IBM/Landscape/Map/Patches/Source/ObstacleSource.h" line="34" column="16" bodyfile="App/Model/IBM/Landscape/Map/Patches/Source/ObstacleSource.h" bodystart="34" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="struct_obstacle_source_1_1_porosity_parameters_1a5d66012f0d035a146a87fb099e029cda" prot="public" static="no" mutable="no">
+        <type>double</type>
+        <definition>double ObstacleSource::PorosityParameters::minimumPoreWidth</definition>
+        <argsstring></argsstring>
+        <name>minimumPoreWidth</name>
+        <qualifiedname>ObstacleSource::PorosityParameters::minimumPoreWidth</qualifiedname>
+        <initializer>= 0.0</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="App/Model/IBM/Landscape/Map/Patches/Source/ObstacleSource.h" line="35" column="16" bodyfile="App/Model/IBM/Landscape/Map/Patches/Source/ObstacleSource.h" bodystart="35" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="struct_obstacle_source_1_1_porosity_parameters_1a7926f074b28639844949be84987d7b5f" prot="public" static="no" mutable="no">
+        <type>std::size_t</type>
+        <definition>std::size_t ObstacleSource::PorosityParameters::octaves</definition>
+        <argsstring></argsstring>
+        <name>octaves</name>
+        <qualifiedname>ObstacleSource::PorosityParameters::octaves</qualifiedname>
+        <initializer>= 0</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="App/Model/IBM/Landscape/Map/Patches/Source/ObstacleSource.h" line="37" column="21" bodyfile="App/Model/IBM/Landscape/Map/Patches/Source/ObstacleSource.h" bodystart="37" bodyend="-1"/>
+      </memberdef>
+    </sectiondef>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+    </detaileddescription>
+    <location file="App/Model/IBM/Landscape/Map/Patches/Source/ObstacleSource.h" line="33" column="5" bodyfile="App/Model/IBM/Landscape/Map/Patches/Source/ObstacleSource.h" bodystart="33" bodyend="38"/>
+    <listofallmembers>
+      <member refid="struct_obstacle_source_1_1_porosity_parameters_1a3adeb7abb8e7ad090b4d1b42c093cf42" prot="public" virt="non-virtual"><scope>ObstacleSource::PorosityParameters</scope><name>featureSize</name></member>
+      <member refid="struct_obstacle_source_1_1_porosity_parameters_1aca5c1b0727059574be9e6ec434edded8" prot="public" virt="non-virtual"><scope>ObstacleSource::PorosityParameters</scope><name>fraction</name></member>
+      <member refid="struct_obstacle_source_1_1_porosity_parameters_1a5d66012f0d035a146a87fb099e029cda" prot="public" virt="non-virtual"><scope>ObstacleSource::PorosityParameters</scope><name>minimumPoreWidth</name></member>
+      <member refid="struct_obstacle_source_1_1_porosity_parameters_1a7926f074b28639844949be84987d7b5f" prot="public" virt="non-virtual"><scope>ObstacleSource::PorosityParameters</scope><name>octaves</name></member>
+    </listofallmembers>
+  </compounddef>
+</doxygen>

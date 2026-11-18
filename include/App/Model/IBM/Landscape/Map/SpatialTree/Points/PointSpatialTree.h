@@ -19,6 +19,7 @@
 
 /**
  * @class PointSpatialTree
+ * @ingroup weaver_landscape
  * @brief Represents a point in a spatial tree with a specific depth.
  *
  * Extends PointMap by adding the depth of the point in a spatial tree structure.

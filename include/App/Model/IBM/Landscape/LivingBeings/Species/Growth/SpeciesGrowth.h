@@ -29,6 +29,7 @@
 
 /**
  * @class SpeciesGrowth
+ * @ingroup weaver_landscape
  * @brief Represents the growth characteristics of a species across its instars.
  *
  * This class encapsulates information about the number of instars, the range of instars,

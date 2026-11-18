@@ -33,13 +33,14 @@ class Model;
 
 /**
  * @class View
+ * @ingroup weaver_model
  * @brief Abstract base class representing a view in the MVC pattern.
  *
  * The `View` class is responsible for managing logs and providing
  * human-readable titles for simulation `RunMode`s. Derived classes
  * must implement methods to handle normal and error log messages.
  *
- * ### Responsibilities
+ * @par Responsibilities
  * - Maintain a reference to the associated `Model`.
  * - Provide mapping from `RunMode` enum values to string titles.
  * - Provide logging interface for normal and error messages.

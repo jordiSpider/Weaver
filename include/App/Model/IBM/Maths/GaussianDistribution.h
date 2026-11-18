@@ -21,6 +21,7 @@
 
 /**
  * @class Gaussian1D
+  * @ingroup weaver_model
  * @brief Class for handling 1-dimensional Gaussian distribution.
  *
  * Supports optional precomputation for faster repeated evaluations.
@@ -78,6 +79,7 @@ public:
 
 /**
  * @class IsotropicGaussian3D
+  * @ingroup weaver_model
  * @brief Class for handling isotropic 3-dimensional Gaussian distributions.
  *
  * The sigma is the same in all three dimensions. Provides evaluation at points or distances.
@@ -133,6 +135,7 @@ public:
 
 /**
  * @class AnisotropicGaussian3D
+  * @ingroup weaver_model
  * @brief Class for handling anisotropic 3D Gaussian distributions.
  *
  * Each dimension can have its own sigma. Precomputed inverse squared sigmas are used for speed.

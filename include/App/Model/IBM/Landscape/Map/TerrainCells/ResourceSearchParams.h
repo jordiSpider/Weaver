@@ -19,6 +19,7 @@
 
 /**
  * @class ResourceSearchParams
+ * @ingroup weaver_landscape
  * @brief Stores parameters for searching resources within a terrain cell.
  *
  * This class encapsulates a set of searchable resource species. It allows

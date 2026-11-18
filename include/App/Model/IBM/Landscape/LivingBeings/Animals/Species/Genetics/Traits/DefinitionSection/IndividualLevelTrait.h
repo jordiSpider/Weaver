@@ -22,6 +22,7 @@
 
 /**
  * @class IndividualLevelTrait
+ * @ingroup weaver_landscape
  * @brief Represents a trait defined at the individual level within a species.
  *
  * This class extends TraitDefinitionSection and handles traits that vary

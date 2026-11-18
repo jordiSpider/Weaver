@@ -17,6 +17,7 @@
 
 /**
  * @class AnimalStatistical
+ * @ingroup weaver_landscape
  * @brief Concrete implementation of Animal for statistical modeling.
  *
  * This class extends Animal to provide a statistical model for animal behavior,

@@ -17,6 +17,7 @@
 
 /**
  * @class ProgressBar
+ * @ingroup weaver_model
  * @brief Displays a textual progress bar that updates as a process advances.
  *
  * The progress bar can be used to monitor operations iterating over a vector

@@ -1,0 +1,44 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.14.0" xml:lang="en-US">
+  <compounddef id="group___genetics_accessors" kind="group">
+    <compoundname>GeneticsAccessors</compoundname>
+    <title>Genetics Accessors</title>
+    <sectiondef kind="func">
+      <memberdef kind="function" id="group___genetics_accessors_1ga59915cc4e1f220d19ba4414fb4fa5b64" prot="public" static="no" const="yes" explicit="no" inline="no" virt="non-virtual">
+        <type>const <ref refid="class_animal_species_genetics" kindref="compound">AnimalSpeciesGenetics</ref> &amp;</type>
+        <definition>const AnimalSpeciesGenetics &amp; AnimalSpecies::getGenetics</definition>
+        <argsstring>() const</argsstring>
+        <name>getGenetics</name>
+        <qualifiedname>AnimalSpecies::getGenetics</qualifiedname>
+        <briefdescription>
+<para>Returns the immutable genetics block for this species. </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="App/Model/IBM/Landscape/LivingBeings/Animals/Species/AnimalSpecies.h" line="129" column="29"/>
+      </memberdef>
+      <memberdef kind="function" id="group___genetics_accessors_1ga0a97af75cb04a7d654bdf83db5238891" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type><ref refid="class_animal_species_genetics" kindref="compound">AnimalSpeciesGenetics</ref> &amp;</type>
+        <definition>AnimalSpeciesGenetics &amp; AnimalSpecies::getMutableGenetics</definition>
+        <argsstring>()</argsstring>
+        <name>getMutableGenetics</name>
+        <qualifiedname>AnimalSpecies::getMutableGenetics</qualifiedname>
+        <briefdescription>
+<para>Returns a mutable reference to the genetics block of this species. </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="App/Model/IBM/Landscape/LivingBeings/Animals/Species/AnimalSpecies.h" line="134" column="23"/>
+      </memberdef>
+    </sectiondef>
+    <briefdescription>
+<para>Accessors for reading and modifying species-level genetic configuration. </para>
+    </briefdescription>
+    <detaileddescription>
+    </detaileddescription>
+  </compounddef>
+</doxygen>

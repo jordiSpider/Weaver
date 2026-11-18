@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Wix xmlns="http://schemas.microsoft.com/wix/2006/wi">
+	<Fragment>
+		<Property Id="ARPNOREMOVE" Value="1" />
+		<DirectoryRef Id="PROGRAM_MENU_FOLDER">
+			<Component Id="WeaverManagerUninstallShortcutComponent" Guid="@WEAVER_MANAGER_SHORTCUT_COMPONENT_GUID@">
+				<Shortcut Id="WeaverManagerStartMenuShortcut"
+						  Name="@WEAVER_MANAGER_NAME@"
+						  Target="[#@WEAVER_MANAGER_EXECUTABLE_FILE_ID@]"
+						  WorkingDirectory="CM_DP_bin" />
+				<Shortcut Id="WeaverManagerUninstallStartMenuShortcut"
+						  Name="Uninstall @WEAVER_MANAGER_NAME@"
+						  Description="Uninstalls @WEAVER_MANAGER_NAME@ and its managed Weaver versions"
+						  Target="[#CM_FP_bin.WeaverManagerUninstaller.exe]"
+						  Arguments="--stage [ProductCode] &quot;[INSTALL_ROOT]&quot;" />
+				<RegistryValue Root="HKLM"
+						   Key="@WEAVER_MANAGER_REGISTRY_KEY@"
+						   Name="ShortcutsInstalled"
+						   Type="integer"
+						   Value="1"
+						   KeyPath="yes" />
+				<RemoveFolder Id="WeaverManagerProgramMenuFolder" On="uninstall" />
+			</Component>
+		</DirectoryRef>
+		<FeatureRef Id="ProductFeature">
+			<ComponentRef Id="WeaverManagerUninstallShortcutComponent" />
+		</FeatureRef>
+		<DirectoryRef Id="INSTALL_ROOT">
+			<Component Id="WeaverManagerUninstallerArpComponent" Guid="@WEAVER_MANAGER_ARP_COMPONENT_GUID@">
+				<RegistryValue Root="HKLM"
+						   Key="Software\Microsoft\Windows\CurrentVersion\Uninstall\@WEAVER_MANAGER_ARP_KEY_NAME@"
+						   Name="DisplayName"
+						   Type="string"
+						   Value="@WEAVER_MANAGER_NAME@"
+						   KeyPath="yes" />
+				<RegistryValue Root="HKLM"
+						   Key="Software\Microsoft\Windows\CurrentVersion\Uninstall\@WEAVER_MANAGER_ARP_KEY_NAME@"
+						   Name="UninstallString"
+						   Type="string"
+						   Value="&quot;[INSTALL_ROOT]bin\WeaverManagerUninstaller.exe&quot; --stage [ProductCode] &quot;[INSTALL_ROOT]&quot;" />
+				<RegistryValue Root="HKLM"
+						   Key="Software\Microsoft\Windows\CurrentVersion\Uninstall\@WEAVER_MANAGER_ARP_KEY_NAME@"
+						   Name="InstallLocation"
+						   Type="string"
+						   Value="[INSTALL_ROOT]" />
+				<RegistryValue Root="HKLM"
+						   Key="Software\Microsoft\Windows\CurrentVersion\Uninstall\@WEAVER_MANAGER_ARP_KEY_NAME@"
+						   Name="Publisher"
+						   Type="string"
+						   Value="Weaver Project" />
+				<RegistryValue Root="HKLM"
+						   Key="Software\Microsoft\Windows\CurrentVersion\Uninstall\@WEAVER_MANAGER_ARP_KEY_NAME@"
+						   Name="DisplayVersion"
+						   Type="string"
+						   Value="@PROJECT_VERSION@" />
+			</Component>
+		</DirectoryRef>
+		<FeatureRef Id="ProductFeature">
+			<ComponentRef Id="WeaverManagerUninstallerArpComponent" />
+		</FeatureRef>
+	</Fragment>
+</Wix>

@@ -1,0 +1,621 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.14.0" xml:lang="en-US">
+  <compounddef id="struct_cell_value" kind="struct" language="C++" prot="public">
+    <compoundname>CellValue</compoundname>
+    <includes refid="_cell_value_8h" local="no">CellValue.h</includes>
+    <sectiondef kind="public-attrib">
+      <memberdef kind="variable" id="struct_cell_value_1abceacaa98964f9add2883d88507c446c" prot="public" static="no" mutable="no">
+        <type>const <ref refid="class_edible" kindref="compound">Edible</ref> *</type>
+        <definition>const Edible* CellValue::bestEdibility</definition>
+        <argsstring></argsstring>
+        <name>bestEdibility</name>
+        <qualifiedname>CellValue::bestEdibility</qualifiedname>
+        <briefdescription>
+<para>The most suitable edible in the cell according to the evaluation. </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="App/Model/IBM/Landscape/Map/TerrainCells/CellValue.h" line="32" column="18" bodyfile="App/Model/IBM/Landscape/Map/TerrainCells/CellValue.h" bodystart="32" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="struct_cell_value_1ace8460838286d121703ab05fb7d99b71" prot="public" static="no" mutable="no">
+        <type>PointContinuous</type>
+        <definition>PointContinuous CellValue::cellCenter</definition>
+        <argsstring></argsstring>
+        <name>cellCenter</name>
+        <qualifiedname>CellValue::cellCenter</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="App/Model/IBM/Landscape/Map/TerrainCells/CellValue.h" line="58" column="21" bodyfile="App/Model/IBM/Landscape/Map/TerrainCells/CellValue.h" bodystart="58" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="struct_cell_value_1adcff8665d29479e2e85b1dba7e7386a0" prot="public" static="no" mutable="no">
+        <type>const RingModel *</type>
+        <definition>const RingModel* CellValue::cellEffectiveArea</definition>
+        <argsstring></argsstring>
+        <name>cellEffectiveArea</name>
+        <qualifiedname>CellValue::cellEffectiveArea</qualifiedname>
+        <briefdescription>
+<para>Effective area of the cell used for coverage calculations. </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="App/Model/IBM/Landscape/Map/TerrainCells/CellValue.h" line="38" column="21" bodyfile="App/Model/IBM/Landscape/Map/TerrainCells/CellValue.h" bodystart="38" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="struct_cell_value_1aad3313898ef72ad94065c330cac36085" prot="public" static="no" mutable="no">
+        <type>const <ref refid="class_point_map" kindref="compound">PointMap</ref> *const</type>
+        <definition>const PointMap* const CellValue::cellPosition</definition>
+        <argsstring></argsstring>
+        <name>cellPosition</name>
+        <qualifiedname>CellValue::cellPosition</qualifiedname>
+        <briefdescription>
+<para>Position of the cell in the map. </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="App/Model/IBM/Landscape/Map/TerrainCells/CellValue.h" line="41" column="26" bodyfile="App/Model/IBM/Landscape/Map/TerrainCells/CellValue.h" bodystart="41" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="struct_cell_value_1aea538f4d3f3b4c37a4cd2e2fce3d3248" prot="public" static="no" mutable="no">
+        <type>bool</type>
+        <definition>bool CellValue::fullCoverage</definition>
+        <argsstring></argsstring>
+        <name>fullCoverage</name>
+        <qualifiedname>CellValue::fullCoverage</qualifiedname>
+        <briefdescription>
+<para>Whether the cell is fully covered by the edible area. </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="App/Model/IBM/Landscape/Map/TerrainCells/CellValue.h" line="35" column="10" bodyfile="App/Model/IBM/Landscape/Map/TerrainCells/CellValue.h" bodystart="35" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="struct_cell_value_1aa0b17efef7e285a6749074f475becada" prot="public" static="no" mutable="no">
+        <type>bool</type>
+        <definition>bool CellValue::habitatDomain</definition>
+        <argsstring></argsstring>
+        <name>habitatDomain</name>
+        <qualifiedname>CellValue::habitatDomain</qualifiedname>
+        <briefdescription>
+<para>Whether the cell belongs to the habitat domain of the evaluating animal. </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="App/Model/IBM/Landscape/Map/TerrainCells/CellValue.h" line="52" column="10" bodyfile="App/Model/IBM/Landscape/Map/TerrainCells/CellValue.h" bodystart="52" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="struct_cell_value_1ae1690d4b96c896f2ffc9c0c5048a112f" prot="public" static="no" mutable="no">
+        <type>unsigned int</type>
+        <definition>unsigned int CellValue::numberOfFemales</definition>
+        <argsstring></argsstring>
+        <name>numberOfFemales</name>
+        <qualifiedname>CellValue::numberOfFemales</qualifiedname>
+        <briefdescription>
+<para><ref refid="class_number" kindref="compound">Number</ref> of mature females in the cell. </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="App/Model/IBM/Landscape/Map/TerrainCells/CellValue.h" line="47" column="18" bodyfile="App/Model/IBM/Landscape/Map/TerrainCells/CellValue.h" bodystart="47" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="struct_cell_value_1a9f3acc6643136eb7b93306a5ef1fb870" prot="public" static="no" mutable="no">
+        <type>unsigned int</type>
+        <definition>unsigned int CellValue::numberOfMales</definition>
+        <argsstring></argsstring>
+        <name>numberOfMales</name>
+        <qualifiedname>CellValue::numberOfMales</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="App/Model/IBM/Landscape/Map/TerrainCells/CellValue.h" line="49" column="18" bodyfile="App/Model/IBM/Landscape/Map/TerrainCells/CellValue.h" bodystart="49" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="struct_cell_value_1ab3f3edd01132017da8d3bc36e6980708" prot="public" static="no" mutable="no">
+        <type><ref refid="class_precise_double" kindref="compound">PreciseDouble</ref></type>
+        <definition>PreciseDouble CellValue::totalConspecificBiomass</definition>
+        <argsstring></argsstring>
+        <name>totalConspecificBiomass</name>
+        <qualifiedname>CellValue::totalConspecificBiomass</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="App/Model/IBM/Landscape/Map/TerrainCells/CellValue.h" line="56" column="19" bodyfile="App/Model/IBM/Landscape/Map/TerrainCells/CellValue.h" bodystart="56" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="struct_cell_value_1a566ee56bfa76a08bce110398c98ab8be" prot="public" static="no" mutable="no">
+        <type><ref refid="class_precise_double" kindref="compound">PreciseDouble</ref></type>
+        <definition>PreciseDouble CellValue::totalEdibilityValue</definition>
+        <argsstring></argsstring>
+        <name>totalEdibilityValue</name>
+        <qualifiedname>CellValue::totalEdibilityValue</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="App/Model/IBM/Landscape/Map/TerrainCells/CellValue.h" line="54" column="15" bodyfile="App/Model/IBM/Landscape/Map/TerrainCells/CellValue.h" bodystart="54" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="struct_cell_value_1a134ebb13ba2a5ddc13d89d15bd7bc1d7" prot="public" static="no" mutable="no">
+        <type><ref refid="class_precise_double" kindref="compound">PreciseDouble</ref></type>
+        <definition>PreciseDouble CellValue::totalPredatoryRiskEdibilityValue</definition>
+        <argsstring></argsstring>
+        <name>totalPredatoryRiskEdibilityValue</name>
+        <qualifiedname>CellValue::totalPredatoryRiskEdibilityValue</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="App/Model/IBM/Landscape/Map/TerrainCells/CellValue.h" line="55" column="15" bodyfile="App/Model/IBM/Landscape/Map/TerrainCells/CellValue.h" bodystart="55" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="struct_cell_value_1afc2aa07235ee641981f777ba17274357" prot="public" static="no" mutable="no">
+        <type><ref refid="class_precise_double" kindref="compound">PreciseDouble</ref></type>
+        <definition>PreciseDouble CellValue::valuePerceived</definition>
+        <argsstring></argsstring>
+        <name>valuePerceived</name>
+        <qualifiedname>CellValue::valuePerceived</qualifiedname>
+        <briefdescription>
+<para>Perceived value of the cell by the evaluating animal. </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="App/Model/IBM/Landscape/Map/TerrainCells/CellValue.h" line="44" column="19" bodyfile="App/Model/IBM/Landscape/Map/TerrainCells/CellValue.h" bodystart="44" bodyend="-1"/>
+      </memberdef>
+    </sectiondef>
+    <sectiondef kind="public-func">
+      <memberdef kind="function" id="struct_cell_value_1abefefa5496d86063e7a19e1f5ca1945c" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type></type>
+        <definition>CellValue::CellValue</definition>
+        <argsstring>(const CellValue &amp;other)</argsstring>
+        <name>CellValue</name>
+        <qualifiedname>CellValue::CellValue</qualifiedname>
+        <param>
+          <type>const <ref refid="struct_cell_value" kindref="compound">CellValue</ref> &amp;</type>
+          <declname>other</declname>
+        </param>
+        <briefdescription>
+<para>Copy constructor. </para>
+        </briefdescription>
+        <detaileddescription>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>other</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Another <ref refid="struct_cell_value" kindref="compound">CellValue</ref> object to copy from </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="App/Model/IBM/Landscape/Map/TerrainCells/CellValue.h" line="87" column="5"/>
+      </memberdef>
+      <memberdef kind="function" id="struct_cell_value_1abb4b209389f3a5d1fedca59ca51d934e" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type></type>
+        <definition>CellValue::CellValue</definition>
+        <argsstring>(const Edible *bestEdibility, bool fullCoverage, const RingModel *cellEffectiveArea, const PointMap *const cellPosition, const PointContinuous &amp;cellCenter, const PreciseDouble &amp;totalEdibilityValue, const PreciseDouble &amp;totalPredatoryRiskEdibilityValue, const PreciseDouble &amp;totalConspecificBiomass, unsigned int numberOfFemales, unsigned int numberOfMales, const bool habitatDomain)</argsstring>
+        <name>CellValue</name>
+        <qualifiedname>CellValue::CellValue</qualifiedname>
+        <param>
+          <type>const <ref refid="class_edible" kindref="compound">Edible</ref> *</type>
+          <declname>bestEdibility</declname>
+        </param>
+        <param>
+          <type>bool</type>
+          <declname>fullCoverage</declname>
+        </param>
+        <param>
+          <type>const RingModel *</type>
+          <declname>cellEffectiveArea</declname>
+        </param>
+        <param>
+          <type>const <ref refid="class_point_map" kindref="compound">PointMap</ref> *const</type>
+          <declname>cellPosition</declname>
+        </param>
+        <param>
+          <type>const PointContinuous &amp;</type>
+          <declname>cellCenter</declname>
+        </param>
+        <param>
+          <type>const <ref refid="class_precise_double" kindref="compound">PreciseDouble</ref> &amp;</type>
+          <declname>totalEdibilityValue</declname>
+        </param>
+        <param>
+          <type>const <ref refid="class_precise_double" kindref="compound">PreciseDouble</ref> &amp;</type>
+          <declname>totalPredatoryRiskEdibilityValue</declname>
+        </param>
+        <param>
+          <type>const <ref refid="class_precise_double" kindref="compound">PreciseDouble</ref> &amp;</type>
+          <declname>totalConspecificBiomass</declname>
+        </param>
+        <param>
+          <type>unsigned int</type>
+          <declname>numberOfFemales</declname>
+        </param>
+        <param>
+          <type>unsigned int</type>
+          <declname>numberOfMales</declname>
+        </param>
+        <param>
+          <type>const bool</type>
+          <declname>habitatDomain</declname>
+        </param>
+        <briefdescription>
+<para>Constructor that evaluates a cell for a given animal. </para>
+        </briefdescription>
+        <detaileddescription>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>animalWhoIsEvaluating</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>The animal performing the evaluation </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>bestEdibility</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Pointer to the most suitable edible in the cell </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>fullCoverage</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>True if the edible fully covers the cell </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>cellEffectiveArea</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Effective area of the cell </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>cellPosition</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Pointer to the position of the cell </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>cellCenter</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Center coordinates of the cell </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>edibilityValue</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Perceived edibility value of the cell </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>predatoryRiskEdibilityValue</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Value modifier due to predatory risk </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>conspecificBiomass</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Biomass of conspecifics in the cell </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>numberOfFemales</parametername>
+</parameternamelist>
+<parameterdescription>
+<para><ref refid="class_number" kindref="compound">Number</ref> of mature females present in the cell </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>habitatDomain</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Whether the cell belongs to the habitat domain </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="App/Model/IBM/Landscape/Map/TerrainCells/CellValue.h" line="75" column="5"/>
+      </memberdef>
+      <memberdef kind="function" id="struct_cell_value_1a3fafb4be594041e39b36d7f7df675e61" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type></type>
+        <definition>CellValue::~CellValue</definition>
+        <argsstring>()</argsstring>
+        <name>~CellValue</name>
+        <qualifiedname>CellValue::~CellValue</qualifiedname>
+        <briefdescription>
+<para>Destructor. </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="App/Model/IBM/Landscape/Map/TerrainCells/CellValue.h" line="80" column="5"/>
+      </memberdef>
+      <memberdef kind="function" id="struct_cell_value_1a8b0bf5464f2c82646dee484a60d75ac9" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void CellValue::calculateValuePerceived</definition>
+        <argsstring>(const AnimalNonStatistical &amp;animalWhoIsEvaluating)</argsstring>
+        <name>calculateValuePerceived</name>
+        <qualifiedname>CellValue::calculateValuePerceived</qualifiedname>
+        <param>
+          <type>const <ref refid="class_animal_non_statistical" kindref="compound">AnimalNonStatistical</ref> &amp;</type>
+          <declname>animalWhoIsEvaluating</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="App/Model/IBM/Landscape/Map/TerrainCells/CellValue.h" line="94" column="10"/>
+      </memberdef>
+      <memberdef kind="function" id="struct_cell_value_1ad886cfb3da0f44ee8aa8c2ccf66a7b4c" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type><ref refid="struct_cell_value" kindref="compound">CellValue</ref> &amp;</type>
+        <definition>CellValue &amp; CellValue::operator=</definition>
+        <argsstring>(const CellValue &amp;)=delete</argsstring>
+        <name>operator=</name>
+        <qualifiedname>CellValue::operator=</qualifiedname>
+        <param>
+          <type>const <ref refid="struct_cell_value" kindref="compound">CellValue</ref> &amp;</type>
+        </param>
+        <briefdescription>
+<para>Copy assignment operator is deleted. </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="App/Model/IBM/Landscape/Map/TerrainCells/CellValue.h" line="92" column="15"/>
+      </memberdef>
+      <memberdef kind="function" id="struct_cell_value_1ac08a167f020fc77b81f5be359893c4fb" prot="public" static="no" const="yes" explicit="no" inline="no" virt="non-virtual">
+        <type>bool</type>
+        <definition>bool CellValue::operator&gt;</definition>
+        <argsstring>(const CellValue &amp;other) const</argsstring>
+        <name>operator&gt;</name>
+        <qualifiedname>CellValue::operator&gt;</qualifiedname>
+        <param>
+          <type>const <ref refid="struct_cell_value" kindref="compound">CellValue</ref> &amp;</type>
+          <declname>other</declname>
+        </param>
+        <briefdescription>
+<para>Greater-than operator based on perceived value and other criteria. </para>
+        </briefdescription>
+        <detaileddescription>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>other</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Another <ref refid="struct_cell_value" kindref="compound">CellValue</ref> to compare with </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<simplesect kind="return"><para>True if this cell is evaluated as greater than the other </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="App/Model/IBM/Landscape/Map/TerrainCells/CellValue.h" line="102" column="6"/>
+      </memberdef>
+      <memberdef kind="function" id="struct_cell_value_1acdc8163c2df962f384cbe8fea4aa128d" prot="public" static="no" const="yes" explicit="no" inline="no" virt="non-virtual">
+        <type>bool</type>
+        <definition>bool CellValue::operator&gt;=</definition>
+        <argsstring>(const CellValue &amp;other) const</argsstring>
+        <name>operator&gt;=</name>
+        <qualifiedname>CellValue::operator&gt;=</qualifiedname>
+        <param>
+          <type>const <ref refid="struct_cell_value" kindref="compound">CellValue</ref> &amp;</type>
+          <declname>other</declname>
+        </param>
+        <briefdescription>
+<para>Greater-than-or-equal operator based on perceived value and other criteria. </para>
+        </briefdescription>
+        <detaileddescription>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>other</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Another <ref refid="struct_cell_value" kindref="compound">CellValue</ref> to compare with </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<simplesect kind="return"><para>True if this cell is evaluated as greater than or equal to the other </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="App/Model/IBM/Landscape/Map/TerrainCells/CellValue.h" line="110" column="10"/>
+      </memberdef>
+    </sectiondef>
+    <briefdescription>
+<para>Stores the evaluation of a terrain cell from the perspective of an animal. </para>
+    </briefdescription>
+    <detaileddescription>
+<para>This struct is used to compare terrain cells based on perceived value, coverage, number of females, predatory risk, habitat domain, and other criteria relevant for animal decision-making in the simulation. </para>
+    </detaileddescription>
+    <collaborationgraph>
+      <node id="8">
+        <label>CellElement</label>
+        <link refid="class_cell_element"/>
+      </node>
+      <node id="12">
+        <label>CellHabitatDomainInterface</label>
+        <link refid="class_cell_habitat_domain_interface"/>
+        <childnode refid="8" relation="public-inheritance">
+        </childnode>
+        <childnode refid="13" relation="usage">
+          <edgelabel>habitatDomainStatus</edgelabel>
+        </childnode>
+      </node>
+      <node id="7">
+        <label>CellMoistureInterface</label>
+        <link refid="class_cell_moisture_interface"/>
+        <childnode refid="8" relation="public-inheritance">
+        </childnode>
+        <childnode refid="9" relation="usage">
+          <edgelabel>totalMaximumResourceCapacity</edgelabel>
+        </childnode>
+      </node>
+      <node id="11">
+        <label>CellObstacleInterface</label>
+        <link refid="class_cell_obstacle_interface"/>
+        <childnode refid="8" relation="public-inheritance">
+        </childnode>
+      </node>
+      <node id="1">
+        <label>CellValue</label>
+        <link refid="struct_cell_value"/>
+        <childnode refid="2" relation="usage">
+          <edgelabel>bestEdibility</edgelabel>
+        </childnode>
+        <childnode refid="14" relation="usage">
+          <edgelabel>cellPosition</edgelabel>
+        </childnode>
+        <childnode refid="10" relation="usage">
+          <edgelabel>totalConspecificBiomass</edgelabel>
+          <edgelabel>totalEdibilityValue</edgelabel>
+          <edgelabel>totalPredatoryRiskEdibilityValue</edgelabel>
+          <edgelabel>valuePerceived</edgelabel>
+        </childnode>
+      </node>
+      <node id="13">
+        <label>CustomIndexedVector&lt; AnimalSpeciesID, CustomIndexedVector&lt; Instar, bool &gt; &gt;</label>
+        <link refid="class_custom_indexed_vector"/>
+      </node>
+      <node id="2">
+        <label>Edible</label>
+        <link refid="class_edible"/>
+        <childnode refid="3" relation="usage">
+          <edgelabel>mySpecies</edgelabel>
+        </childnode>
+        <childnode refid="5" relation="usage">
+          <edgelabel>terrainCell</edgelabel>
+        </childnode>
+      </node>
+      <node id="6">
+        <label>PatchApplicator</label>
+        <link refid="class_patch_applicator"/>
+        <childnode refid="5" relation="usage">
+          <edgelabel>owner</edgelabel>
+        </childnode>
+        <childnode refid="7" relation="usage">
+          <edgelabel>cellMoisture</edgelabel>
+        </childnode>
+        <childnode refid="11" relation="usage">
+          <edgelabel>cellObstacle</edgelabel>
+        </childnode>
+        <childnode refid="12" relation="usage">
+          <edgelabel>cellHabitatDomain</edgelabel>
+        </childnode>
+      </node>
+      <node id="14">
+        <label>PointMap</label>
+        <link refid="class_point_map"/>
+      </node>
+      <node id="10">
+        <label>PreciseDouble</label>
+        <link refid="class_precise_double"/>
+      </node>
+      <node id="3">
+        <label>Species</label>
+        <link refid="class_species"/>
+        <childnode refid="4" relation="usage">
+          <edgelabel>id</edgelabel>
+        </childnode>
+      </node>
+      <node id="4">
+        <label>Species::ID</label>
+        <link refid="class_species_1_1_i_d"/>
+      </node>
+      <node id="5">
+        <label>TerrainCell</label>
+        <link refid="class_terrain_cell"/>
+        <childnode refid="6" relation="usage">
+          <edgelabel>patchApplicator</edgelabel>
+        </childnode>
+        <childnode refid="14" relation="usage">
+          <edgelabel>position</edgelabel>
+        </childnode>
+        <childnode refid="10" relation="usage">
+          <edgelabel>hyperVolume</edgelabel>
+          <edgelabel>size</edgelabel>
+        </childnode>
+      </node>
+      <node id="9">
+        <label>WetMass</label>
+        <link refid="class_wet_mass"/>
+        <childnode refid="10" relation="usage">
+          <edgelabel>value</edgelabel>
+        </childnode>
+      </node>
+    </collaborationgraph>
+    <location file="App/Model/IBM/Landscape/Map/TerrainCells/CellValue.h" line="30" column="1" bodyfile="App/Model/IBM/Landscape/Map/TerrainCells/CellValue.h" bodystart="30" bodyend="111"/>
+    <listofallmembers>
+      <member refid="struct_cell_value_1abceacaa98964f9add2883d88507c446c" prot="public" virt="non-virtual"><scope>CellValue</scope><name>bestEdibility</name></member>
+      <member refid="struct_cell_value_1a8b0bf5464f2c82646dee484a60d75ac9" prot="public" virt="non-virtual"><scope>CellValue</scope><name>calculateValuePerceived</name></member>
+      <member refid="struct_cell_value_1ace8460838286d121703ab05fb7d99b71" prot="public" virt="non-virtual"><scope>CellValue</scope><name>cellCenter</name></member>
+      <member refid="struct_cell_value_1adcff8665d29479e2e85b1dba7e7386a0" prot="public" virt="non-virtual"><scope>CellValue</scope><name>cellEffectiveArea</name></member>
+      <member refid="struct_cell_value_1aad3313898ef72ad94065c330cac36085" prot="public" virt="non-virtual"><scope>CellValue</scope><name>cellPosition</name></member>
+      <member refid="struct_cell_value_1abb4b209389f3a5d1fedca59ca51d934e" prot="public" virt="non-virtual"><scope>CellValue</scope><name>CellValue</name></member>
+      <member refid="struct_cell_value_1abefefa5496d86063e7a19e1f5ca1945c" prot="public" virt="non-virtual"><scope>CellValue</scope><name>CellValue</name></member>
+      <member refid="struct_cell_value_1aea538f4d3f3b4c37a4cd2e2fce3d3248" prot="public" virt="non-virtual"><scope>CellValue</scope><name>fullCoverage</name></member>
+      <member refid="struct_cell_value_1aa0b17efef7e285a6749074f475becada" prot="public" virt="non-virtual"><scope>CellValue</scope><name>habitatDomain</name></member>
+      <member refid="struct_cell_value_1ae1690d4b96c896f2ffc9c0c5048a112f" prot="public" virt="non-virtual"><scope>CellValue</scope><name>numberOfFemales</name></member>
+      <member refid="struct_cell_value_1a9f3acc6643136eb7b93306a5ef1fb870" prot="public" virt="non-virtual"><scope>CellValue</scope><name>numberOfMales</name></member>
+      <member refid="struct_cell_value_1ad886cfb3da0f44ee8aa8c2ccf66a7b4c" prot="public" virt="non-virtual"><scope>CellValue</scope><name>operator=</name></member>
+      <member refid="struct_cell_value_1ac08a167f020fc77b81f5be359893c4fb" prot="public" virt="non-virtual"><scope>CellValue</scope><name>operator&gt;</name></member>
+      <member refid="struct_cell_value_1acdc8163c2df962f384cbe8fea4aa128d" prot="public" virt="non-virtual"><scope>CellValue</scope><name>operator&gt;=</name></member>
+      <member refid="struct_cell_value_1ab3f3edd01132017da8d3bc36e6980708" prot="public" virt="non-virtual"><scope>CellValue</scope><name>totalConspecificBiomass</name></member>
+      <member refid="struct_cell_value_1a566ee56bfa76a08bce110398c98ab8be" prot="public" virt="non-virtual"><scope>CellValue</scope><name>totalEdibilityValue</name></member>
+      <member refid="struct_cell_value_1a134ebb13ba2a5ddc13d89d15bd7bc1d7" prot="public" virt="non-virtual"><scope>CellValue</scope><name>totalPredatoryRiskEdibilityValue</name></member>
+      <member refid="struct_cell_value_1afc2aa07235ee641981f777ba17274357" prot="public" virt="non-virtual"><scope>CellValue</scope><name>valuePerceived</name></member>
+      <member refid="struct_cell_value_1a3fafb4be594041e39b36d7f7df675e61" prot="public" virt="non-virtual"><scope>CellValue</scope><name>~CellValue</name></member>
+    </listofallmembers>
+  </compounddef>
+</doxygen>

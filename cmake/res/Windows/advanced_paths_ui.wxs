@@ -25,20 +25,23 @@
 			<DialogRef Id="LicenseAgreementDlg" />
 			<DialogRef Id="InstallDirDlg" />
 			<DialogRef Id="CustomizeDlg" />
+			<DialogRef Id="DiskCostDlg" />
 			<DialogRef Id="VerifyReadyDlg" />
 			<DialogRef Id="MaintenanceWelcomeDlg" />
 			<DialogRef Id="MaintenanceTypeDlg" />
 
 			<!-- Welcome -->
-			<Publish Dialog="WelcomeDlg" Control="Next" Event="NewDialog" Value="LegacyInstallNoticeDlg" Order="1">WEAVER_LEGACY_INSTALL_DETECTED</Publish>
+		<Publish Dialog="WelcomeDlg" Control="Next" Event="NewDialog" Value="LegacyInstallNoticeDlg" Order="1">WEAVER_LEGACY_DESKTOP_INSTALL_DETECTED OR WEAVER_LEGACY_SERVER_INSTALL_DETECTED OR WEAVER_LEGACY_SHARED_INSTALL_DETECTED</Publish>
 			<Publish Dialog="WelcomeDlg" Control="Next" Event="NewDialog" Value="DowngradeConfirmDlg" Order="2">WEAVER_NEWER_VERSION_DETECTED</Publish>
 			<Publish Dialog="WelcomeDlg" Control="Next" Event="NewDialog" Value="UpgradeConfirmDlg" Order="3">WIX_UPGRADE_DETECTED AND NOT WEAVER_NEWER_VERSION_DETECTED</Publish>
-			<Publish Dialog="WelcomeDlg" Control="Next" Event="NewDialog" Value="LicenseAgreementDlg" Order="4">NOT Installed AND NOT WIX_UPGRADE_DETECTED AND NOT WEAVER_LEGACY_INSTALL_DETECTED</Publish>
+		<Publish Dialog="WelcomeDlg" Control="Next" Event="NewDialog" Value="LicenseAgreementDlg" Order="4">NOT Installed AND NOT WIX_UPGRADE_DETECTED AND NOT (WEAVER_LEGACY_DESKTOP_INSTALL_DETECTED OR WEAVER_LEGACY_SERVER_INSTALL_DETECTED OR WEAVER_LEGACY_SHARED_INSTALL_DETECTED)</Publish>
 			<Publish Dialog="WelcomeDlg" Control="Next" Event="NewDialog" Value="MaintenanceWelcomeDlg" Order="5">Installed AND NOT PATCH</Publish>
 
 			<!-- License -->
 			<Publish Dialog="LicenseAgreementDlg" Control="Back" Event="NewDialog" Value="WelcomeDlg">1</Publish>
-			<Publish Dialog="LicenseAgreementDlg" Control="Next" Event="NewDialog" Value="InstallDirDlg">LicenseAccepted = &quot;1&quot;</Publish>
+			<Publish Dialog="LicenseAgreementDlg" Control="Next" Event="NewDialog" Value="ManagerCustomizeDlg" Order="1">LicenseAccepted = &quot;1&quot; AND WEAVER_MANAGER_INSTALL</Publish>
+			<Publish Dialog="LicenseAgreementDlg" Control="Next" Event="NewDialog" Value="CustomizeDlg" Order="2">LicenseAccepted = &quot;1&quot; AND NOT WEAVER_MANAGER_INSTALL AND WEAVER_INSTALL_ROOT</Publish>
+			<Publish Dialog="LicenseAgreementDlg" Control="Next" Event="NewDialog" Value="InstallDirDlg" Order="3">LicenseAccepted = &quot;1&quot; AND NOT WEAVER_MANAGER_INSTALL AND NOT WEAVER_INSTALL_ROOT</Publish>
 
 			<!-- Legacy installs predate separate edition UpgradeCodes. -->
 			<Publish Dialog="LegacyInstallNoticeDlg" Control="Continue" Event="NewDialog" Value="DowngradeConfirmDlg" Order="1">WEAVER_NEWER_VERSION_DETECTED</Publish>
@@ -68,11 +71,23 @@
 			<Publish Dialog="InstallDirDlg" Control="ChangeFolder" Event="SpawnDialog" Value="BrowseDlg" Order="2">1</Publish>
 
 			<!-- Component selection tree -->
-			<Publish Dialog="CustomizeDlg" Control="Back" Event="NewDialog" Value="InstallDirDlg">1</Publish>
-			<Publish Dialog="CustomizeDlg" Control="Next" Event="NewDialog" Value="ApplicationDataDirDlg">1</Publish>
+			<Publish Dialog="CustomizeDlg" Control="Back" Event="NewDialog" Value="MaintenanceTypeDlg" Order="1">Installed AND NOT PATCH</Publish>
+			<Publish Dialog="CustomizeDlg" Control="Back" Event="NewDialog" Value="InstallDirDlg" Order="2">NOT WEAVER_MANAGER_INSTALL AND NOT WEAVER_INSTALL_ROOT</Publish>
+			<Publish Dialog="CustomizeDlg" Control="Next" Event="NewDialog" Value="VerifyReadyDlg" Order="1">Installed AND NOT PATCH</Publish>
+			<Publish Dialog="CustomizeDlg" Control="Next" Event="NewDialog" Value="ApplicationDataDirDlg" Order="2">NOT Installed AND NOT WEAVER_MANAGER_INSTALL</Publish>
+
+			<!-- Manager component selection without an editable install path. -->
+			<Publish Dialog="ManagerCustomizeDlg" Control="Back" Event="NewDialog" Value="MaintenanceTypeDlg" Order="1">Installed AND NOT PATCH</Publish>
+			<Publish Dialog="ManagerCustomizeDlg" Control="Back" Event="NewDialog" Value="LicenseAgreementDlg" Order="2">NOT Installed AND WEAVER_MANAGER_INSTALL</Publish>
+			<Publish Dialog="ManagerCustomizeDlg" Control="Next" Event="NewDialog" Value="VerifyReadyDlg" Order="1">Installed AND NOT PATCH</Publish>
+			<Publish Dialog="ManagerCustomizeDlg" Control="Next" Event="NewDialog" Value="VerifyReadyDlg" Order="2">NOT Installed AND WEAVER_MANAGER_INSTALL</Publish>
+			<Publish Dialog="ManagerCustomizeDlg" Control="Cancel" Event="SpawnDialog" Value="CancelDlg">1</Publish>
+			<Publish Dialog="ManagerCustomizeDlg" Control="Reset" Event="Reset" Value="1">1</Publish>
+			<Publish Dialog="ManagerCustomizeDlg" Control="DiskCost" Event="SpawnDialog" Value="DiskCostDlg">1</Publish>
 
 			<!-- Application data directory -->
-			<Publish Dialog="ApplicationDataDirDlg" Control="Back" Event="NewDialog" Value="CustomizeDlg">1</Publish>
+			<Publish Dialog="ApplicationDataDirDlg" Control="Back" Event="NewDialog" Value="CustomizeDlg">NOT WEAVER_MANAGER_INSTALL</Publish>
+			<Publish Dialog="ApplicationDataDirDlg" Control="Back" Event="NewDialog" Value="LicenseAgreementDlg">WEAVER_MANAGER_INSTALL</Publish>
 			<!-- Chosen folder -> APPDATADIR -->
 			<Publish Dialog="ApplicationDataDirDlg" Control="Next" Property="APPDATADIR" Value="[CM_DP_Unspecified.AppData]" Order="1">1</Publish>
 			<Publish Dialog="ApplicationDataDirDlg" Control="Next" Event="SetTargetPath" Value="CM_DP_Unspecified.AppData" Order="2">1</Publish>
@@ -88,11 +103,14 @@
 			<Publish Dialog="MaintenanceWelcomeDlg" Control="Next" Event="NewDialog" Value="MaintenanceTypeDlg">1</Publish>
 
 			<Publish Dialog="MaintenanceTypeDlg" Control="Back" Event="NewDialog" Value="MaintenanceWelcomeDlg">1</Publish>
+			<Publish Dialog="MaintenanceTypeDlg" Control="ChangeButton" Event="NewDialog" Value="ManagerCustomizeDlg" Order="1">WEAVER_MANAGER_INSTALL</Publish>
+			<Publish Dialog="MaintenanceTypeDlg" Control="ChangeButton" Event="NewDialog" Value="CustomizeDlg" Order="2">NOT WEAVER_MANAGER_INSTALL</Publish>
 			<Publish Dialog="MaintenanceTypeDlg" Control="RepairButton" Event="NewDialog" Value="VerifyReadyDlg">1</Publish>
 			<Publish Dialog="MaintenanceTypeDlg" Control="RemoveButton" Event="NewDialog" Value="VerifyReadyDlg">1</Publish>
 
 			<!-- Verify ready -->
-			<Publish Dialog="VerifyReadyDlg" Control="Back" Event="NewDialog" Value="ApplicationDataDirDlg">NOT Installed</Publish>
+			<Publish Dialog="VerifyReadyDlg" Control="Back" Event="NewDialog" Value="ManagerCustomizeDlg">NOT Installed AND WEAVER_MANAGER_INSTALL</Publish>
+			<Publish Dialog="VerifyReadyDlg" Control="Back" Event="NewDialog" Value="ApplicationDataDirDlg">NOT Installed AND NOT WEAVER_MANAGER_INSTALL</Publish>
 			<Publish Dialog="VerifyReadyDlg" Control="Back" Event="NewDialog" Value="MaintenanceTypeDlg">Installed AND NOT PATCH</Publish>
 
 			<!-- Exit -->
@@ -100,12 +118,30 @@
 		</UI>
 
 		<UI>
+			<Dialog Id="ManagerCustomizeDlg" Width="370" Height="270" Title="[ProductName] Setup" NoMinimize="yes">
+				<Control Id="BannerBitmap" Type="Bitmap" X="0" Y="0" Width="370" Height="44" TabSkip="yes" Text="WixUI_Bmp_Banner" />
+				<Control Id="BannerLine" Type="Line" X="0" Y="44" Width="370" Height="0" />
+				<Control Id="BottomLine" Type="Line" X="0" Y="234" Width="370" Height="0" />
+				<Control Id="Title" Type="Text" X="15" Y="6" Width="330" Height="18" Transparent="yes" NoPrefix="yes" Text="{\WixUI_Font_Title}Custom Setup" />
+				<Control Id="HeaderDescription" Type="Text" X="25" Y="23" Width="320" Height="18" Transparent="yes" NoPrefix="yes" Text="Select the way you want features to be installed." />
+				<Control Id="Description" Type="Text" X="25" Y="58" Width="330" Height="18" NoPrefix="yes" Text="Click the icons in the tree below to change the way features will be installed." />
+				<Control Id="Tree" Type="SelectionTree" X="25" Y="85" Width="174" Height="130" Property="WIXUI_INSTALLDIR" TabSkip="yes" />
+				<Control Id="FeatureInfoBorder" Type="GroupBox" X="210" Y="85" Width="150" Height="130" />
+				<Control Id="ItemDescription" Type="Text" X="215" Y="95" Width="140" Height="55" NoPrefix="yes" Text="!(loc.CustomizeDlgItemDescription)" />
+				<Control Id="ItemSize" Type="Text" X="215" Y="150" Width="140" Height="55" NoPrefix="yes" Text="!(loc.CustomizeDlgItemSize)" />
+				<Control Id="Reset" Type="PushButton" X="7" Y="243" Width="80" Height="17" Text="Reset" />
+				<Control Id="DiskCost" Type="PushButton" X="89" Y="243" Width="98" Height="17" Text="Disk Usage" />
+				<Control Id="Back" Type="PushButton" X="191" Y="243" Width="56" Height="17" Text="!(loc.WixUIBack)" />
+				<Control Id="Next" Type="PushButton" X="249" Y="243" Width="56" Height="17" Default="yes" Text="!(loc.WixUINext)" />
+				<Control Id="Cancel" Type="PushButton" X="307" Y="243" Width="56" Height="17" Cancel="yes" Text="!(loc.WixUICancel)" />
+			</Dialog>
+
 			<Dialog Id="LegacyInstallNoticeDlg" Width="370" Height="270" Title="[ProductName] Setup" NoMinimize="yes">
 				<Control Id="BannerBitmap" Type="Bitmap" X="0" Y="0" Width="370" Height="44" TabSkip="no" Text="WixUI_Bmp_Banner" />
 				<Control Id="BannerLine" Type="Line" X="0" Y="44" Width="370" Height="0" />
 				<Control Id="BottomLine" Type="Line" X="0" Y="234" Width="370" Height="0" />
 				<Control Id="Title" Type="Text" X="15" Y="6" Width="330" Height="18" Transparent="yes" NoPrefix="yes" Text="Previous Weaver installation found" />
-				<Control Id="Description" Type="Text" X="20" Y="58" Width="330" Height="125" NoPrefix="yes" Text="An installation created before the editions had separate identities was found. It cannot be removed automatically because it might be the other edition, so its program and data folders will remain untouched. This edition will use separate program and default data folders. To reuse the old data, choose its folder on the next screen. Continue side by side?" />
+				<Control Id="Description" Type="Text" X="20" Y="58" Width="330" Height="125" NoPrefix="yes" Text="An installation using the previous shared identity was found. It will remain untouched. This installer uses a separate program folder and default data folder for this version and edition. To reuse existing data, choose its folder on the next screen. Continue side by side?" />
 				<Control Id="Continue" Type="PushButton" X="218" Y="243" Width="76" Height="17" Default="yes" Text="Continue" />
 				<Control Id="Cancel" Type="PushButton" X="304" Y="243" Width="56" Height="17" Cancel="yes" Text="!(loc.WixUICancel)" />
 			</Dialog>

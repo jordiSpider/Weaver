@@ -1,0 +1,833 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.14.0" xml:lang="en-US">
+  <compounddef id="class_custom_indexed_vector" kind="class" language="C++" prot="public">
+    <compoundname>CustomIndexedVector</compoundname>
+    <includes refid="_custom_indexed_vector_8h" local="no">CustomIndexedVector.h</includes>
+    <templateparamlist>
+      <param>
+        <type>typename IndexType</type>
+      </param>
+      <param>
+        <type>typename ContentType</type>
+      </param>
+    </templateparamlist>
+    <sectiondef kind="private-attrib">
+      <memberdef kind="variable" id="class_custom_indexed_vector_1ab0ccb8fcde306af6261c9830e71aa830" prot="private" static="no" mutable="no">
+        <type>std::vector&lt; ContentType &gt;</type>
+        <definition>std::vector&lt;ContentType&gt; CustomIndexedVector&lt; IndexType, ContentType &gt;::data</definition>
+        <argsstring></argsstring>
+        <name>data</name>
+        <qualifiedname>CustomIndexedVector::data</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Internal storage of elements </para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="Misc/CustomIndexedVector.h" line="319" column="17" bodyfile="Misc/CustomIndexedVector.h" bodystart="319" bodyend="-1"/>
+      </memberdef>
+    </sectiondef>
+    <sectiondef kind="public-func">
+      <memberdef kind="function" id="class_custom_indexed_vector_1ad771b8d37691725d337c7881660c91a1" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <type></type>
+        <definition>CustomIndexedVector&lt; IndexType, ContentType &gt;::CustomIndexedVector</definition>
+        <argsstring>()</argsstring>
+        <name>CustomIndexedVector</name>
+        <qualifiedname>CustomIndexedVector::CustomIndexedVector</qualifiedname>
+        <briefdescription>
+<para>Default constructor, creates an empty vector. </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="Misc/CustomIndexedVector.h" line="33" column="5" bodyfile="Misc/CustomIndexedVector.h" bodystart="33" bodyend="37"/>
+      </memberdef>
+      <memberdef kind="function" id="class_custom_indexed_vector_1a5fd9f2a999ca8b23f348102eeabe1426" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type></type>
+        <definition>CustomIndexedVector&lt; IndexType, ContentType &gt;::CustomIndexedVector</definition>
+        <argsstring>(const CustomIndexedVector &amp;other)=default</argsstring>
+        <name>CustomIndexedVector</name>
+        <qualifiedname>CustomIndexedVector::CustomIndexedVector</qualifiedname>
+        <param>
+          <type>const <ref refid="class_custom_indexed_vector" kindref="compound">CustomIndexedVector</ref> &amp;</type>
+          <declname>other</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="Misc/CustomIndexedVector.h" line="74" column="5"/>
+      </memberdef>
+      <memberdef kind="function" id="class_custom_indexed_vector_1a0bcf7ad46ef1b1603ba5202893793708" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <type></type>
+        <definition>CustomIndexedVector&lt; IndexType, ContentType &gt;::CustomIndexedVector</definition>
+        <argsstring>(const size_t n)</argsstring>
+        <name>CustomIndexedVector</name>
+        <qualifiedname>CustomIndexedVector::CustomIndexedVector</qualifiedname>
+        <param>
+          <type>const size_t</type>
+          <declname>n</declname>
+        </param>
+        <briefdescription>
+<para>Constructs a vector of size n with default-initialized elements. </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="Misc/CustomIndexedVector.h" line="40" column="5" bodyfile="Misc/CustomIndexedVector.h" bodystart="40" bodyend="44"/>
+      </memberdef>
+      <memberdef kind="function" id="class_custom_indexed_vector_1a810c9662ffb0b3b55c57e88495ea42d3" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <type></type>
+        <definition>CustomIndexedVector&lt; IndexType, ContentType &gt;::CustomIndexedVector</definition>
+        <argsstring>(const size_t n, const ContentType &amp;val)</argsstring>
+        <name>CustomIndexedVector</name>
+        <qualifiedname>CustomIndexedVector::CustomIndexedVector</qualifiedname>
+        <param>
+          <type>const size_t</type>
+          <declname>n</declname>
+        </param>
+        <param>
+          <type>const ContentType &amp;</type>
+          <declname>val</declname>
+        </param>
+        <briefdescription>
+<para>Constructs a vector of size n initialized with a given value. </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="Misc/CustomIndexedVector.h" line="47" column="5" bodyfile="Misc/CustomIndexedVector.h" bodystart="47" bodyend="51"/>
+      </memberdef>
+      <memberdef kind="function" id="class_custom_indexed_vector_1a01d85e110dd1710a0586f9ab223a7c26" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <type></type>
+        <definition>CustomIndexedVector&lt; IndexType, ContentType &gt;::CustomIndexedVector</definition>
+        <argsstring>(const std::vector&lt; ContentType &gt; &amp;values)</argsstring>
+        <name>CustomIndexedVector</name>
+        <qualifiedname>CustomIndexedVector::CustomIndexedVector</qualifiedname>
+        <param>
+          <type>const std::vector&lt; ContentType &gt; &amp;</type>
+          <declname>values</declname>
+        </param>
+        <briefdescription>
+<para>Constructs a vector from an existing std::vector. </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="Misc/CustomIndexedVector.h" line="54" column="5" bodyfile="Misc/CustomIndexedVector.h" bodystart="54" bodyend="58"/>
+      </memberdef>
+      <memberdef kind="function" id="class_custom_indexed_vector_1a9110781caff959bbea6a73486f0e1263" prot="public" static="no" const="no" explicit="no" inline="yes" noexcept="yes" virt="non-virtual">
+        <type></type>
+        <definition>CustomIndexedVector&lt; IndexType, ContentType &gt;::CustomIndexedVector</definition>
+        <argsstring>(CustomIndexedVector &amp;&amp;other) noexcept</argsstring>
+        <name>CustomIndexedVector</name>
+        <qualifiedname>CustomIndexedVector::CustomIndexedVector</qualifiedname>
+        <param>
+          <type><ref refid="class_custom_indexed_vector" kindref="compound">CustomIndexedVector</ref> &amp;&amp;</type>
+          <declname>other</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="Misc/CustomIndexedVector.h" line="61" column="5" bodyfile="Misc/CustomIndexedVector.h" bodystart="61" bodyend="64"/>
+      </memberdef>
+      <memberdef kind="function" id="class_custom_indexed_vector_1ace5baa0ab622fa9b8a8b3d964a569a31" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <type>ContentType &amp;</type>
+        <definition>ContentType &amp; CustomIndexedVector&lt; IndexType, ContentType &gt;::at</definition>
+        <argsstring>(const IndexType &amp;index)</argsstring>
+        <name>at</name>
+        <qualifiedname>CustomIndexedVector::at</qualifiedname>
+        <param>
+          <type>const IndexType &amp;</type>
+          <declname>index</declname>
+        </param>
+        <briefdescription>
+<para>Access element by index with bounds checking (non-const). </para>
+        </briefdescription>
+        <detaileddescription>
+<para>Checks if the index is within bounds and returns a reference to the element. Throws std::out_of_range if the index is invalid.</para>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>index</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Index of the element. </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<simplesect kind="return"><para>Reference to the element. </para>
+</simplesect>
+<parameterlist kind="exception"><parameteritem>
+<parameternamelist>
+<parametername>std::out_of_range</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>if index &gt;= <ref refid="class_custom_indexed_vector_1ad3a2d5d3e4de163d5807128cf65f7fc0" kindref="member">size()</ref>. </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="Misc/CustomIndexedVector.h" line="183" column="17" bodyfile="Misc/CustomIndexedVector.h" bodystart="183" bodyend="191"/>
+      </memberdef>
+      <memberdef kind="function" id="class_custom_indexed_vector_1ab9306ff798119356b867c9dc609bb1d3" prot="public" static="no" const="yes" explicit="no" inline="yes" virt="non-virtual">
+        <type>const ContentType &amp;</type>
+        <definition>const ContentType &amp; CustomIndexedVector&lt; IndexType, ContentType &gt;::at</definition>
+        <argsstring>(const IndexType &amp;index) const</argsstring>
+        <name>at</name>
+        <qualifiedname>CustomIndexedVector::at</qualifiedname>
+        <param>
+          <type>const IndexType &amp;</type>
+          <declname>index</declname>
+        </param>
+        <briefdescription>
+<para>Access element by index with bounds checking (const version). </para>
+        </briefdescription>
+        <detaileddescription>
+<para>Checks if the index is within bounds and returns a const reference to the element. Throws std::out_of_range if the index is invalid.</para>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>index</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Index of the element. </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<simplesect kind="return"><para>Const reference to the element. </para>
+</simplesect>
+<parameterlist kind="exception"><parameteritem>
+<parameternamelist>
+<parametername>std::out_of_range</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>if index &gt;= <ref refid="class_custom_indexed_vector_1ad3a2d5d3e4de163d5807128cf65f7fc0" kindref="member">size()</ref>. </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="Misc/CustomIndexedVector.h" line="203" column="23" bodyfile="Misc/CustomIndexedVector.h" bodystart="203" bodyend="211"/>
+      </memberdef>
+      <memberdef kind="function" id="class_custom_indexed_vector_1a44851a8fddde3ed46e74a050f234cc53" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <type>std::vector&lt; ContentType &gt;::reference</type>
+        <definition>std::vector&lt; ContentType &gt;::reference CustomIndexedVector&lt; IndexType, ContentType &gt;::back</definition>
+        <argsstring>()</argsstring>
+        <name>back</name>
+        <qualifiedname>CustomIndexedVector::back</qualifiedname>
+        <briefdescription>
+<para>Accesses the last element in the container (non-const). </para>
+        </briefdescription>
+        <detaileddescription>
+<para><simplesect kind="return"><para>Reference to the last element. </para>
+</simplesect>
+<parameterlist kind="exception"><parameteritem>
+<parameternamelist>
+<parametername>std::out_of_range</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>if the container is empty. </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="Misc/CustomIndexedVector.h" line="232" column="38" bodyfile="Misc/CustomIndexedVector.h" bodystart="232" bodyend="234"/>
+      </memberdef>
+      <memberdef kind="function" id="class_custom_indexed_vector_1a7515bfe40fc99b7a1ed90322a990df3e" prot="public" static="no" const="yes" explicit="no" inline="yes" virt="non-virtual">
+        <type>std::vector&lt; ContentType &gt;::const_reference</type>
+        <definition>std::vector&lt; ContentType &gt;::const_reference CustomIndexedVector&lt; IndexType, ContentType &gt;::back</definition>
+        <argsstring>() const</argsstring>
+        <name>back</name>
+        <qualifiedname>CustomIndexedVector::back</qualifiedname>
+        <briefdescription>
+<para>Accesses the last element in the container (const version). </para>
+        </briefdescription>
+        <detaileddescription>
+<para><simplesect kind="return"><para>Const reference to the last element. </para>
+</simplesect>
+<parameterlist kind="exception"><parameteritem>
+<parameternamelist>
+<parametername>std::out_of_range</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>if the container is empty. </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="Misc/CustomIndexedVector.h" line="242" column="44" bodyfile="Misc/CustomIndexedVector.h" bodystart="242" bodyend="244"/>
+      </memberdef>
+      <memberdef kind="function" id="class_custom_indexed_vector_1a40c8ff4c3b43dc04fa177c5d24d3f66b" prot="public" static="no" const="yes" explicit="no" inline="yes" noexcept="yes" virt="non-virtual">
+        <type>std::vector&lt; ContentType &gt;::const_iterator</type>
+        <definition>std::vector&lt; ContentType &gt;::const_iterator CustomIndexedVector&lt; IndexType, ContentType &gt;::begin</definition>
+        <argsstring>() const noexcept</argsstring>
+        <name>begin</name>
+        <qualifiedname>CustomIndexedVector::begin</qualifiedname>
+        <briefdescription>
+<para>Returns a const iterator to the beginning of the container. </para>
+        </briefdescription>
+        <detaileddescription>
+<para><simplesect kind="return"><para>Const iterator pointing to the first element. </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="Misc/CustomIndexedVector.h" line="262" column="43" bodyfile="Misc/CustomIndexedVector.h" bodystart="262" bodyend="264"/>
+      </memberdef>
+      <memberdef kind="function" id="class_custom_indexed_vector_1a5870233d4e47a8567aba796ce8da1351" prot="public" static="no" const="no" explicit="no" inline="yes" noexcept="yes" virt="non-virtual">
+        <type>std::vector&lt; ContentType &gt;::iterator</type>
+        <definition>std::vector&lt; ContentType &gt;::iterator CustomIndexedVector&lt; IndexType, ContentType &gt;::begin</definition>
+        <argsstring>() noexcept</argsstring>
+        <name>begin</name>
+        <qualifiedname>CustomIndexedVector::begin</qualifiedname>
+        <briefdescription>
+<para>Returns an iterator to the beginning of the container (non-const). </para>
+        </briefdescription>
+        <detaileddescription>
+<para>Allows range-based for loops and other iterator-based access.</para>
+<para><simplesect kind="return"><para>Iterator pointing to the first element. </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="Misc/CustomIndexedVector.h" line="253" column="37" bodyfile="Misc/CustomIndexedVector.h" bodystart="253" bodyend="255"/>
+      </memberdef>
+      <memberdef kind="function" id="class_custom_indexed_vector_1a5bbe11d910b8a7205eed778f82bcfd76" prot="public" static="no" const="yes" explicit="no" inline="yes" noexcept="yes" virt="non-virtual">
+        <type>std::vector&lt; ContentType &gt;::const_iterator</type>
+        <definition>std::vector&lt; ContentType &gt;::const_iterator CustomIndexedVector&lt; IndexType, ContentType &gt;::cbegin</definition>
+        <argsstring>() const noexcept</argsstring>
+        <name>cbegin</name>
+        <qualifiedname>CustomIndexedVector::cbegin</qualifiedname>
+        <briefdescription>
+<para>Returns a const iterator to the beginning of the container. </para>
+        </briefdescription>
+        <detaileddescription>
+<para>Equivalent to <computeroutput><ref refid="class_custom_indexed_vector_1a40c8ff4c3b43dc04fa177c5d24d3f66b" kindref="member">begin() const</ref></computeroutput>.</para>
+<para><simplesect kind="return"><para>Const iterator pointing to the first element. </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="Misc/CustomIndexedVector.h" line="273" column="43" bodyfile="Misc/CustomIndexedVector.h" bodystart="273" bodyend="275"/>
+      </memberdef>
+      <memberdef kind="function" id="class_custom_indexed_vector_1a5bac895fbc342f0fa455f4d50fa57c0a" prot="public" static="no" const="yes" explicit="no" inline="yes" noexcept="yes" virt="non-virtual">
+        <type>std::vector&lt; ContentType &gt;::const_iterator</type>
+        <definition>std::vector&lt; ContentType &gt;::const_iterator CustomIndexedVector&lt; IndexType, ContentType &gt;::cend</definition>
+        <argsstring>() const noexcept</argsstring>
+        <name>cend</name>
+        <qualifiedname>CustomIndexedVector::cend</qualifiedname>
+        <briefdescription>
+<para>Returns a const iterator to the end of the container. </para>
+        </briefdescription>
+        <detaileddescription>
+<para>Equivalent to <computeroutput><ref refid="class_custom_indexed_vector_1a30080c44a41246ff67fe509ae09b0fe0" kindref="member">end() const</ref></computeroutput>.</para>
+<para><simplesect kind="return"><para>Const iterator pointing past the last element. </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="Misc/CustomIndexedVector.h" line="304" column="43" bodyfile="Misc/CustomIndexedVector.h" bodystart="304" bodyend="306"/>
+      </memberdef>
+      <memberdef kind="function" id="class_custom_indexed_vector_1af1670f052aa3d4a74220103ac3c9108b" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <type>void</type>
+        <definition>void CustomIndexedVector&lt; IndexType, ContentType &gt;::clear</definition>
+        <argsstring>()</argsstring>
+        <name>clear</name>
+        <qualifiedname>CustomIndexedVector::clear</qualifiedname>
+        <briefdescription>
+<para>Clears all elements in the vector. </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="Misc/CustomIndexedVector.h" line="114" column="10" bodyfile="Misc/CustomIndexedVector.h" bodystart="114" bodyend="117"/>
+      </memberdef>
+      <memberdef kind="function" id="class_custom_indexed_vector_1a8a8707e9ceb750c9ae512c87b9278387" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <templateparamlist>
+          <param>
+            <type>typename...</type>
+            <declname>Args</declname>
+            <defname>Args</defname>
+          </param>
+        </templateparamlist>
+        <type>void</type>
+        <definition>void CustomIndexedVector&lt; IndexType, ContentType &gt;::emplace_back</definition>
+        <argsstring>(Args &amp;&amp;... args)</argsstring>
+        <name>emplace_back</name>
+        <qualifiedname>CustomIndexedVector::emplace_back</qualifiedname>
+        <param>
+          <type>Args &amp;&amp;...</type>
+          <declname>args</declname>
+        </param>
+        <briefdescription>
+<para>Constructs an element in-place at the end of the vector. </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="Misc/CustomIndexedVector.h" line="221" column="10" bodyfile="Misc/CustomIndexedVector.h" bodystart="221" bodyend="224"/>
+      </memberdef>
+      <memberdef kind="function" id="class_custom_indexed_vector_1a1713329d23ee24381ca77294aad2f2aa" prot="public" static="no" const="yes" explicit="no" inline="yes" noexcept="yes" virt="non-virtual">
+        <type>bool</type>
+        <definition>bool CustomIndexedVector&lt; IndexType, ContentType &gt;::empty</definition>
+        <argsstring>() const noexcept</argsstring>
+        <name>empty</name>
+        <qualifiedname>CustomIndexedVector::empty</qualifiedname>
+        <briefdescription>
+<para>Returns true if the vector is empty. </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="Misc/CustomIndexedVector.h" line="108" column="10" bodyfile="Misc/CustomIndexedVector.h" bodystart="108" bodyend="111"/>
+      </memberdef>
+      <memberdef kind="function" id="class_custom_indexed_vector_1a30080c44a41246ff67fe509ae09b0fe0" prot="public" static="no" const="yes" explicit="no" inline="yes" noexcept="yes" virt="non-virtual">
+        <type>std::vector&lt; ContentType &gt;::const_iterator</type>
+        <definition>std::vector&lt; ContentType &gt;::const_iterator CustomIndexedVector&lt; IndexType, ContentType &gt;::end</definition>
+        <argsstring>() const noexcept</argsstring>
+        <name>end</name>
+        <qualifiedname>CustomIndexedVector::end</qualifiedname>
+        <briefdescription>
+<para>Returns a const iterator to the end of the container. </para>
+        </briefdescription>
+        <detaileddescription>
+<para><simplesect kind="return"><para>Const iterator pointing past the last element. </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="Misc/CustomIndexedVector.h" line="293" column="43" bodyfile="Misc/CustomIndexedVector.h" bodystart="293" bodyend="295"/>
+      </memberdef>
+      <memberdef kind="function" id="class_custom_indexed_vector_1a3e3513f44985b56561372ed77c7522b2" prot="public" static="no" const="no" explicit="no" inline="yes" noexcept="yes" virt="non-virtual">
+        <type>std::vector&lt; ContentType &gt;::iterator</type>
+        <definition>std::vector&lt; ContentType &gt;::iterator CustomIndexedVector&lt; IndexType, ContentType &gt;::end</definition>
+        <argsstring>() noexcept</argsstring>
+        <name>end</name>
+        <qualifiedname>CustomIndexedVector::end</qualifiedname>
+        <briefdescription>
+<para>Returns an iterator to the end of the container (non-const). </para>
+        </briefdescription>
+        <detaileddescription>
+<para>The iterator points past the last element.</para>
+<para><simplesect kind="return"><para>Iterator pointing past the last element. </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="Misc/CustomIndexedVector.h" line="284" column="37" bodyfile="Misc/CustomIndexedVector.h" bodystart="284" bodyend="286"/>
+      </memberdef>
+      <memberdef kind="function" id="class_custom_indexed_vector_1a49891e39ea6ae1de531fdab9c2490b94" prot="public" static="no" const="yes" explicit="no" inline="yes" virt="non-virtual">
+        <type>const std::vector&lt; ContentType &gt; &amp;</type>
+        <definition>const std::vector&lt; ContentType &gt; &amp; CustomIndexedVector&lt; IndexType, ContentType &gt;::getData</definition>
+        <argsstring>() const</argsstring>
+        <name>getData</name>
+        <qualifiedname>CustomIndexedVector::getData</qualifiedname>
+        <briefdescription>
+<para>Returns a const reference to the internal vector. </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="Misc/CustomIndexedVector.h" line="78" column="23" bodyfile="Misc/CustomIndexedVector.h" bodystart="78" bodyend="81"/>
+      </memberdef>
+      <memberdef kind="function" id="class_custom_indexed_vector_1a0c96307e701b9a0d0a147b32531dab9b" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type><ref refid="class_custom_indexed_vector" kindref="compound">CustomIndexedVector</ref> &amp;</type>
+        <definition>CustomIndexedVector &amp; CustomIndexedVector&lt; IndexType, ContentType &gt;::operator=</definition>
+        <argsstring>(const CustomIndexedVector &amp;other)=default</argsstring>
+        <name>operator=</name>
+        <qualifiedname>CustomIndexedVector::operator=</qualifiedname>
+        <param>
+          <type>const <ref refid="class_custom_indexed_vector" kindref="compound">CustomIndexedVector</ref> &amp;</type>
+          <declname>other</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="Misc/CustomIndexedVector.h" line="75" column="25"/>
+      </memberdef>
+      <memberdef kind="function" id="class_custom_indexed_vector_1ac63733952e67edd194acefc2a89a5751" prot="public" static="no" const="no" explicit="no" inline="yes" noexcept="yes" virt="non-virtual">
+        <type><ref refid="class_custom_indexed_vector" kindref="compound">CustomIndexedVector</ref> &amp;</type>
+        <definition>CustomIndexedVector &amp; CustomIndexedVector&lt; IndexType, ContentType &gt;::operator=</definition>
+        <argsstring>(CustomIndexedVector &amp;&amp;other) noexcept</argsstring>
+        <name>operator=</name>
+        <qualifiedname>CustomIndexedVector::operator=</qualifiedname>
+        <param>
+          <type><ref refid="class_custom_indexed_vector" kindref="compound">CustomIndexedVector</ref> &amp;&amp;</type>
+          <declname>other</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="Misc/CustomIndexedVector.h" line="67" column="25" bodyfile="Misc/CustomIndexedVector.h" bodystart="67" bodyend="72"/>
+      </memberdef>
+      <memberdef kind="function" id="class_custom_indexed_vector_1a86c570a7a41b5ff0c84128a3e6c9426b" prot="public" static="no" const="yes" explicit="no" inline="yes" noexcept="yes" virt="non-virtual">
+        <type>const ContentType &amp;</type>
+        <definition>const ContentType &amp; CustomIndexedVector&lt; IndexType, ContentType &gt;::operator[]</definition>
+        <argsstring>(const IndexType &amp;index) const noexcept</argsstring>
+        <name>operator[]</name>
+        <qualifiedname>CustomIndexedVector::operator[]</qualifiedname>
+        <param>
+          <type>const IndexType &amp;</type>
+          <declname>index</declname>
+        </param>
+        <briefdescription>
+<para>Access element by index (const version). </para>
+        </briefdescription>
+        <detaileddescription>
+<para>Provides unchecked access to the element at the given index for const objects.</para>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>index</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Index of the element. </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<simplesect kind="return"><para>Const reference to the element at the specified index. </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="Misc/CustomIndexedVector.h" line="154" column="23" bodyfile="Misc/CustomIndexedVector.h" bodystart="154" bodyend="157"/>
+      </memberdef>
+      <memberdef kind="function" id="class_custom_indexed_vector_1ab85dbed6c02cf24c2647ed7a5d4fb826" prot="public" static="no" const="no" explicit="no" inline="yes" noexcept="yes" virt="non-virtual">
+        <type>ContentType &amp;</type>
+        <definition>ContentType &amp; CustomIndexedVector&lt; IndexType, ContentType &gt;::operator[]</definition>
+        <argsstring>(const IndexType &amp;index) noexcept</argsstring>
+        <name>operator[]</name>
+        <qualifiedname>CustomIndexedVector::operator[]</qualifiedname>
+        <param>
+          <type>const IndexType &amp;</type>
+          <declname>index</declname>
+        </param>
+        <briefdescription>
+<para>Access element by index (non-const). </para>
+        </briefdescription>
+        <detaileddescription>
+<para>Provides unchecked access to the element at the given index.</para>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>index</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Index of the element. </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<simplesect kind="return"><para>Reference to the element at the specified index. </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="Misc/CustomIndexedVector.h" line="127" column="17" bodyfile="Misc/CustomIndexedVector.h" bodystart="127" bodyend="130"/>
+      </memberdef>
+      <memberdef kind="function" id="class_custom_indexed_vector_1ac81b3bdf61e1ccf63cff697db52af350" prot="public" static="no" const="yes" explicit="no" inline="yes" noexcept="yes" virt="non-virtual">
+        <type>const ContentType &amp;</type>
+        <definition>const ContentType &amp; CustomIndexedVector&lt; IndexType, ContentType &gt;::operator[]</definition>
+        <argsstring>(size_t index) const noexcept</argsstring>
+        <name>operator[]</name>
+        <qualifiedname>CustomIndexedVector::operator[]</qualifiedname>
+        <param>
+          <type>size_t</type>
+          <declname>index</declname>
+        </param>
+        <briefdescription>
+<para>Access element by index (const version). </para>
+        </briefdescription>
+        <detaileddescription>
+<para>Provides unchecked access to the element at the given index for const objects.</para>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>index</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Index of the element. </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<simplesect kind="return"><para>Const reference to the element at the specified index. </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="Misc/CustomIndexedVector.h" line="168" column="23" bodyfile="Misc/CustomIndexedVector.h" bodystart="168" bodyend="171"/>
+      </memberdef>
+      <memberdef kind="function" id="class_custom_indexed_vector_1a5884484ad9f639c855306713f4c2e734" prot="public" static="no" const="no" explicit="no" inline="yes" noexcept="yes" virt="non-virtual">
+        <type>ContentType &amp;</type>
+        <definition>ContentType &amp; CustomIndexedVector&lt; IndexType, ContentType &gt;::operator[]</definition>
+        <argsstring>(size_t index) noexcept</argsstring>
+        <name>operator[]</name>
+        <qualifiedname>CustomIndexedVector::operator[]</qualifiedname>
+        <param>
+          <type>size_t</type>
+          <declname>index</declname>
+        </param>
+        <briefdescription>
+<para>Access element by index (non-const). </para>
+        </briefdescription>
+        <detaileddescription>
+<para>Provides unchecked access to the element at the given index.</para>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>index</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Index of the element. </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<simplesect kind="return"><para>Reference to the element at the specified index. </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="Misc/CustomIndexedVector.h" line="140" column="17" bodyfile="Misc/CustomIndexedVector.h" bodystart="140" bodyend="143"/>
+      </memberdef>
+      <memberdef kind="function" id="class_custom_indexed_vector_1ac503ae37d6aeda9e2de9f7c8d4191cec" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <type>void</type>
+        <definition>void CustomIndexedVector&lt; IndexType, ContentType &gt;::push_back</definition>
+        <argsstring>(const ContentType &amp;val)</argsstring>
+        <name>push_back</name>
+        <qualifiedname>CustomIndexedVector::push_back</qualifiedname>
+        <param>
+          <type>const ContentType &amp;</type>
+          <declname>val</declname>
+        </param>
+        <briefdescription>
+<para>Adds an element to the end of the vector. </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="Misc/CustomIndexedVector.h" line="214" column="10" bodyfile="Misc/CustomIndexedVector.h" bodystart="214" bodyend="217"/>
+      </memberdef>
+      <memberdef kind="function" id="class_custom_indexed_vector_1a629f670c07daae8dea300c24affeb316" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <type>void</type>
+        <definition>void CustomIndexedVector&lt; IndexType, ContentType &gt;::reserve</definition>
+        <argsstring>(const size_t n)</argsstring>
+        <name>reserve</name>
+        <qualifiedname>CustomIndexedVector::reserve</qualifiedname>
+        <param>
+          <type>const size_t</type>
+          <declname>n</declname>
+        </param>
+        <briefdescription>
+<para>Reserves memory for at least n elements. </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="Misc/CustomIndexedVector.h" line="96" column="10" bodyfile="Misc/CustomIndexedVector.h" bodystart="96" bodyend="99"/>
+      </memberdef>
+      <memberdef kind="function" id="class_custom_indexed_vector_1a724054a86ddae130e61b3216c58b4757" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <type>void</type>
+        <definition>void CustomIndexedVector&lt; IndexType, ContentType &gt;::resize</definition>
+        <argsstring>(const size_t n)</argsstring>
+        <name>resize</name>
+        <qualifiedname>CustomIndexedVector::resize</qualifiedname>
+        <param>
+          <type>const size_t</type>
+          <declname>n</declname>
+        </param>
+        <briefdescription>
+<para>Resizes the vector to contain n elements. </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="Misc/CustomIndexedVector.h" line="84" column="10" bodyfile="Misc/CustomIndexedVector.h" bodystart="84" bodyend="87"/>
+      </memberdef>
+      <memberdef kind="function" id="class_custom_indexed_vector_1ab2490e38c8a70f8a9cc9ee0e59b5310c" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <type>void</type>
+        <definition>void CustomIndexedVector&lt; IndexType, ContentType &gt;::resize</definition>
+        <argsstring>(const size_t n, const ContentType &amp;val)</argsstring>
+        <name>resize</name>
+        <qualifiedname>CustomIndexedVector::resize</qualifiedname>
+        <param>
+          <type>const size_t</type>
+          <declname>n</declname>
+        </param>
+        <param>
+          <type>const ContentType &amp;</type>
+          <declname>val</declname>
+        </param>
+        <briefdescription>
+<para>Resizes the vector to contain n elements, initializing new elements with val. </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="Misc/CustomIndexedVector.h" line="90" column="10" bodyfile="Misc/CustomIndexedVector.h" bodystart="90" bodyend="93"/>
+      </memberdef>
+      <memberdef kind="function" id="class_custom_indexed_vector_1a544767d0fe5255bab360d7e9d8dea258" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <templateparamlist>
+          <param>
+            <type>class Archive</type>
+          </param>
+        </templateparamlist>
+        <type>void</type>
+        <definition>void CustomIndexedVector&lt; IndexType, ContentType &gt;::serialize</definition>
+        <argsstring>(Archive &amp;ar, const unsigned int)</argsstring>
+        <name>serialize</name>
+        <qualifiedname>CustomIndexedVector::serialize</qualifiedname>
+        <param>
+          <type>Archive &amp;</type>
+          <declname>ar</declname>
+        </param>
+        <param>
+          <type>const unsigned int</type>
+        </param>
+        <briefdescription>
+<para>Serializes the vector using Boost.Serialization. </para>
+        </briefdescription>
+        <detaileddescription>
+<para><parameterlist kind="templateparam"><parameteritem>
+<parameternamelist>
+<parametername>Archive</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Archive type. </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>ar</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Archive to serialize to or from. </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="Misc/CustomIndexedVector.h" line="314" column="10" bodyfile="Misc/CustomIndexedVector.h" bodystart="314" bodyend="316"/>
+      </memberdef>
+      <memberdef kind="function" id="class_custom_indexed_vector_1ad3a2d5d3e4de163d5807128cf65f7fc0" prot="public" static="no" const="yes" explicit="no" inline="yes" virt="non-virtual">
+        <type>size_t</type>
+        <definition>size_t CustomIndexedVector&lt; IndexType, ContentType &gt;::size</definition>
+        <argsstring>() const</argsstring>
+        <name>size</name>
+        <qualifiedname>CustomIndexedVector::size</qualifiedname>
+        <briefdescription>
+<para>Returns the number of elements in the vector. </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="Misc/CustomIndexedVector.h" line="102" column="12" bodyfile="Misc/CustomIndexedVector.h" bodystart="102" bodyend="105"/>
+      </memberdef>
+    </sectiondef>
+    <briefdescription>
+<para>A vector container indexed by a custom type with bounds checking. </para>
+    </briefdescription>
+    <detaileddescription>
+<para><parameterlist kind="templateparam"><parameteritem>
+<parameternamelist>
+<parametername>IndexType</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>The type used to index the vector (e.g., enum or integer type). </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>ContentType</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>The type of elements stored in the vector.</para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<simplesect kind="note"><para>Throws <computeroutput>std::out_of_range</computeroutput> if the index exceeds the vector size. </para>
+</simplesect>
+<simplesect kind="note"><para>A specialization for <computeroutput>bool</computeroutput> uses <computeroutput>std::vector&lt;bool&gt;</computeroutput> storage. </para>
+</simplesect>
+</para>
+    </detaileddescription>
+    <location file="Misc/CustomIndexedVector.h" line="30" column="1" bodyfile="Misc/CustomIndexedVector.h" bodystart="30" bodyend="320"/>
+    <listofallmembers>
+      <member refid="class_custom_indexed_vector_1ace5baa0ab622fa9b8a8b3d964a569a31" prot="public" virt="non-virtual"><scope>CustomIndexedVector</scope><name>at</name></member>
+      <member refid="class_custom_indexed_vector_1ab9306ff798119356b867c9dc609bb1d3" prot="public" virt="non-virtual"><scope>CustomIndexedVector</scope><name>at</name></member>
+      <member refid="class_custom_indexed_vector_1a44851a8fddde3ed46e74a050f234cc53" prot="public" virt="non-virtual"><scope>CustomIndexedVector</scope><name>back</name></member>
+      <member refid="class_custom_indexed_vector_1a7515bfe40fc99b7a1ed90322a990df3e" prot="public" virt="non-virtual"><scope>CustomIndexedVector</scope><name>back</name></member>
+      <member refid="class_custom_indexed_vector_1a5870233d4e47a8567aba796ce8da1351" prot="public" virt="non-virtual"><scope>CustomIndexedVector</scope><name>begin</name></member>
+      <member refid="class_custom_indexed_vector_1a40c8ff4c3b43dc04fa177c5d24d3f66b" prot="public" virt="non-virtual"><scope>CustomIndexedVector</scope><name>begin</name></member>
+      <member refid="class_custom_indexed_vector_1a5bbe11d910b8a7205eed778f82bcfd76" prot="public" virt="non-virtual"><scope>CustomIndexedVector</scope><name>cbegin</name></member>
+      <member refid="class_custom_indexed_vector_1a5bac895fbc342f0fa455f4d50fa57c0a" prot="public" virt="non-virtual"><scope>CustomIndexedVector</scope><name>cend</name></member>
+      <member refid="class_custom_indexed_vector_1af1670f052aa3d4a74220103ac3c9108b" prot="public" virt="non-virtual"><scope>CustomIndexedVector</scope><name>clear</name></member>
+      <member refid="class_custom_indexed_vector_1ad771b8d37691725d337c7881660c91a1" prot="public" virt="non-virtual"><scope>CustomIndexedVector</scope><name>CustomIndexedVector</name></member>
+      <member refid="class_custom_indexed_vector_1a0bcf7ad46ef1b1603ba5202893793708" prot="public" virt="non-virtual"><scope>CustomIndexedVector</scope><name>CustomIndexedVector</name></member>
+      <member refid="class_custom_indexed_vector_1a810c9662ffb0b3b55c57e88495ea42d3" prot="public" virt="non-virtual"><scope>CustomIndexedVector</scope><name>CustomIndexedVector</name></member>
+      <member refid="class_custom_indexed_vector_1a01d85e110dd1710a0586f9ab223a7c26" prot="public" virt="non-virtual"><scope>CustomIndexedVector</scope><name>CustomIndexedVector</name></member>
+      <member refid="class_custom_indexed_vector_1a9110781caff959bbea6a73486f0e1263" prot="public" virt="non-virtual"><scope>CustomIndexedVector</scope><name>CustomIndexedVector</name></member>
+      <member refid="class_custom_indexed_vector_1a5fd9f2a999ca8b23f348102eeabe1426" prot="public" virt="non-virtual"><scope>CustomIndexedVector</scope><name>CustomIndexedVector</name></member>
+      <member refid="class_custom_indexed_vector_1ab0ccb8fcde306af6261c9830e71aa830" prot="private" virt="non-virtual"><scope>CustomIndexedVector</scope><name>data</name></member>
+      <member refid="class_custom_indexed_vector_1a8a8707e9ceb750c9ae512c87b9278387" prot="public" virt="non-virtual"><scope>CustomIndexedVector</scope><name>emplace_back</name></member>
+      <member refid="class_custom_indexed_vector_1a1713329d23ee24381ca77294aad2f2aa" prot="public" virt="non-virtual"><scope>CustomIndexedVector</scope><name>empty</name></member>
+      <member refid="class_custom_indexed_vector_1a3e3513f44985b56561372ed77c7522b2" prot="public" virt="non-virtual"><scope>CustomIndexedVector</scope><name>end</name></member>
+      <member refid="class_custom_indexed_vector_1a30080c44a41246ff67fe509ae09b0fe0" prot="public" virt="non-virtual"><scope>CustomIndexedVector</scope><name>end</name></member>
+      <member refid="class_custom_indexed_vector_1a49891e39ea6ae1de531fdab9c2490b94" prot="public" virt="non-virtual"><scope>CustomIndexedVector</scope><name>getData</name></member>
+      <member refid="class_custom_indexed_vector_1ac63733952e67edd194acefc2a89a5751" prot="public" virt="non-virtual"><scope>CustomIndexedVector</scope><name>operator=</name></member>
+      <member refid="class_custom_indexed_vector_1a0c96307e701b9a0d0a147b32531dab9b" prot="public" virt="non-virtual"><scope>CustomIndexedVector</scope><name>operator=</name></member>
+      <member refid="class_custom_indexed_vector_1ab85dbed6c02cf24c2647ed7a5d4fb826" prot="public" virt="non-virtual"><scope>CustomIndexedVector</scope><name>operator[]</name></member>
+      <member refid="class_custom_indexed_vector_1a5884484ad9f639c855306713f4c2e734" prot="public" virt="non-virtual"><scope>CustomIndexedVector</scope><name>operator[]</name></member>
+      <member refid="class_custom_indexed_vector_1a86c570a7a41b5ff0c84128a3e6c9426b" prot="public" virt="non-virtual"><scope>CustomIndexedVector</scope><name>operator[]</name></member>
+      <member refid="class_custom_indexed_vector_1ac81b3bdf61e1ccf63cff697db52af350" prot="public" virt="non-virtual"><scope>CustomIndexedVector</scope><name>operator[]</name></member>
+      <member refid="class_custom_indexed_vector_1ac503ae37d6aeda9e2de9f7c8d4191cec" prot="public" virt="non-virtual"><scope>CustomIndexedVector</scope><name>push_back</name></member>
+      <member refid="class_custom_indexed_vector_1a629f670c07daae8dea300c24affeb316" prot="public" virt="non-virtual"><scope>CustomIndexedVector</scope><name>reserve</name></member>
+      <member refid="class_custom_indexed_vector_1a724054a86ddae130e61b3216c58b4757" prot="public" virt="non-virtual"><scope>CustomIndexedVector</scope><name>resize</name></member>
+      <member refid="class_custom_indexed_vector_1ab2490e38c8a70f8a9cc9ee0e59b5310c" prot="public" virt="non-virtual"><scope>CustomIndexedVector</scope><name>resize</name></member>
+      <member refid="class_custom_indexed_vector_1a544767d0fe5255bab360d7e9d8dea258" prot="public" virt="non-virtual"><scope>CustomIndexedVector</scope><name>serialize</name></member>
+      <member refid="class_custom_indexed_vector_1ad3a2d5d3e4de163d5807128cf65f7fc0" prot="public" virt="non-virtual"><scope>CustomIndexedVector</scope><name>size</name></member>
+    </listofallmembers>
+  </compounddef>
+</doxygen>

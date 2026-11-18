@@ -22,6 +22,7 @@
 
 /**
  * @class BranchPatchApplicator
+ * @ingroup weaver_landscape
  * @brief Concrete implementation of SpatialTreePatchApplicator for branch nodes.
  *
  * BranchPatchApplicator manages the application of patches for branch cells

@@ -21,6 +21,7 @@
 
 /**
  * @class EdibleSearchParams
+ * @ingroup weaver_landscape
  * @brief Encapsulates search parameters for both animals and resources.
  *
  * This class combines animal search parameters and resource search parameters

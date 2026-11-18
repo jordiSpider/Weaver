@@ -21,6 +21,7 @@
 
 /**
  * @class PatchShape
+ * @ingroup weaver_landscape
  * @brief Abstract base class representing a patch shape.
  *
  * The PatchShape class provides a common interface for all patch shapes,

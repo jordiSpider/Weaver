@@ -33,6 +33,7 @@
 
 /**
  * @class CellResourceInterface
+ * @ingroup weaver_landscape
  * @brief Interface for a resource in a terrain cell.
  *
  * Provides methods to manage resource growth, consumption by animals, and 

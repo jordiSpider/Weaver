@@ -18,6 +18,7 @@
 
 /**
  * @class Locus
+ * @ingroup weaver_landscape
  * @brief Represents a genetic locus, which contains a set of alleles.
  *
  * A locus stores multiple alleles. During chromosome formation or genetic operations,

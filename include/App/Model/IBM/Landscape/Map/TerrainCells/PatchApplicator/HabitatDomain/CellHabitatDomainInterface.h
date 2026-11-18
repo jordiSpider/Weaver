@@ -37,6 +37,7 @@
 
 /**
  * @class CellHabitatDomainInterface
+ * @ingroup weaver_landscape
  * @brief Represents the habitat-domain information associated with a terrain cell.
  *
  * This class stores and manages whether each combination of animal species and

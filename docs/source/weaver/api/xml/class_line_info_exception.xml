@@ -1,0 +1,260 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.14.0" xml:lang="en-US">
+  <compounddef id="class_line_info_exception" kind="class" language="C++" prot="public">
+    <compoundname>LineInfoException</compoundname>
+    <basecompoundref prot="public" virt="non-virtual">std::exception</basecompoundref>
+    <derivedcompoundref refid="class_validator_j_s_o_n_exception" prot="public" virt="non-virtual">ValidatorJSONException</derivedcompoundref>
+    <includes refid="_line_info_exception_8h" local="no">LineInfoException.h</includes>
+    <sectiondef kind="private-attrib">
+      <memberdef kind="variable" id="class_line_info_exception_1add6333c031e9843869263b649ecc79d7" prot="private" static="no" mutable="no">
+        <type>std::string</type>
+        <definition>std::string LineInfoException::file</definition>
+        <argsstring></argsstring>
+        <name>file</name>
+        <qualifiedname>LineInfoException::file</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Source file where the exception occurred </para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="Exceptions/LineInfoException.h" line="42" column="17" bodyfile="Exceptions/LineInfoException.h" bodystart="42" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="class_line_info_exception_1a2d1573524967fd4fdb9ccdc425df431d" prot="private" static="no" mutable="no">
+        <type>int</type>
+        <definition>int LineInfoException::line</definition>
+        <argsstring></argsstring>
+        <name>line</name>
+        <qualifiedname>LineInfoException::line</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Line number where the exception occurred </para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="Exceptions/LineInfoException.h" line="43" column="9" bodyfile="Exceptions/LineInfoException.h" bodystart="43" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="class_line_info_exception_1ae1570fd3a3123b43fc63eaeca24b4d66" prot="private" static="no" mutable="no">
+        <type>std::string</type>
+        <definition>std::string LineInfoException::message</definition>
+        <argsstring></argsstring>
+        <name>message</name>
+        <qualifiedname>LineInfoException::message</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Custom error message </para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="Exceptions/LineInfoException.h" line="44" column="17" bodyfile="Exceptions/LineInfoException.h" bodystart="44" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="class_line_info_exception_1a6850a04a20647bda6615f079269ff787" prot="private" static="no" mutable="no">
+        <type>std::string</type>
+        <definition>std::string LineInfoException::what_text</definition>
+        <argsstring></argsstring>
+        <name>what_text</name>
+        <qualifiedname>LineInfoException::what_text</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Complete exception description including file, line, and message </para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="Exceptions/LineInfoException.h" line="45" column="17" bodyfile="Exceptions/LineInfoException.h" bodystart="45" bodyend="-1"/>
+      </memberdef>
+    </sectiondef>
+    <sectiondef kind="public-func">
+      <memberdef kind="function" id="class_line_info_exception_1ad99dfed98ff166a17b984e8a08666765" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type></type>
+        <definition>LineInfoException::LineInfoException</definition>
+        <argsstring>(const std::string &amp;message, const char *file, int line)</argsstring>
+        <name>LineInfoException</name>
+        <qualifiedname>LineInfoException::LineInfoException</qualifiedname>
+        <param>
+          <type>const std::string &amp;</type>
+          <declname>message</declname>
+        </param>
+        <param>
+          <type>const char *</type>
+          <declname>file</declname>
+        </param>
+        <param>
+          <type>int</type>
+          <declname>line</declname>
+        </param>
+        <briefdescription>
+<para>Constructs a <ref refid="class_line_info_exception" kindref="compound">LineInfoException</ref> with a message, file, and line number. </para>
+        </briefdescription>
+        <detaileddescription>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>message</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Custom error message describing the exception. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>file</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Source file where the exception occurred (usually <bold>FILE</bold>). </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>line</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Line number where the exception occurred (usually <bold>LINE</bold>). </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="Exceptions/LineInfoException.h" line="54" column="5"/>
+      </memberdef>
+      <memberdef kind="function" id="class_line_info_exception_1a3e7afc9a4901b6a52c6d43b7fc988f94" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void LineInfoException::addPostMessage</definition>
+        <argsstring>(const std::string &amp;newMessage)</argsstring>
+        <name>addPostMessage</name>
+        <qualifiedname>LineInfoException::addPostMessage</qualifiedname>
+        <param>
+          <type>const std::string &amp;</type>
+          <declname>newMessage</declname>
+        </param>
+        <briefdescription>
+<para>Adds a suffix message to the current exception message. </para>
+        </briefdescription>
+        <detaileddescription>
+<para>Useful to provide additional context after the main exception message.</para>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>newMessage</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>The message to append. </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="Exceptions/LineInfoException.h" line="82" column="10"/>
+      </memberdef>
+      <memberdef kind="function" id="class_line_info_exception_1a013ace9d42fdae3abfbdc4b7444dfe96" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void LineInfoException::addPreMessage</definition>
+        <argsstring>(const std::string &amp;newMessage)</argsstring>
+        <name>addPreMessage</name>
+        <qualifiedname>LineInfoException::addPreMessage</qualifiedname>
+        <param>
+          <type>const std::string &amp;</type>
+          <declname>newMessage</declname>
+        </param>
+        <briefdescription>
+<para>Adds a prefix message to the current exception message. </para>
+        </briefdescription>
+        <detaileddescription>
+<para>Useful to provide additional context before the main exception message.</para>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>newMessage</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>The message to prepend. </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="Exceptions/LineInfoException.h" line="73" column="10"/>
+      </memberdef>
+      <memberdef kind="function" id="class_line_info_exception_1aeffc3769f72c14a0c2cf886badb8f28e" prot="public" static="no" const="yes" explicit="no" inline="no" noexcept="yes" virt="virtual">
+        <type>const char *</type>
+        <definition>virtual const char * LineInfoException::what</definition>
+        <argsstring>() const noexcept</argsstring>
+        <name>what</name>
+        <qualifiedname>LineInfoException::what</qualifiedname>
+        <briefdescription>
+<para>Returns a C-style character string describing the exception. </para>
+        </briefdescription>
+        <detaileddescription>
+<para>Overrides <computeroutput>std::exception::what()</computeroutput> to return the full exception description including file, line, and custom message.</para>
+<para><simplesect kind="return"><para>const char* C-string with the full exception description. </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="Exceptions/LineInfoException.h" line="64" column="24"/>
+      </memberdef>
+    </sectiondef>
+    <briefdescription>
+<para>Exception class that stores file, line, and custom error message. </para>
+    </briefdescription>
+    <detaileddescription>
+<para>The <computeroutput><ref refid="class_line_info_exception" kindref="compound">LineInfoException</ref></computeroutput> class extends <computeroutput>std::exception</computeroutput> and adds information about the source file and line number where the exception occurred. This is useful for debugging and detailed error reporting in the Weaver framework.</para>
+<para><simplesect kind="par"><title>Features</title><para><itemizedlist>
+<listitem><para>Stores the file name and line number.</para>
+</listitem><listitem><para>Stores a custom message.</para>
+</listitem><listitem><para>Automatically formats a full description including file, line, and message.</para>
+</listitem><listitem><para>Supports prepending and appending additional messages dynamically.</para>
+</listitem></itemizedlist>
+</para>
+</simplesect>
+<simplesect kind="par"><title>Example usage</title><para><programlisting><codeline><highlight class="keywordflow">if</highlight><highlight class="normal">(condition)<sp/>{</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>throwLineInfoException(</highlight><highlight class="stringliteral">&quot;Unexpected<sp/>condition<sp/>occurred&quot;</highlight><highlight class="normal">);</highlight></codeline>
+<codeline><highlight class="normal">}</highlight></codeline>
+</programlisting> </para>
+</simplesect>
+</para>
+    </detaileddescription>
+    <inheritancegraph>
+      <node id="1">
+        <label>LineInfoException</label>
+        <link refid="class_line_info_exception"/>
+      </node>
+      <node id="3">
+        <label>ValidatorConfigJSONException</label>
+        <link refid="class_validator_config_j_s_o_n_exception"/>
+        <childnode refid="2" relation="public-inheritance">
+        </childnode>
+      </node>
+      <node id="2">
+        <label>ValidatorJSONException</label>
+        <link refid="class_validator_j_s_o_n_exception"/>
+        <childnode refid="1" relation="public-inheritance">
+        </childnode>
+      </node>
+      <node id="4">
+        <label>ValidatorSchemaJSONException</label>
+        <link refid="class_validator_schema_j_s_o_n_exception"/>
+        <childnode refid="2" relation="public-inheritance">
+        </childnode>
+      </node>
+    </inheritancegraph>
+    <location file="Exceptions/LineInfoException.h" line="39" column="1" bodyfile="Exceptions/LineInfoException.h" bodystart="40" bodyend="83"/>
+    <listofallmembers>
+      <member refid="class_line_info_exception_1a3e7afc9a4901b6a52c6d43b7fc988f94" prot="public" virt="non-virtual"><scope>LineInfoException</scope><name>addPostMessage</name></member>
+      <member refid="class_line_info_exception_1a013ace9d42fdae3abfbdc4b7444dfe96" prot="public" virt="non-virtual"><scope>LineInfoException</scope><name>addPreMessage</name></member>
+      <member refid="class_line_info_exception_1add6333c031e9843869263b649ecc79d7" prot="private" virt="non-virtual"><scope>LineInfoException</scope><name>file</name></member>
+      <member refid="class_line_info_exception_1a2d1573524967fd4fdb9ccdc425df431d" prot="private" virt="non-virtual"><scope>LineInfoException</scope><name>line</name></member>
+      <member refid="class_line_info_exception_1ad99dfed98ff166a17b984e8a08666765" prot="public" virt="non-virtual"><scope>LineInfoException</scope><name>LineInfoException</name></member>
+      <member refid="class_line_info_exception_1ae1570fd3a3123b43fc63eaeca24b4d66" prot="private" virt="non-virtual"><scope>LineInfoException</scope><name>message</name></member>
+      <member refid="class_line_info_exception_1aeffc3769f72c14a0c2cf886badb8f28e" prot="public" virt="virtual"><scope>LineInfoException</scope><name>what</name></member>
+      <member refid="class_line_info_exception_1a6850a04a20647bda6615f079269ff787" prot="private" virt="non-virtual"><scope>LineInfoException</scope><name>what_text</name></member>
+    </listofallmembers>
+  </compounddef>
+</doxygen>

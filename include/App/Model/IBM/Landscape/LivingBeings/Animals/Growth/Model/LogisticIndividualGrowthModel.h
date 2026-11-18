@@ -15,6 +15,7 @@
 
 /**
  * @class LogisticIndividualGrowthModel
+ * @ingroup weaver_landscape
  * @brief Implements a logistic individual growth model.
  * 
  * This class models the growth of an individual using a logistic function.

@@ -21,6 +21,7 @@
 
 /**
  * @class CellResource
+ * @ingroup weaver_landscape
  * @brief Concrete implementation of a resource cell.
  *
  * Manages the lifecycle of a resource in a terrain cell, including growth, 

@@ -81,7 +81,8 @@
 
 
 /**
-* @brief Abstract base class that represents the simulation landscape.
+ * @brief Abstract base class that represents the simulation landscape.
+ * @ingroup weaver_landscape
 *
 * Landscape is responsible for managing the map, resources, species and animals,
 * updating sources, advancing simulation time-steps, saving outputs and

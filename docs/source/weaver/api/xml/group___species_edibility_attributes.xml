@@ -1,0 +1,59 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.14.0" xml:lang="en-US">
+  <compounddef id="group___species_edibility_attributes" kind="group">
+    <compoundname>SpeciesEdibilityAttributes</compoundname>
+    <title>Edibility and Ontogeny Attributes</title>
+    <sectiondef kind="var">
+      <memberdef kind="variable" id="group___species_edibility_attributes_1ga0596e8e852a271038c33ec39d6b30c48" prot="protected" static="no" mutable="no">
+        <type><ref refid="class_custom_indexed_vector" kindref="compound">CustomIndexedVector</ref>&lt; <ref refid="class_instar" kindref="compound">Instar</ref>, <ref refid="class_custom_indexed_vector" kindref="compound">CustomIndexedVector</ref>&lt; <ref refid="class_species_1_1_i_d" kindref="compound">Species::ID</ref>, <ref refid="class_custom_indexed_vector" kindref="compound">CustomIndexedVector</ref>&lt; <ref refid="class_instar" kindref="compound">Instar</ref>, <ref refid="class_ontogenetic_link" kindref="compound">OntogeneticLink</ref> &gt; &gt; &gt;</type>
+        <definition>CustomIndexedVector&lt;Instar, CustomIndexedVector&lt;Species::ID, CustomIndexedVector&lt;Instar, OntogeneticLink&gt; &gt; &gt; AnimalSpecies::edibleOntogeneticLink</definition>
+        <argsstring></argsstring>
+        <name>edibleOntogeneticLink</name>
+        <qualifiedname>AnimalSpecies::edibleOntogeneticLink</qualifiedname>
+        <briefdescription>
+<para>Ontogenetic edibility links for each predator instar and prey species/instar pair. </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="App/Model/IBM/Landscape/LivingBeings/Animals/Species/AnimalSpecies.h" line="712" column="21" bodyfile="App/Model/IBM/Landscape/LivingBeings/Animals/Species/AnimalSpecies.h" bodystart="712" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="group___species_edibility_attributes_1ga677542fe080d2ed01a1706e26d22cc27" prot="protected" static="no" mutable="no">
+        <type><ref refid="class_custom_indexed_vector" kindref="compound">CustomIndexedVector</ref>&lt; <ref refid="class_instar" kindref="compound">Instar</ref>, <ref refid="class_custom_indexed_vector" kindref="compound">CustomIndexedVector</ref>&lt; SpeciesType, std::unordered_map&lt; ID, std::vector&lt; <ref refid="class_instar" kindref="compound">Instar</ref> &gt; &gt; &gt; &gt;</type>
+        <definition>CustomIndexedVector&lt;Instar, CustomIndexedVector&lt;SpeciesType, std::unordered_map&lt;ID, std::vector&lt;Instar&gt; &gt; &gt; &gt; AnimalSpecies::edibleSpecies</definition>
+        <argsstring></argsstring>
+        <name>edibleSpecies</name>
+        <qualifiedname>AnimalSpecies::edibleSpecies</qualifiedname>
+        <briefdescription>
+<para><ref refid="class_species" kindref="compound">Species</ref> that are edible for each instar, categorized by prey type and instar. </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="App/Model/IBM/Landscape/LivingBeings/Animals/Species/AnimalSpecies.h" line="709" column="21" bodyfile="App/Model/IBM/Landscape/LivingBeings/Animals/Species/AnimalSpecies.h" bodystart="709" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="group___species_edibility_attributes_1gafce41e886c7562cdd8c50b992f7e534c" prot="protected" static="no" mutable="no">
+        <type><ref refid="class_custom_indexed_vector" kindref="compound">CustomIndexedVector</ref>&lt; <ref refid="class_species_1_1_i_d" kindref="compound">Species::ID</ref>, unsigned int &gt;</type>
+        <definition>CustomIndexedVector&lt;Species::ID, unsigned int&gt; AnimalSpecies::predationEventsOnOtherSpecies</definition>
+        <argsstring></argsstring>
+        <name>predationEventsOnOtherSpecies</name>
+        <qualifiedname>AnimalSpecies::predationEventsOnOtherSpecies</qualifiedname>
+        <briefdescription>
+<para><ref refid="class_number" kindref="compound">Number</ref> of predation events performed on other species. </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="App/Model/IBM/Landscape/LivingBeings/Animals/Species/AnimalSpecies.h" line="715" column="21" bodyfile="App/Model/IBM/Landscape/LivingBeings/Animals/Species/AnimalSpecies.h" bodystart="715" bodyend="-1"/>
+      </memberdef>
+    </sectiondef>
+    <briefdescription>
+<para>Structures defining what each instar can eat and ontogenetic edibility links. </para>
+    </briefdescription>
+    <detaileddescription>
+    </detaileddescription>
+  </compounddef>
+</doxygen>

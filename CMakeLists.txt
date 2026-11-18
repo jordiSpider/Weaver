@@ -63,6 +63,9 @@ math(EXPR MINOR_VER "${CURRENT_MONTH} + 0")
 math(EXPR PATCH_VER "${CURRENT_DAY} + 0")
 
 set(PROGRAM_VERSION "${MAJOR_VER}.${MINOR_VER}.${PATCH_VER}")
+# Keep the numeric project version convenient for CMake/R metadata, while using
+# a zero-padded date version for installer names and per-version directories.
+set(PROGRAM_VERSION_PADDED "${MAJOR_VER}.${CURRENT_MONTH}.${CURRENT_DAY}")
 
 
 # ------------------------------------------------------------
@@ -78,6 +81,32 @@ include(GNUInstallDirs)
 string(TOUPPER "${PROJECT_NAME}" PROJECT_NAME_UPPER)
 string(TOLOWER "${PROJECT_NAME}" PROJECT_NAME_LOWER)
 
+if(ENABLE_GUI)
+    set(WEAVER_EDITION "Desktop")
+    set(GUI_EXE_NAME "${PROJECT_NAME}GUI")
+else()
+    set(WEAVER_EDITION "Server")
+endif()
+string(TOLOWER "${WEAVER_EDITION}" WEAVER_EDITION_LOWER)
+set(WEAVER_INSTALLER_ID "${PROJECT_NAME}-${PROGRAM_VERSION_PADDED}-${WEAVER_EDITION}")
+set(WEAVER_INSTALL_SUBDIR "${PROGRAM_VERSION_PADDED}/${WEAVER_EDITION}")
+
+# Every package installs into its own version/edition tree under the platform
+# package root (Program Files/Weaver on Windows, /opt/Weaver on Linux).
+set(CMAKE_INSTALL_BINDIR "${WEAVER_INSTALL_SUBDIR}/bin")
+set(CMAKE_INSTALL_SBINDIR "${WEAVER_INSTALL_SUBDIR}/sbin")
+set(CMAKE_INSTALL_LIBEXECDIR "${WEAVER_INSTALL_SUBDIR}/libexec")
+set(CMAKE_INSTALL_SYSCONFDIR "${WEAVER_INSTALL_SUBDIR}/etc")
+set(CMAKE_INSTALL_SHAREDSTATEDIR "${WEAVER_INSTALL_SUBDIR}/com")
+set(CMAKE_INSTALL_LOCALSTATEDIR "${WEAVER_INSTALL_SUBDIR}/var")
+set(CMAKE_INSTALL_LIBDIR "${WEAVER_INSTALL_SUBDIR}/lib")
+set(CMAKE_INSTALL_INCLUDEDIR "${WEAVER_INSTALL_SUBDIR}/include")
+set(CMAKE_INSTALL_DATAROOTDIR "${WEAVER_INSTALL_SUBDIR}/share")
+set(CMAKE_INSTALL_DATADIR "${CMAKE_INSTALL_DATAROOTDIR}")
+set(CMAKE_INSTALL_INFODIR "${CMAKE_INSTALL_DATADIR}/info")
+set(CMAKE_INSTALL_MANDIR "${CMAKE_INSTALL_DATADIR}/man")
+set(CMAKE_INSTALL_DOCDIR "${CMAKE_INSTALL_DATADIR}/doc/${PROJECT_NAME}")
+
 if(MSVC)
     add_compile_options(/MP)
 endif()
@@ -87,6 +116,8 @@ add_compile_definitions(
     DIMENSIONS=2
     ${PROJECT_NAME_UPPER}_PROGRAM_NAME="${PROJECT_NAME}"
     ${PROJECT_NAME_UPPER}_PROGRAM_VERSION="${PROGRAM_VERSION}"
+    ${PROJECT_NAME_UPPER}_PROGRAM_VERSION_DISPLAY="${PROGRAM_VERSION_PADDED}"
+    ${PROJECT_NAME_UPPER}_PROGRAM_EDITION="${WEAVER_EDITION}"
     ${PROJECT_NAME_UPPER}_SCHEMA_VERSION="${SCHEMA_VERSION}"
     ${PROJECT_NAME_UPPER}_SERIALIZATION_VERSION="${SERIALIZATION_VERSION}"
 )
@@ -155,7 +186,9 @@ if(BUILD_APP)
  
     # Define configuration path layout depending on the platform
     if(WIN32)
-        set(CONFIG_DEST_PATH "AppData")
+        # CPack's Directory chooser points at the shared Documents\Weaver root;
+        # the version and edition are appended inside the installer.
+        set(CONFIG_DEST_PATH "AppData/${PROGRAM_VERSION_PADDED}/${WEAVER_EDITION}")
     else()
         set(CONFIG_DEST_PATH "${CMAKE_INSTALL_SYSCONFDIR}/${PROJECT_NAME_LOWER}")
     endif()
@@ -167,12 +200,12 @@ if(BUILD_APP)
     )
  
     # NOTE: the "RPackages" component (weaverR tarball + dependency installer
-    # scripts that install the package in a standard R library) is installed by
-    # R/weaverR/CMakeLists.txt.
+    # scripts that install into this version and edition's private R library)
+    # is installed by R/weaverR/CMakeLists.txt.
  
     # Define data path layout depending on the platform
     if(WIN32)
-        set(DATA_DEST_PATH "AppData")
+        set(DATA_DEST_PATH "AppData/${PROGRAM_VERSION_PADDED}/${WEAVER_EDITION}")
     else()
         set(DATA_DEST_PATH "${CMAKE_INSTALL_DATADIR}/${PROJECT_NAME_LOWER}")
     endif()
@@ -196,13 +229,15 @@ if(BUILD_APP)
     # ------------------------------------------------------------
     # Package baseline properties
     if(ENABLE_GUI)
-        set(CPACK_PACKAGE_NAME "${PROJECT_NAME}-Desktop-Full")
+        set(WEAVER_PACKAGE_VARIANT "Desktop")
+        set(CPACK_PACKAGE_NAME "${PROJECT_NAME} ${WEAVER_PACKAGE_VARIANT}")
     else()
-        set(CPACK_PACKAGE_NAME "${PROJECT_NAME}-Server-CLI")
+        set(WEAVER_PACKAGE_VARIANT "Server")
+        set(CPACK_PACKAGE_NAME "${PROJECT_NAME} ${WEAVER_PACKAGE_VARIANT}")
     endif()
  
     set(CPACK_PACKAGE_VENDOR "${AUTHOR}")
-    set(CPACK_PACKAGE_VERSION ${PROGRAM_VERSION})
+    set(CPACK_PACKAGE_VERSION ${PROGRAM_VERSION_PADDED})
     set(CPACK_PACKAGE_DESCRIPTION_SUMMARY "Weaver Simulator")
  
     set(CPACK_PACKAGE_HOMEPAGE_URL ${REPO_URL})
@@ -212,10 +247,15 @@ if(BUILD_APP)
  
     # Extract target host processor architecture
     set(ARCH ${CMAKE_SYSTEM_PROCESSOR})
+    if(ARCH MATCHES "^(AMD64|amd64|x86_64|X86_64)$")
+        set(ARCH "x64")
+    elseif(ARCH MATCHES "^(aarch64|AARCH64|arm64|ARM64)$")
+        set(ARCH "arm64")
+    endif()
  
     if(WIN32)
         # Standardized layout filename for Windows distributions
-        set(CPACK_PACKAGE_FILE_NAME "${CPACK_PACKAGE_NAME}_${PROJECT_VERSION}_Windows_${ARCH}")
+        set(CPACK_PACKAGE_FILE_NAME "${PROJECT_NAME}-${WEAVER_PACKAGE_VARIANT}-${PROGRAM_VERSION_PADDED}-Windows-${ARCH}")
  
     elseif(UNIX AND NOT APPLE)
         # On Linux systems, attempt to extract precise distribution details (e.g., "Ubuntu-22.04")
@@ -232,7 +272,7 @@ if(BUILD_APP)
         endif()
  
         # Standardized layout filename for Linux distributions
-        set(CPACK_PACKAGE_FILE_NAME "${CPACK_PACKAGE_NAME}_${PROJECT_VERSION}_${OS_RELEASE_NAME}_${ARCH}")
+        set(CPACK_PACKAGE_FILE_NAME "${PROJECT_NAME}-${WEAVER_PACKAGE_VARIANT}-${PROGRAM_VERSION_PADDED}-${OS_RELEASE_NAME}-${ARCH}")
     endif()
  
     # ------------------------------------------------------------
@@ -262,10 +302,8 @@ if(BUILD_APP)
     set(CPACK_COMPONENT_GUI_DISPLAY_NAME "Weaver Graphical Interface")
     set(CPACK_COMPONENT_GUI_DESCRIPTION  "Graphical user interface of the Weaver simulator.")
  
-    # R packages: the weaverR tarball and installer scripts. Compatible
-    # dependencies already available to R are reused; missing or outdated
-    # dependencies are installed in a standard R library for the installing user
-    # (Windows) or in R's site library (Linux).
+    # R packages: the weaverR tarball and installer scripts. weaverR and its
+    # dependencies are installed in a private R library for this version/edition.
     # Optional and unchecked by default (remove the DISABLED line to check it by default).
     set(CPACK_COMPONENT_RPACKAGES_DISPLAY_NAME "R packages")
 
@@ -275,7 +313,7 @@ if(BUILD_APP)
         set(_RPKG_DESC "weaverR R package (run_optimiser for scripts).")
     endif()
     set(CPACK_COMPONENT_RPACKAGES_DESCRIPTION
-        "${_RPKG_DESC} Requires R and internet access for dependencies missing from or older than the installed R libraries.")
+        "${_RPKG_DESC} Requires R and internet access to install dependencies not included with R.")
 
     set(CPACK_COMPONENT_RPACKAGES_DISABLED     FALSE)
  
@@ -284,6 +322,15 @@ if(BUILD_APP)
     # ------------------------------------------------------------
     if(WIN32)
         set(CPACK_GENERATOR "WIX")
+
+        add_library(WeaverRSetupCA SHARED
+            "${CMAKE_CURRENT_SOURCE_DIR}/cmake/res/Windows/weaver_r_setup_ca.cpp")
+        target_compile_definitions(WeaverRSetupCA PRIVATE UNICODE _UNICODE WIN32_LEAN_AND_MEAN)
+        target_link_libraries(WeaverRSetupCA PRIVATE msi)
+        set_target_properties(WeaverRSetupCA PROPERTIES
+            PREFIX ""
+            OUTPUT_NAME "WeaverRSetupCA"
+            MSVC_RUNTIME_LIBRARY "MultiThreaded$<$<CONFIG:Debug>:Debug>")
 
         # Keep the helper's logs scoped to this edition, matching the MSI's
         # separate upgrade and uninstall identity.
@@ -309,25 +356,39 @@ if(BUILD_APP)
             )
         endif()
  
-        # Keep the two editions side by side under Program Files.
-        set(CPACK_PACKAGE_INSTALL_DIRECTORY "${CPACK_PACKAGE_NAME}")
+        # Keep a shared package root; the install destinations below add the
+        # version and edition directories under it.
+        set(CPACK_PACKAGE_INSTALL_DIRECTORY "${PROJECT_NAME}")
+        set(CPACK_WIX_PROGRAM_MENU_FOLDER "${PROJECT_NAME} ${WEAVER_PACKAGE_VARIANT} ${PROGRAM_VERSION_PADDED}")
+        string(REPLACE "/" "." _WEAVER_INSTALL_SUBDIR_ID "${WEAVER_INSTALL_SUBDIR}")
+        set(WEAVER_CLI_BIN_DIR_ID "CM_DP_CLI.${_WEAVER_INSTALL_SUBDIR_ID}.bin")
+        set(WEAVER_R_PAYLOAD_DIR_ID "CM_DP_RPackages.${_WEAVER_INSTALL_SUBDIR_ID}.R")
+        set(WEAVER_VERSION_DIR_ID "CM_DP_Unspecified.${PROGRAM_VERSION_PADDED}")
 
-        # Each edition has its own upgrade family. The old shared upgrade code is
-        # detected (but not removed) by main.wxs.in for a safe one-time transition.
-        if(ENABLE_GUI)
-            set(CPACK_WIX_UPGRADE_GUID "457DDB36-75A2-40C3-AE4B-D7BFB0DEABD3")
-            set(WEAVER_SET_PATH_GUID "2A5F6DB0-DC26-44DB-BD19-B358A38A59B0")
-            set(WEAVER_APPDATA_PATH_GUID "8DA7AB2D-C4FB-4878-AF62-A58238173D2C")
-            set(WEAVER_REMOVE_R_LOGS_GUID "FB9EBC48-FA1D-473C-90C0-D1DC74DA4703")
-        else()
-            set(CPACK_WIX_UPGRADE_GUID "AEF73571-A7AD-42B7-8043-A26A9C07AB88")
-            set(WEAVER_SET_PATH_GUID "C7E4FFA6-5D36-4498-83FC-6C5431F3D886")
-            set(WEAVER_APPDATA_PATH_GUID "4349D90C-1D62-4B19-9568-9B0EDCB94071")
-            set(WEAVER_REMOVE_R_LOGS_GUID "621AF055-7424-471B-97D2-7A8849335684")
-        endif()
+        # Distinct product/upgrade/component identities prevent Windows
+        # Installer from treating another version as an upgrade of this one.
+        set(_WEAVER_UUID_NAMESPACE "6ba7b810-9dad-11d1-80b4-00c04fd430c8")
+        string(UUID CPACK_WIX_PRODUCT_GUID NAMESPACE "${_WEAVER_UUID_NAMESPACE}"
+            NAME "${WEAVER_INSTALLER_ID}-product" TYPE SHA1)
+        string(UUID CPACK_WIX_UPGRADE_GUID NAMESPACE "${_WEAVER_UUID_NAMESPACE}"
+            NAME "${WEAVER_INSTALLER_ID}-upgrade" TYPE SHA1)
+        string(UUID WEAVER_SET_PATH_GUID NAMESPACE "${_WEAVER_UUID_NAMESPACE}"
+            NAME "${WEAVER_INSTALLER_ID}-path-component" TYPE SHA1)
+        string(UUID WEAVER_APPDATA_PATH_GUID NAMESPACE "${_WEAVER_UUID_NAMESPACE}"
+            NAME "${WEAVER_INSTALLER_ID}-appdata-component" TYPE SHA1)
+        string(UUID WEAVER_REMOVE_R_LOGS_GUID NAMESPACE "${_WEAVER_UUID_NAMESPACE}"
+            NAME "${WEAVER_INSTALLER_ID}-r-logs-component" TYPE SHA1)
+        string(UUID WEAVER_REMOVE_INSTALL_DIR_GUID NAMESPACE "${_WEAVER_UUID_NAMESPACE}"
+            NAME "${WEAVER_INSTALLER_ID}-remove-install-dir-component" TYPE SHA1)
+        string(TOUPPER "${CPACK_WIX_PRODUCT_GUID}" CPACK_WIX_PRODUCT_GUID)
+        string(TOUPPER "${CPACK_WIX_UPGRADE_GUID}" CPACK_WIX_UPGRADE_GUID)
+        string(TOUPPER "${WEAVER_SET_PATH_GUID}" WEAVER_SET_PATH_GUID)
+        string(TOUPPER "${WEAVER_APPDATA_PATH_GUID}" WEAVER_APPDATA_PATH_GUID)
+        string(TOUPPER "${WEAVER_REMOVE_R_LOGS_GUID}" WEAVER_REMOVE_R_LOGS_GUID)
+        string(TOUPPER "${WEAVER_REMOVE_INSTALL_DIR_GUID}" WEAVER_REMOVE_INSTALL_DIR_GUID)
 
-        # Components below Program Files differ by edition, so they each need
-        # stable, edition-specific component GUIDs for Windows Installer.
+        # Component GUIDs are unique per version and edition, matching their
+        # distinct target directories in Windows Installer.
         configure_file(
             "${CMAKE_CURRENT_SOURCE_DIR}/cmake/res/Windows/r_libs.wxs"
             "${CMAKE_CURRENT_BINARY_DIR}/r_libs.wxs"
@@ -371,7 +432,8 @@ if(BUILD_APP)
         set(CPACK_WIX_PATCH_FILE "${CMAKE_CURRENT_BINARY_DIR}/wix_patch.xml")
  
         # Visual Studio runtime redistributables (installed in the default
-        # "Unspecified" component)
+        # "Unspecified" component) alongside this version and edition.
+        set(CMAKE_INSTALL_SYSTEM_RUNTIME_DESTINATION "${WEAVER_INSTALL_SUBDIR}/bin")
         include(InstallRequiredSystemLibraries)
  
         find_program(CPACK_WIX_CANDLE_EXECUTABLE
@@ -388,15 +450,12 @@ if(BUILD_APP)
  
         set(CPACK_WIX_PRODUCT_ICON "${CMAKE_CURRENT_SOURCE_DIR}/cmake/res/${PROJECT_NAME_LOWER}.ico")
  
-        # Keep shortcuts separate for the two editions.
-        set(CPACK_WIX_PROGRAM_MENU_FOLDER "${CPACK_PACKAGE_NAME}")
- 
         # Start Menu shortcuts. Syntax: "TargetExecutableName" "Display Name"
         # The first field must match the add_executable() target name.
         # The GUI shortcut only exists when the GUI is built.
-        set(CPACK_PACKAGE_EXECUTABLES "${PROJECT_NAME}CLI" "${PROJECT_NAME} Terminal")
+        set(CPACK_PACKAGE_EXECUTABLES "${PROJECT_NAME}CLI" "${PROJECT_NAME} ${PROGRAM_VERSION_PADDED} Terminal")
         if(ENABLE_GUI)
-            list(PREPEND CPACK_PACKAGE_EXECUTABLES "${PROJECT_NAME}GUI" "${PROJECT_NAME} Simulator")
+            list(PREPEND CPACK_PACKAGE_EXECUTABLES "${PROJECT_NAME}GUI" "${PROJECT_NAME} ${PROGRAM_VERSION_PADDED} Simulator")
         endif()
     endif()
  
@@ -405,30 +464,33 @@ if(BUILD_APP)
     # ------------------------------------------------------------
     if(UNIX AND NOT APPLE)
         set(CPACK_GENERATOR "DEB")
- 
-        configure_file(
-            "${CMAKE_CURRENT_SOURCE_DIR}/cmake/res/Linux/${PROJECT_NAME_LOWER}.desktop.in"
-            "${CMAKE_CURRENT_SOURCE_DIR}/cmake/res/Linux/${PROJECT_NAME_LOWER}.desktop"
-            @ONLY
-        )
- 
-        # 1. Desktop Entry Installation (Application System Menus)
-        install(FILES "${CMAKE_CURRENT_SOURCE_DIR}/cmake/res/Linux/${PROJECT_NAME_LOWER}.desktop"
-            DESTINATION "share/applications"
-            COMPONENT GUI
-        )
- 
-        # 2. Icon Asset Installation
-        install(FILES "${CMAKE_CURRENT_SOURCE_DIR}/cmake/res/${PROJECT_NAME_LOWER}.svg"
-            DESTINATION "share/icons/hicolor/scalable/apps"
-            COMPONENT GUI
-        )
+        set(CPACK_PACKAGING_INSTALL_PREFIX "/opt/${PROJECT_NAME}")
+
+        if(ENABLE_GUI)
+            set(WEAVER_DESKTOP_ID "${PROJECT_NAME_LOWER}-${PROGRAM_VERSION_PADDED}-${WEAVER_EDITION_LOWER}")
+            set(WEAVER_DESKTOP_FILE "${CMAKE_CURRENT_BINARY_DIR}/${WEAVER_DESKTOP_ID}.desktop")
+            configure_file(
+                "${CMAKE_CURRENT_SOURCE_DIR}/cmake/res/Linux/${PROJECT_NAME_LOWER}.desktop.in"
+                "${WEAVER_DESKTOP_FILE}"
+                @ONLY
+            )
+            install(FILES "${WEAVER_DESKTOP_FILE}"
+                DESTINATION "/usr/share/applications"
+                COMPONENT GUI
+            )
+            install(FILES "${CMAKE_CURRENT_SOURCE_DIR}/cmake/res/${PROJECT_NAME_LOWER}.svg"
+                DESTINATION "/usr/share/icons/hicolor/scalable/apps"
+                RENAME "${WEAVER_DESKTOP_ID}.svg"
+                COMPONENT GUI
+            )
+        endif()
  
         # Debian Maintainer Details
         set(CPACK_DEBIAN_PACKAGE_MAINTAINER "${AUTHOR} <${CONTACT_EMAIL}>")
  
         # Debian package name
-        set(CPACK_DEBIAN_PACKAGE_NAME "${PROJECT_NAME_LOWER}")
+        set(CPACK_DEBIAN_PACKAGE_NAME "${PROJECT_NAME_LOWER}-${PROGRAM_VERSION_PADDED}-${WEAVER_EDITION_LOWER}")
+        set(CPACK_DEBIAN_PACKAGE_VERSION "${PROGRAM_VERSION_PADDED}")
  
         set(CPACK_DEBIAN_PACKAGE_LICENSE "MIT")
  
@@ -436,13 +498,12 @@ if(BUILD_APP)
         set(CPACK_DEB_COMPONENT_INSTALL OFF)
  
         # R packages: the .deb ships the weaverR tarball and dependency
-        # metadata. The postinst reuses compatible packages and installs missing
-        # or outdated packages into R's configured site library.
+        # metadata. The postinst installs the package and dependencies in this
+        # version and edition's private library under the installation prefix.
         if(INSTALLER_INCLUDE_R)
-            set(CPACK_PACKAGING_INSTALL_PREFIX "/usr")
             # Keep in sync with R_PAYLOAD_DEST in R/weaverR/CMakeLists.txt
             set(WEAVER_R_PAYLOAD_DIR "${CPACK_PACKAGING_INSTALL_PREFIX}/${CMAKE_INSTALL_DATADIR}/${PROJECT_NAME_LOWER}/R")
-            set(WEAVER_LEGACY_R_LIBRARY_DIR "/var/lib/${PROJECT_NAME_LOWER}/R-library")
+            set(WEAVER_R_LIBRARY_DIR "${CPACK_PACKAGING_INSTALL_PREFIX}/${CMAKE_INSTALL_LIBDIR}/R")
             configure_file(
                 "${CMAKE_CURRENT_SOURCE_DIR}/cmake/res/Linux/postinst.in"
                 "${CMAKE_CURRENT_BINARY_DIR}/debian/postinst"

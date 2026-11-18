@@ -24,6 +24,7 @@ execute_process(
 
 # Remove leading "v" if present
 string(REGEX REPLACE "^v" "" LATEST_VERSION "${GIT_LAST_TAG}")
+set(DOCS_WEAVER_VERSION "${LATEST_VERSION}")
 
 
 # ------------------------------------------------------------

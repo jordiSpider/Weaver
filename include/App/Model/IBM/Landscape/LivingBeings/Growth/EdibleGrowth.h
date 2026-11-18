@@ -21,6 +21,7 @@
 
 /**
  * @class EdibleGrowth
+ * @ingroup weaver_landscape
  * @brief Represents the growth characteristics and current biomasses of an edible object.
  *
  * This class models the growth state of an edible entity (resource or animal) by storing:

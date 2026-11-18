@@ -24,6 +24,7 @@
 
 /**
  * @class CellElement
+ * @ingroup weaver_landscape
  * @brief Base class for any modifiable element contained within a terrain cell.
  *
  * A CellElement represents a component of a TerrainCell that can be modified by

@@ -32,6 +32,7 @@
 
 /**
  * @class Genetics
+ * @ingroup weaver_landscape
  * @brief Represents the genetic information and traits of an individual.
  * 
  * The Genetics class manages an individual's genome, traits, and provides

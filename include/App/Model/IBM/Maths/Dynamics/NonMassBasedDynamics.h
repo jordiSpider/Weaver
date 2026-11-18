@@ -28,6 +28,7 @@
 
 /**
  * @class NonMassBasedDynamics
+ * @ingroup weaver_model
  * @brief Represents dynamics that are independent of mass.
  *
  * NonMassBasedDynamics is a subclass of Dynamics for behaviors that

@@ -1,8 +1,8 @@
 // WeaverRSetup.exe
 //
 // Silent helper executed by the MSI (deferred custom action, as SYSTEM). It
-// finds R, installs missing or outdated dependencies in the installing user's
-// standard R library, then installs weaverR there.
+// finds R, installs missing or outdated dependencies in this Weaver
+// installation's private R library, then installs weaverR there.
 //
 // It is a GUI-subsystem program and starts R without a console, so no window is
 // ever shown. Logs are written outside the installation folder so they survive
@@ -274,6 +274,15 @@ std::wstring findTarball(const std::wstring& dir) {
 
 std::wstring quoted(const std::wstring& s) { return L"\"" + s + L"\""; }
 
+std::wstring privateRLibrary(const std::wstring& payloadDirectory) {
+    std::wstring path = payloadDirectory + L"\\..\\lib\\R";
+    std::vector<wchar_t> normalized(32768);
+    const DWORD length = GetFullPathNameW(path.c_str(), static_cast<DWORD>(normalized.size()),
+                                          normalized.data(), nullptr);
+    if (length == 0 || length >= normalized.size()) return L"";
+    return std::wstring(normalized.data(), length);
+}
+
 }  // namespace
 
 int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int) {
@@ -284,18 +293,20 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int) {
     const std::wstring script  = dir + L"\\install_r_env.R";
     const std::wstring repo    = dir + L"\\cran_repo.txt";
     const std::wstring tarball = findTarball(dir);
+    const std::wstring library = privateRLibrary(dir);
 
     int argumentCount = 0;
     LPWSTR* arguments = CommandLineToArgvW(GetCommandLineW(), &argumentCount);
     const std::wstring userDocuments = arguments != nullptr && argumentCount > 1 ? arguments[1] : L"";
     if (arguments != nullptr) LocalFree(arguments);
-    if (userDocuments.empty()) {
-        logLine(L"ERROR: the installing user's documents folder was not provided.");
+    if (userDocuments.empty() || library.empty()) {
+        logLine(L"ERROR: the installing user's documents folder or private R library path was unavailable.");
         closeLog();
         return kExitMissingFiles;
     }
 
     logLine(L"WeaverRSetup: installation folder " + dir);
+    logLine(L"Version-specific R library: " + library);
     logLine(L"R script: " + script);
     logLine(L"CRAN repository file: " + repo);
 
@@ -333,10 +344,9 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int) {
     }
     logLine(L"Using " + rscript);
 
-    // Keep R environment and site-library configuration, but skip the user's
-    // R profile, which could preload package namespaces during installation.
-    std::wstring command = quoted(rscript) + L" --no-save --no-restore --no-init-file " +
-                           quoted(script) + L" user " + quoted(tarball) + L" " + quoted(repo);
+    // Restrict package discovery to this installation's library and R base.
+    std::wstring command = quoted(rscript) + L" --no-save --no-restore --no-site-file --no-init-file --no-environ " +
+                           quoted(script) + L" " + quoted(library) + L" " + quoted(tarball) + L" " + quoted(repo);
 
     // Handles passed to the child process must be inheritable
     SECURITY_ATTRIBUTES sa{sizeof(sa), nullptr, TRUE};
@@ -359,7 +369,10 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int) {
 
     PROCESS_INFORMATION pi{};
     if (!SetEnvironmentVariableW(L"R_USER", userDocuments.c_str()) ||
-        !SetEnvironmentVariableW(L"HOME", userDocuments.c_str())) {
+        !SetEnvironmentVariableW(L"HOME", userDocuments.c_str()) ||
+        !SetEnvironmentVariableW(L"R_LIBS_SITE", L"") ||
+        !SetEnvironmentVariableW(L"R_LIBS_USER", L"") ||
+        !SetEnvironmentVariableW(L"R_LIBS", library.c_str())) {
         const DWORD error = GetLastError();
         logLine(L"ERROR: could not set the installing user's R home (Windows error " + std::to_wstring(error) + L").");
         CloseHandle(nul);

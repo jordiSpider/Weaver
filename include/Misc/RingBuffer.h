@@ -13,6 +13,7 @@
 
 #include <vector>
 #include <numeric>
+#include <type_traits>
 
 #include <boost/serialization/vector.hpp>
 
@@ -59,13 +60,18 @@ public:
     /**
      * @brief Calculates the mean of the elements in the buffer.
      *
-     * Specialization exists for `size_t` to avoid type issues.
+     * Uses integer division for `size_t` values.
      *
      * @return Mean value of elements.
      */
     T calculateMean() const {
-        T sum = std::accumulate(buffer.begin(), buffer.end(), T());
-        return sum / static_cast<double>(maxSize);
+        if constexpr (std::is_same_v<T, std::size_t>) {
+            const T sum = std::accumulate(buffer.begin(), buffer.end(), T{});
+            return sum / maxSize;
+        } else {
+            const T sum = std::accumulate(buffer.begin(), buffer.end(), T{});
+            return sum / static_cast<double>(maxSize);
+        }
     }
 
     /**
@@ -97,17 +103,5 @@ private:
     std::size_t head;      /**< Index of the next element to overwrite */
     T initialValue;        /**< Value used to initialize buffer elements */
 };
-
-/**
- * @brief Specialization of calculateMean for size_t type.
- *
- * @return Mean of elements in the buffer as size_t.
- */
-template <>
-inline size_t RingBuffer<size_t>::calculateMean() const {
-    size_t sum = std::accumulate(buffer.begin(), buffer.end(), static_cast<size_t>(0u));
-    return sum / maxSize;
-}
-
 
 #endif // RING_BUFFER_H_

@@ -25,6 +25,7 @@
 
 /**
  * @class LogTextbox
+ * @ingroup weaver_model
  * @brief A read-only multiline textbox widget for logging messages.
  *
  * This class provides a simple logging panel with a non-editable,

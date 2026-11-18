@@ -28,6 +28,7 @@ class Animal;
 
 /**
  * @class AnimalSearchParams
+ * @ingroup weaver_landscape
  * @brief Stores parameters for searching animals within a terrain cell.
  *
  * This class encapsulates life stages, species, instars, and genders

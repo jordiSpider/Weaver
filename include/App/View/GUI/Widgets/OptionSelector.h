@@ -24,6 +24,7 @@
 
 /**
  * @class OptionSelector
+ * @ingroup weaver_model
  * @brief A widget combining a label and a dropdown (combo box) for selecting options.
  *
  * This class provides a labeled dropdown using nana::panel and nana::combox.

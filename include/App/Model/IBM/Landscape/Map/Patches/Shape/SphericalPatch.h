@@ -15,6 +15,7 @@
 
 /**
  * @class SphericalPatch
+ * @ingroup weaver_landscape
  * @brief Represents a patch with spherical influence.
  *
  * The SphericalPatch class is a concrete implementation of PatchShape.

@@ -30,6 +30,7 @@
 
 /**
  * @class Tuple
+ * @ingroup weaver_validation
  * @brief Represents a JSON Schema tuple-type element with position-dependent validation.
  *
  * The Tuple class models JSON arrays whose elements are heterogeneous and must match

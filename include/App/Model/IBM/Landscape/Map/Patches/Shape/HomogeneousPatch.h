@@ -13,6 +13,7 @@
 
 /**
  * @class HomogeneousPatch
+ * @ingroup weaver_landscape
  * @brief Represents a patch with homogeneous (uniform) influence.
  *
  * The HomogeneousPatch class is a concrete implementation of PatchShape.

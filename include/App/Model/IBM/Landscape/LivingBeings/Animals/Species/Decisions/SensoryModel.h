@@ -21,6 +21,7 @@
 
 /**
  * @class SensoryModel
+ * @ingroup weaver_landscape
  * @brief Represents a sensory detection model used to calculate the probability
  * of detecting an object based on distance.
  *

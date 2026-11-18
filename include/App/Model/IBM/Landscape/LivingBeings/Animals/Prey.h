@@ -27,6 +27,7 @@
 
 /**
  * @class Prey
+ * @ingroup weaver_landscape
  * @brief Represents a prey item in the ecosystem, including its species, growth stage, and available biomass.
  *
  * The Prey class stores information about an individual prey item that can be consumed by predators.

@@ -1,0 +1,175 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.14.0" xml:lang="en-US">
+  <compounddef id="struct_route_following_result" kind="struct" language="C++" prot="public">
+    <compoundname>RouteFollowingResult</compoundname>
+    <sectiondef kind="public-attrib">
+      <memberdef kind="variable" id="struct_route_following_result_1a8defa4d7bd71426205bb9e603e38f48b" prot="public" static="no" mutable="no">
+        <type>bool</type>
+        <definition>bool RouteFollowingResult::atDestination</definition>
+        <argsstring></argsstring>
+        <name>atDestination</name>
+        <qualifiedname>RouteFollowingResult::atDestination</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="App/Model/IBM/Landscape/Map/Navigation/RouteFollowingPolicy.h" line="18" column="6" bodyfile="App/Model/IBM/Landscape/Map/Navigation/RouteFollowingPolicy.h" bodystart="18" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="struct_route_following_result_1a1161afa5dc0ecc7e65c6b1a98f385494" prot="public" static="no" mutable="no">
+        <type>size_t</type>
+        <definition>size_t RouteFollowingResult::nextCellIndex</definition>
+        <argsstring></argsstring>
+        <name>nextCellIndex</name>
+        <qualifiedname>RouteFollowingResult::nextCellIndex</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="App/Model/IBM/Landscape/Map/Navigation/RouteFollowingPolicy.h" line="17" column="8" bodyfile="App/Model/IBM/Landscape/Map/Navigation/RouteFollowingPolicy.h" bodystart="17" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="struct_route_following_result_1ae3a51dacd2ce79e9fad1088b4d7d6689" prot="public" static="no" mutable="no">
+        <type>PointContinuous</type>
+        <definition>PointContinuous RouteFollowingResult::position</definition>
+        <argsstring></argsstring>
+        <name>position</name>
+        <qualifiedname>RouteFollowingResult::position</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="App/Model/IBM/Landscape/Map/Navigation/RouteFollowingPolicy.h" line="15" column="17" bodyfile="App/Model/IBM/Landscape/Map/Navigation/RouteFollowingPolicy.h" bodystart="15" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="struct_route_following_result_1ac1369e181cd58a6967e3eeaa004e2a78" prot="public" static="no" mutable="no">
+        <type>bool</type>
+        <definition>bool RouteFollowingResult::routeBlocked</definition>
+        <argsstring></argsstring>
+        <name>routeBlocked</name>
+        <qualifiedname>RouteFollowingResult::routeBlocked</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="App/Model/IBM/Landscape/Map/Navigation/RouteFollowingPolicy.h" line="19" column="6" bodyfile="App/Model/IBM/Landscape/Map/Navigation/RouteFollowingPolicy.h" bodystart="19" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="struct_route_following_result_1a4a1a5b0c21ead734b794c5700c04b3d0" prot="public" static="no" mutable="no">
+        <type><ref refid="class_terrain_cell" kindref="compound">TerrainCell</ref> *</type>
+        <definition>TerrainCell* RouteFollowingResult::terrainCell</definition>
+        <argsstring></argsstring>
+        <name>terrainCell</name>
+        <qualifiedname>RouteFollowingResult::terrainCell</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="App/Model/IBM/Landscape/Map/Navigation/RouteFollowingPolicy.h" line="16" column="13" bodyfile="App/Model/IBM/Landscape/Map/Navigation/RouteFollowingPolicy.h" bodystart="16" bodyend="-1"/>
+      </memberdef>
+    </sectiondef>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+    </detaileddescription>
+    <collaborationgraph>
+      <node id="5">
+        <label>CellElement</label>
+        <link refid="class_cell_element"/>
+      </node>
+      <node id="9">
+        <label>CellHabitatDomainInterface</label>
+        <link refid="class_cell_habitat_domain_interface"/>
+        <childnode refid="5" relation="public-inheritance">
+        </childnode>
+        <childnode refid="10" relation="usage">
+          <edgelabel>habitatDomainStatus</edgelabel>
+        </childnode>
+      </node>
+      <node id="4">
+        <label>CellMoistureInterface</label>
+        <link refid="class_cell_moisture_interface"/>
+        <childnode refid="5" relation="public-inheritance">
+        </childnode>
+        <childnode refid="6" relation="usage">
+          <edgelabel>totalMaximumResourceCapacity</edgelabel>
+        </childnode>
+      </node>
+      <node id="8">
+        <label>CellObstacleInterface</label>
+        <link refid="class_cell_obstacle_interface"/>
+        <childnode refid="5" relation="public-inheritance">
+        </childnode>
+      </node>
+      <node id="10">
+        <label>CustomIndexedVector&lt; AnimalSpeciesID, CustomIndexedVector&lt; Instar, bool &gt; &gt;</label>
+        <link refid="class_custom_indexed_vector"/>
+      </node>
+      <node id="3">
+        <label>PatchApplicator</label>
+        <link refid="class_patch_applicator"/>
+        <childnode refid="2" relation="usage">
+          <edgelabel>owner</edgelabel>
+        </childnode>
+        <childnode refid="4" relation="usage">
+          <edgelabel>cellMoisture</edgelabel>
+        </childnode>
+        <childnode refid="8" relation="usage">
+          <edgelabel>cellObstacle</edgelabel>
+        </childnode>
+        <childnode refid="9" relation="usage">
+          <edgelabel>cellHabitatDomain</edgelabel>
+        </childnode>
+      </node>
+      <node id="11">
+        <label>PointMap</label>
+        <link refid="class_point_map"/>
+      </node>
+      <node id="7">
+        <label>PreciseDouble</label>
+        <link refid="class_precise_double"/>
+      </node>
+      <node id="1">
+        <label>RouteFollowingResult</label>
+        <childnode refid="2" relation="usage">
+          <edgelabel>terrainCell</edgelabel>
+        </childnode>
+      </node>
+      <node id="2">
+        <label>TerrainCell</label>
+        <link refid="class_terrain_cell"/>
+        <childnode refid="3" relation="usage">
+          <edgelabel>patchApplicator</edgelabel>
+        </childnode>
+        <childnode refid="11" relation="usage">
+          <edgelabel>position</edgelabel>
+        </childnode>
+        <childnode refid="7" relation="usage">
+          <edgelabel>hyperVolume</edgelabel>
+          <edgelabel>size</edgelabel>
+        </childnode>
+      </node>
+      <node id="6">
+        <label>WetMass</label>
+        <link refid="class_wet_mass"/>
+        <childnode refid="7" relation="usage">
+          <edgelabel>value</edgelabel>
+        </childnode>
+      </node>
+    </collaborationgraph>
+    <location file="App/Model/IBM/Landscape/Map/Navigation/RouteFollowingPolicy.h" line="13" column="1" bodyfile="App/Model/IBM/Landscape/Map/Navigation/RouteFollowingPolicy.h" bodystart="14" bodyend="20"/>
+    <listofallmembers>
+      <member refid="struct_route_following_result_1a8defa4d7bd71426205bb9e603e38f48b" prot="public" virt="non-virtual"><scope>RouteFollowingResult</scope><name>atDestination</name></member>
+      <member refid="struct_route_following_result_1a1161afa5dc0ecc7e65c6b1a98f385494" prot="public" virt="non-virtual"><scope>RouteFollowingResult</scope><name>nextCellIndex</name></member>
+      <member refid="struct_route_following_result_1ae3a51dacd2ce79e9fad1088b4d7d6689" prot="public" virt="non-virtual"><scope>RouteFollowingResult</scope><name>position</name></member>
+      <member refid="struct_route_following_result_1ac1369e181cd58a6967e3eeaa004e2a78" prot="public" virt="non-virtual"><scope>RouteFollowingResult</scope><name>routeBlocked</name></member>
+      <member refid="struct_route_following_result_1a4a1a5b0c21ead734b794c5700c04b3d0" prot="public" virt="non-virtual"><scope>RouteFollowingResult</scope><name>terrainCell</name></member>
+    </listofallmembers>
+  </compounddef>
+</doxygen>

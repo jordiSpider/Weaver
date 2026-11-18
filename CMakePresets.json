@@ -162,8 +162,7 @@
       "description": "Preset for Release builds (optimized for performance).",
       "cacheVariables": {
         "CMAKE_BUILD_TYPE": "Release",
-        "CPACK_PACKAGE_CONTACT": "jordi@eeza.csic.es",
-        "CPACK_PACKAGE_DIRECTORY": "${sourceDir}/installer/${presetName}"
+        "CPACK_PACKAGE_CONTACT": "jordi@eeza.csic.es"
       }
     },
     {
@@ -337,7 +336,9 @@
         "SPHINX_BUILD_DIR_NAME": "build",
         "SPHINX_SOURCE_DIR_NAME": "source",
         "API_DIR_NAME": "api",
-        "DEFAULT_LANGUAGE": "en"
+        "DEFAULT_LANGUAGE": "en",
+        "DOCS_GHPAGES_REMOTE": "origin",
+        "DOCS_GHPAGES_BRANCH": "gh-pages"
       }
     },
     {
@@ -351,10 +352,25 @@
     {
       "name": "build-docs-dev",
       "inherits": [ "docs" ],
-      "description": "Builds documentation for development purposes (without deployment).",
+      "description": "Builds a local documentation preview seeded from the current gh-pages site.",
       "cacheVariables": {
-        "DOCS_BUILD_TYPE": "Build-docs-dev"
+        "DOCS_BUILD_TYPE": "Build-docs-dev",
+        "DOCS_SITE_BASELINE": "gh-pages"
       }
+    },
+    {
+      "name": "build-docs-dev-clean",
+      "inherits": [ "docs" ],
+      "description": "Builds a clean local documentation preview without copying the current gh-pages site.",
+      "cacheVariables": {
+        "DOCS_BUILD_TYPE": "Build-docs-dev",
+        "DOCS_SITE_BASELINE": "empty"
+      }
+    },
+    {
+      "name": "docs-dev-clean-configure",
+      "inherits": [ "build-docs-dev-clean" ],
+      "description": "Configure documentation with an empty local staging directory."
     },
     {
       "name": "update-docs",
@@ -581,8 +597,69 @@
     {
       "name": "build-docs-dev",
       "configurePreset": "build-docs-dev",
-      "description": "Build documentation in development mode.",
+      "description": "Build a local documentation preview seeded from gh-pages.",
       "configuration": "Release",
+      "jobs": 8
+    },
+    {
+      "name": "build-docs-weaver",
+      "configurePreset": "build-docs-dev",
+      "description": "Build only the versioned Weaver documentation.",
+      "configuration": "Release",
+      "targets": [
+        "build-docs-weaver"
+      ],
+      "jobs": 8
+    },
+    {
+      "name": "build-docs-manager",
+      "configurePreset": "build-docs-dev",
+      "description": "Build only the versioned Weaver Manager documentation.",
+      "configuration": "Release",
+      "targets": [
+        "build-docs-manager"
+      ],
+      "jobs": 8
+    },
+    {
+      "name": "build-docs-landing",
+      "configurePreset": "build-docs-dev",
+      "description": "Build only the documentation landing page.",
+      "configuration": "Release",
+      "targets": [
+        "build-docs-landing"
+      ],
+      "jobs": 8
+    },
+    {
+      "name": "build-docs-dev-clean",
+      "configurePreset": "docs-dev-clean-configure",
+      "description": "Build a clean local documentation preview.",
+      "configuration": "Release",
+      "jobs": 8
+    },
+    {
+      "name": "build-docs-weaver-clean",
+      "configurePreset": "docs-dev-clean-configure",
+      "description": "Build only Weaver documentation from an empty local staging directory.",
+      "configuration": "Release",
+      "targets": [ "build-docs-weaver" ],
+      "jobs": 8
+    },
+    {
+      "name": "build-docs-manager-clean",
+      "configurePreset": "docs-dev-clean-configure",
+      "description": "Build only Weaver Manager documentation from an empty local staging directory.",
+      "configuration": "Release",
+      "targets": [ "build-docs-manager" ],
+      "jobs": 8
+    },
+    {
+      "name": "build-docs-landing-clean",
+      "configurePreset": "docs-dev-clean-configure",
+      "description": "Build only the landing page from an empty local staging directory.",
+      "configuration": "Release",
+      "targets": [ "build-docs-landing" ],
       "jobs": 8
     },
     {
@@ -1053,7 +1130,7 @@
     },
     {
       "name": "build-docs-dev",
-      "description": "Workflow to configure and build the development documentation.",
+      "description": "Workflow to configure and build a local preview using the current gh-pages site as a baseline.",
       "steps": [
         {
           "type": "configure",
@@ -1062,6 +1139,104 @@
         {
           "type": "build",
           "name": "build-docs-dev"
+        }
+      ]
+    },
+    {
+      "name": "build-docs-weaver",
+      "description": "Workflow to configure and build only Weaver documentation.",
+      "steps": [
+        {
+          "type": "configure",
+          "name": "build-docs-dev"
+        },
+        {
+          "type": "build",
+          "name": "build-docs-weaver"
+        }
+      ]
+    },
+    {
+      "name": "build-docs-manager",
+      "description": "Workflow to configure and build only Weaver Manager documentation.",
+      "steps": [
+        {
+          "type": "configure",
+          "name": "build-docs-dev"
+        },
+        {
+          "type": "build",
+          "name": "build-docs-manager"
+        }
+      ]
+    },
+    {
+      "name": "build-docs-landing",
+      "description": "Workflow to configure and build only the documentation landing page.",
+      "steps": [
+        {
+          "type": "configure",
+          "name": "build-docs-dev"
+        },
+        {
+          "type": "build",
+          "name": "build-docs-landing"
+        }
+      ]
+    },
+    {
+      "name": "build-docs-dev-clean",
+      "description": "Workflow to configure and build a clean local documentation preview.",
+      "steps": [
+        {
+          "type": "configure",
+          "name": "docs-dev-clean-configure"
+        },
+        {
+          "type": "build",
+          "name": "build-docs-dev-clean"
+        }
+      ]
+    },
+    {
+      "name": "build-docs-weaver-clean",
+      "description": "Workflow to configure and build only Weaver documentation from an empty local staging directory.",
+      "steps": [
+        {
+          "type": "configure",
+          "name": "docs-dev-clean-configure"
+        },
+        {
+          "type": "build",
+          "name": "build-docs-weaver-clean"
+        }
+      ]
+    },
+    {
+      "name": "build-docs-manager-clean",
+      "description": "Workflow to configure and build only Weaver Manager documentation from an empty local staging directory.",
+      "steps": [
+        {
+          "type": "configure",
+          "name": "docs-dev-clean-configure"
+        },
+        {
+          "type": "build",
+          "name": "build-docs-manager-clean"
+        }
+      ]
+    },
+    {
+      "name": "build-docs-landing-clean",
+      "description": "Workflow to configure and build only the documentation landing page from an empty local staging directory.",
+      "steps": [
+        {
+          "type": "configure",
+          "name": "docs-dev-clean-configure"
+        },
+        {
+          "type": "build",
+          "name": "build-docs-landing-clean"
         }
       ]
     },

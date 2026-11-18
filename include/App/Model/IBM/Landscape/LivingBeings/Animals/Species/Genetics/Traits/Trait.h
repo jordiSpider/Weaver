@@ -27,6 +27,7 @@
 
 /**
  * @class Trait
+ * @ingroup weaver_landscape
  * @brief Represents a trait of an animal species or individual.
  *
  * Traits can be base traits, weights for escape probability, predation probability,

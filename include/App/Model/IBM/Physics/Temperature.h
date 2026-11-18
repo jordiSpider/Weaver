@@ -26,6 +26,7 @@
 
 /**
  * @class Temperature
+ * @ingroup weaver_model
  * @brief Represents a temperature and provides conversions and operations between scales.
  *
  * The Temperature class manages a temperature value expressed in three scales:

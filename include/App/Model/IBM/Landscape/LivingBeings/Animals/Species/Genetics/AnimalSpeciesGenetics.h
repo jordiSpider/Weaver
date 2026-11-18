@@ -28,6 +28,7 @@
 
 /**
  * @class AnimalSpeciesGenetics
+ * @ingroup weaver_landscape
  * @brief Manages the genetic architecture of an animal species.
  *
  * This class handles loci, chromosomes, traits, alleles, and related genetic operations.

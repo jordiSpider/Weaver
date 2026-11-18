@@ -1,0 +1,44 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.14.0" xml:lang="en-US">
+  <compounddef id="group___species_resource_handling_attributes" kind="group">
+    <compoundname>SpeciesResourceHandlingAttributes</compoundname>
+    <title>Resource Handling Behaviour</title>
+    <sectiondef kind="var">
+      <memberdef kind="variable" id="group___species_resource_handling_attributes_1ga2f07cfaa3e85f5046ffc186f5acbaa69" prot="protected" static="no" mutable="no">
+        <type>bool</type>
+        <definition>bool AnimalSpecies::forcePresenceAllResourcesInvolved</definition>
+        <argsstring></argsstring>
+        <name>forcePresenceAllResourcesInvolved</name>
+        <qualifiedname>AnimalSpecies::forcePresenceAllResourcesInvolved</qualifiedname>
+        <briefdescription>
+<para>Whether all required resources must be present simultaneously. </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="App/Model/IBM/Landscape/LivingBeings/Animals/Species/AnimalSpecies.h" line="868" column="6" bodyfile="App/Model/IBM/Landscape/LivingBeings/Animals/Species/AnimalSpecies.h" bodystart="868" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="group___species_resource_handling_attributes_1ga63165190f7cbad46bfc5e1dff494801f" prot="protected" static="no" mutable="no">
+        <type>bool</type>
+        <definition>bool AnimalSpecies::preserveLeftovers</definition>
+        <argsstring></argsstring>
+        <name>preserveLeftovers</name>
+        <qualifiedname>AnimalSpecies::preserveLeftovers</qualifiedname>
+        <briefdescription>
+<para>Whether unused resource leftovers are preserved. </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="App/Model/IBM/Landscape/LivingBeings/Animals/Species/AnimalSpecies.h" line="871" column="6" bodyfile="App/Model/IBM/Landscape/LivingBeings/Animals/Species/AnimalSpecies.h" bodystart="871" bodyend="-1"/>
+      </memberdef>
+    </sectiondef>
+    <briefdescription>
+<para>Attributes controlling resource presence requirements and leftover behaviour. </para>
+    </briefdescription>
+    <detaileddescription>
+    </detaileddescription>
+  </compounddef>
+</doxygen>

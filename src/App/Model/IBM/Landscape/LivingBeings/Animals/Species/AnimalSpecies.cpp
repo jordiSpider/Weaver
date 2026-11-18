@@ -521,11 +521,6 @@ void AnimalSpecies::generateInitialGenomesPool(const CustomIndexedVector<Instar,
     }
 
 
-	if (totalInitialPopulation == 0) {
-		throwLineInfoException("Error: The initial population cannot be empty.");
-	}
-
-
 	initialGenomesPool.reserve(totalInitialPopulation);
 
 

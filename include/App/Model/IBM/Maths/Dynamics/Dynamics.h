@@ -29,6 +29,7 @@
 
 /**
  * @class Dynamics
+ * @ingroup weaver_model
  * @brief Abstract base class for modeling temporal dynamics.
  *
  * Dynamics represents a generic temporal change for traits or resources.

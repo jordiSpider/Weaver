@@ -14,6 +14,7 @@
 
 /**
  * @class ValidatorJSONException
+ * @ingroup weaver_exceptions
  * @brief Base exception for JSON validation errors.
  *
  * Inherits from LineInfoException to include file and line number information.
@@ -39,6 +40,7 @@ public:
 
 /**
  * @class ValidatorConfigJSONException
+ * @ingroup weaver_exceptions
  * @brief Exception thrown when the JSON configuration is invalid.
  *
  * Inherits from ValidatorJSONException.
@@ -64,6 +66,7 @@ public:
 
 /**
  * @class ValidatorSchemaJSONException
+ * @ingroup weaver_exceptions
  * @brief Exception thrown when the JSON schema is invalid.
  *
  * Inherits from ValidatorJSONException.

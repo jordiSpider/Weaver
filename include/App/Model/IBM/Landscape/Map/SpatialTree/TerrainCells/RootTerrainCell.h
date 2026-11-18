@@ -27,6 +27,7 @@
 
 /**
  * @class RootTerrainCell
+ * @ingroup weaver_landscape
  * @brief Represents the root node of the spatial tree in the landscape.
  *
  * The RootTerrainCell is the top-level branch of the spatial tree.

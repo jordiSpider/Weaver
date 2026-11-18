@@ -27,6 +27,7 @@
 
 /**
  * @class GrowthRateDynamics
+ * @ingroup weaver_model
  * @brief Implements mass-based dynamics for growth rate of organisms.
  *
  * GrowthRateDynamics is a subclass of MassBasedDynamics and calculates the growth

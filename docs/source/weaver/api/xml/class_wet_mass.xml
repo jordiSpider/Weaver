@@ -1,0 +1,237 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.14.0" xml:lang="en-US">
+  <compounddef id="class_wet_mass" kind="class" language="C++" prot="public">
+    <compoundname>WetMass</compoundname>
+    <includes refid="_structural_units_8h" local="no">StructuralUnits.h</includes>
+    <sectiondef kind="private-attrib">
+      <memberdef kind="variable" id="class_wet_mass_1a058d8630d7cca3f3b8a3077973c87047" prot="private" static="no" mutable="no">
+        <type><ref refid="class_precise_double" kindref="compound">PreciseDouble</ref></type>
+        <definition>PreciseDouble WetMass::value</definition>
+        <argsstring></argsstring>
+        <name>value</name>
+        <qualifiedname>WetMass::value</qualifiedname>
+        <briefdescription>
+<para>Wet mass value. </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="App/Model/IBM/Landscape/LivingBeings/StructuralUnits.h" line="312" column="19" bodyfile="App/Model/IBM/Landscape/LivingBeings/StructuralUnits.h" bodystart="312" bodyend="-1"/>
+      </memberdef>
+    </sectiondef>
+    <sectiondef kind="public-func">
+      <memberdef kind="function" id="class_wet_mass_1a1c177cc5a68c43bfb630802c5328bd04" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type></type>
+        <definition>WetMass::WetMass</definition>
+        <argsstring>()</argsstring>
+        <name>WetMass</name>
+        <qualifiedname>WetMass::WetMass</qualifiedname>
+        <briefdescription>
+<para>Default constructor, initializes value to 0. </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="App/Model/IBM/Landscape/LivingBeings/StructuralUnits.h" line="316" column="5"/>
+      </memberdef>
+      <memberdef kind="function" id="class_wet_mass_1ac72f7e223089b9bf6380f26ac01a1836" prot="public" static="no" const="no" explicit="yes" inline="no" virt="non-virtual">
+        <type></type>
+        <definition>WetMass::WetMass</definition>
+        <argsstring>(const DryMass &amp;dryMass, const PreciseDouble &amp;conversionToWetMass)</argsstring>
+        <name>WetMass</name>
+        <qualifiedname>WetMass::WetMass</qualifiedname>
+        <param>
+          <type>const <ref refid="class_dry_mass" kindref="compound">DryMass</ref> &amp;</type>
+          <declname>dryMass</declname>
+        </param>
+        <param>
+          <type>const <ref refid="class_precise_double" kindref="compound">PreciseDouble</ref> &amp;</type>
+          <declname>conversionToWetMass</declname>
+        </param>
+        <briefdescription>
+<para>Constructor from <ref refid="class_dry_mass" kindref="compound">DryMass</ref> and conversion coefficient. </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="App/Model/IBM/Landscape/LivingBeings/StructuralUnits.h" line="322" column="14"/>
+      </memberdef>
+      <memberdef kind="function" id="class_wet_mass_1a56e9964ca196cfb76d26925ff61974d7" prot="public" static="no" const="no" explicit="yes" inline="no" virt="non-virtual">
+        <type></type>
+        <definition>WetMass::WetMass</definition>
+        <argsstring>(const PreciseDouble &amp;value)</argsstring>
+        <name>WetMass</name>
+        <qualifiedname>WetMass::WetMass</qualifiedname>
+        <param>
+          <type>const <ref refid="class_precise_double" kindref="compound">PreciseDouble</ref> &amp;</type>
+          <declname>value</declname>
+        </param>
+        <briefdescription>
+<para>Constructor from a <ref refid="class_precise_double" kindref="compound">PreciseDouble</ref>. </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="App/Model/IBM/Landscape/LivingBeings/StructuralUnits.h" line="319" column="14"/>
+      </memberdef>
+      <memberdef kind="function" id="class_wet_mass_1a000a23d1450d398ad59b19621380f9a1" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type></type>
+        <definition>WetMass::WetMass</definition>
+        <argsstring>(const WetMass &amp;other)</argsstring>
+        <name>WetMass</name>
+        <qualifiedname>WetMass::WetMass</qualifiedname>
+        <param>
+          <type>const <ref refid="class_wet_mass" kindref="compound">WetMass</ref> &amp;</type>
+          <declname>other</declname>
+        </param>
+        <briefdescription>
+<para>Copy constructor. </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="App/Model/IBM/Landscape/LivingBeings/StructuralUnits.h" line="325" column="5"/>
+      </memberdef>
+      <memberdef kind="function" id="class_wet_mass_1a78cde15f74f4b4efb215292716854057" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type></type>
+        <definition>WetMass::~WetMass</definition>
+        <argsstring>()</argsstring>
+        <name>~WetMass</name>
+        <qualifiedname>WetMass::~WetMass</qualifiedname>
+        <briefdescription>
+<para>Destructor. </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="App/Model/IBM/Landscape/LivingBeings/StructuralUnits.h" line="331" column="5"/>
+      </memberdef>
+      <memberdef kind="function" id="class_wet_mass_1a9da10fd16e701ab52f64515df57d686c" prot="public" static="no" const="yes" explicit="no" inline="no" virt="non-virtual">
+        <type>const <ref refid="class_precise_double" kindref="compound">PreciseDouble</ref> &amp;</type>
+        <definition>const PreciseDouble &amp; WetMass::getValue</definition>
+        <argsstring>() const</argsstring>
+        <name>getValue</name>
+        <qualifiedname>WetMass::getValue</qualifiedname>
+        <briefdescription>
+<para>Returns the numeric value of the wet mass. </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="App/Model/IBM/Landscape/LivingBeings/StructuralUnits.h" line="334" column="25"/>
+      </memberdef>
+      <memberdef kind="function" id="class_wet_mass_1a6a5130322b53ea8324c1a4e86f681440" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type><ref refid="class_wet_mass" kindref="compound">WetMass</ref> &amp;</type>
+        <definition>WetMass &amp; WetMass::operator=</definition>
+        <argsstring>(const WetMass &amp;other)</argsstring>
+        <name>operator=</name>
+        <qualifiedname>WetMass::operator=</qualifiedname>
+        <param>
+          <type>const <ref refid="class_wet_mass" kindref="compound">WetMass</ref> &amp;</type>
+          <declname>other</declname>
+        </param>
+        <briefdescription>
+<para>Copy assignment. </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="App/Model/IBM/Landscape/LivingBeings/StructuralUnits.h" line="328" column="13"/>
+      </memberdef>
+      <memberdef kind="function" id="class_wet_mass_1a37ea0a8a04f2c4f1a66a79a096c50094" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <templateparamlist>
+          <param>
+            <type>class Archive</type>
+          </param>
+        </templateparamlist>
+        <type>void</type>
+        <definition>void WetMass::serialize</definition>
+        <argsstring>(Archive &amp;ar, const unsigned int version)</argsstring>
+        <name>serialize</name>
+        <qualifiedname>WetMass::serialize</qualifiedname>
+        <param>
+          <type>Archive &amp;</type>
+          <declname>ar</declname>
+        </param>
+        <param>
+          <type>const unsigned int</type>
+          <declname>version</declname>
+        </param>
+        <briefdescription>
+<para>Serializes the object for persistence. </para>
+        </briefdescription>
+        <detaileddescription>
+<para><parameterlist kind="templateparam"><parameteritem>
+<parameternamelist>
+<parametername>Archive</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Serialization archive type. </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>ar</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Archive instance. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>version</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Serialization version. </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="App/Model/IBM/Landscape/LivingBeings/StructuralUnits.h" line="344" column="10"/>
+      </memberdef>
+    </sectiondef>
+    <briefdescription>
+<para>Represents wet mass in the ecosystem simulation. </para>
+    </briefdescription>
+    <detaileddescription>
+<para>Encapsulates a <ref refid="class_precise_double" kindref="compound">PreciseDouble</ref> value for wet mass and provides arithmetic operations, comparisons, and conversion from <ref refid="class_dry_mass" kindref="compound">DryMass</ref> using conversion coefficients. </para>
+    </detaileddescription>
+    <collaborationgraph>
+      <node id="2">
+        <label>PreciseDouble</label>
+        <link refid="class_precise_double"/>
+      </node>
+      <node id="1">
+        <label>WetMass</label>
+        <link refid="class_wet_mass"/>
+        <childnode refid="2" relation="usage">
+          <edgelabel>value</edgelabel>
+        </childnode>
+      </node>
+    </collaborationgraph>
+    <location file="App/Model/IBM/Landscape/LivingBeings/StructuralUnits.h" line="309" column="1" bodyfile="App/Model/IBM/Landscape/LivingBeings/StructuralUnits.h" bodystart="309" bodyend="345"/>
+    <listofallmembers>
+      <member refid="class_wet_mass_1a9da10fd16e701ab52f64515df57d686c" prot="public" virt="non-virtual"><scope>WetMass</scope><name>getValue</name></member>
+      <member refid="class_wet_mass_1a6a5130322b53ea8324c1a4e86f681440" prot="public" virt="non-virtual"><scope>WetMass</scope><name>operator=</name></member>
+      <member refid="class_wet_mass_1a37ea0a8a04f2c4f1a66a79a096c50094" prot="public" virt="non-virtual"><scope>WetMass</scope><name>serialize</name></member>
+      <member refid="class_wet_mass_1a058d8630d7cca3f3b8a3077973c87047" prot="private" virt="non-virtual"><scope>WetMass</scope><name>value</name></member>
+      <member refid="class_wet_mass_1a1c177cc5a68c43bfb630802c5328bd04" prot="public" virt="non-virtual"><scope>WetMass</scope><name>WetMass</name></member>
+      <member refid="class_wet_mass_1a56e9964ca196cfb76d26925ff61974d7" prot="public" virt="non-virtual"><scope>WetMass</scope><name>WetMass</name></member>
+      <member refid="class_wet_mass_1ac72f7e223089b9bf6380f26ac01a1836" prot="public" virt="non-virtual"><scope>WetMass</scope><name>WetMass</name></member>
+      <member refid="class_wet_mass_1a000a23d1450d398ad59b19621380f9a1" prot="public" virt="non-virtual"><scope>WetMass</scope><name>WetMass</name></member>
+      <member refid="class_wet_mass_1a78cde15f74f4b4efb215292716854057" prot="public" virt="non-virtual"><scope>WetMass</scope><name>~WetMass</name></member>
+    </listofallmembers>
+  </compounddef>
+</doxygen>

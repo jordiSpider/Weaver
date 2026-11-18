@@ -1,0 +1,611 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.14.0" xml:lang="en-US">
+  <compounddef id="class_edibility_value" kind="class" language="C++" prot="public">
+    <compoundname>EdibilityValue</compoundname>
+    <basecompoundref refid="class_edible_decision_probability" prot="public" virt="non-virtual">EdibleDecisionProbability</basecompoundref>
+    <includes refid="_edibility_value_8h" local="no">EdibilityValue.h</includes>
+    <sectiondef kind="private-attrib">
+      <memberdef kind="variable" id="class_edibility_value_1a10186c9493c4732d5150cd671d2981f6" prot="private" static="no" mutable="no">
+        <type>const <ref refid="class_predation_probability" kindref="compound">PredationProbability</ref> *</type>
+        <definition>const PredationProbability* EdibilityValue::predationProbability</definition>
+        <argsstring></argsstring>
+        <name>predationProbability</name>
+        <qualifiedname>EdibilityValue::predationProbability</qualifiedname>
+        <briefdescription>
+<para>Pointer to the predation probability object used in calculations. </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="App/Model/IBM/Landscape/LivingBeings/Animals/Species/Decisions/DecisionProbability/EdibilityValue.h" line="104" column="32" bodyfile="App/Model/IBM/Landscape/LivingBeings/Animals/Species/Decisions/DecisionProbability/EdibilityValue.h" bodystart="104" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="class_edibility_value_1a166ac0238153b269e2c0c649ba852666" prot="private" static="no" mutable="no">
+        <type>bool</type>
+        <definition>bool EdibilityValue::qualityResourceAssessment</definition>
+        <argsstring></argsstring>
+        <name>qualityResourceAssessment</name>
+        <qualifiedname>EdibilityValue::qualityResourceAssessment</qualifiedname>
+        <briefdescription>
+<para>Flag indicating if resource quality assessment is active. </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="App/Model/IBM/Landscape/LivingBeings/Animals/Species/Decisions/DecisionProbability/EdibilityValue.h" line="107" column="10" bodyfile="App/Model/IBM/Landscape/LivingBeings/Animals/Species/Decisions/DecisionProbability/EdibilityValue.h" bodystart="107" bodyend="-1"/>
+      </memberdef>
+    </sectiondef>
+    <sectiondef kind="public-func">
+      <memberdef kind="function" id="class_edibility_value_1a5ba6cd20c559a364ba6a78d62146cb75" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type></type>
+        <definition>EdibilityValue::EdibilityValue</definition>
+        <argsstring>()</argsstring>
+        <name>EdibilityValue</name>
+        <qualifiedname>EdibilityValue::EdibilityValue</qualifiedname>
+        <briefdescription>
+<para>Default constructor. </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="App/Model/IBM/Landscape/LivingBeings/Animals/Species/Decisions/DecisionProbability/EdibilityValue.h" line="32" column="5"/>
+      </memberdef>
+      <memberdef kind="function" id="class_edibility_value_1a81ec007fe859846ba4f0535d37ad7df8" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type></type>
+        <definition>EdibilityValue::EdibilityValue</definition>
+        <argsstring>(const EdibilityValue &amp;)=delete</argsstring>
+        <name>EdibilityValue</name>
+        <qualifiedname>EdibilityValue::EdibilityValue</qualifiedname>
+        <param>
+          <type>const <ref refid="class_edibility_value" kindref="compound">EdibilityValue</ref> &amp;</type>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="App/Model/IBM/Landscape/LivingBeings/Animals/Species/Decisions/DecisionProbability/EdibilityValue.h" line="49" column="5"/>
+      </memberdef>
+      <memberdef kind="function" id="class_edibility_value_1ad061907e78dcfb3a730978b44f69033e" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type></type>
+        <definition>EdibilityValue::EdibilityValue</definition>
+        <argsstring>(const nlohmann::json &amp;config, const AnimalSpeciesGenetics &amp;genetics, const PredationProbability *predationProbability)</argsstring>
+        <name>EdibilityValue</name>
+        <qualifiedname>EdibilityValue::EdibilityValue</qualifiedname>
+        <param>
+          <type>const nlohmann::json &amp;</type>
+          <declname>config</declname>
+        </param>
+        <param>
+          <type>const <ref refid="class_animal_species_genetics" kindref="compound">AnimalSpeciesGenetics</ref> &amp;</type>
+          <declname>genetics</declname>
+        </param>
+        <param>
+          <type>const <ref refid="class_predation_probability" kindref="compound">PredationProbability</ref> *</type>
+          <declname>predationProbability</declname>
+        </param>
+        <briefdescription>
+<para>Constructor with configuration, species genetics, and predation probability. </para>
+        </briefdescription>
+        <detaileddescription>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>config</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>JSON object containing configuration parameters. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>genetics</parametername>
+</parameternamelist>
+<parameterdescription>
+<para><ref refid="class_species" kindref="compound">Species</ref> genetics. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>predationProbability</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Pointer to a <ref refid="class_predation_probability" kindref="compound">PredationProbability</ref> object used for calculations. </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="App/Model/IBM/Landscape/LivingBeings/Animals/Species/Decisions/DecisionProbability/EdibilityValue.h" line="41" column="5"/>
+      </memberdef>
+      <memberdef kind="function" id="class_edibility_value_1a5cb97f7874156b3c9f62b962304c6532" prot="public" static="no" const="no" explicit="no" inline="no" virt="virtual">
+        <type></type>
+        <definition>virtual EdibilityValue::~EdibilityValue</definition>
+        <argsstring>()</argsstring>
+        <name>~EdibilityValue</name>
+        <qualifiedname>EdibilityValue::~EdibilityValue</qualifiedname>
+        <briefdescription>
+<para>Virtual destructor. </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="App/Model/IBM/Landscape/LivingBeings/Animals/Species/Decisions/DecisionProbability/EdibilityValue.h" line="46" column="13"/>
+      </memberdef>
+      <memberdef kind="function" id="class_edibility_value_1a3579b36324cc1fb02e8c75c75abc8927" prot="public" static="no" const="yes" explicit="no" inline="no" virt="virtual">
+        <type><ref refid="class_precise_double" kindref="compound">PreciseDouble</ref></type>
+        <definition>virtual PreciseDouble EdibilityValue::calculateValue</definition>
+        <argsstring>(const AnimalNonStatistical &amp;predator, const Edible &amp;prey, const DryMass &amp;preyDryMass) const override</argsstring>
+        <name>calculateValue</name>
+        <qualifiedname>EdibilityValue::calculateValue</qualifiedname>
+        <reimplements refid="class_decision_probability_1a78ea76b46ddf1fcb504e333c0033bbbf">calculateValue</reimplements>
+        <param>
+          <type>const <ref refid="class_animal_non_statistical" kindref="compound">AnimalNonStatistical</ref> &amp;</type>
+          <declname>predator</declname>
+        </param>
+        <param>
+          <type>const <ref refid="class_edible" kindref="compound">Edible</ref> &amp;</type>
+          <declname>prey</declname>
+        </param>
+        <param>
+          <type>const <ref refid="class_dry_mass" kindref="compound">DryMass</ref> &amp;</type>
+          <declname>preyDryMass</declname>
+        </param>
+        <briefdescription>
+<para>Calculates the edibility value of a prey for a given predator. </para>
+        </briefdescription>
+        <detaileddescription>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>predator</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Predator individual. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>prey</parametername>
+</parameternamelist>
+<parameterdescription>
+<para><ref refid="class_prey" kindref="compound">Prey</ref> individual. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>preyDryMass</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Dry mass of the prey. </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<simplesect kind="return"><para>Edibility value as <ref refid="class_precise_double" kindref="compound">PreciseDouble</ref>. </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="App/Model/IBM/Landscape/LivingBeings/Animals/Species/Decisions/DecisionProbability/EdibilityValue.h" line="62" column="27"/>
+      </memberdef>
+      <memberdef kind="function" id="class_edibility_value_1ae1e1619346a132b998bc0ab25ca2aac6" prot="public" static="no" const="yes" explicit="no" inline="no" virt="non-virtual">
+        <type>bool</type>
+        <definition>bool EdibilityValue::getQualityResourceAssessment</definition>
+        <argsstring>() const</argsstring>
+        <name>getQualityResourceAssessment</name>
+        <qualifiedname>EdibilityValue::getQualityResourceAssessment</qualifiedname>
+        <briefdescription>
+<para>Returns whether the resource quality assessment is enabled. </para>
+        </briefdescription>
+        <detaileddescription>
+<para><simplesect kind="return"><para>True if resource quality is assessed, false otherwise. </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="App/Model/IBM/Landscape/LivingBeings/Animals/Species/Decisions/DecisionProbability/EdibilityValue.h" line="76" column="10"/>
+      </memberdef>
+      <memberdef kind="function" id="class_edibility_value_1abcd881854dc9f5da974821344bf62d36" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type><ref refid="class_edibility_value" kindref="compound">EdibilityValue</ref> &amp;</type>
+        <definition>EdibilityValue &amp; EdibilityValue::operator=</definition>
+        <argsstring>(const EdibilityValue &amp;)=delete</argsstring>
+        <name>operator=</name>
+        <qualifiedname>EdibilityValue::operator=</qualifiedname>
+        <param>
+          <type>const <ref refid="class_edibility_value" kindref="compound">EdibilityValue</ref> &amp;</type>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="App/Model/IBM/Landscape/LivingBeings/Animals/Species/Decisions/DecisionProbability/EdibilityValue.h" line="52" column="16"/>
+      </memberdef>
+      <memberdef kind="function" id="class_edibility_value_1acdfeeb89f8455ee7ccc25428cc84ee32" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <templateparamlist>
+          <param>
+            <type>class Archive</type>
+          </param>
+        </templateparamlist>
+        <type>void</type>
+        <definition>void EdibilityValue::serialize</definition>
+        <argsstring>(Archive &amp;ar, const unsigned int version)</argsstring>
+        <name>serialize</name>
+        <qualifiedname>EdibilityValue::serialize</qualifiedname>
+        <param>
+          <type>Archive &amp;</type>
+          <declname>ar</declname>
+        </param>
+        <param>
+          <type>const unsigned int</type>
+          <declname>version</declname>
+        </param>
+        <briefdescription>
+<para>Serializes the object for persistence. </para>
+        </briefdescription>
+        <detaileddescription>
+<para><parameterlist kind="templateparam"><parameteritem>
+<parameternamelist>
+<parametername>Archive</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Serialization archive type. </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>ar</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Archive instance. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>version</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Serialization version. </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="App/Model/IBM/Landscape/LivingBeings/Animals/Species/Decisions/DecisionProbability/EdibilityValue.h" line="86" column="10"/>
+      </memberdef>
+      <memberdef kind="function" id="class_edibility_value_1a6c04030f525f9ab145255dc6b34ab9d1" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void EdibilityValue::setPredationProbability</definition>
+        <argsstring>(const PredationProbability *newPredationProbability)</argsstring>
+        <name>setPredationProbability</name>
+        <qualifiedname>EdibilityValue::setPredationProbability</qualifiedname>
+        <param>
+          <type>const <ref refid="class_predation_probability" kindref="compound">PredationProbability</ref> *</type>
+          <declname>newPredationProbability</declname>
+        </param>
+        <briefdescription>
+<para>Sets the predation probability object used for calculations. </para>
+        </briefdescription>
+        <detaileddescription>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>newPredationProbability</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Pointer to the <ref refid="class_predation_probability" kindref="compound">PredationProbability</ref> object. </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="App/Model/IBM/Landscape/LivingBeings/Animals/Species/Decisions/DecisionProbability/EdibilityValue.h" line="69" column="10"/>
+      </memberdef>
+    </sectiondef>
+    <sectiondef kind="protected-func">
+      <memberdef kind="function" id="class_edibility_value_1aa92c6f51a620bd2c1de25eb43af02abe" prot="protected" static="no" const="yes" explicit="no" inline="no" virt="virtual">
+        <type>const std::vector&lt; <ref refid="class_individual_trait" kindref="compound">IndividualTrait</ref> &gt; &amp;</type>
+        <definition>const std::vector&lt; IndividualTrait &gt; &amp; EdibilityValue::getWeightIndividualTraits</definition>
+        <argsstring>(const AnimalNonStatistical &amp;predator) const</argsstring>
+        <name>getWeightIndividualTraits</name>
+        <qualifiedname>EdibilityValue::getWeightIndividualTraits</qualifiedname>
+        <reimplements refid="class_decision_probability_1a9cbf115641a517a81089cd2ded4ea1c1">getWeightIndividualTraits</reimplements>
+        <param>
+          <type>const <ref refid="class_animal_non_statistical" kindref="compound">AnimalNonStatistical</ref> &amp;</type>
+          <declname>predator</declname>
+        </param>
+        <briefdescription>
+<para>Returns the individual-level traits used for weighting the edibility value. </para>
+        </briefdescription>
+        <detaileddescription>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>predator</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Predator individual. </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<simplesect kind="return"><para>Vector of <ref refid="class_individual_trait" kindref="compound">IndividualTrait</ref> references. </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="App/Model/IBM/Landscape/LivingBeings/Animals/Species/Decisions/DecisionProbability/EdibilityValue.h" line="100" column="23"/>
+      </memberdef>
+      <memberdef kind="function" id="class_edibility_value_1a04427fdcce32dc5badc7323e0710338b" prot="protected" static="no" const="no" explicit="no" inline="no" virt="virtual">
+        <type>void</type>
+        <definition>void EdibilityValue::initProbabilityFunctions</definition>
+        <argsstring>()</argsstring>
+        <name>initProbabilityFunctions</name>
+        <qualifiedname>EdibilityValue::initProbabilityFunctions</qualifiedname>
+        <reimplements refid="class_decision_probability_1a0876cb21faca366a7cbd028fca0a75e7">initProbabilityFunctions</reimplements>
+        <briefdescription>
+<para>Initializes all probability functions for edibility value. </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="App/Model/IBM/Landscape/LivingBeings/Animals/Species/Decisions/DecisionProbability/EdibilityValue.h" line="92" column="10"/>
+      </memberdef>
+    </sectiondef>
+    <sectiondef kind="private-func">
+      <memberdef kind="function" id="class_edibility_value_1a5a4025965b6be235e9c320936033b865" prot="private" static="no" const="yes" explicit="no" inline="no" virt="non-virtual">
+        <type><ref refid="class_precise_double" kindref="compound">PreciseDouble</ref></type>
+        <definition>PreciseDouble EdibilityValue::calculatePredationProbability</definition>
+        <argsstring>(const AnimalNonStatistical &amp;predator, const Edible &amp;prey, const DryMass &amp;preyDryMass) const</argsstring>
+        <name>calculatePredationProbability</name>
+        <qualifiedname>EdibilityValue::calculatePredationProbability</qualifiedname>
+        <param>
+          <type>const <ref refid="class_animal_non_statistical" kindref="compound">AnimalNonStatistical</ref> &amp;</type>
+          <declname>predator</declname>
+        </param>
+        <param>
+          <type>const <ref refid="class_edible" kindref="compound">Edible</ref> &amp;</type>
+          <declname>prey</declname>
+        </param>
+        <param>
+          <type>const <ref refid="class_dry_mass" kindref="compound">DryMass</ref> &amp;</type>
+          <declname>preyDryMass</declname>
+        </param>
+        <briefdescription>
+<para>Calculates the predation probability component of edibility. </para>
+        </briefdescription>
+        <detaileddescription>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>predator</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Predator individual. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>prey</parametername>
+</parameternamelist>
+<parameterdescription>
+<para><ref refid="class_prey" kindref="compound">Prey</ref> individual. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>preyDryMass</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Dry mass of the prey. </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<simplesect kind="return"><para>Predation probability as <ref refid="class_precise_double" kindref="compound">PreciseDouble</ref>. </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="App/Model/IBM/Landscape/LivingBeings/Animals/Species/Decisions/DecisionProbability/EdibilityValue.h" line="118" column="19"/>
+      </memberdef>
+      <memberdef kind="function" id="class_edibility_value_1aac634582276a83f65b4e61d661a8471a" prot="private" static="no" const="yes" explicit="no" inline="no" virt="non-virtual">
+        <type><ref refid="class_precise_double" kindref="compound">PreciseDouble</ref></type>
+        <definition>PreciseDouble EdibilityValue::calculateRelativeResourceValue</definition>
+        <argsstring>(const AnimalNonStatistical &amp;predator, const Edible &amp;prey, const DryMass &amp;preyDryMass) const</argsstring>
+        <name>calculateRelativeResourceValue</name>
+        <qualifiedname>EdibilityValue::calculateRelativeResourceValue</qualifiedname>
+        <param>
+          <type>const <ref refid="class_animal_non_statistical" kindref="compound">AnimalNonStatistical</ref> &amp;</type>
+          <declname>predator</declname>
+        </param>
+        <param>
+          <type>const <ref refid="class_edible" kindref="compound">Edible</ref> &amp;</type>
+          <declname>prey</declname>
+        </param>
+        <param>
+          <type>const <ref refid="class_dry_mass" kindref="compound">DryMass</ref> &amp;</type>
+          <declname>preyDryMass</declname>
+        </param>
+        <briefdescription>
+<para>Calculates the relative resource value component of edibility. </para>
+        </briefdescription>
+        <detaileddescription>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>predator</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Predator individual. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>prey</parametername>
+</parameternamelist>
+<parameterdescription>
+<para><ref refid="class_prey" kindref="compound">Prey</ref> individual. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>preyDryMass</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Dry mass of the prey. </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<simplesect kind="return"><para>Relative resource value as <ref refid="class_precise_double" kindref="compound">PreciseDouble</ref>. </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="App/Model/IBM/Landscape/LivingBeings/Animals/Species/Decisions/DecisionProbability/EdibilityValue.h" line="128" column="19"/>
+      </memberdef>
+    </sectiondef>
+    <briefdescription>
+<para>Calculates the edibility value of prey for a predator. </para>
+    </briefdescription>
+    <detaileddescription>
+<para>This class extends <ref refid="class_edible_decision_probability" kindref="compound">EdibleDecisionProbability</ref> and integrates predation probability information to estimate how valuable a prey is for a predator. It also provides assessment of resource quality for decision-making. </para>
+    </detaileddescription>
+    <inheritancegraph>
+      <node id="3">
+        <label>DecisionProbability</label>
+        <link refid="class_decision_probability"/>
+      </node>
+      <node id="1">
+        <label>EdibilityValue</label>
+        <link refid="class_edibility_value"/>
+        <childnode refid="2" relation="public-inheritance">
+        </childnode>
+      </node>
+      <node id="2">
+        <label>EdibleDecisionProbability</label>
+        <link refid="class_edible_decision_probability"/>
+        <childnode refid="3" relation="public-inheritance">
+        </childnode>
+      </node>
+    </inheritancegraph>
+    <collaborationgraph>
+      <node id="6">
+        <label>AnimalDecisionProbability</label>
+        <link refid="class_animal_decision_probability"/>
+        <childnode refid="3" relation="public-inheritance">
+        </childnode>
+      </node>
+      <node id="9">
+        <label>CustomIndexedVector&lt; Instar, PreciseDouble &gt;</label>
+        <link refid="class_custom_indexed_vector"/>
+      </node>
+      <node id="3">
+        <label>DecisionProbability</label>
+        <link refid="class_decision_probability"/>
+      </node>
+      <node id="1">
+        <label>EdibilityValue</label>
+        <link refid="class_edibility_value"/>
+        <childnode refid="2" relation="public-inheritance">
+        </childnode>
+        <childnode refid="4" relation="usage">
+          <edgelabel>predationProbability</edgelabel>
+        </childnode>
+      </node>
+      <node id="2">
+        <label>EdibleDecisionProbability</label>
+        <link refid="class_edible_decision_probability"/>
+        <childnode refid="3" relation="public-inheritance">
+        </childnode>
+      </node>
+      <node id="5">
+        <label>EscapeProbability</label>
+        <link refid="class_escape_probability"/>
+        <childnode refid="6" relation="public-inheritance">
+        </childnode>
+        <childnode refid="7" relation="usage">
+          <edgelabel>sensoryModel</edgelabel>
+        </childnode>
+        <childnode refid="8" relation="usage">
+          <edgelabel>cVelocity</edgelabel>
+        </childnode>
+      </node>
+      <node id="8">
+        <label>PreciseDouble</label>
+        <link refid="class_precise_double"/>
+      </node>
+      <node id="4">
+        <label>PredationProbability</label>
+        <link refid="class_predation_probability"/>
+        <childnode refid="2" relation="public-inheritance">
+        </childnode>
+        <childnode refid="5" relation="usage">
+          <edgelabel>escapeProbability</edgelabel>
+        </childnode>
+        <childnode refid="9" relation="usage">
+          <edgelabel>maximumPDF</edgelabel>
+        </childnode>
+        <childnode refid="8" relation="usage">
+          <edgelabel>pdfThreshold</edgelabel>
+        </childnode>
+      </node>
+      <node id="7">
+        <label>SensoryModel</label>
+        <link refid="class_sensory_model"/>
+        <childnode refid="8" relation="usage">
+          <edgelabel>beta</edgelabel>
+        </childnode>
+      </node>
+    </collaborationgraph>
+    <location file="App/Model/IBM/Landscape/LivingBeings/Animals/Species/Decisions/DecisionProbability/EdibilityValue.h" line="27" column="1" bodyfile="App/Model/IBM/Landscape/LivingBeings/Animals/Species/Decisions/DecisionProbability/EdibilityValue.h" bodystart="27" bodyend="129"/>
+    <listofallmembers>
+      <member refid="class_decision_probability_1a15878f995d07630d81e9077d9eda0c58" prot="private" virt="non-virtual"><scope>EdibilityValue</scope><name>additiveMechanism</name></member>
+      <member refid="class_edible_decision_probability_1ac59f2fb4dc8bac310d38f7eae9e5f6aa" prot="protected" virt="virtual"><scope>EdibilityValue</scope><name>applyProbabilityFunctions</name></member>
+      <member refid="class_edible_decision_probability_1a936c23262b64781e78ae07222871c332" prot="protected" virt="virtual"><scope>EdibilityValue</scope><name>applyRemainingProbabilityFunctions</name></member>
+      <member refid="class_edibility_value_1a5a4025965b6be235e9c320936033b865" prot="private" virt="non-virtual"><scope>EdibilityValue</scope><name>calculatePredationProbability</name></member>
+      <member refid="class_edibility_value_1aac634582276a83f65b4e61d661a8471a" prot="private" virt="non-virtual"><scope>EdibilityValue</scope><name>calculateRelativeResourceValue</name></member>
+      <member refid="class_edibility_value_1a3579b36324cc1fb02e8c75c75abc8927" prot="public" virt="virtual"><scope>EdibilityValue</scope><name>calculateValue</name></member>
+      <member refid="class_decision_probability_1a8617af574dffaae13dd8e4f66f2acb87" prot="private" virt="non-virtual"><scope>EdibilityValue</scope><name>computedRemainingWeight</name></member>
+      <member refid="class_decision_probability_1a0b0bec9634b88cc53b02b30e44806a5a" prot="private" virt="non-virtual"><scope>EdibilityValue</scope><name>computedWeights</name></member>
+      <member refid="class_decision_probability_1ae9c60f54b8c92d2fb992ae5ae2d9930f" prot="public" virt="non-virtual"><scope>EdibilityValue</scope><name>DecisionProbability</name></member>
+      <member refid="class_decision_probability_1a6ec7cdda0b8dac32f3f48adddb4f2daa" prot="public" virt="non-virtual"><scope>EdibilityValue</scope><name>DecisionProbability</name></member>
+      <member refid="class_decision_probability_1ae2a93245e2aec2d9ea721f8360f8f13f" prot="public" virt="non-virtual"><scope>EdibilityValue</scope><name>DecisionProbability</name></member>
+      <member refid="class_edible_decision_probability_1aa498c3ee299070e85a06b3a34c8b4bb9" prot="private" virt="non-virtual"><scope>EdibilityValue</scope><name>defaultProbabilityFunction</name></member>
+      <member refid="class_decision_probability_1a38e6648ad78c90ef374b76763a388c36" prot="public" virt="virtual"><scope>EdibilityValue</scope><name>deserializeProbabilityFunctions</name></member>
+      <member refid="class_edibility_value_1a5ba6cd20c559a364ba6a78d62146cb75" prot="public" virt="non-virtual"><scope>EdibilityValue</scope><name>EdibilityValue</name></member>
+      <member refid="class_edibility_value_1ad061907e78dcfb3a730978b44f69033e" prot="public" virt="non-virtual"><scope>EdibilityValue</scope><name>EdibilityValue</name></member>
+      <member refid="class_edibility_value_1a81ec007fe859846ba4f0535d37ad7df8" prot="public" virt="non-virtual"><scope>EdibilityValue</scope><name>EdibilityValue</name></member>
+      <member refid="class_edible_decision_probability_1a1d1246638f183e7afd53cb50dad80bb8" prot="public" virt="non-virtual"><scope>EdibilityValue</scope><name>EdibleDecisionProbability</name></member>
+      <member refid="class_edible_decision_probability_1a5f78a4f76c7307b06708a80d23d16b4b" prot="public" virt="non-virtual"><scope>EdibilityValue</scope><name>EdibleDecisionProbability</name></member>
+      <member refid="class_edible_decision_probability_1ad1d29e9c23d71de5458ed0f8f270b318" prot="public" virt="non-virtual"><scope>EdibilityValue</scope><name>EdibleDecisionProbability</name></member>
+      <member refid="class_edibility_value_1ae1e1619346a132b998bc0ab25ca2aac6" prot="public" virt="non-virtual"><scope>EdibilityValue</scope><name>getQualityResourceAssessment</name></member>
+      <member refid="class_edibility_value_1aa92c6f51a620bd2c1de25eb43af02abe" prot="protected" virt="virtual"><scope>EdibilityValue</scope><name>getWeightIndividualTraits</name></member>
+      <member refid="class_edibility_value_1a04427fdcce32dc5badc7323e0710338b" prot="protected" virt="virtual"><scope>EdibilityValue</scope><name>initProbabilityFunctions</name></member>
+      <member refid="class_edibility_value_1abcd881854dc9f5da974821344bf62d36" prot="public" virt="non-virtual"><scope>EdibilityValue</scope><name>operator=</name></member>
+      <member refid="class_edible_decision_probability_1a543fb66caa59b9d756d74b5bcfa4af83" prot="public" virt="non-virtual" ambiguityscope="EdibleDecisionProbability::"><scope>EdibilityValue</scope><name>operator=</name></member>
+      <member refid="class_decision_probability_1a07ad5ef0c99eee9ee547b9a0c7b23ae9" prot="public" virt="non-virtual" ambiguityscope="DecisionProbability::"><scope>EdibilityValue</scope><name>operator=</name></member>
+      <member refid="class_edibility_value_1a10186c9493c4732d5150cd671d2981f6" prot="private" virt="non-virtual"><scope>EdibilityValue</scope><name>predationProbability</name></member>
+      <member refid="class_edible_decision_probability_1aff9a93e8fb43d8c20808c332532108ac" prot="private" virt="non-virtual"><scope>EdibilityValue</scope><name>probabilityFunctions</name></member>
+      <member refid="class_edibility_value_1a166ac0238153b269e2c0c649ba852666" prot="private" virt="non-virtual"><scope>EdibilityValue</scope><name>qualityResourceAssessment</name></member>
+      <member refid="class_edible_decision_probability_1a4397949611f586c0671c7a66aadcb51d" prot="private" virt="non-virtual"><scope>EdibilityValue</scope><name>remainingProbabilityFunction</name></member>
+      <member refid="class_edibility_value_1acdfeeb89f8455ee7ccc25428cc84ee32" prot="public" virt="non-virtual"><scope>EdibilityValue</scope><name>serialize</name></member>
+      <member refid="class_edibility_value_1a6c04030f525f9ab145255dc6b34ab9d1" prot="public" virt="non-virtual"><scope>EdibilityValue</scope><name>setPredationProbability</name></member>
+      <member refid="class_edible_decision_probability_1a73548985f83c1901dab65396612085ad" prot="protected" virt="non-virtual"><scope>EdibilityValue</scope><name>setProbabilityFunction</name></member>
+      <member refid="class_edible_decision_probability_1a466a37699a63aafc0ccff0deaa90bd0e" prot="protected" virt="non-virtual"><scope>EdibilityValue</scope><name>setRemainingProbabilityFunction</name></member>
+      <member refid="class_decision_probability_1adf91e66ca6f807f6c4d50c57aa9917d6" prot="public" virt="virtual"><scope>EdibilityValue</scope><name>~DecisionProbability</name></member>
+      <member refid="class_edibility_value_1a5cb97f7874156b3c9f62b962304c6532" prot="public" virt="virtual"><scope>EdibilityValue</scope><name>~EdibilityValue</name></member>
+      <member refid="class_edible_decision_probability_1a26ffb6fd75b7457016515bcd366eda1a" prot="public" virt="virtual"><scope>EdibilityValue</scope><name>~EdibleDecisionProbability</name></member>
+    </listofallmembers>
+  </compounddef>
+</doxygen>

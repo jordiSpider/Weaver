@@ -15,6 +15,7 @@
 
 /**
  * @class LineInfoException
+ * @ingroup weaver_exceptions
  * @brief Exception class that stores file, line, and custom error message.
  *
  * The `LineInfoException` class extends `std::exception` and adds
@@ -22,13 +23,13 @@
  * occurred. This is useful for debugging and detailed error reporting
  * in the Weaver framework.
  *
- * ### Features
+ * @par Features
  * - Stores the file name and line number.
  * - Stores a custom message.
  * - Automatically formats a full description including file, line, and message.
  * - Supports prepending and appending additional messages dynamically.
  *
- * ### Example usage
+ * @par Example usage
  * @code
  * if(condition) {
  *     throwLineInfoException("Unexpected condition occurred");

@@ -30,6 +30,7 @@
 
 /**
  * @brief Utility class providing random number generation functionalities.
+ * @ingroup weaver_model
  *
  * This class maintains a shared Mersenne Twister random number generator for reproducible and
  * thread-safe random generation. It supports generation of doubles, integers, time steps, indices,

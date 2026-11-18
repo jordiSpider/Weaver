@@ -13,6 +13,7 @@
 
 /**
  * @class AnimalStatisticalGrowth
+ * @ingroup weaver_landscape
  * @brief Represents an animal growth model based on statistical approaches.
  * 
  * This class implements the growth of animals using statistical models rather than deterministic curves.

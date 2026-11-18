@@ -17,6 +17,7 @@
 
 /**
  * @class EscapeProbability
+ * @ingroup weaver_landscape
  * @brief Manages the escape probability functions for a prey in predator-prey interactions.
  *
  * This class computes the probability that a prey escapes predation based on

@@ -31,6 +31,7 @@
 
 /**
  * @class MoistureSource
+ * @ingroup weaver_landscape
  * @brief Represents a moisture source in the landscape.
  *
  * MoistureSource extends PathSource and provides data on environmental moisture,

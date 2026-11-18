@@ -22,11 +22,13 @@ fs::path getDefaultOutputFolderPath() {
 		if (_dupenv_s(&buffer, &len, "USERPROFILE") == 0 && buffer != nullptr) {
 			fs::path home(buffer);
 			free(buffer);
-			return home / "Documents" / WEAVER_PROGRAM_NAME / "output";
+			return home / "Documents" / WEAVER_PROGRAM_NAME
+				/ WEAVER_PROGRAM_VERSION_DISPLAY / WEAVER_PROGRAM_EDITION / "output";
 		}
 		throw std::runtime_error("USERPROFILE environment variable not found.");
 	#else
-		return fs::path(std::getenv("HOME")) / WEAVER_PROGRAM_NAME / "output";
+		return fs::path(std::getenv("HOME")) / "Documents" / WEAVER_PROGRAM_NAME
+			/ WEAVER_PROGRAM_VERSION_DISPLAY / WEAVER_PROGRAM_EDITION / "output";
 	#endif
 }
 

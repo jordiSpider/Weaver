@@ -26,33 +26,9 @@
 #include "App/Model/IBM/Physics/Temperature.h"
 
 
-/** @defgroup GrowthParameters Growth Model and Plasticity
- * @brief Methods and attributes related to growth rates, plasticity, and mass–length relations.
- */
-
-/** @defgroup DevelopmentParameters Development and Instar Information
- * @brief Methods and attributes controlling instar age, maturation, and development.
- */
-
-/** @defgroup MorphologyAndPhysiology Mass, Length, and Morphology
- * @brief Attributes and methods defining wet mass, dry mass, and length relations.
- */
-
-/** @defgroup ReproductionParameters Reproduction
- * @brief Attributes and methods controlling fecundity, egg batches, and breeding strategies.
- */
-
-/** @defgroup EnergyAllocation Energy Allocation and Storage
- * @brief Attributes and methods related to structural mass, energy tanks, and molting allocation.
- */
-
-/** @defgroup HabitatParameters Habitat Shift
- * @brief Attributes and methods controlling habitat shifts per instar.
- */
-
-
 /**
  * @class AnimalSpeciesGrowth
+ * @ingroup weaver_landscape
  * @brief Represents species-specific growth, development, and reproductive parameters for animals.
  *
  * This class extends SpeciesGrowth and provides detailed calculations for:
@@ -93,15 +69,12 @@ public:
     // @name Mass and Length Parameters
     // --------------------------------------------------------------------------------------------
     ///@{
-    /// @ingroup MorphologyAndPhysiology
     /// @brief Returns the female wet mass.
     const WetMass& getFemaleWetMass() const;
 
-    /// @ingroup MorphologyAndPhysiology
     /// @brief Returns the egg dry mass.
     const DryMass& getEggDryMass() const;
 
-    /// @ingroup MorphologyAndPhysiology
     /**
      * @brief Calculates dry length from dry mass.
      * @param dryMass Dry mass of the individual.
@@ -110,7 +83,6 @@ public:
      */
     const Length calculateDryLength(const DryMass& dryMass, const bool mature) const;
 
-    /// @ingroup MorphologyAndPhysiology
     /**
      * @brief Calculates dry mass from length.
      * @param length Length of the individual.
@@ -119,19 +91,15 @@ public:
      */
     const DryMass calculateDryMass(const Length& length, const bool mature) const;
 
-    /// @ingroup MorphologyAndPhysiology
     /// @brief Returns the mass coefficient A for mature individuals.
     PreciseDouble getCoefficientForMassAforMature() const;
 
-    /// @ingroup MorphologyAndPhysiology
     /// @brief Returns the mass scale B for mature individuals.
     PreciseDouble getScaleForMassBforMature() const;
 
-    /// @ingroup MorphologyAndPhysiology
     /// @brief Returns the general mass coefficient A.
     PreciseDouble getCoefficientForMassA() const;
 	
-    /// @ingroup MorphologyAndPhysiology
     /// @brief Returns the general mass scale B.
 	PreciseDouble getScaleForMassB() const;
 
@@ -141,7 +109,6 @@ public:
     // @name Growth Model
     // --------------------------------------------------------------------------------------------
     ///@{
-    /// @ingroup GrowthParameters
     /**
      * @brief Returns the actual growth model based on temperature.
      * @param actualTemperature Current environmental temperature.
@@ -150,15 +117,12 @@ public:
      */
     std::pair<IndividualGrowthModel::Type, PreciseDouble> getActualGrowthModel(const Temperature& actualTemperature, const Temperature& tempFromLab) const;
     
-    /// @ingroup GrowthParameters
     /// @brief Checks if the species has indeterminate growth.
     bool hasIndeterminateGrowth() const;
 
-    /// @ingroup GrowthParameters
     /// @brief Returns maximum plasticity for the Von Bertalanffy growth model.
     PreciseDouble getMaxPlasticityKVonBertalanffy() const;
 
-    /// @ingroup GrowthParameters
     /// @brief Returns minimum plasticity for the Von Bertalanffy growth model.
     PreciseDouble getMinPlasticityKVonBertalanffy() const;
 
@@ -168,27 +132,21 @@ public:
     // @name Development and Instars
     // --------------------------------------------------------------------------------------------
     ///@{
-    /// @ingroup DevelopmentParameters
     /// @brief Returns the first reproductive instar.
     const Instar& getInstarFirstReproduction() const;
 
-    /// @ingroup DevelopmentParameters
     /// @brief Returns the first maturation instar.
     const Instar& getInstarFirstMaturation() const;
 
-    /// @ingroup DevelopmentParameters
     /// @brief Returns the range of mature instars.
     const std::vector<Instar>& getMatureInstarsRange() const;
 
-    /// @ingroup DevelopmentParameters
     /// @brief Returns vector of ages per instar.
     const CustomIndexedVector<Instar, Day>& getInstarAgeVector() const;
 
-    /// @ingroup DevelopmentParameters
     /// @brief Returns development time for a given instar.
     const Day& getInstarDevTime(const Instar& instar) const;
 
-    /// @ingroup DevelopmentParameters
     /// @brief Returns threshold age for molting.
     const PreciseDouble& getMoltingAgeThreshold() const;
 
@@ -198,7 +156,6 @@ public:
     // @name Reproduction
     // --------------------------------------------------------------------------------------------
     ///@{
-    /// @ingroup ReproductionParameters
     /**
      * @brief Calculates number of eggs per batch for a given dry mass.
      * @param individualDryMass Dry mass of the individual.
@@ -206,31 +163,24 @@ public:
      */
     PreciseDouble calculateEggsPerBatch(const DryMass& individualDryMass) const;
 
-    /// @ingroup ReproductionParameters
     /// @brief Returns whether eggs per batch are calculated using an equation.
     bool getEggsPerBatchFromEquation() const;
 
-    /// @ingroup ReproductionParameters
     /// @brief Returns predefined eggs per batch value.
     const PreciseDouble& getEggsPerBatch() const;
 
-    /// @ingroup ReproductionParameters
     /// @brief Returns the intercept of the egg batch size equation.
     const PreciseDouble& getInterceptForEggBatchFromEquation() const;
 
-    /// @ingroup ReproductionParameters
     /// @brief Returns the slope of the egg batch size equation.
 	const PreciseDouble& getSlopeForEggBatchFromEquation() const;
 
-    /// @ingroup ReproductionParameters
     /// @brief Checks if the species uses capital breeding.
     bool hasCapitalBreeding() const;
 
-    /// @ingroup ReproductionParameters
     /// @brief Returns time of reproductive event during capital breeding.
     const TimeStep& getTimeOfReproEventDuringCapitalBreeding() const;
 
-    /// @ingroup ReproductionParameters
     /// @brief Returns number of reproductive events in capital breeding.
 	unsigned int getNumberOfCapitalBreeds() const;
 
@@ -240,7 +190,6 @@ public:
     // @name Energy Allocation
     // --------------------------------------------------------------------------------------------
     ///@{
-    /// @ingroup EnergyAllocation
     /**
      * @brief Decomposes mass into structural and energy components.
      * @param dryMass Total dry mass.
@@ -249,15 +198,12 @@ public:
      */
     std::pair<DryMass, DryMass> decomposeMassElements(const DryMass &dryMass, const PreciseDouble &energyTankTraitValue) const;
     
-    /// @ingroup EnergyAllocation
     /// @brief Returns beta scaling factor for energy tank.
     const PreciseDouble& getBetaScaleTank() const;
 
-    /// @ingroup EnergyAllocation
     /// @brief Returns excess investment in size.
     PreciseDouble getExcessInvestInSize() const;
 
-    /// @ingroup EnergyAllocation
     /// @brief Returns allocated energy for molting.
     const PreciseDouble& getAssignedForMolt() const;
 
@@ -267,11 +213,9 @@ public:
     // @name Habitat Shifts
     // --------------------------------------------------------------------------------------------
     ///@{
-    /// @ingroup HabitatParameters
     /// @brief Returns whether the habitat shift occurs at a given instar.
     bool habitatShiftOccurs(const Instar &instar) const;
 
-    /// @ingroup HabitatParameters
     /// @brief Returns habitat shift factor.
     const PreciseDouble& getHabitatShiftFactor() const;
 
@@ -292,27 +236,21 @@ private:
     // @name Morphology and Mass
     // --------------------------------------------------------------------------------------------
     ///@{
-    /// @ingroup MorphologyAndPhysiology
     /// @brief Female wet mass (in grams or species-specific units).
     WetMass femaleWetMass;
 
-    /// @ingroup MorphologyAndPhysiology
     /// @brief Egg dry mass (in grams or species-specific units).
     DryMass eggDryMass;
 
-    /// @ingroup MorphologyAndPhysiology
     /// @brief Default growth model type and parameter for the species.
     std::pair<IndividualGrowthModel::Type, PreciseDouble> defaultGrowthModel;
 
-    /// @ingroup GrowthParameters
     /// @brief Indicates whether the growth model depends on temperature.
     bool growthModelTemperatureDependent;
 
-    /// @ingroup GrowthParameters
     /// @brief Lower temperature thresholds and associated growth model changes.
     std::vector<std::pair<Temperature, std::pair<IndividualGrowthModel::Type, PreciseDouble>>> lowerGrowthModelThermalChanges;
 
-    /// @ingroup GrowthParameters
     /// @brief Upper temperature thresholds and associated growth model changes.
     std::vector<std::pair<Temperature, std::pair<IndividualGrowthModel::Type, PreciseDouble>>> upperGrowthModelThermalChanges;
 
@@ -322,27 +260,21 @@ private:
     // @name Development and Instars
     // --------------------------------------------------------------------------------------------
     ///@{
-    /// @ingroup DevelopmentParameters
     /// @brief Whether the species exhibits indeterminate growth.
     bool indeterminateGrowth;
 
-    /// @ingroup DevelopmentParameters
     /// @brief Instar at which individuals first reproduce.
     Instar instarFirstReproduction;
 
-    /// @ingroup DevelopmentParameters
     /// @brief Range of instars considered mature.
     std::vector<Instar> matureInstarsRange;
 
-    /// @ingroup DevelopmentParameters
     /// @brief Age in days for each instar.
     CustomIndexedVector<Instar, Day> instarAgeVector;
 
-    /// @ingroup GrowthParameters
     /// @brief Maximum plasticity parameter for Von Bertalanffy growth.
     PreciseDouble maxPlasticityKVonBertalanffy;
 
-    /// @ingroup GrowthParameters
     /// @brief Minimum plasticity parameter for Von Bertalanffy growth.
     PreciseDouble minPlasticityKVonBertalanffy;
 
@@ -352,19 +284,15 @@ private:
     // @name Mass-Length Coefficients
     // --------------------------------------------------------------------------------------------
     ///@{
-    /// @ingroup MorphologyAndPhysiology
     /// @brief Mass coefficient A for mature individuals.
     PreciseDouble coefficientForMassAforMature;
 
-    /// @ingroup MorphologyAndPhysiology
     /// @brief Mass scale B for mature individuals.
     PreciseDouble scaleForMassBforMature;
 
-    /// @ingroup MorphologyAndPhysiology
     /// @brief Mass coefficient A for general individuals.
     PreciseDouble coefficientForMassA;
 
-    /// @ingroup MorphologyAndPhysiology
     /// @brief Mass scale B for general individuals.
 	PreciseDouble scaleForMassB;
 
@@ -374,15 +302,12 @@ private:
     // @name Energy Allocation and Molting
     // --------------------------------------------------------------------------------------------
     ///@{
-    /// @ingroup EnergyAllocation
     /// @brief Scaling factor for energy tank.
     PreciseDouble betaScaleTank;
 
-    /// @ingroup EnergyAllocation
     /// @brief Excess investment in size beyond standard growth.
     PreciseDouble excessInvestInSize;
 
-    /// @ingroup EnergyAllocation
     /// @brief Threshold age for molting (in days or time steps).
     PreciseDouble moltingAgeThreshold;
 
@@ -392,35 +317,27 @@ private:
     // @name Reproductive Parameters
     // --------------------------------------------------------------------------------------------
     ///@{
-    /// @ingroup ReproductionParameters
     /// @brief Indicates if eggs per batch are derived from an equation.
     bool eggsPerBatchFromEquation;
 
-    /// @ingroup ReproductionParameters
     /// @brief Number of eggs per batch.
     PreciseDouble eggsPerBatch;
 
-    /// @ingroup ReproductionParameters
     /// @brief Intercept used when calculating eggs per batch from an equation.
     PreciseDouble interceptForEggBatchFromEquation;
 
-    /// @ingroup ReproductionParameters
     /// @brief Slope used when calculating eggs per batch from an equation.
 	PreciseDouble slopeForEggBatchFromEquation;
 
-    /// @ingroup ReproductionParameters
     /// @brief Indicates if species uses capital breeding strategy.
     bool capitalBreeding;
 
-    /// @ingroup ReproductionParameters
     /// @brief Time of reproductive event during capital breeding.
 	TimeStep timeOfReproEventDuringCapitalBreeding;
 
-    /// @ingroup ReproductionParameters
     /// @brief Number of reproductive events in capital breeding.
 	unsigned int numberOfCapitalBreeds;
 
-    /// @ingroup EnergyAllocation
     /// @brief Amount of energy assigned for molting.
     PreciseDouble assignedForMolt;
 
@@ -430,11 +347,9 @@ private:
     // @name Habitat Shift
     // --------------------------------------------------------------------------------------------
     ///@{
-    /// @ingroup HabitatParameters
     /// @brief Flags indicating if habitat shift occurs per instar.
     std::vector<bool> habitatShiftPerInstar;
 
-    /// @ingroup HabitatParameters
     /// @brief Scaling factor for habitat shift.
     PreciseDouble habitatShiftFactor;
 

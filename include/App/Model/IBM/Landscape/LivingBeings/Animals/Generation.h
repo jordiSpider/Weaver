@@ -24,6 +24,7 @@
 
 /**
  * @class Generation
+ * @ingroup weaver_landscape
  * @brief Represents a generation with a numeric value.
  *
  * The Generation class encapsulates an unsigned integer representing a

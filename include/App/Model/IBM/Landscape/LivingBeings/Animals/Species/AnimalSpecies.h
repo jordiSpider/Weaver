@@ -80,6 +80,7 @@ class Animal;
 
 /**
  * @class AnimalSpecies
+  * @ingroup weaver_landscape
  * @brief Represents a specific animal species in the ecosystem.
  * 
  * Contains information about genetics, growth, decisions, ontogenetic links, 

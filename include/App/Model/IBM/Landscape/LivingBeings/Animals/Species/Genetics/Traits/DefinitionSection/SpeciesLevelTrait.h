@@ -15,6 +15,7 @@
 
 /**
  * @class SpeciesLevelTrait
+ * @ingroup weaver_landscape
  * @brief Represents a trait that is constant for all individuals of a species.
  *
  * This class extends TraitDefinitionSection and provides functionality

@@ -1,0 +1,46 @@
+# ============================================================
+# 🖥️ Build Weaver Manager Documentation
+# ------------------------------------------------------------
+# Builds the independent Weaver Manager Sphinx site into its
+# own directory in the shared GitHub Pages output tree.
+# ============================================================
+
+set(DOCS_MANAGER_CATALOG "${MANAGER_DOCS_OUTPUT_DIR}/versions.json")
+
+add_custom_target(update-docs-catalog-manager
+	COMMAND "${CMAKE_COMMAND}" -E rm -rf "${SPHINX_BUILD_DIR}/doctrees/manager"
+	COMMAND "${CMAKE_COMMAND}" -E make_directory "${MANAGER_DOCS_OUTPUT_DIR}"
+	COMMAND "${Python3_EXECUTABLE}" "${DOCS_DIR}/UpdateDocsCatalog.py"
+		--catalog "${DOCS_MANAGER_CATALOG}"
+		--version "${DOCS_MANAGER_VERSION}"
+		--channel "${DOCS_MANAGER_CHANNEL}"
+		--latest "$<IF:$<BOOL:${DOCS_MANAGER_LATEST}>,true,false>"
+	COMMENT "Updating Weaver Manager documentation version catalog..."
+)
+if(TARGET prepare-docs-site)
+	add_dependencies(update-docs-catalog-manager prepare-docs-site)
+endif()
+
+add_custom_target(build-docs-manager)
+
+add_custom_target(build-docs-manager-html
+	COMMAND "${CMAKE_COMMAND}" -E env
+		"WEAVER_MANAGER_DOCS_VERSION=${DOCS_MANAGER_VERSION}"
+		"WEAVER_MANAGER_DOCS_LANGUAGE=en"
+		"WEAVER_MANAGER_DOCS_CATALOG=${DOCS_MANAGER_CATALOG}"
+		"WEAVER_MANAGER_DOCS_SITE_ROOT=${MANAGER_DOCS_OUTPUT_DIR}"
+		"${Python3_EXECUTABLE}" -m sphinx
+		-E
+		-c "${MANAGER_DOCS_SOURCE_DIR}"
+		-b html
+		-d "${SPHINX_BUILD_DIR}/doctrees/manager/${DOCS_MANAGER_VERSION}"
+		-q
+		-j 1
+		"${MANAGER_DOCS_SOURCE_DIR}"
+		"${MANAGER_DOCS_OUTPUT_DIR}/${DOCS_MANAGER_VERSION}"
+	WORKING_DIRECTORY "${PROJECT_SOURCE_DIR}"
+	COMMENT "Building Weaver Manager documentation..."
+)
+
+add_dependencies(build-docs-manager-html update-docs-catalog-manager)
+add_dependencies(build-docs-manager build-docs-manager-html)

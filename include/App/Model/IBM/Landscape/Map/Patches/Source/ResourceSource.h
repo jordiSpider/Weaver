@@ -26,6 +26,7 @@
 
 /**
  * @class ResourceSource
+ * @ingroup weaver_landscape
  * @brief Represents a resource source in the landscape.
  *
  * ResourceSource extends PathSource to manage information about a specific resource

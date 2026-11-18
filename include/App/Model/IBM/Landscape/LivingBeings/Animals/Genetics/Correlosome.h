@@ -20,6 +20,7 @@
 
 /**
  * @class Correlosome
+ * @ingroup weaver_landscape
  * @brief Represents a correlosome in the genetic model.
  * 
  * A Correlosome is similar to a chromosome but may be used to represent a

@@ -18,6 +18,7 @@
 
 /**
  * @class ProbabilityDensityFunctionTrait
+ * @ingroup weaver_landscape
  * @brief Represents a trait defined by a probability density function (PDF).
  *
  * This class extends Trait and provides specialized functions to generate traits, 

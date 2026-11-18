@@ -23,6 +23,7 @@
 
 /**
  * @class OntogeneticLink
+ * @ingroup weaver_landscape
  * @brief Represents an ontogenetic link with attributes edible, preference, and profitability.
  *
  * Each link defines whether it can be consumed (edible), how much it is preferred

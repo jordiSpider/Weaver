@@ -1,0 +1,76 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.14.0" xml:lang="en-US">
+  <compounddef id="class_tbb_adaptive_wrapper" kind="class" language="C++" prot="public">
+    <compoundname>TbbAdaptiveWrapper</compoundname>
+    <sectiondef kind="public-static-func">
+      <memberdef kind="function" id="class_tbb_adaptive_wrapper_1a73b3d317488ea9d1b86d43bbcb968692" prot="public" static="yes" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <templateparamlist>
+          <param>
+            <type>typename Container</type>
+          </param>
+          <param>
+            <type>typename SeqOp</type>
+          </param>
+          <param>
+            <type>typename ParOp</type>
+          </param>
+        </templateparamlist>
+        <type>void</type>
+        <definition>static void TbbAdaptiveWrapper::Execute</definition>
+        <argsstring>(Container &amp;container, size_t startIndex, size_t endIndex, double crossoverPerThread, SeqOp seqOp, ParOp parOp)</argsstring>
+        <name>Execute</name>
+        <qualifiedname>TbbAdaptiveWrapper::Execute</qualifiedname>
+        <param>
+          <type>Container &amp;</type>
+          <declname>container</declname>
+        </param>
+        <param>
+          <type>size_t</type>
+          <declname>startIndex</declname>
+        </param>
+        <param>
+          <type>size_t</type>
+          <declname>endIndex</declname>
+        </param>
+        <param>
+          <type>double</type>
+          <declname>crossoverPerThread</declname>
+        </param>
+        <param>
+          <type>SeqOp</type>
+          <declname>seqOp</declname>
+        </param>
+        <param>
+          <type>ParOp</type>
+          <declname>parOp</declname>
+        </param>
+        <briefdescription>
+<para>Ejecuta una operación en paralelo o secuencial basándose en el crossover por hilo. </para>
+        </briefdescription>
+        <detaileddescription>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>crossoverPerThread</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>El valor obtenido del benchmark (ej. 100.25 animales por hilo) </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="App/Manager/TbbAdaptiveWrapper.h" line="17" column="17" bodyfile="App/Manager/TbbAdaptiveWrapper.h" bodystart="17" bodyend="48"/>
+      </memberdef>
+    </sectiondef>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+    </detaileddescription>
+    <location file="App/Manager/TbbAdaptiveWrapper.h" line="9" column="1" bodyfile="App/Manager/TbbAdaptiveWrapper.h" bodystart="10" bodyend="49"/>
+    <listofallmembers>
+      <member refid="class_tbb_adaptive_wrapper_1a73b3d317488ea9d1b86d43bbcb968692" prot="public" virt="non-virtual"><scope>TbbAdaptiveWrapper</scope><name>Execute</name></member>
+    </listofallmembers>
+  </compounddef>
+</doxygen>

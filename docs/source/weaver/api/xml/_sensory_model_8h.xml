@@ -1,0 +1,416 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.14.0" xml:lang="en-US">
+  <compounddef id="_sensory_model_8h" kind="file" language="C++">
+    <compoundname>SensoryModel.h</compoundname>
+    <includes local="no">nlohmann/json.hpp</includes>
+    <includes local="no">boost/archive/text_iarchive.hpp</includes>
+    <includes local="no">boost/archive/text_oarchive.hpp</includes>
+    <includes local="no">boost/archive/binary_iarchive.hpp</includes>
+    <includes local="no">boost/archive/binary_oarchive.hpp</includes>
+    <includes local="no">cmath</includes>
+    <includes refid="_precise_double_8h" local="yes">Misc/Maths/PreciseDouble.h</includes>
+    <includedby refid="_animal_species_decisions_8h" local="yes">App/Model/IBM/Landscape/LivingBeings/Animals/Species/Decisions/AnimalSpeciesDecisions.h</includedby>
+    <includedby refid="_escape_probability_8h" local="yes">App/Model/IBM/Landscape/LivingBeings/Animals/Species/Decisions/DecisionProbability/EscapeProbability.h</includedby>
+    <incdepgraph>
+      <node id="1">
+        <label>App/Model/IBM/Landscape/LivingBeings/Animals/Species/Decisions/SensoryModel.h</label>
+        <link refid="_sensory_model_8h"/>
+        <childnode refid="2" relation="include">
+        </childnode>
+        <childnode refid="3" relation="include">
+        </childnode>
+        <childnode refid="4" relation="include">
+        </childnode>
+        <childnode refid="5" relation="include">
+        </childnode>
+        <childnode refid="6" relation="include">
+        </childnode>
+        <childnode refid="7" relation="include">
+        </childnode>
+        <childnode refid="8" relation="include">
+        </childnode>
+      </node>
+      <node id="8">
+        <label>Misc/Maths/PreciseDouble.h</label>
+        <link refid="_precise_double_8h_source"/>
+        <childnode refid="3" relation="include">
+        </childnode>
+        <childnode refid="4" relation="include">
+        </childnode>
+        <childnode refid="5" relation="include">
+        </childnode>
+        <childnode refid="6" relation="include">
+        </childnode>
+        <childnode refid="9" relation="include">
+        </childnode>
+        <childnode refid="10" relation="include">
+        </childnode>
+        <childnode refid="7" relation="include">
+        </childnode>
+        <childnode refid="11" relation="include">
+        </childnode>
+        <childnode refid="12" relation="include">
+        </childnode>
+        <childnode refid="13" relation="include">
+        </childnode>
+        <childnode refid="14" relation="include">
+        </childnode>
+      </node>
+      <node id="11">
+        <label>algorithm</label>
+      </node>
+      <node id="5">
+        <label>boost/archive/binary_iarchive.hpp</label>
+      </node>
+      <node id="6">
+        <label>boost/archive/binary_oarchive.hpp</label>
+      </node>
+      <node id="3">
+        <label>boost/archive/text_iarchive.hpp</label>
+      </node>
+      <node id="4">
+        <label>boost/archive/text_oarchive.hpp</label>
+      </node>
+      <node id="7">
+        <label>cmath</label>
+      </node>
+      <node id="9">
+        <label>fmt/format.h</label>
+      </node>
+      <node id="14">
+        <label>functional</label>
+      </node>
+      <node id="12">
+        <label>iostream</label>
+      </node>
+      <node id="13">
+        <label>limits</label>
+      </node>
+      <node id="2">
+        <label>nlohmann/json.hpp</label>
+      </node>
+      <node id="10">
+        <label>string</label>
+      </node>
+    </incdepgraph>
+    <invincdepgraph>
+      <node id="6">
+        <label>App/Model/IBM/IBM.h</label>
+        <link refid="_i_b_m_8h_source"/>
+      </node>
+      <node id="7">
+        <label>App/Model/IBM/Landscape/AquaticLandscape.h</label>
+        <link refid="_aquatic_landscape_8h_source"/>
+      </node>
+      <node id="8">
+        <label>App/Model/IBM/Landscape/ArthropodsLandscape.h</label>
+        <link refid="_arthropods_landscape_8h_source"/>
+      </node>
+      <node id="9">
+        <label>App/Model/IBM/Landscape/DinosaursLandscape.h</label>
+        <link refid="_dinosaurs_landscape_8h_source"/>
+      </node>
+      <node id="5">
+        <label>App/Model/IBM/Landscape/Landscape.h</label>
+        <link refid="_landscape_8h_source"/>
+        <childnode refid="6" relation="include">
+        </childnode>
+        <childnode refid="7" relation="include">
+        </childnode>
+        <childnode refid="8" relation="include">
+        </childnode>
+        <childnode refid="9" relation="include">
+        </childnode>
+      </node>
+      <node id="21">
+        <label>App/Model/IBM/Landscape/LivingBeings/Animals/Animal.h</label>
+        <link refid="_animal_8h_source"/>
+        <childnode refid="4" relation="include">
+        </childnode>
+        <childnode refid="22" relation="include">
+        </childnode>
+        <childnode refid="18" relation="include">
+        </childnode>
+        <childnode refid="14" relation="include">
+        </childnode>
+      </node>
+      <node id="4">
+        <label>App/Model/IBM/Landscape/LivingBeings/Animals/AnimalNonStatistical.h</label>
+        <link refid="_animal_non_statistical_8h_source"/>
+        <childnode refid="5" relation="include">
+        </childnode>
+        <childnode refid="10" relation="include">
+        </childnode>
+        <childnode refid="12" relation="include">
+        </childnode>
+        <childnode refid="14" relation="include">
+        </childnode>
+      </node>
+      <node id="22">
+        <label>App/Model/IBM/Landscape/LivingBeings/Animals/AnimalStatistical.h</label>
+        <link refid="_animal_statistical_8h_source"/>
+        <childnode refid="15" relation="include">
+        </childnode>
+        <childnode refid="11" relation="include">
+        </childnode>
+      </node>
+      <node id="3">
+        <label>App/Model/IBM/Landscape/LivingBeings/Animals/Decisions/Decisions.h</label>
+        <link refid="_decisions_8h_source"/>
+        <childnode refid="4" relation="include">
+        </childnode>
+      </node>
+      <node id="20">
+        <label>App/Model/IBM/Landscape/LivingBeings/Animals/Species/AnimalSpecies.h</label>
+        <link refid="_animal_species_8h_source"/>
+        <childnode refid="5" relation="include">
+        </childnode>
+        <childnode refid="21" relation="include">
+        </childnode>
+        <childnode refid="23" relation="include">
+        </childnode>
+        <childnode refid="11" relation="include">
+        </childnode>
+        <childnode refid="14" relation="include">
+        </childnode>
+      </node>
+      <node id="2">
+        <label>App/Model/IBM/Landscape/LivingBeings/Animals/Species/Decisions/AnimalSpeciesDecisions.h</label>
+        <link refid="_animal_species_decisions_8h_source"/>
+        <childnode refid="3" relation="include">
+        </childnode>
+        <childnode refid="20" relation="include">
+        </childnode>
+      </node>
+      <node id="34">
+        <label>App/Model/IBM/Landscape/LivingBeings/Animals/Species/Decisions/DecisionProbability/CellQualityBiomass.h</label>
+        <link refid="_cell_quality_biomass_8h_source"/>
+        <childnode refid="2" relation="include">
+        </childnode>
+      </node>
+      <node id="33">
+        <label>App/Model/IBM/Landscape/LivingBeings/Animals/Species/Decisions/DecisionProbability/EdibilityValue.h</label>
+        <link refid="_edibility_value_8h_source"/>
+        <childnode refid="2" relation="include">
+        </childnode>
+        <childnode refid="34" relation="include">
+        </childnode>
+      </node>
+      <node id="31">
+        <label>App/Model/IBM/Landscape/LivingBeings/Animals/Species/Decisions/DecisionProbability/EscapeProbability.h</label>
+        <link refid="_escape_probability_8h_source"/>
+        <childnode refid="32" relation="include">
+        </childnode>
+      </node>
+      <node id="32">
+        <label>App/Model/IBM/Landscape/LivingBeings/Animals/Species/Decisions/DecisionProbability/PredationProbability.h</label>
+        <link refid="_predation_probability_8h_source"/>
+        <childnode refid="2" relation="include">
+        </childnode>
+        <childnode refid="33" relation="include">
+        </childnode>
+      </node>
+      <node id="1">
+        <label>App/Model/IBM/Landscape/LivingBeings/Animals/Species/Decisions/SensoryModel.h</label>
+        <link refid="_sensory_model_8h"/>
+        <childnode refid="2" relation="include">
+        </childnode>
+        <childnode refid="31" relation="include">
+        </childnode>
+      </node>
+      <node id="15">
+        <label>App/Model/IBM/Landscape/Map/Map.h</label>
+        <link refid="_map_8h_source"/>
+        <childnode refid="5" relation="include">
+        </childnode>
+        <childnode refid="11" relation="include">
+        </childnode>
+      </node>
+      <node id="13">
+        <label>App/Model/IBM/Landscape/Map/Navigation/DestinationSelectionPolicy.h</label>
+        <link refid="_destination_selection_policy_8h_source"/>
+      </node>
+      <node id="23">
+        <label>App/Model/IBM/Landscape/Map/Patches/Source/HabitatDomainSource.h</label>
+        <link refid="_habitat_domain_source_8h_source"/>
+        <childnode refid="5" relation="include">
+        </childnode>
+        <childnode refid="24" relation="include">
+        </childnode>
+        <childnode refid="26" relation="include">
+        </childnode>
+        <childnode refid="29" relation="include">
+        </childnode>
+      </node>
+      <node id="11">
+        <label>App/Model/IBM/Landscape/Map/SpatialTree.h</label>
+        <link refid="_spatial_tree_8h_source"/>
+        <childnode refid="5" relation="include">
+        </childnode>
+      </node>
+      <node id="10">
+        <label>App/Model/IBM/Landscape/Map/SpatialTree/LivingBeings/Animals/SpatialTreeAnimal.h</label>
+        <link refid="_spatial_tree_animal_8h_source"/>
+        <childnode refid="11" relation="include">
+        </childnode>
+      </node>
+      <node id="17">
+        <label>App/Model/IBM/Landscape/Map/SpatialTree/TerrainCells/BranchTerrainCell.h</label>
+        <link refid="_branch_terrain_cell_8h_source"/>
+        <childnode refid="18" relation="include">
+        </childnode>
+      </node>
+      <node id="19">
+        <label>App/Model/IBM/Landscape/Map/SpatialTree/TerrainCells/LeafTerrainCell.h</label>
+        <link refid="_leaf_terrain_cell_8h_source"/>
+        <childnode refid="17" relation="include">
+        </childnode>
+      </node>
+      <node id="25">
+        <label>App/Model/IBM/Landscape/Map/SpatialTree/TerrainCells/PatchApplicator/BranchPatchApplicator.h</label>
+        <link refid="_branch_patch_applicator_8h_source"/>
+        <childnode refid="17" relation="include">
+        </childnode>
+      </node>
+      <node id="24">
+        <label>App/Model/IBM/Landscape/Map/SpatialTree/TerrainCells/PatchApplicator/HabitatDomain/BranchCellHabitatDomain.h</label>
+        <link refid="_branch_cell_habitat_domain_8h_source"/>
+        <childnode refid="25" relation="include">
+        </childnode>
+      </node>
+      <node id="28">
+        <label>App/Model/IBM/Landscape/Map/SpatialTree/TerrainCells/PatchApplicator/LeafPatchApplicator.h</label>
+        <link refid="_leaf_patch_applicator_8h_source"/>
+        <childnode refid="19" relation="include">
+        </childnode>
+      </node>
+      <node id="30">
+        <label>App/Model/IBM/Landscape/Map/SpatialTree/TerrainCells/PatchApplicator/SpatialTreePatchApplicator.h</label>
+        <link refid="_spatial_tree_patch_applicator_8h_source"/>
+        <childnode refid="25" relation="include">
+        </childnode>
+        <childnode refid="28" relation="include">
+        </childnode>
+        <childnode refid="16" relation="include">
+        </childnode>
+      </node>
+      <node id="18">
+        <label>App/Model/IBM/Landscape/Map/SpatialTree/TerrainCells/RootTerrainCell.h</label>
+        <link refid="_root_terrain_cell_8h_source"/>
+        <childnode refid="11" relation="include">
+        </childnode>
+      </node>
+      <node id="16">
+        <label>App/Model/IBM/Landscape/Map/SpatialTree/TerrainCells/SpatialTreeTerrainCell.h</label>
+        <link refid="_spatial_tree_terrain_cell_8h_source"/>
+        <childnode refid="11" relation="include">
+        </childnode>
+        <childnode refid="17" relation="include">
+        </childnode>
+        <childnode refid="19" relation="include">
+        </childnode>
+      </node>
+      <node id="12">
+        <label>App/Model/IBM/Landscape/Map/TerrainCells/CellValue.h</label>
+        <link refid="_cell_value_8h_source"/>
+        <childnode refid="13" relation="include">
+        </childnode>
+        <childnode refid="10" relation="include">
+        </childnode>
+        <childnode refid="14" relation="include">
+        </childnode>
+      </node>
+      <node id="27">
+        <label>App/Model/IBM/Landscape/Map/TerrainCells/PatchApplicator/HabitatDomain/CellHabitatDomain.h</label>
+        <link refid="_cell_habitat_domain_8h_source"/>
+        <childnode refid="28" relation="include">
+        </childnode>
+      </node>
+      <node id="26">
+        <label>App/Model/IBM/Landscape/Map/TerrainCells/PatchApplicator/HabitatDomain/CellHabitatDomainInterface.h</label>
+        <link refid="_cell_habitat_domain_interface_8h_source"/>
+        <childnode refid="24" relation="include">
+        </childnode>
+        <childnode refid="27" relation="include">
+        </childnode>
+        <childnode refid="29" relation="include">
+        </childnode>
+      </node>
+      <node id="29">
+        <label>App/Model/IBM/Landscape/Map/TerrainCells/PatchApplicator/PatchApplicator.h</label>
+        <link refid="_patch_applicator_8h_source"/>
+        <childnode refid="30" relation="include">
+        </childnode>
+        <childnode refid="14" relation="include">
+        </childnode>
+      </node>
+      <node id="14">
+        <label>App/Model/IBM/Landscape/Map/TerrainCells/TerrainCell.h</label>
+        <link refid="_terrain_cell_8h_source"/>
+        <childnode refid="5" relation="include">
+        </childnode>
+        <childnode refid="15" relation="include">
+        </childnode>
+        <childnode refid="11" relation="include">
+        </childnode>
+        <childnode refid="16" relation="include">
+        </childnode>
+      </node>
+    </invincdepgraph>
+    <innerclass refid="class_sensory_model" prot="public">SensoryModel</innerclass>
+    <briefdescription>
+<para>Defines the <ref refid="class_sensory_model" kindref="compound">SensoryModel</ref> class, representing a probabilistic sensory detection model. </para>
+    </briefdescription>
+    <detaileddescription>
+    </detaileddescription>
+    <programlisting>
+<codeline lineno="1"><highlight class="normal"></highlight></codeline>
+<codeline lineno="5"><highlight class="normal"></highlight></codeline>
+<codeline lineno="6"><highlight class="normal"></highlight><highlight class="preprocessor">#ifndef<sp/>SENSORY_MODEL_H_</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="7"><highlight class="normal"></highlight><highlight class="preprocessor">#define<sp/>SENSORY_MODEL_H_</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="8"><highlight class="normal"></highlight></codeline>
+<codeline lineno="9"><highlight class="normal"></highlight></codeline>
+<codeline lineno="10"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&lt;nlohmann/json.hpp&gt;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="11"><highlight class="normal"></highlight></codeline>
+<codeline lineno="12"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&lt;boost/archive/text_iarchive.hpp&gt;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="13"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&lt;boost/archive/text_oarchive.hpp&gt;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="14"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&lt;boost/archive/binary_iarchive.hpp&gt;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="15"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&lt;boost/archive/binary_oarchive.hpp&gt;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="16"><highlight class="normal"></highlight></codeline>
+<codeline lineno="17"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&lt;cmath&gt;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="18"><highlight class="normal"></highlight></codeline>
+<codeline lineno="19"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&quot;Misc/Maths/PreciseDouble.h&quot;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="20"><highlight class="normal"></highlight></codeline>
+<codeline lineno="21"><highlight class="normal"></highlight></codeline>
+<codeline lineno="31" refid="class_sensory_model" refkind="compound"><highlight class="normal"></highlight><highlight class="keyword">class<sp/></highlight><highlight class="normal"><ref refid="class_sensory_model_1a6bd37cdd30a98fa371563d2ac9311a59" kindref="member">SensoryModel</ref><sp/>{</highlight></codeline>
+<codeline lineno="32"><highlight class="normal"></highlight><highlight class="keyword">public</highlight><highlight class="normal">:</highlight></codeline>
+<codeline lineno="36" refid="class_sensory_model_1a6bd37cdd30a98fa371563d2ac9311a59" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="class_sensory_model_1a6bd37cdd30a98fa371563d2ac9311a59" kindref="member">SensoryModel</ref>();</highlight></codeline>
+<codeline lineno="37"><highlight class="normal"></highlight></codeline>
+<codeline lineno="43" refid="class_sensory_model_1a1a4c8f01f763bc719f5c477950678017" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="class_sensory_model_1a1a4c8f01f763bc719f5c477950678017" kindref="member">SensoryModel</ref>(</highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/>nlohmann::json&amp;<sp/>config);</highlight></codeline>
+<codeline lineno="44"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight></codeline>
+<codeline lineno="48" refid="class_sensory_model_1a71ad18edcd2aed26080ad42c2e4db430" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">virtual</highlight><highlight class="normal"><sp/><ref refid="class_sensory_model_1a71ad18edcd2aed26080ad42c2e4db430" kindref="member">~SensoryModel</ref>();</highlight></codeline>
+<codeline lineno="49"><highlight class="normal"></highlight></codeline>
+<codeline lineno="50"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="comment">//<sp/>Delete<sp/>copy<sp/>constructor</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="51"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="class_sensory_model_1a6bd37cdd30a98fa371563d2ac9311a59" kindref="member">SensoryModel</ref>(</highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/><ref refid="class_sensory_model_1a6bd37cdd30a98fa371563d2ac9311a59" kindref="member">SensoryModel</ref>&amp;)<sp/>=<sp/></highlight><highlight class="keyword">delete</highlight><highlight class="normal">;</highlight></codeline>
+<codeline lineno="52"><highlight class="normal"></highlight></codeline>
+<codeline lineno="53"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="comment">//<sp/>Delete<sp/>assignment<sp/>operator</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="54"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="class_sensory_model_1a6bd37cdd30a98fa371563d2ac9311a59" kindref="member">SensoryModel</ref>&amp;<sp/>operator=(</highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/><ref refid="class_sensory_model_1a6bd37cdd30a98fa371563d2ac9311a59" kindref="member">SensoryModel</ref>&amp;)<sp/>=<sp/></highlight><highlight class="keyword">delete</highlight><highlight class="normal">;</highlight></codeline>
+<codeline lineno="55"><highlight class="normal"></highlight></codeline>
+<codeline lineno="65" refid="class_sensory_model_1a500adac72cda3f4bf6a1f72a3283f8b5" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="class_precise_double" kindref="compound">PreciseDouble</ref><sp/><ref refid="class_sensory_model_1a500adac72cda3f4bf6a1f72a3283f8b5" kindref="member">calculateProbability</ref>(</highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/><ref refid="class_precise_double" kindref="compound">PreciseDouble</ref>&amp;<sp/>distance,<sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/><ref refid="class_precise_double" kindref="compound">PreciseDouble</ref>&amp;<sp/>maximumDistance)<sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal">;</highlight></codeline>
+<codeline lineno="66"><highlight class="normal"></highlight></codeline>
+<codeline lineno="74"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">template</highlight><highlight class="normal"><sp/>&lt;</highlight><highlight class="keyword">class</highlight><highlight class="normal"><sp/>Archive&gt;</highlight></codeline>
+<codeline lineno="75" refid="class_sensory_model_1a3ec70a73ec081f7b7a1e723c2154306c" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/><ref refid="class_sensory_model_1a3ec70a73ec081f7b7a1e723c2154306c" kindref="member">serialize</ref>(Archive<sp/>&amp;ar,<sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordtype">unsigned</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>version);</highlight></codeline>
+<codeline lineno="76"><highlight class="normal"></highlight></codeline>
+<codeline lineno="77"><highlight class="normal"></highlight><highlight class="keyword">private</highlight><highlight class="normal">:</highlight></codeline>
+<codeline lineno="79" refid="class_sensory_model_1afa886d27c344f99f7758e96bc161c1e1" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">static</highlight><highlight class="normal"><sp/></highlight><highlight class="keyword">inline</highlight><highlight class="normal"><sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordtype">double</highlight><highlight class="normal"><sp/><ref refid="class_sensory_model_1afa886d27c344f99f7758e96bc161c1e1" kindref="member">EPSILON</ref><sp/>=<sp/>1e-5;</highlight></codeline>
+<codeline lineno="80"><highlight class="normal"></highlight></codeline>
+<codeline lineno="82" refid="class_sensory_model_1a98ecc807be473386103372c4ff1f994e" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="class_precise_double" kindref="compound">PreciseDouble</ref><sp/><ref refid="class_sensory_model_1a98ecc807be473386103372c4ff1f994e" kindref="member">beta</ref>;</highlight></codeline>
+<codeline lineno="83"><highlight class="normal"></highlight></codeline>
+<codeline lineno="93" refid="class_sensory_model_1ac68ba5ec2000de765af7057a1ab6abf1" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="class_precise_double" kindref="compound">PreciseDouble</ref><sp/><ref refid="class_sensory_model_1ac68ba5ec2000de765af7057a1ab6abf1" kindref="member">calculateDecayRate</ref>(</highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/><ref refid="class_precise_double" kindref="compound">PreciseDouble</ref>&amp;<sp/>maximumDistance)<sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal">;</highlight></codeline>
+<codeline lineno="94"><highlight class="normal">};</highlight></codeline>
+<codeline lineno="95"><highlight class="normal"></highlight></codeline>
+<codeline lineno="96"><highlight class="normal"></highlight><highlight class="preprocessor">#endif<sp/></highlight><highlight class="comment">/*<sp/>SENSORY_MODEL_H_<sp/>*/</highlight><highlight class="preprocessor"></highlight></codeline>
+    </programlisting>
+    <location file="App/Model/IBM/Landscape/LivingBeings/Animals/Species/Decisions/SensoryModel.h"/>
+  </compounddef>
+</doxygen>

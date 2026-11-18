@@ -1,0 +1,559 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.14.0" xml:lang="en-US">
+  <compounddef id="class_cell_resource_interface_growth" kind="class" language="C++" prot="public" abstract="yes">
+    <compoundname>CellResourceInterfaceGrowth</compoundname>
+    <basecompoundref refid="class_edible_growth" prot="public" virt="non-virtual">EdibleGrowth</basecompoundref>
+    <derivedcompoundref refid="class_branch_cell_resource_growth" prot="public" virt="non-virtual">BranchCellResourceGrowth</derivedcompoundref>
+    <derivedcompoundref refid="class_cell_resource_growth" prot="public" virt="non-virtual">CellResourceGrowth</derivedcompoundref>
+    <includes refid="_cell_resource_interface_growth_8h" local="no">CellResourceInterfaceGrowth.h</includes>
+    <sectiondef kind="protected-attrib">
+      <memberdef kind="variable" id="class_cell_resource_interface_growth_1a7f628a8036b304fc83727f352ab34e07" prot="protected" static="no" mutable="no">
+        <type><ref refid="class_cell_resource_interface" kindref="compound">CellResourceInterface</ref> *</type>
+        <definition>CellResourceInterface* CellResourceInterfaceGrowth::owner</definition>
+        <argsstring></argsstring>
+        <name>owner</name>
+        <qualifiedname>CellResourceInterfaceGrowth::owner</qualifiedname>
+        <briefdescription>
+<para>Pointer to the owning <ref refid="class_cell_resource_interface" kindref="compound">CellResourceInterface</ref>. </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="App/Model/IBM/Landscape/Map/TerrainCells/PatchApplicator/Resources/Growth/CellResourceInterfaceGrowth.h" line="92" column="23" bodyfile="App/Model/IBM/Landscape/Map/TerrainCells/PatchApplicator/Resources/Growth/CellResourceInterfaceGrowth.h" bodystart="92" bodyend="-1"/>
+      </memberdef>
+    </sectiondef>
+    <sectiondef kind="public-func">
+      <memberdef kind="function" id="class_cell_resource_interface_growth_1a33c6cf91d2e64fe725677b157dfdfc12" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type></type>
+        <definition>CellResourceInterfaceGrowth::CellResourceInterfaceGrowth</definition>
+        <argsstring>()</argsstring>
+        <name>CellResourceInterfaceGrowth</name>
+        <qualifiedname>CellResourceInterfaceGrowth::CellResourceInterfaceGrowth</qualifiedname>
+        <briefdescription>
+<para>Default constructor. </para>
+        </briefdescription>
+        <detaileddescription>
+<para>Initializes an empty growth object without owner or species growth reference. </para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="App/Model/IBM/Landscape/Map/TerrainCells/PatchApplicator/Resources/Growth/CellResourceInterfaceGrowth.h" line="46" column="1"/>
+      </memberdef>
+      <memberdef kind="function" id="class_cell_resource_interface_growth_1a8aa80e4b3785b55fb8a381c2588f4090" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type></type>
+        <definition>CellResourceInterfaceGrowth::CellResourceInterfaceGrowth</definition>
+        <argsstring>(CellResourceInterface *owner, ResourceSpeciesGrowth *const newSpeciesGrowth)</argsstring>
+        <name>CellResourceInterfaceGrowth</name>
+        <qualifiedname>CellResourceInterfaceGrowth::CellResourceInterfaceGrowth</qualifiedname>
+        <param>
+          <type><ref refid="class_cell_resource_interface" kindref="compound">CellResourceInterface</ref> *</type>
+          <declname>owner</declname>
+        </param>
+        <param>
+          <type><ref refid="class_resource_species_growth" kindref="compound">ResourceSpeciesGrowth</ref> *const</type>
+          <declname>newSpeciesGrowth</declname>
+        </param>
+        <briefdescription>
+<para>Constructor with owner and species growth. </para>
+        </briefdescription>
+        <detaileddescription>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>owner</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Pointer to the owning <ref refid="class_cell_resource_interface" kindref="compound">CellResourceInterface</ref>. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>newSpeciesGrowth</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Pointer to the species growth object for this resource. </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="App/Model/IBM/Landscape/Map/TerrainCells/PatchApplicator/Resources/Growth/CellResourceInterfaceGrowth.h" line="54" column="1"/>
+      </memberdef>
+      <memberdef kind="function" id="class_cell_resource_interface_growth_1a0edf0643add4acdf27ccaa55d7e35400" prot="public" static="no" const="no" explicit="no" inline="no" virt="virtual">
+        <type></type>
+        <definition>virtual CellResourceInterfaceGrowth::~CellResourceInterfaceGrowth</definition>
+        <argsstring>()</argsstring>
+        <name>~CellResourceInterfaceGrowth</name>
+        <qualifiedname>CellResourceInterfaceGrowth::~CellResourceInterfaceGrowth</qualifiedname>
+        <briefdescription>
+<para>Virtual destructor. </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="App/Model/IBM/Landscape/Map/TerrainCells/PatchApplicator/Resources/Growth/CellResourceInterfaceGrowth.h" line="57" column="9"/>
+      </memberdef>
+      <memberdef kind="function" id="class_cell_resource_interface_growth_1a2c805edbff5598dc673ee6572aeaec60" prot="public" static="no" const="yes" explicit="no" inline="no" virt="pure-virtual">
+        <type>const <ref refid="class_wet_mass" kindref="compound">WetMass</ref> &amp;</type>
+        <definition>virtual const WetMass &amp; CellResourceInterfaceGrowth::getMinimumEdibleBiomass</definition>
+        <argsstring>() const =0</argsstring>
+        <name>getMinimumEdibleBiomass</name>
+        <qualifiedname>CellResourceInterfaceGrowth::getMinimumEdibleBiomass</qualifiedname>
+        <reimplementedby refid="class_branch_cell_resource_growth_1a0087642b1b8f094b9a69d4cf6c7e5564">getMinimumEdibleBiomass</reimplementedby>
+        <reimplementedby refid="class_cell_resource_growth_1a287be51d6177d0965946af9d6638bd91">getMinimumEdibleBiomass</reimplementedby>
+        <briefdescription>
+<para>Get the minimum edible biomass that can be consumed. </para>
+        </briefdescription>
+        <detaileddescription>
+<para><simplesect kind="return"><para>Constant reference to the minimum biomass value. </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="App/Model/IBM/Landscape/Map/TerrainCells/PatchApplicator/Resources/Growth/CellResourceInterfaceGrowth.h" line="78" column="23"/>
+      </memberdef>
+      <memberdef kind="function" id="class_cell_resource_interface_growth_1ae9982d1aff28e91857d71286f5a2dfd7" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <templateparamlist>
+          <param>
+            <type>class Archive</type>
+          </param>
+        </templateparamlist>
+        <type>void</type>
+        <definition>void CellResourceInterfaceGrowth::serialize</definition>
+        <argsstring>(Archive &amp;ar, const unsigned int version)</argsstring>
+        <name>serialize</name>
+        <qualifiedname>CellResourceInterfaceGrowth::serialize</qualifiedname>
+        <param>
+          <type>Archive &amp;</type>
+          <declname>ar</declname>
+        </param>
+        <param>
+          <type>const unsigned int</type>
+          <declname>version</declname>
+        </param>
+        <briefdescription>
+<para>Serialization method for persistence. </para>
+        </briefdescription>
+        <detaileddescription>
+<para><parameterlist kind="templateparam"><parameteritem>
+<parameternamelist>
+<parametername>Archive</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Archive type. </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>ar</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Archive object. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>version</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Version number of the class. </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="App/Model/IBM/Landscape/Map/TerrainCells/PatchApplicator/Resources/Growth/CellResourceInterfaceGrowth.h" line="88" column="10"/>
+      </memberdef>
+      <memberdef kind="function" id="class_cell_resource_interface_growth_1a55a7e0dddb81a837b1f47193a8adf6bb" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void CellResourceInterfaceGrowth::setOwner</definition>
+        <argsstring>(CellResourceInterface *newOwner)</argsstring>
+        <name>setOwner</name>
+        <qualifiedname>CellResourceInterfaceGrowth::setOwner</qualifiedname>
+        <param>
+          <type><ref refid="class_cell_resource_interface" kindref="compound">CellResourceInterface</ref> *</type>
+          <declname>newOwner</declname>
+        </param>
+        <briefdescription>
+<para>Set the owner of this growth object. </para>
+        </briefdescription>
+        <detaileddescription>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>newOwner</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Pointer to the owning <ref refid="class_cell_resource_interface" kindref="compound">CellResourceInterface</ref>. </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="App/Model/IBM/Landscape/Map/TerrainCells/PatchApplicator/Resources/Growth/CellResourceInterfaceGrowth.h" line="64" column="6"/>
+      </memberdef>
+      <memberdef kind="function" id="class_cell_resource_interface_growth_1ac010036f47242102d738d3983b27b9a5" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void CellResourceInterfaceGrowth::substractBiomass</definition>
+        <argsstring>(const DryMass &amp;dryMassToBeSubstracted)</argsstring>
+        <name>substractBiomass</name>
+        <qualifiedname>CellResourceInterfaceGrowth::substractBiomass</qualifiedname>
+        <param>
+          <type>const <ref refid="class_dry_mass" kindref="compound">DryMass</ref> &amp;</type>
+          <declname>dryMassToBeSubstracted</declname>
+        </param>
+        <briefdescription>
+<para>Subtract dry biomass from the resource. </para>
+        </briefdescription>
+        <detaileddescription>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>dryMassToBeSubstracted</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Amount of biomass to subtract. </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="App/Model/IBM/Landscape/Map/TerrainCells/PatchApplicator/Resources/Growth/CellResourceInterfaceGrowth.h" line="71" column="6"/>
+      </memberdef>
+    </sectiondef>
+    <sectiondef kind="protected-func">
+      <memberdef kind="function" id="class_cell_resource_interface_growth_1a5413bab6e55642f7f409dfaf87e9ee8e" prot="protected" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type><ref refid="class_cell_resource_interface" kindref="compound">CellResourceInterface</ref> *</type>
+        <definition>CellResourceInterface * CellResourceInterfaceGrowth::getMutableOwner</definition>
+        <argsstring>()</argsstring>
+        <name>getMutableOwner</name>
+        <qualifiedname>CellResourceInterfaceGrowth::getMutableOwner</qualifiedname>
+        <briefdescription>
+<para>Get mutable pointer to the owner cell. </para>
+        </briefdescription>
+        <detaileddescription>
+<para><simplesect kind="return"><para>Pointer to the owning <ref refid="class_cell_resource_interface" kindref="compound">CellResourceInterface</ref>. </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="App/Model/IBM/Landscape/Map/TerrainCells/PatchApplicator/Resources/Growth/CellResourceInterfaceGrowth.h" line="120" column="23"/>
+      </memberdef>
+      <memberdef kind="function" id="class_cell_resource_interface_growth_1a7ff536f8888d3eb27ea5f8133d677d38" prot="protected" static="no" const="no" explicit="no" inline="no" virt="virtual">
+        <type><ref refid="class_resource_species_growth" kindref="compound">ResourceSpeciesGrowth</ref> *</type>
+        <definition>ResourceSpeciesGrowth * CellResourceInterfaceGrowth::getMutableSpeciesGrowth</definition>
+        <argsstring>()</argsstring>
+        <name>getMutableSpeciesGrowth</name>
+        <qualifiedname>CellResourceInterfaceGrowth::getMutableSpeciesGrowth</qualifiedname>
+        <reimplements refid="class_edible_growth_1a5c671d2a99212e921b69e7305c2ba60b">getMutableSpeciesGrowth</reimplements>
+        <briefdescription>
+<para>Get mutable pointer to the species growth object. </para>
+        </briefdescription>
+        <detaileddescription>
+<para><simplesect kind="return"><para>Pointer to <ref refid="class_resource_species_growth" kindref="compound">ResourceSpeciesGrowth</ref>. </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="App/Model/IBM/Landscape/Map/TerrainCells/PatchApplicator/Resources/Growth/CellResourceInterfaceGrowth.h" line="106" column="27"/>
+      </memberdef>
+      <memberdef kind="function" id="class_cell_resource_interface_growth_1acfe61c5bf220a8a3ada23b09f7a91d9f" prot="protected" static="no" const="yes" explicit="no" inline="no" virt="non-virtual">
+        <type>const <ref refid="class_cell_resource_interface" kindref="compound">CellResourceInterface</ref> *</type>
+        <definition>const CellResourceInterface * CellResourceInterfaceGrowth::getOwner</definition>
+        <argsstring>() const</argsstring>
+        <name>getOwner</name>
+        <qualifiedname>CellResourceInterfaceGrowth::getOwner</qualifiedname>
+        <briefdescription>
+<para>Get constant pointer to the owner cell. </para>
+        </briefdescription>
+        <detaileddescription>
+<para><simplesect kind="return"><para>Pointer to the owning <ref refid="class_cell_resource_interface" kindref="compound">CellResourceInterface</ref>. </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="App/Model/IBM/Landscape/Map/TerrainCells/PatchApplicator/Resources/Growth/CellResourceInterfaceGrowth.h" line="113" column="29"/>
+      </memberdef>
+      <memberdef kind="function" id="class_cell_resource_interface_growth_1a44389468d05cc1e345638430bbb551fe" prot="protected" static="no" const="yes" explicit="no" inline="no" virt="virtual">
+        <type>const <ref refid="class_resource_species_growth" kindref="compound">ResourceSpeciesGrowth</ref> *</type>
+        <definition>const ResourceSpeciesGrowth * CellResourceInterfaceGrowth::getSpeciesGrowth</definition>
+        <argsstring>() const</argsstring>
+        <name>getSpeciesGrowth</name>
+        <qualifiedname>CellResourceInterfaceGrowth::getSpeciesGrowth</qualifiedname>
+        <reimplements refid="class_edible_growth_1a4be2e2848527766ce04187ad3cc6694f">getSpeciesGrowth</reimplements>
+        <briefdescription>
+<para>Get constant pointer to the species growth object. </para>
+        </briefdescription>
+        <detaileddescription>
+<para><simplesect kind="return"><para>Pointer to <ref refid="class_resource_species_growth" kindref="compound">ResourceSpeciesGrowth</ref>. </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="App/Model/IBM/Landscape/Map/TerrainCells/PatchApplicator/Resources/Growth/CellResourceInterfaceGrowth.h" line="99" column="29"/>
+      </memberdef>
+      <memberdef kind="function" id="class_cell_resource_interface_growth_1a55890dcaad1ae7bd362fcf50708616da" prot="protected" static="no" const="no" explicit="no" inline="no" virt="virtual">
+        <type>void</type>
+        <definition>void CellResourceInterfaceGrowth::setCurrentTotalDryMass</definition>
+        <argsstring>(const DryMass &amp;newCurrentTotalDryMass) override</argsstring>
+        <name>setCurrentTotalDryMass</name>
+        <qualifiedname>CellResourceInterfaceGrowth::setCurrentTotalDryMass</qualifiedname>
+        <reimplements refid="class_edible_growth_1a3f62f12a015db71067ca349e705be612">setCurrentTotalDryMass</reimplements>
+        <param>
+          <type>const <ref refid="class_dry_mass" kindref="compound">DryMass</ref> &amp;</type>
+          <declname>newCurrentTotalDryMass</declname>
+        </param>
+        <briefdescription>
+<para>Set the current total dry mass of the resource. </para>
+        </briefdescription>
+        <detaileddescription>
+<para>Overrides <ref refid="class_edible_growth" kindref="compound">EdibleGrowth</ref> method.</para>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>newCurrentTotalDryMass</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>New total dry mass value. </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="App/Model/IBM/Landscape/Map/TerrainCells/PatchApplicator/Resources/Growth/CellResourceInterfaceGrowth.h" line="129" column="6"/>
+      </memberdef>
+    </sectiondef>
+    <briefdescription>
+<para>Manages growth and biomass for a resource cell. </para>
+    </briefdescription>
+    <detaileddescription>
+<para>This class extends <ref refid="class_edible_growth" kindref="compound">EdibleGrowth</ref> and provides methods to update, consume, and manage the biomass of a resource cell. It maintains a link to the owning <ref refid="class_cell_resource_interface" kindref="compound">CellResourceInterface</ref> and the corresponding <ref refid="class_resource_species_growth" kindref="compound">ResourceSpeciesGrowth</ref> object. </para>
+    </detaileddescription>
+    <inheritancegraph>
+      <node id="3">
+        <label>BranchCellResourceGrowth</label>
+        <link refid="class_branch_cell_resource_growth"/>
+        <childnode refid="1" relation="public-inheritance">
+        </childnode>
+      </node>
+      <node id="4">
+        <label>CellResourceGrowth</label>
+        <link refid="class_cell_resource_growth"/>
+        <childnode refid="1" relation="public-inheritance">
+        </childnode>
+      </node>
+      <node id="1">
+        <label>CellResourceInterfaceGrowth</label>
+        <link refid="class_cell_resource_interface_growth"/>
+        <childnode refid="2" relation="public-inheritance">
+        </childnode>
+      </node>
+      <node id="2">
+        <label>EdibleGrowth</label>
+        <link refid="class_edible_growth"/>
+      </node>
+    </inheritancegraph>
+    <collaborationgraph>
+      <node id="16">
+        <label>CellElement</label>
+        <link refid="class_cell_element"/>
+      </node>
+      <node id="18">
+        <label>CellHabitatDomainInterface</label>
+        <link refid="class_cell_habitat_domain_interface"/>
+        <childnode refid="16" relation="public-inheritance">
+        </childnode>
+        <childnode refid="19" relation="usage">
+          <edgelabel>habitatDomainStatus</edgelabel>
+        </childnode>
+      </node>
+      <node id="15">
+        <label>CellMoistureInterface</label>
+        <link refid="class_cell_moisture_interface"/>
+        <childnode refid="16" relation="public-inheritance">
+        </childnode>
+        <childnode refid="8" relation="usage">
+          <edgelabel>totalMaximumResourceCapacity</edgelabel>
+        </childnode>
+      </node>
+      <node id="17">
+        <label>CellObstacleInterface</label>
+        <link refid="class_cell_obstacle_interface"/>
+        <childnode refid="16" relation="public-inheritance">
+        </childnode>
+      </node>
+      <node id="9">
+        <label>CellResourceInterface</label>
+        <link refid="class_cell_resource_interface"/>
+        <childnode refid="10" relation="public-inheritance">
+        </childnode>
+        <childnode refid="16" relation="public-inheritance">
+        </childnode>
+      </node>
+      <node id="1">
+        <label>CellResourceInterfaceGrowth</label>
+        <link refid="class_cell_resource_interface_growth"/>
+        <childnode refid="2" relation="public-inheritance">
+        </childnode>
+        <childnode refid="9" relation="usage">
+          <edgelabel>owner</edgelabel>
+        </childnode>
+      </node>
+      <node id="19">
+        <label>CustomIndexedVector&lt; AnimalSpeciesID, CustomIndexedVector&lt; Instar, bool &gt; &gt;</label>
+        <link refid="class_custom_indexed_vector"/>
+      </node>
+      <node id="5">
+        <label>CustomIndexedVector&lt; Instar, PreciseDouble &gt;</label>
+        <link refid="class_custom_indexed_vector"/>
+      </node>
+      <node id="6">
+        <label>DryMass</label>
+        <link refid="class_dry_mass"/>
+        <childnode refid="7" relation="usage">
+          <edgelabel>value</edgelabel>
+        </childnode>
+      </node>
+      <node id="10">
+        <label>Edible</label>
+        <link refid="class_edible"/>
+        <childnode refid="11" relation="usage">
+          <edgelabel>mySpecies</edgelabel>
+        </childnode>
+        <childnode refid="13" relation="usage">
+          <edgelabel>terrainCell</edgelabel>
+        </childnode>
+      </node>
+      <node id="2">
+        <label>EdibleGrowth</label>
+        <link refid="class_edible_growth"/>
+        <childnode refid="3" relation="usage">
+          <edgelabel>instar</edgelabel>
+        </childnode>
+        <childnode refid="4" relation="usage">
+          <edgelabel>speciesGrowth</edgelabel>
+        </childnode>
+        <childnode refid="6" relation="usage">
+          <edgelabel>currentTotalDryMass</edgelabel>
+        </childnode>
+        <childnode refid="8" relation="usage">
+          <edgelabel>currentTotalWetMass</edgelabel>
+        </childnode>
+      </node>
+      <node id="3">
+        <label>Instar</label>
+        <link refid="class_instar"/>
+      </node>
+      <node id="14">
+        <label>PatchApplicator</label>
+        <link refid="class_patch_applicator"/>
+        <childnode refid="13" relation="usage">
+          <edgelabel>owner</edgelabel>
+        </childnode>
+        <childnode refid="15" relation="usage">
+          <edgelabel>cellMoisture</edgelabel>
+        </childnode>
+        <childnode refid="17" relation="usage">
+          <edgelabel>cellObstacle</edgelabel>
+        </childnode>
+        <childnode refid="18" relation="usage">
+          <edgelabel>cellHabitatDomain</edgelabel>
+        </childnode>
+      </node>
+      <node id="20">
+        <label>PointMap</label>
+        <link refid="class_point_map"/>
+      </node>
+      <node id="7">
+        <label>PreciseDouble</label>
+        <link refid="class_precise_double"/>
+      </node>
+      <node id="11">
+        <label>Species</label>
+        <link refid="class_species"/>
+        <childnode refid="12" relation="usage">
+          <edgelabel>id</edgelabel>
+        </childnode>
+      </node>
+      <node id="12">
+        <label>Species::ID</label>
+        <link refid="class_species_1_1_i_d"/>
+      </node>
+      <node id="4">
+        <label>SpeciesGrowth</label>
+        <link refid="class_species_growth"/>
+        <childnode refid="3" relation="usage">
+          <edgelabel>lastInstar</edgelabel>
+        </childnode>
+        <childnode refid="5" relation="usage">
+          <edgelabel>conversionToWetMass</edgelabel>
+        </childnode>
+      </node>
+      <node id="13">
+        <label>TerrainCell</label>
+        <link refid="class_terrain_cell"/>
+        <childnode refid="14" relation="usage">
+          <edgelabel>patchApplicator</edgelabel>
+        </childnode>
+        <childnode refid="20" relation="usage">
+          <edgelabel>position</edgelabel>
+        </childnode>
+        <childnode refid="7" relation="usage">
+          <edgelabel>hyperVolume</edgelabel>
+          <edgelabel>size</edgelabel>
+        </childnode>
+      </node>
+      <node id="8">
+        <label>WetMass</label>
+        <link refid="class_wet_mass"/>
+        <childnode refid="7" relation="usage">
+          <edgelabel>value</edgelabel>
+        </childnode>
+      </node>
+    </collaborationgraph>
+    <location file="App/Model/IBM/Landscape/Map/TerrainCells/PatchApplicator/Resources/Growth/CellResourceInterfaceGrowth.h" line="38" column="1" bodyfile="App/Model/IBM/Landscape/Map/TerrainCells/PatchApplicator/Resources/Growth/CellResourceInterfaceGrowth.h" bodystart="39" bodyend="130"/>
+    <listofallmembers>
+      <member refid="class_edible_growth_1a7d13e5b64cd9dfb03e882e4fd54d8517" prot="public" virt="non-virtual"><scope>CellResourceInterfaceGrowth</scope><name>calculateWetMass</name></member>
+      <member refid="class_cell_resource_interface_growth_1a33c6cf91d2e64fe725677b157dfdfc12" prot="public" virt="non-virtual"><scope>CellResourceInterfaceGrowth</scope><name>CellResourceInterfaceGrowth</name></member>
+      <member refid="class_cell_resource_interface_growth_1a8aa80e4b3785b55fb8a381c2588f4090" prot="public" virt="non-virtual"><scope>CellResourceInterfaceGrowth</scope><name>CellResourceInterfaceGrowth</name></member>
+      <member refid="class_edible_growth_1abe02b9f653e00cfe6c32f83fa42eb98b" prot="protected" virt="non-virtual"><scope>CellResourceInterfaceGrowth</scope><name>currentTotalDryMass</name></member>
+      <member refid="class_edible_growth_1a4e20f49c4c301d19a36cf8fc9157cbbe" prot="protected" virt="non-virtual"><scope>CellResourceInterfaceGrowth</scope><name>currentTotalWetMass</name></member>
+      <member refid="class_edible_growth_1a434f78932717b2a19fa4b807f6dd1507" prot="public" virt="non-virtual"><scope>CellResourceInterfaceGrowth</scope><name>EdibleGrowth</name></member>
+      <member refid="class_edible_growth_1a695321307197847fdc3dbd449f06e911" prot="public" virt="non-virtual"><scope>CellResourceInterfaceGrowth</scope><name>EdibleGrowth</name></member>
+      <member refid="class_edible_growth_1a2765a3227b64e25fedc75e79248bf96e" prot="public" virt="non-virtual"><scope>CellResourceInterfaceGrowth</scope><name>getCurrentTotalDryMass</name></member>
+      <member refid="class_edible_growth_1a34d8ff3d9d6e7d747cfac7fac490fefe" prot="public" virt="non-virtual"><scope>CellResourceInterfaceGrowth</scope><name>getCurrentTotalWetMass</name></member>
+      <member refid="class_edible_growth_1a725bca5f926868c0bfe7a556cc8aacb3" prot="public" virt="non-virtual"><scope>CellResourceInterfaceGrowth</scope><name>getInstar</name></member>
+      <member refid="class_cell_resource_interface_growth_1a2c805edbff5598dc673ee6572aeaec60" prot="public" virt="pure-virtual"><scope>CellResourceInterfaceGrowth</scope><name>getMinimumEdibleBiomass</name></member>
+      <member refid="class_cell_resource_interface_growth_1a5413bab6e55642f7f409dfaf87e9ee8e" prot="protected" virt="non-virtual"><scope>CellResourceInterfaceGrowth</scope><name>getMutableOwner</name></member>
+      <member refid="class_cell_resource_interface_growth_1a7ff536f8888d3eb27ea5f8133d677d38" prot="protected" virt="virtual"><scope>CellResourceInterfaceGrowth</scope><name>getMutableSpeciesGrowth</name></member>
+      <member refid="class_cell_resource_interface_growth_1acfe61c5bf220a8a3ada23b09f7a91d9f" prot="protected" virt="non-virtual"><scope>CellResourceInterfaceGrowth</scope><name>getOwner</name></member>
+      <member refid="class_cell_resource_interface_growth_1a44389468d05cc1e345638430bbb551fe" prot="protected" virt="virtual"><scope>CellResourceInterfaceGrowth</scope><name>getSpeciesGrowth</name></member>
+      <member refid="class_edible_growth_1adbbef8f3ed22941d3d4456bb26fb1da0" prot="protected" virt="non-virtual"><scope>CellResourceInterfaceGrowth</scope><name>instar</name></member>
+      <member refid="class_cell_resource_interface_growth_1a7f628a8036b304fc83727f352ab34e07" prot="protected" virt="non-virtual"><scope>CellResourceInterfaceGrowth</scope><name>owner</name></member>
+      <member refid="class_cell_resource_interface_growth_1ae9982d1aff28e91857d71286f5a2dfd7" prot="public" virt="non-virtual"><scope>CellResourceInterfaceGrowth</scope><name>serialize</name></member>
+      <member refid="class_cell_resource_interface_growth_1a55890dcaad1ae7bd362fcf50708616da" prot="protected" virt="virtual"><scope>CellResourceInterfaceGrowth</scope><name>setCurrentTotalDryMass</name></member>
+      <member refid="class_edible_growth_1a098833b779eee8f4f70966777a9e5ddf" prot="public" virt="virtual"><scope>CellResourceInterfaceGrowth</scope><name>setCurrentTotalWetMass</name></member>
+      <member refid="class_edible_growth_1abb4d581339a665f99bc894576c5f6500" prot="public" virt="non-virtual"><scope>CellResourceInterfaceGrowth</scope><name>setInstar</name></member>
+      <member refid="class_cell_resource_interface_growth_1a55a7e0dddb81a837b1f47193a8adf6bb" prot="public" virt="non-virtual"><scope>CellResourceInterfaceGrowth</scope><name>setOwner</name></member>
+      <member refid="class_edible_growth_1aa4acb69101c339b4dc76b2f4773bcb10" prot="public" virt="non-virtual"><scope>CellResourceInterfaceGrowth</scope><name>setSpeciesGrowth</name></member>
+      <member refid="class_edible_growth_1ab6d39e45c0878f73dc17ec11a90b6b03" prot="protected" virt="non-virtual"><scope>CellResourceInterfaceGrowth</scope><name>speciesGrowth</name></member>
+      <member refid="class_cell_resource_interface_growth_1ac010036f47242102d738d3983b27b9a5" prot="public" virt="non-virtual"><scope>CellResourceInterfaceGrowth</scope><name>substractBiomass</name></member>
+      <member refid="class_cell_resource_interface_growth_1a0edf0643add4acdf27ccaa55d7e35400" prot="public" virt="virtual"><scope>CellResourceInterfaceGrowth</scope><name>~CellResourceInterfaceGrowth</name></member>
+      <member refid="class_edible_growth_1aa828055f5f8bc5ca0d90e2274a58afd0" prot="public" virt="virtual"><scope>CellResourceInterfaceGrowth</scope><name>~EdibleGrowth</name></member>
+    </listofallmembers>
+  </compounddef>
+</doxygen>

@@ -1,0 +1,120 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.14.0" xml:lang="en-US">
+  <compounddef id="group___reproduction_and_habitat_shift" kind="group">
+    <compoundname>ReproductionAndHabitatShift</compoundname>
+    <title>Reproduction and Habitat Shift</title>
+    <sectiondef kind="func">
+      <memberdef kind="function" id="group___reproduction_and_habitat_shift_1ga5fa356278577949b799d6bad33d1312f" prot="public" static="no" const="yes" explicit="no" inline="no" virt="non-virtual">
+        <type>const <ref refid="class_precise_double" kindref="compound">PreciseDouble</ref> &amp;</type>
+        <definition>const PreciseDouble &amp; AnimalSpecies::getHabitatShiftAfterBreedingFactor</definition>
+        <argsstring>() const</argsstring>
+        <name>getHabitatShiftAfterBreedingFactor</name>
+        <qualifiedname>AnimalSpecies::getHabitatShiftAfterBreedingFactor</qualifiedname>
+        <briefdescription>
+<para>Returns the habitat shift factor applied after breeding. </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="App/Model/IBM/Landscape/LivingBeings/Animals/Species/AnimalSpecies.h" line="271" column="21"/>
+      </memberdef>
+      <memberdef kind="function" id="group___reproduction_and_habitat_shift_1ga60581e02d179eb84f5bb6af8a48560ff" prot="public" static="no" const="yes" explicit="no" inline="no" virt="non-virtual">
+        <type>const <ref refid="class_precise_double" kindref="compound">PreciseDouble</ref> &amp;</type>
+        <definition>const PreciseDouble &amp; AnimalSpecies::getHabitatShiftBeforeBreedingFactor</definition>
+        <argsstring>() const</argsstring>
+        <name>getHabitatShiftBeforeBreedingFactor</name>
+        <qualifiedname>AnimalSpecies::getHabitatShiftBeforeBreedingFactor</qualifiedname>
+        <briefdescription>
+<para>Returns the habitat shift factor applied before breeding. </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="App/Model/IBM/Landscape/LivingBeings/Animals/Species/AnimalSpecies.h" line="266" column="21"/>
+      </memberdef>
+      <memberdef kind="function" id="group___reproduction_and_habitat_shift_1gad6b9e91adb1c6f6068b40ee885f03d6b" prot="public" static="no" const="yes" explicit="no" inline="no" virt="non-virtual">
+        <type>bool</type>
+        <definition>bool AnimalSpecies::occursHabitatShiftAfterBreeding</definition>
+        <argsstring>() const</argsstring>
+        <name>occursHabitatShiftAfterBreeding</name>
+        <qualifiedname>AnimalSpecies::occursHabitatShiftAfterBreeding</qualifiedname>
+        <briefdescription>
+<para>Returns true if the species shifts habitat after breeding. </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="App/Model/IBM/Landscape/LivingBeings/Animals/Species/AnimalSpecies.h" line="261" column="6"/>
+      </memberdef>
+      <memberdef kind="function" id="group___reproduction_and_habitat_shift_1gaf180872c36c870194c36169163a5a40a" prot="public" static="no" const="yes" explicit="no" inline="no" virt="non-virtual">
+        <type>bool</type>
+        <definition>bool AnimalSpecies::occursHabitatShiftBeforeBreeding</definition>
+        <argsstring>() const</argsstring>
+        <name>occursHabitatShiftBeforeBreeding</name>
+        <qualifiedname>AnimalSpecies::occursHabitatShiftBeforeBreeding</qualifiedname>
+        <briefdescription>
+<para>Returns true if the species shifts habitat before breeding. </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="App/Model/IBM/Landscape/LivingBeings/Animals/Species/AnimalSpecies.h" line="256" column="6"/>
+      </memberdef>
+      <memberdef kind="function" id="group___reproduction_and_habitat_shift_1gab68605cae025d082e49352b8a34b064c" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void AnimalSpecies::setHabitatShiftAfterBreeding</definition>
+        <argsstring>(const bool newHabitatShiftAfterBreedingValue, const nlohmann::json &amp;newHabitatShiftAfterBreedingFactor)</argsstring>
+        <name>setHabitatShiftAfterBreeding</name>
+        <qualifiedname>AnimalSpecies::setHabitatShiftAfterBreeding</qualifiedname>
+        <param>
+          <type>const bool</type>
+          <declname>newHabitatShiftAfterBreedingValue</declname>
+        </param>
+        <param>
+          <type>const nlohmann::json &amp;</type>
+          <declname>newHabitatShiftAfterBreedingFactor</declname>
+        </param>
+        <briefdescription>
+<para>Sets whether habitat shift occurs after breeding and updates its factor. </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="App/Model/IBM/Landscape/LivingBeings/Animals/Species/AnimalSpecies.h" line="281" column="6"/>
+      </memberdef>
+      <memberdef kind="function" id="group___reproduction_and_habitat_shift_1gafe10e99ff4d359313e9bc8793f6cc67c" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void AnimalSpecies::setHabitatShiftBeforeBreeding</definition>
+        <argsstring>(const bool newHabitatShiftBeforeBreedingValue, const nlohmann::json &amp;newHabitatShiftBeforeBreedingFactor)</argsstring>
+        <name>setHabitatShiftBeforeBreeding</name>
+        <qualifiedname>AnimalSpecies::setHabitatShiftBeforeBreeding</qualifiedname>
+        <param>
+          <type>const bool</type>
+          <declname>newHabitatShiftBeforeBreedingValue</declname>
+        </param>
+        <param>
+          <type>const nlohmann::json &amp;</type>
+          <declname>newHabitatShiftBeforeBreedingFactor</declname>
+        </param>
+        <briefdescription>
+<para>Sets whether habitat shift occurs before breeding and updates its factor. </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="App/Model/IBM/Landscape/LivingBeings/Animals/Species/AnimalSpecies.h" line="276" column="6"/>
+      </memberdef>
+    </sectiondef>
+    <briefdescription>
+<para>Controls habitat transitions linked to reproduction events. </para>
+    </briefdescription>
+    <detaileddescription>
+    </detaileddescription>
+  </compounddef>
+</doxygen>

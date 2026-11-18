@@ -1,0 +1,49 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.14.0" xml:lang="en-US">
+  <compounddef id="structfmt_1_1formatter_3_01_t_00_01char_00_01std_1_1enable__if__t_3_01std_1_1is__enum__v_3_01_t_01_4_01_4_01_4" kind="struct" language="C++" prot="public">
+    <compoundname>fmt::formatter&lt; T, char, std::enable_if_t&lt; std::is_enum_v&lt; T &gt; &gt; &gt;</compoundname>
+    <basecompoundref prot="public" virt="non-virtual">formatter&lt; string_view &gt;</basecompoundref>
+    <templateparamlist>
+      <param>
+        <type>typename T</type>
+      </param>
+    </templateparamlist>
+    <sectiondef kind="public-func">
+      <memberdef kind="function" id="structfmt_1_1formatter_3_01_t_00_01char_00_01std_1_1enable__if__t_3_01std_1_1is__enum__v_3_01_t_01_4_01_4_01_4_1a8c994529fa613843c7755a3d146ecd66" prot="public" static="no" const="yes" explicit="no" inline="yes" virt="non-virtual">
+        <templateparamlist>
+          <param>
+            <type>typename FormatContext</type>
+          </param>
+        </templateparamlist>
+        <type>auto</type>
+        <definition>auto fmt::formatter&lt; T, char, std::enable_if_t&lt; std::is_enum_v&lt; T &gt; &gt; &gt;::format</definition>
+        <argsstring>(T e, FormatContext &amp;ctx) const</argsstring>
+        <name>format</name>
+        <qualifiedname>fmt::formatter&lt; T, char, std::enable_if_t&lt; std::is_enum_v&lt; T &gt; &gt; &gt;::format</qualifiedname>
+        <param>
+          <type>T</type>
+          <declname>e</declname>
+        </param>
+        <param>
+          <type>FormatContext &amp;</type>
+          <declname>ctx</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="Misc/EnumClass.h" line="175" column="6" bodyfile="Misc/EnumClass.h" bodystart="175" bodyend="182"/>
+      </memberdef>
+    </sectiondef>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+    </detaileddescription>
+    <location file="Misc/EnumClass.h" line="173" column="1" bodyfile="Misc/EnumClass.h" bodystart="173" bodyend="183"/>
+    <listofallmembers>
+      <member refid="structfmt_1_1formatter_3_01_t_00_01char_00_01std_1_1enable__if__t_3_01std_1_1is__enum__v_3_01_t_01_4_01_4_01_4_1a8c994529fa613843c7755a3d146ecd66" prot="public" virt="non-virtual"><scope>fmt::formatter&lt; T, char, std::enable_if_t&lt; std::is_enum_v&lt; T &gt; &gt; &gt;</scope><name>format</name></member>
+    </listofallmembers>
+  </compounddef>
+</doxygen>

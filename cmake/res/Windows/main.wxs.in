@@ -6,7 +6,7 @@
     RequiredVersion="3.6.3303.0">
 
     <Product Id="$(var.CPACK_WIX_PRODUCT_GUID)"
-        Name="$(var.CPACK_PACKAGE_NAME)"
+        Name="$(var.CPACK_PACKAGE_NAME) $(var.CPACK_PACKAGE_VERSION)"
         Language="1033"
         Version="$(var.CPACK_PACKAGE_VERSION)"
         Manufacturer="$(var.CPACK_PACKAGE_VENDOR)"
@@ -32,12 +32,25 @@
                 OnlyDetect="yes" />
         </Upgrade>
 
-        <!-- Older releases shared one UpgradeCode across both editions. Detect
-             them for a clear transition notice, but never remove them blindly. -->
+        <!-- Previous releases used edition-wide UpgradeCodes. Detect them for
+             a clear transition notice, but never remove them automatically. -->
+        <Upgrade Id="457DDB36-75A2-40C3-AE4B-D7BFB0DEABD3">
+            <UpgradeVersion Minimum="0.0.0"
+                IncludeMinimum="yes"
+                Property="WEAVER_LEGACY_DESKTOP_INSTALL_DETECTED"
+                OnlyDetect="yes" />
+        </Upgrade>
+        <Upgrade Id="AEF73571-A7AD-42B7-8043-A26A9C07AB88">
+            <UpgradeVersion Minimum="0.0.0"
+                IncludeMinimum="yes"
+                Property="WEAVER_LEGACY_SERVER_INSTALL_DETECTED"
+                OnlyDetect="yes" />
+        </Upgrade>
+        <!-- The oldest releases shared this UpgradeCode across editions. -->
         <Upgrade Id="86D6D602-CCC2-4BE3-A83C-4D9D7A61FAE0">
             <UpgradeVersion Minimum="0.0.0"
                 IncludeMinimum="yes"
-                Property="WEAVER_LEGACY_INSTALL_DETECTED"
+                Property="WEAVER_LEGACY_SHARED_INSTALL_DETECTED"
                 OnlyDetect="yes" />
         </Upgrade>
 

@@ -59,6 +59,7 @@ using SegmentModel = boost::geometry::model::segment<PointContinuous>;
 
 /**
  * @class Geometry
+ * @ingroup weaver_landscape
  * @brief Provides static geometric operations for spatial modeling.
  *
  * The Geometry class includes methods for creating geometric shapes,

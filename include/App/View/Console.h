@@ -30,6 +30,7 @@
 
 /**
  * @class Console
+ * @ingroup weaver_model
  * @brief Console-based implementation of the View interface.
  *
  * Allows interaction with the user via standard input/output to select run modes,

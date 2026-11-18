@@ -1,0 +1,134 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.14.0" xml:lang="en-US">
+  <compounddef id="group___species_metabolism_attributes" kind="group">
+    <compoundname>SpeciesMetabolismAttributes</compoundname>
+    <title>Metabolism, Plasticity and Environmental Tolerance</title>
+    <sectiondef kind="var">
+      <memberdef kind="variable" id="group___species_metabolism_attributes_1ga5bf3ac1a3e08f00a30a739c0ab3ebb07" prot="protected" static="no" mutable="no">
+        <type><ref refid="class_custom_indexed_vector" kindref="compound">CustomIndexedVector</ref>&lt; <ref refid="class_instar" kindref="compound">Instar</ref>, <ref refid="class_precise_double" kindref="compound">PreciseDouble</ref> &gt;</type>
+        <definition>CustomIndexedVector&lt;Instar, PreciseDouble&gt; AnimalSpecies::minRelativeHumidityThreshold</definition>
+        <argsstring></argsstring>
+        <name>minRelativeHumidityThreshold</name>
+        <qualifiedname>AnimalSpecies::minRelativeHumidityThreshold</qualifiedname>
+        <briefdescription>
+<para>Minimum humidity threshold per instar for survival. </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="App/Model/IBM/Landscape/LivingBeings/Animals/Species/AnimalSpecies.h" line="781" column="21" bodyfile="App/Model/IBM/Landscape/LivingBeings/Animals/Species/AnimalSpecies.h" bodystart="781" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="group___species_metabolism_attributes_1gacb44311044c129ecfbc4f71e0c198fe5" prot="protected" static="no" mutable="no">
+        <type>float</type>
+        <definition>float AnimalSpecies::percentageCostForMetabolicDownregulationSearchArea</definition>
+        <argsstring></argsstring>
+        <name>percentageCostForMetabolicDownregulationSearchArea</name>
+        <qualifiedname>AnimalSpecies::percentageCostForMetabolicDownregulationSearchArea</qualifiedname>
+        <briefdescription>
+<para>Cost of metabolic downregulation reducing search area. </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="App/Model/IBM/Landscape/LivingBeings/Animals/Species/AnimalSpecies.h" line="799" column="7" bodyfile="App/Model/IBM/Landscape/LivingBeings/Animals/Species/AnimalSpecies.h" bodystart="799" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="group___species_metabolism_attributes_1ga50d704383d0876a09828b3af7acbd87f" prot="protected" static="no" mutable="no">
+        <type>float</type>
+        <definition>float AnimalSpecies::percentageCostForMetabolicDownregulationSpeed</definition>
+        <argsstring></argsstring>
+        <name>percentageCostForMetabolicDownregulationSpeed</name>
+        <qualifiedname>AnimalSpecies::percentageCostForMetabolicDownregulationSpeed</qualifiedname>
+        <briefdescription>
+<para>Cost of metabolic downregulation reducing movement speed. </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="App/Model/IBM/Landscape/LivingBeings/Animals/Species/AnimalSpecies.h" line="802" column="7" bodyfile="App/Model/IBM/Landscape/LivingBeings/Animals/Species/AnimalSpecies.h" bodystart="802" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="group___species_metabolism_attributes_1ga8ced02d1caf0c31fe96bc62c8a26b81c" prot="protected" static="no" mutable="no">
+        <type>float</type>
+        <definition>float AnimalSpecies::percentageCostForMetabolicDownregulationVoracity</definition>
+        <argsstring></argsstring>
+        <name>percentageCostForMetabolicDownregulationVoracity</name>
+        <qualifiedname>AnimalSpecies::percentageCostForMetabolicDownregulationVoracity</qualifiedname>
+        <briefdescription>
+<para>Cost of metabolic downregulation affecting voracity. </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="App/Model/IBM/Landscape/LivingBeings/Animals/Species/AnimalSpecies.h" line="796" column="7" bodyfile="App/Model/IBM/Landscape/LivingBeings/Animals/Species/AnimalSpecies.h" bodystart="796" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="group___species_metabolism_attributes_1ga6ef4549d3847c15480a25316a4e9f852" prot="protected" static="no" mutable="no">
+        <type>float</type>
+        <definition>float AnimalSpecies::percentageMetabolicDownregulation</definition>
+        <argsstring></argsstring>
+        <name>percentageMetabolicDownregulation</name>
+        <qualifiedname>AnimalSpecies::percentageMetabolicDownregulation</qualifiedname>
+        <briefdescription>
+<para>Percentage of metabolic downregulation under starvation. </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="App/Model/IBM/Landscape/LivingBeings/Animals/Species/AnimalSpecies.h" line="793" column="7" bodyfile="App/Model/IBM/Landscape/LivingBeings/Animals/Species/AnimalSpecies.h" bodystart="793" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="group___species_metabolism_attributes_1gab740fd826e725285dcf41158f3cedf29" prot="protected" static="no" mutable="no">
+        <type><ref refid="class_precise_double" kindref="compound">PreciseDouble</ref></type>
+        <definition>PreciseDouble AnimalSpecies::plasticityDueToConditionSearch</definition>
+        <argsstring></argsstring>
+        <name>plasticityDueToConditionSearch</name>
+        <qualifiedname>AnimalSpecies::plasticityDueToConditionSearch</qualifiedname>
+        <briefdescription>
+<para>Plasticity of search behavior depending on internal condition. </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="App/Model/IBM/Landscape/LivingBeings/Animals/Species/AnimalSpecies.h" line="784" column="15" bodyfile="App/Model/IBM/Landscape/LivingBeings/Animals/Species/AnimalSpecies.h" bodystart="784" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="group___species_metabolism_attributes_1ga14a3d09bb566755eed5c37834ddcf677" prot="protected" static="no" mutable="no">
+        <type><ref refid="class_precise_double" kindref="compound">PreciseDouble</ref></type>
+        <definition>PreciseDouble AnimalSpecies::plasticityDueToConditionSpeed</definition>
+        <argsstring></argsstring>
+        <name>plasticityDueToConditionSpeed</name>
+        <qualifiedname>AnimalSpecies::plasticityDueToConditionSpeed</qualifiedname>
+        <briefdescription>
+<para>Plasticity of movement speed depending on internal condition. </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="App/Model/IBM/Landscape/LivingBeings/Animals/Species/AnimalSpecies.h" line="787" column="15" bodyfile="App/Model/IBM/Landscape/LivingBeings/Animals/Species/AnimalSpecies.h" bodystart="787" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="group___species_metabolism_attributes_1gab30956895483bbc15202f6fed810d0cc" prot="protected" static="no" mutable="no">
+        <type><ref refid="class_time_step" kindref="compound">TimeStep</ref></type>
+        <definition>TimeStep AnimalSpecies::timeStepsWithoutFoodForMetabolicDownregulation</definition>
+        <argsstring></argsstring>
+        <name>timeStepsWithoutFoodForMetabolicDownregulation</name>
+        <qualifiedname>AnimalSpecies::timeStepsWithoutFoodForMetabolicDownregulation</qualifiedname>
+        <briefdescription>
+<para>Time without food before metabolic downregulation begins. </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="App/Model/IBM/Landscape/LivingBeings/Animals/Species/AnimalSpecies.h" line="790" column="10" bodyfile="App/Model/IBM/Landscape/LivingBeings/Animals/Species/AnimalSpecies.h" bodystart="790" bodyend="-1"/>
+      </memberdef>
+    </sectiondef>
+    <briefdescription>
+<para>Physiological parameters controlling metabolism, humidity tolerance and plasticity. </para>
+    </briefdescription>
+    <detaileddescription>
+    </detaileddescription>
+  </compounddef>
+</doxygen>

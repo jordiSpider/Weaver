@@ -21,6 +21,7 @@
 
 /**
  * @class Object
+ * @ingroup weaver_validation
  * @brief Represents a JSON object element with nested properties and conditional rules.
  *
  * Inherits from Element. Supports standard properties, pattern-based properties,

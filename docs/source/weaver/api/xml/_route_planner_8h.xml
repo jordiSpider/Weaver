@@ -1,0 +1,260 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.14.0" xml:lang="en-US">
+  <compounddef id="_route_planner_8h" kind="file" language="C++">
+    <compoundname>RoutePlanner.h</compoundname>
+    <includes local="no">cstddef</includes>
+    <includes local="no">vector</includes>
+    <includes refid="_navigation_route_8h" local="yes">App/Model/IBM/Landscape/Map/Navigation/NavigationRoute.h</includes>
+    <includes refid="_point_continuous_8h" local="yes">App/Model/IBM/Landscape/Map/Points/PointContinuous.h</includes>
+    <includes refid="_precise_double_8h" local="yes">Misc/Maths/PreciseDouble.h</includes>
+    <includedby refid="_destination_selection_policy_8h" local="yes">App/Model/IBM/Landscape/Map/Navigation/DestinationSelectionPolicy.h</includedby>
+    <incdepgraph>
+      <node id="4">
+        <label>App/Model/IBM/Landscape/Map/Navigation/NavigationRoute.h</label>
+        <link refid="_navigation_route_8h_source"/>
+        <childnode refid="2" relation="include">
+        </childnode>
+        <childnode refid="3" relation="include">
+        </childnode>
+        <childnode refid="5" relation="include">
+        </childnode>
+        <childnode refid="24" relation="include">
+        </childnode>
+      </node>
+      <node id="1">
+        <label>App/Model/IBM/Landscape/Map/Navigation/RoutePlanner.h</label>
+        <link refid="_route_planner_8h"/>
+        <childnode refid="2" relation="include">
+        </childnode>
+        <childnode refid="3" relation="include">
+        </childnode>
+        <childnode refid="4" relation="include">
+        </childnode>
+        <childnode refid="5" relation="include">
+        </childnode>
+        <childnode refid="18" relation="include">
+        </childnode>
+      </node>
+      <node id="27">
+        <label>App/Model/IBM/Landscape/Map/Points/Axis.h</label>
+        <link refid="_axis_8h_source"/>
+      </node>
+      <node id="5">
+        <label>App/Model/IBM/Landscape/Map/Points/PointContinuous.h</label>
+        <link refid="_point_continuous_8h_source"/>
+        <childnode refid="3" relation="include">
+        </childnode>
+        <childnode refid="6" relation="include">
+        </childnode>
+        <childnode refid="7" relation="include">
+        </childnode>
+        <childnode refid="8" relation="include">
+        </childnode>
+        <childnode refid="9" relation="include">
+        </childnode>
+        <childnode refid="10" relation="include">
+        </childnode>
+        <childnode refid="11" relation="include">
+        </childnode>
+        <childnode refid="12" relation="include">
+        </childnode>
+        <childnode refid="13" relation="include">
+        </childnode>
+        <childnode refid="14" relation="include">
+        </childnode>
+        <childnode refid="15" relation="include">
+        </childnode>
+        <childnode refid="18" relation="include">
+        </childnode>
+      </node>
+      <node id="24">
+        <label>App/Model/IBM/Landscape/Map/Points/PointMap.h</label>
+        <link refid="_point_map_8h_source"/>
+        <childnode refid="17" relation="include">
+        </childnode>
+        <childnode refid="25" relation="include">
+        </childnode>
+        <childnode refid="3" relation="include">
+        </childnode>
+        <childnode refid="21" relation="include">
+        </childnode>
+        <childnode refid="26" relation="include">
+        </childnode>
+        <childnode refid="11" relation="include">
+        </childnode>
+        <childnode refid="12" relation="include">
+        </childnode>
+        <childnode refid="13" relation="include">
+        </childnode>
+        <childnode refid="14" relation="include">
+        </childnode>
+        <childnode refid="27" relation="include">
+        </childnode>
+        <childnode refid="15" relation="include">
+        </childnode>
+      </node>
+      <node id="15">
+        <label>Exceptions/LineInfoException.h</label>
+        <link refid="_line_info_exception_8h_source"/>
+        <childnode refid="16" relation="include">
+        </childnode>
+        <childnode refid="17" relation="include">
+        </childnode>
+      </node>
+      <node id="18">
+        <label>Misc/Maths/PreciseDouble.h</label>
+        <link refid="_precise_double_8h_source"/>
+        <childnode refid="11" relation="include">
+        </childnode>
+        <childnode refid="12" relation="include">
+        </childnode>
+        <childnode refid="13" relation="include">
+        </childnode>
+        <childnode refid="14" relation="include">
+        </childnode>
+        <childnode refid="8" relation="include">
+        </childnode>
+        <childnode refid="17" relation="include">
+        </childnode>
+        <childnode refid="19" relation="include">
+        </childnode>
+        <childnode refid="20" relation="include">
+        </childnode>
+        <childnode refid="21" relation="include">
+        </childnode>
+        <childnode refid="22" relation="include">
+        </childnode>
+        <childnode refid="23" relation="include">
+        </childnode>
+      </node>
+      <node id="20">
+        <label>algorithm</label>
+      </node>
+      <node id="13">
+        <label>boost/archive/binary_iarchive.hpp</label>
+      </node>
+      <node id="14">
+        <label>boost/archive/binary_oarchive.hpp</label>
+      </node>
+      <node id="11">
+        <label>boost/archive/text_iarchive.hpp</label>
+      </node>
+      <node id="12">
+        <label>boost/archive/text_oarchive.hpp</label>
+      </node>
+      <node id="7">
+        <label>boost/geometry/core/cs.hpp</label>
+      </node>
+      <node id="6">
+        <label>boost/geometry/geometries/point.hpp</label>
+      </node>
+      <node id="10">
+        <label>boost/serialization/vector.hpp</label>
+      </node>
+      <node id="19">
+        <label>cmath</label>
+      </node>
+      <node id="2">
+        <label>cstddef</label>
+      </node>
+      <node id="16">
+        <label>exception</label>
+      </node>
+      <node id="9">
+        <label>fmt/compile.h</label>
+      </node>
+      <node id="8">
+        <label>fmt/format.h</label>
+      </node>
+      <node id="23">
+        <label>functional</label>
+      </node>
+      <node id="21">
+        <label>iostream</label>
+      </node>
+      <node id="22">
+        <label>limits</label>
+      </node>
+      <node id="25">
+        <label>magic_enum/magic_enum.hpp</label>
+      </node>
+      <node id="26">
+        <label>memory</label>
+      </node>
+      <node id="17">
+        <label>string</label>
+      </node>
+      <node id="3">
+        <label>vector</label>
+      </node>
+    </incdepgraph>
+    <invincdepgraph>
+      <node id="2">
+        <label>App/Model/IBM/Landscape/Map/Navigation/DestinationSelectionPolicy.h</label>
+        <link refid="_destination_selection_policy_8h_source"/>
+      </node>
+      <node id="1">
+        <label>App/Model/IBM/Landscape/Map/Navigation/RoutePlanner.h</label>
+        <link refid="_route_planner_8h"/>
+        <childnode refid="2" relation="include">
+        </childnode>
+      </node>
+    </invincdepgraph>
+    <innerclass refid="class_a_star_route_planner" prot="public">AStarRoutePlanner</innerclass>
+    <innerclass refid="struct_route_goal" prot="public">RouteGoal</innerclass>
+    <innerclass refid="class_route_planner" prot="public">RoutePlanner</innerclass>
+    <innerclass refid="struct_route_plan_result" prot="public">RoutePlanResult</innerclass>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+    </detaileddescription>
+    <programlisting>
+<codeline lineno="1"><highlight class="preprocessor">#ifndef<sp/>ROUTE_PLANNER_H_</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="2"><highlight class="normal"></highlight><highlight class="preprocessor">#define<sp/>ROUTE_PLANNER_H_</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="3"><highlight class="normal"></highlight></codeline>
+<codeline lineno="4"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&lt;cstddef&gt;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="5"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&lt;vector&gt;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="6"><highlight class="normal"></highlight></codeline>
+<codeline lineno="7"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&quot;App/Model/IBM/Landscape/Map/Navigation/NavigationRoute.h&quot;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="8"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&quot;App/Model/IBM/Landscape/Map/Points/PointContinuous.h&quot;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="9"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&quot;Misc/Maths/PreciseDouble.h&quot;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="10"><highlight class="normal"></highlight></codeline>
+<codeline lineno="11"><highlight class="normal"></highlight><highlight class="keyword">class<sp/></highlight><highlight class="normal"><ref refid="class_animal_non_statistical" kindref="compound">AnimalNonStatistical</ref>;</highlight></codeline>
+<codeline lineno="12"><highlight class="normal"></highlight><highlight class="keyword">class<sp/></highlight><highlight class="normal">RouteCostPolicy;</highlight></codeline>
+<codeline lineno="13"><highlight class="normal"></highlight><highlight class="keyword">class<sp/></highlight><highlight class="normal">RouteDestinationSelectionPolicy;</highlight></codeline>
+<codeline lineno="14"><highlight class="normal"></highlight><highlight class="keyword">class<sp/></highlight><highlight class="normal"><ref refid="class_map" kindref="compound">Map</ref>;</highlight></codeline>
+<codeline lineno="15"><highlight class="normal"></highlight><highlight class="keyword">class<sp/></highlight><highlight class="normal"><ref refid="class_terrain_cell" kindref="compound">TerrainCell</ref>;</highlight></codeline>
+<codeline lineno="16"><highlight class="normal"></highlight></codeline>
+<codeline lineno="17"><highlight class="normal"></highlight><highlight class="keyword">struct<sp/></highlight><highlight class="normal">RouteGoal</highlight></codeline>
+<codeline lineno="18"><highlight class="normal">{</highlight></codeline>
+<codeline lineno="19"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/>TerrainCell*<sp/>cell;</highlight></codeline>
+<codeline lineno="20"><highlight class="normal"><sp/><sp/><sp/><sp/>PointContinuous<sp/>position;</highlight></codeline>
+<codeline lineno="21"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">size_t</highlight><highlight class="normal"><sp/>priority;</highlight></codeline>
+<codeline lineno="22"><highlight class="normal">};</highlight></codeline>
+<codeline lineno="23"><highlight class="normal"></highlight></codeline>
+<codeline lineno="24"><highlight class="normal"></highlight><highlight class="keyword">struct<sp/></highlight><highlight class="normal">RoutePlanResult</highlight></codeline>
+<codeline lineno="25"><highlight class="normal">{</highlight></codeline>
+<codeline lineno="26"><highlight class="normal"><sp/><sp/><sp/><sp/>NavigationRoute<sp/>route;</highlight></codeline>
+<codeline lineno="27"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">size_t</highlight><highlight class="normal"><sp/>goalIndex;</highlight></codeline>
+<codeline lineno="28"><highlight class="normal">};</highlight></codeline>
+<codeline lineno="29"><highlight class="normal"></highlight></codeline>
+<codeline lineno="30"><highlight class="normal"></highlight><highlight class="keyword">class<sp/></highlight><highlight class="normal">RoutePlanner</highlight></codeline>
+<codeline lineno="31"><highlight class="normal">{</highlight></codeline>
+<codeline lineno="32"><highlight class="normal"></highlight><highlight class="keyword">public</highlight><highlight class="normal">:</highlight></codeline>
+<codeline lineno="33"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">virtual</highlight><highlight class="normal"><sp/>~RoutePlanner()<sp/>=<sp/></highlight><highlight class="keywordflow">default</highlight><highlight class="normal">;</highlight></codeline>
+<codeline lineno="34"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">virtual</highlight><highlight class="normal"><sp/>NavigationRoute<sp/>planRoute(</highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/>Map&amp;<sp/>map,<sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/>TerrainCell&amp;<sp/>start,<sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/>TerrainCell&amp;<sp/>goal,<sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/>PointContinuous&amp;<sp/>startPosition,<sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/>PointContinuous&amp;<sp/>goalPosition,<sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/>AnimalNonStatistical&amp;<sp/>animal,<sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/>PreciseDouble&amp;<sp/>animalBodySection,<sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/>RouteCostPolicy&amp;<sp/>costPolicy)<sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/>=<sp/>0;</highlight></codeline>
+<codeline lineno="35"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">virtual</highlight><highlight class="normal"><sp/>RoutePlanResult<sp/>planRouteToBestGoal(</highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/>Map&amp;<sp/>map,<sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/>TerrainCell&amp;<sp/>start,<sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/>PointContinuous&amp;<sp/>startPosition,<sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/>std::vector&lt;RouteGoal&gt;&amp;<sp/>goals,<sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/>AnimalNonStatistical&amp;<sp/>animal,<sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/>PreciseDouble&amp;<sp/>animalBodySection,<sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/>RouteCostPolicy&amp;<sp/>costPolicy,<sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/>RouteDestinationSelectionPolicy&amp;<sp/>selectionPolicy)<sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/>=<sp/>0;</highlight></codeline>
+<codeline lineno="36"><highlight class="normal">};</highlight></codeline>
+<codeline lineno="37"><highlight class="normal"></highlight></codeline>
+<codeline lineno="38"><highlight class="normal"></highlight><highlight class="keyword">class<sp/></highlight><highlight class="normal">AStarRoutePlanner<sp/>final<sp/>:<sp/></highlight><highlight class="keyword">public</highlight><highlight class="normal"><sp/>RoutePlanner</highlight></codeline>
+<codeline lineno="39"><highlight class="normal">{</highlight></codeline>
+<codeline lineno="40"><highlight class="normal"></highlight><highlight class="keyword">public</highlight><highlight class="normal">:</highlight></codeline>
+<codeline lineno="41"><highlight class="normal"><sp/><sp/><sp/><sp/>NavigationRoute<sp/>planRoute(</highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/>Map&amp;<sp/>map,<sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/>TerrainCell&amp;<sp/>start,<sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/>TerrainCell&amp;<sp/>goal,<sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/>PointContinuous&amp;<sp/>startPosition,<sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/>PointContinuous&amp;<sp/>goalPosition,<sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/>AnimalNonStatistical&amp;<sp/>animal,<sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/>PreciseDouble&amp;<sp/>animalBodySection,<sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/>RouteCostPolicy&amp;<sp/>costPolicy)<sp/></highlight><highlight class="keyword">const<sp/>override</highlight><highlight class="normal">;</highlight></codeline>
+<codeline lineno="42"><highlight class="normal"><sp/><sp/><sp/><sp/>RoutePlanResult<sp/>planRouteToBestGoal(</highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/>Map&amp;<sp/>map,<sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/>TerrainCell&amp;<sp/>start,<sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/>PointContinuous&amp;<sp/>startPosition,<sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/>std::vector&lt;RouteGoal&gt;&amp;<sp/>goals,<sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/>AnimalNonStatistical&amp;<sp/>animal,<sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/>PreciseDouble&amp;<sp/>animalBodySection,<sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/>RouteCostPolicy&amp;<sp/>costPolicy,<sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/>RouteDestinationSelectionPolicy&amp;<sp/>selectionPolicy)<sp/></highlight><highlight class="keyword">const<sp/>override</highlight><highlight class="normal">;</highlight></codeline>
+<codeline lineno="43"><highlight class="normal">};</highlight></codeline>
+<codeline lineno="44"><highlight class="normal"></highlight></codeline>
+<codeline lineno="45"><highlight class="normal"></highlight><highlight class="preprocessor">#endif</highlight></codeline>
+    </programlisting>
+    <location file="App/Model/IBM/Landscape/Map/Navigation/RoutePlanner.h"/>
+  </compounddef>
+</doxygen>

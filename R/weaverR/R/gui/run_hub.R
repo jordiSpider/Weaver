@@ -94,6 +94,11 @@ run_hub <- function(...) {
   # 2. SERVER ROUTING INTERCEPTORS & LIFECYCLE ENGINE
   # ============================================================================
   hub_server <- function(input, output, session) {
+    session$onSessionEnded(function() {
+      message("[Hub Lifecycle] Browser session ended; stopping the Shiny server.")
+      shiny::stopApp()
+    })
+
     message("[weaverR] Core ecosystem state infrastructure framework listening.")
     shared_system_volumes <- shinyFiles::getVolumes()()
     shinyFiles::shinyFileChoose(input, "optimization_template_file_picker", roots = shared_system_volumes, session = session, pattern = "^.*\\.[jJ][sS][oO][nN]$")
@@ -776,8 +781,7 @@ run_hub <- function(...) {
     # --- APP SHUTDOWN ORCHESTRATION ---
     observeEvent(input$btn_terminate_hub, {
       message("[Hub Lifecycle] Termination sequence initialized by user trigger.")
-      session$sendCustomMessage(type = 'close_browser_window', message = list())
-      stopApp()
+      session$sendCustomMessage(type = "close_browser_window", message = list())
     })
   }
 

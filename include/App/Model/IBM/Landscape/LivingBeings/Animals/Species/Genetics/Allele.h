@@ -19,6 +19,7 @@
 
 /**
  * @class Allele
+ * @ingroup weaver_landscape
  * @brief Represents a genetic allele with a value and an alphabetic order.
  *
  * The Allele class stores a numerical value representing the strength or effect of the allele,

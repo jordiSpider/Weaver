@@ -1,0 +1,30 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.14.0" xml:lang="en-US">
+  <compounddef id="struct_navigation_route" kind="struct" language="C++" prot="public">
+    <compoundname>NavigationRoute</compoundname>
+    <sectiondef kind="public-attrib">
+      <memberdef kind="variable" id="struct_navigation_route_1a935a4d07631d691244083fb975251651" prot="public" static="no" mutable="no">
+        <type>std::vector&lt; NavigationWaypoint &gt;</type>
+        <definition>std::vector&lt;NavigationWaypoint&gt; NavigationRoute::waypoints</definition>
+        <argsstring></argsstring>
+        <name>waypoints</name>
+        <qualifiedname>NavigationRoute::waypoints</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="App/Model/IBM/Landscape/Map/Navigation/NavigationRoute.h" line="18" column="13" bodyfile="App/Model/IBM/Landscape/Map/Navigation/NavigationRoute.h" bodystart="18" bodyend="-1"/>
+      </memberdef>
+    </sectiondef>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+    </detaileddescription>
+    <location file="App/Model/IBM/Landscape/Map/Navigation/NavigationRoute.h" line="16" column="1" bodyfile="App/Model/IBM/Landscape/Map/Navigation/NavigationRoute.h" bodystart="17" bodyend="19"/>
+    <listofallmembers>
+      <member refid="struct_navigation_route_1a935a4d07631d691244083fb975251651" prot="public" virt="non-virtual"><scope>NavigationRoute</scope><name>waypoints</name></member>
+    </listofallmembers>
+  </compounddef>
+</doxygen>

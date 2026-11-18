@@ -83,6 +83,7 @@ public:
 
 /**
  * @class GUI
+ * @ingroup weaver_model
  * @brief Graphical User Interface class derived from View.
  *
  * Implements a GUI using the Nana library. Allows selection of run mode, input/output paths,

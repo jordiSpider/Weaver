@@ -31,6 +31,7 @@ class BranchTerrainCell;
 
 /**
  * @class LeafTerrainCell
+ * @ingroup weaver_landscape
  * @brief Represents a leaf terrain cell in a spatial tree.
  *
  * Leaf cells are the terminal nodes of the spatial tree. They store animals

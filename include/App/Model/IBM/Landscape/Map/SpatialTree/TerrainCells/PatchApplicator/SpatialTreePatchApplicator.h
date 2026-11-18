@@ -19,6 +19,7 @@
 
 /**
  * @class SpatialTreePatchApplicator
+ * @ingroup weaver_landscape
  * @brief Abstract class for applying environmental patches to a spatial tree of terrain cells.
  *
  * This class extends PatchApplicator and adds functionality specific to the

@@ -25,6 +25,7 @@
 
 /**
  * @class Model
+ * @ingroup weaver_model
  * @brief Abstract base class for all simulation models in the Weaver framework.
  *
  * The `Model` class establishes the interface that all derived simulation models must follow.
@@ -34,7 +35,7 @@
  * The derived classes (e.g., `IBM`) implement specific simulation logic while conforming to
  * this standardized structure.
  *
- * ### Responsibilities
+ * @par Responsibilities
  * - Define the contract for simulation execution (`run`).
  * - Provide a common base for polymorphic use across different model types.
  */

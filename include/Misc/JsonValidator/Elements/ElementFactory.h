@@ -25,6 +25,7 @@
 
 /**
  * @class ElementFactory
+ * @ingroup weaver_validation
  * @brief Factory for constructing Element objects.
  *
  * Provides static methods to create new Element instances either from a JSON configuration

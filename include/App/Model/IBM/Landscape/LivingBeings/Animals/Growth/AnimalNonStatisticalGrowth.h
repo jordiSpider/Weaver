@@ -22,6 +22,7 @@ class AnimalNonStatistical;
 
 /**
  * @class AnimalNonStatisticalGrowth
+ * @ingroup weaver_landscape
  * @brief Represents the growth dynamics of individual animals in a non-statistical simulation.
  * 
  * This class handles growth, maturation, reproduction, molting, diapause, and energy tank management

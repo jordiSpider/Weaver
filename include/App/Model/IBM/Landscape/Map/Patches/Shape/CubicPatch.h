@@ -17,6 +17,7 @@
 
 /**
  * @class CubicPatch
+ * @ingroup weaver_landscape
  * @brief Represents a cuboidal patch shape.
  *
  * The CubicPatch class extends PatchShape and provides functionality to define

@@ -21,6 +21,7 @@
 
 /**
  * @class TraitTemperatureSection
+ * @ingroup weaver_landscape
  * @brief Represents the temperature-dependent part of a trait.
  *
  * This class provides the interface for managing temperature-specific aspects of traits,

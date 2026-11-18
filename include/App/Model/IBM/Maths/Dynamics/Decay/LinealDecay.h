@@ -17,6 +17,7 @@
 
 /**
  * @class LinealDecay
+ * @ingroup weaver_model
  * @brief Implements linear decay dynamics.
  *
  * This class decreases a value linearly over time according to a specified decay rate.

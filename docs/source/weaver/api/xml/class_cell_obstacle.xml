@@ -1,0 +1,235 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.14.0" xml:lang="en-US">
+  <compounddef id="class_cell_obstacle" kind="class" language="C++" prot="public">
+    <compoundname>CellObstacle</compoundname>
+    <basecompoundref refid="class_cell_obstacle_interface" prot="public" virt="non-virtual">CellObstacleInterface</basecompoundref>
+    <includes refid="_cell_obstacle_8h" local="no">CellObstacle.h</includes>
+    <sectiondef kind="public-func">
+      <memberdef kind="function" id="class_cell_obstacle_1a9ae15ac16bf46fb5af441735ce90113a" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type></type>
+        <definition>CellObstacle::CellObstacle</definition>
+        <argsstring>()</argsstring>
+        <name>CellObstacle</name>
+        <qualifiedname>CellObstacle::CellObstacle</qualifiedname>
+        <briefdescription>
+<para>Default constructor. </para>
+        </briefdescription>
+        <detaileddescription>
+<para>Initializes the cell without obstacles and default patch priority. </para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="App/Model/IBM/Landscape/Map/TerrainCells/PatchApplicator/Obstacle/CellObstacle.h" line="42" column="5"/>
+      </memberdef>
+      <memberdef kind="function" id="class_cell_obstacle_1ab32555bd0ca51d7d7d4a5ea229527911" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type></type>
+        <definition>CellObstacle::CellObstacle</definition>
+        <argsstring>(const CellObstacle &amp;)=delete</argsstring>
+        <name>CellObstacle</name>
+        <qualifiedname>CellObstacle::CellObstacle</qualifiedname>
+        <param>
+          <type>const <ref refid="class_cell_obstacle" kindref="compound">CellObstacle</ref> &amp;</type>
+        </param>
+        <briefdescription>
+<para>Copy constructor deleted to prevent copying. </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="App/Model/IBM/Landscape/Map/TerrainCells/PatchApplicator/Obstacle/CellObstacle.h" line="55" column="5"/>
+      </memberdef>
+      <memberdef kind="function" id="class_cell_obstacle_1aed2c42535d742b82cc1bab0f535a453d" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type></type>
+        <definition>CellObstacle::CellObstacle</definition>
+        <argsstring>(const size_t newObstaclePatchPriority)</argsstring>
+        <name>CellObstacle</name>
+        <qualifiedname>CellObstacle::CellObstacle</qualifiedname>
+        <param>
+          <type>const size_t</type>
+          <declname>newObstaclePatchPriority</declname>
+        </param>
+        <briefdescription>
+<para>Constructor with obstacle patch priority. </para>
+        </briefdescription>
+        <detaileddescription>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>newObstaclePatchPriority</parametername>
+</parameternamelist>
+<parameterdescription>
+<para><ref refid="class_patch" kindref="compound">Patch</ref> priority of the obstacle for this cell. </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="App/Model/IBM/Landscape/Map/TerrainCells/PatchApplicator/Obstacle/CellObstacle.h" line="49" column="5"/>
+      </memberdef>
+      <memberdef kind="function" id="class_cell_obstacle_1af2c8f66b98135eb0c1e91580ad754384" prot="public" static="no" const="no" explicit="no" inline="no" virt="virtual">
+        <type></type>
+        <definition>virtual CellObstacle::~CellObstacle</definition>
+        <argsstring>()</argsstring>
+        <name>~CellObstacle</name>
+        <qualifiedname>CellObstacle::~CellObstacle</qualifiedname>
+        <briefdescription>
+<para>Virtual destructor. </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="App/Model/IBM/Landscape/Map/TerrainCells/PatchApplicator/Obstacle/CellObstacle.h" line="52" column="13"/>
+      </memberdef>
+      <memberdef kind="function" id="class_cell_obstacle_1a495d924939a8d75f41fea96de3f976ed" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type><ref refid="class_cell_obstacle" kindref="compound">CellObstacle</ref> &amp;</type>
+        <definition>CellObstacle &amp; CellObstacle::operator=</definition>
+        <argsstring>(const CellObstacle &amp;)=delete</argsstring>
+        <name>operator=</name>
+        <qualifiedname>CellObstacle::operator=</qualifiedname>
+        <param>
+          <type>const <ref refid="class_cell_obstacle" kindref="compound">CellObstacle</ref> &amp;</type>
+        </param>
+        <briefdescription>
+<para>Copy assignment deleted to prevent copying. </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="App/Model/IBM/Landscape/Map/TerrainCells/PatchApplicator/Obstacle/CellObstacle.h" line="58" column="18"/>
+      </memberdef>
+      <memberdef kind="function" id="class_cell_obstacle_1a7d4d5a05abdd78bdbdad3214e652a5c3" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <templateparamlist>
+          <param>
+            <type>class Archive</type>
+          </param>
+        </templateparamlist>
+        <type>void</type>
+        <definition>void CellObstacle::serialize</definition>
+        <argsstring>(Archive &amp;ar, const unsigned int version)</argsstring>
+        <name>serialize</name>
+        <qualifiedname>CellObstacle::serialize</qualifiedname>
+        <param>
+          <type>Archive &amp;</type>
+          <declname>ar</declname>
+        </param>
+        <param>
+          <type>const unsigned int</type>
+          <declname>version</declname>
+        </param>
+        <briefdescription>
+<para>Serialization method for Boost or other archives. </para>
+        </briefdescription>
+        <detaileddescription>
+<para><parameterlist kind="templateparam"><parameteritem>
+<parameternamelist>
+<parametername>Archive</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Archive type. </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>ar</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Archive object. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>version</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Version number of the class. </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="App/Model/IBM/Landscape/Map/TerrainCells/PatchApplicator/Obstacle/CellObstacle.h" line="68" column="10"/>
+      </memberdef>
+    </sectiondef>
+    <briefdescription>
+<para>Concrete obstacle element for a terrain cell. </para>
+    </briefdescription>
+    <detaileddescription>
+<para>Implements the <ref refid="class_cell_obstacle_interface" kindref="compound">CellObstacleInterface</ref> to provide obstacle behavior in a terrain cell. Supports patch application and serialization.</para>
+<para><simplesect kind="see"><para><ref refid="class_cell_obstacle_interface" kindref="compound">CellObstacleInterface</ref> </para>
+</simplesect>
+</para>
+    </detaileddescription>
+    <inheritancegraph>
+      <node id="3">
+        <label>CellElement</label>
+        <link refid="class_cell_element"/>
+      </node>
+      <node id="1">
+        <label>CellObstacle</label>
+        <link refid="class_cell_obstacle"/>
+        <childnode refid="2" relation="public-inheritance">
+        </childnode>
+      </node>
+      <node id="2">
+        <label>CellObstacleInterface</label>
+        <link refid="class_cell_obstacle_interface"/>
+        <childnode refid="3" relation="public-inheritance">
+        </childnode>
+      </node>
+    </inheritancegraph>
+    <collaborationgraph>
+      <node id="3">
+        <label>CellElement</label>
+        <link refid="class_cell_element"/>
+      </node>
+      <node id="1">
+        <label>CellObstacle</label>
+        <link refid="class_cell_obstacle"/>
+        <childnode refid="2" relation="public-inheritance">
+        </childnode>
+      </node>
+      <node id="2">
+        <label>CellObstacleInterface</label>
+        <link refid="class_cell_obstacle_interface"/>
+        <childnode refid="3" relation="public-inheritance">
+        </childnode>
+      </node>
+    </collaborationgraph>
+    <location file="App/Model/IBM/Landscape/Map/TerrainCells/PatchApplicator/Obstacle/CellObstacle.h" line="34" column="1" bodyfile="App/Model/IBM/Landscape/Map/TerrainCells/PatchApplicator/Obstacle/CellObstacle.h" bodystart="35" bodyend="69"/>
+    <listofallmembers>
+      <member refid="class_cell_obstacle_interface_1a9eca672a56536be37e14a1cc54ed531a" prot="public" virt="non-virtual"><scope>CellObstacle</scope><name>applySource</name></member>
+      <member refid="class_cell_element_1a77dc6b9db0633bb7d35df0b547ddf613" prot="public" virt="non-virtual"><scope>CellObstacle</scope><name>CellElement</name></member>
+      <member refid="class_cell_element_1a07008f499b17c5dc792ab20d05dbf471" prot="public" virt="non-virtual"><scope>CellObstacle</scope><name>CellElement</name></member>
+      <member refid="class_cell_element_1a5abb98d6d592c3fc4084fc886106d7c3" prot="public" virt="non-virtual"><scope>CellObstacle</scope><name>CellElement</name></member>
+      <member refid="class_cell_obstacle_1a9ae15ac16bf46fb5af441735ce90113a" prot="public" virt="non-virtual"><scope>CellObstacle</scope><name>CellObstacle</name></member>
+      <member refid="class_cell_obstacle_1aed2c42535d742b82cc1bab0f535a453d" prot="public" virt="non-virtual"><scope>CellObstacle</scope><name>CellObstacle</name></member>
+      <member refid="class_cell_obstacle_1ab32555bd0ca51d7d7d4a5ea229527911" prot="public" virt="non-virtual"><scope>CellObstacle</scope><name>CellObstacle</name></member>
+      <member refid="class_cell_obstacle_interface_1a6f390196c6bab471b799bf82fe19c22b" prot="public" virt="non-virtual"><scope>CellObstacle</scope><name>CellObstacleInterface</name></member>
+      <member refid="class_cell_obstacle_interface_1ae23e4bd030180db9527589e083e3af57" prot="public" virt="non-virtual"><scope>CellObstacle</scope><name>CellObstacleInterface</name></member>
+      <member refid="class_cell_obstacle_interface_1a9666291bc7698c7c012ba519d4cb9214" prot="public" virt="non-virtual"><scope>CellObstacle</scope><name>CellObstacleInterface</name></member>
+      <member refid="class_cell_obstacle_interface_1a953f59639e68040ef9f121d022bdf68d" prot="protected" virt="non-virtual"><scope>CellObstacle</scope><name>fullObstacle</name></member>
+      <member refid="class_cell_element_1aeb03190224c2ff962587e94d8fe0c8b4" prot="public" virt="non-virtual"><scope>CellObstacle</scope><name>getPatchPriority</name></member>
+      <member refid="class_cell_obstacle_interface_1a1b9699c5abe65aee058155563e49c792" prot="public" virt="non-virtual"><scope>CellObstacle</scope><name>isFullObstacle</name></member>
+      <member refid="class_cell_obstacle_interface_1a4ac9691c3e7bb7c83bcf328fbc6c56ac" prot="public" virt="non-virtual"><scope>CellObstacle</scope><name>isObstacle</name></member>
+      <member refid="class_cell_obstacle_interface_1a49b608b3a477754a93e838da5a9b0b71" prot="protected" virt="non-virtual"><scope>CellObstacle</scope><name>obstacle</name></member>
+      <member refid="class_cell_obstacle_1a495d924939a8d75f41fea96de3f976ed" prot="public" virt="non-virtual"><scope>CellObstacle</scope><name>operator=</name></member>
+      <member refid="class_cell_obstacle_interface_1a943bd3764875e2f822381eea80b84b45" prot="public" virt="non-virtual" ambiguityscope="CellObstacleInterface::"><scope>CellObstacle</scope><name>operator=</name></member>
+      <member refid="class_cell_element_1ac7467d8c95d1a3d3e8b72a3209681ce0" prot="public" virt="non-virtual" ambiguityscope="CellElement::"><scope>CellObstacle</scope><name>operator=</name></member>
+      <member refid="class_cell_element_1ac25808724b01c8f1555c0be37b0f9d6f" prot="protected" virt="non-virtual"><scope>CellObstacle</scope><name>patchPriority</name></member>
+      <member refid="class_cell_obstacle_1a7d4d5a05abdd78bdbdad3214e652a5c3" prot="public" virt="non-virtual"><scope>CellObstacle</scope><name>serialize</name></member>
+      <member refid="class_cell_obstacle_interface_1a763f82ebeded8be8e130fb6658c55dcf" prot="protected" virt="non-virtual"><scope>CellObstacle</scope><name>setFullObstacleValue</name></member>
+      <member refid="class_cell_obstacle_interface_1aedce51a3032dd34ee4e27103126748fb" prot="protected" virt="non-virtual"><scope>CellObstacle</scope><name>setObstacleValue</name></member>
+      <member refid="class_cell_element_1a9178746c39e277cc4ac9af2f434ac72e" prot="protected" virt="non-virtual"><scope>CellObstacle</scope><name>setPatchPriority</name></member>
+      <member refid="class_cell_element_1a82b86d53e7e9c50f4c3145be272bd38f" prot="public" virt="virtual"><scope>CellObstacle</scope><name>~CellElement</name></member>
+      <member refid="class_cell_obstacle_1af2c8f66b98135eb0c1e91580ad754384" prot="public" virt="virtual"><scope>CellObstacle</scope><name>~CellObstacle</name></member>
+      <member refid="class_cell_obstacle_interface_1aad9b23b176d5bd6716a6ce91b4e1eb37" prot="public" virt="virtual"><scope>CellObstacle</scope><name>~CellObstacleInterface</name></member>
+    </listofallmembers>
+  </compounddef>
+</doxygen>

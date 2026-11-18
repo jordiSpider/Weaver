@@ -39,6 +39,7 @@ class TerrainCell;
 
 /**
  * @class CellMoistureInterface
+ * @ingroup weaver_landscape
  * @brief Base interface representing the hydrological and thermal properties
  *        of a terrain cell.
  *

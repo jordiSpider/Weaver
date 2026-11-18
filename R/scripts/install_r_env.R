@@ -1,56 +1,21 @@
 # install_r_env.R
 #
-# Install weaverR and any missing or outdated dependencies in a standard R
-# library selected for the current installation scope.
+# Install weaverR and its dependencies in an isolated R library provided by
+# the versioned Weaver installation.
 # The package DESCRIPTION defines minimum versions; CRAN snapshot URL is passed
-# as the third argument so installation is repeatable without pinning exact
-# package versions in the user's or site's standard library.
+# as the third argument so installation is repeatable without modifying R's
+# standard user or site libraries.
 #
-# Usage: Rscript install_r_env.R <user|site> <tarball> <repo-file>
+# Usage: Rscript install_r_env.R <library> <tarball> <repo-file>
 
 args <- commandArgs(trailingOnly = TRUE)
-if (length(args) != 3L || !args[1] %in% c("user", "site")) {
-  stop("Usage: Rscript install_r_env.R <user|site> <tarball> <repo-file>", call. = FALSE)
+if (length(args) != 3L) {
+  stop("Usage: Rscript install_r_env.R <library> <tarball> <repo-file>", call. = FALSE)
 }
 
-scope    <- args[1]
+lib      <- args[1]
 tarball  <- normalizePath(args[2], winslash = "/", mustWork = TRUE)
 repoFile <- normalizePath(args[3], winslash = "/", mustWork = TRUE)
-
-expand_library_path <- function(path) {
-  version_parts <- strsplit(as.character(getRversion()), ".", fixed = TRUE)[[1]]
-  minor_version <- paste(version_parts[1:2], collapse = ".")
-  path <- gsub("%V", as.character(getRversion()), path, fixed = TRUE)
-  path <- gsub("%v", minor_version, path, fixed = TRUE)
-  path <- gsub("%p", R.version$platform, path, fixed = TRUE)
-  path <- gsub("%o", R.version$os, path, fixed = TRUE)
-  path <- gsub("%a", R.version$arch, path, fixed = TRUE)
-  path.expand(path)
-}
-
-if (scope == "user") {
-  configured_libraries <- strsplit(Sys.getenv("R_LIBS_USER"), .Platform$path.sep,
-                                   fixed = TRUE)[[1]]
-  configured_libraries <- configured_libraries[nzchar(configured_libraries)]
-  if (length(configured_libraries)) {
-    lib <- expand_library_path(configured_libraries[1])
-  } else {
-    version_parts <- strsplit(as.character(getRversion()), ".", fixed = TRUE)[[1]]
-    minor_version <- paste(version_parts[1:2], collapse = ".")
-    library_folder <- if (.Platform$OS.type == "windows") {
-      file.path("R", "win-library", minor_version)
-    } else {
-      file.path("R", paste0(R.version$platform, "-library"), minor_version)
-    }
-    lib <- file.path(path.expand("~"), library_folder)
-  }
-} else {
-  site_libraries <- .Library.site[!is.na(.Library.site) & nzchar(.Library.site)]
-  if (!length(site_libraries)) {
-    stop("This R installation has no standard site library configured.", call. = FALSE)
-  }
-  lib <- site_libraries[1]
-}
 lib <- normalizePath(lib, winslash = "/", mustWork = FALSE)
 repo_lines <- readLines(repoFile, warn = FALSE, encoding = "UTF-8")
 repo <- if (length(repo_lines)) trimws(repo_lines[1]) else ""
@@ -63,7 +28,7 @@ source(file.path(script_dir, "r_dependency_utils.R"), local = TRUE)
 
 message("R ", getRversion(), " at ", R.home())
 message("CRAN snapshot: ", repo)
-message("Standard R library target: ", lib, " (", scope, ")")
+message("Version-specific R library target: ", lib)
 
 available_cores <- parallel::detectCores(logical = TRUE)
 if (is.na(available_cores) || available_cores < 1L) available_cores <- 1L
@@ -76,11 +41,11 @@ message("Package installation parallelism: ", ncpus,
 
 dir.create(lib, recursive = TRUE, showWarnings = FALSE)
 if (!dir.exists(lib) || file.access(lib, 2L) != 0L) {
-  stop("The selected standard R library is not writable: ", lib, call. = FALSE)
+  stop("The version-specific R library is not writable: ", lib, call. = FALSE)
 }
-inherited_libraries <- .libPaths()
-Sys.setenv(R_LIBS = paste(unique(c(lib, inherited_libraries)), collapse = .Platform$path.sep))
-.libPaths(c(lib, inherited_libraries))
+base_libraries <- .Library
+isolated_libraries <- unique(c(lib, base_libraries))
+.libPaths(isolated_libraries)
 message("R library search order (first matching package is selected):")
 for (index in seq_along(.libPaths())) {
   message("  [", index, "] ", .libPaths()[index])
@@ -102,57 +67,62 @@ requirements <- weaver_read_requirements(description)
 dependencies <- requirements$requirements
 weaver_check_r_requirement(requirements$raw)
 
-packages <- weaver_installed_packages()
+packages <- weaver_installed_packages(isolated_libraries)
 message("Installed dependency copies and versions visible to R:")
 for (dependency in dependencies) {
   message("  ", weaver_requirement_diagnostic(dependency, packages))
 }
 unmet <- Filter(function(dependency) !weaver_requirement_satisfied(dependency, packages), dependencies)
 if (length(unmet) == 0L) {
-  message("All declared dependencies meet their minimum versions in the active R libraries.")
+  message("All declared dependencies meet their minimum versions in the version-specific or base R libraries.")
 } else {
-  for (index in seq_along(unmet)) {
-    dependency <- unmet[[index]]
+  unmet_packages <- unique(vapply(unmet, function(dependency) dependency$package, character(1)))
+  unmet_labels <- vapply(unmet, function(dependency) {
     requirement <- if (nzchar(dependency$operator)) {
       paste0(" (", dependency$operator, " ", dependency$version, ")")
     } else ""
-    message("[", index, "/", length(unmet), "] Installing required dependency: ",
-            dependency$package, requirement, " into ", lib)
-    install_warnings <- character()
-    install_error <- NULL
-    tryCatch(
-      withCallingHandlers(
-        utils::install.packages(dependency$package, lib = lib, repos = getOption("repos"),
-                                dependencies = NA),
-        warning = function(warning) {
-          install_warnings <<- c(install_warnings, conditionMessage(warning))
-          invokeRestart("muffleWarning")
-        }
-      ),
-      error = function(error) install_error <<- conditionMessage(error)
-    )
-    if (length(install_warnings)) {
-      message("Warnings while installing ", dependency$package, ": ",
-              paste(unique(install_warnings), collapse = " | "))
-    }
-    packages <- weaver_installed_packages()
-    if (!is.null(install_error) || !weaver_requirement_satisfied(dependency, packages)) {
-      details <- c(
-        paste0("ERROR: required dependency could not be installed: ", dependency$package,
-               if (nzchar(dependency$operator)) paste0(" (", dependency$operator, " ", dependency$version, ")") else ""),
-        paste0("Resolved dependency: ", weaver_requirement_diagnostic(dependency, packages)),
-        paste0("Standard R library target: ", lib),
-        paste0("CRAN repository: ", repo)
-      )
-      if (!is.null(install_error)) details <- c(details, paste0("install.packages error: ", install_error))
-      if (length(install_warnings)) {
-        details <- c(details, paste0("install.packages warnings: ", paste(unique(install_warnings), collapse = " | ")))
+    paste0(dependency$package, requirement)
+  }, character(1))
+  message("Installing required dependencies in one operation: ",
+          paste(unmet_labels, collapse = ", "), " into ", lib)
+
+  install_warnings <- character()
+  install_error <- NULL
+  tryCatch(
+    withCallingHandlers(
+      utils::install.packages(unmet_packages, lib = lib, repos = getOption("repos"),
+                              dependencies = NA),
+      warning = function(warning) {
+        install_warnings <<- c(install_warnings, conditionMessage(warning))
+        invokeRestart("muffleWarning")
       }
-      stop(paste(details, collapse = "\n"), call. = FALSE)
-    }
-    message("Installed dependency is now visible at the required version: ",
-            weaver_requirement_diagnostic(dependency, packages))
+    ),
+    error = function(error) install_error <<- conditionMessage(error)
+  )
+  if (length(install_warnings)) {
+    message("Warnings while installing dependencies: ",
+            paste(unique(install_warnings), collapse = " | "))
   }
+
+  packages <- weaver_installed_packages(isolated_libraries)
+  unmet_after_install <- Filter(
+    function(dependency) !weaver_requirement_satisfied(dependency, packages), unmet
+  )
+  if (!is.null(install_error) || length(unmet_after_install)) {
+    diagnostics <- if (length(unmet_after_install)) unmet_after_install else unmet
+    details <- c(
+      "ERROR: one or more required dependencies could not be installed:",
+      vapply(diagnostics, weaver_requirement_diagnostic, character(1), installed = packages),
+      paste0("Version-specific R library target: ", lib),
+      paste0("CRAN repository: ", repo)
+    )
+    if (!is.null(install_error)) details <- c(details, paste0("install.packages error: ", install_error))
+    if (length(install_warnings)) {
+      details <- c(details, paste0("install.packages warnings: ", paste(unique(install_warnings), collapse = " | ")))
+    }
+    stop(paste(details, collapse = "\n"), call. = FALSE)
+  }
+  message("All required dependencies are now available in the version-specific R library.")
 }
 
 message("Installing Weaver package weaverR from ", tarball, " into ", lib)
@@ -195,15 +165,15 @@ if (!is.null(package_error) || !nrow(weaver_package_copies("weaverR", weaver_ins
 message("Verifying Weaver R environment")
 namespace_error <- NULL
 tryCatch(
-  invisible(loadNamespace("weaverR", lib.loc = .libPaths())),
+  invisible(loadNamespace("weaverR", lib.loc = isolated_libraries)),
   error = function(error) namespace_error <<- conditionMessage(error)
 )
 if (!is.null(namespace_error)) {
-  packages <- weaver_installed_packages()
+  packages <- weaver_installed_packages(isolated_libraries)
   details <- vapply(dependencies, weaver_requirement_diagnostic, character(1), installed = packages)
   message("ERROR: weaverR namespace loading failed: ", namespace_error)
   message("Dependency resolution at failure:\n  ", paste(details, collapse = "\n  "))
   stop("weaverR was installed but could not be loaded: ", namespace_error, call. = FALSE)
 }
 message("weaverR ", as.character(utils::packageVersion("weaverR", lib.loc = lib)),
-        " ready in the standard R library ", lib)
+        " ready in the version-specific R library ", lib)

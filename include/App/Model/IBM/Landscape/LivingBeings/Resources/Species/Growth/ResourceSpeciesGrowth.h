@@ -25,6 +25,7 @@
 
 /**
  * @class ResourceSpeciesGrowth
+ * @ingroup weaver_landscape
  * @brief Growth model for resource-type species.
  *
  * ResourceSpeciesGrowth represents the growth properties of a resource species.

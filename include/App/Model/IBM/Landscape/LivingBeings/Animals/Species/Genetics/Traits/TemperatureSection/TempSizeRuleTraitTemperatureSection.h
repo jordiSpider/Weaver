@@ -21,6 +21,7 @@
 
 /**
  * @class TempSizeRuleTraitTemperatureSection
+ * @ingroup weaver_landscape
  * @brief Represents a temperature-dependent trait section for size rules.
  *
  * This class extends TraitTemperatureSection to provide functionality for

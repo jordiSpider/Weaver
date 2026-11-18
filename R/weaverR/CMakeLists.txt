@@ -9,9 +9,8 @@
 #   INSTALLER_INCLUDE_R   -> ship the package tarball and dependency metadata in the
 #                            installer (workflows "*-pack-*"). Nothing is
 #                            installed locally. During installation on the
-#                            target machine, compatible system dependencies are
-#                            reused and missing/old packages go into Weaver's
-#                            standard R library selected for the installer scope.
+#                            target machine, the package and dependencies go
+#                            into this version and edition's private R library.
 #
 # Targets:
 #   weaverR_tarball        flatten + embed schemas + R CMD build   (common)
@@ -211,8 +210,8 @@ if(INSTALLER_INCLUDE_R)
 
     # Installation rules: component "RPackages"
     if(WIN32)
-        # Keep in sync with CM_DP_RPackages.R in the WiX package templates.
-        set(R_PAYLOAD_DEST "R")
+        # Keep in sync with WEAVER_R_PAYLOAD_DIR_ID in the WiX package templates.
+        set(R_PAYLOAD_DEST "${WEAVER_INSTALL_SUBDIR}/R")
     else()
         # Keep in sync with WEAVER_R_PAYLOAD_DIR in the root CMakeLists.txt
         set(R_PAYLOAD_DEST "${CMAKE_INSTALL_DATADIR}/${PROJECT_NAME_LOWER}/R")
@@ -235,15 +234,6 @@ if(INSTALLER_INCLUDE_R)
         target_compile_definitions(WeaverRSetup PRIVATE UNICODE _UNICODE WIN32_LEAN_AND_MEAN)
         target_link_libraries(WeaverRSetup PRIVATE advapi32 shell32 ole32)
         set_target_properties(WeaverRSetup PROPERTIES
-            MSVC_RUNTIME_LIBRARY "MultiThreaded$<$<CONFIG:Debug>:Debug>")
-
-        add_library(WeaverRSetupCA SHARED
-            "${CMAKE_SOURCE_DIR}/cmake/res/Windows/weaver_r_setup_ca.cpp")
-        target_compile_definitions(WeaverRSetupCA PRIVATE UNICODE _UNICODE WIN32_LEAN_AND_MEAN)
-        target_link_libraries(WeaverRSetupCA PRIVATE msi)
-        set_target_properties(WeaverRSetupCA PROPERTIES
-            PREFIX ""
-            OUTPUT_NAME "WeaverRSetupCA"
             MSVC_RUNTIME_LIBRARY "MultiThreaded$<$<CONFIG:Debug>:Debug>")
 
         install(TARGETS WeaverRSetup

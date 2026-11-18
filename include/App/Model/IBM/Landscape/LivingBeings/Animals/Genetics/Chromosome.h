@@ -24,6 +24,7 @@
 
 /**
  * @class Chromosome
+ * @ingroup weaver_landscape
  * @brief Represents a chromosome in the genetic model.
  * 
  * A chromosome is composed of a sequence of loci, where each locus contains

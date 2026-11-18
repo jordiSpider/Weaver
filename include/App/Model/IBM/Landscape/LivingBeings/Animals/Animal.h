@@ -32,6 +32,7 @@ class TerrainCell;
 
 /**
  * @class Animal
+ * @ingroup weaver_landscape
  * @brief Abstract base class representing an individual animal.
  *
  * This class stores general information about an animal, such as its species,

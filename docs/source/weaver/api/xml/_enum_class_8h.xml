@@ -1,0 +1,1089 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.14.0" xml:lang="en-US">
+  <compounddef id="_enum_class_8h" kind="file" language="C++">
+    <compoundname>EnumClass.h</compoundname>
+    <includes local="no">sstream</includes>
+    <includes local="no">string</includes>
+    <includes local="no">unordered_map</includes>
+    <includes local="no">magic_enum/magic_enum.hpp</includes>
+    <includes local="no">fmt/format.h</includes>
+    <includes refid="_line_info_exception_8h" local="yes">Exceptions/LineInfoException.h</includes>
+    <includedby refid="_storage_bridge_8h" local="yes">App/IO/StorageBridge.h</includedby>
+    <includedby refid="_landscape_8h" local="yes">App/Model/IBM/Landscape/Landscape.h</includedby>
+    <includedby refid="_animal_non_statistical_8h" local="yes">App/Model/IBM/Landscape/LivingBeings/Animals/AnimalNonStatistical.h</includedby>
+    <includedby refid="_animal_species_8h" local="yes">App/Model/IBM/Landscape/LivingBeings/Animals/Species/AnimalSpecies.h</includedby>
+    <includedby refid="_animal_species_genetics_8h" local="yes">App/Model/IBM/Landscape/LivingBeings/Animals/Species/Genetics/AnimalSpeciesGenetics.h</includedby>
+    <includedby refid="_trait_definition_section_8h" local="yes">App/Model/IBM/Landscape/LivingBeings/Animals/Species/Genetics/Traits/DefinitionSection/TraitDefinitionSection.h</includedby>
+    <includedby refid="_pawar_trait_temperature_section_8h" local="yes">App/Model/IBM/Landscape/LivingBeings/Animals/Species/Genetics/Traits/TemperatureSection/PawarTraitTemperatureSection.h</includedby>
+    <includedby refid="_trait_8h" local="yes">App/Model/IBM/Landscape/LivingBeings/Animals/Species/Genetics/Traits/Trait.h</includedby>
+    <includedby refid="_animal_species_growth_8h" local="yes">App/Model/IBM/Landscape/LivingBeings/Animals/Species/Growth/AnimalSpeciesGrowth.h</includedby>
+    <includedby refid="_resource_species_8h" local="yes">App/Model/IBM/Landscape/LivingBeings/Resources/Species/ResourceSpecies.h</includedby>
+    <includedby refid="_map_8h" local="yes">App/Model/IBM/Landscape/Map/Map.h</includedby>
+    <includedby refid="_patch_8h" local="yes">App/Model/IBM/Landscape/Map/Patches/Patch.h</includedby>
+    <includedby refid="_patch_shape_8h" local="yes">App/Model/IBM/Landscape/Map/Patches/Shape/PatchShape.h</includedby>
+    <includedby refid="_animal_search_params_8h" local="yes">App/Model/IBM/Landscape/Map/TerrainCells/AnimalSearchParams.h</includedby>
+    <includedby refid="_edible_search_params_8h" local="yes">App/Model/IBM/Landscape/Map/TerrainCells/EdibleSearchParams.h</includedby>
+    <includedby refid="_decay_8h" local="yes">App/Model/IBM/Maths/Dynamics/Decay/Decay.h</includedby>
+    <includedby refid="_dynamics_8h" local="yes">App/Model/IBM/Maths/Dynamics/Dynamics.h</includedby>
+    <includedby refid="_mass_based_dynamics_8h" local="yes">App/Model/IBM/Maths/Dynamics/MassBasedDynamics.h</includedby>
+    <includedby refid="_non_mass_based_dynamics_8h" local="yes">App/Model/IBM/Maths/Dynamics/NonMassBasedDynamics.h</includedby>
+    <includedby refid="_console_8h" local="yes">App/View/Console.h</includedby>
+    <includedby refid="_g_u_i_8h" local="yes">App/View/GUI/GUI.h</includedby>
+    <includedby refid="_view_8h" local="yes">App/View/View.h</includedby>
+    <includedby refid="_element_factory_8h" local="yes">Misc/JsonValidator/Elements/ElementFactory.h</includedby>
+    <includedby refid="_operators_8h" local="yes">Misc/JsonValidator/Operators.h</includedby>
+    <incdepgraph>
+      <node id="7">
+        <label>Exceptions/LineInfoException.h</label>
+        <link refid="_line_info_exception_8h_source"/>
+        <childnode refid="8" relation="include">
+        </childnode>
+        <childnode refid="3" relation="include">
+        </childnode>
+      </node>
+      <node id="1">
+        <label>Misc/EnumClass.h</label>
+        <link refid="_enum_class_8h"/>
+        <childnode refid="2" relation="include">
+        </childnode>
+        <childnode refid="3" relation="include">
+        </childnode>
+        <childnode refid="4" relation="include">
+        </childnode>
+        <childnode refid="5" relation="include">
+        </childnode>
+        <childnode refid="6" relation="include">
+        </childnode>
+        <childnode refid="7" relation="include">
+        </childnode>
+      </node>
+      <node id="8">
+        <label>exception</label>
+      </node>
+      <node id="6">
+        <label>fmt/format.h</label>
+      </node>
+      <node id="5">
+        <label>magic_enum/magic_enum.hpp</label>
+      </node>
+      <node id="2">
+        <label>sstream</label>
+      </node>
+      <node id="3">
+        <label>string</label>
+      </node>
+      <node id="4">
+        <label>unordered_map</label>
+      </node>
+    </incdepgraph>
+    <invincdepgraph>
+      <node id="2">
+        <label>App/IO/StorageBridge.h</label>
+        <link refid="_storage_bridge_8h_source"/>
+        <childnode refid="3" relation="include">
+        </childnode>
+        <childnode refid="19" relation="include">
+        </childnode>
+        <childnode refid="45" relation="include">
+        </childnode>
+      </node>
+      <node id="5">
+        <label>App/Model/IBM/IBM.h</label>
+        <link refid="_i_b_m_8h_source"/>
+      </node>
+      <node id="6">
+        <label>App/Model/IBM/Landscape/AquaticLandscape.h</label>
+        <link refid="_aquatic_landscape_8h_source"/>
+      </node>
+      <node id="7">
+        <label>App/Model/IBM/Landscape/ArthropodsLandscape.h</label>
+        <link refid="_arthropods_landscape_8h_source"/>
+      </node>
+      <node id="8">
+        <label>App/Model/IBM/Landscape/DinosaursLandscape.h</label>
+        <link refid="_dinosaurs_landscape_8h_source"/>
+      </node>
+      <node id="4">
+        <label>App/Model/IBM/Landscape/Landscape.h</label>
+        <link refid="_landscape_8h_source"/>
+        <childnode refid="5" relation="include">
+        </childnode>
+        <childnode refid="6" relation="include">
+        </childnode>
+        <childnode refid="7" relation="include">
+        </childnode>
+        <childnode refid="8" relation="include">
+        </childnode>
+      </node>
+      <node id="21">
+        <label>App/Model/IBM/Landscape/LivingBeings/Animals/Animal.h</label>
+        <link refid="_animal_8h_source"/>
+        <childnode refid="3" relation="include">
+        </childnode>
+        <childnode refid="22" relation="include">
+        </childnode>
+        <childnode refid="17" relation="include">
+        </childnode>
+        <childnode refid="13" relation="include">
+        </childnode>
+      </node>
+      <node id="3">
+        <label>App/Model/IBM/Landscape/LivingBeings/Animals/AnimalNonStatistical.h</label>
+        <link refid="_animal_non_statistical_8h_source"/>
+        <childnode refid="4" relation="include">
+        </childnode>
+        <childnode refid="9" relation="include">
+        </childnode>
+        <childnode refid="11" relation="include">
+        </childnode>
+        <childnode refid="13" relation="include">
+        </childnode>
+      </node>
+      <node id="22">
+        <label>App/Model/IBM/Landscape/LivingBeings/Animals/AnimalStatistical.h</label>
+        <link refid="_animal_statistical_8h_source"/>
+        <childnode refid="14" relation="include">
+        </childnode>
+        <childnode refid="10" relation="include">
+        </childnode>
+      </node>
+      <node id="28">
+        <label>App/Model/IBM/Landscape/LivingBeings/Animals/Decisions/Decisions.h</label>
+        <link refid="_decisions_8h_source"/>
+        <childnode refid="3" relation="include">
+        </childnode>
+      </node>
+      <node id="20">
+        <label>App/Model/IBM/Landscape/LivingBeings/Animals/Genetics/Genetics.h</label>
+        <link refid="_genetics_8h_source"/>
+        <childnode refid="21" relation="include">
+        </childnode>
+        <childnode refid="23" relation="include">
+        </childnode>
+      </node>
+      <node id="19">
+        <label>App/Model/IBM/Landscape/LivingBeings/Animals/Genetics/Traits/IndividualTrait.h</label>
+        <link refid="_individual_trait_8h_source"/>
+        <childnode refid="20" relation="include">
+        </childnode>
+        <childnode refid="41" relation="include">
+        </childnode>
+        <childnode refid="27" relation="include">
+        </childnode>
+        <childnode refid="23" relation="include">
+        </childnode>
+        <childnode refid="44" relation="include">
+        </childnode>
+      </node>
+      <node id="46">
+        <label>App/Model/IBM/Landscape/LivingBeings/Animals/Genetics/Traits/IndividualTraitTemperatureSectionVariant.h</label>
+        <link refid="_individual_trait_temperature_section_variant_8h_source"/>
+        <childnode refid="19" relation="include">
+        </childnode>
+        <childnode refid="47" relation="include">
+        </childnode>
+      </node>
+      <node id="45">
+        <label>App/Model/IBM/Landscape/LivingBeings/Animals/Genetics/Traits/PawarIndividualTraitTemperatureSection.h</label>
+        <link refid="_pawar_individual_trait_temperature_section_8h_source"/>
+        <childnode refid="46" relation="include">
+        </childnode>
+      </node>
+      <node id="41">
+        <label>App/Model/IBM/Landscape/LivingBeings/Animals/Growth/AnimalGrowth.h</label>
+        <link refid="_animal_growth_8h_source"/>
+        <childnode refid="21" relation="include">
+        </childnode>
+        <childnode refid="42" relation="include">
+        </childnode>
+        <childnode refid="43" relation="include">
+        </childnode>
+      </node>
+      <node id="42">
+        <label>App/Model/IBM/Landscape/LivingBeings/Animals/Growth/AnimalNonStatisticalGrowth.h</label>
+        <link refid="_animal_non_statistical_growth_8h_source"/>
+        <childnode refid="3" relation="include">
+        </childnode>
+      </node>
+      <node id="43">
+        <label>App/Model/IBM/Landscape/LivingBeings/Animals/Growth/AnimalStatisticalGrowth.h</label>
+        <link refid="_animal_statistical_growth_8h_source"/>
+        <childnode refid="22" relation="include">
+        </childnode>
+      </node>
+      <node id="29">
+        <label>App/Model/IBM/Landscape/LivingBeings/Animals/Species/AnimalSpecies.h</label>
+        <link refid="_animal_species_8h_source"/>
+        <childnode refid="4" relation="include">
+        </childnode>
+        <childnode refid="21" relation="include">
+        </childnode>
+        <childnode refid="30" relation="include">
+        </childnode>
+        <childnode refid="10" relation="include">
+        </childnode>
+        <childnode refid="13" relation="include">
+        </childnode>
+      </node>
+      <node id="27">
+        <label>App/Model/IBM/Landscape/LivingBeings/Animals/Species/Decisions/AnimalSpeciesDecisions.h</label>
+        <link refid="_animal_species_decisions_8h_source"/>
+        <childnode refid="28" relation="include">
+        </childnode>
+        <childnode refid="29" relation="include">
+        </childnode>
+      </node>
+      <node id="24">
+        <label>App/Model/IBM/Landscape/LivingBeings/Animals/Species/Decisions/DecisionProbability/AnimalDecisionProbability.h</label>
+        <link refid="_animal_decision_probability_8h_source"/>
+        <childnode refid="25" relation="include">
+        </childnode>
+      </node>
+      <node id="39">
+        <label>App/Model/IBM/Landscape/LivingBeings/Animals/Species/Decisions/DecisionProbability/CellQualityBiomass.h</label>
+        <link refid="_cell_quality_biomass_8h_source"/>
+        <childnode refid="27" relation="include">
+        </childnode>
+      </node>
+      <node id="23">
+        <label>App/Model/IBM/Landscape/LivingBeings/Animals/Species/Decisions/DecisionProbability/DecisionProbability.h</label>
+        <link refid="_decision_probability_8h_source"/>
+        <childnode refid="24" relation="include">
+        </childnode>
+        <childnode refid="40" relation="include">
+        </childnode>
+      </node>
+      <node id="38">
+        <label>App/Model/IBM/Landscape/LivingBeings/Animals/Species/Decisions/DecisionProbability/EdibilityValue.h</label>
+        <link refid="_edibility_value_8h_source"/>
+        <childnode refid="27" relation="include">
+        </childnode>
+        <childnode refid="39" relation="include">
+        </childnode>
+      </node>
+      <node id="40">
+        <label>App/Model/IBM/Landscape/LivingBeings/Animals/Species/Decisions/DecisionProbability/EdibleDecisionProbability.h</label>
+        <link refid="_edible_decision_probability_8h_source"/>
+        <childnode refid="38" relation="include">
+        </childnode>
+        <childnode refid="26" relation="include">
+        </childnode>
+      </node>
+      <node id="25">
+        <label>App/Model/IBM/Landscape/LivingBeings/Animals/Species/Decisions/DecisionProbability/EscapeProbability.h</label>
+        <link refid="_escape_probability_8h_source"/>
+        <childnode refid="26" relation="include">
+        </childnode>
+      </node>
+      <node id="26">
+        <label>App/Model/IBM/Landscape/LivingBeings/Animals/Species/Decisions/DecisionProbability/PredationProbability.h</label>
+        <link refid="_predation_probability_8h_source"/>
+        <childnode refid="27" relation="include">
+        </childnode>
+        <childnode refid="38" relation="include">
+        </childnode>
+      </node>
+      <node id="44">
+        <label>App/Model/IBM/Landscape/LivingBeings/Animals/Species/Genetics/AnimalSpeciesGenetics.h</label>
+        <link refid="_animal_species_genetics_8h_source"/>
+        <childnode refid="20" relation="include">
+        </childnode>
+        <childnode refid="29" relation="include">
+        </childnode>
+      </node>
+      <node id="49">
+        <label>App/Model/IBM/Landscape/LivingBeings/Animals/Species/Genetics/Traits/BaseTrait.h</label>
+        <link refid="_base_trait_8h_source"/>
+      </node>
+      <node id="50">
+        <label>App/Model/IBM/Landscape/LivingBeings/Animals/Species/Genetics/Traits/CellValueTrait.h</label>
+        <link refid="_cell_value_trait_8h_source"/>
+      </node>
+      <node id="58">
+        <label>App/Model/IBM/Landscape/LivingBeings/Animals/Species/Genetics/Traits/DecisionsTrait.h</label>
+        <link refid="_decisions_trait_8h_source"/>
+        <childnode refid="51" relation="include">
+        </childnode>
+        <childnode refid="52" relation="include">
+        </childnode>
+        <childnode refid="53" relation="include">
+        </childnode>
+        <childnode refid="54" relation="include">
+        </childnode>
+      </node>
+      <node id="60">
+        <label>App/Model/IBM/Landscape/LivingBeings/Animals/Species/Genetics/Traits/DefinitionSection/IndividualLevelTrait.h</label>
+        <link refid="_individual_level_trait_8h_source"/>
+        <childnode refid="44" relation="include">
+        </childnode>
+        <childnode refid="47" relation="include">
+        </childnode>
+        <childnode refid="13" relation="include">
+        </childnode>
+      </node>
+      <node id="61">
+        <label>App/Model/IBM/Landscape/LivingBeings/Animals/Species/Genetics/Traits/DefinitionSection/SpeciesLevelTrait.h</label>
+        <link refid="_species_level_trait_8h_source"/>
+      </node>
+      <node id="59">
+        <label>App/Model/IBM/Landscape/LivingBeings/Animals/Species/Genetics/Traits/DefinitionSection/TraitDefinitionSection.h</label>
+        <link refid="_trait_definition_section_8h_source"/>
+        <childnode refid="60" relation="include">
+        </childnode>
+        <childnode refid="61" relation="include">
+        </childnode>
+        <childnode refid="48" relation="include">
+        </childnode>
+        <childnode refid="57" relation="include">
+        </childnode>
+      </node>
+      <node id="51">
+        <label>App/Model/IBM/Landscape/LivingBeings/Animals/Species/Genetics/Traits/EdibilityValueWeightTrait.h</label>
+        <link refid="_edibility_value_weight_trait_8h_source"/>
+      </node>
+      <node id="52">
+        <label>App/Model/IBM/Landscape/LivingBeings/Animals/Species/Genetics/Traits/EscapeProbabilityWeightTrait.h</label>
+        <link refid="_escape_probability_weight_trait_8h_source"/>
+      </node>
+      <node id="53">
+        <label>App/Model/IBM/Landscape/LivingBeings/Animals/Species/Genetics/Traits/PredationProbabilityWeightTrait.h</label>
+        <link refid="_predation_probability_weight_trait_8h_source"/>
+      </node>
+      <node id="54">
+        <label>App/Model/IBM/Landscape/LivingBeings/Animals/Species/Genetics/Traits/PreferencesTrait.h</label>
+        <link refid="_preferences_trait_8h_source"/>
+      </node>
+      <node id="55">
+        <label>App/Model/IBM/Landscape/LivingBeings/Animals/Species/Genetics/Traits/ProbabilityDensityFunctionTrait.h</label>
+        <link refid="_probability_density_function_trait_8h_source"/>
+      </node>
+      <node id="48">
+        <label>App/Model/IBM/Landscape/LivingBeings/Animals/Species/Genetics/Traits/TemperatureSection/PawarTraitTemperatureSection.h</label>
+        <link refid="_pawar_trait_temperature_section_8h_source"/>
+        <childnode refid="49" relation="include">
+        </childnode>
+        <childnode refid="50" relation="include">
+        </childnode>
+        <childnode refid="51" relation="include">
+        </childnode>
+        <childnode refid="52" relation="include">
+        </childnode>
+        <childnode refid="53" relation="include">
+        </childnode>
+        <childnode refid="54" relation="include">
+        </childnode>
+        <childnode refid="55" relation="include">
+        </childnode>
+      </node>
+      <node id="56">
+        <label>App/Model/IBM/Landscape/LivingBeings/Animals/Species/Genetics/Traits/TemperatureSection/TempSizeRuleTraitTemperatureSection.h</label>
+        <link refid="_temp_size_rule_trait_temperature_section_8h_source"/>
+        <childnode refid="49" relation="include">
+        </childnode>
+      </node>
+      <node id="47">
+        <label>App/Model/IBM/Landscape/LivingBeings/Animals/Species/Genetics/Traits/TemperatureSection/TraitTemperatureSection.h</label>
+        <link refid="_trait_temperature_section_8h_source"/>
+        <childnode refid="48" relation="include">
+        </childnode>
+        <childnode refid="56" relation="include">
+        </childnode>
+        <childnode refid="57" relation="include">
+        </childnode>
+      </node>
+      <node id="57">
+        <label>App/Model/IBM/Landscape/LivingBeings/Animals/Species/Genetics/Traits/Trait.h</label>
+        <link refid="_trait_8h_source"/>
+        <childnode refid="19" relation="include">
+        </childnode>
+        <childnode refid="27" relation="include">
+        </childnode>
+        <childnode refid="49" relation="include">
+        </childnode>
+        <childnode refid="50" relation="include">
+        </childnode>
+        <childnode refid="58" relation="include">
+        </childnode>
+        <childnode refid="55" relation="include">
+        </childnode>
+      </node>
+      <node id="62">
+        <label>App/Model/IBM/Landscape/LivingBeings/Animals/Species/Growth/AnimalSpeciesGrowth.h</label>
+        <link refid="_animal_species_growth_8h_source"/>
+        <childnode refid="41" relation="include">
+        </childnode>
+        <childnode refid="29" relation="include">
+        </childnode>
+      </node>
+      <node id="100">
+        <label>App/Model/IBM/Landscape/LivingBeings/Resources/Species/Growth/ResourceSpeciesGrowth.h</label>
+        <link refid="_resource_species_growth_8h_source"/>
+        <childnode refid="63" relation="include">
+        </childnode>
+        <childnode refid="70" relation="include">
+        </childnode>
+      </node>
+      <node id="63">
+        <label>App/Model/IBM/Landscape/LivingBeings/Resources/Species/ResourceSpecies.h</label>
+        <link refid="_resource_species_8h_source"/>
+        <childnode refid="4" relation="include">
+        </childnode>
+        <childnode refid="29" relation="include">
+        </childnode>
+        <childnode refid="64" relation="include">
+        </childnode>
+        <childnode refid="10" relation="include">
+        </childnode>
+        <childnode refid="65" relation="include">
+        </childnode>
+        <childnode refid="73" relation="include">
+        </childnode>
+        <childnode refid="68" relation="include">
+        </childnode>
+      </node>
+      <node id="14">
+        <label>App/Model/IBM/Landscape/Map/Map.h</label>
+        <link refid="_map_8h_source"/>
+        <childnode refid="4" relation="include">
+        </childnode>
+        <childnode refid="10" relation="include">
+        </childnode>
+      </node>
+      <node id="12">
+        <label>App/Model/IBM/Landscape/Map/Navigation/DestinationSelectionPolicy.h</label>
+        <link refid="_destination_selection_policy_8h_source"/>
+      </node>
+      <node id="74">
+        <label>App/Model/IBM/Landscape/Map/Patches/Patch.h</label>
+        <link refid="_patch_8h_source"/>
+        <childnode refid="36" relation="include">
+        </childnode>
+      </node>
+      <node id="76">
+        <label>App/Model/IBM/Landscape/Map/Patches/Shape/CubicPatch.h</label>
+        <link refid="_cubic_patch_8h_source"/>
+        <childnode refid="4" relation="include">
+        </childnode>
+      </node>
+      <node id="77">
+        <label>App/Model/IBM/Landscape/Map/Patches/Shape/GaussianPatch.h</label>
+        <link refid="_gaussian_patch_8h_source"/>
+      </node>
+      <node id="78">
+        <label>App/Model/IBM/Landscape/Map/Patches/Shape/HomogeneousPatch.h</label>
+        <link refid="_homogeneous_patch_8h_source"/>
+      </node>
+      <node id="75">
+        <label>App/Model/IBM/Landscape/Map/Patches/Shape/PatchShape.h</label>
+        <link refid="_patch_shape_8h_source"/>
+        <childnode refid="74" relation="include">
+        </childnode>
+        <childnode refid="76" relation="include">
+        </childnode>
+        <childnode refid="77" relation="include">
+        </childnode>
+        <childnode refid="78" relation="include">
+        </childnode>
+        <childnode refid="79" relation="include">
+        </childnode>
+        <childnode refid="80" relation="include">
+        </childnode>
+      </node>
+      <node id="79">
+        <label>App/Model/IBM/Landscape/Map/Patches/Shape/RandomGaussianPatch.h</label>
+        <link refid="_random_gaussian_patch_8h_source"/>
+      </node>
+      <node id="80">
+        <label>App/Model/IBM/Landscape/Map/Patches/Shape/SphericalPatch.h</label>
+        <link refid="_spherical_patch_8h_source"/>
+      </node>
+      <node id="30">
+        <label>App/Model/IBM/Landscape/Map/Patches/Source/HabitatDomainSource.h</label>
+        <link refid="_habitat_domain_source_8h_source"/>
+        <childnode refid="4" relation="include">
+        </childnode>
+        <childnode refid="31" relation="include">
+        </childnode>
+        <childnode refid="33" relation="include">
+        </childnode>
+        <childnode refid="36" relation="include">
+        </childnode>
+      </node>
+      <node id="90">
+        <label>App/Model/IBM/Landscape/Map/Patches/Source/MoistureSource.h</label>
+        <link refid="_moisture_source_8h_source"/>
+        <childnode refid="4" relation="include">
+        </childnode>
+        <childnode refid="91" relation="include">
+        </childnode>
+        <childnode refid="92" relation="include">
+        </childnode>
+      </node>
+      <node id="64">
+        <label>App/Model/IBM/Landscape/Map/Patches/Source/ResourceSource.h</label>
+        <link refid="_resource_source_8h_source"/>
+        <childnode refid="4" relation="include">
+        </childnode>
+        <childnode refid="36" relation="include">
+        </childnode>
+        <childnode refid="65" relation="include">
+        </childnode>
+        <childnode refid="70" relation="include">
+        </childnode>
+      </node>
+      <node id="10">
+        <label>App/Model/IBM/Landscape/Map/SpatialTree.h</label>
+        <link refid="_spatial_tree_8h_source"/>
+        <childnode refid="4" relation="include">
+        </childnode>
+      </node>
+      <node id="9">
+        <label>App/Model/IBM/Landscape/Map/SpatialTree/LivingBeings/Animals/SpatialTreeAnimal.h</label>
+        <link refid="_spatial_tree_animal_8h_source"/>
+        <childnode refid="10" relation="include">
+        </childnode>
+      </node>
+      <node id="16">
+        <label>App/Model/IBM/Landscape/Map/SpatialTree/TerrainCells/BranchTerrainCell.h</label>
+        <link refid="_branch_terrain_cell_8h_source"/>
+        <childnode refid="17" relation="include">
+        </childnode>
+      </node>
+      <node id="18">
+        <label>App/Model/IBM/Landscape/Map/SpatialTree/TerrainCells/LeafTerrainCell.h</label>
+        <link refid="_leaf_terrain_cell_8h_source"/>
+        <childnode refid="16" relation="include">
+        </childnode>
+      </node>
+      <node id="32">
+        <label>App/Model/IBM/Landscape/Map/SpatialTree/TerrainCells/PatchApplicator/BranchPatchApplicator.h</label>
+        <link refid="_branch_patch_applicator_8h_source"/>
+        <childnode refid="16" relation="include">
+        </childnode>
+      </node>
+      <node id="31">
+        <label>App/Model/IBM/Landscape/Map/SpatialTree/TerrainCells/PatchApplicator/HabitatDomain/BranchCellHabitatDomain.h</label>
+        <link refid="_branch_cell_habitat_domain_8h_source"/>
+        <childnode refid="32" relation="include">
+        </childnode>
+      </node>
+      <node id="35">
+        <label>App/Model/IBM/Landscape/Map/SpatialTree/TerrainCells/PatchApplicator/LeafPatchApplicator.h</label>
+        <link refid="_leaf_patch_applicator_8h_source"/>
+        <childnode refid="18" relation="include">
+        </childnode>
+      </node>
+      <node id="93">
+        <label>App/Model/IBM/Landscape/Map/SpatialTree/TerrainCells/PatchApplicator/Moisture/BranchCellMoisture.h</label>
+        <link refid="_branch_cell_moisture_8h_source"/>
+        <childnode refid="32" relation="include">
+        </childnode>
+      </node>
+      <node id="66">
+        <label>App/Model/IBM/Landscape/Map/SpatialTree/TerrainCells/PatchApplicator/Resources/BranchCellResource.h</label>
+        <link refid="_branch_cell_resource_8h_source"/>
+        <childnode refid="16" relation="include">
+        </childnode>
+        <childnode refid="32" relation="include">
+        </childnode>
+      </node>
+      <node id="71">
+        <label>App/Model/IBM/Landscape/Map/SpatialTree/TerrainCells/PatchApplicator/Resources/Growth/BranchCellResourceGrowth.h</label>
+        <link refid="_branch_cell_resource_growth_8h_source"/>
+        <childnode refid="66" relation="include">
+        </childnode>
+      </node>
+      <node id="37">
+        <label>App/Model/IBM/Landscape/Map/SpatialTree/TerrainCells/PatchApplicator/SpatialTreePatchApplicator.h</label>
+        <link refid="_spatial_tree_patch_applicator_8h_source"/>
+        <childnode refid="32" relation="include">
+        </childnode>
+        <childnode refid="35" relation="include">
+        </childnode>
+        <childnode refid="15" relation="include">
+        </childnode>
+      </node>
+      <node id="17">
+        <label>App/Model/IBM/Landscape/Map/SpatialTree/TerrainCells/RootTerrainCell.h</label>
+        <link refid="_root_terrain_cell_8h_source"/>
+        <childnode refid="10" relation="include">
+        </childnode>
+      </node>
+      <node id="15">
+        <label>App/Model/IBM/Landscape/Map/SpatialTree/TerrainCells/SpatialTreeTerrainCell.h</label>
+        <link refid="_spatial_tree_terrain_cell_8h_source"/>
+        <childnode refid="10" relation="include">
+        </childnode>
+        <childnode refid="16" relation="include">
+        </childnode>
+        <childnode refid="18" relation="include">
+        </childnode>
+      </node>
+      <node id="81">
+        <label>App/Model/IBM/Landscape/Map/TerrainCells/AnimalSearchParams.h</label>
+        <link refid="_animal_search_params_8h_source"/>
+        <childnode refid="29" relation="include">
+        </childnode>
+        <childnode refid="69" relation="include">
+        </childnode>
+        <childnode refid="13" relation="include">
+        </childnode>
+      </node>
+      <node id="11">
+        <label>App/Model/IBM/Landscape/Map/TerrainCells/CellValue.h</label>
+        <link refid="_cell_value_8h_source"/>
+        <childnode refid="12" relation="include">
+        </childnode>
+        <childnode refid="9" relation="include">
+        </childnode>
+        <childnode refid="13" relation="include">
+        </childnode>
+      </node>
+      <node id="69">
+        <label>App/Model/IBM/Landscape/Map/TerrainCells/EdibleSearchParams.h</label>
+        <link refid="_edible_search_params_8h_source"/>
+        <childnode refid="29" relation="include">
+        </childnode>
+      </node>
+      <node id="34">
+        <label>App/Model/IBM/Landscape/Map/TerrainCells/PatchApplicator/HabitatDomain/CellHabitatDomain.h</label>
+        <link refid="_cell_habitat_domain_8h_source"/>
+        <childnode refid="35" relation="include">
+        </childnode>
+      </node>
+      <node id="33">
+        <label>App/Model/IBM/Landscape/Map/TerrainCells/PatchApplicator/HabitatDomain/CellHabitatDomainInterface.h</label>
+        <link refid="_cell_habitat_domain_interface_8h_source"/>
+        <childnode refid="31" relation="include">
+        </childnode>
+        <childnode refid="34" relation="include">
+        </childnode>
+        <childnode refid="36" relation="include">
+        </childnode>
+      </node>
+      <node id="91">
+        <label>App/Model/IBM/Landscape/Map/TerrainCells/PatchApplicator/Moisture/CellMoisture.h</label>
+        <link refid="_cell_moisture_8h_source"/>
+        <childnode refid="35" relation="include">
+        </childnode>
+        <childnode refid="15" relation="include">
+        </childnode>
+      </node>
+      <node id="92">
+        <label>App/Model/IBM/Landscape/Map/TerrainCells/PatchApplicator/Moisture/CellMoistureInterface.h</label>
+        <link refid="_cell_moisture_interface_8h_source"/>
+        <childnode refid="93" relation="include">
+        </childnode>
+        <childnode refid="91" relation="include">
+        </childnode>
+        <childnode refid="36" relation="include">
+        </childnode>
+      </node>
+      <node id="36">
+        <label>App/Model/IBM/Landscape/Map/TerrainCells/PatchApplicator/PatchApplicator.h</label>
+        <link refid="_patch_applicator_8h_source"/>
+        <childnode refid="37" relation="include">
+        </childnode>
+        <childnode refid="13" relation="include">
+        </childnode>
+      </node>
+      <node id="67">
+        <label>App/Model/IBM/Landscape/Map/TerrainCells/PatchApplicator/Resources/CellResource.h</label>
+        <link refid="_cell_resource_8h_source"/>
+        <childnode refid="4" relation="include">
+        </childnode>
+        <childnode refid="35" relation="include">
+        </childnode>
+        <childnode refid="36" relation="include">
+        </childnode>
+        <childnode refid="13" relation="include">
+        </childnode>
+      </node>
+      <node id="65">
+        <label>App/Model/IBM/Landscape/Map/TerrainCells/PatchApplicator/Resources/CellResourceInterface.h</label>
+        <link refid="_cell_resource_interface_8h_source"/>
+        <childnode refid="66" relation="include">
+        </childnode>
+        <childnode refid="36" relation="include">
+        </childnode>
+        <childnode refid="67" relation="include">
+        </childnode>
+        <childnode refid="68" relation="include">
+        </childnode>
+      </node>
+      <node id="72">
+        <label>App/Model/IBM/Landscape/Map/TerrainCells/PatchApplicator/Resources/Growth/CellResourceGrowth.h</label>
+        <link refid="_cell_resource_growth_8h_source"/>
+        <childnode refid="67" relation="include">
+        </childnode>
+      </node>
+      <node id="70">
+        <label>App/Model/IBM/Landscape/Map/TerrainCells/PatchApplicator/Resources/Growth/CellResourceInterfaceGrowth.h</label>
+        <link refid="_cell_resource_interface_growth_8h_source"/>
+        <childnode refid="71" relation="include">
+        </childnode>
+        <childnode refid="65" relation="include">
+        </childnode>
+        <childnode refid="72" relation="include">
+        </childnode>
+      </node>
+      <node id="73">
+        <label>App/Model/IBM/Landscape/Map/TerrainCells/PatchApplicator/Resources/ResourceSignature.h</label>
+        <link refid="_resource_signature_8h_source"/>
+        <childnode refid="65" relation="include">
+        </childnode>
+      </node>
+      <node id="68">
+        <label>App/Model/IBM/Landscape/Map/TerrainCells/ResourceSearchParams.h</label>
+        <link refid="_resource_search_params_8h_source"/>
+        <childnode refid="69" relation="include">
+        </childnode>
+        <childnode refid="13" relation="include">
+        </childnode>
+      </node>
+      <node id="13">
+        <label>App/Model/IBM/Landscape/Map/TerrainCells/TerrainCell.h</label>
+        <link refid="_terrain_cell_8h_source"/>
+        <childnode refid="4" relation="include">
+        </childnode>
+        <childnode refid="14" relation="include">
+        </childnode>
+        <childnode refid="10" relation="include">
+        </childnode>
+        <childnode refid="15" relation="include">
+        </childnode>
+      </node>
+      <node id="82">
+        <label>App/Model/IBM/Maths/Dynamics/Decay/Decay.h</label>
+        <link refid="_decay_8h_source"/>
+        <childnode refid="83" relation="include">
+        </childnode>
+        <childnode refid="84" relation="include">
+        </childnode>
+        <childnode refid="85" relation="include">
+        </childnode>
+      </node>
+      <node id="83">
+        <label>App/Model/IBM/Maths/Dynamics/Decay/LinealDecay.h</label>
+        <link refid="_lineal_decay_8h_source"/>
+      </node>
+      <node id="84">
+        <label>App/Model/IBM/Maths/Dynamics/Decay/NonDecay.h</label>
+        <link refid="_non_decay_8h_source"/>
+      </node>
+      <node id="86">
+        <label>App/Model/IBM/Maths/Dynamics/Dynamics.h</label>
+        <link refid="_dynamics_8h_source"/>
+        <childnode refid="64" relation="include">
+        </childnode>
+        <childnode refid="87" relation="include">
+        </childnode>
+        <childnode refid="89" relation="include">
+        </childnode>
+      </node>
+      <node id="88">
+        <label>App/Model/IBM/Maths/Dynamics/MassBased/GrowthRateDynamics.h</label>
+        <link refid="_growth_rate_dynamics_8h_source"/>
+      </node>
+      <node id="87">
+        <label>App/Model/IBM/Maths/Dynamics/MassBasedDynamics.h</label>
+        <link refid="_mass_based_dynamics_8h_source"/>
+        <childnode refid="88" relation="include">
+        </childnode>
+      </node>
+      <node id="94">
+        <label>App/Model/IBM/Maths/Dynamics/NonMassBased/CycleDynamics.h</label>
+        <link refid="_cycle_dynamics_8h_source"/>
+        <childnode refid="90" relation="include">
+        </childnode>
+      </node>
+      <node id="95">
+        <label>App/Model/IBM/Maths/Dynamics/NonMassBased/NonDynamics.h</label>
+        <link refid="_non_dynamics_8h_source"/>
+        <childnode refid="4" relation="include">
+        </childnode>
+        <childnode refid="64" relation="include">
+        </childnode>
+      </node>
+      <node id="85">
+        <label>App/Model/IBM/Maths/Dynamics/NonMassBased/PulseDynamics.h</label>
+        <link refid="_pulse_dynamics_8h_source"/>
+      </node>
+      <node id="89">
+        <label>App/Model/IBM/Maths/Dynamics/NonMassBasedDynamics.h</label>
+        <link refid="_non_mass_based_dynamics_8h_source"/>
+        <childnode refid="90" relation="include">
+        </childnode>
+        <childnode refid="94" relation="include">
+        </childnode>
+        <childnode refid="95" relation="include">
+        </childnode>
+        <childnode refid="85" relation="include">
+        </childnode>
+      </node>
+      <node id="99">
+        <label>App/Model/IBM/Maths/MathFunctions.h</label>
+        <link refid="_math_functions_8h_source"/>
+        <childnode refid="6" relation="include">
+        </childnode>
+        <childnode refid="7" relation="include">
+        </childnode>
+        <childnode refid="8" relation="include">
+        </childnode>
+        <childnode refid="3" relation="include">
+        </childnode>
+        <childnode refid="29" relation="include">
+        </childnode>
+        <childnode refid="60" relation="include">
+        </childnode>
+        <childnode refid="100" relation="include">
+        </childnode>
+        <childnode refid="13" relation="include">
+        </childnode>
+        <childnode refid="88" relation="include">
+        </childnode>
+      </node>
+      <node id="96">
+        <label>App/View/Console.h</label>
+        <link refid="_console_8h_source"/>
+      </node>
+      <node id="97">
+        <label>App/View/GUI/GUI.h</label>
+        <link refid="_g_u_i_8h_source"/>
+      </node>
+      <node id="98">
+        <label>App/View/View.h</label>
+        <link refid="_view_8h_source"/>
+        <childnode refid="99" relation="include">
+        </childnode>
+        <childnode refid="96" relation="include">
+        </childnode>
+        <childnode refid="97" relation="include">
+        </childnode>
+      </node>
+      <node id="1">
+        <label>Misc/EnumClass.h</label>
+        <link refid="_enum_class_8h"/>
+        <childnode refid="2" relation="include">
+        </childnode>
+        <childnode refid="4" relation="include">
+        </childnode>
+        <childnode refid="3" relation="include">
+        </childnode>
+        <childnode refid="29" relation="include">
+        </childnode>
+        <childnode refid="44" relation="include">
+        </childnode>
+        <childnode refid="59" relation="include">
+        </childnode>
+        <childnode refid="48" relation="include">
+        </childnode>
+        <childnode refid="57" relation="include">
+        </childnode>
+        <childnode refid="62" relation="include">
+        </childnode>
+        <childnode refid="63" relation="include">
+        </childnode>
+        <childnode refid="14" relation="include">
+        </childnode>
+        <childnode refid="74" relation="include">
+        </childnode>
+        <childnode refid="75" relation="include">
+        </childnode>
+        <childnode refid="81" relation="include">
+        </childnode>
+        <childnode refid="69" relation="include">
+        </childnode>
+        <childnode refid="82" relation="include">
+        </childnode>
+        <childnode refid="86" relation="include">
+        </childnode>
+        <childnode refid="87" relation="include">
+        </childnode>
+        <childnode refid="89" relation="include">
+        </childnode>
+        <childnode refid="96" relation="include">
+        </childnode>
+        <childnode refid="97" relation="include">
+        </childnode>
+        <childnode refid="98" relation="include">
+        </childnode>
+        <childnode refid="101" relation="include">
+        </childnode>
+        <childnode refid="102" relation="include">
+        </childnode>
+      </node>
+      <node id="101">
+        <label>Misc/JsonValidator/Elements/ElementFactory.h</label>
+        <link refid="_element_factory_8h_source"/>
+      </node>
+      <node id="103">
+        <label>Misc/JsonValidator/Elements/Object.h</label>
+        <link refid="_object_8h_source"/>
+        <childnode refid="101" relation="include">
+        </childnode>
+        <childnode refid="104" relation="include">
+        </childnode>
+      </node>
+      <node id="102">
+        <label>Misc/JsonValidator/Operators.h</label>
+        <link refid="_operators_8h_source"/>
+        <childnode refid="103" relation="include">
+        </childnode>
+      </node>
+      <node id="104">
+        <label>Misc/JsonValidator/Validator.h</label>
+        <link refid="_validator_8h_source"/>
+      </node>
+    </invincdepgraph>
+    <innerclass refid="class_enum_class" prot="public">EnumClass</innerclass>
+    <innerclass refid="structfmt_1_1formatter_3_01_t_00_01char_00_01std_1_1enable__if__t_3_01std_1_1is__enum__v_3_01_t_01_4_01_4_01_4" prot="public">fmt::formatter&lt; T, char, std::enable_if_t&lt; std::is_enum_v&lt; T &gt; &gt; &gt;</innerclass>
+    <innernamespace refid="namespacefmt">fmt</innernamespace>
+    <briefdescription>
+<para>Template helper class for working with strongly-typed enums. </para>
+    </briefdescription>
+    <detaileddescription>
+<para>This class provides utility functions for converting enums to strings, strings to enum values, obtaining all enum values, and printing headers. It uses the <computeroutput>magic_enum</computeroutput> library to handle enum reflection at compile time. </para>
+    </detaileddescription>
+    <programlisting>
+<codeline lineno="1"><highlight class="normal"></highlight></codeline>
+<codeline lineno="9"><highlight class="normal"></highlight></codeline>
+<codeline lineno="10"><highlight class="normal"></highlight><highlight class="preprocessor">#ifndef<sp/>ENUM_CLASS_H_</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="11"><highlight class="normal"></highlight><highlight class="preprocessor">#define<sp/>ENUM_CLASS_H_</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="12"><highlight class="normal"></highlight></codeline>
+<codeline lineno="13"><highlight class="normal"></highlight></codeline>
+<codeline lineno="14"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&lt;sstream&gt;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="15"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&lt;string&gt;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="16"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&lt;unordered_map&gt;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="17"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&lt;magic_enum/magic_enum.hpp&gt;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="18"><highlight class="normal"></highlight></codeline>
+<codeline lineno="19"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&lt;fmt/format.h&gt;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="20"><highlight class="normal"></highlight></codeline>
+<codeline lineno="21"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&quot;Exceptions/LineInfoException.h&quot;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="22"><highlight class="normal"></highlight></codeline>
+<codeline lineno="34"><highlight class="normal"></highlight><highlight class="keyword">template</highlight><highlight class="normal"><sp/>&lt;</highlight><highlight class="keyword">typename</highlight><highlight class="normal"><sp/>T&gt;</highlight></codeline>
+<codeline lineno="35" refid="class_enum_class" refkind="compound"><highlight class="normal"></highlight><highlight class="keyword">class<sp/></highlight><highlight class="normal"><ref refid="class_enum_class" kindref="compound">EnumClass</ref><sp/>{</highlight></codeline>
+<codeline lineno="36"><highlight class="normal"></highlight><highlight class="keyword">public</highlight><highlight class="normal">:</highlight></codeline>
+<codeline lineno="45"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">static</highlight><highlight class="normal"><sp/>T<sp/><ref refid="class_enum_class_1a8ebeb0ef3fe0412ae2b472e91652346e" kindref="member">stringToEnumValue</ref>(</highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/>std::string<sp/>&amp;str);</highlight></codeline>
+<codeline lineno="46"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight></codeline>
+<codeline lineno="51"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">static</highlight><highlight class="normal"><sp/></highlight><highlight class="keyword">constexpr</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordtype">size_t</highlight><highlight class="normal"><sp/><ref refid="class_enum_class_1a511192c8269ea71ae2723cacc3096a1d" kindref="member">size</ref>();</highlight></codeline>
+<codeline lineno="52"><highlight class="normal"></highlight></codeline>
+<codeline lineno="57"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">static</highlight><highlight class="normal"><sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/>std::vector&lt;T&gt;<sp/><ref refid="class_enum_class_1a6fe19ca1265c5c774262da36165dff55" kindref="member">getEnumValues</ref>();</highlight></codeline>
+<codeline lineno="58"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight></codeline>
+<codeline lineno="64" refid="class_enum_class_1a9b79eeadc5ec19b77088795db07f14c8" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">static</highlight><highlight class="normal"><sp/></highlight><highlight class="keyword">inline</highlight><highlight class="normal"><sp/></highlight><highlight class="keyword">constexpr</highlight><highlight class="normal"><sp/>std::string_view<sp/><ref refid="class_enum_class_1a9b79eeadc5ec19b77088795db07f14c8" kindref="member">to_string</ref>(</highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/>T&amp;<sp/>type)<sp/></highlight><highlight class="keyword">noexcept</highlight><highlight class="normal"><sp/>{</highlight></codeline>
+<codeline lineno="65"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/>magic_enum::enum_name(type);</highlight></codeline>
+<codeline lineno="66"><highlight class="normal"><sp/><sp/><sp/><sp/>};</highlight></codeline>
+<codeline lineno="67"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight></codeline>
+<codeline lineno="72"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">static</highlight><highlight class="normal"><sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/>std::string<sp/><ref refid="class_enum_class_1acc96ab5a554b4a416bbde503c3f1877e" kindref="member">getHeader</ref>();</highlight></codeline>
+<codeline lineno="73"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight></codeline>
+<codeline lineno="78"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">static</highlight><highlight class="normal"><sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/>std::string<sp/><ref refid="class_enum_class_1a702ecb20edb0ee508a2baf390a5ce9df" kindref="member">printValues</ref>();</highlight></codeline>
+<codeline lineno="79"><highlight class="normal"></highlight></codeline>
+<codeline lineno="80"><highlight class="normal"></highlight><highlight class="keyword">private</highlight><highlight class="normal">:</highlight></codeline>
+<codeline lineno="85"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">static</highlight><highlight class="normal"><sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/>std::unordered_map&lt;std::string,<sp/>const<sp/>T&gt;<sp/><ref refid="class_enum_class_1aa35e76515bc5d03e6088995795f8bdbe" kindref="member">generateMap</ref>();</highlight></codeline>
+<codeline lineno="86"><highlight class="normal">};</highlight></codeline>
+<codeline lineno="87"><highlight class="normal"></highlight></codeline>
+<codeline lineno="88"><highlight class="normal"></highlight></codeline>
+<codeline lineno="89"><highlight class="normal"></highlight><highlight class="keyword">template</highlight><highlight class="normal"><sp/>&lt;</highlight><highlight class="keyword">typename</highlight><highlight class="normal"><sp/>T&gt;</highlight></codeline>
+<codeline lineno="90" refid="class_enum_class_1a511192c8269ea71ae2723cacc3096a1d" refkind="member"><highlight class="normal"></highlight><highlight class="keyword">constexpr</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordtype">size_t</highlight><highlight class="normal"><sp/><ref refid="class_enum_class_1a511192c8269ea71ae2723cacc3096a1d" kindref="member">EnumClass&lt;T&gt;::size</ref>()<sp/></highlight></codeline>
+<codeline lineno="91"><highlight class="normal">{<sp/></highlight></codeline>
+<codeline lineno="92"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/>magic_enum::enum_count&lt;T&gt;();<sp/></highlight></codeline>
+<codeline lineno="93"><highlight class="normal">}</highlight></codeline>
+<codeline lineno="94"><highlight class="normal"></highlight></codeline>
+<codeline lineno="95"><highlight class="normal"></highlight><highlight class="keyword">template</highlight><highlight class="normal"><sp/>&lt;</highlight><highlight class="keyword">typename</highlight><highlight class="normal"><sp/>T&gt;</highlight></codeline>
+<codeline lineno="96" refid="class_enum_class_1a6fe19ca1265c5c774262da36165dff55" refkind="member"><highlight class="normal"></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/>std::vector&lt;T&gt;<sp/><ref refid="class_enum_class_1a6fe19ca1265c5c774262da36165dff55" kindref="member">EnumClass&lt;T&gt;::getEnumValues</ref>()<sp/></highlight></codeline>
+<codeline lineno="97"><highlight class="normal">{<sp/></highlight></codeline>
+<codeline lineno="98"><highlight class="normal"><sp/><sp/><sp/><sp/>std::vector&lt;T&gt;<sp/>values;</highlight></codeline>
+<codeline lineno="99"><highlight class="normal"></highlight></codeline>
+<codeline lineno="100"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">for</highlight><highlight class="normal">(</highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/></highlight><highlight class="keyword">auto</highlight><highlight class="normal"><sp/>&amp;value<sp/>:<sp/>magic_enum::enum_values&lt;T&gt;())</highlight></codeline>
+<codeline lineno="101"><highlight class="normal"><sp/><sp/><sp/><sp/>{</highlight></codeline>
+<codeline lineno="102"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>values.push_back(value);</highlight></codeline>
+<codeline lineno="103"><highlight class="normal"><sp/><sp/><sp/><sp/>}</highlight></codeline>
+<codeline lineno="104"><highlight class="normal"></highlight></codeline>
+<codeline lineno="105"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/>values;</highlight></codeline>
+<codeline lineno="106"><highlight class="normal">}</highlight></codeline>
+<codeline lineno="107"><highlight class="normal"></highlight></codeline>
+<codeline lineno="108"><highlight class="normal"></highlight><highlight class="keyword">template</highlight><highlight class="normal"><sp/>&lt;</highlight><highlight class="keyword">typename</highlight><highlight class="normal"><sp/>T&gt;</highlight></codeline>
+<codeline lineno="109" refid="class_enum_class_1acc96ab5a554b4a416bbde503c3f1877e" refkind="member"><highlight class="normal"></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/>std::string<sp/><ref refid="class_enum_class_1acc96ab5a554b4a416bbde503c3f1877e" kindref="member">EnumClass&lt;T&gt;::getHeader</ref>()</highlight></codeline>
+<codeline lineno="110"><highlight class="normal">{</highlight></codeline>
+<codeline lineno="111"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">constexpr</highlight><highlight class="normal"><sp/></highlight><highlight class="keyword">auto</highlight><highlight class="normal"><sp/>enumNames<sp/>=<sp/>magic_enum::enum_names&lt;T&gt;();</highlight></codeline>
+<codeline lineno="112"><highlight class="normal"></highlight></codeline>
+<codeline lineno="113"><highlight class="normal"><sp/><sp/><sp/><sp/>std::ostringstream<sp/>header;</highlight></codeline>
+<codeline lineno="114"><highlight class="normal"></highlight></codeline>
+<codeline lineno="115"><highlight class="normal"><sp/><sp/><sp/><sp/>header<sp/>&lt;&lt;<sp/>enumNames[0];</highlight></codeline>
+<codeline lineno="116"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">for</highlight><highlight class="normal">(</highlight><highlight class="keywordtype">size_t</highlight><highlight class="normal"><sp/>i<sp/>=<sp/>1;<sp/>i<sp/>&lt;<sp/>enumNames.size();<sp/>i++)<sp/>{</highlight></codeline>
+<codeline lineno="117"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>header<sp/>&lt;&lt;<sp/></highlight><highlight class="stringliteral">&quot;\t&quot;</highlight><highlight class="normal"><sp/>&lt;&lt;<sp/>enumNames[i];</highlight></codeline>
+<codeline lineno="118"><highlight class="normal"><sp/><sp/><sp/><sp/>}</highlight></codeline>
+<codeline lineno="119"><highlight class="normal"></highlight></codeline>
+<codeline lineno="120"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/>header.str();</highlight></codeline>
+<codeline lineno="121"><highlight class="normal">}</highlight></codeline>
+<codeline lineno="122"><highlight class="normal"></highlight></codeline>
+<codeline lineno="123"><highlight class="normal"></highlight><highlight class="keyword">template</highlight><highlight class="normal"><sp/>&lt;</highlight><highlight class="keyword">typename</highlight><highlight class="normal"><sp/>T&gt;</highlight></codeline>
+<codeline lineno="124" refid="class_enum_class_1a702ecb20edb0ee508a2baf390a5ce9df" refkind="member"><highlight class="normal"></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/>std::string<sp/><ref refid="class_enum_class_1a702ecb20edb0ee508a2baf390a5ce9df" kindref="member">EnumClass&lt;T&gt;::printValues</ref>()</highlight></codeline>
+<codeline lineno="125"><highlight class="normal">{</highlight></codeline>
+<codeline lineno="126"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">constexpr</highlight><highlight class="normal"><sp/></highlight><highlight class="keyword">auto</highlight><highlight class="normal"><sp/>enumNames<sp/>=<sp/>magic_enum::enum_names&lt;T&gt;();</highlight></codeline>
+<codeline lineno="127"><highlight class="normal"></highlight></codeline>
+<codeline lineno="128"><highlight class="normal"><sp/><sp/><sp/><sp/>std::ostringstream<sp/>values;</highlight></codeline>
+<codeline lineno="129"><highlight class="normal"></highlight></codeline>
+<codeline lineno="130"><highlight class="normal"><sp/><sp/><sp/><sp/>values<sp/>&lt;&lt;<sp/>enumNames[0];</highlight></codeline>
+<codeline lineno="131"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">for</highlight><highlight class="normal">(</highlight><highlight class="keywordtype">size_t</highlight><highlight class="normal"><sp/>i<sp/>=<sp/>1;<sp/>i<sp/>&lt;<sp/>enumNames.size();<sp/>i++)<sp/>{</highlight></codeline>
+<codeline lineno="132"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>values<sp/>&lt;&lt;<sp/></highlight><highlight class="stringliteral">&quot;,<sp/>&quot;</highlight><highlight class="normal"><sp/>&lt;&lt;<sp/>enumNames[i];</highlight></codeline>
+<codeline lineno="133"><highlight class="normal"><sp/><sp/><sp/><sp/>}</highlight></codeline>
+<codeline lineno="134"><highlight class="normal"></highlight></codeline>
+<codeline lineno="135"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/>values.str();</highlight></codeline>
+<codeline lineno="136"><highlight class="normal">}</highlight></codeline>
+<codeline lineno="137"><highlight class="normal"></highlight></codeline>
+<codeline lineno="138"><highlight class="normal"></highlight><highlight class="keyword">template</highlight><highlight class="normal"><sp/>&lt;</highlight><highlight class="keyword">typename</highlight><highlight class="normal"><sp/>T&gt;</highlight></codeline>
+<codeline lineno="139" refid="class_enum_class_1aa35e76515bc5d03e6088995795f8bdbe" refkind="member"><highlight class="normal"></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/>std::unordered_map&lt;std::string,<sp/>const<sp/>T&gt;<sp/><ref refid="class_enum_class_1aa35e76515bc5d03e6088995795f8bdbe" kindref="member">EnumClass&lt;T&gt;::generateMap</ref>()<sp/></highlight></codeline>
+<codeline lineno="140"><highlight class="normal">{</highlight></codeline>
+<codeline lineno="141"><highlight class="normal"><sp/><sp/><sp/><sp/>std::unordered_map&lt;std::string,<sp/>const<sp/>T&gt;<sp/>enumMap;</highlight></codeline>
+<codeline lineno="142"><highlight class="normal"></highlight></codeline>
+<codeline lineno="143"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">for</highlight><highlight class="normal">(</highlight><highlight class="keywordtype">size_t</highlight><highlight class="normal"><sp/>i<sp/>=<sp/>0;<sp/>i<sp/>&lt;<sp/>EnumClass&lt;T&gt;::size();<sp/>i++)<sp/>{</highlight></codeline>
+<codeline lineno="144"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/>T<sp/>type<sp/>=<sp/></highlight><highlight class="keyword">static_cast&lt;</highlight><highlight class="keyword">const<sp/></highlight><highlight class="normal">T</highlight><highlight class="keyword">&gt;</highlight><highlight class="normal">(i);</highlight></codeline>
+<codeline lineno="145"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>enumMap.insert({std::string(<ref refid="class_enum_class_1a9b79eeadc5ec19b77088795db07f14c8" kindref="member">EnumClass&lt;T&gt;::to_string</ref>(type)),<sp/>type});</highlight></codeline>
+<codeline lineno="146"><highlight class="normal"><sp/><sp/><sp/><sp/>}</highlight></codeline>
+<codeline lineno="147"><highlight class="normal"></highlight></codeline>
+<codeline lineno="148"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/>enumMap;</highlight></codeline>
+<codeline lineno="149"><highlight class="normal">}</highlight></codeline>
+<codeline lineno="150"><highlight class="normal"></highlight></codeline>
+<codeline lineno="151"><highlight class="normal"></highlight><highlight class="keyword">template</highlight><highlight class="normal"><sp/>&lt;</highlight><highlight class="keyword">typename</highlight><highlight class="normal"><sp/>T&gt;</highlight></codeline>
+<codeline lineno="152" refid="class_enum_class_1a8ebeb0ef3fe0412ae2b472e91652346e" refkind="member"><highlight class="normal">T<sp/><ref refid="class_enum_class_1a8ebeb0ef3fe0412ae2b472e91652346e" kindref="member">EnumClass&lt;T&gt;::stringToEnumValue</ref>(</highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/>std::string<sp/>&amp;str)<sp/>{<sp/></highlight></codeline>
+<codeline lineno="153"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/>std::unordered_map&lt;std::string,<sp/>const<sp/>T&gt;<sp/>stringToEnum<sp/>=<sp/><ref refid="class_enum_class_1aa35e76515bc5d03e6088995795f8bdbe" kindref="member">EnumClass&lt;T&gt;::generateMap</ref>();</highlight></codeline>
+<codeline lineno="154"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight></codeline>
+<codeline lineno="155"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">try</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="156"><highlight class="normal"><sp/><sp/><sp/><sp/>{</highlight></codeline>
+<codeline lineno="157"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/>stringToEnum.at(str);</highlight></codeline>
+<codeline lineno="158"><highlight class="normal"><sp/><sp/><sp/><sp/>}</highlight></codeline>
+<codeline lineno="159"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">catch</highlight><highlight class="normal">(</highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/>std::out_of_range&amp;)<sp/></highlight></codeline>
+<codeline lineno="160"><highlight class="normal"><sp/><sp/><sp/><sp/>{</highlight></codeline>
+<codeline lineno="161"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>std::ostringstream<sp/>message;</highlight></codeline>
+<codeline lineno="162"><highlight class="normal"></highlight></codeline>
+<codeline lineno="163"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>message<sp/>&lt;&lt;<sp/></highlight><highlight class="stringliteral">&quot;Unknown<sp/>enum<sp/>type<sp/>&apos;&quot;</highlight><highlight class="normal"><sp/>&lt;&lt;<sp/>str<sp/>&lt;&lt;<sp/></highlight><highlight class="stringliteral">&quot;&apos;.<sp/>Valid<sp/>values<sp/>are<sp/>&quot;</highlight><highlight class="normal"><sp/>&lt;&lt;<sp/><ref refid="class_enum_class_1a702ecb20edb0ee508a2baf390a5ce9df" kindref="member">EnumClass&lt;T&gt;::printValues</ref>();</highlight></codeline>
+<codeline lineno="164"><highlight class="normal"></highlight></codeline>
+<codeline lineno="165"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>throwLineInfoException(message.str());</highlight></codeline>
+<codeline lineno="166"><highlight class="normal"><sp/><sp/><sp/><sp/>}</highlight></codeline>
+<codeline lineno="167"><highlight class="normal">}</highlight></codeline>
+<codeline lineno="168"><highlight class="normal"></highlight></codeline>
+<codeline lineno="169"><highlight class="normal"></highlight></codeline>
+<codeline lineno="170"><highlight class="normal"></highlight></codeline>
+<codeline lineno="171"><highlight class="normal"></highlight><highlight class="keyword">namespace<sp/></highlight><highlight class="normal">fmt<sp/>{</highlight></codeline>
+<codeline lineno="172"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">template</highlight><highlight class="normal"><sp/>&lt;</highlight><highlight class="keyword">typename</highlight><highlight class="normal"><sp/>T&gt;</highlight></codeline>
+<codeline lineno="173"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">struct<sp/></highlight><highlight class="normal">formatter&lt;T,<sp/>char,<sp/><ref refid="namespacestd" kindref="compound">std</ref>::enable_if_t&lt;std::is_enum_v&lt;T&gt;&gt;&gt;<sp/>:<sp/>formatter&lt;string_view&gt;<sp/>{</highlight></codeline>
+<codeline lineno="174"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">template</highlight><highlight class="normal"><sp/>&lt;</highlight><highlight class="keyword">typename</highlight><highlight class="normal"><sp/>FormatContext&gt;</highlight></codeline>
+<codeline lineno="175"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">auto</highlight><highlight class="normal"><sp/>format(T<sp/>e,<sp/>FormatContext&amp;<sp/>ctx)</highlight><highlight class="keyword"><sp/>const<sp/></highlight><highlight class="normal">{</highlight></codeline>
+<codeline lineno="176"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="comment">//<sp/>magic_enum<sp/>nos<sp/>da<sp/>el<sp/>string_view<sp/>sin<sp/>coste<sp/>de<sp/>heap</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="177"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>std::string_view<sp/>name<sp/>=<sp/>magic_enum::enum_name(e);</highlight></codeline>
+<codeline lineno="178"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal"><sp/>(name.empty())<sp/>{</highlight></codeline>
+<codeline lineno="179"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/>formatter&lt;string_view&gt;::format(</highlight><highlight class="stringliteral">&quot;UNKNOWN&quot;</highlight><highlight class="normal">,<sp/>ctx);</highlight></codeline>
+<codeline lineno="180"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>}</highlight></codeline>
+<codeline lineno="181"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/>formatter&lt;string_view&gt;::format(name,<sp/>ctx);</highlight></codeline>
+<codeline lineno="182"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>}</highlight></codeline>
+<codeline lineno="183"><highlight class="normal"><sp/><sp/><sp/><sp/>};</highlight></codeline>
+<codeline lineno="184"><highlight class="normal">}</highlight></codeline>
+<codeline lineno="185"><highlight class="normal"></highlight></codeline>
+<codeline lineno="186"><highlight class="normal"></highlight></codeline>
+<codeline lineno="187"><highlight class="normal"></highlight></codeline>
+<codeline lineno="188"><highlight class="normal"></highlight><highlight class="preprocessor">#endif<sp/></highlight><highlight class="comment">//<sp/>ENUM_CLASS_H_</highlight><highlight class="normal"></highlight></codeline>
+    </programlisting>
+    <location file="Misc/EnumClass.h"/>
+  </compounddef>
+</doxygen>

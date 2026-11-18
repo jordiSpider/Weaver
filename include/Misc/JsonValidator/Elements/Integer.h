@@ -19,6 +19,7 @@
 
 /**
  * @class Integer
+ * @ingroup weaver_validation
  * @brief Represents an integer element in a JSON configuration.
  *
  * Inherits from Element. Provides validation for integer values,

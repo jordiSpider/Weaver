@@ -29,6 +29,7 @@
 
  /**
   * @class PawarIndividualTraitTemperatureSection
+  * @ingroup weaver_landscape
   * @brief Temperature-dependent section of an individual trait using the Pawar model.
   *
   * This class modifies an individual trait according to environmental temperature,

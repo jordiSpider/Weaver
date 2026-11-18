@@ -25,6 +25,7 @@
 
 /**
   * @class CellMoisture
+  * @ingroup weaver_landscape
   * @brief Concrete moisture model for a terrain cell.
   *
   * CellMoisture represents a cell influenced by a single MoistureSource.

@@ -17,12 +17,14 @@
 
 /**
  * @class CustomIndexedVector
+ * @ingroup weaver_model
  * @brief A vector container indexed by a custom type with bounds checking.
  *
  * @tparam IndexType The type used to index the vector (e.g., enum or integer type).
  * @tparam ContentType The type of elements stored in the vector.
  *
  * @note Throws `std::out_of_range` if the index exceeds the vector size.
+ * @note A specialization for `bool` uses `std::vector<bool>` storage.
  */
 template <typename IndexType, typename ContentType>
 class CustomIndexedVector {
@@ -319,6 +321,7 @@ private:
 
 
 
+/** @cond DOXYGEN_SHOULD_SKIP_THIS */
 /**
  * @brief Specialization of CustomIndexedVector for `bool` values.
  *
@@ -592,5 +595,6 @@ public:
 private:
     std::vector<bool> data; /**< Internal storage of bool elements */
 };
+/** @endcond */
 
 #endif // CUSTOM_INDEXED_VECTOR_H_

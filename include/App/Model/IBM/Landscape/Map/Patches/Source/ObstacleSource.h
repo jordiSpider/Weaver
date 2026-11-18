@@ -21,6 +21,7 @@
 
 /**
  * @class ObstacleSource
+ * @ingroup weaver_landscape
  * @brief Represents an obstacle source in the landscape.
  *
  * ObstacleSource extends PathSource and provides information about obstacles

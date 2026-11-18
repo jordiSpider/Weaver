@@ -28,6 +28,7 @@ class Length;
 
 /**
  * @class DryMass
+ * @ingroup weaver_landscape
  * @brief Represents dry mass in the ecosystem simulation.
  *
  * Encapsulates a PreciseDouble value for dry mass, provides arithmetic operations,
@@ -299,6 +300,7 @@ bool operator!=(const PreciseDouble& lhs, const DryMass& rhs);
 
 /**
  * @class WetMass
+ * @ingroup weaver_landscape
  * @brief Represents wet mass in the ecosystem simulation.
  *
  * Encapsulates a PreciseDouble value for wet mass and provides arithmetic operations,
@@ -560,6 +562,7 @@ bool operator!=(const PreciseDouble& lhs, const WetMass& rhs);
 
 /**
  * @class Length
+ * @ingroup weaver_landscape
  * @brief Represents length in the ecosystem simulation.
  *
  * Encapsulates a PreciseDouble value for length and provides arithmetic operations,

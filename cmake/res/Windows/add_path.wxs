@@ -1,22 +1,22 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <Wix xmlns="http://schemas.microsoft.com/wix/2006/wi">
 	<Fragment>
-		<DirectoryRef Id="CM_DP_CLI.bin">
+		<DirectoryRef Id="@WEAVER_CLI_BIN_DIR_ID@">
 			<Component Id="setEnviroment" Guid="@WEAVER_SET_PATH_GUID@">
 				<CreateFolder />
 				<Environment
                       Id="PATH"
                       Name="PATH"
-                      Value="[CM_DP_CLI.bin]"
+					Value="[@WEAVER_CLI_BIN_DIR_ID@]"
                       Permanent="no"
                       Part="last"
                       Action="set"
                       System="yes" />
 			</Component>
-			<!-- Remember the user's selected data path for same-edition upgrades. -->
+			<!-- Remember the user's selected data path for this exact version/edition. -->
 			<Component Id="rememberAppDataPath" Guid="@WEAVER_APPDATA_PATH_GUID@">
 				<RegistryValue Root="HKLM"
-					Key="Software\Weaver\@CPACK_PACKAGE_NAME@"
+					Key="Software\Weaver\@PROGRAM_VERSION_PADDED@\@WEAVER_EDITION@"
 					Name="AppDataPath"
 					Type="string"
 					Value="[APPDATADIR]"

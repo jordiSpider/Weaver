@@ -29,6 +29,7 @@
 
 /**
  * @class CycleDynamics
+ * @ingroup weaver_model
  * @brief Implements periodic, non–mass-based dynamic behavior.
  *
  * The CycleDynamics class models a cyclic sequence of values that repeat over time.

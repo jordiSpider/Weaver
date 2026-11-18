@@ -17,6 +17,7 @@
 
 /**
  * @class JsonValidator
+ * @ingroup weaver_validation
  * @brief Validates JSON objects against a predefined JSON Schema.
  *
  * This class loads a JSON schema from a file and provides a method to validate

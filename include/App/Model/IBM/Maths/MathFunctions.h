@@ -25,6 +25,7 @@
 
 /**
  * @class MathFunctions
+ * @ingroup weaver_model
  * @brief Provides static mathematical utilities for traits, temperature responses, and ecological models.
  *
  * This class is not meant to be instantiated. All functions are static and include:

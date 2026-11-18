@@ -13,6 +13,7 @@
 
 /**
  * @class GaussianPatch
+ * @ingroup weaver_landscape
  * @brief Represents a patch with Gaussian-shaped influence.
  *
  * The GaussianPatch class is a concrete implementation of PatchShape.

@@ -1,0 +1,961 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.14.0" xml:lang="en-US">
+  <compounddef id="class_branch_cell_moisture" kind="class" language="C++" prot="public">
+    <compoundname>BranchCellMoisture</compoundname>
+    <basecompoundref refid="class_cell_moisture_interface" prot="public" virt="non-virtual">CellMoistureInterface</basecompoundref>
+    <includes refid="_branch_cell_moisture_8h" local="no">BranchCellMoisture.h</includes>
+    <sectiondef kind="protected-attrib">
+      <memberdef kind="variable" id="class_branch_cell_moisture_1a3797f0aa53e5c1b96e23f041ba1bbe52" prot="protected" static="no" mutable="no">
+        <type>bool</type>
+        <definition>bool BranchCellMoisture::inCompetitorFreeSpace</definition>
+        <argsstring></argsstring>
+        <name>inCompetitorFreeSpace</name>
+        <qualifiedname>BranchCellMoisture::inCompetitorFreeSpace</qualifiedname>
+        <briefdescription>
+<para>Flag indicating if the cell is free of competitors. </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="App/Model/IBM/Landscape/Map/SpatialTree/TerrainCells/PatchApplicator/Moisture/BranchCellMoisture.h" line="111" column="10" bodyfile="App/Model/IBM/Landscape/Map/SpatialTree/TerrainCells/PatchApplicator/Moisture/BranchCellMoisture.h" bodystart="111" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="class_branch_cell_moisture_1a1b82cd7524fc18da9a5ea9a68d79eb05" prot="protected" static="no" mutable="no">
+        <type>bool</type>
+        <definition>bool BranchCellMoisture::inEnemyFreeSpace</definition>
+        <argsstring></argsstring>
+        <name>inEnemyFreeSpace</name>
+        <qualifiedname>BranchCellMoisture::inEnemyFreeSpace</qualifiedname>
+        <briefdescription>
+<para>Flag indicating if the cell is free of enemies. </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="App/Model/IBM/Landscape/Map/SpatialTree/TerrainCells/PatchApplicator/Moisture/BranchCellMoisture.h" line="110" column="10" bodyfile="App/Model/IBM/Landscape/Map/SpatialTree/TerrainCells/PatchApplicator/Moisture/BranchCellMoisture.h" bodystart="110" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="class_branch_cell_moisture_1aaa85ee2c4b820e479bbeed312338ca5f" prot="protected" static="no" mutable="no">
+        <type>bool</type>
+        <definition>bool BranchCellMoisture::isSource</definition>
+        <argsstring></argsstring>
+        <name>isSource</name>
+        <qualifiedname>BranchCellMoisture::isSource</qualifiedname>
+        <briefdescription>
+<para>Flag indicating if this cell is a source. </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="App/Model/IBM/Landscape/Map/SpatialTree/TerrainCells/PatchApplicator/Moisture/BranchCellMoisture.h" line="106" column="10" bodyfile="App/Model/IBM/Landscape/Map/SpatialTree/TerrainCells/PatchApplicator/Moisture/BranchCellMoisture.h" bodystart="106" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="class_branch_cell_moisture_1a6faf21dd83e482eb066a9b60036e1c96" prot="protected" static="no" mutable="no">
+        <type><ref refid="class_precise_double" kindref="compound">PreciseDouble</ref></type>
+        <definition>PreciseDouble BranchCellMoisture::moisture</definition>
+        <argsstring></argsstring>
+        <name>moisture</name>
+        <qualifiedname>BranchCellMoisture::moisture</qualifiedname>
+        <briefdescription>
+<para>Current humidity. </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="App/Model/IBM/Landscape/Map/SpatialTree/TerrainCells/PatchApplicator/Moisture/BranchCellMoisture.h" line="114" column="19" bodyfile="App/Model/IBM/Landscape/Map/SpatialTree/TerrainCells/PatchApplicator/Moisture/BranchCellMoisture.h" bodystart="114" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="class_branch_cell_moisture_1a1c70985507003ee05797f1b80d026d14" prot="protected" static="no" mutable="no">
+        <type>const <ref refid="class_moisture_source" kindref="compound">MoistureSource</ref> *</type>
+        <definition>const MoistureSource* BranchCellMoisture::moistureSource</definition>
+        <argsstring></argsstring>
+        <name>moistureSource</name>
+        <qualifiedname>BranchCellMoisture::moistureSource</qualifiedname>
+        <briefdescription>
+<para>Pointer to the original moisture source. </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="App/Model/IBM/Landscape/Map/SpatialTree/TerrainCells/PatchApplicator/Moisture/BranchCellMoisture.h" line="105" column="26" bodyfile="App/Model/IBM/Landscape/Map/SpatialTree/TerrainCells/PatchApplicator/Moisture/BranchCellMoisture.h" bodystart="105" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="class_branch_cell_moisture_1a685b5e76d79fbf811a647b11139d6452" prot="protected" static="no" mutable="no">
+        <type><ref refid="class_branch_terrain_cell" kindref="compound">BranchTerrainCell</ref> *</type>
+        <definition>BranchTerrainCell* BranchCellMoisture::summaryTerrainCell</definition>
+        <argsstring></argsstring>
+        <name>summaryTerrainCell</name>
+        <qualifiedname>BranchCellMoisture::summaryTerrainCell</qualifiedname>
+        <briefdescription>
+<para>Pointer to the branch cell being summarized. </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="App/Model/IBM/Landscape/Map/SpatialTree/TerrainCells/PatchApplicator/Moisture/BranchCellMoisture.h" line="108" column="23" bodyfile="App/Model/IBM/Landscape/Map/SpatialTree/TerrainCells/PatchApplicator/Moisture/BranchCellMoisture.h" bodystart="108" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="class_branch_cell_moisture_1afc66a8f0d3af72d99248d3dc8c8727c5" prot="protected" static="no" mutable="no">
+        <type><ref refid="class_temperature" kindref="compound">Temperature</ref></type>
+        <definition>Temperature BranchCellMoisture::temperature</definition>
+        <argsstring></argsstring>
+        <name>temperature</name>
+        <qualifiedname>BranchCellMoisture::temperature</qualifiedname>
+        <briefdescription>
+<para>Current temperature. </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="App/Model/IBM/Landscape/Map/SpatialTree/TerrainCells/PatchApplicator/Moisture/BranchCellMoisture.h" line="113" column="17" bodyfile="App/Model/IBM/Landscape/Map/SpatialTree/TerrainCells/PatchApplicator/Moisture/BranchCellMoisture.h" bodystart="113" bodyend="-1"/>
+      </memberdef>
+    </sectiondef>
+    <sectiondef kind="public-func">
+      <memberdef kind="function" id="class_branch_cell_moisture_1aa2216f17619079cff5946541ac3c47a4" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type></type>
+        <definition>BranchCellMoisture::BranchCellMoisture</definition>
+        <argsstring>()</argsstring>
+        <name>BranchCellMoisture</name>
+        <qualifiedname>BranchCellMoisture::BranchCellMoisture</qualifiedname>
+        <briefdescription>
+<para>Default constructor. </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="App/Model/IBM/Landscape/Map/SpatialTree/TerrainCells/PatchApplicator/Moisture/BranchCellMoisture.h" line="34" column="5"/>
+      </memberdef>
+      <memberdef kind="function" id="class_branch_cell_moisture_1a0fa1940a5dfd500dd1adbca25e6af6d7" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type></type>
+        <definition>BranchCellMoisture::BranchCellMoisture</definition>
+        <argsstring>(const BranchCellMoisture &amp;)=delete</argsstring>
+        <name>BranchCellMoisture</name>
+        <qualifiedname>BranchCellMoisture::BranchCellMoisture</qualifiedname>
+        <param>
+          <type>const <ref refid="class_branch_cell_moisture" kindref="compound">BranchCellMoisture</ref> &amp;</type>
+        </param>
+        <briefdescription>
+<para>Deleted copy constructor. </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="App/Model/IBM/Landscape/Map/SpatialTree/TerrainCells/PatchApplicator/Moisture/BranchCellMoisture.h" line="47" column="5"/>
+      </memberdef>
+      <memberdef kind="function" id="class_branch_cell_moisture_1aaa8193d90c521577ebd92a735573ce52" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type></type>
+        <definition>BranchCellMoisture::BranchCellMoisture</definition>
+        <argsstring>(const MoistureSource *const newMoistureSource, const size_t newMoisturePatchPriority)</argsstring>
+        <name>BranchCellMoisture</name>
+        <qualifiedname>BranchCellMoisture::BranchCellMoisture</qualifiedname>
+        <param>
+          <type>const <ref refid="class_moisture_source" kindref="compound">MoistureSource</ref> *const</type>
+          <declname>newMoistureSource</declname>
+        </param>
+        <param>
+          <type>const size_t</type>
+          <declname>newMoisturePatchPriority</declname>
+        </param>
+        <briefdescription>
+<para>Constructor with initial moisture source and patch priority. </para>
+        </briefdescription>
+        <detaileddescription>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>newMoistureSource</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Pointer to the moisture source. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>newMoisturePatchPriority</parametername>
+</parameternamelist>
+<parameterdescription>
+<para><ref refid="class_patch" kindref="compound">Patch</ref> priority for moisture updates. </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="App/Model/IBM/Landscape/Map/SpatialTree/TerrainCells/PatchApplicator/Moisture/BranchCellMoisture.h" line="41" column="5"/>
+      </memberdef>
+      <memberdef kind="function" id="class_branch_cell_moisture_1aba6b8e4b58a9763bdea07f214432e708" prot="public" static="no" const="no" explicit="no" inline="no" virt="virtual">
+        <type></type>
+        <definition>virtual BranchCellMoisture::~BranchCellMoisture</definition>
+        <argsstring>()</argsstring>
+        <name>~BranchCellMoisture</name>
+        <qualifiedname>BranchCellMoisture::~BranchCellMoisture</qualifiedname>
+        <briefdescription>
+<para>Destructor. </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="App/Model/IBM/Landscape/Map/SpatialTree/TerrainCells/PatchApplicator/Moisture/BranchCellMoisture.h" line="44" column="13"/>
+      </memberdef>
+      <memberdef kind="function" id="class_branch_cell_moisture_1ae3f948dce75bb4267cb6d91fe7858b6a" prot="public" static="no" const="yes" explicit="no" inline="no" virt="virtual">
+        <type>void</type>
+        <definition>void BranchCellMoisture::addTemperatureRange</definition>
+        <argsstring>(std::unordered_set&lt; Temperature &gt; &amp;globalTemperatureRange, std::vector&lt; Temperature &gt; &amp;temperatureCycle) const override</argsstring>
+        <name>addTemperatureRange</name>
+        <qualifiedname>BranchCellMoisture::addTemperatureRange</qualifiedname>
+        <reimplements refid="class_cell_moisture_interface_1a67b7c47c51c56f586d1f0f3cf563adab">addTemperatureRange</reimplements>
+        <param>
+          <type>std::unordered_set&lt; <ref refid="class_temperature" kindref="compound">Temperature</ref> &gt; &amp;</type>
+          <declname>globalTemperatureRange</declname>
+        </param>
+        <param>
+          <type>std::vector&lt; <ref refid="class_temperature" kindref="compound">Temperature</ref> &gt; &amp;</type>
+          <declname>temperatureCycle</declname>
+        </param>
+        <briefdescription>
+<para>Add this cell&apos;s temperature to global temperature ranges and cycles. </para>
+        </briefdescription>
+        <detaileddescription>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>globalTemperatureRange</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Set of all temperatures. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>temperatureCycle</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Vector for temperature cycle updates. </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="App/Model/IBM/Landscape/Map/SpatialTree/TerrainCells/PatchApplicator/Moisture/BranchCellMoisture.h" line="86" column="10"/>
+      </memberdef>
+      <memberdef kind="function" id="class_branch_cell_moisture_1a6a0704ae1a86e1a9fced0c89d804e5cf" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void BranchCellMoisture::applyBranch</definition>
+        <argsstring>(BranchTerrainCell *const newSummaryTerrainCell)</argsstring>
+        <name>applyBranch</name>
+        <qualifiedname>BranchCellMoisture::applyBranch</qualifiedname>
+        <param>
+          <type><ref refid="class_branch_terrain_cell" kindref="compound">BranchTerrainCell</ref> *const</type>
+          <declname>newSummaryTerrainCell</declname>
+        </param>
+        <briefdescription>
+<para>Aggregate moisture data from child terrain cells. </para>
+        </briefdescription>
+        <detaileddescription>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>newSummaryTerrainCell</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Pointer to the branch terrain cell to summarize. </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="App/Model/IBM/Landscape/Map/SpatialTree/TerrainCells/PatchApplicator/Moisture/BranchCellMoisture.h" line="64" column="10"/>
+      </memberdef>
+      <memberdef kind="function" id="class_branch_cell_moisture_1ab4171406a1775ae6d9b7c7bea00fb632" prot="public" static="no" const="no" explicit="no" inline="no" virt="virtual">
+        <type>void</type>
+        <definition>void BranchCellMoisture::applySource</definition>
+        <argsstring>(const MoistureSource *const newMoistureSource, const size_t newMoisturePatchPriority, const PreciseDouble &amp;cellSize)</argsstring>
+        <name>applySource</name>
+        <qualifiedname>BranchCellMoisture::applySource</qualifiedname>
+        <reimplements refid="class_cell_moisture_interface_1a2330dbe1ce829193b6d8a1b8afcfa84b">applySource</reimplements>
+        <param>
+          <type>const <ref refid="class_moisture_source" kindref="compound">MoistureSource</ref> *const</type>
+          <declname>newMoistureSource</declname>
+        </param>
+        <param>
+          <type>const size_t</type>
+          <declname>newMoisturePatchPriority</declname>
+        </param>
+        <param>
+          <type>const <ref refid="class_precise_double" kindref="compound">PreciseDouble</ref> &amp;</type>
+          <declname>cellSize</declname>
+        </param>
+        <briefdescription>
+<para>Apply a moisture source to this branch cell. </para>
+        </briefdescription>
+        <detaileddescription>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>newMoistureSource</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Pointer to the moisture source. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>newMoisturePatchPriority</parametername>
+</parameternamelist>
+<parameterdescription>
+<para><ref refid="class_patch" kindref="compound">Patch</ref> priority for the update. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>cellSize</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Size of the cell for calculation. </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="App/Model/IBM/Landscape/Map/SpatialTree/TerrainCells/PatchApplicator/Moisture/BranchCellMoisture.h" line="58" column="10"/>
+      </memberdef>
+      <memberdef kind="function" id="class_branch_cell_moisture_1a113cd89116b10b44624d95772b049ef6" prot="public" static="no" const="no" explicit="no" inline="no" virt="virtual">
+        <type>void</type>
+        <definition>void BranchCellMoisture::deserializeCellMoisture</definition>
+        <argsstring>(std::vector&lt; std::pair&lt; size_t, MoistureSource * &gt; &gt; &amp;appliedMoisture, TerrainCell *newTerrainCell)</argsstring>
+        <name>deserializeCellMoisture</name>
+        <qualifiedname>BranchCellMoisture::deserializeCellMoisture</qualifiedname>
+        <reimplements refid="class_cell_moisture_interface_1ac36581243f864f6cd37d84acea47b3c2">deserializeCellMoisture</reimplements>
+        <param>
+          <type>std::vector&lt; std::pair&lt; size_t, <ref refid="class_moisture_source" kindref="compound">MoistureSource</ref> * &gt; &gt; &amp;</type>
+          <declname>appliedMoisture</declname>
+        </param>
+        <param>
+          <type><ref refid="class_terrain_cell" kindref="compound">TerrainCell</ref> *</type>
+          <declname>newTerrainCell</declname>
+        </param>
+        <briefdescription>
+<para>Deserialize moisture data from child cells to reconstruct the branch cell. </para>
+        </briefdescription>
+        <detaileddescription>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>appliedMoisture</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Vector of applied moisture sources. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>newTerrainCell</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Pointer to the terrain cell being deserialized. </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="App/Model/IBM/Landscape/Map/SpatialTree/TerrainCells/PatchApplicator/Moisture/BranchCellMoisture.h" line="93" column="10"/>
+      </memberdef>
+      <memberdef kind="function" id="class_branch_cell_moisture_1a00202b21051dd5534f636c45ceb5343c" prot="public" static="no" const="yes" explicit="no" inline="no" virt="virtual">
+        <type>const <ref refid="class_wet_mass" kindref="compound">WetMass</ref> &amp;</type>
+        <definition>const WetMass &amp; BranchCellMoisture::getMaximumResourceCapacityDensity</definition>
+        <argsstring>() const</argsstring>
+        <name>getMaximumResourceCapacityDensity</name>
+        <qualifiedname>BranchCellMoisture::getMaximumResourceCapacityDensity</qualifiedname>
+        <reimplements refid="class_cell_moisture_interface_1a52c6bc31c594a851e15c685d9df855e5">getMaximumResourceCapacityDensity</reimplements>
+        <briefdescription>
+<para>Get the maximum resource capacity density for this cell. </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="App/Model/IBM/Landscape/Map/SpatialTree/TerrainCells/PatchApplicator/Moisture/BranchCellMoisture.h" line="79" column="19"/>
+      </memberdef>
+      <memberdef kind="function" id="class_branch_cell_moisture_1ad93cdc4d92ebcfa1818c6a748bed30bf" prot="public" static="no" const="yes" explicit="no" inline="no" virt="virtual">
+        <type>const <ref refid="class_precise_double" kindref="compound">PreciseDouble</ref> &amp;</type>
+        <definition>const PreciseDouble &amp; BranchCellMoisture::getMoisture</definition>
+        <argsstring>() const</argsstring>
+        <name>getMoisture</name>
+        <qualifiedname>BranchCellMoisture::getMoisture</qualifiedname>
+        <reimplements refid="class_cell_moisture_interface_1a4b5656d096e84ab9ef79c820bd88f157">getMoisture</reimplements>
+        <briefdescription>
+<para>Get the current moisture of the branch cell. </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="App/Model/IBM/Landscape/Map/SpatialTree/TerrainCells/PatchApplicator/Moisture/BranchCellMoisture.h" line="70" column="25"/>
+      </memberdef>
+      <memberdef kind="function" id="class_branch_cell_moisture_1a2a76f9702e47f502e004fcacd3735264" prot="public" static="no" const="yes" explicit="no" inline="no" virt="virtual">
+        <type>const <ref refid="class_temperature" kindref="compound">Temperature</ref> &amp;</type>
+        <definition>const Temperature &amp; BranchCellMoisture::getTemperature</definition>
+        <argsstring>() const</argsstring>
+        <name>getTemperature</name>
+        <qualifiedname>BranchCellMoisture::getTemperature</qualifiedname>
+        <reimplements refid="class_cell_moisture_interface_1afdff24d8ffabce0276cc5b4f2d65d13b">getTemperature</reimplements>
+        <briefdescription>
+<para>Get the current temperature of the branch cell. </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="App/Model/IBM/Landscape/Map/SpatialTree/TerrainCells/PatchApplicator/Moisture/BranchCellMoisture.h" line="67" column="23"/>
+      </memberdef>
+      <memberdef kind="function" id="class_branch_cell_moisture_1aabcb858a7c150feccd80034591930862" prot="public" static="no" const="yes" explicit="no" inline="no" virt="virtual">
+        <type>bool</type>
+        <definition>bool BranchCellMoisture::isInCompetitorFreeSpace</definition>
+        <argsstring>() const</argsstring>
+        <name>isInCompetitorFreeSpace</name>
+        <qualifiedname>BranchCellMoisture::isInCompetitorFreeSpace</qualifiedname>
+        <reimplements refid="class_cell_moisture_interface_1a6affd95bdc51091fb93dfe15820d3c9d">isInCompetitorFreeSpace</reimplements>
+        <briefdescription>
+<para>Check if the cell is free of competitors. </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="App/Model/IBM/Landscape/Map/SpatialTree/TerrainCells/PatchApplicator/Moisture/BranchCellMoisture.h" line="76" column="10"/>
+      </memberdef>
+      <memberdef kind="function" id="class_branch_cell_moisture_1ab94376ab840b83200298c5405e1d9e74" prot="public" static="no" const="yes" explicit="no" inline="no" virt="virtual">
+        <type>bool</type>
+        <definition>bool BranchCellMoisture::isInEnemyFreeSpace</definition>
+        <argsstring>() const</argsstring>
+        <name>isInEnemyFreeSpace</name>
+        <qualifiedname>BranchCellMoisture::isInEnemyFreeSpace</qualifiedname>
+        <reimplements refid="class_cell_moisture_interface_1a43454118366ab48daf886c8c99b4688e">isInEnemyFreeSpace</reimplements>
+        <briefdescription>
+<para>Check if the cell is free of enemies. </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="App/Model/IBM/Landscape/Map/SpatialTree/TerrainCells/PatchApplicator/Moisture/BranchCellMoisture.h" line="73" column="10"/>
+      </memberdef>
+      <memberdef kind="function" id="class_branch_cell_moisture_1a099c463f4a3d5008883fd7d98d7275a8" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type><ref refid="class_branch_cell_moisture" kindref="compound">BranchCellMoisture</ref> &amp;</type>
+        <definition>BranchCellMoisture &amp; BranchCellMoisture::operator=</definition>
+        <argsstring>(const BranchCellMoisture &amp;)=delete</argsstring>
+        <name>operator=</name>
+        <qualifiedname>BranchCellMoisture::operator=</qualifiedname>
+        <param>
+          <type>const <ref refid="class_branch_cell_moisture" kindref="compound">BranchCellMoisture</ref> &amp;</type>
+        </param>
+        <briefdescription>
+<para>Deleted copy assignment. </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="App/Model/IBM/Landscape/Map/SpatialTree/TerrainCells/PatchApplicator/Moisture/BranchCellMoisture.h" line="50" column="24"/>
+      </memberdef>
+      <memberdef kind="function" id="class_branch_cell_moisture_1aed3587f8b5d163ee63d2773fb4b76178" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <templateparamlist>
+          <param>
+            <type>class Archive</type>
+          </param>
+        </templateparamlist>
+        <type>void</type>
+        <definition>void BranchCellMoisture::serialize</definition>
+        <argsstring>(Archive &amp;ar, const unsigned int version)</argsstring>
+        <name>serialize</name>
+        <qualifiedname>BranchCellMoisture::serialize</qualifiedname>
+        <param>
+          <type>Archive &amp;</type>
+          <declname>ar</declname>
+        </param>
+        <param>
+          <type>const unsigned int</type>
+          <declname>version</declname>
+        </param>
+        <briefdescription>
+<para>Serialization function. </para>
+        </briefdescription>
+        <detaileddescription>
+<para><parameterlist kind="templateparam"><parameteritem>
+<parameternamelist>
+<parametername>Archive</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Type of the archive. </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>ar</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Archive object. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>version</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Version of serialization. </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="App/Model/IBM/Landscape/Map/SpatialTree/TerrainCells/PatchApplicator/Moisture/BranchCellMoisture.h" line="102" column="10"/>
+      </memberdef>
+    </sectiondef>
+    <sectiondef kind="protected-func">
+      <memberdef kind="function" id="class_branch_cell_moisture_1a35737e49abd41892682b5aabc89223b9" prot="protected" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void BranchCellMoisture::setMoisture</definition>
+        <argsstring>(const PreciseDouble &amp;newMoisture)</argsstring>
+        <name>setMoisture</name>
+        <qualifiedname>BranchCellMoisture::setMoisture</qualifiedname>
+        <param>
+          <type>const <ref refid="class_precise_double" kindref="compound">PreciseDouble</ref> &amp;</type>
+          <declname>newMoisture</declname>
+        </param>
+        <briefdescription>
+<para>Set the current moisture. </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="App/Model/IBM/Landscape/Map/SpatialTree/TerrainCells/PatchApplicator/Moisture/BranchCellMoisture.h" line="126" column="10"/>
+      </memberdef>
+      <memberdef kind="function" id="class_branch_cell_moisture_1a8d9da2f303c5c838f46e3c45cbf09d0a" prot="protected" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void BranchCellMoisture::setTemperature</definition>
+        <argsstring>(const Temperature &amp;newTemperature)</argsstring>
+        <name>setTemperature</name>
+        <qualifiedname>BranchCellMoisture::setTemperature</qualifiedname>
+        <param>
+          <type>const <ref refid="class_temperature" kindref="compound">Temperature</ref> &amp;</type>
+          <declname>newTemperature</declname>
+        </param>
+        <briefdescription>
+<para>Set the current temperature. </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="App/Model/IBM/Landscape/Map/SpatialTree/TerrainCells/PatchApplicator/Moisture/BranchCellMoisture.h" line="123" column="10"/>
+      </memberdef>
+      <memberdef kind="function" id="class_branch_cell_moisture_1abc931662a227c6d25733d5960c7ff1e4" prot="protected" static="no" const="no" explicit="no" inline="no" virt="virtual">
+        <type>void</type>
+        <definition>void BranchCellMoisture::updateRelativeHumidity</definition>
+        <argsstring>()</argsstring>
+        <name>updateRelativeHumidity</name>
+        <qualifiedname>BranchCellMoisture::updateRelativeHumidity</qualifiedname>
+        <reimplements refid="class_cell_moisture_interface_1ac7ee1f94c4df9ab42ef6941a54c1eeed">updateRelativeHumidity</reimplements>
+        <briefdescription>
+<para>Update the relative humidity of the branch cell. </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="App/Model/IBM/Landscape/Map/SpatialTree/TerrainCells/PatchApplicator/Moisture/BranchCellMoisture.h" line="120" column="10"/>
+      </memberdef>
+      <memberdef kind="function" id="class_branch_cell_moisture_1a83c764e01fb8f343ff038391898e1bca" prot="protected" static="no" const="no" explicit="no" inline="no" virt="virtual">
+        <type>void</type>
+        <definition>void BranchCellMoisture::updateTemperature</definition>
+        <argsstring>()</argsstring>
+        <name>updateTemperature</name>
+        <qualifiedname>BranchCellMoisture::updateTemperature</qualifiedname>
+        <reimplements refid="class_cell_moisture_interface_1a13bcb973a7d503d9ecc80dbf8515c2a8">updateTemperature</reimplements>
+        <briefdescription>
+<para>Update the temperature of the branch cell. </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="App/Model/IBM/Landscape/Map/SpatialTree/TerrainCells/PatchApplicator/Moisture/BranchCellMoisture.h" line="117" column="10"/>
+      </memberdef>
+    </sectiondef>
+    <sectiondef kind="private-static-func">
+      <memberdef kind="function" id="class_branch_cell_moisture_1a5c28f4d93cc5d5970fd55466a5a16fee" prot="private" static="yes" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>bool</type>
+        <definition>static bool BranchCellMoisture::calculateInCompetitorFreeSpace</definition>
+        <argsstring>(const BranchTerrainCell *const summaryTerrainCell)</argsstring>
+        <name>calculateInCompetitorFreeSpace</name>
+        <qualifiedname>BranchCellMoisture::calculateInCompetitorFreeSpace</qualifiedname>
+        <param>
+          <type>const <ref refid="class_branch_terrain_cell" kindref="compound">BranchTerrainCell</ref> *const</type>
+          <declname>summaryTerrainCell</declname>
+        </param>
+        <briefdescription>
+<para>Determine if the branch cell is free of competitors. </para>
+        </briefdescription>
+        <detaileddescription>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>summaryTerrainCell</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Pointer to the branch terrain cell. </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<simplesect kind="return"><para>True if competitor-free, false otherwise. </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="App/Model/IBM/Landscape/Map/SpatialTree/TerrainCells/PatchApplicator/Moisture/BranchCellMoisture.h" line="155" column="17"/>
+      </memberdef>
+      <memberdef kind="function" id="class_branch_cell_moisture_1a75a7a60b421e3f50880191f22193ff36" prot="private" static="yes" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>bool</type>
+        <definition>static bool BranchCellMoisture::calculateInEnemyFreeSpace</definition>
+        <argsstring>(const BranchTerrainCell *const summaryTerrainCell)</argsstring>
+        <name>calculateInEnemyFreeSpace</name>
+        <qualifiedname>BranchCellMoisture::calculateInEnemyFreeSpace</qualifiedname>
+        <param>
+          <type>const <ref refid="class_branch_terrain_cell" kindref="compound">BranchTerrainCell</ref> *const</type>
+          <declname>summaryTerrainCell</declname>
+        </param>
+        <briefdescription>
+<para>Determine if the branch cell is free of enemies. </para>
+        </briefdescription>
+        <detaileddescription>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>summaryTerrainCell</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Pointer to the branch terrain cell. </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<simplesect kind="return"><para>True if enemy-free, false otherwise. </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="App/Model/IBM/Landscape/Map/SpatialTree/TerrainCells/PatchApplicator/Moisture/BranchCellMoisture.h" line="148" column="17"/>
+      </memberdef>
+      <memberdef kind="function" id="class_branch_cell_moisture_1aa5816fb770f287d899f9d43208f90176" prot="private" static="yes" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>size_t</type>
+        <definition>static size_t BranchCellMoisture::calculateMoisturePatchPriority</definition>
+        <argsstring>(const BranchTerrainCell *const summaryTerrainCell)</argsstring>
+        <name>calculateMoisturePatchPriority</name>
+        <qualifiedname>BranchCellMoisture::calculateMoisturePatchPriority</qualifiedname>
+        <param>
+          <type>const <ref refid="class_branch_terrain_cell" kindref="compound">BranchTerrainCell</ref> *const</type>
+          <declname>summaryTerrainCell</declname>
+        </param>
+        <briefdescription>
+<para>Calculate the patch priority for moisture based on child cells. </para>
+        </briefdescription>
+        <detaileddescription>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>summaryTerrainCell</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Pointer to the branch terrain cell. </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<simplesect kind="return"><para>Calculated patch priority. </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="App/Model/IBM/Landscape/Map/SpatialTree/TerrainCells/PatchApplicator/Moisture/BranchCellMoisture.h" line="134" column="19"/>
+      </memberdef>
+      <memberdef kind="function" id="class_branch_cell_moisture_1ab631bec0bfb71bbda60ddddf5142eb6a" prot="private" static="yes" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type><ref refid="class_wet_mass" kindref="compound">WetMass</ref></type>
+        <definition>static WetMass BranchCellMoisture::calculateTotalMaximumResourceCapacity</definition>
+        <argsstring>(const BranchTerrainCell *const summaryTerrainCell)</argsstring>
+        <name>calculateTotalMaximumResourceCapacity</name>
+        <qualifiedname>BranchCellMoisture::calculateTotalMaximumResourceCapacity</qualifiedname>
+        <param>
+          <type>const <ref refid="class_branch_terrain_cell" kindref="compound">BranchTerrainCell</ref> *const</type>
+          <declname>summaryTerrainCell</declname>
+        </param>
+        <briefdescription>
+<para>Calculate total maximum resource capacity from child cells. </para>
+        </briefdescription>
+        <detaileddescription>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>summaryTerrainCell</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Pointer to the branch terrain cell. </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<simplesect kind="return"><para>Total maximum resource capacity. </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="App/Model/IBM/Landscape/Map/SpatialTree/TerrainCells/PatchApplicator/Moisture/BranchCellMoisture.h" line="141" column="20"/>
+      </memberdef>
+    </sectiondef>
+    <briefdescription>
+<para>Moisture implementation for branch nodes in a spatial tree. </para>
+    </briefdescription>
+    <detaileddescription>
+<para>This class aggregates moisture information from child cells of a branch terrain cell. It provides current moisture, temperature, and resource capacity estimates, as well as environmental flags such as enemy-free or competitor-free space. </para>
+    </detaileddescription>
+    <inheritancegraph>
+      <node id="1">
+        <label>BranchCellMoisture</label>
+        <link refid="class_branch_cell_moisture"/>
+        <childnode refid="2" relation="public-inheritance">
+        </childnode>
+      </node>
+      <node id="3">
+        <label>CellElement</label>
+        <link refid="class_cell_element"/>
+      </node>
+      <node id="2">
+        <label>CellMoistureInterface</label>
+        <link refid="class_cell_moisture_interface"/>
+        <childnode refid="3" relation="public-inheritance">
+        </childnode>
+      </node>
+    </inheritancegraph>
+    <collaborationgraph>
+      <node id="1">
+        <label>BranchCellMoisture</label>
+        <link refid="class_branch_cell_moisture"/>
+        <childnode refid="2" relation="public-inheritance">
+        </childnode>
+        <childnode refid="6" relation="usage">
+          <edgelabel>moistureSource</edgelabel>
+        </childnode>
+        <childnode refid="12" relation="usage">
+          <edgelabel>summaryTerrainCell</edgelabel>
+        </childnode>
+        <childnode refid="11" relation="usage">
+          <edgelabel>temperature</edgelabel>
+        </childnode>
+        <childnode refid="5" relation="usage">
+          <edgelabel>moisture</edgelabel>
+        </childnode>
+      </node>
+      <node id="12">
+        <label>BranchTerrainCell</label>
+        <link refid="class_branch_terrain_cell"/>
+        <childnode refid="13" relation="public-inheritance">
+        </childnode>
+      </node>
+      <node id="3">
+        <label>CellElement</label>
+        <link refid="class_cell_element"/>
+      </node>
+      <node id="17">
+        <label>CellHabitatDomainInterface</label>
+        <link refid="class_cell_habitat_domain_interface"/>
+        <childnode refid="3" relation="public-inheritance">
+        </childnode>
+        <childnode refid="18" relation="usage">
+          <edgelabel>habitatDomainStatus</edgelabel>
+        </childnode>
+      </node>
+      <node id="2">
+        <label>CellMoistureInterface</label>
+        <link refid="class_cell_moisture_interface"/>
+        <childnode refid="3" relation="public-inheritance">
+        </childnode>
+        <childnode refid="4" relation="usage">
+          <edgelabel>totalMaximumResourceCapacity</edgelabel>
+        </childnode>
+      </node>
+      <node id="16">
+        <label>CellObstacleInterface</label>
+        <link refid="class_cell_obstacle_interface"/>
+        <childnode refid="3" relation="public-inheritance">
+        </childnode>
+      </node>
+      <node id="18">
+        <label>CustomIndexedVector&lt; AnimalSpeciesID, CustomIndexedVector&lt; Instar, bool &gt; &gt;</label>
+        <link refid="class_custom_indexed_vector"/>
+      </node>
+      <node id="8">
+        <label>CycleDynamics</label>
+        <link refid="class_cycle_dynamics"/>
+        <childnode refid="9" relation="public-inheritance">
+        </childnode>
+      </node>
+      <node id="10">
+        <label>Dynamics</label>
+        <link refid="class_dynamics"/>
+      </node>
+      <node id="6">
+        <label>MoistureSource</label>
+        <link refid="class_moisture_source"/>
+        <childnode refid="7" relation="public-inheritance">
+        </childnode>
+        <childnode refid="4" relation="usage">
+          <edgelabel>maximumResourceCapacityDensity</edgelabel>
+        </childnode>
+        <childnode refid="8" relation="usage">
+          <edgelabel>temperatureDynamics</edgelabel>
+        </childnode>
+        <childnode refid="11" relation="usage">
+          <edgelabel>currentTemperature</edgelabel>
+        </childnode>
+        <childnode refid="9" relation="usage">
+          <edgelabel>relativeHumidityDynamics</edgelabel>
+        </childnode>
+        <childnode refid="5" relation="usage">
+          <edgelabel>currentRelativeHumidity</edgelabel>
+        </childnode>
+      </node>
+      <node id="9">
+        <label>NonMassBasedDynamics</label>
+        <link refid="class_non_mass_based_dynamics"/>
+        <childnode refid="10" relation="public-inheritance">
+        </childnode>
+      </node>
+      <node id="15">
+        <label>PatchApplicator</label>
+        <link refid="class_patch_applicator"/>
+        <childnode refid="14" relation="usage">
+          <edgelabel>owner</edgelabel>
+        </childnode>
+        <childnode refid="2" relation="usage">
+          <edgelabel>cellMoisture</edgelabel>
+        </childnode>
+        <childnode refid="16" relation="usage">
+          <edgelabel>cellObstacle</edgelabel>
+        </childnode>
+        <childnode refid="17" relation="usage">
+          <edgelabel>cellHabitatDomain</edgelabel>
+        </childnode>
+      </node>
+      <node id="7">
+        <label>PathSource</label>
+        <link refid="class_path_source"/>
+      </node>
+      <node id="19">
+        <label>PointMap</label>
+        <link refid="class_point_map"/>
+      </node>
+      <node id="5">
+        <label>PreciseDouble</label>
+        <link refid="class_precise_double"/>
+      </node>
+      <node id="13">
+        <label>SpatialTreeTerrainCell</label>
+        <link refid="class_spatial_tree_terrain_cell"/>
+        <childnode refid="14" relation="public-inheritance">
+        </childnode>
+        <childnode refid="12" relation="usage">
+          <edgelabel>parentTerrainCell</edgelabel>
+        </childnode>
+      </node>
+      <node id="11">
+        <label>Temperature</label>
+        <link refid="class_temperature"/>
+        <childnode refid="5" relation="usage">
+          <edgelabel>temperatureCelsius</edgelabel>
+          <edgelabel>temperatureFahrenheit</edgelabel>
+          <edgelabel>temperatureKelvin</edgelabel>
+        </childnode>
+      </node>
+      <node id="14">
+        <label>TerrainCell</label>
+        <link refid="class_terrain_cell"/>
+        <childnode refid="15" relation="usage">
+          <edgelabel>patchApplicator</edgelabel>
+        </childnode>
+        <childnode refid="19" relation="usage">
+          <edgelabel>position</edgelabel>
+        </childnode>
+        <childnode refid="5" relation="usage">
+          <edgelabel>hyperVolume</edgelabel>
+          <edgelabel>size</edgelabel>
+        </childnode>
+      </node>
+      <node id="4">
+        <label>WetMass</label>
+        <link refid="class_wet_mass"/>
+        <childnode refid="5" relation="usage">
+          <edgelabel>value</edgelabel>
+        </childnode>
+      </node>
+    </collaborationgraph>
+    <location file="App/Model/IBM/Landscape/Map/SpatialTree/TerrainCells/PatchApplicator/Moisture/BranchCellMoisture.h" line="30" column="1" bodyfile="App/Model/IBM/Landscape/Map/SpatialTree/TerrainCells/PatchApplicator/Moisture/BranchCellMoisture.h" bodystart="31" bodyend="156"/>
+    <listofallmembers>
+      <member refid="class_branch_cell_moisture_1ae3f948dce75bb4267cb6d91fe7858b6a" prot="public" virt="virtual"><scope>BranchCellMoisture</scope><name>addTemperatureRange</name></member>
+      <member refid="class_branch_cell_moisture_1a6a0704ae1a86e1a9fced0c89d804e5cf" prot="public" virt="non-virtual"><scope>BranchCellMoisture</scope><name>applyBranch</name></member>
+      <member refid="class_branch_cell_moisture_1ab4171406a1775ae6d9b7c7bea00fb632" prot="public" virt="virtual"><scope>BranchCellMoisture</scope><name>applySource</name></member>
+      <member refid="class_branch_cell_moisture_1aa2216f17619079cff5946541ac3c47a4" prot="public" virt="non-virtual"><scope>BranchCellMoisture</scope><name>BranchCellMoisture</name></member>
+      <member refid="class_branch_cell_moisture_1aaa8193d90c521577ebd92a735573ce52" prot="public" virt="non-virtual"><scope>BranchCellMoisture</scope><name>BranchCellMoisture</name></member>
+      <member refid="class_branch_cell_moisture_1a0fa1940a5dfd500dd1adbca25e6af6d7" prot="public" virt="non-virtual"><scope>BranchCellMoisture</scope><name>BranchCellMoisture</name></member>
+      <member refid="class_branch_cell_moisture_1a5c28f4d93cc5d5970fd55466a5a16fee" prot="private" virt="non-virtual"><scope>BranchCellMoisture</scope><name>calculateInCompetitorFreeSpace</name></member>
+      <member refid="class_branch_cell_moisture_1a75a7a60b421e3f50880191f22193ff36" prot="private" virt="non-virtual"><scope>BranchCellMoisture</scope><name>calculateInEnemyFreeSpace</name></member>
+      <member refid="class_branch_cell_moisture_1aa5816fb770f287d899f9d43208f90176" prot="private" virt="non-virtual"><scope>BranchCellMoisture</scope><name>calculateMoisturePatchPriority</name></member>
+      <member refid="class_branch_cell_moisture_1ab631bec0bfb71bbda60ddddf5142eb6a" prot="private" virt="non-virtual"><scope>BranchCellMoisture</scope><name>calculateTotalMaximumResourceCapacity</name></member>
+      <member refid="class_cell_moisture_interface_1a6b52ee3ea2700b7c9b494247e1762d11" prot="protected" virt="non-virtual" ambiguityscope="CellMoistureInterface::"><scope>BranchCellMoisture</scope><name>calculateTotalMaximumResourceCapacity</name></member>
+      <member refid="class_cell_element_1a77dc6b9db0633bb7d35df0b547ddf613" prot="public" virt="non-virtual"><scope>BranchCellMoisture</scope><name>CellElement</name></member>
+      <member refid="class_cell_element_1a07008f499b17c5dc792ab20d05dbf471" prot="public" virt="non-virtual"><scope>BranchCellMoisture</scope><name>CellElement</name></member>
+      <member refid="class_cell_element_1a5abb98d6d592c3fc4084fc886106d7c3" prot="public" virt="non-virtual"><scope>BranchCellMoisture</scope><name>CellElement</name></member>
+      <member refid="class_cell_moisture_interface_1a102ea2fb7d0953a58eb6ccb868fa3d1c" prot="public" virt="non-virtual"><scope>BranchCellMoisture</scope><name>CellMoistureInterface</name></member>
+      <member refid="class_cell_moisture_interface_1ad39e87cf94f04ed0864b08e1eebb60ef" prot="public" virt="non-virtual"><scope>BranchCellMoisture</scope><name>CellMoistureInterface</name></member>
+      <member refid="class_cell_moisture_interface_1afe46886cb046a7663b1420ce1a10b002" prot="public" virt="non-virtual"><scope>BranchCellMoisture</scope><name>CellMoistureInterface</name></member>
+      <member refid="class_branch_cell_moisture_1a113cd89116b10b44624d95772b049ef6" prot="public" virt="virtual"><scope>BranchCellMoisture</scope><name>deserializeCellMoisture</name></member>
+      <member refid="class_branch_cell_moisture_1a00202b21051dd5534f636c45ceb5343c" prot="public" virt="virtual"><scope>BranchCellMoisture</scope><name>getMaximumResourceCapacityDensity</name></member>
+      <member refid="class_branch_cell_moisture_1ad93cdc4d92ebcfa1818c6a748bed30bf" prot="public" virt="virtual"><scope>BranchCellMoisture</scope><name>getMoisture</name></member>
+      <member refid="class_cell_element_1aeb03190224c2ff962587e94d8fe0c8b4" prot="public" virt="non-virtual"><scope>BranchCellMoisture</scope><name>getPatchPriority</name></member>
+      <member refid="class_branch_cell_moisture_1a2a76f9702e47f502e004fcacd3735264" prot="public" virt="virtual"><scope>BranchCellMoisture</scope><name>getTemperature</name></member>
+      <member refid="class_cell_moisture_interface_1a977ed514f9f08df05cf5767f4a682627" prot="public" virt="non-virtual"><scope>BranchCellMoisture</scope><name>getTotalMaximumResourceCapacity</name></member>
+      <member refid="class_branch_cell_moisture_1a3797f0aa53e5c1b96e23f041ba1bbe52" prot="protected" virt="non-virtual"><scope>BranchCellMoisture</scope><name>inCompetitorFreeSpace</name></member>
+      <member refid="class_branch_cell_moisture_1a1b82cd7524fc18da9a5ea9a68d79eb05" prot="protected" virt="non-virtual"><scope>BranchCellMoisture</scope><name>inEnemyFreeSpace</name></member>
+      <member refid="class_branch_cell_moisture_1aabcb858a7c150feccd80034591930862" prot="public" virt="virtual"><scope>BranchCellMoisture</scope><name>isInCompetitorFreeSpace</name></member>
+      <member refid="class_branch_cell_moisture_1ab94376ab840b83200298c5405e1d9e74" prot="public" virt="virtual"><scope>BranchCellMoisture</scope><name>isInEnemyFreeSpace</name></member>
+      <member refid="class_branch_cell_moisture_1aaa85ee2c4b820e479bbeed312338ca5f" prot="protected" virt="non-virtual"><scope>BranchCellMoisture</scope><name>isSource</name></member>
+      <member refid="class_branch_cell_moisture_1a6faf21dd83e482eb066a9b60036e1c96" prot="protected" virt="non-virtual"><scope>BranchCellMoisture</scope><name>moisture</name></member>
+      <member refid="class_branch_cell_moisture_1a1c70985507003ee05797f1b80d026d14" prot="protected" virt="non-virtual"><scope>BranchCellMoisture</scope><name>moistureSource</name></member>
+      <member refid="class_branch_cell_moisture_1a099c463f4a3d5008883fd7d98d7275a8" prot="public" virt="non-virtual"><scope>BranchCellMoisture</scope><name>operator=</name></member>
+      <member refid="class_cell_moisture_interface_1af56b56a73bec1fbebd47c21cda946d0d" prot="public" virt="non-virtual" ambiguityscope="CellMoistureInterface::"><scope>BranchCellMoisture</scope><name>operator=</name></member>
+      <member refid="class_cell_element_1ac7467d8c95d1a3d3e8b72a3209681ce0" prot="public" virt="non-virtual" ambiguityscope="CellElement::"><scope>BranchCellMoisture</scope><name>operator=</name></member>
+      <member refid="class_cell_element_1ac25808724b01c8f1555c0be37b0f9d6f" prot="protected" virt="non-virtual"><scope>BranchCellMoisture</scope><name>patchPriority</name></member>
+      <member refid="class_branch_cell_moisture_1aed3587f8b5d163ee63d2773fb4b76178" prot="public" virt="non-virtual"><scope>BranchCellMoisture</scope><name>serialize</name></member>
+      <member refid="class_branch_cell_moisture_1a35737e49abd41892682b5aabc89223b9" prot="protected" virt="non-virtual"><scope>BranchCellMoisture</scope><name>setMoisture</name></member>
+      <member refid="class_cell_element_1a9178746c39e277cc4ac9af2f434ac72e" prot="protected" virt="non-virtual"><scope>BranchCellMoisture</scope><name>setPatchPriority</name></member>
+      <member refid="class_branch_cell_moisture_1a8d9da2f303c5c838f46e3c45cbf09d0a" prot="protected" virt="non-virtual"><scope>BranchCellMoisture</scope><name>setTemperature</name></member>
+      <member refid="class_cell_moisture_interface_1a0f2b60844eacdc853ac0d8477f86319e" prot="protected" virt="non-virtual"><scope>BranchCellMoisture</scope><name>setTotalMaximumResourceCapacity</name></member>
+      <member refid="class_branch_cell_moisture_1a685b5e76d79fbf811a647b11139d6452" prot="protected" virt="non-virtual"><scope>BranchCellMoisture</scope><name>summaryTerrainCell</name></member>
+      <member refid="class_branch_cell_moisture_1afc66a8f0d3af72d99248d3dc8c8727c5" prot="protected" virt="non-virtual"><scope>BranchCellMoisture</scope><name>temperature</name></member>
+      <member refid="class_cell_moisture_interface_1a447a8de200ee612729e64a2a887ac0a7" prot="protected" virt="non-virtual"><scope>BranchCellMoisture</scope><name>totalMaximumResourceCapacity</name></member>
+      <member refid="class_cell_moisture_interface_1a46bdd883c275baca7f1e527226e2b3b3" prot="public" virt="non-virtual"><scope>BranchCellMoisture</scope><name>update</name></member>
+      <member refid="class_branch_cell_moisture_1abc931662a227c6d25733d5960c7ff1e4" prot="protected" virt="virtual"><scope>BranchCellMoisture</scope><name>updateRelativeHumidity</name></member>
+      <member refid="class_branch_cell_moisture_1a83c764e01fb8f343ff038391898e1bca" prot="protected" virt="virtual"><scope>BranchCellMoisture</scope><name>updateTemperature</name></member>
+      <member refid="class_branch_cell_moisture_1aba6b8e4b58a9763bdea07f214432e708" prot="public" virt="virtual"><scope>BranchCellMoisture</scope><name>~BranchCellMoisture</name></member>
+      <member refid="class_cell_element_1a82b86d53e7e9c50f4c3145be272bd38f" prot="public" virt="virtual"><scope>BranchCellMoisture</scope><name>~CellElement</name></member>
+      <member refid="class_cell_moisture_interface_1acd173ff7fcc191587df1a505469e5c1e" prot="public" virt="virtual"><scope>BranchCellMoisture</scope><name>~CellMoistureInterface</name></member>
+    </listofallmembers>
+  </compounddef>
+</doxygen>

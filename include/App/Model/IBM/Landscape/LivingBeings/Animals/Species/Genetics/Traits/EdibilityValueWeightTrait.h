@@ -17,6 +17,7 @@
 
 /**
  * @class EdibilityValueWeightTrait
+ * @ingroup weaver_landscape
  * @brief Represents a trait that influences edibility values for behavioral decisions in animal species.
  *
  * Inherits from DecisionsTrait and provides methods for trait generation, retrieval of trait identifiers,

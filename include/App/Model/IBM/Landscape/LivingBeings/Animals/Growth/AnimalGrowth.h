@@ -31,6 +31,7 @@
 
 /**
  * @class AnimalGrowth
+ * @ingroup weaver_landscape
  * @brief Manages the growth and mass dynamics of an individual animal.
  *
  * AnimalGrowth tracks the current body size, energy reserves, instar ages, and maturity

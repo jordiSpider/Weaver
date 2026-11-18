@@ -28,6 +28,7 @@ class Day;
 
 /**
  * @class TimeStep
+ * @ingroup weaver_landscape
  * @brief Represents a discrete time step in the simulation.
  *
  * Encapsulates an unsigned integer value for time steps and provides arithmetic
@@ -237,6 +238,7 @@ bool operator!=(const TimeStep& lhs, const TimeStep& rhs);
 
 /**
  * @class Day
+ * @ingroup weaver_landscape
  * @brief Represents time in days using high-precision floating point.
  *
  * Encapsulates a PreciseDouble value for fractional days and provides arithmetic

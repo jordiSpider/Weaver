@@ -49,6 +49,7 @@ class AnimalSearchParams;
 
 /**
  * @class Map
+ * @ingroup weaver_landscape
  * @brief Abstract base class for spatial landscape representations.
  *
  * The Map interface defines methods for managing terrain cells, animals, and resources

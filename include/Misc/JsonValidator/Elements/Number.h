@@ -19,6 +19,7 @@
 
 /**
  * @class Number
+ * @ingroup weaver_validation
  * @brief Represents a floating-point number element in a JSON configuration.
  *
  * Inherits from Element. Provides validation for numeric values,

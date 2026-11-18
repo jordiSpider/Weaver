@@ -19,6 +19,7 @@
 
 /**
  * @class Patch
+ * @ingroup weaver_landscape
  * @brief Represents a spatial patch in a landscape with a specific shape and priority.
  *
  * The Patch class stores information about an environmental patch, including its
@@ -116,6 +117,7 @@ protected:
 
 /**
  * @struct ComparePatch
+ * @ingroup weaver_landscape
  * @brief Comparison functor for PatchPriorityQueue.
  *
  * This functor compares two patches by their priority for use in a priority queue.

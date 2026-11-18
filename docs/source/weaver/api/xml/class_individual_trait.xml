@@ -1,0 +1,677 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.14.0" xml:lang="en-US">
+  <compounddef id="class_individual_trait" kind="class" language="C++" prot="public">
+    <compoundname>IndividualTrait</compoundname>
+    <includes refid="_individual_trait_8h" local="no">IndividualTrait.h</includes>
+    <sectiondef kind="protected-attrib">
+      <memberdef kind="variable" id="class_individual_trait_1a7b96aff79069332997a33304d9904566" prot="protected" static="no" mutable="no">
+        <type><ref refid="class_precise_double" kindref="compound">PreciseDouble</ref></type>
+        <definition>PreciseDouble IndividualTrait::constitutiveValue</definition>
+        <argsstring></argsstring>
+        <name>constitutiveValue</name>
+        <qualifiedname>IndividualTrait::constitutiveValue</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Genetic value of the trait. </para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="App/Model/IBM/Landscape/LivingBeings/Animals/Genetics/Traits/IndividualTrait.h" line="140" column="19" bodyfile="App/Model/IBM/Landscape/LivingBeings/Animals/Genetics/Traits/IndividualTrait.h" bodystart="140" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="class_individual_trait_1a7b0d57629dd1f1732809f59df7fa64ae" prot="protected" static="no" mutable="no">
+        <type><ref refid="class_precise_double" kindref="compound">PreciseDouble</ref></type>
+        <definition>PreciseDouble IndividualTrait::phenotypicValue</definition>
+        <argsstring></argsstring>
+        <name>phenotypicValue</name>
+        <qualifiedname>IndividualTrait::phenotypicValue</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Expressed (phenotypic) value of the trait. </para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="App/Model/IBM/Landscape/LivingBeings/Animals/Genetics/Traits/IndividualTrait.h" line="141" column="19" bodyfile="App/Model/IBM/Landscape/LivingBeings/Animals/Genetics/Traits/IndividualTrait.h" bodystart="141" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="class_individual_trait_1ad6cd91795462db4c9cf56d50079309f0" prot="protected" static="no" mutable="no">
+        <type>IndividualTraitTemperatureSectionVariant</type>
+        <definition>IndividualTraitTemperatureSectionVariant IndividualTrait::temperatureSection</definition>
+        <argsstring></argsstring>
+        <name>temperatureSection</name>
+        <qualifiedname>IndividualTrait::temperatureSection</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Temperature-dependent tuning section. </para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="App/Model/IBM/Landscape/LivingBeings/Animals/Genetics/Traits/IndividualTrait.h" line="142" column="46" bodyfile="App/Model/IBM/Landscape/LivingBeings/Animals/Genetics/Traits/IndividualTrait.h" bodystart="142" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="class_individual_trait_1a9d7be3aecbfe3625ae19ce3cf605a4aa" prot="protected" static="no" mutable="no">
+        <type><ref refid="class_trait" kindref="compound">Trait</ref> *</type>
+        <definition>Trait* IndividualTrait::trait</definition>
+        <argsstring></argsstring>
+        <name>trait</name>
+        <qualifiedname>IndividualTrait::trait</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Pointer to the trait definition. </para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="App/Model/IBM/Landscape/LivingBeings/Animals/Genetics/Traits/IndividualTrait.h" line="139" column="11" bodyfile="App/Model/IBM/Landscape/LivingBeings/Animals/Genetics/Traits/IndividualTrait.h" bodystart="139" bodyend="-1"/>
+      </memberdef>
+    </sectiondef>
+    <sectiondef kind="public-func">
+      <memberdef kind="function" id="class_individual_trait_1a2b6d24ac42fe87543aa157b87364c572" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type></type>
+        <definition>IndividualTrait::IndividualTrait</definition>
+        <argsstring>()</argsstring>
+        <name>IndividualTrait</name>
+        <qualifiedname>IndividualTrait::IndividualTrait</qualifiedname>
+        <briefdescription>
+<para>Default constructor. </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="App/Model/IBM/Landscape/LivingBeings/Animals/Genetics/Traits/IndividualTrait.h" line="44" column="5"/>
+      </memberdef>
+      <memberdef kind="function" id="class_individual_trait_1ad98ad9ef8048d8e51eb8d358b3a632d2" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type></type>
+        <definition>IndividualTrait::IndividualTrait</definition>
+        <argsstring>(Trait *trait, const Genome &amp;genome, const size_t traitsPerModule, const size_t numberOfLociPerTrait, const std::vector&lt; PreciseDouble &gt; &amp;rhoPerModule, const std::vector&lt; size_t &gt; &amp;rhoRangePerModule)</argsstring>
+        <name>IndividualTrait</name>
+        <qualifiedname>IndividualTrait::IndividualTrait</qualifiedname>
+        <param>
+          <type><ref refid="class_trait" kindref="compound">Trait</ref> *</type>
+          <declname>trait</declname>
+        </param>
+        <param>
+          <type>const <ref refid="class_genome" kindref="compound">Genome</ref> &amp;</type>
+          <declname>genome</declname>
+        </param>
+        <param>
+          <type>const size_t</type>
+          <declname>traitsPerModule</declname>
+        </param>
+        <param>
+          <type>const size_t</type>
+          <declname>numberOfLociPerTrait</declname>
+        </param>
+        <param>
+          <type>const std::vector&lt; <ref refid="class_precise_double" kindref="compound">PreciseDouble</ref> &gt; &amp;</type>
+          <declname>rhoPerModule</declname>
+        </param>
+        <param>
+          <type>const std::vector&lt; size_t &gt; &amp;</type>
+          <declname>rhoRangePerModule</declname>
+        </param>
+        <briefdescription>
+<para>Constructor for testing without environmental tuning. </para>
+        </briefdescription>
+        <detaileddescription>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>trait</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Pointer to the trait definition. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>genome</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Reference to the individual&apos;s genome. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>traitsPerModule</parametername>
+</parameternamelist>
+<parameterdescription>
+<para><ref refid="class_number" kindref="compound">Number</ref> of traits per module. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>numberOfLociPerTrait</parametername>
+</parameternamelist>
+<parameterdescription>
+<para><ref refid="class_number" kindref="compound">Number</ref> of loci per trait. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>rhoPerModule</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Vector of correlation values per module. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>rhoRangePerModule</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Vector of correlation range indices per module. </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="App/Model/IBM/Landscape/LivingBeings/Animals/Genetics/Traits/IndividualTrait.h" line="72" column="5"/>
+      </memberdef>
+      <memberdef kind="function" id="class_individual_trait_1ab5f49f55de2fa5b8e0130a82c8e2ec5f" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type></type>
+        <definition>IndividualTrait::IndividualTrait</definition>
+        <argsstring>(Trait *trait, const Genome &amp;genome, const size_t traitsPerModule, const size_t numberOfLociPerTrait, const std::vector&lt; PreciseDouble &gt; &amp;rhoPerModule, const std::vector&lt; size_t &gt; &amp;rhoRangePerModule, const Temperature &amp;temperature, const PreciseDouble &amp;coefficientForMassAforMature, const PreciseDouble &amp;scaleForMassBforMature, const Temperature &amp;tempFromLab)</argsstring>
+        <name>IndividualTrait</name>
+        <qualifiedname>IndividualTrait::IndividualTrait</qualifiedname>
+        <param>
+          <type><ref refid="class_trait" kindref="compound">Trait</ref> *</type>
+          <declname>trait</declname>
+        </param>
+        <param>
+          <type>const <ref refid="class_genome" kindref="compound">Genome</ref> &amp;</type>
+          <declname>genome</declname>
+        </param>
+        <param>
+          <type>const size_t</type>
+          <declname>traitsPerModule</declname>
+        </param>
+        <param>
+          <type>const size_t</type>
+          <declname>numberOfLociPerTrait</declname>
+        </param>
+        <param>
+          <type>const std::vector&lt; <ref refid="class_precise_double" kindref="compound">PreciseDouble</ref> &gt; &amp;</type>
+          <declname>rhoPerModule</declname>
+        </param>
+        <param>
+          <type>const std::vector&lt; size_t &gt; &amp;</type>
+          <declname>rhoRangePerModule</declname>
+        </param>
+        <param>
+          <type>const <ref refid="class_temperature" kindref="compound">Temperature</ref> &amp;</type>
+          <declname>temperature</declname>
+        </param>
+        <param>
+          <type>const <ref refid="class_precise_double" kindref="compound">PreciseDouble</ref> &amp;</type>
+          <declname>coefficientForMassAforMature</declname>
+        </param>
+        <param>
+          <type>const <ref refid="class_precise_double" kindref="compound">PreciseDouble</ref> &amp;</type>
+          <declname>scaleForMassBforMature</declname>
+        </param>
+        <param>
+          <type>const <ref refid="class_temperature" kindref="compound">Temperature</ref> &amp;</type>
+          <declname>tempFromLab</declname>
+        </param>
+        <briefdescription>
+<para>Constructor for initializing an individual trait with environmental tuning. </para>
+        </briefdescription>
+        <detaileddescription>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>trait</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Pointer to the trait definition. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>genome</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Reference to the individual&apos;s genome. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>traitsPerModule</parametername>
+</parameternamelist>
+<parameterdescription>
+<para><ref refid="class_number" kindref="compound">Number</ref> of traits per module. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>numberOfLociPerTrait</parametername>
+</parameternamelist>
+<parameterdescription>
+<para><ref refid="class_number" kindref="compound">Number</ref> of loci per trait. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>rhoPerModule</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Vector of correlation values per module. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>rhoRangePerModule</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Vector of correlation range indices per module. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>temperature</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Current environmental temperature. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>coefficientForMassAforMature</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Coefficient A for mature mass calculation. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>scaleForMassBforMature</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Scale B for mature mass calculation. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>tempFromLab</parametername>
+</parameternamelist>
+<parameterdescription>
+<para><ref refid="class_temperature" kindref="compound">Temperature</ref> data from lab experiments. </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="App/Model/IBM/Landscape/LivingBeings/Animals/Genetics/Traits/IndividualTrait.h" line="60" column="5"/>
+      </memberdef>
+      <memberdef kind="function" id="class_individual_trait_1afe51846c85d967eee5115bf1678f54de" prot="public" static="no" const="no" explicit="no" inline="no" virt="virtual">
+        <type></type>
+        <definition>virtual IndividualTrait::~IndividualTrait</definition>
+        <argsstring>()</argsstring>
+        <name>~IndividualTrait</name>
+        <qualifiedname>IndividualTrait::~IndividualTrait</qualifiedname>
+        <briefdescription>
+<para>Destructor. </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="App/Model/IBM/Landscape/LivingBeings/Animals/Genetics/Traits/IndividualTrait.h" line="77" column="13"/>
+      </memberdef>
+      <memberdef kind="function" id="class_individual_trait_1a6afd47a0632a3e058a616cf3604cd39d" prot="public" static="no" const="yes" explicit="no" inline="no" noexcept="yes" virt="non-virtual">
+        <type>void</type>
+        <definition>void IndividualTrait::formatTraitDirect</definition>
+        <argsstring>(fmt::memory_buffer &amp;buf) const noexcept</argsstring>
+        <name>formatTraitDirect</name>
+        <qualifiedname>IndividualTrait::formatTraitDirect</qualifiedname>
+        <param>
+          <type>fmt::memory_buffer &amp;</type>
+          <declname>buf</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="App/Model/IBM/Landscape/LivingBeings/Animals/Genetics/Traits/IndividualTrait.h" line="107" column="10"/>
+      </memberdef>
+      <memberdef kind="function" id="class_individual_trait_1acf56fe38bdfd85a8b12f1a8c57fb2381" prot="public" static="no" const="yes" explicit="no" inline="yes" noexcept="yes" virt="non-virtual">
+        <type>const <ref refid="class_precise_double" kindref="compound">PreciseDouble</ref> &amp;</type>
+        <definition>const PreciseDouble &amp; IndividualTrait::getConstitutiveValue</definition>
+        <argsstring>() const noexcept</argsstring>
+        <name>getConstitutiveValue</name>
+        <qualifiedname>IndividualTrait::getConstitutiveValue</qualifiedname>
+        <briefdescription>
+<para>Get the constitutive (genetic) value of the trait. </para>
+        </briefdescription>
+        <detaileddescription>
+<para><simplesect kind="return"><para>Reference to the constitutive value. </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="App/Model/IBM/Landscape/LivingBeings/Animals/Genetics/Traits/IndividualTrait.h" line="83" column="32" bodyfile="App/Model/IBM/Landscape/LivingBeings/Animals/Genetics/Traits/IndividualTrait.h" bodystart="83" bodyend="86"/>
+      </memberdef>
+      <memberdef kind="function" id="class_individual_trait_1aeaf65e1480714b775818395dc0d7d172" prot="public" static="no" const="yes" explicit="no" inline="yes" noexcept="yes" virt="non-virtual">
+        <type>const <ref refid="class_precise_double" kindref="compound">PreciseDouble</ref> &amp;</type>
+        <definition>const PreciseDouble &amp; IndividualTrait::getPhenotypicValue</definition>
+        <argsstring>() const noexcept</argsstring>
+        <name>getPhenotypicValue</name>
+        <qualifiedname>IndividualTrait::getPhenotypicValue</qualifiedname>
+        <briefdescription>
+<para>Get the phenotypic (expressed) value of the trait. </para>
+        </briefdescription>
+        <detaileddescription>
+<para><simplesect kind="return"><para>Reference to the phenotypic value. </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="App/Model/IBM/Landscape/LivingBeings/Animals/Genetics/Traits/IndividualTrait.h" line="92" column="32" bodyfile="App/Model/IBM/Landscape/LivingBeings/Animals/Genetics/Traits/IndividualTrait.h" bodystart="92" bodyend="95"/>
+      </memberdef>
+      <memberdef kind="function" id="class_individual_trait_1a2dbcc1d28843e140abb0654a9c845217" prot="public" static="no" const="yes" explicit="no" inline="no" virt="non-virtual">
+        <type><ref refid="class_trait_definition_section_1ad5d5c99dae906788cba493facf6e31e8" kindref="member">IndividualLevelTrait::Type</ref></type>
+        <definition>IndividualLevelTrait::Type IndividualTrait::getType</definition>
+        <argsstring>() const</argsstring>
+        <name>getType</name>
+        <qualifiedname>IndividualTrait::getType</qualifiedname>
+        <briefdescription>
+<para>Get the trait type. </para>
+        </briefdescription>
+        <detaileddescription>
+<para><simplesect kind="return"><para>Type of the individual trait. </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="App/Model/IBM/Landscape/LivingBeings/Animals/Genetics/Traits/IndividualTrait.h" line="113" column="32"/>
+      </memberdef>
+      <memberdef kind="function" id="class_individual_trait_1a258aaa9d690d027716f5df95b928ef03" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <templateparamlist>
+          <param>
+            <type>class Archive</type>
+          </param>
+        </templateparamlist>
+        <type>void</type>
+        <definition>void IndividualTrait::serialize</definition>
+        <argsstring>(Archive &amp;ar, const unsigned int version)</argsstring>
+        <name>serialize</name>
+        <qualifiedname>IndividualTrait::serialize</qualifiedname>
+        <param>
+          <type>Archive &amp;</type>
+          <declname>ar</declname>
+        </param>
+        <param>
+          <type>const unsigned int</type>
+          <declname>version</declname>
+        </param>
+        <briefdescription>
+<para>Serializes the object for persistence. </para>
+        </briefdescription>
+        <detaileddescription>
+<para><parameterlist kind="templateparam"><parameteritem>
+<parameternamelist>
+<parametername>Archive</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Serialization archive type. </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>ar</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Archive instance. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>version</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Serialization version. </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="App/Model/IBM/Landscape/LivingBeings/Animals/Genetics/Traits/IndividualTrait.h" line="136" column="10"/>
+      </memberdef>
+      <memberdef kind="function" id="class_individual_trait_1afba34af7c97896d06d452297bd51a860" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void IndividualTrait::setTrait</definition>
+        <argsstring>(Trait *newTrait)</argsstring>
+        <name>setTrait</name>
+        <qualifiedname>IndividualTrait::setTrait</qualifiedname>
+        <param>
+          <type><ref refid="class_trait" kindref="compound">Trait</ref> *</type>
+          <declname>newTrait</declname>
+        </param>
+        <briefdescription>
+<para>Set a new trait definition. </para>
+        </briefdescription>
+        <detaileddescription>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>newTrait</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Pointer to the new trait definition. </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="App/Model/IBM/Landscape/LivingBeings/Animals/Genetics/Traits/IndividualTrait.h" line="119" column="10"/>
+      </memberdef>
+      <memberdef kind="function" id="class_individual_trait_1a30f7adfc967ad8440a020f118719ad1b" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void IndividualTrait::tune</definition>
+        <argsstring>(const Temperature &amp;temperature, const TimeStep actualTimeStep, const PreciseDouble &amp;coefficientForMassAforMature, const PreciseDouble &amp;scaleForMassBforMature, const Temperature &amp;tempFromLab)</argsstring>
+        <name>tune</name>
+        <qualifiedname>IndividualTrait::tune</qualifiedname>
+        <param>
+          <type>const <ref refid="class_temperature" kindref="compound">Temperature</ref> &amp;</type>
+          <declname>temperature</declname>
+        </param>
+        <param>
+          <type>const <ref refid="class_time_step" kindref="compound">TimeStep</ref></type>
+          <declname>actualTimeStep</declname>
+        </param>
+        <param>
+          <type>const <ref refid="class_precise_double" kindref="compound">PreciseDouble</ref> &amp;</type>
+          <declname>coefficientForMassAforMature</declname>
+        </param>
+        <param>
+          <type>const <ref refid="class_precise_double" kindref="compound">PreciseDouble</ref> &amp;</type>
+          <declname>scaleForMassBforMature</declname>
+        </param>
+        <param>
+          <type>const <ref refid="class_temperature" kindref="compound">Temperature</ref> &amp;</type>
+          <declname>tempFromLab</declname>
+        </param>
+        <briefdescription>
+<para>Tune the trait according to environmental conditions. </para>
+        </briefdescription>
+        <detaileddescription>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>temperature</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Current environmental temperature. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>actualTimeStep</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Current simulation timestep. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>coefficientForMassAforMature</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Coefficient A for mature mass calculation. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>scaleForMassBforMature</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Scale B for mature mass calculation. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>tempFromLab</parametername>
+</parameternamelist>
+<parameterdescription>
+<para><ref refid="class_temperature" kindref="compound">Temperature</ref> from lab experiments. </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="App/Model/IBM/Landscape/LivingBeings/Animals/Genetics/Traits/IndividualTrait.h" line="105" column="10"/>
+      </memberdef>
+    </sectiondef>
+    <sectiondef kind="protected-func">
+      <memberdef kind="function" id="class_individual_trait_1a4a3063e950108759590e51a0586d0b66" prot="protected" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void IndividualTrait::setPhenotypicValue</definition>
+        <argsstring>(const PreciseDouble &amp;newValue, const TimeStep actualTimeStep)</argsstring>
+        <name>setPhenotypicValue</name>
+        <qualifiedname>IndividualTrait::setPhenotypicValue</qualifiedname>
+        <param>
+          <type>const <ref refid="class_precise_double" kindref="compound">PreciseDouble</ref> &amp;</type>
+          <declname>newValue</declname>
+        </param>
+        <param>
+          <type>const <ref refid="class_time_step" kindref="compound">TimeStep</ref></type>
+          <declname>actualTimeStep</declname>
+        </param>
+        <briefdescription>
+<para>Set the phenotypic value. </para>
+        </briefdescription>
+        <detaileddescription>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>newValue</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>New phenotypic value. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>actualTimeStep</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Current simulation timestep. </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="App/Model/IBM/Landscape/LivingBeings/Animals/Genetics/Traits/IndividualTrait.h" line="159" column="10"/>
+      </memberdef>
+    </sectiondef>
+    <briefdescription>
+<para>Represents an individual trait of an animal. </para>
+    </briefdescription>
+    <detaileddescription>
+<para>This class encapsulates a single trait of an individual animal. It holds both the constitutive (genetic) and phenotypic (expressed) values. Traits can be tuned according to environmental conditions, such as temperature, and can be checked against restricted ranges defined for the species. </para>
+    </detaileddescription>
+    <collaborationgraph>
+      <node id="3">
+        <label>CustomIndexedVector&lt; ExecutionOrder, GenerateTraitsFunc &gt;</label>
+        <link refid="class_custom_indexed_vector"/>
+      </node>
+      <node id="4">
+        <label>CustomIndexedVector&lt; ExecutionOrder, std::function&lt; std::vector&lt; std::string &gt;()&gt; &gt;</label>
+        <link refid="class_custom_indexed_vector"/>
+      </node>
+      <node id="1">
+        <label>IndividualTrait</label>
+        <link refid="class_individual_trait"/>
+        <childnode refid="2" relation="usage">
+          <edgelabel>trait</edgelabel>
+        </childnode>
+        <childnode refid="7" relation="usage">
+          <edgelabel>constitutiveValue</edgelabel>
+          <edgelabel>phenotypicValue</edgelabel>
+        </childnode>
+      </node>
+      <node id="7">
+        <label>PreciseDouble</label>
+        <link refid="class_precise_double"/>
+      </node>
+      <node id="2">
+        <label>Trait</label>
+        <link refid="class_trait"/>
+        <childnode refid="3" relation="usage">
+          <edgelabel>registryGenerateTraits</edgelabel>
+        </childnode>
+        <childnode refid="4" relation="usage">
+          <edgelabel>registryGetTraitStrVector</edgelabel>
+        </childnode>
+        <childnode refid="5" relation="usage">
+          <edgelabel>value</edgelabel>
+        </childnode>
+        <childnode refid="6" relation="usage">
+          <edgelabel>temperatureSection</edgelabel>
+        </childnode>
+      </node>
+      <node id="5">
+        <label>TraitDefinitionSection</label>
+        <link refid="class_trait_definition_section"/>
+      </node>
+      <node id="6">
+        <label>TraitTemperatureSection</label>
+        <link refid="class_trait_temperature_section"/>
+      </node>
+    </collaborationgraph>
+    <location file="App/Model/IBM/Landscape/LivingBeings/Animals/Genetics/Traits/IndividualTrait.h" line="39" column="1" bodyfile="App/Model/IBM/Landscape/LivingBeings/Animals/Genetics/Traits/IndividualTrait.h" bodystart="39" bodyend="160"/>
+    <listofallmembers>
+      <member refid="class_individual_trait_1a7b96aff79069332997a33304d9904566" prot="protected" virt="non-virtual"><scope>IndividualTrait</scope><name>constitutiveValue</name></member>
+      <member refid="class_individual_trait_1a6afd47a0632a3e058a616cf3604cd39d" prot="public" virt="non-virtual"><scope>IndividualTrait</scope><name>formatTraitDirect</name></member>
+      <member refid="class_individual_trait_1acf56fe38bdfd85a8b12f1a8c57fb2381" prot="public" virt="non-virtual"><scope>IndividualTrait</scope><name>getConstitutiveValue</name></member>
+      <member refid="class_individual_trait_1aeaf65e1480714b775818395dc0d7d172" prot="public" virt="non-virtual"><scope>IndividualTrait</scope><name>getPhenotypicValue</name></member>
+      <member refid="class_individual_trait_1a2dbcc1d28843e140abb0654a9c845217" prot="public" virt="non-virtual"><scope>IndividualTrait</scope><name>getType</name></member>
+      <member refid="class_individual_trait_1a2b6d24ac42fe87543aa157b87364c572" prot="public" virt="non-virtual"><scope>IndividualTrait</scope><name>IndividualTrait</name></member>
+      <member refid="class_individual_trait_1ab5f49f55de2fa5b8e0130a82c8e2ec5f" prot="public" virt="non-virtual"><scope>IndividualTrait</scope><name>IndividualTrait</name></member>
+      <member refid="class_individual_trait_1ad98ad9ef8048d8e51eb8d358b3a632d2" prot="public" virt="non-virtual"><scope>IndividualTrait</scope><name>IndividualTrait</name></member>
+      <member refid="class_individual_trait_1a7b0d57629dd1f1732809f59df7fa64ae" prot="protected" virt="non-virtual"><scope>IndividualTrait</scope><name>phenotypicValue</name></member>
+      <member refid="class_individual_trait_1a258aaa9d690d027716f5df95b928ef03" prot="public" virt="non-virtual"><scope>IndividualTrait</scope><name>serialize</name></member>
+      <member refid="class_individual_trait_1a4a3063e950108759590e51a0586d0b66" prot="protected" virt="non-virtual"><scope>IndividualTrait</scope><name>setPhenotypicValue</name></member>
+      <member refid="class_individual_trait_1afba34af7c97896d06d452297bd51a860" prot="public" virt="non-virtual"><scope>IndividualTrait</scope><name>setTrait</name></member>
+      <member refid="class_individual_trait_1ad6cd91795462db4c9cf56d50079309f0" prot="protected" virt="non-virtual"><scope>IndividualTrait</scope><name>temperatureSection</name></member>
+      <member refid="class_individual_trait_1a9d7be3aecbfe3625ae19ce3cf605a4aa" prot="protected" virt="non-virtual"><scope>IndividualTrait</scope><name>trait</name></member>
+      <member refid="class_individual_trait_1a30f7adfc967ad8440a020f118719ad1b" prot="public" virt="non-virtual"><scope>IndividualTrait</scope><name>tune</name></member>
+      <member refid="class_individual_trait_1afe51846c85d967eee5115bf1678f54de" prot="public" virt="virtual"><scope>IndividualTrait</scope><name>~IndividualTrait</name></member>
+    </listofallmembers>
+  </compounddef>
+</doxygen>
