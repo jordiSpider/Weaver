@@ -13,7 +13,7 @@
       "binaryDir": "${sourceDir}/build/cmake/${presetName}",
       "cacheVariables": {
         "DOCS_SOURCE_ROOT": "${sourceDir}/source",
-        "DOCS_BUILD_ROOT": "${sourceDir}/build/html",
+        "DOCS_BUILD_ROOT": "${sourceDir}/docs",
         "DOCS_WORK_ROOT": "${sourceDir}/build/work"
       }
     },

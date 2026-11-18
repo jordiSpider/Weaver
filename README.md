@@ -1,6 +1,6 @@
 # GitHub Pages documentation generator
 
-This folder contains the CMake presets and scripts used to generate and maintain the documentation site on the `gh-pages` branch. Copy its contents to the root of that branch. Versioned sources live under `source/`; generated HTML and release catalogs are written under `build/html/`.
+This folder contains the CMake presets and scripts used to generate and maintain the documentation site on the `gh-pages` branch. Copy its contents to the root of that branch. Versioned sources live under `source/`; generated HTML and release catalogs are written under `docs/`.
 
 ## Requirements
 

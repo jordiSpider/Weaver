@@ -4,7 +4,7 @@ project(WeaverGitHubPagesDocs NONE)
 find_package(Python3 REQUIRED COMPONENTS Interpreter)
 
 set(DOCS_SOURCE_ROOT "${CMAKE_CURRENT_SOURCE_DIR}/source" CACHE PATH "Root directory containing versioned documentation sources")
-set(DOCS_BUILD_ROOT "${CMAKE_CURRENT_SOURCE_DIR}/build/html" CACHE PATH "Root directory for generated HTML")
+set(DOCS_BUILD_ROOT "${CMAKE_CURRENT_SOURCE_DIR}/docs" CACHE PATH "Root directory for generated HTML")
 set(DOCS_WORK_ROOT "${CMAKE_CURRENT_BINARY_DIR}/work" CACHE PATH "Temporary documentation build directory")
 set(DOCS_DEFAULT_LANGUAGE "en" CACHE STRING "Default Sphinx output language")
 set(DOCS_GITHUB_REPOSITORY "jordiSpider/Weaver" CACHE STRING "GitHub repository in owner/name format")

@@ -31,15 +31,15 @@ The source root is ``source/``. It contains:
 
 Version directory names are normalized release tags: remove the leading ``v`` but retain the rest of the tag. For example, ``v26.10.04-rc.1`` maps to ``source/weaver/26.10.04-rc.1/``. Manager tags can have their own suffix, such as ``v1.0.0-manager`` mapping to ``source/weaver-manager/1.0.0-manager/``.
 
-Generated files are stored under ``build/html/``:
+Generated files are stored under ``docs/``:
 
 .. code-block:: text
 
-   build/html/index.html
-   build/html/weaver/versions.json
-   build/html/weaver/<version>/
-   build/html/weaver-manager/versions.json
-   build/html/weaver-manager/<version>/
+	  docs/index.html
+   docs/weaver/versions.json
+   docs/weaver/<version>/
+   docs/weaver-manager/versions.json
+   docs/weaver-manager/<version>/
 
 The catalogs are JSON files generated from eligible GitHub releases and local version source directories.
 
@@ -112,7 +112,7 @@ Version removal
 
 A removal workflow queries the Releases API and computes the resulting catalog with the requested version excluded before it deletes anything. It fails if no eligible documentation version would remain, or if no eligible stable release would remain to identify ``latest``. In that case the error explains the reason and no source, HTML, or catalog file is removed.
 
-When validation succeeds, the workflow removes ``source/<product>/<version>/`` and ``build/html/<product>/<version>/``, writes the new catalog, updates only that product's selectors, and rebuilds the landing page. The GitHub release itself is not deleted or changed.
+When validation succeeds, the workflow removes ``source/<product>/<version>/`` and ``docs/<product>/<version>/``, writes the new catalog, updates only that product's selectors, and rebuilds the landing page. The GitHub release itself is not deleted or changed.
 
 CMake settings
 ==============
@@ -120,7 +120,7 @@ CMake settings
 The main configurable cache variables are:
 
 * ``DOCS_SOURCE_ROOT`` — documentation sources; defaults to ``<sourceDir>/source``.
-* ``DOCS_BUILD_ROOT`` — generated site; defaults to ``<sourceDir>/build/html``.
+* ``DOCS_BUILD_ROOT`` — generated site; defaults to ``<sourceDir>/docs``.
 * ``DOCS_WORK_ROOT`` — temporary work files; defaults to the CMake binary directory's ``work`` folder.
 * ``DOCS_DEFAULT_LANGUAGE`` — defaults to ``en``.
 * ``DOCS_GITHUB_REPOSITORY`` — defaults to ``jordiSpider/Weaver``.
