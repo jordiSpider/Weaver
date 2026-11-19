@@ -343,12 +343,14 @@
 <h2>Source and output layout<a class="headerlink" href="#source-and-output-layout" title="Link to this heading">#</a></h2>
 <p>The source root is <code class="docutils literal notranslate"><span class="pre">source/</span></code>. It contains:</p>
 <div class="highlight-text notranslate"><div class="highlight"><pre><span></span>source/landing/
-source/_shared/
 source/weaver/&lt;version&gt;/
 source/weaver-manager/&lt;version&gt;/
+source/weaver/&lt;version&gt;/_templates/
+source/weaver-manager/&lt;version&gt;/_templates/
 </pre></div>
 </div>
 <p>Version directory names are normalized release tags: remove the leading <code class="docutils literal notranslate"><span class="pre">v</span></code> but retain the rest of the tag. For example, <code class="docutils literal notranslate"><span class="pre">v26.10.04-rc.1</span></code> maps to <code class="docutils literal notranslate"><span class="pre">source/weaver/26.10.04-rc.1/</span></code>. Manager tags can have their own suffix, such as <code class="docutils literal notranslate"><span class="pre">v1.0.0-manager</span></code> mapping to <code class="docutils literal notranslate"><span class="pre">source/weaver-manager/1.0.0-manager/</span></code>.</p>
+<p>Each version directory owns its templates and static assets, including its logo. Changes to one version therefore do not alter another version’s files.</p>
 <p>Generated files are stored under <code class="docutils literal notranslate"><span class="pre">docs/</span></code>:</p>
 <div class="highlight-text notranslate"><div class="highlight"><pre><span></span>       docs/index.html
 docs/weaver/versions.json

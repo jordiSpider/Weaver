@@ -84,7 +84,7 @@ gettext_compact = False
 html_logo = "_static/images/logo.png"
 
 html_theme = "pydata_sphinx_theme"
-templates_path = ["../../_shared/_templates"]
+templates_path = ["_templates"]
 html_theme_options = {
     "navbar_end": ["version-switcher", "language-switcher", "theme-switcher"],
 }

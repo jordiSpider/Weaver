@@ -43,7 +43,6 @@ if(NOT IS_DIRECTORY "${DOCS_SOURCE_ROOT}")
 	message(FATAL_ERROR "Documentation source directory not found: ${DOCS_SOURCE_ROOT}")
 endif()
 
-set(DOCS_SHARED_SOURCE_DIR "${DOCS_SOURCE_ROOT}/_shared")
 set(DOCS_WEAVER_SOURCE_DIR "${DOCS_SOURCE_ROOT}/weaver")
 set(DOCS_MANAGER_SOURCE_DIR "${DOCS_SOURCE_ROOT}/weaver-manager")
 set(DOCS_LANDING_SOURCE_DIR "${DOCS_SOURCE_ROOT}/landing")
@@ -137,7 +136,6 @@ add_custom_target(generate-weaver
 		"DOCS_SOURCE_ROOT=${DOCS_SOURCE_ROOT}"
 		"DOCS_OUTPUT_ROOT=${DOCS_WEAVER_OUTPUT_ROOT}"
 		"DOCS_WORK_ROOT=${DOCS_WORK_ROOT}/weaver"
-		"DOCS_SHARED_SOURCE=${DOCS_SHARED_SOURCE_DIR}"
 		"DOCS_PRODUCT=weaver"
 		"DOCS_VERSION=${DOCS_WEAVER_VERSION}"
 		"DOCS_DEFAULT_LANGUAGE=${DOCS_DEFAULT_LANGUAGE}"
@@ -162,11 +160,11 @@ add_custom_target(generate-manager
 		"DOCS_SOURCE_ROOT=${DOCS_SOURCE_ROOT}"
 		"DOCS_OUTPUT_ROOT=${DOCS_MANAGER_OUTPUT_ROOT}"
 		"DOCS_WORK_ROOT=${DOCS_WORK_ROOT}/weaver-manager"
-		"DOCS_SHARED_SOURCE=${DOCS_SHARED_SOURCE_DIR}"
 		"DOCS_PRODUCT=weaver-manager"
 		"DOCS_VERSION=${DOCS_MANAGER_VERSION}"
 		"DOCS_DEFAULT_LANGUAGE=${DOCS_DEFAULT_LANGUAGE}"
 		"DOCS_CATALOG=${DOCS_BUILD_ROOT}/weaver-manager/versions.json"
+		# Keep Weaver catalog in Manager build environment for compatibility.
 		"DOCS_WEAVER_CATALOG=${DOCS_BUILD_ROOT}/weaver/versions.json"
 		"DOCS_SPHINX_JOBS=${DOCS_SPHINX_JOBS}"
 		"${Python3_EXECUTABLE}" "${DOCS_SCRIPT_DIR}/BuildVersionedDocs.py"

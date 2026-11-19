@@ -21,12 +21,9 @@ def safe_version(version):
     return version
 
 
-def prepare_sphinx_source(product, source_dir, destination_dir, shared_dir, version, default_language, languages):
+def prepare_sphinx_source(product, source_dir, destination_dir, version, default_language, languages):
     destination_dir.parent.mkdir(parents=True, exist_ok=True)
     shutil.copytree(source_dir, destination_dir)
-    shared_destination = destination_dir.parents[1] / "_shared"
-    if not shared_destination.exists():
-        shutil.copytree(shared_dir, shared_destination)
     conf = destination_dir / "conf.py"
     template = destination_dir / "conf.in.py"
     if template.is_file():
@@ -47,19 +44,6 @@ def prepare_sphinx_source(product, source_dir, destination_dir, shared_dir, vers
         conf.write_text(content, encoding="utf-8", newline="\n")
     elif not conf.is_file():
         raise FileNotFoundError(f"Sphinx conf.py or conf.in.py not found in {source_dir}")
-    if product == "weaver-manager":
-        weaver_catalog = Path(required_env("DOCS_WEAVER_CATALOG"))
-        latest_weaver = json.loads(weaver_catalog.read_text(encoding="utf-8"))["latest"]
-        content = conf.read_text(encoding="utf-8")
-        content = content.replace("../../weaver/latest/", f"../../weaver/{latest_weaver}/")
-        conf.write_text(content, encoding="utf-8", newline="\n")
-        weaver_source = Path(required_env("DOCS_SOURCE_ROOT")) / "weaver" / latest_weaver
-        logo_source = weaver_source / "_static" / "images" / "logo.png"
-        if not logo_source.is_file():
-            raise FileNotFoundError(f"Weaver logo not found for latest version {latest_weaver}: {logo_source}")
-        logo_destination = destination_dir.parents[1] / "weaver" / latest_weaver / "_static" / "images" / "logo.png"
-        logo_destination.parent.mkdir(parents=True, exist_ok=True)
-        shutil.copy2(logo_source, logo_destination)
     return conf
 
 
@@ -141,7 +125,6 @@ def main():
     source_root = Path(required_env("DOCS_SOURCE_ROOT"))
     output_root = Path(required_env("DOCS_OUTPUT_ROOT"))
     work_root = Path(required_env("DOCS_WORK_ROOT"))
-    shared_source = Path(required_env("DOCS_SHARED_SOURCE"))
     product = required_env("DOCS_PRODUCT")
     version = safe_version(required_env("DOCS_VERSION"))
     default_language = os.environ.get("DOCS_DEFAULT_LANGUAGE", "en")
@@ -156,10 +139,6 @@ def main():
     catalog_versions = [entry["version"] for entry in catalog.get("versions", [])]
     if version not in catalog_versions:
         raise ValueError(f"Version {version} is not present in the release catalog")
-    if product == "weaver-manager":
-        weaver_catalog = Path(required_env("DOCS_WEAVER_CATALOG"))
-        if not weaver_catalog.is_file():
-            raise FileNotFoundError(f"Weaver release catalog not found: {weaver_catalog}")
     source_dir = source_root / product / version
     if not source_dir.is_dir():
         raise FileNotFoundError(f"Version source not found: {source_dir}")
@@ -173,7 +152,7 @@ def main():
         if locale.is_dir():
             languages.extend(sorted(path.name for path in locale.iterdir() if path.is_dir() and path.name != default_language))
         languages = list(dict.fromkeys(languages))
-        conf_path = prepare_sphinx_source(product, source_dir, working_source, shared_source, version, default_language, languages)
+        conf_path = prepare_sphinx_source(product, source_dir, working_source, version, default_language, languages)
         base_conf = conf_path.read_text(encoding="utf-8")
         staged_version_dir = temp_root / "html" / version
         staged_version_dir.mkdir(parents=True)

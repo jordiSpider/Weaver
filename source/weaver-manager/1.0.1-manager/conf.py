@@ -4,7 +4,7 @@ import json
 project = "Weaver Manager"
 author = "Weaver project"
 html_title = "Weaver Manager Documentation"
-html_logo = "../../weaver/latest/_static/images/logo.png"
+html_logo = "_static/images/logo.png"
 
 default_version = os.environ.get("WEAVER_MANAGER_DOCS_DEFAULT_VERSION", "latest")
 default_language = os.environ.get("WEAVER_MANAGER_DOCS_DEFAULT_LANGUAGE", "en")
@@ -23,11 +23,11 @@ current_version = os.environ.get("WEAVER_MANAGER_DOCS_VERSION", default_version)
 current_language = os.environ.get("WEAVER_MANAGER_DOCS_LANGUAGE", default_language)
 language = current_language
 
-extensions = ["sphinx.ext.autosectionlabel"]
+extensions = ["sphinx.ext.autosectionlabel", "sphinx_design"]
 autosectionlabel_prefix_document = True
 
 html_theme = "pydata_sphinx_theme"
-templates_path = ["../../_shared/_templates"]
+templates_path = ["_templates"]
 html_theme_options = {
 	"navbar_end": ["version-switcher", "language-switcher", "theme-switcher"],
 }

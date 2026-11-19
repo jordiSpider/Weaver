@@ -31,6 +31,7 @@
 <link href="_static/styles/pydata-sphinx-theme.css?digest=a95f357e85573c9b56d5" rel="stylesheet" />
 
     <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=8f2a1f02" />
+    <link rel="stylesheet" type="text/css" href="_static/sphinx-design.min.css?v=95c83b7e" />
   
   <!-- So that users can add custom icons -->
   <script defer src="_static/scripts/fontawesome.js?digest=a95f357e85573c9b56d5"></script>
@@ -41,6 +42,7 @@
     <script src="_static/documentation_options.js?v=5929fcd5"></script>
     <script src="_static/doctools.js?v=9bcbadda"></script>
     <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="_static/design-tabs.js?v=f930bc37"></script>
     <script>DOCUMENTATION_OPTIONS.pagename = 'managing-versions';</script>
     <script>DOCUMENTATION_OPTIONS.search_as_you_type = false;</script>
     <link rel="index" title="Index" href="genindex.html" />
@@ -440,35 +442,111 @@
                   
   <section id="managing-installed-versions">
 <h1>Managing Installed Versions<a class="headerlink" href="#managing-installed-versions" title="Link to this heading">#</a></h1>
-<section id="view-and-refresh">
-<h2>View and refresh<a class="headerlink" href="#view-and-refresh" title="Link to this heading">#</a></h2>
-<p>The <strong>Installed Versions</strong> tab lists Weaver versions that the Manager can detect. It checks its managed program directory and <code class="docutils literal notranslate"><span class="pre">/opt/Weaver/&lt;version&gt;/&lt;edition&gt;</span></code> on Linux. On macOS, it checks <code class="docutils literal notranslate"><span class="pre">/Applications/Weaver/&lt;version&gt;/&lt;edition&gt;</span></code>, <code class="docutils literal notranslate"><span class="pre">~/Applications/Weaver/&lt;version&gt;/&lt;edition&gt;</span></code>, <code class="docutils literal notranslate"><span class="pre">/usr/local/&lt;version&gt;/&lt;edition&gt;</span></code>, and <code class="docutils literal notranslate"><span class="pre">/usr/local/Weaver/&lt;version&gt;/&lt;edition&gt;</span></code>. Installations are kept side by side. Select <strong>Refresh Installed Versions</strong> after changing installations outside the Manager.</p>
-<p>The Manager does not currently import arbitrary existing installations or provide a UI for choosing a custom program-install root. A detected installation must be in one of the checked locations and include the expected Weaver CLI executable.</p>
-</section>
 <section id="available-actions">
 <h2>Available actions<a class="headerlink" href="#available-actions" title="Link to this heading">#</a></h2>
-<p>Expand <strong>Actions</strong> on an installation to access its available shortcuts:</p>
+<p>All installed versions appear as a list in the <strong>Installed Versions</strong> tab. Each version has its own entry with a set of action buttons for opening or managing that installation. Expand <strong>Actions</strong> to show the available shortcuts.</p>
+<div class="admonition warning">
+<p class="admonition-title">Warning</p>
+<p>An action button is shown only when the installed version meets its requirements. If a version does not meet a button’s requirements, that action will not appear in its available actions.</p>
+</div>
+<section id="common-actions">
+<h3>Common actions<a class="headerlink" href="#common-actions" title="Link to this heading">#</a></h3>
+<p>The following actions are available across operating systems. Some are shown only for <strong>Desktop</strong> editions or when the required application or feature is installed.</p>
+<section id="open-installation-folder">
+<h4>Open installation folder<a class="headerlink" href="#open-installation-folder" title="Link to this heading">#</a></h4>
 <ul class="simple">
-<li><p><strong>Open installation folder</strong> opens the program files.</p></li>
-<li><p><strong>Open data folder</strong> opens the data folder for that version and edition, when it exists.</p></li>
-<li><p><strong>Open Weaver CLI</strong> opens the installed CLI in a terminal: Command Prompt on Windows, Terminal.app on macOS, or an available Linux terminal emulator such as GNOME Terminal, Konsole, XFCE Terminal, or xterm. On Linux, a supported terminal emulator must be installed. The terminal remains open after the CLI exits so its output can be reviewed.</p></li>
-<li><p><strong>Open R Studio</strong> launches R with the selected installation’s private R library. R must be installed and discoverable on the system.</p></li>
-<li><p><strong>Open Weaver Hub</strong> is available for Desktop installations with the R package installed. It requires R 4.2 or newer and a discoverable <code class="docutils literal notranslate"><span class="pre">Rscript</span></code> executable.</p></li>
-<li><p><strong>Open Weaver GUI</strong> is available only for Desktop installations with the graphical-interface feature installed.</p></li>
-<li><p><strong>Modify</strong> opens Windows Installer maintenance. This action is Windows-only.</p></li>
-<li><p><strong>Uninstall</strong> asks for confirmation and removes the selected version through Windows Installer. This action is Windows-only.</p></li>
+<li><p><strong>Button image:</strong> <a class="reference internal" href="_images/open-installation-folder.png"><img alt="Open installation folder button" src="_images/open-installation-folder.png" style="width: 220px;" /></a></p></li>
+<li><p><strong>Desktop edition required:</strong> <span class="sd-sphinx-override sd-badge sd-bg-success sd-bg-text-success">No</span></p></li>
+<li><p><strong>Required programs:</strong> <span class="sd-sphinx-override sd-badge sd-bg-success sd-bg-text-success">None</span></p></li>
+<li><p><strong>Required components:</strong> <span class="sd-sphinx-override sd-badge sd-bg-success sd-bg-text-success">None</span></p></li>
+<li><p><strong>Functionality:</strong> Opens the folder containing the installed program files.</p></li>
 </ul>
-<p>The Manager may show a version as no longer available if it was removed externally. Refresh the list to update the display.</p>
 </section>
-<section id="storage-locations">
-<h2>Storage locations<a class="headerlink" href="#storage-locations" title="Link to this heading">#</a></h2>
-<p>By default, Manager data is under <code class="docutils literal notranslate"><span class="pre">Documents/Weaver</span> <span class="pre">Manager</span></code>; the Test product uses <code class="docutils literal notranslate"><span class="pre">Documents/Weaver</span> <span class="pre">Manager</span> <span class="pre">Test</span></code>. On Windows, the Manager installer can configure a machine-level data-directory location. Program files are installed under the Manager installation directory in <code class="docutils literal notranslate"><span class="pre">installed_versions</span></code>. Mutable simulator data defaults to <code class="docutils literal notranslate"><span class="pre">&lt;Manager</span> <span class="pre">data</span> <span class="pre">directory&gt;/installed_versions</span></code> and Manager logs are kept in <code class="docutils literal notranslate"><span class="pre">&lt;Manager</span> <span class="pre">data</span> <span class="pre">directory&gt;/logs</span></code>.</p>
-<p>The Weaver installer may let you choose a different data directory for an individual simulator installation. Changing or deleting program files does not necessarily remove mutable data. On Windows, uninstalling Weaver Manager first attempts to uninstall detected Manager-managed Weaver versions and removes Manager logs; it does not delete non-empty mutable data folders. Back up or delete remaining data separately if required.</p>
+<section id="open-data-folder">
+<h4>Open data folder<a class="headerlink" href="#open-data-folder" title="Link to this heading">#</a></h4>
+<ul class="simple">
+<li><p><strong>Button image:</strong> <a class="reference internal" href="_images/open-data-folder.png"><img alt="Open data folder button" src="_images/open-data-folder.png" style="width: 220px;" /></a></p></li>
+<li><p><strong>Desktop edition required:</strong> <span class="sd-sphinx-override sd-badge sd-bg-success sd-bg-text-success">No</span></p></li>
+<li><p><strong>Required programs:</strong> <span class="sd-sphinx-override sd-badge sd-bg-success sd-bg-text-success">None</span></p></li>
+<li><p><strong>Required components:</strong> <span class="sd-sphinx-override sd-badge sd-bg-success sd-bg-text-success">None</span></p></li>
+<li><p><strong>Functionality:</strong> Opens the mutable-data folder for this version and edition, when it exists.</p></li>
+</ul>
 </section>
-<section id="logs-and-installer-cache">
-<h2>Logs and installer cache<a class="headerlink" href="#logs-and-installer-cache" title="Link to this heading">#</a></h2>
-<p><code class="docutils literal notranslate"><span class="pre">weaver-manager.log</span></code> records Manager activity. Windows installer operations produce <code class="docutils literal notranslate"><span class="pre">msiexec-install.log</span></code>; Modify operations produce <code class="docutils literal notranslate"><span class="pre">msiexec-modify.log</span></code>. These files are useful when contacting support or diagnosing an installation failure.</p>
-<p>Verified release installers are cached temporarily and the Manager removes this cache when it closes. If an installer is still running, keep the Manager open until that operation completes.</p>
+<section id="open-weaver-cli">
+<h4>Open Weaver CLI<a class="headerlink" href="#open-weaver-cli" title="Link to this heading">#</a></h4>
+<ul class="simple">
+<li><p><strong>Button image:</strong> <a class="reference internal" href="_images/open-weaver-cli.png"><img alt="Open Weaver CLI button" src="_images/open-weaver-cli.png" style="width: 220px;" /></a></p></li>
+<li><p><strong>Desktop edition required:</strong> <span class="sd-sphinx-override sd-badge sd-bg-success sd-bg-text-success">No</span></p></li>
+<li><p><strong>Required programs:</strong> <span class="sd-sphinx-override sd-badge sd-bg-success sd-bg-text-success">None</span></p></li>
+<li><p><strong>Required components:</strong> <span class="sd-sphinx-override sd-badge sd-bg-success sd-bg-text-success">None</span></p></li>
+<li><p><strong>Functionality:</strong> Opens the installed CLI in a terminal: Command Prompt on Windows, Terminal.app on macOS, or an available Linux terminal emulator such as GNOME Terminal, Konsole, XFCE Terminal, or xterm. On Linux, a supported terminal emulator must be installed. The terminal remains open after the CLI exits so you can review its output.</p></li>
+</ul>
+</section>
+<section id="open-r-studio">
+<h4>Open R Studio<a class="headerlink" href="#open-r-studio" title="Link to this heading">#</a></h4>
+<ul class="simple">
+<li><p><strong>Button image:</strong> <a class="reference internal" href="_images/open-r-studio.png"><img alt="Open R Studio button" src="_images/open-r-studio.png" style="width: 220px;" /></a></p></li>
+<li><p><strong>Desktop edition required:</strong> <span class="sd-sphinx-override sd-badge sd-bg-success sd-bg-text-success">No</span></p></li>
+<li><p><strong>Required programs:</strong> <span class="sd-sphinx-override sd-badge sd-bg-warning sd-bg-text-warning">R</span></p></li>
+<li><p><strong>Required components:</strong> <span class="sd-sphinx-override sd-badge sd-bg-warning sd-bg-text-warning">R packages</span></p></li>
+<li><p><strong>Functionality:</strong> Launches R with the selected installation’s private R library. R must be installed and discoverable on the system.</p></li>
+</ul>
+</section>
+<section id="open-weaver-hub">
+<h4>Open Weaver Hub<a class="headerlink" href="#open-weaver-hub" title="Link to this heading">#</a></h4>
+<ul class="simple">
+<li><p><strong>Button image:</strong> <a class="reference internal" href="_images/open-weaver-hub.png"><img alt="Open Weaver Hub button" src="_images/open-weaver-hub.png" style="width: 220px;" /></a></p></li>
+<li><p><strong>Desktop edition required:</strong> <span class="sd-sphinx-override sd-badge sd-bg-warning sd-bg-text-warning">Yes</span></p></li>
+<li><p><strong>Required programs:</strong> <span class="sd-sphinx-override sd-badge sd-bg-warning sd-bg-text-warning">R 4.2 or newer</span></p></li>
+<li><p><strong>Required components:</strong> <span class="sd-sphinx-override sd-badge sd-bg-warning sd-bg-text-warning">R packages</span></p></li>
+<li><p><strong>Functionality:</strong> Opens Weaver Hub. The R package must be installed, and R 4.2 or newer with a discoverable <code class="docutils literal notranslate"><span class="pre">Rscript</span></code> executable is required.</p></li>
+</ul>
+</section>
+<section id="open-weaver-gui">
+<h4>Open Weaver GUI<a class="headerlink" href="#open-weaver-gui" title="Link to this heading">#</a></h4>
+<ul class="simple">
+<li><p><strong>Button image:</strong> <a class="reference internal" href="_images/open-weaver-gui.png"><img alt="Open Weaver GUI button" src="_images/open-weaver-gui.png" style="width: 220px;" /></a></p></li>
+<li><p><strong>Desktop edition required:</strong> <span class="sd-sphinx-override sd-badge sd-bg-warning sd-bg-text-warning">Yes</span></p></li>
+<li><p><strong>Required programs:</strong> <span class="sd-sphinx-override sd-badge sd-bg-success sd-bg-text-success">None</span></p></li>
+<li><p><strong>Required components:</strong> <span class="sd-sphinx-override sd-badge sd-bg-warning sd-bg-text-warning">Weaver Graphical Interface</span></p></li>
+<li><p><strong>Functionality:</strong> Opens Weaver GUI. The graphical-interface feature must be installed.</p></li>
+</ul>
+</section>
+</section>
+<section id="operating-system-specific-actions">
+<h3>Operating-system-specific actions<a class="headerlink" href="#operating-system-specific-actions" title="Link to this heading">#</a></h3>
+<p>The following actions depend on the operating system.</p>
+<div class="sd-tab-set docutils">
+<input checked="checked" id="sd-tab-item-0" name="sd-tab-set-0" type="radio">
+<label class="sd-tab-label" for="sd-tab-item-0">
+Windows</label><div class="sd-tab-content docutils">
+<p><strong>Modify</strong></p>
+<ul class="simple">
+<li><p><strong>Button image:</strong> <a class="reference internal" href="_images/modify.png"><img alt="Modify button" src="_images/modify.png" style="width: 220px;" /></a></p></li>
+<li><p><strong>Desktop edition required:</strong> <span class="sd-sphinx-override sd-badge sd-bg-success sd-bg-text-success">No</span></p></li>
+<li><p><strong>Required programs:</strong> <span class="sd-sphinx-override sd-badge sd-bg-success sd-bg-text-success">None</span></p></li>
+<li><p><strong>Required components:</strong> <span class="sd-sphinx-override sd-badge sd-bg-success sd-bg-text-success">None</span></p></li>
+<li><p><strong>Functionality:</strong> Opens Windows Installer maintenance for the selected version, where you can change its installed components.</p></li>
+</ul>
+<p><strong>Uninstall</strong></p>
+<ul class="simple">
+<li><p><strong>Button image:</strong> <a class="reference internal" href="_images/uninstall.png"><img alt="Uninstall button" src="_images/uninstall.png" style="width: 220px;" /></a></p></li>
+<li><p><strong>Desktop edition required:</strong> <span class="sd-sphinx-override sd-badge sd-bg-success sd-bg-text-success">No</span></p></li>
+<li><p><strong>Required programs:</strong> <span class="sd-sphinx-override sd-badge sd-bg-success sd-bg-text-success">None</span></p></li>
+<li><p><strong>Required components:</strong> <span class="sd-sphinx-override sd-badge sd-bg-success sd-bg-text-success">None</span></p></li>
+<li><p><strong>Functionality:</strong> Asks for confirmation, then removes the selected version through Windows Installer.</p></li>
+</ul>
+</div>
+<input id="sd-tab-item-1" name="sd-tab-set-0" type="radio">
+<label class="sd-tab-label" for="sd-tab-item-1">
+Linux</label><div class="sd-tab-content docutils">
+</div>
+<input id="sd-tab-item-2" name="sd-tab-set-0" type="radio">
+<label class="sd-tab-label" for="sd-tab-item-2">
+macOS</label><div class="sd-tab-content docutils">
+</div>
+</div>
+</section>
 </section>
 </section>
 
@@ -519,10 +597,19 @@
   </div>
   <nav id="pst-page-toc-nav" class="page-toc" aria-labelledby="pst-page-navigation-heading-2">
     <ul class="pst-show_toc_level nav section-nav flex-column">
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#view-and-refresh">View and refresh</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#available-actions">Available actions</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#storage-locations">Storage locations</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#logs-and-installer-cache">Logs and installer cache</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#available-actions">Available actions</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#common-actions">Common actions</a><ul class="nav section-nav flex-column">
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#open-installation-folder">Open installation folder</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#open-data-folder">Open data folder</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#open-weaver-cli">Open Weaver CLI</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#open-r-studio">Open R Studio</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#open-weaver-hub">Open Weaver Hub</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#open-weaver-gui">Open Weaver GUI</a></li>
+</ul>
+</li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#operating-system-specific-actions">Operating-system-specific actions</a></li>
+</ul>
+</li>
 </ul>
   </nav></div>
 

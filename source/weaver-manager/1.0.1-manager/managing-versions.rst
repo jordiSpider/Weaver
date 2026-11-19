@@ -1,39 +1,128 @@
 Managing Installed Versions
 ============================
 
-View and refresh
-----------------
-
-The **Installed Versions** tab lists Weaver versions that the Manager can detect. It checks its managed program directory and ``/opt/Weaver/<version>/<edition>`` on Linux. On macOS, it checks ``/Applications/Weaver/<version>/<edition>``, ``~/Applications/Weaver/<version>/<edition>``, ``/usr/local/<version>/<edition>``, and ``/usr/local/Weaver/<version>/<edition>``. Installations are kept side by side. Select **Refresh Installed Versions** after changing installations outside the Manager.
-
-The Manager does not currently import arbitrary existing installations or provide a UI for choosing a custom program-install root. A detected installation must be in one of the checked locations and include the expected Weaver CLI executable.
-
 Available actions
 -----------------
 
-Expand **Actions** on an installation to access its available shortcuts:
+All installed versions appear as a list in the **Installed Versions** tab. Each version has its own entry with a set of action buttons for opening or managing that installation. Expand **Actions** to show the available shortcuts.
 
-- **Open installation folder** opens the program files.
-- **Open data folder** opens the data folder for that version and edition, when it exists.
-- **Open Weaver CLI** opens the installed CLI in a terminal: Command Prompt on Windows, Terminal.app on macOS, or an available Linux terminal emulator such as GNOME Terminal, Konsole, XFCE Terminal, or xterm. On Linux, a supported terminal emulator must be installed. The terminal remains open after the CLI exits so its output can be reviewed.
-- **Open R Studio** launches R with the selected installation's private R library. R must be installed and discoverable on the system.
-- **Open Weaver Hub** is available for Desktop installations with the R package installed. It requires R 4.2 or newer and a discoverable ``Rscript`` executable.
-- **Open Weaver GUI** is available only for Desktop installations with the graphical-interface feature installed.
-- **Modify** opens Windows Installer maintenance. This action is Windows-only.
-- **Uninstall** asks for confirmation and removes the selected version through Windows Installer. This action is Windows-only.
+.. warning::
 
-The Manager may show a version as no longer available if it was removed externally. Refresh the list to update the display.
+   An action button is shown only when the installed version meets its requirements. If a version does not meet a button's requirements, that action will not appear in its available actions.
 
-Storage locations
------------------
+.. |button-open-installation-folder| image:: _static/images/managing-versions/open-installation-folder.png
+   :width: 220px
+   :alt: Open installation folder button
+.. |button-open-data-folder| image:: _static/images/managing-versions/open-data-folder.png
+   :width: 220px
+   :alt: Open data folder button
+.. |button-open-weaver-cli| image:: _static/images/managing-versions/open-weaver-cli.png
+   :width: 220px
+   :alt: Open Weaver CLI button
+.. |button-open-r-studio| image:: _static/images/managing-versions/open-r-studio.png
+   :width: 220px
+   :alt: Open R Studio button
+.. |button-open-weaver-hub| image:: _static/images/managing-versions/open-weaver-hub.png
+   :width: 220px
+   :alt: Open Weaver Hub button
+.. |button-open-weaver-gui| image:: _static/images/managing-versions/open-weaver-gui.png
+   :width: 220px
+   :alt: Open Weaver GUI button
+.. |button-modify| image:: _static/images/managing-versions/modify.png
+   :width: 220px
+   :alt: Modify button
+.. |button-uninstall| image:: _static/images/managing-versions/uninstall.png
+   :width: 220px
+   :alt: Uninstall button
 
-By default, Manager data is under ``Documents/Weaver Manager``; the Test product uses ``Documents/Weaver Manager Test``. On Windows, the Manager installer can configure a machine-level data-directory location. Program files are installed under the Manager installation directory in ``installed_versions``. Mutable simulator data defaults to ``<Manager data directory>/installed_versions`` and Manager logs are kept in ``<Manager data directory>/logs``.
+Common actions
+~~~~~~~~~~~~~~
 
-The Weaver installer may let you choose a different data directory for an individual simulator installation. Changing or deleting program files does not necessarily remove mutable data. On Windows, uninstalling Weaver Manager first attempts to uninstall detected Manager-managed Weaver versions and removes Manager logs; it does not delete non-empty mutable data folders. Back up or delete remaining data separately if required.
+The following actions are available across operating systems. Some are shown only for **Desktop** editions or when the required application or feature is installed.
 
-Logs and installer cache
-------------------------
+Open installation folder
+^^^^^^^^^^^^^^^^^^^^^^^^
 
-``weaver-manager.log`` records Manager activity. Windows installer operations produce ``msiexec-install.log``; Modify operations produce ``msiexec-modify.log``. These files are useful when contacting support or diagnosing an installation failure.
+* **Button image:** |button-open-installation-folder|
+* **Desktop edition required:** :bdg-success:`No`
+* **Required programs:** :bdg-success:`None`
+* **Required components:** :bdg-success:`None`
+* **Functionality:** Opens the folder containing the installed program files.
 
-Verified release installers are cached temporarily and the Manager removes this cache when it closes. If an installer is still running, keep the Manager open until that operation completes.
+Open data folder
+^^^^^^^^^^^^^^^^
+
+* **Button image:** |button-open-data-folder|
+* **Desktop edition required:** :bdg-success:`No`
+* **Required programs:** :bdg-success:`None`
+* **Required components:** :bdg-success:`None`
+* **Functionality:** Opens the mutable-data folder for this version and edition, when it exists.
+
+Open Weaver CLI
+^^^^^^^^^^^^^^^
+
+* **Button image:** |button-open-weaver-cli|
+* **Desktop edition required:** :bdg-success:`No`
+* **Required programs:** :bdg-success:`None`
+* **Required components:** :bdg-success:`None`
+* **Functionality:** Opens the installed CLI in a terminal: Command Prompt on Windows, Terminal.app on macOS, or an available Linux terminal emulator such as GNOME Terminal, Konsole, XFCE Terminal, or xterm. On Linux, a supported terminal emulator must be installed. The terminal remains open after the CLI exits so you can review its output.
+
+Open R Studio
+^^^^^^^^^^^^^
+
+* **Button image:** |button-open-r-studio|
+* **Desktop edition required:** :bdg-success:`No`
+* **Required programs:** :bdg-warning:`R`
+* **Required components:** :bdg-warning:`R packages`
+* **Functionality:** Launches R with the selected installation's private R library. R must be installed and discoverable on the system.
+
+Open Weaver Hub
+^^^^^^^^^^^^^^^
+
+* **Button image:** |button-open-weaver-hub|
+* **Desktop edition required:** :bdg-warning:`Yes`
+* **Required programs:** :bdg-warning:`R 4.2 or newer`
+* **Required components:** :bdg-warning:`R packages`
+* **Functionality:** Opens Weaver Hub. The R package must be installed, and R 4.2 or newer with a discoverable ``Rscript`` executable is required.
+
+Open Weaver GUI
+^^^^^^^^^^^^^^^
+
+* **Button image:** |button-open-weaver-gui|
+* **Desktop edition required:** :bdg-warning:`Yes`
+* **Required programs:** :bdg-success:`None`
+* **Required components:** :bdg-warning:`Weaver Graphical Interface`
+* **Functionality:** Opens Weaver GUI. The graphical-interface feature must be installed.
+
+Operating-system-specific actions
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+The following actions depend on the operating system.
+
+.. tab-set::
+
+   .. tab-item:: Windows
+
+	  **Modify**
+
+	  * **Button image:** |button-modify|
+	  * **Desktop edition required:** :bdg-success:`No`
+	  * **Required programs:** :bdg-success:`None`
+	  * **Required components:** :bdg-success:`None`
+	  * **Functionality:** Opens Windows Installer maintenance for the selected version, where you can change its installed components.
+
+	  **Uninstall**
+
+	  * **Button image:** |button-uninstall|
+	  * **Desktop edition required:** :bdg-success:`No`
+	  * **Required programs:** :bdg-success:`None`
+	  * **Required components:** :bdg-success:`None`
+	  * **Functionality:** Asks for confirmation, then removes the selected version through Windows Installer.
+
+   .. tab-item:: Linux
+
+	  .. Linux-specific actions will be documented here.
+
+   .. tab-item:: macOS
+
+	  .. macOS-specific actions will be documented here.

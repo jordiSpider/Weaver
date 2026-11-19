@@ -25,11 +25,14 @@ The source root is ``source/``. It contains:
 .. code-block:: text
 
    source/landing/
-   source/_shared/
    source/weaver/<version>/
    source/weaver-manager/<version>/
+   source/weaver/<version>/_templates/
+   source/weaver-manager/<version>/_templates/
 
 Version directory names are normalized release tags: remove the leading ``v`` but retain the rest of the tag. For example, ``v26.10.04-rc.1`` maps to ``source/weaver/26.10.04-rc.1/``. Manager tags can have their own suffix, such as ``v1.0.0-manager`` mapping to ``source/weaver-manager/1.0.0-manager/``.
+
+Each version directory owns its templates and static assets, including its logo. Changes to one version therefore do not alter another version's files.
 
 Generated files are stored under ``docs/``:
 
