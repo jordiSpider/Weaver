@@ -11,6 +11,7 @@
 
 class QTableWidget;
 class QLabel;
+class QAction;
 class QNetworkReply;
 class QCloseEvent;
 class QVBoxLayout;
@@ -24,6 +25,7 @@ public:
 private slots:
     void refreshReleases();
     void installVerifiedInstaller(const QJsonObject &entry);
+    void continueVerifiedInstallerInstall(const QJsonObject &entry);
 #if ENABLE_TEST
     void addLocalTestInstaller();
     void installLocalTestInstaller(const QString &path);
@@ -47,9 +49,14 @@ private:
     void uninstallInstallation(const QString &version, const QString &edition);
     void setStatus(const QString &message);
     void requestReleasePage(int page);
+    void retryReleasePage(int page, const QString &errorMessage);
+    void requestManagerReleasePage(int page);
+    void handleManagerReleasePage(QNetworkReply *reply, const QByteArray &data);
+    void showManagerUpdateNotification();
     void fetchReleaseManifests();
     void processReleaseManifest(int index);
     void populateReleaseTable();
+    void pruneReleaseCache();
     void refreshReleaseCacheStatuses();
     void removeInstallerCache();
 
@@ -58,7 +65,10 @@ protected:
 
 private:
     QNetworkAccessManager network_;
+    QNetworkAccessManager managerUpdateNetwork_;
+    QNetworkAccessManager releaseValidationNetwork_;
     QProcess installerProcess_;
+    QAction *updateNotificationsAction_{};
     QWidget *installedListContent_{};
     QVBoxLayout *installedListLayout_{};
     QTableWidget *releaseTable_{};
@@ -74,6 +84,15 @@ private:
     QSet<QString> newReleaseEntries_;
     QSet<QString> seenReleaseEntriesAtSearchStart_;
     quint64 releaseSearchGeneration_{};
+    int releasePageRetryCount_{};
+    QString latestManagerStableTag_;
+    QString latestManagerStableUrl_;
+    QString latestManagerStableVersion_;
+    QString latestManagerPrereleaseTag_;
+    QString latestManagerPrereleaseUrl_;
+    QString latestManagerPrereleaseVersion_;
+    int latestManagerPrereleaseNumber_{};
+    bool managerReleasesLoaded_{};
     QString pendingDownloadPath_;
     QByteArray pendingDownloadHash_;
     qint64 pendingDownloadSize_{};
