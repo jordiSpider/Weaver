@@ -9,7 +9,7 @@ if(DEFINED ENV{VCPKG_DEFAULT_BINARY_CACHE})
 endif()
 
 
-project(WeaverManager VERSION 1.0.2 LANGUAGES CXX)
+project(WeaverManager VERSION 1.1.0 LANGUAGES CXX)
 
 option(ENABLE_TEST "Enable test-only Manager features" OFF)
 set(WEAVER_MANAGER_PRERELEASE "" CACHE STRING "Numeric Weaver Manager release-candidate number")
