@@ -1,0 +1,77 @@
+{
+  "version": 6,
+  "cmakeMinimumRequired": {
+    "major": 3,
+    "minor": 25,
+    "patch": 0
+  },
+  "configurePresets": [
+    {
+      "name": "local-weaver",
+      "generator": "Ninja",
+      "binaryDir": "${sourceDir}/build/cmake/${presetName}",
+      "cacheVariables": {
+        "DOCS_GENERATION": "weaver",
+        "DOCS_WORK_ROOT": "${sourceDir}/build/work"
+      }
+    },
+    {
+      "name": "local-weaver-xml",
+      "generator": "Ninja",
+      "binaryDir": "${sourceDir}/build/cmake/${presetName}",
+      "cacheVariables": {
+        "DOCS_GENERATION": "weaver-xml",
+        "DOCS_WORK_ROOT": "${sourceDir}/build/work"
+      }
+    },
+    {
+      "name": "local-manager",
+      "generator": "Ninja",
+      "binaryDir": "${sourceDir}/build/cmake/${presetName}",
+      "cacheVariables": {
+        "DOCS_GENERATION": "manager",
+        "DOCS_WORK_ROOT": "${sourceDir}/build/work"
+      }
+    }
+  ],
+  "buildPresets": [
+    {
+      "name": "generate-local-weaver",
+      "configurePreset": "local-weaver",
+      "targets": [ "generate-local-weaver" ]
+    },
+    {
+      "name": "generate-local-weaver-xml",
+      "configurePreset": "local-weaver-xml",
+      "targets": [ "generate-local-weaver-xml" ]
+    },
+    {
+      "name": "generate-local-manager",
+      "configurePreset": "local-manager",
+      "targets": [ "generate-local-manager" ]
+    }
+  ],
+  "workflowPresets": [
+    {
+      "name": "generate-local-weaver",
+      "steps": [
+        { "type": "configure", "name": "local-weaver" },
+        { "type": "build", "name": "generate-local-weaver" }
+      ]
+    },
+    {
+      "name": "generate-local-weaver-xml",
+      "steps": [
+        { "type": "configure", "name": "local-weaver-xml" },
+        { "type": "build", "name": "generate-local-weaver-xml" }
+      ]
+    },
+    {
+      "name": "generate-local-manager",
+      "steps": [
+        { "type": "configure", "name": "local-manager" },
+        { "type": "build", "name": "generate-local-manager" }
+      ]
+    }
+  ]
+}

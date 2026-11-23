@@ -1,22 +1,164 @@
 !include "nsDialogs.nsh"
 !include "LogicLib.nsh"
+!include "WordFunc.nsh"
+!insertmacro VersionCompare
 
 Var MANAGERDATADIR
 Var MANAGERDATADIRTEXT
 Var MANAGERDATARBROWSEBUTTON
 Var MANAGERDATARBROWSERESULT
+Var MANAGERUPGRADE
+Var MANAGERDIRLOCKWARNEDPATH
+Var MANAGERUPGRADECHECKED
+Var MANAGERINSTALLEDVERSION
+Var MANAGERINSTALLEDVERSIONFULL
+Var MANAGERINSTALLEDPRERELEASE
+Var MANAGERINSTALLEDROOT
+Var MANAGERVERSIONORDER
+
+!define MUI_PAGE_CUSTOMFUNCTION_PRE ManagerUpgradeCheck
+
+InstallDirRegKey HKLM "Software\@CPACK_PACKAGE_VENDOR@\@CPACK_PACKAGE_INSTALL_REGISTRY_KEY@" ""
+
+Function ManagerUpgradeCheck
+	StrCmp $MANAGERUPGRADECHECKED "1" ManagerUpgradeCheckDone
+	StrCpy $MANAGERUPGRADECHECKED 1
+	ReadRegStr $MANAGERINSTALLEDVERSION HKLM "Software\Microsoft\Windows\CurrentVersion\Uninstall\@CPACK_PACKAGE_INSTALL_REGISTRY_KEY@" "DisplayVersion"
+	ReadRegStr $MANAGERINSTALLEDPRERELEASE HKLM "@WEAVER_MANAGER_REGISTRY_KEY@" "Prerelease"
+	StrCpy $MANAGERINSTALLEDVERSIONFULL $MANAGERINSTALLEDVERSION
+	StrCmp $MANAGERINSTALLEDPRERELEASE "" ManagerInstalledVersionReady
+	StrCpy $MANAGERINSTALLEDVERSIONFULL "$MANAGERINSTALLEDVERSION-rc.$MANAGERINSTALLEDPRERELEASE"
+ManagerInstalledVersionReady:
+	StrCmp $MANAGERINSTALLEDVERSION "" ManagerUpgradeCheckUnversioned
+	${If} "@WEAVER_MANAGER_PRERELEASE@" != ""
+		${VersionCompare} "@CPACK_PACKAGE_VERSION@" "$MANAGERINSTALLEDVERSION" $MANAGERVERSIONORDER
+		StrCmp $MANAGERVERSIONORDER "1" ManagerUpgradeConfirm
+		StrCmp $MANAGERVERSIONORDER "2" ManagerDowngradeConfirm
+		StrCmp $MANAGERINSTALLEDPRERELEASE "" ManagerDowngradeConfirm
+		IntCmp @WEAVER_MANAGER_PRERELEASE@ $MANAGERINSTALLEDPRERELEASE ManagerReinstallConfirm ManagerDowngradeConfirm ManagerUpgradeConfirm
+	${Else}
+		${VersionCompare} "@CPACK_PACKAGE_VERSION@" "$MANAGERINSTALLEDVERSION" $MANAGERVERSIONORDER
+		StrCmp $MANAGERVERSIONORDER "1" ManagerUpgradeConfirm
+		StrCmp $MANAGERVERSIONORDER "2" ManagerDowngradeConfirm
+		StrCmp $MANAGERINSTALLEDPRERELEASE "" ManagerReinstallConfirm ManagerUpgradeConfirm
+	${EndIf}
+ManagerUpgradeCheckUnversioned:
+	ReadRegStr $MANAGERINSTALLEDROOT HKLM "Software\@CPACK_PACKAGE_VENDOR@\@CPACK_PACKAGE_INSTALL_REGISTRY_KEY@" ""
+	StrCmp $MANAGERINSTALLEDROOT "" ManagerFreshInstall
+	${If} "@WEAVER_MANAGER_PRERELEASE@" != ""
+		MessageBox MB_ICONEXCLAMATION|MB_OKCANCEL|MB_DEFBUTTON2 "An existing Weaver Manager installation was detected, but its version could not be determined. This installer contains pre-release version @WEAVER_MANAGER_DISPLAY_VERSION@ for testing and may be unstable. Continue?" IDOK ManagerUpgradeConfirmed
+		Quit
+	${EndIf}
+	MessageBox MB_ICONQUESTION|MB_OKCANCEL|MB_DEFBUTTON2 "An existing Weaver Manager installation was detected, but its version could not be determined. Continue with version @CPACK_PACKAGE_VERSION@?" IDOK ManagerUpgradeConfirmed
+	Quit
+ManagerFreshInstall:
+	${If} "@WEAVER_MANAGER_PRERELEASE@" != ""
+		MessageBox MB_ICONEXCLAMATION|MB_OKCANCEL|MB_DEFBUTTON2 "This installer contains pre-release version @WEAVER_MANAGER_DISPLAY_VERSION@ of Weaver Manager. It is a test version and may be unstable. Continue?" IDOK ManagerUpgradeConfirmed
+		Quit
+	${EndIf}
+	Goto ManagerUpgradeCheckDone
+ManagerUpgradeConfirm:
+	${If} "@WEAVER_MANAGER_PRERELEASE@" != ""
+		MessageBox MB_ICONEXCLAMATION|MB_OKCANCEL|MB_DEFBUTTON2 "Weaver Manager version $MANAGERINSTALLEDVERSIONFULL is installed. This installer will upgrade it to version @WEAVER_MANAGER_DISPLAY_VERSION@, which is a pre-release test version and may be unstable. Continue?" IDOK ManagerUpgradeConfirmed
+		Quit
+	${EndIf}
+	MessageBox MB_ICONQUESTION|MB_OKCANCEL|MB_DEFBUTTON2 "Weaver Manager version $MANAGERINSTALLEDVERSIONFULL is installed. This installer will update it to version @WEAVER_MANAGER_DISPLAY_VERSION@. Continue?" IDOK ManagerUpgradeConfirmed
+	Quit
+ManagerDowngradeConfirm:
+	${If} "@WEAVER_MANAGER_PRERELEASE@" != ""
+		MessageBox MB_ICONEXCLAMATION|MB_OKCANCEL|MB_DEFBUTTON2 "Weaver Manager version $MANAGERINSTALLEDVERSIONFULL is installed. This installer will downgrade it to version @WEAVER_MANAGER_DISPLAY_VERSION@, which is a pre-release test version and may be unstable. Continue?" IDOK ManagerUpgradeConfirmed
+		Quit
+	${EndIf}
+	MessageBox MB_ICONEXCLAMATION|MB_OKCANCEL|MB_DEFBUTTON2 "Weaver Manager version $MANAGERINSTALLEDVERSIONFULL is installed. This installer will downgrade to version @WEAVER_MANAGER_DISPLAY_VERSION@ and may cause compatibility issues. Continue?" IDOK ManagerUpgradeConfirmed
+	Quit
+ManagerReinstallConfirm:
+	${If} "@WEAVER_MANAGER_PRERELEASE@" != ""
+		MessageBox MB_ICONEXCLAMATION|MB_OKCANCEL|MB_DEFBUTTON2 "Weaver Manager version $MANAGERINSTALLEDVERSIONFULL is already installed. This will reinstall version @WEAVER_MANAGER_DISPLAY_VERSION@, which is a pre-release test version and may be unstable. Continue?" IDOK ManagerUpgradeConfirmed
+		Quit
+	${EndIf}
+	MessageBox MB_ICONQUESTION|MB_OKCANCEL|MB_DEFBUTTON2 "Weaver Manager version $MANAGERINSTALLEDVERSIONFULL is already installed. This will reinstall the same version (@WEAVER_MANAGER_DISPLAY_VERSION@). Continue?" IDOK ManagerUpgradeConfirmed
+	Quit
+ManagerUpgradeConfirmed:
+	Goto ManagerUpgradeCheckDone
+ManagerUpgradeCheckDone:
+	Call ManagerCheckRunning
+FunctionEnd
+
+Function ManagerCheckRunning
+	nsExec::ExecToStack /TIMEOUT=10000 '"$SYSDIR\tasklist.exe" /FI "IMAGENAME eq @WEAVER_MANAGER_EXECUTABLE_FILE_NAME@" /FO CSV /NH'
+	Pop $0
+	Pop $1
+	StrCmp $0 "0" ManagerCheckRunningResult
+	MessageBox MB_ICONSTOP|MB_OK "Could not check whether @WEAVER_MANAGER_NAME@ is running. Close it manually and restart the installer."
+	Quit
+ManagerCheckRunningResult:
+	StrCpy $2 $1 1
+	StrCmp $2 '"' ManagerCheckRunningPrompt
+	Return
+ManagerCheckRunningPrompt:
+	MessageBox MB_ICONEXCLAMATION|MB_YESNO|MB_DEFBUTTON2 "@WEAVER_MANAGER_NAME@ is currently open. Force it to close before continuing with the installation?" IDYES ManagerForceClose IDNO ManagerCancelInstall
+ManagerForceClose:
+	nsExec::ExecToStack /TIMEOUT=10000 '"$SYSDIR\taskkill.exe" /F /IM "@WEAVER_MANAGER_EXECUTABLE_FILE_NAME@"'
+	Pop $0
+	Pop $1
+	StrCmp $0 "0" ManagerVerifyClosed
+	MessageBox MB_ICONSTOP|MB_OK "@WEAVER_MANAGER_NAME@ could not be closed. Close it manually and restart the installer."
+	Quit
+ManagerVerifyClosed:
+	nsExec::ExecToStack /TIMEOUT=10000 '"$SYSDIR\tasklist.exe" /FI "IMAGENAME eq @WEAVER_MANAGER_EXECUTABLE_FILE_NAME@" /FO CSV /NH'
+	Pop $0
+	Pop $1
+	StrCmp $0 "0" ManagerVerifyClosedResult
+	MessageBox MB_ICONSTOP|MB_OK "Could not verify that @WEAVER_MANAGER_NAME@ was closed. Close it manually and restart the installer."
+	Quit
+ManagerVerifyClosedResult:
+	StrCpy $2 $1 1
+	StrCmp $2 '"' ManagerCloseFailed
+	Return
+ManagerCloseFailed:
+	MessageBox MB_ICONSTOP|MB_OK "@WEAVER_MANAGER_NAME@ is still running. Close it manually and restart the installer."
+	Quit
+ManagerCancelInstall:
+	Quit
+FunctionEnd
+
+Function .onVerifyInstDir
+	ReadRegStr $0 HKLM "Software\@CPACK_PACKAGE_VENDOR@\@CPACK_PACKAGE_INSTALL_REGISTRY_KEY@" ""
+	StrCmp $0 "" ManagerInstallDirValid
+	StrCmp "$INSTDIR" "$0" ManagerInstallDirValid
+	StrCmp "$MANAGERDIRLOCKWARNEDPATH" "$INSTDIR" ManagerInstallDirWarningShown
+	StrCpy $MANAGERDIRLOCKWARNEDPATH $INSTDIR
+	MessageBox MB_ICONEXCLAMATION|MB_OK "An existing Weaver Manager installation was detected. The installation folder cannot be changed during an update."
+ManagerInstallDirWarningShown:
+	StrCpy $INSTDIR $0
+	Abort
+ManagerInstallDirValid:
+FunctionEnd
 
 Function ManagerDataDirPageCreate
-	!insertmacro MUI_HEADER_TEXT "Application Data Folder" "Choose where Weaver Manager stores logs and installed versions"
-
 	SetShellVarContext all
 	StrCpy $0 "$DOCUMENTS\@WEAVER_MANAGER_DATA_FOLDER@"
 	SetShellVarContext current
 	StrCpy $1 "$DOCUMENTS\@WEAVER_MANAGER_DATA_FOLDER@"
 	SetShellVarContext all
 
+	ReadRegStr $2 HKLM "Software\@CPACK_PACKAGE_VENDOR@\@CPACK_PACKAGE_INSTALL_REGISTRY_KEY@" ""
+	StrCmp $2 "" ManagerDataDirFreshInstall
+	StrCpy $MANAGERUPGRADE 1
+	Goto ManagerDataDirInstallStateReady
+ManagerDataDirFreshInstall:
+	StrCpy $MANAGERUPGRADE 0
+ManagerDataDirInstallStateReady:
+	StrCmp $MANAGERUPGRADE "1" ManagerDataDirUpgradeHeader
+	!insertmacro MUI_HEADER_TEXT "Application Data Folder" "Choose where Weaver Manager stores logs and installed versions"
+	Goto ManagerDataDirHeaderReady
+ManagerDataDirUpgradeHeader:
+	!insertmacro MUI_HEADER_TEXT "Application Data Folder" "The existing data folder is locked during an update"
+ManagerDataDirHeaderReady:
+
 	ReadRegStr $MANAGERDATADIR HKLM "@WEAVER_MANAGER_REGISTRY_KEY@" "DataDirectory"
 	StrCmp $MANAGERDATADIR "" ManagerDataDirUseUserDocuments
+	StrCmp $MANAGERUPGRADE "1" ManagerDataDirPathReady
 	StrCmp $MANAGERDATADIR $0 ManagerDataDirUseUserDocuments ManagerDataDirPathReady
 ManagerDataDirUseUserDocuments:
 	StrCpy $MANAGERDATADIR $1
@@ -28,13 +170,25 @@ ManagerDataDirPathReady:
 		Abort
 	${EndIf}
 
-	${NSD_CreateLabel} 0 0 100% 24u "Choose the folder for Weaver Manager's mutable data and logs:"
+	StrCpy $3 "Choose the folder for Weaver Manager's mutable data and logs:"
+	StrCmp $MANAGERUPGRADE "1" ManagerDataDirLockedLabel
+	Goto ManagerDataDirLabelReady
+ManagerDataDirLockedLabel:
+	StrCpy $3 "The existing data folder is fixed during this update:"
+ManagerDataDirLabelReady:
+	${NSD_CreateLabel} 0 0 100% 24u "$3"
 	Pop $0
 	${NSD_CreateText} 0 32u 75% 12u "$MANAGERDATADIR"
 	Pop $MANAGERDATADIRTEXT
 	${NSD_CreateButton} 78% 32u 22% 12u "Browse..."
 	Pop $MANAGERDATARBROWSEBUTTON
 	${NSD_OnClick} $MANAGERDATARBROWSEBUTTON ManagerDataDirBrowse
+	StrCmp $MANAGERUPGRADE "1" ManagerDataDirLockControls
+	Goto ManagerDataDirControlsReady
+ManagerDataDirLockControls:
+	EnableWindow $MANAGERDATADIRTEXT 0
+	EnableWindow $MANAGERDATARBROWSEBUTTON 0
+ManagerDataDirControlsReady:
 
 	nsDialogs::Show
 FunctionEnd
@@ -56,9 +210,27 @@ Function ManagerDataDirPageLeave
 valid:
 FunctionEnd
 
+!macro ManagerUpgradeCleanup
+	ReadRegStr $0 HKLM "Software\@CPACK_PACKAGE_VENDOR@\@CPACK_PACKAGE_INSTALL_REGISTRY_KEY@" ""
+	StrCmp $0 "" ManagerUpgradeCleanupDone
+	StrCmp "$0" "$INSTDIR" 0 ManagerUpgradeCleanupDone
+	ClearErrors
+	RMDir /r "$INSTDIR\bin"
+	IfErrors ManagerUpgradeCleanupFailed
+	ClearErrors
+	RMDir /r "$INSTDIR\share"
+	IfErrors ManagerUpgradeCleanupFailed
+	Goto ManagerUpgradeCleanupDone
+ManagerUpgradeCleanupFailed:
+	MessageBox MB_ICONSTOP|MB_OK "Could not replace the previous Weaver Manager files. Close Weaver Manager and try again."
+	Abort
+ManagerUpgradeCleanupDone:
+!macroend
+
 !macro ManagerDataDirInstall
 	CreateDirectory "$MANAGERDATADIR"
 	CreateDirectory "$MANAGERDATADIR\installed_versions"
 	CreateDirectory "$MANAGERDATADIR\logs"
 	WriteRegStr HKLM "@WEAVER_MANAGER_REGISTRY_KEY@" "DataDirectory" "$MANAGERDATADIR"
+	WriteRegStr HKLM "@WEAVER_MANAGER_REGISTRY_KEY@" "Prerelease" "@WEAVER_MANAGER_PRERELEASE@"
 !macroend

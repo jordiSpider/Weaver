@@ -1,0 +1,68 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1440 960" role="img" aria-labelledby="diagram-title diagram-description">
+  <title id="diagram-title">Weaver Manager GitHub release layout</title>
+  <desc id="diagram-description">A published immutable GitHub Release contains a platform installer, a JSON manifest listing the exact installer filename and SHA-256, and a detached Base64 Ed25519 signature for the manifest. Weaver Manager lists a release only when its signature and platform asset are valid. The installer size and SHA-256 are checked when downloaded.</desc>
+  <defs>
+	<style>
+	  .title { font: 700 38px "Segoe UI", Arial, sans-serif; fill: #17324d; }
+	  .subtitle { font: 400 20px "Segoe UI", Arial, sans-serif; fill: #496176; }
+	  .section { font: 700 25px "Segoe UI", Arial, sans-serif; fill: #ffffff; }
+	  .filename { font: 600 21px Consolas, "Courier New", monospace; fill: #17324d; }
+	  .description { font: 400 19px "Segoe UI", Arial, sans-serif; fill: #354b5e; }
+	  .check-title { font: 700 19px "Segoe UI", Arial, sans-serif; fill: #17324d; }
+	  .check-copy { font: 400 16px "Segoe UI", Arial, sans-serif; fill: #496176; }
+	  .footer { font: 600 18px "Segoe UI", Arial, sans-serif; fill: #17324d; }
+	</style>
+  </defs>
+  <rect width="1440" height="960" rx="24" fill="#f3f6fa" />
+  <text class="title" x="720" y="58" text-anchor="middle">What a Manager-compatible GitHub Release contains</text>
+  <text class="subtitle" x="720" y="91" text-anchor="middle">All three assets are attached directly to the same release; GitHub displays them as a flat list.</text>
+
+  <rect x="55" y="125" width="1330" height="480" rx="18" fill="#ffffff" stroke="#cbd7e3" stroke-width="2" />
+  <path d="M73 125h1294a18 18 0 0 1 18 18v56H55v-56a18 18 0 0 1 18-18z" fill="#174a6e" />
+  <text class="section" x="90" y="171">GitHub Release — Published and immutable</text>
+  <rect x="1108" y="143" width="238" height="38" rx="19" fill="#d8f3e5" />
+	<text x="1227" y="168" text-anchor="middle" style="font:700 16px 'Segoe UI',Arial,sans-serif;fill:#17633a">REQUIRED RELEASE STATE</text>
+
+  <rect x="85" y="218" width="1270" height="105" rx="12" fill="#f7fafc" stroke="#d8e2eb" />
+  <circle cx="121" cy="270" r="20" fill="#dbeafe" />
+  <text x="121" y="277" text-anchor="middle" style="font:700 18px 'Segoe UI',Arial,sans-serif;fill:#155eef">1</text>
+  <text class="filename" x="160" y="263">Weaver-Desktop-26.11.06-Windows-x64.msi</text>
+  <text class="description" x="160" y="294">Installer asset for a supported edition, OS, and architecture.</text>
+
+  <rect x="85" y="345" width="1270" height="105" rx="12" fill="#f7fafc" stroke="#d8e2eb" />
+  <circle cx="121" cy="397" r="20" fill="#e8e2ff" />
+  <text x="121" y="404" text-anchor="middle" style="font:700 18px 'Segoe UI',Arial,sans-serif;fill:#6941c6">2</text>
+  <text class="filename" x="160" y="390">weaver-manager-manifest.json</text>
+  <text class="description" x="160" y="421">Lists the exact installer asset filename and its SHA-256.</text>
+
+  <rect x="85" y="472" width="1270" height="105" rx="12" fill="#f7fafc" stroke="#d8e2eb" />
+  <circle cx="121" cy="524" r="20" fill="#ffead5" />
+  <text x="121" y="531" text-anchor="middle" style="font:700 18px 'Segoe UI',Arial,sans-serif;fill:#b54708">3</text>
+  <text class="filename" x="160" y="517">weaver-manager-manifest.json.sig</text>
+  <text class="description" x="160" y="548">Detached Base64 Ed25519 signature of the exact manifest bytes.</text>
+
+  <text class="title" x="720" y="654" text-anchor="middle" style="font-size:29px">Why a release may not appear in Available Releases</text>
+
+  <rect x="55" y="682" width="420" height="145" rx="15" fill="#ffffff" stroke="#cbd7e3" stroke-width="2" />
+  <circle cx="91" cy="720" r="15" fill="#d8f3e5" />
+  <path d="m84 720 5 5 10-11" fill="none" stroke="#17633a" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" />
+  <text class="check-title" x="119" y="727">Release state</text>
+  <text class="check-copy" x="82" y="766">It must be published and immutable.</text>
+  <text class="check-copy" x="82" y="792">Draft releases are not listed.</text>
+
+  <rect x="510" y="682" width="420" height="145" rx="15" fill="#ffffff" stroke="#cbd7e3" stroke-width="2" />
+  <circle cx="546" cy="720" r="15" fill="#e8e2ff" />
+  <path d="m539 720 5 5 10-11" fill="none" stroke="#6941c6" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" />
+  <text class="check-title" x="574" y="727">Manifest and signature</text>
+  <text class="check-copy" x="537" y="766">Both assets must be present, valid,</text>
+  <text class="check-copy" x="537" y="792">and verified with the Manager's key.</text>
+
+  <rect x="965" y="682" width="420" height="145" rx="15" fill="#ffffff" stroke="#cbd7e3" stroke-width="2" />
+  <circle cx="1001" cy="720" r="15" fill="#dbeafe" />
+  <path d="m994 720 5 5 10-11" fill="none" stroke="#155eef" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" />
+  <text class="check-title" x="1029" y="727">Matching installer</text>
+  <text class="check-copy" x="992" y="766">The manifest must declare a supported</text>
+  <text class="check-copy" x="992" y="792">package for the current platform.</text>
+
+  <text class="footer" x="720" y="877" text-anchor="middle">The installer size and SHA-256 are checked when it is downloaded, before launch.</text>
+</svg>

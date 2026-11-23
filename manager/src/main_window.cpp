@@ -26,10 +26,14 @@
 #include <QFont>
 #include <QHeaderView>
 #include <QHBoxLayout>
+#include <QMenu>
+#include <QMenuBar>
+#include <QAction>
 #include <QJsonArray>
 #include <QJsonDocument>
 #include <QJsonObject>
 #include <QLabel>
+#include <QCheckBox>
 #include <QMessageBox>
 #if ENABLE_TEST
 #include <QMimeData>
@@ -51,12 +55,14 @@
 #include <QScrollArea>
 #include <QTableWidget>
 #include <QTableWidgetItem>
-#include <QToolButton>
+#include <QTimer>
 #include <QUuid>
+#include <QUrlQuery>
 #include <QVBoxLayout>
 #include <QVersionNumber>
 #include <QWidget>
 #include <QUrl>
+#include <QUrlQuery>
 #if defined(Q_OS_WIN)
 #ifndef NOMINMAX
 #define NOMINMAX
@@ -69,8 +75,46 @@
 namespace {
 constexpr int LatestReleaseRequest = std::numeric_limits<int>::min();
 constexpr int DownloadRequest = std::numeric_limits<int>::max();
+constexpr int ManagerReleasePageRequest = std::numeric_limits<int>::min() + 1;
 constexpr int ReleaseSearchGenerationAttribute = static_cast<int>(QNetworkRequest::User) + 1;
+constexpr int ReleaseValidationEntryAttribute = static_cast<int>(QNetworkRequest::User) + 2;
 constexpr int ReleaseRequestTimeoutMs = 30000;
+constexpr int MaxReleasePageRetries = 2;
+constexpr int ReleasePageRetryDelayMs = 1000;
+
+int compareManagerRelease(const QVersionNumber &leftVersion, int leftPrerelease,
+                          const QVersionNumber &rightVersion, int rightPrerelease) {
+    const int baseComparison = QVersionNumber::compare(leftVersion, rightVersion);
+    if (baseComparison != 0) return baseComparison;
+    if (leftPrerelease == rightPrerelease) return 0;
+    if (leftPrerelease < 0) return 1;
+    if (rightPrerelease < 0) return -1;
+    return leftPrerelease < rightPrerelease ? -1 : 1;
+}
+
+struct ManagerReleaseVersion {
+    QVersionNumber version;
+    int prereleaseNumber{-1};
+};
+
+bool parseManagerReleaseTag(const QString &tag, ManagerReleaseVersion *parsed) {
+    static const QRegularExpression pattern(
+        R"(^v(\d+(?:\.\d+)+)-manager(?:-rc\.(\d+))?$)", QRegularExpression::CaseInsensitiveOption);
+    const auto match = pattern.match(tag.trimmed());
+    if (!match.hasMatch()) return false;
+    parsed->version = QVersionNumber::fromString(match.captured(1));
+    parsed->prereleaseNumber = match.captured(2).isEmpty() ? -1 : match.captured(2).toInt();
+    return !parsed->version.isNull();
+}
+
+ManagerReleaseVersion currentManagerReleaseVersion() {
+    static const QRegularExpression pattern(R"(^(.+?)(?:-rc\.(\d+))?$)", QRegularExpression::CaseInsensitiveOption);
+    const auto match = pattern.match(QStringLiteral(WEAVER_MANAGER_DISPLAY_VERSION));
+    ManagerReleaseVersion current;
+    current.version = QVersionNumber::fromString(match.captured(1));
+    current.prereleaseNumber = match.captured(2).isEmpty() ? -1 : match.captured(2).toInt();
+    return current;
+}
 
 #if ENABLE_TEST
 class InstallerDropLabel final : public QLabel {
@@ -123,6 +167,38 @@ QString findRscriptExecutable() {
     }
     return {};
 }
+
+#if defined(Q_OS_WIN)
+QString findRguiExecutable() {
+    auto executable = QStandardPaths::findExecutable("Rgui.exe");
+    if (!executable.isEmpty()) return executable;
+
+    for (const auto scope : {QSettings::SystemScope, QSettings::UserScope}) {
+        QSettings rSettings(QSettings::NativeFormat, scope,
+                            QStringLiteral("R-core"), QStringLiteral("R"));
+        const auto installPath = rSettings.value(QStringLiteral("InstallPath")).toString();
+        if (installPath.isEmpty()) continue;
+
+        const QDir rDirectory(installPath);
+        for (const auto &candidate : {rDirectory.filePath("bin/x64/Rgui.exe"),
+                                      rDirectory.filePath("bin/i386/Rgui.exe"),
+                                      rDirectory.filePath("bin/Rgui.exe")}) {
+            if (QFileInfo(candidate).isFile()) return candidate;
+        }
+    }
+
+    const auto rExecutable = QStandardPaths::findExecutable("R.exe");
+    if (!rExecutable.isEmpty()) {
+        const QDir rBin(QFileInfo(rExecutable).dir());
+        for (const auto &candidate : {rBin.filePath("Rgui.exe"),
+                                      rBin.filePath("x64/Rgui.exe"),
+                                      rBin.filePath("i386/Rgui.exe")}) {
+            if (QFileInfo(candidate).isFile()) return candidate;
+        }
+    }
+    return {};
+}
+#endif
 
 class ReleaseTableWidgetItem final : public QTableWidgetItem {
 public:
@@ -276,8 +352,55 @@ void migrateSeenVersionsCache(QSettings &settings) {
 }
 
 MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent) {
-    setWindowTitle(WEAVER_MANAGER_NAME);
+    const auto windowTitle = QStringLiteral(WEAVER_MANAGER_NAME)
+        + QStringLiteral(" %1").arg(QStringLiteral(WEAVER_MANAGER_DISPLAY_VERSION))
+        + (QStringLiteral(WEAVER_MANAGER_DISPLAY_VERSION) == QStringLiteral(WEAVER_MANAGER_VERSION)
+               ? QString() : QStringLiteral(" (Pre-Release)"));
+    setWindowTitle(windowTitle);
     resize(960, 620);
+
+    auto *notificationsMenu = menuBar()->addMenu("Notifications");
+    updateNotificationsAction_ = notificationsMenu->addAction("Show update notifications");
+    updateNotificationsAction_->setCheckable(true);
+    updateNotificationsAction_->setChecked(true);
+    const auto notificationSettingsPath = seenVersionsCacheFilePath();
+    if (!notificationSettingsPath.isEmpty()) {
+        QSettings settings(notificationSettingsPath, QSettings::IniFormat);
+        updateNotificationsAction_->setChecked(settings.value(QStringLiteral("updates/notifyManagerUpdates"), true).toBool());
+    }
+    connect(updateNotificationsAction_, &QAction::toggled, this, [this](bool enabled) {
+        const auto cacheFilePath = seenVersionsCacheFilePath();
+        if (cacheFilePath.isEmpty()) return;
+        QSettings settings(cacheFilePath, QSettings::IniFormat);
+        settings.setValue(QStringLiteral("updates/notifyManagerUpdates"), enabled);
+        if (enabled) {
+            settings.remove(QStringLiteral("updates/dismissedManagerVersion"));
+            settings.remove(QStringLiteral("updates/dismissedManagerStableTag"));
+            settings.remove(QStringLiteral("updates/dismissedManagerPrereleaseTag"));
+        }
+        settings.sync();
+        if (enabled && managerReleasesLoaded_) showManagerUpdateNotification();
+    });
+    auto *notifyPrereleases = notificationsMenu->addAction("Notify about pre-release versions");
+    notifyPrereleases->setCheckable(true);
+    if (!notificationSettingsPath.isEmpty()) {
+        QSettings settings(notificationSettingsPath, QSettings::IniFormat);
+        notifyPrereleases->setChecked(settings.value(QStringLiteral("updates/notifyManagerPrereleases"), false).toBool());
+    }
+    connect(notifyPrereleases, &QAction::toggled, this, [this](bool enabled) {
+        const auto cacheFilePath = seenVersionsCacheFilePath();
+        if (cacheFilePath.isEmpty()) return;
+        QSettings settings(cacheFilePath, QSettings::IniFormat);
+        settings.setValue(QStringLiteral("updates/notifyManagerPrereleases"), enabled);
+        settings.sync();
+        if (managerReleasesLoaded_) showManagerUpdateNotification();
+    });
+    auto *helpMenu = menuBar()->addMenu("Help");
+    auto *managerDocumentation = helpMenu->addAction("Weaver Manager Documentation");
+    connect(managerDocumentation, &QAction::triggered, this, [] {
+        QDesktopServices::openUrl(QUrl(QStringLiteral("https://jordiSpider.github.io/Weaver/weaver-manager/%1/")
+                                           .arg(QStringLiteral(WEAVER_MANAGER_DOCUMENTATION_VERSION))));
+    });
 
     auto *tabs = new QTabWidget(this);
     auto *installedPage = new QWidget(tabs);
@@ -344,6 +467,43 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent) {
     releaseLayout->addLayout(releaseButtons);
     connect(refreshButton, &QPushButton::clicked, this, &MainWindow::refreshReleases);
     connect(&network_, &QNetworkAccessManager::finished, this, &MainWindow::onReleasesReceived);
+    connect(&managerUpdateNetwork_, &QNetworkAccessManager::finished, this, [this](QNetworkReply *reply) {
+        handleManagerReleasePage(reply, reply->readAll());
+    });
+    connect(&releaseValidationNetwork_, &QNetworkAccessManager::finished, this, [this](QNetworkReply *reply) {
+        const auto data = reply->readAll();
+        const auto entry = reply->request()
+            .attribute(static_cast<QNetworkRequest::Attribute>(ReleaseValidationEntryAttribute)).toJsonObject();
+        const auto requestedReleaseId = entry.value("release_id").toVariant().toLongLong();
+        const auto statusCode = reply->attribute(QNetworkRequest::HttpStatusCodeAttribute).toInt();
+        if (statusCode == 404) {
+            reply->deleteLater();
+            refreshReleases();
+            QMessageBox::warning(this, "Weaver Release Removed",
+                QString("Weaver %1 (%2) was removed from GitHub Releases while Weaver Manager was running. The release list will now be refreshed.")
+                    .arg(entry.value("version").toString(), entry.value("edition").toString()));
+            return;
+        }
+        if (reply->error() != QNetworkReply::NoError) {
+            QMessageBox::warning(this, "Could Not Verify Weaver Release",
+                "Weaver Manager could not verify that this release still exists on GitHub. The installation was cancelled.");
+            qWarning() << "Could not verify GitHub release" << requestedReleaseId << reply->errorString();
+            reply->deleteLater();
+            return;
+        }
+
+        QJsonParseError parseError;
+        const auto document = QJsonDocument::fromJson(data, &parseError);
+        if (parseError.error != QJsonParseError::NoError || !document.isObject()
+            || document.object().value("id").toVariant().toLongLong() != requestedReleaseId) {
+            QMessageBox::warning(this, "Could Not Verify Weaver Release",
+                "GitHub did not return the expected release. The installation was cancelled.");
+            reply->deleteLater();
+            return;
+        }
+        reply->deleteLater();
+        continueVerifiedInstallerInstall(entry);
+    });
     connect(&installerProcess_, &QProcess::readyReadStandardOutput, this, [this] {
         const auto output = QString::fromLocal8Bit(installerProcess_.readAllStandardOutput()).trimmed();
         if (!output.isEmpty()) qInfo().noquote() << "Installer stdout:" << output;
@@ -384,11 +544,198 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent) {
     statusBar()->addWidget(status_);
     setCentralWidget(tabs);
     loadInstallations();
+    requestManagerReleasePage(1);
     refreshReleases();
+}
+
+void MainWindow::requestManagerReleasePage(int page) {
+    if (page == 1) {
+        latestManagerStableTag_.clear();
+        latestManagerStableUrl_.clear();
+        latestManagerStableVersion_.clear();
+        latestManagerPrereleaseTag_.clear();
+        latestManagerPrereleaseUrl_.clear();
+        latestManagerPrereleaseVersion_.clear();
+        latestManagerPrereleaseNumber_ = 0;
+        managerReleasesLoaded_ = false;
+    }
+    QNetworkRequest request(QUrl(QString("https://api.github.com/repos/%1/releases?per_page=100&page=%2")
+                                 .arg(WEAVER_REPOSITORY).arg(page)));
+    request.setTransferTimeout(ReleaseRequestTimeoutMs);
+    request.setAttribute(QNetworkRequest::CacheLoadControlAttribute, QNetworkRequest::AlwaysNetwork);
+    request.setAttribute(QNetworkRequest::CacheSaveControlAttribute, false);
+    request.setRawHeader("Cache-Control", "no-cache, no-store");
+    request.setRawHeader("Pragma", "no-cache");
+    auto url = request.url();
+    QUrlQuery query(url);
+    query.addQueryItem("_fresh", QUuid::createUuid().toString(QUuid::WithoutBraces));
+    url.setQuery(query);
+    request.setUrl(url);
+    request.setHeader(QNetworkRequest::UserAgentHeader, "WeaverManager/" WEAVER_MANAGER_VERSION);
+    request.setRawHeader("Accept", "application/vnd.github+json");
+    request.setAttribute(QNetworkRequest::User, ManagerReleasePageRequest);
+    request.setAttribute(static_cast<QNetworkRequest::Attribute>(ReleaseSearchGenerationAttribute), page);
+    managerUpdateNetwork_.get(request);
+}
+
+void MainWindow::handleManagerReleasePage(QNetworkReply *reply, const QByteArray &data) {
+    if (reply->error() != QNetworkReply::NoError) {
+        qWarning() << "Could not check for Weaver Manager updates:" << reply->errorString();
+        latestManagerStableTag_.clear();
+        latestManagerStableUrl_.clear();
+        latestManagerStableVersion_.clear();
+        latestManagerPrereleaseTag_.clear();
+        latestManagerPrereleaseUrl_.clear();
+        latestManagerPrereleaseVersion_.clear();
+        latestManagerPrereleaseNumber_ = 0;
+        managerReleasesLoaded_ = false;
+        reply->deleteLater();
+        return;
+    }
+
+    QJsonParseError parseError;
+    const auto document = QJsonDocument::fromJson(data, &parseError);
+    if (parseError.error != QJsonParseError::NoError || !document.isArray()) {
+        qWarning() << "GitHub returned an invalid Weaver Manager release list.";
+        latestManagerStableTag_.clear();
+        latestManagerStableUrl_.clear();
+        latestManagerStableVersion_.clear();
+        latestManagerPrereleaseTag_.clear();
+        latestManagerPrereleaseUrl_.clear();
+        latestManagerPrereleaseVersion_.clear();
+        latestManagerPrereleaseNumber_ = 0;
+        managerReleasesLoaded_ = false;
+        reply->deleteLater();
+        return;
+    }
+
+    const int page = reply->request()
+        .attribute(static_cast<QNetworkRequest::Attribute>(ReleaseSearchGenerationAttribute)).toInt();
+    const auto releases = document.array();
+    for (const auto &releaseValue : releases) {
+        const auto release = releaseValue.toObject();
+        if (release.value("draft").toBool()) continue;
+        ManagerReleaseVersion candidate;
+        const auto tag = release.value("tag_name").toString().trimmed();
+        if (!parseManagerReleaseTag(tag, &candidate)) continue;
+        const auto url = release.value("html_url").toString();
+        if (candidate.prereleaseNumber < 0) {
+            if (latestManagerStableVersion_.isEmpty()
+                || compareManagerRelease(candidate.version, -1,
+                                         QVersionNumber::fromString(latestManagerStableVersion_), -1) > 0) {
+                latestManagerStableTag_ = tag;
+                latestManagerStableUrl_ = url;
+                latestManagerStableVersion_ = candidate.version.toString();
+            }
+        } else if (latestManagerPrereleaseVersion_.isEmpty()
+                   || compareManagerRelease(candidate.version, candidate.prereleaseNumber,
+                                            QVersionNumber::fromString(latestManagerPrereleaseVersion_),
+                                            latestManagerPrereleaseNumber_) > 0) {
+            latestManagerPrereleaseTag_ = tag;
+            latestManagerPrereleaseUrl_ = url;
+            latestManagerPrereleaseVersion_ = candidate.version.toString();
+            latestManagerPrereleaseNumber_ = candidate.prereleaseNumber;
+        }
+    }
+
+    reply->deleteLater();
+    if (releases.size() == 100) {
+        requestManagerReleasePage(page + 1);
+        return;
+    }
+    managerReleasesLoaded_ = true;
+    showManagerUpdateNotification();
+}
+
+void MainWindow::showManagerUpdateNotification() {
+    if (!managerReleasesLoaded_) return;
+    const auto cacheFilePath = seenVersionsCacheFilePath();
+    if (cacheFilePath.isEmpty()) return;
+    QSettings settings(cacheFilePath, QSettings::IniFormat);
+    if (!settings.value(QStringLiteral("updates/notifyManagerUpdates"), true).toBool()) return;
+    const auto current = currentManagerReleaseVersion();
+    const bool notifyPrereleases = settings.value(QStringLiteral("updates/notifyManagerPrereleases"), false).toBool();
+    const bool hasNewStable = !latestManagerStableVersion_.isEmpty()
+        && compareManagerRelease(QVersionNumber::fromString(latestManagerStableVersion_), -1,
+                                 current.version, current.prereleaseNumber) > 0;
+    const bool hasNewPrerelease = notifyPrereleases && !latestManagerPrereleaseVersion_.isEmpty()
+        && compareManagerRelease(QVersionNumber::fromString(latestManagerPrereleaseVersion_),
+                                 latestManagerPrereleaseNumber_, current.version,
+                                 current.prereleaseNumber) > 0;
+    const bool stableWasDismissed = settings.value(QStringLiteral("updates/dismissedManagerStableTag")).toString()
+            == latestManagerStableTag_
+        || settings.value(QStringLiteral("updates/dismissedManagerVersion")).toString()
+            == latestManagerStableVersion_;
+    const bool prereleaseWasDismissed = settings.value(QStringLiteral("updates/dismissedManagerPrereleaseTag"))
+            .toString() == latestManagerPrereleaseTag_;
+    const bool showStable = hasNewStable && !stableWasDismissed;
+    const bool showPrerelease = hasNewPrerelease && !prereleaseWasDismissed;
+    const bool prereleaseIsNewest = showPrerelease
+        && (!showStable
+            || compareManagerRelease(QVersionNumber::fromString(latestManagerPrereleaseVersion_),
+                                    latestManagerPrereleaseNumber_,
+                                    QVersionNumber::fromString(latestManagerStableVersion_), -1) > 0);
+
+    QStringList notificationLines;
+    QStringList links;
+    QStringList candidateTags;
+    if (showStable) {
+        const auto stableMessage = current.prereleaseNumber >= 0
+                && QVersionNumber::compare(QVersionNumber::fromString(latestManagerStableVersion_), current.version) == 0
+            ? QString("The stable Weaver Manager %1 release is available. You are currently using the pre-release test version %2 of this same version.")
+                  .arg(latestManagerStableVersion_, QStringLiteral(WEAVER_MANAGER_DISPLAY_VERSION))
+            : QString("Weaver Manager %1 is available. You are using version %2.")
+                  .arg(latestManagerStableVersion_, QStringLiteral(WEAVER_MANAGER_DISPLAY_VERSION));
+        notificationLines.append(stableMessage);
+        links.append(QString("Stable release: <a href=\"%1\">%2</a>")
+                         .arg(latestManagerStableUrl_, latestManagerStableTag_));
+        candidateTags.append(latestManagerStableTag_);
+    }
+    if (showPrerelease) {
+        const bool newerRcOfCurrentBase = current.prereleaseNumber >= 0
+            && QVersionNumber::compare(QVersionNumber::fromString(latestManagerPrereleaseVersion_), current.version) == 0;
+        const auto prereleaseMessage = newerRcOfCurrentBase
+            ? QString("A more advanced test version, %1, is available for version %2. You are currently using %3.")
+                  .arg(QString("%1-rc.%2").arg(latestManagerPrereleaseVersion_).arg(latestManagerPrereleaseNumber_),
+                       current.version.toString(), QStringLiteral(WEAVER_MANAGER_DISPLAY_VERSION))
+            : QString("A newer Weaver Manager pre-release %1 is available. You are using version %2. This is a test version and may be unstable.")
+                  .arg(QString("%1-rc.%2").arg(latestManagerPrereleaseVersion_).arg(latestManagerPrereleaseNumber_),
+                       QStringLiteral(WEAVER_MANAGER_DISPLAY_VERSION));
+        notificationLines.append(prereleaseMessage);
+        links.append(QString("Pre-release: <a href=\"%1\">%2</a>")
+                         .arg(latestManagerPrereleaseUrl_, latestManagerPrereleaseTag_));
+        candidateTags.append(latestManagerPrereleaseTag_);
+    }
+    if (notificationLines.isEmpty()) return;
+
+    QMessageBox messageBox(prereleaseIsNewest ? QMessageBox::Warning : QMessageBox::Information,
+                           "Weaver Manager Update Available",
+                           QString(), QMessageBox::Ok, this);
+    QStringList richNotificationLines;
+    for (const auto &line : notificationLines)
+        richNotificationLines.append(QStringLiteral("<p>%1</p>").arg(line.toHtmlEscaped()));
+    messageBox.setText(richNotificationLines.join(QString()));
+    auto *dismissCheckBox = new QCheckBox("Do not show this notification again for this version", &messageBox);
+    messageBox.setCheckBox(dismissCheckBox);
+    messageBox.setInformativeText(links.join("<br>"));
+    messageBox.setTextFormat(Qt::RichText);
+    messageBox.exec();
+    if (dismissCheckBox->isChecked()) {
+        for (const auto &tag : candidateTags) {
+            if (tag == latestManagerStableTag_)
+                settings.setValue(QStringLiteral("updates/dismissedManagerStableTag"), tag);
+            if (tag == latestManagerPrereleaseTag_)
+                settings.setValue(QStringLiteral("updates/dismissedManagerPrereleaseTag"), tag);
+        }
+        settings.setValue(QStringLiteral("updates/notifyManagerUpdates"), false);
+        settings.sync();
+        updateNotificationsAction_->setChecked(false);
+    }
 }
 
 void MainWindow::refreshReleases() {
     ++releaseSearchGeneration_;
+    releasePageRetryCount_ = 0;
     const QString seenEntriesKey = QStringLiteral("updates/seenWeaverVersionEditions");
     seenReleaseEntriesAtSearchStart_.clear();
     const auto cacheFilePath = seenVersionsCacheFilePath();
@@ -411,6 +758,15 @@ void MainWindow::refreshReleases() {
     setStatus("Resolving the latest stable release…");
     QNetworkRequest latestRequest(QUrl("https://api.github.com/repos/" WEAVER_REPOSITORY "/releases/latest"));
     latestRequest.setTransferTimeout(ReleaseRequestTimeoutMs);
+    latestRequest.setAttribute(QNetworkRequest::CacheLoadControlAttribute, QNetworkRequest::AlwaysNetwork);
+    latestRequest.setAttribute(QNetworkRequest::CacheSaveControlAttribute, false);
+    latestRequest.setRawHeader("Cache-Control", "no-cache, no-store");
+    latestRequest.setRawHeader("Pragma", "no-cache");
+    auto latestUrl = latestRequest.url();
+    QUrlQuery latestQuery(latestUrl);
+    latestQuery.addQueryItem("_fresh", QUuid::createUuid().toString(QUuid::WithoutBraces));
+    latestUrl.setQuery(latestQuery);
+    latestRequest.setUrl(latestUrl);
     latestRequest.setHeader(QNetworkRequest::UserAgentHeader, "WeaverManager/" WEAVER_MANAGER_VERSION);
     latestRequest.setRawHeader("Accept", "application/vnd.github+json");
     latestRequest.setAttribute(QNetworkRequest::User, LatestReleaseRequest);
@@ -423,6 +779,15 @@ void MainWindow::requestReleasePage(int page) {
     QNetworkRequest request(QUrl(QString("https://api.github.com/repos/%1/releases?per_page=100&page=%2")
                                  .arg(WEAVER_REPOSITORY).arg(page)));
     request.setTransferTimeout(ReleaseRequestTimeoutMs);
+    request.setAttribute(QNetworkRequest::CacheLoadControlAttribute, QNetworkRequest::AlwaysNetwork);
+    request.setAttribute(QNetworkRequest::CacheSaveControlAttribute, false);
+    request.setRawHeader("Cache-Control", "no-cache, no-store");
+    request.setRawHeader("Pragma", "no-cache");
+    auto url = request.url();
+    QUrlQuery query(url);
+    query.addQueryItem("_fresh", QUuid::createUuid().toString(QUuid::WithoutBraces));
+    url.setQuery(query);
+    request.setUrl(url);
     request.setHeader(QNetworkRequest::UserAgentHeader, "WeaverManager/" WEAVER_MANAGER_VERSION);
     request.setRawHeader("Accept", "application/vnd.github+json");
     request.setAttribute(QNetworkRequest::User, page);
@@ -431,9 +796,30 @@ void MainWindow::requestReleasePage(int page) {
     network_.get(request);
 }
 
+void MainWindow::retryReleasePage(int page, const QString &errorMessage) {
+    if (releasePageRetryCount_ < MaxReleasePageRetries) {
+        ++releasePageRetryCount_;
+        qWarning() << "GitHub release catalog request failed; retrying page" << page
+                   << "attempt" << releasePageRetryCount_ << "of" << MaxReleasePageRetries
+                   << errorMessage;
+        const auto generation = releaseSearchGeneration_;
+        QTimer::singleShot(ReleasePageRetryDelayMs, this, [this, page, generation] {
+            if (generation != releaseSearchGeneration_) return;
+            requestReleasePage(page);
+        });
+        return;
+    }
+    releasePageRetryCount_ = 0;
+    setStatus("Could not load GitHub releases: " + errorMessage);
+}
+
 void MainWindow::onReleasesReceived(QNetworkReply *reply) {
     const auto requestPage = reply->request().attribute(QNetworkRequest::User).toInt();
     const auto data = reply->readAll();
+    if (requestPage == ManagerReleasePageRequest) {
+        handleManagerReleasePage(reply, data);
+        return;
+    }
     if (requestPage == DownloadRequest) {
         if (reply->error() != QNetworkReply::NoError) {
             setStatus("Installer download failed: " + reply->errorString());
@@ -511,7 +897,7 @@ void MainWindow::onReleasesReceived(QNetworkReply *reply) {
             }
             return;
         }
-        setStatus("Could not load GitHub releases: " + reply->errorString());
+        retryReleasePage(requestPage, reply->errorString());
         reply->deleteLater();
         return;
     }
@@ -538,12 +924,14 @@ void MainWindow::onReleasesReceived(QNetworkReply *reply) {
         return;
     }
     const auto pageItems = document.array();
+    releasePageRetryCount_ = 0;
     for (const auto &item : pageItems) releaseItems_.append(item);
     if (pageItems.size() == 100) {
         reply->deleteLater();
         requestReleasePage(requestPage + 1);
         return;
     }
+    pruneReleaseCache();
     fetchReleaseManifests();
     reply->deleteLater();
 }
@@ -628,6 +1016,46 @@ void MainWindow::processReleaseManifest(int index) {
             });
             break;
         }
+    }
+}
+
+void MainWindow::pruneReleaseCache() {
+    QSet<QString> activeReleaseEntries;
+    QSet<QString> activeInstallerAssets;
+    for (const auto &releaseValue : releaseItems_) {
+        const auto release = releaseValue.toObject();
+        for (const auto &assetValue : release.value("assets").toArray()) {
+            const auto assetName = assetValue.toObject().value("name").toString();
+            QString edition;
+            QString version;
+            QString platform;
+            if (!parseInstallerName(assetName, &edition, &version, &platform)
+                || platform != currentPlatformId()) continue;
+            activeReleaseEntries.insert(version + QLatin1Char('|') + edition);
+            activeInstallerAssets.insert(assetName);
+        }
+    }
+
+    const auto cacheFilePath = seenVersionsCacheFilePath();
+    if (!cacheFilePath.isEmpty()) {
+        QSettings settings(cacheFilePath, QSettings::IniFormat);
+        const auto seenEntriesKey = QStringLiteral("updates/seenWeaverVersionEditions");
+        QStringList retainedEntries;
+        for (const auto &entry : settings.value(seenEntriesKey).toStringList()) {
+            if (activeReleaseEntries.contains(entry)) retainedEntries.append(entry);
+        }
+        settings.setValue(seenEntriesKey, retainedEntries);
+        settings.sync();
+    }
+
+    const auto cacheRoot = QStandardPaths::writableLocation(QStandardPaths::CacheLocation);
+    if (cacheRoot.isEmpty()) return;
+    QDir installerCache(QDir(cacheRoot).filePath("verified-installers"));
+    if (!installerCache.exists()) return;
+    const auto cachedFiles = installerCache.entryInfoList(QDir::Files | QDir::NoDotAndDotDot);
+    for (const auto &cachedFile : cachedFiles) {
+        if (!activeInstallerAssets.contains(cachedFile.fileName()) && !QFile::remove(cachedFile.filePath()))
+            qWarning() << "Could not remove cached installer for a deleted/unavailable release:" << cachedFile.filePath();
     }
 }
 
@@ -879,6 +1307,32 @@ void MainWindow::installLocalTestInstaller(const QString &path) {
 #endif
 
 void MainWindow::installVerifiedInstaller(const QJsonObject &entry) {
+    const auto releaseId = entry.value("release_id").toVariant().toLongLong();
+    if (releaseId <= 0) {
+        QMessageBox::warning(this, "Could Not Verify Weaver Release",
+                             "This catalog entry does not contain a valid GitHub release ID. Refresh the release list and try again.");
+        return;
+    }
+    QNetworkRequest request(QUrl(QString("https://api.github.com/repos/%1/releases/%2")
+                                 .arg(WEAVER_REPOSITORY).arg(releaseId)));
+    request.setTransferTimeout(ReleaseRequestTimeoutMs);
+    request.setAttribute(QNetworkRequest::CacheLoadControlAttribute, QNetworkRequest::AlwaysNetwork);
+    request.setAttribute(QNetworkRequest::CacheSaveControlAttribute, false);
+    request.setRawHeader("Cache-Control", "no-cache, no-store");
+    request.setRawHeader("Pragma", "no-cache");
+    auto url = request.url();
+    QUrlQuery query(url);
+    query.addQueryItem("_fresh", QUuid::createUuid().toString(QUuid::WithoutBraces));
+    url.setQuery(query);
+    request.setUrl(url);
+    request.setHeader(QNetworkRequest::UserAgentHeader, "WeaverManager/" WEAVER_MANAGER_VERSION);
+    request.setRawHeader("Accept", "application/vnd.github+json");
+    request.setAttribute(static_cast<QNetworkRequest::Attribute>(ReleaseValidationEntryAttribute),
+                         QVariant::fromValue(entry));
+    releaseValidationNetwork_.get(request);
+}
+
+void MainWindow::continueVerifiedInstallerInstall(const QJsonObject &entry) {
     const auto version = entry.value("version").toString();
     const auto edition = entry.value("edition").toString();
     const auto assetName = entry.value("asset").toString();
@@ -1088,22 +1542,23 @@ int MainWindow::loadInstallations() {
                 titleFont.setPointSize(titleFont.pointSize() + 3);
                 titleFont.setBold(true);
                 title->setFont(titleFont);
-                auto *expandButton = new QToolButton(card);
-                expandButton->setText("Actions");
+                auto *expandButton = new QPushButton("▼ Open", card);
                 expandButton->setCheckable(true);
-                expandButton->setArrowType(Qt::DownArrow);
-                expandButton->setStyleSheet("QToolButton { font-size: 11pt; padding: 6px 10px; }");
+                expandButton->setFixedSize(112, 36);
+                expandButton->setStyleSheet("QPushButton { font-size: 11pt; padding: 6px 12px; background-color: #1976d2; color: white; border: none; border-radius: 4px; text-align: center; } QPushButton:hover { background-color: #1565c0; }");
                 auto *modifyButton = new QPushButton("Modify", card);
-                modifyButton->setStyleSheet("QPushButton { background-color: #1976d2; color: white; padding: 6px 12px; border: none; border-radius: 4px; } QPushButton:hover { background-color: #1565c0; }");
+                modifyButton->setFixedSize(112, 36);
+                modifyButton->setStyleSheet("QPushButton { font-size: 11pt; background-color: #1976d2; color: white; padding: 6px 12px; border: none; border-radius: 4px; } QPushButton:hover { background-color: #1565c0; }");
                 auto *uninstallButton = new QPushButton("Uninstall", card);
-                uninstallButton->setStyleSheet("QPushButton { background-color: #d32f2f; color: white; padding: 6px 12px; border: none; border-radius: 4px; } QPushButton:hover { background-color: #b71c1c; }");
+                uninstallButton->setFixedSize(112, 36);
+                uninstallButton->setStyleSheet("QPushButton { font-size: 11pt; background-color: #d32f2f; color: white; padding: 6px 12px; border: none; border-radius: 4px; } QPushButton:hover { background-color: #b71c1c; }");
 #if !defined(Q_OS_WIN)
                 modifyButton->hide();
                 uninstallButton->hide();
 #endif
                 headerLayout->addWidget(title);
-                headerLayout->addStretch();
                 headerLayout->addWidget(expandButton);
+                headerLayout->addStretch();
                 headerLayout->addWidget(modifyButton);
                 headerLayout->addWidget(uninstallButton);
                 cardLayout->addLayout(headerLayout);
@@ -1115,7 +1570,7 @@ int MainWindow::loadInstallations() {
                 auto *folderButton = new QPushButton("Open installation folder", actions);
                 auto *dataButton = new QPushButton("Open data folder", actions);
                 auto *cliButton = new QPushButton("Open Weaver CLI", actions);
-                auto *rButton = new QPushButton("Open R Studio", actions);
+                auto *rButton = new QPushButton("Open R", actions);
                 QPushButton *hubButton = nullptr;
                 QPushButton *guiButton = nullptr;
                 actionsLayout->addWidget(folderButton);
@@ -1133,9 +1588,9 @@ int MainWindow::loadInstallations() {
                 cardLayout->addWidget(actions);
                 installedListLayout_->addWidget(card);
 
-                connect(expandButton, &QToolButton::toggled, actions, [actions, expandButton](bool expanded) {
+                connect(expandButton, &QPushButton::toggled, actions, [actions, expandButton](bool expanded) {
                     actions->setVisible(expanded);
-                    expandButton->setArrowType(expanded ? Qt::UpArrow : Qt::DownArrow);
+                    expandButton->setText(expanded ? "▲ Close" : "▼ Open");
                 });
                 connect(folderButton, &QPushButton::clicked, this, [this, cleanRoot] {
                     if (!ensureInstallationAvailable(cleanRoot)) return;
@@ -1398,29 +1853,16 @@ void MainWindow::openRForInstallation(const QString &root) {
             "This Weaver installation does not have the R packages feature installed.");
         return;
     }
-    auto rExecutable = QStandardPaths::findExecutable("Rgui.exe");
 #if defined(Q_OS_WIN)
-    if (rExecutable.isEmpty()) {
-        const auto rExe = QStandardPaths::findExecutable("R.exe");
-        if (!rExe.isEmpty()) {
-            const QDir rBin(QFileInfo(rExe).dir());
-            const QStringList candidates{
-                rBin.filePath("Rgui.exe"),
-                rBin.filePath("x64/Rgui.exe"),
-                rBin.filePath("i386/Rgui.exe")
-            };
-            for (const auto &candidate : candidates) {
-                if (!QFileInfo::exists(candidate)) continue;
-                rExecutable = candidate;
-                break;
-            }
-        }
-    }
+    const auto rExecutable = findRguiExecutable();
 #else
+    auto rExecutable = QStandardPaths::findExecutable("Rgui.exe");
     if (rExecutable.isEmpty()) rExecutable = QStandardPaths::findExecutable("R");
 #endif
     if (rExecutable.isEmpty()) {
-        QMessageBox::warning(this, "R Not Found", "Install R or add its executable to PATH, then try again.");
+        QMessageBox::warning(this, "R Not Found",
+                             "Rgui.exe could not be found. Make sure R is installed and registered with Windows, "
+                             "or add its bin folder to PATH.");
         return;
     }
     QProcessEnvironment environment = QProcessEnvironment::systemEnvironment();
@@ -1432,7 +1874,8 @@ void MainWindow::openRForInstallation(const QString &root) {
     process.setProgram(rExecutable);
     process.setArguments({"--no-save", "--no-restore"});
     if (!process.startDetached())
-        QMessageBox::warning(this, "Could Not Start R", "R could not be started for this installation.");
+        QMessageBox::warning(this, "Could Not Start R",
+                             "R could not be started from:\n" + rExecutable);
 }
 
 void MainWindow::openHubForInstallation(const QString &edition, const QString &root) {

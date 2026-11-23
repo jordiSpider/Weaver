@@ -3,15 +3,12 @@
 # ----------------------------------------------------------
 # This workflow automates building, packaging, and releasing
 # the project executables for Windows (GUI and non-GUI),
-# creates a draft GitHub release with the generated installers,
-# and deploys the latest documentation to GitHub Pages.
-# It also merges the updated documentation back into the develop branch.
+# and creates a draft GitHub release with the generated installers.
 # ==========================================================
 
 name: Deploy release
 
-# 🧭 This workflow builds and packages the Windows releases,
-# creates a GitHub draft release, and deploys the latest documentation.
+# 🧭 This workflow builds and packages releases and creates a GitHub draft release.
 on:
   # Manual trigger from the GitHub Actions interface
   workflow_dispatch:
@@ -201,64 +198,3 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
-  # ======================================================
-  # 3️⃣ Build and Deploy Documentation
-  # ======================================================
-  deploy-docs:
-    needs: release
-    runs-on: ubuntu-latest
-    permissions:
-      contents: write
-    steps:
-      # 🔹 Checkout code from the main branch
-      - name: Checkout
-        uses: actions/checkout@v4
-        with:
-          ref: main
-          fetch-depth: 0
-
-      # 📘 Install Doxygen and Graphviz (for API documentation)
-      - name: Install Doxygen and Graphviz
-        run: |
-          sudo apt update
-          sudo apt install -y doxygen graphviz
-
-      # 📚 Install Sphinx (for user/developer documentation)
-      - name: Install Sphinx
-        run: pip install sphinx sphinx-rtd-theme sphinx-intl
-
-      # 🧱 Build documentation via the CMake "deploy-docs" workflow preset
-      - name: Configure and build project docs
-        run: cmake --workflow deploy-docs
-
-      # 🌐 Deploy generated HTML documentation to GitHub Pages
-      - name: Deploy to GitHub Pages
-        uses: peaceiris/actions-gh-pages@v4
-        with:
-          github_token: ${{ secrets.GITHUB_TOKEN }}
-          publish_branch: gh-pages
-          publish_dir: ./docs/build/html
-          destination_dir: .
-          user_name: 'github-actions[bot]'
-          user_email: 'github-actions[bot]@users.noreply.github.com'
-
-      # ⚙️ Configure Git to allow committing updated documentation source files
-      - name: Configurar Git
-        run: |
-          git config user.name "github-actions[bot]"
-          git config user.email "github-actions[bot]@users.noreply.github.com"
-
-      # 💾 Commit and push new documentation source files
-      - name: Commit and push new docs source files
-        run: |
-          git add "docs/source/"
-          git commit -m "Added new docs source files in 'docs/source/' [skip ci]"
-          git push origin HEAD:${{ github.ref_name }}
-
-      # 🔄 Merge main into develop to synchronize updated documentation
-      - name: Merge main into develop
-        run: |
-          git fetch origin develop
-          git checkout develop
-          git merge origin/main --no-edit || echo "⚠️ Merge conflict, manual resolution required."
-          git push origin develop || echo "No push performed (possibly conflicts)."

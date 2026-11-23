@@ -142,13 +142,9 @@ int main(int argc, char *argv[]) {
 
 	const auto appDataDirectory = QStandardPaths::writableLocation(QStandardPaths::AppDataLocation);
 	if (!appDataDirectory.isEmpty()) {
-		const auto releaseCachePath = QDir(appDataDirectory).filePath("release-cache.ini");
-		if (QFileInfo::exists(releaseCachePath) && !QFile::remove(releaseCachePath))
-			return showFailure(QString("Weaver Manager could not remove its release cache '%1'. Weaver Manager will remain installed.")
-							   .arg(releaseCachePath));
-		if (!removeDirectoryIfEmpty(appDataDirectory, &errorMessage))
-			return showFailure("Weaver Manager could not remove its empty AppData folder. Weaver Manager will remain installed.\n\n"
-							   + errorMessage);
+		if (!removeDirectory(appDataDirectory, &errorMessage))
+			return showFailure("Weaver Manager could not remove its AppData folder. Weaver Manager will remain installed.\n\n"
+						   + errorMessage);
 	}
 
 	QSettings legacySettings(QSettings::NativeFormat, QSettings::UserScope,

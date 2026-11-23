@@ -34,13 +34,12 @@
 # Sphinx documentation
 docs/build
 docs/Doxyfile
-docs/source/weaver/*/api
-docs/source/weaver/*/gettext
-docs/source/weaver/*/conf.py
-docs/source/weaver/*/_static
-!docs/source/weaver/latest/_static
-docs/source/weaver/*/_templates
-!docs/source/weaver/latest/_templates
+docs/source/weaver/gettext
+docs/source/weaver/conf.py
+docs/source/weaver/_static
+docs/source/weaver/_templates
+docs/source/weaver/local/api/xml
+/docs/source/weaver/conf.py
 
 # Simulation's results
 output/*
@@ -238,7 +237,6 @@ R/packages/*.tar.gz
 .vs
 *.diagsession
 *.pdb
-/THIRD-PARTY-NOTICES.md
 /.github
 /manager/signature.bin
 /manager/releases/26.11.18
