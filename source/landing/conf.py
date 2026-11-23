@@ -6,10 +6,11 @@ author = "Weaver Project"
 html_title = "Weaver Project"
 html_logo = "../weaver/latest/_static/images/logo.png"
 
-extensions = ["sphinx.ext.autosectionlabel"]
+extensions = ["sphinx.ext.autosectionlabel", "sphinx_design"]
 autosectionlabel_prefix_document = True
 
 html_theme = "pydata_sphinx_theme"
+html_sidebars = {"**": []}
 templates_path = []
 
 exclude_patterns = ["_build", "Thumbs.db", ".DS_Store"]

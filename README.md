@@ -7,6 +7,7 @@ This folder contains the CMake presets and scripts used to generate and maintain
 - CMake 3.25 or newer, with the Ninja build tool available.
 - Python 3 available to CMake. No exact Python version is pinned by this project.
 - Sphinx and `pydata_sphinx_theme` installed in that Python environment.
+- `sphinx-design` for the landing page's product cards and the Weaver Manager configuration.
 - Breathe installed for Weaver documentation, which includes the Doxygen API reference.
 - Internet access to the GitHub Releases API for catalog updates; `GITHUB_TOKEN` may be set to authenticate or raise API rate limits.
 

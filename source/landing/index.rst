@@ -4,28 +4,32 @@ Weaver Project
 
 Welcome to the documentation for the **Weaver Project**. Choose a product to find its installation, usage, and development guides.
 
-Weaver
-======
+.. grid:: 1 1 2 2
+   :gutter: 3
 
-The Weaver simulation platform, including user guides, configuration, development, testing, and API reference.
+   .. grid-item-card:: Weaver
 
-`Open Weaver documentation`_
+	  The Weaver simulation platform, including user guides, configuration, development, testing, and API reference.
 
-Weaver Manager
-==============
+	  `Open Weaver documentation`_
 
-The desktop application for discovering Weaver releases and managing local installations.
+   .. grid-item-card:: Weaver Manager
 
-`Open Weaver Manager documentation`_
+	  The desktop application for discovering Weaver releases and managing local installations.
 
-Documentation generator
-=======================
+	  `Open Weaver Manager documentation`_
 
-Learn about the CMake workflows, prerequisites, release catalogs, version selection, and maintenance operations used to build this site.
+.. grid:: 1
+   :gutter: 3
+
+   .. grid-item-card:: Documentation site maintenance
+	  :class-card: sd-bg-light
+
+		Learn how to build and maintain this site on the ``gh-pages`` branch, including CMake workflows, release catalogs, and version selection.
+
+		`Read the site maintenance guide <cmake-guide.html>`_
 
 .. toctree::
    :hidden:
 
    cmake-guide
-
-`CMake documentation guide <cmake-guide.html>`_

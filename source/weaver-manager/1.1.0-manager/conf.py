@@ -27,6 +27,7 @@ extensions = ["sphinx.ext.autosectionlabel", "sphinx_design"]
 autosectionlabel_prefix_document = True
 
 html_theme = "pydata_sphinx_theme"
+html_sidebars = {"**": []}
 templates_path = ["_templates"]
 html_theme_options = {
 	"navbar_end": ["version-switcher", "language-switcher", "theme-switcher"],

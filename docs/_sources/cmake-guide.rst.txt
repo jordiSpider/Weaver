@@ -1,8 +1,8 @@
 ===============================
-CMake Documentation Workflows
+Documentation Site Maintenance
 ===============================
 
-This guide describes the CMake workflows used to maintain the Weaver and Weaver Manager documentation site. It complements the short setup instructions in the repository README.
+This guide explains how to build and maintain the Weaver and Weaver Manager documentation site on the ``gh-pages`` branch. It covers the CMake workflows, release catalogs, version selection, and maintenance operations, complementing the setup instructions in the repository README.
 
 Requirements and Python environment
 ===================================
@@ -11,9 +11,10 @@ The project requires CMake 3.25 or newer and uses the Ninja generator. CMake loc
 
 * Sphinx
 * ``pydata_sphinx_theme``
+* ``sphinx-design``
 * Breathe, for Weaver's Doxygen API documentation
 
-The landing and Weaver Manager configurations use ``sphinx.ext.autosectionlabel``, which is included with Sphinx. Weaver also configures Breathe and requires its generated Doxygen XML. The documentation sources do not declare explicit versions for these Python packages; CI should therefore provision and maintain a consistent environment.
+The landing and Weaver Manager configurations use ``sphinx.ext.autosectionlabel``, which is included with Sphinx, and ``sphinx-design`` for product cards. Weaver also configures Breathe and requires its generated Doxygen XML. The documentation sources do not declare explicit versions for these Python packages; CI should therefore provision and maintain a consistent environment.
 
 The catalog updater calls the GitHub Releases REST API. Network access is required when a workflow updates catalogs. ``GITHUB_TOKEN`` is optional and is passed through automatically when set; using a token can avoid unauthenticated API rate limits.
 
@@ -38,7 +39,7 @@ Generated files are stored under ``docs/``:
 
 .. code-block:: text
 
-	  docs/index.html
+   docs/index.html
    docs/weaver/versions.json
    docs/weaver/<version>/
    docs/weaver-manager/versions.json
