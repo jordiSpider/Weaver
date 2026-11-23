@@ -90,6 +90,24 @@ Download the Manager package for your operating system from the `Weaver Manager 
 
       .. Linux installation instructions will be added later.
 
+Weaver Manager menus
+--------------------
+
+**Notifications**
+
+The **Notifications** menu contains two options for Weaver Manager update notifications:
+
+* **Show update notifications** enables or disables notifications about Weaver Manager updates. It is enabled by default.
+* **Notify about pre-release versions** enables or disables notifications about pre-release versions of Weaver Manager. It is disabled by default.
+
+When enabled, update notifications are shown at startup whenever a newer version is available, unless that notification has already been dismissed. The notification includes a checkbox to stop showing it again for that version. Select the checkbox and then **OK** to dismiss the notification and automatically turn off **Show update notifications**. To receive update notifications again, re-enable **Show update notifications** from the **Notifications** menu.
+
+These settings affect notifications about Weaver Manager only; they do not control notifications or release listings for Weaver versions.
+
+**Help**
+
+Select **Weaver Manager Documentation** from the **Help** menu to open the documentation for the installed Weaver Manager version in your web browser.
+
 Find a release
 --------------
 
@@ -194,7 +212,7 @@ The Manager validates release manifest signatures when it loads the catalog. Aft
 
       **Choose components**
 
-      The component list depends on whether you selected the **Desktop** or **Server** edition. It contains required and optional components, and all components are selected by default. Review the list and change optional selections if needed; required components must remain selected. Continue when you are ready.
+      The component list depends on whether you selected the **Desktop** or **Server** edition. All components are selected by default. Select a feature's icon in the tree to open its installation-state menu. Required components cannot be excluded; optional components can also be excluded or added when modifying the installation.
 
       .. figure:: _static/images/install-version/windows/windows-component-selection.png
          :alt: Component selection page showing required and optional Weaver features selected by default.
@@ -202,6 +220,34 @@ The Manager validates release manifest signatures when it loads the catalog. Aft
          :align: center
 
          Component choices vary by edition; all components are selected by default.
+
+      **Required components**
+
+      Required components have an installation-state menu, but it does not include an option to exclude the component. Use one of the available installation options:
+
+      .. figure:: _static/images/install-version/windows/windows-required-component-options.png
+         :alt: Installation-state menu for a required Weaver component.
+         :width: 50%
+         :align: center
+
+         Installation options for a required component. This menu does not include an option to exclude the component.
+
+      * **Will be installed on local hard drive** — installs the component locally; its subcomponents can be selected separately.
+      * **Entire feature will be installed on local hard drive** — installs the component and all its subcomponents locally.
+      * **Feature will be installed when required** — makes the component available for installation when it is first needed.
+
+      **Optional components**
+
+      Optional components have the same installation options, plus an option to leave the component out of the installation. Choose **Entire feature will be unavailable** to prevent the component and its subcomponents from being installed. To add or retain the component, choose one of the installation options described above.
+
+      .. figure:: _static/images/install-version/windows/windows-optional-component-options.png
+         :alt: Installation-state menu for an optional Weaver component, including the option to leave it unavailable.
+         :width: 50%
+         :align: center
+
+         Installation options for an optional component, including ``Entire feature will be unavailable``.
+
+      Repeat this for each component you want to change, then continue with the installation.
 
       **Install**
 

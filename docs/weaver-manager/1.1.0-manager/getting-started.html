@@ -51,7 +51,7 @@
     <link rel="prev" title="Weaver Manager — User Guide" href="index.html" />
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="docsearch:language" content="en"/>
-  <meta name="docsearch:version" content="1.0.1-manager" />
+  <meta name="docsearch:version" content="1.1.0-manager" />
   
     
     <script src="_static/searchtools.js"></script>
@@ -194,12 +194,12 @@
       
         <div class="navbar-item"><div class="dropdown">
   <button class="btn btn-sm btn-outline-secondary dropdown-toggle" type="button" id="version-switcher" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Select version" style="color: #198754 !important">
-    1.0.1-manager (stable, latest)
+    1.1.0-manager (stable, latest)
   </button>
   <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="version-switcher">
     <li>
       <a class="dropdown-item active" style="color: #198754 !important" href="index.html">
-        1.0.1-manager (stable, latest)
+        1.1.0-manager (stable, latest)
       </a>
     </li>
     </ul>
@@ -327,12 +327,12 @@
         
           <div class="navbar-item"><div class="dropdown">
   <button class="btn btn-sm btn-outline-secondary dropdown-toggle" type="button" id="version-switcher" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Select version" style="color: #198754 !important">
-    1.0.1-manager (stable, latest)
+    1.1.0-manager (stable, latest)
   </button>
   <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="version-switcher">
     <li>
       <a class="dropdown-item active" style="color: #198754 !important" href="index.html">
-        1.0.1-manager (stable, latest)
+        1.1.0-manager (stable, latest)
       </a>
     </li>
     </ul>
@@ -501,6 +501,19 @@ Linux</label><div class="sd-tab-content docutils">
 </div>
 </div>
 </section>
+<section id="weaver-manager-menus">
+<h2>Weaver Manager menus<a class="headerlink" href="#weaver-manager-menus" title="Link to this heading">#</a></h2>
+<p><strong>Notifications</strong></p>
+<p>The <strong>Notifications</strong> menu contains two options for Weaver Manager update notifications:</p>
+<ul class="simple">
+<li><p><strong>Show update notifications</strong> enables or disables notifications about Weaver Manager updates. It is enabled by default.</p></li>
+<li><p><strong>Notify about pre-release versions</strong> enables or disables notifications about pre-release versions of Weaver Manager. It is disabled by default.</p></li>
+</ul>
+<p>When enabled, update notifications are shown at startup whenever a newer version is available, unless that notification has already been dismissed. The notification includes a checkbox to stop showing it again for that version. Select the checkbox and then <strong>OK</strong> to dismiss the notification and automatically turn off <strong>Show update notifications</strong>. To receive update notifications again, re-enable <strong>Show update notifications</strong> from the <strong>Notifications</strong> menu.</p>
+<p>These settings affect notifications about Weaver Manager only; they do not control notifications or release listings for Weaver versions.</p>
+<p><strong>Help</strong></p>
+<p>Select <strong>Weaver Manager Documentation</strong> from the <strong>Help</strong> menu to open the documentation for the installed Weaver Manager version in your web browser.</p>
+</section>
 <section id="find-a-release">
 <h2>Find a release<a class="headerlink" href="#find-a-release" title="Link to this heading">#</a></h2>
 <p>Open the <strong>Available Releases</strong> tab. Each time Weaver Manager starts, it automatically refreshes the list of available releases from GitHub. It displays only entries that have a valid signed manifest, a matching artifact, and a package for the current platform. Select <strong>Refresh GitHub Releases</strong> to check again while the program is open.</p>
@@ -587,7 +600,7 @@ Windows</label><div class="sd-tab-content docutils">
 </figcaption>
 </figure>
 <p><strong>Choose components</strong></p>
-<p>The component list depends on whether you selected the <strong>Desktop</strong> or <strong>Server</strong> edition. It contains required and optional components, and all components are selected by default. Review the list and change optional selections if needed; required components must remain selected. Continue when you are ready.</p>
+<p>The component list depends on whether you selected the <strong>Desktop</strong> or <strong>Server</strong> edition. All components are selected by default. Select a feature’s icon in the tree to open its installation-state menu. Required components cannot be excluded; optional components can also be excluded or added when modifying the installation.</p>
 <figure class="align-center" id="id14">
 <a class="reference internal image-reference" href="_images/windows-component-selection.png"><img alt="Component selection page showing required and optional Weaver features selected by default." src="_images/windows-component-selection.png" style="width: 75%;" />
 </a>
@@ -595,6 +608,30 @@ Windows</label><div class="sd-tab-content docutils">
 <p><span class="caption-text">Component choices vary by edition; all components are selected by default.</span><a class="headerlink" href="#id14" title="Link to this image">#</a></p>
 </figcaption>
 </figure>
+<p><strong>Required components</strong></p>
+<p>Required components have an installation-state menu, but it does not include an option to exclude the component. Use one of the available installation options:</p>
+<figure class="align-center" id="id15">
+<a class="reference internal image-reference" href="_images/windows-required-component-options.png"><img alt="Installation-state menu for a required Weaver component." src="_images/windows-required-component-options.png" style="width: 50%;" />
+</a>
+<figcaption>
+<p><span class="caption-text">Installation options for a required component. This menu does not include an option to exclude the component.</span><a class="headerlink" href="#id15" title="Link to this image">#</a></p>
+</figcaption>
+</figure>
+<ul class="simple">
+<li><p><strong>Will be installed on local hard drive</strong> — installs the component locally; its subcomponents can be selected separately.</p></li>
+<li><p><strong>Entire feature will be installed on local hard drive</strong> — installs the component and all its subcomponents locally.</p></li>
+<li><p><strong>Feature will be installed when required</strong> — makes the component available for installation when it is first needed.</p></li>
+</ul>
+<p><strong>Optional components</strong></p>
+<p>Optional components have the same installation options, plus an option to leave the component out of the installation. Choose <strong>Entire feature will be unavailable</strong> to prevent the component and its subcomponents from being installed. To add or retain the component, choose one of the installation options described above.</p>
+<figure class="align-center" id="id16">
+<a class="reference internal image-reference" href="_images/windows-optional-component-options.png"><img alt="Installation-state menu for an optional Weaver component, including the option to leave it unavailable." src="_images/windows-optional-component-options.png" style="width: 50%;" />
+</a>
+<figcaption>
+<p><span class="caption-text">Installation options for an optional component, including <code class="docutils literal notranslate"><span class="pre">Entire</span> <span class="pre">feature</span> <span class="pre">will</span> <span class="pre">be</span> <span class="pre">unavailable</span></code>.</span><a class="headerlink" href="#id16" title="Link to this image">#</a></p>
+</figcaption>
+</figure>
+<p>Repeat this for each component you want to change, then continue with the installation.</p>
 <p><strong>Install</strong></p>
 <p>On the ready-to-install page, select <strong>Install</strong> to begin. Windows may then ask for permission to make changes to your device. Accept the User Account Control prompt to allow the installation to continue.</p>
 <div class="admonition warning">
@@ -603,11 +640,11 @@ Windows</label><div class="sd-tab-content docutils">
 </div>
 <p><strong>Finish</strong></p>
 <p>When installation is complete, the installer displays its completion page. Select <strong>Finish</strong> to close it.</p>
-<figure class="align-center" id="id15">
+<figure class="align-center" id="id17">
 <a class="reference internal image-reference" href="_images/windows-installation-complete.png"><img alt="Completion page confirming that the Weaver version installation has finished." src="_images/windows-installation-complete.png" style="width: 75%;" />
 </a>
 <figcaption>
-<p><span class="caption-text">The completion page confirms that the installation has finished.</span><a class="headerlink" href="#id15" title="Link to this image">#</a></p>
+<p><span class="caption-text">The completion page confirms that the installation has finished.</span><a class="headerlink" href="#id17" title="Link to this image">#</a></p>
 </figcaption>
 </figure>
 </div>
@@ -621,11 +658,11 @@ macOS</label><div class="sd-tab-content docutils">
 </div>
 </div>
 <p>The Manager does not install silently or update an existing version in place; versions can be installed side by side. After installation, the version is added automatically to <strong>Installed Versions</strong>, and its <strong>Cache status</strong> in <strong>Available Releases</strong> changes to <strong>INSTALLED</strong>.</p>
-<figure class="align-center" id="id16">
+<figure class="align-center" id="id18">
 <a class="reference internal image-reference" href="_images/installed-status.png"><img alt="Available Releases table showing the installed version with INSTALLED cache status." src="_images/installed-status.png" style="width: 90%;" />
 </a>
 <figcaption>
-<p><span class="caption-text">The installed version is marked <strong>INSTALLED</strong> in the <strong>Cache status</strong> column.</span><a class="headerlink" href="#id16" title="Link to this image">#</a></p>
+<p><span class="caption-text">The installed version is marked <strong>INSTALLED</strong> in the <strong>Cache status</strong> column.</span><a class="headerlink" href="#id18" title="Link to this image">#</a></p>
 </figcaption>
 </figure>
 <p>For details about the actions available for an installed version, see <a class="reference internal" href="managing-versions.html"><span class="doc">Managing Installed Versions</span></a>.</p>
@@ -690,6 +727,7 @@ macOS</label><div class="sd-tab-content docutils">
   <nav id="pst-page-toc-nav" class="page-toc" aria-labelledby="pst-page-navigation-heading-2">
     <ul class="pst-show_toc_level nav section-nav flex-column">
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#install-weaver-manager">Install Weaver Manager</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#weaver-manager-menus">Weaver Manager menus</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#find-a-release">Find a release</a><ul class="nav section-nav flex-column">
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#why-a-release-may-not-appear">Why a release may not appear</a></li>
 </ul>

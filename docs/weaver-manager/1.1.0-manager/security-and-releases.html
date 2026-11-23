@@ -8,7 +8,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
-    <title>Publishing a Weaver Release &#8212; Weaver Manager Documentation</title>
+    <title>Release Catalog and Security &#8212; Weaver Manager Documentation</title>
   
   
   
@@ -43,14 +43,15 @@
     <script src="_static/doctools.js?v=9bcbadda"></script>
     <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
     <script src="_static/design-tabs.js?v=f930bc37"></script>
-    <script>DOCUMENTATION_OPTIONS.pagename = 'publishing-releases';</script>
+    <script>DOCUMENTATION_OPTIONS.pagename = 'security-and-releases';</script>
     <script>DOCUMENTATION_OPTIONS.search_as_you_type = false;</script>
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
-    <link rel="prev" title="Troubleshooting" href="troubleshooting.html" />
+    <link rel="next" title="Troubleshooting" href="troubleshooting.html" />
+    <link rel="prev" title="Managing Installed Versions" href="managing-versions.html" />
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="docsearch:language" content="en"/>
-  <meta name="docsearch:version" content="1.0.1-manager" />
+  <meta name="docsearch:version" content="1.1.0-manager" />
   
     
     <script src="_static/searchtools.js"></script>
@@ -152,8 +153,8 @@
 </li>
 
 
-<li class="nav-item ">
-  <a class="nav-link nav-internal" href="security-and-releases.html">
+<li class="nav-item current active">
+  <a class="nav-link nav-internal" href="#">
     Release Catalog and Security
   </a>
 </li>
@@ -166,8 +167,8 @@
 </li>
 
 
-<li class="nav-item current active">
-  <a class="nav-link nav-internal" href="#">
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="publishing-releases.html">
     Publishing a Weaver Release
   </a>
 </li>
@@ -193,12 +194,12 @@
       
         <div class="navbar-item"><div class="dropdown">
   <button class="btn btn-sm btn-outline-secondary dropdown-toggle" type="button" id="version-switcher" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Select version" style="color: #198754 !important">
-    1.0.1-manager (stable, latest)
+    1.1.0-manager (stable, latest)
   </button>
   <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="version-switcher">
     <li>
       <a class="dropdown-item active" style="color: #198754 !important" href="index.html">
-        1.0.1-manager (stable, latest)
+        1.1.0-manager (stable, latest)
       </a>
     </li>
     </ul>
@@ -294,8 +295,8 @@
 </li>
 
 
-<li class="nav-item ">
-  <a class="nav-link nav-internal" href="security-and-releases.html">
+<li class="nav-item current active">
+  <a class="nav-link nav-internal" href="#">
     Release Catalog and Security
   </a>
 </li>
@@ -308,8 +309,8 @@
 </li>
 
 
-<li class="nav-item current active">
-  <a class="nav-link nav-internal" href="#">
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="publishing-releases.html">
     Publishing a Weaver Release
   </a>
 </li>
@@ -326,12 +327,12 @@
         
           <div class="navbar-item"><div class="dropdown">
   <button class="btn btn-sm btn-outline-secondary dropdown-toggle" type="button" id="version-switcher" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Select version" style="color: #198754 !important">
-    1.0.1-manager (stable, latest)
+    1.1.0-manager (stable, latest)
   </button>
   <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="version-switcher">
     <li>
       <a class="dropdown-item active" style="color: #198754 !important" href="index.html">
-        1.0.1-manager (stable, latest)
+        1.1.0-manager (stable, latest)
       </a>
     </li>
     </ul>
@@ -406,7 +407,7 @@
         <i class="fa-solid fa-home"></i>
       </a>
     </li>
-    <li class="breadcrumb-item active" aria-current="page"><span class="ellipsis">Publishing a Weaver Release</span></li>
+    <li class="breadcrumb-item active" aria-current="page"><span class="ellipsis">Release Catalog and Security</span></li>
   </ul>
 </nav>
 </div>
@@ -423,57 +424,28 @@
 <div id="searchbox"></div>
                 <article class="bd-article">
                   
-  <section id="publishing-a-weaver-release">
-<h1>Publishing a Weaver Release<a class="headerlink" href="#publishing-a-weaver-release" title="Link to this heading">#</a></h1>
-<section id="scope">
-<h2>Scope<a class="headerlink" href="#scope" title="Link to this heading">#</a></h2>
-<p>Weaver Manager is a release consumer. It does not build Weaver packages, create GitHub Releases, generate manifests, or sign assets. These steps belong to the release-maintenance process.</p>
-<p>Every release intended for the Manager catalog must be published as immutable and include the platform installer assets, <code class="docutils literal notranslate"><span class="pre">weaver-manager-manifest.json</span></code>, and detached Base64 signature <code class="docutils literal notranslate"><span class="pre">weaver-manager-manifest.json.sig</span></code>. The manifest is signed as exact bytes; even a formatting change after signing invalidates the signature.</p>
+  <section id="release-catalog-and-security">
+<h1>Release Catalog and Security<a class="headerlink" href="#release-catalog-and-security" title="Link to this heading">#</a></h1>
+<section id="what-the-manager-verifies">
+<h2>What the Manager verifies<a class="headerlink" href="#what-the-manager-verifies" title="Link to this heading">#</a></h2>
+<p>The release catalog is built from GitHub Releases. Weaver Manager accepts only published immutable releases that include both <code class="docutils literal notranslate"><span class="pre">weaver-manager-manifest.json</span></code> and its detached Base64 Ed25519 signature, <code class="docutils literal notranslate"><span class="pre">weaver-manager-manifest.json.sig</span></code>. Draft releases, missing files, invalid signatures, malformed manifests, and assets that do not match the current platform are omitted.</p>
+<p>The Manager verifies the manifest using a public key pinned into the application at build time. It checks that an artifact is declared in that release and that its filename identifies a supported Weaver edition, version, operating system, and architecture. Before launching a downloaded installer, it verifies the download size and SHA-256 against the signed manifest and verifies the cached file again.</p>
+<p>These checks protect the catalog and installer download from unauthorized or accidental changes relative to the signing key. They do not replace operating-system security controls or independent review of a release. The Manager does not run locally added Test installers through this verification flow.</p>
 </section>
-<section id="prepare-the-assets">
-<h2>Prepare the assets<a class="headerlink" href="#prepare-the-assets" title="Link to this heading">#</a></h2>
-<ol class="arabic">
-<li><p>Build, test, and finalize each installer. Do not modify an installer after calculating its hash.</p></li>
-<li><p>Use a supported filename such as <code class="docutils literal notranslate"><span class="pre">Weaver-Desktop-26.11.06-Windows-x64.msi</span></code>. The filename defines the edition, version, OS, and architecture shown in the catalog.</p></li>
-<li><p>Calculate a SHA-256 hash for each installer. On Windows PowerShell:</p>
-<div class="highlight-powershell notranslate"><div class="highlight"><pre><span></span><span class="nb">Get-FileHash</span> <span class="p">.\</span><span class="n">Weaver-Desktop</span><span class="p">-</span><span class="n">26</span><span class="p">.</span><span class="n">11</span><span class="p">.</span><span class="n">06-Windows-x64</span><span class="p">.</span><span class="n">msi</span> <span class="n">-Algorithm</span> <span class="n">SHA256</span>
-</pre></div>
-</div>
-<p>On Linux use <code class="docutils literal notranslate"><span class="pre">sha256sum</span> <span class="pre">&lt;installer-file&gt;</span></code>; on macOS use <code class="docutils literal notranslate"><span class="pre">shasum</span> <span class="pre">-a</span> <span class="pre">256</span> <span class="pre">&lt;installer-file&gt;</span></code>. Copy the 64 hexadecimal characters into the artifact’s <code class="docutils literal notranslate"><span class="pre">sha256</span></code> value.</p>
-</li>
-<li><p>Create a schema-version 1 manifest. Each artifact object must include the exact asset filename and its SHA-256. See <code class="docutils literal notranslate"><span class="pre">manager/release-manifest.example.json</span></code> in the repository for a sample schema.</p></li>
-<li><p>Sign the manifest using the offline private key and Base64-encode the detached signature:</p>
-<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="go">openssl pkeyutl -sign -rawin -inkey release-signing-private.pem -in weaver-manager-manifest.json -out signature.bin</span>
-<span class="go">openssl base64 -A -in signature.bin -out weaver-manager-manifest.json.sig</span>
-</pre></div>
-</div>
-<p>Never commit, upload, or place the private key in a public CI secret.</p>
-</li>
-</ol>
+<section id="release-status-and-selection">
+<h2>Release status and selection<a class="headerlink" href="#release-status-and-selection" title="Link to this heading">#</a></h2>
+<p>The catalog distinguishes <strong>Latest</strong>, <strong>Stable</strong>, and <strong>Pre-Release</strong>. The latest status refers to GitHub’s latest stable release; it is not an automatic update policy. The Manager does not install updates without user confirmation. Choose an edition and version explicitly, then follow the platform installer’s prompts.</p>
 </section>
-<section id="publish-and-verify">
-<h2>Publish and verify<a class="headerlink" href="#publish-and-verify" title="Link to this heading">#</a></h2>
-<ol class="arabic simple">
-<li><p>Create a draft GitHub Release and attach every installer, <code class="docutils literal notranslate"><span class="pre">weaver-manager-manifest.json</span></code>, and <code class="docutils literal notranslate"><span class="pre">weaver-manager-manifest.json.sig</span></code>.</p></li>
-<li><p>Check that each manifest filename exactly matches an attached installer and that the hash was calculated from the final file.</p></li>
-<li><p>Confirm the signature file is the Base64 detached Ed25519 signature of the exact manifest bytes.</p></li>
-<li><p>Review the release assets, then publish only when all checks pass and release immutability is enabled for the repository.</p></li>
-<li><p>Test catalog discovery and installation with a Manager built using the matching public key.</p></li>
-</ol>
-<p>Published immutable release assets should be treated as final. If an asset or manifest is wrong, prepare a corrected release rather than relying on replacing published files.</p>
+<section id="supported-installer-names">
+<h2>Supported installer names<a class="headerlink" href="#supported-installer-names" title="Link to this heading">#</a></h2>
+<p>The filename carries the catalog metadata and must follow this pattern:</p>
+<p><code class="docutils literal notranslate"><span class="pre">Weaver-&lt;Edition&gt;-&lt;YY.MM.DD&gt;-&lt;OS&gt;-&lt;Architecture&gt;.&lt;extension&gt;</span></code></p>
+<p>For example: <code class="docutils literal notranslate"><span class="pre">Weaver-Desktop-26.11.06-Windows-x64.msi</span></code>. The edition is <code class="docutils literal notranslate"><span class="pre">Desktop</span></code> or <code class="docutils literal notranslate"><span class="pre">Server</span></code>; OS is <code class="docutils literal notranslate"><span class="pre">Windows</span></code>, <code class="docutils literal notranslate"><span class="pre">Linux</span></code>, or <code class="docutils literal notranslate"><span class="pre">macOS</span></code>; architecture is currently <code class="docutils literal notranslate"><span class="pre">x64</span></code> or <code class="docutils literal notranslate"><span class="pre">arm64</span></code>. Supported extensions are <code class="docutils literal notranslate"><span class="pre">msi</span></code> on Windows, <code class="docutils literal notranslate"><span class="pre">deb</span></code> or <code class="docutils literal notranslate"><span class="pre">rpm</span></code> on Linux, and <code class="docutils literal notranslate"><span class="pre">pkg</span></code> or <code class="docutils literal notranslate"><span class="pre">dmg</span></code> on macOS.</p>
 </section>
-<section id="manager-compatible-filename-and-formats">
-<h2>Manager-compatible filename and formats<a class="headerlink" href="#manager-compatible-filename-and-formats" title="Link to this heading">#</a></h2>
-<p>The supported filename pattern is <code class="docutils literal notranslate"><span class="pre">Weaver-&lt;Edition&gt;-&lt;YY.MM.DD&gt;-&lt;OS&gt;-&lt;Architecture&gt;.&lt;extension&gt;</span></code>. Editions are <code class="docutils literal notranslate"><span class="pre">Desktop</span></code> or <code class="docutils literal notranslate"><span class="pre">Server</span></code>; OS names are <code class="docutils literal notranslate"><span class="pre">Windows</span></code>, <code class="docutils literal notranslate"><span class="pre">Linux</span></code>, or <code class="docutils literal notranslate"><span class="pre">macOS</span></code>; architectures are currently <code class="docutils literal notranslate"><span class="pre">x64</span></code> and <code class="docutils literal notranslate"><span class="pre">arm64</span></code>. The supported package formats are MSI for Windows, DEB or RPM for Linux, and PKG or DMG for macOS. Packages must be attached to the same GitHub Release as the signed manifest.</p>
-</section>
-<section id="key-configuration-and-rotation">
-<h2>Key configuration and rotation<a class="headerlink" href="#key-configuration-and-rotation" title="Link to this heading">#</a></h2>
-<p>The Manager’s public verification key is pinned at build time. CMake reads <code class="docutils literal notranslate"><span class="pre">manager/release-signing-public.pem</span></code> by default (PEM or DER input is supported) or can use <code class="docutils literal notranslate"><span class="pre">WEAVER_RELEASE_PUBLIC_KEY_BASE64</span></code> as a fallback override. Commit only the public key. If the signing key changes, build and distribute a Manager version containing the new public key in coordination with release publication; otherwise the catalog will reject signatures from the new key.</p>
-</section>
-<section id="current-automation-limitation">
-<h2>Current automation limitation<a class="headerlink" href="#current-automation-limitation" title="Link to this heading">#</a></h2>
-<p>The repository’s current <code class="docutils literal notranslate"><span class="pre">.github/workflows/deploy-release.yml</span></code> does not generate or attach the Manager manifest and signature. Its generated artifact names and formats also differ from the Manager catalog’s required installer names and extensions. The workflow must be updated and its output validated before it can be used as an end-to-end publishing pipeline for Manager-compatible releases.</p>
-<p>The full build, package, manifest and signing instructions are also maintained in <code class="docutils literal notranslate"><span class="pre">manager/README.md</span></code>.</p>
+<section id="private-key-handling">
+<h2>Private key handling<a class="headerlink" href="#private-key-handling" title="Link to this heading">#</a></h2>
+<p>The private Ed25519 key used to sign manifests must be kept offline and outside the repository. Never publish it in GitHub or include it in a build artifact. The corresponding public key is configured at build time; a Manager built with a different key will reject the release signature. Key rotation therefore requires a coordinated Manager build containing the new public key.</p>
+<p>For maintainers, the complete manifest, checksum, signing, and publication checklist is in <a class="reference internal" href="publishing-releases.html"><span class="doc">Publishing a Weaver Release</span></a> and <code class="docutils literal notranslate"><span class="pre">manager/README.md</span></code>.</p>
 </section>
 </section>
 
@@ -488,13 +460,22 @@
                   
 <div class="prev-next-area">
     <a class="left-prev"
-       href="troubleshooting.html"
+       href="managing-versions.html"
        title="previous page">
       <i class="fa-solid fa-angle-left"></i>
       <div class="prev-next-info">
         <p class="prev-next-subtitle">previous</p>
+        <p class="prev-next-title">Managing Installed Versions</p>
+      </div>
+    </a>
+    <a class="right-next"
+       href="troubleshooting.html"
+       title="next page">
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">next</p>
         <p class="prev-next-title">Troubleshooting</p>
       </div>
+      <i class="fa-solid fa-angle-right"></i>
     </a>
 </div>
                 </footer>
@@ -515,19 +496,17 @@
   </div>
   <nav id="pst-page-toc-nav" class="page-toc" aria-labelledby="pst-page-navigation-heading-2">
     <ul class="pst-show_toc_level nav section-nav flex-column">
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#scope">Scope</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#prepare-the-assets">Prepare the assets</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#publish-and-verify">Publish and verify</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#manager-compatible-filename-and-formats">Manager-compatible filename and formats</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#key-configuration-and-rotation">Key configuration and rotation</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#current-automation-limitation">Current automation limitation</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#what-the-manager-verifies">What the Manager verifies</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#release-status-and-selection">Release status and selection</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#supported-installer-names">Supported installer names</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#private-key-handling">Private key handling</a></li>
 </ul>
   </nav></div>
 
   <div class="sidebar-secondary-item">
 
   <div class="tocsection sourcelink">
-    <a href="_sources/publishing-releases.rst.txt">
+    <a href="_sources/security-and-releases.rst.txt">
       <i class="fa-solid fa-file-lines"></i> Show Source
     </a>
   </div>

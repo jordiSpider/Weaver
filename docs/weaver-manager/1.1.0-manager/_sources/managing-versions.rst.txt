@@ -8,7 +8,7 @@ All installed versions appear as a list in the **Installed Versions** tab. Each 
 
 .. warning::
 
-   An action button is shown only when the installed version meets its requirements. If a version does not meet a button's requirements, that action will not appear in its available actions.
+	  If an installed version does not meet an action's requirements, using that action displays a warning that identifies the missing requirements.
 
 .. |button-open-installation-folder| image:: _static/images/managing-versions/open-installation-folder.png
    :width: 220px
@@ -19,9 +19,9 @@ All installed versions appear as a list in the **Installed Versions** tab. Each 
 .. |button-open-weaver-cli| image:: _static/images/managing-versions/open-weaver-cli.png
    :width: 220px
    :alt: Open Weaver CLI button
-.. |button-open-r-studio| image:: _static/images/managing-versions/open-r-studio.png
+.. |button-open-r| image:: _static/images/managing-versions/open-r.png
    :width: 220px
-   :alt: Open R Studio button
+   :alt: Open R button
 .. |button-open-weaver-hub| image:: _static/images/managing-versions/open-weaver-hub.png
    :width: 220px
    :alt: Open Weaver Hub button
@@ -67,10 +67,10 @@ Open Weaver CLI
 * **Required components:** :bdg-success:`None`
 * **Functionality:** Opens the installed CLI in a terminal: Command Prompt on Windows, Terminal.app on macOS, or an available Linux terminal emulator such as GNOME Terminal, Konsole, XFCE Terminal, or xterm. On Linux, a supported terminal emulator must be installed. The terminal remains open after the CLI exits so you can review its output.
 
-Open R Studio
-^^^^^^^^^^^^^
+Open R
+^^^^^^
 
-* **Button image:** |button-open-r-studio|
+* **Button image:** |button-open-r|
 * **Desktop edition required:** :bdg-success:`No`
 * **Required programs:** :bdg-warning:`R`
 * **Required components:** :bdg-warning:`R packages`
