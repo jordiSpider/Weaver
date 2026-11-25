@@ -19,7 +19,7 @@ import json
 # Basic metadata that appears throughout the documentation and is used by Sphinx internally.
 # ----------------------------------------------------------------------------------------------------
 project = "@CMAKE_PROJECT_NAME@"
-copyright = "@COPYRIGHT_YEAR@, @AUTHOR@"
+copyright = "2025, Jordi Moya Laraño"
 author = "@AUTHOR@"
 repo_url = "@REPO_URL@"
 

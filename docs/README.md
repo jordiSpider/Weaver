@@ -19,4 +19,4 @@ cmake --workflow --preset generate-local-weaver
 cmake --workflow --preset generate-local-manager
 ```
 
-Se necesita CMake 3.25+, Ninja, Python 3, Sphinx, `pydata_sphinx_theme` y `sphinx-design`. Weaver también requiere Breathe.
+Se necesita CMake 3.25+, Ninja, Python 3, Sphinx, `pydata_sphinx_theme` y `sphinx-design`. Weaver Manager también requiere `sphinx-copybutton` para mostrar el botón de copia en los bloques de código. Weaver requiere Breathe.

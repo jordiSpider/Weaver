@@ -3,6 +3,7 @@ import json
 
 project = "Weaver Manager"
 author = "Weaver project"
+copyright = "2025, Jordi Moya Laraño"
 html_title = "Weaver Manager Documentation"
 html_logo = "_static/images/logo.png"
 
@@ -23,7 +24,10 @@ current_version = os.environ.get("WEAVER_MANAGER_DOCS_VERSION", default_version)
 current_language = os.environ.get("WEAVER_MANAGER_DOCS_LANGUAGE", default_language)
 language = current_language
 
-extensions = ["sphinx.ext.autosectionlabel", "sphinx_design"]
+manifest_ref = os.environ.get("WEAVER_MANAGER_DOCS_MANIFEST_REF", "main")
+rst_prolog = f".. _release-manifest-example: https://github.com/jordiSpider/Weaver/blob/{manifest_ref}/manager/release-manifest.example.json\n\n"
+
+extensions = ["sphinx.ext.autosectionlabel", "sphinx_design", "sphinx_copybutton"]
 autosectionlabel_prefix_document = True
 
 html_theme = "pydata_sphinx_theme"
