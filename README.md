@@ -5,13 +5,13 @@ This folder contains the CMake presets and scripts used to generate and maintain
 ## Requirements
 
 - CMake 3.25 or newer, with the Ninja build tool available.
-- Python 3 available to CMake. No exact Python version is pinned by this project.
-- Sphinx and `pydata_sphinx_theme` installed in that Python environment.
-- `sphinx-design` for the landing page's product cards and the Weaver Manager configuration.
-- Breathe installed for Weaver documentation, which includes the Doxygen API reference.
+- Python 3.10, matching the GitHub Actions environment.
+- The pinned Python documentation dependencies from `requirements-docs.txt` (Sphinx, `pydata_sphinx_theme`, `sphinx-design`, Breathe, and `sphinx-copybutton`).
 - Internet access to the GitHub Releases API for catalog updates; `GITHUB_TOKEN` may be set to authenticate or raise API rate limits.
 
-Python package versions are not pinned in this folder. Use a consistent Python environment for CI and local runs.
+Install the same dependencies locally with `python -m pip install -r requirements-docs.txt`. Weaver's Doxygen XML is included in its versioned source, so CI does not need to install or run Doxygen.
+
+The GitHub Actions workflow uses the hosted Ubuntu runner's CMake and Ninja installations, installs Python 3.10, and caches pip dependencies.
 
 ## Source layout
 
@@ -54,4 +54,21 @@ $env:DOCS_MANAGER_VERSION = "1.0.0-manager"
 cmake --workflow --preset remove-manager-version
 ```
 
-Removal is rejected if it would leave the product without an eligible documentation version. See the [detailed CMake and release workflow guide](source/landing/cmake-guide.rst) for catalog selection, channels, labels, and exact target behavior.
+Removal is rejected if it would leave the product without an eligible documentation version. See the [documentation site maintenance guide](source/landing/documentation-site-maintenance.rst) for catalog selection, channels, labels, CI behavior, and exact target behavior.
+
+## GitHub Actions on `gh-pages`
+
+The `Update documentation` workflow in `.github/workflows/update-docs.yml` runs automatically for relevant pushes to `gh-pages`. It detects changed paths and runs only the affected CMake workflow preset and version:
+
+- `source/landing/**` refreshes the landing page and release catalogs.
+- `source/weaver/<version>/**` generates that Weaver version.
+- `source/weaver-manager/<version>/**` generates that Manager version.
+- Changes to shared build configuration or the versioned-documentation generator rebuild all available versions; changes to landing/catalog helpers refresh the landing page.
+
+Product generation also refreshes the landing page as part of the existing CMake targets. Changes limited to generated `docs/**` files do not trigger another run. A successful generation is the validation step; only then does Actions commit the updated source/output and catalogs to `gh-pages`.
+
+Run the workflow manually from **Actions → Update documentation → Run workflow**, selecting the `gh-pages` ref and one of `auto`, `landing`, `weaver`, `weaver-manager`, `remove-weaver`, or `remove-manager`. Product generation and removal require a version. Removal also requires its confirmation input and removes both the source and published output; it is never inferred from a deleted source directory in a push.
+
+GitHub requires the workflow file to exist on the repository's default branch (`main`) for manual runs and `repository_dispatch`. Keep the workflow YAML in sync on `main` and `gh-pages`; the job still checks out and publishes to `gh-pages`.
+
+If another workflow pushes documentation sources using the default `GITHUB_TOKEN`, that push will not start this workflow automatically. After pushing the sources, that workflow must dispatch the `update-docs` event (and have permission to dispatch it). Pushes made with a PAT or GitHub App token can trigger the normal `push` event instead.

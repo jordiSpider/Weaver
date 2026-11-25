@@ -27,62 +27,42 @@ def copy_landing_sources(source_dir, destination_dir):
 	shutil.copytree(source_dir, destination_dir, dirs_exist_ok=True)
 
 
-def sync_manifest(staging_dir, build_root, manifest_path):
+def clear_landing_output(build_root):
+	root = Path(build_root)
+	root.mkdir(parents=True, exist_ok=True)
+	for path in root.iterdir():
+		if path.name in ("weaver", "weaver-manager"):
+			continue
+		if path.name == ".nojekyll" and not path.is_dir():
+			continue
+		if path.is_dir() and not path.is_symlink():
+			shutil.rmtree(path)
+		else:
+			path.unlink()
+
+
+def publish_landing(staging_dir, build_root):
 	staging = Path(staging_dir)
 	root = Path(build_root)
-	manifest = Path(manifest_path)
 	root.mkdir(parents=True, exist_ok=True)
-	previous_files = set()
-	if manifest.is_file():
-		previous_files = set(json.loads(manifest.read_text(encoding="utf-8")))
-	for relative in previous_files:
-		if not isinstance(relative, str):
-			raise ValueError(f"Invalid path in landing manifest: {relative!r}")
-		path = Path(relative)
-		if not path.parts or path.is_absolute() or ".." in path.parts or path.parts[0] in ("weaver", "weaver-manager"):
-			raise ValueError(f"Unsafe path in landing manifest: {relative}")
-
 	current_files = set()
 	for path in staging.rglob("*"):
 		if path.is_file():
 			relative = path.relative_to(staging).as_posix()
-			if relative.split("/", 1)[0] in ("weaver", "weaver-manager"):
-				raise ValueError(f"Landing output overlaps product documentation: {relative}")
+			relative_path = Path(relative)
+			if not relative_path.parts or relative_path.is_absolute() or ".." in relative_path.parts:
+				raise ValueError(f"Unsafe path in landing output: {relative}")
+			if relative_path.parts[0] in (".nojekyll", "weaver", "weaver-manager"):
+				raise ValueError(f"Landing output overlaps preserved content: {relative}")
 			current_files.add(relative)
 
-	for relative in current_files:
-		destination = root / relative
-		if destination.is_dir():
-			raise ValueError(f"Landing output conflicts with existing directory: {destination}")
-		parent = destination.parent
-		while parent != root:
-			if parent.is_file():
-				raise ValueError(f"Landing output parent conflicts with existing file: {parent}")
-			parent = parent.parent
-	for relative in previous_files - current_files:
-		obsolete = root / relative
-		if obsolete.is_dir():
-			raise ValueError(f"Landing manifest points to a directory: {obsolete}")
-
-	for relative in previous_files - current_files:
-		obsolete = root / relative
-		if obsolete.is_file():
-			obsolete.unlink()
-			parent = obsolete.parent
-			while parent != root and parent.exists() and not any(parent.iterdir()):
-				parent.rmdir()
-				parent = parent.parent
+	clear_landing_output(root)
 
 	for relative in current_files:
 		source = staging / relative
 		destination = root / relative
 		destination.parent.mkdir(parents=True, exist_ok=True)
 		shutil.copy2(source, destination)
-
-	manifest.parent.mkdir(parents=True, exist_ok=True)
-	temporary_manifest = manifest.with_name(manifest.name + ".tmp")
-	temporary_manifest.write_text(json.dumps(sorted(current_files), indent=2) + "\n", encoding="utf-8", newline="\n")
-	temporary_manifest.replace(manifest)
 
 
 def main():
@@ -124,7 +104,7 @@ def main():
 			str(work_source), str(staged_output),
 		]
 		subprocess.run(command, check=True, env=environment)
-		sync_manifest(staged_output, build_root, build_root / ".landing-files.json")
+		publish_landing(staged_output, build_root)
 
 	print(f"Regenerated landing page. Weaver latest={weaver_latest}; Manager latest={manager_latest}")
 

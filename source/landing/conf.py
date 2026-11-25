@@ -3,6 +3,7 @@ import os
 
 project = "Weaver Project"
 author = "Weaver Project"
+copyright = "2025, Jordi Moya Laraño"
 html_title = "Weaver Project"
 html_logo = "../weaver/latest/_static/images/logo.png"
 
