@@ -67,7 +67,14 @@ The `Update documentation` workflow in `.github/workflows/update-docs.yml` runs 
 
 Product generation also refreshes the landing page as part of the existing CMake targets. Changes limited to generated `docs/**` files do not trigger another run. A successful generation is the validation step; only then does Actions commit the updated source/output and catalogs to `gh-pages`.
 
-Run the workflow manually from **Actions → Update documentation → Run workflow**, selecting the `gh-pages` ref and one of `auto`, `landing`, `weaver`, `weaver-manager`, `remove-weaver`, or `remove-manager`. Product generation and removal require a version. Removal also requires its confirmation input and removes both the source and published output; it is never inferred from a deleted source directory in a push.
+Run the workflow manually from **Actions → Update documentation → Run workflow**, selecting the `gh-pages` ref. Choose one of these scopes:
+
+- `auto`: compares `gh-pages` with `.github/docs-generated-from` and generates only for changes not yet processed. Landing changes run `generate-landing`; a changed Weaver or Manager version runs only its matching product preset. Shared build/generator changes can require rebuilding all local versions. If no marker exists yet, the current tree is treated as the initial state and all available versions may be generated.
+- `landing`: updates both release catalogs, both products' version selectors, and the landing page. It does not rebuild product-version documentation.
+- `weaver` or `weaver-manager`: requires `version` to be the exact source directory name (without a leading `v`). It generates that version, updates its selectors, and regenerates the landing page; it does not rebuild versions of the other product.
+- `remove-weaver` or `remove-manager`: requires `version` and `confirm_removal=true`. It removes that version's source and generated HTML, updates its catalog and selectors, and regenerates the landing page. It does not delete the GitHub release.
+
+Run a removal scope **before** deleting the source version directory; the removal action needs that directory to calculate a safe replacement catalog. If the directory has already been deleted, restore it before running the removal action. Pushes that delete a whole version directory are rejected and do not remove published files automatically.
 
 GitHub requires the workflow file to exist on the repository's default branch (`main`) for manual runs and `repository_dispatch`. Keep the workflow YAML in sync on `main` and `gh-pages`; the job still checks out and publishes to `gh-pages`.
 

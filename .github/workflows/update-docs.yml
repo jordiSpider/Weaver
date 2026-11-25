@@ -14,7 +14,7 @@ on:
   workflow_dispatch:
     inputs:
       scope:
-        description: Changed-area detection, documentation area, or version-removal action
+        description: auto detects pending changes; other scopes force a component/version build or confirmed removal
         required: true
         type: choice
         options:
@@ -25,11 +25,11 @@ on:
           - remove-weaver
           - remove-manager
       version:
-        description: Required for Weaver, Manager, or version removal
+        description: Exact source directory name for product generation/removal, without a leading v
         required: false
         type: string
       confirm_removal:
-        description: Confirm the selected version removal
+        description: Set true only when intentionally removing a version
         required: true
         default: false
         type: boolean
