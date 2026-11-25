@@ -100,7 +100,18 @@ For automatic runs, the workflow selects the smallest applicable preset:
 
 The selected Sphinx generation is also the validation: Actions does not run a second, duplicate documentation build. If generation succeeds, it commits updated sources (for a manual removal), generated HTML, and catalogs to ``gh-pages``. Runs are serialized, and the last processed source revision is recorded so a later run can include changes from pushes queued while another build was running.
 
-To run it manually, open **Actions → Update documentation → Run workflow**, select the ``gh-pages`` ref, then choose ``auto``, ``landing``, ``weaver``, ``weaver-manager``, ``remove-weaver``, or ``remove-manager``. Product actions require a version. Removal also requires ``confirm_removal`` and deletes both that version's source and generated output; the release itself is untouched. A push that removes a version source directory is rejected rather than being interpreted as an automatic deletion.
+Manual workflow scopes
+----------------------
+
+Open **Actions → Update documentation → Run workflow**, select the ``gh-pages`` ref, and choose a scope. The ``version`` input must be the exact local source directory name, such as ``26.11.18`` or ``1.1.0-manager`` (do not include a leading ``v``).
+
+* ``auto`` compares the current ``gh-pages`` revision with ``.github/docs-generated-from`` and processes only changes since the last successful generation. Landing-only changes run ``generate-landing``; changes under a product version run the matching product preset for that version. Shared CMake configuration, pinned requirements, or the versioned documentation builder can affect every output, so those changes rebuild all local versions. If there is no recorded revision yet, the current tree is treated as the initial state and all available versions may be generated. If there are no pending changes, the workflow exits without installing Sphinx dependencies or publishing.
+* ``landing`` runs ``generate-landing``. It refreshes both release catalogs, both products' selectors, and the landing page, but does not rebuild their versioned documentation.
+* ``weaver`` runs ``generate-weaver`` for the supplied version. It rebuilds that Weaver version, refreshes the Weaver selectors and regenerates the landing page; it does not rebuild Manager versions.
+* ``weaver-manager`` runs ``generate-manager`` for the supplied version. It rebuilds that Manager version, refreshes the Manager selectors and regenerates the landing page; it does not rebuild Weaver versions.
+* ``remove-weaver`` and ``remove-manager`` run the corresponding removal preset. Supply the version and set ``confirm_removal`` to ``true``. The action removes the version's source and published HTML, refreshes the product catalog/selectors and landing page, but does not delete the GitHub release. It refuses to remove the last eligible version.
+
+Run a removal scope before deleting the source directory: the action requires that directory to calculate and validate the replacement catalog. If it has already been deleted, restore it first. Automatic pushes that remove a whole version directory are rejected; they never delete published files implicitly.
 
 GitHub uses the repository's default branch (currently ``main``) to expose ``workflow_dispatch`` and ``repository_dispatch``. Keep the workflow YAML in sync on ``main`` and ``gh-pages``. When started manually, select ``gh-pages``; the job processes and publishes that branch. A ``repository_dispatch`` run also explicitly checks out ``gh-pages``.
 
