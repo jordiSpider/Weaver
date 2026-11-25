@@ -578,7 +578,7 @@ shown below:</p>
 <li><p><a class="reference internal" href="#id2"><span class="std std-ref">Equality and Comparison Operators</span></a></p>
 <blockquote>
 <div><div class="highlight-json notranslate"><div class="highlight"><pre><span></span><span class="p">{</span>
-<span class="w">    </span><span class="nt">&quot;operatorType&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;comparison&quot;</span>
+<span class="w">    </span><span class="nt">"operatorType"</span><span class="p">:</span><span class="w"> </span><span class="s2">"comparison"</span>
 <span class="w">    </span><span class="c1">// Remaining fields</span>
 <span class="p">}</span>
 </pre></div>
@@ -588,7 +588,7 @@ shown below:</p>
 <li><p><a class="reference internal" href="#id3"><span class="std std-ref">Logical Operators</span></a></p>
 <blockquote>
 <div><div class="highlight-json notranslate"><div class="highlight"><pre><span></span><span class="p">{</span>
-<span class="w">    </span><span class="nt">&quot;operatorType&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;logical&quot;</span>
+<span class="w">    </span><span class="nt">"operatorType"</span><span class="p">:</span><span class="w"> </span><span class="s2">"logical"</span>
 <span class="w">    </span><span class="c1">// Remaining fields</span>
 <span class="p">}</span>
 </pre></div>
@@ -598,7 +598,7 @@ shown below:</p>
 <li><p><a class="reference internal" href="#id4"><span class="std std-ref">Property Operators</span></a></p>
 <blockquote>
 <div><div class="highlight-json notranslate"><div class="highlight"><pre><span></span><span class="p">{</span>
-<span class="w">    </span><span class="nt">&quot;operatorType&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;property&quot;</span>
+<span class="w">    </span><span class="nt">"operatorType"</span><span class="p">:</span><span class="w"> </span><span class="s2">"property"</span>
 <span class="w">    </span><span class="c1">// Remaining fields</span>
 <span class="p">}</span>
 </pre></div>
@@ -608,7 +608,7 @@ shown below:</p>
 <li><p><a class="reference internal" href="#id5"><span class="std std-ref">Constant Operators</span></a></p>
 <blockquote>
 <div><div class="highlight-json notranslate"><div class="highlight"><pre><span></span><span class="p">{</span>
-<span class="w">    </span><span class="nt">&quot;operatorType&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;constant&quot;</span>
+<span class="w">    </span><span class="nt">"operatorType"</span><span class="p">:</span><span class="w"> </span><span class="s2">"constant"</span>
 <span class="w">    </span><span class="c1">// Remaining fields</span>
 <span class="p">}</span>
 </pre></div>
@@ -618,7 +618,7 @@ shown below:</p>
 <li><p><a class="reference internal" href="#id6"><span class="std std-ref">Arithmetical Operators</span></a></p>
 <blockquote>
 <div><div class="highlight-json notranslate"><div class="highlight"><pre><span></span><span class="p">{</span>
-<span class="w">    </span><span class="nt">&quot;operatorType&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;arithmetical&quot;</span>
+<span class="w">    </span><span class="nt">"operatorType"</span><span class="p">:</span><span class="w"> </span><span class="s2">"arithmetical"</span>
 <span class="w">    </span><span class="c1">// Remaining fields</span>
 <span class="p">}</span>
 </pre></div>
@@ -639,12 +639,12 @@ comparison types are defined below:</p>
 <div><p>Checks if the ‘<strong>lhs</strong>’ is <strong>equal to</strong> the ‘<strong>rhs</strong>’. The value of the ‘<strong>comparisonType</strong>’ field is <strong>“equal”</strong>.</p>
 <p>Example:</p>
 <div class="highlight-json notranslate"><div class="highlight"><pre><span></span><span class="p">{</span>
-<span class="w">    </span><span class="nt">&quot;operatorType&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;comparison&quot;</span><span class="p">,</span>
-<span class="w">    </span><span class="nt">&quot;comparisonType&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;equal&quot;</span><span class="p">,</span>
-<span class="w">    </span><span class="nt">&quot;lhs&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="nt">"operatorType"</span><span class="p">:</span><span class="w"> </span><span class="s2">"comparison"</span><span class="p">,</span>
+<span class="w">    </span><span class="nt">"comparisonType"</span><span class="p">:</span><span class="w"> </span><span class="s2">"equal"</span><span class="p">,</span>
+<span class="w">    </span><span class="nt">"lhs"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
 <span class="w">        </span><span class="c1">// Define another operator</span>
 <span class="w">    </span><span class="p">},</span>
-<span class="w">    </span><span class="nt">&quot;rhs&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="nt">"rhs"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
 <span class="w">        </span><span class="c1">// Define another operator</span>
 <span class="w">    </span><span class="p">}</span>
 <span class="p">}</span>
@@ -658,12 +658,12 @@ comparison types are defined below:</p>
 <div><p>Checks if the ‘<strong>lhs</strong>’ is <strong>not equal to</strong> the ‘<strong>rhs</strong>’. The value of the ‘<strong>comparisonType</strong>’ field is <strong>“not_equal”</strong>.</p>
 <p>Example:</p>
 <div class="highlight-json notranslate"><div class="highlight"><pre><span></span><span class="p">{</span>
-<span class="w">    </span><span class="nt">&quot;operatorType&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;comparison&quot;</span><span class="p">,</span>
-<span class="w">    </span><span class="nt">&quot;comparisonType&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;not_equal&quot;</span><span class="p">,</span>
-<span class="w">    </span><span class="nt">&quot;lhs&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="nt">"operatorType"</span><span class="p">:</span><span class="w"> </span><span class="s2">"comparison"</span><span class="p">,</span>
+<span class="w">    </span><span class="nt">"comparisonType"</span><span class="p">:</span><span class="w"> </span><span class="s2">"not_equal"</span><span class="p">,</span>
+<span class="w">    </span><span class="nt">"lhs"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
 <span class="w">        </span><span class="c1">// Define another operator</span>
 <span class="w">    </span><span class="p">},</span>
-<span class="w">    </span><span class="nt">&quot;rhs&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="nt">"rhs"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
 <span class="w">        </span><span class="c1">// Define another operator</span>
 <span class="w">    </span><span class="p">}</span>
 <span class="p">}</span>
@@ -677,12 +677,12 @@ comparison types are defined below:</p>
 <div><p>Checks if the ‘<strong>lhs</strong>’ is <strong>less than</strong> the ‘<strong>rhs</strong>’. The value of the ‘<strong>comparisonType</strong>’ field is <strong>“less_than”</strong>.</p>
 <p>Example:</p>
 <div class="highlight-json notranslate"><div class="highlight"><pre><span></span><span class="p">{</span>
-<span class="w">    </span><span class="nt">&quot;operatorType&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;comparison&quot;</span><span class="p">,</span>
-<span class="w">    </span><span class="nt">&quot;comparisonType&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;less_than&quot;</span><span class="p">,</span>
-<span class="w">    </span><span class="nt">&quot;lhs&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="nt">"operatorType"</span><span class="p">:</span><span class="w"> </span><span class="s2">"comparison"</span><span class="p">,</span>
+<span class="w">    </span><span class="nt">"comparisonType"</span><span class="p">:</span><span class="w"> </span><span class="s2">"less_than"</span><span class="p">,</span>
+<span class="w">    </span><span class="nt">"lhs"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
 <span class="w">        </span><span class="c1">// Define another operator</span>
 <span class="w">    </span><span class="p">},</span>
-<span class="w">    </span><span class="nt">&quot;rhs&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="nt">"rhs"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
 <span class="w">        </span><span class="c1">// Define another operator</span>
 <span class="w">    </span><span class="p">}</span>
 <span class="p">}</span>
@@ -696,12 +696,12 @@ comparison types are defined below:</p>
 <div><p>Checks if the ‘<strong>lhs</strong>’ is <strong>less than or equal to</strong> the ‘<strong>rhs</strong>’. The value of the ‘<strong>comparisonType</strong>’ field is <strong>“less_equal_than”</strong>.</p>
 <p>Example:</p>
 <div class="highlight-json notranslate"><div class="highlight"><pre><span></span><span class="p">{</span>
-<span class="w">    </span><span class="nt">&quot;operatorType&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;comparison&quot;</span><span class="p">,</span>
-<span class="w">    </span><span class="nt">&quot;comparisonType&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;less_equal_than&quot;</span><span class="p">,</span>
-<span class="w">    </span><span class="nt">&quot;lhs&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="nt">"operatorType"</span><span class="p">:</span><span class="w"> </span><span class="s2">"comparison"</span><span class="p">,</span>
+<span class="w">    </span><span class="nt">"comparisonType"</span><span class="p">:</span><span class="w"> </span><span class="s2">"less_equal_than"</span><span class="p">,</span>
+<span class="w">    </span><span class="nt">"lhs"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
 <span class="w">        </span><span class="c1">// Define another operator</span>
 <span class="w">    </span><span class="p">},</span>
-<span class="w">    </span><span class="nt">&quot;rhs&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="nt">"rhs"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
 <span class="w">        </span><span class="c1">// Define another operator</span>
 <span class="w">    </span><span class="p">}</span>
 <span class="p">}</span>
@@ -715,12 +715,12 @@ comparison types are defined below:</p>
 <div><p>Checks if the ‘<strong>lhs</strong>’ is <strong>greater than</strong> the ‘<strong>rhs</strong>’. The value of the ‘<strong>comparisonType</strong>’ field is <strong>“greater_than”</strong>.</p>
 <p>Example:</p>
 <div class="highlight-json notranslate"><div class="highlight"><pre><span></span><span class="p">{</span>
-<span class="w">    </span><span class="nt">&quot;operatorType&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;comparison&quot;</span><span class="p">,</span>
-<span class="w">    </span><span class="nt">&quot;comparisonType&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;greater_than&quot;</span><span class="p">,</span>
-<span class="w">    </span><span class="nt">&quot;lhs&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="nt">"operatorType"</span><span class="p">:</span><span class="w"> </span><span class="s2">"comparison"</span><span class="p">,</span>
+<span class="w">    </span><span class="nt">"comparisonType"</span><span class="p">:</span><span class="w"> </span><span class="s2">"greater_than"</span><span class="p">,</span>
+<span class="w">    </span><span class="nt">"lhs"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
 <span class="w">        </span><span class="c1">// Define another operator</span>
 <span class="w">    </span><span class="p">},</span>
-<span class="w">    </span><span class="nt">&quot;rhs&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="nt">"rhs"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
 <span class="w">        </span><span class="c1">// Define another operator</span>
 <span class="w">    </span><span class="p">}</span>
 <span class="p">}</span>
@@ -734,12 +734,12 @@ comparison types are defined below:</p>
 <div><p>Checks if the ‘<strong>lhs</strong>’ is <strong>greater than or equal to</strong> the ‘<strong>rhs</strong>’. The value of the ‘<strong>comparisonType</strong>’ field is <strong>“greater_equal_than”</strong>.</p>
 <p>Example:</p>
 <div class="highlight-json notranslate"><div class="highlight"><pre><span></span><span class="p">{</span>
-<span class="w">    </span><span class="nt">&quot;operatorType&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;comparison&quot;</span><span class="p">,</span>
-<span class="w">    </span><span class="nt">&quot;comparisonType&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;greater_equal_than&quot;</span><span class="p">,</span>
-<span class="w">    </span><span class="nt">&quot;lhs&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="nt">"operatorType"</span><span class="p">:</span><span class="w"> </span><span class="s2">"comparison"</span><span class="p">,</span>
+<span class="w">    </span><span class="nt">"comparisonType"</span><span class="p">:</span><span class="w"> </span><span class="s2">"greater_equal_than"</span><span class="p">,</span>
+<span class="w">    </span><span class="nt">"lhs"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
 <span class="w">        </span><span class="c1">// Define another operator</span>
 <span class="w">    </span><span class="p">},</span>
-<span class="w">    </span><span class="nt">&quot;rhs&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="nt">"rhs"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
 <span class="w">        </span><span class="c1">// Define another operator</span>
 <span class="w">    </span><span class="p">}</span>
 <span class="p">}</span>
@@ -764,9 +764,9 @@ logical types are defined below:</p>
 <p>Negates a operand. The value of the ‘<strong>logicalType</strong>’ field is <strong>“negation”</strong>.</p>
 <p>Example:</p>
 <div class="highlight-json notranslate"><div class="highlight"><pre><span></span><span class="p">{</span>
-<span class="w">    </span><span class="nt">&quot;operatorType&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;logical&quot;</span><span class="p">,</span>
-<span class="w">    </span><span class="nt">&quot;logicalType&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;negation&quot;</span><span class="p">,</span>
-<span class="w">    </span><span class="nt">&quot;operands&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">[</span>
+<span class="w">    </span><span class="nt">"operatorType"</span><span class="p">:</span><span class="w"> </span><span class="s2">"logical"</span><span class="p">,</span>
+<span class="w">    </span><span class="nt">"logicalType"</span><span class="p">:</span><span class="w"> </span><span class="s2">"negation"</span><span class="p">,</span>
+<span class="w">    </span><span class="nt">"operands"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span>
 <span class="w">        </span><span class="p">{</span>
 <span class="w">            </span><span class="c1">// Define another operator</span>
 <span class="w">        </span><span class="p">}</span>
@@ -782,9 +782,9 @@ logical types are defined below:</p>
 <div><p>Checks if all operands are true. The value of the ‘<strong>logicalType</strong>’ field is <strong>“conjunction”</strong>.</p>
 <p>Example:</p>
 <div class="highlight-json notranslate"><div class="highlight"><pre><span></span><span class="p">{</span>
-<span class="w">    </span><span class="nt">&quot;operatorType&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;logical&quot;</span><span class="p">,</span>
-<span class="w">    </span><span class="nt">&quot;logicalType&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;conjunction&quot;</span><span class="p">,</span>
-<span class="w">    </span><span class="nt">&quot;operands&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">[</span>
+<span class="w">    </span><span class="nt">"operatorType"</span><span class="p">:</span><span class="w"> </span><span class="s2">"logical"</span><span class="p">,</span>
+<span class="w">    </span><span class="nt">"logicalType"</span><span class="p">:</span><span class="w"> </span><span class="s2">"conjunction"</span><span class="p">,</span>
+<span class="w">    </span><span class="nt">"operands"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span>
 <span class="w">        </span><span class="p">{</span>
 <span class="w">            </span><span class="c1">// Define another operator</span>
 <span class="w">        </span><span class="p">},</span>
@@ -806,9 +806,9 @@ logical types are defined below:</p>
 <div><p>Checks if at least one operand is true. The value of the ‘<strong>logicalType</strong>’ field is <strong>“disjunction”</strong>.</p>
 <p>Example:</p>
 <div class="highlight-json notranslate"><div class="highlight"><pre><span></span><span class="p">{</span>
-<span class="w">    </span><span class="nt">&quot;operatorType&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;logical&quot;</span><span class="p">,</span>
-<span class="w">    </span><span class="nt">&quot;logicalType&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;disjunction&quot;</span><span class="p">,</span>
-<span class="w">    </span><span class="nt">&quot;operands&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">[</span>
+<span class="w">    </span><span class="nt">"operatorType"</span><span class="p">:</span><span class="w"> </span><span class="s2">"logical"</span><span class="p">,</span>
+<span class="w">    </span><span class="nt">"logicalType"</span><span class="p">:</span><span class="w"> </span><span class="s2">"disjunction"</span><span class="p">,</span>
+<span class="w">    </span><span class="nt">"operands"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span>
 <span class="w">        </span><span class="p">{</span>
 <span class="w">            </span><span class="c1">// Define another operator</span>
 <span class="w">        </span><span class="p">},</span>
@@ -840,12 +840,12 @@ elements are defined below:</p>
 <div><p>Extracts the value associated with the property in the configuration. The value of the ‘<strong>propertyElement</strong>’ field is <strong>“value”</strong>.</p>
 <p>Example:</p>
 <div class="highlight-json notranslate"><div class="highlight"><pre><span></span><span class="p">{</span>
-<span class="w">    </span><span class="nt">&quot;operatorType&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;property&quot;</span><span class="p">,</span>
-<span class="w">    </span><span class="nt">&quot;propertyElement&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;value&quot;</span><span class="p">,</span>
-<span class="w">    </span><span class="nt">&quot;relativePath&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">[</span>
-<span class="w">        </span><span class="s2">&quot;path&quot;</span><span class="p">,</span>
-<span class="w">        </span><span class="s2">&quot;to&quot;</span><span class="p">,</span>
-<span class="w">        </span><span class="s2">&quot;property&quot;</span>
+<span class="w">    </span><span class="nt">"operatorType"</span><span class="p">:</span><span class="w"> </span><span class="s2">"property"</span><span class="p">,</span>
+<span class="w">    </span><span class="nt">"propertyElement"</span><span class="p">:</span><span class="w"> </span><span class="s2">"value"</span><span class="p">,</span>
+<span class="w">    </span><span class="nt">"relativePath"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span>
+<span class="w">        </span><span class="s2">"path"</span><span class="p">,</span>
+<span class="w">        </span><span class="s2">"to"</span><span class="p">,</span>
+<span class="w">        </span><span class="s2">"property"</span>
 <span class="w">    </span><span class="p">]</span>
 <span class="p">}</span>
 </pre></div>
@@ -859,26 +859,26 @@ elements are defined below:</p>
 <p>The selection of the item is defined through the ‘<strong>selectedItem</strong>’ field, which can be defined as a positive integer or as an operator.</p>
 <p>Example:</p>
 <div class="highlight-json notranslate"><div class="highlight"><pre><span></span><span class="p">{</span>
-<span class="w">    </span><span class="nt">&quot;operatorType&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;property&quot;</span><span class="p">,</span>
-<span class="w">    </span><span class="nt">&quot;propertyElement&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;item&quot;</span><span class="p">,</span>
-<span class="w">    </span><span class="nt">&quot;relativePath&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">[</span>
-<span class="w">        </span><span class="s2">&quot;path&quot;</span><span class="p">,</span>
-<span class="w">        </span><span class="s2">&quot;to&quot;</span><span class="p">,</span>
-<span class="w">        </span><span class="s2">&quot;property&quot;</span>
+<span class="w">    </span><span class="nt">"operatorType"</span><span class="p">:</span><span class="w"> </span><span class="s2">"property"</span><span class="p">,</span>
+<span class="w">    </span><span class="nt">"propertyElement"</span><span class="p">:</span><span class="w"> </span><span class="s2">"item"</span><span class="p">,</span>
+<span class="w">    </span><span class="nt">"relativePath"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span>
+<span class="w">        </span><span class="s2">"path"</span><span class="p">,</span>
+<span class="w">        </span><span class="s2">"to"</span><span class="p">,</span>
+<span class="w">        </span><span class="s2">"property"</span>
 <span class="w">    </span><span class="p">],</span>
-<span class="w">    </span><span class="nt">&quot;selectedItem&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">2</span>
+<span class="w">    </span><span class="nt">"selectedItem"</span><span class="p">:</span><span class="w"> </span><span class="mi">2</span>
 <span class="p">}</span>
 </pre></div>
 </div>
 <div class="highlight-json notranslate"><div class="highlight"><pre><span></span><span class="p">{</span>
-<span class="w">    </span><span class="nt">&quot;operatorType&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;property&quot;</span><span class="p">,</span>
-<span class="w">    </span><span class="nt">&quot;propertyElement&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;item&quot;</span><span class="p">,</span>
-<span class="w">    </span><span class="nt">&quot;relativePath&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">[</span>
-<span class="w">        </span><span class="s2">&quot;path&quot;</span><span class="p">,</span>
-<span class="w">        </span><span class="s2">&quot;to&quot;</span><span class="p">,</span>
-<span class="w">        </span><span class="s2">&quot;property&quot;</span>
+<span class="w">    </span><span class="nt">"operatorType"</span><span class="p">:</span><span class="w"> </span><span class="s2">"property"</span><span class="p">,</span>
+<span class="w">    </span><span class="nt">"propertyElement"</span><span class="p">:</span><span class="w"> </span><span class="s2">"item"</span><span class="p">,</span>
+<span class="w">    </span><span class="nt">"relativePath"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span>
+<span class="w">        </span><span class="s2">"path"</span><span class="p">,</span>
+<span class="w">        </span><span class="s2">"to"</span><span class="p">,</span>
+<span class="w">        </span><span class="s2">"property"</span>
 <span class="w">    </span><span class="p">],</span>
-<span class="w">    </span><span class="nt">&quot;selectedItem&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="nt">"selectedItem"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
 <span class="w">        </span><span class="c1">// Define another operator</span>
 <span class="w">    </span><span class="p">}</span>
 <span class="p">}</span>
@@ -892,12 +892,12 @@ elements are defined below:</p>
 <div><p>Extracts the size of the property defined in the configuration. The value of the ‘<strong>propertyElement</strong>’ field is <strong>“size”</strong>.</p>
 <p>Example:</p>
 <div class="highlight-json notranslate"><div class="highlight"><pre><span></span><span class="p">{</span>
-<span class="w">    </span><span class="nt">&quot;operatorType&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;property&quot;</span><span class="p">,</span>
-<span class="w">    </span><span class="nt">&quot;propertyElement&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;size&quot;</span><span class="p">,</span>
-<span class="w">    </span><span class="nt">&quot;relativePath&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">[</span>
-<span class="w">        </span><span class="s2">&quot;path&quot;</span><span class="p">,</span>
-<span class="w">        </span><span class="s2">&quot;to&quot;</span><span class="p">,</span>
-<span class="w">        </span><span class="s2">&quot;property&quot;</span>
+<span class="w">    </span><span class="nt">"operatorType"</span><span class="p">:</span><span class="w"> </span><span class="s2">"property"</span><span class="p">,</span>
+<span class="w">    </span><span class="nt">"propertyElement"</span><span class="p">:</span><span class="w"> </span><span class="s2">"size"</span><span class="p">,</span>
+<span class="w">    </span><span class="nt">"relativePath"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span>
+<span class="w">        </span><span class="s2">"path"</span><span class="p">,</span>
+<span class="w">        </span><span class="s2">"to"</span><span class="p">,</span>
+<span class="w">        </span><span class="s2">"property"</span>
 <span class="w">    </span><span class="p">]</span>
 <span class="p">}</span>
 </pre></div>
@@ -914,12 +914,12 @@ elements are defined below:</p>
 <p>Extracts the possibility of being or not being null of the property. The value of the ‘<strong>propertyElement</strong>’ field is <strong>“nullProperty”</strong>.</p>
 <p>Example:</p>
 <div class="highlight-json notranslate"><div class="highlight"><pre><span></span><span class="p">{</span>
-<span class="w">    </span><span class="nt">&quot;operatorType&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;property&quot;</span><span class="p">,</span>
-<span class="w">    </span><span class="nt">&quot;propertyElement&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;nullProperty&quot;</span><span class="p">,</span>
-<span class="w">    </span><span class="nt">&quot;relativePath&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">[</span>
-<span class="w">        </span><span class="s2">&quot;path&quot;</span><span class="p">,</span>
-<span class="w">        </span><span class="s2">&quot;to&quot;</span><span class="p">,</span>
-<span class="w">        </span><span class="s2">&quot;property&quot;</span>
+<span class="w">    </span><span class="nt">"operatorType"</span><span class="p">:</span><span class="w"> </span><span class="s2">"property"</span><span class="p">,</span>
+<span class="w">    </span><span class="nt">"propertyElement"</span><span class="p">:</span><span class="w"> </span><span class="s2">"nullProperty"</span><span class="p">,</span>
+<span class="w">    </span><span class="nt">"relativePath"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span>
+<span class="w">        </span><span class="s2">"path"</span><span class="p">,</span>
+<span class="w">        </span><span class="s2">"to"</span><span class="p">,</span>
+<span class="w">        </span><span class="s2">"property"</span>
 <span class="w">    </span><span class="p">]</span>
 <span class="p">}</span>
 </pre></div>
@@ -933,26 +933,26 @@ elements are defined below:</p>
 the ‘<strong>value</strong>’ field, which takes values of a basic type such as an integer, a string, a boolean or a floating point number.</p>
 <p>Example:</p>
 <div class="highlight-json notranslate"><div class="highlight"><pre><span></span><span class="p">{</span>
-<span class="w">    </span><span class="nt">&quot;operatorType&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;constant&quot;</span><span class="p">,</span>
-<span class="w">    </span><span class="nt">&quot;value&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">6</span>
+<span class="w">    </span><span class="nt">"operatorType"</span><span class="p">:</span><span class="w"> </span><span class="s2">"constant"</span><span class="p">,</span>
+<span class="w">    </span><span class="nt">"value"</span><span class="p">:</span><span class="w"> </span><span class="mi">6</span>
 <span class="p">}</span>
 </pre></div>
 </div>
 <div class="highlight-json notranslate"><div class="highlight"><pre><span></span><span class="p">{</span>
-<span class="w">    </span><span class="nt">&quot;operatorType&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;constant&quot;</span><span class="p">,</span>
-<span class="w">    </span><span class="nt">&quot;value&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;string&quot;</span>
+<span class="w">    </span><span class="nt">"operatorType"</span><span class="p">:</span><span class="w"> </span><span class="s2">"constant"</span><span class="p">,</span>
+<span class="w">    </span><span class="nt">"value"</span><span class="p">:</span><span class="w"> </span><span class="s2">"string"</span>
 <span class="p">}</span>
 </pre></div>
 </div>
 <div class="highlight-json notranslate"><div class="highlight"><pre><span></span><span class="p">{</span>
-<span class="w">    </span><span class="nt">&quot;operatorType&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;constant&quot;</span><span class="p">,</span>
-<span class="w">    </span><span class="nt">&quot;value&quot;</span><span class="p">:</span><span class="w"> </span><span class="kc">false</span>
+<span class="w">    </span><span class="nt">"operatorType"</span><span class="p">:</span><span class="w"> </span><span class="s2">"constant"</span><span class="p">,</span>
+<span class="w">    </span><span class="nt">"value"</span><span class="p">:</span><span class="w"> </span><span class="kc">false</span>
 <span class="p">}</span>
 </pre></div>
 </div>
 <div class="highlight-json notranslate"><div class="highlight"><pre><span></span><span class="p">{</span>
-<span class="w">    </span><span class="nt">&quot;operatorType&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;constant&quot;</span><span class="p">,</span>
-<span class="w">    </span><span class="nt">&quot;value&quot;</span><span class="p">:</span><span class="w"> </span><span class="mf">5.7</span>
+<span class="w">    </span><span class="nt">"operatorType"</span><span class="p">:</span><span class="w"> </span><span class="s2">"constant"</span><span class="p">,</span>
+<span class="w">    </span><span class="nt">"value"</span><span class="p">:</span><span class="w"> </span><span class="mf">5.7</span>
 <span class="p">}</span>
 </pre></div>
 </div>
@@ -970,12 +970,12 @@ operator types are defined below:</p>
 <div><p>The subtract operator is used to subtract one number from another. The value of the ‘<strong>arithmeticalType</strong>’ field is <strong>“subtract”</strong>.</p>
 <p>Example:</p>
 <div class="highlight-json notranslate"><div class="highlight"><pre><span></span><span class="p">{</span>
-<span class="w">    </span><span class="nt">&quot;operatorType&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;arithmetical&quot;</span><span class="p">,</span>
-<span class="w">    </span><span class="nt">&quot;arithmeticalType&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;subtract&quot;</span><span class="p">,</span>
-<span class="w">    </span><span class="nt">&quot;lhs&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="nt">"operatorType"</span><span class="p">:</span><span class="w"> </span><span class="s2">"arithmetical"</span><span class="p">,</span>
+<span class="w">    </span><span class="nt">"arithmeticalType"</span><span class="p">:</span><span class="w"> </span><span class="s2">"subtract"</span><span class="p">,</span>
+<span class="w">    </span><span class="nt">"lhs"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
 <span class="w">        </span><span class="c1">// Define another operator</span>
 <span class="w">    </span><span class="p">},</span>
-<span class="w">    </span><span class="nt">&quot;rhs&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="nt">"rhs"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
 <span class="w">        </span><span class="c1">// Define another operator</span>
 <span class="w">    </span><span class="p">}</span>
 <span class="p">}</span>
@@ -989,12 +989,12 @@ operator types are defined below:</p>
 <div><p>The addition operator is used to sum two numbers. The value of the ‘<strong>arithmeticalType</strong>’ field is <strong>“addition”</strong>.</p>
 <p>Example:</p>
 <div class="highlight-json notranslate"><div class="highlight"><pre><span></span><span class="p">{</span>
-<span class="w">    </span><span class="nt">&quot;operatorType&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;arithmetical&quot;</span><span class="p">,</span>
-<span class="w">    </span><span class="nt">&quot;arithmeticalType&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;addition&quot;</span><span class="p">,</span>
-<span class="w">    </span><span class="nt">&quot;lhs&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="nt">"operatorType"</span><span class="p">:</span><span class="w"> </span><span class="s2">"arithmetical"</span><span class="p">,</span>
+<span class="w">    </span><span class="nt">"arithmeticalType"</span><span class="p">:</span><span class="w"> </span><span class="s2">"addition"</span><span class="p">,</span>
+<span class="w">    </span><span class="nt">"lhs"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
 <span class="w">        </span><span class="c1">// Define another operator</span>
 <span class="w">    </span><span class="p">},</span>
-<span class="w">    </span><span class="nt">&quot;rhs&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="nt">"rhs"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
 <span class="w">        </span><span class="c1">// Define another operator</span>
 <span class="w">    </span><span class="p">}</span>
 <span class="p">}</span>
@@ -1008,12 +1008,12 @@ operator types are defined below:</p>
 <div><p>The multiply operator is used to multiply two numbers. The value of the ‘<strong>arithmeticalType</strong>’ field is <strong>“multiply”</strong>.</p>
 <p>Example:</p>
 <div class="highlight-json notranslate"><div class="highlight"><pre><span></span><span class="p">{</span>
-<span class="w">    </span><span class="nt">&quot;operatorType&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;arithmetical&quot;</span><span class="p">,</span>
-<span class="w">    </span><span class="nt">&quot;arithmeticalType&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;multiply&quot;</span><span class="p">,</span>
-<span class="w">    </span><span class="nt">&quot;lhs&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="nt">"operatorType"</span><span class="p">:</span><span class="w"> </span><span class="s2">"arithmetical"</span><span class="p">,</span>
+<span class="w">    </span><span class="nt">"arithmeticalType"</span><span class="p">:</span><span class="w"> </span><span class="s2">"multiply"</span><span class="p">,</span>
+<span class="w">    </span><span class="nt">"lhs"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
 <span class="w">        </span><span class="c1">// Define another operator</span>
 <span class="w">    </span><span class="p">},</span>
-<span class="w">    </span><span class="nt">&quot;rhs&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="nt">"rhs"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
 <span class="w">        </span><span class="c1">// Define another operator</span>
 <span class="w">    </span><span class="p">}</span>
 <span class="p">}</span>
@@ -1027,12 +1027,12 @@ operator types are defined below:</p>
 <div><p>The division operator is used to divide one number by another. The value of the ‘<strong>arithmeticalType</strong>’ field is <strong>“division”</strong>.</p>
 <p>Example:</p>
 <div class="highlight-json notranslate"><div class="highlight"><pre><span></span><span class="p">{</span>
-<span class="w">    </span><span class="nt">&quot;operatorType&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;arithmetical&quot;</span><span class="p">,</span>
-<span class="w">    </span><span class="nt">&quot;arithmeticalType&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;division&quot;</span><span class="p">,</span>
-<span class="w">    </span><span class="nt">&quot;lhs&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="nt">"operatorType"</span><span class="p">:</span><span class="w"> </span><span class="s2">"arithmetical"</span><span class="p">,</span>
+<span class="w">    </span><span class="nt">"arithmeticalType"</span><span class="p">:</span><span class="w"> </span><span class="s2">"division"</span><span class="p">,</span>
+<span class="w">    </span><span class="nt">"lhs"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
 <span class="w">        </span><span class="c1">// Define another operator</span>
 <span class="w">    </span><span class="p">},</span>
-<span class="w">    </span><span class="nt">&quot;rhs&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="nt">"rhs"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
 <span class="w">        </span><span class="c1">// Define another operator</span>
 <span class="w">    </span><span class="p">}</span>
 <span class="p">}</span>
@@ -1046,12 +1046,12 @@ operator types are defined below:</p>
 <div><p>The module operator is used to find the remainder of the division of one number by another. The value of the ‘<strong>arithmeticalType</strong>’ field is <strong>“module”</strong>.</p>
 <p>Example:</p>
 <div class="highlight-json notranslate"><div class="highlight"><pre><span></span><span class="p">{</span>
-<span class="w">    </span><span class="nt">&quot;operatorType&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;arithmetical&quot;</span><span class="p">,</span>
-<span class="w">    </span><span class="nt">&quot;arithmeticalType&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;module&quot;</span><span class="p">,</span>
-<span class="w">    </span><span class="nt">&quot;lhs&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="nt">"operatorType"</span><span class="p">:</span><span class="w"> </span><span class="s2">"arithmetical"</span><span class="p">,</span>
+<span class="w">    </span><span class="nt">"arithmeticalType"</span><span class="p">:</span><span class="w"> </span><span class="s2">"module"</span><span class="p">,</span>
+<span class="w">    </span><span class="nt">"lhs"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
 <span class="w">        </span><span class="c1">// Define another operator</span>
 <span class="w">    </span><span class="p">},</span>
-<span class="w">    </span><span class="nt">&quot;rhs&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="nt">"rhs"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
 <span class="w">        </span><span class="c1">// Define another operator</span>
 <span class="w">    </span><span class="p">}</span>
 <span class="p">}</span>
@@ -1264,7 +1264,7 @@ malfunctioning of the validation due to the configuration values used.</p>
 
   <p class="copyright">
     
-      © Copyright 2026, Weaver project.
+      © Copyright 2025, Jordi Moya Laraño.
       <br/>
     
   </p>

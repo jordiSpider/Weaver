@@ -7,16 +7,17 @@ This guide explains how to build and maintain the Weaver and Weaver Manager docu
 Requirements and Python environment
 ===================================
 
-The project requires CMake 3.25 or newer and uses the Ninja generator. CMake locates a Python interpreter, but this repository does not pin a Python minor version or provide a Python requirements/lock file. Install the documentation dependencies into the same Python environment that CMake selects:
+The project requires CMake 3.25 or newer, Ninja, and Python 3.10. Install the pinned documentation dependencies from ``requirements-docs.txt`` into the same Python environment that CMake selects:
 
-* Sphinx
-* ``pydata_sphinx_theme``
-* ``sphinx-design``
-* Breathe, for Weaver's Doxygen API documentation
+* ``sphinx==8.1.3``
+* ``pydata-sphinx-theme==0.19.0``
+* ``sphinx-design==0.6.1``
+* ``breathe==4.36.0``
+* ``sphinx-copybutton==0.5.2``
 
-The landing and Weaver Manager configurations use ``sphinx.ext.autosectionlabel``, which is included with Sphinx, and ``sphinx-design`` for product cards. Weaver also configures Breathe and requires its generated Doxygen XML. The documentation sources do not declare explicit versions for these Python packages; CI should therefore provision and maintain a consistent environment.
+Install the same environment locally with ``python -m pip install -r requirements-docs.txt``. The GitHub Actions workflow uses Python 3.10 and caches these pip dependencies. The hosted Ubuntu runner provides CMake and Ninja. Breathe renders Weaver's Doxygen API, and its generated XML is already included under ``source/weaver/<version>/api/xml/``; CI does not need to install or run Doxygen. ``sphinx-copybutton`` is used by Weaver Manager.
 
-The catalog updater calls the GitHub Releases REST API. Network access is required when a workflow updates catalogs. ``GITHUB_TOKEN`` is optional and is passed through automatically when set; using a token can avoid unauthenticated API rate limits.
+The catalog updater calls the GitHub Releases REST API. Network access is required when a workflow updates catalogs. ``GITHUB_TOKEN`` is passed through automatically; it authenticates the API requests and avoids unauthenticated rate limits. The publishing workflow also needs permission to write repository contents, and repository settings must allow GitHub Actions to push to ``gh-pages``.
 
 Source and output layout
 ========================
@@ -83,6 +84,33 @@ Remove a documentation version:
    cmake --workflow --preset remove-manager-version
 
 The available build targets are ``generate-weaver``, ``generate-manager``, ``generate-landing``, ``remove-weaver-version``, and ``remove-manager-version``. Their workflow presets have the same names. The configure presets are ``docs-weaver``, ``docs-manager``, ``docs-landing``, ``remove-weaver``, and ``remove-manager``.
+
+GitHub Actions on ``gh-pages``
+==============================
+
+The ``Update documentation`` workflow in ``.github/workflows/update-docs.yml`` handles relevant pushes to ``gh-pages`` and can also be started manually. Its source paths are detected before Python documentation dependencies are installed, so irrelevant changes can end without provisioning the build environment.
+
+For automatic runs, the workflow selects the smallest applicable preset:
+
+* Changes under ``source/landing/`` run ``generate-landing``.
+* Changes under ``source/weaver/<version>/`` run ``generate-weaver`` for that version.
+* Changes under ``source/weaver-manager/<version>/`` run ``generate-manager`` for that version.
+* Landing/catalog/selector helper changes refresh the landing page. Changes to shared CMake configuration, pinned requirements, or the versioned documentation builder rebuild all local versions because they affect every rendered version.
+* Changes only under ``docs/`` do not trigger the workflow.
+
+The selected Sphinx generation is also the validation: Actions does not run a second, duplicate documentation build. If generation succeeds, it commits updated sources (for a manual removal), generated HTML, and catalogs to ``gh-pages``. Runs are serialized, and the last processed source revision is recorded so a later run can include changes from pushes queued while another build was running.
+
+To run it manually, open **Actions → Update documentation → Run workflow**, select the ``gh-pages`` ref, then choose ``auto``, ``landing``, ``weaver``, ``weaver-manager``, ``remove-weaver``, or ``remove-manager``. Product actions require a version. Removal also requires ``confirm_removal`` and deletes both that version's source and generated output; the release itself is untouched. A push that removes a version source directory is rejected rather than being interpreted as an automatic deletion.
+
+GitHub uses the repository's default branch (currently ``main``) to expose ``workflow_dispatch`` and ``repository_dispatch``. Keep the workflow YAML in sync on ``main`` and ``gh-pages``. When started manually, select ``gh-pages``; the job processes and publishes that branch. A ``repository_dispatch`` run also explicitly checks out ``gh-pages``.
+
+If the release/source-ingestion workflow pushes sources using the default ``GITHUB_TOKEN``, its push will not start another workflow automatically. After the source push, it must send a ``repository_dispatch`` event with type ``update-docs`` and permission to dispatch repository events. For example, from a GitHub-hosted runner with the ``gh`` CLI and ``GITHUB_TOKEN`` available:
+
+.. code-block:: console
+
+	 GH_TOKEN="$GITHUB_TOKEN" gh api repos/jordiSpider/Weaver/dispatches -f event_type=update-docs
+
+A source push made with a PAT or GitHub App token can instead trigger the normal ``push`` event. Automatic version deletion is deliberately unsupported; use the confirmed manual removal action so catalog eligibility is checked first.
 
 Catalog eligibility and ``latest`` selection
 ============================================

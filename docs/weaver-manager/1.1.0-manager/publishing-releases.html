@@ -31,6 +31,7 @@
 <link href="_static/styles/pydata-sphinx-theme.css?digest=a95f357e85573c9b56d5" rel="stylesheet" />
 
     <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=8f2a1f02" />
+    <link rel="stylesheet" type="text/css" href="_static/copybutton.css?v=76b2166b" />
     <link rel="stylesheet" type="text/css" href="_static/sphinx-design.min.css?v=95c83b7e" />
   
   <!-- So that users can add custom icons -->
@@ -42,12 +43,15 @@
     <script src="_static/documentation_options.js?v=5929fcd5"></script>
     <script src="_static/doctools.js?v=9bcbadda"></script>
     <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="_static/clipboard.min.js?v=a7894cd8"></script>
+    <script src="_static/copybutton.js?v=f281be69"></script>
     <script src="_static/design-tabs.js?v=f930bc37"></script>
     <script>DOCUMENTATION_OPTIONS.pagename = 'publishing-releases';</script>
     <script>DOCUMENTATION_OPTIONS.search_as_you_type = false;</script>
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
-    <link rel="prev" title="Troubleshooting" href="troubleshooting.html" />
+    <link rel="next" title="Troubleshooting" href="troubleshooting.html" />
+    <link rel="prev" title="Managing Installed Versions" href="managing-versions.html" />
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="docsearch:language" content="en"/>
   <meta name="docsearch:version" content="1.1.0-manager" />
@@ -152,9 +156,9 @@
 </li>
 
 
-<li class="nav-item ">
-  <a class="nav-link nav-internal" href="security-and-releases.html">
-    Release Catalog and Security
+<li class="nav-item current active">
+  <a class="nav-link nav-internal" href="#">
+    Publishing a Weaver Release
   </a>
 </li>
 
@@ -162,13 +166,6 @@
 <li class="nav-item ">
   <a class="nav-link nav-internal" href="troubleshooting.html">
     Troubleshooting
-  </a>
-</li>
-
-
-<li class="nav-item current active">
-  <a class="nav-link nav-internal" href="#">
-    Publishing a Weaver Release
   </a>
 </li>
 
@@ -294,9 +291,9 @@
 </li>
 
 
-<li class="nav-item ">
-  <a class="nav-link nav-internal" href="security-and-releases.html">
-    Release Catalog and Security
+<li class="nav-item current active">
+  <a class="nav-link nav-internal" href="#">
+    Publishing a Weaver Release
   </a>
 </li>
 
@@ -304,13 +301,6 @@
 <li class="nav-item ">
   <a class="nav-link nav-internal" href="troubleshooting.html">
     Troubleshooting
-  </a>
-</li>
-
-
-<li class="nav-item current active">
-  <a class="nav-link nav-internal" href="#">
-    Publishing a Weaver Release
   </a>
 </li>
 
@@ -427,53 +417,132 @@
 <h1>Publishing a Weaver Release<a class="headerlink" href="#publishing-a-weaver-release" title="Link to this heading">#</a></h1>
 <section id="scope">
 <h2>Scope<a class="headerlink" href="#scope" title="Link to this heading">#</a></h2>
-<p>Weaver Manager is a release consumer. It does not build Weaver packages, create GitHub Releases, generate manifests, or sign assets. These steps belong to the release-maintenance process.</p>
-<p>Every release intended for the Manager catalog must be published as immutable and include the platform installer assets, <code class="docutils literal notranslate"><span class="pre">weaver-manager-manifest.json</span></code>, and detached Base64 signature <code class="docutils literal notranslate"><span class="pre">weaver-manager-manifest.json.sig</span></code>. The manifest is signed as exact bytes; even a formatting change after signing invalidates the signature.</p>
+<p>Weaver Manager consumes GitHub Releases. It does not build Weaver packages, create releases, generate manifests, or sign assets. This page describes how maintainers prepare and publish a release for the Manager catalog.</p>
+<p>Each release intended for the catalog must include the platform installer assets, <code class="docutils literal notranslate"><span class="pre">weaver-manager-manifest.json</span></code>, and its detached Base64 signature, <code class="docutils literal notranslate"><span class="pre">weaver-manager-manifest.json.sig</span></code>. For supported installer names and formats, see <a class="reference internal" href="getting-started.html#why-a-release-may-not-appear"><span class="std std-ref">Why a release may not appear</span></a>.</p>
 </section>
 <section id="prepare-the-assets">
 <h2>Prepare the assets<a class="headerlink" href="#prepare-the-assets" title="Link to this heading">#</a></h2>
 <ol class="arabic">
 <li><p>Build, test, and finalize each installer. Do not modify an installer after calculating its hash.</p></li>
-<li><p>Use a supported filename such as <code class="docutils literal notranslate"><span class="pre">Weaver-Desktop-26.11.06-Windows-x64.msi</span></code>. The filename defines the edition, version, OS, and architecture shown in the catalog.</p></li>
-<li><p>Calculate a SHA-256 hash for each installer. On Windows PowerShell:</p>
+<li><p>Name each asset using a supported pattern described in <a class="reference internal" href="getting-started.html#why-a-release-may-not-appear"><span class="std std-ref">Why a release may not appear</span></a>.</p></li>
+<li><p>Calculate a SHA-256 hash for every final installer:</p>
+<div class="sd-tab-set docutils">
+<input checked="checked" id="sd-tab-item-0" name="sd-tab-set-0" type="radio">
+<label class="sd-tab-label" for="sd-tab-item-0">
+Windows</label><div class="sd-tab-content docutils">
 <div class="highlight-powershell notranslate"><div class="highlight"><pre><span></span><span class="nb">Get-FileHash</span> <span class="p">.\</span><span class="n">Weaver-Desktop</span><span class="p">-</span><span class="n">26</span><span class="p">.</span><span class="n">11</span><span class="p">.</span><span class="n">06-Windows-x64</span><span class="p">.</span><span class="n">msi</span> <span class="n">-Algorithm</span> <span class="n">SHA256</span>
 </pre></div>
 </div>
-<p>On Linux use <code class="docutils literal notranslate"><span class="pre">sha256sum</span> <span class="pre">&lt;installer-file&gt;</span></code>; on macOS use <code class="docutils literal notranslate"><span class="pre">shasum</span> <span class="pre">-a</span> <span class="pre">256</span> <span class="pre">&lt;installer-file&gt;</span></code>. Copy the 64 hexadecimal characters into the artifact’s <code class="docutils literal notranslate"><span class="pre">sha256</span></code> value.</p>
+</div>
+<input id="sd-tab-item-1" name="sd-tab-set-0" type="radio">
+<label class="sd-tab-label" for="sd-tab-item-1">
+Linux</label><div class="sd-tab-content docutils">
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="go">sha256sum Weaver-Desktop-26.11.06-Linux-x64.deb</span>
+</pre></div>
+</div>
+</div>
+<input id="sd-tab-item-2" name="sd-tab-set-0" type="radio">
+<label class="sd-tab-label" for="sd-tab-item-2">
+macOS</label><div class="sd-tab-content docutils">
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="go">shasum -a 256 Weaver-Desktop-26.11.06-macOS-arm64.pkg</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>Copy the resulting 64-character hexadecimal hash into the corresponding artifact entry.</p>
 </li>
-<li><p>Create a schema-version 1 manifest. Each artifact object must include the exact asset filename and its SHA-256. See <code class="docutils literal notranslate"><span class="pre">manager/release-manifest.example.json</span></code> in the repository for a sample schema.</p></li>
-<li><p>Sign the manifest using the offline private key and Base64-encode the detached signature:</p>
+<li><p>Create a schema-version 1 manifest that lists the exact asset filenames and SHA-256 values. This minimal example shows one artifact:</p>
+<div class="highlight-json notranslate"><div class="highlight"><pre><span></span><span class="p">{</span>
+<span class="w">      </span><span class="nt">"schema_version"</span><span class="p">:</span><span class="w"> </span><span class="mi">1</span><span class="p">,</span>
+<span class="w">      </span><span class="nt">"artifacts"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span>
+<span class="w">        </span><span class="p">{</span>
+<span class="w">              </span><span class="nt">"asset"</span><span class="p">:</span><span class="w"> </span><span class="s2">"Weaver-Desktop-26.11.06-Windows-x64.msi"</span><span class="p">,</span>
+<span class="w">              </span><span class="nt">"sha256"</span><span class="p">:</span><span class="w"> </span><span class="s2">"&lt;64-character-sha256&gt;"</span>
+<span class="w">        </span><span class="p">}</span>
+<span class="w">      </span><span class="p">]</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p>Replace the placeholder with the installer’s actual 64-character hexadecimal SHA-256. See <a class="reference external" href="https://github.com/jordiSpider/Weaver/blob/v1.1.0-manager/manager/release-manifest.example.json">manager/release-manifest.example.json</a> for a complete example with multiple artifacts.</p>
+</li>
+<li><p>Sign the manifest with the offline Ed25519 private key and Base64-encode the detached signature:</p>
 <div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="go">openssl pkeyutl -sign -rawin -inkey release-signing-private.pem -in weaver-manager-manifest.json -out signature.bin</span>
 <span class="go">openssl base64 -A -in signature.bin -out weaver-manager-manifest.json.sig</span>
 </pre></div>
 </div>
-<p>Never commit, upload, or place the private key in a public CI secret.</p>
 </li>
 </ol>
+<p>Do not reformat or otherwise change the manifest after signing; any byte change invalidates the signature. Keep the private key offline and outside the repository. Never commit it, upload it with a release, include it in a build artifact, or place it in a public CI secret.</p>
 </section>
 <section id="publish-and-verify">
 <h2>Publish and verify<a class="headerlink" href="#publish-and-verify" title="Link to this heading">#</a></h2>
 <ol class="arabic simple">
-<li><p>Create a draft GitHub Release and attach every installer, <code class="docutils literal notranslate"><span class="pre">weaver-manager-manifest.json</span></code>, and <code class="docutils literal notranslate"><span class="pre">weaver-manager-manifest.json.sig</span></code>.</p></li>
-<li><p>Check that each manifest filename exactly matches an attached installer and that the hash was calculated from the final file.</p></li>
-<li><p>Confirm the signature file is the Base64 detached Ed25519 signature of the exact manifest bytes.</p></li>
-<li><p>Review the release assets, then publish only when all checks pass and release immutability is enabled for the repository.</p></li>
-<li><p>Test catalog discovery and installation with a Manager built using the matching public key.</p></li>
+<li><p>Create a draft GitHub Release and attach all installer assets, the manifest, and its detached signature.</p></li>
+<li><p>Check that every manifest filename exactly matches an attached installer and that each hash was calculated from the final file.</p></li>
+<li><p>Verify the detached signature against the final manifest using the public key in the Manager build.</p></li>
+<li><p>Review the complete asset set, then publish only when all checks pass and release immutability is enabled for the repository.</p></li>
+<li><p>Test catalog discovery and installation with a Manager build containing the matching public key.</p></li>
 </ol>
-<p>Published immutable release assets should be treated as final. If an asset or manifest is wrong, prepare a corrected release rather than relying on replacing published files.</p>
+<p>Treat published immutable assets as final. If an asset or manifest is wrong, prepare a corrected release rather than relying on replacing published files.</p>
 </section>
-<section id="manager-compatible-filename-and-formats">
-<h2>Manager-compatible filename and formats<a class="headerlink" href="#manager-compatible-filename-and-formats" title="Link to this heading">#</a></h2>
-<p>The supported filename pattern is <code class="docutils literal notranslate"><span class="pre">Weaver-&lt;Edition&gt;-&lt;YY.MM.DD&gt;-&lt;OS&gt;-&lt;Architecture&gt;.&lt;extension&gt;</span></code>. Editions are <code class="docutils literal notranslate"><span class="pre">Desktop</span></code> or <code class="docutils literal notranslate"><span class="pre">Server</span></code>; OS names are <code class="docutils literal notranslate"><span class="pre">Windows</span></code>, <code class="docutils literal notranslate"><span class="pre">Linux</span></code>, or <code class="docutils literal notranslate"><span class="pre">macOS</span></code>; architectures are currently <code class="docutils literal notranslate"><span class="pre">x64</span></code> and <code class="docutils literal notranslate"><span class="pre">arm64</span></code>. The supported package formats are MSI for Windows, DEB or RPM for Linux, and PKG or DMG for macOS. Packages must be attached to the same GitHub Release as the signed manifest.</p>
+<section id="public-key-configuration-and-rotation">
+<h2>Public-key configuration and rotation<a class="headerlink" href="#public-key-configuration-and-rotation" title="Link to this heading">#</a></h2>
+<p>The Manager’s public verification key is pinned at build time. CMake reads <code class="docutils literal notranslate"><span class="pre">manager/release-signing-public.pem</span></code> by default (PEM or DER input is supported) or can use <code class="docutils literal notranslate"><span class="pre">WEAVER_RELEASE_PUBLIC_KEY_BASE64</span></code> as a fallback override. Commit only the public key. If the signing key changes, build and distribute a Manager version containing the new public key in coordination with release publication; otherwise, the catalog will reject signatures from the new key.</p>
 </section>
-<section id="key-configuration-and-rotation">
-<h2>Key configuration and rotation<a class="headerlink" href="#key-configuration-and-rotation" title="Link to this heading">#</a></h2>
-<p>The Manager’s public verification key is pinned at build time. CMake reads <code class="docutils literal notranslate"><span class="pre">manager/release-signing-public.pem</span></code> by default (PEM or DER input is supported) or can use <code class="docutils literal notranslate"><span class="pre">WEAVER_RELEASE_PUBLIC_KEY_BASE64</span></code> as a fallback override. Commit only the public key. If the signing key changes, build and distribute a Manager version containing the new public key in coordination with release publication; otherwise the catalog will reject signatures from the new key.</p>
+<section id="local-test-installers">
+<span id="id1"></span><h2>Local test installers<a class="headerlink" href="#local-test-installers" title="Link to this heading">#</a></h2>
+<p>The <strong>Add Test Installer</strong> control is available only in a Manager build configured with <code class="docutils literal notranslate"><span class="pre">ENABLE_TEST=ON</span></code>. It adds a package from the local machine to the <strong>Available Releases</strong> table for testing; it does not publish the package or make it available to other users.</p>
+<section id="add-a-local-test-installer">
+<h3>Add a local test installer<a class="headerlink" href="#add-a-local-test-installer" title="Link to this heading">#</a></h3>
+<ol class="arabic">
+<li><p>In <strong>Available Releases</strong>, select <strong>Add Test Installer</strong>. In the dialog, choose <strong>Browse…</strong>, enter or paste a file path, or drag and drop one installer file into the drop area. Select <strong>Add Installer</strong> to continue.</p>
+<figure class="align-center" id="id2">
+<a class="reference internal image-reference" href="_images/add-installer-dialog.png"><img alt="Add Local Test Installer dialog with Browse, path entry, drag-and-drop area, and Add Installer button." src="_images/add-installer-dialog.png" style="width: 80%;" />
+</a>
+<figcaption>
+<p><span class="caption-text">The <strong>Add Local Test Installer</strong> dialog accepts one package selected with <strong>Browse…</strong>, entered as a path, or dragged into the dialog.</span><a class="headerlink" href="#id2" title="Link to this image">#</a></p>
+</figcaption>
+</figure>
+</li>
+<li><p>The Manager checks that the file exists, is readable, has an extension supported on the current operating system, and has a supported filename matching the current platform. See <a class="reference internal" href="getting-started.html#why-a-release-may-not-appear"><span class="std std-ref">Why a release may not appear</span></a> for the supported package names and formats. An invalid package or filename is rejected with an <strong>Invalid Test Installer</strong> or <strong>Invalid Test Installer Name</strong> warning.</p>
+<figure class="align-center" id="id3">
+<a class="reference internal image-reference" href="_images/invalid-installer-warnings.png"><img alt="Invalid Test Installer and Invalid Test Installer Name warning dialogs shown when a local package cannot be added." src="_images/invalid-installer-warnings.png" style="width: 75%;" />
+</a>
+<figcaption>
+<p><span class="caption-text">These warnings explain whether the package is unreadable or has an unsupported extension, or whether its filename does not match the current platform.</span><a class="headerlink" href="#id3" title="Link to this image">#</a></p>
+</figcaption>
+</figure>
+</li>
+<li><p>After a successful addition, the package appears in the table with its version and edition, <strong>Local</strong> as its installer source, <strong>Test</strong> as its status, and an <strong>Install</strong> button.</p>
+<figure class="align-center" id="id4">
+<a class="reference internal image-reference" href="_images/test-installer-row.png"><img alt="Available Releases table showing a locally added test installer with Test status and an Install button." src="_images/test-installer-row.png" style="width: 90%;" />
+</a>
+<figcaption>
+<p><span class="caption-text">A successfully added local package is marked <strong>Test</strong> and can be launched with its <strong>Install</strong> button.</span><a class="headerlink" href="#id4" title="Link to this image">#</a></p>
+</figcaption>
+</figure>
+</li>
+</ol>
 </section>
-<section id="current-automation-limitation">
-<h2>Current automation limitation<a class="headerlink" href="#current-automation-limitation" title="Link to this heading">#</a></h2>
-<p>The repository’s current <code class="docutils literal notranslate"><span class="pre">.github/workflows/deploy-release.yml</span></code> does not generate or attach the Manager manifest and signature. Its generated artifact names and formats also differ from the Manager catalog’s required installer names and extensions. The workflow must be updated and its output validated before it can be used as an end-to-end publishing pipeline for Manager-compatible releases.</p>
-<p>The full build, package, manifest and signing instructions are also maintained in <code class="docutils literal notranslate"><span class="pre">manager/README.md</span></code>.</p>
+<section id="install-a-local-test-installer">
+<h3>Install a local test installer<a class="headerlink" href="#install-a-local-test-installer" title="Link to this heading">#</a></h3>
+<p>Select <strong>Install</strong> for the test entry. Before launching the package, the Manager displays an <strong>Unverified Test Installer</strong> warning: the installer was not verified using a signed GitHub manifest and may request administrator privileges. <strong>Cancel</strong> is selected by default; choose <strong>Yes</strong> only if the package came from a trusted source.</p>
+<figure class="align-center" id="id5">
+<a class="reference internal image-reference" href="_images/unverified-installer-warning.png"><img alt="Unverified Test Installer warning shown before launching a local package, with Yes and Cancel options." src="_images/unverified-installer-warning.png" style="width: 75%;" />
+</a>
+<figcaption>
+<p><span class="caption-text">Review the verification and administrator-privilege warning before choosing <strong>Yes</strong> to launch the local installer.</span><a class="headerlink" href="#id5" title="Link to this image">#</a></p>
+</figcaption>
+</figure>
+<p>If the package has been moved, deleted, or become unreadable, the Manager displays a <strong>Test Installer Not Found</strong> warning and removes the entry from the table. If the operating system cannot start the installer, a <strong>Could Not Start Test Installer</strong> warning displays the launch error.</p>
+<figure class="align-center" id="id6">
+<a class="reference internal image-reference" href="_images/installer-launch-warnings.png"><img alt="Test Installer Not Found and Could Not Start Test Installer warning dialogs." src="_images/installer-launch-warnings.png" style="width: 75%;" />
+</a>
+<figcaption>
+<p><span class="caption-text">The Manager reports a missing or unreadable local package, or an error when the operating system cannot start it.</span><a class="headerlink" href="#id6" title="Link to this image">#</a></p>
+</figcaption>
+</figure>
+</section>
 </section>
 </section>
 
@@ -488,13 +557,22 @@
                   
 <div class="prev-next-area">
     <a class="left-prev"
-       href="troubleshooting.html"
+       href="managing-versions.html"
        title="previous page">
       <i class="fa-solid fa-angle-left"></i>
       <div class="prev-next-info">
         <p class="prev-next-subtitle">previous</p>
+        <p class="prev-next-title">Managing Installed Versions</p>
+      </div>
+    </a>
+    <a class="right-next"
+       href="troubleshooting.html"
+       title="next page">
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">next</p>
         <p class="prev-next-title">Troubleshooting</p>
       </div>
+      <i class="fa-solid fa-angle-right"></i>
     </a>
 </div>
                 </footer>
@@ -518,9 +596,12 @@
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#scope">Scope</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#prepare-the-assets">Prepare the assets</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#publish-and-verify">Publish and verify</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#manager-compatible-filename-and-formats">Manager-compatible filename and formats</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#key-configuration-and-rotation">Key configuration and rotation</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#current-automation-limitation">Current automation limitation</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#public-key-configuration-and-rotation">Public-key configuration and rotation</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#local-test-installers">Local test installers</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#add-a-local-test-installer">Add a local test installer</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#install-a-local-test-installer">Install a local test installer</a></li>
+</ul>
+</li>
 </ul>
   </nav></div>
 
@@ -553,6 +634,16 @@
 <div class="bd-footer__inner bd-page-width">
   
     <div class="footer-items__start">
+      
+        <div class="footer-item">
+
+  <p class="copyright">
+    
+      © Copyright 2025, Jordi Moya Laraño.
+      <br/>
+    
+  </p>
+</div>
       
         <div class="footer-item">
 

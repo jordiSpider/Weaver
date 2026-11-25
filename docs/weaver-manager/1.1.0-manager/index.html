@@ -31,6 +31,7 @@
 <link href="_static/styles/pydata-sphinx-theme.css?digest=a95f357e85573c9b56d5" rel="stylesheet" />
 
     <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=8f2a1f02" />
+    <link rel="stylesheet" type="text/css" href="_static/copybutton.css?v=76b2166b" />
     <link rel="stylesheet" type="text/css" href="_static/sphinx-design.min.css?v=95c83b7e" />
   
   <!-- So that users can add custom icons -->
@@ -42,6 +43,8 @@
     <script src="_static/documentation_options.js?v=5929fcd5"></script>
     <script src="_static/doctools.js?v=9bcbadda"></script>
     <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="_static/clipboard.min.js?v=a7894cd8"></script>
+    <script src="_static/copybutton.js?v=f281be69"></script>
     <script src="_static/design-tabs.js?v=f930bc37"></script>
     <script>DOCUMENTATION_OPTIONS.pagename = 'index';</script>
     <script>DOCUMENTATION_OPTIONS.search_as_you_type = false;</script>
@@ -153,8 +156,8 @@
 
 
 <li class="nav-item ">
-  <a class="nav-link nav-internal" href="security-and-releases.html">
-    Release Catalog and Security
+  <a class="nav-link nav-internal" href="publishing-releases.html">
+    Publishing a Weaver Release
   </a>
 </li>
 
@@ -162,13 +165,6 @@
 <li class="nav-item ">
   <a class="nav-link nav-internal" href="troubleshooting.html">
     Troubleshooting
-  </a>
-</li>
-
-
-<li class="nav-item ">
-  <a class="nav-link nav-internal" href="publishing-releases.html">
-    Publishing a Weaver Release
   </a>
 </li>
 
@@ -297,8 +293,8 @@
 
 
 <li class="nav-item ">
-  <a class="nav-link nav-internal" href="security-and-releases.html">
-    Release Catalog and Security
+  <a class="nav-link nav-internal" href="publishing-releases.html">
+    Publishing a Weaver Release
   </a>
 </li>
 
@@ -306,13 +302,6 @@
 <li class="nav-item ">
   <a class="nav-link nav-internal" href="troubleshooting.html">
     Troubleshooting
-  </a>
-</li>
-
-
-<li class="nav-item ">
-  <a class="nav-link nav-internal" href="publishing-releases.html">
-    Publishing a Weaver Release
   </a>
 </li>
 
@@ -413,7 +402,6 @@
 <li class="toctree-l2"><a class="reference internal" href="getting-started.html#weaver-manager-menus">Weaver Manager menus</a></li>
 <li class="toctree-l2"><a class="reference internal" href="getting-started.html#find-a-release">Find a release</a></li>
 <li class="toctree-l2"><a class="reference internal" href="getting-started.html#install-a-version">Install a version</a></li>
-<li class="toctree-l2"><a class="reference internal" href="getting-started.html#local-test-installers">Local test installers</a></li>
 <li class="toctree-l2"><a class="reference internal" href="getting-started.html#logs-and-installer-cache">Logs and installer cache</a></li>
 </ul>
 </li>
@@ -421,13 +409,17 @@
 <li class="toctree-l2"><a class="reference internal" href="managing-versions.html#available-actions">Available actions</a></li>
 </ul>
 </li>
-<li class="toctree-l1"><a class="reference internal" href="security-and-releases.html">Release Catalog and Security</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="security-and-releases.html#what-the-manager-verifies">What the Manager verifies</a></li>
-<li class="toctree-l2"><a class="reference internal" href="security-and-releases.html#release-status-and-selection">Release status and selection</a></li>
-<li class="toctree-l2"><a class="reference internal" href="security-and-releases.html#supported-installer-names">Supported installer names</a></li>
-<li class="toctree-l2"><a class="reference internal" href="security-and-releases.html#private-key-handling">Private key handling</a></li>
 </ul>
-</li>
+</div>
+<div class="toctree-wrapper compound">
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Maintainers</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="publishing-releases.html">Publishing a Weaver Release</a></li>
+</ul>
+</div>
+<div class="toctree-wrapper compound">
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Support</span></p>
+<ul>
 <li class="toctree-l1"><a class="reference internal" href="troubleshooting.html">Troubleshooting</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="troubleshooting.html#no-releases-are-displayed">No releases are displayed</a></li>
 <li class="toctree-l2"><a class="reference internal" href="troubleshooting.html#the-installer-cannot-be-verified-or-downloaded">The installer cannot be verified or downloaded</a></li>
@@ -437,12 +429,6 @@
 <li class="toctree-l2"><a class="reference internal" href="troubleshooting.html#need-more-diagnostic-information">Need more diagnostic information?</a></li>
 </ul>
 </li>
-</ul>
-</div>
-<div class="toctree-wrapper compound">
-<p aria-level="2" class="caption" role="heading"><span class="caption-text">Maintainers</span></p>
-<ul>
-<li class="toctree-l1"><a class="reference internal" href="publishing-releases.html">Publishing a Weaver Release</a></li>
 </ul>
 </div>
 </section>
@@ -506,6 +492,16 @@
 <div class="bd-footer__inner bd-page-width">
   
     <div class="footer-items__start">
+      
+        <div class="footer-item">
+
+  <p class="copyright">
+    
+      © Copyright 2025, Jordi Moya Laraño.
+      <br/>
+    
+  </p>
+</div>
       
         <div class="footer-item">
 

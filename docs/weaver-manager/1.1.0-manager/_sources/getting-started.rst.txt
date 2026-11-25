@@ -143,10 +143,20 @@ When the Manager searches for releases for the first time, this record is empty,
 
 When the Manager detects that a version and edition are installed, **Cache status** changes to **INSTALLED** and its **Install** button is hidden to prevent installing it again. After uninstalling it, select **Refresh Installed Versions**; if its release is still available in the catalog, it can be installed again.
 
+.. _why-a-release-may-not-appear:
+
 Why a release may not appear
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-GitHub Release assets are attached as a flat list, not uploaded into folders. A release must be published and immutable, and include the manifest, its detached signature, and a supported installer asset. The manifest must declare the exact installer filename and SHA-256; its signature must validate with the public key built into Weaver Manager. The installer must also match the current operating system and architecture. If any of these checks fail, the release is omitted from the catalog.
+GitHub Release assets are attached as a flat list, not uploaded into folders. Weaver Manager lists only published, immutable releases that include both ``weaver-manager-manifest.json`` and its detached Base64 Ed25519 signature, ``weaver-manager-manifest.json.sig``, as well as a supported installer asset. Draft releases, missing files, invalid signatures, malformed manifests, and assets that do not match the current platform are omitted.
+
+The Manager verifies the manifest using a public key pinned into the application at build time. The signed manifest must declare the installer asset and its SHA-256. The installer filename must identify a supported edition, version, operating system, and architecture, and must match the current platform.
+
+**Supported installer names** follow this pattern:
+
+``Weaver-<Edition>-<YY.MM.DD>-<OS>-<Architecture>.<extension>``
+
+For example: ``Weaver-Desktop-26.11.06-Windows-x64.msi``. The edition is ``Desktop`` or ``Server``; OS is ``Windows``, ``Linux``, or ``macOS``; architecture is currently ``x64`` or ``arm64``. Supported extensions are ``msi`` on Windows, ``deb`` or ``rpm`` on Linux, and ``pkg`` or ``dmg`` on macOS.
 
 .. figure:: _static/images/available-releases/weaver-manager-release-layout.svg
    :alt: Diagram of a published GitHub Release with its installer, manifest and signature, and the checks Weaver Manager applies before listing it.
@@ -155,7 +165,13 @@ GitHub Release assets are attached as a flat list, not uploaded into folders. A 
 
    Example of the assets attached to a Manager-compatible GitHub Release and the catalog requirements.
 
-The installer size and SHA-256 are checked again when it is downloaded, before it is launched. See :doc:`security-and-releases` for the validation details and :doc:`publishing-releases` for the release preparation checklist. If this explanation does not identify why a release is missing, see :doc:`troubleshooting` for other possible causes and their solutions.
+Before launching an installer, the Manager checks the downloaded file's size and SHA-256 against the signed manifest and verifies the cached file again.
+
+.. warning::
+
+   These checks protect the catalog and installer download from unauthorized or accidental changes relative to the signing key. They do not replace operating-system security controls or independent review of a release.
+
+See :doc:`publishing-releases` for the release preparation checklist. If this explanation does not identify why a release is missing, see :doc:`troubleshooting` for other possible causes and their solutions.
 
 Install a version
 -----------------
@@ -287,18 +303,21 @@ The Manager does not install silently or update an existing version in place; ve
 
 For details about the actions available for an installed version, see :doc:`managing-versions`.
 
-Local test installers
----------------------
-
-**Add Test Installer** is available only in a Manager built with ``ENABLE_TEST=ON``. Select a local installer using **Browse…**, enter or paste its path, or drag and drop one file. The file must have a supported extension and a filename matching the current platform, such as ``Weaver-Desktop-26.11.06-Windows-x64.msi``.
-
-Local installers are not verified with the signed GitHub manifest. The Manager displays a warning before launching one. Use only a package obtained from a trusted source. Adding it to the Test list does not publish it or make it available to other users.
-
+For instructions on adding and installing a local test installer, see :ref:`Local test installers <local-test-installers>`.
 
 Logs and installer cache
 ------------------------
 
-``weaver-manager.log`` records Manager activity. Windows installer operations produce ``msiexec-install.log``; Modify operations produce ``msiexec-modify.log``. These files are useful when contacting support or diagnosing an installation failure.
+Weaver Manager stores its logs and data in the application data folder selected during installation. By default, this is ``Documents\Weaver Manager``. The folder can be in a different location if you selected one in the installer.
 
-Verified release installers are cached temporarily and the Manager removes this cache when it closes. If an installer is still running, keep the Manager open until that operation completes.
+**Logs** are stored in the ``logs`` subfolder:
+
+* ``weaver-manager.log`` records Manager activity and installer process output. It is appended to across Manager sessions.
+* On Windows, ``msiexec-install.log`` records a managed version installation, and ``msiexec-modify.log`` records a **Modify** operation. These are verbose Windows Installer logs and can help diagnose installation or maintenance failures.
+
+**Release and notification state** is stored separately in ``release-cache.ini`` in the platform's per-user application data folder. It records which Weaver version-and-edition pairs have already appeared in the release catalog, along with Manager update-notification preferences and dismissed notifications. This lets the Manager identify newly discovered releases and remember your notification choices. It is not a cache of the GitHub release catalog or its manifests. Removing this file resets notification preferences to their defaults; on systems with legacy saved release history, the Manager may restore that history from its older settings store.
+
+**Verified installers** are downloaded to ``verified-installers`` in the platform's cache folder. Before launching an installer, Weaver Manager checks its size and SHA-256 against the signed release manifest and verifies the cached file again. A catalog refresh removes cached installers for releases that are no longer available for the current platform. The Manager also removes the installer cache when it closes; if an installer is still running, the Manager waits until it finishes before closing and cleaning up the cache.
+
+The ``installed_versions`` folders contain the actual Weaver installations, not temporary cache files. Closing Weaver Manager does not remove installed versions.
 

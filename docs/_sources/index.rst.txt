@@ -27,9 +27,9 @@ Welcome to the documentation for the **Weaver Project**. Choose a product to fin
 
 		Learn how to build and maintain this site on the ``gh-pages`` branch, including CMake workflows, release catalogs, and version selection.
 
-		`Read the site maintenance guide <cmake-guide.html>`_
+		`Read the site maintenance guide <documentation-site-maintenance.html>`_
 
 .. toctree::
    :hidden:
 
-   cmake-guide
+   documentation-site-maintenance
