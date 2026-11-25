@@ -12,11 +12,15 @@ This guide focuses on day-to-day use and release operations. It does not documen
 
    getting-started
    managing-versions
-   security-and-releases
-   troubleshooting
 
 .. toctree::
    :maxdepth: 1
    :caption: Maintainers
 
    publishing-releases
+
+.. toctree::
+   :maxdepth: 2
+   :caption: Support
+
+   troubleshooting

@@ -139,6 +139,10 @@ def main():
     catalog_versions = [entry["version"] for entry in catalog.get("versions", [])]
     if version not in catalog_versions:
         raise ValueError(f"Version {version} is not present in the release catalog")
+    manifest_ref = os.environ.get("WEAVER_MANAGER_DOCS_MANIFEST_REF") or next(
+        (entry.get("tag") or version for entry in catalog.get("versions", []) if entry["version"] == version),
+        version,
+    )
     source_dir = source_root / product / version
     if not source_dir.is_dir():
         raise FileNotFoundError(f"Version source not found: {source_dir}")
@@ -175,6 +179,7 @@ def main():
                 "WEAVER_MANAGER_DOCS_VERSION": version,
                 "WEAVER_MANAGER_DOCS_LANGUAGE": language,
                 "WEAVER_MANAGER_DOCS_CATALOG": str(catalog_path),
+                "WEAVER_MANAGER_DOCS_MANIFEST_REF": manifest_ref,
                 "WEAVER_MANAGER_DOCS_SITE_ROOT": str(output_root),
                 "WEAVER_MANAGER_DOCS_DEFAULT_VERSION": catalog.get("latest", version),
                 "WEAVER_MANAGER_DOCS_DEFAULT_LANGUAGE": default_language,

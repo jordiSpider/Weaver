@@ -1,0 +1,161 @@
+name: Update documentation
+
+on:
+  push:
+    branches:
+      - gh-pages
+    paths:
+      - 'source/**'
+      - 'scripts/**'
+      - 'CMakeLists.txt'
+      - 'CMakePresets.json'
+      - 'requirements-docs.txt'
+  # GitHub requires this workflow to also exist on main for manual/repository_dispatch runs.
+  workflow_dispatch:
+    inputs:
+      scope:
+        description: Changed-area detection, documentation area, or version-removal action
+        required: true
+        type: choice
+        options:
+          - auto
+          - landing
+          - weaver
+          - weaver-manager
+          - remove-weaver
+          - remove-manager
+      version:
+        description: Required for Weaver, Manager, or version removal
+        required: false
+        type: string
+      confirm_removal:
+        description: Confirm the selected version removal
+        required: true
+        default: false
+        type: boolean
+  # Ingesting workflows using GITHUB_TOKEN should dispatch update-docs after pushing source files.
+  repository_dispatch:
+    types:
+      - update-docs
+
+permissions:
+  contents: write
+
+concurrency:
+  group: docs-gh-pages
+  cancel-in-progress: false
+
+jobs:
+  update:
+    if: github.ref == 'refs/heads/gh-pages' || github.event_name == 'repository_dispatch'
+    runs-on: ubuntu-latest
+    env:
+      GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+    steps:
+      - name: Check out gh-pages
+        uses: actions/checkout@v4
+        with:
+          ref: ${{ github.event_name == 'repository_dispatch' && 'gh-pages' || github.sha }}
+
+      - name: Detect affected documentation
+        id: detect
+        shell: bash
+        env:
+          INPUT_SCOPE: ${{ inputs.scope }}
+          INPUT_VERSION: ${{ inputs.version }}
+          INPUT_CONFIRM_REMOVAL: ${{ inputs.confirm_removal }}
+          PUSH_BEFORE: ${{ github.event.before }}
+        run: |
+          if [[ "$GITHUB_EVENT_NAME" == "workflow_dispatch" && "$INPUT_SCOPE" != "auto" ]]; then
+            args=(--event dispatch --scope "$INPUT_SCOPE" --version "$INPUT_VERSION")
+            if [[ "$INPUT_CONFIRM_REMOVAL" == "true" ]]; then
+              args+=(--confirm-removal)
+            fi
+            python scripts/SelectDocsBuilds.py "${args[@]}" >> "$GITHUB_OUTPUT"
+          else
+            base_sha="0000000000000000000000000000000000000000"
+            if [[ "$GITHUB_EVENT_NAME" == "push" ]]; then
+              base_sha="$PUSH_BEFORE"
+            fi
+            if [[ -f .github/docs-generated-from ]]; then
+              base_sha="$(cat .github/docs-generated-from)"
+            fi
+            if [[ "$base_sha" != "0000000000000000000000000000000000000000" ]]; then
+              git fetch --no-tags --depth=1 origin "$base_sha"
+            fi
+            source_sha="$(git rev-parse HEAD)"
+            python scripts/SelectDocsBuilds.py --event push --base "$base_sha" --head "$source_sha" >> "$GITHUB_OUTPUT"
+          fi
+
+      - name: Set up Python
+        if: steps.detect.outputs.operation != 'none'
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.10'
+          cache: pip
+          cache-dependency-path: requirements-docs.txt
+
+      - name: Install documentation dependencies
+        if: steps.detect.outputs.operation != 'none'
+        run: python -m pip install -r requirements-docs.txt
+
+      - name: Check CMake and Ninja
+        if: steps.detect.outputs.operation != 'none'
+        run: |
+          cmake --version
+          ninja --version
+
+      - name: Remove Weaver version
+        if: steps.detect.outputs.operation == 'remove-weaver'
+        env:
+          DOCS_WEAVER_VERSION: ${{ inputs.version }}
+        run: cmake --workflow --preset remove-weaver-version
+
+      - name: Remove Weaver Manager version
+        if: steps.detect.outputs.operation == 'remove-manager'
+        env:
+          DOCS_MANAGER_VERSION: ${{ inputs.version }}
+        run: cmake --workflow --preset remove-manager-version
+
+      - name: Generate affected versions and landing page
+        if: steps.detect.outputs.operation == 'generate'
+        shell: bash
+        env:
+          WEAVER_VERSIONS: ${{ steps.detect.outputs.weaver_versions }}
+          MANAGER_VERSIONS: ${{ steps.detect.outputs.manager_versions }}
+          RUN_LANDING: ${{ steps.detect.outputs.run_landing }}
+        run: |
+          while IFS= read -r version; do
+            [[ -z "$version" ]] && continue
+            DOCS_WEAVER_VERSION="$version" cmake --workflow --preset generate-weaver
+          done < <(python -c 'import json, os; print("\n".join(json.loads(os.environ["WEAVER_VERSIONS"])))')
+
+          while IFS= read -r version; do
+            [[ -z "$version" ]] && continue
+            DOCS_MANAGER_VERSION="$version" cmake --workflow --preset generate-manager
+          done < <(python -c 'import json, os; print("\n".join(json.loads(os.environ["MANAGER_VERSIONS"])))')
+
+          if [[ "$RUN_LANDING" == "true" ]]; then
+            cmake --workflow --preset generate-landing
+          fi
+
+      - name: Record processed source revision
+        if: steps.detect.outputs.operation != 'none'
+        run: |
+          mkdir -p .github
+          # Keep the last generated source revision so queued pushes can include skipped intermediate commits.
+          printf '%s\n' "$(git rev-parse HEAD)" > .github/docs-generated-from
+
+      - name: Publish generated documentation
+        if: steps.detect.outputs.operation != 'none'
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add -A source docs .github/docs-generated-from
+          if git diff --cached --quiet; then
+            echo "Documentation is already up to date."
+            exit 0
+          fi
+          git commit -m "docs: update generated documentation"
+          git push origin HEAD:gh-pages

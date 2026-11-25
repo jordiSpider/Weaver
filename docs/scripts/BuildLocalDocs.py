@@ -56,6 +56,7 @@ def main():
 			"DOCS_CATALOG": str(catalog_path),
 			"DOCS_WEAVER_CATALOG": str(catalog_path),
 			"DOCS_SPHINX_JOBS": args.jobs,
+			"WEAVER_MANAGER_DOCS_MANIFEST_REF": "main",
 		})
 		builder = Path(__file__).with_name("BuildVersionedDocs.py")
 		subprocess.run([sys.executable, str(builder)], check=True, env=environment)
