@@ -1,22 +1,24 @@
-# Generador local de documentación
+# Local documentation generator
 
-Este paquete es independiente del generador de la rama `gh-pages`. Copia `CMakeLists.txt`, `CMakePresets.json`, este `README.md` y la carpeta `scripts/` directamente a `docs/` del repositorio principal, junto a sus carpetas `source/` existentes. No copies las carpetas temporales `source/` y `build/` que puedan aparecer en este directorio.
+This local generator is independent of the generator on the `gh-pages` branch, but uses the same pinned Python dependencies.
 
-## Fuentes y salida
+## Sources and output
 
 - Weaver: `docs/source/weaver/local/`
 - Weaver Manager: `docs/source/weaver-manager/local/`
-- HTML: `docs/build/weaver/latest/` o `docs/build/weaver-manager/latest/`
+- HTML: `docs/build/weaver/latest/` or `docs/build/weaver-manager/latest/`
 
-El generador copia la fuente seleccionada a un directorio temporal, la construye como versión `latest` usando un catálogo temporal y no consulta ni actualiza GitHub Releases. Para incluir la referencia API de Weaver, la fuente local debe contener el XML de Doxygen en `api/xml/`.
+The generator copies the selected source to a temporary directory, builds it as version `latest` using a temporary catalog, and does not query or update GitHub Releases. The Weaver HTML build first generates Doxygen XML in `source/weaver/local/api/xml/` for the API reference.
 
-## Uso en PowerShell
+## Usage in PowerShell
 
-Ejecuta estos comandos desde el directorio `docs/` del repositorio principal:
+Run these commands from the repository's `docs/` directory:
 
 ```powershell
 cmake --workflow --preset generate-local-weaver
 cmake --workflow --preset generate-local-manager
 ```
 
-Se necesita CMake 3.25+, Ninja, Python 3, Sphinx, `pydata_sphinx_theme` y `sphinx-design`. Weaver Manager también requiere `sphinx-copybutton` para mostrar el botón de copia en los bloques de código. Weaver requiere Breathe.
+CMake 3.25+, Ninja, and Python 3.10+ with `pip` are required. Weaver also requires Doxygen 1.9.8+ and Graphviz to generate the API reference. CMake reports an error during configuration if it cannot find a compatible Python interpreter; select one with `-DPython3_EXECUTABLE=<path>` when configuring.
+
+Before generating HTML, CMake runs `python -m pip install -r requirements-docs.txt` using the selected interpreter, installing the same pinned versions of Sphinx, PyData Sphinx Theme, sphinx-design, Breathe, and sphinx-copybutton as `gh-pages`. This requires access to the packages and modifies the selected Python environment; using a virtual environment is recommended. If installation fails, the build fails too. The `generate-local-weaver-xml` target does not install Python packages.

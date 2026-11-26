@@ -1,7 +1,7 @@
 cmake_minimum_required(VERSION 3.25)
 project(WeaverLocalDocs NONE)
 
-find_package(Python3 REQUIRED COMPONENTS Interpreter)
+find_package(Python3 3.10 REQUIRED COMPONENTS Interpreter)
 
 set(DOCS_GENERATION "" CACHE STRING "Local documentation product to build: weaver, weaver-xml, or manager")
 set(DOCS_WORK_ROOT "${CMAKE_CURRENT_BINARY_DIR}/work" CACHE PATH "Temporary local documentation build directory")
@@ -23,6 +23,12 @@ if(NOT IS_DIRECTORY "${selected_source}")
 	message(FATAL_ERROR "Local documentation source not found: ${selected_source}")
 endif()
 
+add_custom_target(install-docs-python-dependencies
+	COMMAND "${Python3_EXECUTABLE}" -m pip install -r "${CMAKE_CURRENT_SOURCE_DIR}/requirements-docs.txt"
+	VERBATIM
+	COMMENT "Installing Python documentation dependencies"
+)
+
 foreach(product weaver weaver-manager)
 	if(product STREQUAL "weaver")
 		set(target generate-local-weaver)
@@ -40,6 +46,7 @@ foreach(product weaver weaver-manager)
 		VERBATIM
 		COMMENT "Generating local ${product} documentation as latest"
 	)
+	add_dependencies(${target} install-docs-python-dependencies)
 endforeach()
 
 if(DOCS_GENERATION MATCHES "^(weaver|weaver-xml)$")

@@ -27,6 +27,7 @@ QString managerDocumentsDirectory() {
 	return QDir(documentsDirectory).filePath(managerDataFolderName());
 }
 
+// Match the installer's system-wide DataDirectory setting when it is present.
 QString managerDataDirectory() {
 	const auto configuredDirectory = QSettings(QSettings::NativeFormat, QSettings::SystemScope,
 												   managerSettingsOrganization(),

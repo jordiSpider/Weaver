@@ -17,6 +17,7 @@ QFile logFile;
 QMutex logMutex;
 QString logDirectory;
 
+// Serialize Qt log messages so concurrent callers cannot interleave file writes.
 void messageHandler(QtMsgType type, const QMessageLogContext &context, const QString &message) {
 	const char *level = "debug";
 	switch (type) {
@@ -43,6 +44,7 @@ QString managerLogDirectory() {
 	return managerLogsDirectory();
 }
 
+// Keep startup diagnostics on Qt's default handler if the log file is unavailable.
 void initializeManagerLogging() {
 	logDirectory = managerLogsDirectory();
 	if (logDirectory.isEmpty() || !QDir().mkpath(logDirectory)) {

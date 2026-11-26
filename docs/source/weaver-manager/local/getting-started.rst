@@ -95,14 +95,15 @@ Weaver Manager menus
 
 **Notifications**
 
-The **Notifications** menu contains two options for Weaver Manager update notifications:
+The **Notifications** menu has separate **Weaver Manager** and **Weaver releases** submenus. Each has an option to enable notifications (enabled by default) and an independent option to include pre-releases (disabled by default).
 
-* **Show update notifications** enables or disables notifications about Weaver Manager updates. It is enabled by default.
-* **Notify about pre-release versions** enables or disables notifications about pre-release versions of Weaver Manager. It is disabled by default.
+Manager update notifications are shown at startup whenever a newer version is available, unless that notification has already been dismissed. Select the checkbox in the notification and then **OK** to turn off Manager update notifications. Re-enable them in the **Weaver Manager** submenu.
 
-When enabled, update notifications are shown at startup whenever a newer version is available, unless that notification has already been dismissed. The notification includes a checkbox to stop showing it again for that version. Select the checkbox and then **OK** to dismiss the notification and automatically turn off **Show update notifications**. To receive update notifications again, re-enable **Show update notifications** from the **Notifications** menu.
+Weaver release notifications list newly discovered verified version and edition pairs, using the same discovery cache as the **NEW** indicator rather than comparing against an installed version. They appear on any search, including **Refresh GitHub Releases**, when eligible new versions are found. Select the notification checkbox and **OK** to turn off new Weaver release notifications; re-enable them in the **Weaver releases** submenu. These preferences apply to subsequent searches: discoveries are still recorded when notifications or pre-release notifications are disabled, so enabling them later does not replay earlier discoveries. The display filter in **Available Releases** is independent of both notification settings.
 
-These settings affect notifications about Weaver Manager only; they do not control notifications or release listings for Weaver versions.
+**Theme**
+
+Choose **System** (the default), **Light**, or **Dark** from the **Theme** menu. System selects the same Light or Dark palette as the operating system's appearance and follows changes while Weaver Manager is open. If the operating system does not report its color scheme, System uses the initial system palette to choose between Light and Dark. The choice is applied immediately and remembered for future sessions; release status and new or installed release colors adapt to the selected appearance.
 
 **Help**
 
@@ -112,6 +113,10 @@ Find a release
 --------------
 
 Open the **Available Releases** tab. Each time Weaver Manager starts, it automatically refreshes the list of available releases from GitHub. It displays only entries that have a valid signed manifest, a matching artifact, and a package for the current platform. Select **Refresh GitHub Releases** to check again while the program is open.
+
+Use **Show pre-releases** to show or hide pre-release rows. This preference is remembered and is enabled by default. It does not change the discovery cache or notification preferences, and local test installers remain visible.
+
+The **GitHub tag** column shows each release's tag, including any pre-release identifier such as ``-rc.1``, so releases with the same version and edition can be distinguished. Releases without a tag are omitted. Local test installers have no GitHub tag. The **Version** column retains the version from the installer filename; installed status is still determined by that version and edition, not the GitHub tag.
 
 Select a column heading to sort the list. The arrow in the heading shows the current sort direction; select the same heading again to reverse it.
 
@@ -130,9 +135,9 @@ Select a column heading to sort the list. The arrow in the heading shows the cur
    - :bdg-primary:`Stable`: a regular release that is not marked as a pre-release; a newer stable release may be available.
    - :bdg-warning:`Pre-Release`: a release marked by its maintainers as preliminary, usually for testing or evaluation.
 
-**Cache status** tracks releases the Manager has discovered and versions it detects as installed. It keeps a local record of verified release version and edition pairs for the current platform; this record is separate from the temporary cache used for downloaded installer files.
+**Cache status** tracks releases the Manager has discovered and versions it detects as installed. It identifies each verified entry for the current platform by its GitHub tag, version and edition, so different tags with the same version and edition are tracked independently. This record is separate from the temporary cache used for downloaded installer files. Earlier ID-based or version-and-edition cache entries are migrated when the release catalog is next loaded. The older version-and-edition cache cannot distinguish tags, so matching releases in that first catalog are treated as already seen.
 
-When the Manager searches for releases for the first time, this record is empty, so every verified release it finds for the current platform that is not already detected as installed is marked **NEW**. On later searches, **NEW** marks releases discovered since the previous search. The Manager displays an information window listing all newly discovered versions and editions so you can decide whether to try them. The **NEW** marker is informational; it is not a recommendation or security rating, and it clears after the next refresh or when the Manager restarts.
+When the Manager searches for releases for the first time, this record is empty, so every verified release it finds for the current platform that is not already detected as installed is marked **NEW**. On later searches, **NEW** marks releases discovered since the previous search. If Weaver release notifications are enabled, an information window lists newly discovered versions and editions, including pre-releases only if their notification option is enabled. The **NEW** marker is informational; it is not a recommendation or security rating, and it clears after the next refresh or when the Manager restarts.
 
 .. figure:: _static/images/available-releases/new-releases-notification.png
    :alt: Weaver Manager information window listing newly discovered Weaver versions and editions.
@@ -315,7 +320,7 @@ Weaver Manager stores its logs and data in the application data folder selected 
 * ``weaver-manager.log`` records Manager activity and installer process output. It is appended to across Manager sessions.
 * On Windows, ``msiexec-install.log`` records a managed version installation, and ``msiexec-modify.log`` records a **Modify** operation. These are verbose Windows Installer logs and can help diagnose installation or maintenance failures.
 
-**Release and notification state** is stored separately in ``release-cache.ini`` in the platform's per-user application data folder. It records which Weaver version-and-edition pairs have already appeared in the release catalog, along with Manager update-notification preferences and dismissed notifications. This lets the Manager identify newly discovered releases and remember your notification choices. It is not a cache of the GitHub release catalog or its manifests. Removing this file resets notification preferences to their defaults; on systems with legacy saved release history, the Manager may restore that history from its older settings store.
+**Release, notification and theme state** is stored separately in ``release-cache.ini`` in the platform's per-user application data folder. It records which Weaver version-and-edition pairs have already appeared in the release catalog, along with the theme choice, Manager update-notification preferences and dismissed notifications. This lets the Manager identify newly discovered releases and remember your preferences. It is not a cache of the GitHub release catalog or its manifests. Removing this file resets the theme and notification preferences to their defaults; on systems with legacy saved release history, the Manager may restore that history from its older settings store.
 
 **Verified installers** are downloaded to ``verified-installers`` in the platform's cache folder. Before launching an installer, Weaver Manager checks its size and SHA-256 against the signed release manifest and verifies the cached file again. A catalog refresh removes cached installers for releases that are no longer available for the current platform. The Manager also removes the installer cache when it closes; if an installer is still running, the Manager waits until it finishes before closing and cleaning up the cache.
 

@@ -5,6 +5,7 @@
 #include <QApplication>
 #include <QCoreApplication>
 
+// Initialize shared application services before displaying the Manager window.
 int main(int argc, char *argv[]) {
     QApplication app(argc, argv);
     QCoreApplication::setApplicationName(WEAVER_MANAGER_NAME);

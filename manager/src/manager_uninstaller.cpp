@@ -12,6 +12,7 @@
 
 namespace {
 
+// Prefer the system copy of Windows Installer, with PATH lookup as a fallback.
 QString findMsiexec() {
 	const auto windowsDir = qEnvironmentVariable("WINDIR");
 	const auto systemMsiexec = QDir(windowsDir).filePath("System32/msiexec.exe");
@@ -43,6 +44,7 @@ bool removeDirectory(const QString &path, QString *errorMessage) {
 	return false;
 }
 
+// Resolve the same system-configured data root used by the Manager application.
 QString managerDataDirectory() {
 	const auto configuredDirectory = QSettings(QSettings::NativeFormat, QSettings::SystemScope,
 												   QStringLiteral("Weaver"),
@@ -54,6 +56,7 @@ QString managerDataDirectory() {
 	return QDir(documentsDirectory).filePath(QStringLiteral(WEAVER_MANAGER_DATA_DIRECTORY_NAME));
 }
 
+// Remove one managed MSI product and report any failure to the caller.
 bool runUninstaller(const QString &msiexec, const QString &productCode, QString *errorMessage) {
 	QProcess process;
 	process.setProgram(msiexec);
@@ -78,6 +81,7 @@ int showFailure(const QString &message) {
 
 }
 
+// Uninstall managed Weaver products first, then remove only Manager-owned data.
 int main(int argc, char *argv[]) {
 	QApplication app(argc, argv);
 	QCoreApplication::setApplicationName(WEAVER_MANAGER_NAME);

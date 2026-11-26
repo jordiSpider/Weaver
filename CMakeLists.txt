@@ -308,9 +308,9 @@ if(BUILD_APP)
     set(CPACK_COMPONENT_RPACKAGES_DISPLAY_NAME "R packages")
 
     if(ENABLE_GUI)
-        set(_RPKG_DESC "weaverR R package (graphical hub and optimiser).")
+        set(_RPKG_DESC "The weaverR package (with a graphical interface).")
     else()
-        set(_RPKG_DESC "weaverR R package (run_optimiser for scripts).")
+        set(_RPKG_DESC "The weaverR package.")
     endif()
     set(CPACK_COMPONENT_RPACKAGES_DESCRIPTION
         "${_RPKG_DESC} Requires R and internet access to install dependencies not included with R.")
