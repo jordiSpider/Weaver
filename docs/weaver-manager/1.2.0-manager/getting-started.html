@@ -1,0 +1,817 @@
+
+<!DOCTYPE html>
+
+
+<html lang="en" data-content_root="./" >
+
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>Getting Started &#8212; Weaver Manager Documentation</title>
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "";
+  </script>
+  <!--
+    this give us a css class that will be invisible only if js is disabled
+  -->
+  <noscript>
+    <style>
+      .pst-js-only { display: none !important; }
+
+    </style>
+  </noscript>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="_static/styles/theme.css?digest=a95f357e85573c9b56d5" rel="stylesheet" />
+<link href="_static/styles/pydata-sphinx-theme.css?digest=a95f357e85573c9b56d5" rel="stylesheet" />
+
+    <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=8f2a1f02" />
+    <link rel="stylesheet" type="text/css" href="_static/copybutton.css?v=76b2166b" />
+    <link rel="stylesheet" type="text/css" href="_static/sphinx-design.min.css?v=95c83b7e" />
+  
+  <!-- So that users can add custom icons -->
+  <script defer src="_static/scripts/fontawesome.js?digest=a95f357e85573c9b56d5"></script>
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="_static/scripts/bootstrap.js?digest=a95f357e85573c9b56d5" />
+<link rel="preload" as="script" href="_static/scripts/pydata-sphinx-theme.js?digest=a95f357e85573c9b56d5" />
+
+    <script src="_static/documentation_options.js?v=5929fcd5"></script>
+    <script src="_static/doctools.js?v=9bcbadda"></script>
+    <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="_static/clipboard.min.js?v=a7894cd8"></script>
+    <script src="_static/copybutton.js?v=f281be69"></script>
+    <script src="_static/design-tabs.js?v=f930bc37"></script>
+    <script>DOCUMENTATION_OPTIONS.pagename = 'getting-started';</script>
+    <script>DOCUMENTATION_OPTIONS.search_as_you_type = false;</script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="Managing Installed Versions" href="managing-versions.html" />
+    <link rel="prev" title="Weaver Manager — User Guide" href="index.html" />
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="docsearch:language" content="en"/>
+  <meta name="docsearch:version" content="1.1.0-manager" />
+  
+    
+    <script src="_static/searchtools.js"></script>
+    <script src="_static/language_data.js"></script>
+    <script src="searchindex.js"></script>
+  
+  </head>
+  <body data-default-mode="">
+  
+  
+  <div id="pst-skip-link" class="skip-link d-print-none"><a href="#main-content">Skip to main content</a></div>
+
+  
+  <div id="pst-scroll-pixel-helper"></div>
+  
+  <button type="button" class="btn rounded-pill" id="pst-back-to-top">
+    <i class="fa-solid fa-arrow-up"></i>Back to top</button>
+  
+  
+  
+  
+  <dialog id="pst-search-dialog">
+    
+<form class="bd-search d-flex align-items-center"
+      action="search.html"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         placeholder="Search the docs ..."
+         aria-label="Search the docs ..."
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form>
+  </dialog>
+
+  <div class="pst-async-banner-revealer d-none">
+  <aside id="bd-header-version-warning" class="d-none d-print-none" aria-label="Version warning"></aside>
+</div>
+
+  
+    <header id="pst-header" class="bd-header navbar navbar-expand-lg bd-navbar d-print-none">
+<div class="bd-header__inner bd-page-width">
+  <button class="pst-navbar-icon sidebar-toggle primary-toggle" aria-label="Site navigation">
+    <span class="fa-solid fa-bars"></span>
+  </button>
+  
+  
+  <div class="col-lg-3 navbar-header-items__start">
+    
+      <div class="navbar-item">
+
+  
+    
+  
+
+<a class="navbar-brand logo" href="index.html">
+  
+  
+  
+  
+  
+    
+    
+      
+    
+    
+    <img src="_static/logo.png" class="logo__image only-light" alt="Weaver Manager Documentation - Home"/>
+    <img src="_static/logo.png" class="logo__image only-dark pst-js-only" alt="Weaver Manager Documentation - Home"/>
+  
+  
+</a></div>
+    
+  </div>
+  
+  <div class="col-lg-9 navbar-header-items">
+    
+    <div class="me-auto navbar-header-items__center">
+      
+        <div class="navbar-item">
+<nav>
+  <ul class="bd-navbar-elements navbar-nav">
+    
+<li class="nav-item current active">
+  <a class="nav-link nav-internal" href="#">
+    Getting Started
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="managing-versions.html">
+    Managing Installed Versions
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="publishing-releases.html">
+    Publishing a Weaver Release
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="troubleshooting.html">
+    Troubleshooting
+  </a>
+</li>
+
+  </ul>
+</nav></div>
+      
+    </div>
+    
+    
+    <div class="navbar-header-items__end">
+      
+        <div class="navbar-item navbar-persistent--container">
+          
+
+<button class="btn search-button-field search-button__button pst-js-only" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+ <i class="fa-solid fa-magnifying-glass"></i>
+ <span class="search-button__default-text">Search</span>
+ <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+</button>
+        </div>
+      
+      
+        <div class="navbar-item"><div class="dropdown">
+  <button class="btn btn-sm btn-outline-secondary dropdown-toggle" type="button" id="version-switcher" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Select version" style="color: #198754 !important">
+    1.2.0-manager (stable, latest)
+  </button>
+  <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="version-switcher">
+    <li>
+      <a class="dropdown-item active" style="color: #198754 !important" href="index.html">
+        1.2.0-manager (stable, latest)
+      </a>
+    </li>
+    <li>
+      <a class="dropdown-item" style="color: #0d6efd !important" href="../1.1.0-manager/index.html">
+        1.1.0-manager (stable)
+      </a>
+    </li>
+    </ul>
+</div></div>
+      
+        <div class="navbar-item"><div class="dropdown">
+  <button class="btn btn-sm btn-outline-secondary dropdown-toggle" type="button" id="language-switcher" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Select language">
+    en
+  </button>
+  <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="language-switcher">
+    
+    <li>
+      <a class="dropdown-item active" href="index.html">
+        en
+      </a>
+    </li>
+    
+  </ul>
+</div></div>
+      
+        <div class="navbar-item">
+
+<div class="theme-switch-container dropdown pst-js-only" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Color mode">
+  <button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button dropdown-toggle" aria-label="Color mode" data-bs-toggle="dropdown">
+    <i class="theme-switch fa-solid fa-sun fa-lg fa-fw" data-mode="light" title="Light"></i>
+    <i class="theme-switch fa-solid fa-moon fa-lg fa-fw" data-mode="dark" title="Dark"></i>
+    <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg fa-fw" data-mode="auto" title="System Settings"></i>
+  </button>
+  <ul class="dropdown-menu dropdown-menu-end">
+    <li><button class="dropdown-item d-flex align-items-center theme-change-button" data-mode="auto"><i class="fa-solid fa-circle-half-stroke fa-lg fa-fw me-1"></i>System Settings</button></li>
+    <li><button class="dropdown-item d-flex align-items-center theme-change-button" data-mode="light"><i class="fa-solid fa-sun fa-lg fa-fw me-1"></i>Light</button></li>
+    <li><button class="dropdown-item d-flex align-items-center theme-change-button" data-mode="dark"><i class="fa-solid fa-moon fa-lg fa-fw me-1"></i>Dark</button></li>
+  </ul>
+</div></div>
+      
+    </div>
+    
+  </div>
+  
+  
+    <div class="navbar-persistent--mobile">
+
+<button class="btn search-button-field search-button__button pst-js-only" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+ <i class="fa-solid fa-magnifying-glass"></i>
+ <span class="search-button__default-text">Search</span>
+ <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+</button>
+    </div>
+  
+
+  
+    <button class="pst-navbar-icon sidebar-toggle secondary-toggle" aria-label="On this page">
+      <span class="fa-solid fa-outdent"></span>
+    </button>
+  
+</div>
+
+    </header>
+  
+
+  <div class="bd-container">
+    <div class="bd-container__inner bd-page-width">
+      
+      
+      
+      <dialog id="pst-primary-sidebar-modal"></dialog>
+      <div id="pst-primary-sidebar" class="bd-sidebar-primary bd-sidebar hide-on-wide">
+        
+
+  
+  <div class="sidebar-header-items sidebar-primary__section">
+    
+    
+      <div class="sidebar-header-items__center">
+        
+          
+          
+            <div class="navbar-item">
+<nav>
+  <ul class="bd-navbar-elements navbar-nav">
+    
+<li class="nav-item current active">
+  <a class="nav-link nav-internal" href="#">
+    Getting Started
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="managing-versions.html">
+    Managing Installed Versions
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="publishing-releases.html">
+    Publishing a Weaver Release
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="troubleshooting.html">
+    Troubleshooting
+  </a>
+</li>
+
+  </ul>
+</nav></div>
+          
+        
+      </div>
+    
+    
+    
+      <div class="sidebar-header-items__end">
+        
+          <div class="navbar-item"><div class="dropdown">
+  <button class="btn btn-sm btn-outline-secondary dropdown-toggle" type="button" id="version-switcher" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Select version" style="color: #198754 !important">
+    1.2.0-manager (stable, latest)
+  </button>
+  <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="version-switcher">
+    <li>
+      <a class="dropdown-item active" style="color: #198754 !important" href="index.html">
+        1.2.0-manager (stable, latest)
+      </a>
+    </li>
+    <li>
+      <a class="dropdown-item" style="color: #0d6efd !important" href="../1.1.0-manager/index.html">
+        1.1.0-manager (stable)
+      </a>
+    </li>
+    </ul>
+</div></div>
+        
+          <div class="navbar-item"><div class="dropdown">
+  <button class="btn btn-sm btn-outline-secondary dropdown-toggle" type="button" id="language-switcher" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Select language">
+    en
+  </button>
+  <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="language-switcher">
+    
+    <li>
+      <a class="dropdown-item active" href="index.html">
+        en
+      </a>
+    </li>
+    
+  </ul>
+</div></div>
+        
+          <div class="navbar-item">
+
+<div class="theme-switch-container dropdown pst-js-only" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Color mode">
+  <button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button dropdown-toggle" aria-label="Color mode" data-bs-toggle="dropdown">
+    <i class="theme-switch fa-solid fa-sun fa-lg fa-fw" data-mode="light" title="Light"></i>
+    <i class="theme-switch fa-solid fa-moon fa-lg fa-fw" data-mode="dark" title="Dark"></i>
+    <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg fa-fw" data-mode="auto" title="System Settings"></i>
+  </button>
+  <ul class="dropdown-menu dropdown-menu-end">
+    <li><button class="dropdown-item d-flex align-items-center theme-change-button" data-mode="auto"><i class="fa-solid fa-circle-half-stroke fa-lg fa-fw me-1"></i>System Settings</button></li>
+    <li><button class="dropdown-item d-flex align-items-center theme-change-button" data-mode="light"><i class="fa-solid fa-sun fa-lg fa-fw me-1"></i>Light</button></li>
+    <li><button class="dropdown-item d-flex align-items-center theme-change-button" data-mode="dark"><i class="fa-solid fa-moon fa-lg fa-fw me-1"></i>Dark</button></li>
+  </ul>
+</div></div>
+        
+      </div>
+    
+  </div>
+  
+  
+  <div class="sidebar-primary-items__end sidebar-primary__section">
+      <div class="sidebar-primary-item">
+<div id="ethical-ad-placement"
+      class="flat"
+      data-ea-publisher="readthedocs"
+      data-ea-type="readthedocs-sidebar"
+      data-ea-manual="true">
+</div></div>
+  </div>
+
+
+      </div>
+      
+      <main id="main-content" class="bd-main" role="main">
+        
+        
+          <div class="bd-content">
+            <div class="bd-article-container">
+              
+              <div class="bd-header-article d-print-none">
+<div class="header-article-items header-article__inner">
+  
+    <div class="header-article-items__start">
+      
+        <div class="header-article-item">
+
+<nav aria-label="Breadcrumb" class="d-print-none">
+  <ul class="bd-breadcrumbs">
+    
+    <li class="breadcrumb-item breadcrumb-home">
+      <a href="index.html" class="nav-link" aria-label="Home">
+        <i class="fa-solid fa-home"></i>
+      </a>
+    </li>
+    <li class="breadcrumb-item active" aria-current="page"><span class="ellipsis">Getting Started</span></li>
+  </ul>
+</nav>
+</div>
+      
+    </div>
+  
+  
+</div>
+</div>
+              
+              
+              
+                
+<div id="searchbox"></div>
+                <article class="bd-article">
+                  
+  <section id="getting-started">
+<h1>Getting Started<a class="headerlink" href="#getting-started" title="Link to this heading">#</a></h1>
+<section id="install-weaver-manager">
+<h2>Install Weaver Manager<a class="headerlink" href="#install-weaver-manager" title="Link to this heading">#</a></h2>
+<p>Download the Manager package for your operating system from the <a class="reference external" href="https://github.com/jordiSpider/Weaver/releases?q=manager">Weaver Manager releases</a> page and install it using the standard procedure for that platform. This page filters releases by <code class="docutils literal notranslate"><span class="pre">manager</span></code>; select the most recent result for Weaver Manager. The repository’s <code class="docutils literal notranslate"><span class="pre">latest</span></code> release may belong to Weaver, not the Manager.</p>
+<div class="sd-tab-set docutils">
+<input checked="checked" id="sd-tab-item-0" name="sd-tab-set-0" type="radio">
+<label class="sd-tab-label" for="sd-tab-item-0">
+Windows</label><div class="sd-tab-content docutils">
+<p>The Windows installer guides you through the following phases.</p>
+<p><strong>Phase 1 — Windows Defender SmartScreen</strong></p>
+<p>The installer is not yet digitally signed, so Windows cannot verify its publisher and may display the <strong>Windows protected your PC</strong> warning. Continue only if you downloaded the installer from the official Weaver Manager releases page. Select <strong>More info</strong> (also shown as <strong>More information</strong> in some Windows versions), then <strong>Run anyway</strong>. Otherwise, cancel the installer.</p>
+<figure class="align-center" id="id2">
+<a class="reference internal image-reference" href="_images/01-smartscreen.png"><img alt="Windows Defender SmartScreen warning with the More info option." src="_images/01-smartscreen.png" style="width: 85%;" />
+</a>
+<figcaption>
+<p><span class="caption-text">Windows Defender SmartScreen warning. Select <code class="docutils literal notranslate"><span class="pre">More</span> <span class="pre">info</span></code> to reveal <code class="docutils literal notranslate"><span class="pre">Run</span> <span class="pre">anyway</span></code>.</span><a class="headerlink" href="#id2" title="Link to this image">#</a></p>
+</figcaption>
+</figure>
+<p><strong>Phase 2 — Administrator permission and welcome</strong></p>
+<p>Windows asks for permission to let the installer make changes to the device. Accept the prompt to continue. The installer then opens its welcome page; select <strong>Next</strong> to proceed.</p>
+<p><strong>Phase 3 — Software license</strong></p>
+<p>Review and accept the software license agreement, then select <strong>Next</strong>.</p>
+<figure class="align-center" id="id3">
+<a class="reference internal image-reference" href="_images/02-license.png"><img alt="Weaver Manager installer license agreement page." src="_images/02-license.png" style="width: 85%;" />
+</a>
+<figcaption>
+<p><span class="caption-text">License agreement page. Review and accept the terms to continue.</span><a class="headerlink" href="#id3" title="Link to this image">#</a></p>
+</figcaption>
+</figure>
+<p><strong>Phase 4 — Program installation folder</strong></p>
+<p>The default program folder is <code class="docutils literal notranslate"><span class="pre">C:\Program</span> <span class="pre">Files\Weaver</span> <span class="pre">Manager</span></code>. Keep this location or choose another, then continue.</p>
+<figure class="align-center" id="id4">
+<a class="reference internal image-reference" href="_images/03-program-folder.png"><img alt="Program installation folder page showing the default path." src="_images/03-program-folder.png" style="width: 85%;" />
+</a>
+<figcaption>
+<p><span class="caption-text">Program installation folder page with the default path <code class="docutils literal notranslate"><span class="pre">C:\Program</span> <span class="pre">Files\Weaver</span> <span class="pre">Manager</span></code>.</span><a class="headerlink" href="#id4" title="Link to this image">#</a></p>
+</figcaption>
+</figure>
+<p><strong>Phase 5 — Program shortcut</strong></p>
+<p>Choose whether the installer should create a program shortcut, then continue.</p>
+<figure class="align-center" id="id5">
+<a class="reference internal image-reference" href="_images/04-shortcut.png"><img alt="Installer page for choosing whether to create a program shortcut." src="_images/04-shortcut.png" style="width: 85%;" />
+</a>
+<figcaption>
+<p><span class="caption-text">Program shortcut selection page.</span><a class="headerlink" href="#id5" title="Link to this image">#</a></p>
+</figcaption>
+</figure>
+<p><strong>Phase 6 — Application data folder</strong></p>
+<p>Choose where Weaver Manager should store its mutable data, installed Weaver versions, and logs. The default is <code class="docutils literal notranslate"><span class="pre">Documents\Weaver</span> <span class="pre">Manager</span></code>. Keep this location or choose another folder, then continue.</p>
+<figure class="align-center" id="id6">
+<a class="reference internal image-reference" href="_images/05-data-folder.png"><img alt="Application data folder page showing the suggested Documents location." src="_images/05-data-folder.png" style="width: 85%;" />
+</a>
+<figcaption>
+<p><span class="caption-text">Application data folder page with the suggested <code class="docutils literal notranslate"><span class="pre">Documents\Weaver</span> <span class="pre">Manager</span></code> location.</span><a class="headerlink" href="#id6" title="Link to this image">#</a></p>
+</figcaption>
+</figure>
+<p><strong>Phase 7 — Install and finish</strong></p>
+<p>Select <strong>Install</strong> and wait for setup to complete. When the completion page appears, select <strong>Finish</strong> to close the installer.</p>
+<figure class="align-center" id="id7">
+<a class="reference internal image-reference" href="_images/06-complete.png"><img alt="Weaver Manager installer completion page with the Finish button." src="_images/06-complete.png" style="width: 85%;" />
+</a>
+<figcaption>
+<p><span class="caption-text">Installer completion page. Select <code class="docutils literal notranslate"><span class="pre">Finish</span></code> to close setup.</span><a class="headerlink" href="#id7" title="Link to this image">#</a></p>
+</figcaption>
+</figure>
+</div>
+<input id="sd-tab-item-1" name="sd-tab-set-0" type="radio">
+<label class="sd-tab-label" for="sd-tab-item-1">
+macOS</label><div class="sd-tab-content docutils">
+</div>
+<input id="sd-tab-item-2" name="sd-tab-set-0" type="radio">
+<label class="sd-tab-label" for="sd-tab-item-2">
+Linux</label><div class="sd-tab-content docutils">
+</div>
+</div>
+</section>
+<section id="weaver-manager-menus">
+<h2>Weaver Manager menus<a class="headerlink" href="#weaver-manager-menus" title="Link to this heading">#</a></h2>
+<p><strong>Notifications</strong></p>
+<p>The <strong>Notifications</strong> menu has separate <strong>Weaver Manager</strong> and <strong>Weaver releases</strong> submenus. Each has an option to enable notifications (enabled by default) and an independent option to include pre-releases (disabled by default).</p>
+<p>Manager update notifications are shown at startup whenever a newer version is available, unless that notification has already been dismissed. Select the checkbox in the notification and then <strong>OK</strong> to turn off Manager update notifications. Re-enable them in the <strong>Weaver Manager</strong> submenu.</p>
+<p>Weaver release notifications list newly discovered verified version and edition pairs, using the same discovery cache as the <strong>NEW</strong> indicator rather than comparing against an installed version. They appear on any search, including <strong>Refresh GitHub Releases</strong>, when eligible new versions are found. Select the notification checkbox and <strong>OK</strong> to turn off new Weaver release notifications; re-enable them in the <strong>Weaver releases</strong> submenu. These preferences apply to subsequent searches: discoveries are still recorded when notifications or pre-release notifications are disabled, so enabling them later does not replay earlier discoveries. The display filter in <strong>Available Releases</strong> is independent of both notification settings.</p>
+<p><strong>Theme</strong></p>
+<p>Choose <strong>System</strong> (the default), <strong>Light</strong>, or <strong>Dark</strong> from the <strong>Theme</strong> menu. System selects the same Light or Dark palette as the operating system’s appearance and follows changes while Weaver Manager is open. If the operating system does not report its color scheme, System uses the initial system palette to choose between Light and Dark. The choice is applied immediately and remembered for future sessions; release status and new or installed release colors adapt to the selected appearance.</p>
+<p><strong>Help</strong></p>
+<p>Select <strong>Weaver Manager Documentation</strong> from the <strong>Help</strong> menu to open the documentation for the installed Weaver Manager version in your web browser.</p>
+</section>
+<section id="find-a-release">
+<h2>Find a release<a class="headerlink" href="#find-a-release" title="Link to this heading">#</a></h2>
+<p>Open the <strong>Available Releases</strong> tab. Each time Weaver Manager starts, it automatically refreshes the list of available releases from GitHub. It displays only entries that have a valid signed manifest, a matching artifact, and a package for the current platform. Select <strong>Refresh GitHub Releases</strong> to check again while the program is open.</p>
+<p>Use <strong>Show pre-releases</strong> to show or hide pre-release rows. This preference is remembered and is enabled by default. It does not change the discovery cache or notification preferences, and local test installers remain visible.</p>
+<p>The <strong>GitHub tag</strong> column shows each release’s tag, including any pre-release identifier such as <code class="docutils literal notranslate"><span class="pre">-rc.1</span></code>, so releases with the same version and edition can be distinguished. Releases without a tag are omitted. Local test installers have no GitHub tag. The <strong>Version</strong> column retains the version from the installer filename; installed status is still determined by that version and edition, not the GitHub tag.</p>
+<p>Select a column heading to sort the list. The arrow in the heading shows the current sort direction; select the same heading again to reverse it.</p>
+<figure class="align-center" id="id8">
+<a class="reference internal image-reference" href="_images/sort-column.png"><img alt="Cropped Available Releases table header showing the Edition column sorted in ascending order." src="_images/sort-column.png" style="width: 40%;" />
+</a>
+<figcaption>
+<p><span class="caption-text">The <code class="docutils literal notranslate"><span class="pre">Edition</span></code> column is sorted in ascending order. Select the same column heading again to reverse the order.</span><a class="headerlink" href="#id8" title="Link to this image">#</a></p>
+</figcaption>
+</figure>
+<div class="sd-mb-3 docutils">
+<p>The <strong>Release status</strong> column identifies <span class="sd-sphinx-override sd-badge sd-bg-success sd-bg-text-success">Latest</span>, <span class="sd-sphinx-override sd-badge sd-bg-primary sd-bg-text-primary">Stable</span>, or <span class="sd-sphinx-override sd-badge sd-bg-warning sd-bg-text-warning">Pre-Release</span>.</p>
+<ul class="simple">
+<li><p><span class="sd-sphinx-override sd-badge sd-bg-success sd-bg-text-success">Latest</span>: the most recent stable release identified by GitHub. Weaver Manager does not install it automatically.</p></li>
+<li><p><span class="sd-sphinx-override sd-badge sd-bg-primary sd-bg-text-primary">Stable</span>: a regular release that is not marked as a pre-release; a newer stable release may be available.</p></li>
+<li><p><span class="sd-sphinx-override sd-badge sd-bg-warning sd-bg-text-warning">Pre-Release</span>: a release marked by its maintainers as preliminary, usually for testing or evaluation.</p></li>
+</ul>
+</div>
+<p><strong>Cache status</strong> tracks releases the Manager has discovered and versions it detects as installed. It identifies each verified entry for the current platform by its GitHub tag, version and edition, so different tags with the same version and edition are tracked independently. This record is separate from the temporary cache used for downloaded installer files. Earlier ID-based or version-and-edition cache entries are migrated when the release catalog is next loaded. The older version-and-edition cache cannot distinguish tags, so matching releases in that first catalog are treated as already seen.</p>
+<p>When the Manager searches for releases for the first time, this record is empty, so every verified release it finds for the current platform that is not already detected as installed is marked <strong>NEW</strong>. On later searches, <strong>NEW</strong> marks releases discovered since the previous search. If Weaver release notifications are enabled, an information window lists newly discovered versions and editions, including pre-releases only if their notification option is enabled. The <strong>NEW</strong> marker is informational; it is not a recommendation or security rating, and it clears after the next refresh or when the Manager restarts.</p>
+<figure class="align-center" id="id9">
+<a class="reference internal image-reference" href="_images/new-releases-notification.png"><img alt="Weaver Manager information window listing newly discovered Weaver versions and editions." src="_images/new-releases-notification.png" style="width: 40%;" />
+</a>
+<figcaption>
+<p><span class="caption-text">Information window listing the newly discovered version and edition pairs.</span><a class="headerlink" href="#id9" title="Link to this image">#</a></p>
+</figcaption>
+</figure>
+<p>When the Manager detects that a version and edition are installed, <strong>Cache status</strong> changes to <strong>INSTALLED</strong> and its <strong>Install</strong> button is hidden to prevent installing it again. After uninstalling it, select <strong>Refresh Installed Versions</strong>; if its release is still available in the catalog, it can be installed again.</p>
+<section id="why-a-release-may-not-appear">
+<span id="id1"></span><h3>Why a release may not appear<a class="headerlink" href="#why-a-release-may-not-appear" title="Link to this heading">#</a></h3>
+<p>GitHub Release assets are attached as a flat list, not uploaded into folders. Weaver Manager lists only published, immutable releases that include both <code class="docutils literal notranslate"><span class="pre">weaver-manager-manifest.json</span></code> and its detached Base64 Ed25519 signature, <code class="docutils literal notranslate"><span class="pre">weaver-manager-manifest.json.sig</span></code>, as well as a supported installer asset. Draft releases, missing files, invalid signatures, malformed manifests, and assets that do not match the current platform are omitted.</p>
+<p>The Manager verifies the manifest using a public key pinned into the application at build time. The signed manifest must declare the installer asset and its SHA-256. The installer filename must identify a supported edition, version, operating system, and architecture, and must match the current platform.</p>
+<p><strong>Supported installer names</strong> follow this pattern:</p>
+<p><code class="docutils literal notranslate"><span class="pre">Weaver-&lt;Edition&gt;-&lt;YY.MM.DD&gt;-&lt;OS&gt;-&lt;Architecture&gt;.&lt;extension&gt;</span></code></p>
+<p>For example: <code class="docutils literal notranslate"><span class="pre">Weaver-Desktop-26.11.06-Windows-x64.msi</span></code>. The edition is <code class="docutils literal notranslate"><span class="pre">Desktop</span></code> or <code class="docutils literal notranslate"><span class="pre">Server</span></code>; OS is <code class="docutils literal notranslate"><span class="pre">Windows</span></code>, <code class="docutils literal notranslate"><span class="pre">Linux</span></code>, or <code class="docutils literal notranslate"><span class="pre">macOS</span></code>; architecture is currently <code class="docutils literal notranslate"><span class="pre">x64</span></code> or <code class="docutils literal notranslate"><span class="pre">arm64</span></code>. Supported extensions are <code class="docutils literal notranslate"><span class="pre">msi</span></code> on Windows, <code class="docutils literal notranslate"><span class="pre">deb</span></code> or <code class="docutils literal notranslate"><span class="pre">rpm</span></code> on Linux, and <code class="docutils literal notranslate"><span class="pre">pkg</span></code> or <code class="docutils literal notranslate"><span class="pre">dmg</span></code> on macOS.</p>
+<figure class="align-center" id="id10">
+<a class="reference internal image-reference" href="_images/weaver-manager-release-layout.svg"><img alt="Diagram of a published GitHub Release with its installer, manifest and signature, and the checks Weaver Manager applies before listing it." src="_images/weaver-manager-release-layout.svg" style="width: 100%;" />
+</a>
+<figcaption>
+<p><span class="caption-text">Example of the assets attached to a Manager-compatible GitHub Release and the catalog requirements.</span><a class="headerlink" href="#id10" title="Link to this image">#</a></p>
+</figcaption>
+</figure>
+<p>Before launching an installer, the Manager checks the downloaded file’s size and SHA-256 against the signed manifest and verifies the cached file again.</p>
+<div class="admonition warning">
+<p class="admonition-title">Warning</p>
+<p>These checks protect the catalog and installer download from unauthorized or accidental changes relative to the signing key. They do not replace operating-system security controls or independent review of a release.</p>
+</div>
+<p>See <a class="reference internal" href="publishing-releases.html"><span class="doc">Publishing a Weaver Release</span></a> for the release preparation checklist. If this explanation does not identify why a release is missing, see <a class="reference internal" href="troubleshooting.html"><span class="doc">Troubleshooting</span></a> for other possible causes and their solutions.</p>
+</section>
+</section>
+<section id="install-a-version">
+<h2>Install a version<a class="headerlink" href="#install-a-version" title="Link to this heading">#</a></h2>
+<p>The verified releases for your operating system and architecture are shown in a table. Compare the <strong>Version</strong> and <strong>Edition</strong> columns to find the build you want. The <strong>Installer</strong> column shows the package that will be launched; other columns provide publication date, release status, and cache status.</p>
+<p>Select <strong>Install</strong> in the row for the chosen version and edition.</p>
+<figure class="align-center" id="id11">
+<a class="reference internal image-reference" href="_images/select-version.png"><img alt="Available Releases table showing a version and edition with its Install button." src="_images/select-version.png" style="width: 90%;" />
+</a>
+<figcaption>
+<p><span class="caption-text">Select the intended version and edition, then click <strong>Install</strong> in that row.</span><a class="headerlink" href="#id11" title="Link to this image">#</a></p>
+</figcaption>
+</figure>
+<p>Weaver Manager opens a confirmation dialog showing the selected version and edition. It explains that the release manifest signature and installer SHA-256 will be verified before the installer is launched, and that the installer may request administrator privileges. Select <strong>Yes</strong> to continue or <strong>Cancel</strong> to stop.</p>
+<figure class="align-center" id="id12">
+<a class="reference internal image-reference" href="_images/install-confirmation.png"><img alt="Install Weaver Version confirmation dialog showing the selected version and verification notice." src="_images/install-confirmation.png" style="width: 75%;" />
+</a>
+<figcaption>
+<p><span class="caption-text">Confirm the selected version after reviewing the verification and administrator-privilege notice.</span><a class="headerlink" href="#id12" title="Link to this image">#</a></p>
+</figcaption>
+</figure>
+<p>The Manager validates release manifest signatures when it loads the catalog. After you confirm, it downloads the installer and checks its size and SHA-256 against the signed manifest. If the checks pass, the Manager launches the downloaded installer automatically. Follow the instructions for your operating system in the relevant tab.</p>
+<div class="sd-tab-set docutils">
+<input checked="checked" id="sd-tab-item-3" name="sd-tab-set-1" type="radio">
+<label class="sd-tab-label" for="sd-tab-item-3">
+Windows</label><div class="sd-tab-content docutils">
+<p>After verification, Weaver Manager opens the downloaded Windows installer automatically. When started this way, the MSI runs in Manager-managed mode and skips the standard folder-selection pages. The Manager installs the version in an <code class="docutils literal notranslate"><span class="pre">installed_versions</span></code> subdirectory under each of its configured locations: the software installation directory and the mutable-data directory. These predetermined locations let Weaver Manager keep track of the installed versions and their content. You do not need to choose either path in the version installer. This differs from launching the MSI directly.</p>
+<p><strong>Welcome</strong></p>
+<p>The version installer opens at its welcome screen. Select <strong>Next</strong> to continue.</p>
+<figure class="align-center" id="id13">
+<a class="reference internal image-reference" href="_images/windows-installer-welcome.png"><img alt="Welcome page of the Weaver version installer launched by Weaver Manager." src="_images/windows-installer-welcome.png" style="width: 75%;" />
+</a>
+<figcaption>
+<p><span class="caption-text">The version installer opens automatically after verification. Select <strong>Next</strong> to continue.</span><a class="headerlink" href="#id13" title="Link to this image">#</a></p>
+</figcaption>
+</figure>
+<p><strong>Accept the license</strong></p>
+<p>Review the license agreement, select the option to accept its terms, and continue to the next page.</p>
+<figure class="align-center" id="id14">
+<a class="reference internal image-reference" href="_images/windows-license-agreement.png"><img alt="License agreement page in the Weaver version installer." src="_images/windows-license-agreement.png" style="width: 75%;" />
+</a>
+<figcaption>
+<p><span class="caption-text">Accept the license agreement to continue with the installation.</span><a class="headerlink" href="#id14" title="Link to this image">#</a></p>
+</figcaption>
+</figure>
+<p><strong>Choose components</strong></p>
+<p>The component list depends on whether you selected the <strong>Desktop</strong> or <strong>Server</strong> edition. All components are selected by default. Select a feature’s icon in the tree to open its installation-state menu. Required components cannot be excluded; optional components can also be excluded or added when modifying the installation.</p>
+<figure class="align-center" id="id15">
+<a class="reference internal image-reference" href="_images/windows-component-selection.png"><img alt="Component selection page showing required and optional Weaver features selected by default." src="_images/windows-component-selection.png" style="width: 75%;" />
+</a>
+<figcaption>
+<p><span class="caption-text">Component choices vary by edition; all components are selected by default.</span><a class="headerlink" href="#id15" title="Link to this image">#</a></p>
+</figcaption>
+</figure>
+<p><strong>Required components</strong></p>
+<p>Required components have an installation-state menu, but it does not include an option to exclude the component. Use one of the available installation options:</p>
+<figure class="align-center" id="id16">
+<a class="reference internal image-reference" href="_images/windows-required-component-options.png"><img alt="Installation-state menu for a required Weaver component." src="_images/windows-required-component-options.png" style="width: 50%;" />
+</a>
+<figcaption>
+<p><span class="caption-text">Installation options for a required component. This menu does not include an option to exclude the component.</span><a class="headerlink" href="#id16" title="Link to this image">#</a></p>
+</figcaption>
+</figure>
+<ul class="simple">
+<li><p><strong>Will be installed on local hard drive</strong> — installs the component locally; its subcomponents can be selected separately.</p></li>
+<li><p><strong>Entire feature will be installed on local hard drive</strong> — installs the component and all its subcomponents locally.</p></li>
+<li><p><strong>Feature will be installed when required</strong> — makes the component available for installation when it is first needed.</p></li>
+</ul>
+<p><strong>Optional components</strong></p>
+<p>Optional components have the same installation options, plus an option to leave the component out of the installation. Choose <strong>Entire feature will be unavailable</strong> to prevent the component and its subcomponents from being installed. To add or retain the component, choose one of the installation options described above.</p>
+<figure class="align-center" id="id17">
+<a class="reference internal image-reference" href="_images/windows-optional-component-options.png"><img alt="Installation-state menu for an optional Weaver component, including the option to leave it unavailable." src="_images/windows-optional-component-options.png" style="width: 50%;" />
+</a>
+<figcaption>
+<p><span class="caption-text">Installation options for an optional component, including <code class="docutils literal notranslate"><span class="pre">Entire</span> <span class="pre">feature</span> <span class="pre">will</span> <span class="pre">be</span> <span class="pre">unavailable</span></code>.</span><a class="headerlink" href="#id17" title="Link to this image">#</a></p>
+</figcaption>
+</figure>
+<p>Repeat this for each component you want to change, then continue with the installation.</p>
+<p><strong>Install</strong></p>
+<p>On the ready-to-install page, select <strong>Install</strong> to begin. Windows may then ask for permission to make changes to your device. Accept the User Account Control prompt to allow the installation to continue.</p>
+<div class="admonition warning">
+<p class="admonition-title">Warning</p>
+<p>Installation time depends on the selected components and may range from a few seconds to several minutes. Wait for the installer to finish and do not close or interrupt it.</p>
+</div>
+<p><strong>Finish</strong></p>
+<p>When installation is complete, the installer displays its completion page. Select <strong>Finish</strong> to close it.</p>
+<figure class="align-center" id="id18">
+<a class="reference internal image-reference" href="_images/windows-installation-complete.png"><img alt="Completion page confirming that the Weaver version installation has finished." src="_images/windows-installation-complete.png" style="width: 75%;" />
+</a>
+<figcaption>
+<p><span class="caption-text">The completion page confirms that the installation has finished.</span><a class="headerlink" href="#id18" title="Link to this image">#</a></p>
+</figcaption>
+</figure>
+</div>
+<input id="sd-tab-item-4" name="sd-tab-set-1" type="radio">
+<label class="sd-tab-label" for="sd-tab-item-4">
+Linux</label><div class="sd-tab-content docutils">
+</div>
+<input id="sd-tab-item-5" name="sd-tab-set-1" type="radio">
+<label class="sd-tab-label" for="sd-tab-item-5">
+macOS</label><div class="sd-tab-content docutils">
+</div>
+</div>
+<p>The Manager does not install silently or update an existing version in place; versions can be installed side by side. After installation, the version is added automatically to <strong>Installed Versions</strong>, and its <strong>Cache status</strong> in <strong>Available Releases</strong> changes to <strong>INSTALLED</strong>.</p>
+<figure class="align-center" id="id19">
+<a class="reference internal image-reference" href="_images/installed-status.png"><img alt="Available Releases table showing the installed version with INSTALLED cache status." src="_images/installed-status.png" style="width: 90%;" />
+</a>
+<figcaption>
+<p><span class="caption-text">The installed version is marked <strong>INSTALLED</strong> in the <strong>Cache status</strong> column.</span><a class="headerlink" href="#id19" title="Link to this image">#</a></p>
+</figcaption>
+</figure>
+<p>For details about the actions available for an installed version, see <a class="reference internal" href="managing-versions.html"><span class="doc">Managing Installed Versions</span></a>.</p>
+<p>For instructions on adding and installing a local test installer, see <a class="reference internal" href="publishing-releases.html#local-test-installers"><span class="std std-ref">Local test installers</span></a>.</p>
+</section>
+<section id="logs-and-installer-cache">
+<h2>Logs and installer cache<a class="headerlink" href="#logs-and-installer-cache" title="Link to this heading">#</a></h2>
+<p>Weaver Manager stores its logs and data in the application data folder selected during installation. By default, this is <code class="docutils literal notranslate"><span class="pre">Documents\Weaver</span> <span class="pre">Manager</span></code>. The folder can be in a different location if you selected one in the installer.</p>
+<p><strong>Logs</strong> are stored in the <code class="docutils literal notranslate"><span class="pre">logs</span></code> subfolder:</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">weaver-manager.log</span></code> records Manager activity and installer process output. It is appended to across Manager sessions.</p></li>
+<li><p>On Windows, <code class="docutils literal notranslate"><span class="pre">msiexec-install.log</span></code> records a managed version installation, and <code class="docutils literal notranslate"><span class="pre">msiexec-modify.log</span></code> records a <strong>Modify</strong> operation. These are verbose Windows Installer logs and can help diagnose installation or maintenance failures.</p></li>
+</ul>
+<p><strong>Release, notification and theme state</strong> is stored separately in <code class="docutils literal notranslate"><span class="pre">release-cache.ini</span></code> in the platform’s per-user application data folder. It records which Weaver version-and-edition pairs have already appeared in the release catalog, along with the theme choice, Manager update-notification preferences and dismissed notifications. This lets the Manager identify newly discovered releases and remember your preferences. It is not a cache of the GitHub release catalog or its manifests. Removing this file resets the theme and notification preferences to their defaults; on systems with legacy saved release history, the Manager may restore that history from its older settings store.</p>
+<p><strong>Verified installers</strong> are downloaded to <code class="docutils literal notranslate"><span class="pre">verified-installers</span></code> in the platform’s cache folder. Before launching an installer, Weaver Manager checks its size and SHA-256 against the signed release manifest and verifies the cached file again. A catalog refresh removes cached installers for releases that are no longer available for the current platform. The Manager also removes the installer cache when it closes; if an installer is still running, the Manager waits until it finishes before closing and cleaning up the cache.</p>
+<p>The <code class="docutils literal notranslate"><span class="pre">installed_versions</span></code> folders contain the actual Weaver installations, not temporary cache files. Closing Weaver Manager does not remove installed versions.</p>
+</section>
+</section>
+
+
+                </article>
+              
+              
+              
+              
+              
+                <footer class="prev-next-footer d-print-none">
+                  
+<div class="prev-next-area">
+    <a class="left-prev"
+       href="index.html"
+       title="previous page">
+      <i class="fa-solid fa-angle-left"></i>
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">previous</p>
+        <p class="prev-next-title">Weaver Manager — User Guide</p>
+      </div>
+    </a>
+    <a class="right-next"
+       href="managing-versions.html"
+       title="next page">
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">next</p>
+        <p class="prev-next-title">Managing Installed Versions</p>
+      </div>
+      <i class="fa-solid fa-angle-right"></i>
+    </a>
+</div>
+                </footer>
+              
+            </div>
+            
+            
+              
+                <dialog id="pst-secondary-sidebar-modal"></dialog>
+                <div id="pst-secondary-sidebar" class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
+
+
+  <div class="sidebar-secondary-item">
+<div
+    id="pst-page-navigation-heading-2"
+    class="page-toc tocsection onthispage">
+    <i class="fa-solid fa-list"></i> On this page
+  </div>
+  <nav id="pst-page-toc-nav" class="page-toc" aria-labelledby="pst-page-navigation-heading-2">
+    <ul class="pst-show_toc_level nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#install-weaver-manager">Install Weaver Manager</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#weaver-manager-menus">Weaver Manager menus</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#find-a-release">Find a release</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#why-a-release-may-not-appear">Why a release may not appear</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#install-a-version">Install a version</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#logs-and-installer-cache">Logs and installer cache</a></li>
+</ul>
+  </nav></div>
+
+  <div class="sidebar-secondary-item">
+
+  <div class="tocsection sourcelink">
+    <a href="_sources/getting-started.rst.txt">
+      <i class="fa-solid fa-file-lines"></i> Show Source
+    </a>
+  </div>
+</div>
+
+</div></div>
+              
+            
+          </div>
+          <footer class="bd-footer-content">
+            
+          </footer>
+        
+      </main>
+    </div>
+  </div>
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script defer src="_static/scripts/bootstrap.js?digest=a95f357e85573c9b56d5"></script>
+<script defer src="_static/scripts/pydata-sphinx-theme.js?digest=a95f357e85573c9b56d5"></script>
+
+  <footer class="bd-footer">
+<div class="bd-footer__inner bd-page-width">
+  
+    <div class="footer-items__start">
+      
+        <div class="footer-item">
+
+  <p class="copyright">
+    
+      © Copyright 2025, Jordi Moya Laraño.
+      <br/>
+    
+  </p>
+</div>
+      
+        <div class="footer-item">
+
+  <p class="sphinx-version">
+    Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 8.1.3.
+    <br/>
+  </p>
+</div>
+      
+    </div>
+  
+  
+  
+    <div class="footer-items__end">
+      
+        <div class="footer-item">
+<p class="theme-version">
+  <!-- # L10n: Setting the PST URL as an argument as this does not need to be localized -->
+  Built with the <a href="https://pydata-sphinx-theme.readthedocs.io/en/stable/index.html">PyData Sphinx Theme</a> 0.19.0.
+</p></div>
+      
+    </div>
+  
+</div>
+
+  </footer>
+  </body>
+</html>
