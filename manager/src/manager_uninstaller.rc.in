@@ -1,5 +1,6 @@
 #include <windows.h>
 
+// Windows version-resource metadata for the standalone Manager uninstaller.
 VS_VERSION_INFO VERSIONINFO
  FILEVERSION @PROJECT_VERSION_MAJOR@,@PROJECT_VERSION_MINOR@,0,0
  PRODUCTVERSION @PROJECT_VERSION_MAJOR@,@PROJECT_VERSION_MINOR@,0,0

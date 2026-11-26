@@ -1,3 +1,4 @@
 #pragma once
 
+// Build-time public key used to authenticate signed release manifests.
 #define WEAVER_RELEASE_PUBLIC_KEY_BASE64 "@WEAVER_RELEASE_PUBLIC_KEY_BASE64@"

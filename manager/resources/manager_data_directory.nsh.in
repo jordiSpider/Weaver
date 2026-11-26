@@ -227,6 +227,14 @@ ManagerUpgradeCleanupFailed:
 ManagerUpgradeCleanupDone:
 !macroend
 
+; Launch through Explorer so the Manager runs with the user's normal (non-elevated)
+; token; otherwise Windows blocks drag and drop from Explorer into the elevated app.
+Function ManagerLaunchUnelevated
+	Exec '"$WINDIR\explorer.exe" "$INSTDIR\bin\@WEAVER_MANAGER_EXECUTABLE_FILE_NAME@"'
+FunctionEnd
+
+!define MUI_FINISHPAGE_RUN_FUNCTION ManagerLaunchUnelevated
+
 !macro ManagerDataDirInstall
 	CreateDirectory "$MANAGERDATADIR"
 	CreateDirectory "$MANAGERDATADIR\installed_versions"

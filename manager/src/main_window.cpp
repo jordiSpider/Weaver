@@ -1,10 +1,12 @@
-#include "main_window.h"
+﻿#include "main_window.h"
 #include "manager_logging.h"
 #include "manager_paths.h"
 #include "release_trust_config.h"
 
 #include <QDir>
 #include <QColor>
+#include <QApplication>
+#include <QActionGroup>
 #include <QCryptographicHash>
 #include <QCloseEvent>
 #include <QDebug>
@@ -14,6 +16,7 @@
 #include <QDialogButtonBox>
 #include <QDragEnterEvent>
 #include <QDropEvent>
+#include <functional>
 #endif
 #include <QEvent>
 #include <QFile>
@@ -40,8 +43,6 @@
 #endif
 #include <QNetworkReply>
 #include <QNetworkRequest>
-#include <QPainter>
-#include <QPaintEvent>
 #include <QProcess>
 #include <QProcessEnvironment>
 #include <QRegularExpression>
@@ -50,6 +51,8 @@
 #include <QStandardPaths>
 #include <QSettings>
 #include <QStatusBar>
+#include <QStyle>
+#include <QStyleHints>
 #include <QSysInfo>
 #include <QTabWidget>
 #include <QScrollArea>
@@ -81,6 +84,60 @@ constexpr int ReleaseValidationEntryAttribute = static_cast<int>(QNetworkRequest
 constexpr int ReleaseRequestTimeoutMs = 30000;
 constexpr int MaxReleasePageRetries = 2;
 constexpr int ReleasePageRetryDelayMs = 1000;
+
+enum class ReleaseStatus { Stable, Latest, Prerelease, Test };
+
+struct ReleaseColors {
+    QColor installedBackground;
+    QColor newBackground;
+    QColor rowText;
+    QColor installedText;
+    QColor newText;
+    QColor stableBackground;
+    QColor stableText;
+    QColor prereleaseBackground;
+    QColor prereleaseText;
+    QColor testBackground;
+    QColor testText;
+};
+
+ReleaseColors releaseColors() {
+    if (QApplication::palette().color(QPalette::Base).lightness() < 128) {
+        return {QColor("#1d392c"), QColor("#453a1f"), QColor("#f5f2e8"),
+                QColor("#a5d6a7"), QColor("#e1bee7"), QColor("#1b344c"),
+                QColor("#90caf9"), QColor("#493420"), QColor("#ffcc80"),
+                QColor("#3d2945"), QColor("#e1bee7")};
+    }
+    return {QColor("#e8f5e9"), QColor("#fff2cc"), QColor("#202020"),
+            QColor("#1b5e20"), QColor("#6a1b9a"), QColor("#e3f2fd"),
+            QColor("#0d47a1"), QColor("#fff3e0"), QColor("#8a4b08"),
+            QColor("#f3e5f5"), QColor("#6a1b9a")};
+}
+
+QPalette managerPalette(bool dark) {
+    QPalette palette;
+    const QColor window(dark ? "#252b33" : "#f4f6f8");
+    const QColor base(dark ? "#1c2229" : "#ffffff");
+    const QColor text(dark ? "#edf1f5" : "#20252b");
+    const QColor button(dark ? "#343e49" : "#e7edf3");
+    const QColor disabled(dark ? "#9ba6b2" : "#626d78");
+    palette.setColor(QPalette::Window, window);
+    palette.setColor(QPalette::WindowText, text);
+    palette.setColor(QPalette::Base, base);
+    palette.setColor(QPalette::AlternateBase, window);
+    palette.setColor(QPalette::Text, text);
+    palette.setColor(QPalette::Button, button);
+    palette.setColor(QPalette::ButtonText, text);
+    palette.setColor(QPalette::ToolTipBase, dark ? QColor("#343e49") : QColor("#ffffdc"));
+    palette.setColor(QPalette::ToolTipText, text);
+    palette.setColor(QPalette::Highlight, dark ? QColor("#90caf9") : QColor("#1976d2"));
+    palette.setColor(QPalette::HighlightedText, dark ? QColor("#102334") : QColor("#ffffff"));
+    palette.setColor(QPalette::Link, dark ? QColor("#90caf9") : QColor("#0d47a1"));
+    palette.setColor(QPalette::Disabled, QPalette::WindowText, disabled);
+    palette.setColor(QPalette::Disabled, QPalette::Text, disabled);
+    palette.setColor(QPalette::Disabled, QPalette::ButtonText, disabled);
+    return palette;
+}
 
 int compareManagerRelease(const QVersionNumber &leftVersion, int leftPrerelease,
                           const QVersionNumber &rightVersion, int rightPrerelease) {
@@ -117,28 +174,53 @@ ManagerReleaseVersion currentManagerReleaseVersion() {
 }
 
 #if ENABLE_TEST
-class InstallerDropLabel final : public QLabel {
+// Event filter installed on every widget of the dialog so a dropped file is
+// accepted wherever it is released (child widgets would otherwise reject it).
+class InstallerDropFilter final : public QObject {
 public:
-    InstallerDropLabel(QLineEdit *pathEdit, QWidget *parent = nullptr)
-        : QLabel(parent), pathEdit_(pathEdit) {
-        setAcceptDrops(true);
-    }
+    InstallerDropFilter(QLineEdit *pathEdit, std::function<bool(const QString &)> isValid, QObject *parent)
+        : QObject(parent), pathEdit_(pathEdit), isValid_(std::move(isValid)) {}
 
-protected:
-    void dragEnterEvent(QDragEnterEvent *event) override {
-        if (event->mimeData()->hasUrls()) event->acceptProposedAction();
-    }
-
-    void dropEvent(QDropEvent *event) override {
-        const auto urls = event->mimeData()->urls();
-        if (urls.size() == 1 && urls.first().isLocalFile()) {
-            pathEdit_->setText(urls.first().toLocalFile());
-            event->acceptProposedAction();
+    bool eventFilter(QObject *watched, QEvent *event) override {
+        switch (event->type()) {
+        case QEvent::DragEnter:
+        case QEvent::DragMove: {
+            auto *drag = static_cast<QDropEvent *>(event);
+            if (!localFile(drag->mimeData()).isEmpty()) {
+                drag->setDropAction(Qt::CopyAction);
+                drag->accept();
+                return true;
+            }
+            break;
         }
+        case QEvent::Drop: {
+            auto *drop = static_cast<QDropEvent *>(event);
+            const auto path = localFile(drop->mimeData());
+            if (!path.isEmpty()) {
+                pathEdit_->setText(path);
+                drop->setDropAction(Qt::CopyAction);
+                drop->accept();
+                return true;
+            }
+            break;
+        }
+        default:
+            break;
+        }
+        return QObject::eventFilter(watched, event);
     }
 
 private:
+    QString localFile(const QMimeData *mime) const {
+        if (!mime || !mime->hasUrls()) return {};
+        const auto urls = mime->urls();
+        if (urls.size() != 1 || !urls.first().isLocalFile()) return {};
+        const auto path = urls.first().toLocalFile();
+        return isValid_ && !isValid_(path) ? QString() : path;
+    }
+
     QLineEdit *pathEdit_{};
+    std::function<bool(const QString &)> isValid_;
 };
 #endif
 
@@ -220,18 +302,36 @@ public:
 class ReleaseTableHeader final : public QHeaderView {
 public:
     explicit ReleaseTableHeader(Qt::Orientation orientation, QWidget *parent = nullptr)
-        : QHeaderView(orientation, parent) {}
+        : QHeaderView(orientation, parent) {
+        updateColors();
+        connect(qApp, &QApplication::paletteChanged, this, [this] { updateColors(); });
+    }
 
-protected:
-    void paintEvent(QPaintEvent *event) override {
-        QHeaderView::paintEvent(event);
-        QPainter painter(viewport());
-        const int lineHeight = 4;
-        painter.fillRect(0, qMax(0, viewport()->height() - lineHeight),
-                         viewport()->width(), lineHeight, Qt::black);
+private:
+    void updateColors() {
+        const bool dark = QApplication::palette().color(QPalette::Base).lightness() < 128;
+        const QString background = dark ? QStringLiteral("#303943") : QStringLiteral("#edf1f5");
+        const QString foreground = dark ? QStringLiteral("#edf1f5") : QStringLiteral("#20252b");
+        const QString border = dark ? QStringLiteral("#45515e") : QStringLiteral("#d3dae2");
+        const QString hover = dark ? QStringLiteral("#3a4652") : QStringLiteral("#e1e8ef");
+        setStyleSheet(QStringLiteral(
+            "QHeaderView { background-color: %1; }"
+            "QHeaderView::section { background-color: %1; color: %2;"
+            " border: 0; border-right: 1px solid %3; border-bottom: 1px solid %3;"
+            " padding-top: 6px; padding-bottom: 6px; }"
+            "QHeaderView::section:hover { background-color: %4; }"
+            "QHeaderView::section:pressed { background-color: %4; }")
+                          .arg(background, foreground, border, hover));
+        if (orientation() == Qt::Horizontal && parentWidget()) {
+            parentWidget()->setStyleSheet(QStringLiteral(
+                "QTableCornerButton::section { background-color: %1; border: 0;"
+                " border-right: 1px solid %2; border-bottom: 1px solid %2; }")
+                                              .arg(background, border));
+        }
     }
 };
 
+// Authenticate the exact manifest bytes before any artifact metadata is trusted.
 bool verifyEd25519Manifest(const QByteArray &manifest, const QByteArray &base64Signature) {
     const QByteArray publicKey = QByteArray::fromBase64(QByteArray(WEAVER_RELEASE_PUBLIC_KEY_BASE64),
                                                         QByteArray::AbortOnBase64DecodingErrors);
@@ -338,6 +438,10 @@ QString seenVersionsCacheFilePath() {
     return QDir(appDataDirectory).filePath("release-cache.ini");
 }
 
+QString releaseEntryKey(const QString &tag, const QString &version, const QString &edition) {
+    return tag + QLatin1Char('|') + version + QLatin1Char('|') + edition;
+}
+
 void migrateSeenVersionsCache(QSettings &settings) {
     const QString key = QStringLiteral("updates/seenWeaverVersionEditions");
     if (settings.contains(key)) return;
@@ -359,8 +463,23 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent) {
     setWindowTitle(windowTitle);
     resize(960, 620);
 
+    systemDarkFallback_ = QApplication::palette().color(QPalette::Window).lightness() < 128;
+    const auto themeSettingsPath = seenVersionsCacheFilePath();
+    if (!themeSettingsPath.isEmpty()) {
+        QSettings settings(themeSettingsPath, QSettings::IniFormat);
+        theme_ = settings.value(QStringLiteral("appearance/theme"), QStringLiteral("system")).toString();
+        if (theme_ != "system" && theme_ != "light" && theme_ != "dark") {
+            qWarning() << "Invalid saved theme:" << theme_;
+            theme_ = QStringLiteral("system");
+        }
+    } else {
+        qWarning() << "Could not access the settings directory for the theme preference";
+    }
+    applyTheme();
+
     auto *notificationsMenu = menuBar()->addMenu("Notifications");
-    updateNotificationsAction_ = notificationsMenu->addAction("Show update notifications");
+    auto *managerNotificationsMenu = notificationsMenu->addMenu("Weaver Manager");
+    updateNotificationsAction_ = managerNotificationsMenu->addAction("Show update notifications");
     updateNotificationsAction_->setCheckable(true);
     updateNotificationsAction_->setChecked(true);
     const auto notificationSettingsPath = seenVersionsCacheFilePath();
@@ -381,7 +500,7 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent) {
         settings.sync();
         if (enabled && managerReleasesLoaded_) showManagerUpdateNotification();
     });
-    auto *notifyPrereleases = notificationsMenu->addAction("Notify about pre-release versions");
+    auto *notifyPrereleases = managerNotificationsMenu->addAction("Notify about pre-release versions");
     notifyPrereleases->setCheckable(true);
     if (!notificationSettingsPath.isEmpty()) {
         QSettings settings(notificationSettingsPath, QSettings::IniFormat);
@@ -395,6 +514,58 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent) {
         settings.sync();
         if (managerReleasesLoaded_) showManagerUpdateNotification();
     });
+    auto *weaverNotificationsMenu = notificationsMenu->addMenu("Weaver releases");
+    weaverNotificationsAction_ = weaverNotificationsMenu->addAction("Show new release notifications");
+    weaverNotificationsAction_->setCheckable(true);
+    weaverNotificationsAction_->setChecked(true);
+    weaverPrereleaseNotificationsAction_ = weaverNotificationsMenu->addAction("Notify about pre-release versions");
+    weaverPrereleaseNotificationsAction_->setCheckable(true);
+    if (!notificationSettingsPath.isEmpty()) {
+        QSettings settings(notificationSettingsPath, QSettings::IniFormat);
+        weaverNotificationsAction_->setChecked(settings.value(QStringLiteral("updates/notifyWeaverReleases"), true).toBool());
+        weaverPrereleaseNotificationsAction_->setChecked(settings.value(QStringLiteral("updates/notifyWeaverPrereleases"), false).toBool());
+    } else {
+        qWarning() << "Could not access the settings directory for notification preferences";
+    }
+    connect(weaverNotificationsAction_, &QAction::toggled, this, [this](bool enabled) {
+        savePreference(QStringLiteral("updates/notifyWeaverReleases"), enabled);
+    });
+    connect(weaverPrereleaseNotificationsAction_, &QAction::toggled, this, [this](bool enabled) {
+        savePreference(QStringLiteral("updates/notifyWeaverPrereleases"), enabled);
+    });
+    auto *themeMenu = menuBar()->addMenu("Theme");
+    auto *themeActions = new QActionGroup(this);
+    themeActions->setExclusive(true);
+    for (const auto &option : {qMakePair(QStringLiteral("System"), QStringLiteral("system")),
+                               qMakePair(QStringLiteral("Light"), QStringLiteral("light")),
+                               qMakePair(QStringLiteral("Dark"), QStringLiteral("dark"))}) {
+        auto *action = themeMenu->addAction(option.first);
+        action->setCheckable(true);
+        action->setData(option.second);
+        action->setChecked(theme_ == option.second);
+        themeActions->addAction(action);
+    }
+    connect(themeActions, &QActionGroup::triggered, this, [this](QAction *action) {
+        theme_ = action->data().toString();
+        applyTheme();
+        const auto path = seenVersionsCacheFilePath();
+        if (!path.isEmpty()) {
+            QSettings settings(path, QSettings::IniFormat);
+            settings.setValue(QStringLiteral("appearance/theme"), theme_);
+            settings.sync();
+            if (settings.status() == QSettings::NoError) return;
+        }
+        qWarning() << "Could not save the theme preference";
+        QMessageBox::warning(this, "Theme Preference Not Saved",
+                             "The theme was applied, but the preference could not be saved.");
+    });
+    connect(qApp->styleHints(), &QStyleHints::colorSchemeChanged, this, [this] {
+        if (theme_ == "system") applyTheme();
+    });
+    connect(qApp, &QApplication::paletteChanged, this, [this] {
+        if (releaseTable_) refreshReleaseCacheStatuses();
+    });
+
     auto *helpMenu = menuBar()->addMenu("Help");
     auto *managerDocumentation = helpMenu->addAction("Weaver Manager Documentation");
     connect(managerDocumentation, &QAction::triggered, this, [] {
@@ -422,20 +593,20 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent) {
 
     auto *releasePage = new QWidget(tabs);
     auto *releaseLayout = new QVBoxLayout(releasePage);
-    releaseTable_ = new QTableWidget(0, 7, releasePage);
+    releaseTable_ = new QTableWidget(0, 8, releasePage);
     releaseTable_->setHorizontalHeader(new ReleaseTableHeader(Qt::Horizontal, releaseTable_));
-    releaseTable_->setHorizontalHeaderLabels({"", "Cache status", "Version", "Edition", "Published", "Installer", "Release status"});
+    releaseTable_->setVerticalHeader(new ReleaseTableHeader(Qt::Vertical, releaseTable_));
+    releaseTable_->setHorizontalHeaderLabels({"", "Cache status", "Version", "Edition", "Published", "Installer", "Release status", "GitHub tag"});
     auto headerFont = releaseTable_->horizontalHeader()->font();
     headerFont.setBold(true);
     releaseTable_->horizontalHeader()->setFont(headerFont);
-    releaseTable_->horizontalHeader()->setStyleSheet(
-        "QHeaderView::section { padding-top: 6px; padding-bottom: 6px; }");
     QPushButton installButtonWidthProbe("Install");
     releaseTable_->horizontalHeader()->setSectionResizeMode(0, QHeaderView::Fixed);
     releaseTable_->setColumnWidth(0, installButtonWidthProbe.sizeHint().width() + 16);
     releaseTable_->horizontalHeader()->setSectionResizeMode(1, QHeaderView::ResizeToContents);
     releaseTable_->horizontalHeader()->setSectionResizeMode(5, QHeaderView::Stretch);
     releaseTable_->horizontalHeader()->setSectionResizeMode(6, QHeaderView::ResizeToContents);
+    releaseTable_->horizontalHeader()->setSectionResizeMode(7, QHeaderView::ResizeToContents);
     releaseTable_->horizontalHeader()->setSortIndicator(2, Qt::DescendingOrder);
     releaseTable_->horizontalHeader()->setDefaultAlignment(Qt::AlignCenter);
     releaseTable_->horizontalHeader()->setSectionsClickable(true);
@@ -451,6 +622,7 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent) {
         }
         header->setSortIndicator(sortColumn, sortOrder);
         releaseTable_->sortItems(sortColumn, sortOrder);
+        applyReleaseFilter();
     });
     releaseTable_->horizontalHeader()->setToolTip("Click a column heading to sort the releases.");
     releaseTable_->setEditTriggers(QAbstractItemView::NoEditTriggers);
@@ -458,6 +630,17 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent) {
     auto *releaseButtons = new QHBoxLayout;
     auto *refreshButton = new QPushButton("Refresh GitHub Releases", releasePage);
     releaseButtons->addWidget(refreshButton);
+    showPrereleasesCheckBox_ = new QCheckBox("Show pre-releases", releasePage);
+    showPrereleasesCheckBox_->setChecked(true);
+    if (!notificationSettingsPath.isEmpty()) {
+        QSettings settings(notificationSettingsPath, QSettings::IniFormat);
+        showPrereleasesCheckBox_->setChecked(settings.value(QStringLiteral("releases/showPrereleases"), true).toBool());
+    }
+    connect(showPrereleasesCheckBox_, &QCheckBox::toggled, this, [this](bool enabled) {
+        savePreference(QStringLiteral("releases/showPrereleases"), enabled);
+        applyReleaseFilter();
+    });
+    releaseButtons->addWidget(showPrereleasesCheckBox_);
 #if ENABLE_TEST
     auto *addTestInstallerButton = new QPushButton("Add Test Installer", releasePage);
     releaseButtons->addWidget(addTestInstallerButton);
@@ -546,6 +729,36 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent) {
     loadInstallations();
     requestManagerReleasePage(1);
     refreshReleases();
+}
+
+void MainWindow::savePreference(const QString &key, bool enabled) {
+    const auto path = seenVersionsCacheFilePath();
+    if (!path.isEmpty()) {
+        QSettings settings(path, QSettings::IniFormat);
+        settings.setValue(key, enabled);
+        settings.sync();
+        if (settings.status() == QSettings::NoError) return;
+    }
+    qWarning() << "Could not save preference" << key;
+    QMessageBox::warning(this, "Preference Not Saved",
+                         "The preference was applied for this session, but could not be saved.");
+}
+
+void MainWindow::applyTheme() {
+    bool dark = theme_ == "dark";
+    if (theme_ == "system") {
+        const auto scheme = qApp->styleHints()->colorScheme();
+        if (scheme == Qt::ColorScheme::Unknown) {
+            qWarning() << "System color scheme is unavailable; using the initial system palette";
+            dark = systemDarkFallback_;
+        } else {
+            dark = scheme == Qt::ColorScheme::Dark;
+        }
+    }
+    if (!QApplication::setStyle(QStringLiteral("Fusion")))
+        qWarning() << "Could not apply the Fusion style";
+    QApplication::setPalette(managerPalette(dark));
+    if (releaseTable_) refreshReleaseCacheStatuses();
 }
 
 void MainWindow::requestManagerReleasePage(int page) {
@@ -736,14 +949,25 @@ void MainWindow::showManagerUpdateNotification() {
 void MainWindow::refreshReleases() {
     ++releaseSearchGeneration_;
     releasePageRetryCount_ = 0;
-    const QString seenEntriesKey = QStringLiteral("updates/seenWeaverVersionEditions");
     seenReleaseEntriesAtSearchStart_.clear();
+    seenCacheFormat_ = SeenCacheFormat::Tag;
     const auto cacheFilePath = seenVersionsCacheFilePath();
     if (!cacheFilePath.isEmpty()) {
         QSettings settings(cacheFilePath, QSettings::IniFormat);
         migrateSeenVersionsCache(settings);
-        for (const auto &seenEntry : settings.value(seenEntriesKey).toStringList())
+        QString snapshotKey = QStringLiteral("updates/seenWeaverReleaseTags");
+        if (!settings.contains(snapshotKey)) {
+            snapshotKey = QStringLiteral("updates/seenWeaverReleases");
+            seenCacheFormat_ = SeenCacheFormat::ReleaseId;
+            if (!settings.contains(snapshotKey)) {
+                snapshotKey = QStringLiteral("updates/seenWeaverVersionEditions");
+                seenCacheFormat_ = SeenCacheFormat::VersionEdition;
+            }
+        }
+        for (const auto &seenEntry : settings.value(snapshotKey).toStringList())
             seenReleaseEntriesAtSearchStart_.insert(seenEntry);
+    } else {
+        qWarning() << "Could not access the settings directory for the seen Weaver releases cache";
     }
 
     releaseItems_ = {};
@@ -813,6 +1037,7 @@ void MainWindow::retryReleasePage(int page, const QString &errorMessage) {
     setStatus("Could not load GitHub releases: " + errorMessage);
 }
 
+// Route asynchronous responses and enforce size/hash checks before installer launch.
 void MainWindow::onReleasesReceived(QNetworkReply *reply) {
     const auto requestPage = reply->request().attribute(QNetworkRequest::User).toInt();
     const auto data = reply->readAll();
@@ -893,7 +1118,7 @@ void MainWindow::onReleasesReceived(QNetworkReply *reply) {
             reply->deleteLater();
             if (pendingManifests_ == 0) {
                 for (int index = 0; index < releaseManifests_.size(); ++index) processReleaseManifest(index);
-                populateReleaseTable();
+                finishReleaseSearch();
             }
             return;
         }
@@ -911,7 +1136,7 @@ void MainWindow::onReleasesReceived(QNetworkReply *reply) {
         reply->deleteLater();
         if (pendingManifests_ == 0) {
             for (int index = 0; index < releaseManifests_.size(); ++index) processReleaseManifest(index);
-            populateReleaseTable();
+            finishReleaseSearch();
         }
         return;
     }
@@ -968,12 +1193,13 @@ void MainWindow::fetchReleaseManifests() {
         }
     }
     if (pendingManifests_ == 0) {
-        populateReleaseTable();
+        finishReleaseSearch();
         return;
     }
     setStatus(QString("Reading signed manifests from %1 releases…").arg(pendingManifests_ / 2));
 }
 
+// Add only platform-compatible assets whose release manifest signature is valid.
 void MainWindow::processReleaseManifest(int index) {
     if (!downloadedManifests_.contains(index) || !downloadedSignatures_.contains(index)) return;
     const auto manifestBytes = downloadedManifests_.value(index);
@@ -984,6 +1210,10 @@ void MainWindow::processReleaseManifest(int index) {
     if (manifestError.error != QJsonParseError::NoError || !manifest.isObject()) return;
     const auto release = releaseManifests_.at(index).toObject();
     if (!release.value("immutable").toBool()) return;
+    if (release.value("tag_name").toString().isEmpty()) {
+        qWarning() << "GitHub release is missing its tag:" << release.value("id");
+        return;
+    }
     const auto root = manifest.object();
     if (root.value("schema_version").toInt() != 1 || !root.value("artifacts").isArray()) return;
 
@@ -1007,6 +1237,7 @@ void MainWindow::processReleaseManifest(int index) {
             catalogEntries_.append(QJsonObject{
                 {"version", version}, {"edition", edition},
                 {"release_id", release.value("id")},
+                {"release_tag", release.value("tag_name").toString()},
                 {"prerelease", release.value("prerelease").toBool()},
                 {"published", release.value("published_at").toString().left(10)},
                 {"asset", assetName},
@@ -1021,9 +1252,11 @@ void MainWindow::processReleaseManifest(int index) {
 
 void MainWindow::pruneReleaseCache() {
     QSet<QString> activeReleaseEntries;
+    QSet<QString> migratedEntries;
     QSet<QString> activeInstallerAssets;
     for (const auto &releaseValue : releaseItems_) {
         const auto release = releaseValue.toObject();
+        const auto tag = release.value("tag_name").toString();
         for (const auto &assetValue : release.value("assets").toArray()) {
             const auto assetName = assetValue.toObject().value("name").toString();
             QString edition;
@@ -1031,21 +1264,37 @@ void MainWindow::pruneReleaseCache() {
             QString platform;
             if (!parseInstallerName(assetName, &edition, &version, &platform)
                 || platform != currentPlatformId()) continue;
-            activeReleaseEntries.insert(version + QLatin1Char('|') + edition);
             activeInstallerAssets.insert(assetName);
+            if (tag.isEmpty()) {
+                qWarning() << "GitHub release is missing its tag:" << release.value("id");
+                continue;
+            }
+            const auto key = releaseEntryKey(tag, version, edition);
+            activeReleaseEntries.insert(key);
+            if (seenCacheFormat_ != SeenCacheFormat::Tag) {
+                const auto oldKey = seenCacheFormat_ == SeenCacheFormat::ReleaseId
+                    ? releaseEntryKey(QString::number(release.value("id").toVariant().toLongLong()), version, edition)
+                    : version + QLatin1Char('|') + edition;
+                if (seenReleaseEntriesAtSearchStart_.contains(oldKey)) migratedEntries.insert(key);
+            }
         }
     }
+    if (seenCacheFormat_ != SeenCacheFormat::Tag) seenReleaseEntriesAtSearchStart_ = migratedEntries;
 
     const auto cacheFilePath = seenVersionsCacheFilePath();
     if (!cacheFilePath.isEmpty()) {
         QSettings settings(cacheFilePath, QSettings::IniFormat);
-        const auto seenEntriesKey = QStringLiteral("updates/seenWeaverVersionEditions");
-        QStringList retainedEntries;
-        for (const auto &entry : settings.value(seenEntriesKey).toStringList()) {
-            if (activeReleaseEntries.contains(entry)) retainedEntries.append(entry);
+        const auto seenEntriesKey = QStringLiteral("updates/seenWeaverReleaseTags");
+        if (settings.contains(seenEntriesKey)) {
+            QStringList retainedEntries;
+            for (const auto &entry : settings.value(seenEntriesKey).toStringList()) {
+                if (activeReleaseEntries.contains(entry)) retainedEntries.append(entry);
+            }
+            settings.setValue(seenEntriesKey, retainedEntries);
+            settings.sync();
+            if (settings.status() != QSettings::NoError)
+                qWarning() << "Could not prune the seen Weaver releases cache";
         }
-        settings.setValue(seenEntriesKey, retainedEntries);
-        settings.sync();
     }
 
     const auto cacheRoot = QStandardPaths::writableLocation(QStandardPaths::CacheLocation);
@@ -1059,20 +1308,30 @@ void MainWindow::pruneReleaseCache() {
     }
 }
 
-void MainWindow::populateReleaseTable() {
-    const QString seenEntriesKey = QStringLiteral("updates/seenWeaverVersionEditions");
-    QSet<QString> seenEntries = seenReleaseEntriesAtSearchStart_;
+void MainWindow::finishReleaseSearch() {
+    const QString seenEntriesKey = QStringLiteral("updates/seenWeaverReleaseTags");
+    QSet<QString> seenEntries = seenCacheFormat_ == SeenCacheFormat::Tag
+        ? QSet<QString>() : seenReleaseEntriesAtSearchStart_;
 
     newReleaseEntries_.clear();
     QStringList newlyAvailable;
+    QSet<QString> notifiedEntries;
     for (const auto &entryValue : catalogEntries_) {
         const auto entry = entryValue.toObject();
         const QString version = entry.value("version").toString();
         const QString edition = entry.value("edition").toString();
-        const QString key = version + QLatin1Char('|') + edition;
+        const QString key = releaseEntryKey(entry.value("release_tag").toString(), version, edition);
         if (!seenReleaseEntriesAtSearchStart_.contains(key)) {
             newReleaseEntries_.insert(key);
-            newlyAvailable.append(QStringLiteral("Weaver %1 (%2)").arg(version, edition));
+            if ((!entry.value("prerelease").toBool() || weaverPrereleaseNotificationsAction_->isChecked())
+                && !notifiedEntries.contains(key)) {
+                const auto tag = entry.value("release_tag").toString();
+                newlyAvailable.append(QStringLiteral("Weaver %1 (%2)%3%4")
+                                          .arg(version, edition, entry.value("prerelease").toBool()
+                                               ? QStringLiteral(" - Pre-Release") : QString(),
+                                               tag.isEmpty() ? QString() : QStringLiteral(" [%1]").arg(tag)));
+                notifiedEntries.insert(key);
+            }
         }
         seenEntries.insert(key);
     }
@@ -1086,8 +1345,27 @@ void MainWindow::populateReleaseTable() {
         savedEntries.sort();
         settings.setValue(seenEntriesKey, savedEntries);
         settings.sync();
+        if (settings.status() != QSettings::NoError)
+            qWarning() << "Could not save the seen Weaver releases cache";
+    } else {
+        qWarning() << "Could not access the settings directory for the seen Weaver releases cache";
     }
 
+    populateReleaseTable();
+    if (weaverNotificationsAction_->isChecked() && !newlyAvailable.isEmpty()) {
+        QMessageBox messageBox(QMessageBox::Information, QStringLiteral("New Weaver versions available"),
+                               QStringLiteral("New versions were found:\n\n%1")
+                                   .arg(newlyAvailable.join(QLatin1Char('\n'))),
+                               QMessageBox::Ok, this);
+        messageBox.setTextFormat(Qt::PlainText);
+        auto *disableCheckBox = new QCheckBox("Do not show new Weaver release notifications again", &messageBox);
+        messageBox.setCheckBox(disableCheckBox);
+        messageBox.exec();
+        if (disableCheckBox->isChecked()) weaverNotificationsAction_->setChecked(false);
+    }
+}
+
+void MainWindow::populateReleaseTable() {
     releaseTable_->setRowCount(0);
     for (const auto entryValue : catalogEntries_) {
         const auto entry = entryValue.toObject();
@@ -1102,33 +1380,24 @@ void MainWindow::populateReleaseTable() {
         releaseTable_->item(row, 5)->setData(Qt::UserRole, entry.value("url").toString());
         releaseTable_->item(row, 5)->setData(Qt::UserRole + 1, entry.value("sha256").toString());
         releaseTable_->item(row, 5)->setData(Qt::UserRole + 2, entry.value("size").toVariant().toLongLong());
-        const QString releaseKey = entry.value("version").toString() + QLatin1Char('|')
-            + entry.value("edition").toString();
-        const bool isNew = newReleaseEntries_.contains(releaseKey);
         const bool prerelease = entry.value("prerelease").toBool();
         const bool latest = !prerelease && entry.value("release_id").toVariant().toLongLong() == latestReleaseId_;
         const QString releaseLabel = prerelease ? "Pre-Release" : latest ? "Latest" : "Stable";
         auto *statusItem = new ReleaseTableWidgetItem(releaseLabel);
         statusItem->setTextAlignment(Qt::AlignCenter);
-        statusItem->setForeground(prerelease ? QColor("#8a4b08") : latest ? QColor("#1b5e20") : QColor("#0d47a1"));
-        statusItem->setBackground(prerelease ? QColor("#fff3e0") : latest ? QColor("#e8f5e9") : QColor("#e3f2fd"));
+        statusItem->setData(Qt::UserRole, static_cast<int>(prerelease ? ReleaseStatus::Prerelease
+                                                               : latest ? ReleaseStatus::Latest : ReleaseStatus::Stable));
         releaseTable_->setItem(row, 6, statusItem);
+        const auto tag = entry.value("release_tag").toString();
+        auto *tagItem = new ReleaseTableWidgetItem(tag);
+        tagItem->setTextAlignment(Qt::AlignCenter);
+        releaseTable_->setItem(row, 7, tagItem);
 
         auto *newItem = new ReleaseTableWidgetItem;
         newItem->setTextAlignment(Qt::AlignCenter);
+        newItem->setData(Qt::UserRole + 1, releaseEntryKey(tag, entry.value("version").toString(),
+                                                          entry.value("edition").toString()));
         releaseTable_->setItem(row, 1, newItem);
-        if (isNew) {
-            const QColor rowHighlight("#fff2cc");
-            newItem->setForeground(QColor("#6a1b9a"));
-            newItem->setFont(QFont(newItem->font().family(), newItem->font().pointSize(), QFont::Bold));
-            newItem->setToolTip("Recently available; cleared after the next refresh or when Weaver Manager restarts.");
-            for (int column = 1; column < releaseTable_->columnCount(); ++column) {
-                if (column == 6) continue;
-                releaseTable_->item(row, column)->setBackground(rowHighlight);
-            }
-            auto *buttonContainer = new QWidget(releaseTable_);
-            releaseTable_->setCellWidget(row, 0, buttonContainer);
-        }
 
         auto *installButton = new QPushButton("Install", releaseTable_);
         installButton->setToolTip("Download, verify, and launch this release's installer");
@@ -1164,9 +1433,11 @@ void MainWindow::populateReleaseTable() {
         }
         auto *statusItem = new ReleaseTableWidgetItem("Test");
         statusItem->setTextAlignment(Qt::AlignCenter);
-        statusItem->setForeground(QColor("#6a1b9a"));
-        statusItem->setBackground(QColor("#f3e5f5"));
+        statusItem->setData(Qt::UserRole, static_cast<int>(ReleaseStatus::Test));
         releaseTable_->setItem(row, 6, statusItem);
+        auto *tagItem = new ReleaseTableWidgetItem("—");
+        tagItem->setTextAlignment(Qt::AlignCenter);
+        releaseTable_->setItem(row, 7, tagItem);
 
         auto *installButton = new QPushButton("Install", releaseTable_);
         installButton->setToolTip("Launch a local test installer without signed GitHub manifest verification");
@@ -1185,16 +1456,20 @@ void MainWindow::populateReleaseTable() {
     refreshReleaseCacheStatuses();
     releaseTable_->sortItems(releaseTable_->horizontalHeader()->sortIndicatorSection(),
                              releaseTable_->horizontalHeader()->sortIndicatorOrder());
-    if (!newlyAvailable.isEmpty()) {
-        QMessageBox::information(this, QStringLiteral("New Weaver versions available"),
-                                 QStringLiteral("New versions were found:\n\n%1")
-                                     .arg(newlyAvailable.join(QLatin1Char('\n'))));
-    }
+    applyReleaseFilter();
     if (releaseTable_->rowCount() == 0) {
         setStatus("No releases with a valid signed manifest were found for " + platformLabel() + ".");
     } else {
         setStatus(QString("Showing %1 verified release entries for %2.")
                   .arg(releaseTable_->rowCount()).arg(platformLabel()));
+    }
+}
+
+void MainWindow::applyReleaseFilter() {
+    for (int row = 0; row < releaseTable_->rowCount(); ++row) {
+        const auto *status = releaseTable_->item(row, 6);
+        const bool prerelease = status && status->data(Qt::UserRole).toInt() == static_cast<int>(ReleaseStatus::Prerelease);
+        releaseTable_->setRowHidden(row, prerelease && !showPrereleasesCheckBox_->isChecked());
     }
 }
 
@@ -1217,7 +1492,7 @@ void MainWindow::addLocalTestInstaller() {
     pathLayout->addWidget(browseButton);
     layout->addLayout(pathLayout);
 
-    auto *dropLabel = new InstallerDropLabel(pathEdit, &dialog);
+    auto *dropLabel = new QLabel(&dialog);
     dropLabel->setText("Drag and drop an installer file here");
     dropLabel->setAlignment(Qt::AlignCenter);
     dropLabel->setMinimumHeight(72);
@@ -1243,6 +1518,29 @@ void MainWindow::addLocalTestInstaller() {
     connect(buttons, &QDialogButtonBox::accepted, &dialog, &QDialog::accept);
     connect(buttons, &QDialogButtonBox::rejected, &dialog, &QDialog::reject);
     layout->addWidget(buttons);
+
+    const auto isValidInstaller = [](const QString &path) {
+        QString edition, version, platform;
+        const QFileInfo info(path);
+#if defined(Q_OS_WIN)
+        const QStringList extensions = {"msi"};
+#elif defined(Q_OS_MACOS)
+        const QStringList extensions = {"pkg", "dmg"};
+#else
+        const QStringList extensions = {"deb", "rpm"};
+#endif
+        return info.isFile() && extensions.contains(info.suffix().toLower())
+            && parseInstallerName(info.fileName(), &edition, &version, &platform)
+            && platform == currentPlatformId();
+    };
+    auto *dropFilter = new InstallerDropFilter(pathEdit, isValidInstaller, &dialog);
+    dialog.setAcceptDrops(true);
+    pathEdit->setAcceptDrops(true);
+    dropLabel->setAcceptDrops(true);
+    for (QWidget *widget : {static_cast<QWidget *>(&dialog), static_cast<QWidget *>(pathEdit),
+                            static_cast<QWidget *>(dropLabel)}) {
+        widget->installEventFilter(dropFilter);
+    }
 
     if (dialog.exec() != QDialog::Accepted) return;
 
@@ -1306,6 +1604,7 @@ void MainWindow::installLocalTestInstaller(const QString &path) {
 }
 #endif
 
+// Re-query GitHub at install time so a stale catalog cannot authorize an asset.
 void MainWindow::installVerifiedInstaller(const QJsonObject &entry) {
     const auto releaseId = entry.value("release_id").toVariant().toLongLong();
     if (releaseId <= 0) {
@@ -1511,6 +1810,7 @@ void MainWindow::closeEvent(QCloseEvent *event) {
     QMainWindow::closeEvent(event);
 }
 
+// Rebuild the installed-version cards from every supported installation root.
 int MainWindow::loadInstallations() {
     while (auto *item = installedListLayout_->takeAt(0)) {
         if (auto *widget = item->widget()) widget->deleteLater();
@@ -1564,7 +1864,7 @@ int MainWindow::loadInstallations() {
                 cardLayout->addLayout(headerLayout);
 
                 auto *actions = new QWidget(card);
-                actions->setStyleSheet("QPushButton { font-size: 11pt; padding: 9px 14px; min-height: 36px; background-color: #00897b; color: white; border: none; border-radius: 4px; } QPushButton:hover { background-color: #00796b; }");
+                actions->setStyleSheet("QPushButton { font-size: 11pt; padding: 9px 14px; min-height: 36px; background-color: #00796b; color: white; border: none; border-radius: 4px; } QPushButton:hover { background-color: #00695c; }");
                 auto *actionsLayout = new QHBoxLayout(actions);
                 actionsLayout->setContentsMargins(0, 0, 0, 0);
                 auto *folderButton = new QPushButton("Open installation folder", actions);
@@ -1647,7 +1947,29 @@ void MainWindow::refreshInstalledVersions() {
 }
 
 void MainWindow::refreshReleaseCacheStatuses() {
+    const auto colors = releaseColors();
     for (int row = 0; row < releaseTable_->rowCount(); ++row) {
+        if (auto *statusItem = releaseTable_->item(row, 6)) {
+            const auto status = static_cast<ReleaseStatus>(statusItem->data(Qt::UserRole).toInt());
+            switch (status) {
+            case ReleaseStatus::Latest:
+                statusItem->setForeground(colors.installedText);
+                statusItem->setBackground(colors.installedBackground);
+                break;
+            case ReleaseStatus::Prerelease:
+                statusItem->setForeground(colors.prereleaseText);
+                statusItem->setBackground(colors.prereleaseBackground);
+                break;
+            case ReleaseStatus::Test:
+                statusItem->setForeground(colors.testText);
+                statusItem->setBackground(colors.testBackground);
+                break;
+            case ReleaseStatus::Stable:
+                statusItem->setForeground(colors.stableText);
+                statusItem->setBackground(colors.stableBackground);
+                break;
+            }
+        }
         const auto *versionItem = releaseTable_->item(row, 2);
         const auto *editionItem = releaseTable_->item(row, 3);
         auto *cacheStatusItem = releaseTable_->item(row, 1);
@@ -1656,50 +1978,39 @@ void MainWindow::refreshReleaseCacheStatuses() {
         const auto version = versionItem->text();
         const auto edition = editionItem->text();
         const bool installed = !findWeaverInstallationRoot(version, edition).isEmpty();
-        const auto releaseKey = version + QLatin1Char('|') + edition;
+        const auto releaseKey = cacheStatusItem->data(Qt::UserRole + 1).toString();
         const bool isNew = newReleaseEntries_.contains(releaseKey);
-
-        const QColor installedRowBackground("#e8f5e9");
-        const QColor newRowBackground("#fff2cc");
-        const QColor rowBackground = installed ? installedRowBackground
-            : isNew ? newRowBackground : QColor("#ffffff");
-        for (int column = 1; column <= 5; ++column) {
-            if (auto *item = releaseTable_->item(row, column))
-                item->setBackground(rowBackground);
+        const bool highlighted = installed || isNew;
+        const QColor rowBackground = installed ? colors.installedBackground : colors.newBackground;
+        for (int column = 1; column < releaseTable_->columnCount(); ++column) {
+            if (column == 6) continue;
+            if (auto *item = releaseTable_->item(row, column)) {
+                item->setBackground(highlighted ? QBrush(rowBackground) : QBrush());
+                item->setForeground(highlighted ? QBrush(colors.rowText) : QBrush());
+            }
         }
 
         if (auto *buttonContainer = releaseTable_->cellWidget(row, 0)) {
-            buttonContainer->setStyleSheet(installed
-                ? QStringLiteral("QWidget#releaseInstallButtonCell { background-color: #e8f5e9; }")
-                : isNew ? QStringLiteral("QWidget#releaseInstallButtonCell { background-color: #fff2cc; }")
-                        : QStringLiteral("QWidget#releaseInstallButtonCell { background-color: #ffffff; }"));
+            buttonContainer->setStyleSheet(highlighted
+                ? QStringLiteral("QWidget#releaseInstallButtonCell { background-color: %1; }").arg(rowBackground.name())
+                : QString());
             if (auto *installButton = buttonContainer->findChild<QPushButton *>())
                 installButton->setVisible(!installed);
         }
 
+        auto font = cacheStatusItem->font();
+        font.setBold(highlighted);
+        cacheStatusItem->setFont(font);
         if (installed) {
             cacheStatusItem->setText("INSTALLED");
-            cacheStatusItem->setForeground(QColor("#1b5e20"));
-            cacheStatusItem->setBackground(installedRowBackground);
-            auto font = cacheStatusItem->font();
-            font.setBold(true);
-            cacheStatusItem->setFont(font);
+            cacheStatusItem->setForeground(colors.installedText);
             cacheStatusItem->setToolTip("This version and edition are installed by Weaver Manager.");
         } else if (isNew) {
             cacheStatusItem->setText("NEW");
-            cacheStatusItem->setForeground(QColor("#6a1b9a"));
-            cacheStatusItem->setBackground(newRowBackground);
-            auto font = cacheStatusItem->font();
-            font.setBold(true);
-            cacheStatusItem->setFont(font);
+            cacheStatusItem->setForeground(colors.newText);
             cacheStatusItem->setToolTip("Recently available; cleared after the next refresh or when Weaver Manager restarts.");
         } else {
             cacheStatusItem->setText({});
-            cacheStatusItem->setForeground(QBrush());
-            cacheStatusItem->setBackground(QColor("#ffffff"));
-            auto font = cacheStatusItem->font();
-            font.setBold(false);
-            cacheStatusItem->setFont(font);
             cacheStatusItem->setToolTip({});
         }
     }

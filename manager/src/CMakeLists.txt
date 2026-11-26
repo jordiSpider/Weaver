@@ -1,3 +1,4 @@
+# Build the Manager GUI from its startup, logging, path, and window components.
 add_executable(WeaverManager WIN32
 	main.cpp
 	manager_logging.cpp
@@ -9,6 +10,7 @@ add_executable(WeaverManager WIN32
 )
 
 if(WIN32)
+	# Bundle the Qt runtime next to the executable for Windows deployments.
 	add_custom_command(TARGET WeaverManager POST_BUILD
 		COMMAND "${WEAVER_WINDEPLOYQT_EXECUTABLE}"
 				"$<TARGET_FILE:WeaverManager>"
