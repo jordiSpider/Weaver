@@ -1,7 +1,7 @@
 cmake_minimum_required(VERSION 3.25)
 project(WeaverGitHubPagesDocs NONE)
 
-find_package(Python3 REQUIRED COMPONENTS Interpreter)
+find_package(Python3 3.10 REQUIRED COMPONENTS Interpreter)
 
 set(DOCS_SOURCE_ROOT "${CMAKE_CURRENT_SOURCE_DIR}/source" CACHE PATH "Root directory containing versioned documentation sources")
 set(DOCS_BUILD_ROOT "${CMAKE_CURRENT_SOURCE_DIR}/docs" CACHE PATH "Root directory for generated HTML")
