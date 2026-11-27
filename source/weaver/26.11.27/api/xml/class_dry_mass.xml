@@ -1,0 +1,305 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.18.0" xml:lang="en-US">
+  <compounddef id="class_dry_mass" kind="class" language="C++" prot="public">
+    <compoundname>DryMass</compoundname>
+    <includes refid="_structural_units_8h" local="no">StructuralUnits.h</includes>
+    <sectiondef kind="private-attrib">
+      <memberdef kind="variable" id="class_dry_mass_1a60858a847cf6fd833b913854ff9c84ec" prot="private" static="no" mutable="no">
+        <type><ref refid="class_precise_double" kindref="compound">PreciseDouble</ref></type>
+        <definition>PreciseDouble DryMass::value</definition>
+        <argsstring></argsstring>
+        <name>value</name>
+        <qualifiedname>DryMass::value</qualifiedname>
+        <briefdescription>
+<para>Dry mass value. </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="App/Model/IBM/Landscape/LivingBeings/StructuralUnits.h" line="40" column="19" bodyfile="App/Model/IBM/Landscape/LivingBeings/StructuralUnits.h" bodystart="40" bodyend="-1"/>
+      </memberdef>
+    </sectiondef>
+    <sectiondef kind="public-func">
+      <memberdef kind="function" id="class_dry_mass_1a61baf1582a5f098b52ecb9152c258b9e" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type></type>
+        <definition>DryMass::DryMass</definition>
+        <argsstring>()</argsstring>
+        <name>DryMass</name>
+        <qualifiedname>DryMass::DryMass</qualifiedname>
+        <briefdescription>
+<para>Default constructor, initializes value to 0. </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="App/Model/IBM/Landscape/LivingBeings/StructuralUnits.h" line="44" column="5"/>
+      </memberdef>
+      <memberdef kind="function" id="class_dry_mass_1acc585306331f6a1d0e71d7c9cbf3c551" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type></type>
+        <definition>DryMass::DryMass</definition>
+        <argsstring>(const DryMass &amp;other)</argsstring>
+        <name>DryMass</name>
+        <qualifiedname>DryMass::DryMass</qualifiedname>
+        <param>
+          <type>const <ref refid="class_dry_mass" kindref="compound">DryMass</ref> &amp;</type>
+          <declname>other</declname>
+        </param>
+        <briefdescription>
+<para>Copy constructor. </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="App/Model/IBM/Landscape/LivingBeings/StructuralUnits.h" line="56" column="5"/>
+      </memberdef>
+      <memberdef kind="function" id="class_dry_mass_1aada0b26ed2b270fd26d9711211937337" prot="public" static="no" const="no" explicit="yes" inline="no" virt="non-virtual">
+        <type></type>
+        <definition>DryMass::DryMass</definition>
+        <argsstring>(const Length &amp;length, const PreciseDouble &amp;coefficientForMassA, const PreciseDouble &amp;scaleForMassB)</argsstring>
+        <name>DryMass</name>
+        <qualifiedname>DryMass::DryMass</qualifiedname>
+        <param>
+          <type>const <ref refid="class_length" kindref="compound">Length</ref> &amp;</type>
+          <declname>length</declname>
+        </param>
+        <param>
+          <type>const <ref refid="class_precise_double" kindref="compound">PreciseDouble</ref> &amp;</type>
+          <declname>coefficientForMassA</declname>
+        </param>
+        <param>
+          <type>const <ref refid="class_precise_double" kindref="compound">PreciseDouble</ref> &amp;</type>
+          <declname>scaleForMassB</declname>
+        </param>
+        <briefdescription>
+<para>Constructor from <ref refid="class_length" kindref="compound">Length</ref> and species-specific mass coefficients. </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="App/Model/IBM/Landscape/LivingBeings/StructuralUnits.h" line="53" column="14"/>
+      </memberdef>
+      <memberdef kind="function" id="class_dry_mass_1a92b5f667fafa52f2145587b6a44923e0" prot="public" static="no" const="no" explicit="yes" inline="no" virt="non-virtual">
+        <type></type>
+        <definition>DryMass::DryMass</definition>
+        <argsstring>(const PreciseDouble &amp;value)</argsstring>
+        <name>DryMass</name>
+        <qualifiedname>DryMass::DryMass</qualifiedname>
+        <param>
+          <type>const <ref refid="class_precise_double" kindref="compound">PreciseDouble</ref> &amp;</type>
+          <declname>value</declname>
+        </param>
+        <briefdescription>
+<para>Constructor from a <ref refid="class_precise_double" kindref="compound">PreciseDouble</ref>. </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="App/Model/IBM/Landscape/LivingBeings/StructuralUnits.h" line="47" column="14"/>
+      </memberdef>
+      <memberdef kind="function" id="class_dry_mass_1a39e1d52bc1c7b79ae66e26b0149309cb" prot="public" static="no" const="no" explicit="yes" inline="no" virt="non-virtual">
+        <type></type>
+        <definition>DryMass::DryMass</definition>
+        <argsstring>(const WetMass &amp;wetMass, const PreciseDouble &amp;conversionToWetMass)</argsstring>
+        <name>DryMass</name>
+        <qualifiedname>DryMass::DryMass</qualifiedname>
+        <param>
+          <type>const <ref refid="class_wet_mass" kindref="compound">WetMass</ref> &amp;</type>
+          <declname>wetMass</declname>
+        </param>
+        <param>
+          <type>const <ref refid="class_precise_double" kindref="compound">PreciseDouble</ref> &amp;</type>
+          <declname>conversionToWetMass</declname>
+        </param>
+        <briefdescription>
+<para>Constructor from <ref refid="class_wet_mass" kindref="compound">WetMass</ref> and conversion coefficient. </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="App/Model/IBM/Landscape/LivingBeings/StructuralUnits.h" line="50" column="14"/>
+      </memberdef>
+      <memberdef kind="function" id="class_dry_mass_1ab5fe0713bb2ace147c945c1105288741" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type></type>
+        <definition>DryMass::~DryMass</definition>
+        <argsstring>()</argsstring>
+        <name>~DryMass</name>
+        <qualifiedname>DryMass::~DryMass</qualifiedname>
+        <briefdescription>
+<para>Destructor. </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="App/Model/IBM/Landscape/LivingBeings/StructuralUnits.h" line="62" column="5"/>
+      </memberdef>
+      <memberdef kind="function" id="class_dry_mass_1a60b6629159c16ef98d88280f44e5f37b" prot="public" static="no" const="yes" explicit="no" inline="no" virt="non-virtual">
+        <type>const <ref refid="class_precise_double" kindref="compound">PreciseDouble</ref> &amp;</type>
+        <definition>const PreciseDouble &amp; DryMass::getValue</definition>
+        <argsstring>() const</argsstring>
+        <name>getValue</name>
+        <qualifiedname>DryMass::getValue</qualifiedname>
+        <briefdescription>
+<para>Returns the numeric value of the dry mass. </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="App/Model/IBM/Landscape/LivingBeings/StructuralUnits.h" line="65" column="25"/>
+      </memberdef>
+      <memberdef kind="function" id="class_dry_mass_1a65cecec3c837556c4678548dfff5b8ea" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type><ref refid="class_dry_mass" kindref="compound">DryMass</ref> &amp;</type>
+        <definition>DryMass &amp; DryMass::operator+=</definition>
+        <argsstring>(const DryMass &amp;other)</argsstring>
+        <name>operator+=</name>
+        <qualifiedname>DryMass::operator+=</qualifiedname>
+        <param>
+          <type>const <ref refid="class_dry_mass" kindref="compound">DryMass</ref> &amp;</type>
+          <declname>other</declname>
+        </param>
+        <briefdescription>
+<para>Adds another <ref refid="class_dry_mass" kindref="compound">DryMass</ref> to this one. </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="App/Model/IBM/Landscape/LivingBeings/StructuralUnits.h" line="68" column="13"/>
+      </memberdef>
+      <memberdef kind="function" id="class_dry_mass_1aebe28caa0385ec3fe9add680412f50ff" prot="public" static="no" const="yes" explicit="no" inline="no" virt="non-virtual">
+        <type><ref refid="class_dry_mass" kindref="compound">DryMass</ref></type>
+        <definition>DryMass DryMass::operator/</definition>
+        <argsstring>(const PreciseDouble &amp;scalar) const</argsstring>
+        <name>operator/</name>
+        <qualifiedname>DryMass::operator/</qualifiedname>
+        <param>
+          <type>const <ref refid="class_precise_double" kindref="compound">PreciseDouble</ref> &amp;</type>
+          <declname>scalar</declname>
+        </param>
+        <briefdescription>
+<para>Division by scalar. </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="App/Model/IBM/Landscape/LivingBeings/StructuralUnits.h" line="71" column="13"/>
+      </memberdef>
+      <memberdef kind="function" id="class_dry_mass_1a963314e8ff4a0fdb68f08d134b3f052b" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type><ref refid="class_dry_mass" kindref="compound">DryMass</ref> &amp;</type>
+        <definition>DryMass &amp; DryMass::operator=</definition>
+        <argsstring>(const DryMass &amp;other)</argsstring>
+        <name>operator=</name>
+        <qualifiedname>DryMass::operator=</qualifiedname>
+        <param>
+          <type>const <ref refid="class_dry_mass" kindref="compound">DryMass</ref> &amp;</type>
+          <declname>other</declname>
+        </param>
+        <briefdescription>
+<para>Copy assignment. </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="App/Model/IBM/Landscape/LivingBeings/StructuralUnits.h" line="59" column="13"/>
+      </memberdef>
+      <memberdef kind="function" id="class_dry_mass_1ac85cc039c11c10e6f6e32b2f94bdf692" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <templateparamlist>
+          <param>
+            <type>class Archive</type>
+          </param>
+        </templateparamlist>
+        <type>void</type>
+        <definition>void DryMass::serialize</definition>
+        <argsstring>(Archive &amp;ar, const unsigned int version)</argsstring>
+        <name>serialize</name>
+        <qualifiedname>DryMass::serialize</qualifiedname>
+        <param>
+          <type>Archive &amp;</type>
+          <declname>ar</declname>
+        </param>
+        <param>
+          <type>const unsigned int</type>
+          <declname>version</declname>
+        </param>
+        <briefdescription>
+<para>Serializes the object for persistence. </para>
+        </briefdescription>
+        <detaileddescription>
+<para><parameterlist kind="templateparam"><parameteritem>
+<parameternamelist>
+<parametername>Archive</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Serialization archive type. </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>ar</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Archive instance. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>version</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Serialization version. </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="App/Model/IBM/Landscape/LivingBeings/StructuralUnits.h" line="81" column="10"/>
+      </memberdef>
+    </sectiondef>
+    <briefdescription>
+<para>Represents dry mass in the ecosystem simulation. </para>
+    </briefdescription>
+    <detaileddescription>
+<para>Encapsulates a <ref refid="class_precise_double" kindref="compound">PreciseDouble</ref> value for dry mass, provides arithmetic operations, comparisons, and conversion from <ref refid="class_wet_mass" kindref="compound">WetMass</ref> or <ref refid="class_length" kindref="compound">Length</ref> using species-specific coefficients. </para>
+    </detaileddescription>
+    <collaborationgraph>
+      <node id="1">
+        <label>DryMass</label>
+        <link refid="class_dry_mass"/>
+        <childnode refid="2" relation="usage">
+          <edgelabel>value</edgelabel>
+        </childnode>
+      </node>
+      <node id="2">
+        <label>PreciseDouble</label>
+        <link refid="class_precise_double"/>
+      </node>
+    </collaborationgraph>
+    <location file="App/Model/IBM/Landscape/LivingBeings/StructuralUnits.h" line="37" column="1" bodyfile="App/Model/IBM/Landscape/LivingBeings/StructuralUnits.h" bodystart="37" bodyend="82"/>
+    <listofallmembers>
+      <member refid="class_dry_mass_1a61baf1582a5f098b52ecb9152c258b9e" prot="public" virt="non-virtual"><scope>DryMass</scope><name>DryMass</name></member>
+      <member refid="class_dry_mass_1a92b5f667fafa52f2145587b6a44923e0" prot="public" virt="non-virtual"><scope>DryMass</scope><name>DryMass</name></member>
+      <member refid="class_dry_mass_1a39e1d52bc1c7b79ae66e26b0149309cb" prot="public" virt="non-virtual"><scope>DryMass</scope><name>DryMass</name></member>
+      <member refid="class_dry_mass_1aada0b26ed2b270fd26d9711211937337" prot="public" virt="non-virtual"><scope>DryMass</scope><name>DryMass</name></member>
+      <member refid="class_dry_mass_1acc585306331f6a1d0e71d7c9cbf3c551" prot="public" virt="non-virtual"><scope>DryMass</scope><name>DryMass</name></member>
+      <member refid="class_dry_mass_1a60b6629159c16ef98d88280f44e5f37b" prot="public" virt="non-virtual"><scope>DryMass</scope><name>getValue</name></member>
+      <member refid="class_dry_mass_1a65cecec3c837556c4678548dfff5b8ea" prot="public" virt="non-virtual"><scope>DryMass</scope><name>operator+=</name></member>
+      <member refid="class_dry_mass_1aebe28caa0385ec3fe9add680412f50ff" prot="public" virt="non-virtual"><scope>DryMass</scope><name>operator/</name></member>
+      <member refid="class_dry_mass_1a963314e8ff4a0fdb68f08d134b3f052b" prot="public" virt="non-virtual"><scope>DryMass</scope><name>operator=</name></member>
+      <member refid="class_dry_mass_1ac85cc039c11c10e6f6e32b2f94bdf692" prot="public" virt="non-virtual"><scope>DryMass</scope><name>serialize</name></member>
+      <member refid="class_dry_mass_1a60858a847cf6fd833b913854ff9c84ec" prot="private" virt="non-virtual"><scope>DryMass</scope><name>value</name></member>
+      <member refid="class_dry_mass_1ab5fe0713bb2ace147c945c1105288741" prot="public" virt="non-virtual"><scope>DryMass</scope><name>~DryMass</name></member>
+    </listofallmembers>
+  </compounddef>
+</doxygen>

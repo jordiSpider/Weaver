@@ -1,0 +1,62 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.18.0" xml:lang="en-US">
+  <compounddef id="struct_compare_patch" kind="struct" language="C++" prot="public">
+    <compoundname>ComparePatch</compoundname>
+    <includes refid="_patch_8h" local="no">Patch.h</includes>
+    <sectiondef kind="public-func">
+      <memberdef kind="function" id="struct_compare_patch_1ade3b63f2b51522d25c1576b807af9d54" prot="public" static="no" const="yes" explicit="no" inline="yes" virt="non-virtual">
+        <type>bool</type>
+        <definition>bool ComparePatch::operator()</definition>
+        <argsstring>(const std::unique_ptr&lt; Patch &gt; &amp;lhs, const std::unique_ptr&lt; Patch &gt; &amp;rhs) const</argsstring>
+        <name>operator()</name>
+        <qualifiedname>ComparePatch::operator()</qualifiedname>
+        <param>
+          <type>const std::unique_ptr&lt; <ref refid="class_patch" kindref="compound">Patch</ref> &gt; &amp;</type>
+          <declname>lhs</declname>
+        </param>
+        <param>
+          <type>const std::unique_ptr&lt; <ref refid="class_patch" kindref="compound">Patch</ref> &gt; &amp;</type>
+          <declname>rhs</declname>
+        </param>
+        <briefdescription>
+<para>Returns true if lhs has lower priority than rhs. </para>
+        </briefdescription>
+        <detaileddescription>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>lhs</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Left-hand side patch. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>rhs</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Right-hand side patch. </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<simplesect kind="return"><para>True if lhs &lt; rhs. </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="App/Model/IBM/Landscape/Map/Patches/Patch.h" line="132" column="10" bodyfile="App/Model/IBM/Landscape/Map/Patches/Patch.h" bodystart="132" bodyend="134"/>
+      </memberdef>
+    </sectiondef>
+    <briefdescription>
+<para>Comparison functor for PatchPriorityQueue. </para>
+    </briefdescription>
+    <detaileddescription>
+<para>This functor compares two patches by their priority for use in a priority queue. </para>
+    </detaileddescription>
+    <location file="App/Model/IBM/Landscape/Map/Patches/Patch.h" line="125" column="1" bodyfile="App/Model/IBM/Landscape/Map/Patches/Patch.h" bodystart="125" bodyend="135"/>
+    <listofallmembers>
+      <member refid="struct_compare_patch_1ade3b63f2b51522d25c1576b807af9d54" prot="public" virt="non-virtual"><scope>ComparePatch</scope><name>operator()</name></member>
+    </listofallmembers>
+  </compounddef>
+</doxygen>

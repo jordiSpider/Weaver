@@ -1,0 +1,205 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.18.0" xml:lang="en-US">
+  <compounddef id="class_habitat_domain_source" kind="class" language="C++" prot="public">
+    <compoundname>HabitatDomainSource</compoundname>
+    <basecompoundref refid="class_path_source" prot="public" virt="non-virtual">PathSource</basecompoundref>
+    <includes refid="_habitat_domain_source_8h" local="no">HabitatDomainSource.h</includes>
+    <sectiondef kind="private-attrib">
+      <memberdef kind="variable" id="class_habitat_domain_source_1a182b1a800083b1c393bedb8087f61e8f" prot="private" static="no" mutable="no">
+        <type>std::vector&lt; std::pair&lt; std::string, std::vector&lt; <ref refid="class_instar" kindref="compound">Instar</ref> &gt; &gt; &gt;</type>
+        <definition>std::vector&lt;std::pair&lt;std::string, std::vector&lt;Instar&gt; &gt; &gt; HabitatDomainSource::affectedAnimalSpecies</definition>
+        <argsstring></argsstring>
+        <name>affectedAnimalSpecies</name>
+        <qualifiedname>HabitatDomainSource::affectedAnimalSpecies</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>List of species affected by this habitat domain source </para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="App/Model/IBM/Landscape/Map/Patches/Source/HabitatDomainSource.h" line="77" column="17" bodyfile="App/Model/IBM/Landscape/Map/Patches/Source/HabitatDomainSource.h" bodystart="77" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="class_habitat_domain_source_1ad4761605496f96eb905c1220ea677a88" prot="private" static="no" mutable="no">
+        <type><ref refid="class_custom_indexed_vector" kindref="compound">CustomIndexedVector</ref>&lt; <ref refid="class_animal_species_i_d" kindref="compound">AnimalSpeciesID</ref>, <ref refid="class_custom_indexed_vector" kindref="compound">CustomIndexedVector</ref>&lt; <ref refid="class_instar" kindref="compound">Instar</ref>, bool &gt; &gt;</type>
+        <definition>CustomIndexedVector&lt;AnimalSpeciesID, CustomIndexedVector&lt;Instar, bool&gt; &gt; HabitatDomainSource::habitatDomainStatus</definition>
+        <argsstring></argsstring>
+        <name>habitatDomainStatus</name>
+        <qualifiedname>HabitatDomainSource::habitatDomainStatus</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Maps species and instar to habitat suitability </para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="App/Model/IBM/Landscape/Map/Patches/Source/HabitatDomainSource.h" line="76" column="25" bodyfile="App/Model/IBM/Landscape/Map/Patches/Source/HabitatDomainSource.h" bodystart="76" bodyend="-1"/>
+      </memberdef>
+    </sectiondef>
+    <sectiondef kind="public-func">
+      <memberdef kind="function" id="class_habitat_domain_source_1a3ffdd380e3165c6338f400c27c895fe3" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type></type>
+        <definition>HabitatDomainSource::HabitatDomainSource</definition>
+        <argsstring>(const nlohmann::json &amp;config, const std::vector&lt; AnimalSpecies * &gt; &amp;existingAnimalSpecies)</argsstring>
+        <name>HabitatDomainSource</name>
+        <qualifiedname>HabitatDomainSource::HabitatDomainSource</qualifiedname>
+        <param>
+          <type>const nlohmann::json &amp;</type>
+          <declname>config</declname>
+        </param>
+        <param>
+          <type>const std::vector&lt; <ref refid="class_animal_species" kindref="compound">AnimalSpecies</ref> * &gt; &amp;</type>
+          <declname>existingAnimalSpecies</declname>
+        </param>
+        <briefdescription>
+<para>Constructs a <ref refid="class_habitat_domain_source" kindref="compound">HabitatDomainSource</ref> object from JSON configuration. </para>
+        </briefdescription>
+        <detaileddescription>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>config</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>JSON configuration describing the habitat domain. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>existingAnimalSpecies</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Vector of pointers to existing animal species in the landscape. </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="App/Model/IBM/Landscape/Map/Patches/Source/HabitatDomainSource.h" line="47" column="5"/>
+      </memberdef>
+      <memberdef kind="function" id="class_habitat_domain_source_1a354164d7393b6a1d3543638ca87ab310" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type></type>
+        <definition>HabitatDomainSource::~HabitatDomainSource</definition>
+        <argsstring>()</argsstring>
+        <name>~HabitatDomainSource</name>
+        <qualifiedname>HabitatDomainSource::~HabitatDomainSource</qualifiedname>
+        <briefdescription>
+<para>Destructor. </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="App/Model/IBM/Landscape/Map/Patches/Source/HabitatDomainSource.h" line="52" column="5"/>
+      </memberdef>
+      <memberdef kind="function" id="class_habitat_domain_source_1a22ab26966668a0a5b0ce01425a885f89" prot="public" static="no" const="yes" explicit="no" inline="no" virt="non-virtual">
+        <type>const <ref refid="class_custom_indexed_vector" kindref="compound">CustomIndexedVector</ref>&lt; <ref refid="class_animal_species_i_d" kindref="compound">AnimalSpeciesID</ref>, <ref refid="class_custom_indexed_vector" kindref="compound">CustomIndexedVector</ref>&lt; <ref refid="class_instar" kindref="compound">Instar</ref>, bool &gt; &gt; &amp;</type>
+        <definition>const CustomIndexedVector&lt; AnimalSpeciesID, CustomIndexedVector&lt; Instar, bool &gt; &gt; &amp; HabitatDomainSource::getHabitatDomainStatus</definition>
+        <argsstring>() const</argsstring>
+        <name>getHabitatDomainStatus</name>
+        <qualifiedname>HabitatDomainSource::getHabitatDomainStatus</qualifiedname>
+        <briefdescription>
+<para>Returns the habitat domain status for each animal species and life stage. </para>
+        </briefdescription>
+        <detaileddescription>
+<para><simplesect kind="return"><para>Reference to a nested <ref refid="class_custom_indexed_vector" kindref="compound">CustomIndexedVector</ref> mapping species ID and instar to suitability. </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="App/Model/IBM/Landscape/Map/Patches/Source/HabitatDomainSource.h" line="73" column="31"/>
+      </memberdef>
+      <memberdef kind="function" id="class_habitat_domain_source_1a2e2ac3509d8777538b9f4e521cb8456e" prot="public" static="no" const="yes" explicit="no" inline="no" virt="virtual">
+        <type><ref refid="class_path_source_1a7ec27884b82605503c9e7c6a45d5e52c" kindref="member">Type</ref></type>
+        <definition>Type HabitatDomainSource::getType</definition>
+        <argsstring>() const</argsstring>
+        <name>getType</name>
+        <qualifiedname>HabitatDomainSource::getType</qualifiedname>
+        <reimplements refid="class_path_source_1a499b4a31103f4ee5803ee6b670fd37fb">getType</reimplements>
+        <briefdescription>
+<para>Returns the type of this path source. </para>
+        </briefdescription>
+        <detaileddescription>
+<para><simplesect kind="return"><para><ref refid="class_path_source_1a7ec27884b82605503c9e7c6a45d5e52caaf7a7b7e3d9ddca455f230d81613a2b7" kindref="member">PathSource::Type::HabitatDomain</ref> </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="App/Model/IBM/Landscape/Map/Patches/Source/HabitatDomainSource.h" line="66" column="10"/>
+      </memberdef>
+      <memberdef kind="function" id="class_habitat_domain_source_1af70214be230706dfeef4fc3fc9a0447a" prot="public" static="no" const="yes" explicit="no" inline="no" virt="virtual">
+        <type>std::string</type>
+        <definition>std::string HabitatDomainSource::showInfo</definition>
+        <argsstring>() const</argsstring>
+        <name>showInfo</name>
+        <qualifiedname>HabitatDomainSource::showInfo</qualifiedname>
+        <reimplements refid="class_path_source_1aa1a85bad0b6a856dec4e1c2297ef3e51">showInfo</reimplements>
+        <briefdescription>
+<para>Returns a string describing this habitat domain source. </para>
+        </briefdescription>
+        <detaileddescription>
+<para><simplesect kind="return"><para>Description of the habitat domain source. </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="App/Model/IBM/Landscape/Map/Patches/Source/HabitatDomainSource.h" line="59" column="17"/>
+      </memberdef>
+    </sectiondef>
+    <briefdescription>
+<para>Represents habitat domain information for animals in the landscape. </para>
+    </briefdescription>
+    <detaileddescription>
+<para><ref refid="class_habitat_domain_source" kindref="compound">HabitatDomainSource</ref> extends <ref refid="class_path_source" kindref="compound">PathSource</ref> and contains data on which habitat cells are suitable for each species and life stage. It can provide a status map and a textual description of the source. </para>
+    </detaileddescription>
+    <inheritancegraph>
+      <node id="1">
+        <label>HabitatDomainSource</label>
+        <link refid="class_habitat_domain_source"/>
+        <childnode refid="2" relation="public-inheritance">
+        </childnode>
+      </node>
+      <node id="2">
+        <label>PathSource</label>
+        <link refid="class_path_source"/>
+      </node>
+    </inheritancegraph>
+    <collaborationgraph>
+      <node id="3">
+        <label>CustomIndexedVector&lt; AnimalSpeciesID, CustomIndexedVector&lt; Instar, bool &gt; &gt;</label>
+        <link refid="class_custom_indexed_vector"/>
+      </node>
+      <node id="1">
+        <label>HabitatDomainSource</label>
+        <link refid="class_habitat_domain_source"/>
+        <childnode refid="2" relation="public-inheritance">
+        </childnode>
+        <childnode refid="3" relation="usage">
+          <edgelabel>habitatDomainStatus</edgelabel>
+        </childnode>
+      </node>
+      <node id="2">
+        <label>PathSource</label>
+        <link refid="class_path_source"/>
+      </node>
+    </collaborationgraph>
+    <location file="App/Model/IBM/Landscape/Map/Patches/Source/HabitatDomainSource.h" line="39" column="1" bodyfile="App/Model/IBM/Landscape/Map/Patches/Source/HabitatDomainSource.h" bodystart="39" bodyend="78"/>
+    <listofallmembers>
+      <member refid="class_habitat_domain_source_1a182b1a800083b1c393bedb8087f61e8f" prot="private" virt="non-virtual"><scope>HabitatDomainSource</scope><name>affectedAnimalSpecies</name></member>
+      <member refid="class_habitat_domain_source_1a22ab26966668a0a5b0ce01425a885f89" prot="public" virt="non-virtual"><scope>HabitatDomainSource</scope><name>getHabitatDomainStatus</name></member>
+      <member refid="class_habitat_domain_source_1a2e2ac3509d8777538b9f4e521cb8456e" prot="public" virt="virtual"><scope>HabitatDomainSource</scope><name>getType</name></member>
+      <member refid="class_habitat_domain_source_1a3ffdd380e3165c6338f400c27c895fe3" prot="public" virt="non-virtual"><scope>HabitatDomainSource</scope><name>HabitatDomainSource</name></member>
+      <member refid="class_habitat_domain_source_1ad4761605496f96eb905c1220ea677a88" prot="private" virt="non-virtual"><scope>HabitatDomainSource</scope><name>habitatDomainStatus</name></member>
+      <member refid="class_path_source_1a5254419b330af44e1adade9f9b8cabb5" prot="public" virt="non-virtual"><scope>HabitatDomainSource</scope><name>PathSource</name></member>
+      <member refid="class_path_source_1ae07eddfd7666bc5bf46a7cf920fdb311" prot="public" virt="non-virtual"><scope>HabitatDomainSource</scope><name>serialize</name></member>
+      <member refid="class_habitat_domain_source_1af70214be230706dfeef4fc3fc9a0447a" prot="public" virt="virtual"><scope>HabitatDomainSource</scope><name>showInfo</name></member>
+      <member refid="class_path_source_1a7ec27884b82605503c9e7c6a45d5e52c" prot="public" virt="non-virtual"><scope>HabitatDomainSource</scope><name>Type</name></member>
+      <member refid="class_habitat_domain_source_1a354164d7393b6a1d3543638ca87ab310" prot="public" virt="non-virtual"><scope>HabitatDomainSource</scope><name>~HabitatDomainSource</name></member>
+      <member refid="class_path_source_1a2e714dffb83c697cfaeceba8f16dced5" prot="public" virt="virtual"><scope>HabitatDomainSource</scope><name>~PathSource</name></member>
+    </listofallmembers>
+  </compounddef>
+</doxygen>

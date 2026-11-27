@@ -1,0 +1,281 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.18.0" xml:lang="en-US">
+  <compounddef id="class_path_chooser" kind="class" language="C++" prot="public">
+    <compoundname>PathChooser</compoundname>
+    <basecompoundref prot="public" virt="non-virtual">nana::panel&lt; true &gt;</basecompoundref>
+    <includes refid="_path_chooser_8h" local="no">PathChooser.h</includes>
+    <sectiondef kind="protected-attrib">
+      <memberdef kind="variable" id="class_path_chooser_1a3df5e1854bebed6c928d2ecb51c9fec0" prot="protected" static="no" mutable="no">
+        <type>nana::button</type>
+        <definition>nana::button PathChooser::button</definition>
+        <argsstring></argsstring>
+        <name>button</name>
+        <qualifiedname>PathChooser::button</qualifiedname>
+        <initializer>{*this}</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Button to open file/folder dialog </para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="App/View/GUI/Widgets/PathChooser.h" line="71" column="18" bodyfile="App/View/GUI/Widgets/PathChooser.h" bodystart="71" bodyend="71"/>
+      </memberdef>
+      <memberdef kind="variable" id="class_path_chooser_1a4c02ab759e7582411f4b731687e143b4" prot="protected" static="no" mutable="no">
+        <type>bool</type>
+        <definition>bool PathChooser::isDirectory</definition>
+        <argsstring></argsstring>
+        <name>isDirectory</name>
+        <qualifiedname>PathChooser::isDirectory</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Flag indicating if selection is directory or file </para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="App/View/GUI/Widgets/PathChooser.h" line="73" column="10" bodyfile="App/View/GUI/Widgets/PathChooser.h" bodystart="73" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="class_path_chooser_1ab3e7015ad4ea0e8185c9599f505e6cbb" prot="protected" static="no" mutable="no">
+        <type>nana::label</type>
+        <definition>nana::label PathChooser::label</definition>
+        <argsstring></argsstring>
+        <name>label</name>
+        <qualifiedname>PathChooser::label</qualifiedname>
+        <initializer>{*this}</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Label widget </para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="App/View/GUI/Widgets/PathChooser.h" line="69" column="17" bodyfile="App/View/GUI/Widgets/PathChooser.h" bodystart="69" bodyend="69"/>
+      </memberdef>
+      <memberdef kind="variable" id="class_path_chooser_1aa7ab79e87ee2ee96733f574111c80729" prot="protected" static="no" mutable="no">
+        <type>nana::place</type>
+        <definition>nana::place PathChooser::layout</definition>
+        <argsstring></argsstring>
+        <name>layout</name>
+        <qualifiedname>PathChooser::layout</qualifiedname>
+        <initializer>{*this}</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Layout manager for arranging the widgets </para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="App/View/GUI/Widgets/PathChooser.h" line="68" column="17" bodyfile="App/View/GUI/Widgets/PathChooser.h" bodystart="68" bodyend="68"/>
+      </memberdef>
+      <memberdef kind="variable" id="class_path_chooser_1a11a04719d5d39e3f69d1714698a86cd6" prot="protected" static="no" mutable="no">
+        <type>nana::textbox</type>
+        <definition>nana::textbox PathChooser::textbox</definition>
+        <argsstring></argsstring>
+        <name>textbox</name>
+        <qualifiedname>PathChooser::textbox</qualifiedname>
+        <initializer>{*this}</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Textbox displaying the selected path </para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="App/View/GUI/Widgets/PathChooser.h" line="70" column="19" bodyfile="App/View/GUI/Widgets/PathChooser.h" bodystart="70" bodyend="70"/>
+      </memberdef>
+    </sectiondef>
+    <sectiondef kind="public-func">
+      <memberdef kind="function" id="class_path_chooser_1aad4e35ac986eeb5254d365b5323c49e7" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type></type>
+        <definition>PathChooser::PathChooser</definition>
+        <argsstring>(const PathChooser &amp;other)=delete</argsstring>
+        <name>PathChooser</name>
+        <qualifiedname>PathChooser::PathChooser</qualifiedname>
+        <param>
+          <type>const <ref refid="class_path_chooser" kindref="compound">PathChooser</ref> &amp;</type>
+          <declname>other</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="App/View/GUI/Widgets/PathChooser.h" line="52" column="5"/>
+      </memberdef>
+      <memberdef kind="function" id="class_path_chooser_1a0f9357bb8187834c33cc1a137d0cfda9" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type></type>
+        <definition>PathChooser::PathChooser</definition>
+        <argsstring>(nana::window parent, const std::string &amp;labelText, const bool isDirectory)</argsstring>
+        <name>PathChooser</name>
+        <qualifiedname>PathChooser::PathChooser</qualifiedname>
+        <param>
+          <type>nana::window</type>
+          <declname>parent</declname>
+        </param>
+        <param>
+          <type>const std::string &amp;</type>
+          <declname>labelText</declname>
+        </param>
+        <param>
+          <type>const bool</type>
+          <declname>isDirectory</declname>
+        </param>
+        <briefdescription>
+<para>Constructs a <ref refid="class_path_chooser" kindref="compound">PathChooser</ref> widget. </para>
+        </briefdescription>
+        <detaileddescription>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>parent</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>The parent window. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>labelText</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Text to display as the label. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>isDirectory</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>True to select directories, false to select files. </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="App/View/GUI/Widgets/PathChooser.h" line="44" column="5"/>
+      </memberdef>
+      <memberdef kind="function" id="class_path_chooser_1a0f26554e815f0d266d122ced07ae8e1e" prot="public" static="no" const="no" explicit="no" inline="no" virt="virtual">
+        <type></type>
+        <definition>virtual PathChooser::~PathChooser</definition>
+        <argsstring>()</argsstring>
+        <name>~PathChooser</name>
+        <qualifiedname>PathChooser::~PathChooser</qualifiedname>
+        <briefdescription>
+<para>Destructor for <ref refid="class_path_chooser" kindref="compound">PathChooser</ref>. </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="App/View/GUI/Widgets/PathChooser.h" line="49" column="13"/>
+      </memberdef>
+      <memberdef kind="function" id="class_path_chooser_1a4c04f57f220793bc9ec55f818f98dcc7" prot="public" static="no" const="yes" explicit="no" inline="no" virt="non-virtual">
+        <type>std::filesystem::path</type>
+        <definition>std::filesystem::path PathChooser::getPath</definition>
+        <argsstring>() const</argsstring>
+        <name>getPath</name>
+        <qualifiedname>PathChooser::getPath</qualifiedname>
+        <briefdescription>
+<para>Returns the current path in the textbox. </para>
+        </briefdescription>
+        <detaileddescription>
+<para><simplesect kind="return"><para>Selected path. </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="App/View/GUI/Widgets/PathChooser.h" line="59" column="27"/>
+      </memberdef>
+      <memberdef kind="function" id="class_path_chooser_1aebe4214b9800a0370d2022b6434647de" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type><ref refid="class_path_chooser" kindref="compound">PathChooser</ref> &amp;</type>
+        <definition>PathChooser &amp; PathChooser::operator=</definition>
+        <argsstring>(const PathChooser &amp;other)=delete</argsstring>
+        <name>operator=</name>
+        <qualifiedname>PathChooser::operator=</qualifiedname>
+        <param>
+          <type>const <ref refid="class_path_chooser" kindref="compound">PathChooser</ref> &amp;</type>
+          <declname>other</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="App/View/GUI/Widgets/PathChooser.h" line="53" column="13"/>
+      </memberdef>
+      <memberdef kind="function" id="class_path_chooser_1a3f2d91c61f93e1323089a0aa7a3b14d3" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void PathChooser::setPath</definition>
+        <argsstring>(const std::filesystem::path &amp;newPath)</argsstring>
+        <name>setPath</name>
+        <qualifiedname>PathChooser::setPath</qualifiedname>
+        <param>
+          <type>const std::filesystem::path &amp;</type>
+          <declname>newPath</declname>
+        </param>
+        <briefdescription>
+<para>Sets the path displayed in the textbox. </para>
+        </briefdescription>
+        <detaileddescription>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>newPath</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Path to set. </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="App/View/GUI/Widgets/PathChooser.h" line="65" column="10"/>
+      </memberdef>
+    </sectiondef>
+    <sectiondef kind="protected-func">
+      <memberdef kind="function" id="class_path_chooser_1add206f90549848afebfb5d2f100bd572" prot="protected" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void PathChooser::browsePath</definition>
+        <argsstring>()</argsstring>
+        <name>browsePath</name>
+        <qualifiedname>PathChooser::browsePath</qualifiedname>
+        <briefdescription>
+<para>Opens the file or folder dialog to select a path. </para>
+        </briefdescription>
+        <detaileddescription>
+<para>Updates the textbox with the selected path. </para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="App/View/GUI/Widgets/PathChooser.h" line="80" column="10"/>
+      </memberdef>
+    </sectiondef>
+    <briefdescription>
+<para>A widget that allows the user to choose a file or directory path. </para>
+    </briefdescription>
+    <detaileddescription>
+<para>Provides a label, a read-only textbox, and a browse button. Clicking the button opens a file or folder dialog, and the selected path is displayed in the textbox. </para>
+    </detaileddescription>
+    <location file="App/View/GUI/Widgets/PathChooser.h" line="36" column="1" bodyfile="App/View/GUI/Widgets/PathChooser.h" bodystart="36" bodyend="81"/>
+    <listofallmembers>
+      <member refid="class_path_chooser_1add206f90549848afebfb5d2f100bd572" prot="protected" virt="non-virtual"><scope>PathChooser</scope><name>browsePath</name></member>
+      <member refid="class_path_chooser_1a3df5e1854bebed6c928d2ecb51c9fec0" prot="protected" virt="non-virtual"><scope>PathChooser</scope><name>button</name></member>
+      <member refid="class_path_chooser_1a4c04f57f220793bc9ec55f818f98dcc7" prot="public" virt="non-virtual"><scope>PathChooser</scope><name>getPath</name></member>
+      <member refid="class_path_chooser_1a4c02ab759e7582411f4b731687e143b4" prot="protected" virt="non-virtual"><scope>PathChooser</scope><name>isDirectory</name></member>
+      <member refid="class_path_chooser_1ab3e7015ad4ea0e8185c9599f505e6cbb" prot="protected" virt="non-virtual"><scope>PathChooser</scope><name>label</name></member>
+      <member refid="class_path_chooser_1aa7ab79e87ee2ee96733f574111c80729" prot="protected" virt="non-virtual"><scope>PathChooser</scope><name>layout</name></member>
+      <member refid="class_path_chooser_1aebe4214b9800a0370d2022b6434647de" prot="public" virt="non-virtual"><scope>PathChooser</scope><name>operator=</name></member>
+      <member refid="class_path_chooser_1a0f9357bb8187834c33cc1a137d0cfda9" prot="public" virt="non-virtual"><scope>PathChooser</scope><name>PathChooser</name></member>
+      <member refid="class_path_chooser_1aad4e35ac986eeb5254d365b5323c49e7" prot="public" virt="non-virtual"><scope>PathChooser</scope><name>PathChooser</name></member>
+      <member refid="class_path_chooser_1a3f2d91c61f93e1323089a0aa7a3b14d3" prot="public" virt="non-virtual"><scope>PathChooser</scope><name>setPath</name></member>
+      <member refid="class_path_chooser_1a11a04719d5d39e3f69d1714698a86cd6" prot="protected" virt="non-virtual"><scope>PathChooser</scope><name>textbox</name></member>
+      <member refid="class_path_chooser_1a0f26554e815f0d266d122ced07ae8e1e" prot="public" virt="virtual"><scope>PathChooser</scope><name>~PathChooser</name></member>
+    </listofallmembers>
+  </compounddef>
+</doxygen>

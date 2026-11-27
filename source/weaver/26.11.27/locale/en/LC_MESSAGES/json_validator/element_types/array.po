@@ -1,0 +1,140 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) 2025, EEZA
+# This file is distributed under the same license as the Weaver package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, 2025.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: Weaver latest\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2025-10-27 21:00+0100\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language: en\n"
+"Language-Team: en <LL@li.org>\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Generated-By: Babel 2.17.0\n"
+
+#: ../json_validator/element_types/array.rst:3
+msgid "Array Type"
+msgstr ""
+
+#: ../json_validator/element_types/array.rst:5
+msgid "The '**array**' type represents an ordered list of items."
+msgstr ""
+
+#: ../json_validator/element_types/array.rst:9
+msgid "Specific Fields"
+msgstr ""
+
+#: ../json_validator/element_types/array.rst:11
+msgid ""
+"The following specific fields to the '**array**' type are related to the "
+"definition of the array elements:"
+msgstr ""
+
+#: ../json_validator/element_types/array.rst:15
+msgid "items"
+msgstr ""
+
+#: ../json_validator/element_types/array.rst:19
+msgid "The '**items**' field is required. The '**items**' must be a schema."
+msgstr ""
+
+#: ../json_validator/element_types/array.rst:21
+msgid "Specifies the schema that the items in the array must adhere to."
+msgstr ""
+
+#: ../json_validator/element_types/array.rst:23
+msgid ""
+"The following specific fields to the '**array**' type are related to "
+"constraints on the array:"
+msgstr ""
+
+#: ../json_validator/element_types/array.rst:27
+msgid "minItems"
+msgstr ""
+
+#: ../json_validator/element_types/array.rst:31
+msgid "The '**minItems**' field is optional. Its default value is **0**."
+msgstr ""
+
+#: ../json_validator/element_types/array.rst:35
+msgid "The '**minItems**' must be a positive integer."
+msgstr ""
+
+#: ../json_validator/element_types/array.rst:37
+msgid "Specifies the minimum number of items in the array."
+msgstr ""
+
+#: ../json_validator/element_types/array.rst:41
+msgid "maxItems"
+msgstr ""
+
+#: ../json_validator/element_types/array.rst:45
+msgid ""
+"The '**maxItems**' field is optional. Its default value is "
+"**18446744073709551615**."
+msgstr ""
+
+#: ../json_validator/element_types/array.rst:49
+msgid "The '**maxItems**' must be a positive integer."
+msgstr ""
+
+#: ../json_validator/element_types/array.rst:51
+msgid "Specifies the maximum number of items in the array."
+msgstr ""
+
+#: ../json_validator/element_types/array.rst:55
+msgid "itemsOrder"
+msgstr ""
+
+#: ../json_validator/element_types/array.rst:59
+msgid "The '**itemsOrder**' field is optional."
+msgstr ""
+
+#: ../json_validator/element_types/array.rst:63
+msgid "The '**itemsOrder**' must be a string."
+msgstr ""
+
+#: ../json_validator/element_types/array.rst:65
+msgid "Specifies the order of the elements in the array. The possible values are:"
+msgstr ""
+
+#: ../json_validator/element_types/array.rst:67
+msgid "**increasing**: Items must be in increasing order."
+msgstr ""
+
+#: ../json_validator/element_types/array.rst:68
+msgid "**strictly_increasing**: Items must be in strictly increasing order."
+msgstr ""
+
+#: ../json_validator/element_types/array.rst:69
+msgid "**decreasing**: Items must be in decreasing order."
+msgstr ""
+
+#: ../json_validator/element_types/array.rst:70
+msgid "**strictly_decreasing**: Items must be in strictly decreasing order."
+msgstr ""
+
+#: ../json_validator/element_types/array.rst:73
+msgid ""
+"These constraints ensure that the array adheres to specified rules, such "
+"as being within a certain size range or sorted in a certain specified "
+"order."
+msgstr ""
+
+#: ../json_validator/element_types/array.rst:76
+msgid ""
+"For more details on the common fields, see the section "
+"':ref:`json_validator/getting_started:common fields`'."
+msgstr ""
+
+#: ../json_validator/element_types/array.rst:80
+msgid "Example"
+msgstr ""
+

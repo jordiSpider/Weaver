@@ -1,0 +1,567 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.18.0" xml:lang="en-US">
+  <compounddef id="class_element" kind="class" language="C++" prot="public" abstract="yes">
+    <compoundname>Element</compoundname>
+    <derivedcompoundref refid="class_array" prot="public" virt="non-virtual">Array</derivedcompoundref>
+    <derivedcompoundref refid="class_boolean" prot="public" virt="non-virtual">Boolean</derivedcompoundref>
+    <derivedcompoundref refid="class_integer" prot="public" virt="non-virtual">Integer</derivedcompoundref>
+    <derivedcompoundref refid="class_number" prot="public" virt="non-virtual">Number</derivedcompoundref>
+    <derivedcompoundref refid="class_object" prot="public" virt="non-virtual">Object</derivedcompoundref>
+    <derivedcompoundref refid="class_string" prot="public" virt="non-virtual">String</derivedcompoundref>
+    <derivedcompoundref refid="class_tuple" prot="public" virt="non-virtual">Tuple</derivedcompoundref>
+    <includes refid="_element_8h" local="no">Element.h</includes>
+    <sectiondef kind="public-type">
+      <memberdef kind="enum" id="class_element_1a009a3be4c3a037a72e292b2464c9cbc5" prot="public" static="no" strong="yes">
+        <type></type>
+        <name>Type</name>
+        <qualifiedname>Element::Type</qualifiedname>
+        <enumvalue id="class_element_1a009a3be4c3a037a72e292b2464c9cbc5aa8cfde6331bd59eb2ac96f8911c4b666" prot="public">
+          <name>object</name>
+          <briefdescription>
+<para>JSON object. </para>
+          </briefdescription>
+          <detaileddescription>
+          </detaileddescription>
+        </enumvalue>
+        <enumvalue id="class_element_1a009a3be4c3a037a72e292b2464c9cbc5af1f713c9e000f5d3f280adbd124df4f5" prot="public">
+          <name>array</name>
+          <briefdescription>
+<para>JSON array. </para>
+          </briefdescription>
+          <detaileddescription>
+          </detaileddescription>
+        </enumvalue>
+        <enumvalue id="class_element_1a009a3be4c3a037a72e292b2464c9cbc5a0636f7c1e41a18679ab958368587c630" prot="public">
+          <name>tuple</name>
+          <briefdescription>
+<para><ref refid="class_tuple" kindref="compound">Tuple</ref> structure. </para>
+          </briefdescription>
+          <detaileddescription>
+          </detaileddescription>
+        </enumvalue>
+        <enumvalue id="class_element_1a009a3be4c3a037a72e292b2464c9cbc5ab45cffe084dd3d20d928bee85e7b0f21" prot="public">
+          <name>string</name>
+          <briefdescription>
+<para><ref refid="class_string" kindref="compound">String</ref>. </para>
+          </briefdescription>
+          <detaileddescription>
+          </detaileddescription>
+        </enumvalue>
+        <enumvalue id="class_element_1a009a3be4c3a037a72e292b2464c9cbc5a157db7df530023575515d366c9b672e8" prot="public">
+          <name>integer</name>
+          <briefdescription>
+<para><ref refid="class_integer" kindref="compound">Integer</ref> number. </para>
+          </briefdescription>
+          <detaileddescription>
+          </detaileddescription>
+        </enumvalue>
+        <enumvalue id="class_element_1a009a3be4c3a037a72e292b2464c9cbc5ab1bc248a7ff2b2e95569f56de68615df" prot="public">
+          <name>number</name>
+          <briefdescription>
+<para>Floating point number. </para>
+          </briefdescription>
+          <detaileddescription>
+          </detaileddescription>
+        </enumvalue>
+        <enumvalue id="class_element_1a009a3be4c3a037a72e292b2464c9cbc5a84e2c64f38f78ba3ea5c905ab5a2da27" prot="public">
+          <name>boolean</name>
+          <briefdescription>
+<para><ref refid="class_boolean" kindref="compound">Boolean</ref> value. </para>
+          </briefdescription>
+          <detaileddescription>
+          </detaileddescription>
+        </enumvalue>
+        <briefdescription>
+<para>Enum representing the type of the element. </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="Misc/JsonValidator/Elements/Element.h" line="48" column="5" bodyfile="Misc/JsonValidator/Elements/Element.h" bodystart="48" bodyend="56"/>
+      </memberdef>
+    </sectiondef>
+    <sectiondef kind="protected-attrib">
+      <memberdef kind="variable" id="class_element_1a31838aa329c7380f4395b9c0a4a82cfe" prot="protected" static="no" mutable="no">
+        <type>std::string</type>
+        <definition>std::string Element::description</definition>
+        <argsstring></argsstring>
+        <name>description</name>
+        <qualifiedname>Element::description</qualifiedname>
+        <briefdescription>
+<para>Description of the element. </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="Misc/JsonValidator/Elements/Element.h" line="33" column="17" bodyfile="Misc/JsonValidator/Elements/Element.h" bodystart="33" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="class_element_1a1b0c283200e0e2c16b8713369631214d" prot="protected" static="no" mutable="no">
+        <type>bool</type>
+        <definition>bool Element::modified</definition>
+        <argsstring></argsstring>
+        <name>modified</name>
+        <qualifiedname>Element::modified</qualifiedname>
+        <briefdescription>
+<para>Indicates whether the element has been modified. </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="Misc/JsonValidator/Elements/Element.h" line="31" column="10" bodyfile="Misc/JsonValidator/Elements/Element.h" bodystart="31" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="class_element_1a4318313abfd08feae300a12668cec95a" prot="protected" static="no" mutable="no">
+        <type>bool</type>
+        <definition>bool Element::nullProperty</definition>
+        <argsstring></argsstring>
+        <name>nullProperty</name>
+        <qualifiedname>Element::nullProperty</qualifiedname>
+        <briefdescription>
+<para>Indicates whether the element represents a null property. </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="Misc/JsonValidator/Elements/Element.h" line="32" column="10" bodyfile="Misc/JsonValidator/Elements/Element.h" bodystart="32" bodyend="-1"/>
+      </memberdef>
+    </sectiondef>
+    <sectiondef kind="protected-func">
+      <memberdef kind="function" id="class_element_1a2e31082683027a829ee75a4bd872738a" prot="protected" static="no" const="yes" explicit="no" inline="no" virt="pure-virtual">
+        <type>void</type>
+        <definition>virtual void Element::validateElement</definition>
+        <argsstring>(const nlohmann::json &amp;config) const =0</argsstring>
+        <name>validateElement</name>
+        <qualifiedname>Element::validateElement</qualifiedname>
+        <reimplementedby refid="class_array_1a4c46b73865d2a188548f3dd72d9b16f7">validateElement</reimplementedby>
+        <reimplementedby refid="class_boolean_1a25edf02ba439c1d7ced60f62b4e113b6">validateElement</reimplementedby>
+        <reimplementedby refid="class_integer_1a75332e1010229eb65afa21a270f6e156">validateElement</reimplementedby>
+        <reimplementedby refid="class_number_1ac4a6cc041cdf8a1df0e74ac0a67dcc3e">validateElement</reimplementedby>
+        <reimplementedby refid="class_object_1a353ce1d7d61fb2411e88aa12d7526b81">validateElement</reimplementedby>
+        <reimplementedby refid="class_string_1a2ec87f1060c707c160e38567126373af">validateElement</reimplementedby>
+        <reimplementedby refid="class_tuple_1a247214c632de7c3a73f7d66446a64883">validateElement</reimplementedby>
+        <param>
+          <type>const nlohmann::json &amp;</type>
+          <declname>config</declname>
+        </param>
+        <briefdescription>
+<para>Validates the element against a JSON configuration. </para>
+        </briefdescription>
+        <detaileddescription>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>config</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>JSON object to validate against.</para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+This pure virtual function must be implemented by derived classes to define element-specific validation rules. </para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="Misc/JsonValidator/Elements/Element.h" line="42" column="18"/>
+      </memberdef>
+    </sectiondef>
+    <sectiondef kind="public-func">
+      <memberdef kind="function" id="class_element_1a7adf23f4617107ee13fcab2747d8b394" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type></type>
+        <definition>Element::Element</definition>
+        <argsstring>(const bool nullProperty, const std::string &amp;description)</argsstring>
+        <name>Element</name>
+        <qualifiedname>Element::Element</qualifiedname>
+        <param>
+          <type>const bool</type>
+          <declname>nullProperty</declname>
+        </param>
+        <param>
+          <type>const std::string &amp;</type>
+          <declname>description</declname>
+        </param>
+        <briefdescription>
+<para>Constructs an <ref refid="class_element" kindref="compound">Element</ref> with specified null property flag and description. </para>
+        </briefdescription>
+        <detaileddescription>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>nullProperty</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Whether this element represents a null property. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>description</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Description of the element. </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="Misc/JsonValidator/Elements/Element.h" line="69" column="5"/>
+      </memberdef>
+      <memberdef kind="function" id="class_element_1a5ef746a08042747acd608589686df030" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type></type>
+        <definition>Element::Element</definition>
+        <argsstring>(const nlohmann::json &amp;info)</argsstring>
+        <name>Element</name>
+        <qualifiedname>Element::Element</qualifiedname>
+        <param>
+          <type>const nlohmann::json &amp;</type>
+          <declname>info</declname>
+        </param>
+        <briefdescription>
+<para>Constructs an <ref refid="class_element" kindref="compound">Element</ref> from JSON information. </para>
+        </briefdescription>
+        <detaileddescription>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>info</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>JSON object containing element data. </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="Misc/JsonValidator/Elements/Element.h" line="62" column="5"/>
+      </memberdef>
+      <memberdef kind="function" id="class_element_1ab4fc182292f44e46acba9c55662237bf" prot="public" static="no" const="no" explicit="no" inline="no" virt="virtual">
+        <type></type>
+        <definition>virtual Element::~Element</definition>
+        <argsstring>()</argsstring>
+        <name>~Element</name>
+        <qualifiedname>Element::~Element</qualifiedname>
+        <briefdescription>
+<para>Virtual destructor. </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="Misc/JsonValidator/Elements/Element.h" line="74" column="13"/>
+      </memberdef>
+      <memberdef kind="function" id="class_element_1a2eab22dd80bfba5646c6f0e79dec8569" prot="public" static="no" const="yes" explicit="no" inline="no" virt="non-virtual">
+        <type>const std::string &amp;</type>
+        <definition>const std::string &amp; Element::getDescription</definition>
+        <argsstring>() const</argsstring>
+        <name>getDescription</name>
+        <qualifiedname>Element::getDescription</qualifiedname>
+        <briefdescription>
+<para>Returns the element description. </para>
+        </briefdescription>
+        <detaileddescription>
+<para><simplesect kind="return"><para>Description string. </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="Misc/JsonValidator/Elements/Element.h" line="92" column="23"/>
+      </memberdef>
+      <memberdef kind="function" id="class_element_1ae4ee4a9ec97bb054a43aea28d9700f8e" prot="public" static="no" const="yes" explicit="no" inline="no" virt="non-virtual">
+        <type>std::pair&lt; const <ref refid="class_element" kindref="compound">Element</ref> *const, std::string &gt;</type>
+        <definition>std::pair&lt; const Element *const, std::string &gt; Element::getProperty</definition>
+        <argsstring>(const std::string &amp;propertyName) const</argsstring>
+        <name>getProperty</name>
+        <qualifiedname>Element::getProperty</qualifiedname>
+        <param>
+          <type>const std::string &amp;</type>
+          <declname>propertyName</declname>
+        </param>
+        <briefdescription>
+<para>Retrieves a child property by name without pattern replacement. </para>
+        </briefdescription>
+        <detaileddescription>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>propertyName</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Name of the property to retrieve. </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<simplesect kind="return"><para>Pair of pointer to the <ref refid="class_element" kindref="compound">Element</ref> and its description. </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="Misc/JsonValidator/Elements/Element.h" line="127" column="15"/>
+      </memberdef>
+      <memberdef kind="function" id="class_element_1abf6e4f402b616bf7f52166f96c450b36" prot="public" static="no" const="yes" explicit="no" inline="no" virt="virtual">
+        <type>std::pair&lt; const <ref refid="class_element" kindref="compound">Element</ref> *const, std::string &gt;</type>
+        <definition>virtual std::pair&lt; const Element *const, std::string &gt; Element::getProperty</definition>
+        <argsstring>(const std::string &amp;propertyName, const bool patternReplacement, const std::string &amp;replacementValue) const</argsstring>
+        <name>getProperty</name>
+        <qualifiedname>Element::getProperty</qualifiedname>
+        <reimplementedby refid="class_object_1a2c78ed0c6df8d496465d086565f624f6">getProperty</reimplementedby>
+        <param>
+          <type>const std::string &amp;</type>
+          <declname>propertyName</declname>
+        </param>
+        <param>
+          <type>const bool</type>
+          <declname>patternReplacement</declname>
+        </param>
+        <param>
+          <type>const std::string &amp;</type>
+          <declname>replacementValue</declname>
+        </param>
+        <briefdescription>
+<para>Retrieves a child property by name with optional pattern replacement. </para>
+        </briefdescription>
+        <detaileddescription>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>propertyName</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Name of the property to retrieve. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>patternReplacement</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Whether to perform pattern replacement in strings. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>replacementValue</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Value to replace the pattern with. </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<simplesect kind="return"><para>Pair of pointer to the <ref refid="class_element" kindref="compound">Element</ref> and its description.</para>
+</simplesect>
+Can be overridden by derived classes for structured access. </para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="Misc/JsonValidator/Elements/Element.h" line="120" column="23"/>
+      </memberdef>
+      <memberdef kind="function" id="class_element_1a00ef06c036d1d4628fcd3586885ca131" prot="public" static="no" const="yes" explicit="no" inline="no" virt="pure-virtual">
+        <type><ref refid="class_element_1a009a3be4c3a037a72e292b2464c9cbc5" kindref="member">Type</ref></type>
+        <definition>virtual Type Element::getType</definition>
+        <argsstring>() const =0</argsstring>
+        <name>getType</name>
+        <qualifiedname>Element::getType</qualifiedname>
+        <reimplementedby refid="class_array_1af52134ea9937f168a98ed4b5a0fc348f">getType</reimplementedby>
+        <reimplementedby refid="class_boolean_1ae1b5e9cb75831650e15c7fdd7c6af50a">getType</reimplementedby>
+        <reimplementedby refid="class_integer_1ab94dff0fc68241967363eaa30f3a95e1">getType</reimplementedby>
+        <reimplementedby refid="class_number_1a07939c25f6009e53050fba58998b72d5">getType</reimplementedby>
+        <reimplementedby refid="class_object_1a9bb97ab8fe1c83ce6dbbb19cba53a578">getType</reimplementedby>
+        <reimplementedby refid="class_string_1ac654ad56d5ed2ad2287e4f208348b607">getType</reimplementedby>
+        <reimplementedby refid="class_tuple_1a8966457d330ac250bd002c719e606a63">getType</reimplementedby>
+        <briefdescription>
+<para>Returns the type of the element. </para>
+        </briefdescription>
+        <detaileddescription>
+<para><simplesect kind="return"><para><ref refid="class_element" kindref="compound">Element</ref> type (<ref refid="class_element_1a009a3be4c3a037a72e292b2464c9cbc5" kindref="member">Type</ref> enum).</para>
+</simplesect>
+Pure virtual function to be implemented by derived classes. </para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="Misc/JsonValidator/Elements/Element.h" line="135" column="18"/>
+      </memberdef>
+      <memberdef kind="function" id="class_element_1a4e3a7ef1a3b0b42c84c1022a4db94246" prot="public" static="no" const="yes" explicit="no" inline="no" virt="non-virtual">
+        <type>bool</type>
+        <definition>bool Element::isModified</definition>
+        <argsstring>() const</argsstring>
+        <name>isModified</name>
+        <qualifiedname>Element::isModified</qualifiedname>
+        <briefdescription>
+<para>Checks if the element has been modified. </para>
+        </briefdescription>
+        <detaileddescription>
+<para><simplesect kind="return"><para>True if modified, false otherwise. </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="Misc/JsonValidator/Elements/Element.h" line="86" column="10"/>
+      </memberdef>
+      <memberdef kind="function" id="class_element_1a97d883c0b237ec9e1fe6993825fd0f8c" prot="public" static="no" const="yes" explicit="no" inline="no" virt="non-virtual">
+        <type>bool</type>
+        <definition>bool Element::isNullProperty</definition>
+        <argsstring>() const</argsstring>
+        <name>isNullProperty</name>
+        <qualifiedname>Element::isNullProperty</qualifiedname>
+        <briefdescription>
+<para>Checks if the element represents a null property. </para>
+        </briefdescription>
+        <detaileddescription>
+<para><simplesect kind="return"><para>True if null property, false otherwise. </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="Misc/JsonValidator/Elements/Element.h" line="80" column="10"/>
+      </memberdef>
+      <memberdef kind="function" id="class_element_1a59cc1d05821dd36340deffd7f56add32" prot="public" static="no" const="yes" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void Element::validate</definition>
+        <argsstring>(const nlohmann::json &amp;config) const</argsstring>
+        <name>validate</name>
+        <qualifiedname>Element::validate</qualifiedname>
+        <param>
+          <type>const nlohmann::json &amp;</type>
+          <declname>config</declname>
+        </param>
+        <briefdescription>
+<para>Validates the element against a JSON configuration. </para>
+        </briefdescription>
+        <detaileddescription>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>config</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>JSON object to validate against.</para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+Calls the derived class&apos;s <ref refid="class_element_1a2e31082683027a829ee75a4bd872738a" kindref="member">validateElement()</ref> implementation. </para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="Misc/JsonValidator/Elements/Element.h" line="100" column="10"/>
+      </memberdef>
+      <memberdef kind="function" id="class_element_1adbcc49811634a36df5d3830d366ba2b0" prot="public" static="no" const="yes" explicit="no" inline="no" virt="virtual">
+        <type>void</type>
+        <definition>virtual void Element::verifyPropertyPath</definition>
+        <argsstring>(const std::vector&lt; std::string &gt; &amp;path, const unsigned int currentIndex) const</argsstring>
+        <name>verifyPropertyPath</name>
+        <qualifiedname>Element::verifyPropertyPath</qualifiedname>
+        <reimplementedby refid="class_object_1a85d295101b9c3d5b6ba7eae776344dc3">verifyPropertyPath</reimplementedby>
+        <param>
+          <type>const std::vector&lt; std::string &gt; &amp;</type>
+          <declname>path</declname>
+        </param>
+        <param>
+          <type>const unsigned int</type>
+          <declname>currentIndex</declname>
+        </param>
+        <briefdescription>
+<para>Verifies that a property path exists in the element. </para>
+        </briefdescription>
+        <detaileddescription>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>path</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Vector of property names representing the path. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>currentIndex</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Current index in the path traversal.</para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+Can be overridden by derived classes to enforce structured property checks. </para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="Misc/JsonValidator/Elements/Element.h" line="109" column="18"/>
+      </memberdef>
+    </sectiondef>
+    <briefdescription>
+<para>Abstract base class for elements that can be validated and accessed in a configuration. </para>
+    </briefdescription>
+    <detaileddescription>
+<para>Elements represent structured or primitive data in a JSON configuration. This class provides an interface for validation, property access, and metadata management such as description and modification status. </para>
+    </detaileddescription>
+    <inheritancegraph>
+      <node id="2">
+        <label>Array</label>
+        <link refid="class_array"/>
+        <childnode refid="1" relation="public-inheritance">
+        </childnode>
+      </node>
+      <node id="3">
+        <label>Boolean</label>
+        <link refid="class_boolean"/>
+        <childnode refid="1" relation="public-inheritance">
+        </childnode>
+      </node>
+      <node id="1">
+        <label>Element</label>
+        <link refid="class_element"/>
+      </node>
+      <node id="4">
+        <label>Integer</label>
+        <link refid="class_integer"/>
+        <childnode refid="1" relation="public-inheritance">
+        </childnode>
+      </node>
+      <node id="5">
+        <label>Number</label>
+        <link refid="class_number"/>
+        <childnode refid="1" relation="public-inheritance">
+        </childnode>
+      </node>
+      <node id="6">
+        <label>Object</label>
+        <link refid="class_object"/>
+        <childnode refid="1" relation="public-inheritance">
+        </childnode>
+      </node>
+      <node id="7">
+        <label>String</label>
+        <link refid="class_string"/>
+        <childnode refid="1" relation="public-inheritance">
+        </childnode>
+      </node>
+      <node id="8">
+        <label>Tuple</label>
+        <link refid="class_tuple"/>
+        <childnode refid="1" relation="public-inheritance">
+        </childnode>
+      </node>
+    </inheritancegraph>
+    <location file="Misc/JsonValidator/Elements/Element.h" line="28" column="1" bodyfile="Misc/JsonValidator/Elements/Element.h" bodystart="29" bodyend="136"/>
+    <listofallmembers>
+      <member refid="class_element_1a31838aa329c7380f4395b9c0a4a82cfe" prot="protected" virt="non-virtual"><scope>Element</scope><name>description</name></member>
+      <member refid="class_element_1a5ef746a08042747acd608589686df030" prot="public" virt="non-virtual"><scope>Element</scope><name>Element</name></member>
+      <member refid="class_element_1a7adf23f4617107ee13fcab2747d8b394" prot="public" virt="non-virtual"><scope>Element</scope><name>Element</name></member>
+      <member refid="class_element_1a2eab22dd80bfba5646c6f0e79dec8569" prot="public" virt="non-virtual"><scope>Element</scope><name>getDescription</name></member>
+      <member refid="class_element_1abf6e4f402b616bf7f52166f96c450b36" prot="public" virt="virtual"><scope>Element</scope><name>getProperty</name></member>
+      <member refid="class_element_1ae4ee4a9ec97bb054a43aea28d9700f8e" prot="public" virt="non-virtual"><scope>Element</scope><name>getProperty</name></member>
+      <member refid="class_element_1a00ef06c036d1d4628fcd3586885ca131" prot="public" virt="pure-virtual"><scope>Element</scope><name>getType</name></member>
+      <member refid="class_element_1a4e3a7ef1a3b0b42c84c1022a4db94246" prot="public" virt="non-virtual"><scope>Element</scope><name>isModified</name></member>
+      <member refid="class_element_1a97d883c0b237ec9e1fe6993825fd0f8c" prot="public" virt="non-virtual"><scope>Element</scope><name>isNullProperty</name></member>
+      <member refid="class_element_1a1b0c283200e0e2c16b8713369631214d" prot="protected" virt="non-virtual"><scope>Element</scope><name>modified</name></member>
+      <member refid="class_element_1a4318313abfd08feae300a12668cec95a" prot="protected" virt="non-virtual"><scope>Element</scope><name>nullProperty</name></member>
+      <member refid="class_element_1a009a3be4c3a037a72e292b2464c9cbc5" prot="public" virt="non-virtual"><scope>Element</scope><name>Type</name></member>
+      <member refid="class_element_1a59cc1d05821dd36340deffd7f56add32" prot="public" virt="non-virtual"><scope>Element</scope><name>validate</name></member>
+      <member refid="class_element_1a2e31082683027a829ee75a4bd872738a" prot="protected" virt="pure-virtual"><scope>Element</scope><name>validateElement</name></member>
+      <member refid="class_element_1adbcc49811634a36df5d3830d366ba2b0" prot="public" virt="virtual"><scope>Element</scope><name>verifyPropertyPath</name></member>
+      <member refid="class_element_1ab4fc182292f44e46acba9c55662237bf" prot="public" virt="virtual"><scope>Element</scope><name>~Element</name></member>
+    </listofallmembers>
+  </compounddef>
+</doxygen>

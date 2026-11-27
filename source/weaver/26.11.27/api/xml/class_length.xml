@@ -1,0 +1,241 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.18.0" xml:lang="en-US">
+  <compounddef id="class_length" kind="class" language="C++" prot="public">
+    <compoundname>Length</compoundname>
+    <includes refid="_structural_units_8h" local="no">StructuralUnits.h</includes>
+    <sectiondef kind="private-attrib">
+      <memberdef kind="variable" id="class_length_1a8b269571953f650ba26e01d16e19c32a" prot="private" static="no" mutable="no">
+        <type><ref refid="class_precise_double" kindref="compound">PreciseDouble</ref></type>
+        <definition>PreciseDouble Length::value</definition>
+        <argsstring></argsstring>
+        <name>value</name>
+        <qualifiedname>Length::value</qualifiedname>
+        <briefdescription>
+<para><ref refid="class_length" kindref="compound">Length</ref> value. </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="App/Model/IBM/Landscape/LivingBeings/StructuralUnits.h" line="574" column="19" bodyfile="App/Model/IBM/Landscape/LivingBeings/StructuralUnits.h" bodystart="574" bodyend="-1"/>
+      </memberdef>
+    </sectiondef>
+    <sectiondef kind="public-func">
+      <memberdef kind="function" id="class_length_1a775ea8a0d82677aa7b5c4f88ed1c1599" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type></type>
+        <definition>Length::Length</definition>
+        <argsstring>()</argsstring>
+        <name>Length</name>
+        <qualifiedname>Length::Length</qualifiedname>
+        <briefdescription>
+<para>Default constructor, initializes value to 0. </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="App/Model/IBM/Landscape/LivingBeings/StructuralUnits.h" line="578" column="5"/>
+      </memberdef>
+      <memberdef kind="function" id="class_length_1a080ef15ff4b565c0eec8518592d7f93d" prot="public" static="no" const="no" explicit="yes" inline="no" virt="non-virtual">
+        <type></type>
+        <definition>Length::Length</definition>
+        <argsstring>(const DryMass &amp;dryMass, const PreciseDouble &amp;coefficientForMassA, const PreciseDouble &amp;scaleForMassB)</argsstring>
+        <name>Length</name>
+        <qualifiedname>Length::Length</qualifiedname>
+        <param>
+          <type>const <ref refid="class_dry_mass" kindref="compound">DryMass</ref> &amp;</type>
+          <declname>dryMass</declname>
+        </param>
+        <param>
+          <type>const <ref refid="class_precise_double" kindref="compound">PreciseDouble</ref> &amp;</type>
+          <declname>coefficientForMassA</declname>
+        </param>
+        <param>
+          <type>const <ref refid="class_precise_double" kindref="compound">PreciseDouble</ref> &amp;</type>
+          <declname>scaleForMassB</declname>
+        </param>
+        <briefdescription>
+<para>Constructor from <ref refid="class_dry_mass" kindref="compound">DryMass</ref> and species-specific coefficients. </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="App/Model/IBM/Landscape/LivingBeings/StructuralUnits.h" line="584" column="14"/>
+      </memberdef>
+      <memberdef kind="function" id="class_length_1af366d8b3e4e3fd1ddbc32e68e6638900" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type></type>
+        <definition>Length::Length</definition>
+        <argsstring>(const Length &amp;other)</argsstring>
+        <name>Length</name>
+        <qualifiedname>Length::Length</qualifiedname>
+        <param>
+          <type>const <ref refid="class_length" kindref="compound">Length</ref> &amp;</type>
+          <declname>other</declname>
+        </param>
+        <briefdescription>
+<para>Copy constructor. </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="App/Model/IBM/Landscape/LivingBeings/StructuralUnits.h" line="587" column="5"/>
+      </memberdef>
+      <memberdef kind="function" id="class_length_1a502df23e3d3d12ef642562539e639b44" prot="public" static="no" const="no" explicit="yes" inline="no" virt="non-virtual">
+        <type></type>
+        <definition>Length::Length</definition>
+        <argsstring>(const PreciseDouble &amp;value)</argsstring>
+        <name>Length</name>
+        <qualifiedname>Length::Length</qualifiedname>
+        <param>
+          <type>const <ref refid="class_precise_double" kindref="compound">PreciseDouble</ref> &amp;</type>
+          <declname>value</declname>
+        </param>
+        <briefdescription>
+<para>Constructor from a <ref refid="class_precise_double" kindref="compound">PreciseDouble</ref>. </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="App/Model/IBM/Landscape/LivingBeings/StructuralUnits.h" line="581" column="14"/>
+      </memberdef>
+      <memberdef kind="function" id="class_length_1a5a165fd6bf4f73b5d143785c205d83c4" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type></type>
+        <definition>Length::~Length</definition>
+        <argsstring>()</argsstring>
+        <name>~Length</name>
+        <qualifiedname>Length::~Length</qualifiedname>
+        <briefdescription>
+<para>Destructor. </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="App/Model/IBM/Landscape/LivingBeings/StructuralUnits.h" line="593" column="5"/>
+      </memberdef>
+      <memberdef kind="function" id="class_length_1ae27435ad7980f57535bf95f324be72df" prot="public" static="no" const="yes" explicit="no" inline="no" virt="non-virtual">
+        <type>const <ref refid="class_precise_double" kindref="compound">PreciseDouble</ref> &amp;</type>
+        <definition>const PreciseDouble &amp; Length::getValue</definition>
+        <argsstring>() const</argsstring>
+        <name>getValue</name>
+        <qualifiedname>Length::getValue</qualifiedname>
+        <briefdescription>
+<para>Returns the numeric value of the length. </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="App/Model/IBM/Landscape/LivingBeings/StructuralUnits.h" line="596" column="25"/>
+      </memberdef>
+      <memberdef kind="function" id="class_length_1a4800605d48634394232416a18d304ab2" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type><ref refid="class_length" kindref="compound">Length</ref> &amp;</type>
+        <definition>Length &amp; Length::operator=</definition>
+        <argsstring>(const Length &amp;other)</argsstring>
+        <name>operator=</name>
+        <qualifiedname>Length::operator=</qualifiedname>
+        <param>
+          <type>const <ref refid="class_length" kindref="compound">Length</ref> &amp;</type>
+          <declname>other</declname>
+        </param>
+        <briefdescription>
+<para>Copy assignment. </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="App/Model/IBM/Landscape/LivingBeings/StructuralUnits.h" line="590" column="12"/>
+      </memberdef>
+      <memberdef kind="function" id="class_length_1a73942e898c5b08e34c25b8355adfbfe0" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <templateparamlist>
+          <param>
+            <type>class Archive</type>
+          </param>
+        </templateparamlist>
+        <type>void</type>
+        <definition>void Length::serialize</definition>
+        <argsstring>(Archive &amp;ar, const unsigned int version)</argsstring>
+        <name>serialize</name>
+        <qualifiedname>Length::serialize</qualifiedname>
+        <param>
+          <type>Archive &amp;</type>
+          <declname>ar</declname>
+        </param>
+        <param>
+          <type>const unsigned int</type>
+          <declname>version</declname>
+        </param>
+        <briefdescription>
+<para>Serializes the object for persistence. </para>
+        </briefdescription>
+        <detaileddescription>
+<para><parameterlist kind="templateparam"><parameteritem>
+<parameternamelist>
+<parametername>Archive</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Serialization archive type. </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>ar</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Archive instance. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>version</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Serialization version. </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="App/Model/IBM/Landscape/LivingBeings/StructuralUnits.h" line="606" column="10"/>
+      </memberdef>
+    </sectiondef>
+    <briefdescription>
+<para>Represents length in the ecosystem simulation. </para>
+    </briefdescription>
+    <detaileddescription>
+<para>Encapsulates a <ref refid="class_precise_double" kindref="compound">PreciseDouble</ref> value for length and provides arithmetic operations, comparisons, and conversion from <ref refid="class_dry_mass" kindref="compound">DryMass</ref> using species-specific coefficients. </para>
+    </detaileddescription>
+    <collaborationgraph>
+      <node id="1">
+        <label>Length</label>
+        <link refid="class_length"/>
+        <childnode refid="2" relation="usage">
+          <edgelabel>value</edgelabel>
+        </childnode>
+      </node>
+      <node id="2">
+        <label>PreciseDouble</label>
+        <link refid="class_precise_double"/>
+      </node>
+    </collaborationgraph>
+    <location file="App/Model/IBM/Landscape/LivingBeings/StructuralUnits.h" line="571" column="1" bodyfile="App/Model/IBM/Landscape/LivingBeings/StructuralUnits.h" bodystart="571" bodyend="607"/>
+    <listofallmembers>
+      <member refid="class_length_1ae27435ad7980f57535bf95f324be72df" prot="public" virt="non-virtual"><scope>Length</scope><name>getValue</name></member>
+      <member refid="class_length_1a775ea8a0d82677aa7b5c4f88ed1c1599" prot="public" virt="non-virtual"><scope>Length</scope><name>Length</name></member>
+      <member refid="class_length_1a502df23e3d3d12ef642562539e639b44" prot="public" virt="non-virtual"><scope>Length</scope><name>Length</name></member>
+      <member refid="class_length_1a080ef15ff4b565c0eec8518592d7f93d" prot="public" virt="non-virtual"><scope>Length</scope><name>Length</name></member>
+      <member refid="class_length_1af366d8b3e4e3fd1ddbc32e68e6638900" prot="public" virt="non-virtual"><scope>Length</scope><name>Length</name></member>
+      <member refid="class_length_1a4800605d48634394232416a18d304ab2" prot="public" virt="non-virtual"><scope>Length</scope><name>operator=</name></member>
+      <member refid="class_length_1a73942e898c5b08e34c25b8355adfbfe0" prot="public" virt="non-virtual"><scope>Length</scope><name>serialize</name></member>
+      <member refid="class_length_1a8b269571953f650ba26e01d16e19c32a" prot="private" virt="non-virtual"><scope>Length</scope><name>value</name></member>
+      <member refid="class_length_1a5a165fd6bf4f73b5d143785c205d83c4" prot="public" virt="non-virtual"><scope>Length</scope><name>~Length</name></member>
+    </listofallmembers>
+  </compounddef>
+</doxygen>

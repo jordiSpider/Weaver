@@ -1,0 +1,259 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.18.0" xml:lang="en-US">
+  <compounddef id="class_model" kind="class" language="C++" prot="public" abstract="yes">
+    <compoundname>Model</compoundname>
+    <derivedcompoundref refid="class_i_b_m" prot="public" virt="non-virtual">IBM</derivedcompoundref>
+    <includes refid="_model_8h" local="no">Model.h</includes>
+    <sectiondef kind="public-type">
+      <memberdef kind="enum" id="class_model_1a704990bea21287d993439d3bdf1755bf" prot="public" static="no" strong="yes">
+        <type></type>
+        <name>Type</name>
+        <qualifiedname>Model::Type</qualifiedname>
+        <enumvalue id="class_model_1a704990bea21287d993439d3bdf1755bfacbf44511d041dc6d1dd73cc0c033122c" prot="public">
+          <name>IBM</name>
+          <briefdescription>
+          </briefdescription>
+          <detaileddescription>
+<para>Individual-Based <ref refid="class_model" kindref="compound">Model</ref> </para>
+          </detaileddescription>
+        </enumvalue>
+        <briefdescription>
+<para>Enumeration of supported model types. </para>
+        </briefdescription>
+        <detaileddescription>
+<para>Defines all the simulation models available within the framework. Currently, only the <computeroutput><ref refid="class_i_b_m" kindref="compound">IBM</ref></computeroutput> (Individual-Based <ref refid="class_model" kindref="compound">Model</ref>) type is implemented. </para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="App/Model/Model.h" line="51" column="5" bodyfile="App/Model/Model.h" bodystart="51" bodyend="53"/>
+      </memberdef>
+    </sectiondef>
+    <sectiondef kind="public-static-func">
+      <memberdef kind="function" id="class_model_1a3843378ad7df408a7411b8ee2ac0e8a9" prot="public" static="yes" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type><ref refid="class_model" kindref="compound">Model</ref> *</type>
+        <definition>static Model * Model::createInstance</definition>
+        <argsstring>(Type modelType)</argsstring>
+        <name>createInstance</name>
+        <qualifiedname>Model::createInstance</qualifiedname>
+        <param>
+          <type><ref refid="class_model_1a704990bea21287d993439d3bdf1755bf" kindref="member">Type</ref></type>
+          <declname>modelType</declname>
+        </param>
+        <briefdescription>
+<para>Factory method for creating a model instance. </para>
+        </briefdescription>
+        <detaileddescription>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>modelType</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>The type of model to create (e.g., <computeroutput><ref refid="class_model_1a704990bea21287d993439d3bdf1755bfacbf44511d041dc6d1dd73cc0c033122c" kindref="member">Type::IBM</ref></computeroutput>). </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<simplesect kind="return"><para>Pointer to the newly created model instance.</para>
+</simplesect>
+<parameterlist kind="exception"><parameteritem>
+<parameternamelist>
+<parametername><ref refid="class_line_info_exception" kindref="compound">LineInfoException</ref></parametername>
+</parameternamelist>
+<parameterdescription>
+<para>If the provided model type is not supported. </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="App/Model/Model.h" line="64" column="18"/>
+      </memberdef>
+    </sectiondef>
+    <sectiondef kind="public-func">
+      <memberdef kind="function" id="class_model_1ae3b375de5f6df4faf74a95d64748e048" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type></type>
+        <definition>Model::Model</definition>
+        <argsstring>()</argsstring>
+        <name>Model</name>
+        <qualifiedname>Model::Model</qualifiedname>
+        <briefdescription>
+<para>Constructs a new <ref refid="class_model" kindref="compound">Model</ref> object. </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="App/Model/Model.h" line="70" column="5"/>
+      </memberdef>
+      <memberdef kind="function" id="class_model_1aa7d701bbc2af44488e12c5f9b68c671d" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type></type>
+        <definition>Model::Model</definition>
+        <argsstring>(const Model &amp;other)=delete</argsstring>
+        <name>Model</name>
+        <qualifiedname>Model::Model</qualifiedname>
+        <param>
+          <type>const <ref refid="class_model" kindref="compound">Model</ref> &amp;</type>
+          <declname>other</declname>
+        </param>
+        <briefdescription>
+<para>Deleted copy constructor. </para>
+        </briefdescription>
+        <detaileddescription>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>other</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Another instance of <ref refid="class_model" kindref="compound">Model</ref> (unused). </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="App/Model/Model.h" line="85" column="5"/>
+      </memberdef>
+      <memberdef kind="function" id="class_model_1af032d8433c87a0a3a431faf6563a1f03" prot="public" static="no" const="no" explicit="no" inline="no" virt="virtual">
+        <type></type>
+        <definition>virtual Model::~Model</definition>
+        <argsstring>()</argsstring>
+        <name>~Model</name>
+        <qualifiedname>Model::~Model</qualifiedname>
+        <briefdescription>
+<para>Virtual destructor for safe polymorphic cleanup. </para>
+        </briefdescription>
+        <detaileddescription>
+<para>Ensures that derived classes are properly destroyed when deleted through a pointer to <computeroutput><ref refid="class_model" kindref="compound">Model</ref></computeroutput>. </para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="App/Model/Model.h" line="78" column="13"/>
+      </memberdef>
+      <memberdef kind="function" id="class_model_1a2d794533f5836646d32d24c13da3b83d" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type><ref refid="class_model" kindref="compound">Model</ref> &amp;</type>
+        <definition>Model &amp; Model::operator=</definition>
+        <argsstring>(const Model &amp;other)=delete</argsstring>
+        <name>operator=</name>
+        <qualifiedname>Model::operator=</qualifiedname>
+        <param>
+          <type>const <ref refid="class_model" kindref="compound">Model</ref> &amp;</type>
+          <declname>other</declname>
+        </param>
+        <briefdescription>
+<para>Deleted copy assignment operator. </para>
+        </briefdescription>
+        <detaileddescription>
+<para>Prevents assignment between <computeroutput><ref refid="class_model" kindref="compound">Model</ref></computeroutput> instances to ensure resource integrity.</para>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>other</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Another instance of <ref refid="class_model" kindref="compound">Model</ref> (unused). </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<simplesect kind="return"><para>Reference to the current object (deleted). </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="App/Model/Model.h" line="95" column="11"/>
+      </memberdef>
+      <memberdef kind="function" id="class_model_1a210ea22c73a3a9fadecfb151760a3f9e" prot="public" static="no" const="no" explicit="no" inline="no" virt="pure-virtual">
+        <type>void</type>
+        <definition>virtual void Model::run</definition>
+        <argsstring>(const RunMode runMode, const std::filesystem::path &amp;inputConfigPath, const std::filesystem::path &amp;outputFolderPath)=0</argsstring>
+        <name>run</name>
+        <qualifiedname>Model::run</qualifiedname>
+        <reimplementedby refid="class_i_b_m_1a6a2fb4fd1205d420fb579e52b6c8e161">run</reimplementedby>
+        <param>
+          <type>const RunMode</type>
+          <declname>runMode</declname>
+        </param>
+        <param>
+          <type>const std::filesystem::path &amp;</type>
+          <declname>inputConfigPath</declname>
+        </param>
+        <param>
+          <type>const std::filesystem::path &amp;</type>
+          <declname>outputFolderPath</declname>
+        </param>
+        <briefdescription>
+<para>Runs the simulation with the specified parameters. </para>
+        </briefdescription>
+        <detaileddescription>
+<para>This pure virtual function defines the main simulation routine that must be implemented by derived classes (e.g., <computeroutput><ref refid="class_i_b_m" kindref="compound">IBM</ref></computeroutput>). It handles reading configuration files, setting up the simulation, and producing outputs.</para>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>runMode</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Execution mode of the simulation (e.g., full run, resume, benchmark). </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>inputConfigPath</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Path to the directory or JSON file containing the input configuration. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>outputFolderPath</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Path to the folder where output files will be generated. </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="App/Model/Model.h" line="108" column="18"/>
+      </memberdef>
+    </sectiondef>
+    <briefdescription>
+<para>Abstract base class for all simulation models in the Weaver framework. </para>
+    </briefdescription>
+    <detaileddescription>
+<para>The <computeroutput><ref refid="class_model" kindref="compound">Model</ref></computeroutput> class establishes the interface that all derived simulation models must follow. It encapsulates the essential lifecycle methods (<computeroutput><ref refid="class_model_1a210ea22c73a3a9fadecfb151760a3f9e" kindref="member">run</ref></computeroutput>) and provides a static factory method for model creation.</para>
+<para>The derived classes (e.g., <computeroutput><ref refid="class_i_b_m" kindref="compound">IBM</ref></computeroutput>) implement specific simulation logic while conforming to this standardized structure.</para>
+<para><simplesect kind="par"><title>Responsibilities</title><para><itemizedlist>
+<listitem><para>Define the contract for simulation execution (<computeroutput><ref refid="class_model_1a210ea22c73a3a9fadecfb151760a3f9e" kindref="member">run</ref></computeroutput>).</para>
+</listitem><listitem><para>Provide a common base for polymorphic use across different model types. </para>
+</listitem></itemizedlist>
+</para>
+</simplesect>
+</para>
+    </detaileddescription>
+    <inheritancegraph>
+      <node id="2">
+        <label>IBM</label>
+        <link refid="class_i_b_m"/>
+        <childnode refid="1" relation="public-inheritance">
+        </childnode>
+      </node>
+      <node id="1">
+        <label>Model</label>
+        <link refid="class_model"/>
+      </node>
+    </inheritancegraph>
+    <location file="App/Model/Model.h" line="42" column="1" bodyfile="App/Model/Model.h" bodystart="43" bodyend="109"/>
+    <listofallmembers>
+      <member refid="class_model_1a3843378ad7df408a7411b8ee2ac0e8a9" prot="public" virt="non-virtual"><scope>Model</scope><name>createInstance</name></member>
+      <member refid="class_model_1ae3b375de5f6df4faf74a95d64748e048" prot="public" virt="non-virtual"><scope>Model</scope><name>Model</name></member>
+      <member refid="class_model_1aa7d701bbc2af44488e12c5f9b68c671d" prot="public" virt="non-virtual"><scope>Model</scope><name>Model</name></member>
+      <member refid="class_model_1a2d794533f5836646d32d24c13da3b83d" prot="public" virt="non-virtual"><scope>Model</scope><name>operator=</name></member>
+      <member refid="class_model_1a210ea22c73a3a9fadecfb151760a3f9e" prot="public" virt="pure-virtual"><scope>Model</scope><name>run</name></member>
+      <member refid="class_model_1a704990bea21287d993439d3bdf1755bf" prot="public" virt="non-virtual"><scope>Model</scope><name>Type</name></member>
+      <member refid="class_model_1af032d8433c87a0a3a431faf6563a1f03" prot="public" virt="virtual"><scope>Model</scope><name>~Model</name></member>
+    </listofallmembers>
+  </compounddef>
+</doxygen>

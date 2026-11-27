@@ -1,0 +1,300 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.18.0" xml:lang="en-US">
+  <compounddef id="class_branch_cell_habitat_domain" kind="class" language="C++" prot="public">
+    <compoundname>BranchCellHabitatDomain</compoundname>
+    <basecompoundref refid="class_cell_habitat_domain_interface" prot="public" virt="non-virtual">CellHabitatDomainInterface</basecompoundref>
+    <includes refid="_branch_cell_habitat_domain_8h" local="no">BranchCellHabitatDomain.h</includes>
+    <sectiondef kind="public-func">
+      <memberdef kind="function" id="class_branch_cell_habitat_domain_1a721787ccde2d19fab4e56dbf3546d9e7" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type></type>
+        <definition>BranchCellHabitatDomain::BranchCellHabitatDomain</definition>
+        <argsstring>()</argsstring>
+        <name>BranchCellHabitatDomain</name>
+        <qualifiedname>BranchCellHabitatDomain::BranchCellHabitatDomain</qualifiedname>
+        <briefdescription>
+<para>Default constructor. </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="App/Model/IBM/Landscape/Map/SpatialTree/TerrainCells/PatchApplicator/HabitatDomain/BranchCellHabitatDomain.h" line="35" column="5"/>
+      </memberdef>
+      <memberdef kind="function" id="class_branch_cell_habitat_domain_1ae3bf1c7b133e69bc7a744d3269226fad" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type></type>
+        <definition>BranchCellHabitatDomain::BranchCellHabitatDomain</definition>
+        <argsstring>(const BranchCellHabitatDomain &amp;)=delete</argsstring>
+        <name>BranchCellHabitatDomain</name>
+        <qualifiedname>BranchCellHabitatDomain::BranchCellHabitatDomain</qualifiedname>
+        <param>
+          <type>const <ref refid="class_branch_cell_habitat_domain" kindref="compound">BranchCellHabitatDomain</ref> &amp;</type>
+        </param>
+        <briefdescription>
+<para>Deleted copy constructor. </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="App/Model/IBM/Landscape/Map/SpatialTree/TerrainCells/PatchApplicator/HabitatDomain/BranchCellHabitatDomain.h" line="47" column="5"/>
+      </memberdef>
+      <memberdef kind="function" id="class_branch_cell_habitat_domain_1ad8c547a96fded9fa7c300a4b054213c1" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type></type>
+        <definition>BranchCellHabitatDomain::BranchCellHabitatDomain</definition>
+        <argsstring>(const size_t newHabitatDomainPatchPriority)</argsstring>
+        <name>BranchCellHabitatDomain</name>
+        <qualifiedname>BranchCellHabitatDomain::BranchCellHabitatDomain</qualifiedname>
+        <param>
+          <type>const size_t</type>
+          <declname>newHabitatDomainPatchPriority</declname>
+        </param>
+        <briefdescription>
+<para>Constructor with a specified patch priority. </para>
+        </briefdescription>
+        <detaileddescription>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>newHabitatDomainPatchPriority</parametername>
+</parameternamelist>
+<parameterdescription>
+<para><ref refid="class_patch" kindref="compound">Patch</ref> priority for habitat domain updates. </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="App/Model/IBM/Landscape/Map/SpatialTree/TerrainCells/PatchApplicator/HabitatDomain/BranchCellHabitatDomain.h" line="41" column="5"/>
+      </memberdef>
+      <memberdef kind="function" id="class_branch_cell_habitat_domain_1a7069fedd0d8fd552b28faea64e867109" prot="public" static="no" const="no" explicit="no" inline="no" virt="virtual">
+        <type></type>
+        <definition>virtual BranchCellHabitatDomain::~BranchCellHabitatDomain</definition>
+        <argsstring>()</argsstring>
+        <name>~BranchCellHabitatDomain</name>
+        <qualifiedname>BranchCellHabitatDomain::~BranchCellHabitatDomain</qualifiedname>
+        <briefdescription>
+<para>Destructor. </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="App/Model/IBM/Landscape/Map/SpatialTree/TerrainCells/PatchApplicator/HabitatDomain/BranchCellHabitatDomain.h" line="44" column="13"/>
+      </memberdef>
+      <memberdef kind="function" id="class_branch_cell_habitat_domain_1aee5f4b7f87f49123dbdad8a61b33c31e" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void BranchCellHabitatDomain::applyBranch</definition>
+        <argsstring>(BranchTerrainCell *const summaryTerrainCell)</argsstring>
+        <name>applyBranch</name>
+        <qualifiedname>BranchCellHabitatDomain::applyBranch</qualifiedname>
+        <param>
+          <type><ref refid="class_branch_terrain_cell" kindref="compound">BranchTerrainCell</ref> *const</type>
+          <declname>summaryTerrainCell</declname>
+        </param>
+        <briefdescription>
+<para>Aggregates habitat domain information from the children of the branch cell. </para>
+        </briefdescription>
+        <detaileddescription>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>summaryTerrainCell</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Pointer to the branch terrain cell to summarize.</para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+This method updates the habitat domain of the branch node based on the habitat domain status of its child terrain cells. </para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="App/Model/IBM/Landscape/Map/SpatialTree/TerrainCells/PatchApplicator/HabitatDomain/BranchCellHabitatDomain.h" line="59" column="10"/>
+      </memberdef>
+      <memberdef kind="function" id="class_branch_cell_habitat_domain_1a38ded5bcea6a4d3ed26a4917b6b185a5" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type><ref refid="class_branch_cell_habitat_domain" kindref="compound">BranchCellHabitatDomain</ref> &amp;</type>
+        <definition>BranchCellHabitatDomain &amp; BranchCellHabitatDomain::operator=</definition>
+        <argsstring>(const BranchCellHabitatDomain &amp;)=delete</argsstring>
+        <name>operator=</name>
+        <qualifiedname>BranchCellHabitatDomain::operator=</qualifiedname>
+        <param>
+          <type>const <ref refid="class_branch_cell_habitat_domain" kindref="compound">BranchCellHabitatDomain</ref> &amp;</type>
+        </param>
+        <briefdescription>
+<para>Deleted copy assignment. </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="App/Model/IBM/Landscape/Map/SpatialTree/TerrainCells/PatchApplicator/HabitatDomain/BranchCellHabitatDomain.h" line="50" column="29"/>
+      </memberdef>
+      <memberdef kind="function" id="class_branch_cell_habitat_domain_1a102c1cfbfe1144cbe225b22446bec2b6" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <templateparamlist>
+          <param>
+            <type>class Archive</type>
+          </param>
+        </templateparamlist>
+        <type>void</type>
+        <definition>void BranchCellHabitatDomain::serialize</definition>
+        <argsstring>(Archive &amp;ar, const unsigned int version)</argsstring>
+        <name>serialize</name>
+        <qualifiedname>BranchCellHabitatDomain::serialize</qualifiedname>
+        <param>
+          <type>Archive &amp;</type>
+          <declname>ar</declname>
+        </param>
+        <param>
+          <type>const unsigned int</type>
+          <declname>version</declname>
+        </param>
+        <briefdescription>
+<para>Serialization function. </para>
+        </briefdescription>
+        <detaileddescription>
+<para><parameterlist kind="templateparam"><parameteritem>
+<parameternamelist>
+<parametername>Archive</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Type of the archive. </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>ar</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Archive object. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>version</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Version of serialization. </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="App/Model/IBM/Landscape/Map/SpatialTree/TerrainCells/PatchApplicator/HabitatDomain/BranchCellHabitatDomain.h" line="68" column="10"/>
+      </memberdef>
+    </sectiondef>
+    <sectiondef kind="private-static-func">
+      <memberdef kind="function" id="class_branch_cell_habitat_domain_1aeb82adb1ff3e12b35be3a5e9dc6e8277" prot="private" static="yes" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>size_t</type>
+        <definition>static size_t BranchCellHabitatDomain::calculateHabitatDomainPatchPriority</definition>
+        <argsstring>(BranchTerrainCell *const summaryTerrainCell)</argsstring>
+        <name>calculateHabitatDomainPatchPriority</name>
+        <qualifiedname>BranchCellHabitatDomain::calculateHabitatDomainPatchPriority</qualifiedname>
+        <param>
+          <type><ref refid="class_branch_terrain_cell" kindref="compound">BranchTerrainCell</ref> *const</type>
+          <declname>summaryTerrainCell</declname>
+        </param>
+        <briefdescription>
+<para>Calculates the patch priority for the habitat domain based on child cells. </para>
+        </briefdescription>
+        <detaileddescription>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>summaryTerrainCell</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Pointer to the branch terrain cell. </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<simplesect kind="return"><para>Calculated patch priority.</para>
+</simplesect>
+This static method computes the patch priority to use when updating the habitat domain for a branch cell based on its children&apos;s priorities. </para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="App/Model/IBM/Landscape/Map/SpatialTree/TerrainCells/PatchApplicator/HabitatDomain/BranchCellHabitatDomain.h" line="79" column="19"/>
+      </memberdef>
+    </sectiondef>
+    <briefdescription>
+<para>Habitat domain implementation for branch nodes in a spatial tree. </para>
+    </briefdescription>
+    <detaileddescription>
+<para>This class manages habitat domain information for a branch terrain cell. It can aggregate habitat data from its children and apply a combined habitat domain status to the branch node. </para>
+    </detaileddescription>
+    <inheritancegraph>
+      <node id="1">
+        <label>BranchCellHabitatDomain</label>
+        <link refid="class_branch_cell_habitat_domain"/>
+        <childnode refid="2" relation="public-inheritance">
+        </childnode>
+      </node>
+      <node id="3">
+        <label>CellElement</label>
+        <link refid="class_cell_element"/>
+      </node>
+      <node id="2">
+        <label>CellHabitatDomainInterface</label>
+        <link refid="class_cell_habitat_domain_interface"/>
+        <childnode refid="3" relation="public-inheritance">
+        </childnode>
+      </node>
+    </inheritancegraph>
+    <collaborationgraph>
+      <node id="1">
+        <label>BranchCellHabitatDomain</label>
+        <link refid="class_branch_cell_habitat_domain"/>
+        <childnode refid="2" relation="public-inheritance">
+        </childnode>
+      </node>
+      <node id="3">
+        <label>CellElement</label>
+        <link refid="class_cell_element"/>
+      </node>
+      <node id="2">
+        <label>CellHabitatDomainInterface</label>
+        <link refid="class_cell_habitat_domain_interface"/>
+        <childnode refid="3" relation="public-inheritance">
+        </childnode>
+        <childnode refid="4" relation="usage">
+          <edgelabel>habitatDomainStatus</edgelabel>
+        </childnode>
+      </node>
+      <node id="4">
+        <label>CustomIndexedVector&lt; AnimalSpeciesID, CustomIndexedVector&lt; Instar, bool &gt; &gt;</label>
+        <link refid="class_custom_indexed_vector"/>
+      </node>
+    </collaborationgraph>
+    <location file="App/Model/IBM/Landscape/Map/SpatialTree/TerrainCells/PatchApplicator/HabitatDomain/BranchCellHabitatDomain.h" line="31" column="1" bodyfile="App/Model/IBM/Landscape/Map/SpatialTree/TerrainCells/PatchApplicator/HabitatDomain/BranchCellHabitatDomain.h" bodystart="32" bodyend="80"/>
+    <listofallmembers>
+      <member refid="class_cell_habitat_domain_interface_1a2e900a2ddc1b5f7cdf4478f8310368be" prot="public" virt="non-virtual"><scope>BranchCellHabitatDomain</scope><name>addAnimalSpecies</name></member>
+      <member refid="class_branch_cell_habitat_domain_1aee5f4b7f87f49123dbdad8a61b33c31e" prot="public" virt="non-virtual"><scope>BranchCellHabitatDomain</scope><name>applyBranch</name></member>
+      <member refid="class_cell_habitat_domain_interface_1a118a77e09bd60d98f15137bb9ae1aedc" prot="public" virt="non-virtual"><scope>BranchCellHabitatDomain</scope><name>applySource</name></member>
+      <member refid="class_branch_cell_habitat_domain_1a721787ccde2d19fab4e56dbf3546d9e7" prot="public" virt="non-virtual"><scope>BranchCellHabitatDomain</scope><name>BranchCellHabitatDomain</name></member>
+      <member refid="class_branch_cell_habitat_domain_1ad8c547a96fded9fa7c300a4b054213c1" prot="public" virt="non-virtual"><scope>BranchCellHabitatDomain</scope><name>BranchCellHabitatDomain</name></member>
+      <member refid="class_branch_cell_habitat_domain_1ae3bf1c7b133e69bc7a744d3269226fad" prot="public" virt="non-virtual"><scope>BranchCellHabitatDomain</scope><name>BranchCellHabitatDomain</name></member>
+      <member refid="class_branch_cell_habitat_domain_1aeb82adb1ff3e12b35be3a5e9dc6e8277" prot="private" virt="non-virtual"><scope>BranchCellHabitatDomain</scope><name>calculateHabitatDomainPatchPriority</name></member>
+      <member refid="class_cell_element_1a77dc6b9db0633bb7d35df0b547ddf613" prot="public" virt="non-virtual"><scope>BranchCellHabitatDomain</scope><name>CellElement</name></member>
+      <member refid="class_cell_element_1a07008f499b17c5dc792ab20d05dbf471" prot="public" virt="non-virtual"><scope>BranchCellHabitatDomain</scope><name>CellElement</name></member>
+      <member refid="class_cell_element_1a5abb98d6d592c3fc4084fc886106d7c3" prot="public" virt="non-virtual"><scope>BranchCellHabitatDomain</scope><name>CellElement</name></member>
+      <member refid="class_cell_habitat_domain_interface_1ae302b49a4fde4f8a6401148b3e1730e2" prot="public" virt="non-virtual"><scope>BranchCellHabitatDomain</scope><name>CellHabitatDomainInterface</name></member>
+      <member refid="class_cell_habitat_domain_interface_1a72a0e8a784d97e09c69e709e868ecf44" prot="public" virt="non-virtual"><scope>BranchCellHabitatDomain</scope><name>CellHabitatDomainInterface</name></member>
+      <member refid="class_cell_habitat_domain_interface_1a8e7a77dce984afa0441e49cc4a8f739e" prot="public" virt="non-virtual"><scope>BranchCellHabitatDomain</scope><name>CellHabitatDomainInterface</name></member>
+      <member refid="class_cell_habitat_domain_interface_1aa40901b89b4a9752ff4103a1b3a83601" prot="public" virt="non-virtual"><scope>BranchCellHabitatDomain</scope><name>getHabitatDomainStatus</name></member>
+      <member refid="class_cell_element_1aeb03190224c2ff962587e94d8fe0c8b4" prot="public" virt="non-virtual"><scope>BranchCellHabitatDomain</scope><name>getPatchPriority</name></member>
+      <member refid="class_cell_habitat_domain_interface_1a103ba5bf83ba3345631ac070927adc5d" prot="protected" virt="non-virtual"><scope>BranchCellHabitatDomain</scope><name>habitatDomainStatus</name></member>
+      <member refid="class_cell_habitat_domain_interface_1ad2af1aa7844d0463bf861c6a5f2d6c5b" prot="public" virt="non-virtual"><scope>BranchCellHabitatDomain</scope><name>isHabitatDomain</name></member>
+      <member refid="class_branch_cell_habitat_domain_1a38ded5bcea6a4d3ed26a4917b6b185a5" prot="public" virt="non-virtual"><scope>BranchCellHabitatDomain</scope><name>operator=</name></member>
+      <member refid="class_cell_habitat_domain_interface_1a58dee52409eda6c633750ab9702d8c45" prot="public" virt="non-virtual" ambiguityscope="CellHabitatDomainInterface::"><scope>BranchCellHabitatDomain</scope><name>operator=</name></member>
+      <member refid="class_cell_element_1ac7467d8c95d1a3d3e8b72a3209681ce0" prot="public" virt="non-virtual" ambiguityscope="CellElement::"><scope>BranchCellHabitatDomain</scope><name>operator=</name></member>
+      <member refid="class_cell_element_1ac25808724b01c8f1555c0be37b0f9d6f" prot="protected" virt="non-virtual"><scope>BranchCellHabitatDomain</scope><name>patchPriority</name></member>
+      <member refid="class_branch_cell_habitat_domain_1a102c1cfbfe1144cbe225b22446bec2b6" prot="public" virt="non-virtual"><scope>BranchCellHabitatDomain</scope><name>serialize</name></member>
+      <member refid="class_cell_element_1a9178746c39e277cc4ac9af2f434ac72e" prot="protected" virt="non-virtual"><scope>BranchCellHabitatDomain</scope><name>setPatchPriority</name></member>
+      <member refid="class_branch_cell_habitat_domain_1a7069fedd0d8fd552b28faea64e867109" prot="public" virt="virtual"><scope>BranchCellHabitatDomain</scope><name>~BranchCellHabitatDomain</name></member>
+      <member refid="class_cell_element_1a82b86d53e7e9c50f4c3145be272bd38f" prot="public" virt="virtual"><scope>BranchCellHabitatDomain</scope><name>~CellElement</name></member>
+      <member refid="class_cell_habitat_domain_interface_1a8872cf77eaca0a85f48440a101674ee6" prot="public" virt="virtual"><scope>BranchCellHabitatDomain</scope><name>~CellHabitatDomainInterface</name></member>
+    </listofallmembers>
+  </compounddef>
+</doxygen>

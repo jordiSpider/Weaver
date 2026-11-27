@@ -1,0 +1,75 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.18.0" xml:lang="en-US">
+  <compounddef id="structfmt_1_1formatter_3_01boost_1_1geometry_1_1model_1_1point_3_01_coordinate_type_00_01_dimens5193aa7151370f8aea23e82d91a67103" kind="struct" language="C++" prot="public">
+    <compoundname>fmt::formatter&lt; boost::geometry::model::point&lt; CoordinateType, DimensionCount, CoordinateSystem &gt; &gt;</compoundname>
+    <templateparamlist>
+      <param>
+        <type>typename CoordinateType</type>
+      </param>
+      <param>
+        <type>std::size_t</type>
+        <declname>DimensionCount</declname>
+        <defname>DimensionCount</defname>
+      </param>
+      <param>
+        <type>typename CoordinateSystem</type>
+      </param>
+    </templateparamlist>
+    <sectiondef kind="public-func">
+      <memberdef kind="function" id="structfmt_1_1formatter_3_01boost_1_1geometry_1_1model_1_1point_3_01_coordinate_type_00_01_dimens5193aa7151370f8aea23e82d91a67103_1a6fd7407cbdb2b6b1784215d97c3f0b81" prot="public" static="no" const="yes" explicit="no" inline="yes" virt="non-virtual">
+        <templateparamlist>
+          <param>
+            <type>typename FormatContext</type>
+          </param>
+        </templateparamlist>
+        <type>decltype(ctx.out())</type>
+        <definition>decltype(ctx.out()) fmt::formatter&lt; boost::geometry::model::point&lt; CoordinateType, DimensionCount, CoordinateSystem &gt; &gt;::format</definition>
+        <argsstring>(const boost::geometry::model::point&lt; CoordinateType, DimensionCount, CoordinateSystem &gt; &amp;point, FormatContext &amp;ctx) const</argsstring>
+        <name>format</name>
+        <qualifiedname>fmt::formatter&lt; boost::geometry::model::point&lt; CoordinateType, DimensionCount, CoordinateSystem &gt; &gt;::format</qualifiedname>
+        <param>
+          <type>const boost::geometry::model::point&lt; CoordinateType, DimensionCount, CoordinateSystem &gt; &amp;</type>
+          <declname>point</declname>
+        </param>
+        <param>
+          <type>FormatContext &amp;</type>
+          <declname>ctx</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="App/Model/IBM/Landscape/Map/Points/PointContinuous.h" line="134" column="14" bodyfile="App/Model/IBM/Landscape/Map/Points/PointContinuous.h" bodystart="134" bodyend="144"/>
+      </memberdef>
+      <memberdef kind="function" id="structfmt_1_1formatter_3_01boost_1_1geometry_1_1model_1_1point_3_01_coordinate_type_00_01_dimens5193aa7151370f8aea23e82d91a67103_1aa6febbc248f8cbcfe3f32abe5be4b36e" prot="public" static="no" constexpr="yes" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <type>decltype(ctx.begin())</type>
+        <definition>decltype(ctx.begin()) fmt::formatter&lt; boost::geometry::model::point&lt; CoordinateType, DimensionCount, CoordinateSystem &gt; &gt;::parse</definition>
+        <argsstring>(format_parse_context &amp;ctx)</argsstring>
+        <name>parse</name>
+        <qualifiedname>fmt::formatter&lt; boost::geometry::model::point&lt; CoordinateType, DimensionCount, CoordinateSystem &gt; &gt;::parse</qualifiedname>
+        <param>
+          <type>format_parse_context &amp;</type>
+          <declname>ctx</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="App/Model/IBM/Landscape/Map/Points/PointContinuous.h" line="128" column="24" bodyfile="App/Model/IBM/Landscape/Map/Points/PointContinuous.h" bodystart="128" bodyend="130"/>
+      </memberdef>
+    </sectiondef>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+    </detaileddescription>
+    <location file="App/Model/IBM/Landscape/Map/Points/PointContinuous.h" line="125" column="5" bodyfile="App/Model/IBM/Landscape/Map/Points/PointContinuous.h" bodystart="125" bodyend="145"/>
+    <listofallmembers>
+      <member refid="structfmt_1_1formatter_3_01boost_1_1geometry_1_1model_1_1point_3_01_coordinate_type_00_01_dimens5193aa7151370f8aea23e82d91a67103_1a6fd7407cbdb2b6b1784215d97c3f0b81" prot="public" virt="non-virtual"><scope>fmt::formatter&lt; boost::geometry::model::point&lt; CoordinateType, DimensionCount, CoordinateSystem &gt; &gt;</scope><name>format</name></member>
+      <member refid="structfmt_1_1formatter_3_01boost_1_1geometry_1_1model_1_1point_3_01_coordinate_type_00_01_dimens5193aa7151370f8aea23e82d91a67103_1aa6febbc248f8cbcfe3f32abe5be4b36e" prot="public" virt="non-virtual"><scope>fmt::formatter&lt; boost::geometry::model::point&lt; CoordinateType, DimensionCount, CoordinateSystem &gt; &gt;</scope><name>parse</name></member>
+    </listofallmembers>
+  </compounddef>
+</doxygen>

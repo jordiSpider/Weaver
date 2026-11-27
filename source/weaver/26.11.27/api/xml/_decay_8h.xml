@@ -1,0 +1,220 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.18.0" xml:lang="en-US">
+  <compounddef id="_decay_8h" kind="file" language="C++">
+    <compoundname>Decay.h</compoundname>
+    <includes local="no">boost/archive/text_iarchive.hpp</includes>
+    <includes local="no">boost/archive/text_oarchive.hpp</includes>
+    <includes local="no">boost/archive/binary_iarchive.hpp</includes>
+    <includes local="no">boost/archive/binary_oarchive.hpp</includes>
+    <includes local="no">string</includes>
+    <includes local="no">sstream</includes>
+    <includes local="no">nlohmann/json.hpp</includes>
+    <includes refid="_enum_class_8h" local="yes">Misc/EnumClass.h</includes>
+    <includes refid="_precise_double_8h" local="yes">Misc/Maths/PreciseDouble.h</includes>
+    <includedby refid="_lineal_decay_8h" local="yes">App/Model/IBM/Maths/Dynamics/Decay/LinealDecay.h</includedby>
+    <includedby refid="_non_decay_8h" local="yes">App/Model/IBM/Maths/Dynamics/Decay/NonDecay.h</includedby>
+    <includedby refid="_pulse_dynamics_8h" local="yes">App/Model/IBM/Maths/Dynamics/NonMassBased/PulseDynamics.h</includedby>
+    <incdepgraph>
+      <node id="1">
+        <label>App/Model/IBM/Maths/Dynamics/Decay/Decay.h</label>
+        <link refid="_decay_8h"/>
+        <childnode refid="2" relation="include">
+        </childnode>
+        <childnode refid="3" relation="include">
+        </childnode>
+        <childnode refid="4" relation="include">
+        </childnode>
+        <childnode refid="5" relation="include">
+        </childnode>
+        <childnode refid="6" relation="include">
+        </childnode>
+        <childnode refid="7" relation="include">
+        </childnode>
+        <childnode refid="8" relation="include">
+        </childnode>
+        <childnode refid="9" relation="include">
+        </childnode>
+        <childnode refid="15" relation="include">
+        </childnode>
+      </node>
+      <node id="13">
+        <label>Exceptions/LineInfoException.h</label>
+        <link refid="_line_info_exception_8h_source"/>
+        <childnode refid="14" relation="include">
+        </childnode>
+        <childnode refid="6" relation="include">
+        </childnode>
+      </node>
+      <node id="9">
+        <label>Misc/EnumClass.h</label>
+        <link refid="_enum_class_8h_source"/>
+        <childnode refid="7" relation="include">
+        </childnode>
+        <childnode refid="6" relation="include">
+        </childnode>
+        <childnode refid="10" relation="include">
+        </childnode>
+        <childnode refid="11" relation="include">
+        </childnode>
+        <childnode refid="12" relation="include">
+        </childnode>
+        <childnode refid="13" relation="include">
+        </childnode>
+      </node>
+      <node id="15">
+        <label>Misc/Maths/PreciseDouble.h</label>
+        <link refid="_precise_double_8h_source"/>
+        <childnode refid="2" relation="include">
+        </childnode>
+        <childnode refid="3" relation="include">
+        </childnode>
+        <childnode refid="4" relation="include">
+        </childnode>
+        <childnode refid="5" relation="include">
+        </childnode>
+        <childnode refid="12" relation="include">
+        </childnode>
+        <childnode refid="6" relation="include">
+        </childnode>
+        <childnode refid="16" relation="include">
+        </childnode>
+        <childnode refid="17" relation="include">
+        </childnode>
+        <childnode refid="18" relation="include">
+        </childnode>
+        <childnode refid="19" relation="include">
+        </childnode>
+        <childnode refid="20" relation="include">
+        </childnode>
+      </node>
+      <node id="17">
+        <label>algorithm</label>
+      </node>
+      <node id="4">
+        <label>boost/archive/binary_iarchive.hpp</label>
+      </node>
+      <node id="5">
+        <label>boost/archive/binary_oarchive.hpp</label>
+      </node>
+      <node id="2">
+        <label>boost/archive/text_iarchive.hpp</label>
+      </node>
+      <node id="3">
+        <label>boost/archive/text_oarchive.hpp</label>
+      </node>
+      <node id="16">
+        <label>cmath</label>
+      </node>
+      <node id="14">
+        <label>exception</label>
+      </node>
+      <node id="12">
+        <label>fmt/format.h</label>
+      </node>
+      <node id="20">
+        <label>functional</label>
+      </node>
+      <node id="18">
+        <label>iostream</label>
+      </node>
+      <node id="19">
+        <label>limits</label>
+      </node>
+      <node id="11">
+        <label>magic_enum/magic_enum.hpp</label>
+      </node>
+      <node id="8">
+        <label>nlohmann/json.hpp</label>
+      </node>
+      <node id="7">
+        <label>sstream</label>
+      </node>
+      <node id="6">
+        <label>string</label>
+      </node>
+      <node id="10">
+        <label>unordered_map</label>
+      </node>
+    </incdepgraph>
+    <invincdepgraph>
+      <node id="1">
+        <label>App/Model/IBM/Maths/Dynamics/Decay/Decay.h</label>
+        <link refid="_decay_8h"/>
+        <childnode refid="2" relation="include">
+        </childnode>
+        <childnode refid="3" relation="include">
+        </childnode>
+        <childnode refid="4" relation="include">
+        </childnode>
+      </node>
+      <node id="2">
+        <label>App/Model/IBM/Maths/Dynamics/Decay/LinealDecay.h</label>
+        <link refid="_lineal_decay_8h_source"/>
+      </node>
+      <node id="3">
+        <label>App/Model/IBM/Maths/Dynamics/Decay/NonDecay.h</label>
+        <link refid="_non_decay_8h_source"/>
+      </node>
+      <node id="4">
+        <label>App/Model/IBM/Maths/Dynamics/NonMassBased/PulseDynamics.h</label>
+        <link refid="_pulse_dynamics_8h_source"/>
+      </node>
+    </invincdepgraph>
+    <innerclass refid="class_decay" prot="public">Decay</innerclass>
+    <briefdescription>
+<para>Defines the abstract <ref refid="class_decay" kindref="compound">Decay</ref> class for modeling decay processes. </para>
+    </briefdescription>
+    <detaileddescription>
+<para>The <ref refid="class_decay" kindref="compound">Decay</ref> class represents decay dynamics for quantities such as mass or energy. It provides a common interface for different types of decay, such as linear decay or no decay. </para>
+    </detaileddescription>
+    <programlisting>
+<codeline lineno="1"><highlight class="normal"></highlight></codeline>
+<codeline lineno="8"><highlight class="normal"></highlight></codeline>
+<codeline lineno="9"><highlight class="normal"></highlight><highlight class="preprocessor">#ifndef<sp/>DECAY_H</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="10"><highlight class="normal"></highlight><highlight class="preprocessor">#define<sp/>DECAY_H</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="11"><highlight class="normal"></highlight></codeline>
+<codeline lineno="12"><highlight class="normal"></highlight></codeline>
+<codeline lineno="13"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&lt;boost/archive/text_iarchive.hpp&gt;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="14"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&lt;boost/archive/text_oarchive.hpp&gt;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="15"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&lt;boost/archive/binary_iarchive.hpp&gt;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="16"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&lt;boost/archive/binary_oarchive.hpp&gt;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="17"><highlight class="normal"></highlight></codeline>
+<codeline lineno="18"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&lt;string&gt;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="19"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&lt;sstream&gt;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="20"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&lt;nlohmann/json.hpp&gt;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="21"><highlight class="normal"></highlight></codeline>
+<codeline lineno="22"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&quot;Misc/EnumClass.h&quot;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="23"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&quot;Misc/Maths/PreciseDouble.h&quot;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="24"><highlight class="normal"></highlight></codeline>
+<codeline lineno="25"><highlight class="normal"></highlight></codeline>
+<codeline lineno="34" refid="class_decay" refkind="compound"><highlight class="normal"></highlight><highlight class="keyword">class<sp/></highlight><highlight class="normal"><ref refid="class_decay_1a603fb8ea4172c2c80c8779ad301b6a4f" kindref="member">Decay</ref><sp/>{</highlight></codeline>
+<codeline lineno="35"><highlight class="normal"></highlight><highlight class="keyword">public</highlight><highlight class="normal">:</highlight></codeline>
+<codeline lineno="39" refid="class_decay_1af7a0694a0f4844a8d9889a926d75ac70" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">enum<sp/>class</highlight><highlight class="normal"><sp/><ref refid="class_decay_1af7a0694a0f4844a8d9889a926d75ac70" kindref="member">Type</ref><sp/>:<sp/></highlight><highlight class="keywordtype">unsigned</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordtype">char</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="40"><highlight class="normal"><sp/><sp/><sp/><sp/>{</highlight></codeline>
+<codeline lineno="41" refid="class_decay_1af7a0694a0f4844a8d9889a926d75ac70ade709c1ca6ad1107d8c02b0fc136351f" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><ref refid="class_non_decay" kindref="compound">NonDecay</ref>,<sp/></highlight></codeline>
+<codeline lineno="42" refid="class_decay_1af7a0694a0f4844a8d9889a926d75ac70a5ed4a9ffc6e5384cf341f301f1cef556" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>Lineal<sp/><sp/><sp/><sp/></highlight></codeline>
+<codeline lineno="43"><highlight class="normal"><sp/><sp/><sp/><sp/>};</highlight></codeline>
+<codeline lineno="44"><highlight class="normal"></highlight></codeline>
+<codeline lineno="50" refid="class_decay_1ac8561a7e55cfd00f952489c8a371b9c7" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">static</highlight><highlight class="normal"><sp/><ref refid="class_decay_1a603fb8ea4172c2c80c8779ad301b6a4f" kindref="member">Decay</ref>*<sp/><ref refid="class_decay_1ac8561a7e55cfd00f952489c8a371b9c7" kindref="member">createInstance</ref>(</highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/>nlohmann::json<sp/>&amp;config);</highlight></codeline>
+<codeline lineno="51"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight></codeline>
+<codeline lineno="58" refid="class_decay_1a9a28c814beaf09f7dba745c6a925647b" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">static</highlight><highlight class="normal"><sp/><ref refid="class_decay_1a603fb8ea4172c2c80c8779ad301b6a4f" kindref="member">Decay</ref>*<sp/><ref refid="class_decay_1a9a28c814beaf09f7dba745c6a925647b" kindref="member">createInstance</ref>(</highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/>nlohmann::json<sp/>&amp;config,<sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/><ref refid="class_precise_double" kindref="compound">PreciseDouble</ref>&amp;<sp/>hyperVolume);</highlight></codeline>
+<codeline lineno="59"><highlight class="normal"></highlight></codeline>
+<codeline lineno="63" refid="class_decay_1a603fb8ea4172c2c80c8779ad301b6a4f" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="class_decay_1a603fb8ea4172c2c80c8779ad301b6a4f" kindref="member">Decay</ref>();</highlight></codeline>
+<codeline lineno="64"><highlight class="normal"></highlight></codeline>
+<codeline lineno="68" refid="class_decay_1a1e1f9eaf505383a3eb8521ba29f71c97" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">virtual</highlight><highlight class="normal"><sp/><ref refid="class_decay_1a1e1f9eaf505383a3eb8521ba29f71c97" kindref="member">~Decay</ref>();</highlight></codeline>
+<codeline lineno="69"><highlight class="normal"></highlight></codeline>
+<codeline lineno="75" refid="class_decay_1ad0d7164e34c88ecca6a308e80a40cccc" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">virtual</highlight><highlight class="normal"><sp/><ref refid="class_precise_double" kindref="compound">PreciseDouble</ref><sp/><ref refid="class_decay_1ad0d7164e34c88ecca6a308e80a40cccc" kindref="member">apply</ref>(</highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/><ref refid="class_precise_double" kindref="compound">PreciseDouble</ref>&amp;<sp/>currentValue)<sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal">=0;</highlight></codeline>
+<codeline lineno="76"><highlight class="normal"></highlight></codeline>
+<codeline lineno="82" refid="class_decay_1a8f3fe11b373bafc083669965a7012da4" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">virtual</highlight><highlight class="normal"><sp/>std::string<sp/><ref refid="class_decay_1a8f3fe11b373bafc083669965a7012da4" kindref="member">showInfo</ref>(</highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/>std::string&amp;<sp/>indentation)<sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal">=0;</highlight></codeline>
+<codeline lineno="83"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight></codeline>
+<codeline lineno="90"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">template</highlight><highlight class="normal">&lt;</highlight><highlight class="keyword">class</highlight><highlight class="normal"><sp/>Archive&gt;</highlight></codeline>
+<codeline lineno="91" refid="class_decay_1a9fc061a5cdfaeba3d6dffa34c68582d6" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/><ref refid="class_decay_1a9fc061a5cdfaeba3d6dffa34c68582d6" kindref="member">serialize</ref>(Archive<sp/>&amp;<sp/>ar,<sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordtype">unsigned</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>version);</highlight></codeline>
+<codeline lineno="92"><highlight class="normal">};</highlight></codeline>
+<codeline lineno="93"><highlight class="normal"></highlight></codeline>
+<codeline lineno="94"><highlight class="normal"></highlight></codeline>
+<codeline lineno="95"><highlight class="normal"></highlight><highlight class="preprocessor">#endif<sp/></highlight><highlight class="comment">//<sp/>DECAY_H</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="96"><highlight class="normal"></highlight></codeline>
+    </programlisting>
+    <location file="App/Model/IBM/Maths/Dynamics/Decay/Decay.h"/>
+  </compounddef>
+</doxygen>

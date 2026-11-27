@@ -1,0 +1,359 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.18.0" xml:lang="en-US">
+  <compounddef id="class_branch_cell_obstacle" kind="class" language="C++" prot="public">
+    <compoundname>BranchCellObstacle</compoundname>
+    <basecompoundref refid="class_cell_obstacle_interface" prot="public" virt="non-virtual">CellObstacleInterface</basecompoundref>
+    <includes refid="_branch_cell_obstacle_8h" local="no">BranchCellObstacle.h</includes>
+    <sectiondef kind="public-func">
+      <memberdef kind="function" id="class_branch_cell_obstacle_1ac385246542f0b6436e7b76750e8a08d8" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type></type>
+        <definition>BranchCellObstacle::BranchCellObstacle</definition>
+        <argsstring>()</argsstring>
+        <name>BranchCellObstacle</name>
+        <qualifiedname>BranchCellObstacle::BranchCellObstacle</qualifiedname>
+        <briefdescription>
+<para>Default constructor. </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="App/Model/IBM/Landscape/Map/SpatialTree/TerrainCells/PatchApplicator/Obstacle/BranchCellObstacle.h" line="35" column="5"/>
+      </memberdef>
+      <memberdef kind="function" id="class_branch_cell_obstacle_1ad7b0511d8df0802c1c9d8cf345a0fedf" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type></type>
+        <definition>BranchCellObstacle::BranchCellObstacle</definition>
+        <argsstring>(const BranchCellObstacle &amp;)=delete</argsstring>
+        <name>BranchCellObstacle</name>
+        <qualifiedname>BranchCellObstacle::BranchCellObstacle</qualifiedname>
+        <param>
+          <type>const <ref refid="class_branch_cell_obstacle" kindref="compound">BranchCellObstacle</ref> &amp;</type>
+        </param>
+        <briefdescription>
+<para>Deleted copy constructor. </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="App/Model/IBM/Landscape/Map/SpatialTree/TerrainCells/PatchApplicator/Obstacle/BranchCellObstacle.h" line="47" column="5"/>
+      </memberdef>
+      <memberdef kind="function" id="class_branch_cell_obstacle_1a3f7bd3d73b9cea874e399454c1defd0c" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type></type>
+        <definition>BranchCellObstacle::BranchCellObstacle</definition>
+        <argsstring>(const size_t newObstaclePatchPriority)</argsstring>
+        <name>BranchCellObstacle</name>
+        <qualifiedname>BranchCellObstacle::BranchCellObstacle</qualifiedname>
+        <param>
+          <type>const size_t</type>
+          <declname>newObstaclePatchPriority</declname>
+        </param>
+        <briefdescription>
+<para>Constructor with initial patch priority. </para>
+        </briefdescription>
+        <detaileddescription>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>newObstaclePatchPriority</parametername>
+</parameternamelist>
+<parameterdescription>
+<para><ref refid="class_patch" kindref="compound">Patch</ref> priority for obstacle updates. </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="App/Model/IBM/Landscape/Map/SpatialTree/TerrainCells/PatchApplicator/Obstacle/BranchCellObstacle.h" line="41" column="5"/>
+      </memberdef>
+      <memberdef kind="function" id="class_branch_cell_obstacle_1a2f3ac842ba043b3d758933e912c4441e" prot="public" static="no" const="no" explicit="no" inline="no" virt="virtual">
+        <type></type>
+        <definition>virtual BranchCellObstacle::~BranchCellObstacle</definition>
+        <argsstring>()</argsstring>
+        <name>~BranchCellObstacle</name>
+        <qualifiedname>BranchCellObstacle::~BranchCellObstacle</qualifiedname>
+        <briefdescription>
+<para>Destructor. </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="App/Model/IBM/Landscape/Map/SpatialTree/TerrainCells/PatchApplicator/Obstacle/BranchCellObstacle.h" line="44" column="13"/>
+      </memberdef>
+      <memberdef kind="function" id="class_branch_cell_obstacle_1a129c11f846339e4a867acdda142f6c53" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void BranchCellObstacle::applyBranch</definition>
+        <argsstring>(BranchTerrainCell *const newSummaryTerrainCell)</argsstring>
+        <name>applyBranch</name>
+        <qualifiedname>BranchCellObstacle::applyBranch</qualifiedname>
+        <param>
+          <type><ref refid="class_branch_terrain_cell" kindref="compound">BranchTerrainCell</ref> *const</type>
+          <declname>newSummaryTerrainCell</declname>
+        </param>
+        <briefdescription>
+<para>Aggregate obstacle data from child terrain cells. </para>
+        </briefdescription>
+        <detaileddescription>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>newSummaryTerrainCell</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Pointer to the branch terrain cell to summarize. </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="App/Model/IBM/Landscape/Map/SpatialTree/TerrainCells/PatchApplicator/Obstacle/BranchCellObstacle.h" line="56" column="10"/>
+      </memberdef>
+      <memberdef kind="function" id="class_branch_cell_obstacle_1a9b7322c8d8888d2190e287536ba574de" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type><ref refid="class_branch_cell_obstacle" kindref="compound">BranchCellObstacle</ref> &amp;</type>
+        <definition>BranchCellObstacle &amp; BranchCellObstacle::operator=</definition>
+        <argsstring>(const BranchCellObstacle &amp;)=delete</argsstring>
+        <name>operator=</name>
+        <qualifiedname>BranchCellObstacle::operator=</qualifiedname>
+        <param>
+          <type>const <ref refid="class_branch_cell_obstacle" kindref="compound">BranchCellObstacle</ref> &amp;</type>
+        </param>
+        <briefdescription>
+<para>Deleted copy assignment. </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="App/Model/IBM/Landscape/Map/SpatialTree/TerrainCells/PatchApplicator/Obstacle/BranchCellObstacle.h" line="50" column="24"/>
+      </memberdef>
+      <memberdef kind="function" id="class_branch_cell_obstacle_1a833a8bb35a7fc0b2aff1fe20cd17c120" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <templateparamlist>
+          <param>
+            <type>class Archive</type>
+          </param>
+        </templateparamlist>
+        <type>void</type>
+        <definition>void BranchCellObstacle::serialize</definition>
+        <argsstring>(Archive &amp;ar, const unsigned int version)</argsstring>
+        <name>serialize</name>
+        <qualifiedname>BranchCellObstacle::serialize</qualifiedname>
+        <param>
+          <type>Archive &amp;</type>
+          <declname>ar</declname>
+        </param>
+        <param>
+          <type>const unsigned int</type>
+          <declname>version</declname>
+        </param>
+        <briefdescription>
+<para>Serialization function. </para>
+        </briefdescription>
+        <detaileddescription>
+<para><parameterlist kind="templateparam"><parameteritem>
+<parameternamelist>
+<parametername>Archive</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Type of the archive. </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>ar</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Archive object. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>version</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Version of serialization. </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="App/Model/IBM/Landscape/Map/SpatialTree/TerrainCells/PatchApplicator/Obstacle/BranchCellObstacle.h" line="65" column="10"/>
+      </memberdef>
+    </sectiondef>
+    <sectiondef kind="private-static-func">
+      <memberdef kind="function" id="class_branch_cell_obstacle_1adf3ee46f1d74a6e751a300977a35a7ae" prot="private" static="yes" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>bool</type>
+        <definition>static bool BranchCellObstacle::calculateFullObstacleValue</definition>
+        <argsstring>(BranchTerrainCell *const summaryTerrainCell)</argsstring>
+        <name>calculateFullObstacleValue</name>
+        <qualifiedname>BranchCellObstacle::calculateFullObstacleValue</qualifiedname>
+        <param>
+          <type><ref refid="class_branch_terrain_cell" kindref="compound">BranchTerrainCell</ref> *const</type>
+          <declname>summaryTerrainCell</declname>
+        </param>
+        <briefdescription>
+<para>Calculate the full obstacle flag based on child cells. </para>
+        </briefdescription>
+        <detaileddescription>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>summaryTerrainCell</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Pointer to the branch terrain cell. </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<simplesect kind="return"><para>True if all child cells are full obstacles, false otherwise. </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="App/Model/IBM/Landscape/Map/SpatialTree/TerrainCells/PatchApplicator/Obstacle/BranchCellObstacle.h" line="73" column="17"/>
+      </memberdef>
+      <memberdef kind="function" id="class_branch_cell_obstacle_1a99d20eddfd4eb91236632dee01d0dba7" prot="private" static="yes" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>size_t</type>
+        <definition>static size_t BranchCellObstacle::calculateObstaclePatchPriority</definition>
+        <argsstring>(BranchTerrainCell *const summaryTerrainCell)</argsstring>
+        <name>calculateObstaclePatchPriority</name>
+        <qualifiedname>BranchCellObstacle::calculateObstaclePatchPriority</qualifiedname>
+        <param>
+          <type><ref refid="class_branch_terrain_cell" kindref="compound">BranchTerrainCell</ref> *const</type>
+          <declname>summaryTerrainCell</declname>
+        </param>
+        <briefdescription>
+<para>Calculate the patch priority for obstacle updates based on child cells. </para>
+        </briefdescription>
+        <detaileddescription>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>summaryTerrainCell</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Pointer to the branch terrain cell. </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<simplesect kind="return"><para>Calculated patch priority. </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="App/Model/IBM/Landscape/Map/SpatialTree/TerrainCells/PatchApplicator/Obstacle/BranchCellObstacle.h" line="87" column="19"/>
+      </memberdef>
+      <memberdef kind="function" id="class_branch_cell_obstacle_1af0becb0b6f014b7a1725f73e932648ff" prot="private" static="yes" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>bool</type>
+        <definition>static bool BranchCellObstacle::calculateObstacleValue</definition>
+        <argsstring>(BranchTerrainCell *const summaryTerrainCell)</argsstring>
+        <name>calculateObstacleValue</name>
+        <qualifiedname>BranchCellObstacle::calculateObstacleValue</qualifiedname>
+        <param>
+          <type><ref refid="class_branch_terrain_cell" kindref="compound">BranchTerrainCell</ref> *const</type>
+          <declname>summaryTerrainCell</declname>
+        </param>
+        <briefdescription>
+<para>Calculate the obstacle flag based on child cells. </para>
+        </briefdescription>
+        <detaileddescription>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>summaryTerrainCell</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Pointer to the branch terrain cell. </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<simplesect kind="return"><para>True if at least one child cell is an obstacle, false otherwise. </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="App/Model/IBM/Landscape/Map/SpatialTree/TerrainCells/PatchApplicator/Obstacle/BranchCellObstacle.h" line="80" column="17"/>
+      </memberdef>
+    </sectiondef>
+    <briefdescription>
+<para>Obstacle representation for branch nodes in a spatial tree. </para>
+    </briefdescription>
+    <detaileddescription>
+<para>This class aggregates obstacle information from child terrain cells of a branch terrain cell. It provides flags for full obstacles and partial obstacles and calculates the patch priority for updates. </para>
+    </detaileddescription>
+    <inheritancegraph>
+      <node id="1">
+        <label>BranchCellObstacle</label>
+        <link refid="class_branch_cell_obstacle"/>
+        <childnode refid="2" relation="public-inheritance">
+        </childnode>
+      </node>
+      <node id="3">
+        <label>CellElement</label>
+        <link refid="class_cell_element"/>
+      </node>
+      <node id="2">
+        <label>CellObstacleInterface</label>
+        <link refid="class_cell_obstacle_interface"/>
+        <childnode refid="3" relation="public-inheritance">
+        </childnode>
+      </node>
+    </inheritancegraph>
+    <collaborationgraph>
+      <node id="1">
+        <label>BranchCellObstacle</label>
+        <link refid="class_branch_cell_obstacle"/>
+        <childnode refid="2" relation="public-inheritance">
+        </childnode>
+      </node>
+      <node id="3">
+        <label>CellElement</label>
+        <link refid="class_cell_element"/>
+      </node>
+      <node id="2">
+        <label>CellObstacleInterface</label>
+        <link refid="class_cell_obstacle_interface"/>
+        <childnode refid="3" relation="public-inheritance">
+        </childnode>
+      </node>
+    </collaborationgraph>
+    <location file="App/Model/IBM/Landscape/Map/SpatialTree/TerrainCells/PatchApplicator/Obstacle/BranchCellObstacle.h" line="31" column="1" bodyfile="App/Model/IBM/Landscape/Map/SpatialTree/TerrainCells/PatchApplicator/Obstacle/BranchCellObstacle.h" bodystart="32" bodyend="88"/>
+    <listofallmembers>
+      <member refid="class_branch_cell_obstacle_1a129c11f846339e4a867acdda142f6c53" prot="public" virt="non-virtual"><scope>BranchCellObstacle</scope><name>applyBranch</name></member>
+      <member refid="class_cell_obstacle_interface_1a9eca672a56536be37e14a1cc54ed531a" prot="public" virt="non-virtual"><scope>BranchCellObstacle</scope><name>applySource</name></member>
+      <member refid="class_branch_cell_obstacle_1ac385246542f0b6436e7b76750e8a08d8" prot="public" virt="non-virtual"><scope>BranchCellObstacle</scope><name>BranchCellObstacle</name></member>
+      <member refid="class_branch_cell_obstacle_1a3f7bd3d73b9cea874e399454c1defd0c" prot="public" virt="non-virtual"><scope>BranchCellObstacle</scope><name>BranchCellObstacle</name></member>
+      <member refid="class_branch_cell_obstacle_1ad7b0511d8df0802c1c9d8cf345a0fedf" prot="public" virt="non-virtual"><scope>BranchCellObstacle</scope><name>BranchCellObstacle</name></member>
+      <member refid="class_branch_cell_obstacle_1adf3ee46f1d74a6e751a300977a35a7ae" prot="private" virt="non-virtual"><scope>BranchCellObstacle</scope><name>calculateFullObstacleValue</name></member>
+      <member refid="class_branch_cell_obstacle_1a99d20eddfd4eb91236632dee01d0dba7" prot="private" virt="non-virtual"><scope>BranchCellObstacle</scope><name>calculateObstaclePatchPriority</name></member>
+      <member refid="class_branch_cell_obstacle_1af0becb0b6f014b7a1725f73e932648ff" prot="private" virt="non-virtual"><scope>BranchCellObstacle</scope><name>calculateObstacleValue</name></member>
+      <member refid="class_cell_element_1a77dc6b9db0633bb7d35df0b547ddf613" prot="public" virt="non-virtual"><scope>BranchCellObstacle</scope><name>CellElement</name></member>
+      <member refid="class_cell_element_1a07008f499b17c5dc792ab20d05dbf471" prot="public" virt="non-virtual"><scope>BranchCellObstacle</scope><name>CellElement</name></member>
+      <member refid="class_cell_element_1a5abb98d6d592c3fc4084fc886106d7c3" prot="public" virt="non-virtual"><scope>BranchCellObstacle</scope><name>CellElement</name></member>
+      <member refid="class_cell_obstacle_interface_1a6f390196c6bab471b799bf82fe19c22b" prot="public" virt="non-virtual"><scope>BranchCellObstacle</scope><name>CellObstacleInterface</name></member>
+      <member refid="class_cell_obstacle_interface_1ae23e4bd030180db9527589e083e3af57" prot="public" virt="non-virtual"><scope>BranchCellObstacle</scope><name>CellObstacleInterface</name></member>
+      <member refid="class_cell_obstacle_interface_1a9666291bc7698c7c012ba519d4cb9214" prot="public" virt="non-virtual"><scope>BranchCellObstacle</scope><name>CellObstacleInterface</name></member>
+      <member refid="class_cell_obstacle_interface_1a953f59639e68040ef9f121d022bdf68d" prot="protected" virt="non-virtual"><scope>BranchCellObstacle</scope><name>fullObstacle</name></member>
+      <member refid="class_cell_element_1aeb03190224c2ff962587e94d8fe0c8b4" prot="public" virt="non-virtual"><scope>BranchCellObstacle</scope><name>getPatchPriority</name></member>
+      <member refid="class_cell_obstacle_interface_1a1b9699c5abe65aee058155563e49c792" prot="public" virt="non-virtual"><scope>BranchCellObstacle</scope><name>isFullObstacle</name></member>
+      <member refid="class_cell_obstacle_interface_1a4ac9691c3e7bb7c83bcf328fbc6c56ac" prot="public" virt="non-virtual"><scope>BranchCellObstacle</scope><name>isObstacle</name></member>
+      <member refid="class_cell_obstacle_interface_1a49b608b3a477754a93e838da5a9b0b71" prot="protected" virt="non-virtual"><scope>BranchCellObstacle</scope><name>obstacle</name></member>
+      <member refid="class_branch_cell_obstacle_1a9b7322c8d8888d2190e287536ba574de" prot="public" virt="non-virtual"><scope>BranchCellObstacle</scope><name>operator=</name></member>
+      <member refid="class_cell_obstacle_interface_1a943bd3764875e2f822381eea80b84b45" prot="public" virt="non-virtual" ambiguityscope="CellObstacleInterface::"><scope>BranchCellObstacle</scope><name>operator=</name></member>
+      <member refid="class_cell_element_1ac7467d8c95d1a3d3e8b72a3209681ce0" prot="public" virt="non-virtual" ambiguityscope="CellElement::"><scope>BranchCellObstacle</scope><name>operator=</name></member>
+      <member refid="class_cell_element_1ac25808724b01c8f1555c0be37b0f9d6f" prot="protected" virt="non-virtual"><scope>BranchCellObstacle</scope><name>patchPriority</name></member>
+      <member refid="class_branch_cell_obstacle_1a833a8bb35a7fc0b2aff1fe20cd17c120" prot="public" virt="non-virtual"><scope>BranchCellObstacle</scope><name>serialize</name></member>
+      <member refid="class_cell_obstacle_interface_1a763f82ebeded8be8e130fb6658c55dcf" prot="protected" virt="non-virtual"><scope>BranchCellObstacle</scope><name>setFullObstacleValue</name></member>
+      <member refid="class_cell_obstacle_interface_1aedce51a3032dd34ee4e27103126748fb" prot="protected" virt="non-virtual"><scope>BranchCellObstacle</scope><name>setObstacleValue</name></member>
+      <member refid="class_cell_element_1a9178746c39e277cc4ac9af2f434ac72e" prot="protected" virt="non-virtual"><scope>BranchCellObstacle</scope><name>setPatchPriority</name></member>
+      <member refid="class_branch_cell_obstacle_1a2f3ac842ba043b3d758933e912c4441e" prot="public" virt="virtual"><scope>BranchCellObstacle</scope><name>~BranchCellObstacle</name></member>
+      <member refid="class_cell_element_1a82b86d53e7e9c50f4c3145be272bd38f" prot="public" virt="virtual"><scope>BranchCellObstacle</scope><name>~CellElement</name></member>
+      <member refid="class_cell_obstacle_interface_1aad9b23b176d5bd6716a6ce91b4e1eb37" prot="public" virt="virtual"><scope>BranchCellObstacle</scope><name>~CellObstacleInterface</name></member>
+    </listofallmembers>
+  </compounddef>
+</doxygen>

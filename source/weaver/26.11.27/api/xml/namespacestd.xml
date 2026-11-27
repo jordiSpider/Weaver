@@ -1,0 +1,21 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.18.0" xml:lang="en-US">
+  <compounddef id="namespacestd" kind="namespace" language="C++">
+    <compoundname>std</compoundname>
+    <innerclass refid="structstd_1_1hash_3_01_animal_species_i_d_01_4" prot="public">std::hash&lt; AnimalSpeciesID &gt;</innerclass>
+    <innerclass refid="structstd_1_1hash_3_01_instar_01_4" prot="public">std::hash&lt; Instar &gt;</innerclass>
+    <innerclass refid="structstd_1_1hash_3_01_precise_double_01_4" prot="public">std::hash&lt; PreciseDouble &gt;</innerclass>
+    <innerclass refid="structstd_1_1hash_3_01_resource_species_1_1_resource_i_d_01_4" prot="public">std::hash&lt; ResourceSpecies::ResourceID &gt;</innerclass>
+    <innerclass refid="structstd_1_1hash_3_01_species_1_1_i_d_01_4" prot="public">std::hash&lt; Species::ID &gt;</innerclass>
+    <innerclass refid="structstd_1_1hash_3_01_temperature_01_4" prot="public">std::hash&lt; Temperature &gt;</innerclass>
+    <briefdescription>
+<para>Provides a specialization of std::hash for the custom type <ref refid="class_temperature" kindref="compound">Temperature</ref>. </para>
+    </briefdescription>
+    <detaileddescription>
+<para>Provides a specialization of std::hash for the custom type <ref refid="class_precise_double" kindref="compound">PreciseDouble</ref>.</para>
+<para>This specialization allows <ref refid="class_temperature" kindref="compound">Temperature</ref> objects to be used as keys in standard unordered containers (e.g., std::unordered_map, std::unordered_set) by defining a hash function based on the internal representation of <ref refid="class_temperature" kindref="compound">Temperature</ref>.</para>
+<para>This namespace specialization allows <ref refid="class_precise_double" kindref="compound">PreciseDouble</ref> objects to be used as keys in standard unordered containers (e.g., std::unordered_map, std::unordered_set) by defining a hash function based on the internal double value. </para>
+    </detaileddescription>
+    <location file="App/Model/IBM/Physics/Temperature.h" line="210" column="1"/>
+  </compounddef>
+</doxygen>

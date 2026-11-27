@@ -1,0 +1,57 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.18.0" xml:lang="en-US">
+  <compounddef id="struct_navigation_waypoint" kind="struct" language="C++" prot="public">
+    <compoundname>NavigationWaypoint</compoundname>
+    <sectiondef kind="public-attrib">
+      <memberdef kind="variable" id="struct_navigation_waypoint_1a1a0dc6f3393e214d5d789652a471dbd1" prot="public" static="no" mutable="no">
+        <type><ref refid="class_point_map" kindref="compound">PointMap</ref></type>
+        <definition>PointMap NavigationWaypoint::cell</definition>
+        <argsstring></argsstring>
+        <name>cell</name>
+        <qualifiedname>NavigationWaypoint::cell</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="App/Model/IBM/Landscape/Map/Navigation/NavigationRoute.h" line="13" column="10" bodyfile="App/Model/IBM/Landscape/Map/Navigation/NavigationRoute.h" bodystart="13" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="struct_navigation_waypoint_1a29b26be351823969b5d2e4cbb94b7f1e" prot="public" static="no" mutable="no">
+        <type>PointContinuous</type>
+        <definition>PointContinuous NavigationWaypoint::position</definition>
+        <argsstring></argsstring>
+        <name>position</name>
+        <qualifiedname>NavigationWaypoint::position</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="App/Model/IBM/Landscape/Map/Navigation/NavigationRoute.h" line="12" column="17" bodyfile="App/Model/IBM/Landscape/Map/Navigation/NavigationRoute.h" bodystart="12" bodyend="-1"/>
+      </memberdef>
+    </sectiondef>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+    </detaileddescription>
+    <collaborationgraph>
+      <node id="1">
+        <label>NavigationWaypoint</label>
+        <childnode refid="2" relation="usage">
+          <edgelabel>cell</edgelabel>
+        </childnode>
+      </node>
+      <node id="2">
+        <label>PointMap</label>
+        <link refid="class_point_map"/>
+      </node>
+    </collaborationgraph>
+    <location file="App/Model/IBM/Landscape/Map/Navigation/NavigationRoute.h" line="10" column="1" bodyfile="App/Model/IBM/Landscape/Map/Navigation/NavigationRoute.h" bodystart="11" bodyend="14"/>
+    <listofallmembers>
+      <member refid="struct_navigation_waypoint_1a1a0dc6f3393e214d5d789652a471dbd1" prot="public" virt="non-virtual"><scope>NavigationWaypoint</scope><name>cell</name></member>
+      <member refid="struct_navigation_waypoint_1a29b26be351823969b5d2e4cbb94b7f1e" prot="public" virt="non-virtual"><scope>NavigationWaypoint</scope><name>position</name></member>
+    </listofallmembers>
+  </compounddef>
+</doxygen>

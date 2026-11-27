@@ -1,0 +1,480 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.18.0" xml:lang="en-US">
+  <compounddef id="class_probability_density_function_trait" kind="class" language="C++" prot="public">
+    <compoundname>ProbabilityDensityFunctionTrait</compoundname>
+    <basecompoundref refid="class_trait" prot="public" virt="non-virtual">Trait</basecompoundref>
+    <includes refid="_probability_density_function_trait_8h" local="no">ProbabilityDensityFunctionTrait.h</includes>
+    <sectiondef kind="public-static-func">
+      <memberdef kind="function" id="class_probability_density_function_trait_1a0645086b5ae88db5b1facb1a92ffc73a" prot="public" static="yes" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>std::vector&lt; <ref refid="class_trait" kindref="compound">Trait</ref> * &gt;</type>
+        <definition>static std::vector&lt; Trait * &gt; ProbabilityDensityFunctionTrait::generateTraits</definition>
+        <argsstring>(std::vector&lt; IndividualLevelTrait * &gt; &amp;individualLevelTraits, const nlohmann::json &amp;definitionConfig, const std::vector&lt; nlohmann::json &gt; &amp;individualLevelTraitsOrder)</argsstring>
+        <name>generateTraits</name>
+        <qualifiedname>ProbabilityDensityFunctionTrait::generateTraits</qualifiedname>
+        <param>
+          <type>std::vector&lt; <ref refid="class_individual_level_trait" kindref="compound">IndividualLevelTrait</ref> * &gt; &amp;</type>
+          <declname>individualLevelTraits</declname>
+        </param>
+        <param>
+          <type>const nlohmann::json &amp;</type>
+          <declname>definitionConfig</declname>
+        </param>
+        <param>
+          <type>const std::vector&lt; nlohmann::json &gt; &amp;</type>
+          <declname>individualLevelTraitsOrder</declname>
+        </param>
+        <briefdescription>
+<para>Generate a vector of <ref refid="class_probability_density_function_trait" kindref="compound">ProbabilityDensityFunctionTrait</ref> objects. </para>
+        </briefdescription>
+        <detaileddescription>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>individualLevelTraits</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Vector of individual-level traits used to construct these traits. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>definitionConfig</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>JSON configuration defining the traits. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>individualLevelTraitsOrder</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Order of individual-level traits in JSON. </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<simplesect kind="return"><para>Vector of generated <ref refid="class_trait" kindref="compound">Trait</ref> pointers. </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="App/Model/IBM/Landscape/LivingBeings/Animals/Species/Genetics/Traits/ProbabilityDensityFunctionTrait.h" line="36" column="24"/>
+      </memberdef>
+      <memberdef kind="function" id="class_probability_density_function_trait_1abed3cc2c114cbbcab4ed5b51f7fc9105" prot="public" static="yes" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>std::vector&lt; std::string &gt;</type>
+        <definition>static std::vector&lt; std::string &gt; ProbabilityDensityFunctionTrait::getTraitStrVector</definition>
+        <argsstring>()</argsstring>
+        <name>getTraitStrVector</name>
+        <qualifiedname>ProbabilityDensityFunctionTrait::getTraitStrVector</qualifiedname>
+        <briefdescription>
+<para>Get a vector of string identifiers for these traits. </para>
+        </briefdescription>
+        <detaileddescription>
+<para><simplesect kind="return"><para>Vector of trait strings. </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="App/Model/IBM/Landscape/LivingBeings/Animals/Species/Genetics/Traits/ProbabilityDensityFunctionTrait.h" line="42" column="24"/>
+      </memberdef>
+    </sectiondef>
+    <sectiondef kind="public-func">
+      <memberdef kind="function" id="class_probability_density_function_trait_1a42876e2e3388f08b596911afd24dbb12" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type></type>
+        <definition>ProbabilityDensityFunctionTrait::ProbabilityDensityFunctionTrait</definition>
+        <argsstring>()</argsstring>
+        <name>ProbabilityDensityFunctionTrait</name>
+        <qualifiedname>ProbabilityDensityFunctionTrait::ProbabilityDensityFunctionTrait</qualifiedname>
+        <briefdescription>
+<para>Default constructor. </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="App/Model/IBM/Landscape/LivingBeings/Animals/Species/Genetics/Traits/ProbabilityDensityFunctionTrait.h" line="45" column="5"/>
+      </memberdef>
+      <memberdef kind="function" id="class_probability_density_function_trait_1a398c7d4f6a0380e2b4b9adbf8811cf4a" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type></type>
+        <definition>ProbabilityDensityFunctionTrait::ProbabilityDensityFunctionTrait</definition>
+        <argsstring>(std::vector&lt; IndividualLevelTrait * &gt; &amp;individualLevelTraits, const ProbabilityDensityFunctionTraitType type, const nlohmann::json &amp;config, const std::vector&lt; nlohmann::json &gt; &amp;individualLevelTraitsOrder)</argsstring>
+        <name>ProbabilityDensityFunctionTrait</name>
+        <qualifiedname>ProbabilityDensityFunctionTrait::ProbabilityDensityFunctionTrait</qualifiedname>
+        <param>
+          <type>std::vector&lt; <ref refid="class_individual_level_trait" kindref="compound">IndividualLevelTrait</ref> * &gt; &amp;</type>
+          <declname>individualLevelTraits</declname>
+        </param>
+        <param>
+          <type>const ProbabilityDensityFunctionTraitType</type>
+          <declname>type</declname>
+        </param>
+        <param>
+          <type>const nlohmann::json &amp;</type>
+          <declname>config</declname>
+        </param>
+        <param>
+          <type>const std::vector&lt; nlohmann::json &gt; &amp;</type>
+          <declname>individualLevelTraitsOrder</declname>
+        </param>
+        <briefdescription>
+<para>Constructor with type and configuration. </para>
+        </briefdescription>
+        <detaileddescription>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>individualLevelTraits</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Vector of individual-level traits. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>type</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Type of PDF trait. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>config</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>JSON configuration. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>individualLevelTraitsOrder</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Order of individual-level traits. </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="App/Model/IBM/Landscape/LivingBeings/Animals/Species/Genetics/Traits/ProbabilityDensityFunctionTrait.h" line="54" column="5"/>
+      </memberdef>
+      <memberdef kind="function" id="class_probability_density_function_trait_1ae94eab6a63697b548d496fe0f7cff979" prot="public" static="no" const="no" explicit="no" inline="no" virt="virtual">
+        <type></type>
+        <definition>virtual ProbabilityDensityFunctionTrait::~ProbabilityDensityFunctionTrait</definition>
+        <argsstring>()</argsstring>
+        <name>~ProbabilityDensityFunctionTrait</name>
+        <qualifiedname>ProbabilityDensityFunctionTrait::~ProbabilityDensityFunctionTrait</qualifiedname>
+        <briefdescription>
+<para>Destructor. </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="App/Model/IBM/Landscape/LivingBeings/Animals/Species/Genetics/Traits/ProbabilityDensityFunctionTrait.h" line="57" column="13"/>
+      </memberdef>
+      <memberdef kind="function" id="class_probability_density_function_trait_1a5c2fbb3ab451fc0687cfcdebe871e6f9" prot="public" static="no" const="yes" explicit="no" inline="no" virt="virtual">
+        <type>bool</type>
+        <definition>bool ProbabilityDensityFunctionTrait::canBeNegative</definition>
+        <argsstring>() const</argsstring>
+        <name>canBeNegative</name>
+        <qualifiedname>ProbabilityDensityFunctionTrait::canBeNegative</qualifiedname>
+        <reimplements refid="class_trait_1a0db4c1cbb2f5e49d3c2d2a458f6135c6">canBeNegative</reimplements>
+        <briefdescription>
+<para>Determine if the trait can have negative values. </para>
+        </briefdescription>
+        <detaileddescription>
+<para><simplesect kind="return"><para>True if negative values are allowed. </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="App/Model/IBM/Landscape/LivingBeings/Animals/Species/Genetics/Traits/ProbabilityDensityFunctionTrait.h" line="63" column="10"/>
+      </memberdef>
+      <memberdef kind="function" id="class_probability_density_function_trait_1a011c7536eab99cafa5c4f0a885fa9689" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <templateparamlist>
+          <param>
+            <type>class Archive</type>
+          </param>
+        </templateparamlist>
+        <type>void</type>
+        <definition>void ProbabilityDensityFunctionTrait::serialize</definition>
+        <argsstring>(Archive &amp;ar, const unsigned int version)</argsstring>
+        <name>serialize</name>
+        <qualifiedname>ProbabilityDensityFunctionTrait::serialize</qualifiedname>
+        <param>
+          <type>Archive &amp;</type>
+          <declname>ar</declname>
+        </param>
+        <param>
+          <type>const unsigned int</type>
+          <declname>version</declname>
+        </param>
+        <briefdescription>
+<para>Serializes the object for persistence. </para>
+        </briefdescription>
+        <detaileddescription>
+<para><parameterlist kind="templateparam"><parameteritem>
+<parameternamelist>
+<parametername>Archive</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Serialization archive type. </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>ar</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Archive instance. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>version</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Serialization version. </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="App/Model/IBM/Landscape/LivingBeings/Animals/Species/Genetics/Traits/ProbabilityDensityFunctionTrait.h" line="73" column="10"/>
+      </memberdef>
+    </sectiondef>
+    <sectiondef kind="protected-static-func">
+      <memberdef kind="function" id="class_probability_density_function_trait_1a01f09420de321778b6720baa3e893b82" prot="protected" static="yes" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>std::string</type>
+        <definition>static std::string ProbabilityDensityFunctionTrait::getJsonFieldName</definition>
+        <argsstring>()</argsstring>
+        <name>getJsonFieldName</name>
+        <qualifiedname>ProbabilityDensityFunctionTrait::getJsonFieldName</qualifiedname>
+        <briefdescription>
+<para>Get the JSON field name associated with this trait. </para>
+        </briefdescription>
+        <detaileddescription>
+<para><simplesect kind="return"><para>JSON field name as a string. </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="App/Model/IBM/Landscape/LivingBeings/Animals/Species/Genetics/Traits/ProbabilityDensityFunctionTrait.h" line="80" column="24"/>
+      </memberdef>
+    </sectiondef>
+    <sectiondef kind="protected-func">
+      <memberdef kind="function" id="class_probability_density_function_trait_1aceeb31f74b23ca6f39450892e5d32d28" prot="protected" static="no" const="yes" explicit="no" inline="no" virt="virtual">
+        <type>std::string</type>
+        <definition>std::string ProbabilityDensityFunctionTrait::getFileName</definition>
+        <argsstring>() const override</argsstring>
+        <name>getFileName</name>
+        <qualifiedname>ProbabilityDensityFunctionTrait::getFileName</qualifiedname>
+        <reimplements refid="class_trait_1a7a4e7aecd6973f24ccc42cd2b06036a8">getFileName</reimplements>
+        <briefdescription>
+<para>Get the file name associated with the trait. </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="App/Model/IBM/Landscape/LivingBeings/Animals/Species/Genetics/Traits/ProbabilityDensityFunctionTrait.h" line="83" column="17"/>
+      </memberdef>
+      <memberdef kind="function" id="class_probability_density_function_trait_1ae51c4c141a1ae649a874d81f7c4ecbfd" prot="protected" static="no" const="yes" explicit="no" inline="no" virt="virtual">
+        <type>std::string</type>
+        <definition>std::string ProbabilityDensityFunctionTrait::getParentTraitStr</definition>
+        <argsstring>() const override</argsstring>
+        <name>getParentTraitStr</name>
+        <qualifiedname>ProbabilityDensityFunctionTrait::getParentTraitStr</qualifiedname>
+        <reimplements refid="class_trait_1ab8fa64d924dad4f23f839a879d3a51e9">getParentTraitStr</reimplements>
+        <briefdescription>
+<para>Get the parent trait string identifier. </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="App/Model/IBM/Landscape/LivingBeings/Animals/Species/Genetics/Traits/ProbabilityDensityFunctionTrait.h" line="86" column="17"/>
+      </memberdef>
+    </sectiondef>
+    <sectiondef kind="private-static-func">
+      <memberdef kind="function" id="class_probability_density_function_trait_1a41200b0b59dad2b72c5b17a5f31b831a" prot="private" static="yes" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type><ref refid="class_trait_temperature_section" kindref="compound">TraitTemperatureSection</ref> *</type>
+        <definition>static TraitTemperatureSection * ProbabilityDensityFunctionTrait::createTemperatureSection</definition>
+        <argsstring>(std::vector&lt; IndividualLevelTrait * &gt; &amp;individualLevelTraits, const nlohmann::json &amp;temperatureConfig, const std::vector&lt; nlohmann::json &gt; &amp;individualLevelTraitsOrder, const std::string &amp;traitStr, const std::string &amp;fileName)</argsstring>
+        <name>createTemperatureSection</name>
+        <qualifiedname>ProbabilityDensityFunctionTrait::createTemperatureSection</qualifiedname>
+        <param>
+          <type>std::vector&lt; <ref refid="class_individual_level_trait" kindref="compound">IndividualLevelTrait</ref> * &gt; &amp;</type>
+          <declname>individualLevelTraits</declname>
+        </param>
+        <param>
+          <type>const nlohmann::json &amp;</type>
+          <declname>temperatureConfig</declname>
+        </param>
+        <param>
+          <type>const std::vector&lt; nlohmann::json &gt; &amp;</type>
+          <declname>individualLevelTraitsOrder</declname>
+        </param>
+        <param>
+          <type>const std::string &amp;</type>
+          <declname>traitStr</declname>
+        </param>
+        <param>
+          <type>const std::string &amp;</type>
+          <declname>fileName</declname>
+        </param>
+        <briefdescription>
+<para>Create the temperature section for this trait. </para>
+        </briefdescription>
+        <detaileddescription>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>individualLevelTraits</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Vector of individual-level traits. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>temperatureConfig</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>JSON configuration for temperature section. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>individualLevelTraitsOrder</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Order of individual-level traits. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>traitStr</parametername>
+</parameternamelist>
+<parameterdescription>
+<para><ref refid="class_trait" kindref="compound">Trait</ref> string identifier. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>fileName</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>File name for this trait. </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<simplesect kind="return"><para>Pointer to the created <ref refid="class_trait_temperature_section" kindref="compound">TraitTemperatureSection</ref>. </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="App/Model/IBM/Landscape/LivingBeings/Animals/Species/Genetics/Traits/ProbabilityDensityFunctionTrait.h" line="98" column="36"/>
+      </memberdef>
+    </sectiondef>
+    <briefdescription>
+<para>Represents a trait defined by a probability density function (PDF). </para>
+    </briefdescription>
+    <detaileddescription>
+<para>This class extends <ref refid="class_trait" kindref="compound">Trait</ref> and provides specialized functions to generate traits, retrieve trait identifiers, and handle temperature-dependent sections. </para>
+    </detaileddescription>
+    <inheritancegraph>
+      <node id="1">
+        <label>ProbabilityDensityFunctionTrait</label>
+        <link refid="class_probability_density_function_trait"/>
+        <childnode refid="2" relation="public-inheritance">
+        </childnode>
+      </node>
+      <node id="2">
+        <label>Trait</label>
+        <link refid="class_trait"/>
+      </node>
+    </inheritancegraph>
+    <collaborationgraph>
+      <node id="3">
+        <label>CustomIndexedVector&lt; ExecutionOrder, GenerateTraitsFunc &gt;</label>
+        <link refid="class_custom_indexed_vector"/>
+      </node>
+      <node id="4">
+        <label>CustomIndexedVector&lt; ExecutionOrder, std::function&lt; std::vector&lt; std::string &gt;()&gt; &gt;</label>
+        <link refid="class_custom_indexed_vector"/>
+      </node>
+      <node id="1">
+        <label>ProbabilityDensityFunctionTrait</label>
+        <link refid="class_probability_density_function_trait"/>
+        <childnode refid="2" relation="public-inheritance">
+        </childnode>
+      </node>
+      <node id="2">
+        <label>Trait</label>
+        <link refid="class_trait"/>
+        <childnode refid="3" relation="usage">
+          <edgelabel>registryGenerateTraits</edgelabel>
+        </childnode>
+        <childnode refid="4" relation="usage">
+          <edgelabel>registryGetTraitStrVector</edgelabel>
+        </childnode>
+        <childnode refid="5" relation="usage">
+          <edgelabel>value</edgelabel>
+        </childnode>
+        <childnode refid="6" relation="usage">
+          <edgelabel>temperatureSection</edgelabel>
+        </childnode>
+      </node>
+      <node id="5">
+        <label>TraitDefinitionSection</label>
+        <link refid="class_trait_definition_section"/>
+      </node>
+      <node id="6">
+        <label>TraitTemperatureSection</label>
+        <link refid="class_trait_temperature_section"/>
+      </node>
+    </collaborationgraph>
+    <location file="App/Model/IBM/Landscape/LivingBeings/Animals/Species/Genetics/Traits/ProbabilityDensityFunctionTrait.h" line="27" column="1" bodyfile="App/Model/IBM/Landscape/LivingBeings/Animals/Species/Genetics/Traits/ProbabilityDensityFunctionTrait.h" bodystart="27" bodyend="99"/>
+    <listofallmembers>
+      <member refid="class_probability_density_function_trait_1a5c2fbb3ab451fc0687cfcdebe871e6f9" prot="public" virt="virtual"><scope>ProbabilityDensityFunctionTrait</scope><name>canBeNegative</name></member>
+      <member refid="class_probability_density_function_trait_1a41200b0b59dad2b72c5b17a5f31b831a" prot="private" virt="non-virtual"><scope>ProbabilityDensityFunctionTrait</scope><name>createTemperatureSection</name></member>
+      <member refid="class_trait_1a53d74d98ffd1ed386045b0c762cea4f8" prot="public" virt="non-virtual"><scope>ProbabilityDensityFunctionTrait</scope><name>defaultGenerateTraits</name></member>
+      <member refid="class_trait_1ae16a0fd5fad5b0cd999da92a6b05b6e9" prot="public" virt="non-virtual"><scope>ProbabilityDensityFunctionTrait</scope><name>defaultGetTraitStrVector</name></member>
+      <member refid="class_trait_1a2992bf837cfed940fc725f29a1b89e66" prot="public" virt="non-virtual"><scope>ProbabilityDensityFunctionTrait</scope><name>deserializeIndividualLevelTraits</name></member>
+      <member refid="class_trait_1ae6b7272eb7b811a0ffe03525a142d468" prot="public" virt="non-virtual"><scope>ProbabilityDensityFunctionTrait</scope><name>ExecutionOrder</name></member>
+      <member refid="class_probability_density_function_trait_1a0645086b5ae88db5b1facb1a92ffc73a" prot="public" virt="non-virtual"><scope>ProbabilityDensityFunctionTrait</scope><name>generateTraits</name></member>
+      <member refid="class_trait_1a4f08be480b7ae35ba0e1c35eab90df54" prot="public" virt="non-virtual"><scope>ProbabilityDensityFunctionTrait</scope><name>GenerateTraitsFunc</name></member>
+      <member refid="class_probability_density_function_trait_1aceeb31f74b23ca6f39450892e5d32d28" prot="protected" virt="virtual"><scope>ProbabilityDensityFunctionTrait</scope><name>getFileName</name></member>
+      <member refid="class_trait_1a6c95780c171ab8838838c9aa5506169c" prot="public" virt="non-virtual"><scope>ProbabilityDensityFunctionTrait</scope><name>getHeader</name></member>
+      <member refid="class_probability_density_function_trait_1a01f09420de321778b6720baa3e893b82" prot="protected" virt="non-virtual"><scope>ProbabilityDensityFunctionTrait</scope><name>getJsonFieldName</name></member>
+      <member refid="class_probability_density_function_trait_1ae51c4c141a1ae649a874d81f7c4ecbfd" prot="protected" virt="virtual"><scope>ProbabilityDensityFunctionTrait</scope><name>getParentTraitStr</name></member>
+      <member refid="class_trait_1a64c797baa9849a467c152c894a93f1a3" prot="public" virt="non-virtual"><scope>ProbabilityDensityFunctionTrait</scope><name>getTemperatureSection</name></member>
+      <member refid="class_probability_density_function_trait_1abed3cc2c114cbbcab4ed5b51f7fc9105" prot="public" virt="non-virtual"><scope>ProbabilityDensityFunctionTrait</scope><name>getTraitStrVector</name></member>
+      <member refid="class_trait_1a3bdf5c9cdece115eb4622ee4cb7c4703" prot="public" virt="non-virtual"><scope>ProbabilityDensityFunctionTrait</scope><name>getValue</name></member>
+      <member refid="class_trait_1affddb05eaf31887ce88d9dbf773f80a4" prot="public" virt="non-virtual"><scope>ProbabilityDensityFunctionTrait</scope><name>getValue</name></member>
+      <member refid="class_trait_1ae067531775e1497fdfb328d8025226b2" prot="public" virt="non-virtual"><scope>ProbabilityDensityFunctionTrait</scope><name>isNull</name></member>
+      <member refid="class_trait_1ac881efc740d9065e4d70526afd2e2738" prot="public" virt="non-virtual"><scope>ProbabilityDensityFunctionTrait</scope><name>isThermallyDependent</name></member>
+      <member refid="class_probability_density_function_trait_1a42876e2e3388f08b596911afd24dbb12" prot="public" virt="non-virtual"><scope>ProbabilityDensityFunctionTrait</scope><name>ProbabilityDensityFunctionTrait</name></member>
+      <member refid="class_probability_density_function_trait_1a398c7d4f6a0380e2b4b9adbf8811cf4a" prot="public" virt="non-virtual"><scope>ProbabilityDensityFunctionTrait</scope><name>ProbabilityDensityFunctionTrait</name></member>
+      <member refid="class_trait_1a8dcae044e795a01ef9bee257afbaede6" prot="public" virt="non-virtual"><scope>ProbabilityDensityFunctionTrait</scope><name>registryGenerateTraits</name></member>
+      <member refid="class_trait_1a5696bf9ca5fc4350c563053937d3df4e" prot="public" virt="non-virtual"><scope>ProbabilityDensityFunctionTrait</scope><name>registryGetTraitStrVector</name></member>
+      <member refid="class_probability_density_function_trait_1a011c7536eab99cafa5c4f0a885fa9689" prot="public" virt="non-virtual"><scope>ProbabilityDensityFunctionTrait</scope><name>serialize</name></member>
+      <member refid="class_trait_1a26018a9144fab74f38336aae605da01d" prot="protected" virt="non-virtual"><scope>ProbabilityDensityFunctionTrait</scope><name>temperatureSection</name></member>
+      <member refid="class_trait_1a3d1268015b3d6c8e8c2b8e247ed8c635" prot="protected" virt="non-virtual"><scope>ProbabilityDensityFunctionTrait</scope><name>thermallyDependent</name></member>
+      <member refid="class_trait_1aae36b201023c346213c0e5bcc1c7922f" prot="public" virt="non-virtual"><scope>ProbabilityDensityFunctionTrait</scope><name>Trait</name></member>
+      <member refid="class_trait_1ab83fed03a389345639441434caef755d" prot="public" virt="non-virtual"><scope>ProbabilityDensityFunctionTrait</scope><name>Trait</name></member>
+      <member refid="class_trait_1a4e980cb5b7ac6f59d3462ccec66c3d70" prot="protected" virt="non-virtual"><scope>ProbabilityDensityFunctionTrait</scope><name>value</name></member>
+      <member refid="class_probability_density_function_trait_1ae94eab6a63697b548d496fe0f7cff979" prot="public" virt="virtual"><scope>ProbabilityDensityFunctionTrait</scope><name>~ProbabilityDensityFunctionTrait</name></member>
+      <member refid="class_trait_1adf5a385491a3eab49ddfd4b80f21b267" prot="public" virt="virtual"><scope>ProbabilityDensityFunctionTrait</scope><name>~Trait</name></member>
+    </listofallmembers>
+  </compounddef>
+</doxygen>

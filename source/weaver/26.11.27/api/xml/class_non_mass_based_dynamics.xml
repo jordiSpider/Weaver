@@ -1,0 +1,343 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.18.0" xml:lang="en-US">
+  <compounddef id="class_non_mass_based_dynamics" kind="class" language="C++" prot="public" abstract="yes">
+    <compoundname>NonMassBasedDynamics</compoundname>
+    <basecompoundref refid="class_dynamics" prot="public" virt="non-virtual">Dynamics</basecompoundref>
+    <derivedcompoundref refid="class_cycle_dynamics" prot="public" virt="non-virtual">CycleDynamics</derivedcompoundref>
+    <derivedcompoundref refid="class_non_dynamics" prot="public" virt="non-virtual">NonDynamics</derivedcompoundref>
+    <derivedcompoundref refid="class_pulse_dynamics" prot="public" virt="non-virtual">PulseDynamics</derivedcompoundref>
+    <includes refid="_non_mass_based_dynamics_8h" local="no">NonMassBasedDynamics.h</includes>
+    <sectiondef kind="public-static-func">
+      <memberdef kind="function" id="class_non_mass_based_dynamics_1a11550e9f5abcaf15ce2cf1f77f8b5897" prot="public" static="yes" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type><ref refid="class_non_mass_based_dynamics" kindref="compound">NonMassBasedDynamics</ref> *</type>
+        <definition>static NonMassBasedDynamics * NonMassBasedDynamics::createInstance</definition>
+        <argsstring>(const nlohmann::json &amp;config, const PreciseDouble &amp;timeStepsPerDay)</argsstring>
+        <name>createInstance</name>
+        <qualifiedname>NonMassBasedDynamics::createInstance</qualifiedname>
+        <param>
+          <type>const nlohmann::json &amp;</type>
+          <declname>config</declname>
+        </param>
+        <param>
+          <type>const <ref refid="class_precise_double" kindref="compound">PreciseDouble</ref> &amp;</type>
+          <declname>timeStepsPerDay</declname>
+        </param>
+        <briefdescription>
+<para>Factory method to create a <ref refid="class_non_mass_based_dynamics" kindref="compound">NonMassBasedDynamics</ref> instance from JSON configuration. </para>
+        </briefdescription>
+        <detaileddescription>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>config</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>JSON configuration defining the dynamics. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>timeStepsPerDay</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>The number of simulation time steps per day. </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<simplesect kind="return"><para>Pointer to a newly created <ref refid="class_non_mass_based_dynamics" kindref="compound">NonMassBasedDynamics</ref> instance. </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="App/Model/IBM/Maths/Dynamics/NonMassBasedDynamics.h" line="47" column="33"/>
+      </memberdef>
+    </sectiondef>
+    <sectiondef kind="public-func">
+      <memberdef kind="function" id="class_non_mass_based_dynamics_1a2b7d25cd67f9702b9e50bf8c62e38945" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type></type>
+        <definition>NonMassBasedDynamics::NonMassBasedDynamics</definition>
+        <argsstring>()</argsstring>
+        <name>NonMassBasedDynamics</name>
+        <qualifiedname>NonMassBasedDynamics::NonMassBasedDynamics</qualifiedname>
+        <briefdescription>
+<para>Default constructor for <ref refid="class_non_mass_based_dynamics" kindref="compound">NonMassBasedDynamics</ref>. </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="App/Model/IBM/Maths/Dynamics/NonMassBasedDynamics.h" line="52" column="5"/>
+      </memberdef>
+      <memberdef kind="function" id="class_non_mass_based_dynamics_1a8ca0f767d647cee60ec14d1f817ec39f" prot="public" static="no" const="no" explicit="no" inline="no" virt="virtual">
+        <type></type>
+        <definition>virtual NonMassBasedDynamics::~NonMassBasedDynamics</definition>
+        <argsstring>()</argsstring>
+        <name>~NonMassBasedDynamics</name>
+        <qualifiedname>NonMassBasedDynamics::~NonMassBasedDynamics</qualifiedname>
+        <briefdescription>
+<para>Virtual destructor for <ref refid="class_non_mass_based_dynamics" kindref="compound">NonMassBasedDynamics</ref>. </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="App/Model/IBM/Maths/Dynamics/NonMassBasedDynamics.h" line="57" column="13"/>
+      </memberdef>
+      <memberdef kind="function" id="class_non_mass_based_dynamics_1a2e29d9b3cc6fadd4ffbd79cb3c1634cb" prot="public" static="no" const="yes" explicit="no" inline="no" virt="pure-virtual">
+        <type><ref refid="class_precise_double" kindref="compound">PreciseDouble</ref></type>
+        <definition>virtual PreciseDouble NonMassBasedDynamics::getValue</definition>
+        <argsstring>(const PreciseDouble &amp;baseValue) const =0</argsstring>
+        <name>getValue</name>
+        <qualifiedname>NonMassBasedDynamics::getValue</qualifiedname>
+        <reimplementedby refid="class_cycle_dynamics_1a5266a7f14908c5219ab7644b4b41cf7f">getValue</reimplementedby>
+        <reimplementedby refid="class_non_dynamics_1a478366a9da6a737dbbe9e4bf2d673ac9">getValue</reimplementedby>
+        <reimplementedby refid="class_pulse_dynamics_1a9242fc5ca974db30fe908ba4f1ff3d83">getValue</reimplementedby>
+        <param>
+          <type>const <ref refid="class_precise_double" kindref="compound">PreciseDouble</ref> &amp;</type>
+          <declname>baseValue</declname>
+        </param>
+        <briefdescription>
+<para>Pure virtual method to get the value of the dynamics based on a base value. </para>
+        </briefdescription>
+        <detaileddescription>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>baseValue</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>The reference value for computing the dynamics. </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<simplesect kind="return"><para>The computed value as a <ref refid="class_precise_double" kindref="compound">PreciseDouble</ref>. </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="App/Model/IBM/Maths/Dynamics/NonMassBasedDynamics.h" line="64" column="27"/>
+      </memberdef>
+      <memberdef kind="function" id="class_non_mass_based_dynamics_1a939adc890bb5843ddd8507d149071b3e" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <templateparamlist>
+          <param>
+            <type>class Archive</type>
+          </param>
+        </templateparamlist>
+        <type>void</type>
+        <definition>void NonMassBasedDynamics::serialize</definition>
+        <argsstring>(Archive &amp;ar, const unsigned int version)</argsstring>
+        <name>serialize</name>
+        <qualifiedname>NonMassBasedDynamics::serialize</qualifiedname>
+        <param>
+          <type>Archive &amp;</type>
+          <declname>ar</declname>
+        </param>
+        <param>
+          <type>const unsigned int</type>
+          <declname>version</declname>
+        </param>
+        <briefdescription>
+<para>Serialize the <ref refid="class_non_mass_based_dynamics" kindref="compound">NonMassBasedDynamics</ref> object. </para>
+        </briefdescription>
+        <detaileddescription>
+<para><parameterlist kind="templateparam"><parameteritem>
+<parameternamelist>
+<parametername>Archive</parametername>
+</parameternamelist>
+<parameterdescription>
+<para><ref refid="class_dynamics_1a3a0aec0c5657efbbb3df85fc244af169" kindref="member">Type</ref> of archive (binary/text, input/output). </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>ar</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Archive to serialize with. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>version</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Version of serialization format. </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="App/Model/IBM/Maths/Dynamics/NonMassBasedDynamics.h" line="73" column="10"/>
+      </memberdef>
+    </sectiondef>
+    <sectiondef kind="protected-func">
+      <memberdef kind="function" id="class_non_mass_based_dynamics_1a0752ba431b7db3ede797a88663e6412d" prot="protected" static="no" const="yes" explicit="no" inline="no" virt="virtual">
+        <type><ref refid="class_precise_double" kindref="compound">PreciseDouble</ref></type>
+        <definition>PreciseDouble NonMassBasedDynamics::getValue</definition>
+        <argsstring>(const PreciseDouble &amp;baseValue, bool competitionAmongResourceSpecies, const WetMass &amp;totalMaximumResourceCapacity, const PreciseDouble &amp;timeStepsPerDay, const Temperature &amp;temperature, const PreciseDouble &amp;moisture, const PreciseDouble &amp;minRH, const PreciseDouble &amp;maxRH) const</argsstring>
+        <name>getValue</name>
+        <qualifiedname>NonMassBasedDynamics::getValue</qualifiedname>
+        <reimplements refid="class_dynamics_1ad0df4ad4f58fa172d6f8c330402ffe78">getValue</reimplements>
+        <param>
+          <type>const <ref refid="class_precise_double" kindref="compound">PreciseDouble</ref> &amp;</type>
+          <declname>baseValue</declname>
+        </param>
+        <param>
+          <type>bool</type>
+          <declname>competitionAmongResourceSpecies</declname>
+        </param>
+        <param>
+          <type>const <ref refid="class_wet_mass" kindref="compound">WetMass</ref> &amp;</type>
+          <declname>totalMaximumResourceCapacity</declname>
+        </param>
+        <param>
+          <type>const <ref refid="class_precise_double" kindref="compound">PreciseDouble</ref> &amp;</type>
+          <declname>timeStepsPerDay</declname>
+        </param>
+        <param>
+          <type>const <ref refid="class_temperature" kindref="compound">Temperature</ref> &amp;</type>
+          <declname>temperature</declname>
+        </param>
+        <param>
+          <type>const <ref refid="class_precise_double" kindref="compound">PreciseDouble</ref> &amp;</type>
+          <declname>moisture</declname>
+        </param>
+        <param>
+          <type>const <ref refid="class_precise_double" kindref="compound">PreciseDouble</ref> &amp;</type>
+          <declname>minRH</declname>
+        </param>
+        <param>
+          <type>const <ref refid="class_precise_double" kindref="compound">PreciseDouble</ref> &amp;</type>
+          <declname>maxRH</declname>
+        </param>
+        <briefdescription>
+<para>Internal helper to compute the dynamics value including environmental factors. </para>
+        </briefdescription>
+        <detaileddescription>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>baseValue</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Base value of the trait. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>timeStepsPerDay</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Simulation time steps per day. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>temperature</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Current temperature. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>moisture</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Current moisture value. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>minRH</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Minimum relative humidity. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>maxRH</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Maximum relative humidity. </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<simplesect kind="return"><para>Computed value as a <ref refid="class_precise_double" kindref="compound">PreciseDouble</ref>. </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="App/Model/IBM/Maths/Dynamics/NonMassBasedDynamics.h" line="86" column="19"/>
+      </memberdef>
+    </sectiondef>
+    <briefdescription>
+<para>Represents dynamics that are independent of mass. </para>
+    </briefdescription>
+    <detaileddescription>
+<para><ref refid="class_non_mass_based_dynamics" kindref="compound">NonMassBasedDynamics</ref> is a subclass of <ref refid="class_dynamics" kindref="compound">Dynamics</ref> for behaviors that are not influenced by the mass of the organism or resource. This class is abstract and should be subclassed to implement specific non-mass-dependent dynamic behaviors. </para>
+    </detaileddescription>
+    <inheritancegraph>
+      <node id="3">
+        <label>CycleDynamics</label>
+        <link refid="class_cycle_dynamics"/>
+        <childnode refid="1" relation="public-inheritance">
+        </childnode>
+      </node>
+      <node id="2">
+        <label>Dynamics</label>
+        <link refid="class_dynamics"/>
+      </node>
+      <node id="4">
+        <label>NonDynamics</label>
+        <link refid="class_non_dynamics"/>
+        <childnode refid="1" relation="public-inheritance">
+        </childnode>
+      </node>
+      <node id="1">
+        <label>NonMassBasedDynamics</label>
+        <link refid="class_non_mass_based_dynamics"/>
+        <childnode refid="2" relation="public-inheritance">
+        </childnode>
+      </node>
+      <node id="5">
+        <label>PulseDynamics</label>
+        <link refid="class_pulse_dynamics"/>
+        <childnode refid="1" relation="public-inheritance">
+        </childnode>
+      </node>
+    </inheritancegraph>
+    <collaborationgraph>
+      <node id="2">
+        <label>Dynamics</label>
+        <link refid="class_dynamics"/>
+      </node>
+      <node id="1">
+        <label>NonMassBasedDynamics</label>
+        <link refid="class_non_mass_based_dynamics"/>
+        <childnode refid="2" relation="public-inheritance">
+        </childnode>
+      </node>
+    </collaborationgraph>
+    <location file="App/Model/IBM/Maths/Dynamics/NonMassBasedDynamics.h" line="39" column="1" bodyfile="App/Model/IBM/Maths/Dynamics/NonMassBasedDynamics.h" bodystart="39" bodyend="87"/>
+    <listofallmembers>
+      <member refid="class_non_mass_based_dynamics_1a11550e9f5abcaf15ce2cf1f77f8b5897" prot="public" virt="non-virtual"><scope>NonMassBasedDynamics</scope><name>createInstance</name></member>
+      <member refid="class_dynamics_1ad09feb0a33b9dbc56f0dab4cb9d4b88e" prot="public" virt="non-virtual"><scope>NonMassBasedDynamics</scope><name>createInstanceForResource</name></member>
+      <member refid="class_dynamics_1af3e1536fbe0ac872e65d1b0d5b8867a8" prot="public" virt="non-virtual"><scope>NonMassBasedDynamics</scope><name>Dynamics</name></member>
+      <member refid="class_dynamics_1ae9000c3efeec95fe692d45a58ac0edd7" prot="public" virt="pure-virtual"><scope>NonMassBasedDynamics</scope><name>getInitialValue</name></member>
+      <member refid="class_non_mass_based_dynamics_1a2e29d9b3cc6fadd4ffbd79cb3c1634cb" prot="public" virt="pure-virtual"><scope>NonMassBasedDynamics</scope><name>getValue</name></member>
+      <member refid="class_non_mass_based_dynamics_1a0752ba431b7db3ede797a88663e6412d" prot="protected" virt="virtual"><scope>NonMassBasedDynamics</scope><name>getValue</name></member>
+      <member refid="class_non_mass_based_dynamics_1a2b7d25cd67f9702b9e50bf8c62e38945" prot="public" virt="non-virtual"><scope>NonMassBasedDynamics</scope><name>NonMassBasedDynamics</name></member>
+      <member refid="class_non_mass_based_dynamics_1a939adc890bb5843ddd8507d149071b3e" prot="public" virt="non-virtual"><scope>NonMassBasedDynamics</scope><name>serialize</name></member>
+      <member refid="class_dynamics_1a80ea07e58c041f77683f073e34eb403b" prot="public" virt="pure-virtual"><scope>NonMassBasedDynamics</scope><name>showInfo</name></member>
+      <member refid="class_dynamics_1a3a0aec0c5657efbbb3df85fc244af169" prot="public" virt="non-virtual"><scope>NonMassBasedDynamics</scope><name>Type</name></member>
+      <member refid="class_dynamics_1a2687d6e20817c0322fe04eb7dc30d3dc" prot="public" virt="pure-virtual"><scope>NonMassBasedDynamics</scope><name>update</name></member>
+      <member refid="class_dynamics_1ac8d12beac1e6e1c7895f5360b3800370" prot="public" virt="virtual"><scope>NonMassBasedDynamics</scope><name>~Dynamics</name></member>
+      <member refid="class_non_mass_based_dynamics_1a8ca0f767d647cee60ec14d1f817ec39f" prot="public" virt="virtual"><scope>NonMassBasedDynamics</scope><name>~NonMassBasedDynamics</name></member>
+    </listofallmembers>
+  </compounddef>
+</doxygen>

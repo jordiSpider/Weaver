@@ -1,0 +1,530 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.18.0" xml:lang="en-US">
+  <compounddef id="class_trait_definition_section" kind="class" language="C++" prot="public" abstract="yes">
+    <compoundname>TraitDefinitionSection</compoundname>
+    <derivedcompoundref refid="class_individual_level_trait" prot="public" virt="non-virtual">IndividualLevelTrait</derivedcompoundref>
+    <derivedcompoundref refid="class_species_level_trait" prot="public" virt="non-virtual">SpeciesLevelTrait</derivedcompoundref>
+    <includes refid="_trait_definition_section_8h" local="no">TraitDefinitionSection.h</includes>
+    <sectiondef kind="public-type">
+      <memberdef kind="enum" id="class_trait_definition_section_1ad5d5c99dae906788cba493facf6e31e8" prot="public" static="no" strong="yes">
+        <type>unsigned char</type>
+        <name>Type</name>
+        <qualifiedname>TraitDefinitionSection::Type</qualifiedname>
+        <enumvalue id="class_trait_definition_section_1ad5d5c99dae906788cba493facf6e31e8abc04e9cdfe92eebb1a92e2f9346d3992" prot="public">
+          <name>SpeciesLevel</name>
+          <briefdescription>
+<para><ref refid="class_trait" kindref="compound">Trait</ref> defined at the species level. </para>
+          </briefdescription>
+          <detaileddescription>
+          </detaileddescription>
+        </enumvalue>
+        <enumvalue id="class_trait_definition_section_1ad5d5c99dae906788cba493facf6e31e8a955fbd310c4a5de3039f2865ebfc9d9a" prot="public">
+          <name>IndividualLevel</name>
+          <briefdescription>
+<para><ref refid="class_trait" kindref="compound">Trait</ref> defined at the individual level. </para>
+          </briefdescription>
+          <detaileddescription>
+          </detaileddescription>
+        </enumvalue>
+        <briefdescription>
+<para>Represents whether the trait is defined at the species or individual level. </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="App/Model/IBM/Landscape/LivingBeings/Animals/Species/Genetics/Traits/DefinitionSection/TraitDefinitionSection.h" line="47" column="5" bodyfile="App/Model/IBM/Landscape/LivingBeings/Animals/Species/Genetics/Traits/DefinitionSection/TraitDefinitionSection.h" bodystart="48" bodyend="54"/>
+      </memberdef>
+    </sectiondef>
+    <sectiondef kind="public-static-func">
+      <memberdef kind="function" id="class_trait_definition_section_1aaf49a69d04bd5030d08f96a328d7b566" prot="public" static="yes" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type><ref refid="class_trait_definition_section" kindref="compound">TraitDefinitionSection</ref> *</type>
+        <definition>static TraitDefinitionSection * TraitDefinitionSection::createInstance</definition>
+        <argsstring>(std::vector&lt; IndividualLevelTrait * &gt; &amp;individualLevelTraits, const nlohmann::json &amp;config, const std::vector&lt; nlohmann::json &gt; &amp;individualLevelTraitsOrder, const std::string &amp;traitStr, const std::string &amp;elementStr, const std::string &amp;fileName)</argsstring>
+        <name>createInstance</name>
+        <qualifiedname>TraitDefinitionSection::createInstance</qualifiedname>
+        <param>
+          <type>std::vector&lt; <ref refid="class_individual_level_trait" kindref="compound">IndividualLevelTrait</ref> * &gt; &amp;</type>
+          <declname>individualLevelTraits</declname>
+        </param>
+        <param>
+          <type>const nlohmann::json &amp;</type>
+          <declname>config</declname>
+        </param>
+        <param>
+          <type>const std::vector&lt; nlohmann::json &gt; &amp;</type>
+          <declname>individualLevelTraitsOrder</declname>
+        </param>
+        <param>
+          <type>const std::string &amp;</type>
+          <declname>traitStr</declname>
+        </param>
+        <param>
+          <type>const std::string &amp;</type>
+          <declname>elementStr</declname>
+        </param>
+        <param>
+          <type>const std::string &amp;</type>
+          <declname>fileName</declname>
+        </param>
+        <briefdescription>
+<para>Creates a new instance of a <ref refid="class_trait_definition_section" kindref="compound">TraitDefinitionSection</ref> from configuration. </para>
+        </briefdescription>
+        <detaileddescription>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>individualLevelTraits</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Vector of pointers to individual-level traits. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>config</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>JSON object defining the trait. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>individualLevelTraitsOrder</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Vector defining the order of traits. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>traitStr</parametername>
+</parameternamelist>
+<parameterdescription>
+<para><ref refid="class_trait" kindref="compound">Trait</ref> identifier string. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>elementStr</parametername>
+</parameternamelist>
+<parameterdescription>
+<para><ref refid="class_element" kindref="compound">Element</ref> identifier string. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>fileName</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>File name associated with the trait. </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<simplesect kind="return"><para>Pointer to a new <ref refid="class_trait_definition_section" kindref="compound">TraitDefinitionSection</ref> instance. </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="App/Model/IBM/Landscape/LivingBeings/Animals/Species/Genetics/Traits/DefinitionSection/TraitDefinitionSection.h" line="78" column="35"/>
+      </memberdef>
+      <memberdef kind="function" id="class_trait_definition_section_1abec925023405389506b2477f5bb5e305" prot="public" static="yes" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>size_t</type>
+        <definition>static size_t TraitDefinitionSection::findOrder</definition>
+        <argsstring>(Type type, const std::vector&lt; nlohmann::json &gt; &amp;individualLevelTraitsOrder, const std::string &amp;traitStr, const std::string &amp;elementStr)</argsstring>
+        <name>findOrder</name>
+        <qualifiedname>TraitDefinitionSection::findOrder</qualifiedname>
+        <param>
+          <type><ref refid="class_trait_definition_section_1ad5d5c99dae906788cba493facf6e31e8" kindref="member">Type</ref></type>
+          <declname>type</declname>
+        </param>
+        <param>
+          <type>const std::vector&lt; nlohmann::json &gt; &amp;</type>
+          <declname>individualLevelTraitsOrder</declname>
+        </param>
+        <param>
+          <type>const std::string &amp;</type>
+          <declname>traitStr</declname>
+        </param>
+        <param>
+          <type>const std::string &amp;</type>
+          <declname>elementStr</declname>
+        </param>
+        <briefdescription>
+<para>Finds the order of a trait element in a configuration. </para>
+        </briefdescription>
+        <detaileddescription>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>type</parametername>
+</parameternamelist>
+<parameterdescription>
+<para><ref refid="class_trait_definition_section_1ad5d5c99dae906788cba493facf6e31e8" kindref="member">Type</ref> of the trait (SpeciesLevel or IndividualLevel). </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>individualLevelTraitsOrder</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Vector of JSON objects defining trait order. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>traitStr</parametername>
+</parameternamelist>
+<parameterdescription>
+<para><ref refid="class_string" kindref="compound">String</ref> identifier of the trait. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>elementStr</parametername>
+</parameternamelist>
+<parameterdescription>
+<para><ref refid="class_string" kindref="compound">String</ref> identifier of the element. </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<simplesect kind="return"><para>Position index of the element in the order vector. </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="App/Model/IBM/Landscape/LivingBeings/Animals/Species/Genetics/Traits/DefinitionSection/TraitDefinitionSection.h" line="65" column="19"/>
+      </memberdef>
+    </sectiondef>
+    <sectiondef kind="public-func">
+      <memberdef kind="function" id="class_trait_definition_section_1ac5aa1cd642e50db3de0d4d60e7aaf761" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type></type>
+        <definition>TraitDefinitionSection::TraitDefinitionSection</definition>
+        <argsstring>()</argsstring>
+        <name>TraitDefinitionSection</name>
+        <qualifiedname>TraitDefinitionSection::TraitDefinitionSection</qualifiedname>
+        <briefdescription>
+<para>Default constructor. </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="App/Model/IBM/Landscape/LivingBeings/Animals/Species/Genetics/Traits/DefinitionSection/TraitDefinitionSection.h" line="84" column="5"/>
+      </memberdef>
+      <memberdef kind="function" id="class_trait_definition_section_1a3aa5a6c99c36405d445222119eff23ce" prot="public" static="no" const="no" explicit="no" inline="no" virt="virtual">
+        <type></type>
+        <definition>virtual TraitDefinitionSection::~TraitDefinitionSection</definition>
+        <argsstring>()</argsstring>
+        <name>~TraitDefinitionSection</name>
+        <qualifiedname>TraitDefinitionSection::~TraitDefinitionSection</qualifiedname>
+        <briefdescription>
+<para>Destructor. </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="App/Model/IBM/Landscape/LivingBeings/Animals/Species/Genetics/Traits/DefinitionSection/TraitDefinitionSection.h" line="89" column="13"/>
+      </memberdef>
+      <memberdef kind="function" id="class_trait_definition_section_1ab88b4d3f98e81b5857ee0c85e239355a" prot="public" static="no" const="no" explicit="no" inline="no" virt="pure-virtual">
+        <type>void</type>
+        <definition>virtual void TraitDefinitionSection::deserializeIndividualLevelTraits</definition>
+        <argsstring>(std::vector&lt; IndividualLevelTrait * &gt; &amp;individualLevelTraits)=0</argsstring>
+        <name>deserializeIndividualLevelTraits</name>
+        <qualifiedname>TraitDefinitionSection::deserializeIndividualLevelTraits</qualifiedname>
+        <reimplementedby refid="class_individual_level_trait_1a615ad2e44588c411c1ba426af4868759">deserializeIndividualLevelTraits</reimplementedby>
+        <reimplementedby refid="class_species_level_trait_1a3f8d005f4ecf4d22a7aa215d19e3c8ae">deserializeIndividualLevelTraits</reimplementedby>
+        <param>
+          <type>std::vector&lt; <ref refid="class_individual_level_trait" kindref="compound">IndividualLevelTrait</ref> * &gt; &amp;</type>
+          <declname>individualLevelTraits</declname>
+        </param>
+        <briefdescription>
+<para>Deserializes individual-level traits from a serialized format. </para>
+        </briefdescription>
+        <detaileddescription>
+<para>Must be implemented by derived classes.</para>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>individualLevelTraits</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Vector of pointers to <ref refid="class_individual_level_trait" kindref="compound">IndividualLevelTrait</ref> objects to populate. </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="App/Model/IBM/Landscape/LivingBeings/Animals/Species/Genetics/Traits/DefinitionSection/TraitDefinitionSection.h" line="112" column="18"/>
+      </memberdef>
+      <memberdef kind="function" id="class_trait_definition_section_1a38f3dbca7b03bdee0fe793c4e72e546e" prot="public" static="no" const="yes" explicit="no" inline="no" virt="pure-virtual">
+        <type>const <ref refid="class_precise_double" kindref="compound">PreciseDouble</ref> &amp;</type>
+        <definition>virtual const PreciseDouble &amp; TraitDefinitionSection::getMaxTraitRestrictedRange</definition>
+        <argsstring>() const =0</argsstring>
+        <name>getMaxTraitRestrictedRange</name>
+        <qualifiedname>TraitDefinitionSection::getMaxTraitRestrictedRange</qualifiedname>
+        <reimplementedby refid="class_individual_level_trait_1aaad26194e926ceba97880c8a49c951af">getMaxTraitRestrictedRange</reimplementedby>
+        <reimplementedby refid="class_species_level_trait_1a5061bb3059ebad5548f743a93300a0e0">getMaxTraitRestrictedRange</reimplementedby>
+        <briefdescription>
+<para>Returns the maximum allowed value for the trait. </para>
+        </briefdescription>
+        <detaileddescription>
+<para>Must be implemented by derived classes.</para>
+<para><simplesect kind="return"><para>Maximum restricted range as <ref refid="class_precise_double" kindref="compound">PreciseDouble</ref>. </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="App/Model/IBM/Landscape/LivingBeings/Animals/Species/Genetics/Traits/DefinitionSection/TraitDefinitionSection.h" line="139" column="33"/>
+      </memberdef>
+      <memberdef kind="function" id="class_trait_definition_section_1a75e4dcf1465a0dc3f09e049c3504f6ad" prot="public" static="no" const="yes" explicit="no" inline="no" virt="pure-virtual">
+        <type>const <ref refid="class_precise_double" kindref="compound">PreciseDouble</ref> &amp;</type>
+        <definition>virtual const PreciseDouble &amp; TraitDefinitionSection::getMinTraitRestrictedRange</definition>
+        <argsstring>() const =0</argsstring>
+        <name>getMinTraitRestrictedRange</name>
+        <qualifiedname>TraitDefinitionSection::getMinTraitRestrictedRange</qualifiedname>
+        <reimplementedby refid="class_individual_level_trait_1a55266e162494255acbfaf259e5eb7cfa">getMinTraitRestrictedRange</reimplementedby>
+        <reimplementedby refid="class_species_level_trait_1a0e4cce169e9da6b93dbf9a86015edd81">getMinTraitRestrictedRange</reimplementedby>
+        <briefdescription>
+<para>Returns the minimum allowed value for the trait. </para>
+        </briefdescription>
+        <detaileddescription>
+<para>Must be implemented by derived classes.</para>
+<para><simplesect kind="return"><para>Minimum restricted range as <ref refid="class_precise_double" kindref="compound">PreciseDouble</ref>. </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="App/Model/IBM/Landscape/LivingBeings/Animals/Species/Genetics/Traits/DefinitionSection/TraitDefinitionSection.h" line="130" column="33"/>
+      </memberdef>
+      <memberdef kind="function" id="class_trait_definition_section_1a026b2d51e67a6321da698a900d095cbb" prot="public" static="no" const="yes" explicit="no" inline="no" virt="pure-virtual">
+        <type><ref refid="class_trait_definition_section_1ad5d5c99dae906788cba493facf6e31e8" kindref="member">Type</ref></type>
+        <definition>virtual Type TraitDefinitionSection::getType</definition>
+        <argsstring>() const =0</argsstring>
+        <name>getType</name>
+        <qualifiedname>TraitDefinitionSection::getType</qualifiedname>
+        <reimplementedby refid="class_individual_level_trait_1a9ad33ccab17578ffaced1a99bf4310d2">getType</reimplementedby>
+        <reimplementedby refid="class_species_level_trait_1a2c21a5062e6be1f4e795777a79e8f004">getType</reimplementedby>
+        <briefdescription>
+<para>Returns the type of the trait (SpeciesLevel or IndividualLevel). </para>
+        </briefdescription>
+        <detaileddescription>
+<para>Must be implemented by derived classes.</para>
+<para><simplesect kind="return"><para><ref refid="class_trait" kindref="compound">Trait</ref> type. </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="App/Model/IBM/Landscape/LivingBeings/Animals/Species/Genetics/Traits/DefinitionSection/TraitDefinitionSection.h" line="121" column="18"/>
+      </memberdef>
+      <memberdef kind="function" id="class_trait_definition_section_1a45bb754d6ef28d58e3631988b49ab9e2" prot="public" static="no" const="yes" explicit="no" inline="no" virt="pure-virtual">
+        <type><ref refid="class_precise_double" kindref="compound">PreciseDouble</ref></type>
+        <definition>virtual PreciseDouble TraitDefinitionSection::getValue</definition>
+        <argsstring>(const Genome &amp;genome, const size_t traitsPerModule, const size_t numberOfLociPerTrait, const std::vector&lt; PreciseDouble &gt; &amp;rhoPerModule, const std::vector&lt; size_t &gt; &amp;rhoRangePerModule) const =0</argsstring>
+        <name>getValue</name>
+        <qualifiedname>TraitDefinitionSection::getValue</qualifiedname>
+        <reimplementedby refid="class_individual_level_trait_1a35ed06a1c9d46ca9cb077066419e5aac">getValue</reimplementedby>
+        <reimplementedby refid="class_species_level_trait_1ad2d2da41a27d4d9cd97ebca97ba448ef">getValue</reimplementedby>
+        <param>
+          <type>const <ref refid="class_genome" kindref="compound">Genome</ref> &amp;</type>
+          <declname>genome</declname>
+        </param>
+        <param>
+          <type>const size_t</type>
+          <declname>traitsPerModule</declname>
+        </param>
+        <param>
+          <type>const size_t</type>
+          <declname>numberOfLociPerTrait</declname>
+        </param>
+        <param>
+          <type>const std::vector&lt; <ref refid="class_precise_double" kindref="compound">PreciseDouble</ref> &gt; &amp;</type>
+          <declname>rhoPerModule</declname>
+        </param>
+        <param>
+          <type>const std::vector&lt; size_t &gt; &amp;</type>
+          <declname>rhoRangePerModule</declname>
+        </param>
+        <briefdescription>
+<para>Retrieves the value of the trait for a given genome. </para>
+        </briefdescription>
+        <detaileddescription>
+<para>Must be implemented by derived classes.</para>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>genome</parametername>
+</parameternamelist>
+<parameterdescription>
+<para><ref refid="class_genome" kindref="compound">Genome</ref> containing trait information. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>traitsPerModule</parametername>
+</parameternamelist>
+<parameterdescription>
+<para><ref refid="class_number" kindref="compound">Number</ref> of traits per module. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>numberOfLociPerTrait</parametername>
+</parameternamelist>
+<parameterdescription>
+<para><ref refid="class_number" kindref="compound">Number</ref> of loci per trait. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>rhoPerModule</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Vector of rho values per module. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>rhoRangePerModule</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Vector of rho ranges per module. </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<simplesect kind="return"><para><ref refid="class_trait" kindref="compound">Trait</ref> value as a <ref refid="class_precise_double" kindref="compound">PreciseDouble</ref>. </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="App/Model/IBM/Landscape/LivingBeings/Animals/Species/Genetics/Traits/DefinitionSection/TraitDefinitionSection.h" line="103" column="27"/>
+      </memberdef>
+      <memberdef kind="function" id="class_trait_definition_section_1abbf56650f0e3aada447e66b4418cae8d" prot="public" static="no" const="yes" explicit="no" inline="no" virt="pure-virtual">
+        <type>bool</type>
+        <definition>virtual bool TraitDefinitionSection::isNull</definition>
+        <argsstring>() const =0</argsstring>
+        <name>isNull</name>
+        <qualifiedname>TraitDefinitionSection::isNull</qualifiedname>
+        <reimplementedby refid="class_individual_level_trait_1a77d9d19df487ef32e150179ea27926a6">isNull</reimplementedby>
+        <reimplementedby refid="class_species_level_trait_1ad30929eaaa4b9aed0347613ed59cf87a">isNull</reimplementedby>
+        <briefdescription>
+<para>Checks if the trait definition is null or uninitialized. </para>
+        </briefdescription>
+        <detaileddescription>
+<para>Must be implemented by derived classes.</para>
+<para><simplesect kind="return"><para>True if the trait definition is null, false otherwise. </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="App/Model/IBM/Landscape/LivingBeings/Animals/Species/Genetics/Traits/DefinitionSection/TraitDefinitionSection.h" line="148" column="18"/>
+      </memberdef>
+      <memberdef kind="function" id="class_trait_definition_section_1a1e65919bf0848bd145c3d705f473c9c9" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <templateparamlist>
+          <param>
+            <type>class Archive</type>
+          </param>
+        </templateparamlist>
+        <type>void</type>
+        <definition>void TraitDefinitionSection::serialize</definition>
+        <argsstring>(Archive &amp;ar, const unsigned int version)</argsstring>
+        <name>serialize</name>
+        <qualifiedname>TraitDefinitionSection::serialize</qualifiedname>
+        <param>
+          <type>Archive &amp;</type>
+          <declname>ar</declname>
+        </param>
+        <param>
+          <type>const unsigned int</type>
+          <declname>version</declname>
+        </param>
+        <briefdescription>
+<para>Serializes the object for persistence. </para>
+        </briefdescription>
+        <detaileddescription>
+<para><parameterlist kind="templateparam"><parameteritem>
+<parameternamelist>
+<parametername>Archive</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Serialization archive type. </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>ar</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Archive instance. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>version</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Serialization version. </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="App/Model/IBM/Landscape/LivingBeings/Animals/Species/Genetics/Traits/DefinitionSection/TraitDefinitionSection.h" line="158" column="10"/>
+      </memberdef>
+    </sectiondef>
+    <briefdescription>
+<para>Represents the definition of a trait, either at the species or individual level. </para>
+    </briefdescription>
+    <detaileddescription>
+<para>This class provides an interface for trait definitions, including:<itemizedlist>
+<listitem><para>Retrieving trait values based on genome and module information.</para>
+</listitem><listitem><para>Checking trait ranges.</para>
+</listitem><listitem><para>Deserializing individual-level traits.</para>
+</listitem><listitem><para>Serializing the trait definition for persistence. </para>
+</listitem></itemizedlist>
+</para>
+    </detaileddescription>
+    <inheritancegraph>
+      <node id="2">
+        <label>IndividualLevelTrait</label>
+        <link refid="class_individual_level_trait"/>
+        <childnode refid="1" relation="public-inheritance">
+        </childnode>
+      </node>
+      <node id="3">
+        <label>SpeciesLevelTrait</label>
+        <link refid="class_species_level_trait"/>
+        <childnode refid="1" relation="public-inheritance">
+        </childnode>
+      </node>
+      <node id="1">
+        <label>TraitDefinitionSection</label>
+        <link refid="class_trait_definition_section"/>
+      </node>
+    </inheritancegraph>
+    <location file="App/Model/IBM/Landscape/LivingBeings/Animals/Species/Genetics/Traits/DefinitionSection/TraitDefinitionSection.h" line="41" column="1" bodyfile="App/Model/IBM/Landscape/LivingBeings/Animals/Species/Genetics/Traits/DefinitionSection/TraitDefinitionSection.h" bodystart="41" bodyend="159"/>
+    <listofallmembers>
+      <member refid="class_trait_definition_section_1aaf49a69d04bd5030d08f96a328d7b566" prot="public" virt="non-virtual"><scope>TraitDefinitionSection</scope><name>createInstance</name></member>
+      <member refid="class_trait_definition_section_1ab88b4d3f98e81b5857ee0c85e239355a" prot="public" virt="pure-virtual"><scope>TraitDefinitionSection</scope><name>deserializeIndividualLevelTraits</name></member>
+      <member refid="class_trait_definition_section_1abec925023405389506b2477f5bb5e305" prot="public" virt="non-virtual"><scope>TraitDefinitionSection</scope><name>findOrder</name></member>
+      <member refid="class_trait_definition_section_1a38f3dbca7b03bdee0fe793c4e72e546e" prot="public" virt="pure-virtual"><scope>TraitDefinitionSection</scope><name>getMaxTraitRestrictedRange</name></member>
+      <member refid="class_trait_definition_section_1a75e4dcf1465a0dc3f09e049c3504f6ad" prot="public" virt="pure-virtual"><scope>TraitDefinitionSection</scope><name>getMinTraitRestrictedRange</name></member>
+      <member refid="class_trait_definition_section_1a026b2d51e67a6321da698a900d095cbb" prot="public" virt="pure-virtual"><scope>TraitDefinitionSection</scope><name>getType</name></member>
+      <member refid="class_trait_definition_section_1a45bb754d6ef28d58e3631988b49ab9e2" prot="public" virt="pure-virtual"><scope>TraitDefinitionSection</scope><name>getValue</name></member>
+      <member refid="class_trait_definition_section_1abbf56650f0e3aada447e66b4418cae8d" prot="public" virt="pure-virtual"><scope>TraitDefinitionSection</scope><name>isNull</name></member>
+      <member refid="class_trait_definition_section_1a1e65919bf0848bd145c3d705f473c9c9" prot="public" virt="non-virtual"><scope>TraitDefinitionSection</scope><name>serialize</name></member>
+      <member refid="class_trait_definition_section_1ac5aa1cd642e50db3de0d4d60e7aaf761" prot="public" virt="non-virtual"><scope>TraitDefinitionSection</scope><name>TraitDefinitionSection</name></member>
+      <member refid="class_trait_definition_section_1ad5d5c99dae906788cba493facf6e31e8" prot="public" virt="non-virtual"><scope>TraitDefinitionSection</scope><name>Type</name></member>
+      <member refid="class_trait_definition_section_1a3aa5a6c99c36405d445222119eff23ce" prot="public" virt="virtual"><scope>TraitDefinitionSection</scope><name>~TraitDefinitionSection</name></member>
+    </listofallmembers>
+  </compounddef>
+</doxygen>

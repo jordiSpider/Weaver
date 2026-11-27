@@ -1,0 +1,1220 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.18.0" xml:lang="en-US">
+  <compounddef id="_animal_non_statistical_growth_8h" kind="file" language="C++">
+    <compoundname>AnimalNonStatisticalGrowth.h</compoundname>
+    <includes local="no">boost/serialization/export.hpp</includes>
+    <includes local="no">boost/serialization/vector.hpp</includes>
+    <includes refid="_animal_growth_8h" local="yes">App/Model/IBM/Landscape/LivingBeings/Animals/Growth/AnimalGrowth.h</includes>
+    <includes refid="_life_stage_8h" local="yes">App/Model/IBM/Landscape/LivingBeings/Animals/Species/LifeStage.h</includes>
+    <includes refid="_sexual_type_8h" local="yes">App/Model/IBM/Landscape/LivingBeings/Animals/Species/SexualType.h</includes>
+    <includedby refid="_animal_non_statistical_8h" local="yes">App/Model/IBM/Landscape/LivingBeings/Animals/AnimalNonStatistical.h</includedby>
+    <incdepgraph>
+      <node id="84">
+        <label>App/IO/StorageBridge.h</label>
+        <link refid="_storage_bridge_8h_source"/>
+        <childnode refid="14" relation="include">
+        </childnode>
+        <childnode refid="11" relation="include">
+        </childnode>
+        <childnode refid="34" relation="include">
+        </childnode>
+        <childnode refid="30" relation="include">
+        </childnode>
+        <childnode refid="73" relation="include">
+        </childnode>
+        <childnode refid="85" relation="include">
+        </childnode>
+        <childnode refid="86" relation="include">
+        </childnode>
+        <childnode refid="87" relation="include">
+        </childnode>
+        <childnode refid="88" relation="include">
+        </childnode>
+        <childnode refid="59" relation="include">
+        </childnode>
+        <childnode refid="89" relation="include">
+        </childnode>
+        <childnode refid="15" relation="include">
+        </childnode>
+        <childnode refid="90" relation="include">
+        </childnode>
+        <childnode refid="57" relation="include">
+        </childnode>
+        <childnode refid="50" relation="include">
+        </childnode>
+        <childnode refid="32" relation="include">
+        </childnode>
+        <childnode refid="91" relation="include">
+        </childnode>
+        <childnode refid="92" relation="include">
+        </childnode>
+        <childnode refid="31" relation="include">
+        </childnode>
+      </node>
+      <node id="92">
+        <label>App/Model/IBM/Landscape/LivingBeings/Animals/ActivityType.h</label>
+        <link refid="_activity_type_8h_source"/>
+      </node>
+      <node id="54">
+        <label>App/Model/IBM/Landscape/LivingBeings/Animals/Genetics/Chromosome.h</label>
+        <link refid="_chromosome_8h_source"/>
+        <childnode refid="2" relation="include">
+        </childnode>
+        <childnode refid="3" relation="include">
+        </childnode>
+        <childnode refid="11" relation="include">
+        </childnode>
+        <childnode refid="13" relation="include">
+        </childnode>
+        <childnode refid="41" relation="include">
+        </childnode>
+      </node>
+      <node id="55">
+        <label>App/Model/IBM/Landscape/LivingBeings/Animals/Genetics/Correlosome.h</label>
+        <link refid="_correlosome_8h_source"/>
+        <childnode refid="11" relation="include">
+        </childnode>
+        <childnode refid="13" relation="include">
+        </childnode>
+        <childnode refid="41" relation="include">
+        </childnode>
+      </node>
+      <node id="56">
+        <label>App/Model/IBM/Landscape/LivingBeings/Animals/Genetics/Gamete.h</label>
+        <link refid="_gamete_8h_source"/>
+        <childnode refid="11" relation="include">
+        </childnode>
+        <childnode refid="54" relation="include">
+        </childnode>
+      </node>
+      <node id="38">
+        <label>App/Model/IBM/Landscape/LivingBeings/Animals/Genetics/Genome.h</label>
+        <link refid="_genome_8h_source"/>
+        <childnode refid="2" relation="include">
+        </childnode>
+        <childnode refid="3" relation="include">
+        </childnode>
+        <childnode refid="39" relation="include">
+        </childnode>
+        <childnode refid="40" relation="include">
+        </childnode>
+        <childnode refid="54" relation="include">
+        </childnode>
+        <childnode refid="55" relation="include">
+        </childnode>
+        <childnode refid="56" relation="include">
+        </childnode>
+        <childnode refid="42" relation="include">
+        </childnode>
+        <childnode refid="27" relation="include">
+        </childnode>
+      </node>
+      <node id="33">
+        <label>App/Model/IBM/Landscape/LivingBeings/Animals/Genetics/Traits/IndividualTrait.h</label>
+        <link refid="_individual_trait_8h_source"/>
+        <childnode refid="5" relation="include">
+        </childnode>
+        <childnode refid="6" relation="include">
+        </childnode>
+        <childnode refid="7" relation="include">
+        </childnode>
+        <childnode refid="8" relation="include">
+        </childnode>
+        <childnode refid="34" relation="include">
+        </childnode>
+        <childnode refid="35" relation="include">
+        </childnode>
+        <childnode refid="78" relation="include">
+        </childnode>
+        <childnode refid="84" relation="include">
+        </childnode>
+      </node>
+      <node id="81">
+        <label>App/Model/IBM/Landscape/LivingBeings/Animals/Genetics/Traits/IndividualTraitTemperatureSectionNone.h</label>
+        <link refid="_individual_trait_temperature_section_none_8h_source"/>
+        <childnode refid="14" relation="include">
+        </childnode>
+        <childnode refid="65" relation="include">
+        </childnode>
+        <childnode refid="5" relation="include">
+        </childnode>
+        <childnode refid="6" relation="include">
+        </childnode>
+        <childnode refid="7" relation="include">
+        </childnode>
+        <childnode refid="8" relation="include">
+        </childnode>
+        <childnode refid="39" relation="include">
+        </childnode>
+        <childnode refid="17" relation="include">
+        </childnode>
+        <childnode refid="24" relation="include">
+        </childnode>
+      </node>
+      <node id="78">
+        <label>App/Model/IBM/Landscape/LivingBeings/Animals/Genetics/Traits/IndividualTraitTemperatureSectionVariant.h</label>
+        <link refid="_individual_trait_temperature_section_variant_8h_source"/>
+        <childnode refid="34" relation="include">
+        </childnode>
+        <childnode refid="79" relation="include">
+        </childnode>
+        <childnode refid="80" relation="include">
+        </childnode>
+        <childnode refid="81" relation="include">
+        </childnode>
+        <childnode refid="82" relation="include">
+        </childnode>
+        <childnode refid="93" relation="include">
+        </childnode>
+        <childnode refid="27" relation="include">
+        </childnode>
+      </node>
+      <node id="82">
+        <label>App/Model/IBM/Landscape/LivingBeings/Animals/Genetics/Traits/PawarIndividualTraitTemperatureSection.h</label>
+        <link refid="_pawar_individual_trait_temperature_section_8h_source"/>
+        <childnode refid="14" relation="include">
+        </childnode>
+        <childnode refid="65" relation="include">
+        </childnode>
+        <childnode refid="5" relation="include">
+        </childnode>
+        <childnode refid="6" relation="include">
+        </childnode>
+        <childnode refid="7" relation="include">
+        </childnode>
+        <childnode refid="8" relation="include">
+        </childnode>
+        <childnode refid="39" relation="include">
+        </childnode>
+        <childnode refid="24" relation="include">
+        </childnode>
+        <childnode refid="83" relation="include">
+        </childnode>
+        <childnode refid="16" relation="include">
+        </childnode>
+        <childnode refid="84" relation="include">
+        </childnode>
+      </node>
+      <node id="93">
+        <label>App/Model/IBM/Landscape/LivingBeings/Animals/Genetics/Traits/TempSizeRuleIndividualTraitTemperatureSection.h</label>
+        <link refid="_temp_size_rule_individual_trait_temperature_section_8h_source"/>
+        <childnode refid="14" relation="include">
+        </childnode>
+        <childnode refid="5" relation="include">
+        </childnode>
+        <childnode refid="6" relation="include">
+        </childnode>
+        <childnode refid="7" relation="include">
+        </childnode>
+        <childnode refid="8" relation="include">
+        </childnode>
+        <childnode refid="24" relation="include">
+        </childnode>
+      </node>
+      <node id="4">
+        <label>App/Model/IBM/Landscape/LivingBeings/Animals/Growth/AnimalGrowth.h</label>
+        <link refid="_animal_growth_8h_source"/>
+        <childnode refid="5" relation="include">
+        </childnode>
+        <childnode refid="6" relation="include">
+        </childnode>
+        <childnode refid="7" relation="include">
+        </childnode>
+        <childnode refid="8" relation="include">
+        </childnode>
+        <childnode refid="9" relation="include">
+        </childnode>
+        <childnode refid="24" relation="include">
+        </childnode>
+        <childnode refid="27" relation="include">
+        </childnode>
+        <childnode refid="29" relation="include">
+        </childnode>
+        <childnode refid="16" relation="include">
+        </childnode>
+        <childnode refid="32" relation="include">
+        </childnode>
+        <childnode refid="31" relation="include">
+        </childnode>
+        <childnode refid="33" relation="include">
+        </childnode>
+        <childnode refid="94" relation="include">
+        </childnode>
+        <childnode refid="95" relation="include">
+        </childnode>
+      </node>
+      <node id="1">
+        <label>App/Model/IBM/Landscape/LivingBeings/Animals/Growth/AnimalNonStatisticalGrowth.h</label>
+        <link refid="_animal_non_statistical_growth_8h"/>
+        <childnode refid="2" relation="include">
+        </childnode>
+        <childnode refid="3" relation="include">
+        </childnode>
+        <childnode refid="4" relation="include">
+        </childnode>
+        <childnode refid="91" relation="include">
+        </childnode>
+        <childnode refid="96" relation="include">
+        </childnode>
+      </node>
+      <node id="29">
+        <label>App/Model/IBM/Landscape/LivingBeings/Animals/Growth/Model/IndividualGrowthModel.h</label>
+        <link refid="_individual_growth_model_8h_source"/>
+        <childnode refid="30" relation="include">
+        </childnode>
+        <childnode refid="5" relation="include">
+        </childnode>
+        <childnode refid="6" relation="include">
+        </childnode>
+        <childnode refid="7" relation="include">
+        </childnode>
+        <childnode refid="8" relation="include">
+        </childnode>
+        <childnode refid="27" relation="include">
+        </childnode>
+        <childnode refid="23" relation="include">
+        </childnode>
+        <childnode refid="31" relation="include">
+        </childnode>
+      </node>
+      <node id="32">
+        <label>App/Model/IBM/Landscape/LivingBeings/Animals/Species/Gender.h</label>
+        <link refid="_gender_8h_source"/>
+      </node>
+      <node id="41">
+        <label>App/Model/IBM/Landscape/LivingBeings/Animals/Species/Genetics/Allele.h</label>
+        <link refid="_allele_8h_source"/>
+        <childnode refid="2" relation="include">
+        </childnode>
+        <childnode refid="13" relation="include">
+        </childnode>
+        <childnode refid="15" relation="include">
+        </childnode>
+        <childnode refid="42" relation="include">
+        </childnode>
+      </node>
+      <node id="40">
+        <label>App/Model/IBM/Landscape/LivingBeings/Animals/Species/Genetics/Locus.h</label>
+        <link refid="_locus_8h_source"/>
+        <childnode refid="11" relation="include">
+        </childnode>
+        <childnode refid="3" relation="include">
+        </childnode>
+        <childnode refid="41" relation="include">
+        </childnode>
+      </node>
+      <node id="62">
+        <label>App/Model/IBM/Landscape/LivingBeings/Animals/Species/Genetics/Traits/DefinitionSection/IndividualLevelTrait.h</label>
+        <link refid="_individual_level_trait_8h_source"/>
+        <childnode refid="14" relation="include">
+        </childnode>
+        <childnode refid="19" relation="include">
+        </childnode>
+        <childnode refid="21" relation="include">
+        </childnode>
+        <childnode refid="2" relation="include">
+        </childnode>
+        <childnode refid="37" relation="include">
+        </childnode>
+        <childnode refid="63" relation="include">
+        </childnode>
+        <childnode refid="74" relation="include">
+        </childnode>
+      </node>
+      <node id="37">
+        <label>App/Model/IBM/Landscape/LivingBeings/Animals/Species/Genetics/Traits/DefinitionSection/TraitDefinitionSection.h</label>
+        <link refid="_trait_definition_section_8h_source"/>
+        <childnode refid="36" relation="include">
+        </childnode>
+        <childnode refid="11" relation="include">
+        </childnode>
+        <childnode refid="14" relation="include">
+        </childnode>
+        <childnode refid="5" relation="include">
+        </childnode>
+        <childnode refid="6" relation="include">
+        </childnode>
+        <childnode refid="7" relation="include">
+        </childnode>
+        <childnode refid="8" relation="include">
+        </childnode>
+        <childnode refid="38" relation="include">
+        </childnode>
+        <childnode refid="57" relation="include">
+        </childnode>
+        <childnode refid="27" relation="include">
+        </childnode>
+      </node>
+      <node id="83">
+        <label>App/Model/IBM/Landscape/LivingBeings/Animals/Species/Genetics/Traits/TemperatureSection/PawarElement.h</label>
+        <link refid="_pawar_element_8h_source"/>
+      </node>
+      <node id="61">
+        <label>App/Model/IBM/Landscape/LivingBeings/Animals/Species/Genetics/Traits/TemperatureSection/TraitTemperatureSection.h</label>
+        <link refid="_trait_temperature_section_8h_source"/>
+        <childnode refid="11" relation="include">
+        </childnode>
+        <childnode refid="5" relation="include">
+        </childnode>
+        <childnode refid="6" relation="include">
+        </childnode>
+        <childnode refid="7" relation="include">
+        </childnode>
+        <childnode refid="8" relation="include">
+        </childnode>
+        <childnode refid="38" relation="include">
+        </childnode>
+        <childnode refid="62" relation="include">
+        </childnode>
+        <childnode refid="78" relation="include">
+        </childnode>
+      </node>
+      <node id="35">
+        <label>App/Model/IBM/Landscape/LivingBeings/Animals/Species/Genetics/Traits/Trait.h</label>
+        <link refid="_trait_8h_source"/>
+        <childnode refid="14" relation="include">
+        </childnode>
+        <childnode refid="11" relation="include">
+        </childnode>
+        <childnode refid="36" relation="include">
+        </childnode>
+        <childnode refid="22" relation="include">
+        </childnode>
+        <childnode refid="5" relation="include">
+        </childnode>
+        <childnode refid="6" relation="include">
+        </childnode>
+        <childnode refid="7" relation="include">
+        </childnode>
+        <childnode refid="8" relation="include">
+        </childnode>
+        <childnode refid="37" relation="include">
+        </childnode>
+        <childnode refid="61" relation="include">
+        </childnode>
+        <childnode refid="27" relation="include">
+        </childnode>
+        <childnode refid="57" relation="include">
+        </childnode>
+        <childnode refid="16" relation="include">
+        </childnode>
+      </node>
+      <node id="95">
+        <label>App/Model/IBM/Landscape/LivingBeings/Animals/Species/Genetics/Traits/Type/BaseTraitType.h</label>
+        <link refid="_base_trait_type_8h_source"/>
+      </node>
+      <node id="94">
+        <label>App/Model/IBM/Landscape/LivingBeings/Animals/Species/Growth/AnimalSpeciesGrowth.h</label>
+        <link refid="_animal_species_growth_8h_source"/>
+        <childnode refid="36" relation="include">
+        </childnode>
+        <childnode refid="11" relation="include">
+        </childnode>
+        <childnode refid="2" relation="include">
+        </childnode>
+        <childnode refid="39" relation="include">
+        </childnode>
+        <childnode refid="29" relation="include">
+        </childnode>
+        <childnode refid="57" relation="include">
+        </childnode>
+        <childnode refid="16" relation="include">
+        </childnode>
+        <childnode refid="10" relation="include">
+        </childnode>
+        <childnode refid="23" relation="include">
+        </childnode>
+        <childnode refid="31" relation="include">
+        </childnode>
+        <childnode refid="24" relation="include">
+        </childnode>
+      </node>
+      <node id="91">
+        <label>App/Model/IBM/Landscape/LivingBeings/Animals/Species/LifeStage.h</label>
+        <link refid="_life_stage_8h_source"/>
+      </node>
+      <node id="96">
+        <label>App/Model/IBM/Landscape/LivingBeings/Animals/Species/SexualType.h</label>
+        <link refid="_sexual_type_8h_source"/>
+      </node>
+      <node id="9">
+        <label>App/Model/IBM/Landscape/LivingBeings/Growth/EdibleGrowth.h</label>
+        <link refid="_edible_growth_8h_source"/>
+        <childnode refid="5" relation="include">
+        </childnode>
+        <childnode refid="6" relation="include">
+        </childnode>
+        <childnode refid="7" relation="include">
+        </childnode>
+        <childnode refid="8" relation="include">
+        </childnode>
+        <childnode refid="10" relation="include">
+        </childnode>
+        <childnode refid="23" relation="include">
+        </childnode>
+      </node>
+      <node id="12">
+        <label>App/Model/IBM/Landscape/LivingBeings/Species/Growth/Instar.h</label>
+        <link refid="_instar_8h_source"/>
+        <childnode refid="13" relation="include">
+        </childnode>
+        <childnode refid="14" relation="include">
+        </childnode>
+        <childnode refid="5" relation="include">
+        </childnode>
+        <childnode refid="6" relation="include">
+        </childnode>
+        <childnode refid="7" relation="include">
+        </childnode>
+        <childnode refid="8" relation="include">
+        </childnode>
+        <childnode refid="15" relation="include">
+        </childnode>
+      </node>
+      <node id="10">
+        <label>App/Model/IBM/Landscape/LivingBeings/Species/Growth/SpeciesGrowth.h</label>
+        <link refid="_species_growth_8h_source"/>
+        <childnode refid="11" relation="include">
+        </childnode>
+        <childnode refid="3" relation="include">
+        </childnode>
+        <childnode refid="5" relation="include">
+        </childnode>
+        <childnode refid="6" relation="include">
+        </childnode>
+        <childnode refid="7" relation="include">
+        </childnode>
+        <childnode refid="8" relation="include">
+        </childnode>
+        <childnode refid="12" relation="include">
+        </childnode>
+        <childnode refid="16" relation="include">
+        </childnode>
+        <childnode refid="17" relation="include">
+        </childnode>
+      </node>
+      <node id="23">
+        <label>App/Model/IBM/Landscape/LivingBeings/StructuralUnits.h</label>
+        <link refid="_structural_units_8h_source"/>
+        <childnode refid="5" relation="include">
+        </childnode>
+        <childnode refid="6" relation="include">
+        </childnode>
+        <childnode refid="7" relation="include">
+        </childnode>
+        <childnode refid="8" relation="include">
+        </childnode>
+        <childnode refid="13" relation="include">
+        </childnode>
+        <childnode refid="18" relation="include">
+        </childnode>
+        <childnode refid="17" relation="include">
+        </childnode>
+      </node>
+      <node id="31">
+        <label>App/Model/IBM/Landscape/LivingBeings/TimeUnits.h</label>
+        <link refid="_time_units_8h_source"/>
+        <childnode refid="5" relation="include">
+        </childnode>
+        <childnode refid="6" relation="include">
+        </childnode>
+        <childnode refid="7" relation="include">
+        </childnode>
+        <childnode refid="8" relation="include">
+        </childnode>
+        <childnode refid="13" relation="include">
+        </childnode>
+        <childnode refid="18" relation="include">
+        </childnode>
+        <childnode refid="17" relation="include">
+        </childnode>
+      </node>
+      <node id="63">
+        <label>App/Model/IBM/Maths/MathFunctions.h</label>
+        <link refid="_math_functions_8h_source"/>
+        <childnode refid="11" relation="include">
+        </childnode>
+        <childnode refid="64" relation="include">
+        </childnode>
+        <childnode refid="65" relation="include">
+        </childnode>
+        <childnode refid="18" relation="include">
+        </childnode>
+        <childnode refid="22" relation="include">
+        </childnode>
+        <childnode refid="20" relation="include">
+        </childnode>
+        <childnode refid="24" relation="include">
+        </childnode>
+        <childnode refid="23" relation="include">
+        </childnode>
+        <childnode refid="66" relation="include">
+        </childnode>
+        <childnode refid="49" relation="include">
+        </childnode>
+      </node>
+      <node id="42">
+        <label>App/Model/IBM/Maths/Random.h</label>
+        <link refid="_random_8h_source"/>
+        <childnode refid="18" relation="include">
+        </childnode>
+        <childnode refid="43" relation="include">
+        </childnode>
+        <childnode refid="20" relation="include">
+        </childnode>
+        <childnode refid="44" relation="include">
+        </childnode>
+        <childnode refid="45" relation="include">
+        </childnode>
+        <childnode refid="11" relation="include">
+        </childnode>
+        <childnode refid="46" relation="include">
+        </childnode>
+        <childnode refid="47" relation="include">
+        </childnode>
+        <childnode refid="19" relation="include">
+        </childnode>
+        <childnode refid="48" relation="include">
+        </childnode>
+        <childnode refid="30" relation="include">
+        </childnode>
+        <childnode refid="27" relation="include">
+        </childnode>
+        <childnode refid="49" relation="include">
+        </childnode>
+        <childnode refid="31" relation="include">
+        </childnode>
+        <childnode refid="50" relation="include">
+        </childnode>
+      </node>
+      <node id="24">
+        <label>App/Model/IBM/Physics/Temperature.h</label>
+        <link refid="_temperature_8h_source"/>
+        <childnode refid="5" relation="include">
+        </childnode>
+        <childnode refid="6" relation="include">
+        </childnode>
+        <childnode refid="7" relation="include">
+        </childnode>
+        <childnode refid="8" relation="include">
+        </childnode>
+        <childnode refid="25" relation="include">
+        </childnode>
+        <childnode refid="22" relation="include">
+        </childnode>
+        <childnode refid="26" relation="include">
+        </childnode>
+        <childnode refid="17" relation="include">
+        </childnode>
+      </node>
+      <node id="71">
+        <label>App/Model/RunMode.h</label>
+        <link refid="_run_mode_8h_source"/>
+      </node>
+      <node id="66">
+        <label>App/View/View.h</label>
+        <link refid="_view_8h_source"/>
+        <childnode refid="14" relation="include">
+        </childnode>
+        <childnode refid="67" relation="include">
+        </childnode>
+        <childnode refid="68" relation="include">
+        </childnode>
+        <childnode refid="25" relation="include">
+        </childnode>
+        <childnode refid="58" relation="include">
+        </childnode>
+        <childnode refid="69" relation="include">
+        </childnode>
+        <childnode refid="70" relation="include">
+        </childnode>
+        <childnode refid="71" relation="include">
+        </childnode>
+        <childnode refid="57" relation="include">
+        </childnode>
+        <childnode refid="16" relation="include">
+        </childnode>
+        <childnode refid="72" relation="include">
+        </childnode>
+      </node>
+      <node id="27">
+        <label>Exceptions/LineInfoException.h</label>
+        <link refid="_line_info_exception_8h_source"/>
+        <childnode refid="28" relation="include">
+        </childnode>
+        <childnode refid="14" relation="include">
+        </childnode>
+      </node>
+      <node id="51">
+        <label>Coordinate3D.h</label>
+        <link refid="_coordinate3_d_8h_source"/>
+        <childnode refid="52" relation="include">
+        </childnode>
+        <childnode refid="7" relation="include">
+        </childnode>
+        <childnode refid="8" relation="include">
+        </childnode>
+        <childnode refid="25" relation="include">
+        </childnode>
+      </node>
+      <node id="16">
+        <label>Misc/CustomIndexedVector.h</label>
+        <link refid="_custom_indexed_vector_8h_source"/>
+        <childnode refid="11" relation="include">
+        </childnode>
+        <childnode refid="3" relation="include">
+        </childnode>
+      </node>
+      <node id="57">
+        <label>Misc/EnumClass.h</label>
+        <link refid="_enum_class_8h_source"/>
+        <childnode refid="58" relation="include">
+        </childnode>
+        <childnode refid="14" relation="include">
+        </childnode>
+        <childnode refid="59" relation="include">
+        </childnode>
+        <childnode refid="60" relation="include">
+        </childnode>
+        <childnode refid="15" relation="include">
+        </childnode>
+        <childnode refid="27" relation="include">
+        </childnode>
+      </node>
+      <node id="49">
+        <label>Misc/Maths/Constants.h</label>
+        <link refid="_constants_8h_source"/>
+      </node>
+      <node id="17">
+        <label>Misc/Maths/PreciseDouble.h</label>
+        <link refid="_precise_double_8h_source"/>
+        <childnode refid="5" relation="include">
+        </childnode>
+        <childnode refid="6" relation="include">
+        </childnode>
+        <childnode refid="7" relation="include">
+        </childnode>
+        <childnode refid="8" relation="include">
+        </childnode>
+        <childnode refid="15" relation="include">
+        </childnode>
+        <childnode refid="14" relation="include">
+        </childnode>
+        <childnode refid="18" relation="include">
+        </childnode>
+        <childnode refid="19" relation="include">
+        </childnode>
+        <childnode refid="20" relation="include">
+        </childnode>
+        <childnode refid="21" relation="include">
+        </childnode>
+        <childnode refid="22" relation="include">
+        </childnode>
+      </node>
+      <node id="72">
+        <label>Misc/PathUtils.h</label>
+        <link refid="_path_utils_8h_source"/>
+        <childnode refid="73" relation="include">
+        </childnode>
+        <childnode refid="14" relation="include">
+        </childnode>
+      </node>
+      <node id="50">
+        <label>Misc/Types.h</label>
+        <link refid="_types_8h_source"/>
+        <childnode refid="51" relation="include">
+        </childnode>
+        <childnode refid="53" relation="include">
+        </childnode>
+        <childnode refid="21" relation="include">
+        </childnode>
+        <childnode refid="17" relation="include">
+        </childnode>
+      </node>
+      <node id="74">
+        <label>Misc/Utilities.h</label>
+        <link refid="_utilities_8h_source"/>
+        <childnode refid="14" relation="include">
+        </childnode>
+        <childnode refid="25" relation="include">
+        </childnode>
+        <childnode refid="36" relation="include">
+        </childnode>
+        <childnode refid="60" relation="include">
+        </childnode>
+        <childnode refid="21" relation="include">
+        </childnode>
+        <childnode refid="20" relation="include">
+        </childnode>
+        <childnode refid="70" relation="include">
+        </childnode>
+        <childnode refid="19" relation="include">
+        </childnode>
+        <childnode refid="75" relation="include">
+        </childnode>
+        <childnode refid="58" relation="include">
+        </childnode>
+        <childnode refid="76" relation="include">
+        </childnode>
+        <childnode refid="77" relation="include">
+        </childnode>
+        <childnode refid="68" relation="include">
+        </childnode>
+        <childnode refid="73" relation="include">
+        </childnode>
+        <childnode refid="50" relation="include">
+        </childnode>
+        <childnode refid="27" relation="include">
+        </childnode>
+      </node>
+      <node id="19">
+        <label>algorithm</label>
+      </node>
+      <node id="90">
+        <label>array</label>
+      </node>
+      <node id="47">
+        <label>atomic</label>
+      </node>
+      <node id="7">
+        <label>boost/archive/binary_iarchive.hpp</label>
+      </node>
+      <node id="8">
+        <label>boost/archive/binary_oarchive.hpp</label>
+      </node>
+      <node id="5">
+        <label>boost/archive/text_iarchive.hpp</label>
+      </node>
+      <node id="6">
+        <label>boost/archive/text_oarchive.hpp</label>
+      </node>
+      <node id="52">
+        <label>boost/serialization/access.hpp</label>
+      </node>
+      <node id="2">
+        <label>boost/serialization/export.hpp</label>
+      </node>
+      <node id="80">
+        <label>boost/serialization/nvp.hpp</label>
+      </node>
+      <node id="79">
+        <label>boost/serialization/split_free.hpp</label>
+      </node>
+      <node id="39">
+        <label>boost/serialization/utility.hpp</label>
+      </node>
+      <node id="3">
+        <label>boost/serialization/vector.hpp</label>
+      </node>
+      <node id="53">
+        <label>cfloat</label>
+      </node>
+      <node id="68">
+        <label>chrono</label>
+      </node>
+      <node id="18">
+        <label>cmath</label>
+      </node>
+      <node id="86">
+        <label>cstdio</label>
+      </node>
+      <node id="70">
+        <label>ctime</label>
+      </node>
+      <node id="28">
+        <label>exception</label>
+      </node>
+      <node id="73">
+        <label>filesystem</label>
+      </node>
+      <node id="44">
+        <label>float.h</label>
+      </node>
+      <node id="15">
+        <label>fmt/format.h</label>
+      </node>
+      <node id="25">
+        <label>fstream</label>
+      </node>
+      <node id="22">
+        <label>functional</label>
+      </node>
+      <node id="67">
+        <label>initializer_list</label>
+      </node>
+      <node id="69">
+        <label>iomanip</label>
+      </node>
+      <node id="20">
+        <label>iostream</label>
+      </node>
+      <node id="21">
+        <label>limits</label>
+      </node>
+      <node id="45">
+        <label>list</label>
+      </node>
+      <node id="60">
+        <label>magic_enum/magic_enum.hpp</label>
+      </node>
+      <node id="64">
+        <label>map</label>
+      </node>
+      <node id="30">
+        <label>memory</label>
+      </node>
+      <node id="89">
+        <label>mutex</label>
+      </node>
+      <node id="36">
+        <label>nlohmann/json.hpp</label>
+      </node>
+      <node id="48">
+        <label>numeric</label>
+      </node>
+      <node id="88">
+        <label>oneapi/tbb/concurrent_queue.h</label>
+      </node>
+      <node id="13">
+        <label>ostream</label>
+      </node>
+      <node id="87">
+        <label>queue</label>
+      </node>
+      <node id="46">
+        <label>random</label>
+      </node>
+      <node id="75">
+        <label>regex</label>
+      </node>
+      <node id="77">
+        <label>set</label>
+      </node>
+      <node id="58">
+        <label>sstream</label>
+      </node>
+      <node id="76">
+        <label>stack</label>
+      </node>
+      <node id="26">
+        <label>stdexcept</label>
+      </node>
+      <node id="43">
+        <label>stdlib.h</label>
+      </node>
+      <node id="14">
+        <label>string</label>
+      </node>
+      <node id="85">
+        <label>string_view</label>
+      </node>
+      <node id="59">
+        <label>unordered_map</label>
+      </node>
+      <node id="65">
+        <label>utility</label>
+      </node>
+      <node id="34">
+        <label>variant</label>
+      </node>
+      <node id="11">
+        <label>vector</label>
+      </node>
+    </incdepgraph>
+    <invincdepgraph>
+      <node id="4">
+        <label>App/Model/IBM/IBM.h</label>
+        <link refid="_i_b_m_8h_source"/>
+      </node>
+      <node id="5">
+        <label>App/Model/IBM/Landscape/AquaticLandscape.h</label>
+        <link refid="_aquatic_landscape_8h_source"/>
+      </node>
+      <node id="6">
+        <label>App/Model/IBM/Landscape/ArthropodsLandscape.h</label>
+        <link refid="_arthropods_landscape_8h_source"/>
+      </node>
+      <node id="7">
+        <label>App/Model/IBM/Landscape/DinosaursLandscape.h</label>
+        <link refid="_dinosaurs_landscape_8h_source"/>
+      </node>
+      <node id="3">
+        <label>App/Model/IBM/Landscape/Landscape.h</label>
+        <link refid="_landscape_8h_source"/>
+        <childnode refid="4" relation="include">
+        </childnode>
+        <childnode refid="5" relation="include">
+        </childnode>
+        <childnode refid="6" relation="include">
+        </childnode>
+        <childnode refid="7" relation="include">
+        </childnode>
+      </node>
+      <node id="2">
+        <label>App/Model/IBM/Landscape/LivingBeings/Animals/AnimalNonStatistical.h</label>
+        <link refid="_animal_non_statistical_8h_source"/>
+        <childnode refid="3" relation="include">
+        </childnode>
+        <childnode refid="8" relation="include">
+        </childnode>
+        <childnode refid="10" relation="include">
+        </childnode>
+        <childnode refid="12" relation="include">
+        </childnode>
+      </node>
+      <node id="1">
+        <label>App/Model/IBM/Landscape/LivingBeings/Animals/Growth/AnimalNonStatisticalGrowth.h</label>
+        <link refid="_animal_non_statistical_growth_8h"/>
+        <childnode refid="2" relation="include">
+        </childnode>
+      </node>
+      <node id="13">
+        <label>App/Model/IBM/Landscape/Map/Map.h</label>
+        <link refid="_map_8h_source"/>
+        <childnode refid="3" relation="include">
+        </childnode>
+        <childnode refid="9" relation="include">
+        </childnode>
+      </node>
+      <node id="11">
+        <label>App/Model/IBM/Landscape/Map/Navigation/DestinationSelectionPolicy.h</label>
+        <link refid="_destination_selection_policy_8h_source"/>
+      </node>
+      <node id="9">
+        <label>App/Model/IBM/Landscape/Map/SpatialTree.h</label>
+        <link refid="_spatial_tree_8h_source"/>
+        <childnode refid="3" relation="include">
+        </childnode>
+      </node>
+      <node id="8">
+        <label>App/Model/IBM/Landscape/Map/SpatialTree/LivingBeings/Animals/SpatialTreeAnimal.h</label>
+        <link refid="_spatial_tree_animal_8h_source"/>
+        <childnode refid="9" relation="include">
+        </childnode>
+      </node>
+      <node id="15">
+        <label>App/Model/IBM/Landscape/Map/SpatialTree/TerrainCells/BranchTerrainCell.h</label>
+        <link refid="_branch_terrain_cell_8h_source"/>
+        <childnode refid="16" relation="include">
+        </childnode>
+      </node>
+      <node id="17">
+        <label>App/Model/IBM/Landscape/Map/SpatialTree/TerrainCells/LeafTerrainCell.h</label>
+        <link refid="_leaf_terrain_cell_8h_source"/>
+        <childnode refid="15" relation="include">
+        </childnode>
+      </node>
+      <node id="16">
+        <label>App/Model/IBM/Landscape/Map/SpatialTree/TerrainCells/RootTerrainCell.h</label>
+        <link refid="_root_terrain_cell_8h_source"/>
+        <childnode refid="9" relation="include">
+        </childnode>
+      </node>
+      <node id="14">
+        <label>App/Model/IBM/Landscape/Map/SpatialTree/TerrainCells/SpatialTreeTerrainCell.h</label>
+        <link refid="_spatial_tree_terrain_cell_8h_source"/>
+        <childnode refid="9" relation="include">
+        </childnode>
+        <childnode refid="15" relation="include">
+        </childnode>
+        <childnode refid="17" relation="include">
+        </childnode>
+      </node>
+      <node id="10">
+        <label>App/Model/IBM/Landscape/Map/TerrainCells/CellValue.h</label>
+        <link refid="_cell_value_8h_source"/>
+        <childnode refid="11" relation="include">
+        </childnode>
+        <childnode refid="8" relation="include">
+        </childnode>
+        <childnode refid="12" relation="include">
+        </childnode>
+      </node>
+      <node id="12">
+        <label>App/Model/IBM/Landscape/Map/TerrainCells/TerrainCell.h</label>
+        <link refid="_terrain_cell_8h_source"/>
+        <childnode refid="3" relation="include">
+        </childnode>
+        <childnode refid="13" relation="include">
+        </childnode>
+        <childnode refid="9" relation="include">
+        </childnode>
+        <childnode refid="14" relation="include">
+        </childnode>
+      </node>
+    </invincdepgraph>
+    <innerclass refid="class_animal_non_statistical_growth" prot="public">AnimalNonStatisticalGrowth</innerclass>
+    <briefdescription>
+<para>Defines the <ref refid="class_animal_non_statistical_growth" kindref="compound">AnimalNonStatisticalGrowth</ref> class, which extends <ref refid="class_animal_growth" kindref="compound">AnimalGrowth</ref> for non-statistical animal simulations. </para>
+    </briefdescription>
+    <detaileddescription>
+    </detaileddescription>
+    <programlisting>
+<codeline lineno="1"><highlight class="normal"></highlight></codeline>
+<codeline lineno="5"><highlight class="normal"></highlight></codeline>
+<codeline lineno="6"><highlight class="normal"></highlight><highlight class="preprocessor">#ifndef<sp/>ANIMAL_NON_STATISTICAL_GROWTH_MODULE_H_</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="7"><highlight class="normal"></highlight><highlight class="preprocessor">#define<sp/>ANIMAL_NON_STATISTICAL_GROWTH_MODULE_H_</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="8"><highlight class="normal"></highlight></codeline>
+<codeline lineno="9"><highlight class="normal"></highlight></codeline>
+<codeline lineno="10"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&lt;boost/serialization/export.hpp&gt;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="11"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&lt;boost/serialization/vector.hpp&gt;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="12"><highlight class="normal"></highlight></codeline>
+<codeline lineno="13"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&quot;App/Model/IBM/Landscape/LivingBeings/Animals/Growth/AnimalGrowth.h&quot;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="14"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&quot;App/Model/IBM/Landscape/LivingBeings/Animals/Species/LifeStage.h&quot;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="15"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&quot;App/Model/IBM/Landscape/LivingBeings/Animals/Species/SexualType.h&quot;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="16"><highlight class="normal"></highlight></codeline>
+<codeline lineno="17"><highlight class="normal"></highlight></codeline>
+<codeline lineno="18"><highlight class="normal"></highlight></codeline>
+<codeline lineno="19"><highlight class="normal"></highlight><highlight class="keyword">class<sp/></highlight><highlight class="normal"><ref refid="class_landscape" kindref="compound">Landscape</ref>;</highlight></codeline>
+<codeline lineno="20"><highlight class="normal"></highlight><highlight class="keyword">class<sp/></highlight><highlight class="normal"><ref refid="class_animal_non_statistical" kindref="compound">AnimalNonStatistical</ref>;</highlight></codeline>
+<codeline lineno="21"><highlight class="normal"></highlight></codeline>
+<codeline lineno="22"><highlight class="normal"></highlight></codeline>
+<codeline lineno="31" refid="class_animal_non_statistical_growth" refkind="compound"><highlight class="normal"></highlight><highlight class="keyword">class<sp/></highlight><highlight class="normal"><ref refid="class_animal_non_statistical_growth_1a266e825a68c7e3064545ad7f2e11f1b4" kindref="member">AnimalNonStatisticalGrowth</ref><sp/>:<sp/></highlight><highlight class="keyword">public</highlight><highlight class="normal"><sp/><ref refid="class_animal_growth_1aff40ef147aeb41f2682cb0cc56af0530" kindref="member">AnimalGrowth</ref><sp/>{</highlight></codeline>
+<codeline lineno="32"><highlight class="normal"></highlight><highlight class="keyword">public</highlight><highlight class="normal">:</highlight></codeline>
+<codeline lineno="36" refid="class_animal_non_statistical_growth_1a266e825a68c7e3064545ad7f2e11f1b4" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="class_animal_non_statistical_growth_1a266e825a68c7e3064545ad7f2e11f1b4" kindref="member">AnimalNonStatisticalGrowth</ref>();</highlight></codeline>
+<codeline lineno="37"><highlight class="normal"></highlight></codeline>
+<codeline lineno="53" refid="class_animal_non_statistical_growth_1a4cfa6b12c82a4fd3cb13778bf85d490b" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="class_animal_non_statistical_growth_1a4cfa6b12c82a4fd3cb13778bf85d490b" kindref="member">AnimalNonStatisticalGrowth</ref>(<ref refid="class_animal_species_growth" kindref="compound">AnimalSpeciesGrowth</ref>*<sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/><ref refid="class_edible_growth_1ab6d39e45c0878f73dc17ec11a90b6b03" kindref="member">speciesGrowth</ref>,<sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/><ref refid="class_instar" kindref="compound">Instar</ref><sp/>&amp;<ref refid="class_edible_growth_1adbbef8f3ed22941d3d4456bb26fb1da0" kindref="member">instar</ref>,<sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordtype">bool</highlight><highlight class="normal"><sp/><ref refid="class_animal_growth_1a3c82a64e4cef505c1e713313e80e02b3" kindref="member">temperatureDependent</ref>,<sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/><ref refid="class_time_step" kindref="compound">TimeStep</ref>&amp;<sp/>actualTimeSteps,<sp/>Gender<sp/>gender,<sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/>std::vector&lt;IndividualTrait&gt;&amp;<sp/>baseIndividualTraits,<sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/><ref refid="class_precise_double" kindref="compound">PreciseDouble</ref>&amp;<sp/>factorEggMassValue,<sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordtype">unsigned</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>femaleMaxReproductionEvents,<sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/><ref refid="class_temperature" kindref="compound">Temperature</ref>&amp;<sp/>actualTemperature,<sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/><ref refid="class_temperature" kindref="compound">Temperature</ref>&amp;<sp/>tempFromLab,<sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/><ref refid="class_precise_double" kindref="compound">PreciseDouble</ref>&amp;<sp/>timeStepsPerDay);</highlight></codeline>
+<codeline lineno="54"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight></codeline>
+<codeline lineno="58" refid="class_animal_non_statistical_growth_1ae2d1463c582e0d0f0eab52bcbbeec109" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">virtual</highlight><highlight class="normal"><sp/><ref refid="class_animal_non_statistical_growth_1ae2d1463c582e0d0f0eab52bcbbeec109" kindref="member">~AnimalNonStatisticalGrowth</ref>();</highlight></codeline>
+<codeline lineno="59"><highlight class="normal"></highlight></codeline>
+<codeline lineno="60"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="comment">//<sp/>Delete<sp/>copy<sp/>constructor<sp/></highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="61"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="class_animal_non_statistical_growth_1a266e825a68c7e3064545ad7f2e11f1b4" kindref="member">AnimalNonStatisticalGrowth</ref>(</highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/><ref refid="class_animal_non_statistical_growth_1a266e825a68c7e3064545ad7f2e11f1b4" kindref="member">AnimalNonStatisticalGrowth</ref>&amp;)<sp/>=<sp/></highlight><highlight class="keyword">delete</highlight><highlight class="normal">;</highlight></codeline>
+<codeline lineno="62"><highlight class="normal"></highlight></codeline>
+<codeline lineno="63"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="comment">//<sp/>Delete<sp/><sp/>assignment<sp/>operator</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="64"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="class_animal_non_statistical_growth_1a266e825a68c7e3064545ad7f2e11f1b4" kindref="member">AnimalNonStatisticalGrowth</ref>&amp;<sp/>operator=(</highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/><ref refid="class_animal_non_statistical_growth_1a266e825a68c7e3064545ad7f2e11f1b4" kindref="member">AnimalNonStatisticalGrowth</ref>&amp;)<sp/>=<sp/></highlight><highlight class="keyword">delete</highlight><highlight class="normal">;</highlight></codeline>
+<codeline lineno="65"><highlight class="normal"></highlight></codeline>
+<codeline lineno="69" refid="class_animal_non_statistical_growth_1ae20ee8285e581c451ba9ca2531e16f49" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/><ref refid="class_animal_non_statistical_growth_1ae20ee8285e581c451ba9ca2531e16f49" kindref="member">tune</ref>(</highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/>std::vector&lt;IndividualTrait&gt;&amp;<sp/>baseIndividualTraits,<sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordtype">unsigned</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>femaleMaxReproductionEvents,<sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/><ref refid="class_temperature" kindref="compound">Temperature</ref>&amp;<sp/>actualTemperature,<sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/><ref refid="class_temperature" kindref="compound">Temperature</ref>&amp;<sp/>tempFromLab,<sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/><ref refid="class_precise_double" kindref="compound">PreciseDouble</ref><sp/>&amp;timeStepsPerDay);</highlight></codeline>
+<codeline lineno="70"><highlight class="normal"></highlight></codeline>
+<codeline lineno="76" refid="class_animal_non_statistical_growth_1a89a7e83037248325adcb0007f0fb47ab" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/><ref refid="class_custom_indexed_vector" kindref="compound">CustomIndexedVector&lt;Instar, Length&gt;</ref>&amp;<sp/><ref refid="class_animal_non_statistical_growth_1a89a7e83037248325adcb0007f0fb47ab" kindref="member">getInstarLengthsVector</ref>()<sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal">;</highlight></codeline>
+<codeline lineno="77"><highlight class="normal"></highlight></codeline>
+<codeline lineno="84" refid="class_animal_non_statistical_growth_1a52522fee09f9484704b5c3991b85abb2" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/><ref refid="class_length" kindref="compound">Length</ref>&amp;<sp/><ref refid="class_animal_non_statistical_growth_1a52522fee09f9484704b5c3991b85abb2" kindref="member">getInstarLength</ref>(</highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/><ref refid="class_instar" kindref="compound">Instar</ref>&amp;<sp/>instarValue)<sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal">;</highlight></codeline>
+<codeline lineno="85"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight></codeline>
+<codeline lineno="91" refid="class_animal_non_statistical_growth_1a7cb7beeb1738233bd2e934c373635d35" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/><ref refid="class_custom_indexed_vector" kindref="compound">CustomIndexedVector&lt;Instar, DryMass&gt;</ref>&amp;<sp/><ref refid="class_animal_non_statistical_growth_1a7cb7beeb1738233bd2e934c373635d35" kindref="member">getInstarMassesVector</ref>()<sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal">;</highlight></codeline>
+<codeline lineno="92"><highlight class="normal"></highlight></codeline>
+<codeline lineno="99" refid="class_animal_non_statistical_growth_1a3c560a12cd2f2e43072dbe0bf8b5ce65" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/><ref refid="class_dry_mass" kindref="compound">DryMass</ref>&amp;<sp/><ref refid="class_animal_non_statistical_growth_1a3c560a12cd2f2e43072dbe0bf8b5ce65" kindref="member">getInstarMass</ref>(</highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/><ref refid="class_instar" kindref="compound">Instar</ref>&amp;<sp/>instarValue)<sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal">;</highlight></codeline>
+<codeline lineno="100"><highlight class="normal"></highlight></codeline>
+<codeline lineno="106" refid="class_animal_non_statistical_growth_1a7a571c4a3631065d2ace75bffb2927e2" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/>std::pair&lt;std::pair&lt;bool,<sp/>TimeStep&gt;,<sp/>std::pair&lt;bool,<sp/>LifeStage&gt;&gt;<sp/><ref refid="class_animal_non_statistical_growth_1a7a571c4a3631065d2ace75bffb2927e2" kindref="member">grow</ref>(<ref refid="class_landscape" kindref="compound">Landscape</ref>*<sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/>landscape,<sp/><ref refid="class_animal_non_statistical" kindref="compound">AnimalNonStatistical</ref>*<sp/>animal,<sp/>Gender<sp/>gender,<sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/><ref refid="class_time_step" kindref="compound">TimeStep</ref>&amp;<sp/>pupaPeriodTime,<sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordtype">unsigned</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>reproCounter,<sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordtype">unsigned</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>femaleMaxReproductionEvents,<sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/><ref refid="class_precise_double" kindref="compound">PreciseDouble</ref>&amp;<sp/>growthValue,<sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/><ref refid="class_precise_double" kindref="compound">PreciseDouble</ref>&amp;<sp/>totFec,<sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/>SexualType<sp/>sexualType,<sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordtype">bool</highlight><highlight class="normal"><sp/>isMated,<sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/><ref refid="class_time_step" kindref="compound">TimeStep</ref><sp/>actualTimeStep,<sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/><ref refid="class_precise_double" kindref="compound">PreciseDouble</ref>&amp;<sp/>energyTankFinalTraitValue,<sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/><ref refid="class_precise_double" kindref="compound">PreciseDouble</ref>&amp;<sp/>timeStepsPerDay);</highlight></codeline>
+<codeline lineno="107"><highlight class="normal"></highlight></codeline>
+<codeline lineno="111" refid="class_animal_non_statistical_growth_1ae8d5bf7d549877a17b6678ff6f33d2ff" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">bool</highlight><highlight class="normal"><sp/><ref refid="class_animal_non_statistical_growth_1ae8d5bf7d549877a17b6678ff6f33d2ff" kindref="member">isReadyToResumeFromPupaOrDecreasePupaTimer</ref>();</highlight></codeline>
+<codeline lineno="112"><highlight class="normal"></highlight></codeline>
+<codeline lineno="120" refid="class_animal_non_statistical_growth_1a0e2924fe6d2ddfb85bb0573eccfa3f27" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/>std::pair&lt;bool,<sp/>bool&gt;<sp/><ref refid="class_animal_non_statistical_growth_1a0e2924fe6d2ddfb85bb0573eccfa3f27" kindref="member">isReadyToResumeFromDiapauseOrIncreaseDiapauseTimeSteps</ref>(</highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/><ref refid="class_precise_double" kindref="compound">PreciseDouble</ref>&amp;<sp/>relativeHumidity,<sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/><ref refid="class_precise_double" kindref="compound">PreciseDouble</ref>&amp;<sp/>minRelativeHumidityThreshold);</highlight></codeline>
+<codeline lineno="121"><highlight class="normal"></highlight></codeline>
+<codeline lineno="125" refid="class_animal_non_statistical_growth_1a1cad100087c858cfefa51d63c810dd71" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/><ref refid="class_time_step" kindref="compound">TimeStep</ref><sp/><ref refid="class_animal_non_statistical_growth_1a1cad100087c858cfefa51d63c810dd71" kindref="member">getDiapauseTimeSteps</ref>()<sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal">;</highlight></codeline>
+<codeline lineno="126"><highlight class="normal"></highlight></codeline>
+<codeline lineno="130" refid="class_animal_non_statistical_growth_1a8ec84adc476771b7f8d65ef879ce616d" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/><ref refid="class_time_step" kindref="compound">TimeStep</ref>&amp;<sp/><ref refid="class_animal_non_statistical_growth_1a8ec84adc476771b7f8d65ef879ce616d" kindref="member">getLongevity</ref>()<sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal">;</highlight></codeline>
+<codeline lineno="131"><highlight class="normal"></highlight></codeline>
+<codeline lineno="139" refid="class_animal_non_statistical_growth_1adae9ac3de3cdea48a4348c28a6656af2" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="class_dry_mass" kindref="compound">DryMass</ref><sp/><ref refid="class_animal_non_statistical_growth_1adae9ac3de3cdea48a4348c28a6656af2" kindref="member">calculatePreviousTarget</ref>(</highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/>Gender<sp/>gender,<sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordtype">unsigned</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>reproCounter)<sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal">;</highlight></codeline>
+<codeline lineno="140"><highlight class="normal"></highlight></codeline>
+<codeline lineno="147" refid="class_animal_non_statistical_growth_1a73f9967ceeb07f3ad4a5a9eab63eb62f" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="class_dry_mass" kindref="compound">DryMass</ref><sp/><ref refid="class_animal_non_statistical_growth_1a73f9967ceeb07f3ad4a5a9eab63eb62f" kindref="member">calculateNextTarget</ref>(</highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/>Gender<sp/>gender)<sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal">;</highlight></codeline>
+<codeline lineno="148"><highlight class="normal"></highlight></codeline>
+<codeline lineno="156" refid="class_animal_non_statistical_growth_1a56017eaa77233382b310565a4ab4df2f" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="class_dry_mass" kindref="compound">DryMass</ref><sp/><ref refid="class_animal_non_statistical_growth_1a56017eaa77233382b310565a4ab4df2f" kindref="member">calculateMassLoad</ref>(</highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/>Gender<sp/>gender,<sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordtype">unsigned</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>reproCounter)<sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal">;</highlight></codeline>
+<codeline lineno="157"><highlight class="normal"></highlight></codeline>
+<codeline lineno="161" refid="class_animal_non_statistical_growth_1a75af3caabd901544856b58fb702f94f2" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/>std::pair&lt;TimeStep,<sp/>std::pair&lt;bool,<sp/>LifeStage&gt;&gt;<sp/><ref refid="class_animal_non_statistical_growth_1a75af3caabd901544856b58fb702f94f2" kindref="member">forceMolting</ref>(</highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/>std::vector&lt;IndividualTrait&gt;&amp;<sp/>baseIndividualTraits,<sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/><ref refid="class_time_step" kindref="compound">TimeStep</ref><sp/>actualTimeStep,<sp/>Gender<sp/>gender,<sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/><ref refid="class_precise_double" kindref="compound">PreciseDouble</ref>&amp;<sp/>timeStepsPerDay);</highlight></codeline>
+<codeline lineno="162"><highlight class="normal"></highlight></codeline>
+<codeline lineno="166" refid="class_animal_non_statistical_growth_1a4408e750fad40f2832dabbcf788796be" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/><ref refid="class_animal_non_statistical_growth_1a4408e750fad40f2832dabbcf788796be" kindref="member">forceReproduction</ref>(</highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordtype">unsigned</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>reproCounter,<sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordtype">unsigned</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>femaleMaxReproductionEvents,<sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/><ref refid="class_time_step" kindref="compound">TimeStep</ref>&amp;<sp/>timeOfReproEvent,<sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/><ref refid="class_time_step" kindref="compound">TimeStep</ref><sp/>ageOfLastMoultOrReproduction,<sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/><ref refid="class_time_step" kindref="compound">TimeStep</ref>&amp;<sp/>pupaPeriodTime,<sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/><ref refid="class_precise_double" kindref="compound">PreciseDouble</ref>&amp;<sp/>factorEggMassValue,<sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/><ref refid="class_time_step" kindref="compound">TimeStep</ref><sp/>actualTimeStep,<sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/><ref refid="class_precise_double" kindref="compound">PreciseDouble</ref>&amp;<sp/>growthValue,<sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/><ref refid="class_precise_double" kindref="compound">PreciseDouble</ref>&amp;<sp/>totFec,<sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordtype">bool</highlight><highlight class="normal"><sp/>lastEventIsMoult,<sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/><ref refid="class_precise_double" kindref="compound">PreciseDouble</ref>&amp;<sp/>timeStepsPerDay);</highlight></codeline>
+<codeline lineno="167"><highlight class="normal"></highlight></codeline>
+<codeline lineno="171" refid="class_animal_non_statistical_growth_1a2d08b5d8ba30ca636ecb7abbf9d3fc85" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">bool</highlight><highlight class="normal"><sp/><ref refid="class_animal_non_statistical_growth_1a2d08b5d8ba30ca636ecb7abbf9d3fc85" kindref="member">hasCapitalBreeding</ref>()<sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal">;</highlight></codeline>
+<codeline lineno="172"><highlight class="normal"></highlight></codeline>
+<codeline lineno="176" refid="class_animal_non_statistical_growth_1a31156fe69d8765f74555216b08aaef93" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/><ref refid="class_animal_non_statistical_growth_1a31156fe69d8765f74555216b08aaef93" kindref="member">disableCapitalBreeding</ref>();</highlight></codeline>
+<codeline lineno="177"><highlight class="normal"></highlight></codeline>
+<codeline lineno="183" refid="class_animal_non_statistical_growth_1a999d9586f09edc9a9902b5585feba9dc" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/><ref refid="class_dry_mass" kindref="compound">DryMass</ref>&amp;<sp/><ref refid="class_animal_non_statistical_growth_1a999d9586f09edc9a9902b5585feba9dc" kindref="member">getMassForNextReproduction</ref>()<sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal">;</highlight></codeline>
+<codeline lineno="184"><highlight class="normal"></highlight></codeline>
+<codeline lineno="190" refid="class_animal_non_statistical_growth_1a22f6a5a0dcb3a39b70d2290abff4006b" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/><ref refid="class_animal_non_statistical_growth_1a22f6a5a0dcb3a39b70d2290abff4006b" kindref="member">setMassForNextReproduction</ref>(</highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/><ref refid="class_dry_mass" kindref="compound">DryMass</ref>&amp;<sp/>newMassForNextReproduction);</highlight></codeline>
+<codeline lineno="191"><highlight class="normal"></highlight></codeline>
+<codeline lineno="195" refid="class_animal_non_statistical_growth_1aa7df86994274cc3a22935601591ad6af" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">unsigned</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/><ref refid="class_animal_non_statistical_growth_1aa7df86994274cc3a22935601591ad6af" kindref="member">computeEggBatchNumber</ref>(</highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/><ref refid="class_precise_double" kindref="compound">PreciseDouble</ref>&amp;<sp/>factorEggMassValue)<sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal">;</highlight></codeline>
+<codeline lineno="196"><highlight class="normal"></highlight></codeline>
+<codeline lineno="200" refid="class_animal_non_statistical_growth_1a8414508e1faa5d09f0c7493d8aba1aef" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/><ref refid="class_day" kindref="compound">Day</ref>&amp;<sp/><ref refid="class_animal_non_statistical_growth_1a8414508e1faa5d09f0c7493d8aba1aef" kindref="member">getDateEgg</ref>()<sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal">;</highlight></codeline>
+<codeline lineno="201"><highlight class="normal"></highlight></codeline>
+<codeline lineno="205" refid="class_animal_non_statistical_growth_1ae7c459027f918b76c653d61514ba3ffd" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/><ref refid="class_dry_mass" kindref="compound">DryMass</ref><sp/><ref refid="class_animal_non_statistical_growth_1ae7c459027f918b76c653d61514ba3ffd" kindref="member">calculatePredVor</ref>(</highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/><ref refid="class_dry_mass" kindref="compound">DryMass</ref>&amp;<sp/>basalMetabolicDryMassLoss,<sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/><ref refid="class_precise_double" kindref="compound">PreciseDouble</ref>&amp;<sp/>assim,<sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/><ref refid="class_dry_mass" kindref="compound">DryMass</ref>&amp;<sp/>previousNetGrowth,<sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/><ref refid="class_time_step" kindref="compound">TimeStep</ref><sp/>numberOfTimeSteps);</highlight></codeline>
+<codeline lineno="206"><highlight class="normal"></highlight></codeline>
+<codeline lineno="212" refid="class_animal_non_statistical_growth_1a5fc0027314d28ee6f21b25c3b9227122" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/><ref refid="class_dry_mass" kindref="compound">DryMass</ref>&amp;<sp/><ref refid="class_animal_non_statistical_growth_1a5fc0027314d28ee6f21b25c3b9227122" kindref="member">getTotalReproMass</ref>()<sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal">;</highlight></codeline>
+<codeline lineno="213"><highlight class="normal"></highlight></codeline>
+<codeline lineno="219" refid="class_animal_non_statistical_growth_1a55af0aadac3e94e8a15fdf197003ad7e" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/><ref refid="class_dry_mass" kindref="compound">DryMass</ref>&amp;<sp/><ref refid="class_animal_non_statistical_growth_1a55af0aadac3e94e8a15fdf197003ad7e" kindref="member">getTankAtGrowth</ref>()<sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal">;</highlight></codeline>
+<codeline lineno="220"><highlight class="normal"></highlight></codeline>
+<codeline lineno="226" refid="class_animal_non_statistical_growth_1a74f732ea0625324af796e01454a7bc1e" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/><ref refid="class_dry_mass" kindref="compound">DryMass</ref>&amp;<sp/><ref refid="class_animal_non_statistical_growth_1a74f732ea0625324af796e01454a7bc1e" kindref="member">getPreviousReproMassTarget</ref>()<sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal">;</highlight></codeline>
+<codeline lineno="227"><highlight class="normal"></highlight></codeline>
+<codeline lineno="233" refid="class_animal_non_statistical_growth_1a70f3bbd2af09a2f328fa081fe0f66bd7" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/><ref refid="class_dry_mass" kindref="compound">DryMass</ref>&amp;<sp/><ref refid="class_animal_non_statistical_growth_1a70f3bbd2af09a2f328fa081fe0f66bd7" kindref="member">getPreviousMoultingMassTarget</ref>()<sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal">;</highlight></codeline>
+<codeline lineno="234"><highlight class="normal"></highlight></codeline>
+<codeline lineno="238" refid="class_animal_non_statistical_growth_1ab991ed9a421539dddfac008711757697" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/><ref refid="class_animal_non_statistical_growth_1ab991ed9a421539dddfac008711757697" kindref="member">setMatureValue</ref>(</highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordtype">bool</highlight><highlight class="normal"><sp/><ref refid="class_animal_growth_1a245dba4ad1fb98f12653e41758a4ccbe" kindref="member">isMature</ref>,<sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/>Gender&amp;<sp/>gender)<sp/></highlight><highlight class="keyword">override</highlight><highlight class="normal">;</highlight></codeline>
+<codeline lineno="239"><highlight class="normal"></highlight></codeline>
+<codeline lineno="243" refid="class_animal_non_statistical_growth_1a8d47fb34822e8e30b92994c5d305c754" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/><ref refid="class_animal_non_statistical_growth_1a8d47fb34822e8e30b92994c5d305c754" kindref="member">calculateGrowthCurves</ref>(</highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/>std::vector&lt;IndividualTrait&gt;&amp;<sp/>baseIndividualTraits,<sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordtype">unsigned</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>femaleMaxReproductionEvents,<sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/><ref refid="class_precise_double" kindref="compound">PreciseDouble</ref>&amp;<sp/>timeStepsPerDay)<sp/></highlight><highlight class="keyword">override</highlight><highlight class="normal">;</highlight></codeline>
+<codeline lineno="244"><highlight class="normal"></highlight></codeline>
+<codeline lineno="248" refid="class_animal_non_statistical_growth_1a05cae1aafb35b48a44e4664e97d9ecff" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/><ref refid="class_time_step" kindref="compound">TimeStep</ref>&amp;<sp/><ref refid="class_animal_non_statistical_growth_1a05cae1aafb35b48a44e4664e97d9ecff" kindref="member">getAgeForNextReproduction</ref>()<sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal">;</highlight></codeline>
+<codeline lineno="249"><highlight class="normal"></highlight></codeline>
+<codeline lineno="255" refid="class_animal_non_statistical_growth_1a54da28bb5a84be5d3a6b3e6c604d6b5d" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">bool</highlight><highlight class="normal"><sp/><ref refid="class_animal_non_statistical_growth_1a54da28bb5a84be5d3a6b3e6c604d6b5d" kindref="member">isInHabitatShift</ref>()<sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal">;</highlight></codeline>
+<codeline lineno="256"><highlight class="normal"></highlight></codeline>
+<codeline lineno="262" refid="class_animal_non_statistical_growth_1a6b18066446c5dab2b933791231f7678e" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/><ref refid="class_animal_non_statistical_growth_1a6b18066446c5dab2b933791231f7678e" kindref="member">setInHabitatShift</ref>(</highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordtype">bool</highlight><highlight class="normal"><sp/>newInHabitatShiftValue);</highlight></codeline>
+<codeline lineno="263"><highlight class="normal"></highlight></codeline>
+<codeline lineno="269" refid="class_animal_non_statistical_growth_1aed1348d9b40d0c9441f1d2297bf85a18" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/><ref refid="class_dry_mass" kindref="compound">DryMass</ref>&amp;<sp/><ref refid="class_animal_non_statistical_growth_1aed1348d9b40d0c9441f1d2297bf85a18" kindref="member">getNextMassPredicted</ref>()<sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal">;</highlight></codeline>
+<codeline lineno="270"><highlight class="normal"></highlight></codeline>
+<codeline lineno="280" refid="class_animal_non_statistical_growth_1a8879188bf232ae5a9e45cc538ab9caaa" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/><ref refid="class_animal_non_statistical_growth_1a8879188bf232ae5a9e45cc538ab9caaa" kindref="member">calculateNextMassPredicted</ref>(</highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordtype">unsigned</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>reproCounter,<sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordtype">unsigned</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>maxReproductionEvents,<sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/><ref refid="class_precise_double" kindref="compound">PreciseDouble</ref>&amp;<sp/>growthValue,<sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/>Gender<sp/>gender,<sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/><ref refid="class_precise_double" kindref="compound">PreciseDouble</ref>&amp;<sp/>timeStepsPerDay);</highlight></codeline>
+<codeline lineno="281"><highlight class="normal"></highlight></codeline>
+<codeline lineno="287" refid="class_animal_non_statistical_growth_1afc0c7a5d3aa47688c80a300ebd9bf973" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/><ref refid="class_dry_mass" kindref="compound">DryMass</ref>&amp;<sp/><ref refid="class_animal_non_statistical_growth_1afc0c7a5d3aa47688c80a300ebd9bf973" kindref="member">getPreviousNextMassPredicted</ref>()<sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal">;</highlight></codeline>
+<codeline lineno="288"><highlight class="normal"></highlight></codeline>
+<codeline lineno="292" refid="class_animal_non_statistical_growth_1aebbdcdf10d5a09791041e73f54977c1c" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/><ref refid="class_animal_non_statistical_growth_1aebbdcdf10d5a09791041e73f54977c1c" kindref="member">setInstar</ref>(<ref refid="class_landscape" kindref="compound">Landscape</ref>*<sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/>landscape,<sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/><ref refid="class_instar" kindref="compound">Instar</ref>&amp;<sp/>newInstar,<sp/><ref refid="class_animal_non_statistical" kindref="compound">AnimalNonStatistical</ref>*<sp/>animal,<sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/><ref refid="class_precise_double" kindref="compound">PreciseDouble</ref>&amp;<sp/>timeStepsPerDay);</highlight></codeline>
+<codeline lineno="293"><highlight class="normal"></highlight></codeline>
+<codeline lineno="297" refid="class_animal_non_statistical_growth_1a53d332bcd242d076a480697c1368f3ab" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/><ref refid="class_animal_non_statistical_growth_1a53d332bcd242d076a480697c1368f3ab" kindref="member">calculateMatureNextReproductionTargets</ref>(</highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/><ref refid="class_time_step" kindref="compound">TimeStep</ref>&amp;<sp/>pupaPeriodTime,<sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordtype">unsigned</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>femaleMaxReproductionEvents,<sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordtype">unsigned</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>reproCounter,<sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/><ref refid="class_precise_double" kindref="compound">PreciseDouble</ref>&amp;<sp/>growthValue,<sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/><ref refid="class_precise_double" kindref="compound">PreciseDouble</ref>&amp;<sp/>totFec,<sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordtype">bool</highlight><highlight class="normal"><sp/>updatePreviousReproMassTarget,<sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/><ref refid="class_precise_double" kindref="compound">PreciseDouble</ref>&amp;<sp/>timeStepsPerDay);</highlight></codeline>
+<codeline lineno="298"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight></codeline>
+<codeline lineno="306"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">template</highlight><highlight class="normal"><sp/>&lt;</highlight><highlight class="keyword">class</highlight><highlight class="normal"><sp/>Archive&gt;</highlight></codeline>
+<codeline lineno="307" refid="class_animal_non_statistical_growth_1a0c9d504782016be968330fc972bdaf90" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/><ref refid="class_animal_non_statistical_growth_1a0c9d504782016be968330fc972bdaf90" kindref="member">serialize</ref>(Archive<sp/>&amp;ar,<sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordtype">unsigned</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>version);</highlight></codeline>
+<codeline lineno="308"><highlight class="normal"></highlight></codeline>
+<codeline lineno="309"><highlight class="normal"></highlight><highlight class="keyword">protected</highlight><highlight class="normal">:</highlight></codeline>
+<codeline lineno="310" refid="class_animal_non_statistical_growth_1ad1c4845f34b8cc3faeb59b1395be8104" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="class_time_step" kindref="compound">TimeStep</ref><sp/><ref refid="class_animal_non_statistical_growth_1ad1c4845f34b8cc3faeb59b1395be8104" kindref="member">longevity</ref>;<sp/></highlight></codeline>
+<codeline lineno="311" refid="class_animal_non_statistical_growth_1ab027efd649396372b80bb67f1b07d013" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="class_time_step" kindref="compound">TimeStep</ref><sp/><ref refid="class_animal_non_statistical_growth_1ab027efd649396372b80bb67f1b07d013" kindref="member">pupaTimer</ref>;<sp/></highlight></codeline>
+<codeline lineno="312" refid="class_animal_non_statistical_growth_1aa484e85d233eff7890b636ebb3183170" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="class_time_step" kindref="compound">TimeStep</ref><sp/><ref refid="class_animal_non_statistical_growth_1aa484e85d233eff7890b636ebb3183170" kindref="member">diapauseTimeSteps</ref>;<sp/></highlight></codeline>
+<codeline lineno="313" refid="class_animal_non_statistical_growth_1a206a0b0439af801ef0512241b9e55ba8" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="class_dry_mass" kindref="compound">DryMass</ref><sp/><ref refid="class_animal_non_statistical_growth_1a206a0b0439af801ef0512241b9e55ba8" kindref="member">massForNextReproduction</ref>;<sp/></highlight></codeline>
+<codeline lineno="314" refid="class_animal_non_statistical_growth_1ae1ffe47384425d7e1d43f2616a39486f" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="class_dry_mass" kindref="compound">DryMass</ref><sp/><ref refid="class_animal_non_statistical_growth_1ae1ffe47384425d7e1d43f2616a39486f" kindref="member">lastMassBeforeMaturationOrOviposition</ref>;<sp/></highlight></codeline>
+<codeline lineno="315" refid="class_animal_non_statistical_growth_1aba3123ab49fe09271574f4fa23c4e9a1" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="class_dry_mass" kindref="compound">DryMass</ref><sp/><ref refid="class_animal_non_statistical_growth_1aba3123ab49fe09271574f4fa23c4e9a1" kindref="member">clutchDryMass</ref>;<sp/></highlight></codeline>
+<codeline lineno="316" refid="class_animal_non_statistical_growth_1a5bcfeb75955958dcf2d5d46439a16f10" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="class_dry_mass" kindref="compound">DryMass</ref><sp/><ref refid="class_animal_non_statistical_growth_1a5bcfeb75955958dcf2d5d46439a16f10" kindref="member">tankAtGrowth</ref>;<sp/></highlight></codeline>
+<codeline lineno="317" refid="class_animal_non_statistical_growth_1aae3f65c8981b363f3025ba0e539fb2ca" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="class_dry_mass" kindref="compound">DryMass</ref><sp/><ref refid="class_animal_non_statistical_growth_1aae3f65c8981b363f3025ba0e539fb2ca" kindref="member">nextMassPredicted</ref>;<sp/></highlight></codeline>
+<codeline lineno="318" refid="class_animal_non_statistical_growth_1af797a1422c3b23a74c888f69175c4fff" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="class_dry_mass" kindref="compound">DryMass</ref><sp/><ref refid="class_animal_non_statistical_growth_1af797a1422c3b23a74c888f69175c4fff" kindref="member">previousNextMassPredicted</ref>;<sp/></highlight></codeline>
+<codeline lineno="319" refid="class_animal_non_statistical_growth_1a4564142ed287cc97ee83a4b3702b92e6" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">bool</highlight><highlight class="normal"><sp/><ref refid="class_animal_non_statistical_growth_1a4564142ed287cc97ee83a4b3702b92e6" kindref="member">calculatedFirstReproductionTargets</ref>;<sp/></highlight></codeline>
+<codeline lineno="320" refid="class_animal_non_statistical_growth_1a765e6b71883ff352083a4870de3159c3" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">bool</highlight><highlight class="normal"><sp/><ref refid="class_animal_non_statistical_growth_1a765e6b71883ff352083a4870de3159c3" kindref="member">calculatedMassAtMaturation</ref>;<sp/></highlight></codeline>
+<codeline lineno="321" refid="class_animal_non_statistical_growth_1a182d9c4f3d17261a9580ab0e911b697c" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="class_dry_mass" kindref="compound">DryMass</ref><sp/><ref refid="class_animal_non_statistical_growth_1a182d9c4f3d17261a9580ab0e911b697c" kindref="member">massAtMaturation</ref>;<sp/></highlight></codeline>
+<codeline lineno="322" refid="class_animal_non_statistical_growth_1ac3014fa932ea575410cf7a5c9f839c95" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/>std::vector&lt;TimeStep&gt;<sp/><ref refid="class_animal_non_statistical_growth_1ac3014fa932ea575410cf7a5c9f839c95" kindref="member">actualMoltingTimeVector</ref>;<sp/></highlight></codeline>
+<codeline lineno="323" refid="class_animal_non_statistical_growth_1a434aa244177457db918c8b5b9e6e1bf9" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/>std::vector&lt;DryMass&gt;<sp/><ref refid="class_animal_non_statistical_growth_1a434aa244177457db918c8b5b9e6e1bf9" kindref="member">actualMoltingMassVector</ref>;<sp/></highlight></codeline>
+<codeline lineno="324" refid="class_animal_non_statistical_growth_1a8927acb80367ab2c3a901654d2a82e0d" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="class_day" kindref="compound">Day</ref><sp/><ref refid="class_animal_non_statistical_growth_1a8927acb80367ab2c3a901654d2a82e0d" kindref="member">dateEgg</ref>;<sp/></highlight></codeline>
+<codeline lineno="325" refid="class_animal_non_statistical_growth_1af88faa560398ce3cd6694db649146f14" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="class_dry_mass" kindref="compound">DryMass</ref><sp/><ref refid="class_animal_non_statistical_growth_1af88faa560398ce3cd6694db649146f14" kindref="member">totalReproMass</ref>;<sp/></highlight></codeline>
+<codeline lineno="326" refid="class_animal_non_statistical_growth_1a56defd3a7affbba0b9108a19768d17ad" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">bool</highlight><highlight class="normal"><sp/><ref refid="class_animal_non_statistical_growth_1a56defd3a7affbba0b9108a19768d17ad" kindref="member">capitalBreeding</ref>;<sp/></highlight></codeline>
+<codeline lineno="327" refid="class_animal_non_statistical_growth_1ae59a90892917814daa3e58c85d0a8c6d" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="class_time_step" kindref="compound">TimeStep</ref><sp/><ref refid="class_animal_non_statistical_growth_1ae59a90892917814daa3e58c85d0a8c6d" kindref="member">ageForNextReproduction</ref>;<sp/></highlight></codeline>
+<codeline lineno="328" refid="class_animal_non_statistical_growth_1a3ec99129d277868b07fc2b056358ece0" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">bool</highlight><highlight class="normal"><sp/><ref refid="class_animal_non_statistical_growth_1a3ec99129d277868b07fc2b056358ece0" kindref="member">inHabitatShift</ref>;<sp/></highlight></codeline>
+<codeline lineno="329" refid="class_animal_non_statistical_growth_1a171ec2ac6eb64fe9601f62b06c8c3e7d" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="class_dry_mass" kindref="compound">DryMass</ref><sp/><ref refid="class_animal_non_statistical_growth_1a171ec2ac6eb64fe9601f62b06c8c3e7d" kindref="member">previousReproMassTarget</ref>;<sp/></highlight></codeline>
+<codeline lineno="330" refid="class_animal_non_statistical_growth_1a2f4acf4383a080030e976b4772c77c31" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="class_dry_mass" kindref="compound">DryMass</ref><sp/><ref refid="class_animal_non_statistical_growth_1a2f4acf4383a080030e976b4772c77c31" kindref="member">previousMoultingMassTarget</ref>;<sp/></highlight></codeline>
+<codeline lineno="331"><highlight class="normal"></highlight></codeline>
+<codeline lineno="332"><highlight class="normal"></highlight></codeline>
+<codeline lineno="336" refid="class_animal_non_statistical_growth_1a7e3602f28114c8075e473af7b5767fa8" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/><ref refid="class_animal_non_statistical_growth_1a7e3602f28114c8075e473af7b5767fa8" kindref="member">calculateLongevity</ref>(</highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/><ref refid="class_precise_double" kindref="compound">PreciseDouble</ref>&amp;<sp/>longevitySinceMaturationValue,<sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/><ref refid="class_time_step" kindref="compound">TimeStep</ref>&amp;<sp/>pupaPeriodTime);</highlight></codeline>
+<codeline lineno="337"><highlight class="normal"></highlight></codeline>
+<codeline lineno="341" refid="class_animal_non_statistical_growth_1a4fd0a97632826fb18f3dc8b9eebcd859" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/><ref refid="class_animal_non_statistical_growth_1a4fd0a97632826fb18f3dc8b9eebcd859" kindref="member">calculateTotalReproMass</ref>();</highlight></codeline>
+<codeline lineno="342"><highlight class="normal"></highlight></codeline>
+<codeline lineno="348" refid="class_animal_non_statistical_growth_1a2af5f8e9f4cdc5414f53f02d8b72db3a" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/><ref refid="class_dry_mass" kindref="compound">DryMass</ref>&amp;<sp/><ref refid="class_animal_non_statistical_growth_1a2af5f8e9f4cdc5414f53f02d8b72db3a" kindref="member">getLastMassBeforeMaturationOrOviposition</ref>()<sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal">;</highlight></codeline>
+<codeline lineno="349"><highlight class="normal"></highlight></codeline>
+<codeline lineno="355" refid="class_animal_non_statistical_growth_1a54b961c29fdbbcac2d6d2e3b1940a2f1" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/><ref refid="class_animal_non_statistical_growth_1a54b961c29fdbbcac2d6d2e3b1940a2f1" kindref="member">setLastMassBeforeMaturationOrOviposition</ref>(</highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/><ref refid="class_dry_mass" kindref="compound">DryMass</ref>&amp;<sp/>newLastMassBeforeMaturationOrOviposition);</highlight></codeline>
+<codeline lineno="356"><highlight class="normal"></highlight></codeline>
+<codeline lineno="368" refid="class_animal_non_statistical_growth_1a81e71afc0fadec76ca2116ec19612f4e" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/><ref refid="class_animal_non_statistical_growth_1a81e71afc0fadec76ca2116ec19612f4e" kindref="member">calculateNextMassPredicted</ref>(</highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/><ref refid="class_dry_mass" kindref="compound">DryMass</ref>&amp;<sp/>dryMass,<sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/><ref refid="class_time_step" kindref="compound">TimeStep</ref>&amp;<sp/>age,<sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordtype">unsigned</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>reproCounter,<sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordtype">unsigned</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>maxReproductionEvents,<sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/><ref refid="class_precise_double" kindref="compound">PreciseDouble</ref>&amp;<sp/>growthValue,<sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/>Gender<sp/>gender,<sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/><ref refid="class_precise_double" kindref="compound">PreciseDouble</ref>&amp;<sp/>timeStepsPerDay);</highlight></codeline>
+<codeline lineno="369"><highlight class="normal"></highlight></codeline>
+<codeline lineno="380" refid="class_animal_non_statistical_growth_1a13bbe48d024293c48aa4bfb170074c91" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/>std::pair&lt;std::pair&lt;bool,<sp/>TimeStep&gt;,<sp/>std::pair&lt;bool,<sp/>LifeStage&gt;&gt;<sp/><ref refid="class_animal_non_statistical_growth_1a13bbe48d024293c48aa4bfb170074c91" kindref="member">checkReproductionTargets</ref>(Gender<sp/>gender,<sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/>SexualType<sp/>sexualType,<sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordtype">bool</highlight><highlight class="normal"><sp/>isMated);</highlight></codeline>
+<codeline lineno="381"><highlight class="normal"></highlight></codeline>
+<codeline lineno="387" refid="class_animal_non_statistical_growth_1a23afd070d9eef21c8dddf14158805380" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">bool</highlight><highlight class="normal"><sp/><ref refid="class_animal_non_statistical_growth_1a23afd070d9eef21c8dddf14158805380" kindref="member">meetReproductionTargets</ref>()<sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal">;</highlight></codeline>
+<codeline lineno="388"><highlight class="normal"></highlight></codeline>
+<codeline lineno="394" refid="class_animal_non_statistical_growth_1ad37c55a796e1a160bc73047f5ecc1e4f" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">bool</highlight><highlight class="normal"><sp/><ref refid="class_animal_non_statistical_growth_1ad37c55a796e1a160bc73047f5ecc1e4f" kindref="member">meetMoltingTargets</ref>()<sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal">;</highlight></codeline>
+<codeline lineno="395"><highlight class="normal"></highlight></codeline>
+<codeline lineno="403" refid="class_animal_non_statistical_growth_1ab33a0d266bd68f5708c4a36cb29669af" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/><ref refid="class_animal_non_statistical_growth_1ab33a0d266bd68f5708c4a36cb29669af" kindref="member">applyMoulting</ref>(</highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/><ref refid="class_time_step" kindref="compound">TimeStep</ref><sp/>actualTimeStep,<sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/><ref refid="class_precise_double" kindref="compound">PreciseDouble</ref>&amp;<sp/>energyTankFinalTraitValue,<sp/>Gender<sp/>gender);</highlight></codeline>
+<codeline lineno="404"><highlight class="normal"></highlight></codeline>
+<codeline lineno="410" refid="class_animal_non_statistical_growth_1afa71216da089effe56e650644221dcfb" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/><ref refid="class_animal_non_statistical_growth_1afa71216da089effe56e650644221dcfb" kindref="member">calculateClutchDryMass</ref>(</highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/><ref refid="class_dry_mass" kindref="compound">DryMass</ref>&amp;<sp/>individualDryMass);</highlight></codeline>
+<codeline lineno="411"><highlight class="normal"></highlight></codeline>
+<codeline lineno="417" refid="class_animal_non_statistical_growth_1a5fffd2a7772df14d684d14256ee29c4d" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/><ref refid="class_animal_non_statistical_growth_1a5fffd2a7772df14d684d14256ee29c4d" kindref="member">calculateClutchDryMass</ref>(</highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/><ref refid="class_precise_double" kindref="compound">PreciseDouble</ref>&amp;<sp/>currentEggs);</highlight></codeline>
+<codeline lineno="418"><highlight class="normal"></highlight></codeline>
+<codeline lineno="424" refid="class_animal_non_statistical_growth_1add1348a194f7f5701a825c485dae22e4" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/><ref refid="class_dry_mass" kindref="compound">DryMass</ref>&amp;<sp/><ref refid="class_animal_non_statistical_growth_1add1348a194f7f5701a825c485dae22e4" kindref="member">getClutchDryMass</ref>()<sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal">;</highlight></codeline>
+<codeline lineno="425"><highlight class="normal"></highlight></codeline>
+<codeline lineno="431" refid="class_animal_non_statistical_growth_1a0d76bdf90e0087f2a5c0f6adff455b3a" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/><ref refid="class_animal_non_statistical_growth_1a0d76bdf90e0087f2a5c0f6adff455b3a" kindref="member">setDateEgg</ref>(<ref refid="class_day" kindref="compound">Day</ref><sp/>newDateEgg);</highlight></codeline>
+<codeline lineno="432"><highlight class="normal"></highlight></codeline>
+<codeline lineno="440" refid="class_animal_non_statistical_growth_1acc950d1aa160e624e5be7a4f97d4110d" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/><ref refid="class_animal_non_statistical_growth_1acc950d1aa160e624e5be7a4f97d4110d" kindref="member">moveOnNextInstar</ref>(<ref refid="class_landscape" kindref="compound">Landscape</ref>*<sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/>landscape,<sp/><ref refid="class_animal_non_statistical" kindref="compound">AnimalNonStatistical</ref>*<sp/>animal,<sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/><ref refid="class_precise_double" kindref="compound">PreciseDouble</ref>&amp;<sp/>timeStepsPerDay);</highlight></codeline>
+<codeline lineno="441"><highlight class="normal"></highlight></codeline>
+<codeline lineno="447" refid="class_animal_non_statistical_growth_1a0b1de081f3cb3ce8dc552c2e5e642e6a" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/><ref refid="class_animal_non_statistical_growth_1a0b1de081f3cb3ce8dc552c2e5e642e6a" kindref="member">setAgeForNextReproduction</ref>(</highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/><ref refid="class_time_step" kindref="compound">TimeStep</ref>&amp;<sp/>newAgeForNextReproduction);</highlight></codeline>
+<codeline lineno="448"><highlight class="normal">};</highlight></codeline>
+<codeline lineno="449"><highlight class="normal"></highlight></codeline>
+<codeline lineno="450"><highlight class="normal"></highlight><highlight class="preprocessor">#endif<sp/></highlight><highlight class="comment">/*<sp/>ANIMAL_NON_STATISTICAL_GROWTH_MODULE_H_<sp/>*/</highlight><highlight class="preprocessor"></highlight></codeline>
+    </programlisting>
+    <location file="App/Model/IBM/Landscape/LivingBeings/Animals/Growth/AnimalNonStatisticalGrowth.h"/>
+  </compounddef>
+</doxygen>

@@ -1,0 +1,58 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.18.0" xml:lang="en-US">
+  <compounddef id="class_route_destination_selection_policy" kind="class" language="C++" prot="public" abstract="yes">
+    <compoundname>RouteDestinationSelectionPolicy</compoundname>
+    <derivedcompoundref refid="class_candidate_priority_route_selection_policy" prot="public" virt="non-virtual">CandidatePriorityRouteSelectionPolicy</derivedcompoundref>
+    <sectiondef kind="public-func">
+      <memberdef kind="function" id="class_route_destination_selection_policy_1ad7e11d7ea97be3bc71d0a4491a3c7683" prot="public" static="no" const="no" explicit="no" inline="no" virt="virtual">
+        <type></type>
+        <definition>virtual RouteDestinationSelectionPolicy::~RouteDestinationSelectionPolicy</definition>
+        <argsstring>()=default</argsstring>
+        <name>~RouteDestinationSelectionPolicy</name>
+        <qualifiedname>RouteDestinationSelectionPolicy::~RouteDestinationSelectionPolicy</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="App/Model/IBM/Landscape/Map/Navigation/DestinationSelectionPolicy.h" line="26" column="9"/>
+      </memberdef>
+      <memberdef kind="function" id="class_route_destination_selection_policy_1a4413fdb122231a0d3ad736bca82eefd2" prot="public" static="no" const="yes" explicit="no" inline="no" virt="pure-virtual">
+        <type>size_t</type>
+        <definition>virtual size_t RouteDestinationSelectionPolicy::selectGoal</definition>
+        <argsstring>(const std::vector&lt; RouteGoal &gt; &amp;goals, const std::vector&lt; size_t &gt; &amp;reachableGoalIndices, const std::vector&lt; double &gt; &amp;routeCosts) const =0</argsstring>
+        <name>selectGoal</name>
+        <qualifiedname>RouteDestinationSelectionPolicy::selectGoal</qualifiedname>
+        <param>
+          <type>const std::vector&lt; RouteGoal &gt; &amp;</type>
+          <declname>goals</declname>
+        </param>
+        <param>
+          <type>const std::vector&lt; size_t &gt; &amp;</type>
+          <declname>reachableGoalIndices</declname>
+        </param>
+        <param>
+          <type>const std::vector&lt; double &gt; &amp;</type>
+          <declname>routeCosts</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="App/Model/IBM/Landscape/Map/Navigation/DestinationSelectionPolicy.h" line="27" column="16"/>
+      </memberdef>
+    </sectiondef>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+    </detaileddescription>
+    <location file="App/Model/IBM/Landscape/Map/Navigation/DestinationSelectionPolicy.h" line="23" column="1" bodyfile="App/Model/IBM/Landscape/Map/Navigation/DestinationSelectionPolicy.h" bodystart="24" bodyend="28"/>
+    <listofallmembers>
+      <member refid="class_route_destination_selection_policy_1a4413fdb122231a0d3ad736bca82eefd2" prot="public" virt="pure-virtual"><scope>RouteDestinationSelectionPolicy</scope><name>selectGoal</name></member>
+      <member refid="class_route_destination_selection_policy_1ad7e11d7ea97be3bc71d0a4491a3c7683" prot="public" virt="virtual"><scope>RouteDestinationSelectionPolicy</scope><name>~RouteDestinationSelectionPolicy</name></member>
+    </listofallmembers>
+  </compounddef>
+</doxygen>

@@ -1,0 +1,608 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.18.0" xml:lang="en-US">
+  <compounddef id="_cell_moisture_8h" kind="file" language="C++">
+    <compoundname>CellMoisture.h</compoundname>
+    <includes local="no">boost/serialization/serialization.hpp</includes>
+    <includes local="no">boost/serialization/base_object.hpp</includes>
+    <includes local="no">boost/serialization/assume_abstract.hpp</includes>
+    <includes local="no">boost/serialization/export.hpp</includes>
+    <includes refid="_cell_moisture_interface_8h" local="yes">App/Model/IBM/Landscape/Map/TerrainCells/PatchApplicator/Moisture/CellMoistureInterface.h</includes>
+    <includes refid="_moisture_source_8h" local="yes">App/Model/IBM/Landscape/Map/Patches/Source/MoistureSource.h</includes>
+    <includedby refid="_leaf_patch_applicator_8h" local="yes">App/Model/IBM/Landscape/Map/SpatialTree/TerrainCells/PatchApplicator/LeafPatchApplicator.h</includedby>
+    <includedby refid="_spatial_tree_terrain_cell_8h" local="yes">App/Model/IBM/Landscape/Map/SpatialTree/TerrainCells/SpatialTreeTerrainCell.h</includedby>
+    <incdepgraph>
+      <node id="25">
+        <label>App/Model/IBM/Landscape/LivingBeings/StructuralUnits.h</label>
+        <link refid="_structural_units_8h_source"/>
+        <childnode refid="7" relation="include">
+        </childnode>
+        <childnode refid="8" relation="include">
+        </childnode>
+        <childnode refid="9" relation="include">
+        </childnode>
+        <childnode refid="10" relation="include">
+        </childnode>
+        <childnode refid="12" relation="include">
+        </childnode>
+        <childnode refid="21" relation="include">
+        </childnode>
+        <childnode refid="18" relation="include">
+        </childnode>
+      </node>
+      <node id="30">
+        <label>App/Model/IBM/Landscape/LivingBeings/TimeUnits.h</label>
+        <link refid="_time_units_8h_source"/>
+        <childnode refid="7" relation="include">
+        </childnode>
+        <childnode refid="8" relation="include">
+        </childnode>
+        <childnode refid="9" relation="include">
+        </childnode>
+        <childnode refid="10" relation="include">
+        </childnode>
+        <childnode refid="12" relation="include">
+        </childnode>
+        <childnode refid="21" relation="include">
+        </childnode>
+        <childnode refid="18" relation="include">
+        </childnode>
+      </node>
+      <node id="26">
+        <label>App/Model/IBM/Landscape/Map/Patches/Source/MoistureSource.h</label>
+        <link refid="_moisture_source_8h_source"/>
+        <childnode refid="5" relation="include">
+        </childnode>
+        <childnode refid="27" relation="include">
+        </childnode>
+        <childnode refid="20" relation="include">
+        </childnode>
+        <childnode refid="28" relation="include">
+        </childnode>
+        <childnode refid="29" relation="include">
+        </childnode>
+        <childnode refid="25" relation="include">
+        </childnode>
+        <childnode refid="30" relation="include">
+        </childnode>
+        <childnode refid="15" relation="include">
+        </childnode>
+        <childnode refid="31" relation="include">
+        </childnode>
+        <childnode refid="38" relation="include">
+        </childnode>
+      </node>
+      <node id="29">
+        <label>App/Model/IBM/Landscape/Map/Patches/Source/PathSource.h</label>
+        <link refid="_path_source_8h_source"/>
+        <childnode refid="7" relation="include">
+        </childnode>
+        <childnode refid="8" relation="include">
+        </childnode>
+        <childnode refid="9" relation="include">
+        </childnode>
+        <childnode refid="10" relation="include">
+        </childnode>
+      </node>
+      <node id="53">
+        <label>App/Model/IBM/Landscape/Map/TerrainCells/PatchApplicator/CellElement.h</label>
+        <link refid="_cell_element_8h_source"/>
+        <childnode refid="2" relation="include">
+        </childnode>
+        <childnode refid="3" relation="include">
+        </childnode>
+        <childnode refid="4" relation="include">
+        </childnode>
+        <childnode refid="7" relation="include">
+        </childnode>
+        <childnode refid="8" relation="include">
+        </childnode>
+        <childnode refid="9" relation="include">
+        </childnode>
+        <childnode refid="10" relation="include">
+        </childnode>
+      </node>
+      <node id="1">
+        <label>App/Model/IBM/Landscape/Map/TerrainCells/PatchApplicator/Moisture/CellMoisture.h</label>
+        <link refid="_cell_moisture_8h"/>
+        <childnode refid="2" relation="include">
+        </childnode>
+        <childnode refid="3" relation="include">
+        </childnode>
+        <childnode refid="4" relation="include">
+        </childnode>
+        <childnode refid="5" relation="include">
+        </childnode>
+        <childnode refid="6" relation="include">
+        </childnode>
+        <childnode refid="26" relation="include">
+        </childnode>
+      </node>
+      <node id="6">
+        <label>App/Model/IBM/Landscape/Map/TerrainCells/PatchApplicator/Moisture/CellMoistureInterface.h</label>
+        <link refid="_cell_moisture_interface_8h_source"/>
+        <childnode refid="2" relation="include">
+        </childnode>
+        <childnode refid="3" relation="include">
+        </childnode>
+        <childnode refid="4" relation="include">
+        </childnode>
+        <childnode refid="7" relation="include">
+        </childnode>
+        <childnode refid="8" relation="include">
+        </childnode>
+        <childnode refid="9" relation="include">
+        </childnode>
+        <childnode refid="10" relation="include">
+        </childnode>
+        <childnode refid="11" relation="include">
+        </childnode>
+        <childnode refid="12" relation="include">
+        </childnode>
+        <childnode refid="13" relation="include">
+        </childnode>
+        <childnode refid="14" relation="include">
+        </childnode>
+        <childnode refid="15" relation="include">
+        </childnode>
+        <childnode refid="25" relation="include">
+        </childnode>
+        <childnode refid="26" relation="include">
+        </childnode>
+        <childnode refid="53" relation="include">
+        </childnode>
+      </node>
+      <node id="37">
+        <label>App/Model/IBM/Maths/Dynamics/Dynamics.h</label>
+        <link refid="_dynamics_8h_source"/>
+        <childnode refid="7" relation="include">
+        </childnode>
+        <childnode refid="8" relation="include">
+        </childnode>
+        <childnode refid="9" relation="include">
+        </childnode>
+        <childnode refid="10" relation="include">
+        </childnode>
+        <childnode refid="20" relation="include">
+        </childnode>
+        <childnode refid="28" relation="include">
+        </childnode>
+        <childnode refid="27" relation="include">
+        </childnode>
+        <childnode refid="30" relation="include">
+        </childnode>
+        <childnode refid="25" relation="include">
+        </childnode>
+        <childnode refid="32" relation="include">
+        </childnode>
+        <childnode refid="15" relation="include">
+        </childnode>
+      </node>
+      <node id="38">
+        <label>App/Model/IBM/Maths/Dynamics/NonMassBased/CycleDynamics.h</label>
+        <link refid="_cycle_dynamics_8h_source"/>
+        <childnode refid="5" relation="include">
+        </childnode>
+        <childnode refid="39" relation="include">
+        </childnode>
+        <childnode refid="40" relation="include">
+        </childnode>
+        <childnode refid="27" relation="include">
+        </childnode>
+        <childnode refid="31" relation="include">
+        </childnode>
+        <childnode refid="41" relation="include">
+        </childnode>
+      </node>
+      <node id="31">
+        <label>App/Model/IBM/Maths/Dynamics/NonMassBasedDynamics.h</label>
+        <link refid="_non_mass_based_dynamics_8h_source"/>
+        <childnode refid="7" relation="include">
+        </childnode>
+        <childnode refid="8" relation="include">
+        </childnode>
+        <childnode refid="9" relation="include">
+        </childnode>
+        <childnode refid="10" relation="include">
+        </childnode>
+        <childnode refid="20" relation="include">
+        </childnode>
+        <childnode refid="28" relation="include">
+        </childnode>
+        <childnode refid="27" relation="include">
+        </childnode>
+        <childnode refid="30" relation="include">
+        </childnode>
+        <childnode refid="32" relation="include">
+        </childnode>
+        <childnode refid="15" relation="include">
+        </childnode>
+        <childnode refid="37" relation="include">
+        </childnode>
+      </node>
+      <node id="41">
+        <label>App/Model/IBM/Maths/Random.h</label>
+        <link refid="_random_8h_source"/>
+        <childnode refid="21" relation="include">
+        </childnode>
+        <childnode refid="42" relation="include">
+        </childnode>
+        <childnode refid="23" relation="include">
+        </childnode>
+        <childnode refid="43" relation="include">
+        </childnode>
+        <childnode refid="44" relation="include">
+        </childnode>
+        <childnode refid="40" relation="include">
+        </childnode>
+        <childnode refid="45" relation="include">
+        </childnode>
+        <childnode refid="46" relation="include">
+        </childnode>
+        <childnode refid="22" relation="include">
+        </childnode>
+        <childnode refid="47" relation="include">
+        </childnode>
+        <childnode refid="14" relation="include">
+        </childnode>
+        <childnode refid="35" relation="include">
+        </childnode>
+        <childnode refid="48" relation="include">
+        </childnode>
+        <childnode refid="30" relation="include">
+        </childnode>
+        <childnode refid="49" relation="include">
+        </childnode>
+      </node>
+      <node id="15">
+        <label>App/Model/IBM/Physics/Temperature.h</label>
+        <link refid="_temperature_8h_source"/>
+        <childnode refid="7" relation="include">
+        </childnode>
+        <childnode refid="8" relation="include">
+        </childnode>
+        <childnode refid="9" relation="include">
+        </childnode>
+        <childnode refid="10" relation="include">
+        </childnode>
+        <childnode refid="11" relation="include">
+        </childnode>
+        <childnode refid="16" relation="include">
+        </childnode>
+        <childnode refid="17" relation="include">
+        </childnode>
+        <childnode refid="18" relation="include">
+        </childnode>
+      </node>
+      <node id="35">
+        <label>Exceptions/LineInfoException.h</label>
+        <link refid="_line_info_exception_8h_source"/>
+        <childnode refid="36" relation="include">
+        </childnode>
+        <childnode refid="20" relation="include">
+        </childnode>
+      </node>
+      <node id="50">
+        <label>Coordinate3D.h</label>
+        <link refid="_coordinate3_d_8h_source"/>
+        <childnode refid="51" relation="include">
+        </childnode>
+        <childnode refid="9" relation="include">
+        </childnode>
+        <childnode refid="10" relation="include">
+        </childnode>
+        <childnode refid="11" relation="include">
+        </childnode>
+      </node>
+      <node id="32">
+        <label>Misc/EnumClass.h</label>
+        <link refid="_enum_class_8h_source"/>
+        <childnode refid="28" relation="include">
+        </childnode>
+        <childnode refid="20" relation="include">
+        </childnode>
+        <childnode refid="33" relation="include">
+        </childnode>
+        <childnode refid="34" relation="include">
+        </childnode>
+        <childnode refid="19" relation="include">
+        </childnode>
+        <childnode refid="35" relation="include">
+        </childnode>
+      </node>
+      <node id="48">
+        <label>Misc/Maths/Constants.h</label>
+        <link refid="_constants_8h_source"/>
+      </node>
+      <node id="18">
+        <label>Misc/Maths/PreciseDouble.h</label>
+        <link refid="_precise_double_8h_source"/>
+        <childnode refid="7" relation="include">
+        </childnode>
+        <childnode refid="8" relation="include">
+        </childnode>
+        <childnode refid="9" relation="include">
+        </childnode>
+        <childnode refid="10" relation="include">
+        </childnode>
+        <childnode refid="19" relation="include">
+        </childnode>
+        <childnode refid="20" relation="include">
+        </childnode>
+        <childnode refid="21" relation="include">
+        </childnode>
+        <childnode refid="22" relation="include">
+        </childnode>
+        <childnode refid="23" relation="include">
+        </childnode>
+        <childnode refid="24" relation="include">
+        </childnode>
+        <childnode refid="16" relation="include">
+        </childnode>
+      </node>
+      <node id="49">
+        <label>Misc/Types.h</label>
+        <link refid="_types_8h_source"/>
+        <childnode refid="50" relation="include">
+        </childnode>
+        <childnode refid="52" relation="include">
+        </childnode>
+        <childnode refid="24" relation="include">
+        </childnode>
+        <childnode refid="18" relation="include">
+        </childnode>
+      </node>
+      <node id="22">
+        <label>algorithm</label>
+      </node>
+      <node id="46">
+        <label>atomic</label>
+      </node>
+      <node id="9">
+        <label>boost/archive/binary_iarchive.hpp</label>
+      </node>
+      <node id="10">
+        <label>boost/archive/binary_oarchive.hpp</label>
+      </node>
+      <node id="7">
+        <label>boost/archive/text_iarchive.hpp</label>
+      </node>
+      <node id="8">
+        <label>boost/archive/text_oarchive.hpp</label>
+      </node>
+      <node id="51">
+        <label>boost/serialization/access.hpp</label>
+      </node>
+      <node id="4">
+        <label>boost/serialization/assume_abstract.hpp</label>
+      </node>
+      <node id="3">
+        <label>boost/serialization/base_object.hpp</label>
+      </node>
+      <node id="5">
+        <label>boost/serialization/export.hpp</label>
+      </node>
+      <node id="2">
+        <label>boost/serialization/serialization.hpp</label>
+      </node>
+      <node id="39">
+        <label>boost/serialization/vector.hpp</label>
+      </node>
+      <node id="52">
+        <label>cfloat</label>
+      </node>
+      <node id="21">
+        <label>cmath</label>
+      </node>
+      <node id="36">
+        <label>exception</label>
+      </node>
+      <node id="43">
+        <label>float.h</label>
+      </node>
+      <node id="19">
+        <label>fmt/format.h</label>
+      </node>
+      <node id="11">
+        <label>fstream</label>
+      </node>
+      <node id="16">
+        <label>functional</label>
+      </node>
+      <node id="23">
+        <label>iostream</label>
+      </node>
+      <node id="24">
+        <label>limits</label>
+      </node>
+      <node id="44">
+        <label>list</label>
+      </node>
+      <node id="34">
+        <label>magic_enum/magic_enum.hpp</label>
+      </node>
+      <node id="14">
+        <label>memory</label>
+      </node>
+      <node id="27">
+        <label>nlohmann/json.hpp</label>
+      </node>
+      <node id="47">
+        <label>numeric</label>
+      </node>
+      <node id="12">
+        <label>ostream</label>
+      </node>
+      <node id="45">
+        <label>random</label>
+      </node>
+      <node id="28">
+        <label>sstream</label>
+      </node>
+      <node id="17">
+        <label>stdexcept</label>
+      </node>
+      <node id="42">
+        <label>stdlib.h</label>
+      </node>
+      <node id="20">
+        <label>string</label>
+      </node>
+      <node id="33">
+        <label>unordered_map</label>
+      </node>
+      <node id="13">
+        <label>unordered_set</label>
+      </node>
+      <node id="40">
+        <label>vector</label>
+      </node>
+    </incdepgraph>
+    <invincdepgraph>
+      <node id="8">
+        <label>App/Model/IBM/IBM.h</label>
+        <link refid="_i_b_m_8h_source"/>
+      </node>
+      <node id="9">
+        <label>App/Model/IBM/Landscape/AquaticLandscape.h</label>
+        <link refid="_aquatic_landscape_8h_source"/>
+      </node>
+      <node id="10">
+        <label>App/Model/IBM/Landscape/ArthropodsLandscape.h</label>
+        <link refid="_arthropods_landscape_8h_source"/>
+      </node>
+      <node id="11">
+        <label>App/Model/IBM/Landscape/DinosaursLandscape.h</label>
+        <link refid="_dinosaurs_landscape_8h_source"/>
+      </node>
+      <node id="7">
+        <label>App/Model/IBM/Landscape/Landscape.h</label>
+        <link refid="_landscape_8h_source"/>
+        <childnode refid="8" relation="include">
+        </childnode>
+        <childnode refid="9" relation="include">
+        </childnode>
+        <childnode refid="10" relation="include">
+        </childnode>
+        <childnode refid="11" relation="include">
+        </childnode>
+      </node>
+      <node id="6">
+        <label>App/Model/IBM/Landscape/Map/SpatialTree.h</label>
+        <link refid="_spatial_tree_8h_source"/>
+        <childnode refid="7" relation="include">
+        </childnode>
+      </node>
+      <node id="4">
+        <label>App/Model/IBM/Landscape/Map/SpatialTree/TerrainCells/BranchTerrainCell.h</label>
+        <link refid="_branch_terrain_cell_8h_source"/>
+        <childnode refid="5" relation="include">
+        </childnode>
+      </node>
+      <node id="3">
+        <label>App/Model/IBM/Landscape/Map/SpatialTree/TerrainCells/LeafTerrainCell.h</label>
+        <link refid="_leaf_terrain_cell_8h_source"/>
+        <childnode refid="4" relation="include">
+        </childnode>
+      </node>
+      <node id="2">
+        <label>App/Model/IBM/Landscape/Map/SpatialTree/TerrainCells/PatchApplicator/LeafPatchApplicator.h</label>
+        <link refid="_leaf_patch_applicator_8h_source"/>
+        <childnode refid="3" relation="include">
+        </childnode>
+      </node>
+      <node id="5">
+        <label>App/Model/IBM/Landscape/Map/SpatialTree/TerrainCells/RootTerrainCell.h</label>
+        <link refid="_root_terrain_cell_8h_source"/>
+        <childnode refid="6" relation="include">
+        </childnode>
+      </node>
+      <node id="12">
+        <label>App/Model/IBM/Landscape/Map/SpatialTree/TerrainCells/SpatialTreeTerrainCell.h</label>
+        <link refid="_spatial_tree_terrain_cell_8h_source"/>
+        <childnode refid="6" relation="include">
+        </childnode>
+        <childnode refid="4" relation="include">
+        </childnode>
+        <childnode refid="3" relation="include">
+        </childnode>
+      </node>
+      <node id="1">
+        <label>App/Model/IBM/Landscape/Map/TerrainCells/PatchApplicator/Moisture/CellMoisture.h</label>
+        <link refid="_cell_moisture_8h"/>
+        <childnode refid="2" relation="include">
+        </childnode>
+        <childnode refid="12" relation="include">
+        </childnode>
+      </node>
+    </invincdepgraph>
+    <innerclass refid="class_cell_moisture" prot="public">CellMoisture</innerclass>
+    <briefdescription>
+<para>Concrete implementation of <ref refid="class_cell_moisture_interface" kindref="compound">CellMoistureInterface</ref> representing the moisture and thermal state of a terrain cell. </para>
+    </briefdescription>
+    <detaileddescription>
+<para>This class models how a single moisture source affects a terrain cell, including temperature, humidity, and the resulting maximum resource capacity. It provides the concrete logic for environmental updates required by the <ref refid="class_cell_moisture_interface" kindref="compound">CellMoistureInterface</ref> base class. </para>
+    </detaileddescription>
+    <programlisting>
+<codeline lineno="1"><highlight class="normal"></highlight></codeline>
+<codeline lineno="11"><highlight class="normal"></highlight></codeline>
+<codeline lineno="12"><highlight class="normal"></highlight><highlight class="preprocessor">#ifndef<sp/>CELL_MOISTURE_H_</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="13"><highlight class="normal"></highlight><highlight class="preprocessor">#define<sp/>CELL_MOISTURE_H_</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="14"><highlight class="normal"></highlight></codeline>
+<codeline lineno="15"><highlight class="normal"></highlight></codeline>
+<codeline lineno="16"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&lt;boost/serialization/serialization.hpp&gt;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="17"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&lt;boost/serialization/base_object.hpp&gt;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="18"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&lt;boost/serialization/assume_abstract.hpp&gt;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="19"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&lt;boost/serialization/export.hpp&gt;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="20"><highlight class="normal"></highlight></codeline>
+<codeline lineno="21"><highlight class="normal"></highlight></codeline>
+<codeline lineno="22"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&quot;App/Model/IBM/Landscape/Map/TerrainCells/PatchApplicator/Moisture/CellMoistureInterface.h&quot;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="23"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&quot;App/Model/IBM/Landscape/Map/Patches/Source/MoistureSource.h&quot;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="24"><highlight class="normal"></highlight></codeline>
+<codeline lineno="25"><highlight class="normal"></highlight></codeline>
+<codeline lineno="45" refid="class_cell_moisture" refkind="compound"><highlight class="normal"></highlight><highlight class="keyword">class<sp/></highlight><highlight class="normal"><ref refid="class_cell_moisture_1aaa75bc64b5833f8ad6f9a75b75278058" kindref="member">CellMoisture</ref><sp/>:<sp/></highlight><highlight class="keyword">public</highlight><highlight class="normal"><sp/><ref refid="class_cell_moisture_interface_1a102ea2fb7d0953a58eb6ccb868fa3d1c" kindref="member">CellMoistureInterface</ref></highlight></codeline>
+<codeline lineno="46"><highlight class="normal">{</highlight></codeline>
+<codeline lineno="47"><highlight class="normal"></highlight><highlight class="keyword">public</highlight><highlight class="normal">:</highlight></codeline>
+<codeline lineno="53" refid="class_cell_moisture_1aaa75bc64b5833f8ad6f9a75b75278058" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="class_cell_moisture_1aaa75bc64b5833f8ad6f9a75b75278058" kindref="member">CellMoisture</ref>();</highlight></codeline>
+<codeline lineno="54"><highlight class="normal"></highlight></codeline>
+<codeline lineno="61" refid="class_cell_moisture_1ab3eb7d365123d71faf143c5fca147e9b" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="class_cell_moisture_1ab3eb7d365123d71faf143c5fca147e9b" kindref="member">CellMoisture</ref>(</highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/><ref refid="class_moisture_source" kindref="compound">MoistureSource</ref>*<sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/>newMoistureSource,<sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordtype">size_t</highlight><highlight class="normal"><sp/>newMoisturePatchPriority);</highlight></codeline>
+<codeline lineno="62"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight></codeline>
+<codeline lineno="64" refid="class_cell_moisture_1a78b22aca3e29f34f11d7ca8482bb687b" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">virtual</highlight><highlight class="normal"><sp/><ref refid="class_cell_moisture_1a78b22aca3e29f34f11d7ca8482bb687b" kindref="member">~CellMoisture</ref>();</highlight></codeline>
+<codeline lineno="65"><highlight class="normal"></highlight></codeline>
+<codeline lineno="67" refid="class_cell_moisture_1a06f866e71da1bec7579874b4997655a0" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="class_cell_moisture_1a06f866e71da1bec7579874b4997655a0" kindref="member">CellMoisture</ref>(</highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/><ref refid="class_cell_moisture_1aaa75bc64b5833f8ad6f9a75b75278058" kindref="member">CellMoisture</ref>&amp;)<sp/>=<sp/></highlight><highlight class="keyword">delete</highlight><highlight class="normal">;</highlight></codeline>
+<codeline lineno="68"><highlight class="normal"></highlight></codeline>
+<codeline lineno="70" refid="class_cell_moisture_1a9e7c623c002ee6c3d6694d26324f6114" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="class_cell_moisture_1aaa75bc64b5833f8ad6f9a75b75278058" kindref="member">CellMoisture</ref>&amp;<sp/><ref refid="class_cell_moisture_1a9e7c623c002ee6c3d6694d26324f6114" kindref="member">operator=</ref>(</highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/><ref refid="class_cell_moisture_1aaa75bc64b5833f8ad6f9a75b75278058" kindref="member">CellMoisture</ref>&amp;)<sp/>=<sp/></highlight><highlight class="keyword">delete</highlight><highlight class="normal">;</highlight></codeline>
+<codeline lineno="71"><highlight class="normal"></highlight></codeline>
+<codeline lineno="83" refid="class_cell_moisture_1a3d86bc9dbdbaa0669ce894230dce23c5" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/><ref refid="class_cell_moisture_1a3d86bc9dbdbaa0669ce894230dce23c5" kindref="member">applySource</ref>(</highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/><ref refid="class_moisture_source" kindref="compound">MoistureSource</ref>*<sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/>newMoistureSource,<sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordtype">size_t</highlight><highlight class="normal"><sp/>newMoisturePatchPriority,<sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/><ref refid="class_precise_double" kindref="compound">PreciseDouble</ref>&amp;<sp/>cellSize);</highlight></codeline>
+<codeline lineno="84"><highlight class="normal"></highlight></codeline>
+<codeline lineno="89" refid="class_cell_moisture_1a6ce642ad713d03f98a0f74b7ba8fba3a" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/><ref refid="class_moisture_source" kindref="compound">MoistureSource</ref>*<sp/><ref refid="class_cell_moisture_1a6ce642ad713d03f98a0f74b7ba8fba3a" kindref="member">getMoistureSource</ref>()<sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal">;</highlight></codeline>
+<codeline lineno="90"><highlight class="normal"></highlight></codeline>
+<codeline lineno="92" refid="class_cell_moisture_1a65b024e3c0b6835ac9d7f20eb00d4a37" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/><ref refid="class_temperature" kindref="compound">Temperature</ref>&amp;<sp/><ref refid="class_cell_moisture_1a65b024e3c0b6835ac9d7f20eb00d4a37" kindref="member">getTemperature</ref>()<sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal">;</highlight></codeline>
+<codeline lineno="93"><highlight class="normal"></highlight></codeline>
+<codeline lineno="95" refid="class_cell_moisture_1acae6dcaae192909b05db8bc103adbc3a" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/><ref refid="class_precise_double" kindref="compound">PreciseDouble</ref>&amp;<sp/><ref refid="class_cell_moisture_1acae6dcaae192909b05db8bc103adbc3a" kindref="member">getMoisture</ref>()<sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal">;</highlight></codeline>
+<codeline lineno="96"><highlight class="normal"></highlight></codeline>
+<codeline lineno="98" refid="class_cell_moisture_1ab73af77484e8d95364cc3f3d9ea5ccd8" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">bool</highlight><highlight class="normal"><sp/><ref refid="class_cell_moisture_1ab73af77484e8d95364cc3f3d9ea5ccd8" kindref="member">isInEnemyFreeSpace</ref>()<sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal">;</highlight></codeline>
+<codeline lineno="99"><highlight class="normal"></highlight></codeline>
+<codeline lineno="101" refid="class_cell_moisture_1a9d1dbf57212798077789df1eada90e3c" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">bool</highlight><highlight class="normal"><sp/><ref refid="class_cell_moisture_1a9d1dbf57212798077789df1eada90e3c" kindref="member">isInCompetitorFreeSpace</ref>()<sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal">;</highlight></codeline>
+<codeline lineno="102"><highlight class="normal"></highlight></codeline>
+<codeline lineno="104" refid="class_cell_moisture_1a359f9b022103e4055c340cac69893f9b" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/><ref refid="class_wet_mass" kindref="compound">WetMass</ref>&amp;<sp/><ref refid="class_cell_moisture_1a359f9b022103e4055c340cac69893f9b" kindref="member">getMaximumResourceCapacityDensity</ref>()<sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal">;</highlight></codeline>
+<codeline lineno="105"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight></codeline>
+<codeline lineno="112" refid="class_cell_moisture_1a42a449ac178e52bfd0f386b3cbdf7c9b" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">virtual</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/><ref refid="class_cell_moisture_1a42a449ac178e52bfd0f386b3cbdf7c9b" kindref="member">addTemperatureRange</ref>(std::unordered_set&lt;Temperature&gt;&amp;<sp/>globalTemperatureRange,<sp/>std::vector&lt;Temperature&gt;&amp;<sp/>temperatureCycle)<sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal">;</highlight></codeline>
+<codeline lineno="113"><highlight class="normal"></highlight></codeline>
+<codeline lineno="120" refid="class_cell_moisture_1ae82a437b108dea030e5167338c0f52e0" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/><ref refid="class_cell_moisture_1ae82a437b108dea030e5167338c0f52e0" kindref="member">deserializeCellMoisture</ref>(std::vector&lt;std::pair&lt;size_t,<sp/>MoistureSource*&gt;&gt;&amp;<sp/>appliedMoisture,<sp/><ref refid="class_terrain_cell" kindref="compound">TerrainCell</ref>*<sp/>newTerrainCell);</highlight></codeline>
+<codeline lineno="121"><highlight class="normal"></highlight></codeline>
+<codeline lineno="127"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">template</highlight><highlight class="normal"><sp/>&lt;</highlight><highlight class="keyword">class</highlight><highlight class="normal"><sp/>Archive&gt;</highlight></codeline>
+<codeline lineno="128" refid="class_cell_moisture_1ae90dd541972c3495650bfe68131a45e8" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/><ref refid="class_cell_moisture_1ae90dd541972c3495650bfe68131a45e8" kindref="member">serialize</ref>(Archive<sp/>&amp;ar,<sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordtype">unsigned</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>version);</highlight></codeline>
+<codeline lineno="129"><highlight class="normal"></highlight></codeline>
+<codeline lineno="130"><highlight class="normal"></highlight><highlight class="keyword">protected</highlight><highlight class="normal">:</highlight></codeline>
+<codeline lineno="136" refid="class_cell_moisture_1a7e814377b36f501df86a2f183a80cec4" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/><ref refid="class_moisture_source" kindref="compound">MoistureSource</ref>*<sp/><ref refid="class_cell_moisture_1a7e814377b36f501df86a2f183a80cec4" kindref="member">moistureSource</ref>;</highlight></codeline>
+<codeline lineno="137"><highlight class="normal"></highlight></codeline>
+<codeline lineno="143" refid="class_cell_moisture_1a8830ace2d5003435e55654425baca0c5" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/><ref refid="class_cell_moisture_1a8830ace2d5003435e55654425baca0c5" kindref="member">updateTemperature</ref>();</highlight></codeline>
+<codeline lineno="144"><highlight class="normal"></highlight></codeline>
+<codeline lineno="150" refid="class_cell_moisture_1ae7d6a08a36455e9b6c0f3fa5b0bc4a68" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/><ref refid="class_cell_moisture_1ae7d6a08a36455e9b6c0f3fa5b0bc4a68" kindref="member">updateRelativeHumidity</ref>();</highlight></codeline>
+<codeline lineno="151"><highlight class="normal">};</highlight></codeline>
+<codeline lineno="152"><highlight class="normal"></highlight></codeline>
+<codeline lineno="153"><highlight class="normal"></highlight><highlight class="preprocessor">#endif<sp/></highlight><highlight class="comment">/*<sp/>CELL_MOISTURE_H_<sp/>*/</highlight><highlight class="preprocessor"></highlight></codeline>
+    </programlisting>
+    <location file="App/Model/IBM/Landscape/Map/TerrainCells/PatchApplicator/Moisture/CellMoisture.h"/>
+  </compounddef>
+</doxygen>

@@ -1,0 +1,405 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.18.0" xml:lang="en-US">
+  <compounddef id="class_gaussian1_d" kind="class" language="C++" prot="public">
+    <compoundname>Gaussian1D</compoundname>
+    <includes refid="_gaussian_distribution_8h" local="no">GaussianDistribution.h</includes>
+    <sectiondef kind="protected-attrib">
+      <memberdef kind="variable" id="class_gaussian1_d_1ad23fcab6572d5fa5ebd90188163746a8" prot="protected" static="no" mutable="no">
+        <type><ref refid="class_precise_double" kindref="compound">PreciseDouble</ref></type>
+        <definition>PreciseDouble Gaussian1D::amplitude</definition>
+        <argsstring></argsstring>
+        <name>amplitude</name>
+        <qualifiedname>Gaussian1D::amplitude</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Amplitude of the Gaussian function. </para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="App/Model/IBM/Maths/GaussianDistribution.h" line="32" column="19" bodyfile="App/Model/IBM/Maths/GaussianDistribution.h" bodystart="32" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="class_gaussian1_d_1ae20133474bd2c91f235211f6c17f96ac" prot="protected" static="no" mutable="no">
+        <type><ref refid="class_precise_double" kindref="compound">PreciseDouble</ref></type>
+        <definition>PreciseDouble Gaussian1D::center</definition>
+        <argsstring></argsstring>
+        <name>center</name>
+        <qualifiedname>Gaussian1D::center</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Center of the Gaussian function. </para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="App/Model/IBM/Maths/GaussianDistribution.h" line="33" column="19" bodyfile="App/Model/IBM/Maths/GaussianDistribution.h" bodystart="33" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="class_gaussian1_d_1aacd716ede6f9871f85bfc26df2357b89" prot="protected" static="no" mutable="no">
+        <type><ref refid="class_precise_double" kindref="compound">PreciseDouble</ref></type>
+        <definition>PreciseDouble Gaussian1D::inverseSigma</definition>
+        <argsstring></argsstring>
+        <name>inverseSigma</name>
+        <qualifiedname>Gaussian1D::inverseSigma</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Precomputed 1/sigma for speed. </para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="App/Model/IBM/Maths/GaussianDistribution.h" line="39" column="19" bodyfile="App/Model/IBM/Maths/GaussianDistribution.h" bodystart="39" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="class_gaussian1_d_1ad4cf80d0971dd179e30ac3c30bc1736d" prot="protected" static="no" mutable="no">
+        <type>bool</type>
+        <definition>bool Gaussian1D::precompute</definition>
+        <argsstring></argsstring>
+        <name>precompute</name>
+        <qualifiedname>Gaussian1D::precompute</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Flag indicating if precomputation is enabled. </para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="App/Model/IBM/Maths/GaussianDistribution.h" line="34" column="10" bodyfile="App/Model/IBM/Maths/GaussianDistribution.h" bodystart="34" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="class_gaussian1_d_1a66892329041332ca675b95dfe50026ad" prot="protected" static="no" mutable="no">
+        <type>unsigned int</type>
+        <definition>unsigned int Gaussian1D::precomputeBins</definition>
+        <argsstring></argsstring>
+        <name>precomputeBins</name>
+        <qualifiedname>Gaussian1D::precomputeBins</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para><ref refid="class_number" kindref="compound">Number</ref> of bins for precomputed values. </para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="App/Model/IBM/Maths/GaussianDistribution.h" line="35" column="18" bodyfile="App/Model/IBM/Maths/GaussianDistribution.h" bodystart="35" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="class_gaussian1_d_1a43bbb025af792d433a420fc4399b9ffe" prot="protected" static="no" mutable="no">
+        <type><ref refid="class_precise_double" kindref="compound">PreciseDouble</ref></type>
+        <definition>PreciseDouble Gaussian1D::precomputeBinWidth</definition>
+        <argsstring></argsstring>
+        <name>precomputeBinWidth</name>
+        <qualifiedname>Gaussian1D::precomputeBinWidth</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Size of each bin, stored inverted for speed. </para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="App/Model/IBM/Maths/GaussianDistribution.h" line="38" column="19" bodyfile="App/Model/IBM/Maths/GaussianDistribution.h" bodystart="38" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="class_gaussian1_d_1a940828562cd0d8f150ea5a1748965463" prot="protected" static="no" mutable="no">
+        <type>std::vector&lt; <ref refid="class_precise_double" kindref="compound">PreciseDouble</ref> &gt;</type>
+        <definition>std::vector&lt;PreciseDouble&gt; Gaussian1D::precomputed</definition>
+        <argsstring></argsstring>
+        <name>precomputed</name>
+        <qualifiedname>Gaussian1D::precomputed</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Precomputed values of Gaussian function. </para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="App/Model/IBM/Maths/GaussianDistribution.h" line="37" column="17" bodyfile="App/Model/IBM/Maths/GaussianDistribution.h" bodystart="37" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="class_gaussian1_d_1af2709a1460885a19107eb0c47f07077d" prot="protected" static="no" mutable="no">
+        <type>unsigned int</type>
+        <definition>unsigned int Gaussian1D::precomputeDim</definition>
+        <argsstring></argsstring>
+        <name>precomputeDim</name>
+        <qualifiedname>Gaussian1D::precomputeDim</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Dimension (radius) of precomputation from center. </para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="App/Model/IBM/Maths/GaussianDistribution.h" line="36" column="18" bodyfile="App/Model/IBM/Maths/GaussianDistribution.h" bodystart="36" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="class_gaussian1_d_1abed6cd37e6c3b7ad1ae1a5cd2247b2e7" prot="protected" static="no" mutable="no">
+        <type><ref refid="class_precise_double" kindref="compound">PreciseDouble</ref></type>
+        <definition>PreciseDouble Gaussian1D::sigma</definition>
+        <argsstring></argsstring>
+        <name>sigma</name>
+        <qualifiedname>Gaussian1D::sigma</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Sigma parameter of the Gaussian function. </para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="App/Model/IBM/Maths/GaussianDistribution.h" line="31" column="15" bodyfile="App/Model/IBM/Maths/GaussianDistribution.h" bodystart="31" bodyend="-1"/>
+      </memberdef>
+    </sectiondef>
+    <sectiondef kind="public-func">
+      <memberdef kind="function" id="class_gaussian1_d_1abf7212b4d34e315c576c62dee1cf8b3b" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type></type>
+        <definition>Gaussian1D::Gaussian1D</definition>
+        <argsstring>()</argsstring>
+        <name>Gaussian1D</name>
+        <qualifiedname>Gaussian1D::Gaussian1D</qualifiedname>
+        <briefdescription>
+<para>Default constructor. Amplitude=1, Sigma=1, Center=0. </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="App/Model/IBM/Maths/GaussianDistribution.h" line="43" column="1"/>
+      </memberdef>
+      <memberdef kind="function" id="class_gaussian1_d_1acbc485637efeda8c611e49a81769f775" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type></type>
+        <definition>Gaussian1D::Gaussian1D</definition>
+        <argsstring>(const PreciseDouble &amp;newAmplitude, const PreciseDouble &amp;newSigma, const PreciseDouble &amp;newCenter)</argsstring>
+        <name>Gaussian1D</name>
+        <qualifiedname>Gaussian1D::Gaussian1D</qualifiedname>
+        <param>
+          <type>const <ref refid="class_precise_double" kindref="compound">PreciseDouble</ref> &amp;</type>
+          <declname>newAmplitude</declname>
+        </param>
+        <param>
+          <type>const <ref refid="class_precise_double" kindref="compound">PreciseDouble</ref> &amp;</type>
+          <declname>newSigma</declname>
+        </param>
+        <param>
+          <type>const <ref refid="class_precise_double" kindref="compound">PreciseDouble</ref> &amp;</type>
+          <declname>newCenter</declname>
+        </param>
+        <briefdescription>
+<para>Constructor with specified amplitude, sigma, and center. </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="App/Model/IBM/Maths/GaussianDistribution.h" line="46" column="1"/>
+      </memberdef>
+      <memberdef kind="function" id="class_gaussian1_d_1a3b1bb047886dd11c7eabdd6526fe4d87" prot="public" static="no" const="no" explicit="no" inline="no" virt="virtual">
+        <type></type>
+        <definition>virtual Gaussian1D::~Gaussian1D</definition>
+        <argsstring>()</argsstring>
+        <name>~Gaussian1D</name>
+        <qualifiedname>Gaussian1D::~Gaussian1D</qualifiedname>
+        <briefdescription>
+<para>Destructor. </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="App/Model/IBM/Maths/GaussianDistribution.h" line="49" column="9"/>
+      </memberdef>
+      <memberdef kind="function" id="class_gaussian1_d_1a4b00e91269bf4c9c72e749ad22488c02" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>const <ref refid="class_precise_double" kindref="compound">PreciseDouble</ref> &amp;</type>
+        <definition>const PreciseDouble &amp; Gaussian1D::getAmplitude</definition>
+        <argsstring>()</argsstring>
+        <name>getAmplitude</name>
+        <qualifiedname>Gaussian1D::getAmplitude</qualifiedname>
+        <briefdescription>
+<para>Get the amplitude. </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="App/Model/IBM/Maths/GaussianDistribution.h" line="64" column="21"/>
+      </memberdef>
+      <memberdef kind="function" id="class_gaussian1_d_1a56ce4d776f462dc034bce4c6f1ec50b7" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>const <ref refid="class_precise_double" kindref="compound">PreciseDouble</ref> &amp;</type>
+        <definition>const PreciseDouble &amp; Gaussian1D::getCenter</definition>
+        <argsstring>()</argsstring>
+        <name>getCenter</name>
+        <qualifiedname>Gaussian1D::getCenter</qualifiedname>
+        <briefdescription>
+<para>Get the center. </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="App/Model/IBM/Maths/GaussianDistribution.h" line="70" column="21"/>
+      </memberdef>
+      <memberdef kind="function" id="class_gaussian1_d_1a4fcae2a6aaf0e245ba1d56e0e5a99338" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>const <ref refid="class_precise_double" kindref="compound">PreciseDouble</ref> &amp;</type>
+        <definition>const PreciseDouble &amp; Gaussian1D::getSigma</definition>
+        <argsstring>()</argsstring>
+        <name>getSigma</name>
+        <qualifiedname>Gaussian1D::getSigma</qualifiedname>
+        <briefdescription>
+<para>Get the sigma value. </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="App/Model/IBM/Maths/GaussianDistribution.h" line="52" column="21"/>
+      </memberdef>
+      <memberdef kind="function" id="class_gaussian1_d_1aef8692fa8a110e139dae618ac510e5c0" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type><ref refid="class_precise_double" kindref="compound">PreciseDouble</ref></type>
+        <definition>PreciseDouble Gaussian1D::getValueAtDistance</definition>
+        <argsstring>(const PreciseDouble &amp;distance)</argsstring>
+        <name>getValueAtDistance</name>
+        <qualifiedname>Gaussian1D::getValueAtDistance</qualifiedname>
+        <param>
+          <type>const <ref refid="class_precise_double" kindref="compound">PreciseDouble</ref> &amp;</type>
+          <declname>distance</declname>
+        </param>
+        <briefdescription>
+<para>Compute Gaussian value at a given distance from center. </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="App/Model/IBM/Maths/GaussianDistribution.h" line="73" column="15"/>
+      </memberdef>
+      <memberdef kind="function" id="class_gaussian1_d_1ab6ab4871d3013127f6aa4048c6810d75" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type><ref refid="class_precise_double" kindref="compound">PreciseDouble</ref></type>
+        <definition>PreciseDouble Gaussian1D::getValueAtPoint</definition>
+        <argsstring>(const PreciseDouble &amp;point)</argsstring>
+        <name>getValueAtPoint</name>
+        <qualifiedname>Gaussian1D::getValueAtPoint</qualifiedname>
+        <param>
+          <type>const <ref refid="class_precise_double" kindref="compound">PreciseDouble</ref> &amp;</type>
+          <declname>point</declname>
+        </param>
+        <briefdescription>
+<para>Compute Gaussian value at a specific point. </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="App/Model/IBM/Maths/GaussianDistribution.h" line="76" column="15"/>
+      </memberdef>
+      <memberdef kind="function" id="class_gaussian1_d_1aff13f4b4d69c14345433f52a6dd8e488" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>bool</type>
+        <definition>bool Gaussian1D::isPrecomputed</definition>
+        <argsstring>()</argsstring>
+        <name>isPrecomputed</name>
+        <qualifiedname>Gaussian1D::isPrecomputed</qualifiedname>
+        <briefdescription>
+<para>Check if the <ref refid="class_gaussian1_d" kindref="compound">Gaussian1D</ref> is precomputed. </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="App/Model/IBM/Maths/GaussianDistribution.h" line="58" column="6"/>
+      </memberdef>
+      <memberdef kind="function" id="class_gaussian1_d_1ac1f6fc0944d1bdb7b5511049f91ccd73" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void Gaussian1D::setAmplitude</definition>
+        <argsstring>(const PreciseDouble &amp;newValue)</argsstring>
+        <name>setAmplitude</name>
+        <qualifiedname>Gaussian1D::setAmplitude</qualifiedname>
+        <param>
+          <type>const <ref refid="class_precise_double" kindref="compound">PreciseDouble</ref> &amp;</type>
+          <declname>newValue</declname>
+        </param>
+        <briefdescription>
+<para>Set the amplitude. </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="App/Model/IBM/Maths/GaussianDistribution.h" line="67" column="6"/>
+      </memberdef>
+      <memberdef kind="function" id="class_gaussian1_d_1adc76ac7b031d3f59c43b1a0860b1d89e" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void Gaussian1D::setPrecomputed</definition>
+        <argsstring>(bool doPrecompute)</argsstring>
+        <name>setPrecomputed</name>
+        <qualifiedname>Gaussian1D::setPrecomputed</qualifiedname>
+        <param>
+          <type>bool</type>
+          <declname>doPrecompute</declname>
+        </param>
+        <briefdescription>
+<para>Enable or disable precomputation. </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="App/Model/IBM/Maths/GaussianDistribution.h" line="61" column="6"/>
+      </memberdef>
+      <memberdef kind="function" id="class_gaussian1_d_1ab40ddcea7ecdf3767df3dcf829f445e1" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void Gaussian1D::setSigma</definition>
+        <argsstring>(const PreciseDouble &amp;newValue)</argsstring>
+        <name>setSigma</name>
+        <qualifiedname>Gaussian1D::setSigma</qualifiedname>
+        <param>
+          <type>const <ref refid="class_precise_double" kindref="compound">PreciseDouble</ref> &amp;</type>
+          <declname>newValue</declname>
+        </param>
+        <briefdescription>
+<para>Set the sigma value. </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="App/Model/IBM/Maths/GaussianDistribution.h" line="55" column="6"/>
+      </memberdef>
+    </sectiondef>
+    <briefdescription>
+<para>Class for handling 1-dimensional Gaussian distribution. </para>
+    </briefdescription>
+    <detaileddescription>
+<para>Supports optional precomputation for faster repeated evaluations. </para>
+    </detaileddescription>
+    <collaborationgraph>
+      <node id="1">
+        <label>Gaussian1D</label>
+        <link refid="class_gaussian1_d"/>
+        <childnode refid="2" relation="usage">
+          <edgelabel>amplitude</edgelabel>
+          <edgelabel>center</edgelabel>
+          <edgelabel>inverseSigma</edgelabel>
+          <edgelabel>precomputeBinWidth</edgelabel>
+          <edgelabel>sigma</edgelabel>
+        </childnode>
+      </node>
+      <node id="2">
+        <label>PreciseDouble</label>
+        <link refid="class_precise_double"/>
+      </node>
+    </collaborationgraph>
+    <location file="App/Model/IBM/Maths/GaussianDistribution.h" line="29" column="1" bodyfile="App/Model/IBM/Maths/GaussianDistribution.h" bodystart="29" bodyend="77"/>
+    <listofallmembers>
+      <member refid="class_gaussian1_d_1ad23fcab6572d5fa5ebd90188163746a8" prot="protected" virt="non-virtual"><scope>Gaussian1D</scope><name>amplitude</name></member>
+      <member refid="class_gaussian1_d_1ae20133474bd2c91f235211f6c17f96ac" prot="protected" virt="non-virtual"><scope>Gaussian1D</scope><name>center</name></member>
+      <member refid="class_gaussian1_d_1abf7212b4d34e315c576c62dee1cf8b3b" prot="public" virt="non-virtual"><scope>Gaussian1D</scope><name>Gaussian1D</name></member>
+      <member refid="class_gaussian1_d_1acbc485637efeda8c611e49a81769f775" prot="public" virt="non-virtual"><scope>Gaussian1D</scope><name>Gaussian1D</name></member>
+      <member refid="class_gaussian1_d_1a4b00e91269bf4c9c72e749ad22488c02" prot="public" virt="non-virtual"><scope>Gaussian1D</scope><name>getAmplitude</name></member>
+      <member refid="class_gaussian1_d_1a56ce4d776f462dc034bce4c6f1ec50b7" prot="public" virt="non-virtual"><scope>Gaussian1D</scope><name>getCenter</name></member>
+      <member refid="class_gaussian1_d_1a4fcae2a6aaf0e245ba1d56e0e5a99338" prot="public" virt="non-virtual"><scope>Gaussian1D</scope><name>getSigma</name></member>
+      <member refid="class_gaussian1_d_1aef8692fa8a110e139dae618ac510e5c0" prot="public" virt="non-virtual"><scope>Gaussian1D</scope><name>getValueAtDistance</name></member>
+      <member refid="class_gaussian1_d_1ab6ab4871d3013127f6aa4048c6810d75" prot="public" virt="non-virtual"><scope>Gaussian1D</scope><name>getValueAtPoint</name></member>
+      <member refid="class_gaussian1_d_1aacd716ede6f9871f85bfc26df2357b89" prot="protected" virt="non-virtual"><scope>Gaussian1D</scope><name>inverseSigma</name></member>
+      <member refid="class_gaussian1_d_1aff13f4b4d69c14345433f52a6dd8e488" prot="public" virt="non-virtual"><scope>Gaussian1D</scope><name>isPrecomputed</name></member>
+      <member refid="class_gaussian1_d_1ad4cf80d0971dd179e30ac3c30bc1736d" prot="protected" virt="non-virtual"><scope>Gaussian1D</scope><name>precompute</name></member>
+      <member refid="class_gaussian1_d_1a66892329041332ca675b95dfe50026ad" prot="protected" virt="non-virtual"><scope>Gaussian1D</scope><name>precomputeBins</name></member>
+      <member refid="class_gaussian1_d_1a43bbb025af792d433a420fc4399b9ffe" prot="protected" virt="non-virtual"><scope>Gaussian1D</scope><name>precomputeBinWidth</name></member>
+      <member refid="class_gaussian1_d_1a940828562cd0d8f150ea5a1748965463" prot="protected" virt="non-virtual"><scope>Gaussian1D</scope><name>precomputed</name></member>
+      <member refid="class_gaussian1_d_1af2709a1460885a19107eb0c47f07077d" prot="protected" virt="non-virtual"><scope>Gaussian1D</scope><name>precomputeDim</name></member>
+      <member refid="class_gaussian1_d_1ac1f6fc0944d1bdb7b5511049f91ccd73" prot="public" virt="non-virtual"><scope>Gaussian1D</scope><name>setAmplitude</name></member>
+      <member refid="class_gaussian1_d_1adc76ac7b031d3f59c43b1a0860b1d89e" prot="public" virt="non-virtual"><scope>Gaussian1D</scope><name>setPrecomputed</name></member>
+      <member refid="class_gaussian1_d_1ab40ddcea7ecdf3767df3dcf829f445e1" prot="public" virt="non-virtual"><scope>Gaussian1D</scope><name>setSigma</name></member>
+      <member refid="class_gaussian1_d_1abed6cd37e6c3b7ad1ae1a5cd2247b2e7" prot="protected" virt="non-virtual"><scope>Gaussian1D</scope><name>sigma</name></member>
+      <member refid="class_gaussian1_d_1a3b1bb047886dd11c7eabdd6526fe4d87" prot="public" virt="virtual"><scope>Gaussian1D</scope><name>~Gaussian1D</name></member>
+    </listofallmembers>
+  </compounddef>
+</doxygen>

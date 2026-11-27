@@ -1,0 +1,398 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.18.0" xml:lang="en-US">
+  <compounddef id="class_cell_quality_biomass" kind="class" language="C++" prot="public">
+    <compoundname>CellQualityBiomass</compoundname>
+    <includes refid="_cell_quality_biomass_8h" local="no">CellQualityBiomass.h</includes>
+    <sectiondef kind="private-attrib">
+      <memberdef kind="variable" id="class_cell_quality_biomass_1ab572fccfa225c1ac3ab9ae43ef458718" prot="private" static="no" mutable="no">
+        <type>const <ref refid="class_edibility_value" kindref="compound">EdibilityValue</ref> *</type>
+        <definition>const EdibilityValue* CellQualityBiomass::edibilityValue</definition>
+        <argsstring></argsstring>
+        <name>edibilityValue</name>
+        <qualifiedname>CellQualityBiomass::edibilityValue</qualifiedname>
+        <briefdescription>
+<para>Pointer to the <ref refid="class_edibility_value" kindref="compound">EdibilityValue</ref> object used for calculations. </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="App/Model/IBM/Landscape/LivingBeings/Animals/Species/Decisions/DecisionProbability/CellQualityBiomass.h" line="83" column="26" bodyfile="App/Model/IBM/Landscape/LivingBeings/Animals/Species/Decisions/DecisionProbability/CellQualityBiomass.h" bodystart="83" bodyend="-1"/>
+      </memberdef>
+    </sectiondef>
+    <sectiondef kind="public-func">
+      <memberdef kind="function" id="class_cell_quality_biomass_1a1bfd231744b8ab3b0b2aef0c140a4729" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type></type>
+        <definition>CellQualityBiomass::CellQualityBiomass</definition>
+        <argsstring>()</argsstring>
+        <name>CellQualityBiomass</name>
+        <qualifiedname>CellQualityBiomass::CellQualityBiomass</qualifiedname>
+        <briefdescription>
+<para>Default constructor. </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="App/Model/IBM/Landscape/LivingBeings/Animals/Species/Decisions/DecisionProbability/CellQualityBiomass.h" line="34" column="5"/>
+      </memberdef>
+      <memberdef kind="function" id="class_cell_quality_biomass_1a3a96ca39fcfd266847e0ab537a08798d" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type></type>
+        <definition>CellQualityBiomass::CellQualityBiomass</definition>
+        <argsstring>(const CellQualityBiomass &amp;)=delete</argsstring>
+        <name>CellQualityBiomass</name>
+        <qualifiedname>CellQualityBiomass::CellQualityBiomass</qualifiedname>
+        <param>
+          <type>const <ref refid="class_cell_quality_biomass" kindref="compound">CellQualityBiomass</ref> &amp;</type>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="App/Model/IBM/Landscape/LivingBeings/Animals/Species/Decisions/DecisionProbability/CellQualityBiomass.h" line="49" column="5"/>
+      </memberdef>
+      <memberdef kind="function" id="class_cell_quality_biomass_1ae071710965a89d31b4290e4e693e158f" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type></type>
+        <definition>CellQualityBiomass::CellQualityBiomass</definition>
+        <argsstring>(const EdibilityValue *edibilityValue)</argsstring>
+        <name>CellQualityBiomass</name>
+        <qualifiedname>CellQualityBiomass::CellQualityBiomass</qualifiedname>
+        <param>
+          <type>const <ref refid="class_edibility_value" kindref="compound">EdibilityValue</ref> *</type>
+          <declname>edibilityValue</declname>
+        </param>
+        <briefdescription>
+<para>Constructor with an <ref refid="class_edibility_value" kindref="compound">EdibilityValue</ref> object. </para>
+        </briefdescription>
+        <detaileddescription>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>edibilityValue</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Pointer to the <ref refid="class_edibility_value" kindref="compound">EdibilityValue</ref> object used for calculations. </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="App/Model/IBM/Landscape/LivingBeings/Animals/Species/Decisions/DecisionProbability/CellQualityBiomass.h" line="41" column="5"/>
+      </memberdef>
+      <memberdef kind="function" id="class_cell_quality_biomass_1aa53d6021b5113d5bd0c7a912e9137983" prot="public" static="no" const="no" explicit="no" inline="no" virt="virtual">
+        <type></type>
+        <definition>virtual CellQualityBiomass::~CellQualityBiomass</definition>
+        <argsstring>()</argsstring>
+        <name>~CellQualityBiomass</name>
+        <qualifiedname>CellQualityBiomass::~CellQualityBiomass</qualifiedname>
+        <briefdescription>
+<para>Virtual destructor. </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="App/Model/IBM/Landscape/LivingBeings/Animals/Species/Decisions/DecisionProbability/CellQualityBiomass.h" line="46" column="13"/>
+      </memberdef>
+      <memberdef kind="function" id="class_cell_quality_biomass_1a532027d289c90df5df64359100f3fd88" prot="public" static="no" const="yes" explicit="no" inline="no" virt="non-virtual">
+        <type><ref refid="class_precise_double" kindref="compound">PreciseDouble</ref></type>
+        <definition>PreciseDouble CellQualityBiomass::calculateValue</definition>
+        <argsstring>(const AnimalNonStatistical &amp;predator, const Edible &amp;prey, const DryMass &amp;preyDryMass) const</argsstring>
+        <name>calculateValue</name>
+        <qualifiedname>CellQualityBiomass::calculateValue</qualifiedname>
+        <param>
+          <type>const <ref refid="class_animal_non_statistical" kindref="compound">AnimalNonStatistical</ref> &amp;</type>
+          <declname>predator</declname>
+        </param>
+        <param>
+          <type>const <ref refid="class_edible" kindref="compound">Edible</ref> &amp;</type>
+          <declname>prey</declname>
+        </param>
+        <param>
+          <type>const <ref refid="class_dry_mass" kindref="compound">DryMass</ref> &amp;</type>
+          <declname>preyDryMass</declname>
+        </param>
+        <briefdescription>
+<para>Calculates the quality of a cell for a predator. </para>
+        </briefdescription>
+        <detaileddescription>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>predator</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Predator individual. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>prey</parametername>
+</parameternamelist>
+<parameterdescription>
+<para><ref refid="class_prey" kindref="compound">Prey</ref> individual. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>preyDryMass</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Dry mass of the prey. </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<simplesect kind="return"><para>Cell quality value as <ref refid="class_precise_double" kindref="compound">PreciseDouble</ref>. </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="App/Model/IBM/Landscape/LivingBeings/Animals/Species/Decisions/DecisionProbability/CellQualityBiomass.h" line="62" column="19"/>
+      </memberdef>
+      <memberdef kind="function" id="class_cell_quality_biomass_1a8f5670266949bd69ba2c42579a6cc30b" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type><ref refid="class_cell_quality_biomass" kindref="compound">CellQualityBiomass</ref> &amp;</type>
+        <definition>CellQualityBiomass &amp; CellQualityBiomass::operator=</definition>
+        <argsstring>(const CellQualityBiomass &amp;)=delete</argsstring>
+        <name>operator=</name>
+        <qualifiedname>CellQualityBiomass::operator=</qualifiedname>
+        <param>
+          <type>const <ref refid="class_cell_quality_biomass" kindref="compound">CellQualityBiomass</ref> &amp;</type>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="App/Model/IBM/Landscape/LivingBeings/Animals/Species/Decisions/DecisionProbability/CellQualityBiomass.h" line="52" column="20"/>
+      </memberdef>
+      <memberdef kind="function" id="class_cell_quality_biomass_1a835a01ea6400487b0ede11e7eb16291b" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <templateparamlist>
+          <param>
+            <type>class Archive</type>
+          </param>
+        </templateparamlist>
+        <type>void</type>
+        <definition>void CellQualityBiomass::serialize</definition>
+        <argsstring>(Archive &amp;ar, const unsigned int version)</argsstring>
+        <name>serialize</name>
+        <qualifiedname>CellQualityBiomass::serialize</qualifiedname>
+        <param>
+          <type>Archive &amp;</type>
+          <declname>ar</declname>
+        </param>
+        <param>
+          <type>const unsigned int</type>
+          <declname>version</declname>
+        </param>
+        <briefdescription>
+<para>Serializes the object for persistence. </para>
+        </briefdescription>
+        <detaileddescription>
+<para><parameterlist kind="templateparam"><parameteritem>
+<parameternamelist>
+<parametername>Archive</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Serialization archive type. </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>ar</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Archive instance. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>version</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Serialization version. </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="App/Model/IBM/Landscape/LivingBeings/Animals/Species/Decisions/DecisionProbability/CellQualityBiomass.h" line="79" column="10"/>
+      </memberdef>
+      <memberdef kind="function" id="class_cell_quality_biomass_1a9a0112f5768a84be71b3122f84ae5745" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void CellQualityBiomass::setEdibilityValue</definition>
+        <argsstring>(const EdibilityValue *newEdibilityValue)</argsstring>
+        <name>setEdibilityValue</name>
+        <qualifiedname>CellQualityBiomass::setEdibilityValue</qualifiedname>
+        <param>
+          <type>const <ref refid="class_edibility_value" kindref="compound">EdibilityValue</ref> *</type>
+          <declname>newEdibilityValue</declname>
+        </param>
+        <briefdescription>
+<para>Sets the <ref refid="class_edibility_value" kindref="compound">EdibilityValue</ref> object used for cell quality calculations. </para>
+        </briefdescription>
+        <detaileddescription>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>newEdibilityValue</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Pointer to the <ref refid="class_edibility_value" kindref="compound">EdibilityValue</ref> object. </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="App/Model/IBM/Landscape/LivingBeings/Animals/Species/Decisions/DecisionProbability/CellQualityBiomass.h" line="69" column="10"/>
+      </memberdef>
+    </sectiondef>
+    <sectiondef kind="private-func">
+      <memberdef kind="function" id="class_cell_quality_biomass_1ab4a6f7f027f88d840208eb021b60071f" prot="private" static="no" const="yes" explicit="no" inline="no" virt="non-virtual">
+        <type><ref refid="class_precise_double" kindref="compound">PreciseDouble</ref></type>
+        <definition>PreciseDouble CellQualityBiomass::calculateProximityProbability</definition>
+        <argsstring>(const AnimalNonStatistical &amp;predator, const Edible &amp;prey) const</argsstring>
+        <name>calculateProximityProbability</name>
+        <qualifiedname>CellQualityBiomass::calculateProximityProbability</qualifiedname>
+        <param>
+          <type>const <ref refid="class_animal_non_statistical" kindref="compound">AnimalNonStatistical</ref> &amp;</type>
+          <declname>predator</declname>
+        </param>
+        <param>
+          <type>const <ref refid="class_edible" kindref="compound">Edible</ref> &amp;</type>
+          <declname>prey</declname>
+        </param>
+        <briefdescription>
+<para>Calculates the probability of a prey being available based on proximity. </para>
+        </briefdescription>
+        <detaileddescription>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>predator</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Predator individual. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>prey</parametername>
+</parameternamelist>
+<parameterdescription>
+<para><ref refid="class_prey" kindref="compound">Prey</ref> individual. </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<simplesect kind="return"><para>Proximity probability as <ref refid="class_precise_double" kindref="compound">PreciseDouble</ref>. </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="App/Model/IBM/Landscape/LivingBeings/Animals/Species/Decisions/DecisionProbability/CellQualityBiomass.h" line="93" column="19"/>
+      </memberdef>
+    </sectiondef>
+    <briefdescription>
+<para>Computes the quality of a cell for a predator based on prey biomass and edibility. </para>
+    </briefdescription>
+    <detaileddescription>
+<para>This class uses the <ref refid="class_edibility_value" kindref="compound">EdibilityValue</ref> object to assess how valuable the resources in a cell are for a predator, taking into account the proximity and biomass of prey. </para>
+    </detaileddescription>
+    <collaborationgraph>
+      <node id="7">
+        <label>AnimalDecisionProbability</label>
+        <link refid="class_animal_decision_probability"/>
+        <childnode refid="4" relation="public-inheritance">
+        </childnode>
+      </node>
+      <node id="1">
+        <label>CellQualityBiomass</label>
+        <link refid="class_cell_quality_biomass"/>
+        <childnode refid="2" relation="usage">
+          <edgelabel>edibilityValue</edgelabel>
+        </childnode>
+      </node>
+      <node id="10">
+        <label>CustomIndexedVector&lt; Instar, PreciseDouble &gt;</label>
+        <link refid="class_custom_indexed_vector"/>
+      </node>
+      <node id="4">
+        <label>DecisionProbability</label>
+        <link refid="class_decision_probability"/>
+      </node>
+      <node id="2">
+        <label>EdibilityValue</label>
+        <link refid="class_edibility_value"/>
+        <childnode refid="3" relation="public-inheritance">
+        </childnode>
+        <childnode refid="5" relation="usage">
+          <edgelabel>predationProbability</edgelabel>
+        </childnode>
+      </node>
+      <node id="3">
+        <label>EdibleDecisionProbability</label>
+        <link refid="class_edible_decision_probability"/>
+        <childnode refid="4" relation="public-inheritance">
+        </childnode>
+      </node>
+      <node id="6">
+        <label>EscapeProbability</label>
+        <link refid="class_escape_probability"/>
+        <childnode refid="7" relation="public-inheritance">
+        </childnode>
+        <childnode refid="8" relation="usage">
+          <edgelabel>sensoryModel</edgelabel>
+        </childnode>
+        <childnode refid="9" relation="usage">
+          <edgelabel>cVelocity</edgelabel>
+        </childnode>
+      </node>
+      <node id="9">
+        <label>PreciseDouble</label>
+        <link refid="class_precise_double"/>
+      </node>
+      <node id="5">
+        <label>PredationProbability</label>
+        <link refid="class_predation_probability"/>
+        <childnode refid="3" relation="public-inheritance">
+        </childnode>
+        <childnode refid="6" relation="usage">
+          <edgelabel>escapeProbability</edgelabel>
+        </childnode>
+        <childnode refid="10" relation="usage">
+          <edgelabel>maximumPDF</edgelabel>
+        </childnode>
+        <childnode refid="9" relation="usage">
+          <edgelabel>pdfThreshold</edgelabel>
+        </childnode>
+      </node>
+      <node id="8">
+        <label>SensoryModel</label>
+        <link refid="class_sensory_model"/>
+        <childnode refid="9" relation="usage">
+          <edgelabel>beta</edgelabel>
+        </childnode>
+      </node>
+    </collaborationgraph>
+    <location file="App/Model/IBM/Landscape/LivingBeings/Animals/Species/Decisions/DecisionProbability/CellQualityBiomass.h" line="29" column="1" bodyfile="App/Model/IBM/Landscape/LivingBeings/Animals/Species/Decisions/DecisionProbability/CellQualityBiomass.h" bodystart="29" bodyend="94"/>
+    <listofallmembers>
+      <member refid="class_cell_quality_biomass_1ab4a6f7f027f88d840208eb021b60071f" prot="private" virt="non-virtual"><scope>CellQualityBiomass</scope><name>calculateProximityProbability</name></member>
+      <member refid="class_cell_quality_biomass_1a532027d289c90df5df64359100f3fd88" prot="public" virt="non-virtual"><scope>CellQualityBiomass</scope><name>calculateValue</name></member>
+      <member refid="class_cell_quality_biomass_1a1bfd231744b8ab3b0b2aef0c140a4729" prot="public" virt="non-virtual"><scope>CellQualityBiomass</scope><name>CellQualityBiomass</name></member>
+      <member refid="class_cell_quality_biomass_1ae071710965a89d31b4290e4e693e158f" prot="public" virt="non-virtual"><scope>CellQualityBiomass</scope><name>CellQualityBiomass</name></member>
+      <member refid="class_cell_quality_biomass_1a3a96ca39fcfd266847e0ab537a08798d" prot="public" virt="non-virtual"><scope>CellQualityBiomass</scope><name>CellQualityBiomass</name></member>
+      <member refid="class_cell_quality_biomass_1ab572fccfa225c1ac3ab9ae43ef458718" prot="private" virt="non-virtual"><scope>CellQualityBiomass</scope><name>edibilityValue</name></member>
+      <member refid="class_cell_quality_biomass_1a8f5670266949bd69ba2c42579a6cc30b" prot="public" virt="non-virtual"><scope>CellQualityBiomass</scope><name>operator=</name></member>
+      <member refid="class_cell_quality_biomass_1a835a01ea6400487b0ede11e7eb16291b" prot="public" virt="non-virtual"><scope>CellQualityBiomass</scope><name>serialize</name></member>
+      <member refid="class_cell_quality_biomass_1a9a0112f5768a84be71b3122f84ae5745" prot="public" virt="non-virtual"><scope>CellQualityBiomass</scope><name>setEdibilityValue</name></member>
+      <member refid="class_cell_quality_biomass_1aa53d6021b5113d5bd0c7a912e9137983" prot="public" virt="virtual"><scope>CellQualityBiomass</scope><name>~CellQualityBiomass</name></member>
+    </listofallmembers>
+  </compounddef>
+</doxygen>

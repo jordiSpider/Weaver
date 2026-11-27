@@ -1,0 +1,861 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.18.0" xml:lang="en-US">
+  <compounddef id="_trait_definition_section_8h" kind="file" language="C++">
+    <compoundname>TraitDefinitionSection.h</compoundname>
+    <includes local="no">nlohmann/json.hpp</includes>
+    <includes local="no">vector</includes>
+    <includes local="no">string</includes>
+    <includes local="no">boost/archive/text_iarchive.hpp</includes>
+    <includes local="no">boost/archive/text_oarchive.hpp</includes>
+    <includes local="no">boost/archive/binary_iarchive.hpp</includes>
+    <includes local="no">boost/archive/binary_oarchive.hpp</includes>
+    <includes refid="_genome_8h" local="yes">App/Model/IBM/Landscape/LivingBeings/Animals/Genetics/Genome.h</includes>
+    <includes refid="_enum_class_8h" local="yes">Misc/EnumClass.h</includes>
+    <includes refid="_line_info_exception_8h" local="yes">Exceptions/LineInfoException.h</includes>
+    <includedby refid="_individual_level_trait_8h" local="yes">App/Model/IBM/Landscape/LivingBeings/Animals/Species/Genetics/Traits/DefinitionSection/IndividualLevelTrait.h</includedby>
+    <includedby refid="_species_level_trait_8h" local="yes">App/Model/IBM/Landscape/LivingBeings/Animals/Species/Genetics/Traits/DefinitionSection/SpeciesLevelTrait.h</includedby>
+    <includedby refid="_pawar_trait_temperature_section_8h" local="yes">App/Model/IBM/Landscape/LivingBeings/Animals/Species/Genetics/Traits/TemperatureSection/PawarTraitTemperatureSection.h</includedby>
+    <includedby refid="_trait_8h" local="yes">App/Model/IBM/Landscape/LivingBeings/Animals/Species/Genetics/Traits/Trait.h</includedby>
+    <incdepgraph>
+      <node id="40">
+        <label>App/Model/IBM/Landscape/LivingBeings/Animals/Genetics/Chromosome.h</label>
+        <link refid="_chromosome_8h_source"/>
+        <childnode refid="10" relation="include">
+        </childnode>
+        <childnode refid="11" relation="include">
+        </childnode>
+        <childnode refid="3" relation="include">
+        </childnode>
+        <childnode refid="15" relation="include">
+        </childnode>
+        <childnode refid="14" relation="include">
+        </childnode>
+      </node>
+      <node id="41">
+        <label>App/Model/IBM/Landscape/LivingBeings/Animals/Genetics/Correlosome.h</label>
+        <link refid="_correlosome_8h_source"/>
+        <childnode refid="3" relation="include">
+        </childnode>
+        <childnode refid="15" relation="include">
+        </childnode>
+        <childnode refid="14" relation="include">
+        </childnode>
+      </node>
+      <node id="42">
+        <label>App/Model/IBM/Landscape/LivingBeings/Animals/Genetics/Gamete.h</label>
+        <link refid="_gamete_8h_source"/>
+        <childnode refid="3" relation="include">
+        </childnode>
+        <childnode refid="40" relation="include">
+        </childnode>
+      </node>
+      <node id="9">
+        <label>App/Model/IBM/Landscape/LivingBeings/Animals/Genetics/Genome.h</label>
+        <link refid="_genome_8h_source"/>
+        <childnode refid="10" relation="include">
+        </childnode>
+        <childnode refid="11" relation="include">
+        </childnode>
+        <childnode refid="12" relation="include">
+        </childnode>
+        <childnode refid="13" relation="include">
+        </childnode>
+        <childnode refid="40" relation="include">
+        </childnode>
+        <childnode refid="41" relation="include">
+        </childnode>
+        <childnode refid="42" relation="include">
+        </childnode>
+        <childnode refid="17" relation="include">
+        </childnode>
+        <childnode refid="28" relation="include">
+        </childnode>
+      </node>
+      <node id="14">
+        <label>App/Model/IBM/Landscape/LivingBeings/Animals/Species/Genetics/Allele.h</label>
+        <link refid="_allele_8h_source"/>
+        <childnode refid="10" relation="include">
+        </childnode>
+        <childnode refid="15" relation="include">
+        </childnode>
+        <childnode refid="16" relation="include">
+        </childnode>
+        <childnode refid="17" relation="include">
+        </childnode>
+      </node>
+      <node id="13">
+        <label>App/Model/IBM/Landscape/LivingBeings/Animals/Species/Genetics/Locus.h</label>
+        <link refid="_locus_8h_source"/>
+        <childnode refid="3" relation="include">
+        </childnode>
+        <childnode refid="11" relation="include">
+        </childnode>
+        <childnode refid="14" relation="include">
+        </childnode>
+      </node>
+      <node id="1">
+        <label>App/Model/IBM/Landscape/LivingBeings/Animals/Species/Genetics/Traits/DefinitionSection/TraitDefinitionSection.h</label>
+        <link refid="_trait_definition_section_8h"/>
+        <childnode refid="2" relation="include">
+        </childnode>
+        <childnode refid="3" relation="include">
+        </childnode>
+        <childnode refid="4" relation="include">
+        </childnode>
+        <childnode refid="5" relation="include">
+        </childnode>
+        <childnode refid="6" relation="include">
+        </childnode>
+        <childnode refid="7" relation="include">
+        </childnode>
+        <childnode refid="8" relation="include">
+        </childnode>
+        <childnode refid="9" relation="include">
+        </childnode>
+        <childnode refid="43" relation="include">
+        </childnode>
+        <childnode refid="28" relation="include">
+        </childnode>
+      </node>
+      <node id="31">
+        <label>App/Model/IBM/Landscape/LivingBeings/TimeUnits.h</label>
+        <link refid="_time_units_8h_source"/>
+        <childnode refid="5" relation="include">
+        </childnode>
+        <childnode refid="6" relation="include">
+        </childnode>
+        <childnode refid="7" relation="include">
+        </childnode>
+        <childnode refid="8" relation="include">
+        </childnode>
+        <childnode refid="15" relation="include">
+        </childnode>
+        <childnode refid="18" relation="include">
+        </childnode>
+        <childnode refid="32" relation="include">
+        </childnode>
+      </node>
+      <node id="17">
+        <label>App/Model/IBM/Maths/Random.h</label>
+        <link refid="_random_8h_source"/>
+        <childnode refid="18" relation="include">
+        </childnode>
+        <childnode refid="19" relation="include">
+        </childnode>
+        <childnode refid="20" relation="include">
+        </childnode>
+        <childnode refid="21" relation="include">
+        </childnode>
+        <childnode refid="22" relation="include">
+        </childnode>
+        <childnode refid="3" relation="include">
+        </childnode>
+        <childnode refid="23" relation="include">
+        </childnode>
+        <childnode refid="24" relation="include">
+        </childnode>
+        <childnode refid="25" relation="include">
+        </childnode>
+        <childnode refid="26" relation="include">
+        </childnode>
+        <childnode refid="27" relation="include">
+        </childnode>
+        <childnode refid="28" relation="include">
+        </childnode>
+        <childnode refid="30" relation="include">
+        </childnode>
+        <childnode refid="31" relation="include">
+        </childnode>
+        <childnode refid="35" relation="include">
+        </childnode>
+      </node>
+      <node id="28">
+        <label>Exceptions/LineInfoException.h</label>
+        <link refid="_line_info_exception_8h_source"/>
+        <childnode refid="29" relation="include">
+        </childnode>
+        <childnode refid="4" relation="include">
+        </childnode>
+      </node>
+      <node id="36">
+        <label>Coordinate3D.h</label>
+        <link refid="_coordinate3_d_8h_source"/>
+        <childnode refid="37" relation="include">
+        </childnode>
+        <childnode refid="7" relation="include">
+        </childnode>
+        <childnode refid="8" relation="include">
+        </childnode>
+        <childnode refid="38" relation="include">
+        </childnode>
+      </node>
+      <node id="43">
+        <label>Misc/EnumClass.h</label>
+        <link refid="_enum_class_8h_source"/>
+        <childnode refid="44" relation="include">
+        </childnode>
+        <childnode refid="4" relation="include">
+        </childnode>
+        <childnode refid="45" relation="include">
+        </childnode>
+        <childnode refid="46" relation="include">
+        </childnode>
+        <childnode refid="16" relation="include">
+        </childnode>
+        <childnode refid="28" relation="include">
+        </childnode>
+      </node>
+      <node id="30">
+        <label>Misc/Maths/Constants.h</label>
+        <link refid="_constants_8h_source"/>
+      </node>
+      <node id="32">
+        <label>Misc/Maths/PreciseDouble.h</label>
+        <link refid="_precise_double_8h_source"/>
+        <childnode refid="5" relation="include">
+        </childnode>
+        <childnode refid="6" relation="include">
+        </childnode>
+        <childnode refid="7" relation="include">
+        </childnode>
+        <childnode refid="8" relation="include">
+        </childnode>
+        <childnode refid="16" relation="include">
+        </childnode>
+        <childnode refid="4" relation="include">
+        </childnode>
+        <childnode refid="18" relation="include">
+        </childnode>
+        <childnode refid="25" relation="include">
+        </childnode>
+        <childnode refid="20" relation="include">
+        </childnode>
+        <childnode refid="33" relation="include">
+        </childnode>
+        <childnode refid="34" relation="include">
+        </childnode>
+      </node>
+      <node id="35">
+        <label>Misc/Types.h</label>
+        <link refid="_types_8h_source"/>
+        <childnode refid="36" relation="include">
+        </childnode>
+        <childnode refid="39" relation="include">
+        </childnode>
+        <childnode refid="33" relation="include">
+        </childnode>
+        <childnode refid="32" relation="include">
+        </childnode>
+      </node>
+      <node id="25">
+        <label>algorithm</label>
+      </node>
+      <node id="24">
+        <label>atomic</label>
+      </node>
+      <node id="7">
+        <label>boost/archive/binary_iarchive.hpp</label>
+      </node>
+      <node id="8">
+        <label>boost/archive/binary_oarchive.hpp</label>
+      </node>
+      <node id="5">
+        <label>boost/archive/text_iarchive.hpp</label>
+      </node>
+      <node id="6">
+        <label>boost/archive/text_oarchive.hpp</label>
+      </node>
+      <node id="37">
+        <label>boost/serialization/access.hpp</label>
+      </node>
+      <node id="10">
+        <label>boost/serialization/export.hpp</label>
+      </node>
+      <node id="12">
+        <label>boost/serialization/utility.hpp</label>
+      </node>
+      <node id="11">
+        <label>boost/serialization/vector.hpp</label>
+      </node>
+      <node id="39">
+        <label>cfloat</label>
+      </node>
+      <node id="18">
+        <label>cmath</label>
+      </node>
+      <node id="29">
+        <label>exception</label>
+      </node>
+      <node id="21">
+        <label>float.h</label>
+      </node>
+      <node id="16">
+        <label>fmt/format.h</label>
+      </node>
+      <node id="38">
+        <label>fstream</label>
+      </node>
+      <node id="34">
+        <label>functional</label>
+      </node>
+      <node id="20">
+        <label>iostream</label>
+      </node>
+      <node id="33">
+        <label>limits</label>
+      </node>
+      <node id="22">
+        <label>list</label>
+      </node>
+      <node id="46">
+        <label>magic_enum/magic_enum.hpp</label>
+      </node>
+      <node id="27">
+        <label>memory</label>
+      </node>
+      <node id="2">
+        <label>nlohmann/json.hpp</label>
+      </node>
+      <node id="26">
+        <label>numeric</label>
+      </node>
+      <node id="15">
+        <label>ostream</label>
+      </node>
+      <node id="23">
+        <label>random</label>
+      </node>
+      <node id="44">
+        <label>sstream</label>
+      </node>
+      <node id="19">
+        <label>stdlib.h</label>
+      </node>
+      <node id="4">
+        <label>string</label>
+      </node>
+      <node id="45">
+        <label>unordered_map</label>
+      </node>
+      <node id="3">
+        <label>vector</label>
+      </node>
+    </incdepgraph>
+    <invincdepgraph>
+      <node id="8">
+        <label>App/Model/IBM/IBM.h</label>
+        <link refid="_i_b_m_8h_source"/>
+      </node>
+      <node id="9">
+        <label>App/Model/IBM/Landscape/AquaticLandscape.h</label>
+        <link refid="_aquatic_landscape_8h_source"/>
+      </node>
+      <node id="10">
+        <label>App/Model/IBM/Landscape/ArthropodsLandscape.h</label>
+        <link refid="_arthropods_landscape_8h_source"/>
+      </node>
+      <node id="11">
+        <label>App/Model/IBM/Landscape/DinosaursLandscape.h</label>
+        <link refid="_dinosaurs_landscape_8h_source"/>
+      </node>
+      <node id="7">
+        <label>App/Model/IBM/Landscape/Landscape.h</label>
+        <link refid="_landscape_8h_source"/>
+        <childnode refid="8" relation="include">
+        </childnode>
+        <childnode refid="9" relation="include">
+        </childnode>
+        <childnode refid="10" relation="include">
+        </childnode>
+        <childnode refid="11" relation="include">
+        </childnode>
+      </node>
+      <node id="5">
+        <label>App/Model/IBM/Landscape/LivingBeings/Animals/Animal.h</label>
+        <link refid="_animal_8h_source"/>
+        <childnode refid="6" relation="include">
+        </childnode>
+        <childnode refid="22" relation="include">
+        </childnode>
+        <childnode refid="20" relation="include">
+        </childnode>
+        <childnode refid="16" relation="include">
+        </childnode>
+      </node>
+      <node id="6">
+        <label>App/Model/IBM/Landscape/LivingBeings/Animals/AnimalNonStatistical.h</label>
+        <link refid="_animal_non_statistical_8h_source"/>
+        <childnode refid="7" relation="include">
+        </childnode>
+        <childnode refid="12" relation="include">
+        </childnode>
+        <childnode refid="14" relation="include">
+        </childnode>
+        <childnode refid="16" relation="include">
+        </childnode>
+      </node>
+      <node id="22">
+        <label>App/Model/IBM/Landscape/LivingBeings/Animals/AnimalStatistical.h</label>
+        <link refid="_animal_statistical_8h_source"/>
+        <childnode refid="17" relation="include">
+        </childnode>
+        <childnode refid="13" relation="include">
+        </childnode>
+      </node>
+      <node id="28">
+        <label>App/Model/IBM/Landscape/LivingBeings/Animals/Decisions/Decisions.h</label>
+        <link refid="_decisions_8h_source"/>
+        <childnode refid="6" relation="include">
+        </childnode>
+      </node>
+      <node id="4">
+        <label>App/Model/IBM/Landscape/LivingBeings/Animals/Genetics/Genetics.h</label>
+        <link refid="_genetics_8h_source"/>
+        <childnode refid="5" relation="include">
+        </childnode>
+        <childnode refid="23" relation="include">
+        </childnode>
+      </node>
+      <node id="52">
+        <label>App/Model/IBM/Landscape/LivingBeings/Animals/Genetics/Traits/IndividualTrait.h</label>
+        <link refid="_individual_trait_8h_source"/>
+        <childnode refid="4" relation="include">
+        </childnode>
+        <childnode refid="53" relation="include">
+        </childnode>
+        <childnode refid="27" relation="include">
+        </childnode>
+        <childnode refid="23" relation="include">
+        </childnode>
+        <childnode refid="3" relation="include">
+        </childnode>
+      </node>
+      <node id="53">
+        <label>App/Model/IBM/Landscape/LivingBeings/Animals/Growth/AnimalGrowth.h</label>
+        <link refid="_animal_growth_8h_source"/>
+        <childnode refid="5" relation="include">
+        </childnode>
+        <childnode refid="54" relation="include">
+        </childnode>
+        <childnode refid="55" relation="include">
+        </childnode>
+      </node>
+      <node id="54">
+        <label>App/Model/IBM/Landscape/LivingBeings/Animals/Growth/AnimalNonStatisticalGrowth.h</label>
+        <link refid="_animal_non_statistical_growth_8h_source"/>
+        <childnode refid="6" relation="include">
+        </childnode>
+      </node>
+      <node id="55">
+        <label>App/Model/IBM/Landscape/LivingBeings/Animals/Growth/AnimalStatisticalGrowth.h</label>
+        <link refid="_animal_statistical_growth_8h_source"/>
+        <childnode refid="22" relation="include">
+        </childnode>
+      </node>
+      <node id="29">
+        <label>App/Model/IBM/Landscape/LivingBeings/Animals/Species/AnimalSpecies.h</label>
+        <link refid="_animal_species_8h_source"/>
+        <childnode refid="7" relation="include">
+        </childnode>
+        <childnode refid="5" relation="include">
+        </childnode>
+        <childnode refid="30" relation="include">
+        </childnode>
+        <childnode refid="13" relation="include">
+        </childnode>
+        <childnode refid="16" relation="include">
+        </childnode>
+      </node>
+      <node id="27">
+        <label>App/Model/IBM/Landscape/LivingBeings/Animals/Species/Decisions/AnimalSpeciesDecisions.h</label>
+        <link refid="_animal_species_decisions_8h_source"/>
+        <childnode refid="28" relation="include">
+        </childnode>
+        <childnode refid="29" relation="include">
+        </childnode>
+      </node>
+      <node id="24">
+        <label>App/Model/IBM/Landscape/LivingBeings/Animals/Species/Decisions/DecisionProbability/AnimalDecisionProbability.h</label>
+        <link refid="_animal_decision_probability_8h_source"/>
+        <childnode refid="25" relation="include">
+        </childnode>
+      </node>
+      <node id="39">
+        <label>App/Model/IBM/Landscape/LivingBeings/Animals/Species/Decisions/DecisionProbability/CellQualityBiomass.h</label>
+        <link refid="_cell_quality_biomass_8h_source"/>
+        <childnode refid="27" relation="include">
+        </childnode>
+      </node>
+      <node id="23">
+        <label>App/Model/IBM/Landscape/LivingBeings/Animals/Species/Decisions/DecisionProbability/DecisionProbability.h</label>
+        <link refid="_decision_probability_8h_source"/>
+        <childnode refid="24" relation="include">
+        </childnode>
+        <childnode refid="40" relation="include">
+        </childnode>
+      </node>
+      <node id="38">
+        <label>App/Model/IBM/Landscape/LivingBeings/Animals/Species/Decisions/DecisionProbability/EdibilityValue.h</label>
+        <link refid="_edibility_value_8h_source"/>
+        <childnode refid="27" relation="include">
+        </childnode>
+        <childnode refid="39" relation="include">
+        </childnode>
+      </node>
+      <node id="40">
+        <label>App/Model/IBM/Landscape/LivingBeings/Animals/Species/Decisions/DecisionProbability/EdibleDecisionProbability.h</label>
+        <link refid="_edible_decision_probability_8h_source"/>
+        <childnode refid="38" relation="include">
+        </childnode>
+        <childnode refid="26" relation="include">
+        </childnode>
+      </node>
+      <node id="25">
+        <label>App/Model/IBM/Landscape/LivingBeings/Animals/Species/Decisions/DecisionProbability/EscapeProbability.h</label>
+        <link refid="_escape_probability_8h_source"/>
+        <childnode refid="26" relation="include">
+        </childnode>
+      </node>
+      <node id="26">
+        <label>App/Model/IBM/Landscape/LivingBeings/Animals/Species/Decisions/DecisionProbability/PredationProbability.h</label>
+        <link refid="_predation_probability_8h_source"/>
+        <childnode refid="27" relation="include">
+        </childnode>
+        <childnode refid="38" relation="include">
+        </childnode>
+      </node>
+      <node id="3">
+        <label>App/Model/IBM/Landscape/LivingBeings/Animals/Species/Genetics/AnimalSpeciesGenetics.h</label>
+        <link refid="_animal_species_genetics_8h_source"/>
+        <childnode refid="4" relation="include">
+        </childnode>
+        <childnode refid="29" relation="include">
+        </childnode>
+      </node>
+      <node id="43">
+        <label>App/Model/IBM/Landscape/LivingBeings/Animals/Species/Genetics/Traits/BaseTrait.h</label>
+        <link refid="_base_trait_8h_source"/>
+      </node>
+      <node id="44">
+        <label>App/Model/IBM/Landscape/LivingBeings/Animals/Species/Genetics/Traits/CellValueTrait.h</label>
+        <link refid="_cell_value_trait_8h_source"/>
+      </node>
+      <node id="56">
+        <label>App/Model/IBM/Landscape/LivingBeings/Animals/Species/Genetics/Traits/DecisionsTrait.h</label>
+        <link refid="_decisions_trait_8h_source"/>
+        <childnode refid="45" relation="include">
+        </childnode>
+        <childnode refid="46" relation="include">
+        </childnode>
+        <childnode refid="47" relation="include">
+        </childnode>
+        <childnode refid="48" relation="include">
+        </childnode>
+      </node>
+      <node id="2">
+        <label>App/Model/IBM/Landscape/LivingBeings/Animals/Species/Genetics/Traits/DefinitionSection/IndividualLevelTrait.h</label>
+        <link refid="_individual_level_trait_8h_source"/>
+        <childnode refid="3" relation="include">
+        </childnode>
+        <childnode refid="41" relation="include">
+        </childnode>
+        <childnode refid="16" relation="include">
+        </childnode>
+      </node>
+      <node id="57">
+        <label>App/Model/IBM/Landscape/LivingBeings/Animals/Species/Genetics/Traits/DefinitionSection/SpeciesLevelTrait.h</label>
+        <link refid="_species_level_trait_8h_source"/>
+      </node>
+      <node id="1">
+        <label>App/Model/IBM/Landscape/LivingBeings/Animals/Species/Genetics/Traits/DefinitionSection/TraitDefinitionSection.h</label>
+        <link refid="_trait_definition_section_8h"/>
+        <childnode refid="2" relation="include">
+        </childnode>
+        <childnode refid="57" relation="include">
+        </childnode>
+        <childnode refid="42" relation="include">
+        </childnode>
+        <childnode refid="51" relation="include">
+        </childnode>
+      </node>
+      <node id="45">
+        <label>App/Model/IBM/Landscape/LivingBeings/Animals/Species/Genetics/Traits/EdibilityValueWeightTrait.h</label>
+        <link refid="_edibility_value_weight_trait_8h_source"/>
+      </node>
+      <node id="46">
+        <label>App/Model/IBM/Landscape/LivingBeings/Animals/Species/Genetics/Traits/EscapeProbabilityWeightTrait.h</label>
+        <link refid="_escape_probability_weight_trait_8h_source"/>
+      </node>
+      <node id="47">
+        <label>App/Model/IBM/Landscape/LivingBeings/Animals/Species/Genetics/Traits/PredationProbabilityWeightTrait.h</label>
+        <link refid="_predation_probability_weight_trait_8h_source"/>
+      </node>
+      <node id="48">
+        <label>App/Model/IBM/Landscape/LivingBeings/Animals/Species/Genetics/Traits/PreferencesTrait.h</label>
+        <link refid="_preferences_trait_8h_source"/>
+      </node>
+      <node id="49">
+        <label>App/Model/IBM/Landscape/LivingBeings/Animals/Species/Genetics/Traits/ProbabilityDensityFunctionTrait.h</label>
+        <link refid="_probability_density_function_trait_8h_source"/>
+      </node>
+      <node id="42">
+        <label>App/Model/IBM/Landscape/LivingBeings/Animals/Species/Genetics/Traits/TemperatureSection/PawarTraitTemperatureSection.h</label>
+        <link refid="_pawar_trait_temperature_section_8h_source"/>
+        <childnode refid="43" relation="include">
+        </childnode>
+        <childnode refid="44" relation="include">
+        </childnode>
+        <childnode refid="45" relation="include">
+        </childnode>
+        <childnode refid="46" relation="include">
+        </childnode>
+        <childnode refid="47" relation="include">
+        </childnode>
+        <childnode refid="48" relation="include">
+        </childnode>
+        <childnode refid="49" relation="include">
+        </childnode>
+      </node>
+      <node id="50">
+        <label>App/Model/IBM/Landscape/LivingBeings/Animals/Species/Genetics/Traits/TemperatureSection/TempSizeRuleTraitTemperatureSection.h</label>
+        <link refid="_temp_size_rule_trait_temperature_section_8h_source"/>
+        <childnode refid="43" relation="include">
+        </childnode>
+      </node>
+      <node id="41">
+        <label>App/Model/IBM/Landscape/LivingBeings/Animals/Species/Genetics/Traits/TemperatureSection/TraitTemperatureSection.h</label>
+        <link refid="_trait_temperature_section_8h_source"/>
+        <childnode refid="42" relation="include">
+        </childnode>
+        <childnode refid="50" relation="include">
+        </childnode>
+        <childnode refid="51" relation="include">
+        </childnode>
+      </node>
+      <node id="51">
+        <label>App/Model/IBM/Landscape/LivingBeings/Animals/Species/Genetics/Traits/Trait.h</label>
+        <link refid="_trait_8h_source"/>
+        <childnode refid="52" relation="include">
+        </childnode>
+        <childnode refid="27" relation="include">
+        </childnode>
+        <childnode refid="43" relation="include">
+        </childnode>
+        <childnode refid="44" relation="include">
+        </childnode>
+        <childnode refid="56" relation="include">
+        </childnode>
+        <childnode refid="49" relation="include">
+        </childnode>
+      </node>
+      <node id="17">
+        <label>App/Model/IBM/Landscape/Map/Map.h</label>
+        <link refid="_map_8h_source"/>
+        <childnode refid="7" relation="include">
+        </childnode>
+        <childnode refid="13" relation="include">
+        </childnode>
+      </node>
+      <node id="15">
+        <label>App/Model/IBM/Landscape/Map/Navigation/DestinationSelectionPolicy.h</label>
+        <link refid="_destination_selection_policy_8h_source"/>
+      </node>
+      <node id="30">
+        <label>App/Model/IBM/Landscape/Map/Patches/Source/HabitatDomainSource.h</label>
+        <link refid="_habitat_domain_source_8h_source"/>
+        <childnode refid="7" relation="include">
+        </childnode>
+        <childnode refid="31" relation="include">
+        </childnode>
+        <childnode refid="33" relation="include">
+        </childnode>
+        <childnode refid="36" relation="include">
+        </childnode>
+      </node>
+      <node id="13">
+        <label>App/Model/IBM/Landscape/Map/SpatialTree.h</label>
+        <link refid="_spatial_tree_8h_source"/>
+        <childnode refid="7" relation="include">
+        </childnode>
+      </node>
+      <node id="12">
+        <label>App/Model/IBM/Landscape/Map/SpatialTree/LivingBeings/Animals/SpatialTreeAnimal.h</label>
+        <link refid="_spatial_tree_animal_8h_source"/>
+        <childnode refid="13" relation="include">
+        </childnode>
+      </node>
+      <node id="19">
+        <label>App/Model/IBM/Landscape/Map/SpatialTree/TerrainCells/BranchTerrainCell.h</label>
+        <link refid="_branch_terrain_cell_8h_source"/>
+        <childnode refid="20" relation="include">
+        </childnode>
+      </node>
+      <node id="21">
+        <label>App/Model/IBM/Landscape/Map/SpatialTree/TerrainCells/LeafTerrainCell.h</label>
+        <link refid="_leaf_terrain_cell_8h_source"/>
+        <childnode refid="19" relation="include">
+        </childnode>
+      </node>
+      <node id="32">
+        <label>App/Model/IBM/Landscape/Map/SpatialTree/TerrainCells/PatchApplicator/BranchPatchApplicator.h</label>
+        <link refid="_branch_patch_applicator_8h_source"/>
+        <childnode refid="19" relation="include">
+        </childnode>
+      </node>
+      <node id="31">
+        <label>App/Model/IBM/Landscape/Map/SpatialTree/TerrainCells/PatchApplicator/HabitatDomain/BranchCellHabitatDomain.h</label>
+        <link refid="_branch_cell_habitat_domain_8h_source"/>
+        <childnode refid="32" relation="include">
+        </childnode>
+      </node>
+      <node id="35">
+        <label>App/Model/IBM/Landscape/Map/SpatialTree/TerrainCells/PatchApplicator/LeafPatchApplicator.h</label>
+        <link refid="_leaf_patch_applicator_8h_source"/>
+        <childnode refid="21" relation="include">
+        </childnode>
+      </node>
+      <node id="37">
+        <label>App/Model/IBM/Landscape/Map/SpatialTree/TerrainCells/PatchApplicator/SpatialTreePatchApplicator.h</label>
+        <link refid="_spatial_tree_patch_applicator_8h_source"/>
+        <childnode refid="32" relation="include">
+        </childnode>
+        <childnode refid="35" relation="include">
+        </childnode>
+        <childnode refid="18" relation="include">
+        </childnode>
+      </node>
+      <node id="20">
+        <label>App/Model/IBM/Landscape/Map/SpatialTree/TerrainCells/RootTerrainCell.h</label>
+        <link refid="_root_terrain_cell_8h_source"/>
+        <childnode refid="13" relation="include">
+        </childnode>
+      </node>
+      <node id="18">
+        <label>App/Model/IBM/Landscape/Map/SpatialTree/TerrainCells/SpatialTreeTerrainCell.h</label>
+        <link refid="_spatial_tree_terrain_cell_8h_source"/>
+        <childnode refid="13" relation="include">
+        </childnode>
+        <childnode refid="19" relation="include">
+        </childnode>
+        <childnode refid="21" relation="include">
+        </childnode>
+      </node>
+      <node id="14">
+        <label>App/Model/IBM/Landscape/Map/TerrainCells/CellValue.h</label>
+        <link refid="_cell_value_8h_source"/>
+        <childnode refid="15" relation="include">
+        </childnode>
+        <childnode refid="12" relation="include">
+        </childnode>
+        <childnode refid="16" relation="include">
+        </childnode>
+      </node>
+      <node id="34">
+        <label>App/Model/IBM/Landscape/Map/TerrainCells/PatchApplicator/HabitatDomain/CellHabitatDomain.h</label>
+        <link refid="_cell_habitat_domain_8h_source"/>
+        <childnode refid="35" relation="include">
+        </childnode>
+      </node>
+      <node id="33">
+        <label>App/Model/IBM/Landscape/Map/TerrainCells/PatchApplicator/HabitatDomain/CellHabitatDomainInterface.h</label>
+        <link refid="_cell_habitat_domain_interface_8h_source"/>
+        <childnode refid="31" relation="include">
+        </childnode>
+        <childnode refid="34" relation="include">
+        </childnode>
+        <childnode refid="36" relation="include">
+        </childnode>
+      </node>
+      <node id="36">
+        <label>App/Model/IBM/Landscape/Map/TerrainCells/PatchApplicator/PatchApplicator.h</label>
+        <link refid="_patch_applicator_8h_source"/>
+        <childnode refid="37" relation="include">
+        </childnode>
+        <childnode refid="16" relation="include">
+        </childnode>
+      </node>
+      <node id="16">
+        <label>App/Model/IBM/Landscape/Map/TerrainCells/TerrainCell.h</label>
+        <link refid="_terrain_cell_8h_source"/>
+        <childnode refid="7" relation="include">
+        </childnode>
+        <childnode refid="17" relation="include">
+        </childnode>
+        <childnode refid="13" relation="include">
+        </childnode>
+        <childnode refid="18" relation="include">
+        </childnode>
+      </node>
+    </invincdepgraph>
+    <innerclass refid="class_trait_definition_section" prot="public">TraitDefinitionSection</innerclass>
+    <briefdescription>
+<para>Defines the <ref refid="class_trait_definition_section" kindref="compound">TraitDefinitionSection</ref> class, representing a section of a trait definition. </para>
+    </briefdescription>
+    <detaileddescription>
+    </detaileddescription>
+    <programlisting>
+<codeline lineno="1"><highlight class="normal"></highlight></codeline>
+<codeline lineno="5"><highlight class="normal"></highlight></codeline>
+<codeline lineno="6"><highlight class="normal"></highlight><highlight class="preprocessor">#ifndef<sp/>TRAIT_DEFINITION_SECTION_H_</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="7"><highlight class="normal"></highlight><highlight class="preprocessor">#define<sp/>TRAIT_DEFINITION_SECTION_H_</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="8"><highlight class="normal"></highlight></codeline>
+<codeline lineno="9"><highlight class="normal"></highlight></codeline>
+<codeline lineno="10"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&lt;nlohmann/json.hpp&gt;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="11"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&lt;vector&gt;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="12"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&lt;string&gt;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="13"><highlight class="normal"></highlight></codeline>
+<codeline lineno="14"><highlight class="normal"></highlight></codeline>
+<codeline lineno="15"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&lt;boost/archive/text_iarchive.hpp&gt;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="16"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&lt;boost/archive/text_oarchive.hpp&gt;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="17"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&lt;boost/archive/binary_iarchive.hpp&gt;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="18"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&lt;boost/archive/binary_oarchive.hpp&gt;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="19"><highlight class="normal"></highlight></codeline>
+<codeline lineno="20"><highlight class="normal"></highlight></codeline>
+<codeline lineno="21"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&quot;App/Model/IBM/Landscape/LivingBeings/Animals/Genetics/Genome.h&quot;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="22"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&quot;Misc/EnumClass.h&quot;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="23"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&quot;Exceptions/LineInfoException.h&quot;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="24"><highlight class="normal"></highlight></codeline>
+<codeline lineno="25"><highlight class="normal"></highlight></codeline>
+<codeline lineno="26"><highlight class="normal"></highlight></codeline>
+<codeline lineno="27"><highlight class="normal"></highlight><highlight class="keyword">class<sp/></highlight><highlight class="normal"><ref refid="class_individual_level_trait" kindref="compound">IndividualLevelTrait</ref>;</highlight></codeline>
+<codeline lineno="28"><highlight class="normal"></highlight></codeline>
+<codeline lineno="29"><highlight class="normal"></highlight></codeline>
+<codeline lineno="41" refid="class_trait_definition_section" refkind="compound"><highlight class="normal"></highlight><highlight class="keyword">class<sp/></highlight><highlight class="normal"><ref refid="class_trait_definition_section_1ac5aa1cd642e50db3de0d4d60e7aaf761" kindref="member">TraitDefinitionSection</ref><sp/>{</highlight></codeline>
+<codeline lineno="42"><highlight class="normal"></highlight><highlight class="keyword">public</highlight><highlight class="normal">:</highlight></codeline>
+<codeline lineno="47" refid="class_trait_definition_section_1ad5d5c99dae906788cba493facf6e31e8" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">enum<sp/>class</highlight><highlight class="normal"><sp/><ref refid="class_trait_definition_section_1ad5d5c99dae906788cba493facf6e31e8" kindref="member">Type</ref><sp/>:<sp/></highlight><highlight class="keywordtype">unsigned</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordtype">char</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="48"><highlight class="normal"><sp/><sp/><sp/><sp/>{</highlight></codeline>
+<codeline lineno="50" refid="class_trait_definition_section_1ad5d5c99dae906788cba493facf6e31e8abc04e9cdfe92eebb1a92e2f9346d3992" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>SpeciesLevel,</highlight></codeline>
+<codeline lineno="51"><highlight class="normal"></highlight></codeline>
+<codeline lineno="53" refid="class_trait_definition_section_1ad5d5c99dae906788cba493facf6e31e8a955fbd310c4a5de3039f2865ebfc9d9a" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>IndividualLevel</highlight></codeline>
+<codeline lineno="54"><highlight class="normal"><sp/><sp/><sp/><sp/>};</highlight></codeline>
+<codeline lineno="55"><highlight class="normal"></highlight></codeline>
+<codeline lineno="65" refid="class_trait_definition_section_1abec925023405389506b2477f5bb5e305" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">static</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordtype">size_t</highlight><highlight class="normal"><sp/><ref refid="class_trait_definition_section_1abec925023405389506b2477f5bb5e305" kindref="member">findOrder</ref>(<ref refid="class_trait_definition_section_1ad5d5c99dae906788cba493facf6e31e8" kindref="member">Type</ref><sp/>type,<sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/>std::vector&lt;nlohmann::json&gt;&amp;<sp/>individualLevelTraitsOrder,<sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/>std::string&amp;<sp/>traitStr,<sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/>std::string&amp;<sp/>elementStr);</highlight></codeline>
+<codeline lineno="66"><highlight class="normal"></highlight></codeline>
+<codeline lineno="78" refid="class_trait_definition_section_1aaf49a69d04bd5030d08f96a328d7b566" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">static</highlight><highlight class="normal"><sp/><ref refid="class_trait_definition_section_1ac5aa1cd642e50db3de0d4d60e7aaf761" kindref="member">TraitDefinitionSection</ref>*<sp/><ref refid="class_trait_definition_section_1aaf49a69d04bd5030d08f96a328d7b566" kindref="member">createInstance</ref>(std::vector&lt;IndividualLevelTrait*&gt;&amp;<sp/>individualLevelTraits,<sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/>nlohmann::json&amp;<sp/>config,<sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/>std::vector&lt;nlohmann::json&gt;&amp;<sp/>individualLevelTraitsOrder,<sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/>std::string&amp;<sp/>traitStr,<sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/>std::string&amp;<sp/>elementStr,<sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/>std::string&amp;<sp/>fileName);</highlight></codeline>
+<codeline lineno="79"><highlight class="normal"></highlight></codeline>
+<codeline lineno="80"><highlight class="normal"></highlight></codeline>
+<codeline lineno="84" refid="class_trait_definition_section_1ac5aa1cd642e50db3de0d4d60e7aaf761" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="class_trait_definition_section_1ac5aa1cd642e50db3de0d4d60e7aaf761" kindref="member">TraitDefinitionSection</ref>();</highlight></codeline>
+<codeline lineno="85"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight></codeline>
+<codeline lineno="89" refid="class_trait_definition_section_1a3aa5a6c99c36405d445222119eff23ce" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">virtual</highlight><highlight class="normal"><sp/><ref refid="class_trait_definition_section_1a3aa5a6c99c36405d445222119eff23ce" kindref="member">~TraitDefinitionSection</ref>();</highlight></codeline>
+<codeline lineno="90"><highlight class="normal"></highlight></codeline>
+<codeline lineno="103" refid="class_trait_definition_section_1a45bb754d6ef28d58e3631988b49ab9e2" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">virtual</highlight><highlight class="normal"><sp/><ref refid="class_precise_double" kindref="compound">PreciseDouble</ref><sp/><ref refid="class_trait_definition_section_1a45bb754d6ef28d58e3631988b49ab9e2" kindref="member">getValue</ref>(</highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/><ref refid="class_genome" kindref="compound">Genome</ref>&amp;<sp/>genome,<sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordtype">size_t</highlight><highlight class="normal"><sp/>traitsPerModule,<sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordtype">size_t</highlight><highlight class="normal"><sp/>numberOfLociPerTrait,<sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/>std::vector&lt;PreciseDouble&gt;&amp;<sp/>rhoPerModule,<sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/>std::vector&lt;size_t&gt;&amp;<sp/>rhoRangePerModule)<sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal">=0;</highlight></codeline>
+<codeline lineno="104"><highlight class="normal"></highlight></codeline>
+<codeline lineno="112" refid="class_trait_definition_section_1ab88b4d3f98e81b5857ee0c85e239355a" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">virtual</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/><ref refid="class_trait_definition_section_1ab88b4d3f98e81b5857ee0c85e239355a" kindref="member">deserializeIndividualLevelTraits</ref>(std::vector&lt;IndividualLevelTrait*&gt;&amp;<sp/>individualLevelTraits)=0;</highlight></codeline>
+<codeline lineno="113"><highlight class="normal"></highlight></codeline>
+<codeline lineno="121" refid="class_trait_definition_section_1a026b2d51e67a6321da698a900d095cbb" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">virtual</highlight><highlight class="normal"><sp/><ref refid="class_trait_definition_section_1ad5d5c99dae906788cba493facf6e31e8" kindref="member">Type</ref><sp/><ref refid="class_trait_definition_section_1a026b2d51e67a6321da698a900d095cbb" kindref="member">getType</ref>()<sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal">=0;</highlight></codeline>
+<codeline lineno="122"><highlight class="normal"></highlight></codeline>
+<codeline lineno="130" refid="class_trait_definition_section_1a75e4dcf1465a0dc3f09e049c3504f6ad" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">virtual</highlight><highlight class="normal"><sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/><ref refid="class_precise_double" kindref="compound">PreciseDouble</ref>&amp;<sp/><ref refid="class_trait_definition_section_1a75e4dcf1465a0dc3f09e049c3504f6ad" kindref="member">getMinTraitRestrictedRange</ref>()<sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal">=0;</highlight></codeline>
+<codeline lineno="131"><highlight class="normal"></highlight></codeline>
+<codeline lineno="139" refid="class_trait_definition_section_1a38f3dbca7b03bdee0fe793c4e72e546e" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">virtual</highlight><highlight class="normal"><sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/><ref refid="class_precise_double" kindref="compound">PreciseDouble</ref>&amp;<sp/><ref refid="class_trait_definition_section_1a38f3dbca7b03bdee0fe793c4e72e546e" kindref="member">getMaxTraitRestrictedRange</ref>()<sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal">=0;</highlight></codeline>
+<codeline lineno="140"><highlight class="normal"></highlight></codeline>
+<codeline lineno="148" refid="class_trait_definition_section_1abbf56650f0e3aada447e66b4418cae8d" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">virtual</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordtype">bool</highlight><highlight class="normal"><sp/><ref refid="class_trait_definition_section_1abbf56650f0e3aada447e66b4418cae8d" kindref="member">isNull</ref>()<sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal">=0;</highlight></codeline>
+<codeline lineno="149"><highlight class="normal"></highlight></codeline>
+<codeline lineno="157"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">template</highlight><highlight class="normal"><sp/>&lt;</highlight><highlight class="keyword">class</highlight><highlight class="normal"><sp/>Archive&gt;</highlight></codeline>
+<codeline lineno="158" refid="class_trait_definition_section_1a1e65919bf0848bd145c3d705f473c9c9" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/><ref refid="class_trait_definition_section_1a1e65919bf0848bd145c3d705f473c9c9" kindref="member">serialize</ref>(Archive<sp/>&amp;ar,<sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordtype">unsigned</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>version);</highlight></codeline>
+<codeline lineno="159"><highlight class="normal">};</highlight></codeline>
+<codeline lineno="160"><highlight class="normal"></highlight></codeline>
+<codeline lineno="161"><highlight class="normal"></highlight><highlight class="preprocessor">#endif<sp/></highlight><highlight class="comment">//<sp/>TRAIT_DEFINITION_SECTION_H_</highlight><highlight class="normal"></highlight></codeline>
+    </programlisting>
+    <location file="App/Model/IBM/Landscape/LivingBeings/Animals/Species/Genetics/Traits/DefinitionSection/TraitDefinitionSection.h"/>
+  </compounddef>
+</doxygen>

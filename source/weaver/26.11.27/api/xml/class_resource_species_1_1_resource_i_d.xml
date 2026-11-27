@@ -1,0 +1,177 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.18.0" xml:lang="en-US">
+  <compounddef id="class_resource_species_1_1_resource_i_d" kind="class" language="C++" prot="public">
+    <compoundname>ResourceSpecies::ResourceID</compoundname>
+    <includes refid="_resource_species_8h" local="no">ResourceSpecies.h</includes>
+    <sectiondef kind="private-attrib">
+      <memberdef kind="variable" id="class_resource_species_1_1_resource_i_d_1ad8ea92e7fca385fbd7cebf17003c13cf" prot="private" static="no" mutable="no">
+        <type>id_type</type>
+        <definition>id_type ResourceSpecies::ResourceID::value</definition>
+        <argsstring></argsstring>
+        <name>value</name>
+        <qualifiedname>ResourceSpecies::ResourceID::value</qualifiedname>
+        <briefdescription>
+<para>Internal identifier value. </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="App/Model/IBM/Landscape/LivingBeings/Resources/Species/ResourceSpecies.h" line="93" column="9" bodyfile="App/Model/IBM/Landscape/LivingBeings/Resources/Species/ResourceSpecies.h" bodystart="93" bodyend="-1"/>
+      </memberdef>
+    </sectiondef>
+    <sectiondef kind="public-func">
+      <memberdef kind="function" id="class_resource_species_1_1_resource_i_d_1af683e902b8ff5777f9109b16b7171a44" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type></type>
+        <definition>ResourceSpecies::ResourceID::ResourceID</definition>
+        <argsstring>()</argsstring>
+        <name>ResourceID</name>
+        <qualifiedname>ResourceSpecies::ResourceID::ResourceID</qualifiedname>
+        <briefdescription>
+<para>Default constructor. </para>
+        </briefdescription>
+        <detaileddescription>
+<para>Initializes the identifier with a default value. </para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="App/Model/IBM/Landscape/LivingBeings/Resources/Species/ResourceSpecies.h" line="58" column="1"/>
+      </memberdef>
+      <memberdef kind="function" id="class_resource_species_1_1_resource_i_d_1a52253726d0c943cee8bc13c66f584b0f" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type></type>
+        <definition>ResourceSpecies::ResourceID::ResourceID</definition>
+        <argsstring>(const id_type &amp;value)</argsstring>
+        <name>ResourceID</name>
+        <qualifiedname>ResourceSpecies::ResourceID::ResourceID</qualifiedname>
+        <param>
+          <type>const id_type &amp;</type>
+          <declname>value</declname>
+        </param>
+        <briefdescription>
+<para>Constructs a <ref refid="class_resource_species_1_1_resource_i_d" kindref="compound">ResourceID</ref> with a specific value. </para>
+        </briefdescription>
+        <detaileddescription>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>value</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Identifier value. </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="App/Model/IBM/Landscape/LivingBeings/Resources/Species/ResourceSpecies.h" line="64" column="1"/>
+      </memberdef>
+      <memberdef kind="function" id="class_resource_species_1_1_resource_i_d_1a349254a6755310d4c03eb383fc6b5dc0" prot="public" static="no" const="yes" explicit="no" inline="no" virt="non-virtual">
+        <type>const id_type &amp;</type>
+        <definition>const id_type &amp; ResourceSpecies::ResourceID::getValue</definition>
+        <argsstring>() const</argsstring>
+        <name>getValue</name>
+        <qualifiedname>ResourceSpecies::ResourceID::getValue</qualifiedname>
+        <briefdescription>
+<para>Returns the underlying identifier value. </para>
+        </briefdescription>
+        <detaileddescription>
+<para><simplesect kind="return"><para>Constant reference to the identifier value. </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="App/Model/IBM/Landscape/LivingBeings/Resources/Species/ResourceSpecies.h" line="70" column="15"/>
+      </memberdef>
+      <memberdef kind="function" id="class_resource_species_1_1_resource_i_d_1adc19b90992a91f21ebf245abbeff42e8" prot="public" static="no" constexpr="yes" const="yes" explicit="no" inline="yes" noexcept="yes" virt="non-virtual">
+        <type>constexpr</type>
+        <definition>ResourceSpecies::ResourceID::operator size_t</definition>
+        <argsstring>() const noexcept</argsstring>
+        <name>operator size_t</name>
+        <qualifiedname>ResourceSpecies::ResourceID::operator size_t</qualifiedname>
+        <briefdescription>
+<para>Implicit conversion operator to size_t. </para>
+        </briefdescription>
+        <detaileddescription>
+<para>Enables use of <ref refid="class_resource_species_1_1_resource_i_d" kindref="compound">ResourceID</ref> as a key in hash-based containers. <simplesect kind="return"><para>Identifier value converted to size_t. </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="App/Model/IBM/Landscape/LivingBeings/Resources/Species/ResourceSpecies.h" line="78" column="11" bodyfile="App/Model/IBM/Landscape/LivingBeings/Resources/Species/ResourceSpecies.h" bodystart="78" bodyend="80"/>
+      </memberdef>
+      <memberdef kind="function" id="class_resource_species_1_1_resource_i_d_1a6efc3344f067a8011a6ed6687ec3fc0a" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <templateparamlist>
+          <param>
+            <type>class Archive</type>
+          </param>
+        </templateparamlist>
+        <type>void</type>
+        <definition>void ResourceSpecies::ResourceID::serialize</definition>
+        <argsstring>(Archive &amp;ar, const unsigned int version)</argsstring>
+        <name>serialize</name>
+        <qualifiedname>ResourceSpecies::ResourceID::serialize</qualifiedname>
+        <param>
+          <type>Archive &amp;</type>
+          <declname>ar</declname>
+        </param>
+        <param>
+          <type>const unsigned int</type>
+          <declname>version</declname>
+        </param>
+        <briefdescription>
+<para>Serializes the object for persistence. </para>
+        </briefdescription>
+        <detaileddescription>
+<para><parameterlist kind="templateparam"><parameteritem>
+<parameternamelist>
+<parametername>Archive</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Serialization archive type. </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>ar</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Archive instance. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>version</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Serialization version. </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="App/Model/IBM/Landscape/LivingBeings/Resources/Species/ResourceSpecies.h" line="90" column="10"/>
+      </memberdef>
+    </sectiondef>
+    <briefdescription>
+<para>Unique identifier for a resource species. </para>
+    </briefdescription>
+    <detaileddescription>
+<para>This class encapsulates a value of type id_type used to distinguish resource species from each other. It provides access to the identifier value, support for hashing, and serialization capabilities. </para>
+    </detaileddescription>
+    <location file="App/Model/IBM/Landscape/LivingBeings/Resources/Species/ResourceSpecies.h" line="50" column="1" bodyfile="App/Model/IBM/Landscape/LivingBeings/Resources/Species/ResourceSpecies.h" bodystart="51" bodyend="94"/>
+    <listofallmembers>
+      <member refid="class_resource_species_1_1_resource_i_d_1a349254a6755310d4c03eb383fc6b5dc0" prot="public" virt="non-virtual"><scope>ResourceSpecies::ResourceID</scope><name>getValue</name></member>
+      <member refid="class_resource_species_1_1_resource_i_d_1adc19b90992a91f21ebf245abbeff42e8" prot="public" virt="non-virtual"><scope>ResourceSpecies::ResourceID</scope><name>operator size_t</name></member>
+      <member refid="class_resource_species_1_1_resource_i_d_1af683e902b8ff5777f9109b16b7171a44" prot="public" virt="non-virtual"><scope>ResourceSpecies::ResourceID</scope><name>ResourceID</name></member>
+      <member refid="class_resource_species_1_1_resource_i_d_1a52253726d0c943cee8bc13c66f584b0f" prot="public" virt="non-virtual"><scope>ResourceSpecies::ResourceID</scope><name>ResourceID</name></member>
+      <member refid="class_resource_species_1_1_resource_i_d_1a6efc3344f067a8011a6ed6687ec3fc0a" prot="public" virt="non-virtual"><scope>ResourceSpecies::ResourceID</scope><name>serialize</name></member>
+      <member refid="class_resource_species_1_1_resource_i_d_1ad8ea92e7fca385fbd7cebf17003c13cf" prot="private" virt="non-virtual"><scope>ResourceSpecies::ResourceID</scope><name>value</name></member>
+    </listofallmembers>
+  </compounddef>
+</doxygen>

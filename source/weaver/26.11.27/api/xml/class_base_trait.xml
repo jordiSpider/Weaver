@@ -1,0 +1,589 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.18.0" xml:lang="en-US">
+  <compounddef id="class_base_trait" kind="class" language="C++" prot="public">
+    <compoundname>BaseTrait</compoundname>
+    <basecompoundref refid="class_trait" prot="public" virt="non-virtual">Trait</basecompoundref>
+    <includes refid="_base_trait_8h" local="no">BaseTrait.h</includes>
+    <sectiondef kind="private-attrib">
+      <memberdef kind="variable" id="class_base_trait_1a0bac2d8e89024d38c10bb160d3609f80" prot="private" static="no" mutable="no">
+        <type>BaseTraitType</type>
+        <definition>BaseTraitType BaseTrait::type</definition>
+        <argsstring></argsstring>
+        <name>type</name>
+        <qualifiedname>BaseTrait::type</qualifiedname>
+        <briefdescription>
+<para>The specific type of this <ref refid="class_base_trait" kindref="compound">BaseTrait</ref>. </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="App/Model/IBM/Landscape/LivingBeings/Animals/Species/Genetics/Traits/BaseTrait.h" line="134" column="19" bodyfile="App/Model/IBM/Landscape/LivingBeings/Animals/Species/Genetics/Traits/BaseTrait.h" bodystart="134" bodyend="-1"/>
+      </memberdef>
+    </sectiondef>
+    <sectiondef kind="public-static-func">
+      <memberdef kind="function" id="class_base_trait_1a7d115c2f0779e547ed55534edd369ab4" prot="public" static="yes" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>std::vector&lt; <ref refid="class_trait" kindref="compound">Trait</ref> * &gt;</type>
+        <definition>static std::vector&lt; Trait * &gt; BaseTrait::generateTraits</definition>
+        <argsstring>(std::vector&lt; IndividualLevelTrait * &gt; &amp;individualLevelTraits, const nlohmann::json &amp;definitionConfig, const std::vector&lt; nlohmann::json &gt; &amp;individualLevelTraitsOrder)</argsstring>
+        <name>generateTraits</name>
+        <qualifiedname>BaseTrait::generateTraits</qualifiedname>
+        <param>
+          <type>std::vector&lt; <ref refid="class_individual_level_trait" kindref="compound">IndividualLevelTrait</ref> * &gt; &amp;</type>
+          <declname>individualLevelTraits</declname>
+        </param>
+        <param>
+          <type>const nlohmann::json &amp;</type>
+          <declname>definitionConfig</declname>
+        </param>
+        <param>
+          <type>const std::vector&lt; nlohmann::json &gt; &amp;</type>
+          <declname>individualLevelTraitsOrder</declname>
+        </param>
+        <briefdescription>
+<para>Generates a list of <ref refid="class_base_trait" kindref="compound">BaseTrait</ref> objects from JSON configuration. </para>
+        </briefdescription>
+        <detaileddescription>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>individualLevelTraits</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Vector of pointers to individual-level traits. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>definitionConfig</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>JSON object defining the traits. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>individualLevelTraitsOrder</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Vector of JSON objects specifying the order of traits. </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<simplesect kind="return"><para>Vector of pointers to <ref refid="class_trait" kindref="compound">Trait</ref> objects created. </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="App/Model/IBM/Landscape/LivingBeings/Animals/Species/Genetics/Traits/BaseTrait.h" line="44" column="24"/>
+      </memberdef>
+      <memberdef kind="function" id="class_base_trait_1a4806231c9bfb727c4005f5b7f3d4b3d3" prot="public" static="yes" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>std::vector&lt; std::string &gt;</type>
+        <definition>static std::vector&lt; std::string &gt; BaseTrait::getTraitStrVector</definition>
+        <argsstring>()</argsstring>
+        <name>getTraitStrVector</name>
+        <qualifiedname>BaseTrait::getTraitStrVector</qualifiedname>
+        <briefdescription>
+<para>Returns the string identifiers for all <ref refid="class_base_trait" kindref="compound">BaseTrait</ref> types. </para>
+        </briefdescription>
+        <detaileddescription>
+<para><simplesect kind="return"><para>Vector of strings representing the trait identifiers. </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="App/Model/IBM/Landscape/LivingBeings/Animals/Species/Genetics/Traits/BaseTrait.h" line="51" column="24"/>
+      </memberdef>
+      <memberdef kind="function" id="class_base_trait_1a9057f4f9dedb1f34062c958c1b3e7774" prot="public" static="yes" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>bool</type>
+        <definition>static bool BaseTrait::isInverse</definition>
+        <argsstring>(const BaseTraitType type)</argsstring>
+        <name>isInverse</name>
+        <qualifiedname>BaseTrait::isInverse</qualifiedname>
+        <param>
+          <type>const BaseTraitType</type>
+          <declname>type</declname>
+        </param>
+        <briefdescription>
+<para>Checks whether the given trait type represents an inverse trait. </para>
+        </briefdescription>
+        <detaileddescription>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>type</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>BaseTraitType to check. </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<simplesect kind="return"><para>True if the trait is inverse, false otherwise. </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="App/Model/IBM/Landscape/LivingBeings/Animals/Species/Genetics/Traits/BaseTrait.h" line="83" column="17"/>
+      </memberdef>
+      <memberdef kind="function" id="class_base_trait_1a19c4f7d2d69683155263a3914c193c85" prot="public" static="yes" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>bool</type>
+        <definition>static bool BaseTrait::isStrictlyPositive</definition>
+        <argsstring>(const BaseTraitType type)</argsstring>
+        <name>isStrictlyPositive</name>
+        <qualifiedname>BaseTrait::isStrictlyPositive</qualifiedname>
+        <param>
+          <type>const BaseTraitType</type>
+          <declname>type</declname>
+        </param>
+        <briefdescription>
+<para>Checks whether the given trait type must always be strictly positive. </para>
+        </briefdescription>
+        <detaileddescription>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>type</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>BaseTraitType to check. </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<simplesect kind="return"><para>True if the trait is strictly positive, false otherwise. </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="App/Model/IBM/Landscape/LivingBeings/Animals/Species/Genetics/Traits/BaseTrait.h" line="91" column="17"/>
+      </memberdef>
+    </sectiondef>
+    <sectiondef kind="public-func">
+      <memberdef kind="function" id="class_base_trait_1a073e51f6d92ff69ef600b6d84955feae" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type></type>
+        <definition>BaseTrait::BaseTrait</definition>
+        <argsstring>()</argsstring>
+        <name>BaseTrait</name>
+        <qualifiedname>BaseTrait::BaseTrait</qualifiedname>
+        <briefdescription>
+<para>Default constructor. </para>
+        </briefdescription>
+        <detaileddescription>
+<para>Initializes an empty <ref refid="class_base_trait" kindref="compound">BaseTrait</ref> object. </para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="App/Model/IBM/Landscape/LivingBeings/Animals/Species/Genetics/Traits/BaseTrait.h" line="58" column="5"/>
+      </memberdef>
+      <memberdef kind="function" id="class_base_trait_1af59039559f42add801f62877ef754b67" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type></type>
+        <definition>BaseTrait::BaseTrait</definition>
+        <argsstring>(std::vector&lt; IndividualLevelTrait * &gt; &amp;individualLevelTraits, const BaseTraitType type, const nlohmann::json &amp;config, const std::vector&lt; nlohmann::json &gt; &amp;individualLevelTraitsOrder)</argsstring>
+        <name>BaseTrait</name>
+        <qualifiedname>BaseTrait::BaseTrait</qualifiedname>
+        <param>
+          <type>std::vector&lt; <ref refid="class_individual_level_trait" kindref="compound">IndividualLevelTrait</ref> * &gt; &amp;</type>
+          <declname>individualLevelTraits</declname>
+        </param>
+        <param>
+          <type>const BaseTraitType</type>
+          <declname>type</declname>
+        </param>
+        <param>
+          <type>const nlohmann::json &amp;</type>
+          <declname>config</declname>
+        </param>
+        <param>
+          <type>const std::vector&lt; nlohmann::json &gt; &amp;</type>
+          <declname>individualLevelTraitsOrder</declname>
+        </param>
+        <briefdescription>
+<para>Constructor with initialization parameters. </para>
+        </briefdescription>
+        <detaileddescription>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>individualLevelTraits</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Vector of pointers to individual-level traits. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>type</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Type of <ref refid="class_base_trait" kindref="compound">BaseTrait</ref>. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>config</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>JSON object containing trait configuration. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>individualLevelTraitsOrder</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Vector of JSON objects defining the order of traits. </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="App/Model/IBM/Landscape/LivingBeings/Animals/Species/Genetics/Traits/BaseTrait.h" line="68" column="5"/>
+      </memberdef>
+      <memberdef kind="function" id="class_base_trait_1a357fa5fb4d4a5a52c7589f422a4de133" prot="public" static="no" const="no" explicit="no" inline="no" virt="virtual">
+        <type></type>
+        <definition>virtual BaseTrait::~BaseTrait</definition>
+        <argsstring>()</argsstring>
+        <name>~BaseTrait</name>
+        <qualifiedname>BaseTrait::~BaseTrait</qualifiedname>
+        <briefdescription>
+<para>Destructor. </para>
+        </briefdescription>
+        <detaileddescription>
+<para>Cleans up resources used by the trait. </para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="App/Model/IBM/Landscape/LivingBeings/Animals/Species/Genetics/Traits/BaseTrait.h" line="75" column="13"/>
+      </memberdef>
+      <memberdef kind="function" id="class_base_trait_1aa419eb9303cd5be4a020d1257cf4fdf5" prot="public" static="no" const="yes" explicit="no" inline="no" virt="virtual">
+        <type>bool</type>
+        <definition>bool BaseTrait::canBeNegative</definition>
+        <argsstring>() const</argsstring>
+        <name>canBeNegative</name>
+        <qualifiedname>BaseTrait::canBeNegative</qualifiedname>
+        <reimplements refid="class_trait_1a0db4c1cbb2f5e49d3c2d2a458f6135c6">canBeNegative</reimplements>
+        <briefdescription>
+<para>Checks whether this trait can have negative values. </para>
+        </briefdescription>
+        <detaileddescription>
+<para><simplesect kind="return"><para>True if the trait can be negative, false otherwise. </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="App/Model/IBM/Landscape/LivingBeings/Animals/Species/Genetics/Traits/BaseTrait.h" line="98" column="10"/>
+      </memberdef>
+      <memberdef kind="function" id="class_base_trait_1a508bac833c0a0d112e447a10c5badeef" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <templateparamlist>
+          <param>
+            <type>class Archive</type>
+          </param>
+        </templateparamlist>
+        <type>void</type>
+        <definition>void BaseTrait::serialize</definition>
+        <argsstring>(Archive &amp;ar, const unsigned int version)</argsstring>
+        <name>serialize</name>
+        <qualifiedname>BaseTrait::serialize</qualifiedname>
+        <param>
+          <type>Archive &amp;</type>
+          <declname>ar</declname>
+        </param>
+        <param>
+          <type>const unsigned int</type>
+          <declname>version</declname>
+        </param>
+        <briefdescription>
+<para>Serializes the object for persistence. </para>
+        </briefdescription>
+        <detaileddescription>
+<para><parameterlist kind="templateparam"><parameteritem>
+<parameternamelist>
+<parametername>Archive</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Serialization archive type. </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>ar</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Archive instance. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>version</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Serialization version. </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="App/Model/IBM/Landscape/LivingBeings/Animals/Species/Genetics/Traits/BaseTrait.h" line="108" column="10"/>
+      </memberdef>
+    </sectiondef>
+    <sectiondef kind="protected-static-func">
+      <memberdef kind="function" id="class_base_trait_1a37f2dd888a5c39f0590a33ba578d6557" prot="protected" static="yes" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>std::string</type>
+        <definition>static std::string BaseTrait::getJsonFieldName</definition>
+        <argsstring>()</argsstring>
+        <name>getJsonFieldName</name>
+        <qualifiedname>BaseTrait::getJsonFieldName</qualifiedname>
+        <briefdescription>
+<para>Returns the JSON field name used for this trait. </para>
+        </briefdescription>
+        <detaileddescription>
+<para><simplesect kind="return"><para>JSON field name as a std::string. </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="App/Model/IBM/Landscape/LivingBeings/Animals/Species/Genetics/Traits/BaseTrait.h" line="116" column="24"/>
+      </memberdef>
+    </sectiondef>
+    <sectiondef kind="protected-func">
+      <memberdef kind="function" id="class_base_trait_1adb479197770be81c4de5c70c973281d6" prot="protected" static="no" const="yes" explicit="no" inline="no" virt="virtual">
+        <type>std::string</type>
+        <definition>std::string BaseTrait::getFileName</definition>
+        <argsstring>() const override</argsstring>
+        <name>getFileName</name>
+        <qualifiedname>BaseTrait::getFileName</qualifiedname>
+        <reimplements refid="class_trait_1a7a4e7aecd6973f24ccc42cd2b06036a8">getFileName</reimplements>
+        <briefdescription>
+<para>Returns the file name associated with this trait. </para>
+        </briefdescription>
+        <detaileddescription>
+<para><simplesect kind="return"><para>File name as a std::string. </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="App/Model/IBM/Landscape/LivingBeings/Animals/Species/Genetics/Traits/BaseTrait.h" line="123" column="17"/>
+      </memberdef>
+      <memberdef kind="function" id="class_base_trait_1a01ccbf91616911429127233f6b4430e5" prot="protected" static="no" const="yes" explicit="no" inline="no" virt="virtual">
+        <type>std::string</type>
+        <definition>std::string BaseTrait::getParentTraitStr</definition>
+        <argsstring>() const override</argsstring>
+        <name>getParentTraitStr</name>
+        <qualifiedname>BaseTrait::getParentTraitStr</qualifiedname>
+        <reimplements refid="class_trait_1ab8fa64d924dad4f23f839a879d3a51e9">getParentTraitStr</reimplements>
+        <briefdescription>
+<para>Returns the parent trait string identifier. </para>
+        </briefdescription>
+        <detaileddescription>
+<para><simplesect kind="return"><para>Parent trait string. </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="App/Model/IBM/Landscape/LivingBeings/Animals/Species/Genetics/Traits/BaseTrait.h" line="130" column="17"/>
+      </memberdef>
+    </sectiondef>
+    <sectiondef kind="private-static-func">
+      <memberdef kind="function" id="class_base_trait_1adb2dd1e046c5771554da52e5915411e0" prot="private" static="yes" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type><ref refid="class_trait_temperature_section" kindref="compound">TraitTemperatureSection</ref> *</type>
+        <definition>static TraitTemperatureSection * BaseTrait::createTemperatureSection</definition>
+        <argsstring>(std::vector&lt; IndividualLevelTrait * &gt; &amp;individualLevelTraits, const BaseTraitType type, const nlohmann::json &amp;temperatureConfig, const std::vector&lt; nlohmann::json &gt; &amp;individualLevelTraitsOrder, const std::string &amp;traitStr, const std::string &amp;fileName)</argsstring>
+        <name>createTemperatureSection</name>
+        <qualifiedname>BaseTrait::createTemperatureSection</qualifiedname>
+        <param>
+          <type>std::vector&lt; <ref refid="class_individual_level_trait" kindref="compound">IndividualLevelTrait</ref> * &gt; &amp;</type>
+          <declname>individualLevelTraits</declname>
+        </param>
+        <param>
+          <type>const BaseTraitType</type>
+          <declname>type</declname>
+        </param>
+        <param>
+          <type>const nlohmann::json &amp;</type>
+          <declname>temperatureConfig</declname>
+        </param>
+        <param>
+          <type>const std::vector&lt; nlohmann::json &gt; &amp;</type>
+          <declname>individualLevelTraitsOrder</declname>
+        </param>
+        <param>
+          <type>const std::string &amp;</type>
+          <declname>traitStr</declname>
+        </param>
+        <param>
+          <type>const std::string &amp;</type>
+          <declname>fileName</declname>
+        </param>
+        <briefdescription>
+<para>Creates a temperature section for the trait from JSON configuration. </para>
+        </briefdescription>
+        <detaileddescription>
+<para>This is used internally to initialize temperature-dependent aspects of the trait.</para>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>individualLevelTraits</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Vector of pointers to individual-level traits. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>type</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Type of <ref refid="class_base_trait" kindref="compound">BaseTrait</ref>. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>temperatureConfig</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>JSON object containing temperature configuration. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>individualLevelTraitsOrder</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Vector defining order of traits. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>traitStr</parametername>
+</parameternamelist>
+<parameterdescription>
+<para><ref refid="class_trait" kindref="compound">Trait</ref> identifier string. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>fileName</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>File name associated with the trait. </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<simplesect kind="return"><para>Pointer to the created <ref refid="class_trait_temperature_section" kindref="compound">TraitTemperatureSection</ref>. </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="App/Model/IBM/Landscape/LivingBeings/Animals/Species/Genetics/Traits/BaseTrait.h" line="149" column="36"/>
+      </memberdef>
+    </sectiondef>
+    <briefdescription>
+<para>Represents a fundamental trait for individuals in the simulation. </para>
+    </briefdescription>
+    <detaileddescription>
+<para><ref refid="class_base_trait" kindref="compound">BaseTrait</ref> inherits from <ref refid="class_trait" kindref="compound">Trait</ref> and includes functionality to:<itemizedlist>
+<listitem><para>Generate multiple traits from JSON configuration.</para>
+</listitem><listitem><para>Retrieve trait identifiers.</para>
+</listitem><listitem><para>Check trait properties such as inverse or strictly positive.</para>
+</listitem><listitem><para>Handle serialization and temperature-dependent trait sections. </para>
+</listitem></itemizedlist>
+</para>
+    </detaileddescription>
+    <inheritancegraph>
+      <node id="1">
+        <label>BaseTrait</label>
+        <link refid="class_base_trait"/>
+        <childnode refid="2" relation="public-inheritance">
+        </childnode>
+      </node>
+      <node id="2">
+        <label>Trait</label>
+        <link refid="class_trait"/>
+      </node>
+    </inheritancegraph>
+    <collaborationgraph>
+      <node id="1">
+        <label>BaseTrait</label>
+        <link refid="class_base_trait"/>
+        <childnode refid="2" relation="public-inheritance">
+        </childnode>
+      </node>
+      <node id="3">
+        <label>CustomIndexedVector&lt; ExecutionOrder, GenerateTraitsFunc &gt;</label>
+        <link refid="class_custom_indexed_vector"/>
+      </node>
+      <node id="4">
+        <label>CustomIndexedVector&lt; ExecutionOrder, std::function&lt; std::vector&lt; std::string &gt;()&gt; &gt;</label>
+        <link refid="class_custom_indexed_vector"/>
+      </node>
+      <node id="2">
+        <label>Trait</label>
+        <link refid="class_trait"/>
+        <childnode refid="3" relation="usage">
+          <edgelabel>registryGenerateTraits</edgelabel>
+        </childnode>
+        <childnode refid="4" relation="usage">
+          <edgelabel>registryGetTraitStrVector</edgelabel>
+        </childnode>
+        <childnode refid="5" relation="usage">
+          <edgelabel>value</edgelabel>
+        </childnode>
+        <childnode refid="6" relation="usage">
+          <edgelabel>temperatureSection</edgelabel>
+        </childnode>
+      </node>
+      <node id="5">
+        <label>TraitDefinitionSection</label>
+        <link refid="class_trait_definition_section"/>
+      </node>
+      <node id="6">
+        <label>TraitTemperatureSection</label>
+        <link refid="class_trait_temperature_section"/>
+      </node>
+    </collaborationgraph>
+    <location file="App/Model/IBM/Landscape/LivingBeings/Animals/Species/Genetics/Traits/BaseTrait.h" line="34" column="1" bodyfile="App/Model/IBM/Landscape/LivingBeings/Animals/Species/Genetics/Traits/BaseTrait.h" bodystart="34" bodyend="150"/>
+    <listofallmembers>
+      <member refid="class_base_trait_1a073e51f6d92ff69ef600b6d84955feae" prot="public" virt="non-virtual"><scope>BaseTrait</scope><name>BaseTrait</name></member>
+      <member refid="class_base_trait_1af59039559f42add801f62877ef754b67" prot="public" virt="non-virtual"><scope>BaseTrait</scope><name>BaseTrait</name></member>
+      <member refid="class_base_trait_1aa419eb9303cd5be4a020d1257cf4fdf5" prot="public" virt="virtual"><scope>BaseTrait</scope><name>canBeNegative</name></member>
+      <member refid="class_base_trait_1adb2dd1e046c5771554da52e5915411e0" prot="private" virt="non-virtual"><scope>BaseTrait</scope><name>createTemperatureSection</name></member>
+      <member refid="class_trait_1a53d74d98ffd1ed386045b0c762cea4f8" prot="public" virt="non-virtual"><scope>BaseTrait</scope><name>defaultGenerateTraits</name></member>
+      <member refid="class_trait_1ae16a0fd5fad5b0cd999da92a6b05b6e9" prot="public" virt="non-virtual"><scope>BaseTrait</scope><name>defaultGetTraitStrVector</name></member>
+      <member refid="class_trait_1a2992bf837cfed940fc725f29a1b89e66" prot="public" virt="non-virtual"><scope>BaseTrait</scope><name>deserializeIndividualLevelTraits</name></member>
+      <member refid="class_trait_1ae6b7272eb7b811a0ffe03525a142d468" prot="public" virt="non-virtual"><scope>BaseTrait</scope><name>ExecutionOrder</name></member>
+      <member refid="class_base_trait_1a7d115c2f0779e547ed55534edd369ab4" prot="public" virt="non-virtual"><scope>BaseTrait</scope><name>generateTraits</name></member>
+      <member refid="class_trait_1a4f08be480b7ae35ba0e1c35eab90df54" prot="public" virt="non-virtual"><scope>BaseTrait</scope><name>GenerateTraitsFunc</name></member>
+      <member refid="class_base_trait_1adb479197770be81c4de5c70c973281d6" prot="protected" virt="virtual"><scope>BaseTrait</scope><name>getFileName</name></member>
+      <member refid="class_trait_1a6c95780c171ab8838838c9aa5506169c" prot="public" virt="non-virtual"><scope>BaseTrait</scope><name>getHeader</name></member>
+      <member refid="class_base_trait_1a37f2dd888a5c39f0590a33ba578d6557" prot="protected" virt="non-virtual"><scope>BaseTrait</scope><name>getJsonFieldName</name></member>
+      <member refid="class_base_trait_1a01ccbf91616911429127233f6b4430e5" prot="protected" virt="virtual"><scope>BaseTrait</scope><name>getParentTraitStr</name></member>
+      <member refid="class_trait_1a64c797baa9849a467c152c894a93f1a3" prot="public" virt="non-virtual"><scope>BaseTrait</scope><name>getTemperatureSection</name></member>
+      <member refid="class_base_trait_1a4806231c9bfb727c4005f5b7f3d4b3d3" prot="public" virt="non-virtual"><scope>BaseTrait</scope><name>getTraitStrVector</name></member>
+      <member refid="class_trait_1a3bdf5c9cdece115eb4622ee4cb7c4703" prot="public" virt="non-virtual"><scope>BaseTrait</scope><name>getValue</name></member>
+      <member refid="class_trait_1affddb05eaf31887ce88d9dbf773f80a4" prot="public" virt="non-virtual"><scope>BaseTrait</scope><name>getValue</name></member>
+      <member refid="class_base_trait_1a9057f4f9dedb1f34062c958c1b3e7774" prot="public" virt="non-virtual"><scope>BaseTrait</scope><name>isInverse</name></member>
+      <member refid="class_trait_1ae067531775e1497fdfb328d8025226b2" prot="public" virt="non-virtual"><scope>BaseTrait</scope><name>isNull</name></member>
+      <member refid="class_base_trait_1a19c4f7d2d69683155263a3914c193c85" prot="public" virt="non-virtual"><scope>BaseTrait</scope><name>isStrictlyPositive</name></member>
+      <member refid="class_trait_1ac881efc740d9065e4d70526afd2e2738" prot="public" virt="non-virtual"><scope>BaseTrait</scope><name>isThermallyDependent</name></member>
+      <member refid="class_trait_1a8dcae044e795a01ef9bee257afbaede6" prot="public" virt="non-virtual"><scope>BaseTrait</scope><name>registryGenerateTraits</name></member>
+      <member refid="class_trait_1a5696bf9ca5fc4350c563053937d3df4e" prot="public" virt="non-virtual"><scope>BaseTrait</scope><name>registryGetTraitStrVector</name></member>
+      <member refid="class_base_trait_1a508bac833c0a0d112e447a10c5badeef" prot="public" virt="non-virtual"><scope>BaseTrait</scope><name>serialize</name></member>
+      <member refid="class_trait_1a26018a9144fab74f38336aae605da01d" prot="protected" virt="non-virtual"><scope>BaseTrait</scope><name>temperatureSection</name></member>
+      <member refid="class_trait_1a3d1268015b3d6c8e8c2b8e247ed8c635" prot="protected" virt="non-virtual"><scope>BaseTrait</scope><name>thermallyDependent</name></member>
+      <member refid="class_trait_1aae36b201023c346213c0e5bcc1c7922f" prot="public" virt="non-virtual"><scope>BaseTrait</scope><name>Trait</name></member>
+      <member refid="class_trait_1ab83fed03a389345639441434caef755d" prot="public" virt="non-virtual"><scope>BaseTrait</scope><name>Trait</name></member>
+      <member refid="class_base_trait_1a0bac2d8e89024d38c10bb160d3609f80" prot="private" virt="non-virtual"><scope>BaseTrait</scope><name>type</name></member>
+      <member refid="class_trait_1a4e980cb5b7ac6f59d3462ccec66c3d70" prot="protected" virt="non-virtual"><scope>BaseTrait</scope><name>value</name></member>
+      <member refid="class_base_trait_1a357fa5fb4d4a5a52c7589f422a4de133" prot="public" virt="virtual"><scope>BaseTrait</scope><name>~BaseTrait</name></member>
+      <member refid="class_trait_1adf5a385491a3eab49ddfd4b80f21b267" prot="public" virt="virtual"><scope>BaseTrait</scope><name>~Trait</name></member>
+    </listofallmembers>
+  </compounddef>
+</doxygen>

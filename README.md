@@ -24,7 +24,7 @@ source/weaver-manager/<version>/_templates/
 ```
 
 The version directory must match its release tag without a leading `v` (for example, tag `v26.10.04-rc.1` uses `source/weaver/26.10.04-rc.1/`).
-Each version keeps its own templates and static assets, including its logo, so editing one version does not affect the others.
+Each version keeps its own templates and static assets, including its logo, so editing one version does not affect the others. The landing page uses its own branding in `source/landing/_static/branding/` and licenses in `source/landing/licenses/`, independently of product versions.
 
 ## Common workflows (PowerShell)
 

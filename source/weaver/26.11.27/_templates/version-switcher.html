@@ -1,0 +1,14 @@
+<div class="dropdown">
+  <button class="btn btn-sm btn-outline-secondary dropdown-toggle" style="color: {% if current_version == default_version %}#198754{% elif version_labels.get(current_version, "stable") == "pre-release" %}#fd7e14{% else %}#0d6efd{% endif %} !important" type="button" id="version-switcher" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Select version">
+    {{ current_version }} ({{ version_labels.get(current_version, "stable") }}{% if current_version == default_version %}, latest{% endif %})
+  </button>
+  <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="version-switcher">
+    {% for version in all_versions %}
+    <li>
+      <a class="dropdown-item{% if version == current_version %} active{% endif %}" style="color: {% if version == default_version %}#198754{% elif version_labels.get(version, "stable") == "pre-release" %}#fd7e14{% else %}#0d6efd{% endif %} !important" href="{{ urls[version][current_language] }}">
+        {{ version }} ({{ version_labels.get(version, "stable") }}{% if version == default_version %}, latest{% endif %})
+      </a>
+    </li>
+    {% endfor %}
+  </ul>
+</div>

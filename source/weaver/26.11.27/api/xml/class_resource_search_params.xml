@@ -1,0 +1,207 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.18.0" xml:lang="en-US">
+  <compounddef id="class_resource_search_params" kind="class" language="C++" prot="public">
+    <compoundname>ResourceSearchParams</compoundname>
+    <includes refid="_resource_search_params_8h" local="no">ResourceSearchParams.h</includes>
+    <sectiondef kind="protected-attrib">
+      <memberdef kind="variable" id="class_resource_search_params_1a6bccb87d9dc22d8b0d0cf0e6a47a3e1b" prot="protected" static="no" mutable="no">
+        <type>std::vector&lt; bool &gt;</type>
+        <definition>std::vector&lt;bool&gt; ResourceSearchParams::validSignaturesBitmask</definition>
+        <argsstring></argsstring>
+        <name>validSignaturesBitmask</name>
+        <qualifiedname>ResourceSearchParams::validSignaturesBitmask</qualifiedname>
+        <briefdescription>
+<para>Set of resource species IDs that are searchable. </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="App/Model/IBM/Landscape/Map/TerrainCells/ResourceSearchParams.h" line="32" column="17" bodyfile="App/Model/IBM/Landscape/Map/TerrainCells/ResourceSearchParams.h" bodystart="32" bodyend="-1"/>
+      </memberdef>
+    </sectiondef>
+    <sectiondef kind="public-func">
+      <memberdef kind="function" id="class_resource_search_params_1a419bf0460dd34a3d4103c0d6883b0a4f" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type></type>
+        <definition>ResourceSearchParams::ResourceSearchParams</definition>
+        <argsstring>()</argsstring>
+        <name>ResourceSearchParams</name>
+        <qualifiedname>ResourceSearchParams::ResourceSearchParams</qualifiedname>
+        <briefdescription>
+<para>Default constructor, initializes empty search parameters. </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="App/Model/IBM/Landscape/Map/TerrainCells/ResourceSearchParams.h" line="38" column="5"/>
+      </memberdef>
+      <memberdef kind="function" id="class_resource_search_params_1ab042c5c55f841d3192962b9336d89dc9" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type></type>
+        <definition>ResourceSearchParams::ResourceSearchParams</definition>
+        <argsstring>(const ResourceSearchParams &amp;other)</argsstring>
+        <name>ResourceSearchParams</name>
+        <qualifiedname>ResourceSearchParams::ResourceSearchParams</qualifiedname>
+        <param>
+          <type>const <ref refid="class_resource_search_params" kindref="compound">ResourceSearchParams</ref> &amp;</type>
+          <declname>other</declname>
+        </param>
+        <briefdescription>
+<para>Copy constructor. </para>
+        </briefdescription>
+        <detaileddescription>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>other</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Another <ref refid="class_resource_search_params" kindref="compound">ResourceSearchParams</ref> object to copy from </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="App/Model/IBM/Landscape/Map/TerrainCells/ResourceSearchParams.h" line="50" column="5"/>
+      </memberdef>
+      <memberdef kind="function" id="class_resource_search_params_1a7137672193d8be6ccb6602af7fcd0080" prot="public" static="no" const="no" explicit="no" inline="no" virt="virtual">
+        <type></type>
+        <definition>virtual ResourceSearchParams::~ResourceSearchParams</definition>
+        <argsstring>()</argsstring>
+        <name>~ResourceSearchParams</name>
+        <qualifiedname>ResourceSearchParams::~ResourceSearchParams</qualifiedname>
+        <briefdescription>
+<para>Destructor. </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="App/Model/IBM/Landscape/Map/TerrainCells/ResourceSearchParams.h" line="43" column="13"/>
+      </memberdef>
+      <memberdef kind="function" id="class_resource_search_params_1aa8b8bab4cf7afdef86c5153c4f86ee97" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void ResourceSearchParams::addSearchParams</definition>
+        <argsstring>(size_t numberExistingResourceSpecies, const std::vector&lt; ResourceSpecies::ResourceID &gt; &amp;searchableResourceSpecies={})</argsstring>
+        <name>addSearchParams</name>
+        <qualifiedname>ResourceSearchParams::addSearchParams</qualifiedname>
+        <param>
+          <type>size_t</type>
+          <declname>numberExistingResourceSpecies</declname>
+        </param>
+        <param>
+          <type>const std::vector&lt; <ref refid="class_resource_species_1_1_resource_i_d" kindref="compound">ResourceSpecies::ResourceID</ref> &gt; &amp;</type>
+          <declname>searchableResourceSpecies</declname>
+          <defval>{}</defval>
+        </param>
+        <briefdescription>
+<para>Adds new searchable resource species to the current object. </para>
+        </briefdescription>
+        <detaileddescription>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>existingResourceSpecies</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Vector of existing <ref refid="class_resource_species" kindref="compound">ResourceSpecies</ref> objects </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>searchableResourceSpecies</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Optional vector of resource IDs to add explicitly </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="App/Model/IBM/Landscape/Map/TerrainCells/ResourceSearchParams.h" line="66" column="10"/>
+      </memberdef>
+      <memberdef kind="function" id="class_resource_search_params_1a01495a73856874f67a650180fba6e3bf" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void ResourceSearchParams::init</definition>
+        <argsstring>()</argsstring>
+        <name>init</name>
+        <qualifiedname>ResourceSearchParams::init</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="App/Model/IBM/Landscape/Map/TerrainCells/ResourceSearchParams.h" line="68" column="10"/>
+      </memberdef>
+      <memberdef kind="function" id="class_resource_search_params_1a940f75f89c9f6a85ab675d126a694739" prot="public" static="no" const="yes" explicit="no" inline="no" noexcept="yes" virt="non-virtual">
+        <type>bool</type>
+        <definition>bool ResourceSearchParams::matches</definition>
+        <argsstring>(const CellResourceInterface &amp;resource) const noexcept</argsstring>
+        <name>matches</name>
+        <qualifiedname>ResourceSearchParams::matches</qualifiedname>
+        <param>
+          <type>const <ref refid="class_cell_resource_interface" kindref="compound">CellResourceInterface</ref> &amp;</type>
+          <declname>resource</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="App/Model/IBM/Landscape/Map/TerrainCells/ResourceSearchParams.h" line="70" column="10"/>
+      </memberdef>
+      <memberdef kind="function" id="class_resource_search_params_1ad9c8f7ae276e1b12557ad3baf4166cbe" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type><ref refid="class_resource_search_params" kindref="compound">ResourceSearchParams</ref> &amp;</type>
+        <definition>ResourceSearchParams &amp; ResourceSearchParams::operator=</definition>
+        <argsstring>(const ResourceSearchParams &amp;other)</argsstring>
+        <name>operator=</name>
+        <qualifiedname>ResourceSearchParams::operator=</qualifiedname>
+        <param>
+          <type>const <ref refid="class_resource_search_params" kindref="compound">ResourceSearchParams</ref> &amp;</type>
+          <declname>other</declname>
+        </param>
+        <briefdescription>
+<para>Copy assignment operator. </para>
+        </briefdescription>
+        <detaileddescription>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>other</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Another <ref refid="class_resource_search_params" kindref="compound">ResourceSearchParams</ref> object to assign from </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<simplesect kind="return"><para>Reference to this object </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="App/Model/IBM/Landscape/Map/TerrainCells/ResourceSearchParams.h" line="58" column="26"/>
+      </memberdef>
+    </sectiondef>
+    <briefdescription>
+<para>Stores parameters for searching resources within a terrain cell. </para>
+    </briefdescription>
+    <detaileddescription>
+<para>This class encapsulates a set of searchable resource species. It allows filtering resources based on their species during simulation operations. </para>
+    </detaileddescription>
+    <location file="App/Model/IBM/Landscape/Map/TerrainCells/ResourceSearchParams.h" line="28" column="1" bodyfile="App/Model/IBM/Landscape/Map/TerrainCells/ResourceSearchParams.h" bodystart="29" bodyend="71"/>
+    <listofallmembers>
+      <member refid="class_resource_search_params_1aa8b8bab4cf7afdef86c5153c4f86ee97" prot="public" virt="non-virtual"><scope>ResourceSearchParams</scope><name>addSearchParams</name></member>
+      <member refid="class_resource_search_params_1a01495a73856874f67a650180fba6e3bf" prot="public" virt="non-virtual"><scope>ResourceSearchParams</scope><name>init</name></member>
+      <member refid="class_resource_search_params_1a940f75f89c9f6a85ab675d126a694739" prot="public" virt="non-virtual"><scope>ResourceSearchParams</scope><name>matches</name></member>
+      <member refid="class_resource_search_params_1ad9c8f7ae276e1b12557ad3baf4166cbe" prot="public" virt="non-virtual"><scope>ResourceSearchParams</scope><name>operator=</name></member>
+      <member refid="class_resource_search_params_1a419bf0460dd34a3d4103c0d6883b0a4f" prot="public" virt="non-virtual"><scope>ResourceSearchParams</scope><name>ResourceSearchParams</name></member>
+      <member refid="class_resource_search_params_1ab042c5c55f841d3192962b9336d89dc9" prot="public" virt="non-virtual"><scope>ResourceSearchParams</scope><name>ResourceSearchParams</name></member>
+      <member refid="class_resource_search_params_1a6bccb87d9dc22d8b0d0cf0e6a47a3e1b" prot="protected" virt="non-virtual"><scope>ResourceSearchParams</scope><name>validSignaturesBitmask</name></member>
+      <member refid="class_resource_search_params_1a7137672193d8be6ccb6602af7fcd0080" prot="public" virt="virtual"><scope>ResourceSearchParams</scope><name>~ResourceSearchParams</name></member>
+    </listofallmembers>
+  </compounddef>
+</doxygen>

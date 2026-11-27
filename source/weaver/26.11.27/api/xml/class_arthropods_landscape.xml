@@ -1,0 +1,741 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.18.0" xml:lang="en-US">
+  <compounddef id="class_arthropods_landscape" kind="class" language="C++" prot="public">
+    <compoundname>ArthropodsLandscape</compoundname>
+    <basecompoundref refid="class_landscape" prot="public" virt="non-virtual">Landscape</basecompoundref>
+    <includes refid="_arthropods_landscape_8h" local="no">ArthropodsLandscape.h</includes>
+    <sectiondef kind="protected-func">
+      <memberdef kind="function" id="class_arthropods_landscape_1a9b5b98650cf4ae041e7262621da39977" prot="protected" static="no" const="yes" explicit="no" inline="no" virt="virtual">
+        <type><ref refid="class_precise_double" kindref="compound">PreciseDouble</ref></type>
+        <definition>PreciseDouble ArthropodsLandscape::calculateWetFood</definition>
+        <argsstring>(const PreciseDouble &amp;wetMass) const</argsstring>
+        <name>calculateWetFood</name>
+        <qualifiedname>ArthropodsLandscape::calculateWetFood</qualifiedname>
+        <reimplements refid="class_landscape_1a6b453746362067e8f23ef205d07b3347">calculateWetFood</reimplements>
+        <param>
+          <type>const <ref refid="class_precise_double" kindref="compound">PreciseDouble</ref> &amp;</type>
+          <declname>wetMass</declname>
+        </param>
+        <briefdescription>
+<para>Computes the amount of wet food available to an arthropod based on its wet mass. </para>
+        </briefdescription>
+        <detaileddescription>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>wetMass</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Wet mass of the individual. </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<simplesect kind="return"><para><ref refid="class_precise_double" kindref="compound">PreciseDouble</ref> Amount of available wet food. </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="App/Model/IBM/Landscape/ArthropodsLandscape.h" line="47" column="19"/>
+      </memberdef>
+    </sectiondef>
+    <sectiondef kind="public-func">
+      <memberdef kind="function" id="class_arthropods_landscape_1a1978019277d6dc52c9a6c6bc221529fd" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type></type>
+        <definition>ArthropodsLandscape::ArthropodsLandscape</definition>
+        <argsstring>()</argsstring>
+        <name>ArthropodsLandscape</name>
+        <qualifiedname>ArthropodsLandscape::ArthropodsLandscape</qualifiedname>
+        <briefdescription>
+<para>Constructs an <ref refid="class_arthropods_landscape" kindref="compound">ArthropodsLandscape</ref> object. </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="App/Model/IBM/Landscape/ArthropodsLandscape.h" line="53" column="5"/>
+      </memberdef>
+      <memberdef kind="function" id="class_arthropods_landscape_1a5adb0df5b7cbe71105e8d6022b2d18cc" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type></type>
+        <definition>ArthropodsLandscape::ArthropodsLandscape</definition>
+        <argsstring>(const ArthropodsLandscape &amp;)=delete</argsstring>
+        <name>ArthropodsLandscape</name>
+        <qualifiedname>ArthropodsLandscape::ArthropodsLandscape</qualifiedname>
+        <param>
+          <type>const <ref refid="class_arthropods_landscape" kindref="compound">ArthropodsLandscape</ref> &amp;</type>
+        </param>
+        <briefdescription>
+<para>Deleted copy constructor; <ref refid="class_arthropods_landscape" kindref="compound">ArthropodsLandscape</ref> is non-copyable. </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="App/Model/IBM/Landscape/ArthropodsLandscape.h" line="63" column="5"/>
+      </memberdef>
+      <memberdef kind="function" id="class_arthropods_landscape_1aa8be8a220a5339a3034afed9260565e8" prot="public" static="no" const="no" explicit="no" inline="no" virt="virtual">
+        <type></type>
+        <definition>virtual ArthropodsLandscape::~ArthropodsLandscape</definition>
+        <argsstring>()</argsstring>
+        <name>~ArthropodsLandscape</name>
+        <qualifiedname>ArthropodsLandscape::~ArthropodsLandscape</qualifiedname>
+        <briefdescription>
+<para>Destructor. </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="App/Model/IBM/Landscape/ArthropodsLandscape.h" line="58" column="13"/>
+      </memberdef>
+      <memberdef kind="function" id="class_arthropods_landscape_1aa2e8a4c7538d63fa14a6a869bd3575d1" prot="public" static="no" const="yes" explicit="no" inline="no" virt="virtual">
+        <type><ref refid="class_dry_mass" kindref="compound">DryMass</ref></type>
+        <definition>DryMass ArthropodsLandscape::calculateMaxVoracityTimeStep</definition>
+        <argsstring>(const WetMass &amp;wetMass, const PreciseDouble &amp;conversionToWetMass, const bool hasCapitalBreeding, const DryMass &amp;basalMetabolicDryMassLoss, const PreciseDouble &amp;YodzisA, const PreciseDouble &amp;YodzisB) const</argsstring>
+        <name>calculateMaxVoracityTimeStep</name>
+        <qualifiedname>ArthropodsLandscape::calculateMaxVoracityTimeStep</qualifiedname>
+        <reimplements refid="class_landscape_1a33a8910e4f8ec0448ea25345f0f96b81">calculateMaxVoracityTimeStep</reimplements>
+        <param>
+          <type>const <ref refid="class_wet_mass" kindref="compound">WetMass</ref> &amp;</type>
+          <declname>wetMass</declname>
+        </param>
+        <param>
+          <type>const <ref refid="class_precise_double" kindref="compound">PreciseDouble</ref> &amp;</type>
+          <declname>conversionToWetMass</declname>
+        </param>
+        <param>
+          <type>const bool</type>
+          <declname>hasCapitalBreeding</declname>
+        </param>
+        <param>
+          <type>const <ref refid="class_dry_mass" kindref="compound">DryMass</ref> &amp;</type>
+          <declname>basalMetabolicDryMassLoss</declname>
+        </param>
+        <param>
+          <type>const <ref refid="class_precise_double" kindref="compound">PreciseDouble</ref> &amp;</type>
+          <declname>YodzisA</declname>
+        </param>
+        <param>
+          <type>const <ref refid="class_precise_double" kindref="compound">PreciseDouble</ref> &amp;</type>
+          <declname>YodzisB</declname>
+        </param>
+        <briefdescription>
+<para>Computes the maximum voracity (maximum dry mass consumable) in a timestep. </para>
+        </briefdescription>
+        <detaileddescription>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>wetMass</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Wet mass of the individual. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>conversionToWetMass</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Dry-to-wet mass conversion. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>hasCapitalBreeding</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Whether the species uses capital breeding. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>basalMetabolicDryMassLoss</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Basal metabolic dry mass loss. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>YodzisA</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Constant A from Yodzis &amp; Innes. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>YodzisB</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Constant B from Yodzis &amp; Innes. </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<simplesect kind="return"><para><ref refid="class_dry_mass" kindref="compound">DryMass</ref> Maximum consumable dry mass. </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="App/Model/IBM/Landscape/ArthropodsLandscape.h" line="101" column="13"/>
+      </memberdef>
+      <memberdef kind="function" id="class_arthropods_landscape_1a495f4793a0c1d31cb9ebe97d4e5d6dae" prot="public" static="no" const="yes" explicit="no" inline="no" virt="virtual">
+        <type><ref refid="class_dry_mass" kindref="compound">DryMass</ref></type>
+        <definition>DryMass ArthropodsLandscape::calculateMetabolicDryMassLossPerDay</definition>
+        <argsstring>(const WetMass &amp;wetMass, const PreciseDouble &amp;proportionOfTimeTheAnimalWasMoving, const PreciseDouble &amp;actE_metValue, const bool actE_metThermallyDependent, const PreciseDouble &amp;met_rateValue, const bool met_rateThermallyDependent, const PreciseDouble &amp;search_areaValue, const Temperature &amp;tempFromLab, const Temperature &amp;terrainCellTemperature, const PreciseDouble &amp;conversionToWetMass) const</argsstring>
+        <name>calculateMetabolicDryMassLossPerDay</name>
+        <qualifiedname>ArthropodsLandscape::calculateMetabolicDryMassLossPerDay</qualifiedname>
+        <reimplements refid="class_landscape_1af7fefe910597a0e79d6944871a97e7c0">calculateMetabolicDryMassLossPerDay</reimplements>
+        <param>
+          <type>const <ref refid="class_wet_mass" kindref="compound">WetMass</ref> &amp;</type>
+          <declname>wetMass</declname>
+        </param>
+        <param>
+          <type>const <ref refid="class_precise_double" kindref="compound">PreciseDouble</ref> &amp;</type>
+          <declname>proportionOfTimeTheAnimalWasMoving</declname>
+        </param>
+        <param>
+          <type>const <ref refid="class_precise_double" kindref="compound">PreciseDouble</ref> &amp;</type>
+          <declname>actE_metValue</declname>
+        </param>
+        <param>
+          <type>const bool</type>
+          <declname>actE_metThermallyDependent</declname>
+        </param>
+        <param>
+          <type>const <ref refid="class_precise_double" kindref="compound">PreciseDouble</ref> &amp;</type>
+          <declname>met_rateValue</declname>
+        </param>
+        <param>
+          <type>const bool</type>
+          <declname>met_rateThermallyDependent</declname>
+        </param>
+        <param>
+          <type>const <ref refid="class_precise_double" kindref="compound">PreciseDouble</ref> &amp;</type>
+          <declname>search_areaValue</declname>
+        </param>
+        <param>
+          <type>const <ref refid="class_temperature" kindref="compound">Temperature</ref> &amp;</type>
+          <declname>tempFromLab</declname>
+        </param>
+        <param>
+          <type>const <ref refid="class_temperature" kindref="compound">Temperature</ref> &amp;</type>
+          <declname>terrainCellTemperature</declname>
+        </param>
+        <param>
+          <type>const <ref refid="class_precise_double" kindref="compound">PreciseDouble</ref> &amp;</type>
+          <declname>conversionToWetMass</declname>
+        </param>
+        <briefdescription>
+<para>Calculates the dry mass loss due to metabolic processes during a day. </para>
+        </briefdescription>
+        <detaileddescription>
+<para>This value depends on activity time, metabolic parameters, and the thermal environment.</para>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>wetMass</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Wet mass of the individual. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>proportionOfTimeTheAnimalWasMoving</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Fraction of the day spent moving. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>actE_metValue</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Activity metabolic parameter. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>actE_metThermallyDependent</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>True if activity metabolism depends on temperature. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>met_rateValue</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Basal metabolic rate parameter. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>met_rateThermallyDependent</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>True if basal metabolism depends on temperature. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>search_areaValue</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Search area parameter. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>tempFromLab</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Laboratory temperature data. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>terrainCellTemperature</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Actual temperature of the landscape cell. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>conversionToWetMass</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Conversion ratio between dry and wet mass. </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<simplesect kind="return"><para><ref refid="class_dry_mass" kindref="compound">DryMass</ref> Dry mass lost per day. </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="App/Model/IBM/Landscape/ArthropodsLandscape.h" line="88" column="13"/>
+      </memberdef>
+      <memberdef kind="function" id="class_arthropods_landscape_1a8fd9339c65fe6507f8a07343648af1c1" prot="public" static="no" const="yes" explicit="no" inline="no" virt="virtual">
+        <type><ref refid="class_precise_double" kindref="compound">PreciseDouble</ref></type>
+        <definition>PreciseDouble ArthropodsLandscape::calculatePostTSpeed</definition>
+        <argsstring>(const PreciseDouble &amp;speedAfterAllometric, const WetMass &amp;wetMass) const</argsstring>
+        <name>calculatePostTSpeed</name>
+        <qualifiedname>ArthropodsLandscape::calculatePostTSpeed</qualifiedname>
+        <reimplements refid="class_landscape_1ac7db2f729807321952fe6f7ee2dbce41">calculatePostTSpeed</reimplements>
+        <param>
+          <type>const <ref refid="class_precise_double" kindref="compound">PreciseDouble</ref> &amp;</type>
+          <declname>speedAfterAllometric</declname>
+        </param>
+        <param>
+          <type>const <ref refid="class_wet_mass" kindref="compound">WetMass</ref> &amp;</type>
+          <declname>wetMass</declname>
+        </param>
+        <briefdescription>
+<para>Computes the animal&apos;s post-timestep speed. </para>
+        </briefdescription>
+        <detaileddescription>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>speedAfterAllometric</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Base speed after allometric scaling. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>wetMass</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Wet mass of the individual. </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<simplesect kind="return"><para><ref refid="class_precise_double" kindref="compound">PreciseDouble</ref> Adjusted speed. </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="App/Model/IBM/Landscape/ArthropodsLandscape.h" line="110" column="19"/>
+      </memberdef>
+      <memberdef kind="function" id="class_arthropods_landscape_1a3a1cd1ddf0e4580db6a1c4c6e8321540" prot="public" static="no" const="yes" explicit="no" inline="no" virt="virtual">
+        <type><ref refid="class_precise_double" kindref="compound">PreciseDouble</ref></type>
+        <definition>PreciseDouble ArthropodsLandscape::getScaleMass</definition>
+        <argsstring>() const</argsstring>
+        <name>getScaleMass</name>
+        <qualifiedname>ArthropodsLandscape::getScaleMass</qualifiedname>
+        <reimplements refid="class_landscape_1a0f676bded3039242df9bfcac9bb422f6">getScaleMass</reimplements>
+        <briefdescription>
+<para>Returns the mass scaling factor used for ecological calculations. </para>
+        </briefdescription>
+        <detaileddescription>
+<para><simplesect kind="return"><para><ref refid="class_precise_double" kindref="compound">PreciseDouble</ref> Scaling mass for arthropods. </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="App/Model/IBM/Landscape/ArthropodsLandscape.h" line="122" column="19"/>
+      </memberdef>
+      <memberdef kind="function" id="class_arthropods_landscape_1a5254f2377c2e9015ad66c04e88d1a7bf" prot="public" static="no" const="yes" explicit="no" inline="no" virt="virtual">
+        <type><ref refid="class_landscape_1aaa33bcf3a636223bea05cdc6ef67e536" kindref="member">Type</ref></type>
+        <definition>Type ArthropodsLandscape::getType</definition>
+        <argsstring>() const</argsstring>
+        <name>getType</name>
+        <qualifiedname>ArthropodsLandscape::getType</qualifiedname>
+        <reimplements refid="class_landscape_1ad9fd97237fcaba36d0ed28c6bafe9149">getType</reimplements>
+        <briefdescription>
+<para>Returns the type of this landscape. </para>
+        </briefdescription>
+        <detaileddescription>
+<para><simplesect kind="return"><para><ref refid="class_landscape_1aaa33bcf3a636223bea05cdc6ef67e536" kindref="member">Type</ref> Enumeration value identifying the landscape type. </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="App/Model/IBM/Landscape/ArthropodsLandscape.h" line="116" column="10"/>
+      </memberdef>
+      <memberdef kind="function" id="class_arthropods_landscape_1a08b9e1ff447dd3146356301e7b505ef9" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type><ref refid="class_arthropods_landscape" kindref="compound">ArthropodsLandscape</ref> &amp;</type>
+        <definition>ArthropodsLandscape &amp; ArthropodsLandscape::operator=</definition>
+        <argsstring>(const ArthropodsLandscape &amp;)=delete</argsstring>
+        <name>operator=</name>
+        <qualifiedname>ArthropodsLandscape::operator=</qualifiedname>
+        <param>
+          <type>const <ref refid="class_arthropods_landscape" kindref="compound">ArthropodsLandscape</ref> &amp;</type>
+        </param>
+        <briefdescription>
+<para>Deleted copy assignment operator; <ref refid="class_arthropods_landscape" kindref="compound">ArthropodsLandscape</ref> is non-copyable. </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="App/Model/IBM/Landscape/ArthropodsLandscape.h" line="68" column="25"/>
+      </memberdef>
+      <memberdef kind="function" id="class_arthropods_landscape_1adfcd0720979d4f42569cd7b30761d6be" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <templateparamlist>
+          <param>
+            <type>class Archive</type>
+          </param>
+        </templateparamlist>
+        <type>void</type>
+        <definition>void ArthropodsLandscape::serialize</definition>
+        <argsstring>(Archive &amp;ar, const unsigned int version)</argsstring>
+        <name>serialize</name>
+        <qualifiedname>ArthropodsLandscape::serialize</qualifiedname>
+        <param>
+          <type>Archive &amp;</type>
+          <declname>ar</declname>
+        </param>
+        <param>
+          <type>const unsigned int</type>
+          <declname>version</declname>
+        </param>
+        <briefdescription>
+<para>Serializes the <ref refid="class_arthropods_landscape" kindref="compound">ArthropodsLandscape</ref> object. </para>
+        </briefdescription>
+        <detaileddescription>
+<para><parameterlist kind="templateparam"><parameteritem>
+<parameternamelist>
+<parametername>Archive</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Archive type (e.g., boost::archive::binary_oarchive). </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>ar</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Archive instance. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>version</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Serialization version. </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="App/Model/IBM/Landscape/ArthropodsLandscape.h" line="132" column="10"/>
+      </memberdef>
+    </sectiondef>
+    <briefdescription>
+<para>Specialized landscape model for arthropod ecosystems. </para>
+    </briefdescription>
+    <detaileddescription>
+<para>This class extends the generic <ref refid="class_landscape" kindref="compound">Landscape</ref> class with arthropod-specific ecological rules. It handles metabolic processes, voracity constraints, speed adjustments, and temperature-dependent behaviours relevant to arthropods. </para>
+    </detaileddescription>
+    <inheritancegraph>
+      <node id="1">
+        <label>ArthropodsLandscape</label>
+        <link refid="class_arthropods_landscape"/>
+        <childnode refid="2" relation="public-inheritance">
+        </childnode>
+      </node>
+      <node id="2">
+        <label>Landscape</label>
+        <link refid="class_landscape"/>
+      </node>
+    </inheritancegraph>
+    <collaborationgraph>
+      <node id="1">
+        <label>ArthropodsLandscape</label>
+        <link refid="class_arthropods_landscape"/>
+        <childnode refid="2" relation="public-inheritance">
+        </childnode>
+      </node>
+      <node id="5">
+        <label>CustomIndexedVector&lt; AnimalSpeciesID, std::filesystem::path &gt;</label>
+        <link refid="class_custom_indexed_vector"/>
+      </node>
+      <node id="3">
+        <label>Day</label>
+        <link refid="class_day"/>
+        <childnode refid="4" relation="usage">
+          <edgelabel>value</edgelabel>
+        </childnode>
+      </node>
+      <node id="2">
+        <label>Landscape</label>
+        <link refid="class_landscape"/>
+        <childnode refid="3" relation="usage">
+          <edgelabel>runDays</edgelabel>
+        </childnode>
+        <childnode refid="4" relation="usage">
+          <edgelabel>coefficientOfVariationThreshold</edgelabel>
+          <edgelabel>minExploitableResource</edgelabel>
+          <edgelabel>multiplierForFieldMetabolicRate</edgelabel>
+          <edgelabel>pdfThreshold</edgelabel>
+          <edgelabel>timeStepsPerDay</edgelabel>
+        </childnode>
+        <childnode refid="5" relation="usage">
+          <edgelabel>animalConstitutiveTraitsFilePath</edgelabel>
+        </childnode>
+        <childnode refid="6" relation="usage">
+          <edgelabel>stabilityCalculationInterval</edgelabel>
+        </childnode>
+        <childnode refid="7" relation="usage">
+          <edgelabel>landscapeMap</edgelabel>
+        </childnode>
+      </node>
+      <node id="7">
+        <label>Map</label>
+        <link refid="class_map"/>
+        <childnode refid="4" relation="usage">
+          <edgelabel>minCellSize</edgelabel>
+          <edgelabel>minHyperVolume</edgelabel>
+        </childnode>
+      </node>
+      <node id="4">
+        <label>PreciseDouble</label>
+        <link refid="class_precise_double"/>
+      </node>
+      <node id="6">
+        <label>TimeStep</label>
+        <link refid="class_time_step"/>
+      </node>
+    </collaborationgraph>
+    <location file="App/Model/IBM/Landscape/ArthropodsLandscape.h" line="38" column="1" bodyfile="App/Model/IBM/Landscape/ArthropodsLandscape.h" bodystart="38" bodyend="133"/>
+    <listofallmembers>
+      <member refid="class_landscape_1a52909af4d3b01b98c441614bd36e86ba" prot="protected" virt="non-virtual"><scope>ArthropodsLandscape</scope><name>addAnimalSpecies</name></member>
+      <member refid="class_landscape_1a163aefc5acabc515be19b353aed2b113" prot="protected" virt="non-virtual"><scope>ArthropodsLandscape</scope><name>addAppliedMoisture</name></member>
+      <member refid="class_landscape_1a1cd98e052ecd209451dbcb4bb8d9f7cf" prot="protected" virt="non-virtual"><scope>ArthropodsLandscape</scope><name>addAppliedResource</name></member>
+      <member refid="class_landscape_1aae31a08e578c678ebcb9d82013b85b47" prot="protected" virt="non-virtual"><scope>ArthropodsLandscape</scope><name>addResourceSpecies</name></member>
+      <member refid="class_landscape_1a867a812755394ee6bf8dcbf4a5a36142" prot="protected" virt="non-virtual"><scope>ArthropodsLandscape</scope><name>addSpecies</name></member>
+      <member refid="class_landscape_1a0f97aa76d2620a224cb670403e9f055a" prot="protected" virt="non-virtual"><scope>ArthropodsLandscape</scope><name>animalConstitutiveTraitsFilePath</name></member>
+      <member refid="class_landscape_1a99e6e50c2a8599dd0ea74c95e3288788" prot="private" virt="non-virtual"><scope>ArthropodsLandscape</scope><name>animalIdCounter</name></member>
+      <member refid="class_landscape_1ae09d296f37af8511a3db4da1bf3c1393" prot="protected" virt="non-virtual"><scope>ArthropodsLandscape</scope><name>appliedMoisture</name></member>
+      <member refid="class_landscape_1ae46341df232cca2031ba7954479c15bb" prot="protected" virt="non-virtual"><scope>ArthropodsLandscape</scope><name>appliedResource</name></member>
+      <member refid="class_landscape_1a8ecdd5d4ba78cd6ea6deb552feeded89" prot="private" virt="non-virtual"><scope>ArthropodsLandscape</scope><name>applyPatch</name></member>
+      <member refid="class_arthropods_landscape_1a1978019277d6dc52c9a6c6bc221529fd" prot="public" virt="non-virtual"><scope>ArthropodsLandscape</scope><name>ArthropodsLandscape</name></member>
+      <member refid="class_arthropods_landscape_1a5adb0df5b7cbe71105e8d6022b2d18cc" prot="public" virt="non-virtual"><scope>ArthropodsLandscape</scope><name>ArthropodsLandscape</name></member>
+      <member refid="class_landscape_1a2b2645331cb18b5ab20eacc19af919c2" prot="private" virt="non-virtual"><scope>ArthropodsLandscape</scope><name>binaryCheckpointEnabled</name></member>
+      <member refid="class_landscape_1a0a84e5a937ba2ba83695bdb602be93f2" prot="private" virt="non-virtual"><scope>ArthropodsLandscape</scope><name>calculateAnimalSpeciesStatistics</name></member>
+      <member refid="class_landscape_1ab2bb574b57ff7bc6cff2cf60de5e00fb" prot="public" virt="non-virtual"><scope>ArthropodsLandscape</scope><name>calculateAttackStatistics</name></member>
+      <member refid="class_arthropods_landscape_1aa2e8a4c7538d63fa14a6a869bd3575d1" prot="public" virt="virtual"><scope>ArthropodsLandscape</scope><name>calculateMaxVoracityTimeStep</name></member>
+      <member refid="class_arthropods_landscape_1a495f4793a0c1d31cb9ebe97d4e5d6dae" prot="public" virt="virtual"><scope>ArthropodsLandscape</scope><name>calculateMetabolicDryMassLossPerDay</name></member>
+      <member refid="class_landscape_1a337f346a361ddf829b68a43f3b397f7b" prot="public" virt="non-virtual"><scope>ArthropodsLandscape</scope><name>calculateNewVoracity</name></member>
+      <member refid="class_arthropods_landscape_1a8fd9339c65fe6507f8a07343648af1c1" prot="public" virt="virtual"><scope>ArthropodsLandscape</scope><name>calculatePostTSpeed</name></member>
+      <member refid="class_arthropods_landscape_1a9b5b98650cf4ae041e7262621da39977" prot="protected" virt="virtual"><scope>ArthropodsLandscape</scope><name>calculateWetFood</name></member>
+      <member refid="class_landscape_1a7ace6d91f86678e67abe855b60dd7eda" prot="private" virt="non-virtual"><scope>ArthropodsLandscape</scope><name>checkBreakConditions</name></member>
+      <member refid="class_landscape_1a5096053a7cb0e94738bfa3df6e0a8f09" prot="private" virt="non-virtual"><scope>ArthropodsLandscape</scope><name>checkpointsEnabled</name></member>
+      <member refid="class_landscape_1a3a862b3accc67f7cfd4125f27c9ccc63" prot="private" virt="non-virtual"><scope>ArthropodsLandscape</scope><name>checkpointsRecordEach</name></member>
+      <member refid="class_landscape_1ad17ccfae142cdb98774686dacf690be1" prot="protected" virt="non-virtual"><scope>ArthropodsLandscape</scope><name>coefficientOfVariationThreshold</name></member>
+      <member refid="class_landscape_1afe26740be2ca402ea74d87015f43a2d7" prot="protected" virt="non-virtual"><scope>ArthropodsLandscape</scope><name>competitionAmongResourceSpecies</name></member>
+      <member refid="class_landscape_1a4e5dfc300f8ca60c0c35fc2983ba27c2" prot="public" virt="non-virtual"><scope>ArthropodsLandscape</scope><name>createInstance</name></member>
+      <member refid="class_landscape_1a42b76dfff8814d178758d06af1e927bc" prot="private" virt="non-virtual"><scope>ArthropodsLandscape</scope><name>edibleIdCounter</name></member>
+      <member refid="class_landscape_1a59487cabc768d42ac3fea69d2944e9b4" prot="protected" virt="non-virtual"><scope>ArthropodsLandscape</scope><name>eraseStatisticsPopulation</name></member>
+      <member refid="class_landscape_1a2a01d20984d8b1210eec1c9e248cbac7" prot="public" virt="non-virtual"><scope>ArthropodsLandscape</scope><name>evolveLandscape</name></member>
+      <member refid="class_landscape_1a23d62f0a0e0ab48ffd39f33457a6d69a" prot="private" virt="non-virtual"><scope>ArthropodsLandscape</scope><name>executingActions</name></member>
+      <member refid="class_landscape_1a5072997c3fa65fa48af4fb49d5b9ac40" prot="private" virt="non-virtual"><scope>ArthropodsLandscape</scope><name>executionTimeBuffer</name></member>
+      <member refid="class_landscape_1a4548b615fc0fc839e4047f52f507ee79" prot="protected" virt="non-virtual"><scope>ArthropodsLandscape</scope><name>existingAnimalSpecies</name></member>
+      <member refid="class_landscape_1ab1b9e1cb743e2cbe0ea246337a503735" prot="protected" virt="non-virtual"><scope>ArthropodsLandscape</scope><name>existingResourceSpecies</name></member>
+      <member refid="class_landscape_1a14b15fd2bb1f7d919042769771074da5" prot="protected" virt="non-virtual"><scope>ArthropodsLandscape</scope><name>existingSpecies</name></member>
+      <member refid="class_landscape_1ae51bcd5ac528fd01aa1ffb63ecbaf76e" prot="protected" virt="non-virtual"><scope>ArthropodsLandscape</scope><name>exitAtFirstExtinction</name></member>
+      <member refid="class_landscape_1a14162cdf19f2a3752fa4cba63dbf103d" prot="protected" virt="non-virtual"><scope>ArthropodsLandscape</scope><name>exitTimeThreshold</name></member>
+      <member refid="class_landscape_1a0b781ea8c50986dd7aedbe2ed673aa43" prot="private" virt="non-virtual"><scope>ArthropodsLandscape</scope><name>extendedDailySummaryBuffer</name></member>
+      <member refid="class_landscape_1aaa690e49e860cb186b2113f06c79288c" prot="protected" virt="non-virtual"><scope>ArthropodsLandscape</scope><name>fixedSeedValue</name></member>
+      <member refid="class_landscape_1a452736fbbaed5050cd3ab1e299ac73cf" prot="protected" virt="non-virtual"><scope>ArthropodsLandscape</scope><name>Garland1983</name></member>
+      <member refid="class_landscape_1ab217cf8911083bda30f1f3ec963e6d23" prot="public" virt="non-virtual"><scope>ArthropodsLandscape</scope><name>generateAnimalId</name></member>
+      <member refid="class_landscape_1ab0bde9504ab6ea2fe2f74a02a721109d" prot="public" virt="non-virtual"><scope>ArthropodsLandscape</scope><name>generateEdibleId</name></member>
+      <member refid="class_landscape_1ae6bc14e494152c0f92b11c5e20fa7a46" prot="public" virt="non-virtual"><scope>ArthropodsLandscape</scope><name>generateResourceId</name></member>
+      <member refid="class_landscape_1a0d2ef462fa58069fa930b3056b1d9574" prot="protected" virt="non-virtual"><scope>ArthropodsLandscape</scope><name>getAnimalSpecies</name></member>
+      <member refid="class_landscape_1af38b075e1310e02489eefc3e4d74aab4" prot="public" virt="non-virtual"><scope>ArthropodsLandscape</scope><name>getBasalMetabolicDryMassLossPerTimeStep</name></member>
+      <member refid="class_landscape_1ad10b1249061dea118df222bdb1b65da6" prot="private" virt="non-virtual"><scope>ArthropodsLandscape</scope><name>getCheckpointsRecordEach</name></member>
+      <member refid="class_landscape_1af4f1360baf9cd6426f914557aa680401" prot="public" virt="non-virtual"><scope>ArthropodsLandscape</scope><name>getCompetitionAmongResourceSpecies</name></member>
+      <member refid="class_landscape_1a58df5becc34bb68e30d316cc20b47c99" prot="public" virt="non-virtual"><scope>ArthropodsLandscape</scope><name>getExistingAnimalSpecies</name></member>
+      <member refid="class_landscape_1aa496511b129528cb94c0b597c07617f6" prot="public" virt="non-virtual"><scope>ArthropodsLandscape</scope><name>getExistingResourceSpecies</name></member>
+      <member refid="class_landscape_1a918cf6431d9e180707f4d7e66561998f" prot="public" virt="non-virtual"><scope>ArthropodsLandscape</scope><name>getExistingSpecies</name></member>
+      <member refid="class_landscape_1a57e6c0fc25c94d574517e5a9ece8b6c6" prot="public" virt="non-virtual"><scope>ArthropodsLandscape</scope><name>getLandscapeAnimals</name></member>
+      <member refid="class_landscape_1a97bb04a2dc4c4632579342cfda123a5c" prot="public" virt="non-virtual"><scope>ArthropodsLandscape</scope><name>getLandscapeAnimals</name></member>
+      <member refid="class_landscape_1a61328f5b7f9751b114f8c2d5767551ac" prot="public" virt="non-virtual"><scope>ArthropodsLandscape</scope><name>getLandscapeTerrainCells</name></member>
+      <member refid="class_landscape_1a87812c2372eb7817e02e24975d9d7103" prot="public" virt="non-virtual"><scope>ArthropodsLandscape</scope><name>getLandscapeTerrainCells</name></member>
+      <member refid="class_landscape_1a2f9be442d7871e0add83a866248915e7" prot="public" virt="non-virtual"><scope>ArthropodsLandscape</scope><name>getMap</name></member>
+      <member refid="class_landscape_1a28f2c2a80cb8e5b041fad2ded670f9cb" prot="public" virt="non-virtual"><scope>ArthropodsLandscape</scope><name>getMetabolicDryMassLossPerTimeStep</name></member>
+      <member refid="class_landscape_1a4fd832edf865e9210defd057c3aa11e5" prot="public" virt="non-virtual"><scope>ArthropodsLandscape</scope><name>getMinExploitableResource</name></member>
+      <member refid="class_landscape_1a0aaaa2bee7addd6890f3950aac1d9993" prot="public" virt="non-virtual"><scope>ArthropodsLandscape</scope><name>getMutableExistingAnimalSpecies</name></member>
+      <member refid="class_landscape_1ac57606a2ebc25a3363dd5baa0740aad1" prot="protected" virt="non-virtual"><scope>ArthropodsLandscape</scope><name>getMutableExistingResourceSpecies</name></member>
+      <member refid="class_landscape_1a1ad4e9a4879942aaf7ff5e90d2765ba3" prot="protected" virt="non-virtual"><scope>ArthropodsLandscape</scope><name>getMutableExistingSpecies</name></member>
+      <member refid="class_landscape_1afed23f6999730dcfffde71d86da4b983" prot="public" virt="non-virtual"><scope>ArthropodsLandscape</scope><name>getMutableMap</name></member>
+      <member refid="class_landscape_1a7501f5ecebf33ad32489852ab1e585a4" prot="public" virt="non-virtual"><scope>ArthropodsLandscape</scope><name>getPdfThreshold</name></member>
+      <member refid="class_landscape_1a369695179f29100c1b42096a8f5aac46" prot="private" virt="non-virtual"><scope>ArthropodsLandscape</scope><name>getRandomPredator</name></member>
+      <member refid="class_landscape_1a5509528a0b74b9f59d542d567ab42eaa" prot="private" virt="non-virtual"><scope>ArthropodsLandscape</scope><name>getRandomPrey</name></member>
+      <member refid="class_landscape_1ad247ff3e60dcac5be0911417bded8c50" prot="protected" virt="non-virtual"><scope>ArthropodsLandscape</scope><name>getResourceSpecies</name></member>
+      <member refid="class_landscape_1a888bf9e476927cbd34e4c891f710f424" prot="public" virt="non-virtual"><scope>ArthropodsLandscape</scope><name>getResultFolder</name></member>
+      <member refid="class_landscape_1a6f8ef6aecd3b5c8f9e6d86c16df760c8" prot="protected" virt="non-virtual"><scope>ArthropodsLandscape</scope><name>getResultFolderName</name></member>
+      <member refid="class_landscape_1a1101f5c50a491da4ab7074666915ad3f" prot="protected" virt="non-virtual"><scope>ArthropodsLandscape</scope><name>getRunDays</name></member>
+      <member refid="class_landscape_1a2bae570c501cf84eb039d09fd87327be" prot="public" virt="non-virtual"><scope>ArthropodsLandscape</scope><name>getSaveActivity</name></member>
+      <member refid="class_landscape_1ab6a654ad0cbd4734fc9a1963354a6082" prot="public" virt="non-virtual"><scope>ArthropodsLandscape</scope><name>getSaveAnimalConstitutiveTraits</name></member>
+      <member refid="class_landscape_1a62eeefaacf1d4181ef1690b916b091bc" prot="public" virt="non-virtual"><scope>ArthropodsLandscape</scope><name>getSaveAnimalsEachDayPredationProbabilities</name></member>
+      <member refid="class_landscape_1a6cd50cfd5ba5119bf6b41b866223817c" prot="public" virt="non-virtual"><scope>ArthropodsLandscape</scope><name>getSaveAnimalsEachDayVoracities</name></member>
+      <member refid="class_landscape_1a480894e1387b2cda3dea39215a0c2245" prot="public" virt="non-virtual"><scope>ArthropodsLandscape</scope><name>getSaveEdibilitiesFile</name></member>
+      <member refid="class_landscape_1a7391b8df0a5985bba7c9f1528bc01a1f" prot="public" virt="non-virtual"><scope>ArthropodsLandscape</scope><name>getSaveGenetics</name></member>
+      <member refid="class_landscape_1a651a21a30e83a20c30eac093930a1905" prot="public" virt="non-virtual"><scope>ArthropodsLandscape</scope><name>getSaveMassInfo</name></member>
+      <member refid="class_landscape_1a4d8f8fe5eaf3fef36a7a8b5d211a3a38" prot="public" virt="non-virtual"><scope>ArthropodsLandscape</scope><name>getSaveMovements</name></member>
+      <member refid="class_arthropods_landscape_1a3a1cd1ddf0e4580db6a1c4c6e8321540" prot="public" virt="virtual"><scope>ArthropodsLandscape</scope><name>getScaleMass</name></member>
+      <member refid="class_landscape_1a8179c99e38fb9e6e40b83a96a0df6af0" prot="public" virt="non-virtual"><scope>ArthropodsLandscape</scope><name>getTimeStepsPerDay</name></member>
+      <member refid="class_arthropods_landscape_1a5254f2377c2e9015ad66c04e88d1a7bf" prot="public" virt="virtual"><scope>ArthropodsLandscape</scope><name>getType</name></member>
+      <member refid="class_landscape_1ad59c95b3cf65d501eb87b57d27654570" prot="protected" virt="non-virtual"><scope>ArthropodsLandscape</scope><name>growthAndReproTest</name></member>
+      <member refid="class_landscape_1af51eaf6eec3adea51d3dcd1131cb0e80" prot="private" virt="non-virtual"><scope>ArthropodsLandscape</scope><name>HABITAT_DOMAIN_FOLDER_NAME</name></member>
+      <member refid="class_landscape_1a1071a22eb0e586286309390f13beb6be" prot="protected" virt="non-virtual"><scope>ArthropodsLandscape</scope><name>heatingCodeTemperatureCycle</name></member>
+      <member refid="class_landscape_1a85d2778f3921446c49fb3514099d7424" prot="public" virt="non-virtual"><scope>ArthropodsLandscape</scope><name>init</name></member>
+      <member refid="class_landscape_1a4c53b4363016258a175008d66d26a474" prot="public" virt="non-virtual"><scope>ArthropodsLandscape</scope><name>initializeAnimals</name></member>
+      <member refid="class_landscape_1a1dd8afe7974d4a8db20a494b29fc77ac" prot="protected" virt="non-virtual"><scope>ArthropodsLandscape</scope><name>initializeMap</name></member>
+      <member refid="class_landscape_1a39ebb4e69e17c3a7bd28cc632af9ac61" prot="public" virt="non-virtual"><scope>ArthropodsLandscape</scope><name>initializeOutputFiles</name></member>
+      <member refid="class_landscape_1a8f56201193cfc0f72b69c139bdd8a9ba" prot="private" virt="non-virtual"><scope>ArthropodsLandscape</scope><name>isBinaryCheckpointEnabled</name></member>
+      <member refid="class_landscape_1a34314b07c7194819aabd310005cd5280" prot="private" virt="non-virtual"><scope>ArthropodsLandscape</scope><name>isCheckpointsEnabled</name></member>
+      <member refid="class_landscape_1aa52a7db9134a4c71dca255183cfdc3b6" prot="public" virt="virtual"><scope>ArthropodsLandscape</scope><name>isDinosaurs</name></member>
+      <member refid="class_landscape_1a8e7b4d893bd0e0af1853c56458fb5163" prot="protected" virt="non-virtual"><scope>ArthropodsLandscape</scope><name>isExtinguished</name></member>
+      <member refid="class_landscape_1a0bd21ed97555cdf4976aa3616df4085b" prot="public" virt="non-virtual"><scope>ArthropodsLandscape</scope><name>isGrowthAndReproTest</name></member>
+      <member refid="class_landscape_1a600e7696c1f78965dc45303f8be7b381" prot="protected" virt="non-virtual"><scope>ArthropodsLandscape</scope><name>isSimulationStabilised</name></member>
+      <member refid="class_landscape_1a0a54d8aabc38c0a5aa27ccace3f91915" prot="public" virt="non-virtual"><scope>ArthropodsLandscape</scope><name>Landscape</name></member>
+      <member refid="class_landscape_1a3585c2dbf24f5b073b35f60ec74e1b42" prot="public" virt="non-virtual"><scope>ArthropodsLandscape</scope><name>Landscape</name></member>
+      <member refid="class_landscape_1afbdad00a7463f272b230f3580caca557" prot="protected" virt="non-virtual"><scope>ArthropodsLandscape</scope><name>landscapeAnimals</name></member>
+      <member refid="class_landscape_1ae1e6129fbb67434b86cfcd93e03ef109" prot="protected" virt="non-virtual"><scope>ArthropodsLandscape</scope><name>landscapeAnimalsMutex</name></member>
+      <member refid="class_landscape_1a81330ca71624903bffb092f894c99c74" prot="protected" virt="non-virtual"><scope>ArthropodsLandscape</scope><name>landscapeMap</name></member>
+      <member refid="class_landscape_1a48763b42946d3780a1ee588afb3d9052" prot="protected" virt="non-virtual"><scope>ArthropodsLandscape</scope><name>landscapeResources</name></member>
+      <member refid="class_landscape_1ad4ddd162856139784558ee986627c250" prot="private" virt="non-virtual"><scope>ArthropodsLandscape</scope><name>localBuffersActivities</name></member>
+      <member refid="class_landscape_1a57def5064ccab05308a63bd6e8ec6214" prot="private" virt="non-virtual"><scope>ArthropodsLandscape</scope><name>localBuffersAnimalConstitutiveTraits</name></member>
+      <member refid="class_landscape_1a449923dd90cb8608ee4b81a953687f97" prot="private" virt="non-virtual"><scope>ArthropodsLandscape</scope><name>localBuffersAnimalsEnd</name></member>
+      <member refid="class_landscape_1a246e90074bac728242f3b81f58161e2d" prot="private" virt="non-virtual"><scope>ArthropodsLandscape</scope><name>localBuffersAnimalsStart</name></member>
+      <member refid="class_landscape_1a21a7a2131609f923befc030eea8a0959" prot="private" virt="non-virtual"><scope>ArthropodsLandscape</scope><name>localBuffersCells</name></member>
+      <member refid="class_landscape_1ae5e4bf0cbc0562a81f56954bb3715e4a" prot="private" virt="non-virtual"><scope>ArthropodsLandscape</scope><name>localBuffersEdibilities</name></member>
+      <member refid="class_landscape_1a0ab4cb2702279d3cb2707470cfeea499" prot="private" virt="non-virtual"><scope>ArthropodsLandscape</scope><name>localBuffersGenetics</name></member>
+      <member refid="class_landscape_1aaba6f195f90c10fe85d3f983c33b4937" prot="private" virt="non-virtual"><scope>ArthropodsLandscape</scope><name>localBuffersMassInfo</name></member>
+      <member refid="class_landscape_1a9b1281999cff37515bbc03514ec15b24" prot="private" virt="non-virtual"><scope>ArthropodsLandscape</scope><name>localBuffersMovements</name></member>
+      <member refid="class_landscape_1aeb06c3067c3ba0ecf655887a86496a75" prot="private" virt="non-virtual"><scope>ArthropodsLandscape</scope><name>localBuffersPredationProbabilities</name></member>
+      <member refid="class_landscape_1a707cb6f654dbd180b85ff93754136f4a" prot="private" virt="non-virtual"><scope>ArthropodsLandscape</scope><name>localBuffersVoracities</name></member>
+      <member refid="class_landscape_1a3c9183dd8cce99aa0a3a4f8ab64752b4" prot="protected" virt="non-virtual"><scope>ArthropodsLandscape</scope><name>localProgressBarCounter</name></member>
+      <member refid="class_landscape_1ad74d97c35f6face15d272e61626a92a9" prot="protected" virt="non-virtual"><scope>ArthropodsLandscape</scope><name>minExploitableResource</name></member>
+      <member refid="class_landscape_1add8fb4aa11bbba0b0862d74e2b019f8a" prot="private" virt="non-virtual"><scope>ArthropodsLandscape</scope><name>MOISTURE_FOLDER_NAME</name></member>
+      <member refid="class_landscape_1a8066a0d5ed2a522ebc98598e05a7ca72" prot="protected" virt="non-virtual"><scope>ArthropodsLandscape</scope><name>multiplierForFieldMetabolicRate</name></member>
+      <member refid="class_landscape_1a8ce9f3350b45bcb2e974d51512b9fd35" prot="protected" virt="non-virtual"><scope>ArthropodsLandscape</scope><name>numberOfCombinations</name></member>
+      <member refid="class_landscape_1a06a85c2fb390cab59dc4aa86fdf34bdf" prot="private" virt="non-virtual"><scope>ArthropodsLandscape</scope><name>OBSTACLE_FOLDER_NAME</name></member>
+      <member refid="class_arthropods_landscape_1a08b9e1ff447dd3146356301e7b505ef9" prot="public" virt="non-virtual"><scope>ArthropodsLandscape</scope><name>operator=</name></member>
+      <member refid="class_landscape_1a9199e786f0c55a4ce2cb7306a85e30e3" prot="public" virt="non-virtual" ambiguityscope="Landscape::"><scope>ArthropodsLandscape</scope><name>operator=</name></member>
+      <member refid="class_landscape_1a570afede9c32510fdc2c2ea2727221de" prot="protected" virt="non-virtual"><scope>ArthropodsLandscape</scope><name>outputFolder</name></member>
+      <member refid="class_landscape_1af3c1b95310afcbffb1cacfa64c7d44ec" prot="private" virt="non-virtual"><scope>ArthropodsLandscape</scope><name>pdfThreshold</name></member>
+      <member refid="class_landscape_1aa0e28696e5c390240a09bbd79b1bee78" prot="private" virt="non-virtual"><scope>ArthropodsLandscape</scope><name>performAnimalsActions</name></member>
+      <member refid="class_landscape_1ae6ff0eb159c343e62cbb1280812fdeeb" prot="private" virt="non-virtual"><scope>ArthropodsLandscape</scope><name>predationEventsOnOtherSpeciesMatrixBuffer</name></member>
+      <member refid="class_landscape_1a1b7719e3c80bab0215afc46dbc51ae7e" prot="protected" virt="non-virtual"><scope>ArthropodsLandscape</scope><name>printAnimalsAlongCells</name></member>
+      <member refid="class_landscape_1af01fc1cf0d8efe1b70e504f504dab407" prot="protected" virt="non-virtual"><scope>ArthropodsLandscape</scope><name>printAnimalsAlongCellsHeader</name></member>
+      <member refid="class_landscape_1ae563db1382b4aa50dc24b265439f5c05" prot="protected" virt="non-virtual"><scope>ArthropodsLandscape</scope><name>printCellAlongCells</name></member>
+      <member refid="class_landscape_1a99e30ba87fd6846bc5b9ce3f39a41699" prot="protected" virt="non-virtual"><scope>ArthropodsLandscape</scope><name>printCellAlongCellsHeader</name></member>
+      <member refid="class_landscape_1a1abc546b6f5186dfa3af865435aad522" prot="protected" virt="non-virtual"><scope>ArthropodsLandscape</scope><name>printExtendedDailySummary</name></member>
+      <member refid="class_landscape_1a7e7439541f773bf3013d7d393aa0de7f" prot="public" virt="non-virtual"><scope>ArthropodsLandscape</scope><name>printPredationEventsOnOtherSpeciesMatrix</name></member>
+      <member refid="class_landscape_1a4f4cb88e2db710792ec9b5366d461014" prot="protected" virt="non-virtual"><scope>ArthropodsLandscape</scope><name>purgeDeadAnimals</name></member>
+      <member refid="class_landscape_1a6fb217c02fc515fceaad83c83dc344e7" prot="protected" virt="non-virtual"><scope>ArthropodsLandscape</scope><name>readAnimalSpeciesFromJSONFiles</name></member>
+      <member refid="class_landscape_1aa49c147cec85d0401f449d8279c24d28" prot="protected" virt="non-virtual"><scope>ArthropodsLandscape</scope><name>readHabitatDomainPatchesFromJSONFiles</name></member>
+      <member refid="class_landscape_1a053f7eb2cacd4401f6302bd0146f736a" prot="protected" virt="non-virtual"><scope>ArthropodsLandscape</scope><name>readMoisturePatchesFromJSONFiles</name></member>
+      <member refid="class_landscape_1aef56f1ad671f6ec8fc0fca7b67c9a219" prot="protected" virt="non-virtual"><scope>ArthropodsLandscape</scope><name>readObstaclePatchesFromJSONFiles</name></member>
+      <member refid="class_landscape_1a933ef385816a0a642f9f8da074d3d649" prot="protected" virt="non-virtual"><scope>ArthropodsLandscape</scope><name>readResourcePatchesFromJSONFiles</name></member>
+      <member refid="class_landscape_1ae6315b6e2969fe0d31d360f006b7c7a3" prot="protected" virt="non-virtual"><scope>ArthropodsLandscape</scope><name>readResourceSpeciesFromJSONFiles</name></member>
+      <member refid="class_landscape_1a43d7a6af543f8a61e24d9f7193f437e2" prot="protected" virt="non-virtual"><scope>ArthropodsLandscape</scope><name>recordEach</name></member>
+      <member refid="class_landscape_1a71e96aab2943130fdf3ac537e79267c2" prot="public" virt="non-virtual"><scope>ArthropodsLandscape</scope><name>registerAnimal</name></member>
+      <member refid="class_landscape_1a2e0e84968a1873cc56668014ff41dbc2" prot="public" virt="non-virtual"><scope>ArthropodsLandscape</scope><name>resetEdibleIdCounter</name></member>
+      <member refid="class_landscape_1a67f4b719c8396ebec52cb187693caea4" prot="private" virt="non-virtual"><scope>ArthropodsLandscape</scope><name>RESOURCE_FOLDER_NAME</name></member>
+      <member refid="class_landscape_1a56e18c5068a9329e8cf73fcf328cdca0" prot="private" virt="non-virtual"><scope>ArthropodsLandscape</scope><name>resourceIdCounter</name></member>
+      <member refid="class_landscape_1afdd388505d8880e36310d3d63f6c9feb" prot="protected" virt="non-virtual"><scope>ArthropodsLandscape</scope><name>resultFolder</name></member>
+      <member refid="class_landscape_1a11afe2886e6acf30bd429385806bb2c3" prot="protected" virt="non-virtual"><scope>ArthropodsLandscape</scope><name>runDays</name></member>
+      <member refid="class_landscape_1a6d1f15e4b2954d51383621b1007b88ab" prot="protected" virt="non-virtual"><scope>ArthropodsLandscape</scope><name>saveActivity</name></member>
+      <member refid="class_landscape_1a6a642d61229b74d58cf376a16e5f27dd" prot="protected" virt="non-virtual"><scope>ArthropodsLandscape</scope><name>saveAnimalConstitutiveTraits</name></member>
+      <member refid="class_landscape_1a1f5da229148a37c7cab7c8863f89abeb" prot="protected" virt="non-virtual"><scope>ArthropodsLandscape</scope><name>saveAnimalsEachDayEnd</name></member>
+      <member refid="class_landscape_1a33f45c7dc074c90903070ffa94ccff69" prot="protected" virt="non-virtual"><scope>ArthropodsLandscape</scope><name>saveAnimalsEachDayPredationProbabilities</name></member>
+      <member refid="class_landscape_1aaf9d0f1faeb08cd4a54726e0b9f6d410" prot="protected" virt="non-virtual"><scope>ArthropodsLandscape</scope><name>saveAnimalsEachDayStart</name></member>
+      <member refid="class_landscape_1a1a0a35fce0a6ad8ef03bfb331db8a88e" prot="protected" virt="non-virtual"><scope>ArthropodsLandscape</scope><name>saveAnimalsEachDayVoracities</name></member>
+      <member refid="class_landscape_1a7d91adf9dba0b4e114bdf0e67f060c60" prot="protected" virt="non-virtual"><scope>ArthropodsLandscape</scope><name>saveAnimalSpeciesSnapshot</name></member>
+      <member refid="class_landscape_1af86b207f5c2dea7d5459f2c664b6c55e" prot="private" virt="non-virtual"><scope>ArthropodsLandscape</scope><name>saveBreakConditionsInfo</name></member>
+      <member refid="class_landscape_1a283908f8e7b7199ae09514b543893632" prot="protected" virt="non-virtual"><scope>ArthropodsLandscape</scope><name>saveCellsEachDay</name></member>
+      <member refid="class_landscape_1ac5e5985d79ed470d23654463eea322df" prot="private" virt="non-virtual"><scope>ArthropodsLandscape</scope><name>saveCheckpoint</name></member>
+      <member refid="class_landscape_1a5ef49897d39330af3ee03de6f85ace3f" prot="protected" virt="non-virtual"><scope>ArthropodsLandscape</scope><name>saveEdibilitiesFile</name></member>
+      <member refid="class_landscape_1a30f79d985cf1cdfd2f13f2112d8e0122" prot="protected" virt="non-virtual"><scope>ArthropodsLandscape</scope><name>saveExtendedDailySummary</name></member>
+      <member refid="class_landscape_1aefbd5dbaf09acd4ba398b479343887ee" prot="protected" virt="non-virtual"><scope>ArthropodsLandscape</scope><name>saveGenetics</name></member>
+      <member refid="class_landscape_1a5ced402800889246ca9ccbad75b0e3e8" prot="protected" virt="non-virtual"><scope>ArthropodsLandscape</scope><name>saveMassInfo</name></member>
+      <member refid="class_landscape_1a02d67a47fc92dc8746ddd360998a10c1" prot="protected" virt="non-virtual"><scope>ArthropodsLandscape</scope><name>saveMovements</name></member>
+      <member refid="class_landscape_1a85a7f541a7fde188465e3d59c417c35c" prot="protected" virt="non-virtual"><scope>ArthropodsLandscape</scope><name>savePredationEventsOnOtherSpecies</name></member>
+      <member refid="class_landscape_1a3b84ecf187b5f43e92aa48d276b1ce54" prot="protected" virt="non-virtual"><scope>ArthropodsLandscape</scope><name>saveResourceSpeciesSnapshot</name></member>
+      <member refid="class_landscape_1aca69366b2a35dd583265fdfc7b4c61fe" prot="protected" virt="non-virtual"><scope>ArthropodsLandscape</scope><name>saveSnapshots</name></member>
+      <member refid="class_landscape_1a7a0edd57526134b75b5651eeeae5e0eb" prot="protected" virt="non-virtual"><scope>ArthropodsLandscape</scope><name>saveSnapshotsPeriodicity</name></member>
+      <member refid="class_landscape_1af519b71f79cd1db6845c951cb0f3f82e" prot="protected" virt="non-virtual"><scope>ArthropodsLandscape</scope><name>saveWaterSnapshot</name></member>
+      <member refid="class_landscape_1ad1229480bdba20d22c96dd0c8e56e3ef" prot="private" virt="non-virtual"><scope>ArthropodsLandscape</scope><name>serializationVersion</name></member>
+      <member refid="class_arthropods_landscape_1adfcd0720979d4f42569cd7b30761d6be" prot="public" virt="non-virtual"><scope>ArthropodsLandscape</scope><name>serialize</name></member>
+      <member refid="class_landscape_1aaa5b9dac484e3a437a827c4f0cf2a12d" prot="protected" virt="non-virtual"><scope>ArthropodsLandscape</scope><name>setExitTimeThreshold</name></member>
+      <member refid="class_landscape_1a22e457568b92963ac8c19f8379618ed0" prot="protected" virt="non-virtual"><scope>ArthropodsLandscape</scope><name>setLandscapeParams</name></member>
+      <member refid="class_landscape_1a79b6c40547ee6eb66fa37b71f87f8ae4" prot="protected" virt="non-virtual"><scope>ArthropodsLandscape</scope><name>setOntogeneticLinks</name></member>
+      <member refid="class_landscape_1a8b5cab8c8b79da5430283cccd556a771" prot="public" virt="non-virtual"><scope>ArthropodsLandscape</scope><name>setOutputFolder</name></member>
+      <member refid="class_landscape_1ad7cb19c58bd6e3d012344ccbd04a73f7" prot="protected" virt="non-virtual"><scope>ArthropodsLandscape</scope><name>setSimulationParams</name></member>
+      <member refid="class_landscape_1a528b6ec0997a38aad8feab20d86f9c4d" prot="private" virt="non-virtual"><scope>ArthropodsLandscape</scope><name>SPECIES_FOLDER_NAME</name></member>
+      <member refid="class_landscape_1aae2e44e65e564df03d00cd69eea24f9b" prot="protected" virt="non-virtual"><scope>ArthropodsLandscape</scope><name>stabilityCalculationInterval</name></member>
+      <member refid="class_landscape_1a5a65d4a4546b604b5c01c44ead8236de" prot="protected" virt="non-virtual"><scope>ArthropodsLandscape</scope><name>stabilityEnabled</name></member>
+      <member refid="class_landscape_1afb0cca26794a9a1fa856a6a6e3609bca" prot="protected" virt="non-virtual"><scope>ArthropodsLandscape</scope><name>terrainCells</name></member>
+      <member refid="class_landscape_1a177d90f82aa496bba736b77e7af796fe" prot="private" virt="non-virtual"><scope>ArthropodsLandscape</scope><name>timeSpentBuffer</name></member>
+      <member refid="class_landscape_1afa53576f9e5ff91c447a5cad69162211" prot="protected" virt="non-virtual"><scope>ArthropodsLandscape</scope><name>timeStepsPerDay</name></member>
+      <member refid="class_landscape_1aaa33bcf3a636223bea05cdc6ef67e536" prot="public" virt="non-virtual"><scope>ArthropodsLandscape</scope><name>Type</name></member>
+      <member refid="class_landscape_1a1dc533fd93a4248ee5127dc10f4e5400" prot="public" virt="non-virtual"><scope>ArthropodsLandscape</scope><name>unregisterAnimal</name></member>
+      <member refid="class_landscape_1a260e701dce78790d256f3a27caa613a0" prot="protected" virt="non-virtual"><scope>ArthropodsLandscape</scope><name>updateAllSources</name></member>
+      <member refid="class_landscape_1a6f3649426c8f0ea1c56026c6a402911c" prot="protected" virt="non-virtual"><scope>ArthropodsLandscape</scope><name>updateAnimalSpeciesGlobalMaximum</name></member>
+      <member refid="class_landscape_1a632f67b1dd6b90668ec60180f8110475" prot="protected" virt="non-virtual"><scope>ArthropodsLandscape</scope><name>updateMap</name></member>
+      <member refid="class_landscape_1abea55709419895988b0d99baa62cc8bf" prot="private" virt="non-virtual"><scope>ArthropodsLandscape</scope><name>versionsBuffer</name></member>
+      <member refid="class_landscape_1ad134b9a71cccc385dd59358a4652efd3" prot="protected" virt="non-virtual"><scope>ArthropodsLandscape</scope><name>Yodzis</name></member>
+      <member refid="class_arthropods_landscape_1aa8be8a220a5339a3034afed9260565e8" prot="public" virt="virtual"><scope>ArthropodsLandscape</scope><name>~ArthropodsLandscape</name></member>
+      <member refid="class_landscape_1a4ca8b541944a6de7c46ae2a15973c03c" prot="public" virt="virtual"><scope>ArthropodsLandscape</scope><name>~Landscape</name></member>
+    </listofallmembers>
+  </compounddef>
+</doxygen>

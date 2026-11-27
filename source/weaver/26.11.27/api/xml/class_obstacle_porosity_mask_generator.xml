@@ -1,0 +1,126 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.18.0" xml:lang="en-US">
+  <compounddef id="class_obstacle_porosity_mask_generator" kind="class" language="C++" prot="public">
+    <compoundname>ObstaclePorosityMaskGenerator</compoundname>
+    <innerclass refid="struct_obstacle_porosity_mask_generator_1_1_parameters" prot="public">ObstaclePorosityMaskGenerator::Parameters</innerclass>
+    <sectiondef kind="public-static-func">
+      <memberdef kind="function" id="class_obstacle_porosity_mask_generator_1a3a41d30b54569c6151152b8e1fa5fe92" prot="public" static="yes" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>std::vector&lt; std::uint8_t &gt;</type>
+        <definition>static std::vector&lt; std::uint8_t &gt; ObstaclePorosityMaskGenerator::generate</definition>
+        <argsstring>(const std::vector&lt; std::uint8_t &gt; &amp;coveredCells, std::size_t gridWidth, std::size_t gridHeight, double originX, double originY, double cellWidth, double cellHeight, const Parameters &amp;parameters, unsigned int seed)</argsstring>
+        <name>generate</name>
+        <qualifiedname>ObstaclePorosityMaskGenerator::generate</qualifiedname>
+        <param>
+          <type>const std::vector&lt; std::uint8_t &gt; &amp;</type>
+          <declname>coveredCells</declname>
+        </param>
+        <param>
+          <type>std::size_t</type>
+          <declname>gridWidth</declname>
+        </param>
+        <param>
+          <type>std::size_t</type>
+          <declname>gridHeight</declname>
+        </param>
+        <param>
+          <type>double</type>
+          <declname>originX</declname>
+        </param>
+        <param>
+          <type>double</type>
+          <declname>originY</declname>
+        </param>
+        <param>
+          <type>double</type>
+          <declname>cellWidth</declname>
+        </param>
+        <param>
+          <type>double</type>
+          <declname>cellHeight</declname>
+        </param>
+        <param>
+          <type>const Parameters &amp;</type>
+          <declname>parameters</declname>
+        </param>
+        <param>
+          <type>unsigned int</type>
+          <declname>seed</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="App/Model/IBM/Landscape/Map/Patches/ObstaclePorosityMaskGenerator.h" line="27" column="21"/>
+      </memberdef>
+      <memberdef kind="function" id="class_obstacle_porosity_mask_generator_1af0b83bdd5b1c2ae1cdc450fdbec8c1ca" prot="public" static="yes" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>std::vector&lt; int &gt;</type>
+        <definition>static std::vector&lt; int &gt; ObstaclePorosityMaskGenerator::generatePatch</definition>
+        <argsstring>(const std::vector&lt; std::uint8_t &gt; &amp;eligibleCells, std::size_t mapWidth, std::size_t mapHeight, double cellWidth, double cellHeight, double bottomLeftX, double bottomLeftY, double topRightX, double topRightY, const Parameters &amp;parameters, unsigned int seed)</argsstring>
+        <name>generatePatch</name>
+        <qualifiedname>ObstaclePorosityMaskGenerator::generatePatch</qualifiedname>
+        <param>
+          <type>const std::vector&lt; std::uint8_t &gt; &amp;</type>
+          <declname>eligibleCells</declname>
+        </param>
+        <param>
+          <type>std::size_t</type>
+          <declname>mapWidth</declname>
+        </param>
+        <param>
+          <type>std::size_t</type>
+          <declname>mapHeight</declname>
+        </param>
+        <param>
+          <type>double</type>
+          <declname>cellWidth</declname>
+        </param>
+        <param>
+          <type>double</type>
+          <declname>cellHeight</declname>
+        </param>
+        <param>
+          <type>double</type>
+          <declname>bottomLeftX</declname>
+        </param>
+        <param>
+          <type>double</type>
+          <declname>bottomLeftY</declname>
+        </param>
+        <param>
+          <type>double</type>
+          <declname>topRightX</declname>
+        </param>
+        <param>
+          <type>double</type>
+          <declname>topRightY</declname>
+        </param>
+        <param>
+          <type>const Parameters &amp;</type>
+          <declname>parameters</declname>
+        </param>
+        <param>
+          <type>unsigned int</type>
+          <declname>seed</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="App/Model/IBM/Landscape/Map/Patches/ObstaclePorosityMaskGenerator.h" line="38" column="21"/>
+      </memberdef>
+    </sectiondef>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+    </detaileddescription>
+    <location file="App/Model/IBM/Landscape/Map/Patches/ObstaclePorosityMaskGenerator.h" line="18" column="1" bodyfile="App/Model/IBM/Landscape/Map/Patches/ObstaclePorosityMaskGenerator.h" bodystart="18" bodyend="50"/>
+    <listofallmembers>
+      <member refid="class_obstacle_porosity_mask_generator_1a3a41d30b54569c6151152b8e1fa5fe92" prot="public" virt="non-virtual"><scope>ObstaclePorosityMaskGenerator</scope><name>generate</name></member>
+      <member refid="class_obstacle_porosity_mask_generator_1af0b83bdd5b1c2ae1cdc450fdbec8c1ca" prot="public" virt="non-virtual"><scope>ObstaclePorosityMaskGenerator</scope><name>generatePatch</name></member>
+    </listofallmembers>
+  </compounddef>
+</doxygen>

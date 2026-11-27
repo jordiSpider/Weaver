@@ -1,0 +1,47 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.18.0" xml:lang="en-US">
+  <compounddef id="structfmt_1_1formatter_3_01_day_01_4" kind="struct" language="C++" prot="public">
+    <compoundname>fmt::formatter&lt; Day &gt;</compoundname>
+    <basecompoundref prot="public" virt="non-virtual">fmt::formatter&lt; PreciseDouble &gt;</basecompoundref>
+    <templateparamlist>
+    </templateparamlist>
+    <sectiondef kind="public-func">
+      <memberdef kind="function" id="structfmt_1_1formatter_3_01_day_01_4_1a08bc45b49b9b5827cd1b2ab527b8461d" prot="public" static="no" const="yes" explicit="no" inline="yes" virt="non-virtual">
+        <templateparamlist>
+          <param>
+            <type>typename FormatContext</type>
+          </param>
+        </templateparamlist>
+        <type>auto</type>
+        <definition>auto fmt::formatter&lt; Day &gt;::format</definition>
+        <argsstring>(const Day &amp;day, FormatContext &amp;ctx) const</argsstring>
+        <name>format</name>
+        <qualifiedname>fmt::formatter&lt; Day &gt;::format</qualifiedname>
+        <param>
+          <type>const <ref refid="class_day" kindref="compound">Day</ref> &amp;</type>
+          <declname>day</declname>
+        </param>
+        <param>
+          <type>FormatContext &amp;</type>
+          <declname>ctx</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="App/Model/IBM/Landscape/LivingBeings/TimeUnits.h" line="292" column="14" bodyfile="App/Model/IBM/Landscape/LivingBeings/TimeUnits.h" bodystart="292" bodyend="295"/>
+      </memberdef>
+    </sectiondef>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+    </detaileddescription>
+    <location file="App/Model/IBM/Landscape/LivingBeings/TimeUnits.h" line="289" column="5" bodyfile="App/Model/IBM/Landscape/LivingBeings/TimeUnits.h" bodystart="289" bodyend="296"/>
+    <listofallmembers>
+      <member refid="structfmt_1_1formatter_3_01_day_01_4_1a08bc45b49b9b5827cd1b2ab527b8461d" prot="public" virt="non-virtual"><scope>fmt::formatter&lt; Day &gt;</scope><name>format</name></member>
+      <member refid="structfmt_1_1formatter_3_01_precise_double_01_4_1ab2314baf5984779a7eb06a89f271714d" prot="public" virt="non-virtual" ambiguityscope="fmt::formatter&lt; PreciseDouble &gt;::"><scope>fmt::formatter&lt; Day &gt;</scope><name>format</name></member>
+    </listofallmembers>
+  </compounddef>
+</doxygen>

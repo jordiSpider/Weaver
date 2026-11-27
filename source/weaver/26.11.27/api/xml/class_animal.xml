@@ -1,0 +1,1240 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.18.0" xml:lang="en-US">
+  <compounddef id="class_animal" kind="class" language="C++" prot="public" abstract="yes">
+    <compoundname>Animal</compoundname>
+    <basecompoundref refid="class_edible" prot="public" virt="non-virtual">Edible</basecompoundref>
+    <derivedcompoundref refid="class_animal_non_statistical" prot="public" virt="non-virtual">AnimalNonStatistical</derivedcompoundref>
+    <derivedcompoundref refid="class_animal_statistical" prot="public" virt="non-virtual">AnimalStatistical</derivedcompoundref>
+    <includes refid="_animal_8h" local="no">Animal.h</includes>
+    <sectiondef kind="protected-attrib">
+      <memberdef kind="variable" id="class_animal_1a2707620937fd718e432e88dbd95583bd" prot="protected" static="no" mutable="no">
+        <type><ref refid="class_animal_species_i_d" kindref="compound">AnimalSpeciesID</ref></type>
+        <definition>AnimalSpeciesID Animal::animalSpeciesId</definition>
+        <argsstring></argsstring>
+        <name>animalSpeciesId</name>
+        <qualifiedname>Animal::animalSpeciesId</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="App/Model/IBM/Landscape/LivingBeings/Animals/Animal.h" line="270" column="21" bodyfile="App/Model/IBM/Landscape/LivingBeings/Animals/Animal.h" bodystart="270" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="class_animal_1ac17391b9290aa4231a7c835de66cd3e1" prot="protected" static="no" mutable="no">
+        <type>Gender</type>
+        <definition>Gender Animal::gender</definition>
+        <argsstring></argsstring>
+        <name>gender</name>
+        <qualifiedname>Animal::gender</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para><ref refid="class_animal" kindref="compound">Animal</ref> gender </para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="App/Model/IBM/Landscape/LivingBeings/Animals/Animal.h" line="267" column="12" bodyfile="App/Model/IBM/Landscape/LivingBeings/Animals/Animal.h" bodystart="267" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="class_animal_1a6c071bac7b6d9a6ed6599261dd134e16" prot="protected" static="no" mutable="no">
+        <type><ref refid="class_genetics" kindref="compound">Genetics</ref></type>
+        <definition>Genetics Animal::genetics</definition>
+        <argsstring></argsstring>
+        <name>genetics</name>
+        <qualifiedname>Animal::genetics</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para><ref refid="class_genetics" kindref="compound">Genetics</ref> of the animal </para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="App/Model/IBM/Landscape/LivingBeings/Animals/Animal.h" line="265" column="14" bodyfile="App/Model/IBM/Landscape/LivingBeings/Animals/Animal.h" bodystart="265" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="class_animal_1aa3723364c1393355127c54741e7ba0cc" prot="protected" static="no" mutable="no">
+        <type>LifeStage</type>
+        <definition>LifeStage Animal::lifeStage</definition>
+        <argsstring></argsstring>
+        <name>lifeStage</name>
+        <qualifiedname>Animal::lifeStage</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Current life stage </para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="App/Model/IBM/Landscape/LivingBeings/Animals/Animal.h" line="266" column="15" bodyfile="App/Model/IBM/Landscape/LivingBeings/Animals/Animal.h" bodystart="266" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="class_animal_1a082bb5e6de6932e203f51425869313a1" prot="protected" static="no" mutable="no">
+        <type>PointContinuous</type>
+        <definition>PointContinuous Animal::position</definition>
+        <argsstring></argsstring>
+        <name>position</name>
+        <qualifiedname>Animal::position</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Continuous position in the landscape </para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="App/Model/IBM/Landscape/LivingBeings/Animals/Animal.h" line="268" column="21" bodyfile="App/Model/IBM/Landscape/LivingBeings/Animals/Animal.h" bodystart="268" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="class_animal_1a0d1644086e4f62fe31074b798607e8ed" prot="protected" static="no" mutable="no">
+        <type>AnimalSignature</type>
+        <definition>AnimalSignature Animal::signature</definition>
+        <argsstring></argsstring>
+        <name>signature</name>
+        <qualifiedname>Animal::signature</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="App/Model/IBM/Landscape/LivingBeings/Animals/Animal.h" line="272" column="21" bodyfile="App/Model/IBM/Landscape/LivingBeings/Animals/Animal.h" bodystart="272" bodyend="-1"/>
+      </memberdef>
+    </sectiondef>
+    <sectiondef kind="public-func">
+      <memberdef kind="function" id="class_animal_1a1e726a49ec952443190ac62dad22353c" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type></type>
+        <definition>Animal::Animal</definition>
+        <argsstring>()</argsstring>
+        <name>Animal</name>
+        <qualifiedname>Animal::Animal</qualifiedname>
+        <briefdescription>
+<para>Default constructor. </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="App/Model/IBM/Landscape/LivingBeings/Animals/Animal.h" line="49" column="5"/>
+      </memberdef>
+      <memberdef kind="function" id="class_animal_1a5f306799edf02bb7f025894d6d59662d" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type></type>
+        <definition>Animal::Animal</definition>
+        <argsstring>(const Animal &amp;)=delete</argsstring>
+        <name>Animal</name>
+        <qualifiedname>Animal::Animal</qualifiedname>
+        <param>
+          <type>const <ref refid="class_animal" kindref="compound">Animal</ref> &amp;</type>
+        </param>
+        <briefdescription>
+<para>Deleted copy constructor to prevent copying. </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="App/Model/IBM/Landscape/LivingBeings/Animals/Animal.h" line="85" column="5"/>
+      </memberdef>
+      <memberdef kind="function" id="class_animal_1ad4bbd234af51a4e7f321a1410e74c59c" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type></type>
+        <definition>Animal::Animal</definition>
+        <argsstring>(id_type id, AnimalSpecies *const mySpecies, TerrainCell *terrainCell, const Genome *const genome, const LifeStage &amp;lifeStage)</argsstring>
+        <name>Animal</name>
+        <qualifiedname>Animal::Animal</qualifiedname>
+        <param>
+          <type>id_type</type>
+          <declname>id</declname>
+        </param>
+        <param>
+          <type><ref refid="class_animal_species" kindref="compound">AnimalSpecies</ref> *const</type>
+          <declname>mySpecies</declname>
+        </param>
+        <param>
+          <type><ref refid="class_terrain_cell" kindref="compound">TerrainCell</ref> *</type>
+          <declname>terrainCell</declname>
+        </param>
+        <param>
+          <type>const <ref refid="class_genome" kindref="compound">Genome</ref> *const</type>
+          <declname>genome</declname>
+        </param>
+        <param>
+          <type>const LifeStage &amp;</type>
+          <declname>lifeStage</declname>
+        </param>
+        <briefdescription>
+<para>Constructor for a newly created animal. </para>
+        </briefdescription>
+        <detaileddescription>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>id</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Unique identifier for the animal. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>mySpecies</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Pointer to the animal&apos;s species. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>terrainCell</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Pointer to the cell the animal occupies. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>lifeStage</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Current life stage of the animal. </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="App/Model/IBM/Landscape/LivingBeings/Animals/Animal.h" line="58" column="5"/>
+      </memberdef>
+      <memberdef kind="function" id="class_animal_1aac0fb375f31c671e3fa2b021aaf298ef" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type></type>
+        <definition>Animal::Animal</definition>
+        <argsstring>(id_type id, AnimalSpecies *const mySpecies, TerrainCell *terrainCell, const LifeStage &amp;lifeStage, Gamete *const firstParentGamete, Gamete *const secondParentGamete, const Gender &amp;gender)</argsstring>
+        <name>Animal</name>
+        <qualifiedname>Animal::Animal</qualifiedname>
+        <param>
+          <type>id_type</type>
+          <declname>id</declname>
+        </param>
+        <param>
+          <type><ref refid="class_animal_species" kindref="compound">AnimalSpecies</ref> *const</type>
+          <declname>mySpecies</declname>
+        </param>
+        <param>
+          <type><ref refid="class_terrain_cell" kindref="compound">TerrainCell</ref> *</type>
+          <declname>terrainCell</declname>
+        </param>
+        <param>
+          <type>const LifeStage &amp;</type>
+          <declname>lifeStage</declname>
+        </param>
+        <param>
+          <type><ref refid="class_gamete" kindref="compound">Gamete</ref> *const</type>
+          <declname>firstParentGamete</declname>
+        </param>
+        <param>
+          <type><ref refid="class_gamete" kindref="compound">Gamete</ref> *const</type>
+          <declname>secondParentGamete</declname>
+        </param>
+        <param>
+          <type>const Gender &amp;</type>
+          <declname>gender</declname>
+        </param>
+        <briefdescription>
+<para>Constructor for an animal created via reproduction. </para>
+        </briefdescription>
+        <detaileddescription>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>id</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Unique identifier for the animal. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>mySpecies</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Pointer to the animal&apos;s species. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>terrainCell</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Pointer to the cell the animal occupies. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>lifeStage</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Current life stage of the animal. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>firstParentGamete</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Pointer to the first parent&apos;s gamete. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>secondParentGamete</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Pointer to the second parent&apos;s gamete. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>gender</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Gender of the offspring. </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="App/Model/IBM/Landscape/LivingBeings/Animals/Animal.h" line="72" column="5"/>
+      </memberdef>
+      <memberdef kind="function" id="class_animal_1a16d8b7f94611cc65f5cdb58cc105527b" prot="public" static="no" const="no" explicit="no" inline="no" virt="virtual">
+        <type></type>
+        <definition>virtual Animal::~Animal</definition>
+        <argsstring>()</argsstring>
+        <name>~Animal</name>
+        <qualifiedname>Animal::~Animal</qualifiedname>
+        <briefdescription>
+<para>Virtual destructor. </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="App/Model/IBM/Landscape/LivingBeings/Animals/Animal.h" line="80" column="13"/>
+      </memberdef>
+      <memberdef kind="function" id="class_animal_1a2f767a1dc23025e6a87996cbe1f2c986" prot="public" static="no" const="yes" explicit="no" inline="no" virt="non-virtual">
+        <type><ref refid="class_precise_double" kindref="compound">PreciseDouble</ref></type>
+        <definition>PreciseDouble Animal::applyAllometricModel</definition>
+        <argsstring>(const PreciseDouble &amp;coefficient, const PreciseDouble &amp;scale) const</argsstring>
+        <name>applyAllometricModel</name>
+        <qualifiedname>Animal::applyAllometricModel</qualifiedname>
+        <param>
+          <type>const <ref refid="class_precise_double" kindref="compound">PreciseDouble</ref> &amp;</type>
+          <declname>coefficient</declname>
+        </param>
+        <param>
+          <type>const <ref refid="class_precise_double" kindref="compound">PreciseDouble</ref> &amp;</type>
+          <declname>scale</declname>
+        </param>
+        <briefdescription>
+<para>Apply an allometric model to the animal&apos;s traits. </para>
+        </briefdescription>
+        <detaileddescription>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>coefficient</parametername>
+</parameternamelist>
+<parameterdescription>
+<para><ref refid="class_model" kindref="compound">Model</ref> coefficient. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>scale</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Scaling factor. </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<simplesect kind="return"><para>Result of the allometric model as <ref refid="class_precise_double" kindref="compound">PreciseDouble</ref>. </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="App/Model/IBM/Landscape/LivingBeings/Animals/Animal.h" line="153" column="19"/>
+      </memberdef>
+      <memberdef kind="function" id="class_animal_1ab836e557886d8fc9642c62e276eb6ee8" prot="public" static="no" constexpr="yes" const="yes" explicit="no" inline="yes" noexcept="yes" virt="non-virtual">
+        <type><ref refid="class_animal_species_i_d" kindref="compound">AnimalSpeciesID</ref></type>
+        <definition>AnimalSpeciesID Animal::getAnimalSpeciesId</definition>
+        <argsstring>() const noexcept</argsstring>
+        <name>getAnimalSpeciesId</name>
+        <qualifiedname>Animal::getAnimalSpeciesId</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="App/Model/IBM/Landscape/LivingBeings/Animals/Animal.h" line="204" column="38" bodyfile="App/Model/IBM/Landscape/LivingBeings/Animals/Animal.h" bodystart="204" bodyend="207"/>
+      </memberdef>
+      <memberdef kind="function" id="class_animal_1a706c22141587830a4ebcb5599e1c0b59" prot="public" static="no" constexpr="yes" const="yes" explicit="no" inline="yes" noexcept="yes" virt="non-virtual">
+        <type>Gender</type>
+        <definition>Gender Animal::getGender</definition>
+        <argsstring>() const noexcept</argsstring>
+        <name>getGender</name>
+        <qualifiedname>Animal::getGender</qualifiedname>
+        <briefdescription>
+<para>Get the animal&apos;s gender. </para>
+        </briefdescription>
+        <detaileddescription>
+<para><simplesect kind="return"><para>Gender of the animal. </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="App/Model/IBM/Landscape/LivingBeings/Animals/Animal.h" line="199" column="29" bodyfile="App/Model/IBM/Landscape/LivingBeings/Animals/Animal.h" bodystart="199" bodyend="202"/>
+      </memberdef>
+      <memberdef kind="function" id="class_animal_1a9389d2cf85ecab5fe1d2ba13f3992c06" prot="public" static="no" const="yes" explicit="no" inline="no" virt="non-virtual">
+        <type>const <ref refid="class_genetics" kindref="compound">Genetics</ref> &amp;</type>
+        <definition>const Genetics &amp; Animal::getGenetics</definition>
+        <argsstring>() const</argsstring>
+        <name>getGenetics</name>
+        <qualifiedname>Animal::getGenetics</qualifiedname>
+        <briefdescription>
+<para>Get a const reference to the animal&apos;s genetics. </para>
+        </briefdescription>
+        <detaileddescription>
+<para><simplesect kind="return"><para>Const reference to <ref refid="class_genetics" kindref="compound">Genetics</ref>. </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="App/Model/IBM/Landscape/LivingBeings/Animals/Animal.h" line="123" column="20"/>
+      </memberdef>
+      <memberdef kind="function" id="class_animal_1a6ae311c4dc8862ef1dbf2cf2f301be3c" prot="public" static="no" const="yes" explicit="no" inline="no" virt="pure-virtual">
+        <type>const <ref refid="class_animal_growth" kindref="compound">AnimalGrowth</ref> &amp;</type>
+        <definition>virtual const AnimalGrowth &amp; Animal::getGrowthBuildingBlock</definition>
+        <argsstring>() const =0</argsstring>
+        <name>getGrowthBuildingBlock</name>
+        <qualifiedname>Animal::getGrowthBuildingBlock</qualifiedname>
+        <reimplements refid="class_edible_1a9a7bf3e902e6a55494764d07896b732f">getGrowthBuildingBlock</reimplements>
+        <reimplementedby refid="class_animal_non_statistical_1a642f2a95254292a30c6358e312e42f3c">getGrowthBuildingBlock</reimplementedby>
+        <reimplementedby refid="class_animal_statistical_1aed272bb8c8e47191be1f4d56769dc64c">getGrowthBuildingBlock</reimplementedby>
+        <briefdescription>
+<para>Get the animal&apos;s growth building block (const). </para>
+        </briefdescription>
+        <detaileddescription>
+<para><simplesect kind="return"><para>Const reference to <ref refid="class_animal_growth" kindref="compound">AnimalGrowth</ref>.</para>
+</simplesect>
+Pure virtual: must be implemented in derived classes. </para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="App/Model/IBM/Landscape/LivingBeings/Animals/Animal.h" line="173" column="32"/>
+      </memberdef>
+      <memberdef kind="function" id="class_animal_1a363ef1f74e4bbecacc8fbf8533272e52" prot="public" static="no" constexpr="yes" const="yes" explicit="no" inline="no" noexcept="yes" virt="pure-virtual">
+        <type><ref refid="class_instar" kindref="compound">Instar</ref></type>
+        <definition>virtual constexpr Instar Animal::getInstarToEvaluateCells</definition>
+        <argsstring>() const noexcept=0</argsstring>
+        <name>getInstarToEvaluateCells</name>
+        <qualifiedname>Animal::getInstarToEvaluateCells</qualifiedname>
+        <reimplementedby refid="class_animal_non_statistical_1acec4441a01d102172058a8da510162c3">getInstarToEvaluateCells</reimplementedby>
+        <reimplementedby refid="class_animal_statistical_1aa3f97b58fc1af228acf2dafbeb42a6a7">getInstarToEvaluateCells</reimplementedby>
+        <briefdescription>
+<para>Get the instar to evaluate the terrain cells. </para>
+        </briefdescription>
+        <detaileddescription>
+<para><simplesect kind="return"><para>Const reference to <ref refid="class_instar" kindref="compound">Instar</ref>.</para>
+</simplesect>
+Pure virtual: must be implemented in derived classes. </para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="App/Model/IBM/Landscape/LivingBeings/Animals/Animal.h" line="145" column="30"/>
+      </memberdef>
+      <memberdef kind="function" id="class_animal_1a907f8feab5539db1ce7fbfed320d6fff" prot="public" static="no" constexpr="yes" const="yes" explicit="no" inline="yes" noexcept="yes" virt="non-virtual">
+        <type>LifeStage</type>
+        <definition>LifeStage Animal::getLifeStage</definition>
+        <argsstring>() const noexcept</argsstring>
+        <name>getLifeStage</name>
+        <qualifiedname>Animal::getLifeStage</qualifiedname>
+        <briefdescription>
+<para>Get the animal&apos;s current life stage. </para>
+        </briefdescription>
+        <detaileddescription>
+<para><simplesect kind="return"><para>Const reference to LifeStage. </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="App/Model/IBM/Landscape/LivingBeings/Animals/Animal.h" line="108" column="32" bodyfile="App/Model/IBM/Landscape/LivingBeings/Animals/Animal.h" bodystart="108" bodyend="111"/>
+      </memberdef>
+      <memberdef kind="function" id="class_animal_1aa21b22f0ad2a36e52cd56ff4252914f9" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type><ref refid="class_genetics" kindref="compound">Genetics</ref> &amp;</type>
+        <definition>Genetics &amp; Animal::getMutableGenetics</definition>
+        <argsstring>()</argsstring>
+        <name>getMutableGenetics</name>
+        <qualifiedname>Animal::getMutableGenetics</qualifiedname>
+        <briefdescription>
+<para>Get a mutable reference to the animal&apos;s genetics. </para>
+        </briefdescription>
+        <detaileddescription>
+<para><simplesect kind="return"><para>Reference to <ref refid="class_genetics" kindref="compound">Genetics</ref>. </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="App/Model/IBM/Landscape/LivingBeings/Animals/Animal.h" line="129" column="14"/>
+      </memberdef>
+      <memberdef kind="function" id="class_animal_1a4b65e8a158b2d3be496d174c956f40f3" prot="public" static="no" const="no" explicit="no" inline="no" virt="pure-virtual">
+        <type><ref refid="class_animal_growth" kindref="compound">AnimalGrowth</ref> &amp;</type>
+        <definition>virtual AnimalGrowth &amp; Animal::getMutableGrowthBuildingBlock</definition>
+        <argsstring>()=0</argsstring>
+        <name>getMutableGrowthBuildingBlock</name>
+        <qualifiedname>Animal::getMutableGrowthBuildingBlock</qualifiedname>
+        <reimplements refid="class_edible_1a11969fa7f0b24b39eadd450cd3649582">getMutableGrowthBuildingBlock</reimplements>
+        <reimplementedby refid="class_animal_non_statistical_1a24ad19f9c0876a691388c445b8e3a144">getMutableGrowthBuildingBlock</reimplementedby>
+        <reimplementedby refid="class_animal_statistical_1a6e8970bfc832bc55e313f8287338a611">getMutableGrowthBuildingBlock</reimplementedby>
+        <briefdescription>
+<para>Get the animal&apos;s growth building block (mutable). </para>
+        </briefdescription>
+        <detaileddescription>
+<para><simplesect kind="return"><para>Reference to <ref refid="class_animal_growth" kindref="compound">AnimalGrowth</ref>.</para>
+</simplesect>
+Pure virtual: must be implemented in derived classes. </para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="App/Model/IBM/Landscape/LivingBeings/Animals/Animal.h" line="181" column="22"/>
+      </memberdef>
+      <memberdef kind="function" id="class_animal_1adaf3c8075a306eb4d132a5901c637169" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>PointContinuous &amp;</type>
+        <definition>PointContinuous &amp; Animal::getMutablePosition</definition>
+        <argsstring>()</argsstring>
+        <name>getMutablePosition</name>
+        <qualifiedname>Animal::getMutablePosition</qualifiedname>
+        <briefdescription>
+<para>Get a mutable reference to the animal&apos;s position. </para>
+        </briefdescription>
+        <detaileddescription>
+<para><simplesect kind="return"><para>Reference to PointContinuous. </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="App/Model/IBM/Landscape/LivingBeings/Animals/Animal.h" line="165" column="17"/>
+      </memberdef>
+      <memberdef kind="function" id="class_animal_1a311b5098fe43e3ca5883ae38ec9e9c2b" prot="public" static="no" const="no" explicit="no" inline="no" virt="virtual">
+        <type><ref refid="class_animal_species" kindref="compound">AnimalSpecies</ref> *</type>
+        <definition>AnimalSpecies * Animal::getMutableSpecies</definition>
+        <argsstring>()</argsstring>
+        <name>getMutableSpecies</name>
+        <qualifiedname>Animal::getMutableSpecies</qualifiedname>
+        <reimplements refid="class_edible_1ac15c013fca3d7bbb1add42d42b52fba5">getMutableSpecies</reimplements>
+        <briefdescription>
+<para>Get a mutable pointer to the animal&apos;s species. </para>
+        </briefdescription>
+        <detaileddescription>
+<para><simplesect kind="return"><para>Pointer to the <ref refid="class_animal_species" kindref="compound">AnimalSpecies</ref>. </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="App/Model/IBM/Landscape/LivingBeings/Animals/Animal.h" line="102" column="19"/>
+      </memberdef>
+      <memberdef kind="function" id="class_animal_1a8260dfe71396ffb117d311d56ef57ee6" prot="public" static="no" const="yes" explicit="no" inline="no" virt="non-virtual">
+        <type>const PointContinuous &amp;</type>
+        <definition>const PointContinuous &amp; Animal::getPosition</definition>
+        <argsstring>() const</argsstring>
+        <name>getPosition</name>
+        <qualifiedname>Animal::getPosition</qualifiedname>
+        <briefdescription>
+<para>Get a const reference to the animal&apos;s position. </para>
+        </briefdescription>
+        <detaileddescription>
+<para><simplesect kind="return"><para>Const reference to PointContinuous. </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="App/Model/IBM/Landscape/LivingBeings/Animals/Animal.h" line="159" column="27"/>
+      </memberdef>
+      <memberdef kind="function" id="class_animal_1a4c68dbb1c563da519131983c226e6693" prot="public" static="no" const="yes" explicit="no" inline="no" virt="pure-virtual">
+        <type><ref refid="class_precise_double" kindref="compound">PreciseDouble</ref></type>
+        <definition>virtual PreciseDouble Animal::getRemainingVoracity</definition>
+        <argsstring>() const =0</argsstring>
+        <name>getRemainingVoracity</name>
+        <qualifiedname>Animal::getRemainingVoracity</qualifiedname>
+        <reimplementedby refid="class_animal_non_statistical_1ac2b42703c07ca5a7df640dfbdae98c29">getRemainingVoracity</reimplementedby>
+        <reimplementedby refid="class_animal_statistical_1ae8688afa00c109d09a4b680b0e06b962">getRemainingVoracity</reimplementedby>
+        <briefdescription>
+<para>Get the remaining voracity of the animal. </para>
+        </briefdescription>
+        <detaileddescription>
+<para><simplesect kind="return"><para>Remaining voracity as <ref refid="class_precise_double" kindref="compound">PreciseDouble</ref>.</para>
+</simplesect>
+Pure virtual: must be implemented in derived classes. </para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="App/Model/IBM/Landscape/LivingBeings/Animals/Animal.h" line="137" column="27"/>
+      </memberdef>
+      <memberdef kind="function" id="class_animal_1a8e64dce62963045cb37ac3be0440c052" prot="public" static="no" const="yes" explicit="no" inline="yes" noexcept="yes" virt="non-virtual">
+        <type>AnimalSignature</type>
+        <definition>AnimalSignature Animal::getSignature</definition>
+        <argsstring>() const noexcept</argsstring>
+        <name>getSignature</name>
+        <qualifiedname>Animal::getSignature</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="App/Model/IBM/Landscape/LivingBeings/Animals/Animal.h" line="241" column="24" bodyfile="App/Model/IBM/Landscape/LivingBeings/Animals/Animal.h" bodystart="241" bodyend="243"/>
+      </memberdef>
+      <memberdef kind="function" id="class_animal_1a7305aa2245f6b908eb66019b14d2673e" prot="public" static="no" const="yes" explicit="no" inline="no" virt="virtual">
+        <type>const <ref refid="class_animal_species" kindref="compound">AnimalSpecies</ref> *</type>
+        <definition>const AnimalSpecies * Animal::getSpecies</definition>
+        <argsstring>() const</argsstring>
+        <name>getSpecies</name>
+        <qualifiedname>Animal::getSpecies</qualifiedname>
+        <reimplements refid="class_edible_1a2e2e945811a5e87c2e7fad53e5689de9">getSpecies</reimplements>
+        <briefdescription>
+<para>Get a const pointer to the animal&apos;s species. </para>
+        </briefdescription>
+        <detaileddescription>
+<para><simplesect kind="return"><para>Pointer to the <ref refid="class_animal_species" kindref="compound">AnimalSpecies</ref>. </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="App/Model/IBM/Landscape/LivingBeings/Animals/Animal.h" line="96" column="25"/>
+      </memberdef>
+      <memberdef kind="function" id="class_animal_1a932bf27aadf410f5bde29d30e65c1ac3" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type><ref refid="class_animal" kindref="compound">Animal</ref> &amp;</type>
+        <definition>Animal &amp; Animal::operator=</definition>
+        <argsstring>(const Animal &amp;)=delete</argsstring>
+        <name>operator=</name>
+        <qualifiedname>Animal::operator=</qualifiedname>
+        <param>
+          <type>const <ref refid="class_animal" kindref="compound">Animal</ref> &amp;</type>
+        </param>
+        <briefdescription>
+<para>Deleted copy assignment operator to prevent assignment. </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="App/Model/IBM/Landscape/LivingBeings/Animals/Animal.h" line="90" column="8"/>
+      </memberdef>
+      <memberdef kind="function" id="class_animal_1aa225bb2edec8e4b53fc2feb6da54c0e6" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <templateparamlist>
+          <param>
+            <type>class Archive</type>
+          </param>
+        </templateparamlist>
+        <type>void</type>
+        <definition>void Animal::serialize</definition>
+        <argsstring>(Archive &amp;ar, const unsigned int version)</argsstring>
+        <name>serialize</name>
+        <qualifiedname>Animal::serialize</qualifiedname>
+        <param>
+          <type>Archive &amp;</type>
+          <declname>ar</declname>
+        </param>
+        <param>
+          <type>const unsigned int</type>
+          <declname>version</declname>
+        </param>
+        <briefdescription>
+<para>Serializes the object for persistence. </para>
+        </briefdescription>
+        <detaileddescription>
+<para><parameterlist kind="templateparam"><parameteritem>
+<parameternamelist>
+<parametername>Archive</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Serialization archive type. </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>ar</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Archive instance. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>version</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Serialization version. </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="App/Model/IBM/Landscape/LivingBeings/Animals/Animal.h" line="262" column="10"/>
+      </memberdef>
+      <memberdef kind="function" id="class_animal_1a87a3b56352b807409bf410a1040b5300" prot="public" static="no" const="no" explicit="no" inline="no" virt="pure-virtual">
+        <type>void</type>
+        <definition>virtual void Animal::setNewLifeStage</definition>
+        <argsstring>(Landscape *const landscape, const LifeStage newLifeStage)=0</argsstring>
+        <name>setNewLifeStage</name>
+        <qualifiedname>Animal::setNewLifeStage</qualifiedname>
+        <reimplementedby refid="class_animal_non_statistical_1a1beb73b8b39a97a72199169c8cc16b14">setNewLifeStage</reimplementedby>
+        <reimplementedby refid="class_animal_statistical_1ac6a5f495eb127f53401db185a9a4b7b8">setNewLifeStage</reimplementedby>
+        <param>
+          <type><ref refid="class_landscape" kindref="compound">Landscape</ref> *const</type>
+          <declname>landscape</declname>
+        </param>
+        <param>
+          <type>const LifeStage</type>
+          <declname>newLifeStage</declname>
+        </param>
+        <briefdescription>
+<para>Set a new life stage for the animal (abstract version). </para>
+        </briefdescription>
+        <detaileddescription>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>landscape</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Pointer to the landscape. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>newLifeStage</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>The new life stage.</para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+Pure virtual: must be implemented in derived classes. </para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="App/Model/IBM/Landscape/LivingBeings/Animals/Animal.h" line="216" column="18"/>
+      </memberdef>
+      <memberdef kind="function" id="class_animal_1af98dc050c7fa03ffa7dc9893d6309bba" prot="public" static="no" const="no" explicit="no" inline="no" virt="pure-virtual">
+        <type>void</type>
+        <definition>virtual void Animal::setNewLifeStage</definition>
+        <argsstring>(Landscape *const landscape, const LifeStage newLifeStage, const TimeStep numberOfTimeSteps, const PreciseDouble &amp;timeStepsPerDay)=0</argsstring>
+        <name>setNewLifeStage</name>
+        <qualifiedname>Animal::setNewLifeStage</qualifiedname>
+        <reimplementedby refid="class_animal_non_statistical_1a777f064b43b6273f7c7ec2e48cb3606c">setNewLifeStage</reimplementedby>
+        <reimplementedby refid="class_animal_statistical_1a16d4fb33de2e6617f9a34eb2515e4d24">setNewLifeStage</reimplementedby>
+        <param>
+          <type><ref refid="class_landscape" kindref="compound">Landscape</ref> *const</type>
+          <declname>landscape</declname>
+        </param>
+        <param>
+          <type>const LifeStage</type>
+          <declname>newLifeStage</declname>
+        </param>
+        <param>
+          <type>const <ref refid="class_time_step" kindref="compound">TimeStep</ref></type>
+          <declname>numberOfTimeSteps</declname>
+        </param>
+        <param>
+          <type>const <ref refid="class_precise_double" kindref="compound">PreciseDouble</ref> &amp;</type>
+          <declname>timeStepsPerDay</declname>
+        </param>
+        <briefdescription>
+<para>Set a new life stage for the animal with a specified number of time steps. </para>
+        </briefdescription>
+        <detaileddescription>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>landscape</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Pointer to the landscape. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>newLifeStage</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>The new life stage. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>numberOfTimeSteps</parametername>
+</parameternamelist>
+<parameterdescription>
+<para><ref refid="class_number" kindref="compound">Number</ref> of time steps for transition. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>timeStepsPerDay</parametername>
+</parameternamelist>
+<parameterdescription>
+<para><ref refid="class_number" kindref="compound">Number</ref> of time steps per day.</para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+Pure virtual: must be implemented in derived classes. </para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="App/Model/IBM/Landscape/LivingBeings/Animals/Animal.h" line="227" column="18"/>
+      </memberdef>
+      <memberdef kind="function" id="class_animal_1a5f9763db43c973011b1b935211b5f20c" prot="public" static="no" const="no" explicit="no" inline="no" virt="pure-virtual">
+        <type>void</type>
+        <definition>virtual void Animal::setNewLifeStage</definition>
+        <argsstring>(Landscape *const landscape, const LifeStage newLifeStage, const TimeStep numberOfTimeSteps, id_type predatorId, const PreciseDouble &amp;timeStepsPerDay)=0</argsstring>
+        <name>setNewLifeStage</name>
+        <qualifiedname>Animal::setNewLifeStage</qualifiedname>
+        <reimplementedby refid="class_animal_non_statistical_1a32c209dd6e1b83bb001ca1165467c8ec">setNewLifeStage</reimplementedby>
+        <reimplementedby refid="class_animal_statistical_1a111015c0f0710dce6b113c7acc5212fc">setNewLifeStage</reimplementedby>
+        <param>
+          <type><ref refid="class_landscape" kindref="compound">Landscape</ref> *const</type>
+          <declname>landscape</declname>
+        </param>
+        <param>
+          <type>const LifeStage</type>
+          <declname>newLifeStage</declname>
+        </param>
+        <param>
+          <type>const <ref refid="class_time_step" kindref="compound">TimeStep</ref></type>
+          <declname>numberOfTimeSteps</declname>
+        </param>
+        <param>
+          <type>id_type</type>
+          <declname>predatorId</declname>
+        </param>
+        <param>
+          <type>const <ref refid="class_precise_double" kindref="compound">PreciseDouble</ref> &amp;</type>
+          <declname>timeStepsPerDay</declname>
+        </param>
+        <briefdescription>
+<para>Set a new life stage for the animal considering predation. </para>
+        </briefdescription>
+        <detaileddescription>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>landscape</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Pointer to the landscape. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>newLifeStage</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>The new life stage. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>numberOfTimeSteps</parametername>
+</parameternamelist>
+<parameterdescription>
+<para><ref refid="class_number" kindref="compound">Number</ref> of time steps for transition. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>predatorId</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>ID of the predator. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>timeStepsPerDay</parametername>
+</parameternamelist>
+<parameterdescription>
+<para><ref refid="class_number" kindref="compound">Number</ref> of time steps per day.</para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+Pure virtual: must be implemented in derived classes. </para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="App/Model/IBM/Landscape/LivingBeings/Animals/Animal.h" line="239" column="18"/>
+      </memberdef>
+      <memberdef kind="function" id="class_animal_1ab785f02af7406b949885216db5cfcae9" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void Animal::setPosition</definition>
+        <argsstring>(const PointContinuous &amp;newPosition)</argsstring>
+        <name>setPosition</name>
+        <qualifiedname>Animal::setPosition</qualifiedname>
+        <param>
+          <type>const PointContinuous &amp;</type>
+          <declname>newPosition</declname>
+        </param>
+        <briefdescription>
+<para>Set a new position for the animal. </para>
+        </briefdescription>
+        <detaileddescription>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>newPosition</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>New position as PointContinuous. </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="App/Model/IBM/Landscape/LivingBeings/Animals/Animal.h" line="187" column="6"/>
+      </memberdef>
+      <memberdef kind="function" id="class_animal_1a6efd9361684e8513016ff2cf317ba56e" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void Animal::setPosition</definition>
+        <argsstring>(const std::vector&lt; PreciseDouble &gt; &amp;newPosition)</argsstring>
+        <name>setPosition</name>
+        <qualifiedname>Animal::setPosition</qualifiedname>
+        <param>
+          <type>const std::vector&lt; <ref refid="class_precise_double" kindref="compound">PreciseDouble</ref> &gt; &amp;</type>
+          <declname>newPosition</declname>
+        </param>
+        <briefdescription>
+<para>Set a new position for the animal. </para>
+        </briefdescription>
+        <detaileddescription>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>newPosition</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Vector of <ref refid="class_precise_double" kindref="compound">PreciseDouble</ref> coordinates. </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="App/Model/IBM/Landscape/LivingBeings/Animals/Animal.h" line="193" column="10"/>
+      </memberdef>
+      <memberdef kind="function" id="class_animal_1af499bfdd6a58e30cea4ddc228462068d" prot="public" static="no" const="no" explicit="no" inline="no" virt="virtual">
+        <type>void</type>
+        <definition>virtual void Animal::setSpecies</definition>
+        <argsstring>(Species *newSpecies) override</argsstring>
+        <name>setSpecies</name>
+        <qualifiedname>Animal::setSpecies</qualifiedname>
+        <reimplements refid="class_edible_1a1e12758142353ed756c4b74b35913c62">setSpecies</reimplements>
+        <reimplementedby refid="class_animal_non_statistical_1ab166e4abcb413138fa5cb4ee7158a997">setSpecies</reimplementedby>
+        <param>
+          <type><ref refid="class_species" kindref="compound">Species</ref> *</type>
+          <declname>newSpecies</declname>
+        </param>
+        <briefdescription>
+<para>Set a new species for the animal (overrides <ref refid="class_edible" kindref="compound">Edible</ref>). </para>
+        </briefdescription>
+        <detaileddescription>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>newSpecies</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Pointer to the new species. </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="App/Model/IBM/Landscape/LivingBeings/Animals/Animal.h" line="117" column="18"/>
+      </memberdef>
+      <memberdef kind="function" id="class_animal_1a67af488e90ea55012e1a2e9be0a9a7d8" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void Animal::updateSignature</definition>
+        <argsstring>()</argsstring>
+        <name>updateSignature</name>
+        <qualifiedname>Animal::updateSignature</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="App/Model/IBM/Landscape/LivingBeings/Animals/Animal.h" line="245" column="10"/>
+      </memberdef>
+    </sectiondef>
+    <sectiondef kind="protected-func">
+      <memberdef kind="function" id="class_animal_1a2a32231b631f179b42da2fc02efcfca8" prot="protected" static="no" const="yes" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void Animal::checkGrowthMinimumValue</definition>
+        <argsstring>() const</argsstring>
+        <name>checkGrowthMinimumValue</name>
+        <qualifiedname>Animal::checkGrowthMinimumValue</qualifiedname>
+        <briefdescription>
+<para>Check the minimum value for growth and enforce constraints if needed. </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="App/Model/IBM/Landscape/LivingBeings/Animals/Animal.h" line="277" column="10"/>
+      </memberdef>
+    </sectiondef>
+    <briefdescription>
+<para>Abstract base class representing an individual animal. </para>
+    </briefdescription>
+    <detaileddescription>
+<para>This class stores general information about an animal, such as its species, life stage, genetics, position, and gender. It defines pure virtual functions for derived classes to implement behaviors such as voracity, growth, and life stage transitions. </para>
+    </detaileddescription>
+    <inheritancegraph>
+      <node id="1">
+        <label>Animal</label>
+        <link refid="class_animal"/>
+        <childnode refid="2" relation="public-inheritance">
+        </childnode>
+      </node>
+      <node id="3">
+        <label>AnimalNonStatistical</label>
+        <link refid="class_animal_non_statistical"/>
+        <childnode refid="1" relation="public-inheritance">
+        </childnode>
+      </node>
+      <node id="5">
+        <label>AnimalStatistical</label>
+        <link refid="class_animal_statistical"/>
+        <childnode refid="1" relation="public-inheritance">
+        </childnode>
+      </node>
+      <node id="2">
+        <label>Edible</label>
+        <link refid="class_edible"/>
+      </node>
+      <node id="4">
+        <label>SpatialTreeAnimal</label>
+        <link refid="class_spatial_tree_animal"/>
+        <childnode refid="3" relation="public-inheritance">
+        </childnode>
+      </node>
+    </inheritancegraph>
+    <collaborationgraph>
+      <node id="1">
+        <label>Animal</label>
+        <link refid="class_animal"/>
+        <childnode refid="2" relation="public-inheritance">
+        </childnode>
+        <childnode refid="15" relation="usage">
+          <edgelabel>genetics</edgelabel>
+        </childnode>
+        <childnode refid="20" relation="usage">
+          <edgelabel>animalSpeciesId</edgelabel>
+        </childnode>
+      </node>
+      <node id="16">
+        <label>AnimalSpeciesGenetics</label>
+        <link refid="class_animal_species_genetics"/>
+        <childnode refid="17" relation="usage">
+          <edgelabel>allTraits</edgelabel>
+        </childnode>
+      </node>
+      <node id="20">
+        <label>AnimalSpeciesID</label>
+        <link refid="class_animal_species_i_d"/>
+      </node>
+      <node id="8">
+        <label>CellElement</label>
+        <link refid="class_cell_element"/>
+      </node>
+      <node id="12">
+        <label>CellHabitatDomainInterface</label>
+        <link refid="class_cell_habitat_domain_interface"/>
+        <childnode refid="8" relation="public-inheritance">
+        </childnode>
+        <childnode refid="13" relation="usage">
+          <edgelabel>habitatDomainStatus</edgelabel>
+        </childnode>
+      </node>
+      <node id="7">
+        <label>CellMoistureInterface</label>
+        <link refid="class_cell_moisture_interface"/>
+        <childnode refid="8" relation="public-inheritance">
+        </childnode>
+        <childnode refid="9" relation="usage">
+          <edgelabel>totalMaximumResourceCapacity</edgelabel>
+        </childnode>
+      </node>
+      <node id="11">
+        <label>CellObstacleInterface</label>
+        <link refid="class_cell_obstacle_interface"/>
+        <childnode refid="8" relation="public-inheritance">
+        </childnode>
+      </node>
+      <node id="13">
+        <label>CustomIndexedVector&lt; AnimalSpeciesID, CustomIndexedVector&lt; Instar, bool &gt; &gt;</label>
+        <link refid="class_custom_indexed_vector"/>
+      </node>
+      <node id="19">
+        <label>CustomIndexedVector&lt; Trait::ExecutionOrder, std::vector&lt; IndividualTrait &gt; &gt;</label>
+        <link refid="class_custom_indexed_vector"/>
+      </node>
+      <node id="17">
+        <label>CustomIndexedVector&lt; Trait::ExecutionOrder, std::vector&lt; Trait * &gt; &gt;</label>
+        <link refid="class_custom_indexed_vector"/>
+      </node>
+      <node id="2">
+        <label>Edible</label>
+        <link refid="class_edible"/>
+        <childnode refid="3" relation="usage">
+          <edgelabel>mySpecies</edgelabel>
+        </childnode>
+        <childnode refid="5" relation="usage">
+          <edgelabel>terrainCell</edgelabel>
+        </childnode>
+      </node>
+      <node id="15">
+        <label>Genetics</label>
+        <link refid="class_genetics"/>
+        <childnode refid="16" relation="usage">
+          <edgelabel>speciesGenetics</edgelabel>
+        </childnode>
+        <childnode refid="18" relation="usage">
+          <edgelabel>genome</edgelabel>
+        </childnode>
+        <childnode refid="19" relation="usage">
+          <edgelabel>allIndividualTraits</edgelabel>
+        </childnode>
+      </node>
+      <node id="18">
+        <label>Genome</label>
+        <link refid="class_genome"/>
+      </node>
+      <node id="6">
+        <label>PatchApplicator</label>
+        <link refid="class_patch_applicator"/>
+        <childnode refid="5" relation="usage">
+          <edgelabel>owner</edgelabel>
+        </childnode>
+        <childnode refid="7" relation="usage">
+          <edgelabel>cellMoisture</edgelabel>
+        </childnode>
+        <childnode refid="11" relation="usage">
+          <edgelabel>cellObstacle</edgelabel>
+        </childnode>
+        <childnode refid="12" relation="usage">
+          <edgelabel>cellHabitatDomain</edgelabel>
+        </childnode>
+      </node>
+      <node id="14">
+        <label>PointMap</label>
+        <link refid="class_point_map"/>
+      </node>
+      <node id="10">
+        <label>PreciseDouble</label>
+        <link refid="class_precise_double"/>
+      </node>
+      <node id="3">
+        <label>Species</label>
+        <link refid="class_species"/>
+        <childnode refid="4" relation="usage">
+          <edgelabel>id</edgelabel>
+        </childnode>
+      </node>
+      <node id="4">
+        <label>Species::ID</label>
+        <link refid="class_species_1_1_i_d"/>
+      </node>
+      <node id="5">
+        <label>TerrainCell</label>
+        <link refid="class_terrain_cell"/>
+        <childnode refid="6" relation="usage">
+          <edgelabel>patchApplicator</edgelabel>
+        </childnode>
+        <childnode refid="14" relation="usage">
+          <edgelabel>position</edgelabel>
+        </childnode>
+        <childnode refid="10" relation="usage">
+          <edgelabel>hyperVolume</edgelabel>
+          <edgelabel>size</edgelabel>
+        </childnode>
+      </node>
+      <node id="9">
+        <label>WetMass</label>
+        <link refid="class_wet_mass"/>
+        <childnode refid="10" relation="usage">
+          <edgelabel>value</edgelabel>
+        </childnode>
+      </node>
+    </collaborationgraph>
+    <location file="App/Model/IBM/Landscape/LivingBeings/Animals/Animal.h" line="43" column="1" bodyfile="App/Model/IBM/Landscape/LivingBeings/Animals/Animal.h" bodystart="44" bodyend="278"/>
+    <listofallmembers>
+      <member refid="class_animal_1a1e726a49ec952443190ac62dad22353c" prot="public" virt="non-virtual"><scope>Animal</scope><name>Animal</name></member>
+      <member refid="class_animal_1ad4bbd234af51a4e7f321a1410e74c59c" prot="public" virt="non-virtual"><scope>Animal</scope><name>Animal</name></member>
+      <member refid="class_animal_1aac0fb375f31c671e3fa2b021aaf298ef" prot="public" virt="non-virtual"><scope>Animal</scope><name>Animal</name></member>
+      <member refid="class_animal_1a5f306799edf02bb7f025894d6d59662d" prot="public" virt="non-virtual"><scope>Animal</scope><name>Animal</name></member>
+      <member refid="class_animal_1a2707620937fd718e432e88dbd95583bd" prot="protected" virt="non-virtual"><scope>Animal</scope><name>animalSpeciesId</name></member>
+      <member refid="class_animal_1a2f767a1dc23025e6a87996cbe1f2c986" prot="public" virt="non-virtual"><scope>Animal</scope><name>applyAllometricModel</name></member>
+      <member refid="class_animal_1a2a32231b631f179b42da2fc02efcfca8" prot="protected" virt="non-virtual"><scope>Animal</scope><name>checkGrowthMinimumValue</name></member>
+      <member refid="class_edible_1ad2bd330d8bddee1968a782c8c7417f6c" prot="public" virt="non-virtual"><scope>Animal</scope><name>Edible</name></member>
+      <member refid="class_edible_1a6eeeb715ddf2707990356e169cbc3ab6" prot="public" virt="non-virtual"><scope>Animal</scope><name>Edible</name></member>
+      <member refid="class_edible_1aead81535b712265418ab786a8ada4f51" prot="public" virt="non-virtual"><scope>Animal</scope><name>Edible</name></member>
+      <member refid="class_animal_1ac17391b9290aa4231a7c835de66cd3e1" prot="protected" virt="non-virtual"><scope>Animal</scope><name>gender</name></member>
+      <member refid="class_animal_1a6c071bac7b6d9a6ed6599261dd134e16" prot="protected" virt="non-virtual"><scope>Animal</scope><name>genetics</name></member>
+      <member refid="class_animal_1ab836e557886d8fc9642c62e276eb6ee8" prot="public" virt="non-virtual"><scope>Animal</scope><name>getAnimalSpeciesId</name></member>
+      <member refid="class_animal_1a706c22141587830a4ebcb5599e1c0b59" prot="public" virt="non-virtual"><scope>Animal</scope><name>getGender</name></member>
+      <member refid="class_animal_1a9389d2cf85ecab5fe1d2ba13f3992c06" prot="public" virt="non-virtual"><scope>Animal</scope><name>getGenetics</name></member>
+      <member refid="class_animal_1a6ae311c4dc8862ef1dbf2cf2f301be3c" prot="public" virt="pure-virtual"><scope>Animal</scope><name>getGrowthBuildingBlock</name></member>
+      <member refid="class_edible_1a89223f30f79d20181aa5e5e477f4a96a" prot="public" virt="non-virtual"><scope>Animal</scope><name>getId</name></member>
+      <member refid="class_edible_1ac0ad9e1a6d3049f445cd78f1eb7da95d" prot="public" virt="non-virtual"><scope>Animal</scope><name>getInstar</name></member>
+      <member refid="class_animal_1a363ef1f74e4bbecacc8fbf8533272e52" prot="public" virt="pure-virtual"><scope>Animal</scope><name>getInstarToEvaluateCells</name></member>
+      <member refid="class_animal_1a907f8feab5539db1ce7fbfed320d6fff" prot="public" virt="non-virtual"><scope>Animal</scope><name>getLifeStage</name></member>
+      <member refid="class_animal_1aa21b22f0ad2a36e52cd56ff4252914f9" prot="public" virt="non-virtual"><scope>Animal</scope><name>getMutableGenetics</name></member>
+      <member refid="class_animal_1a4b65e8a158b2d3be496d174c956f40f3" prot="public" virt="pure-virtual"><scope>Animal</scope><name>getMutableGrowthBuildingBlock</name></member>
+      <member refid="class_animal_1adaf3c8075a306eb4d132a5901c637169" prot="public" virt="non-virtual"><scope>Animal</scope><name>getMutablePosition</name></member>
+      <member refid="class_animal_1a311b5098fe43e3ca5883ae38ec9e9c2b" prot="public" virt="virtual"><scope>Animal</scope><name>getMutableSpecies</name></member>
+      <member refid="class_edible_1ae8427bf3b3cced2e4c10dabbf7d25bb9" prot="public" virt="non-virtual"><scope>Animal</scope><name>getMutableTerrainCell</name></member>
+      <member refid="class_animal_1a8260dfe71396ffb117d311d56ef57ee6" prot="public" virt="non-virtual"><scope>Animal</scope><name>getPosition</name></member>
+      <member refid="class_animal_1a4c68dbb1c563da519131983c226e6693" prot="public" virt="pure-virtual"><scope>Animal</scope><name>getRemainingVoracity</name></member>
+      <member refid="class_animal_1a8e64dce62963045cb37ac3be0440c052" prot="public" virt="non-virtual"><scope>Animal</scope><name>getSignature</name></member>
+      <member refid="class_animal_1a7305aa2245f6b908eb66019b14d2673e" prot="public" virt="virtual"><scope>Animal</scope><name>getSpecies</name></member>
+      <member refid="class_edible_1a40371658641bb50c113dcced827247ac" prot="public" virt="non-virtual"><scope>Animal</scope><name>getTerrainCell</name></member>
+      <member refid="class_edible_1a54e4c51c58f7126ec542f2a41dd1467e" prot="protected" virt="non-virtual"><scope>Animal</scope><name>id</name></member>
+      <member refid="class_edible_1a323034d9cc4ba4182252ad04433984db" prot="public" virt="pure-virtual"><scope>Animal</scope><name>isHunting</name></member>
+      <member refid="class_animal_1aa3723364c1393355127c54741e7ba0cc" prot="protected" virt="non-virtual"><scope>Animal</scope><name>lifeStage</name></member>
+      <member refid="class_edible_1a2ee0ce7e08eee8fc76858a05398152ec" prot="protected" virt="non-virtual"><scope>Animal</scope><name>mySpecies</name></member>
+      <member refid="class_animal_1a932bf27aadf410f5bde29d30e65c1ac3" prot="public" virt="non-virtual"><scope>Animal</scope><name>operator=</name></member>
+      <member refid="class_edible_1a8c112449263b7f7c057718102c0e56f8" prot="public" virt="non-virtual" ambiguityscope="Edible::"><scope>Animal</scope><name>operator=</name></member>
+      <member refid="class_animal_1a082bb5e6de6932e203f51425869313a1" prot="protected" virt="non-virtual"><scope>Animal</scope><name>position</name></member>
+      <member refid="class_animal_1aa225bb2edec8e4b53fc2feb6da54c0e6" prot="public" virt="non-virtual"><scope>Animal</scope><name>serialize</name></member>
+      <member refid="class_animal_1a87a3b56352b807409bf410a1040b5300" prot="public" virt="pure-virtual"><scope>Animal</scope><name>setNewLifeStage</name></member>
+      <member refid="class_animal_1af98dc050c7fa03ffa7dc9893d6309bba" prot="public" virt="pure-virtual"><scope>Animal</scope><name>setNewLifeStage</name></member>
+      <member refid="class_animal_1a5f9763db43c973011b1b935211b5f20c" prot="public" virt="pure-virtual"><scope>Animal</scope><name>setNewLifeStage</name></member>
+      <member refid="class_animal_1ab785f02af7406b949885216db5cfcae9" prot="public" virt="non-virtual"><scope>Animal</scope><name>setPosition</name></member>
+      <member refid="class_animal_1a6efd9361684e8513016ff2cf317ba56e" prot="public" virt="non-virtual"><scope>Animal</scope><name>setPosition</name></member>
+      <member refid="class_animal_1af499bfdd6a58e30cea4ddc228462068d" prot="public" virt="virtual"><scope>Animal</scope><name>setSpecies</name></member>
+      <member refid="class_edible_1a42f012c8bd16e3c9b1c48f774527d9f0" prot="protected" virt="pure-virtual"><scope>Animal</scope><name>setSpeciesGrowth</name></member>
+      <member refid="class_edible_1aacd97af4f965dadd80be8cc711829f77" prot="public" virt="virtual"><scope>Animal</scope><name>setTerrainCell</name></member>
+      <member refid="class_animal_1a0d1644086e4f62fe31074b798607e8ed" prot="protected" virt="non-virtual"><scope>Animal</scope><name>signature</name></member>
+      <member refid="class_edible_1a035e2c46b32ea4e77f457a8c114106c7" prot="protected" virt="non-virtual"><scope>Animal</scope><name>terrainCell</name></member>
+      <member refid="class_edible_1a0e4e6440021a0065de183c97cd2fa5bd" prot="public" virt="pure-virtual"><scope>Animal</scope><name>turnIntoDryMass</name></member>
+      <member refid="class_animal_1a67af488e90ea55012e1a2e9be0a9a7d8" prot="public" virt="non-virtual"><scope>Animal</scope><name>updateSignature</name></member>
+      <member refid="class_animal_1a16d8b7f94611cc65f5cdb58cc105527b" prot="public" virt="virtual"><scope>Animal</scope><name>~Animal</name></member>
+      <member refid="class_edible_1a8645217fd9d754597e5398be80f03094" prot="public" virt="virtual"><scope>Animal</scope><name>~Edible</name></member>
+    </listofallmembers>
+  </compounddef>
+</doxygen>

@@ -1,0 +1,393 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.18.0" xml:lang="en-US">
+  <compounddef id="class_von_bertalanffy_individual_growth_model" kind="class" language="C++" prot="public">
+    <compoundname>VonBertalanffyIndividualGrowthModel</compoundname>
+    <basecompoundref refid="class_individual_growth_model" prot="public" virt="non-virtual">IndividualGrowthModel</basecompoundref>
+    <includes refid="_von_bertalanffy_individual_growth_model_8h" local="no">VonBertalanffyIndividualGrowthModel.h</includes>
+    <sectiondef kind="private-attrib">
+      <memberdef kind="variable" id="class_von_bertalanffy_individual_growth_model_1a18717eca6a0c32c227eb2441abe6582d" prot="private" static="no" mutable="no">
+        <type><ref refid="class_precise_double" kindref="compound">PreciseDouble</ref></type>
+        <definition>PreciseDouble VonBertalanffyIndividualGrowthModel::Linf</definition>
+        <argsstring></argsstring>
+        <name>Linf</name>
+        <qualifiedname>VonBertalanffyIndividualGrowthModel::Linf</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Asymptotic maximum length of the individual. </para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="App/Model/IBM/Landscape/LivingBeings/Animals/Growth/Model/VonBertalanffyIndividualGrowthModel.h" line="83" column="19" bodyfile="App/Model/IBM/Landscape/LivingBeings/Animals/Growth/Model/VonBertalanffyIndividualGrowthModel.h" bodystart="83" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="class_von_bertalanffy_individual_growth_model_1abbd16c291a752a36611575d54c9c0a0f" prot="private" static="no" mutable="no">
+        <type><ref refid="class_precise_double" kindref="compound">PreciseDouble</ref></type>
+        <definition>PreciseDouble VonBertalanffyIndividualGrowthModel::t0</definition>
+        <argsstring></argsstring>
+        <name>t0</name>
+        <qualifiedname>VonBertalanffyIndividualGrowthModel::t0</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Theoretical age at which length is zero. </para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="App/Model/IBM/Landscape/LivingBeings/Animals/Growth/Model/VonBertalanffyIndividualGrowthModel.h" line="84" column="19" bodyfile="App/Model/IBM/Landscape/LivingBeings/Animals/Growth/Model/VonBertalanffyIndividualGrowthModel.h" bodystart="84" bodyend="-1"/>
+      </memberdef>
+    </sectiondef>
+    <sectiondef kind="public-func">
+      <memberdef kind="function" id="class_von_bertalanffy_individual_growth_model_1addbd456f67a6f0c5296002900dcc238c" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type></type>
+        <definition>VonBertalanffyIndividualGrowthModel::VonBertalanffyIndividualGrowthModel</definition>
+        <argsstring>()</argsstring>
+        <name>VonBertalanffyIndividualGrowthModel</name>
+        <qualifiedname>VonBertalanffyIndividualGrowthModel::VonBertalanffyIndividualGrowthModel</qualifiedname>
+        <briefdescription>
+<para>Default constructor. </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="App/Model/IBM/Landscape/LivingBeings/Animals/Growth/Model/VonBertalanffyIndividualGrowthModel.h" line="30" column="5"/>
+      </memberdef>
+      <memberdef kind="function" id="class_von_bertalanffy_individual_growth_model_1af8b9140e6db00ed6c78320f8f8a515b5" prot="public" static="no" const="no" explicit="no" inline="no" virt="virtual">
+        <type></type>
+        <definition>virtual VonBertalanffyIndividualGrowthModel::~VonBertalanffyIndividualGrowthModel</definition>
+        <argsstring>()</argsstring>
+        <name>~VonBertalanffyIndividualGrowthModel</name>
+        <qualifiedname>VonBertalanffyIndividualGrowthModel::~VonBertalanffyIndividualGrowthModel</qualifiedname>
+        <briefdescription>
+<para>Destructor. </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="App/Model/IBM/Landscape/LivingBeings/Animals/Growth/Model/VonBertalanffyIndividualGrowthModel.h" line="35" column="13"/>
+      </memberdef>
+      <memberdef kind="function" id="class_von_bertalanffy_individual_growth_model_1a91b313d6a6072074a956c44f6c51c508" prot="public" static="no" const="no" explicit="no" inline="no" virt="virtual">
+        <type>void</type>
+        <definition>void VonBertalanffyIndividualGrowthModel::adjust</definition>
+        <argsstring>(const PreciseDouble &amp;growthCoefficient, const Length &amp;Lmax, const Day &amp;Tmax, const Length &amp;lengthAtBirth)</argsstring>
+        <name>adjust</name>
+        <qualifiedname>VonBertalanffyIndividualGrowthModel::adjust</qualifiedname>
+        <reimplements refid="class_individual_growth_model_1aa88ae5f4c09dab4a5de66b79e2cebdce">adjust</reimplements>
+        <param>
+          <type>const <ref refid="class_precise_double" kindref="compound">PreciseDouble</ref> &amp;</type>
+          <declname>growthCoefficient</declname>
+        </param>
+        <param>
+          <type>const <ref refid="class_length" kindref="compound">Length</ref> &amp;</type>
+          <declname>Lmax</declname>
+        </param>
+        <param>
+          <type>const <ref refid="class_day" kindref="compound">Day</ref> &amp;</type>
+          <declname>Tmax</declname>
+        </param>
+        <param>
+          <type>const <ref refid="class_length" kindref="compound">Length</ref> &amp;</type>
+          <declname>lengthAtBirth</declname>
+        </param>
+        <briefdescription>
+<para>Adjusts the model parameters based on maximum length, maximum age, and length at birth. </para>
+        </briefdescription>
+        <detaileddescription>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>growthCoefficient</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Growth coefficient for scaling. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>Lmax</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Maximum achievable length. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>Tmax</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Maximum age for growth. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>lengthAtBirth</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Initial length at birth. </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="App/Model/IBM/Landscape/LivingBeings/Animals/Growth/Model/VonBertalanffyIndividualGrowthModel.h" line="64" column="10"/>
+      </memberdef>
+      <memberdef kind="function" id="class_von_bertalanffy_individual_growth_model_1a8b5493caff0c4395873274fffb5c9aed" prot="public" static="no" const="yes" explicit="no" inline="no" virt="virtual">
+        <type><ref refid="class_length" kindref="compound">Length</ref></type>
+        <definition>Length VonBertalanffyIndividualGrowthModel::calculateLength</definition>
+        <argsstring>(const Day &amp;age, const PreciseDouble &amp;growthCoefficient) const</argsstring>
+        <name>calculateLength</name>
+        <qualifiedname>VonBertalanffyIndividualGrowthModel::calculateLength</qualifiedname>
+        <reimplements refid="class_individual_growth_model_1a9423310fe45081bb62aea6f9b162ea86">calculateLength</reimplements>
+        <param>
+          <type>const <ref refid="class_day" kindref="compound">Day</ref> &amp;</type>
+          <declname>age</declname>
+        </param>
+        <param>
+          <type>const <ref refid="class_precise_double" kindref="compound">PreciseDouble</ref> &amp;</type>
+          <declname>growthCoefficient</declname>
+        </param>
+        <briefdescription>
+<para>Calculates the length of an individual at a given age using the von Bertalanffy function. </para>
+        </briefdescription>
+        <detaileddescription>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>age</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Age of the individual. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>growthCoefficient</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Growth coefficient for scaling the model. </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<simplesect kind="return"><para>The length of the individual at the specified age. </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="App/Model/IBM/Landscape/LivingBeings/Animals/Growth/Model/VonBertalanffyIndividualGrowthModel.h" line="55" column="12"/>
+      </memberdef>
+      <memberdef kind="function" id="class_von_bertalanffy_individual_growth_model_1a058f2cd821b063a37490ba1dc91e62a1" prot="public" static="no" const="yes" explicit="no" inline="no" virt="non-virtual">
+        <type>const <ref refid="class_precise_double" kindref="compound">PreciseDouble</ref> &amp;</type>
+        <definition>const PreciseDouble &amp; VonBertalanffyIndividualGrowthModel::getLinf</definition>
+        <argsstring>() const</argsstring>
+        <name>getLinf</name>
+        <qualifiedname>VonBertalanffyIndividualGrowthModel::getLinf</qualifiedname>
+        <briefdescription>
+<para>Get the Linf parameter of the von Bertalanffy model. </para>
+        </briefdescription>
+        <detaileddescription>
+<para><simplesect kind="return"><para>The asymptotic maximum length (Linf). </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="App/Model/IBM/Landscape/LivingBeings/Animals/Growth/Model/VonBertalanffyIndividualGrowthModel.h" line="41" column="25"/>
+      </memberdef>
+      <memberdef kind="function" id="class_von_bertalanffy_individual_growth_model_1af56707af9bf010a7a90d13141b91b5af" prot="public" static="no" const="yes" explicit="no" inline="no" virt="non-virtual">
+        <type>const <ref refid="class_precise_double" kindref="compound">PreciseDouble</ref> &amp;</type>
+        <definition>const PreciseDouble &amp; VonBertalanffyIndividualGrowthModel::getT0</definition>
+        <argsstring>() const</argsstring>
+        <name>getT0</name>
+        <qualifiedname>VonBertalanffyIndividualGrowthModel::getT0</qualifiedname>
+        <briefdescription>
+<para>Get the T0 parameter of the von Bertalanffy model. </para>
+        </briefdescription>
+        <detaileddescription>
+<para><simplesect kind="return"><para>The theoretical age at which length is zero (T0). </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="App/Model/IBM/Landscape/LivingBeings/Animals/Growth/Model/VonBertalanffyIndividualGrowthModel.h" line="47" column="25"/>
+      </memberdef>
+      <memberdef kind="function" id="class_von_bertalanffy_individual_growth_model_1a26c71241329d16c9d9bad16f0fab60b2" prot="public" static="no" const="yes" explicit="no" inline="no" virt="virtual">
+        <type><ref refid="class_individual_growth_model_1acadacbdb89e0db3e1ffd490634162459" kindref="member">IndividualGrowthModel::Type</ref></type>
+        <definition>IndividualGrowthModel::Type VonBertalanffyIndividualGrowthModel::getType</definition>
+        <argsstring>() const</argsstring>
+        <name>getType</name>
+        <qualifiedname>VonBertalanffyIndividualGrowthModel::getType</qualifiedname>
+        <reimplements refid="class_individual_growth_model_1ad1c08a537cd40bbebb73d89d48a33398">getType</reimplements>
+        <briefdescription>
+<para>Returns the type of the growth model. </para>
+        </briefdescription>
+        <detaileddescription>
+<para><simplesect kind="return"><para><ref refid="class_individual_growth_model_1acadacbdb89e0db3e1ffd490634162459acc2190383d34582610b8e38e7e75e90a" kindref="member">IndividualGrowthModel::Type::VonBertalanffy</ref> </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="App/Model/IBM/Landscape/LivingBeings/Animals/Growth/Model/VonBertalanffyIndividualGrowthModel.h" line="70" column="33"/>
+      </memberdef>
+      <memberdef kind="function" id="class_von_bertalanffy_individual_growth_model_1a5e2f28299729f998dd4b09e8419122bf" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <templateparamlist>
+          <param>
+            <type>class Archive</type>
+          </param>
+        </templateparamlist>
+        <type>void</type>
+        <definition>void VonBertalanffyIndividualGrowthModel::serialize</definition>
+        <argsstring>(Archive &amp;ar, const unsigned int version)</argsstring>
+        <name>serialize</name>
+        <qualifiedname>VonBertalanffyIndividualGrowthModel::serialize</qualifiedname>
+        <param>
+          <type>Archive &amp;</type>
+          <declname>ar</declname>
+        </param>
+        <param>
+          <type>const unsigned int</type>
+          <declname>version</declname>
+        </param>
+        <briefdescription>
+<para>Serializes the object for persistence. </para>
+        </briefdescription>
+        <detaileddescription>
+<para><parameterlist kind="templateparam"><parameteritem>
+<parameternamelist>
+<parametername>Archive</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Serialization archive type. </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>ar</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Archive instance. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>version</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Serialization version. </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="App/Model/IBM/Landscape/LivingBeings/Animals/Growth/Model/VonBertalanffyIndividualGrowthModel.h" line="80" column="10"/>
+      </memberdef>
+    </sectiondef>
+    <sectiondef kind="private-func">
+      <memberdef kind="function" id="class_von_bertalanffy_individual_growth_model_1a4c05f0e52dfe4257a95e5a4bc67cf507" prot="private" static="no" const="yes" explicit="no" inline="no" virt="non-virtual">
+        <type><ref refid="class_precise_double" kindref="compound">PreciseDouble</ref></type>
+        <definition>PreciseDouble VonBertalanffyIndividualGrowthModel::VonBertalanffy</definition>
+        <argsstring>(const PreciseDouble &amp;k, const Day &amp;t) const</argsstring>
+        <name>VonBertalanffy</name>
+        <qualifiedname>VonBertalanffyIndividualGrowthModel::VonBertalanffy</qualifiedname>
+        <param>
+          <type>const <ref refid="class_precise_double" kindref="compound">PreciseDouble</ref> &amp;</type>
+          <declname>k</declname>
+        </param>
+        <param>
+          <type>const <ref refid="class_day" kindref="compound">Day</ref> &amp;</type>
+          <declname>t</declname>
+        </param>
+        <briefdescription>
+<para>Computes the von Bertalanffy growth function for a given rate k and time t. </para>
+        </briefdescription>
+        <detaileddescription>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>k</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Growth rate parameter. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>t</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Time (age). </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<simplesect kind="return"><para>Result of the von Bertalanffy growth function. </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="App/Model/IBM/Landscape/LivingBeings/Animals/Growth/Model/VonBertalanffyIndividualGrowthModel.h" line="92" column="19"/>
+      </memberdef>
+    </sectiondef>
+    <briefdescription>
+<para>Implements an individual growth model using the von Bertalanffy equation. </para>
+    </briefdescription>
+    <detaileddescription>
+<para>This class models the growth of an individual using the von Bertalanffy growth function. It inherits from <ref refid="class_individual_growth_model" kindref="compound">IndividualGrowthModel</ref> and provides methods to adjust parameters, calculate length at a given age, and access key model parameters such as Linf and T0. </para>
+    </detaileddescription>
+    <inheritancegraph>
+      <node id="2">
+        <label>IndividualGrowthModel</label>
+        <link refid="class_individual_growth_model"/>
+      </node>
+      <node id="1">
+        <label>VonBertalanffyIndividualGrowthModel</label>
+        <link refid="class_von_bertalanffy_individual_growth_model"/>
+        <childnode refid="2" relation="public-inheritance">
+        </childnode>
+      </node>
+    </inheritancegraph>
+    <collaborationgraph>
+      <node id="2">
+        <label>IndividualGrowthModel</label>
+        <link refid="class_individual_growth_model"/>
+      </node>
+      <node id="3">
+        <label>PreciseDouble</label>
+        <link refid="class_precise_double"/>
+      </node>
+      <node id="1">
+        <label>VonBertalanffyIndividualGrowthModel</label>
+        <link refid="class_von_bertalanffy_individual_growth_model"/>
+        <childnode refid="2" relation="public-inheritance">
+        </childnode>
+        <childnode refid="3" relation="usage">
+          <edgelabel>Linf</edgelabel>
+          <edgelabel>t0</edgelabel>
+        </childnode>
+      </node>
+    </collaborationgraph>
+    <location file="App/Model/IBM/Landscape/LivingBeings/Animals/Growth/Model/VonBertalanffyIndividualGrowthModel.h" line="25" column="1" bodyfile="App/Model/IBM/Landscape/LivingBeings/Animals/Growth/Model/VonBertalanffyIndividualGrowthModel.h" bodystart="25" bodyend="93"/>
+    <listofallmembers>
+      <member refid="class_von_bertalanffy_individual_growth_model_1a91b313d6a6072074a956c44f6c51c508" prot="public" virt="virtual"><scope>VonBertalanffyIndividualGrowthModel</scope><name>adjust</name></member>
+      <member refid="class_von_bertalanffy_individual_growth_model_1a8b5493caff0c4395873274fffb5c9aed" prot="public" virt="virtual"><scope>VonBertalanffyIndividualGrowthModel</scope><name>calculateLength</name></member>
+      <member refid="class_individual_growth_model_1a0f4153250f1bfdeda8dd35685293ec2f" prot="public" virt="non-virtual"><scope>VonBertalanffyIndividualGrowthModel</scope><name>createInstance</name></member>
+      <member refid="class_von_bertalanffy_individual_growth_model_1a058f2cd821b063a37490ba1dc91e62a1" prot="public" virt="non-virtual"><scope>VonBertalanffyIndividualGrowthModel</scope><name>getLinf</name></member>
+      <member refid="class_von_bertalanffy_individual_growth_model_1af56707af9bf010a7a90d13141b91b5af" prot="public" virt="non-virtual"><scope>VonBertalanffyIndividualGrowthModel</scope><name>getT0</name></member>
+      <member refid="class_von_bertalanffy_individual_growth_model_1a26c71241329d16c9d9bad16f0fab60b2" prot="public" virt="virtual"><scope>VonBertalanffyIndividualGrowthModel</scope><name>getType</name></member>
+      <member refid="class_individual_growth_model_1a1303c5c34b7cf1231ed4eb964400e228" prot="public" virt="non-virtual"><scope>VonBertalanffyIndividualGrowthModel</scope><name>IndividualGrowthModel</name></member>
+      <member refid="class_von_bertalanffy_individual_growth_model_1a18717eca6a0c32c227eb2441abe6582d" prot="private" virt="non-virtual"><scope>VonBertalanffyIndividualGrowthModel</scope><name>Linf</name></member>
+      <member refid="class_von_bertalanffy_individual_growth_model_1a5e2f28299729f998dd4b09e8419122bf" prot="public" virt="non-virtual"><scope>VonBertalanffyIndividualGrowthModel</scope><name>serialize</name></member>
+      <member refid="class_von_bertalanffy_individual_growth_model_1abbd16c291a752a36611575d54c9c0a0f" prot="private" virt="non-virtual"><scope>VonBertalanffyIndividualGrowthModel</scope><name>t0</name></member>
+      <member refid="class_individual_growth_model_1acadacbdb89e0db3e1ffd490634162459" prot="public" virt="non-virtual"><scope>VonBertalanffyIndividualGrowthModel</scope><name>Type</name></member>
+      <member refid="class_von_bertalanffy_individual_growth_model_1a4c05f0e52dfe4257a95e5a4bc67cf507" prot="private" virt="non-virtual"><scope>VonBertalanffyIndividualGrowthModel</scope><name>VonBertalanffy</name></member>
+      <member refid="class_von_bertalanffy_individual_growth_model_1addbd456f67a6f0c5296002900dcc238c" prot="public" virt="non-virtual"><scope>VonBertalanffyIndividualGrowthModel</scope><name>VonBertalanffyIndividualGrowthModel</name></member>
+      <member refid="class_individual_growth_model_1a7737a1e46b20fb23fb68f975babc5fad" prot="public" virt="virtual"><scope>VonBertalanffyIndividualGrowthModel</scope><name>~IndividualGrowthModel</name></member>
+      <member refid="class_von_bertalanffy_individual_growth_model_1af8b9140e6db00ed6c78320f8f8a515b5" prot="public" virt="virtual"><scope>VonBertalanffyIndividualGrowthModel</scope><name>~VonBertalanffyIndividualGrowthModel</name></member>
+    </listofallmembers>
+  </compounddef>
+</doxygen>

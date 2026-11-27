@@ -1,0 +1,155 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.18.0" xml:lang="en-US">
+  <compounddef id="class_route_cost_policy" kind="class" language="C++" prot="public" abstract="yes">
+    <compoundname>RouteCostPolicy</compoundname>
+    <derivedcompoundref refid="class_euclidean_route_cost_policy" prot="public" virt="non-virtual">EuclideanRouteCostPolicy</derivedcompoundref>
+    <sectiondef kind="public-func">
+      <memberdef kind="function" id="class_route_cost_policy_1a1b9345d0f809e57c560f961378df6c40" prot="public" static="no" const="no" explicit="no" inline="no" virt="virtual">
+        <type></type>
+        <definition>virtual RouteCostPolicy::~RouteCostPolicy</definition>
+        <argsstring>()=default</argsstring>
+        <name>~RouteCostPolicy</name>
+        <qualifiedname>RouteCostPolicy::~RouteCostPolicy</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="App/Model/IBM/Landscape/Map/Navigation/RouteCostPolicy.h" line="13" column="9"/>
+      </memberdef>
+      <memberdef kind="function" id="class_route_cost_policy_1af496139f3160a5592cb776367bf005d5" prot="public" static="no" const="yes" explicit="no" inline="no" virt="virtual">
+        <type><ref refid="class_precise_double" kindref="compound">PreciseDouble</ref></type>
+        <definition>virtual PreciseDouble RouteCostPolicy::calculateTransitionCost</definition>
+        <argsstring>(const PointContinuous &amp;fromPosition, const TerrainCell &amp;from, const PointContinuous &amp;toPosition, const TerrainCell &amp;to, const AnimalNonStatistical &amp;animal) const</argsstring>
+        <name>calculateTransitionCost</name>
+        <qualifiedname>RouteCostPolicy::calculateTransitionCost</qualifiedname>
+        <param>
+          <type>const PointContinuous &amp;</type>
+          <declname>fromPosition</declname>
+        </param>
+        <param>
+          <type>const <ref refid="class_terrain_cell" kindref="compound">TerrainCell</ref> &amp;</type>
+          <declname>from</declname>
+        </param>
+        <param>
+          <type>const PointContinuous &amp;</type>
+          <declname>toPosition</declname>
+        </param>
+        <param>
+          <type>const <ref refid="class_terrain_cell" kindref="compound">TerrainCell</ref> &amp;</type>
+          <declname>to</declname>
+        </param>
+        <param>
+          <type>const <ref refid="class_animal_non_statistical" kindref="compound">AnimalNonStatistical</ref> &amp;</type>
+          <declname>animal</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="App/Model/IBM/Landscape/Map/Navigation/RouteCostPolicy.h" line="16" column="23"/>
+      </memberdef>
+      <memberdef kind="function" id="class_route_cost_policy_1ab54f7d3a751d429893878574676e55f7" prot="public" static="no" const="yes" explicit="no" inline="no" virt="pure-virtual">
+        <type><ref refid="class_precise_double" kindref="compound">PreciseDouble</ref></type>
+        <definition>virtual PreciseDouble RouteCostPolicy::calculateTransitionCost</definition>
+        <argsstring>(const TerrainCell &amp;from, const TerrainCell &amp;to, const AnimalNonStatistical &amp;animal) const =0</argsstring>
+        <name>calculateTransitionCost</name>
+        <qualifiedname>RouteCostPolicy::calculateTransitionCost</qualifiedname>
+        <param>
+          <type>const <ref refid="class_terrain_cell" kindref="compound">TerrainCell</ref> &amp;</type>
+          <declname>from</declname>
+        </param>
+        <param>
+          <type>const <ref refid="class_terrain_cell" kindref="compound">TerrainCell</ref> &amp;</type>
+          <declname>to</declname>
+        </param>
+        <param>
+          <type>const <ref refid="class_animal_non_statistical" kindref="compound">AnimalNonStatistical</ref> &amp;</type>
+          <declname>animal</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="App/Model/IBM/Landscape/Map/Navigation/RouteCostPolicy.h" line="14" column="23"/>
+      </memberdef>
+      <memberdef kind="function" id="class_route_cost_policy_1afd82740ddf5a098a42ef7ec0ac571926" prot="public" static="no" const="yes" explicit="no" inline="no" virt="virtual">
+        <type><ref refid="class_precise_double" kindref="compound">PreciseDouble</ref></type>
+        <definition>virtual PreciseDouble RouteCostPolicy::estimateRemainingCost</definition>
+        <argsstring>(const PointContinuous &amp;fromPosition, const TerrainCell &amp;from, const PointContinuous &amp;goalPosition, const TerrainCell &amp;goal, const AnimalNonStatistical &amp;animal) const</argsstring>
+        <name>estimateRemainingCost</name>
+        <qualifiedname>RouteCostPolicy::estimateRemainingCost</qualifiedname>
+        <param>
+          <type>const PointContinuous &amp;</type>
+          <declname>fromPosition</declname>
+        </param>
+        <param>
+          <type>const <ref refid="class_terrain_cell" kindref="compound">TerrainCell</ref> &amp;</type>
+          <declname>from</declname>
+        </param>
+        <param>
+          <type>const PointContinuous &amp;</type>
+          <declname>goalPosition</declname>
+        </param>
+        <param>
+          <type>const <ref refid="class_terrain_cell" kindref="compound">TerrainCell</ref> &amp;</type>
+          <declname>goal</declname>
+        </param>
+        <param>
+          <type>const <ref refid="class_animal_non_statistical" kindref="compound">AnimalNonStatistical</ref> &amp;</type>
+          <declname>animal</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="App/Model/IBM/Landscape/Map/Navigation/RouteCostPolicy.h" line="17" column="23"/>
+      </memberdef>
+      <memberdef kind="function" id="class_route_cost_policy_1a66fbefdac5bef2de3f0f40a4b7a4018e" prot="public" static="no" const="yes" explicit="no" inline="no" virt="pure-virtual">
+        <type><ref refid="class_precise_double" kindref="compound">PreciseDouble</ref></type>
+        <definition>virtual PreciseDouble RouteCostPolicy::estimateRemainingCost</definition>
+        <argsstring>(const TerrainCell &amp;from, const TerrainCell &amp;goal, const AnimalNonStatistical &amp;animal) const =0</argsstring>
+        <name>estimateRemainingCost</name>
+        <qualifiedname>RouteCostPolicy::estimateRemainingCost</qualifiedname>
+        <param>
+          <type>const <ref refid="class_terrain_cell" kindref="compound">TerrainCell</ref> &amp;</type>
+          <declname>from</declname>
+        </param>
+        <param>
+          <type>const <ref refid="class_terrain_cell" kindref="compound">TerrainCell</ref> &amp;</type>
+          <declname>goal</declname>
+        </param>
+        <param>
+          <type>const <ref refid="class_animal_non_statistical" kindref="compound">AnimalNonStatistical</ref> &amp;</type>
+          <declname>animal</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="App/Model/IBM/Landscape/Map/Navigation/RouteCostPolicy.h" line="15" column="23"/>
+      </memberdef>
+    </sectiondef>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+    </detaileddescription>
+    <location file="App/Model/IBM/Landscape/Map/Navigation/RouteCostPolicy.h" line="10" column="1" bodyfile="App/Model/IBM/Landscape/Map/Navigation/RouteCostPolicy.h" bodystart="11" bodyend="18"/>
+    <listofallmembers>
+      <member refid="class_route_cost_policy_1ab54f7d3a751d429893878574676e55f7" prot="public" virt="pure-virtual"><scope>RouteCostPolicy</scope><name>calculateTransitionCost</name></member>
+      <member refid="class_route_cost_policy_1af496139f3160a5592cb776367bf005d5" prot="public" virt="virtual"><scope>RouteCostPolicy</scope><name>calculateTransitionCost</name></member>
+      <member refid="class_route_cost_policy_1a66fbefdac5bef2de3f0f40a4b7a4018e" prot="public" virt="pure-virtual"><scope>RouteCostPolicy</scope><name>estimateRemainingCost</name></member>
+      <member refid="class_route_cost_policy_1afd82740ddf5a098a42ef7ec0ac571926" prot="public" virt="virtual"><scope>RouteCostPolicy</scope><name>estimateRemainingCost</name></member>
+      <member refid="class_route_cost_policy_1a1b9345d0f809e57c560f961378df6c40" prot="public" virt="virtual"><scope>RouteCostPolicy</scope><name>~RouteCostPolicy</name></member>
+    </listofallmembers>
+  </compounddef>
+</doxygen>

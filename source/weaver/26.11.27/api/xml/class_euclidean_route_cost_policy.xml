@@ -1,0 +1,141 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.18.0" xml:lang="en-US">
+  <compounddef id="class_euclidean_route_cost_policy" kind="class" language="C++" prot="public" final="yes">
+    <compoundname>EuclideanRouteCostPolicy</compoundname>
+    <basecompoundref prot="public" virt="non-virtual">RouteCostPolicy</basecompoundref>
+    <sectiondef kind="public-func">
+      <memberdef kind="function" id="class_euclidean_route_cost_policy_1a420a664050126e71ae2cd007447c2d78" prot="public" static="no" const="yes" explicit="no" inline="no" virt="non-virtual">
+        <type><ref refid="class_precise_double" kindref="compound">PreciseDouble</ref></type>
+        <definition>PreciseDouble EuclideanRouteCostPolicy::calculateTransitionCost</definition>
+        <argsstring>(const PointContinuous &amp;fromPosition, const TerrainCell &amp;from, const PointContinuous &amp;toPosition, const TerrainCell &amp;to, const AnimalNonStatistical &amp;animal) const override</argsstring>
+        <name>calculateTransitionCost</name>
+        <qualifiedname>EuclideanRouteCostPolicy::calculateTransitionCost</qualifiedname>
+        <param>
+          <type>const PointContinuous &amp;</type>
+          <declname>fromPosition</declname>
+        </param>
+        <param>
+          <type>const <ref refid="class_terrain_cell" kindref="compound">TerrainCell</ref> &amp;</type>
+          <declname>from</declname>
+        </param>
+        <param>
+          <type>const PointContinuous &amp;</type>
+          <declname>toPosition</declname>
+        </param>
+        <param>
+          <type>const <ref refid="class_terrain_cell" kindref="compound">TerrainCell</ref> &amp;</type>
+          <declname>to</declname>
+        </param>
+        <param>
+          <type>const <ref refid="class_animal_non_statistical" kindref="compound">AnimalNonStatistical</ref> &amp;</type>
+          <declname>animal</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="App/Model/IBM/Landscape/Map/Navigation/RouteCostPolicy.h" line="25" column="15"/>
+      </memberdef>
+      <memberdef kind="function" id="class_euclidean_route_cost_policy_1a1247d547130c5839113a2e809f108607" prot="public" static="no" const="yes" explicit="no" inline="no" virt="non-virtual">
+        <type><ref refid="class_precise_double" kindref="compound">PreciseDouble</ref></type>
+        <definition>PreciseDouble EuclideanRouteCostPolicy::calculateTransitionCost</definition>
+        <argsstring>(const TerrainCell &amp;from, const TerrainCell &amp;to, const AnimalNonStatistical &amp;animal) const override</argsstring>
+        <name>calculateTransitionCost</name>
+        <qualifiedname>EuclideanRouteCostPolicy::calculateTransitionCost</qualifiedname>
+        <param>
+          <type>const <ref refid="class_terrain_cell" kindref="compound">TerrainCell</ref> &amp;</type>
+          <declname>from</declname>
+        </param>
+        <param>
+          <type>const <ref refid="class_terrain_cell" kindref="compound">TerrainCell</ref> &amp;</type>
+          <declname>to</declname>
+        </param>
+        <param>
+          <type>const <ref refid="class_animal_non_statistical" kindref="compound">AnimalNonStatistical</ref> &amp;</type>
+          <declname>animal</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="App/Model/IBM/Landscape/Map/Navigation/RouteCostPolicy.h" line="23" column="15"/>
+      </memberdef>
+      <memberdef kind="function" id="class_euclidean_route_cost_policy_1ac3c2e29c3f09d3656d66908bf58f8888" prot="public" static="no" const="yes" explicit="no" inline="no" virt="non-virtual">
+        <type><ref refid="class_precise_double" kindref="compound">PreciseDouble</ref></type>
+        <definition>PreciseDouble EuclideanRouteCostPolicy::estimateRemainingCost</definition>
+        <argsstring>(const PointContinuous &amp;fromPosition, const TerrainCell &amp;from, const PointContinuous &amp;goalPosition, const TerrainCell &amp;goal, const AnimalNonStatistical &amp;animal) const override</argsstring>
+        <name>estimateRemainingCost</name>
+        <qualifiedname>EuclideanRouteCostPolicy::estimateRemainingCost</qualifiedname>
+        <param>
+          <type>const PointContinuous &amp;</type>
+          <declname>fromPosition</declname>
+        </param>
+        <param>
+          <type>const <ref refid="class_terrain_cell" kindref="compound">TerrainCell</ref> &amp;</type>
+          <declname>from</declname>
+        </param>
+        <param>
+          <type>const PointContinuous &amp;</type>
+          <declname>goalPosition</declname>
+        </param>
+        <param>
+          <type>const <ref refid="class_terrain_cell" kindref="compound">TerrainCell</ref> &amp;</type>
+          <declname>goal</declname>
+        </param>
+        <param>
+          <type>const <ref refid="class_animal_non_statistical" kindref="compound">AnimalNonStatistical</ref> &amp;</type>
+          <declname>animal</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="App/Model/IBM/Landscape/Map/Navigation/RouteCostPolicy.h" line="26" column="15"/>
+      </memberdef>
+      <memberdef kind="function" id="class_euclidean_route_cost_policy_1af4d7b1cb7d0f1fe9b860b3095df052ed" prot="public" static="no" const="yes" explicit="no" inline="no" virt="non-virtual">
+        <type><ref refid="class_precise_double" kindref="compound">PreciseDouble</ref></type>
+        <definition>PreciseDouble EuclideanRouteCostPolicy::estimateRemainingCost</definition>
+        <argsstring>(const TerrainCell &amp;from, const TerrainCell &amp;goal, const AnimalNonStatistical &amp;animal) const override</argsstring>
+        <name>estimateRemainingCost</name>
+        <qualifiedname>EuclideanRouteCostPolicy::estimateRemainingCost</qualifiedname>
+        <param>
+          <type>const <ref refid="class_terrain_cell" kindref="compound">TerrainCell</ref> &amp;</type>
+          <declname>from</declname>
+        </param>
+        <param>
+          <type>const <ref refid="class_terrain_cell" kindref="compound">TerrainCell</ref> &amp;</type>
+          <declname>goal</declname>
+        </param>
+        <param>
+          <type>const <ref refid="class_animal_non_statistical" kindref="compound">AnimalNonStatistical</ref> &amp;</type>
+          <declname>animal</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="App/Model/IBM/Landscape/Map/Navigation/RouteCostPolicy.h" line="24" column="15"/>
+      </memberdef>
+    </sectiondef>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+    </detaileddescription>
+    <location file="App/Model/IBM/Landscape/Map/Navigation/RouteCostPolicy.h" line="20" column="1" bodyfile="App/Model/IBM/Landscape/Map/Navigation/RouteCostPolicy.h" bodystart="21" bodyend="27"/>
+    <listofallmembers>
+      <member refid="class_euclidean_route_cost_policy_1a1247d547130c5839113a2e809f108607" prot="public" virt="non-virtual"><scope>EuclideanRouteCostPolicy</scope><name>calculateTransitionCost</name></member>
+      <member refid="class_euclidean_route_cost_policy_1a420a664050126e71ae2cd007447c2d78" prot="public" virt="non-virtual"><scope>EuclideanRouteCostPolicy</scope><name>calculateTransitionCost</name></member>
+      <member refid="class_euclidean_route_cost_policy_1af4d7b1cb7d0f1fe9b860b3095df052ed" prot="public" virt="non-virtual"><scope>EuclideanRouteCostPolicy</scope><name>estimateRemainingCost</name></member>
+      <member refid="class_euclidean_route_cost_policy_1ac3c2e29c3f09d3656d66908bf58f8888" prot="public" virt="non-virtual"><scope>EuclideanRouteCostPolicy</scope><name>estimateRemainingCost</name></member>
+      <member refid="class_route_cost_policy_1a1b9345d0f809e57c560f961378df6c40" prot="public" virt="virtual"><scope>EuclideanRouteCostPolicy</scope><name>~RouteCostPolicy</name></member>
+    </listofallmembers>
+  </compounddef>
+</doxygen>

@@ -34,7 +34,7 @@ The source root is ``source/``. It contains:
 
 Version directory names are normalized release tags: remove the leading ``v`` but retain the rest of the tag. For example, ``v26.10.04-rc.1`` maps to ``source/weaver/26.10.04-rc.1/``. Manager tags can have their own suffix, such as ``v1.0.0-manager`` mapping to ``source/weaver-manager/1.0.0-manager/``.
 
-Each version directory owns its templates and static assets, including its logo. Changes to one version therefore do not alter another version's files.
+Each version directory owns its templates and static assets, including its logo. Changes to one version therefore do not alter another version's files. The landing page uses its own branding in ``source/landing/_static/branding/`` and its own licenses in ``source/landing/licenses/``; it does not load branding from product versions. Its product cards use the landing's Weaver and Weaver Manager icons. The `Bootstrap Icons license <bootstrap-icons/LICENSE>`_ is published with the landing page.
 
 Generated files are stored under ``docs/``:
 

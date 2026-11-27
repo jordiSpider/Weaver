@@ -1,0 +1,340 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.18.0" xml:lang="en-US">
+  <compounddef id="class_coordinate3_d" kind="class" language="C++" prot="public">
+    <compoundname>Coordinate3D</compoundname>
+    <includes refid="_coordinate3_d_8h" local="no">Coordinate3D.h</includes>
+    <templateparamlist>
+      <param>
+        <type>class T</type>
+      </param>
+    </templateparamlist>
+    <sectiondef kind="private-attrib">
+      <memberdef kind="variable" id="class_coordinate3_d_1a558dda2d687fecd192dac7ef48d4ecf8" prot="private" static="no" mutable="no">
+        <type>T</type>
+        <definition>T Coordinate3D&lt; T &gt;::x</definition>
+        <argsstring></argsstring>
+        <name>x</name>
+        <qualifiedname>Coordinate3D::x</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>The x-coordinate </para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="Misc/Coordinate3D.h" line="35" column="3" bodyfile="Misc/Coordinate3D.h" bodystart="35" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="class_coordinate3_d_1af23c7fefc9da53cb65b24e800ae474fe" prot="private" static="no" mutable="no">
+        <type>T</type>
+        <definition>T Coordinate3D&lt; T &gt;::y</definition>
+        <argsstring></argsstring>
+        <name>y</name>
+        <qualifiedname>Coordinate3D::y</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>The y-coordinate </para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="Misc/Coordinate3D.h" line="36" column="7" bodyfile="Misc/Coordinate3D.h" bodystart="36" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="class_coordinate3_d_1a38935f1089b69b3c02d5ad3bbf115582" prot="private" static="no" mutable="no">
+        <type>T</type>
+        <definition>T Coordinate3D&lt; T &gt;::z</definition>
+        <argsstring></argsstring>
+        <name>z</name>
+        <qualifiedname>Coordinate3D::z</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>The z-coordinate </para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="Misc/Coordinate3D.h" line="37" column="7" bodyfile="Misc/Coordinate3D.h" bodystart="37" bodyend="-1"/>
+      </memberdef>
+    </sectiondef>
+    <sectiondef kind="public-func">
+      <memberdef kind="function" id="class_coordinate3_d_1a1cf009e72111f3d00d5ff383d449c39e" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <type></type>
+        <definition>Coordinate3D&lt; T &gt;::Coordinate3D</definition>
+        <argsstring>(const T &amp;x, const T &amp;y, const T &amp;z)</argsstring>
+        <name>Coordinate3D</name>
+        <qualifiedname>Coordinate3D::Coordinate3D</qualifiedname>
+        <param>
+          <type>const T &amp;</type>
+          <declname>x</declname>
+        </param>
+        <param>
+          <type>const T &amp;</type>
+          <declname>y</declname>
+        </param>
+        <param>
+          <type>const T &amp;</type>
+          <declname>z</declname>
+        </param>
+        <briefdescription>
+<para>Constructs a <ref refid="class_coordinate3_d" kindref="compound">Coordinate3D</ref> with given x, y, z values. </para>
+        </briefdescription>
+        <detaileddescription>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>x</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>The x-coordinate. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>y</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>The y-coordinate. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>z</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>The z-coordinate. </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="Misc/Coordinate3D.h" line="46" column="1" bodyfile="Misc/Coordinate3D.h" bodystart="46" bodyend="46"/>
+      </memberdef>
+      <memberdef kind="function" id="class_coordinate3_d_1a90dc2eb793ff055a7e5d123d27774c4d" prot="public" static="no" const="yes" explicit="no" inline="yes" virt="non-virtual">
+        <type>T</type>
+        <definition>T Coordinate3D&lt; T &gt;::getX</definition>
+        <argsstring>() const</argsstring>
+        <name>getX</name>
+        <qualifiedname>Coordinate3D::getX</qualifiedname>
+        <briefdescription>
+<para>Returns the x-coordinate. </para>
+        </briefdescription>
+        <detaileddescription>
+<para><simplesect kind="return"><para>The x value. </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="Misc/Coordinate3D.h" line="52" column="3" bodyfile="Misc/Coordinate3D.h" bodystart="52" bodyend="52"/>
+      </memberdef>
+      <memberdef kind="function" id="class_coordinate3_d_1a702c077c7d5ef101db1ce0902e6bdcf1" prot="public" static="no" const="yes" explicit="no" inline="yes" virt="non-virtual">
+        <type>T</type>
+        <definition>T Coordinate3D&lt; T &gt;::getY</definition>
+        <argsstring>() const</argsstring>
+        <name>getY</name>
+        <qualifiedname>Coordinate3D::getY</qualifiedname>
+        <briefdescription>
+<para>Returns the y-coordinate. </para>
+        </briefdescription>
+        <detaileddescription>
+<para><simplesect kind="return"><para>The y value. </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="Misc/Coordinate3D.h" line="58" column="3" bodyfile="Misc/Coordinate3D.h" bodystart="58" bodyend="58"/>
+      </memberdef>
+      <memberdef kind="function" id="class_coordinate3_d_1a6cbef810e754794fe0f64fea5c4e5967" prot="public" static="no" const="yes" explicit="no" inline="yes" virt="non-virtual">
+        <type>T</type>
+        <definition>T Coordinate3D&lt; T &gt;::getZ</definition>
+        <argsstring>() const</argsstring>
+        <name>getZ</name>
+        <qualifiedname>Coordinate3D::getZ</qualifiedname>
+        <briefdescription>
+<para>Returns the z-coordinate. </para>
+        </briefdescription>
+        <detaileddescription>
+<para><simplesect kind="return"><para>The z value. </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="Misc/Coordinate3D.h" line="64" column="3" bodyfile="Misc/Coordinate3D.h" bodystart="64" bodyend="64"/>
+      </memberdef>
+      <memberdef kind="function" id="class_coordinate3_d_1a86dcbf6cd5cd035c2a761075a112bc50" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <templateparamlist>
+          <param>
+            <type>class Archive</type>
+          </param>
+        </templateparamlist>
+        <type>void</type>
+        <definition>void Coordinate3D&lt; T &gt;::serialize</definition>
+        <argsstring>(Archive &amp;ar, const unsigned int version)</argsstring>
+        <name>serialize</name>
+        <qualifiedname>Coordinate3D::serialize</qualifiedname>
+        <param>
+          <type>Archive &amp;</type>
+          <declname>ar</declname>
+        </param>
+        <param>
+          <type>const unsigned int</type>
+          <declname>version</declname>
+        </param>
+        <briefdescription>
+<para>Serializes the object using Boost.Serialization. </para>
+        </briefdescription>
+        <detaileddescription>
+<para>The function serializes the x, y, and z coordinates to the provided archive. It supports both saving (output archive) and loading (input archive).</para>
+<para><parameterlist kind="templateparam"><parameteritem>
+<parameternamelist>
+<parametername>Archive</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Type of the Boost archive (e.g., binary_oarchive, binary_iarchive). </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>ar</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>The archive object to serialize to or deserialize from. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>version</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Version number of the serialization format (unused). </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="Misc/Coordinate3D.h" line="95" column="10" bodyfile="Misc/Coordinate3D.h" bodystart="95" bodyend="100"/>
+      </memberdef>
+      <memberdef kind="function" id="class_coordinate3_d_1abffd325ceaedaefd3b4b861976da0cf0" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <type>void</type>
+        <definition>void Coordinate3D&lt; T &gt;::setX</definition>
+        <argsstring>(const T &amp;newX)</argsstring>
+        <name>setX</name>
+        <qualifiedname>Coordinate3D::setX</qualifiedname>
+        <param>
+          <type>const T &amp;</type>
+          <declname>newX</declname>
+        </param>
+        <briefdescription>
+<para>Sets the x-coordinate. </para>
+        </briefdescription>
+        <detaileddescription>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>newX</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>The new x-coordinate value. </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="Misc/Coordinate3D.h" line="70" column="10" bodyfile="Misc/Coordinate3D.h" bodystart="70" bodyend="70"/>
+      </memberdef>
+      <memberdef kind="function" id="class_coordinate3_d_1a6a684d259d58fb7a3291aaaaa028b0d5" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <type>void</type>
+        <definition>void Coordinate3D&lt; T &gt;::setY</definition>
+        <argsstring>(const T &amp;newY)</argsstring>
+        <name>setY</name>
+        <qualifiedname>Coordinate3D::setY</qualifiedname>
+        <param>
+          <type>const T &amp;</type>
+          <declname>newY</declname>
+        </param>
+        <briefdescription>
+<para>Sets the y-coordinate. </para>
+        </briefdescription>
+        <detaileddescription>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>newY</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>The new y-coordinate value. </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="Misc/Coordinate3D.h" line="76" column="10" bodyfile="Misc/Coordinate3D.h" bodystart="76" bodyend="76"/>
+      </memberdef>
+      <memberdef kind="function" id="class_coordinate3_d_1a8a351944f5ffba7a0c9fd855a711d4c4" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <type>void</type>
+        <definition>void Coordinate3D&lt; T &gt;::setZ</definition>
+        <argsstring>(const T &amp;newZ)</argsstring>
+        <name>setZ</name>
+        <qualifiedname>Coordinate3D::setZ</qualifiedname>
+        <param>
+          <type>const T &amp;</type>
+          <declname>newZ</declname>
+        </param>
+        <briefdescription>
+<para>Sets the z-coordinate. </para>
+        </briefdescription>
+        <detaileddescription>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>newZ</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>The new z-coordinate value. </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="Misc/Coordinate3D.h" line="82" column="10" bodyfile="Misc/Coordinate3D.h" bodystart="82" bodyend="82"/>
+      </memberdef>
+    </sectiondef>
+    <briefdescription>
+<para>Represents a 3D coordinate with x, y, and z values. </para>
+    </briefdescription>
+    <detaileddescription>
+<para><parameterlist kind="templateparam"><parameteritem>
+<parameternamelist>
+<parametername>T</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Type of the coordinate values (e.g., int, float, double, or custom numeric type).</para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+This class encapsulates three-dimensional coordinates and provides getters, setters, and Boost.Serialization support. It can be used to represent points, vectors, or positions in 3D space. </para>
+    </detaileddescription>
+    <location file="Misc/Coordinate3D.h" line="33" column="1" bodyfile="Misc/Coordinate3D.h" bodystart="33" bodyend="101"/>
+    <listofallmembers>
+      <member refid="class_coordinate3_d_1a1cf009e72111f3d00d5ff383d449c39e" prot="public" virt="non-virtual"><scope>Coordinate3D</scope><name>Coordinate3D</name></member>
+      <member refid="class_coordinate3_d_1a90dc2eb793ff055a7e5d123d27774c4d" prot="public" virt="non-virtual"><scope>Coordinate3D</scope><name>getX</name></member>
+      <member refid="class_coordinate3_d_1a702c077c7d5ef101db1ce0902e6bdcf1" prot="public" virt="non-virtual"><scope>Coordinate3D</scope><name>getY</name></member>
+      <member refid="class_coordinate3_d_1a6cbef810e754794fe0f64fea5c4e5967" prot="public" virt="non-virtual"><scope>Coordinate3D</scope><name>getZ</name></member>
+      <member refid="class_coordinate3_d_1a86dcbf6cd5cd035c2a761075a112bc50" prot="public" virt="non-virtual"><scope>Coordinate3D</scope><name>serialize</name></member>
+      <member refid="class_coordinate3_d_1abffd325ceaedaefd3b4b861976da0cf0" prot="public" virt="non-virtual"><scope>Coordinate3D</scope><name>setX</name></member>
+      <member refid="class_coordinate3_d_1a6a684d259d58fb7a3291aaaaa028b0d5" prot="public" virt="non-virtual"><scope>Coordinate3D</scope><name>setY</name></member>
+      <member refid="class_coordinate3_d_1a8a351944f5ffba7a0c9fd855a711d4c4" prot="public" virt="non-virtual"><scope>Coordinate3D</scope><name>setZ</name></member>
+      <member refid="class_coordinate3_d_1a558dda2d687fecd192dac7ef48d4ecf8" prot="private" virt="non-virtual"><scope>Coordinate3D</scope><name>x</name></member>
+      <member refid="class_coordinate3_d_1af23c7fefc9da53cb65b24e800ae474fe" prot="private" virt="non-virtual"><scope>Coordinate3D</scope><name>y</name></member>
+      <member refid="class_coordinate3_d_1a38935f1089b69b3c02d5ad3bbf115582" prot="private" virt="non-virtual"><scope>Coordinate3D</scope><name>z</name></member>
+    </listofallmembers>
+  </compounddef>
+</doxygen>

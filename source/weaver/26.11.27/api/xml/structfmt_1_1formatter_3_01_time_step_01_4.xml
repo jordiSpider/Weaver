@@ -1,0 +1,46 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.18.0" xml:lang="en-US">
+  <compounddef id="structfmt_1_1formatter_3_01_time_step_01_4" kind="struct" language="C++" prot="public">
+    <compoundname>fmt::formatter&lt; TimeStep &gt;</compoundname>
+    <basecompoundref prot="public" virt="non-virtual">formatter&lt; unsigned int &gt;</basecompoundref>
+    <templateparamlist>
+    </templateparamlist>
+    <sectiondef kind="public-func">
+      <memberdef kind="function" id="structfmt_1_1formatter_3_01_time_step_01_4_1a0c0b32ca28cf888a6456814756a063b2" prot="public" static="no" const="yes" explicit="no" inline="yes" virt="non-virtual">
+        <templateparamlist>
+          <param>
+            <type>typename FormatContext</type>
+          </param>
+        </templateparamlist>
+        <type>auto</type>
+        <definition>auto fmt::formatter&lt; TimeStep &gt;::format</definition>
+        <argsstring>(const TimeStep &amp;timeStep, FormatContext &amp;ctx) const</argsstring>
+        <name>format</name>
+        <qualifiedname>fmt::formatter&lt; TimeStep &gt;::format</qualifiedname>
+        <param>
+          <type>const <ref refid="class_time_step" kindref="compound">TimeStep</ref> &amp;</type>
+          <declname>timeStep</declname>
+        </param>
+        <param>
+          <type>FormatContext &amp;</type>
+          <declname>ctx</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="App/Model/IBM/Landscape/LivingBeings/TimeUnits.h" line="93" column="14" bodyfile="App/Model/IBM/Landscape/LivingBeings/TimeUnits.h" bodystart="93" bodyend="96"/>
+      </memberdef>
+    </sectiondef>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+    </detaileddescription>
+    <location file="App/Model/IBM/Landscape/LivingBeings/TimeUnits.h" line="90" column="5" bodyfile="App/Model/IBM/Landscape/LivingBeings/TimeUnits.h" bodystart="90" bodyend="97"/>
+    <listofallmembers>
+      <member refid="structfmt_1_1formatter_3_01_time_step_01_4_1a0c0b32ca28cf888a6456814756a063b2" prot="public" virt="non-virtual"><scope>fmt::formatter&lt; TimeStep &gt;</scope><name>format</name></member>
+    </listofallmembers>
+  </compounddef>
+</doxygen>

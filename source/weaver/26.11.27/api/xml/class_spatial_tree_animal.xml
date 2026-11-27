@@ -1,0 +1,1654 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.18.0" xml:lang="en-US">
+  <compounddef id="class_spatial_tree_animal" kind="class" language="C++" prot="public">
+    <compoundname>SpatialTreeAnimal</compoundname>
+    <basecompoundref refid="class_animal_non_statistical" prot="public" virt="non-virtual">AnimalNonStatistical</basecompoundref>
+    <includes refid="_spatial_tree_animal_8h" local="no">SpatialTreeAnimal.h</includes>
+    <sectiondef kind="protected-attrib">
+      <memberdef kind="variable" id="class_spatial_tree_animal_1a0627b7b0974c3b778e4900b4c3728a45" prot="protected" static="no" mutable="no">
+        <type>std::shared_ptr&lt; const DestinationSelectionPolicy &gt;</type>
+        <definition>std::shared_ptr&lt;const DestinationSelectionPolicy&gt; SpatialTreeAnimal::destinationSelectionPolicy</definition>
+        <argsstring></argsstring>
+        <name>destinationSelectionPolicy</name>
+        <qualifiedname>SpatialTreeAnimal::destinationSelectionPolicy</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="App/Model/IBM/Landscape/Map/SpatialTree/LivingBeings/Animals/SpatialTreeAnimal.h" line="38" column="21" bodyfile="App/Model/IBM/Landscape/Map/SpatialTree/LivingBeings/Animals/SpatialTreeAnimal.h" bodystart="38" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="class_spatial_tree_animal_1a52a6b945b798531a05527484ec58d7e5" prot="protected" static="no" mutable="no">
+        <type>NavigationRoute</type>
+        <definition>NavigationRoute SpatialTreeAnimal::navigationRoute</definition>
+        <argsstring></argsstring>
+        <name>navigationRoute</name>
+        <qualifiedname>SpatialTreeAnimal::navigationRoute</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="App/Model/IBM/Landscape/Map/SpatialTree/LivingBeings/Animals/SpatialTreeAnimal.h" line="43" column="21" bodyfile="App/Model/IBM/Landscape/Map/SpatialTree/LivingBeings/Animals/SpatialTreeAnimal.h" bodystart="43" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="class_spatial_tree_animal_1a960da35d8de63e83ad1a4006abf7f3af" prot="protected" static="no" mutable="no">
+        <type>size_t</type>
+        <definition>size_t SpatialTreeAnimal::nextRouteCellIndex</definition>
+        <argsstring></argsstring>
+        <name>nextRouteCellIndex</name>
+        <qualifiedname>SpatialTreeAnimal::nextRouteCellIndex</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="App/Model/IBM/Landscape/Map/SpatialTree/LivingBeings/Animals/SpatialTreeAnimal.h" line="44" column="12" bodyfile="App/Model/IBM/Landscape/Map/SpatialTree/LivingBeings/Animals/SpatialTreeAnimal.h" bodystart="44" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="class_spatial_tree_animal_1a97098bc739a4bbf51b51d830bd8a878a" prot="protected" static="no" mutable="no">
+        <type>std::shared_ptr&lt; const RouteCostPolicy &gt;</type>
+        <definition>std::shared_ptr&lt;const RouteCostPolicy&gt; SpatialTreeAnimal::routeCostPolicy</definition>
+        <argsstring></argsstring>
+        <name>routeCostPolicy</name>
+        <qualifiedname>SpatialTreeAnimal::routeCostPolicy</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="App/Model/IBM/Landscape/Map/SpatialTree/LivingBeings/Animals/SpatialTreeAnimal.h" line="39" column="21" bodyfile="App/Model/IBM/Landscape/Map/SpatialTree/LivingBeings/Animals/SpatialTreeAnimal.h" bodystart="39" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="class_spatial_tree_animal_1a1c7b6e7a7b1f112445b328bf84aa6825" prot="protected" static="no" mutable="no">
+        <type>std::shared_ptr&lt; const RouteDestinationSelectionPolicy &gt;</type>
+        <definition>std::shared_ptr&lt;const RouteDestinationSelectionPolicy&gt; SpatialTreeAnimal::routeDestinationSelectionPolicy</definition>
+        <argsstring></argsstring>
+        <name>routeDestinationSelectionPolicy</name>
+        <qualifiedname>SpatialTreeAnimal::routeDestinationSelectionPolicy</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="App/Model/IBM/Landscape/Map/SpatialTree/LivingBeings/Animals/SpatialTreeAnimal.h" line="40" column="21" bodyfile="App/Model/IBM/Landscape/Map/SpatialTree/LivingBeings/Animals/SpatialTreeAnimal.h" bodystart="40" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="class_spatial_tree_animal_1a3b4277087a848b2b928fd6bd6e0a62e7" prot="protected" static="no" mutable="no">
+        <type>std::shared_ptr&lt; const RouteFollowingPolicy &gt;</type>
+        <definition>std::shared_ptr&lt;const RouteFollowingPolicy&gt; SpatialTreeAnimal::routeFollowingPolicy</definition>
+        <argsstring></argsstring>
+        <name>routeFollowingPolicy</name>
+        <qualifiedname>SpatialTreeAnimal::routeFollowingPolicy</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="App/Model/IBM/Landscape/Map/SpatialTree/LivingBeings/Animals/SpatialTreeAnimal.h" line="42" column="21" bodyfile="App/Model/IBM/Landscape/Map/SpatialTree/LivingBeings/Animals/SpatialTreeAnimal.h" bodystart="42" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="class_spatial_tree_animal_1a6ba0810b3d488584c6daa8c37245b007" prot="protected" static="no" mutable="no">
+        <type>std::shared_ptr&lt; const RoutePlanner &gt;</type>
+        <definition>std::shared_ptr&lt;const RoutePlanner&gt; SpatialTreeAnimal::routePlanner</definition>
+        <argsstring></argsstring>
+        <name>routePlanner</name>
+        <qualifiedname>SpatialTreeAnimal::routePlanner</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="App/Model/IBM/Landscape/Map/SpatialTree/LivingBeings/Animals/SpatialTreeAnimal.h" line="41" column="21" bodyfile="App/Model/IBM/Landscape/Map/SpatialTree/LivingBeings/Animals/SpatialTreeAnimal.h" bodystart="41" bodyend="-1"/>
+      </memberdef>
+    </sectiondef>
+    <sectiondef kind="protected-func">
+      <memberdef kind="function" id="class_spatial_tree_animal_1aca79fefd699d95f08632a70178fec2ba" prot="protected" static="no" const="no" explicit="no" inline="no" virt="virtual">
+        <type><ref refid="class_animal_non_statistical" kindref="compound">AnimalNonStatistical</ref> *</type>
+        <definition>AnimalNonStatistical * SpatialTreeAnimal::createOffspring</definition>
+        <argsstring>(Gamete *const firstParentGamete, Gamete *const secondParentGamete, TerrainCell *parentTerrainCell, const PreciseDouble &amp;factorEggMassFromMom, const Generation &amp;g_numb_prt_female, const Generation &amp;g_numb_prt_male, id_type ID_prt_female, id_type ID_prt_male, AnimalSpecies *const parentSpecies, Gender genderValue, const TimeStep actualTimeStep, const PreciseDouble &amp;timeStepsPerDay)</argsstring>
+        <name>createOffspring</name>
+        <qualifiedname>SpatialTreeAnimal::createOffspring</qualifiedname>
+        <reimplements refid="class_animal_non_statistical_1a88ab65ecccf5a4eba61b1eec9183e84c">createOffspring</reimplements>
+        <param>
+          <type><ref refid="class_gamete" kindref="compound">Gamete</ref> *const</type>
+          <declname>firstParentGamete</declname>
+        </param>
+        <param>
+          <type><ref refid="class_gamete" kindref="compound">Gamete</ref> *const</type>
+          <declname>secondParentGamete</declname>
+        </param>
+        <param>
+          <type><ref refid="class_terrain_cell" kindref="compound">TerrainCell</ref> *</type>
+          <declname>parentTerrainCell</declname>
+        </param>
+        <param>
+          <type>const <ref refid="class_precise_double" kindref="compound">PreciseDouble</ref> &amp;</type>
+          <declname>factorEggMassFromMom</declname>
+        </param>
+        <param>
+          <type>const <ref refid="class_generation" kindref="compound">Generation</ref> &amp;</type>
+          <declname>g_numb_prt_female</declname>
+        </param>
+        <param>
+          <type>const <ref refid="class_generation" kindref="compound">Generation</ref> &amp;</type>
+          <declname>g_numb_prt_male</declname>
+        </param>
+        <param>
+          <type>id_type</type>
+          <declname>ID_prt_female</declname>
+        </param>
+        <param>
+          <type>id_type</type>
+          <declname>ID_prt_male</declname>
+        </param>
+        <param>
+          <type><ref refid="class_animal_species" kindref="compound">AnimalSpecies</ref> *const</type>
+          <declname>parentSpecies</declname>
+        </param>
+        <param>
+          <type>Gender</type>
+          <declname>genderValue</declname>
+        </param>
+        <param>
+          <type>const <ref refid="class_time_step" kindref="compound">TimeStep</ref></type>
+          <declname>actualTimeStep</declname>
+        </param>
+        <param>
+          <type>const <ref refid="class_precise_double" kindref="compound">PreciseDouble</ref> &amp;</type>
+          <declname>timeStepsPerDay</declname>
+        </param>
+        <briefdescription>
+<para>Creates an offspring from two parent gametes. </para>
+        </briefdescription>
+        <detaileddescription>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>firstParentGamete</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>First parent&apos;s gamete. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>secondParentGamete</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Second parent&apos;s gamete. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>parentTerrainCell</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Terrain cell where the offspring is born. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>factorEggMassFromMom</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Factor of egg mass contributed by the mother. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>g_numb_prt_female</parametername>
+</parameternamelist>
+<parameterdescription>
+<para><ref refid="class_generation" kindref="compound">Generation</ref> number of the female parent. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>g_numb_prt_male</parametername>
+</parameternamelist>
+<parameterdescription>
+<para><ref refid="class_generation" kindref="compound">Generation</ref> number of the male parent. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>ID_prt_female</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>id_type of the female parent. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>ID_prt_male</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>id_type of the male parent. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>parentSpecies</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Pointer to the parent species. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>genderValue</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Gender of the offspring. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>actualTimeStep</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Current time step. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>timeStepsPerDay</parametername>
+</parameternamelist>
+<parameterdescription>
+<para><ref refid="class_number" kindref="compound">Number</ref> of time steps per day. </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<simplesect kind="return"><para>Pointer to the newly created offspring. </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="App/Model/IBM/Landscape/Map/SpatialTree/LivingBeings/Animals/SpatialTreeAnimal.h" line="75" column="26"/>
+      </memberdef>
+      <memberdef kind="function" id="class_spatial_tree_animal_1aefb0489ce7b8c5e00a60d3650a3fb56f" prot="protected" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void SpatialTreeAnimal::initializeNavigationPolicies</definition>
+        <argsstring>()</argsstring>
+        <name>initializeNavigationPolicies</name>
+        <qualifiedname>SpatialTreeAnimal::initializeNavigationPolicies</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="App/Model/IBM/Landscape/Map/SpatialTree/LivingBeings/Animals/SpatialTreeAnimal.h" line="46" column="10"/>
+      </memberdef>
+      <memberdef kind="function" id="class_spatial_tree_animal_1a211c3b034b16de92c4b54f504936a476" prot="protected" static="no" const="no" explicit="no" inline="no" virt="virtual">
+        <type>void</type>
+        <definition>void SpatialTreeAnimal::move</definition>
+        <argsstring>(Landscape *const landscape, const TimeStep numberOfTimeSteps, const PreciseDouble &amp;timeStepsPerDay, const bool saveMovements, fmt::memory_buffer &amp;movementsText, const bool saveActivity, fmt::memory_buffer &amp;activitiesText) override</argsstring>
+        <name>move</name>
+        <qualifiedname>SpatialTreeAnimal::move</qualifiedname>
+        <reimplements refid="class_animal_non_statistical_1a20e2556f8664298ea763e9b60a2ae290">move</reimplements>
+        <param>
+          <type><ref refid="class_landscape" kindref="compound">Landscape</ref> *const</type>
+          <declname>landscape</declname>
+        </param>
+        <param>
+          <type>const <ref refid="class_time_step" kindref="compound">TimeStep</ref></type>
+          <declname>numberOfTimeSteps</declname>
+        </param>
+        <param>
+          <type>const <ref refid="class_precise_double" kindref="compound">PreciseDouble</ref> &amp;</type>
+          <declname>timeStepsPerDay</declname>
+        </param>
+        <param>
+          <type>const bool</type>
+          <declname>saveMovements</declname>
+        </param>
+        <param>
+          <type>fmt::memory_buffer &amp;</type>
+          <declname>movementsText</declname>
+        </param>
+        <param>
+          <type>const bool</type>
+          <declname>saveActivity</declname>
+        </param>
+        <param>
+          <type>fmt::memory_buffer &amp;</type>
+          <declname>activitiesText</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="App/Model/IBM/Landscape/Map/SpatialTree/LivingBeings/Animals/SpatialTreeAnimal.h" line="55" column="10"/>
+      </memberdef>
+      <memberdef kind="function" id="class_spatial_tree_animal_1a0b43b08743250fc28c49f8ee812de5c5" prot="protected" static="no" const="no" explicit="no" inline="no" virt="virtual">
+        <type>bool</type>
+        <definition>bool SpatialTreeAnimal::searchTargetToTravelTo</definition>
+        <argsstring>(Landscape *const landscape, const PreciseDouble &amp;scopeArea, CustomIndexedVector&lt; Instar, PreciseDouble &gt; &amp;maximumPatchEdibilityValueGlobal, CustomIndexedVector&lt; Instar, PreciseDouble &gt; &amp;maximumPatchPredationRiskGlobal, CustomIndexedVector&lt; Instar, PreciseDouble &gt; &amp;maximumPatchConspecificBiomassGlobal)</argsstring>
+        <name>searchTargetToTravelTo</name>
+        <qualifiedname>SpatialTreeAnimal::searchTargetToTravelTo</qualifiedname>
+        <reimplements refid="class_animal_non_statistical_1a08dcddd832d4095162758b966e8d5ee0">searchTargetToTravelTo</reimplements>
+        <param>
+          <type><ref refid="class_landscape" kindref="compound">Landscape</ref> *const</type>
+          <declname>landscape</declname>
+        </param>
+        <param>
+          <type>const <ref refid="class_precise_double" kindref="compound">PreciseDouble</ref> &amp;</type>
+          <declname>scopeArea</declname>
+        </param>
+        <param>
+          <type><ref refid="class_custom_indexed_vector" kindref="compound">CustomIndexedVector</ref>&lt; <ref refid="class_instar" kindref="compound">Instar</ref>, <ref refid="class_precise_double" kindref="compound">PreciseDouble</ref> &gt; &amp;</type>
+          <declname>maximumPatchEdibilityValueGlobal</declname>
+        </param>
+        <param>
+          <type><ref refid="class_custom_indexed_vector" kindref="compound">CustomIndexedVector</ref>&lt; <ref refid="class_instar" kindref="compound">Instar</ref>, <ref refid="class_precise_double" kindref="compound">PreciseDouble</ref> &gt; &amp;</type>
+          <declname>maximumPatchPredationRiskGlobal</declname>
+        </param>
+        <param>
+          <type><ref refid="class_custom_indexed_vector" kindref="compound">CustomIndexedVector</ref>&lt; <ref refid="class_instar" kindref="compound">Instar</ref>, <ref refid="class_precise_double" kindref="compound">PreciseDouble</ref> &gt; &amp;</type>
+          <declname>maximumPatchConspecificBiomassGlobal</declname>
+        </param>
+        <briefdescription>
+<para>Searches for a target cell to travel to, with an output flag indicating if no destinations are available. </para>
+        </briefdescription>
+        <detaileddescription>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>scopeArea</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Maximum area the animal can travel. </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="App/Model/IBM/Landscape/Map/SpatialTree/LivingBeings/Animals/SpatialTreeAnimal.h" line="53" column="10"/>
+      </memberdef>
+    </sectiondef>
+    <sectiondef kind="public-func">
+      <memberdef kind="function" id="class_spatial_tree_animal_1a0e0f61ee5219af98cd7c87347ac6544e" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type></type>
+        <definition>SpatialTreeAnimal::SpatialTreeAnimal</definition>
+        <argsstring>()</argsstring>
+        <name>SpatialTreeAnimal</name>
+        <qualifiedname>SpatialTreeAnimal::SpatialTreeAnimal</qualifiedname>
+        <briefdescription>
+<para>Default constructor. </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="App/Model/IBM/Landscape/Map/SpatialTree/LivingBeings/Animals/SpatialTreeAnimal.h" line="80" column="5"/>
+      </memberdef>
+      <memberdef kind="function" id="class_spatial_tree_animal_1a310096ee48eb83d4f5fc3a4ec59848fe" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type></type>
+        <definition>SpatialTreeAnimal::SpatialTreeAnimal</definition>
+        <argsstring>(const Instar &amp;instar, AnimalSpecies *const mySpecies, TerrainCell *terrainCell, const Genome *const genome, const TimeStep actualTimeStep, const PreciseDouble &amp;timeStepsPerDay)</argsstring>
+        <name>SpatialTreeAnimal</name>
+        <qualifiedname>SpatialTreeAnimal::SpatialTreeAnimal</qualifiedname>
+        <param>
+          <type>const <ref refid="class_instar" kindref="compound">Instar</ref> &amp;</type>
+          <declname>instar</declname>
+        </param>
+        <param>
+          <type><ref refid="class_animal_species" kindref="compound">AnimalSpecies</ref> *const</type>
+          <declname>mySpecies</declname>
+        </param>
+        <param>
+          <type><ref refid="class_terrain_cell" kindref="compound">TerrainCell</ref> *</type>
+          <declname>terrainCell</declname>
+        </param>
+        <param>
+          <type>const <ref refid="class_genome" kindref="compound">Genome</ref> *const</type>
+          <declname>genome</declname>
+        </param>
+        <param>
+          <type>const <ref refid="class_time_step" kindref="compound">TimeStep</ref></type>
+          <declname>actualTimeStep</declname>
+        </param>
+        <param>
+          <type>const <ref refid="class_precise_double" kindref="compound">PreciseDouble</ref> &amp;</type>
+          <declname>timeStepsPerDay</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="App/Model/IBM/Landscape/Map/SpatialTree/LivingBeings/Animals/SpatialTreeAnimal.h" line="92" column="5"/>
+      </memberdef>
+      <memberdef kind="function" id="class_spatial_tree_animal_1a2f7e058db9ade3423fa5566f2e3f8e05" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type></type>
+        <definition>SpatialTreeAnimal::SpatialTreeAnimal</definition>
+        <argsstring>(const Instar &amp;instar, AnimalSpecies *const mySpecies, TerrainCell *terrainCell, const TimeStep actualTimeStep, const PreciseDouble &amp;timeStepsPerDay)</argsstring>
+        <name>SpatialTreeAnimal</name>
+        <qualifiedname>SpatialTreeAnimal::SpatialTreeAnimal</qualifiedname>
+        <param>
+          <type>const <ref refid="class_instar" kindref="compound">Instar</ref> &amp;</type>
+          <declname>instar</declname>
+        </param>
+        <param>
+          <type><ref refid="class_animal_species" kindref="compound">AnimalSpecies</ref> *const</type>
+          <declname>mySpecies</declname>
+        </param>
+        <param>
+          <type><ref refid="class_terrain_cell" kindref="compound">TerrainCell</ref> *</type>
+          <declname>terrainCell</declname>
+        </param>
+        <param>
+          <type>const <ref refid="class_time_step" kindref="compound">TimeStep</ref></type>
+          <declname>actualTimeStep</declname>
+        </param>
+        <param>
+          <type>const <ref refid="class_precise_double" kindref="compound">PreciseDouble</ref> &amp;</type>
+          <declname>timeStepsPerDay</declname>
+        </param>
+        <briefdescription>
+<para>Constructor for an animal at a given instar stage. </para>
+        </briefdescription>
+        <detaileddescription>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>instar</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Current instar of the animal. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>mySpecies</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Pointer to the species. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>terrainCell</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Pointer to the terrain cell where the animal is located. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>actualTimeStep</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Current time step. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>timeStepsPerDay</parametername>
+</parameternamelist>
+<parameterdescription>
+<para><ref refid="class_number" kindref="compound">Number</ref> of time steps per day. </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="App/Model/IBM/Landscape/Map/SpatialTree/LivingBeings/Animals/SpatialTreeAnimal.h" line="90" column="5"/>
+      </memberdef>
+      <memberdef kind="function" id="class_spatial_tree_animal_1a22eb531026f3bac222fa50a2e7155756" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type></type>
+        <definition>SpatialTreeAnimal::SpatialTreeAnimal</definition>
+        <argsstring>(const SpatialTreeAnimal &amp;)=delete</argsstring>
+        <name>SpatialTreeAnimal</name>
+        <qualifiedname>SpatialTreeAnimal::SpatialTreeAnimal</qualifiedname>
+        <param>
+          <type>const <ref refid="class_spatial_tree_animal" kindref="compound">SpatialTreeAnimal</ref> &amp;</type>
+        </param>
+        <briefdescription>
+<para>Deleted copy constructor. </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="App/Model/IBM/Landscape/Map/SpatialTree/LivingBeings/Animals/SpatialTreeAnimal.h" line="122" column="5"/>
+      </memberdef>
+      <memberdef kind="function" id="class_spatial_tree_animal_1a40252b345907baec72f0ed7d06c09235" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type></type>
+        <definition>SpatialTreeAnimal::SpatialTreeAnimal</definition>
+        <argsstring>(Gamete *const firstParentGamete, Gamete *const secondParentGamete, TerrainCell *parentTerrainCell, const PreciseDouble &amp;eggMassAtBirth, const Generation &amp;g_numb_prt_female, const Generation &amp;g_numb_prt_male, id_type ID_prt_female, id_type ID_prt_male, AnimalSpecies *const mySpecies, Gender genderValue, const TimeStep actualTimeStep, const PreciseDouble &amp;timeStepsPerDay)</argsstring>
+        <name>SpatialTreeAnimal</name>
+        <qualifiedname>SpatialTreeAnimal::SpatialTreeAnimal</qualifiedname>
+        <param>
+          <type><ref refid="class_gamete" kindref="compound">Gamete</ref> *const</type>
+          <declname>firstParentGamete</declname>
+        </param>
+        <param>
+          <type><ref refid="class_gamete" kindref="compound">Gamete</ref> *const</type>
+          <declname>secondParentGamete</declname>
+        </param>
+        <param>
+          <type><ref refid="class_terrain_cell" kindref="compound">TerrainCell</ref> *</type>
+          <declname>parentTerrainCell</declname>
+        </param>
+        <param>
+          <type>const <ref refid="class_precise_double" kindref="compound">PreciseDouble</ref> &amp;</type>
+          <declname>eggMassAtBirth</declname>
+        </param>
+        <param>
+          <type>const <ref refid="class_generation" kindref="compound">Generation</ref> &amp;</type>
+          <declname>g_numb_prt_female</declname>
+        </param>
+        <param>
+          <type>const <ref refid="class_generation" kindref="compound">Generation</ref> &amp;</type>
+          <declname>g_numb_prt_male</declname>
+        </param>
+        <param>
+          <type>id_type</type>
+          <declname>ID_prt_female</declname>
+        </param>
+        <param>
+          <type>id_type</type>
+          <declname>ID_prt_male</declname>
+        </param>
+        <param>
+          <type><ref refid="class_animal_species" kindref="compound">AnimalSpecies</ref> *const</type>
+          <declname>mySpecies</declname>
+        </param>
+        <param>
+          <type>Gender</type>
+          <declname>genderValue</declname>
+        </param>
+        <param>
+          <type>const <ref refid="class_time_step" kindref="compound">TimeStep</ref></type>
+          <declname>actualTimeStep</declname>
+        </param>
+        <param>
+          <type>const <ref refid="class_precise_double" kindref="compound">PreciseDouble</ref> &amp;</type>
+          <declname>timeStepsPerDay</declname>
+        </param>
+        <briefdescription>
+<para>Constructor for an animal from two parent gametes. </para>
+        </briefdescription>
+        <detaileddescription>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>firstParentGamete</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>First parent&apos;s gamete. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>secondParentGamete</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Second parent&apos;s gamete. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>parentTerrainCell</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Terrain cell where the animal is born. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>eggMassAtBirth</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Egg mass at birth. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>g_numb_prt_female</parametername>
+</parameternamelist>
+<parameterdescription>
+<para><ref refid="class_generation" kindref="compound">Generation</ref> number of the female parent. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>g_numb_prt_male</parametername>
+</parameternamelist>
+<parameterdescription>
+<para><ref refid="class_generation" kindref="compound">Generation</ref> number of the male parent. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>ID_prt_female</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>id_type of the female parent. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>ID_prt_male</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>id_type of the male parent. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>mySpecies</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Pointer to the species. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>genderValue</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Gender of the offspring. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>actualTimeStep</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Current time step. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>timeStepsPerDay</parametername>
+</parameternamelist>
+<parameterdescription>
+<para><ref refid="class_number" kindref="compound">Number</ref> of time steps per day. </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="App/Model/IBM/Landscape/Map/SpatialTree/LivingBeings/Animals/SpatialTreeAnimal.h" line="109" column="5"/>
+      </memberdef>
+      <memberdef kind="function" id="class_spatial_tree_animal_1a1aa60ed7b054378677b29d03694a5420" prot="public" static="no" const="no" explicit="no" inline="no" virt="virtual">
+        <type></type>
+        <definition>virtual SpatialTreeAnimal::~SpatialTreeAnimal</definition>
+        <argsstring>()</argsstring>
+        <name>~SpatialTreeAnimal</name>
+        <qualifiedname>SpatialTreeAnimal::~SpatialTreeAnimal</qualifiedname>
+        <briefdescription>
+<para>Destructor. </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="App/Model/IBM/Landscape/Map/SpatialTree/LivingBeings/Animals/SpatialTreeAnimal.h" line="113" column="13"/>
+      </memberdef>
+      <memberdef kind="function" id="class_spatial_tree_animal_1a272193bed55a6bd636ec3a7bcd9725eb" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type><ref refid="class_spatial_tree_animal" kindref="compound">SpatialTreeAnimal</ref> &amp;</type>
+        <definition>SpatialTreeAnimal &amp; SpatialTreeAnimal::operator=</definition>
+        <argsstring>(const SpatialTreeAnimal &amp;)=delete</argsstring>
+        <name>operator=</name>
+        <qualifiedname>SpatialTreeAnimal::operator=</qualifiedname>
+        <param>
+          <type>const <ref refid="class_spatial_tree_animal" kindref="compound">SpatialTreeAnimal</ref> &amp;</type>
+        </param>
+        <briefdescription>
+<para>Deleted copy assignment. </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="App/Model/IBM/Landscape/Map/SpatialTree/LivingBeings/Animals/SpatialTreeAnimal.h" line="125" column="23"/>
+      </memberdef>
+      <memberdef kind="function" id="class_spatial_tree_animal_1a9247d49f29397a17aa7c719117d1365f" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <templateparamlist>
+          <param>
+            <type>class Archive</type>
+          </param>
+        </templateparamlist>
+        <type>void</type>
+        <definition>void SpatialTreeAnimal::serialize</definition>
+        <argsstring>(Archive &amp;ar, const unsigned int version)</argsstring>
+        <name>serialize</name>
+        <qualifiedname>SpatialTreeAnimal::serialize</qualifiedname>
+        <param>
+          <type>Archive &amp;</type>
+          <declname>ar</declname>
+        </param>
+        <param>
+          <type>const unsigned int</type>
+          <declname>version</declname>
+        </param>
+        <briefdescription>
+<para>Serialization function. </para>
+        </briefdescription>
+        <detaileddescription>
+<para><parameterlist kind="templateparam"><parameteritem>
+<parameternamelist>
+<parametername>Archive</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Type of archive. </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>ar</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Archive object. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>version</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Serialization version. </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="App/Model/IBM/Landscape/Map/SpatialTree/LivingBeings/Animals/SpatialTreeAnimal.h" line="134" column="10"/>
+      </memberdef>
+      <memberdef kind="function" id="class_spatial_tree_animal_1a75fe01c611aafbd878f5f206d029f599" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void SpatialTreeAnimal::setDestinationSelectionPolicy</definition>
+        <argsstring>(std::shared_ptr&lt; const DestinationSelectionPolicy &gt; policy)</argsstring>
+        <name>setDestinationSelectionPolicy</name>
+        <qualifiedname>SpatialTreeAnimal::setDestinationSelectionPolicy</qualifiedname>
+        <param>
+          <type>std::shared_ptr&lt; const DestinationSelectionPolicy &gt;</type>
+          <declname>policy</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="App/Model/IBM/Landscape/Map/SpatialTree/LivingBeings/Animals/SpatialTreeAnimal.h" line="115" column="10"/>
+      </memberdef>
+      <memberdef kind="function" id="class_spatial_tree_animal_1aa7f3c86cddfdcb293d98806789c83290" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void SpatialTreeAnimal::setRouteCostPolicy</definition>
+        <argsstring>(std::shared_ptr&lt; const RouteCostPolicy &gt; policy)</argsstring>
+        <name>setRouteCostPolicy</name>
+        <qualifiedname>SpatialTreeAnimal::setRouteCostPolicy</qualifiedname>
+        <param>
+          <type>std::shared_ptr&lt; const RouteCostPolicy &gt;</type>
+          <declname>policy</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="App/Model/IBM/Landscape/Map/SpatialTree/LivingBeings/Animals/SpatialTreeAnimal.h" line="116" column="10"/>
+      </memberdef>
+      <memberdef kind="function" id="class_spatial_tree_animal_1ad82881fff5fb34edd0613bc460353b13" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void SpatialTreeAnimal::setRouteDestinationSelectionPolicy</definition>
+        <argsstring>(std::shared_ptr&lt; const RouteDestinationSelectionPolicy &gt; policy)</argsstring>
+        <name>setRouteDestinationSelectionPolicy</name>
+        <qualifiedname>SpatialTreeAnimal::setRouteDestinationSelectionPolicy</qualifiedname>
+        <param>
+          <type>std::shared_ptr&lt; const RouteDestinationSelectionPolicy &gt;</type>
+          <declname>policy</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="App/Model/IBM/Landscape/Map/SpatialTree/LivingBeings/Animals/SpatialTreeAnimal.h" line="117" column="10"/>
+      </memberdef>
+      <memberdef kind="function" id="class_spatial_tree_animal_1af1eeecf3cc8e1f17585756f799c6ed9e" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void SpatialTreeAnimal::setRouteFollowingPolicy</definition>
+        <argsstring>(std::shared_ptr&lt; const RouteFollowingPolicy &gt; policy)</argsstring>
+        <name>setRouteFollowingPolicy</name>
+        <qualifiedname>SpatialTreeAnimal::setRouteFollowingPolicy</qualifiedname>
+        <param>
+          <type>std::shared_ptr&lt; const RouteFollowingPolicy &gt;</type>
+          <declname>policy</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="App/Model/IBM/Landscape/Map/SpatialTree/LivingBeings/Animals/SpatialTreeAnimal.h" line="119" column="10"/>
+      </memberdef>
+      <memberdef kind="function" id="class_spatial_tree_animal_1a78898b64a32ff46f4ae355a953882362" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void SpatialTreeAnimal::setRoutePlanner</definition>
+        <argsstring>(std::shared_ptr&lt; const RoutePlanner &gt; planner)</argsstring>
+        <name>setRoutePlanner</name>
+        <qualifiedname>SpatialTreeAnimal::setRoutePlanner</qualifiedname>
+        <param>
+          <type>std::shared_ptr&lt; const RoutePlanner &gt;</type>
+          <declname>planner</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="App/Model/IBM/Landscape/Map/SpatialTree/LivingBeings/Animals/SpatialTreeAnimal.h" line="118" column="10"/>
+      </memberdef>
+    </sectiondef>
+    <briefdescription>
+<para>Represents a non-statistical animal located in a spatial tree terrain. </para>
+    </briefdescription>
+    <detaileddescription>
+<para>Extends <ref refid="class_animal_non_statistical" kindref="compound">AnimalNonStatistical</ref> to provide movement, target search, and reproduction functionality specifically adapted to spatial tree structured landscapes. </para>
+    </detaileddescription>
+    <inheritancegraph>
+      <node id="3">
+        <label>Animal</label>
+        <link refid="class_animal"/>
+        <childnode refid="4" relation="public-inheritance">
+        </childnode>
+      </node>
+      <node id="2">
+        <label>AnimalNonStatistical</label>
+        <link refid="class_animal_non_statistical"/>
+        <childnode refid="3" relation="public-inheritance">
+        </childnode>
+      </node>
+      <node id="4">
+        <label>Edible</label>
+        <link refid="class_edible"/>
+      </node>
+      <node id="1">
+        <label>SpatialTreeAnimal</label>
+        <link refid="class_spatial_tree_animal"/>
+        <childnode refid="2" relation="public-inheritance">
+        </childnode>
+      </node>
+    </inheritancegraph>
+    <collaborationgraph>
+      <node id="3">
+        <label>Animal</label>
+        <link refid="class_animal"/>
+        <childnode refid="4" relation="public-inheritance">
+        </childnode>
+        <childnode refid="17" relation="usage">
+          <edgelabel>genetics</edgelabel>
+        </childnode>
+        <childnode refid="22" relation="usage">
+          <edgelabel>animalSpeciesId</edgelabel>
+        </childnode>
+      </node>
+      <node id="44">
+        <label>AnimalDecisionProbability</label>
+        <link refid="class_animal_decision_probability"/>
+        <childnode refid="42" relation="public-inheritance">
+        </childnode>
+      </node>
+      <node id="24">
+        <label>AnimalGrowth</label>
+        <link refid="class_animal_growth"/>
+        <childnode refid="25" relation="public-inheritance">
+        </childnode>
+        <childnode refid="30" relation="usage">
+          <edgelabel>individualInstarAgeVector</edgelabel>
+        </childnode>
+        <childnode refid="31" relation="usage">
+          <edgelabel>instarLengthsVector</edgelabel>
+        </childnode>
+        <childnode refid="32" relation="usage">
+          <edgelabel>instarMassesVector</edgelabel>
+        </childnode>
+        <childnode refid="33" relation="usage">
+          <edgelabel>individualGrowthModel</edgelabel>
+        </childnode>
+        <childnode refid="29" relation="usage">
+          <edgelabel>currentBodySize</edgelabel>
+          <edgelabel>currentEnergyTank</edgelabel>
+          <edgelabel>eggDryMassAtBirth</edgelabel>
+        </childnode>
+        <childnode refid="34" relation="usage">
+          <edgelabel>lengthAtBirth</edgelabel>
+        </childnode>
+        <childnode refid="12" relation="usage">
+          <edgelabel>baseDevTimeProportion</edgelabel>
+        </childnode>
+        <childnode refid="35" relation="usage">
+          <edgelabel>currentAge</edgelabel>
+        </childnode>
+      </node>
+      <node id="2">
+        <label>AnimalNonStatistical</label>
+        <link refid="class_animal_non_statistical"/>
+        <childnode refid="3" relation="public-inheritance">
+        </childnode>
+        <childnode refid="23" relation="usage">
+          <edgelabel>growthBuildingBlock</edgelabel>
+        </childnode>
+        <childnode refid="37" relation="usage">
+          <edgelabel>decisions</edgelabel>
+        </childnode>
+        <childnode refid="12" relation="usage">
+          <edgelabel>distanceTravelled</edgelabel>
+          <edgelabel>enhancedH</edgelabel>
+          <edgelabel>interactionAreaRadius</edgelabel>
+          <edgelabel>scopeAreaRadius</edgelabel>
+          <edgelabel>searchAreaRadius</edgelabel>
+          <edgelabel>speed</edgelabel>
+          <edgelabel>voracity</edgelabel>
+        </childnode>
+        <childnode refid="50" relation="usage">
+          <edgelabel>generationNumberFromFemaleParent</edgelabel>
+          <edgelabel>generationNumberFromMaleParent</edgelabel>
+          <edgelabel>generationNumberFromMatedMale</edgelabel>
+        </childnode>
+        <childnode refid="20" relation="usage">
+          <edgelabel>genomeFromMatedMale</edgelabel>
+        </childnode>
+        <childnode refid="26" relation="usage">
+          <edgelabel>instarToEvaluateCells</edgelabel>
+        </childnode>
+        <childnode refid="35" relation="usage">
+          <edgelabel>ageOfFirstReproduction</edgelabel>
+          <edgelabel>ageOfLastMoultOrReproduction</edgelabel>
+          <edgelabel>timeStepsWithoutFood</edgelabel>
+          <edgelabel>unbornTimeSteps</edgelabel>
+        </childnode>
+        <childnode refid="36" relation="usage">
+          <edgelabel>dateOfDeath</edgelabel>
+        </childnode>
+        <childnode refid="29" relation="usage">
+          <edgelabel>foodMassAssimilatedCurrentTimeStep</edgelabel>
+          <edgelabel>foodMassEatenCurrentTimeStep</edgelabel>
+          <edgelabel>maxVoracityTimeStep</edgelabel>
+          <edgelabel>previousNetGrowth</edgelabel>
+        </childnode>
+        <childnode refid="51" relation="usage">
+          <edgelabel>foodMassAssimilatedCurrentTimeStepPerSpecies</edgelabel>
+          <edgelabel>foodMassEatenCurrentTimeStepPerSpecies</edgelabel>
+        </childnode>
+        <childnode refid="52" relation="usage">
+          <edgelabel>currentPrey</edgelabel>
+        </childnode>
+      </node>
+      <node id="23">
+        <label>AnimalNonStatisticalGrowth</label>
+        <link refid="class_animal_non_statistical_growth"/>
+        <childnode refid="24" relation="public-inheritance">
+        </childnode>
+        <childnode refid="35" relation="usage">
+          <edgelabel>ageForNextReproduction</edgelabel>
+          <edgelabel>diapauseTimeSteps</edgelabel>
+          <edgelabel>longevity</edgelabel>
+          <edgelabel>pupaTimer</edgelabel>
+        </childnode>
+        <childnode refid="29" relation="usage">
+          <edgelabel>clutchDryMass</edgelabel>
+          <edgelabel>lastMassBeforeMaturationOrOviposition</edgelabel>
+          <edgelabel>massAtMaturation</edgelabel>
+          <edgelabel>massForNextReproduction</edgelabel>
+          <edgelabel>nextMassPredicted</edgelabel>
+          <edgelabel>previousMoultingMassTarget</edgelabel>
+          <edgelabel>previousNextMassPredicted</edgelabel>
+          <edgelabel>previousReproMassTarget</edgelabel>
+          <edgelabel>tankAtGrowth</edgelabel>
+          <edgelabel>totalReproMass</edgelabel>
+          <edgelabel>  ...</edgelabel>
+        </childnode>
+        <childnode refid="36" relation="usage">
+          <edgelabel>dateEgg</edgelabel>
+        </childnode>
+      </node>
+      <node id="38">
+        <label>AnimalSpeciesDecisions</label>
+        <link refid="class_animal_species_decisions"/>
+        <childnode refid="39" relation="usage">
+          <edgelabel>sensoryModel</edgelabel>
+        </childnode>
+        <childnode refid="40" relation="usage">
+          <edgelabel>predationProbability</edgelabel>
+        </childnode>
+        <childnode refid="45" relation="usage">
+          <edgelabel>edibilityValue</edgelabel>
+        </childnode>
+        <childnode refid="46" relation="usage">
+          <edgelabel>cellQuality</edgelabel>
+        </childnode>
+        <childnode refid="28" relation="usage">
+          <edgelabel>maximumPatchConspecificBiomassGlobal</edgelabel>
+          <edgelabel>maximumPatchEdibilityValueGlobal</edgelabel>
+          <edgelabel>maximumPatchPredationRiskGlobal</edgelabel>
+          <edgelabel>maximumPredatorInteractionArea</edgelabel>
+          <edgelabel>maximumPreyVoracity</edgelabel>
+          <edgelabel>maximumVoracity</edgelabel>
+        </childnode>
+        <childnode refid="12" relation="usage">
+          <edgelabel>killProbability</edgelabel>
+          <edgelabel>weightIndividualToGlobalAssessment</edgelabel>
+        </childnode>
+      </node>
+      <node id="18">
+        <label>AnimalSpeciesGenetics</label>
+        <link refid="class_animal_species_genetics"/>
+        <childnode refid="19" relation="usage">
+          <edgelabel>allTraits</edgelabel>
+        </childnode>
+      </node>
+      <node id="22">
+        <label>AnimalSpeciesID</label>
+        <link refid="class_animal_species_i_d"/>
+      </node>
+      <node id="10">
+        <label>CellElement</label>
+        <link refid="class_cell_element"/>
+      </node>
+      <node id="14">
+        <label>CellHabitatDomainInterface</label>
+        <link refid="class_cell_habitat_domain_interface"/>
+        <childnode refid="10" relation="public-inheritance">
+        </childnode>
+        <childnode refid="15" relation="usage">
+          <edgelabel>habitatDomainStatus</edgelabel>
+        </childnode>
+      </node>
+      <node id="9">
+        <label>CellMoistureInterface</label>
+        <link refid="class_cell_moisture_interface"/>
+        <childnode refid="10" relation="public-inheritance">
+        </childnode>
+        <childnode refid="11" relation="usage">
+          <edgelabel>totalMaximumResourceCapacity</edgelabel>
+        </childnode>
+      </node>
+      <node id="13">
+        <label>CellObstacleInterface</label>
+        <link refid="class_cell_obstacle_interface"/>
+        <childnode refid="10" relation="public-inheritance">
+        </childnode>
+      </node>
+      <node id="46">
+        <label>CellQualityBiomass</label>
+        <link refid="class_cell_quality_biomass"/>
+        <childnode refid="45" relation="usage">
+          <edgelabel>edibilityValue</edgelabel>
+        </childnode>
+      </node>
+      <node id="15">
+        <label>CustomIndexedVector&lt; AnimalSpeciesID, CustomIndexedVector&lt; Instar, bool &gt; &gt;</label>
+        <link refid="class_custom_indexed_vector"/>
+      </node>
+      <node id="32">
+        <label>CustomIndexedVector&lt; Instar, DryMass &gt;</label>
+        <link refid="class_custom_indexed_vector"/>
+      </node>
+      <node id="31">
+        <label>CustomIndexedVector&lt; Instar, Length &gt;</label>
+        <link refid="class_custom_indexed_vector"/>
+      </node>
+      <node id="28">
+        <label>CustomIndexedVector&lt; Instar, PreciseDouble &gt;</label>
+        <link refid="class_custom_indexed_vector"/>
+      </node>
+      <node id="30">
+        <label>CustomIndexedVector&lt; Instar, TimeStep &gt;</label>
+        <link refid="class_custom_indexed_vector"/>
+      </node>
+      <node id="51">
+        <label>CustomIndexedVector&lt; Species::ID, CustomIndexedVector&lt; Instar, DryMass &gt; &gt;</label>
+        <link refid="class_custom_indexed_vector"/>
+      </node>
+      <node id="49">
+        <label>CustomIndexedVector&lt; Species::ID, CustomIndexedVector&lt; Instar, PreciseDouble &gt; &gt;</label>
+        <link refid="class_custom_indexed_vector"/>
+      </node>
+      <node id="48">
+        <label>CustomIndexedVector&lt; Species::ID, CustomIndexedVector&lt; Instar, RingBuffer&lt; PreciseDouble &gt; &gt; &gt;</label>
+        <link refid="class_custom_indexed_vector"/>
+      </node>
+      <node id="21">
+        <label>CustomIndexedVector&lt; Trait::ExecutionOrder, std::vector&lt; IndividualTrait &gt; &gt;</label>
+        <link refid="class_custom_indexed_vector"/>
+      </node>
+      <node id="19">
+        <label>CustomIndexedVector&lt; Trait::ExecutionOrder, std::vector&lt; Trait * &gt; &gt;</label>
+        <link refid="class_custom_indexed_vector"/>
+      </node>
+      <node id="36">
+        <label>Day</label>
+        <link refid="class_day"/>
+        <childnode refid="12" relation="usage">
+          <edgelabel>value</edgelabel>
+        </childnode>
+      </node>
+      <node id="42">
+        <label>DecisionProbability</label>
+        <link refid="class_decision_probability"/>
+      </node>
+      <node id="37">
+        <label>Decisions</label>
+        <link refid="class_decisions"/>
+        <childnode refid="2" relation="usage">
+          <edgelabel>owner</edgelabel>
+        </childnode>
+        <childnode refid="38" relation="usage">
+          <edgelabel>animalSpeciesDecisions</edgelabel>
+        </childnode>
+        <childnode refid="47" relation="usage">
+          <edgelabel>assimilationEfficiencyBuffer</edgelabel>
+          <edgelabel>cumulativePredationProbabilityBuffer</edgelabel>
+        </childnode>
+        <childnode refid="12" relation="usage">
+          <edgelabel>lastAssimilationEfficiency</edgelabel>
+          <edgelabel>lastCumulativePredationProbability</edgelabel>
+          <edgelabel>maximumCumulativePredationProbabilityCurrentTimeStep</edgelabel>
+          <edgelabel>maximumPatchConspecificBiomassIndividual</edgelabel>
+          <edgelabel>maximumPatchEdibilityValueIndividual</edgelabel>
+          <edgelabel>maximumPatchPredationRiskIndividual</edgelabel>
+        </childnode>
+        <childnode refid="48" relation="usage">
+          <edgelabel>experienceBuffer</edgelabel>
+        </childnode>
+        <childnode refid="49" relation="usage">
+          <edgelabel>preferences</edgelabel>
+        </childnode>
+      </node>
+      <node id="29">
+        <label>DryMass</label>
+        <link refid="class_dry_mass"/>
+        <childnode refid="12" relation="usage">
+          <edgelabel>value</edgelabel>
+        </childnode>
+      </node>
+      <node id="45">
+        <label>EdibilityValue</label>
+        <link refid="class_edibility_value"/>
+        <childnode refid="41" relation="public-inheritance">
+        </childnode>
+        <childnode refid="40" relation="usage">
+          <edgelabel>predationProbability</edgelabel>
+        </childnode>
+      </node>
+      <node id="4">
+        <label>Edible</label>
+        <link refid="class_edible"/>
+        <childnode refid="5" relation="usage">
+          <edgelabel>mySpecies</edgelabel>
+        </childnode>
+        <childnode refid="7" relation="usage">
+          <edgelabel>terrainCell</edgelabel>
+        </childnode>
+      </node>
+      <node id="41">
+        <label>EdibleDecisionProbability</label>
+        <link refid="class_edible_decision_probability"/>
+        <childnode refid="42" relation="public-inheritance">
+        </childnode>
+      </node>
+      <node id="25">
+        <label>EdibleGrowth</label>
+        <link refid="class_edible_growth"/>
+        <childnode refid="26" relation="usage">
+          <edgelabel>instar</edgelabel>
+        </childnode>
+        <childnode refid="27" relation="usage">
+          <edgelabel>speciesGrowth</edgelabel>
+        </childnode>
+        <childnode refid="29" relation="usage">
+          <edgelabel>currentTotalDryMass</edgelabel>
+        </childnode>
+        <childnode refid="11" relation="usage">
+          <edgelabel>currentTotalWetMass</edgelabel>
+        </childnode>
+      </node>
+      <node id="43">
+        <label>EscapeProbability</label>
+        <link refid="class_escape_probability"/>
+        <childnode refid="44" relation="public-inheritance">
+        </childnode>
+        <childnode refid="39" relation="usage">
+          <edgelabel>sensoryModel</edgelabel>
+        </childnode>
+        <childnode refid="12" relation="usage">
+          <edgelabel>cVelocity</edgelabel>
+        </childnode>
+      </node>
+      <node id="50">
+        <label>Generation</label>
+        <link refid="class_generation"/>
+      </node>
+      <node id="17">
+        <label>Genetics</label>
+        <link refid="class_genetics"/>
+        <childnode refid="18" relation="usage">
+          <edgelabel>speciesGenetics</edgelabel>
+        </childnode>
+        <childnode refid="20" relation="usage">
+          <edgelabel>genome</edgelabel>
+        </childnode>
+        <childnode refid="21" relation="usage">
+          <edgelabel>allIndividualTraits</edgelabel>
+        </childnode>
+      </node>
+      <node id="20">
+        <label>Genome</label>
+        <link refid="class_genome"/>
+      </node>
+      <node id="33">
+        <label>IndividualGrowthModel</label>
+        <link refid="class_individual_growth_model"/>
+      </node>
+      <node id="26">
+        <label>Instar</label>
+        <link refid="class_instar"/>
+      </node>
+      <node id="34">
+        <label>Length</label>
+        <link refid="class_length"/>
+        <childnode refid="12" relation="usage">
+          <edgelabel>value</edgelabel>
+        </childnode>
+      </node>
+      <node id="8">
+        <label>PatchApplicator</label>
+        <link refid="class_patch_applicator"/>
+        <childnode refid="7" relation="usage">
+          <edgelabel>owner</edgelabel>
+        </childnode>
+        <childnode refid="9" relation="usage">
+          <edgelabel>cellMoisture</edgelabel>
+        </childnode>
+        <childnode refid="13" relation="usage">
+          <edgelabel>cellObstacle</edgelabel>
+        </childnode>
+        <childnode refid="14" relation="usage">
+          <edgelabel>cellHabitatDomain</edgelabel>
+        </childnode>
+      </node>
+      <node id="16">
+        <label>PointMap</label>
+        <link refid="class_point_map"/>
+      </node>
+      <node id="12">
+        <label>PreciseDouble</label>
+        <link refid="class_precise_double"/>
+      </node>
+      <node id="40">
+        <label>PredationProbability</label>
+        <link refid="class_predation_probability"/>
+        <childnode refid="41" relation="public-inheritance">
+        </childnode>
+        <childnode refid="43" relation="usage">
+          <edgelabel>escapeProbability</edgelabel>
+        </childnode>
+        <childnode refid="28" relation="usage">
+          <edgelabel>maximumPDF</edgelabel>
+        </childnode>
+        <childnode refid="12" relation="usage">
+          <edgelabel>pdfThreshold</edgelabel>
+        </childnode>
+      </node>
+      <node id="52">
+        <label>Prey</label>
+        <link refid="class_prey"/>
+        <childnode refid="6" relation="usage">
+          <edgelabel>id</edgelabel>
+        </childnode>
+        <childnode refid="26" relation="usage">
+          <edgelabel>instar</edgelabel>
+        </childnode>
+        <childnode refid="29" relation="usage">
+          <edgelabel>foodDryMass</edgelabel>
+          <edgelabel>foodDryMassPerTimeStep</edgelabel>
+          <edgelabel>initialDryMass</edgelabel>
+        </childnode>
+        <childnode refid="36" relation="usage">
+          <edgelabel>handlingTime</edgelabel>
+        </childnode>
+      </node>
+      <node id="47">
+        <label>RingBuffer&lt; PreciseDouble &gt;</label>
+        <link refid="class_ring_buffer"/>
+        <childnode refid="12" relation="usage">
+          <edgelabel>initialValue</edgelabel>
+        </childnode>
+      </node>
+      <node id="39">
+        <label>SensoryModel</label>
+        <link refid="class_sensory_model"/>
+        <childnode refid="12" relation="usage">
+          <edgelabel>beta</edgelabel>
+        </childnode>
+      </node>
+      <node id="1">
+        <label>SpatialTreeAnimal</label>
+        <link refid="class_spatial_tree_animal"/>
+        <childnode refid="2" relation="public-inheritance">
+        </childnode>
+      </node>
+      <node id="5">
+        <label>Species</label>
+        <link refid="class_species"/>
+        <childnode refid="6" relation="usage">
+          <edgelabel>id</edgelabel>
+        </childnode>
+      </node>
+      <node id="6">
+        <label>Species::ID</label>
+        <link refid="class_species_1_1_i_d"/>
+      </node>
+      <node id="27">
+        <label>SpeciesGrowth</label>
+        <link refid="class_species_growth"/>
+        <childnode refid="26" relation="usage">
+          <edgelabel>lastInstar</edgelabel>
+        </childnode>
+        <childnode refid="28" relation="usage">
+          <edgelabel>conversionToWetMass</edgelabel>
+        </childnode>
+      </node>
+      <node id="7">
+        <label>TerrainCell</label>
+        <link refid="class_terrain_cell"/>
+        <childnode refid="8" relation="usage">
+          <edgelabel>patchApplicator</edgelabel>
+        </childnode>
+        <childnode refid="16" relation="usage">
+          <edgelabel>position</edgelabel>
+        </childnode>
+        <childnode refid="12" relation="usage">
+          <edgelabel>hyperVolume</edgelabel>
+          <edgelabel>size</edgelabel>
+        </childnode>
+      </node>
+      <node id="35">
+        <label>TimeStep</label>
+        <link refid="class_time_step"/>
+      </node>
+      <node id="11">
+        <label>WetMass</label>
+        <link refid="class_wet_mass"/>
+        <childnode refid="12" relation="usage">
+          <edgelabel>value</edgelabel>
+        </childnode>
+      </node>
+    </collaborationgraph>
+    <location file="App/Model/IBM/Landscape/Map/SpatialTree/LivingBeings/Animals/SpatialTreeAnimal.h" line="35" column="1" bodyfile="App/Model/IBM/Landscape/Map/SpatialTree/LivingBeings/Animals/SpatialTreeAnimal.h" bodystart="36" bodyend="135"/>
+    <listofallmembers>
+      <member refid="class_animal_non_statistical_1a93d98e3c4bb1758f270324126fa96c41" prot="public" virt="non-virtual"><scope>SpatialTreeAnimal</scope><name>Action</name></member>
+      <member refid="class_animal_non_statistical_1aacef76e16d87fa196cc86ee56b0a0aa4" prot="public" virt="non-virtual"><scope>SpatialTreeAnimal</scope><name>actionExecution</name></member>
+      <member refid="class_animal_non_statistical_1a0b80ab73ea50e6c4ec9bbfb564cff74e" prot="public" virt="non-virtual"><scope>SpatialTreeAnimal</scope><name>actionPlanning</name></member>
+      <member refid="class_animal_non_statistical_1ae995fa45d8068039a2043d02f9b758cc" prot="protected" virt="non-virtual"><scope>SpatialTreeAnimal</scope><name>actionsCurrentTimeStep</name></member>
+      <member refid="class_animal_non_statistical_1ad18c39735047d054e458a8e7881bc61a" prot="public" virt="non-virtual"><scope>SpatialTreeAnimal</scope><name>activateRetaliation</name></member>
+      <member refid="class_animal_non_statistical_1a3391e765eebecb4c1fa7dcfeb144e112" prot="protected" virt="non-virtual"><scope>SpatialTreeAnimal</scope><name>ageOfFirstReproduction</name></member>
+      <member refid="class_animal_non_statistical_1a299e32434972c6e12b9e79fe11f0ea52" prot="protected" virt="non-virtual"><scope>SpatialTreeAnimal</scope><name>ageOfLastMoultOrReproduction</name></member>
+      <member refid="class_animal_1a1e726a49ec952443190ac62dad22353c" prot="public" virt="non-virtual"><scope>SpatialTreeAnimal</scope><name>Animal</name></member>
+      <member refid="class_animal_1ad4bbd234af51a4e7f321a1410e74c59c" prot="public" virt="non-virtual"><scope>SpatialTreeAnimal</scope><name>Animal</name></member>
+      <member refid="class_animal_1aac0fb375f31c671e3fa2b021aaf298ef" prot="public" virt="non-virtual"><scope>SpatialTreeAnimal</scope><name>Animal</name></member>
+      <member refid="class_animal_1a5f306799edf02bb7f025894d6d59662d" prot="public" virt="non-virtual"><scope>SpatialTreeAnimal</scope><name>Animal</name></member>
+      <member refid="class_animal_non_statistical_1aa9962429946d789f810a13d565853bef" prot="public" virt="non-virtual"><scope>SpatialTreeAnimal</scope><name>AnimalNonStatistical</name></member>
+      <member refid="class_animal_non_statistical_1a8269d316159a2df04f71eb59c1717013" prot="public" virt="non-virtual"><scope>SpatialTreeAnimal</scope><name>AnimalNonStatistical</name></member>
+      <member refid="class_animal_non_statistical_1a25578fd06cf3b3227f662330cf708990" prot="public" virt="non-virtual"><scope>SpatialTreeAnimal</scope><name>AnimalNonStatistical</name></member>
+      <member refid="class_animal_non_statistical_1a7b19950f74329e810400a83bedf36815" prot="public" virt="non-virtual"><scope>SpatialTreeAnimal</scope><name>AnimalNonStatistical</name></member>
+      <member refid="class_animal_1a2707620937fd718e432e88dbd95583bd" prot="protected" virt="non-virtual"><scope>SpatialTreeAnimal</scope><name>animalSpeciesId</name></member>
+      <member refid="class_animal_1a2f767a1dc23025e6a87996cbe1f2c986" prot="public" virt="non-virtual"><scope>SpatialTreeAnimal</scope><name>applyAllometricModel</name></member>
+      <member refid="class_animal_non_statistical_1a991d548e616df4ae0b54d097ece2b232" prot="protected" virt="non-virtual"><scope>SpatialTreeAnimal</scope><name>applyHandlingTime</name></member>
+      <member refid="class_animal_non_statistical_1aa5c379d6b26ca5033c12de871c93da09" prot="public" virt="non-virtual"><scope>SpatialTreeAnimal</scope><name>applyPlasticityDueToConditionToTrait</name></member>
+      <member refid="class_animal_non_statistical_1aecc374acaf3c5128a714be1df1bffd76" prot="public" virt="virtual"><scope>SpatialTreeAnimal</scope><name>assimilateFoodMass</name></member>
+      <member refid="class_animal_non_statistical_1a4168bef628b2e2b36af5104faa8be68d" prot="protected" virt="non-virtual"><scope>SpatialTreeAnimal</scope><name>atDestination</name></member>
+      <member refid="class_animal_non_statistical_1a67a66403397a0c87f203e904f944c275" prot="protected" virt="non-virtual"><scope>SpatialTreeAnimal</scope><name>beyondCurve</name></member>
+      <member refid="class_animal_non_statistical_1af78d6f711fa5977dd923da03be4c5884" prot="public" virt="non-virtual"><scope>SpatialTreeAnimal</scope><name>breed</name></member>
+      <member refid="class_animal_non_statistical_1ad4aecfa5736933237af9110fa394b616" prot="public" virt="non-virtual"><scope>SpatialTreeAnimal</scope><name>breedAsexually</name></member>
+      <member refid="class_animal_non_statistical_1a54b94a940e551afcccfcabe23c9a8c42" prot="public" virt="non-virtual"><scope>SpatialTreeAnimal</scope><name>breedSexually</name></member>
+      <member refid="class_animal_non_statistical_1a4d7c2ea751b2288948ae1a23a86ca14b" prot="public" virt="non-virtual"><scope>SpatialTreeAnimal</scope><name>calculateAssimilatedMass</name></member>
+      <member refid="class_animal_non_statistical_1a0349ada1b6ae1a444bd54ffc7652bc8e" prot="public" virt="non-virtual"><scope>SpatialTreeAnimal</scope><name>calculateCellQuality</name></member>
+      <member refid="class_animal_non_statistical_1ae8f013f842743682e13d23ff964c11c5" prot="public" virt="non-virtual"><scope>SpatialTreeAnimal</scope><name>calculateCellQuality</name></member>
+      <member refid="class_animal_non_statistical_1a8c204beb50c1fbbcaefadcd6aa3fe835" prot="public" virt="non-virtual"><scope>SpatialTreeAnimal</scope><name>calculateConspecificBiomass</name></member>
+      <member refid="class_animal_non_statistical_1afac976392d0d0faa661efba34092e84c" prot="public" virt="non-virtual"><scope>SpatialTreeAnimal</scope><name>calculateEdibilityValue</name></member>
+      <member refid="class_animal_non_statistical_1a82711983ecb58b6f86d78be842e49713" prot="public" virt="non-virtual"><scope>SpatialTreeAnimal</scope><name>calculateEdibilityValue</name></member>
+      <member refid="class_animal_non_statistical_1a741ba3b3dfa46ee12b95c1bafcad5ceb" prot="public" virt="non-virtual"><scope>SpatialTreeAnimal</scope><name>calculateGrowthCurves</name></member>
+      <member refid="class_animal_non_statistical_1a472380f42ea3eac1ca7a474948b4a924" prot="public" virt="non-virtual"><scope>SpatialTreeAnimal</scope><name>calculateGrowthModel</name></member>
+      <member refid="class_animal_non_statistical_1a5cc633087ef0e1652592bd59ca3b1379" prot="protected" virt="non-virtual"><scope>SpatialTreeAnimal</scope><name>calculateLogMassRatio</name></member>
+      <member refid="class_animal_non_statistical_1a333b91e54803e649eb019d0fc62a0458" prot="public" virt="non-virtual"><scope>SpatialTreeAnimal</scope><name>calculateMassLoad</name></member>
+      <member refid="class_animal_non_statistical_1a2807cc15ba8f6cbdcbd88b02b698c765" prot="public" virt="non-virtual"><scope>SpatialTreeAnimal</scope><name>calculatePredationProbability</name></member>
+      <member refid="class_animal_non_statistical_1a06ecd2a6c4a650dc44ee681c4455183b" prot="public" virt="non-virtual"><scope>SpatialTreeAnimal</scope><name>calculatePredationRisk</name></member>
+      <member refid="class_animal_non_statistical_1a581cddb51d0b806df751b352b2a2fd8b" prot="protected" virt="non-virtual"><scope>SpatialTreeAnimal</scope><name>calculateProportionOfTimeWasMoving</name></member>
+      <member refid="class_animal_non_statistical_1a0a6efdc09a9301a165da2d49e9de27b0" prot="protected" virt="non-virtual"><scope>SpatialTreeAnimal</scope><name>canEatResource</name></member>
+      <member refid="class_animal_non_statistical_1a84d25ffe7398e8aa82b99426395c8682" prot="protected" virt="non-virtual"><scope>SpatialTreeAnimal</scope><name>checkBreed</name></member>
+      <member refid="class_animal_non_statistical_1a5ea122713c3272e19d4336e5f8c4fee9" prot="public" virt="non-virtual"><scope>SpatialTreeAnimal</scope><name>checkEnergyTank</name></member>
+      <member refid="class_animal_1a2a32231b631f179b42da2fc02efcfca8" prot="protected" virt="non-virtual"><scope>SpatialTreeAnimal</scope><name>checkGrowthMinimumValue</name></member>
+      <member refid="class_animal_non_statistical_1a75a0b97070fb0b8b3dc06633d8af23aa" prot="protected" virt="non-virtual"><scope>SpatialTreeAnimal</scope><name>checkInitialMovementCellLeaving</name></member>
+      <member refid="class_animal_non_statistical_1a68a23c8afae43f0bca468667bd3984fe" prot="protected" virt="non-virtual"><scope>SpatialTreeAnimal</scope><name>checkStepCellLeaving</name></member>
+      <member refid="class_animal_non_statistical_1aa71b35a0aeacb3e7cd10f0a0f19a4742" prot="protected" virt="non-virtual"><scope>SpatialTreeAnimal</scope><name>computeHandlingFoodMass</name></member>
+      <member refid="class_animal_non_statistical_1ae3ffb661aea303c7716fa8a746ef3056" prot="protected" virt="non-virtual"><scope>SpatialTreeAnimal</scope><name>computeHandlingTime</name></member>
+      <member refid="class_spatial_tree_animal_1aca79fefd699d95f08632a70178fec2ba" prot="protected" virt="virtual"><scope>SpatialTreeAnimal</scope><name>createOffspring</name></member>
+      <member refid="class_animal_non_statistical_1ad4943591d0d90aa3f79228d57cce1684" prot="protected" virt="non-virtual"><scope>SpatialTreeAnimal</scope><name>currentPrey</name></member>
+      <member refid="class_animal_non_statistical_1a915e12c1231e15b57c8c48f373b6403f" prot="protected" virt="non-virtual"><scope>SpatialTreeAnimal</scope><name>dateOfDeath</name></member>
+      <member refid="class_animal_non_statistical_1a1fcc6da6ce3717de433456af3bd35b19" prot="protected" virt="non-virtual"><scope>SpatialTreeAnimal</scope><name>decisions</name></member>
+      <member refid="class_spatial_tree_animal_1a0627b7b0974c3b778e4900b4c3728a45" prot="protected" virt="non-virtual"><scope>SpatialTreeAnimal</scope><name>destinationSelectionPolicy</name></member>
+      <member refid="class_animal_non_statistical_1aa4ba03240bdb55ff47e3510c83a3b88a" prot="public" virt="virtual"><scope>SpatialTreeAnimal</scope><name>dieFromBackground</name></member>
+      <member refid="class_animal_non_statistical_1acfc98c4777116d209b849b7aea7cc2e3" prot="protected" virt="non-virtual"><scope>SpatialTreeAnimal</scope><name>distanceTravelled</name></member>
+      <member refid="class_animal_non_statistical_1a3503044828434aef1a931b5b7de63802" prot="public" virt="non-virtual"><scope>SpatialTreeAnimal</scope><name>doDefinitive</name></member>
+      <member refid="class_animal_non_statistical_1a1d11431765e8282bc8bc49e47643ad7f" prot="public" virt="non-virtual"><scope>SpatialTreeAnimal</scope><name>doInitialCellEvaluation</name></member>
+      <member refid="class_animal_non_statistical_1a981dd5eea5440fd0c12df70d8c987d94" prot="protected" virt="non-virtual"><scope>SpatialTreeAnimal</scope><name>eatenToday</name></member>
+      <member refid="class_edible_1ad2bd330d8bddee1968a782c8c7417f6c" prot="public" virt="non-virtual"><scope>SpatialTreeAnimal</scope><name>Edible</name></member>
+      <member refid="class_edible_1a6eeeb715ddf2707990356e169cbc3ab6" prot="public" virt="non-virtual"><scope>SpatialTreeAnimal</scope><name>Edible</name></member>
+      <member refid="class_edible_1aead81535b712265418ab786a8ada4f51" prot="public" virt="non-virtual"><scope>SpatialTreeAnimal</scope><name>Edible</name></member>
+      <member refid="class_animal_non_statistical_1af06c893baa1149107620465264609704" prot="protected" virt="non-virtual"><scope>SpatialTreeAnimal</scope><name>enhancedH</name></member>
+      <member refid="class_animal_non_statistical_1a5f11a15f07011ced000115802f896d94" prot="protected" virt="non-virtual"><scope>SpatialTreeAnimal</scope><name>exhausted</name></member>
+      <member refid="class_animal_non_statistical_1a4da9989956a8193c3b9715ae7d872923" prot="protected" virt="non-virtual"><scope>SpatialTreeAnimal</scope><name>fecundity</name></member>
+      <member refid="class_animal_non_statistical_1a6248457b4ec3409f564a4e8009d16add" prot="protected" virt="non-virtual"><scope>SpatialTreeAnimal</scope><name>feed</name></member>
+      <member refid="class_animal_non_statistical_1a68d559be410aadde8a1a7f10ca536ea8" prot="protected" virt="non-virtual"><scope>SpatialTreeAnimal</scope><name>foodMassAssimilatedCurrentTimeStep</name></member>
+      <member refid="class_animal_non_statistical_1aa4606650ac0d7dd7c9113785d2848500" prot="protected" virt="non-virtual"><scope>SpatialTreeAnimal</scope><name>foodMassAssimilatedCurrentTimeStepPerSpecies</name></member>
+      <member refid="class_animal_non_statistical_1a20c9d5c3157967d90fcdcd909016beee" prot="protected" virt="non-virtual"><scope>SpatialTreeAnimal</scope><name>foodMassEatenCurrentTimeStep</name></member>
+      <member refid="class_animal_non_statistical_1a19f31f052e5f57c61429193d4b75b611" prot="protected" virt="non-virtual"><scope>SpatialTreeAnimal</scope><name>foodMassEatenCurrentTimeStepPerSpecies</name></member>
+      <member refid="class_animal_non_statistical_1ab60a710a36e893b93756a646c78eefdc" prot="public" virt="non-virtual"><scope>SpatialTreeAnimal</scope><name>forceMolting</name></member>
+      <member refid="class_animal_non_statistical_1a4e0f0709e36896cfe96a3ab8b57136da" prot="protected" virt="non-virtual"><scope>SpatialTreeAnimal</scope><name>forceReproduction</name></member>
+      <member refid="class_animal_non_statistical_1a50c7a4e9e8d68b0ad4a6e84f1496e586" prot="public" virt="non-virtual"><scope>SpatialTreeAnimal</scope><name>formatBuffer</name></member>
+      <member refid="class_animal_non_statistical_1a4fad6b11bdd7b243d6ddd1e5ae893304" prot="public" virt="non-virtual"><scope>SpatialTreeAnimal</scope><name>formatToBufferDirect</name></member>
+      <member refid="class_animal_non_statistical_1a999a1126cf94efc9a54a0db37778f266" prot="public" virt="non-virtual"><scope>SpatialTreeAnimal</scope><name>formatToBufferDirect</name></member>
+      <member refid="class_animal_1ac17391b9290aa4231a7c835de66cd3e1" prot="protected" virt="non-virtual"><scope>SpatialTreeAnimal</scope><name>gender</name></member>
+      <member refid="class_animal_non_statistical_1a80645d47f4dcdcc4234342b1f07b94c9" prot="protected" virt="non-virtual"><scope>SpatialTreeAnimal</scope><name>generationNumberFromFemaleParent</name></member>
+      <member refid="class_animal_non_statistical_1ae3030fa7eda2363f44ff96a46096f6d6" prot="protected" virt="non-virtual"><scope>SpatialTreeAnimal</scope><name>generationNumberFromMaleParent</name></member>
+      <member refid="class_animal_non_statistical_1a68a986cff22fe6cf4438e1886a37c9bc" prot="protected" virt="non-virtual"><scope>SpatialTreeAnimal</scope><name>generationNumberFromMatedMale</name></member>
+      <member refid="class_animal_1a6c071bac7b6d9a6ed6599261dd134e16" prot="protected" virt="non-virtual"><scope>SpatialTreeAnimal</scope><name>genetics</name></member>
+      <member refid="class_animal_non_statistical_1af37667780d9175692b1d0010e0a02bf5" prot="protected" virt="non-virtual"><scope>SpatialTreeAnimal</scope><name>genomeFromMatedMale</name></member>
+      <member refid="class_animal_non_statistical_1af2226ed94f290552a1e642aa25791293" prot="public" virt="non-virtual"><scope>SpatialTreeAnimal</scope><name>getAgeOfFirstReproduction</name></member>
+      <member refid="class_animal_non_statistical_1a58325ee11d879df46cbae19b6ab15086" prot="public" virt="non-virtual"><scope>SpatialTreeAnimal</scope><name>getAgeOfLastMoultOrReproduction</name></member>
+      <member refid="class_animal_1ab836e557886d8fc9642c62e276eb6ee8" prot="public" virt="non-virtual"><scope>SpatialTreeAnimal</scope><name>getAnimalSpeciesId</name></member>
+      <member refid="class_animal_non_statistical_1a20024e276f675004eaa02677b011d221" prot="protected" virt="non-virtual"><scope>SpatialTreeAnimal</scope><name>getCurrentPrey</name></member>
+      <member refid="class_animal_non_statistical_1acc71d26d789c9dfaf1a1cfa4a49ab169" prot="protected" virt="non-virtual"><scope>SpatialTreeAnimal</scope><name>getCurrentPrey</name></member>
+      <member refid="class_animal_non_statistical_1a6a0a19faee4d21189c2bfec725112c4f" prot="public" virt="virtual"><scope>SpatialTreeAnimal</scope><name>getDateOfDeath</name></member>
+      <member refid="class_animal_non_statistical_1adb17f97f5ca6efe5cf029c8e9e0366f0" prot="protected" virt="non-virtual"><scope>SpatialTreeAnimal</scope><name>getDistanceTravelled</name></member>
+      <member refid="class_animal_non_statistical_1a208806280f325d93c6be665f91961c7c" prot="protected" virt="non-virtual"><scope>SpatialTreeAnimal</scope><name>getEnhancedH</name></member>
+      <member refid="class_animal_non_statistical_1a03480c2a86671fb1fccd1e264bf8568a" prot="public" virt="non-virtual"><scope>SpatialTreeAnimal</scope><name>getFecundity</name></member>
+      <member refid="class_animal_1a706c22141587830a4ebcb5599e1c0b59" prot="public" virt="non-virtual"><scope>SpatialTreeAnimal</scope><name>getGender</name></member>
+      <member refid="class_animal_non_statistical_1aa2e52909486ff8659bc67b4aa8b3e542" prot="public" virt="non-virtual"><scope>SpatialTreeAnimal</scope><name>getGenerationNumberFromFemaleParent</name></member>
+      <member refid="class_animal_non_statistical_1a456bc482778a1ec4528c60595879485f" prot="public" virt="non-virtual"><scope>SpatialTreeAnimal</scope><name>getGenerationNumberFromMaleParent</name></member>
+      <member refid="class_animal_1a9389d2cf85ecab5fe1d2ba13f3992c06" prot="public" virt="non-virtual"><scope>SpatialTreeAnimal</scope><name>getGenetics</name></member>
+      <member refid="class_animal_non_statistical_1a642f2a95254292a30c6358e312e42f3c" prot="public" virt="virtual"><scope>SpatialTreeAnimal</scope><name>getGrowthBuildingBlock</name></member>
+      <member refid="class_animal_non_statistical_1a3b2ad5bdef0bc792346af8655999f171" prot="public" virt="non-virtual"><scope>SpatialTreeAnimal</scope><name>getHeader</name></member>
+      <member refid="class_animal_non_statistical_1a403c169e1fc5db81815511dfcc4cf352" prot="public" virt="non-virtual"><scope>SpatialTreeAnimal</scope><name>getHuntingMode</name></member>
+      <member refid="class_edible_1a89223f30f79d20181aa5e5e477f4a96a" prot="public" virt="non-virtual"><scope>SpatialTreeAnimal</scope><name>getId</name></member>
+      <member refid="class_animal_non_statistical_1a452b2408b2e62eaa1f7e75c73bc38188" prot="public" virt="non-virtual"><scope>SpatialTreeAnimal</scope><name>getIdFromFemaleParent</name></member>
+      <member refid="class_animal_non_statistical_1a696a00e20363717214d05fb461e14b86" prot="public" virt="non-virtual"><scope>SpatialTreeAnimal</scope><name>getIdFromMaleParent</name></member>
+      <member refid="class_edible_1ac0ad9e1a6d3049f445cd78f1eb7da95d" prot="public" virt="non-virtual"><scope>SpatialTreeAnimal</scope><name>getInstar</name></member>
+      <member refid="class_animal_non_statistical_1acec4441a01d102172058a8da510162c3" prot="public" virt="virtual"><scope>SpatialTreeAnimal</scope><name>getInstarToEvaluateCells</name></member>
+      <member refid="class_animal_non_statistical_1a5013460249f54559b68af26343d650b5" prot="public" virt="non-virtual"><scope>SpatialTreeAnimal</scope><name>getInteractionAreaRadius</name></member>
+      <member refid="class_animal_1a907f8feab5539db1ce7fbfed320d6fff" prot="public" virt="non-virtual"><scope>SpatialTreeAnimal</scope><name>getLifeStage</name></member>
+      <member refid="class_animal_non_statistical_1af437cc3ec4c489a61d350c4e737d15a9" prot="public" virt="non-virtual"><scope>SpatialTreeAnimal</scope><name>getMassesFirstReproduction</name></member>
+      <member refid="class_animal_non_statistical_1a0d1b6bbd0ebca0bc3465e668a4cec988" prot="public" virt="non-virtual"><scope>SpatialTreeAnimal</scope><name>getMassesLastInstar</name></member>
+      <member refid="class_animal_non_statistical_1ad577dc6cd134fe27cc14ede337b011f3" prot="public" virt="non-virtual"><scope>SpatialTreeAnimal</scope><name>getMaximumPatchConspecificBiomass</name></member>
+      <member refid="class_animal_non_statistical_1abbc4c1ec07008d6445f154d63fbae984" prot="public" virt="non-virtual"><scope>SpatialTreeAnimal</scope><name>getMaximumPatchEdibilityValue</name></member>
+      <member refid="class_animal_non_statistical_1a545938f9fb093191ad4244dff94349a4" prot="public" virt="non-virtual"><scope>SpatialTreeAnimal</scope><name>getMaximumPatchPredationRisk</name></member>
+      <member refid="class_animal_non_statistical_1a31b8aaa7614d5d1661ac1c01a54b009a" prot="public" virt="non-virtual"><scope>SpatialTreeAnimal</scope><name>getMaxReproductionEvents</name></member>
+      <member refid="class_animal_1aa21b22f0ad2a36e52cd56ff4252914f9" prot="public" virt="non-virtual"><scope>SpatialTreeAnimal</scope><name>getMutableGenetics</name></member>
+      <member refid="class_animal_non_statistical_1a24ad19f9c0876a691388c445b8e3a144" prot="public" virt="virtual"><scope>SpatialTreeAnimal</scope><name>getMutableGrowthBuildingBlock</name></member>
+      <member refid="class_animal_1adaf3c8075a306eb4d132a5901c637169" prot="public" virt="non-virtual"><scope>SpatialTreeAnimal</scope><name>getMutablePosition</name></member>
+      <member refid="class_animal_1a311b5098fe43e3ca5883ae38ec9e9c2b" prot="public" virt="virtual"><scope>SpatialTreeAnimal</scope><name>getMutableSpecies</name></member>
+      <member refid="class_edible_1ae8427bf3b3cced2e4c10dabbf7d25bb9" prot="public" virt="non-virtual"><scope>SpatialTreeAnimal</scope><name>getMutableTerrainCell</name></member>
+      <member refid="class_animal_non_statistical_1a39b46986753f9591058d04c6b5d8d089" prot="public" virt="non-virtual"><scope>SpatialTreeAnimal</scope><name>getNextAction</name></member>
+      <member refid="class_animal_1a8260dfe71396ffb117d311d56ef57ee6" prot="public" virt="non-virtual"><scope>SpatialTreeAnimal</scope><name>getPosition</name></member>
+      <member refid="class_animal_non_statistical_1ad7c443398e9700ca527ab2ca8ea7033a" prot="protected" virt="non-virtual"><scope>SpatialTreeAnimal</scope><name>getPotencialPrey</name></member>
+      <member refid="class_animal_non_statistical_1a5141e7de56c749739dac09e7588c5df8" prot="protected" virt="non-virtual"><scope>SpatialTreeAnimal</scope><name>getPotencialPrey</name></member>
+      <member refid="class_animal_non_statistical_1acad6c660d84d453266bff693d08b01b7" prot="protected" virt="non-virtual"><scope>SpatialTreeAnimal</scope><name>getPredationEncountersCurrentDay</name></member>
+      <member refid="class_animal_non_statistical_1a4ba54dac45daa4969b6921f80b9690ee" prot="public" virt="non-virtual"><scope>SpatialTreeAnimal</scope><name>getPreference</name></member>
+      <member refid="class_animal_non_statistical_1ac2b42703c07ca5a7df640dfbdae98c29" prot="public" virt="virtual"><scope>SpatialTreeAnimal</scope><name>getRemainingVoracity</name></member>
+      <member refid="class_animal_non_statistical_1a5409aae91267da34a6f9c65e73b3631c" prot="public" virt="non-virtual"><scope>SpatialTreeAnimal</scope><name>getReproCounter</name></member>
+      <member refid="class_animal_non_statistical_1a730758df8a40350910192d55ce263197" prot="public" virt="non-virtual"><scope>SpatialTreeAnimal</scope><name>getScopeAreaRadius</name></member>
+      <member refid="class_animal_non_statistical_1a15541112a2d30ee7d9612313979b7161" prot="public" virt="non-virtual"><scope>SpatialTreeAnimal</scope><name>getSearchAreaRadius</name></member>
+      <member refid="class_animal_1a8e64dce62963045cb37ac3be0440c052" prot="public" virt="non-virtual"><scope>SpatialTreeAnimal</scope><name>getSignature</name></member>
+      <member refid="class_animal_1a7305aa2245f6b908eb66019b14d2673e" prot="public" virt="virtual"><scope>SpatialTreeAnimal</scope><name>getSpecies</name></member>
+      <member refid="class_animal_non_statistical_1aef8d290f715aa6ca6ab644d87526c32c" prot="public" virt="non-virtual"><scope>SpatialTreeAnimal</scope><name>getSpeed</name></member>
+      <member refid="class_animal_non_statistical_1af8883df67ac93a24b22f11187d5f46b7" prot="public" virt="non-virtual"><scope>SpatialTreeAnimal</scope><name>getTargetNeighborToTravelTo</name></member>
+      <member refid="class_edible_1a40371658641bb50c113dcced827247ac" prot="public" virt="non-virtual"><scope>SpatialTreeAnimal</scope><name>getTerrainCell</name></member>
+      <member refid="class_animal_non_statistical_1ac184ec7d076506201d37587c8ad0b256" prot="public" virt="non-virtual"><scope>SpatialTreeAnimal</scope><name>getTotalPredationEncounters</name></member>
+      <member refid="class_animal_non_statistical_1a82da0b1cc201bddd080908304b5c4689" prot="public" virt="non-virtual"><scope>SpatialTreeAnimal</scope><name>getVoracity</name></member>
+      <member refid="class_animal_non_statistical_1aabee46f18cf685e6ef2f75aa9af7f0fb" prot="public" virt="non-virtual"><scope>SpatialTreeAnimal</scope><name>grow</name></member>
+      <member refid="class_animal_non_statistical_1aba607798fecaacbcd175cfad4df301c1" prot="protected" virt="non-virtual"><scope>SpatialTreeAnimal</scope><name>growthBuildingBlock</name></member>
+      <member refid="class_animal_non_statistical_1a63b5c6398fd60cdb12dbb86898c0b0ce" prot="protected" virt="non-virtual"><scope>SpatialTreeAnimal</scope><name>habitatShift</name></member>
+      <member refid="class_animal_non_statistical_1ab82a4649a133d1ee68fa9cd452abb2dc" prot="protected" virt="non-virtual"><scope>SpatialTreeAnimal</scope><name>huntingMode</name></member>
+      <member refid="class_edible_1a54e4c51c58f7126ec542f2a41dd1467e" prot="protected" virt="non-virtual"><scope>SpatialTreeAnimal</scope><name>id</name></member>
+      <member refid="class_animal_non_statistical_1a8ec6e168ef7257ef12bdb0971830bbfe" prot="protected" virt="non-virtual"><scope>SpatialTreeAnimal</scope><name>idFromFemaleParent</name></member>
+      <member refid="class_animal_non_statistical_1a288c75584b4544efb3d54320909f76f1" prot="protected" virt="non-virtual"><scope>SpatialTreeAnimal</scope><name>idFromMaleParent</name></member>
+      <member refid="class_animal_non_statistical_1a918234c7b5c43e75cf643bccfe36f4c6" prot="protected" virt="non-virtual"><scope>SpatialTreeAnimal</scope><name>idFromMatedMale</name></member>
+      <member refid="class_animal_non_statistical_1a062d9fa6d466dd6c31db9ef0d26b509d" prot="protected" virt="non-virtual"><scope>SpatialTreeAnimal</scope><name>inBreedingZone</name></member>
+      <member refid="class_animal_non_statistical_1a4a2eb07966277273a42df1a03e360c9d" prot="protected" virt="non-virtual"><scope>SpatialTreeAnimal</scope><name>increaseActionsCounter</name></member>
+      <member refid="class_animal_non_statistical_1a1c5da59ea80f2184da1f4f9ccd790722" prot="public" virt="non-virtual"><scope>SpatialTreeAnimal</scope><name>increaseAge</name></member>
+      <member refid="class_animal_non_statistical_1aba91203a5e8bc92d9ff2afd2a871ff2e" prot="protected" virt="non-virtual"><scope>SpatialTreeAnimal</scope><name>increaseDistanceTravelled</name></member>
+      <member refid="class_animal_non_statistical_1ad1bb0adb70fbb0e31f3641d9f6020510" prot="public" virt="non-virtual"><scope>SpatialTreeAnimal</scope><name>increasePredationEncounters</name></member>
+      <member refid="class_animal_non_statistical_1a46854cdeb10278ec7e8bb8a10dc0ae4a" prot="protected" virt="non-virtual"><scope>SpatialTreeAnimal</scope><name>inHabitatShiftAfterBreeding</name></member>
+      <member refid="class_animal_non_statistical_1a68da68ab6cbdc2a0955fc7b80f172487" prot="protected" virt="non-virtual"><scope>SpatialTreeAnimal</scope><name>inHabitatShiftBeforeBreeding</name></member>
+      <member refid="class_animal_non_statistical_1afad06ef554af1fe8eb48f9dd46df1c10" prot="public" virt="non-virtual"><scope>SpatialTreeAnimal</scope><name>initControlVariables</name></member>
+      <member refid="class_spatial_tree_animal_1aefb0489ce7b8c5e00a60d3650a3fb56f" prot="protected" virt="non-virtual"><scope>SpatialTreeAnimal</scope><name>initializeNavigationPolicies</name></member>
+      <member refid="class_animal_non_statistical_1a44ad2195ff59d5c33dfe25f15501811d" prot="protected" virt="non-virtual"><scope>SpatialTreeAnimal</scope><name>instarToEvaluateCells</name></member>
+      <member refid="class_animal_non_statistical_1ae7fae49be2ab6a3f71f9038ab287f486" prot="protected" virt="non-virtual"><scope>SpatialTreeAnimal</scope><name>interactionAreaRadius</name></member>
+      <member refid="class_animal_non_statistical_1abe8cbd4b5018b66b828d0970bd98bf28" prot="public" virt="non-virtual"><scope>SpatialTreeAnimal</scope><name>isActive</name></member>
+      <member refid="class_animal_non_statistical_1a3e6dfdda780194106a4b4ae8d1fdb4b8" prot="public" virt="non-virtual"><scope>SpatialTreeAnimal</scope><name>isAtDestination</name></member>
+      <member refid="class_animal_non_statistical_1aa20f3938e917ea922d42980d90c84cad" prot="public" virt="virtual"><scope>SpatialTreeAnimal</scope><name>isExhausted</name></member>
+      <member refid="class_animal_non_statistical_1a79e03038acae24dd963ed0dc8961746f" prot="public" virt="virtual"><scope>SpatialTreeAnimal</scope><name>isHunting</name></member>
+      <member refid="class_animal_non_statistical_1ad68cf08c9f1ad3a9855837fd222f202c" prot="public" virt="non-virtual"><scope>SpatialTreeAnimal</scope><name>isInBreedingZone</name></member>
+      <member refid="class_animal_non_statistical_1aacbe3c97662e8b67bd9615c633e1c167" prot="public" virt="non-virtual"><scope>SpatialTreeAnimal</scope><name>isInHabitatShiftAfterBreeding</name></member>
+      <member refid="class_animal_non_statistical_1a17b84f2eef95b6189a2ca999b3120099" prot="public" virt="non-virtual"><scope>SpatialTreeAnimal</scope><name>isInHabitatShiftBeforeBreeding</name></member>
+      <member refid="class_animal_non_statistical_1a3d67c85e9860292b04aa57bb4831ec53" prot="public" virt="virtual"><scope>SpatialTreeAnimal</scope><name>isMated</name></member>
+      <member refid="class_animal_non_statistical_1acdf2f784e51848d863cebfd3e0677318" prot="public" virt="virtual"><scope>SpatialTreeAnimal</scope><name>isReadyToBeBorn</name></member>
+      <member refid="class_animal_non_statistical_1a9fff96c3deb123807b5e19379256d5a9" prot="public" virt="non-virtual"><scope>SpatialTreeAnimal</scope><name>isReadyToResumeFromDiapauseOrIncreaseDiapauseTimeSteps</name></member>
+      <member refid="class_animal_non_statistical_1ab4aa09e44f6db342c49b03ac7a110a9c" prot="public" virt="non-virtual"><scope>SpatialTreeAnimal</scope><name>isReadyToResumeFromPupaOrDecreasePupaTimer</name></member>
+      <member refid="class_animal_non_statistical_1a02136b869a9bc5fec7aceb261674cce9" prot="public" virt="virtual"><scope>SpatialTreeAnimal</scope><name>isSated</name></member>
+      <member refid="class_animal_1aa3723364c1393355127c54741e7ba0cc" prot="protected" virt="non-virtual"><scope>SpatialTreeAnimal</scope><name>lifeStage</name></member>
+      <member refid="class_animal_non_statistical_1ac21fb8d4130d243e2e37677aa703f1a5" prot="protected" virt="non-virtual"><scope>SpatialTreeAnimal</scope><name>mated</name></member>
+      <member refid="class_animal_non_statistical_1a341ae18c6d6f1fb909d21d1e0c180b3e" prot="protected" virt="non-virtual"><scope>SpatialTreeAnimal</scope><name>maxVoracityTimeStep</name></member>
+      <member refid="class_animal_non_statistical_1afbced885dff9b2ff8d1a5c519f12e589" prot="public" virt="virtual"><scope>SpatialTreeAnimal</scope><name>metabolize</name></member>
+      <member refid="class_spatial_tree_animal_1a211c3b034b16de92c4b54f504936a476" prot="protected" virt="virtual"><scope>SpatialTreeAnimal</scope><name>move</name></member>
+      <member refid="class_animal_non_statistical_1ae8c1a897a2c55d41dc9f4d77429007ec" prot="protected" virt="non-virtual"><scope>SpatialTreeAnimal</scope><name>mustDoHabitatShift</name></member>
+      <member refid="class_edible_1a2ee0ce7e08eee8fc76858a05398152ec" prot="protected" virt="non-virtual"><scope>SpatialTreeAnimal</scope><name>mySpecies</name></member>
+      <member refid="class_spatial_tree_animal_1a52a6b945b798531a05527484ec58d7e5" prot="protected" virt="non-virtual"><scope>SpatialTreeAnimal</scope><name>navigationRoute</name></member>
+      <member refid="class_animal_non_statistical_1a2bb87ca89ff71dc48cf4b9b4f0e8f3c3" prot="protected" virt="non-virtual"><scope>SpatialTreeAnimal</scope><name>nextAction</name></member>
+      <member refid="class_spatial_tree_animal_1a960da35d8de63e83ad1a4006abf7f3af" prot="protected" virt="non-virtual"><scope>SpatialTreeAnimal</scope><name>nextRouteCellIndex</name></member>
+      <member refid="class_spatial_tree_animal_1a272193bed55a6bd636ec3a7bcd9725eb" prot="public" virt="non-virtual"><scope>SpatialTreeAnimal</scope><name>operator=</name></member>
+      <member refid="class_animal_non_statistical_1a3daa462ea672a22837dff8c1e4b4df7f" prot="public" virt="non-virtual" ambiguityscope="AnimalNonStatistical::"><scope>SpatialTreeAnimal</scope><name>operator=</name></member>
+      <member refid="class_animal_1a932bf27aadf410f5bde29d30e65c1ac3" prot="public" virt="non-virtual" ambiguityscope="Animal::"><scope>SpatialTreeAnimal</scope><name>operator=</name></member>
+      <member refid="class_edible_1a8c112449263b7f7c057718102c0e56f8" prot="public" virt="non-virtual" ambiguityscope="Edible::"><scope>SpatialTreeAnimal</scope><name>operator=</name></member>
+      <member refid="class_animal_1a082bb5e6de6932e203f51425869313a1" prot="protected" virt="non-virtual"><scope>SpatialTreeAnimal</scope><name>position</name></member>
+      <member refid="class_animal_non_statistical_1ac1661b5f3efa3eb866d9a100086233e9" prot="public" virt="virtual"><scope>SpatialTreeAnimal</scope><name>postBreeding</name></member>
+      <member refid="class_animal_non_statistical_1a775f692009ef1f4c07bd6317c231089c" prot="protected" virt="non-virtual"><scope>SpatialTreeAnimal</scope><name>potencialPrey</name></member>
+      <member refid="class_animal_non_statistical_1afccf0b8bb0606e3b6e2c813a91d5a3d2" prot="public" virt="non-virtual"><scope>SpatialTreeAnimal</scope><name>predate</name></member>
+      <member refid="class_animal_non_statistical_1a9809e5d2da28a8ffb2fefc7d0143f5b1" prot="protected" virt="non-virtual"><scope>SpatialTreeAnimal</scope><name>predatedByID</name></member>
+      <member refid="class_animal_non_statistical_1ae0e54d787a712f110c1c9bc20e825eeb" prot="protected" virt="non-virtual"><scope>SpatialTreeAnimal</scope><name>predationEncountersCurrentDay</name></member>
+      <member refid="class_animal_non_statistical_1a066ef8fbd981a4e5aca6dd07cd819303" prot="protected" virt="non-virtual"><scope>SpatialTreeAnimal</scope><name>previousNetGrowth</name></member>
+      <member refid="class_animal_non_statistical_1ac29f0a6f14928416fce3046b5136503e" prot="public" virt="virtual"><scope>SpatialTreeAnimal</scope><name>printTraits</name></member>
+      <member refid="class_animal_non_statistical_1a2adece33fb7db909ef5ebb5d5d1e5b89" prot="public" virt="virtual"><scope>SpatialTreeAnimal</scope><name>printVoracities</name></member>
+      <member refid="class_animal_non_statistical_1acd45175bd0ebf3a350dc0dc071acbb79" prot="protected" virt="non-virtual"><scope>SpatialTreeAnimal</scope><name>removeCurrentPrey</name></member>
+      <member refid="class_animal_non_statistical_1aa433bb0bb058046649b6c9212f3d317e" prot="protected" virt="non-virtual"><scope>SpatialTreeAnimal</scope><name>reproCounter</name></member>
+      <member refid="class_animal_non_statistical_1a1bd85735a3e430f5f049f0a8249d4fae" prot="public" virt="non-virtual"><scope>SpatialTreeAnimal</scope><name>resetControlVariables</name></member>
+      <member refid="class_spatial_tree_animal_1a97098bc739a4bbf51b51d830bd8a878a" prot="protected" virt="non-virtual"><scope>SpatialTreeAnimal</scope><name>routeCostPolicy</name></member>
+      <member refid="class_spatial_tree_animal_1a1c7b6e7a7b1f112445b328bf84aa6825" prot="protected" virt="non-virtual"><scope>SpatialTreeAnimal</scope><name>routeDestinationSelectionPolicy</name></member>
+      <member refid="class_spatial_tree_animal_1a3b4277087a848b2b928fd6bd6e0a62e7" prot="protected" virt="non-virtual"><scope>SpatialTreeAnimal</scope><name>routeFollowingPolicy</name></member>
+      <member refid="class_spatial_tree_animal_1a6ba0810b3d488584c6daa8c37245b007" prot="protected" virt="non-virtual"><scope>SpatialTreeAnimal</scope><name>routePlanner</name></member>
+      <member refid="class_animal_non_statistical_1a70437b66cc6f71d9530011884ddc5262" prot="protected" virt="non-virtual"><scope>SpatialTreeAnimal</scope><name>sated</name></member>
+      <member refid="class_animal_non_statistical_1a640dc6c9ad52e8333eada6284cb85911" prot="protected" virt="non-virtual"><scope>SpatialTreeAnimal</scope><name>scopeAreaRadius</name></member>
+      <member refid="class_animal_non_statistical_1a68e33d3752e13aadf1a074477470915f" prot="public" virt="non-virtual"><scope>SpatialTreeAnimal</scope><name>searchAnimalsAndResourceToEat</name></member>
+      <member refid="class_animal_non_statistical_1aebdc84417ffe42a74db32d843077801e" prot="public" virt="non-virtual"><scope>SpatialTreeAnimal</scope><name>searchAnimalToBreed</name></member>
+      <member refid="class_animal_non_statistical_1a7cc982f28ec2ccd4c05abea13712f13f" prot="protected" virt="non-virtual"><scope>SpatialTreeAnimal</scope><name>searchAreaRadius</name></member>
+      <member refid="class_spatial_tree_animal_1a0b43b08743250fc28c49f8ee812de5c5" prot="protected" virt="virtual"><scope>SpatialTreeAnimal</scope><name>searchTargetToTravelTo</name></member>
+      <member refid="class_spatial_tree_animal_1a9247d49f29397a17aa7c719117d1365f" prot="public" virt="non-virtual"><scope>SpatialTreeAnimal</scope><name>serialize</name></member>
+      <member refid="class_animal_non_statistical_1ab3af51174a79fa148ea52fd4e8b44adc" prot="public" virt="non-virtual"><scope>SpatialTreeAnimal</scope><name>setAgeOfLastMoultOrReproduction</name></member>
+      <member refid="class_animal_non_statistical_1afb1157eb8eaac6c868b977ca44fe8fea" prot="protected" virt="non-virtual"><scope>SpatialTreeAnimal</scope><name>setAtDestination</name></member>
+      <member refid="class_animal_non_statistical_1a601650b5b6b19065540650ebf8634489" prot="protected" virt="non-virtual"><scope>SpatialTreeAnimal</scope><name>setCurrentPrey</name></member>
+      <member refid="class_animal_non_statistical_1afc7eee1af9c21b188f904d2b5e346c1e" prot="public" virt="virtual"><scope>SpatialTreeAnimal</scope><name>setDateOfDeath</name></member>
+      <member refid="class_spatial_tree_animal_1a75fe01c611aafbd878f5f206d029f599" prot="public" virt="non-virtual"><scope>SpatialTreeAnimal</scope><name>setDestinationSelectionPolicy</name></member>
+      <member refid="class_animal_non_statistical_1a02b27e1427742a47b4db4bbd628ff57e" prot="public" virt="virtual"><scope>SpatialTreeAnimal</scope><name>setGenomeFromMatedMale</name></member>
+      <member refid="class_animal_non_statistical_1a1b35ae8031c64c67cfe5fd5ffab365fc" prot="public" virt="non-virtual"><scope>SpatialTreeAnimal</scope><name>setInBreedingZone</name></member>
+      <member refid="class_animal_non_statistical_1a948d757bf817bbdd6735972e37924670" prot="protected" virt="non-virtual"><scope>SpatialTreeAnimal</scope><name>setInHabitatShiftAfterBreeding</name></member>
+      <member refid="class_animal_non_statistical_1ab7f3a5a9edeea320251357e5d0e330f5" prot="protected" virt="non-virtual"><scope>SpatialTreeAnimal</scope><name>setInHabitatShiftBeforeBreeding</name></member>
+      <member refid="class_animal_non_statistical_1abc245e1ddb27986866de740567400535" prot="public" virt="non-virtual"><scope>SpatialTreeAnimal</scope><name>setInitialPreferences</name></member>
+      <member refid="class_animal_non_statistical_1af50a6ab709d1b58bcc69401288bf363f" prot="public" virt="non-virtual"><scope>SpatialTreeAnimal</scope><name>setInstarToEvaluateCells</name></member>
+      <member refid="class_animal_non_statistical_1ad76d3d5c5c52758a2c93abf9cbe3da5c" prot="public" virt="non-virtual"><scope>SpatialTreeAnimal</scope><name>setMaximumCellEvaluation</name></member>
+      <member refid="class_animal_non_statistical_1a1beb73b8b39a97a72199169c8cc16b14" prot="public" virt="virtual"><scope>SpatialTreeAnimal</scope><name>setNewLifeStage</name></member>
+      <member refid="class_animal_non_statistical_1a777f064b43b6273f7c7ec2e48cb3606c" prot="public" virt="virtual"><scope>SpatialTreeAnimal</scope><name>setNewLifeStage</name></member>
+      <member refid="class_animal_non_statistical_1a32c209dd6e1b83bb001ca1165467c8ec" prot="public" virt="virtual"><scope>SpatialTreeAnimal</scope><name>setNewLifeStage</name></member>
+      <member refid="class_animal_non_statistical_1a62528422f421dcf4ae3ccc4cfe915909" prot="protected" virt="non-virtual"><scope>SpatialTreeAnimal</scope><name>setOtherAttributes</name></member>
+      <member refid="class_animal_1ab785f02af7406b949885216db5cfcae9" prot="public" virt="non-virtual"><scope>SpatialTreeAnimal</scope><name>setPosition</name></member>
+      <member refid="class_animal_1a6efd9361684e8513016ff2cf317ba56e" prot="public" virt="non-virtual"><scope>SpatialTreeAnimal</scope><name>setPosition</name></member>
+      <member refid="class_animal_non_statistical_1a6a2d2c576455d0460ae5a66b01443a5c" prot="public" virt="non-virtual"><scope>SpatialTreeAnimal</scope><name>setPredatedByID</name></member>
+      <member refid="class_spatial_tree_animal_1aa7f3c86cddfdcb293d98806789c83290" prot="public" virt="non-virtual"><scope>SpatialTreeAnimal</scope><name>setRouteCostPolicy</name></member>
+      <member refid="class_spatial_tree_animal_1ad82881fff5fb34edd0613bc460353b13" prot="public" virt="non-virtual"><scope>SpatialTreeAnimal</scope><name>setRouteDestinationSelectionPolicy</name></member>
+      <member refid="class_spatial_tree_animal_1af1eeecf3cc8e1f17585756f799c6ed9e" prot="public" virt="non-virtual"><scope>SpatialTreeAnimal</scope><name>setRouteFollowingPolicy</name></member>
+      <member refid="class_spatial_tree_animal_1a78898b64a32ff46f4ae355a953882362" prot="public" virt="non-virtual"><scope>SpatialTreeAnimal</scope><name>setRoutePlanner</name></member>
+      <member refid="class_animal_non_statistical_1a84681826d156e6b2abfe6078a0265864" prot="protected" virt="non-virtual"><scope>SpatialTreeAnimal</scope><name>setScopeAreaRadius</name></member>
+      <member refid="class_animal_non_statistical_1ab166e4abcb413138fa5cb4ee7158a997" prot="public" virt="virtual"><scope>SpatialTreeAnimal</scope><name>setSpecies</name></member>
+      <member refid="class_animal_non_statistical_1a1649262e046769c67f0c78378be86de9" prot="protected" virt="virtual"><scope>SpatialTreeAnimal</scope><name>setSpeciesGrowth</name></member>
+      <member refid="class_animal_non_statistical_1a82a1c58c17ad776e71973a6b3c0ab369" prot="protected" virt="non-virtual"><scope>SpatialTreeAnimal</scope><name>setTargetNeighborToTravelTo</name></member>
+      <member refid="class_edible_1aacd97af4f965dadd80be8cc711829f77" prot="public" virt="virtual"><scope>SpatialTreeAnimal</scope><name>setTerrainCell</name></member>
+      <member refid="class_animal_1a0d1644086e4f62fe31074b798607e8ed" prot="protected" virt="non-virtual"><scope>SpatialTreeAnimal</scope><name>signature</name></member>
+      <member refid="class_spatial_tree_animal_1a0e0f61ee5219af98cd7c87347ac6544e" prot="public" virt="non-virtual"><scope>SpatialTreeAnimal</scope><name>SpatialTreeAnimal</name></member>
+      <member refid="class_spatial_tree_animal_1a2f7e058db9ade3423fa5566f2e3f8e05" prot="public" virt="non-virtual"><scope>SpatialTreeAnimal</scope><name>SpatialTreeAnimal</name></member>
+      <member refid="class_spatial_tree_animal_1a310096ee48eb83d4f5fc3a4ec59848fe" prot="public" virt="non-virtual"><scope>SpatialTreeAnimal</scope><name>SpatialTreeAnimal</name></member>
+      <member refid="class_spatial_tree_animal_1a40252b345907baec72f0ed7d06c09235" prot="public" virt="non-virtual"><scope>SpatialTreeAnimal</scope><name>SpatialTreeAnimal</name></member>
+      <member refid="class_spatial_tree_animal_1a22eb531026f3bac222fa50a2e7155756" prot="public" virt="non-virtual"><scope>SpatialTreeAnimal</scope><name>SpatialTreeAnimal</name></member>
+      <member refid="class_animal_non_statistical_1ae0a1481891649d60fd2b1ebbcee8cdca" prot="protected" virt="non-virtual"><scope>SpatialTreeAnimal</scope><name>speed</name></member>
+      <member refid="class_animal_non_statistical_1a0568c6924e81f8e90c3c5eb662e71786" prot="protected" virt="non-virtual"><scope>SpatialTreeAnimal</scope><name>stepsAttempted</name></member>
+      <member refid="class_animal_non_statistical_1ae37d5d1d8bd9199e14302926d4e454ee" prot="protected" virt="non-virtual"><scope>SpatialTreeAnimal</scope><name>targetNeighborToTravelTo</name></member>
+      <member refid="class_edible_1a035e2c46b32ea4e77f457a8c114106c7" prot="protected" virt="non-virtual"><scope>SpatialTreeAnimal</scope><name>terrainCell</name></member>
+      <member refid="class_animal_non_statistical_1a69f9878c8fc83fc3187da301fdc5fe6b" prot="protected" virt="non-virtual"><scope>SpatialTreeAnimal</scope><name>timeStepsWithoutFood</name></member>
+      <member refid="class_animal_non_statistical_1a67f55e67e2c5f02724dfae56470be395" prot="protected" virt="non-virtual"><scope>SpatialTreeAnimal</scope><name>totalPredationEncounters</name></member>
+      <member refid="class_animal_non_statistical_1a3b843b869abc89c4183562ec45b459db" prot="public" virt="virtual"><scope>SpatialTreeAnimal</scope><name>transferAssimilatedFoodToEnergyTank</name></member>
+      <member refid="class_animal_non_statistical_1ae20ebfd779ff659eb97d3d7555944f92" prot="public" virt="virtual"><scope>SpatialTreeAnimal</scope><name>tune</name></member>
+      <member refid="class_animal_non_statistical_1a1a58892f27e8c2395c79d673cb1749d6" prot="public" virt="virtual"><scope>SpatialTreeAnimal</scope><name>turnIntoDryMass</name></member>
+      <member refid="class_animal_non_statistical_1a75b7a952c3c50d77d0f0d87a6721769a" prot="protected" virt="non-virtual"><scope>SpatialTreeAnimal</scope><name>unbornTimeSteps</name></member>
+      <member refid="class_animal_1a67af488e90ea55012e1a2e9be0a9a7d8" prot="public" virt="non-virtual"><scope>SpatialTreeAnimal</scope><name>updateSignature</name></member>
+      <member refid="class_animal_non_statistical_1a4684890a3b878a680ab3b3cdc033f6b9" prot="public" virt="non-virtual"><scope>SpatialTreeAnimal</scope><name>updateTimeStepsWithoutFood</name></member>
+      <member refid="class_animal_non_statistical_1a432993c323d38ec513fbd19f89c7f457" prot="public" virt="non-virtual"><scope>SpatialTreeAnimal</scope><name>updateVariablesAssociatedWithInstar</name></member>
+      <member refid="class_animal_non_statistical_1a03f4e1e90650cb9e8c02c966d505d146" prot="protected" virt="non-virtual"><scope>SpatialTreeAnimal</scope><name>voracity</name></member>
+      <member refid="class_animal_1a16d8b7f94611cc65f5cdb58cc105527b" prot="public" virt="virtual"><scope>SpatialTreeAnimal</scope><name>~Animal</name></member>
+      <member refid="class_animal_non_statistical_1a2eefba39700bdbbe9e82230c118b1de8" prot="public" virt="virtual"><scope>SpatialTreeAnimal</scope><name>~AnimalNonStatistical</name></member>
+      <member refid="class_edible_1a8645217fd9d754597e5398be80f03094" prot="public" virt="virtual"><scope>SpatialTreeAnimal</scope><name>~Edible</name></member>
+      <member refid="class_spatial_tree_animal_1a1aa60ed7b054378677b29d03694a5420" prot="public" virt="virtual"><scope>SpatialTreeAnimal</scope><name>~SpatialTreeAnimal</name></member>
+    </listofallmembers>
+  </compounddef>
+</doxygen>

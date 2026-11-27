@@ -1,0 +1,114 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.18.0" xml:lang="en-US">
+  <compounddef id="_checkbox_8h" kind="file" language="C++">
+    <compoundname>Checkbox.h</compoundname>
+    <includes local="no">nana/gui.hpp</includes>
+    <includes local="no">nana/gui/widgets/label.hpp</includes>
+    <includes local="no">nana/gui/widgets/panel.hpp</includes>
+    <includes local="no">nana/gui/widgets/checkbox.hpp</includes>
+    <includes local="no">nana/gui/place.hpp</includes>
+    <includes local="no">vector</includes>
+    <includes local="no">string</includes>
+    <includedby refid="_g_u_i_8h" local="yes">App/View/GUI/GUI.h</includedby>
+    <incdepgraph>
+      <node id="1">
+        <label>App/View/GUI/Widgets/Checkbox.h</label>
+        <link refid="_checkbox_8h"/>
+        <childnode refid="2" relation="include">
+        </childnode>
+        <childnode refid="3" relation="include">
+        </childnode>
+        <childnode refid="4" relation="include">
+        </childnode>
+        <childnode refid="5" relation="include">
+        </childnode>
+        <childnode refid="6" relation="include">
+        </childnode>
+        <childnode refid="7" relation="include">
+        </childnode>
+        <childnode refid="8" relation="include">
+        </childnode>
+      </node>
+      <node id="2">
+        <label>nana/gui.hpp</label>
+      </node>
+      <node id="6">
+        <label>nana/gui/place.hpp</label>
+      </node>
+      <node id="5">
+        <label>nana/gui/widgets/checkbox.hpp</label>
+      </node>
+      <node id="3">
+        <label>nana/gui/widgets/label.hpp</label>
+      </node>
+      <node id="4">
+        <label>nana/gui/widgets/panel.hpp</label>
+      </node>
+      <node id="8">
+        <label>string</label>
+      </node>
+      <node id="7">
+        <label>vector</label>
+      </node>
+    </incdepgraph>
+    <invincdepgraph>
+      <node id="2">
+        <label>App/View/GUI/GUI.h</label>
+        <link refid="_g_u_i_8h_source"/>
+      </node>
+      <node id="1">
+        <label>App/View/GUI/Widgets/Checkbox.h</label>
+        <link refid="_checkbox_8h"/>
+        <childnode refid="2" relation="include">
+        </childnode>
+      </node>
+    </invincdepgraph>
+    <innerclass refid="class_checkbox" prot="public">Checkbox</innerclass>
+    <briefdescription>
+<para>Defines a custom <ref refid="class_checkbox" kindref="compound">Checkbox</ref> widget combining a label and a checkbox. </para>
+    </briefdescription>
+    <detaileddescription>
+<para>This file contains the declaration of the <ref refid="class_checkbox" kindref="compound">Checkbox</ref> class, a <ref refid="class_g_u_i" kindref="compound">GUI</ref> widget built using the Nana library. It provides a labeled checkbox for user interaction in forms or panels. </para>
+    </detaileddescription>
+    <programlisting>
+<codeline lineno="1"><highlight class="normal"></highlight></codeline>
+<codeline lineno="9"><highlight class="normal"></highlight></codeline>
+<codeline lineno="10"><highlight class="normal"></highlight><highlight class="preprocessor">#ifndef<sp/>CHECKBOX_H_</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="11"><highlight class="normal"></highlight><highlight class="preprocessor">#define<sp/>CHECKBOX_H_</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="12"><highlight class="normal"></highlight></codeline>
+<codeline lineno="13"><highlight class="normal"></highlight></codeline>
+<codeline lineno="14"><highlight class="normal"></highlight></codeline>
+<codeline lineno="15"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&lt;nana/gui.hpp&gt;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="16"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&lt;nana/gui/widgets/label.hpp&gt;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="17"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&lt;nana/gui/widgets/panel.hpp&gt;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="18"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&lt;nana/gui/widgets/checkbox.hpp&gt;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="19"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&lt;nana/gui/place.hpp&gt;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="20"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&lt;vector&gt;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="21"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&lt;string&gt;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="22"><highlight class="normal"></highlight></codeline>
+<codeline lineno="23"><highlight class="normal"></highlight></codeline>
+<codeline lineno="24"><highlight class="normal"></highlight></codeline>
+<codeline lineno="33" refid="class_checkbox" refkind="compound"><highlight class="normal"></highlight><highlight class="keyword">class<sp/></highlight><highlight class="normal"><ref refid="class_checkbox_1aaa8ea6bbca6f80f68e96190dc966ca9f" kindref="member">Checkbox</ref><sp/>:<sp/></highlight><highlight class="keyword">public</highlight><highlight class="normal"><sp/>nana::panel&lt;true&gt;<sp/>{</highlight></codeline>
+<codeline lineno="34"><highlight class="normal"></highlight><highlight class="keyword">public</highlight><highlight class="normal">:</highlight></codeline>
+<codeline lineno="41" refid="class_checkbox_1aaa8ea6bbca6f80f68e96190dc966ca9f" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="class_checkbox_1aaa8ea6bbca6f80f68e96190dc966ca9f" kindref="member">Checkbox</ref>(nana::window<sp/>parent,<sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/>std::string&amp;<sp/>labelText,<sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordtype">bool</highlight><highlight class="normal"><sp/>defaultValue);</highlight></codeline>
+<codeline lineno="42"><highlight class="normal"></highlight></codeline>
+<codeline lineno="46" refid="class_checkbox_1a7aefc53807ff5fa08e7719330d6db83b" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">virtual</highlight><highlight class="normal"><sp/><ref refid="class_checkbox_1a7aefc53807ff5fa08e7719330d6db83b" kindref="member">~Checkbox</ref>();</highlight></codeline>
+<codeline lineno="47"><highlight class="normal"></highlight></codeline>
+<codeline lineno="48"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="comment">//<sp/>Disable<sp/>copy<sp/>constructor<sp/>and<sp/>assignment</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="49"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="class_checkbox_1aaa8ea6bbca6f80f68e96190dc966ca9f" kindref="member">Checkbox</ref>(</highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/><ref refid="class_checkbox_1aaa8ea6bbca6f80f68e96190dc966ca9f" kindref="member">Checkbox</ref>&amp;<sp/>other)<sp/>=<sp/></highlight><highlight class="keyword">delete</highlight><highlight class="normal">;</highlight></codeline>
+<codeline lineno="50"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="class_checkbox_1aaa8ea6bbca6f80f68e96190dc966ca9f" kindref="member">Checkbox</ref>&amp;<sp/>operator=(</highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/><ref refid="class_checkbox_1aaa8ea6bbca6f80f68e96190dc966ca9f" kindref="member">Checkbox</ref>&amp;<sp/>other)<sp/>=<sp/></highlight><highlight class="keyword">delete</highlight><highlight class="normal">;</highlight></codeline>
+<codeline lineno="51"><highlight class="normal"></highlight></codeline>
+<codeline lineno="56" refid="class_checkbox_1a7a74a35d1b49e3b5ab88a3c056eabd33" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">bool</highlight><highlight class="normal"><sp/><ref refid="class_checkbox_1a7a74a35d1b49e3b5ab88a3c056eabd33" kindref="member">checked</ref>()<sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal">;</highlight></codeline>
+<codeline lineno="57"><highlight class="normal"></highlight></codeline>
+<codeline lineno="58"><highlight class="normal"></highlight><highlight class="keyword">protected</highlight><highlight class="normal">:</highlight></codeline>
+<codeline lineno="59" refid="class_checkbox_1a9f69957c4a1036e5d1707588f7b94170" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/>nana::place<sp/><ref refid="class_checkbox_1a9f69957c4a1036e5d1707588f7b94170" kindref="member">layout</ref>{*</highlight><highlight class="keyword">this</highlight><highlight class="normal">};<sp/><sp/><sp/></highlight></codeline>
+<codeline lineno="60" refid="class_checkbox_1a8f492cf95de6ecfa8d0aff1f80307359" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/>nana::label<sp/><ref refid="class_checkbox_1a8f492cf95de6ecfa8d0aff1f80307359" kindref="member">label</ref>{*</highlight><highlight class="keyword">this</highlight><highlight class="normal">};<sp/><sp/><sp/><sp/></highlight></codeline>
+<codeline lineno="61" refid="class_checkbox_1aac990bceb251554de2a5c7dc082129c6" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/>nana::checkbox<sp/><ref refid="class_checkbox_1aac990bceb251554de2a5c7dc082129c6" kindref="member">checkbox</ref>{*</highlight><highlight class="keyword">this</highlight><highlight class="normal">};<sp/></highlight></codeline>
+<codeline lineno="62"><highlight class="normal">};</highlight></codeline>
+<codeline lineno="63"><highlight class="normal"></highlight></codeline>
+<codeline lineno="64"><highlight class="normal"></highlight></codeline>
+<codeline lineno="65"><highlight class="normal"></highlight><highlight class="preprocessor">#endif<sp/></highlight><highlight class="comment">//<sp/>CHECKBOX_H_</highlight><highlight class="normal"></highlight></codeline>
+    </programlisting>
+    <location file="App/View/GUI/Widgets/Checkbox.h"/>
+  </compounddef>
+</doxygen>

@@ -1,0 +1,197 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.18.0" xml:lang="en-US">
+  <compounddef id="class_spinbox" kind="class" language="C++" prot="public">
+    <compoundname>Spinbox</compoundname>
+    <basecompoundref prot="public" virt="non-virtual">nana::panel&lt; true &gt;</basecompoundref>
+    <sectiondef kind="protected-attrib">
+      <memberdef kind="variable" id="class_spinbox_1ad5f5ea8cc10697249df6c94ffd308828" prot="protected" static="no" mutable="no">
+        <type>nana::label</type>
+        <definition>nana::label Spinbox::label</definition>
+        <argsstring></argsstring>
+        <name>label</name>
+        <qualifiedname>Spinbox::label</qualifiedname>
+        <initializer>{ *this }</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="App/View/GUI/Widgets/Spinbox.h" line="30" column="17" bodyfile="App/View/GUI/Widgets/Spinbox.h" bodystart="30" bodyend="30"/>
+      </memberdef>
+      <memberdef kind="variable" id="class_spinbox_1a98853b3cec191079ed209f24b5a38a0e" prot="protected" static="no" mutable="no">
+        <type>nana::place</type>
+        <definition>nana::place Spinbox::layout</definition>
+        <argsstring></argsstring>
+        <name>layout</name>
+        <qualifiedname>Spinbox::layout</qualifiedname>
+        <initializer>{ *this }</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="App/View/GUI/Widgets/Spinbox.h" line="29" column="17" bodyfile="App/View/GUI/Widgets/Spinbox.h" bodystart="29" bodyend="29"/>
+      </memberdef>
+      <memberdef kind="variable" id="class_spinbox_1a08880af000873a50eed80ffc44224997" prot="protected" static="no" mutable="no">
+        <type>unsigned int</type>
+        <definition>unsigned int Spinbox::maxValue</definition>
+        <argsstring></argsstring>
+        <name>maxValue</name>
+        <qualifiedname>Spinbox::maxValue</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Maximum value for the spinbox </para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="App/View/GUI/Widgets/Spinbox.h" line="33" column="14" bodyfile="App/View/GUI/Widgets/Spinbox.h" bodystart="33" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="class_spinbox_1a093b2ff7e746fc1b7a2b39c81c35651c" prot="protected" static="no" mutable="no">
+        <type>nana::spinbox</type>
+        <definition>nana::spinbox Spinbox::spinbox</definition>
+        <argsstring></argsstring>
+        <name>spinbox</name>
+        <qualifiedname>Spinbox::spinbox</qualifiedname>
+        <initializer>{ *this }</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="App/View/GUI/Widgets/Spinbox.h" line="31" column="19" bodyfile="App/View/GUI/Widgets/Spinbox.h" bodystart="31" bodyend="31"/>
+      </memberdef>
+      <memberdef kind="variable" id="class_spinbox_1a4a4497aec8a3aed74309d93ae9d878ca" prot="protected" static="no" mutable="no">
+        <type>unsigned int</type>
+        <definition>unsigned int Spinbox::stepValue</definition>
+        <argsstring></argsstring>
+        <name>stepValue</name>
+        <qualifiedname>Spinbox::stepValue</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Step value for the spinbox </para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="App/View/GUI/Widgets/Spinbox.h" line="34" column="14" bodyfile="App/View/GUI/Widgets/Spinbox.h" bodystart="34" bodyend="-1"/>
+      </memberdef>
+    </sectiondef>
+    <sectiondef kind="public-func">
+      <memberdef kind="function" id="class_spinbox_1aa26e3983ab65bd9be4bdb4f730202c43" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type></type>
+        <definition>Spinbox::Spinbox</definition>
+        <argsstring>(const Spinbox &amp;other)=delete</argsstring>
+        <name>Spinbox</name>
+        <qualifiedname>Spinbox::Spinbox</qualifiedname>
+        <param>
+          <type>const Spinbox &amp;</type>
+          <declname>other</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="App/View/GUI/Widgets/Spinbox.h" line="23" column="5"/>
+      </memberdef>
+      <memberdef kind="function" id="class_spinbox_1acf5d1f441ed3b48d7d41386c3cae965a" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type></type>
+        <definition>Spinbox::Spinbox</definition>
+        <argsstring>(nana::window parent, const std::string &amp;labelText, unsigned int maxValue, unsigned int stepValue)</argsstring>
+        <name>Spinbox</name>
+        <qualifiedname>Spinbox::Spinbox</qualifiedname>
+        <param>
+          <type>nana::window</type>
+          <declname>parent</declname>
+        </param>
+        <param>
+          <type>const std::string &amp;</type>
+          <declname>labelText</declname>
+        </param>
+        <param>
+          <type>unsigned int</type>
+          <declname>maxValue</declname>
+        </param>
+        <param>
+          <type>unsigned int</type>
+          <declname>stepValue</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="App/View/GUI/Widgets/Spinbox.h" line="18" column="5"/>
+      </memberdef>
+      <memberdef kind="function" id="class_spinbox_1a9fc166eee625223c0a4b1cca36c47275" prot="public" static="no" const="no" explicit="no" inline="no" virt="virtual">
+        <type></type>
+        <definition>virtual Spinbox::~Spinbox</definition>
+        <argsstring>()</argsstring>
+        <name>~Spinbox</name>
+        <qualifiedname>Spinbox::~Spinbox</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="App/View/GUI/Widgets/Spinbox.h" line="20" column="13"/>
+      </memberdef>
+      <memberdef kind="function" id="class_spinbox_1a0773500f71ff6c6ba12fb4560aff9f38" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>Spinbox &amp;</type>
+        <definition>Spinbox &amp; Spinbox::operator=</definition>
+        <argsstring>(const Spinbox &amp;other)=delete</argsstring>
+        <name>operator=</name>
+        <qualifiedname>Spinbox::operator=</qualifiedname>
+        <param>
+          <type>const Spinbox &amp;</type>
+          <declname>other</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="App/View/GUI/Widgets/Spinbox.h" line="24" column="13"/>
+      </memberdef>
+      <memberdef kind="function" id="class_spinbox_1ab273c9ebdf904d68919a046e53347e98" prot="public" static="no" const="yes" explicit="no" inline="no" virt="non-virtual">
+        <type>unsigned int</type>
+        <definition>unsigned int Spinbox::value</definition>
+        <argsstring>() const</argsstring>
+        <name>value</name>
+        <qualifiedname>Spinbox::value</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="App/View/GUI/Widgets/Spinbox.h" line="26" column="18"/>
+      </memberdef>
+    </sectiondef>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+    </detaileddescription>
+    <location file="App/View/GUI/Widgets/Spinbox.h" line="16" column="1" bodyfile="App/View/GUI/Widgets/Spinbox.h" bodystart="16" bodyend="35"/>
+    <listofallmembers>
+      <member refid="class_spinbox_1ad5f5ea8cc10697249df6c94ffd308828" prot="protected" virt="non-virtual"><scope>Spinbox</scope><name>label</name></member>
+      <member refid="class_spinbox_1a98853b3cec191079ed209f24b5a38a0e" prot="protected" virt="non-virtual"><scope>Spinbox</scope><name>layout</name></member>
+      <member refid="class_spinbox_1a08880af000873a50eed80ffc44224997" prot="protected" virt="non-virtual"><scope>Spinbox</scope><name>maxValue</name></member>
+      <member refid="class_spinbox_1a0773500f71ff6c6ba12fb4560aff9f38" prot="public" virt="non-virtual"><scope>Spinbox</scope><name>operator=</name></member>
+      <member refid="class_spinbox_1acf5d1f441ed3b48d7d41386c3cae965a" prot="public" virt="non-virtual"><scope>Spinbox</scope><name>Spinbox</name></member>
+      <member refid="class_spinbox_1aa26e3983ab65bd9be4bdb4f730202c43" prot="public" virt="non-virtual"><scope>Spinbox</scope><name>Spinbox</name></member>
+      <member refid="class_spinbox_1a093b2ff7e746fc1b7a2b39c81c35651c" prot="protected" virt="non-virtual"><scope>Spinbox</scope><name>spinbox</name></member>
+      <member refid="class_spinbox_1a4a4497aec8a3aed74309d93ae9d878ca" prot="protected" virt="non-virtual"><scope>Spinbox</scope><name>stepValue</name></member>
+      <member refid="class_spinbox_1ab273c9ebdf904d68919a046e53347e98" prot="public" virt="non-virtual"><scope>Spinbox</scope><name>value</name></member>
+      <member refid="class_spinbox_1a9fc166eee625223c0a4b1cca36c47275" prot="public" virt="virtual"><scope>Spinbox</scope><name>~Spinbox</name></member>
+    </listofallmembers>
+  </compounddef>
+</doxygen>

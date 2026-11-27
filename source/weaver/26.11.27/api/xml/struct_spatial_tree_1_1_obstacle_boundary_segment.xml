@@ -1,0 +1,90 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.18.0" xml:lang="en-US">
+  <compounddef id="struct_spatial_tree_1_1_obstacle_boundary_segment" kind="struct" language="C++" prot="protected">
+    <compoundname>SpatialTree::ObstacleBoundarySegment</compoundname>
+    <sectiondef kind="public-attrib">
+      <memberdef kind="variable" id="struct_spatial_tree_1_1_obstacle_boundary_segment_1a4ca9d7c28a7ceb4b165fb548374a6885" prot="public" static="no" mutable="no">
+        <type>size_t</type>
+        <definition>size_t SpatialTree::ObstacleBoundarySegment::endCoordinate</definition>
+        <argsstring></argsstring>
+        <name>endCoordinate</name>
+        <qualifiedname>SpatialTree::ObstacleBoundarySegment::endCoordinate</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="App/Model/IBM/Landscape/Map/SpatialTree.h" line="67" column="16" bodyfile="App/Model/IBM/Landscape/Map/SpatialTree.h" bodystart="67" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="struct_spatial_tree_1_1_obstacle_boundary_segment_1adc6125283c626cdd1a10024823b173d6" prot="public" static="no" mutable="no">
+        <type>size_t</type>
+        <definition>size_t SpatialTree::ObstacleBoundarySegment::fixedCoordinate</definition>
+        <argsstring></argsstring>
+        <name>fixedCoordinate</name>
+        <qualifiedname>SpatialTree::ObstacleBoundarySegment::fixedCoordinate</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="App/Model/IBM/Landscape/Map/SpatialTree.h" line="65" column="16" bodyfile="App/Model/IBM/Landscape/Map/SpatialTree.h" bodystart="65" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="struct_spatial_tree_1_1_obstacle_boundary_segment_1a0aad58b09779ece684a65ca67152e150" prot="public" static="no" mutable="no">
+        <type>bool</type>
+        <definition>bool SpatialTree::ObstacleBoundarySegment::horizontal</definition>
+        <argsstring></argsstring>
+        <name>horizontal</name>
+        <qualifiedname>SpatialTree::ObstacleBoundarySegment::horizontal</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="App/Model/IBM/Landscape/Map/SpatialTree.h" line="68" column="14" bodyfile="App/Model/IBM/Landscape/Map/SpatialTree.h" bodystart="68" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="struct_spatial_tree_1_1_obstacle_boundary_segment_1a914afa9d0daf02ed55d520028eb19040" prot="public" static="no" mutable="no">
+        <type>bool</type>
+        <definition>bool SpatialTree::ObstacleBoundarySegment::obstacleOnPositiveSide</definition>
+        <argsstring></argsstring>
+        <name>obstacleOnPositiveSide</name>
+        <qualifiedname>SpatialTree::ObstacleBoundarySegment::obstacleOnPositiveSide</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="App/Model/IBM/Landscape/Map/SpatialTree.h" line="69" column="14" bodyfile="App/Model/IBM/Landscape/Map/SpatialTree.h" bodystart="69" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="struct_spatial_tree_1_1_obstacle_boundary_segment_1a7d21836e7a894fe22572448f7900ce31" prot="public" static="no" mutable="no">
+        <type>size_t</type>
+        <definition>size_t SpatialTree::ObstacleBoundarySegment::startCoordinate</definition>
+        <argsstring></argsstring>
+        <name>startCoordinate</name>
+        <qualifiedname>SpatialTree::ObstacleBoundarySegment::startCoordinate</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="App/Model/IBM/Landscape/Map/SpatialTree.h" line="66" column="16" bodyfile="App/Model/IBM/Landscape/Map/SpatialTree.h" bodystart="66" bodyend="-1"/>
+      </memberdef>
+    </sectiondef>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+    </detaileddescription>
+    <location file="App/Model/IBM/Landscape/Map/SpatialTree.h" line="63" column="5" bodyfile="App/Model/IBM/Landscape/Map/SpatialTree.h" bodystart="64" bodyend="70"/>
+    <listofallmembers>
+      <member refid="struct_spatial_tree_1_1_obstacle_boundary_segment_1a4ca9d7c28a7ceb4b165fb548374a6885" prot="public" virt="non-virtual"><scope>SpatialTree::ObstacleBoundarySegment</scope><name>endCoordinate</name></member>
+      <member refid="struct_spatial_tree_1_1_obstacle_boundary_segment_1adc6125283c626cdd1a10024823b173d6" prot="public" virt="non-virtual"><scope>SpatialTree::ObstacleBoundarySegment</scope><name>fixedCoordinate</name></member>
+      <member refid="struct_spatial_tree_1_1_obstacle_boundary_segment_1a0aad58b09779ece684a65ca67152e150" prot="public" virt="non-virtual"><scope>SpatialTree::ObstacleBoundarySegment</scope><name>horizontal</name></member>
+      <member refid="struct_spatial_tree_1_1_obstacle_boundary_segment_1a914afa9d0daf02ed55d520028eb19040" prot="public" virt="non-virtual"><scope>SpatialTree::ObstacleBoundarySegment</scope><name>obstacleOnPositiveSide</name></member>
+      <member refid="struct_spatial_tree_1_1_obstacle_boundary_segment_1a7d21836e7a894fe22572448f7900ce31" prot="public" virt="non-virtual"><scope>SpatialTree::ObstacleBoundarySegment</scope><name>startCoordinate</name></member>
+    </listofallmembers>
+  </compounddef>
+</doxygen>

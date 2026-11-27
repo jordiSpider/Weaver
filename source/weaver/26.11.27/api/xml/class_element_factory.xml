@@ -1,0 +1,94 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.18.0" xml:lang="en-US">
+  <compounddef id="class_element_factory" kind="class" language="C++" prot="public">
+    <compoundname>ElementFactory</compoundname>
+    <includes refid="_element_factory_8h" local="no">ElementFactory.h</includes>
+    <sectiondef kind="public-static-func">
+      <memberdef kind="function" id="class_element_factory_1af729d89fd82de85c6f21c868b14409aa" prot="public" static="yes" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type><ref refid="class_element" kindref="compound">Element</ref> *</type>
+        <definition>static Element * ElementFactory::createInstance</definition>
+        <argsstring>(const Element &amp;other, const bool nullProperty)</argsstring>
+        <name>createInstance</name>
+        <qualifiedname>ElementFactory::createInstance</qualifiedname>
+        <param>
+          <type>const <ref refid="class_element" kindref="compound">Element</ref> &amp;</type>
+          <declname>other</declname>
+        </param>
+        <param>
+          <type>const bool</type>
+          <declname>nullProperty</declname>
+        </param>
+        <briefdescription>
+<para>Creates a new <ref refid="class_element" kindref="compound">Element</ref> instance by copying an existing <ref refid="class_element" kindref="compound">Element</ref>. </para>
+        </briefdescription>
+        <detaileddescription>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>other</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Reference to the <ref refid="class_element" kindref="compound">Element</ref> to copy. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>nullProperty</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>If true, the created <ref refid="class_element" kindref="compound">Element</ref> will represent a null property. </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<simplesect kind="return"><para>Pointer to the newly created <ref refid="class_element" kindref="compound">Element</ref> instance.</para>
+</simplesect>
+The created <ref refid="class_element" kindref="compound">Element</ref> is dynamically allocated and should be managed appropriately by the caller. </para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="Misc/JsonValidator/Elements/ElementFactory.h" line="56" column="20"/>
+      </memberdef>
+      <memberdef kind="function" id="class_element_factory_1a3fd76a627bb5d7517adefe03f3e06c08" prot="public" static="yes" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type><ref refid="class_element" kindref="compound">Element</ref> *</type>
+        <definition>static Element * ElementFactory::createInstance</definition>
+        <argsstring>(const nlohmann::json &amp;info)</argsstring>
+        <name>createInstance</name>
+        <qualifiedname>ElementFactory::createInstance</qualifiedname>
+        <param>
+          <type>const nlohmann::json &amp;</type>
+          <declname>info</declname>
+        </param>
+        <briefdescription>
+<para>Creates a new <ref refid="class_element" kindref="compound">Element</ref> instance based on JSON information. </para>
+        </briefdescription>
+        <detaileddescription>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>info</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>JSON object containing the information to configure the <ref refid="class_element" kindref="compound">Element</ref>. </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<simplesect kind="return"><para>Pointer to the newly created <ref refid="class_element" kindref="compound">Element</ref> instance.</para>
+</simplesect>
+The created <ref refid="class_element" kindref="compound">Element</ref> is dynamically allocated and should be managed appropriately by the caller. </para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="Misc/JsonValidator/Elements/ElementFactory.h" line="45" column="20"/>
+      </memberdef>
+    </sectiondef>
+    <briefdescription>
+<para>Factory for constructing <ref refid="class_element" kindref="compound">Element</ref> objects. </para>
+    </briefdescription>
+    <detaileddescription>
+<para>Provides static methods to create new <ref refid="class_element" kindref="compound">Element</ref> instances either from a JSON configuration or by copying an existing <ref refid="class_element" kindref="compound">Element</ref>, optionally producing a null property. </para>
+    </detaileddescription>
+    <location file="Misc/JsonValidator/Elements/ElementFactory.h" line="34" column="1" bodyfile="Misc/JsonValidator/Elements/ElementFactory.h" bodystart="35" bodyend="57"/>
+    <listofallmembers>
+      <member refid="class_element_factory_1a3fd76a627bb5d7517adefe03f3e06c08" prot="public" virt="non-virtual"><scope>ElementFactory</scope><name>createInstance</name></member>
+      <member refid="class_element_factory_1af729d89fd82de85c6f21c868b14409aa" prot="public" virt="non-virtual"><scope>ElementFactory</scope><name>createInstance</name></member>
+    </listofallmembers>
+  </compounddef>
+</doxygen>

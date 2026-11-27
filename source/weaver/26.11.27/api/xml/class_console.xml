@@ -1,0 +1,339 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.18.0" xml:lang="en-US">
+  <compounddef id="class_console" kind="class" language="C++" prot="public">
+    <compoundname>Console</compoundname>
+    <basecompoundref refid="class_view" prot="public" virt="non-virtual">View</basecompoundref>
+    <includes refid="_console_8h" local="no">Console.h</includes>
+    <sectiondef kind="protected-attrib">
+      <memberdef kind="variable" id="class_console_1afaa27bbb0f62322dd8a900c00dc70011" prot="protected" static="no" mutable="no">
+        <type>bool</type>
+        <definition>bool Console::silentMode</definition>
+        <argsstring></argsstring>
+        <name>silentMode</name>
+        <qualifiedname>Console::silentMode</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Flag indicating if the console is in silent mode </para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="App/View/Console.h" line="65" column="10" bodyfile="App/View/Console.h" bodystart="65" bodyend="-1"/>
+      </memberdef>
+    </sectiondef>
+    <sectiondef kind="public-func">
+      <memberdef kind="function" id="class_console_1a9a755f640491d4373758038167820228" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type></type>
+        <definition>Console::Console</definition>
+        <argsstring>(Model *newModel)</argsstring>
+        <name>Console</name>
+        <qualifiedname>Console::Console</qualifiedname>
+        <param>
+          <type><ref refid="class_model" kindref="compound">Model</ref> *</type>
+          <declname>newModel</declname>
+        </param>
+        <briefdescription>
+<para>Constructs a <ref refid="class_console" kindref="compound">Console</ref> object. </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="App/View/Console.h" line="46" column="5"/>
+      </memberdef>
+      <memberdef kind="function" id="class_console_1adde4537261151a8beedd8d5e8f90c60c" prot="public" static="no" const="no" explicit="no" inline="no" virt="virtual">
+        <type></type>
+        <definition>virtual Console::~Console</definition>
+        <argsstring>()</argsstring>
+        <name>~Console</name>
+        <qualifiedname>Console::~Console</qualifiedname>
+        <briefdescription>
+<para>Destructor for <ref refid="class_console" kindref="compound">Console</ref>. </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="App/View/Console.h" line="51" column="13"/>
+      </memberdef>
+      <memberdef kind="function" id="class_console_1afac4d1ff335f24d0a29a47fed3466cda" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void Console::run</definition>
+        <argsstring>(const std::string &amp;runMode, const std::string &amp;inputConfig, const std::string &amp;outputFolder, bool silent, bool verbose, bool enableDiskOutputMock, unsigned int requestedThreads)</argsstring>
+        <name>run</name>
+        <qualifiedname>Console::run</qualifiedname>
+        <param>
+          <type>const std::string &amp;</type>
+          <declname>runMode</declname>
+        </param>
+        <param>
+          <type>const std::string &amp;</type>
+          <declname>inputConfig</declname>
+        </param>
+        <param>
+          <type>const std::string &amp;</type>
+          <declname>outputFolder</declname>
+        </param>
+        <param>
+          <type>bool</type>
+          <declname>silent</declname>
+        </param>
+        <param>
+          <type>bool</type>
+          <declname>verbose</declname>
+        </param>
+        <param>
+          <type>bool</type>
+          <declname>enableDiskOutputMock</declname>
+        </param>
+        <param>
+          <type>unsigned int</type>
+          <declname>requestedThreads</declname>
+        </param>
+        <briefdescription>
+<para>Runs the simulation in console mode. </para>
+        </briefdescription>
+        <detaileddescription>
+<para>If parameters are empty, the user is prompted to provide them. <parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>runMode</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Name of the run mode. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>inputConfig</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Path to the input configuration directory. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>outputFolder</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Path to the output directory. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>silent</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>True to suppress log output; false to display logs. </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="App/View/Console.h" line="62" column="10"/>
+      </memberdef>
+    </sectiondef>
+    <sectiondef kind="protected-func">
+      <memberdef kind="function" id="class_console_1a407729096f71b2f1228fdfdbc99ec542" prot="protected" static="no" const="yes" explicit="no" inline="no" virt="non-virtual">
+        <type>bool</type>
+        <definition>bool Console::isSilentMode</definition>
+        <argsstring>() const</argsstring>
+        <name>isSilentMode</name>
+        <qualifiedname>Console::isSilentMode</qualifiedname>
+        <briefdescription>
+<para>Returns whether the console is in silent mode. </para>
+        </briefdescription>
+        <detaileddescription>
+<para><simplesect kind="return"><para>True if silent mode is active. </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="App/View/Console.h" line="71" column="10"/>
+      </memberdef>
+      <memberdef kind="function" id="class_console_1a5f54da6abd8fe86fa40ae3c54c6e8ca4" prot="protected" static="no" const="yes" explicit="no" inline="no" virt="non-virtual">
+        <type>bool</type>
+        <definition>bool Console::isValidFolderPath</definition>
+        <argsstring>(const std::filesystem::path &amp;folderPath) const</argsstring>
+        <name>isValidFolderPath</name>
+        <qualifiedname>Console::isValidFolderPath</qualifiedname>
+        <param>
+          <type>const std::filesystem::path &amp;</type>
+          <declname>folderPath</declname>
+        </param>
+        <briefdescription>
+<para>Checks if a folder path exists and is a directory. </para>
+        </briefdescription>
+        <detaileddescription>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>folderPath</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Path to validate. </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<simplesect kind="return"><para>True if the path exists and is a directory. </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="App/View/Console.h" line="84" column="10"/>
+      </memberdef>
+      <memberdef kind="function" id="class_console_1a70e809720741df7a6074d65f5495c482" prot="protected" static="no" const="yes" explicit="no" inline="no" virt="non-virtual">
+        <type>std::filesystem::path</type>
+        <definition>std::filesystem::path Console::requestInputConfig</definition>
+        <argsstring>() const</argsstring>
+        <name>requestInputConfig</name>
+        <qualifiedname>Console::requestInputConfig</qualifiedname>
+        <briefdescription>
+<para>Prompts the user to specify the input configuration folder. </para>
+        </briefdescription>
+        <detaileddescription>
+<para><simplesect kind="return"><para>Valid input configuration path. </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="App/View/Console.h" line="96" column="27"/>
+      </memberdef>
+      <memberdef kind="function" id="class_console_1ae9e453ffee5f1a32998630f619274787" prot="protected" static="no" const="yes" explicit="no" inline="no" virt="non-virtual">
+        <type>std::filesystem::path</type>
+        <definition>std::filesystem::path Console::requestOutputFolder</definition>
+        <argsstring>() const</argsstring>
+        <name>requestOutputFolder</name>
+        <qualifiedname>Console::requestOutputFolder</qualifiedname>
+        <briefdescription>
+<para>Prompts the user to specify the output folder. </para>
+        </briefdescription>
+        <detaileddescription>
+<para><simplesect kind="return"><para>Valid output folder path. </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="App/View/Console.h" line="102" column="27"/>
+      </memberdef>
+      <memberdef kind="function" id="class_console_1a753ef1e34f7e9e5cce130da312ef6d51" prot="protected" static="no" const="yes" explicit="no" inline="no" virt="non-virtual">
+        <type>bool</type>
+        <definition>bool Console::requestShowOutput</definition>
+        <argsstring>() const</argsstring>
+        <name>requestShowOutput</name>
+        <qualifiedname>Console::requestShowOutput</qualifiedname>
+        <briefdescription>
+<para>Prompts the user to specify whether to display output. </para>
+        </briefdescription>
+        <detaileddescription>
+<para><simplesect kind="return"><para>True if output should be displayed. </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="App/View/Console.h" line="90" column="10"/>
+      </memberdef>
+      <memberdef kind="function" id="class_console_1ae486c10ffe13fb417a83b1b1fbacb2ae" prot="protected" static="no" const="yes" explicit="no" inline="no" virt="non-virtual">
+        <type>unsigned int</type>
+        <definition>unsigned int Console::requestThreads</definition>
+        <argsstring>() const</argsstring>
+        <name>requestThreads</name>
+        <qualifiedname>Console::requestThreads</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="App/View/Console.h" line="104" column="18"/>
+      </memberdef>
+      <memberdef kind="function" id="class_console_1af4eda2767111e444f1793c0917b7575a" prot="protected" static="no" const="yes" explicit="no" inline="no" virt="non-virtual">
+        <type>RunMode</type>
+        <definition>RunMode Console::selectRunMode</definition>
+        <argsstring>() const</argsstring>
+        <name>selectRunMode</name>
+        <qualifiedname>Console::selectRunMode</qualifiedname>
+        <briefdescription>
+<para>Prompts the user to select a RunMode. </para>
+        </briefdescription>
+        <detaileddescription>
+<para><simplesect kind="return"><para>Selected RunMode. </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="App/View/Console.h" line="77" column="13"/>
+      </memberdef>
+    </sectiondef>
+    <briefdescription>
+<para>Console-based implementation of the <ref refid="class_view" kindref="compound">View</ref> interface. </para>
+    </briefdescription>
+    <detaileddescription>
+<para>Allows interaction with the user via standard input/output to select run modes, input/output paths, and whether to display simulation output. Executes simulations using the associated model and prints logs. </para>
+    </detaileddescription>
+    <inheritancegraph>
+      <node id="1">
+        <label>Console</label>
+        <link refid="class_console"/>
+        <childnode refid="2" relation="public-inheritance">
+        </childnode>
+      </node>
+      <node id="2">
+        <label>View</label>
+        <link refid="class_view"/>
+      </node>
+    </inheritancegraph>
+    <collaborationgraph>
+      <node id="1">
+        <label>Console</label>
+        <link refid="class_console"/>
+        <childnode refid="2" relation="public-inheritance">
+        </childnode>
+      </node>
+      <node id="4">
+        <label>CustomIndexedVector&lt; RunMode, std::string &gt;</label>
+        <link refid="class_custom_indexed_vector"/>
+      </node>
+      <node id="3">
+        <label>Model</label>
+        <link refid="class_model"/>
+      </node>
+      <node id="2">
+        <label>View</label>
+        <link refid="class_view"/>
+        <childnode refid="3" relation="usage">
+          <edgelabel>model</edgelabel>
+        </childnode>
+        <childnode refid="4" relation="usage">
+          <edgelabel>runModesTitles</edgelabel>
+        </childnode>
+      </node>
+    </collaborationgraph>
+    <location file="App/View/Console.h" line="40" column="1" bodyfile="App/View/Console.h" bodystart="41" bodyend="105"/>
+    <listofallmembers>
+      <member refid="class_console_1a9a755f640491d4373758038167820228" prot="public" virt="non-virtual"><scope>Console</scope><name>Console</name></member>
+      <member refid="class_view_1ad1a8ef02c09ce17ea66439c93213488e" prot="protected" virt="non-virtual"><scope>Console</scope><name>DEFAULT_OUTPUT_FOLDER</name></member>
+      <member refid="class_view_1a23f11aac467cbd7a5682b5ecb44cd01c" prot="public" virt="non-virtual"><scope>Console</scope><name>getRunModesTitles</name></member>
+      <member refid="class_console_1a407729096f71b2f1228fdfdbc99ec542" prot="protected" virt="non-virtual"><scope>Console</scope><name>isSilentMode</name></member>
+      <member refid="class_console_1a5f54da6abd8fe86fa40ae3c54c6e8ca4" prot="protected" virt="non-virtual"><scope>Console</scope><name>isValidFolderPath</name></member>
+      <member refid="class_view_1af9f5eea17223c374879af02bd02dfdfb" prot="protected" virt="non-virtual"><scope>Console</scope><name>model</name></member>
+      <member refid="class_console_1a70e809720741df7a6074d65f5495c482" prot="protected" virt="non-virtual"><scope>Console</scope><name>requestInputConfig</name></member>
+      <member refid="class_console_1ae9e453ffee5f1a32998630f619274787" prot="protected" virt="non-virtual"><scope>Console</scope><name>requestOutputFolder</name></member>
+      <member refid="class_console_1a753ef1e34f7e9e5cce130da312ef6d51" prot="protected" virt="non-virtual"><scope>Console</scope><name>requestShowOutput</name></member>
+      <member refid="class_console_1ae486c10ffe13fb417a83b1b1fbacb2ae" prot="protected" virt="non-virtual"><scope>Console</scope><name>requestThreads</name></member>
+      <member refid="class_console_1afac4d1ff335f24d0a29a47fed3466cda" prot="public" virt="non-virtual"><scope>Console</scope><name>run</name></member>
+      <member refid="class_view_1a7fc6c69717b600c8cafc9d782bec1180" prot="protected" virt="non-virtual"><scope>Console</scope><name>runModesTitles</name></member>
+      <member refid="class_console_1af4eda2767111e444f1793c0917b7575a" prot="protected" virt="non-virtual"><scope>Console</scope><name>selectRunMode</name></member>
+      <member refid="class_console_1afaa27bbb0f62322dd8a900c00dc70011" prot="protected" virt="non-virtual"><scope>Console</scope><name>silentMode</name></member>
+      <member refid="class_view_1ae3b6ee9f5e261ca2cf8115f531d033e8" prot="public" virt="non-virtual"><scope>Console</scope><name>View</name></member>
+      <member refid="class_console_1adde4537261151a8beedd8d5e8f90c60c" prot="public" virt="virtual"><scope>Console</scope><name>~Console</name></member>
+      <member refid="class_view_1aa02a820358e1a7bf7e34d205212ae8f3" prot="public" virt="virtual"><scope>Console</scope><name>~View</name></member>
+    </listofallmembers>
+  </compounddef>
+</doxygen>

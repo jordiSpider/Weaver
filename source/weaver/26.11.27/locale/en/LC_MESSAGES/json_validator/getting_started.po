@@ -1,0 +1,239 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) 2025, EEZA
+# This file is distributed under the same license as the Weaver package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, 2025.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: Weaver latest\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2025-10-27 21:00+0100\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language: en\n"
+"Language-Team: en <LL@li.org>\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Generated-By: Babel 2.17.0\n"
+
+#: ../json_validator/getting_started.rst:3
+msgid "Getting Started"
+msgstr ""
+
+#: ../json_validator/getting_started.rst:7
+msgid "What is JSON Schema?"
+msgstr ""
+
+#: ../json_validator/getting_started.rst:9
+msgid ""
+"A JSON Schema is a declarative format for specifying the structure, "
+"content, and semantics of JSON data. It is written in JSON itself and "
+"provides a comprehensive vocabulary for describing data structures, "
+"including:"
+msgstr ""
+
+#: ../json_validator/getting_started.rst:12
+msgid "The types of values (e.g., strings, numbers, objects, arrays)"
+msgstr ""
+
+#: ../json_validator/getting_started.rst:13
+msgid "The properties that an object can have"
+msgstr ""
+
+#: ../json_validator/getting_started.rst:14
+msgid ""
+"Constraints on data values (e.g., minimum and maximum values, string "
+"lengths)"
+msgstr ""
+
+#: ../json_validator/getting_started.rst:15
+msgid "Data relationships and dependencies"
+msgstr ""
+
+#: ../json_validator/getting_started.rst:19
+msgid "Elements of JSON Schema"
+msgstr ""
+
+#: ../json_validator/getting_started.rst:21
+msgid ""
+"In JSON Schema, each element is defined using a dictionary (or object) "
+"with various fields that describe the component's properties, "
+"constraints, and types."
+msgstr ""
+
+#: ../json_validator/getting_started.rst:26
+msgid "Common Fields"
+msgstr ""
+
+#: ../json_validator/getting_started.rst:28
+msgid "These fields can be present in all types of JSON Schema elements:"
+msgstr ""
+
+#: ../json_validator/getting_started.rst:32
+msgid "type"
+msgstr ""
+
+#: ../json_validator/getting_started.rst:36
+msgid "The '**type**' field is required."
+msgstr ""
+
+#: ../json_validator/getting_started.rst:38
+msgid "Determines the nature of the data. Here are all possible types:"
+msgstr ""
+
+#: ../json_validator/getting_started.rst:40
+msgid "**Array Type**:"
+msgstr ""
+
+#: ../json_validator/getting_started.rst:42
+msgid "Represents an ordered list of items."
+msgstr ""
+
+#: ../json_validator/getting_started.rst:51
+msgid "**Boolean Type**:"
+msgstr ""
+
+#: ../json_validator/getting_started.rst:53
+msgid "Represents a true or false value."
+msgstr ""
+
+#: ../json_validator/getting_started.rst:62
+msgid "**Integer Type**:"
+msgstr ""
+
+#: ../json_validator/getting_started.rst:64
+msgid "Represents whole numbers without a fractional component."
+msgstr ""
+
+#: ../json_validator/getting_started.rst:73
+msgid "**Number Type**:"
+msgstr ""
+
+#: ../json_validator/getting_started.rst:75
+msgid "Represents numeric data, including integers and floating-point numbers."
+msgstr ""
+
+#: ../json_validator/getting_started.rst:84
+msgid "**Object Type**:"
+msgstr ""
+
+#: ../json_validator/getting_started.rst:86
+msgid "Represents a collection of key-value pairs."
+msgstr ""
+
+#: ../json_validator/getting_started.rst:95
+msgid "**String Type**:"
+msgstr ""
+
+#: ../json_validator/getting_started.rst:97
+msgid "Represents textual data."
+msgstr ""
+
+#: ../json_validator/getting_started.rst:106
+msgid "**Tuple Type**:"
+msgstr ""
+
+#: ../json_validator/getting_started.rst:108
+msgid ""
+"Represent a variant of the '**array**' type where each position in the "
+"array can have a different schema. This allows for arrays with fixed-"
+"length and heterogeneously-typed items."
+msgstr ""
+
+#: ../json_validator/getting_started.rst:119
+msgid "description"
+msgstr ""
+
+#: ../json_validator/getting_started.rst:123
+msgid ""
+"The '**description**' field is optional, but can be very useful for "
+"documentation and understanding the schema."
+msgstr ""
+
+#: ../json_validator/getting_started.rst:125
+msgid ""
+"Provides a brief description of what the element represents within the "
+"schema."
+msgstr ""
+
+#: ../json_validator/getting_started.rst:137
+msgid "nullProperty"
+msgstr ""
+
+#: ../json_validator/getting_started.rst:141
+msgid "The '**nullProperty**' field is optional. Its default value is **false**."
+msgstr ""
+
+#: ../json_validator/getting_started.rst:145
+msgid ""
+"Ensure that '**nullProperty**' is correctly set based on whether the "
+"element is allowed to have null values. Incorrect settings can lead to "
+"unexpected validation behavior."
+msgstr ""
+
+#: ../json_validator/getting_started.rst:148
+msgid ""
+"Indicates whether an element can have a null value. If **nullProperty** "
+"is set to **true**, the element can be null and, in that case, the "
+"element will not be validated and will be considered correct "
+"automatically. If set to **false**, the validator will give an error if "
+"the element has a null value."
+msgstr ""
+
+#: ../json_validator/getting_started.rst:162
+msgid "Specific Fields for Each Type"
+msgstr ""
+
+#: ../json_validator/getting_started.rst:164
+msgid ""
+"Each element type can have additional specific fields that define its "
+"properties and constraints. These fields are documented in detail in the "
+"sections for each type:"
+msgstr ""
+
+#: ../json_validator/getting_started.rst:180
+msgid "Benefits of Using JSON Schema"
+msgstr ""
+
+#: ../json_validator/getting_started.rst:182
+msgid ""
+"**Validation**: JSON Schema ensures that JSON data adheres to a specified"
+" structure and set of rules, making data validation straightforward and "
+"consistent."
+msgstr ""
+
+#: ../json_validator/getting_started.rst:184
+msgid ""
+"**Documentation**: It serves as a form of documentation, clearly defining"
+" what data is expected and how it should be structured."
+msgstr ""
+
+#: ../json_validator/getting_started.rst:186
+msgid ""
+"**Interoperability**: JSON Schema promotes interoperability between "
+"systems by providing a standard way to describe data formats."
+msgstr ""
+
+#: ../json_validator/getting_started.rst:188
+msgid ""
+"**Automation**: Tools can automatically generate forms, APIs, and other "
+"components based on JSON Schemas, reducing development time and errors."
+msgstr ""
+
+#: ../json_validator/getting_started.rst:190
+msgid ""
+"**Consistency**: It helps maintain data consistency across different "
+"parts of an application or between different systems."
+msgstr ""
+
+#: ../json_validator/getting_started.rst:194
+msgid "Example of a Complete JSON Schema"
+msgstr ""
+
+#: ../json_validator/getting_started.rst:196
+msgid "Here's a more comprehensive example of a JSON Schema for a user profile:"
+msgstr ""
+

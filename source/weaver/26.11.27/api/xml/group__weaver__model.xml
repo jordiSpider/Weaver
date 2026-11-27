@@ -1,0 +1,42 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.18.0" xml:lang="en-US">
+  <compounddef id="group__weaver__model" kind="group">
+    <compoundname>weaver_model</compoundname>
+    <title>Model</title>
+    <innerclass refid="class_anisotropic_gaussian3_d" prot="public">AnisotropicGaussian3D</innerclass>
+    <innerclass refid="class_checkbox" prot="public">Checkbox</innerclass>
+    <innerclass refid="class_console" prot="public">Console</innerclass>
+    <innerclass refid="class_coordinate3_d" prot="public">Coordinate3D</innerclass>
+    <innerclass refid="class_custom_indexed_vector" prot="public">CustomIndexedVector</innerclass>
+    <innerclass refid="class_cycle_dynamics" prot="public">CycleDynamics</innerclass>
+    <innerclass refid="class_decay" prot="public">Decay</innerclass>
+    <innerclass refid="class_dynamics" prot="public">Dynamics</innerclass>
+    <innerclass refid="class_enum_class" prot="public">EnumClass</innerclass>
+    <innerclass refid="class_gaussian1_d" prot="public">Gaussian1D</innerclass>
+    <innerclass refid="class_growth_rate_dynamics" prot="public">GrowthRateDynamics</innerclass>
+    <innerclass refid="class_g_u_i" prot="public">GUI</innerclass>
+    <innerclass refid="class_i_b_m" prot="public">IBM</innerclass>
+    <innerclass refid="class_isotropic_gaussian3_d" prot="public">IsotropicGaussian3D</innerclass>
+    <innerclass refid="class_lineal_decay" prot="public">LinealDecay</innerclass>
+    <innerclass refid="class_log_textbox" prot="public">LogTextbox</innerclass>
+    <innerclass refid="class_mass_based_dynamics" prot="public">MassBasedDynamics</innerclass>
+    <innerclass refid="class_math_functions" prot="public">MathFunctions</innerclass>
+    <innerclass refid="class_model" prot="public">Model</innerclass>
+    <innerclass refid="class_non_decay" prot="public">NonDecay</innerclass>
+    <innerclass refid="class_non_dynamics" prot="public">NonDynamics</innerclass>
+    <innerclass refid="class_non_mass_based_dynamics" prot="public">NonMassBasedDynamics</innerclass>
+    <innerclass refid="class_option_selector" prot="public">OptionSelector</innerclass>
+    <innerclass refid="class_parabola" prot="public">Parabola</innerclass>
+    <innerclass refid="class_path_chooser" prot="public">PathChooser</innerclass>
+    <innerclass refid="class_progress_bar" prot="public">ProgressBar</innerclass>
+    <innerclass refid="class_pulse_dynamics" prot="public">PulseDynamics</innerclass>
+    <innerclass refid="class_random" prot="public">Random</innerclass>
+    <innerclass refid="class_temperature" prot="public">Temperature</innerclass>
+    <innerclass refid="class_view" prot="public">View</innerclass>
+    <briefdescription>
+<para>Core simulation model types, dynamics, and mathematical models. </para>
+    </briefdescription>
+    <detaileddescription>
+    </detaileddescription>
+  </compounddef>
+</doxygen>

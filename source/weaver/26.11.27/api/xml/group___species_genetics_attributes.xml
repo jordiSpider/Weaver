@@ -1,0 +1,44 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.18.0" xml:lang="en-US">
+  <compounddef id="group___species_genetics_attributes" kind="group">
+    <compoundname>SpeciesGeneticsAttributes</compoundname>
+    <title>Genetic and Growth Attributes</title>
+    <sectiondef kind="var">
+      <memberdef kind="variable" id="group___species_genetics_attributes_1gae021e316ed4881d851f4dab57128e988" prot="protected" static="no" mutable="no">
+        <type><ref refid="class_animal_species_growth" kindref="compound">AnimalSpeciesGrowth</ref></type>
+        <definition>AnimalSpeciesGrowth AnimalSpecies::animalSpeciesGrowth</definition>
+        <argsstring></argsstring>
+        <name>animalSpeciesGrowth</name>
+        <qualifiedname>AnimalSpecies::animalSpeciesGrowth</qualifiedname>
+        <briefdescription>
+<para>Growth-related parameters, including instar-duration functions and growth models. </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="App/Model/IBM/Landscape/LivingBeings/Animals/Species/AnimalSpecies.h" line="676" column="21" bodyfile="App/Model/IBM/Landscape/LivingBeings/Animals/Species/AnimalSpecies.h" bodystart="676" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="group___species_genetics_attributes_1gaa0a878c0fde6e2fcd4494367c363439e" prot="protected" static="no" mutable="no">
+        <type><ref refid="class_animal_species_genetics" kindref="compound">AnimalSpeciesGenetics</ref></type>
+        <definition>AnimalSpeciesGenetics AnimalSpecies::genetics</definition>
+        <argsstring></argsstring>
+        <name>genetics</name>
+        <qualifiedname>AnimalSpecies::genetics</qualifiedname>
+        <briefdescription>
+<para>Genetic traits and inheritance rules for the species. </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="App/Model/IBM/Landscape/LivingBeings/Animals/Species/AnimalSpecies.h" line="673" column="23" bodyfile="App/Model/IBM/Landscape/LivingBeings/Animals/Species/AnimalSpecies.h" bodystart="673" bodyend="-1"/>
+      </memberdef>
+    </sectiondef>
+    <briefdescription>
+<para>Attributes storing genetic configuration and growth parameters. </para>
+    </briefdescription>
+    <detaileddescription>
+    </detaileddescription>
+  </compounddef>
+</doxygen>

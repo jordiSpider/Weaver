@@ -1,0 +1,510 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.18.0" xml:lang="en-US">
+  <compounddef id="class_anisotropic_gaussian3_d" kind="class" language="C++" prot="public">
+    <compoundname>AnisotropicGaussian3D</compoundname>
+    <includes refid="_gaussian_distribution_8h" local="no">GaussianDistribution.h</includes>
+    <sectiondef kind="protected-attrib">
+      <memberdef kind="variable" id="class_anisotropic_gaussian3_d_1ae860883dc0260a816847ff4237c7610e" prot="protected" static="no" mutable="no">
+        <type><ref refid="class_precise_double" kindref="compound">PreciseDouble</ref></type>
+        <definition>PreciseDouble AnisotropicGaussian3D::amplitude</definition>
+        <argsstring></argsstring>
+        <name>amplitude</name>
+        <qualifiedname>AnisotropicGaussian3D::amplitude</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Maximum amplitude. </para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="App/Model/IBM/Maths/GaussianDistribution.h" line="148" column="19" bodyfile="App/Model/IBM/Maths/GaussianDistribution.h" bodystart="148" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="class_anisotropic_gaussian3_d_1a16d42644d9edee3d7e76e1f2f244b315" prot="protected" static="no" mutable="no">
+        <type>dPoint3D</type>
+        <definition>dPoint3D AnisotropicGaussian3D::center</definition>
+        <argsstring></argsstring>
+        <name>center</name>
+        <qualifiedname>AnisotropicGaussian3D::center</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>3D center point. </para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="App/Model/IBM/Maths/GaussianDistribution.h" line="149" column="14" bodyfile="App/Model/IBM/Maths/GaussianDistribution.h" bodystart="149" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="class_anisotropic_gaussian3_d_1a3c7a01ca2f0d19d3b3d3da56a19de41f" prot="protected" static="no" mutable="no">
+        <type><ref refid="class_precise_double" kindref="compound">PreciseDouble</ref></type>
+        <definition>PreciseDouble AnisotropicGaussian3D::inverseSquaredSigmaDepth</definition>
+        <argsstring></argsstring>
+        <name>inverseSquaredSigmaDepth</name>
+        <qualifiedname>AnisotropicGaussian3D::inverseSquaredSigmaDepth</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Precomputed 1/sigma² in Z. </para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="App/Model/IBM/Maths/GaussianDistribution.h" line="152" column="19" bodyfile="App/Model/IBM/Maths/GaussianDistribution.h" bodystart="152" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="class_anisotropic_gaussian3_d_1a27efe5bf0915e85acdcf83e8819a767b" prot="protected" static="no" mutable="no">
+        <type><ref refid="class_precise_double" kindref="compound">PreciseDouble</ref></type>
+        <definition>PreciseDouble AnisotropicGaussian3D::inverseSquaredSigmaLength</definition>
+        <argsstring></argsstring>
+        <name>inverseSquaredSigmaLength</name>
+        <qualifiedname>AnisotropicGaussian3D::inverseSquaredSigmaLength</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Precomputed 1/sigma² in Y. </para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="App/Model/IBM/Maths/GaussianDistribution.h" line="151" column="19" bodyfile="App/Model/IBM/Maths/GaussianDistribution.h" bodystart="151" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="class_anisotropic_gaussian3_d_1ad75caa55daf39098491172e4917764f8" prot="protected" static="no" mutable="no">
+        <type><ref refid="class_precise_double" kindref="compound">PreciseDouble</ref></type>
+        <definition>PreciseDouble AnisotropicGaussian3D::inverseSquaredSigmaWidth</definition>
+        <argsstring></argsstring>
+        <name>inverseSquaredSigmaWidth</name>
+        <qualifiedname>AnisotropicGaussian3D::inverseSquaredSigmaWidth</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Precomputed 1/sigma² in X. </para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="App/Model/IBM/Maths/GaussianDistribution.h" line="150" column="19" bodyfile="App/Model/IBM/Maths/GaussianDistribution.h" bodystart="150" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="class_anisotropic_gaussian3_d_1a7d4ee283d3a8721cb1118f9f681c2103" prot="protected" static="no" mutable="no">
+        <type><ref refid="class_precise_double" kindref="compound">PreciseDouble</ref></type>
+        <definition>PreciseDouble AnisotropicGaussian3D::sigmaDepth</definition>
+        <argsstring></argsstring>
+        <name>sigmaDepth</name>
+        <qualifiedname>AnisotropicGaussian3D::sigmaDepth</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Sigma in Z direction. </para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="App/Model/IBM/Maths/GaussianDistribution.h" line="147" column="19" bodyfile="App/Model/IBM/Maths/GaussianDistribution.h" bodystart="147" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="class_anisotropic_gaussian3_d_1a9e775a4db377f45da4f2923779886aa2" prot="protected" static="no" mutable="no">
+        <type><ref refid="class_precise_double" kindref="compound">PreciseDouble</ref></type>
+        <definition>PreciseDouble AnisotropicGaussian3D::sigmaLength</definition>
+        <argsstring></argsstring>
+        <name>sigmaLength</name>
+        <qualifiedname>AnisotropicGaussian3D::sigmaLength</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Sigma in Y direction. </para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="App/Model/IBM/Maths/GaussianDistribution.h" line="146" column="19" bodyfile="App/Model/IBM/Maths/GaussianDistribution.h" bodystart="146" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="class_anisotropic_gaussian3_d_1ab9bc2f25824fe42fecdb593827583ad8" prot="protected" static="no" mutable="no">
+        <type><ref refid="class_precise_double" kindref="compound">PreciseDouble</ref></type>
+        <definition>PreciseDouble AnisotropicGaussian3D::sigmaWidth</definition>
+        <argsstring></argsstring>
+        <name>sigmaWidth</name>
+        <qualifiedname>AnisotropicGaussian3D::sigmaWidth</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Sigma in X direction. </para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="App/Model/IBM/Maths/GaussianDistribution.h" line="145" column="15" bodyfile="App/Model/IBM/Maths/GaussianDistribution.h" bodystart="145" bodyend="-1"/>
+      </memberdef>
+    </sectiondef>
+    <sectiondef kind="public-func">
+      <memberdef kind="function" id="class_anisotropic_gaussian3_d_1aa668038dadb889d9a13083526e795db4" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type></type>
+        <definition>AnisotropicGaussian3D::AnisotropicGaussian3D</definition>
+        <argsstring>()</argsstring>
+        <name>AnisotropicGaussian3D</name>
+        <qualifiedname>AnisotropicGaussian3D::AnisotropicGaussian3D</qualifiedname>
+        <briefdescription>
+<para>Default constructor. Sigma=(1,1,1), amplitude=1, center=(0,0,0). </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="App/Model/IBM/Maths/GaussianDistribution.h" line="156" column="1"/>
+      </memberdef>
+      <memberdef kind="function" id="class_anisotropic_gaussian3_d_1a5a30435b4eb14009ed53ba0fb21fb877" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type></type>
+        <definition>AnisotropicGaussian3D::AnisotropicGaussian3D</definition>
+        <argsstring>(const PreciseDouble &amp;newAmplitude, const PreciseDouble &amp;newSigmaWidth, const PreciseDouble &amp;newSigmaLength, const PreciseDouble &amp;newSigmadepth, const PreciseDouble &amp;newCenterX, const PreciseDouble &amp;newCenterY, const PreciseDouble &amp;newCenterZ)</argsstring>
+        <name>AnisotropicGaussian3D</name>
+        <qualifiedname>AnisotropicGaussian3D::AnisotropicGaussian3D</qualifiedname>
+        <param>
+          <type>const <ref refid="class_precise_double" kindref="compound">PreciseDouble</ref> &amp;</type>
+          <declname>newAmplitude</declname>
+        </param>
+        <param>
+          <type>const <ref refid="class_precise_double" kindref="compound">PreciseDouble</ref> &amp;</type>
+          <declname>newSigmaWidth</declname>
+        </param>
+        <param>
+          <type>const <ref refid="class_precise_double" kindref="compound">PreciseDouble</ref> &amp;</type>
+          <declname>newSigmaLength</declname>
+        </param>
+        <param>
+          <type>const <ref refid="class_precise_double" kindref="compound">PreciseDouble</ref> &amp;</type>
+          <declname>newSigmadepth</declname>
+        </param>
+        <param>
+          <type>const <ref refid="class_precise_double" kindref="compound">PreciseDouble</ref> &amp;</type>
+          <declname>newCenterX</declname>
+        </param>
+        <param>
+          <type>const <ref refid="class_precise_double" kindref="compound">PreciseDouble</ref> &amp;</type>
+          <declname>newCenterY</declname>
+        </param>
+        <param>
+          <type>const <ref refid="class_precise_double" kindref="compound">PreciseDouble</ref> &amp;</type>
+          <declname>newCenterZ</declname>
+        </param>
+        <briefdescription>
+<para>Constructor with amplitude, sigmas, and center coordinates. </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="App/Model/IBM/Maths/GaussianDistribution.h" line="162" column="1"/>
+      </memberdef>
+      <memberdef kind="function" id="class_anisotropic_gaussian3_d_1a523ceeeebfe93f4ecd2f1b403a308dfa" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type></type>
+        <definition>AnisotropicGaussian3D::AnisotropicGaussian3D</definition>
+        <argsstring>(const PreciseDouble &amp;newAmplitude, const PreciseDouble &amp;newSigmaWidth, const PreciseDouble &amp;newSigmaLength, const PreciseDouble &amp;newSigmadepth, dPoint3D newCenter)</argsstring>
+        <name>AnisotropicGaussian3D</name>
+        <qualifiedname>AnisotropicGaussian3D::AnisotropicGaussian3D</qualifiedname>
+        <param>
+          <type>const <ref refid="class_precise_double" kindref="compound">PreciseDouble</ref> &amp;</type>
+          <declname>newAmplitude</declname>
+        </param>
+        <param>
+          <type>const <ref refid="class_precise_double" kindref="compound">PreciseDouble</ref> &amp;</type>
+          <declname>newSigmaWidth</declname>
+        </param>
+        <param>
+          <type>const <ref refid="class_precise_double" kindref="compound">PreciseDouble</ref> &amp;</type>
+          <declname>newSigmaLength</declname>
+        </param>
+        <param>
+          <type>const <ref refid="class_precise_double" kindref="compound">PreciseDouble</ref> &amp;</type>
+          <declname>newSigmadepth</declname>
+        </param>
+        <param>
+          <type>dPoint3D</type>
+          <declname>newCenter</declname>
+        </param>
+        <briefdescription>
+<para>Constructor with amplitude, sigmas, and center. </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="App/Model/IBM/Maths/GaussianDistribution.h" line="159" column="1"/>
+      </memberdef>
+      <memberdef kind="function" id="class_anisotropic_gaussian3_d_1ad379f40ceb5169ef360d6667d21084f4" prot="public" static="no" const="no" explicit="no" inline="no" virt="virtual">
+        <type></type>
+        <definition>virtual AnisotropicGaussian3D::~AnisotropicGaussian3D</definition>
+        <argsstring>()</argsstring>
+        <name>~AnisotropicGaussian3D</name>
+        <qualifiedname>AnisotropicGaussian3D::~AnisotropicGaussian3D</qualifiedname>
+        <briefdescription>
+<para>Destructor. </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="App/Model/IBM/Maths/GaussianDistribution.h" line="165" column="9"/>
+      </memberdef>
+      <memberdef kind="function" id="class_anisotropic_gaussian3_d_1a8557ff34b1de9c77fd0a36d2beae5a27" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>const <ref refid="class_precise_double" kindref="compound">PreciseDouble</ref> &amp;</type>
+        <definition>const PreciseDouble &amp; AnisotropicGaussian3D::getAmplitude</definition>
+        <argsstring>()</argsstring>
+        <name>getAmplitude</name>
+        <qualifiedname>AnisotropicGaussian3D::getAmplitude</qualifiedname>
+        <briefdescription>
+<para>Get amplitude. </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="App/Model/IBM/Maths/GaussianDistribution.h" line="180" column="21"/>
+      </memberdef>
+      <memberdef kind="function" id="class_anisotropic_gaussian3_d_1a35511ee9cf30f97f9fb73e308e1d285b" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>dPoint3D</type>
+        <definition>dPoint3D AnisotropicGaussian3D::getCenter</definition>
+        <argsstring>()</argsstring>
+        <name>getCenter</name>
+        <qualifiedname>AnisotropicGaussian3D::getCenter</qualifiedname>
+        <briefdescription>
+<para>Get 3D center point. </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="App/Model/IBM/Maths/GaussianDistribution.h" line="186" column="10"/>
+      </memberdef>
+      <memberdef kind="function" id="class_anisotropic_gaussian3_d_1a4677c9614ef6ca2dee9f2551f26f1550" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>const <ref refid="class_precise_double" kindref="compound">PreciseDouble</ref> &amp;</type>
+        <definition>const PreciseDouble &amp; AnisotropicGaussian3D::getSigmaHeight</definition>
+        <argsstring>()</argsstring>
+        <name>getSigmaHeight</name>
+        <qualifiedname>AnisotropicGaussian3D::getSigmaHeight</qualifiedname>
+        <briefdescription>
+<para>Get sigma in Z direction. </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="App/Model/IBM/Maths/GaussianDistribution.h" line="174" column="21"/>
+      </memberdef>
+      <memberdef kind="function" id="class_anisotropic_gaussian3_d_1aec71f1ec6b819a56afaeabdb743e690b" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>const <ref refid="class_precise_double" kindref="compound">PreciseDouble</ref> &amp;</type>
+        <definition>const PreciseDouble &amp; AnisotropicGaussian3D::getSigmaLength</definition>
+        <argsstring>()</argsstring>
+        <name>getSigmaLength</name>
+        <qualifiedname>AnisotropicGaussian3D::getSigmaLength</qualifiedname>
+        <briefdescription>
+<para>Get sigma in Y direction. </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="App/Model/IBM/Maths/GaussianDistribution.h" line="171" column="21"/>
+      </memberdef>
+      <memberdef kind="function" id="class_anisotropic_gaussian3_d_1a7be6860fcd68b7df0426e3bb21648c63" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>const <ref refid="class_precise_double" kindref="compound">PreciseDouble</ref> &amp;</type>
+        <definition>const PreciseDouble &amp; AnisotropicGaussian3D::getSigmaWidth</definition>
+        <argsstring>()</argsstring>
+        <name>getSigmaWidth</name>
+        <qualifiedname>AnisotropicGaussian3D::getSigmaWidth</qualifiedname>
+        <briefdescription>
+<para>Get sigma in X direction. </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="App/Model/IBM/Maths/GaussianDistribution.h" line="168" column="21"/>
+      </memberdef>
+      <memberdef kind="function" id="class_anisotropic_gaussian3_d_1ab3f697eeb1a5b20a8bc30d64dff331f0" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type><ref refid="class_precise_double" kindref="compound">PreciseDouble</ref></type>
+        <definition>PreciseDouble AnisotropicGaussian3D::getValueAtDistance</definition>
+        <argsstring>(const PreciseDouble &amp;xDistance, const PreciseDouble &amp;yDistance, const PreciseDouble &amp;zDistance)</argsstring>
+        <name>getValueAtDistance</name>
+        <qualifiedname>AnisotropicGaussian3D::getValueAtDistance</qualifiedname>
+        <param>
+          <type>const <ref refid="class_precise_double" kindref="compound">PreciseDouble</ref> &amp;</type>
+          <declname>xDistance</declname>
+        </param>
+        <param>
+          <type>const <ref refid="class_precise_double" kindref="compound">PreciseDouble</ref> &amp;</type>
+          <declname>yDistance</declname>
+        </param>
+        <param>
+          <type>const <ref refid="class_precise_double" kindref="compound">PreciseDouble</ref> &amp;</type>
+          <declname>zDistance</declname>
+        </param>
+        <briefdescription>
+<para>Get Gaussian value at distance (X,Y,Z). </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="App/Model/IBM/Maths/GaussianDistribution.h" line="189" column="15"/>
+      </memberdef>
+      <memberdef kind="function" id="class_anisotropic_gaussian3_d_1a4c59405558095318b9ea5e22b0ad8ae4" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type><ref refid="class_precise_double" kindref="compound">PreciseDouble</ref></type>
+        <definition>PreciseDouble AnisotropicGaussian3D::getValueAtDistance</definition>
+        <argsstring>(dVector3D distance)</argsstring>
+        <name>getValueAtDistance</name>
+        <qualifiedname>AnisotropicGaussian3D::getValueAtDistance</qualifiedname>
+        <param>
+          <type>dVector3D</type>
+          <declname>distance</declname>
+        </param>
+        <briefdescription>
+<para>Get Gaussian value at distance vector. </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="App/Model/IBM/Maths/GaussianDistribution.h" line="195" column="15"/>
+      </memberdef>
+      <memberdef kind="function" id="class_anisotropic_gaussian3_d_1ac9029125274a9a8d3dc3fe62d08f3ff0" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type><ref refid="class_precise_double" kindref="compound">PreciseDouble</ref></type>
+        <definition>PreciseDouble AnisotropicGaussian3D::getValueAtPoint</definition>
+        <argsstring>(const PreciseDouble &amp;xPoint, const PreciseDouble &amp;yPoint, const PreciseDouble &amp;zPoint)</argsstring>
+        <name>getValueAtPoint</name>
+        <qualifiedname>AnisotropicGaussian3D::getValueAtPoint</qualifiedname>
+        <param>
+          <type>const <ref refid="class_precise_double" kindref="compound">PreciseDouble</ref> &amp;</type>
+          <declname>xPoint</declname>
+        </param>
+        <param>
+          <type>const <ref refid="class_precise_double" kindref="compound">PreciseDouble</ref> &amp;</type>
+          <declname>yPoint</declname>
+        </param>
+        <param>
+          <type>const <ref refid="class_precise_double" kindref="compound">PreciseDouble</ref> &amp;</type>
+          <declname>zPoint</declname>
+        </param>
+        <briefdescription>
+<para>Get Gaussian value at point (X,Y,Z). </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="App/Model/IBM/Maths/GaussianDistribution.h" line="192" column="15"/>
+      </memberdef>
+      <memberdef kind="function" id="class_anisotropic_gaussian3_d_1a5af5c273f1afedfd9b2364c4dec431bb" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type><ref refid="class_precise_double" kindref="compound">PreciseDouble</ref></type>
+        <definition>PreciseDouble AnisotropicGaussian3D::getValueAtPoint</definition>
+        <argsstring>(dPoint3D point)</argsstring>
+        <name>getValueAtPoint</name>
+        <qualifiedname>AnisotropicGaussian3D::getValueAtPoint</qualifiedname>
+        <param>
+          <type>dPoint3D</type>
+          <declname>point</declname>
+        </param>
+        <briefdescription>
+<para>Get Gaussian value at point vector. </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="App/Model/IBM/Maths/GaussianDistribution.h" line="198" column="15"/>
+      </memberdef>
+      <memberdef kind="function" id="class_anisotropic_gaussian3_d_1a702b84cd00485f71a708363271cc3a51" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void AnisotropicGaussian3D::setAmplitude</definition>
+        <argsstring>(const PreciseDouble &amp;newValue)</argsstring>
+        <name>setAmplitude</name>
+        <qualifiedname>AnisotropicGaussian3D::setAmplitude</qualifiedname>
+        <param>
+          <type>const <ref refid="class_precise_double" kindref="compound">PreciseDouble</ref> &amp;</type>
+          <declname>newValue</declname>
+        </param>
+        <briefdescription>
+<para>Set amplitude. </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="App/Model/IBM/Maths/GaussianDistribution.h" line="183" column="6"/>
+      </memberdef>
+      <memberdef kind="function" id="class_anisotropic_gaussian3_d_1ae5cf0dc0cc295c69aff70906c0a9a76e" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void AnisotropicGaussian3D::setSigmas</definition>
+        <argsstring>(const PreciseDouble &amp;newSigmaWidth, const PreciseDouble &amp;newSigmaLength, const PreciseDouble &amp;newSigmadepth)</argsstring>
+        <name>setSigmas</name>
+        <qualifiedname>AnisotropicGaussian3D::setSigmas</qualifiedname>
+        <param>
+          <type>const <ref refid="class_precise_double" kindref="compound">PreciseDouble</ref> &amp;</type>
+          <declname>newSigmaWidth</declname>
+        </param>
+        <param>
+          <type>const <ref refid="class_precise_double" kindref="compound">PreciseDouble</ref> &amp;</type>
+          <declname>newSigmaLength</declname>
+        </param>
+        <param>
+          <type>const <ref refid="class_precise_double" kindref="compound">PreciseDouble</ref> &amp;</type>
+          <declname>newSigmadepth</declname>
+        </param>
+        <briefdescription>
+<para>Set sigma values in all directions. </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="App/Model/IBM/Maths/GaussianDistribution.h" line="177" column="6"/>
+      </memberdef>
+    </sectiondef>
+    <briefdescription>
+<para>Class for handling anisotropic 3D Gaussian distributions. </para>
+    </briefdescription>
+    <detaileddescription>
+<para>Each dimension can have its own sigma. Precomputed inverse squared sigmas are used for speed. </para>
+    </detaileddescription>
+    <collaborationgraph>
+      <node id="1">
+        <label>AnisotropicGaussian3D</label>
+        <link refid="class_anisotropic_gaussian3_d"/>
+        <childnode refid="2" relation="usage">
+          <edgelabel>amplitude</edgelabel>
+          <edgelabel>inverseSquaredSigmaDepth</edgelabel>
+          <edgelabel>inverseSquaredSigmaLength</edgelabel>
+          <edgelabel>inverseSquaredSigmaWidth</edgelabel>
+          <edgelabel>sigmaDepth</edgelabel>
+          <edgelabel>sigmaLength</edgelabel>
+          <edgelabel>sigmaWidth</edgelabel>
+        </childnode>
+        <childnode refid="3" relation="usage">
+          <edgelabel>center</edgelabel>
+        </childnode>
+      </node>
+      <node id="3">
+        <label>Coordinate3D&lt; PreciseDouble &gt;</label>
+        <link refid="class_coordinate3_d"/>
+      </node>
+      <node id="2">
+        <label>PreciseDouble</label>
+        <link refid="class_precise_double"/>
+      </node>
+    </collaborationgraph>
+    <location file="App/Model/IBM/Maths/GaussianDistribution.h" line="143" column="1" bodyfile="App/Model/IBM/Maths/GaussianDistribution.h" bodystart="143" bodyend="199"/>
+    <listofallmembers>
+      <member refid="class_anisotropic_gaussian3_d_1ae860883dc0260a816847ff4237c7610e" prot="protected" virt="non-virtual"><scope>AnisotropicGaussian3D</scope><name>amplitude</name></member>
+      <member refid="class_anisotropic_gaussian3_d_1aa668038dadb889d9a13083526e795db4" prot="public" virt="non-virtual"><scope>AnisotropicGaussian3D</scope><name>AnisotropicGaussian3D</name></member>
+      <member refid="class_anisotropic_gaussian3_d_1a523ceeeebfe93f4ecd2f1b403a308dfa" prot="public" virt="non-virtual"><scope>AnisotropicGaussian3D</scope><name>AnisotropicGaussian3D</name></member>
+      <member refid="class_anisotropic_gaussian3_d_1a5a30435b4eb14009ed53ba0fb21fb877" prot="public" virt="non-virtual"><scope>AnisotropicGaussian3D</scope><name>AnisotropicGaussian3D</name></member>
+      <member refid="class_anisotropic_gaussian3_d_1a16d42644d9edee3d7e76e1f2f244b315" prot="protected" virt="non-virtual"><scope>AnisotropicGaussian3D</scope><name>center</name></member>
+      <member refid="class_anisotropic_gaussian3_d_1a8557ff34b1de9c77fd0a36d2beae5a27" prot="public" virt="non-virtual"><scope>AnisotropicGaussian3D</scope><name>getAmplitude</name></member>
+      <member refid="class_anisotropic_gaussian3_d_1a35511ee9cf30f97f9fb73e308e1d285b" prot="public" virt="non-virtual"><scope>AnisotropicGaussian3D</scope><name>getCenter</name></member>
+      <member refid="class_anisotropic_gaussian3_d_1a4677c9614ef6ca2dee9f2551f26f1550" prot="public" virt="non-virtual"><scope>AnisotropicGaussian3D</scope><name>getSigmaHeight</name></member>
+      <member refid="class_anisotropic_gaussian3_d_1aec71f1ec6b819a56afaeabdb743e690b" prot="public" virt="non-virtual"><scope>AnisotropicGaussian3D</scope><name>getSigmaLength</name></member>
+      <member refid="class_anisotropic_gaussian3_d_1a7be6860fcd68b7df0426e3bb21648c63" prot="public" virt="non-virtual"><scope>AnisotropicGaussian3D</scope><name>getSigmaWidth</name></member>
+      <member refid="class_anisotropic_gaussian3_d_1ab3f697eeb1a5b20a8bc30d64dff331f0" prot="public" virt="non-virtual"><scope>AnisotropicGaussian3D</scope><name>getValueAtDistance</name></member>
+      <member refid="class_anisotropic_gaussian3_d_1a4c59405558095318b9ea5e22b0ad8ae4" prot="public" virt="non-virtual"><scope>AnisotropicGaussian3D</scope><name>getValueAtDistance</name></member>
+      <member refid="class_anisotropic_gaussian3_d_1ac9029125274a9a8d3dc3fe62d08f3ff0" prot="public" virt="non-virtual"><scope>AnisotropicGaussian3D</scope><name>getValueAtPoint</name></member>
+      <member refid="class_anisotropic_gaussian3_d_1a5af5c273f1afedfd9b2364c4dec431bb" prot="public" virt="non-virtual"><scope>AnisotropicGaussian3D</scope><name>getValueAtPoint</name></member>
+      <member refid="class_anisotropic_gaussian3_d_1a3c7a01ca2f0d19d3b3d3da56a19de41f" prot="protected" virt="non-virtual"><scope>AnisotropicGaussian3D</scope><name>inverseSquaredSigmaDepth</name></member>
+      <member refid="class_anisotropic_gaussian3_d_1a27efe5bf0915e85acdcf83e8819a767b" prot="protected" virt="non-virtual"><scope>AnisotropicGaussian3D</scope><name>inverseSquaredSigmaLength</name></member>
+      <member refid="class_anisotropic_gaussian3_d_1ad75caa55daf39098491172e4917764f8" prot="protected" virt="non-virtual"><scope>AnisotropicGaussian3D</scope><name>inverseSquaredSigmaWidth</name></member>
+      <member refid="class_anisotropic_gaussian3_d_1a702b84cd00485f71a708363271cc3a51" prot="public" virt="non-virtual"><scope>AnisotropicGaussian3D</scope><name>setAmplitude</name></member>
+      <member refid="class_anisotropic_gaussian3_d_1ae5cf0dc0cc295c69aff70906c0a9a76e" prot="public" virt="non-virtual"><scope>AnisotropicGaussian3D</scope><name>setSigmas</name></member>
+      <member refid="class_anisotropic_gaussian3_d_1a7d4ee283d3a8721cb1118f9f681c2103" prot="protected" virt="non-virtual"><scope>AnisotropicGaussian3D</scope><name>sigmaDepth</name></member>
+      <member refid="class_anisotropic_gaussian3_d_1a9e775a4db377f45da4f2923779886aa2" prot="protected" virt="non-virtual"><scope>AnisotropicGaussian3D</scope><name>sigmaLength</name></member>
+      <member refid="class_anisotropic_gaussian3_d_1ab9bc2f25824fe42fecdb593827583ad8" prot="protected" virt="non-virtual"><scope>AnisotropicGaussian3D</scope><name>sigmaWidth</name></member>
+      <member refid="class_anisotropic_gaussian3_d_1ad379f40ceb5169ef360d6667d21084f4" prot="public" virt="virtual"><scope>AnisotropicGaussian3D</scope><name>~AnisotropicGaussian3D</name></member>
+    </listofallmembers>
+  </compounddef>
+</doxygen>

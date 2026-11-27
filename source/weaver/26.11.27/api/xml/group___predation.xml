@@ -1,0 +1,163 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.18.0" xml:lang="en-US">
+  <compounddef id="group___predation" kind="group">
+    <compoundname>Predation</compoundname>
+    <title>Predation</title>
+    <sectiondef kind="func">
+      <memberdef kind="function" id="group___predation_1ga8d9239fa4763fdae19c4675a660b8ed7" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void AnimalSpecies::addPredationEventOnOtherSpecies</definition>
+        <argsstring>(const CustomIndexedVector&lt; Species::ID, unsigned int &gt; &amp;newEvents)</argsstring>
+        <name>addPredationEventOnOtherSpecies</name>
+        <qualifiedname>AnimalSpecies::addPredationEventOnOtherSpecies</qualifiedname>
+        <param>
+          <type>const <ref refid="class_custom_indexed_vector" kindref="compound">CustomIndexedVector</ref>&lt; <ref refid="class_species_1_1_i_d" kindref="compound">Species::ID</ref>, unsigned int &gt; &amp;</type>
+          <declname>newEvents</declname>
+        </param>
+        <briefdescription>
+<para>Registers a predation event on another species. </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="App/Model/IBM/Landscape/LivingBeings/Animals/Species/AnimalSpecies.h" line="319" column="6"/>
+      </memberdef>
+      <memberdef kind="function" id="group___predation_1ga70b08d2c597977fa5627ad20327d7d97" prot="public" static="no" const="yes" explicit="no" inline="no" virt="non-virtual">
+        <type>bool</type>
+        <definition>bool AnimalSpecies::canEatEdible</definition>
+        <argsstring>(const Species::ID &amp;preySpeciesId, const Instar &amp;predatorInstar, const Instar &amp;preyInstar) const</argsstring>
+        <name>canEatEdible</name>
+        <qualifiedname>AnimalSpecies::canEatEdible</qualifiedname>
+        <param>
+          <type>const <ref refid="class_species_1_1_i_d" kindref="compound">Species::ID</ref> &amp;</type>
+          <declname>preySpeciesId</declname>
+        </param>
+        <param>
+          <type>const <ref refid="class_instar" kindref="compound">Instar</ref> &amp;</type>
+          <declname>predatorInstar</declname>
+        </param>
+        <param>
+          <type>const <ref refid="class_instar" kindref="compound">Instar</ref> &amp;</type>
+          <declname>preyInstar</declname>
+        </param>
+        <briefdescription>
+<para>Determines if a predator instar can eat the given prey instar. </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="App/Model/IBM/Landscape/LivingBeings/Animals/Species/AnimalSpecies.h" line="304" column="6"/>
+      </memberdef>
+      <memberdef kind="function" id="group___predation_1ga81da867dd0e662a59d08ee8f2cbaa634" prot="public" static="no" const="yes" explicit="no" inline="no" virt="non-virtual">
+        <type>bool</type>
+        <definition>bool AnimalSpecies::eatsAnimalSpecies</definition>
+        <argsstring>(const Instar &amp;instar) const</argsstring>
+        <name>eatsAnimalSpecies</name>
+        <qualifiedname>AnimalSpecies::eatsAnimalSpecies</qualifiedname>
+        <param>
+          <type>const <ref refid="class_instar" kindref="compound">Instar</ref> &amp;</type>
+          <declname>instar</declname>
+        </param>
+        <briefdescription>
+<para>Returns true if individuals of the given instar are carnivorous. </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="App/Model/IBM/Landscape/LivingBeings/Animals/Species/AnimalSpecies.h" line="294" column="6"/>
+      </memberdef>
+      <memberdef kind="function" id="group___predation_1ga9b5494292f7a30d8fa291f9f6ace2bc1" prot="public" static="no" const="yes" explicit="no" inline="no" virt="non-virtual">
+        <type>const <ref refid="class_precise_double" kindref="compound">PreciseDouble</ref> &amp;</type>
+        <definition>const PreciseDouble &amp; AnimalSpecies::getEdibleProfitability</definition>
+        <argsstring>(const Species::ID &amp;preySpeciesId, const Instar &amp;predatorInstar, const Instar &amp;preyInstar) const</argsstring>
+        <name>getEdibleProfitability</name>
+        <qualifiedname>AnimalSpecies::getEdibleProfitability</qualifiedname>
+        <param>
+          <type>const <ref refid="class_species_1_1_i_d" kindref="compound">Species::ID</ref> &amp;</type>
+          <declname>preySpeciesId</declname>
+        </param>
+        <param>
+          <type>const <ref refid="class_instar" kindref="compound">Instar</ref> &amp;</type>
+          <declname>predatorInstar</declname>
+        </param>
+        <param>
+          <type>const <ref refid="class_instar" kindref="compound">Instar</ref> &amp;</type>
+          <declname>preyInstar</declname>
+        </param>
+        <briefdescription>
+<para>Returns profitability of eating a prey instar by a predator instar. </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="App/Model/IBM/Landscape/LivingBeings/Animals/Species/AnimalSpecies.h" line="299" column="21"/>
+      </memberdef>
+      <memberdef kind="function" id="group___predation_1ga356c42b0559fe1dd9285c42e03b05755" prot="public" static="no" const="yes" explicit="no" inline="no" virt="non-virtual">
+        <type>const <ref refid="class_precise_double" kindref="compound">PreciseDouble</ref> &amp;</type>
+        <definition>const PreciseDouble &amp; AnimalSpecies::getMaximumInteractionArea</definition>
+        <argsstring>(const Instar &amp;instar) const</argsstring>
+        <name>getMaximumInteractionArea</name>
+        <qualifiedname>AnimalSpecies::getMaximumInteractionArea</qualifiedname>
+        <param>
+          <type>const <ref refid="class_instar" kindref="compound">Instar</ref> &amp;</type>
+          <declname>instar</declname>
+        </param>
+        <briefdescription>
+<para>Returns the maximum interaction area for individuals of an instar. </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="App/Model/IBM/Landscape/LivingBeings/Animals/Species/AnimalSpecies.h" line="314" column="21"/>
+      </memberdef>
+      <memberdef kind="function" id="group___predation_1ga907bab93bde90c4b6061898cc880d5fc" prot="public" static="no" const="yes" explicit="no" inline="no" virt="non-virtual">
+        <type>const unsigned int &amp;</type>
+        <definition>const unsigned int &amp; AnimalSpecies::getPredationEventsOnOtherSpecies</definition>
+        <argsstring>(Species::ID predatedSpeciesId) const</argsstring>
+        <name>getPredationEventsOnOtherSpecies</name>
+        <qualifiedname>AnimalSpecies::getPredationEventsOnOtherSpecies</qualifiedname>
+        <param>
+          <type><ref refid="class_species_1_1_i_d" kindref="compound">Species::ID</ref></type>
+          <declname>predatedSpeciesId</declname>
+        </param>
+        <briefdescription>
+<para>Returns total predation events on a specific species. </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="App/Model/IBM/Landscape/LivingBeings/Animals/Species/AnimalSpecies.h" line="324" column="20"/>
+      </memberdef>
+      <memberdef kind="function" id="group___predation_1ga5930e5b84647e88665baab1c8bb7c363" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void AnimalSpecies::updateMaximumInteractionArea</definition>
+        <argsstring>(const CustomIndexedVector&lt; Instar, PreciseDouble &gt; &amp;newMaximumInteractionArea)</argsstring>
+        <name>updateMaximumInteractionArea</name>
+        <qualifiedname>AnimalSpecies::updateMaximumInteractionArea</qualifiedname>
+        <param>
+          <type>const <ref refid="class_custom_indexed_vector" kindref="compound">CustomIndexedVector</ref>&lt; <ref refid="class_instar" kindref="compound">Instar</ref>, <ref refid="class_precise_double" kindref="compound">PreciseDouble</ref> &gt; &amp;</type>
+          <declname>newMaximumInteractionArea</declname>
+        </param>
+        <briefdescription>
+<para>Updates the maximum interaction area for individuals of a given instar. </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="App/Model/IBM/Landscape/LivingBeings/Animals/Species/AnimalSpecies.h" line="309" column="6"/>
+      </memberdef>
+    </sectiondef>
+    <briefdescription>
+<para>Handling of predator–prey interactions and consumption constraints. </para>
+    </briefdescription>
+    <detaileddescription>
+    </detaileddescription>
+  </compounddef>
+</doxygen>

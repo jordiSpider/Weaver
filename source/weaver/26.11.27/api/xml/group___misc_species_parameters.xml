@@ -1,0 +1,74 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.18.0" xml:lang="en-US">
+  <compounddef id="group___misc_species_parameters" kind="group">
+    <compoundname>MiscSpeciesParameters</compoundname>
+    <title>Miscellaneous Species Parameters</title>
+    <sectiondef kind="func">
+      <memberdef kind="function" id="group___misc_species_parameters_1gaedc8ba5fd7a904530ddc9cf824e6e92d" prot="public" static="no" const="yes" explicit="no" inline="no" virt="non-virtual">
+        <type>bool</type>
+        <definition>bool AnimalSpecies::getActivatedHandling</definition>
+        <argsstring>() const</argsstring>
+        <name>getActivatedHandling</name>
+        <qualifiedname>AnimalSpecies::getActivatedHandling</qualifiedname>
+        <briefdescription>
+<para>Returns true if handling time should be activated. </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="App/Model/IBM/Landscape/LivingBeings/Animals/Species/AnimalSpecies.h" line="508" column="6"/>
+      </memberdef>
+      <memberdef kind="function" id="group___misc_species_parameters_1ga2d2e4fbe324d0df40f04891ef3aa1450" prot="public" static="no" const="yes" explicit="no" inline="yes" virt="virtual">
+        <type>const HuntingMode &amp;</type>
+        <definition>virtual const HuntingMode &amp; AnimalSpecies::getDefaultHuntingMode</definition>
+        <argsstring>() const</argsstring>
+        <name>getDefaultHuntingMode</name>
+        <qualifiedname>AnimalSpecies::getDefaultHuntingMode</qualifiedname>
+        <briefdescription>
+<para>Returns the default hunting mode for the species. </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="App/Model/IBM/Landscape/LivingBeings/Animals/Species/AnimalSpecies.h" line="503" column="27" bodyfile="App/Model/IBM/Landscape/LivingBeings/Animals/Species/AnimalSpecies.h" bodystart="503" bodyend="503"/>
+      </memberdef>
+      <memberdef kind="function" id="group___misc_species_parameters_1ga0c3d41674d21edb9a2475dcecb8408db" prot="public" static="no" const="yes" explicit="no" inline="no" virt="non-virtual">
+        <type>const <ref refid="class_precise_double" kindref="compound">PreciseDouble</ref> &amp;</type>
+        <definition>const PreciseDouble &amp; AnimalSpecies::getYodzisA</definition>
+        <argsstring>() const</argsstring>
+        <name>getYodzisA</name>
+        <qualifiedname>AnimalSpecies::getYodzisA</qualifiedname>
+        <briefdescription>
+<para>Returns Yodzis parameter A for metabolic scaling. </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="App/Model/IBM/Landscape/LivingBeings/Animals/Species/AnimalSpecies.h" line="493" column="21"/>
+      </memberdef>
+      <memberdef kind="function" id="group___misc_species_parameters_1ga97865aa8b6c31e50a44d84a8f50ae011" prot="public" static="no" const="yes" explicit="no" inline="no" virt="non-virtual">
+        <type>const <ref refid="class_precise_double" kindref="compound">PreciseDouble</ref> &amp;</type>
+        <definition>const PreciseDouble &amp; AnimalSpecies::getYodzisB</definition>
+        <argsstring>() const</argsstring>
+        <name>getYodzisB</name>
+        <qualifiedname>AnimalSpecies::getYodzisB</qualifiedname>
+        <briefdescription>
+<para>Returns Yodzis parameter B for metabolic scaling. </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="App/Model/IBM/Landscape/LivingBeings/Animals/Species/AnimalSpecies.h" line="498" column="21"/>
+      </memberdef>
+    </sectiondef>
+    <briefdescription>
+<para>Additional ecological or physiological parameters not covered by other groups. </para>
+    </briefdescription>
+    <detaileddescription>
+    </detaileddescription>
+  </compounddef>
+</doxygen>

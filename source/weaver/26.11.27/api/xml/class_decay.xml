@@ -1,0 +1,304 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.18.0" xml:lang="en-US">
+  <compounddef id="class_decay" kind="class" language="C++" prot="public" abstract="yes">
+    <compoundname>Decay</compoundname>
+    <derivedcompoundref refid="class_lineal_decay" prot="public" virt="non-virtual">LinealDecay</derivedcompoundref>
+    <derivedcompoundref refid="class_non_decay" prot="public" virt="non-virtual">NonDecay</derivedcompoundref>
+    <includes refid="_decay_8h" local="no">Decay.h</includes>
+    <sectiondef kind="public-type">
+      <memberdef kind="enum" id="class_decay_1af7a0694a0f4844a8d9889a926d75ac70" prot="public" static="no" strong="yes">
+        <type>unsigned char</type>
+        <name>Type</name>
+        <qualifiedname>Decay::Type</qualifiedname>
+        <enumvalue id="class_decay_1af7a0694a0f4844a8d9889a926d75ac70ade709c1ca6ad1107d8c02b0fc136351f" prot="public">
+          <name>NonDecay</name>
+          <briefdescription>
+          </briefdescription>
+          <detaileddescription>
+<para>No decay occurs. </para>
+          </detaileddescription>
+        </enumvalue>
+        <enumvalue id="class_decay_1af7a0694a0f4844a8d9889a926d75ac70a5ed4a9ffc6e5384cf341f301f1cef556" prot="public">
+          <name>Lineal</name>
+          <briefdescription>
+          </briefdescription>
+          <detaileddescription>
+<para>Linear decay over time. </para>
+          </detaileddescription>
+        </enumvalue>
+        <briefdescription>
+<para>Enumeration of decay types. </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="App/Model/IBM/Maths/Dynamics/Decay/Decay.h" line="39" column="5" bodyfile="App/Model/IBM/Maths/Dynamics/Decay/Decay.h" bodystart="40" bodyend="43"/>
+      </memberdef>
+    </sectiondef>
+    <sectiondef kind="public-static-func">
+      <memberdef kind="function" id="class_decay_1ac8561a7e55cfd00f952489c8a371b9c7" prot="public" static="yes" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type><ref refid="class_decay" kindref="compound">Decay</ref> *</type>
+        <definition>static Decay * Decay::createInstance</definition>
+        <argsstring>(const nlohmann::json &amp;config)</argsstring>
+        <name>createInstance</name>
+        <qualifiedname>Decay::createInstance</qualifiedname>
+        <param>
+          <type>const nlohmann::json &amp;</type>
+          <declname>config</declname>
+        </param>
+        <briefdescription>
+<para>Factory method to create a <ref refid="class_decay" kindref="compound">Decay</ref> instance from a JSON configuration. </para>
+        </briefdescription>
+        <detaileddescription>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>config</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>JSON object containing decay parameters. </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<simplesect kind="return"><para>Pointer to a <ref refid="class_decay" kindref="compound">Decay</ref> instance. </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="App/Model/IBM/Maths/Dynamics/Decay/Decay.h" line="50" column="18"/>
+      </memberdef>
+      <memberdef kind="function" id="class_decay_1a9a28c814beaf09f7dba745c6a925647b" prot="public" static="yes" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type><ref refid="class_decay" kindref="compound">Decay</ref> *</type>
+        <definition>static Decay * Decay::createInstance</definition>
+        <argsstring>(const nlohmann::json &amp;config, const PreciseDouble &amp;hyperVolume)</argsstring>
+        <name>createInstance</name>
+        <qualifiedname>Decay::createInstance</qualifiedname>
+        <param>
+          <type>const nlohmann::json &amp;</type>
+          <declname>config</declname>
+        </param>
+        <param>
+          <type>const <ref refid="class_precise_double" kindref="compound">PreciseDouble</ref> &amp;</type>
+          <declname>hyperVolume</declname>
+        </param>
+        <briefdescription>
+<para>Factory method to create a <ref refid="class_decay" kindref="compound">Decay</ref> instance with hyper-volume scaling. </para>
+        </briefdescription>
+        <detaileddescription>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>config</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>JSON object containing decay parameters. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>hyperVolume</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Hyper-volume factor used for scaling. </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<simplesect kind="return"><para>Pointer to a <ref refid="class_decay" kindref="compound">Decay</ref> instance. </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="App/Model/IBM/Maths/Dynamics/Decay/Decay.h" line="58" column="18"/>
+      </memberdef>
+    </sectiondef>
+    <sectiondef kind="public-func">
+      <memberdef kind="function" id="class_decay_1a603fb8ea4172c2c80c8779ad301b6a4f" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type></type>
+        <definition>Decay::Decay</definition>
+        <argsstring>()</argsstring>
+        <name>Decay</name>
+        <qualifiedname>Decay::Decay</qualifiedname>
+        <briefdescription>
+<para>Default constructor for <ref refid="class_decay" kindref="compound">Decay</ref>. </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="App/Model/IBM/Maths/Dynamics/Decay/Decay.h" line="63" column="5"/>
+      </memberdef>
+      <memberdef kind="function" id="class_decay_1a1e1f9eaf505383a3eb8521ba29f71c97" prot="public" static="no" const="no" explicit="no" inline="no" virt="virtual">
+        <type></type>
+        <definition>virtual Decay::~Decay</definition>
+        <argsstring>()</argsstring>
+        <name>~Decay</name>
+        <qualifiedname>Decay::~Decay</qualifiedname>
+        <briefdescription>
+<para>Virtual destructor for <ref refid="class_decay" kindref="compound">Decay</ref>. </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="App/Model/IBM/Maths/Dynamics/Decay/Decay.h" line="68" column="13"/>
+      </memberdef>
+      <memberdef kind="function" id="class_decay_1ad0d7164e34c88ecca6a308e80a40cccc" prot="public" static="no" const="yes" explicit="no" inline="no" virt="pure-virtual">
+        <type><ref refid="class_precise_double" kindref="compound">PreciseDouble</ref></type>
+        <definition>virtual PreciseDouble Decay::apply</definition>
+        <argsstring>(const PreciseDouble &amp;currentValue) const =0</argsstring>
+        <name>apply</name>
+        <qualifiedname>Decay::apply</qualifiedname>
+        <reimplementedby refid="class_lineal_decay_1a4bb86af5c8cf6917134dc4c915655a27">apply</reimplementedby>
+        <reimplementedby refid="class_non_decay_1a8166ad1771602d45e0433ebe9b1c53b4">apply</reimplementedby>
+        <param>
+          <type>const <ref refid="class_precise_double" kindref="compound">PreciseDouble</ref> &amp;</type>
+          <declname>currentValue</declname>
+        </param>
+        <briefdescription>
+<para>Applies the decay to a given value. </para>
+        </briefdescription>
+        <detaileddescription>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>currentValue</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>The current value to which decay will be applied. </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<simplesect kind="return"><para>The decayed value as <ref refid="class_precise_double" kindref="compound">PreciseDouble</ref>. </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="App/Model/IBM/Maths/Dynamics/Decay/Decay.h" line="75" column="27"/>
+      </memberdef>
+      <memberdef kind="function" id="class_decay_1a9fc061a5cdfaeba3d6dffa34c68582d6" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <templateparamlist>
+          <param>
+            <type>class Archive</type>
+          </param>
+        </templateparamlist>
+        <type>void</type>
+        <definition>void Decay::serialize</definition>
+        <argsstring>(Archive &amp;ar, const unsigned int version)</argsstring>
+        <name>serialize</name>
+        <qualifiedname>Decay::serialize</qualifiedname>
+        <param>
+          <type>Archive &amp;</type>
+          <declname>ar</declname>
+        </param>
+        <param>
+          <type>const unsigned int</type>
+          <declname>version</declname>
+        </param>
+        <briefdescription>
+<para>Serializes the object using Boost serialization. </para>
+        </briefdescription>
+        <detaileddescription>
+<para><parameterlist kind="templateparam"><parameteritem>
+<parameternamelist>
+<parametername>Archive</parametername>
+</parameternamelist>
+<parameterdescription>
+<para><ref refid="class_decay_1af7a0694a0f4844a8d9889a926d75ac70" kindref="member">Type</ref> of archive (binary/text, input/output). </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>ar</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Archive object. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>version</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Version of the serialization format. </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="App/Model/IBM/Maths/Dynamics/Decay/Decay.h" line="91" column="10"/>
+      </memberdef>
+      <memberdef kind="function" id="class_decay_1a8f3fe11b373bafc083669965a7012da4" prot="public" static="no" const="yes" explicit="no" inline="no" virt="pure-virtual">
+        <type>std::string</type>
+        <definition>virtual std::string Decay::showInfo</definition>
+        <argsstring>(const std::string &amp;indentation) const =0</argsstring>
+        <name>showInfo</name>
+        <qualifiedname>Decay::showInfo</qualifiedname>
+        <reimplementedby refid="class_lineal_decay_1ae2ae955a2f837663d26045219dc0d8c6">showInfo</reimplementedby>
+        <reimplementedby refid="class_non_decay_1ac7833fab90458b47921044dc12290238">showInfo</reimplementedby>
+        <param>
+          <type>const std::string &amp;</type>
+          <declname>indentation</declname>
+        </param>
+        <briefdescription>
+<para>Returns a string describing the decay instance. </para>
+        </briefdescription>
+        <detaileddescription>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>indentation</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Indentation string for formatting output. </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<simplesect kind="return"><para>Formatted string with decay information. </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="App/Model/IBM/Maths/Dynamics/Decay/Decay.h" line="82" column="25"/>
+      </memberdef>
+    </sectiondef>
+    <briefdescription>
+<para>Abstract base class for different decay models. </para>
+    </briefdescription>
+    <detaileddescription>
+<para><ref refid="class_decay" kindref="compound">Decay</ref> models define how a quantity decreases over time. Subclasses implement specific decay laws, such as linear decay or no decay at all. </para>
+    </detaileddescription>
+    <inheritancegraph>
+      <node id="1">
+        <label>Decay</label>
+        <link refid="class_decay"/>
+      </node>
+      <node id="2">
+        <label>LinealDecay</label>
+        <link refid="class_lineal_decay"/>
+        <childnode refid="1" relation="public-inheritance">
+        </childnode>
+      </node>
+      <node id="3">
+        <label>NonDecay</label>
+        <link refid="class_non_decay"/>
+        <childnode refid="1" relation="public-inheritance">
+        </childnode>
+      </node>
+    </inheritancegraph>
+    <location file="App/Model/IBM/Maths/Dynamics/Decay/Decay.h" line="34" column="1" bodyfile="App/Model/IBM/Maths/Dynamics/Decay/Decay.h" bodystart="34" bodyend="92"/>
+    <listofallmembers>
+      <member refid="class_decay_1ad0d7164e34c88ecca6a308e80a40cccc" prot="public" virt="pure-virtual"><scope>Decay</scope><name>apply</name></member>
+      <member refid="class_decay_1ac8561a7e55cfd00f952489c8a371b9c7" prot="public" virt="non-virtual"><scope>Decay</scope><name>createInstance</name></member>
+      <member refid="class_decay_1a9a28c814beaf09f7dba745c6a925647b" prot="public" virt="non-virtual"><scope>Decay</scope><name>createInstance</name></member>
+      <member refid="class_decay_1a603fb8ea4172c2c80c8779ad301b6a4f" prot="public" virt="non-virtual"><scope>Decay</scope><name>Decay</name></member>
+      <member refid="class_decay_1a9fc061a5cdfaeba3d6dffa34c68582d6" prot="public" virt="non-virtual"><scope>Decay</scope><name>serialize</name></member>
+      <member refid="class_decay_1a8f3fe11b373bafc083669965a7012da4" prot="public" virt="pure-virtual"><scope>Decay</scope><name>showInfo</name></member>
+      <member refid="class_decay_1af7a0694a0f4844a8d9889a926d75ac70" prot="public" virt="non-virtual"><scope>Decay</scope><name>Type</name></member>
+      <member refid="class_decay_1a1e1f9eaf505383a3eb8521ba29f71c97" prot="public" virt="virtual"><scope>Decay</scope><name>~Decay</name></member>
+    </listofallmembers>
+  </compounddef>
+</doxygen>

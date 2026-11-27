@@ -1,0 +1,360 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.18.0" xml:lang="en-US">
+  <compounddef id="class_string" kind="class" language="C++" prot="public">
+    <compoundname>String</compoundname>
+    <basecompoundref refid="class_element" prot="public" virt="non-virtual">Element</basecompoundref>
+    <includes refid="_string_8h" local="no">String.h</includes>
+    <sectiondef kind="protected-attrib">
+      <memberdef kind="variable" id="class_string_1ad64cbe7a470a760742d381a486325efe" prot="protected" static="no" mutable="no">
+        <type>std::pair&lt; bool, std::vector&lt; std::string &gt; &gt;</type>
+        <definition>std::pair&lt;bool, std::vector&lt;std::string&gt; &gt; String::enumValues</definition>
+        <argsstring></argsstring>
+        <name>enumValues</name>
+        <qualifiedname>String::enumValues</qualifiedname>
+        <briefdescription>
+<para>Optional list of allowed string values. </para>
+        </briefdescription>
+        <detaileddescription>
+<para><itemizedlist>
+<listitem><para>first → true if the enum constraint is defined.</para>
+</listitem><listitem><para>second → vector containing the allowed string values. </para>
+</listitem></itemizedlist>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="Misc/JsonValidator/Elements/String.h" line="49" column="15" bodyfile="Misc/JsonValidator/Elements/String.h" bodystart="49" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="class_string_1a1b06a5c6c193969066f1569c8b79d3e1" prot="protected" static="no" mutable="no">
+        <type>size_t</type>
+        <definition>size_t String::maxLength</definition>
+        <argsstring></argsstring>
+        <name>maxLength</name>
+        <qualifiedname>String::maxLength</qualifiedname>
+        <briefdescription>
+<para>Maximum allowed length for the string. </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="Misc/JsonValidator/Elements/String.h" line="59" column="12" bodyfile="Misc/JsonValidator/Elements/String.h" bodystart="59" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="class_string_1a7b915902443cdb9232b4145de3e6cbc4" prot="protected" static="no" mutable="no">
+        <type>size_t</type>
+        <definition>size_t String::minLength</definition>
+        <argsstring></argsstring>
+        <name>minLength</name>
+        <qualifiedname>String::minLength</qualifiedname>
+        <briefdescription>
+<para>Minimum allowed length for the string. </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="Misc/JsonValidator/Elements/String.h" line="54" column="12" bodyfile="Misc/JsonValidator/Elements/String.h" bodystart="54" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="class_string_1a4c9a490ce829761fda42de5a356150d1" prot="protected" static="no" mutable="no">
+        <type>std::pair&lt; bool, std::string &gt;</type>
+        <definition>std::pair&lt;bool, std::string&gt; String::patternStr</definition>
+        <argsstring></argsstring>
+        <name>patternStr</name>
+        <qualifiedname>String::patternStr</qualifiedname>
+        <briefdescription>
+<para>Optional regular expression pattern constraint. </para>
+        </briefdescription>
+        <detaileddescription>
+<para><itemizedlist>
+<listitem><para>first → true if a regex pattern constraint is defined.</para>
+</listitem><listitem><para>second → the regex pattern string. </para>
+</listitem></itemizedlist>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="Misc/JsonValidator/Elements/String.h" line="67" column="15" bodyfile="Misc/JsonValidator/Elements/String.h" bodystart="67" bodyend="-1"/>
+      </memberdef>
+    </sectiondef>
+    <sectiondef kind="protected-func">
+      <memberdef kind="function" id="class_string_1a2ec87f1060c707c160e38567126373af" prot="protected" static="no" const="yes" explicit="no" inline="no" virt="virtual">
+        <type>void</type>
+        <definition>void String::validateElement</definition>
+        <argsstring>(const nlohmann::json &amp;config) const</argsstring>
+        <name>validateElement</name>
+        <qualifiedname>String::validateElement</qualifiedname>
+        <reimplements refid="class_element_1a2e31082683027a829ee75a4bd872738a">validateElement</reimplements>
+        <param>
+          <type>const nlohmann::json &amp;</type>
+          <declname>config</declname>
+        </param>
+        <briefdescription>
+<para>Validates a configuration entry against the string constraints. </para>
+        </briefdescription>
+        <detaileddescription>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>config</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>JSON configuration entry to validate.</para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+This method enforces:<itemizedlist>
+<listitem><para>type checking (must be a string),</para>
+</listitem><listitem><para>minimum and maximum length,</para>
+</listitem><listitem><para>allowed enum values,</para>
+</listitem><listitem><para>optional regex pattern validation.</para>
+</listitem></itemizedlist>
+</para>
+<para>Throws an exception if validation fails. </para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="Misc/JsonValidator/Elements/String.h" line="83" column="10"/>
+      </memberdef>
+    </sectiondef>
+    <sectiondef kind="public-func">
+      <memberdef kind="function" id="class_string_1a296e36d7c48d53e78de64666f008564d" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type></type>
+        <definition>String::String</definition>
+        <argsstring>(const nlohmann::json &amp;info)</argsstring>
+        <name>String</name>
+        <qualifiedname>String::String</qualifiedname>
+        <param>
+          <type>const nlohmann::json &amp;</type>
+          <declname>info</declname>
+        </param>
+        <briefdescription>
+<para>Constructs a <ref refid="class_string" kindref="compound">String</ref> element from its schema definition. </para>
+        </briefdescription>
+        <detaileddescription>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>info</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>JSON object containing the schema definition for this string. </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="Misc/JsonValidator/Elements/String.h" line="90" column="5"/>
+      </memberdef>
+      <memberdef kind="function" id="class_string_1a2af145dd7cb771c9ab6fcb19752763e7" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type></type>
+        <definition>String::String</definition>
+        <argsstring>(const String &amp;other, const bool nullProperty)</argsstring>
+        <name>String</name>
+        <qualifiedname>String::String</qualifiedname>
+        <param>
+          <type>const <ref refid="class_string" kindref="compound">String</ref> &amp;</type>
+          <declname>other</declname>
+        </param>
+        <param>
+          <type>const bool</type>
+          <declname>nullProperty</declname>
+        </param>
+        <briefdescription>
+<para>Copy constructor used when cloning or overriding properties. </para>
+        </briefdescription>
+        <detaileddescription>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>other</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Original <ref refid="class_string" kindref="compound">String</ref> element. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>nullProperty</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Whether the cloned element should behave as null/ignored. </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="Misc/JsonValidator/Elements/String.h" line="97" column="5"/>
+      </memberdef>
+      <memberdef kind="function" id="class_string_1ac73850e459f183bdd3c172e506be2a32" prot="public" static="no" const="no" explicit="no" inline="no" virt="virtual">
+        <type></type>
+        <definition>virtual String::~String</definition>
+        <argsstring>()</argsstring>
+        <name>~String</name>
+        <qualifiedname>String::~String</qualifiedname>
+        <briefdescription>
+<para>Destructor. </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="Misc/JsonValidator/Elements/String.h" line="102" column="13"/>
+      </memberdef>
+      <memberdef kind="function" id="class_string_1ad471b956ac9308269e64cfe446d114a0" prot="public" static="no" const="yes" explicit="no" inline="no" virt="non-virtual">
+        <type>const std::pair&lt; bool, std::vector&lt; std::string &gt; &gt; &amp;</type>
+        <definition>const std::pair&lt; bool, std::vector&lt; std::string &gt; &gt; &amp; String::getEnumValues</definition>
+        <argsstring>() const</argsstring>
+        <name>getEnumValues</name>
+        <qualifiedname>String::getEnumValues</qualifiedname>
+        <briefdescription>
+<para>Returns the enum constraint for the string. </para>
+        </briefdescription>
+        <detaileddescription>
+<para><simplesect kind="return"><para>Pair where:<itemizedlist>
+<listitem><para>first → indicates if enum constraint is active,</para>
+</listitem><listitem><para>second → list of allowed string values. </para>
+</listitem></itemizedlist>
+</para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="Misc/JsonValidator/Elements/String.h" line="117" column="21"/>
+      </memberdef>
+      <memberdef kind="function" id="class_string_1acb4d59062e466fb1ec3c9fff42a39f2e" prot="public" static="no" const="yes" explicit="no" inline="no" virt="non-virtual">
+        <type>size_t</type>
+        <definition>size_t String::getMaxLength</definition>
+        <argsstring>() const</argsstring>
+        <name>getMaxLength</name>
+        <qualifiedname>String::getMaxLength</qualifiedname>
+        <briefdescription>
+<para>Returns the maximum allowed length. </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="Misc/JsonValidator/Elements/String.h" line="127" column="12"/>
+      </memberdef>
+      <memberdef kind="function" id="class_string_1aff6c086c927f13aa6ff626eb790559c6" prot="public" static="no" const="yes" explicit="no" inline="no" virt="non-virtual">
+        <type>size_t</type>
+        <definition>size_t String::getMinLength</definition>
+        <argsstring>() const</argsstring>
+        <name>getMinLength</name>
+        <qualifiedname>String::getMinLength</qualifiedname>
+        <briefdescription>
+<para>Returns the minimum allowed length. </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="Misc/JsonValidator/Elements/String.h" line="122" column="12"/>
+      </memberdef>
+      <memberdef kind="function" id="class_string_1a8a1d3b28537f40e011bedd2074d73daa" prot="public" static="no" const="yes" explicit="no" inline="no" virt="non-virtual">
+        <type>const std::pair&lt; bool, std::string &gt; &amp;</type>
+        <definition>const std::pair&lt; bool, std::string &gt; &amp; String::getPatternStr</definition>
+        <argsstring>() const</argsstring>
+        <name>getPatternStr</name>
+        <qualifiedname>String::getPatternStr</qualifiedname>
+        <briefdescription>
+<para>Returns the optional regex pattern constraint. </para>
+        </briefdescription>
+        <detaileddescription>
+<para><simplesect kind="return"><para>Pair where:<itemizedlist>
+<listitem><para>first → indicates if a pattern constraint is active,</para>
+</listitem><listitem><para>second → regex pattern string. </para>
+</listitem></itemizedlist>
+</para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="Misc/JsonValidator/Elements/String.h" line="136" column="21"/>
+      </memberdef>
+      <memberdef kind="function" id="class_string_1ac654ad56d5ed2ad2287e4f208348b607" prot="public" static="no" const="yes" explicit="no" inline="no" virt="virtual">
+        <type><ref refid="class_element_1a009a3be4c3a037a72e292b2464c9cbc5" kindref="member">Type</ref></type>
+        <definition>Type String::getType</definition>
+        <argsstring>() const</argsstring>
+        <name>getType</name>
+        <qualifiedname>String::getType</qualifiedname>
+        <reimplements refid="class_element_1a00ef06c036d1d4628fcd3586885ca131">getType</reimplements>
+        <briefdescription>
+<para>Returns the type of this element. </para>
+        </briefdescription>
+        <detaileddescription>
+<para><simplesect kind="return"><para><ref refid="class_element_1a009a3be4c3a037a72e292b2464c9cbc5ab45cffe084dd3d20d928bee85e7b0f21" kindref="member">Type::string</ref>. </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="Misc/JsonValidator/Elements/String.h" line="108" column="10"/>
+      </memberdef>
+    </sectiondef>
+    <briefdescription>
+<para>Represents a string-type element in the JSON schema validation system. </para>
+    </briefdescription>
+    <detaileddescription>
+<para>This class models a JSON string element and provides mechanisms for validating configuration values according to constraints such as enumeration of allowed values, minimum and maximum length, and regular expression patterns.</para>
+<para>It inherits from <ref refid="class_element" kindref="compound">Element</ref> and implements the required validation logic for string-based schema elements. </para>
+    </detaileddescription>
+    <inheritancegraph>
+      <node id="2">
+        <label>Element</label>
+        <link refid="class_element"/>
+      </node>
+      <node id="1">
+        <label>String</label>
+        <link refid="class_string"/>
+        <childnode refid="2" relation="public-inheritance">
+        </childnode>
+      </node>
+    </inheritancegraph>
+    <collaborationgraph>
+      <node id="2">
+        <label>Element</label>
+        <link refid="class_element"/>
+      </node>
+      <node id="1">
+        <label>String</label>
+        <link refid="class_string"/>
+        <childnode refid="2" relation="public-inheritance">
+        </childnode>
+      </node>
+    </collaborationgraph>
+    <location file="Misc/JsonValidator/Elements/String.h" line="40" column="1" bodyfile="Misc/JsonValidator/Elements/String.h" bodystart="41" bodyend="137"/>
+    <listofallmembers>
+      <member refid="class_element_1a31838aa329c7380f4395b9c0a4a82cfe" prot="protected" virt="non-virtual"><scope>String</scope><name>description</name></member>
+      <member refid="class_element_1a5ef746a08042747acd608589686df030" prot="public" virt="non-virtual"><scope>String</scope><name>Element</name></member>
+      <member refid="class_element_1a7adf23f4617107ee13fcab2747d8b394" prot="public" virt="non-virtual"><scope>String</scope><name>Element</name></member>
+      <member refid="class_string_1ad64cbe7a470a760742d381a486325efe" prot="protected" virt="non-virtual"><scope>String</scope><name>enumValues</name></member>
+      <member refid="class_element_1a2eab22dd80bfba5646c6f0e79dec8569" prot="public" virt="non-virtual"><scope>String</scope><name>getDescription</name></member>
+      <member refid="class_string_1ad471b956ac9308269e64cfe446d114a0" prot="public" virt="non-virtual"><scope>String</scope><name>getEnumValues</name></member>
+      <member refid="class_string_1acb4d59062e466fb1ec3c9fff42a39f2e" prot="public" virt="non-virtual"><scope>String</scope><name>getMaxLength</name></member>
+      <member refid="class_string_1aff6c086c927f13aa6ff626eb790559c6" prot="public" virt="non-virtual"><scope>String</scope><name>getMinLength</name></member>
+      <member refid="class_string_1a8a1d3b28537f40e011bedd2074d73daa" prot="public" virt="non-virtual"><scope>String</scope><name>getPatternStr</name></member>
+      <member refid="class_element_1abf6e4f402b616bf7f52166f96c450b36" prot="public" virt="virtual"><scope>String</scope><name>getProperty</name></member>
+      <member refid="class_element_1ae4ee4a9ec97bb054a43aea28d9700f8e" prot="public" virt="non-virtual"><scope>String</scope><name>getProperty</name></member>
+      <member refid="class_string_1ac654ad56d5ed2ad2287e4f208348b607" prot="public" virt="virtual"><scope>String</scope><name>getType</name></member>
+      <member refid="class_element_1a4e3a7ef1a3b0b42c84c1022a4db94246" prot="public" virt="non-virtual"><scope>String</scope><name>isModified</name></member>
+      <member refid="class_element_1a97d883c0b237ec9e1fe6993825fd0f8c" prot="public" virt="non-virtual"><scope>String</scope><name>isNullProperty</name></member>
+      <member refid="class_string_1a1b06a5c6c193969066f1569c8b79d3e1" prot="protected" virt="non-virtual"><scope>String</scope><name>maxLength</name></member>
+      <member refid="class_string_1a7b915902443cdb9232b4145de3e6cbc4" prot="protected" virt="non-virtual"><scope>String</scope><name>minLength</name></member>
+      <member refid="class_element_1a1b0c283200e0e2c16b8713369631214d" prot="protected" virt="non-virtual"><scope>String</scope><name>modified</name></member>
+      <member refid="class_element_1a4318313abfd08feae300a12668cec95a" prot="protected" virt="non-virtual"><scope>String</scope><name>nullProperty</name></member>
+      <member refid="class_string_1a4c9a490ce829761fda42de5a356150d1" prot="protected" virt="non-virtual"><scope>String</scope><name>patternStr</name></member>
+      <member refid="class_string_1a296e36d7c48d53e78de64666f008564d" prot="public" virt="non-virtual"><scope>String</scope><name>String</name></member>
+      <member refid="class_string_1a2af145dd7cb771c9ab6fcb19752763e7" prot="public" virt="non-virtual"><scope>String</scope><name>String</name></member>
+      <member refid="class_element_1a009a3be4c3a037a72e292b2464c9cbc5" prot="public" virt="non-virtual"><scope>String</scope><name>Type</name></member>
+      <member refid="class_element_1a59cc1d05821dd36340deffd7f56add32" prot="public" virt="non-virtual"><scope>String</scope><name>validate</name></member>
+      <member refid="class_string_1a2ec87f1060c707c160e38567126373af" prot="protected" virt="virtual"><scope>String</scope><name>validateElement</name></member>
+      <member refid="class_element_1adbcc49811634a36df5d3830d366ba2b0" prot="public" virt="virtual"><scope>String</scope><name>verifyPropertyPath</name></member>
+      <member refid="class_element_1ab4fc182292f44e46acba9c55662237bf" prot="public" virt="virtual"><scope>String</scope><name>~Element</name></member>
+      <member refid="class_string_1ac73850e459f183bdd3c172e506be2a32" prot="public" virt="virtual"><scope>String</scope><name>~String</name></member>
+    </listofallmembers>
+  </compounddef>
+</doxygen>

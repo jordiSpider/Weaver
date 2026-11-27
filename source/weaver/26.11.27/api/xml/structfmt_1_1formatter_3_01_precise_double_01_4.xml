@@ -1,0 +1,49 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.18.0" xml:lang="en-US">
+  <compounddef id="structfmt_1_1formatter_3_01_precise_double_01_4" kind="struct" language="C++" prot="public">
+    <compoundname>fmt::formatter&lt; PreciseDouble &gt;</compoundname>
+    <basecompoundref prot="public" virt="non-virtual">formatter&lt; double &gt;</basecompoundref>
+    <derivedcompoundref refid="structfmt_1_1formatter_3_01_allele_01_4" prot="public" virt="non-virtual">fmt::formatter&lt; Allele &gt;</derivedcompoundref>
+    <derivedcompoundref refid="structfmt_1_1formatter_3_01_day_01_4" prot="public" virt="non-virtual">fmt::formatter&lt; Day &gt;</derivedcompoundref>
+    <derivedcompoundref refid="structfmt_1_1formatter_3_01_dry_mass_01_4" prot="public" virt="non-virtual">fmt::formatter&lt; DryMass &gt;</derivedcompoundref>
+    <templateparamlist>
+    </templateparamlist>
+    <sectiondef kind="public-func">
+      <memberdef kind="function" id="structfmt_1_1formatter_3_01_precise_double_01_4_1ab2314baf5984779a7eb06a89f271714d" prot="public" static="no" const="yes" explicit="no" inline="yes" virt="non-virtual">
+        <templateparamlist>
+          <param>
+            <type>typename FormatContext</type>
+          </param>
+        </templateparamlist>
+        <type>auto</type>
+        <definition>auto fmt::formatter&lt; PreciseDouble &gt;::format</definition>
+        <argsstring>(const PreciseDouble &amp;pd, FormatContext &amp;ctx) const</argsstring>
+        <name>format</name>
+        <qualifiedname>fmt::formatter&lt; PreciseDouble &gt;::format</qualifiedname>
+        <param>
+          <type>const <ref refid="class_precise_double" kindref="compound">PreciseDouble</ref> &amp;</type>
+          <declname>pd</declname>
+        </param>
+        <param>
+          <type>FormatContext &amp;</type>
+          <declname>ctx</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="Misc/Maths/PreciseDouble.h" line="643" column="14" bodyfile="Misc/Maths/PreciseDouble.h" bodystart="643" bodyend="646"/>
+      </memberdef>
+    </sectiondef>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+    </detaileddescription>
+    <location file="Misc/Maths/PreciseDouble.h" line="640" column="5" bodyfile="Misc/Maths/PreciseDouble.h" bodystart="640" bodyend="647"/>
+    <listofallmembers>
+      <member refid="structfmt_1_1formatter_3_01_precise_double_01_4_1ab2314baf5984779a7eb06a89f271714d" prot="public" virt="non-virtual"><scope>fmt::formatter&lt; PreciseDouble &gt;</scope><name>format</name></member>
+    </listofallmembers>
+  </compounddef>
+</doxygen>

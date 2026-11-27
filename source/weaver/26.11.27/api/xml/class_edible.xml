@@ -1,0 +1,718 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.18.0" xml:lang="en-US">
+  <compounddef id="class_edible" kind="class" language="C++" prot="public" abstract="yes">
+    <compoundname>Edible</compoundname>
+    <derivedcompoundref refid="class_animal" prot="public" virt="non-virtual">Animal</derivedcompoundref>
+    <derivedcompoundref refid="class_cell_resource_interface" prot="public" virt="non-virtual">CellResourceInterface</derivedcompoundref>
+    <includes refid="_edible_8h" local="no">Edible.h</includes>
+    <sectiondef kind="protected-attrib">
+      <memberdef kind="variable" id="class_edible_1a54e4c51c58f7126ec542f2a41dd1467e" prot="protected" static="no" mutable="no">
+        <type>id_type</type>
+        <definition>id_type Edible::id</definition>
+        <argsstring></argsstring>
+        <name>id</name>
+        <qualifiedname>Edible::id</qualifiedname>
+        <briefdescription>
+<para>Unique identifier for this edible. </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="App/Model/IBM/Landscape/LivingBeings/Edible.h" line="149" column="13" bodyfile="App/Model/IBM/Landscape/LivingBeings/Edible.h" bodystart="149" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="class_edible_1a2ee0ce7e08eee8fc76858a05398152ec" prot="protected" static="no" mutable="no">
+        <type><ref refid="class_species" kindref="compound">Species</ref> *</type>
+        <definition>Species* Edible::mySpecies</definition>
+        <argsstring></argsstring>
+        <name>mySpecies</name>
+        <qualifiedname>Edible::mySpecies</qualifiedname>
+        <briefdescription>
+<para>Pointer to the species associated with this edible. </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="App/Model/IBM/Landscape/LivingBeings/Edible.h" line="152" column="13" bodyfile="App/Model/IBM/Landscape/LivingBeings/Edible.h" bodystart="152" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="class_edible_1a035e2c46b32ea4e77f457a8c114106c7" prot="protected" static="no" mutable="no">
+        <type><ref refid="class_terrain_cell" kindref="compound">TerrainCell</ref> *</type>
+        <definition>TerrainCell* Edible::terrainCell</definition>
+        <argsstring></argsstring>
+        <name>terrainCell</name>
+        <qualifiedname>Edible::terrainCell</qualifiedname>
+        <briefdescription>
+<para>Pointer to the terrain cell containing this edible. </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="App/Model/IBM/Landscape/LivingBeings/Edible.h" line="155" column="17" bodyfile="App/Model/IBM/Landscape/LivingBeings/Edible.h" bodystart="155" bodyend="-1"/>
+      </memberdef>
+    </sectiondef>
+    <sectiondef kind="public-func">
+      <memberdef kind="function" id="class_edible_1ad2bd330d8bddee1968a782c8c7417f6c" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type></type>
+        <definition>Edible::Edible</definition>
+        <argsstring>()</argsstring>
+        <name>Edible</name>
+        <qualifiedname>Edible::Edible</qualifiedname>
+        <briefdescription>
+<para>Default constructor. </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="App/Model/IBM/Landscape/LivingBeings/Edible.h" line="45" column="1"/>
+      </memberdef>
+      <memberdef kind="function" id="class_edible_1aead81535b712265418ab786a8ada4f51" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type></type>
+        <definition>Edible::Edible</definition>
+        <argsstring>(const Edible &amp;)=delete</argsstring>
+        <name>Edible</name>
+        <qualifiedname>Edible::Edible</qualifiedname>
+        <param>
+          <type>const <ref refid="class_edible" kindref="compound">Edible</ref> &amp;</type>
+        </param>
+        <briefdescription>
+<para>Deleted copy constructor. </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="App/Model/IBM/Landscape/LivingBeings/Edible.h" line="59" column="1"/>
+      </memberdef>
+      <memberdef kind="function" id="class_edible_1a6eeeb715ddf2707990356e169cbc3ab6" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type></type>
+        <definition>Edible::Edible</definition>
+        <argsstring>(id_type id, Species *const mySpecies, TerrainCell *terrainCell)</argsstring>
+        <name>Edible</name>
+        <qualifiedname>Edible::Edible</qualifiedname>
+        <param>
+          <type>id_type</type>
+          <declname>id</declname>
+        </param>
+        <param>
+          <type><ref refid="class_species" kindref="compound">Species</ref> *const</type>
+          <declname>mySpecies</declname>
+        </param>
+        <param>
+          <type><ref refid="class_terrain_cell" kindref="compound">TerrainCell</ref> *</type>
+          <declname>terrainCell</declname>
+        </param>
+        <briefdescription>
+<para>Constructs an <ref refid="class_edible" kindref="compound">Edible</ref> with a specific ID, species, and terrain cell. </para>
+        </briefdescription>
+        <detaileddescription>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>id</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Unique EdibleID </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>mySpecies</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Pointer to the associated <ref refid="class_species" kindref="compound">Species</ref> </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>terrainCell</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Pointer to the terrain cell containing this edible </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="App/Model/IBM/Landscape/LivingBeings/Edible.h" line="53" column="1"/>
+      </memberdef>
+      <memberdef kind="function" id="class_edible_1a8645217fd9d754597e5398be80f03094" prot="public" static="no" const="no" explicit="no" inline="no" virt="virtual">
+        <type></type>
+        <definition>virtual Edible::~Edible</definition>
+        <argsstring>()</argsstring>
+        <name>~Edible</name>
+        <qualifiedname>Edible::~Edible</qualifiedname>
+        <briefdescription>
+<para>Virtual destructor. </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="App/Model/IBM/Landscape/LivingBeings/Edible.h" line="56" column="9"/>
+      </memberdef>
+      <memberdef kind="function" id="class_edible_1a9a7bf3e902e6a55494764d07896b732f" prot="public" static="no" const="yes" explicit="no" inline="no" virt="pure-virtual">
+        <type>const <ref refid="class_edible_growth" kindref="compound">EdibleGrowth</ref> &amp;</type>
+        <definition>virtual const EdibleGrowth &amp; Edible::getGrowthBuildingBlock</definition>
+        <argsstring>() const =0</argsstring>
+        <name>getGrowthBuildingBlock</name>
+        <qualifiedname>Edible::getGrowthBuildingBlock</qualifiedname>
+        <reimplementedby refid="class_animal_1a6ae311c4dc8862ef1dbf2cf2f301be3c">getGrowthBuildingBlock</reimplementedby>
+        <reimplementedby refid="class_animal_non_statistical_1a642f2a95254292a30c6358e312e42f3c">getGrowthBuildingBlock</reimplementedby>
+        <reimplementedby refid="class_animal_statistical_1aed272bb8c8e47191be1f4d56769dc64c">getGrowthBuildingBlock</reimplementedby>
+        <reimplementedby refid="class_branch_cell_resource_1ae7ceb13ae866aba9e23f386780f35fbb">getGrowthBuildingBlock</reimplementedby>
+        <reimplementedby refid="class_cell_resource_1a870daa4ffa65253eedfbd4370f7e3140">getGrowthBuildingBlock</reimplementedby>
+        <reimplementedby refid="class_cell_resource_interface_1a8d831aaf96365e20807577e946aeb4bc">getGrowthBuildingBlock</reimplementedby>
+        <briefdescription>
+<para>Returns the growth building block for this edible (const). </para>
+        </briefdescription>
+        <detaileddescription>
+<para><simplesect kind="return"><para>Reference to the <ref refid="class_edible_growth" kindref="compound">EdibleGrowth</ref> </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="App/Model/IBM/Landscape/LivingBeings/Edible.h" line="113" column="28"/>
+      </memberdef>
+      <memberdef kind="function" id="class_edible_1a89223f30f79d20181aa5e5e477f4a96a" prot="public" static="no" const="yes" explicit="no" inline="no" virt="non-virtual">
+        <type>id_type</type>
+        <definition>id_type Edible::getId</definition>
+        <argsstring>() const</argsstring>
+        <name>getId</name>
+        <qualifiedname>Edible::getId</qualifiedname>
+        <briefdescription>
+<para>Returns the unique identifier of this edible. </para>
+        </briefdescription>
+        <detaileddescription>
+<para><simplesect kind="return"><para>Reference to the EdibleID </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="App/Model/IBM/Landscape/LivingBeings/Edible.h" line="68" column="9"/>
+      </memberdef>
+      <memberdef kind="function" id="class_edible_1ac0ad9e1a6d3049f445cd78f1eb7da95d" prot="public" static="no" constexpr="yes" const="yes" explicit="no" inline="yes" noexcept="yes" virt="non-virtual">
+        <type><ref refid="class_instar" kindref="compound">Instar</ref></type>
+        <definition>Instar Edible::getInstar</definition>
+        <argsstring>() const noexcept</argsstring>
+        <name>getInstar</name>
+        <qualifiedname>Edible::getInstar</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="App/Model/IBM/Landscape/LivingBeings/Edible.h" line="121" column="30" bodyfile="App/Model/IBM/Landscape/LivingBeings/Edible.h" bodystart="121" bodyend="124"/>
+      </memberdef>
+      <memberdef kind="function" id="class_edible_1a11969fa7f0b24b39eadd450cd3649582" prot="public" static="no" const="no" explicit="no" inline="no" virt="pure-virtual">
+        <type><ref refid="class_edible_growth" kindref="compound">EdibleGrowth</ref> &amp;</type>
+        <definition>virtual EdibleGrowth &amp; Edible::getMutableGrowthBuildingBlock</definition>
+        <argsstring>()=0</argsstring>
+        <name>getMutableGrowthBuildingBlock</name>
+        <qualifiedname>Edible::getMutableGrowthBuildingBlock</qualifiedname>
+        <reimplementedby refid="class_animal_1a4b65e8a158b2d3be496d174c956f40f3">getMutableGrowthBuildingBlock</reimplementedby>
+        <reimplementedby refid="class_animal_non_statistical_1a24ad19f9c0876a691388c445b8e3a144">getMutableGrowthBuildingBlock</reimplementedby>
+        <reimplementedby refid="class_animal_statistical_1a6e8970bfc832bc55e313f8287338a611">getMutableGrowthBuildingBlock</reimplementedby>
+        <reimplementedby refid="class_branch_cell_resource_1ac9036380b1ae91b00fb9ca18495b07ad">getMutableGrowthBuildingBlock</reimplementedby>
+        <reimplementedby refid="class_cell_resource_1a57a8a87f583c211de79f1b9c0ca22d56">getMutableGrowthBuildingBlock</reimplementedby>
+        <reimplementedby refid="class_cell_resource_interface_1a2869771900d7794d44d3b8067d3551e4">getMutableGrowthBuildingBlock</reimplementedby>
+        <briefdescription>
+<para>Returns the growth building block for this edible (mutable). </para>
+        </briefdescription>
+        <detaileddescription>
+<para><simplesect kind="return"><para>Reference to the <ref refid="class_edible_growth" kindref="compound">EdibleGrowth</ref> </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="App/Model/IBM/Landscape/LivingBeings/Edible.h" line="119" column="22"/>
+      </memberdef>
+      <memberdef kind="function" id="class_edible_1ac15c013fca3d7bbb1add42d42b52fba5" prot="public" static="no" const="no" explicit="no" inline="no" virt="virtual">
+        <type><ref refid="class_species" kindref="compound">Species</ref> *</type>
+        <definition>virtual Species * Edible::getMutableSpecies</definition>
+        <argsstring>()</argsstring>
+        <name>getMutableSpecies</name>
+        <qualifiedname>Edible::getMutableSpecies</qualifiedname>
+        <reimplementedby refid="class_animal_1a311b5098fe43e3ca5883ae38ec9e9c2b">getMutableSpecies</reimplementedby>
+        <reimplementedby refid="class_cell_resource_interface_1a752f2976ac75f00003cd0b15b8cfde87">getMutableSpecies</reimplementedby>
+        <briefdescription>
+<para>Returns the associated species (mutable). </para>
+        </briefdescription>
+        <detaileddescription>
+<para><simplesect kind="return"><para>Pointer to the <ref refid="class_species" kindref="compound">Species</ref> </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="App/Model/IBM/Landscape/LivingBeings/Edible.h" line="80" column="17"/>
+      </memberdef>
+      <memberdef kind="function" id="class_edible_1ae8427bf3b3cced2e4c10dabbf7d25bb9" prot="public" static="no" const="yes" explicit="no" inline="no" virt="non-virtual">
+        <type><ref refid="class_terrain_cell" kindref="compound">TerrainCell</ref> *</type>
+        <definition>TerrainCell * Edible::getMutableTerrainCell</definition>
+        <argsstring>() const</argsstring>
+        <name>getMutableTerrainCell</name>
+        <qualifiedname>Edible::getMutableTerrainCell</qualifiedname>
+        <briefdescription>
+<para>Returns the terrain cell where this edible resides (mutable). </para>
+        </briefdescription>
+        <detaileddescription>
+<para><simplesect kind="return"><para>Pointer to the <ref refid="class_terrain_cell" kindref="compound">TerrainCell</ref> </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="App/Model/IBM/Landscape/LivingBeings/Edible.h" line="107" column="13"/>
+      </memberdef>
+      <memberdef kind="function" id="class_edible_1a2e2e945811a5e87c2e7fad53e5689de9" prot="public" static="no" const="yes" explicit="no" inline="no" virt="virtual">
+        <type>const <ref refid="class_species" kindref="compound">Species</ref> *</type>
+        <definition>virtual const Species * Edible::getSpecies</definition>
+        <argsstring>() const</argsstring>
+        <name>getSpecies</name>
+        <qualifiedname>Edible::getSpecies</qualifiedname>
+        <reimplementedby refid="class_animal_1a7305aa2245f6b908eb66019b14d2673e">getSpecies</reimplementedby>
+        <reimplementedby refid="class_cell_resource_interface_1a1de3da0bea43a61ec6dd20e9f2aa4d99">getSpecies</reimplementedby>
+        <briefdescription>
+<para>Returns the associated species (const). </para>
+        </briefdescription>
+        <detaileddescription>
+<para><simplesect kind="return"><para>Pointer to the <ref refid="class_species" kindref="compound">Species</ref> </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="App/Model/IBM/Landscape/LivingBeings/Edible.h" line="74" column="23"/>
+      </memberdef>
+      <memberdef kind="function" id="class_edible_1a40371658641bb50c113dcced827247ac" prot="public" static="no" const="yes" explicit="no" inline="no" virt="non-virtual">
+        <type>const <ref refid="class_terrain_cell" kindref="compound">TerrainCell</ref> *</type>
+        <definition>const TerrainCell * Edible::getTerrainCell</definition>
+        <argsstring>() const</argsstring>
+        <name>getTerrainCell</name>
+        <qualifiedname>Edible::getTerrainCell</qualifiedname>
+        <briefdescription>
+<para>Returns the terrain cell where this edible object is currently located. </para>
+        </briefdescription>
+        <detaileddescription>
+<para>Provides read-only access to the <ref refid="class_terrain_cell" kindref="compound">TerrainCell</ref> pointer.</para>
+<para><simplesect kind="return"><para>Pointer to the current <ref refid="class_terrain_cell" kindref="compound">TerrainCell</ref>. </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="App/Model/IBM/Landscape/LivingBeings/Edible.h" line="101" column="19"/>
+      </memberdef>
+      <memberdef kind="function" id="class_edible_1a323034d9cc4ba4182252ad04433984db" prot="public" static="no" const="yes" explicit="no" inline="no" virt="pure-virtual">
+        <type>bool</type>
+        <definition>virtual bool Edible::isHunting</definition>
+        <argsstring>() const =0</argsstring>
+        <name>isHunting</name>
+        <qualifiedname>Edible::isHunting</qualifiedname>
+        <reimplementedby refid="class_animal_non_statistical_1a79e03038acae24dd963ed0dc8961746f">isHunting</reimplementedby>
+        <reimplementedby refid="class_animal_statistical_1a87abd435d96c22142f9ee985fc3a1107">isHunting</reimplementedby>
+        <reimplementedby refid="class_cell_resource_interface_1a7212e7df1698df3d51e3b42724b4ea80">isHunting</reimplementedby>
+        <briefdescription>
+<para>Returns whether this edible is currently being hunted. </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="App/Model/IBM/Landscape/LivingBeings/Edible.h" line="127" column="14"/>
+      </memberdef>
+      <memberdef kind="function" id="class_edible_1a8c112449263b7f7c057718102c0e56f8" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type><ref refid="class_edible" kindref="compound">Edible</ref> &amp;</type>
+        <definition>Edible &amp; Edible::operator=</definition>
+        <argsstring>(const Edible &amp;)=delete</argsstring>
+        <name>operator=</name>
+        <qualifiedname>Edible::operator=</qualifiedname>
+        <param>
+          <type>const <ref refid="class_edible" kindref="compound">Edible</ref> &amp;</type>
+        </param>
+        <briefdescription>
+<para>Deleted copy assignment operator. </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="App/Model/IBM/Landscape/LivingBeings/Edible.h" line="62" column="8"/>
+      </memberdef>
+      <memberdef kind="function" id="class_edible_1aaa472efff4315951fd5f52650a781264" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <templateparamlist>
+          <param>
+            <type>class Archive</type>
+          </param>
+        </templateparamlist>
+        <type>void</type>
+        <definition>void Edible::serialize</definition>
+        <argsstring>(Archive &amp;ar, const unsigned int version)</argsstring>
+        <name>serialize</name>
+        <qualifiedname>Edible::serialize</qualifiedname>
+        <param>
+          <type>Archive &amp;</type>
+          <declname>ar</declname>
+        </param>
+        <param>
+          <type>const unsigned int</type>
+          <declname>version</declname>
+        </param>
+        <briefdescription>
+<para>Serializes the object for persistence. </para>
+        </briefdescription>
+        <detaileddescription>
+<para><parameterlist kind="templateparam"><parameteritem>
+<parameternamelist>
+<parametername>Archive</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Serialization archive type. </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>ar</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Archive instance. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>version</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Serialization version. </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="App/Model/IBM/Landscape/LivingBeings/Edible.h" line="145" column="11"/>
+      </memberdef>
+      <memberdef kind="function" id="class_edible_1a1e12758142353ed756c4b74b35913c62" prot="public" static="no" const="no" explicit="no" inline="no" virt="virtual">
+        <type>void</type>
+        <definition>virtual void Edible::setSpecies</definition>
+        <argsstring>(Species *newSpecies)</argsstring>
+        <name>setSpecies</name>
+        <qualifiedname>Edible::setSpecies</qualifiedname>
+        <reimplementedby refid="class_animal_1af499bfdd6a58e30cea4ddc228462068d">setSpecies</reimplementedby>
+        <reimplementedby refid="class_animal_non_statistical_1ab166e4abcb413138fa5cb4ee7158a997">setSpecies</reimplementedby>
+        <param>
+          <type><ref refid="class_species" kindref="compound">Species</ref> *</type>
+          <declname>newSpecies</declname>
+        </param>
+        <briefdescription>
+<para>Sets the species associated with this edible. </para>
+        </briefdescription>
+        <detaileddescription>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>newSpecies</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Pointer to the new <ref refid="class_species" kindref="compound">Species</ref> </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="App/Model/IBM/Landscape/LivingBeings/Edible.h" line="86" column="14"/>
+      </memberdef>
+      <memberdef kind="function" id="class_edible_1aacd97af4f965dadd80be8cc711829f77" prot="public" static="no" const="no" explicit="no" inline="no" virt="virtual">
+        <type>void</type>
+        <definition>virtual void Edible::setTerrainCell</definition>
+        <argsstring>(TerrainCell *newTerrainCell)</argsstring>
+        <name>setTerrainCell</name>
+        <qualifiedname>Edible::setTerrainCell</qualifiedname>
+        <reimplementedby refid="class_branch_cell_resource_1a56aa6b70d5a3dfbcf76830be91fe9e8c">setTerrainCell</reimplementedby>
+        <param>
+          <type><ref refid="class_terrain_cell" kindref="compound">TerrainCell</ref> *</type>
+          <declname>newTerrainCell</declname>
+        </param>
+        <briefdescription>
+<para>Sets the terrain cell where this edible is located. </para>
+        </briefdescription>
+        <detaileddescription>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>newTerrainCell</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Pointer to the new <ref refid="class_terrain_cell" kindref="compound">TerrainCell</ref> </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="App/Model/IBM/Landscape/LivingBeings/Edible.h" line="92" column="14"/>
+      </memberdef>
+      <memberdef kind="function" id="class_edible_1a0e4e6440021a0065de183c97cd2fa5bd" prot="public" static="no" const="yes" explicit="no" inline="no" virt="pure-virtual">
+        <type><ref refid="class_dry_mass" kindref="compound">DryMass</ref></type>
+        <definition>virtual DryMass Edible::turnIntoDryMass</definition>
+        <argsstring>(const DryMass &amp;targetDryMass, const PreciseDouble &amp;predatorRemainingVoracity) const =0</argsstring>
+        <name>turnIntoDryMass</name>
+        <qualifiedname>Edible::turnIntoDryMass</qualifiedname>
+        <reimplementedby refid="class_animal_non_statistical_1a1a58892f27e8c2395c79d673cb1749d6">turnIntoDryMass</reimplementedby>
+        <reimplementedby refid="class_animal_statistical_1a642641a1a91c82b3a5a68d6089c726f7">turnIntoDryMass</reimplementedby>
+        <reimplementedby refid="class_cell_resource_interface_1a7655b227cc0e745cbf05981236432191">turnIntoDryMass</reimplementedby>
+        <param>
+          <type>const <ref refid="class_dry_mass" kindref="compound">DryMass</ref> &amp;</type>
+          <declname>targetDryMass</declname>
+        </param>
+        <param>
+          <type>const <ref refid="class_precise_double" kindref="compound">PreciseDouble</ref> &amp;</type>
+          <declname>predatorRemainingVoracity</declname>
+        </param>
+        <briefdescription>
+<para>Converts part of the edible into dry mass for a predator. </para>
+        </briefdescription>
+        <detaileddescription>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>targetDryMass</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Amount of dry mass targeted for consumption </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>predatorRemainingVoracity</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Remaining voracity of the predator </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<simplesect kind="return"><para>Actual dry mass obtained </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="App/Model/IBM/Landscape/LivingBeings/Edible.h" line="135" column="17"/>
+      </memberdef>
+    </sectiondef>
+    <sectiondef kind="protected-func">
+      <memberdef kind="function" id="class_edible_1a42f012c8bd16e3c9b1c48f774527d9f0" prot="protected" static="no" const="no" explicit="no" inline="no" virt="pure-virtual">
+        <type>void</type>
+        <definition>virtual void Edible::setSpeciesGrowth</definition>
+        <argsstring>(SpeciesGrowth *newSpeciesGrowth)=0</argsstring>
+        <name>setSpeciesGrowth</name>
+        <qualifiedname>Edible::setSpeciesGrowth</qualifiedname>
+        <reimplementedby refid="class_animal_non_statistical_1a1649262e046769c67f0c78378be86de9">setSpeciesGrowth</reimplementedby>
+        <reimplementedby refid="class_animal_statistical_1a4bf0d87641e6e37016763ae1ffc980f0">setSpeciesGrowth</reimplementedby>
+        <reimplementedby refid="class_branch_cell_resource_1a7d0b937482e258a350a45638591586fd">setSpeciesGrowth</reimplementedby>
+        <reimplementedby refid="class_cell_resource_1a85d224cf18b0ed42a315b9212fafaedd">setSpeciesGrowth</reimplementedby>
+        <param>
+          <type><ref refid="class_species_growth" kindref="compound">SpeciesGrowth</ref> *</type>
+          <declname>newSpeciesGrowth</declname>
+        </param>
+        <briefdescription>
+<para>Sets the species growth block (implemented in derived classes). </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="App/Model/IBM/Landscape/LivingBeings/Edible.h" line="158" column="14"/>
+      </memberdef>
+    </sectiondef>
+    <briefdescription>
+<para>Represents a generic edible entity within a terrain cell. </para>
+    </briefdescription>
+    <detaileddescription>
+<para>The <ref refid="class_edible" kindref="compound">Edible</ref> class serves as a base class for all resources or prey that animals can consume. It stores information about its unique identifier, associated species, and the terrain cell it belongs to. Subclasses implement growth, predation, and biomass conversion. </para>
+    </detaileddescription>
+    <inheritancegraph>
+      <node id="2">
+        <label>Animal</label>
+        <link refid="class_animal"/>
+        <childnode refid="1" relation="public-inheritance">
+        </childnode>
+      </node>
+      <node id="3">
+        <label>AnimalNonStatistical</label>
+        <link refid="class_animal_non_statistical"/>
+        <childnode refid="2" relation="public-inheritance">
+        </childnode>
+      </node>
+      <node id="5">
+        <label>AnimalStatistical</label>
+        <link refid="class_animal_statistical"/>
+        <childnode refid="2" relation="public-inheritance">
+        </childnode>
+      </node>
+      <node id="7">
+        <label>BranchCellResource</label>
+        <link refid="class_branch_cell_resource"/>
+        <childnode refid="6" relation="public-inheritance">
+        </childnode>
+      </node>
+      <node id="8">
+        <label>CellResource</label>
+        <link refid="class_cell_resource"/>
+        <childnode refid="6" relation="public-inheritance">
+        </childnode>
+      </node>
+      <node id="6">
+        <label>CellResourceInterface</label>
+        <link refid="class_cell_resource_interface"/>
+        <childnode refid="1" relation="public-inheritance">
+        </childnode>
+      </node>
+      <node id="1">
+        <label>Edible</label>
+        <link refid="class_edible"/>
+      </node>
+      <node id="4">
+        <label>SpatialTreeAnimal</label>
+        <link refid="class_spatial_tree_animal"/>
+        <childnode refid="3" relation="public-inheritance">
+        </childnode>
+      </node>
+    </inheritancegraph>
+    <collaborationgraph>
+      <node id="7">
+        <label>CellElement</label>
+        <link refid="class_cell_element"/>
+      </node>
+      <node id="11">
+        <label>CellHabitatDomainInterface</label>
+        <link refid="class_cell_habitat_domain_interface"/>
+        <childnode refid="7" relation="public-inheritance">
+        </childnode>
+        <childnode refid="12" relation="usage">
+          <edgelabel>habitatDomainStatus</edgelabel>
+        </childnode>
+      </node>
+      <node id="6">
+        <label>CellMoistureInterface</label>
+        <link refid="class_cell_moisture_interface"/>
+        <childnode refid="7" relation="public-inheritance">
+        </childnode>
+        <childnode refid="8" relation="usage">
+          <edgelabel>totalMaximumResourceCapacity</edgelabel>
+        </childnode>
+      </node>
+      <node id="10">
+        <label>CellObstacleInterface</label>
+        <link refid="class_cell_obstacle_interface"/>
+        <childnode refid="7" relation="public-inheritance">
+        </childnode>
+      </node>
+      <node id="12">
+        <label>CustomIndexedVector&lt; AnimalSpeciesID, CustomIndexedVector&lt; Instar, bool &gt; &gt;</label>
+        <link refid="class_custom_indexed_vector"/>
+      </node>
+      <node id="1">
+        <label>Edible</label>
+        <link refid="class_edible"/>
+        <childnode refid="2" relation="usage">
+          <edgelabel>mySpecies</edgelabel>
+        </childnode>
+        <childnode refid="4" relation="usage">
+          <edgelabel>terrainCell</edgelabel>
+        </childnode>
+      </node>
+      <node id="5">
+        <label>PatchApplicator</label>
+        <link refid="class_patch_applicator"/>
+        <childnode refid="4" relation="usage">
+          <edgelabel>owner</edgelabel>
+        </childnode>
+        <childnode refid="6" relation="usage">
+          <edgelabel>cellMoisture</edgelabel>
+        </childnode>
+        <childnode refid="10" relation="usage">
+          <edgelabel>cellObstacle</edgelabel>
+        </childnode>
+        <childnode refid="11" relation="usage">
+          <edgelabel>cellHabitatDomain</edgelabel>
+        </childnode>
+      </node>
+      <node id="13">
+        <label>PointMap</label>
+        <link refid="class_point_map"/>
+      </node>
+      <node id="9">
+        <label>PreciseDouble</label>
+        <link refid="class_precise_double"/>
+      </node>
+      <node id="2">
+        <label>Species</label>
+        <link refid="class_species"/>
+        <childnode refid="3" relation="usage">
+          <edgelabel>id</edgelabel>
+        </childnode>
+      </node>
+      <node id="3">
+        <label>Species::ID</label>
+        <link refid="class_species_1_1_i_d"/>
+      </node>
+      <node id="4">
+        <label>TerrainCell</label>
+        <link refid="class_terrain_cell"/>
+        <childnode refid="5" relation="usage">
+          <edgelabel>patchApplicator</edgelabel>
+        </childnode>
+        <childnode refid="13" relation="usage">
+          <edgelabel>position</edgelabel>
+        </childnode>
+        <childnode refid="9" relation="usage">
+          <edgelabel>hyperVolume</edgelabel>
+          <edgelabel>size</edgelabel>
+        </childnode>
+      </node>
+      <node id="8">
+        <label>WetMass</label>
+        <link refid="class_wet_mass"/>
+        <childnode refid="9" relation="usage">
+          <edgelabel>value</edgelabel>
+        </childnode>
+      </node>
+    </collaborationgraph>
+    <location file="App/Model/IBM/Landscape/LivingBeings/Edible.h" line="42" column="1" bodyfile="App/Model/IBM/Landscape/LivingBeings/Edible.h" bodystart="42" bodyend="159"/>
+    <listofallmembers>
+      <member refid="class_edible_1ad2bd330d8bddee1968a782c8c7417f6c" prot="public" virt="non-virtual"><scope>Edible</scope><name>Edible</name></member>
+      <member refid="class_edible_1a6eeeb715ddf2707990356e169cbc3ab6" prot="public" virt="non-virtual"><scope>Edible</scope><name>Edible</name></member>
+      <member refid="class_edible_1aead81535b712265418ab786a8ada4f51" prot="public" virt="non-virtual"><scope>Edible</scope><name>Edible</name></member>
+      <member refid="class_edible_1a9a7bf3e902e6a55494764d07896b732f" prot="public" virt="pure-virtual"><scope>Edible</scope><name>getGrowthBuildingBlock</name></member>
+      <member refid="class_edible_1a89223f30f79d20181aa5e5e477f4a96a" prot="public" virt="non-virtual"><scope>Edible</scope><name>getId</name></member>
+      <member refid="class_edible_1ac0ad9e1a6d3049f445cd78f1eb7da95d" prot="public" virt="non-virtual"><scope>Edible</scope><name>getInstar</name></member>
+      <member refid="class_edible_1a11969fa7f0b24b39eadd450cd3649582" prot="public" virt="pure-virtual"><scope>Edible</scope><name>getMutableGrowthBuildingBlock</name></member>
+      <member refid="class_edible_1ac15c013fca3d7bbb1add42d42b52fba5" prot="public" virt="virtual"><scope>Edible</scope><name>getMutableSpecies</name></member>
+      <member refid="class_edible_1ae8427bf3b3cced2e4c10dabbf7d25bb9" prot="public" virt="non-virtual"><scope>Edible</scope><name>getMutableTerrainCell</name></member>
+      <member refid="class_edible_1a2e2e945811a5e87c2e7fad53e5689de9" prot="public" virt="virtual"><scope>Edible</scope><name>getSpecies</name></member>
+      <member refid="class_edible_1a40371658641bb50c113dcced827247ac" prot="public" virt="non-virtual"><scope>Edible</scope><name>getTerrainCell</name></member>
+      <member refid="class_edible_1a54e4c51c58f7126ec542f2a41dd1467e" prot="protected" virt="non-virtual"><scope>Edible</scope><name>id</name></member>
+      <member refid="class_edible_1a323034d9cc4ba4182252ad04433984db" prot="public" virt="pure-virtual"><scope>Edible</scope><name>isHunting</name></member>
+      <member refid="class_edible_1a2ee0ce7e08eee8fc76858a05398152ec" prot="protected" virt="non-virtual"><scope>Edible</scope><name>mySpecies</name></member>
+      <member refid="class_edible_1a8c112449263b7f7c057718102c0e56f8" prot="public" virt="non-virtual"><scope>Edible</scope><name>operator=</name></member>
+      <member refid="class_edible_1aaa472efff4315951fd5f52650a781264" prot="public" virt="non-virtual"><scope>Edible</scope><name>serialize</name></member>
+      <member refid="class_edible_1a1e12758142353ed756c4b74b35913c62" prot="public" virt="virtual"><scope>Edible</scope><name>setSpecies</name></member>
+      <member refid="class_edible_1a42f012c8bd16e3c9b1c48f774527d9f0" prot="protected" virt="pure-virtual"><scope>Edible</scope><name>setSpeciesGrowth</name></member>
+      <member refid="class_edible_1aacd97af4f965dadd80be8cc711829f77" prot="public" virt="virtual"><scope>Edible</scope><name>setTerrainCell</name></member>
+      <member refid="class_edible_1a035e2c46b32ea4e77f457a8c114106c7" prot="protected" virt="non-virtual"><scope>Edible</scope><name>terrainCell</name></member>
+      <member refid="class_edible_1a0e4e6440021a0065de183c97cd2fa5bd" prot="public" virt="pure-virtual"><scope>Edible</scope><name>turnIntoDryMass</name></member>
+      <member refid="class_edible_1a8645217fd9d754597e5398be80f03094" prot="public" virt="virtual"><scope>Edible</scope><name>~Edible</name></member>
+    </listofallmembers>
+  </compounddef>
+</doxygen>

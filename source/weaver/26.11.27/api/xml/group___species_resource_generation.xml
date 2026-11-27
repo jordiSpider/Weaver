@@ -1,0 +1,122 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.18.0" xml:lang="en-US">
+  <compounddef id="group___species_resource_generation" kind="group">
+    <compoundname>SpeciesResourceGeneration</compoundname>
+    <title>Resource Generation and Involvement</title>
+    <sectiondef kind="func">
+      <memberdef kind="function" id="group___species_resource_generation_1ga2b3c7f18eed0433c831e4518cafeb20e" prot="public" static="no" const="yes" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void AnimalSpecies::generateInstarInvolvedResourceSpecies</definition>
+        <argsstring>(const std::vector&lt; Species * &gt; &amp;existingSpecies, const Instar &amp;instar, std::vector&lt; ResourceSpecies::ResourceID &gt; &amp;involvedResourceSpecies, CustomIndexedVector&lt; AnimalSpeciesID, CustomIndexedVector&lt; Instar, bool &gt; &gt; &amp;alreadyCheckedSpecies) const</argsstring>
+        <name>generateInstarInvolvedResourceSpecies</name>
+        <qualifiedname>AnimalSpecies::generateInstarInvolvedResourceSpecies</qualifiedname>
+        <param>
+          <type>const std::vector&lt; <ref refid="class_species" kindref="compound">Species</ref> * &gt; &amp;</type>
+          <declname>existingSpecies</declname>
+        </param>
+        <param>
+          <type>const <ref refid="class_instar" kindref="compound">Instar</ref> &amp;</type>
+          <declname>instar</declname>
+        </param>
+        <param>
+          <type>std::vector&lt; <ref refid="class_resource_species_1_1_resource_i_d" kindref="compound">ResourceSpecies::ResourceID</ref> &gt; &amp;</type>
+          <declname>involvedResourceSpecies</declname>
+        </param>
+        <param>
+          <type><ref refid="class_custom_indexed_vector" kindref="compound">CustomIndexedVector</ref>&lt; <ref refid="class_animal_species_i_d" kindref="compound">AnimalSpeciesID</ref>, <ref refid="class_custom_indexed_vector" kindref="compound">CustomIndexedVector</ref>&lt; <ref refid="class_instar" kindref="compound">Instar</ref>, bool &gt; &gt; &amp;</type>
+          <declname>alreadyCheckedSpecies</declname>
+        </param>
+        <briefdescription>
+<para>Generates involved-resource list for a single instar. </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="App/Model/IBM/Landscape/LivingBeings/Animals/Species/AnimalSpecies.h" line="530" column="6"/>
+      </memberdef>
+      <memberdef kind="function" id="group___species_resource_generation_1ga0f0b55034914692a5792f227ad2ce8d0" prot="public" static="no" const="yes" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void AnimalSpecies::generateInvolvedResourceSpecies</definition>
+        <argsstring>(const std::vector&lt; Species * &gt; &amp;existingSpecies, const std::vector&lt; AnimalSpecies * &gt; &amp;existingAnimalSpecies, CustomIndexedVector&lt; AnimalSpeciesID, CustomIndexedVector&lt; Instar, std::vector&lt; ResourceSpecies::ResourceID &gt; &gt; &gt; &amp;involvedResourceSpecies) const</argsstring>
+        <name>generateInvolvedResourceSpecies</name>
+        <qualifiedname>AnimalSpecies::generateInvolvedResourceSpecies</qualifiedname>
+        <param>
+          <type>const std::vector&lt; <ref refid="class_species" kindref="compound">Species</ref> * &gt; &amp;</type>
+          <declname>existingSpecies</declname>
+        </param>
+        <param>
+          <type>const std::vector&lt; <ref refid="class_animal_species" kindref="compound">AnimalSpecies</ref> * &gt; &amp;</type>
+          <declname>existingAnimalSpecies</declname>
+        </param>
+        <param>
+          <type><ref refid="class_custom_indexed_vector" kindref="compound">CustomIndexedVector</ref>&lt; <ref refid="class_animal_species_i_d" kindref="compound">AnimalSpeciesID</ref>, <ref refid="class_custom_indexed_vector" kindref="compound">CustomIndexedVector</ref>&lt; <ref refid="class_instar" kindref="compound">Instar</ref>, std::vector&lt; <ref refid="class_resource_species_1_1_resource_i_d" kindref="compound">ResourceSpecies::ResourceID</ref> &gt; &gt; &gt; &amp;</type>
+          <declname>involvedResourceSpecies</declname>
+        </param>
+        <briefdescription>
+<para>Generates involved resource species for the whole species. </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="App/Model/IBM/Landscape/LivingBeings/Animals/Species/AnimalSpecies.h" line="518" column="6"/>
+      </memberdef>
+      <memberdef kind="function" id="group___species_resource_generation_1ga2930865844ac55e63c38343b3c456f34" prot="public" static="no" constexpr="yes" const="yes" explicit="no" inline="yes" noexcept="yes" virt="non-virtual">
+        <type><ref refid="class_animal_species_i_d" kindref="compound">AnimalSpeciesID</ref></type>
+        <definition>AnimalSpeciesID AnimalSpecies::getAnimalSpeciesId</definition>
+        <argsstring>() const noexcept</argsstring>
+        <name>getAnimalSpeciesId</name>
+        <qualifiedname>AnimalSpecies::getAnimalSpeciesId</qualifiedname>
+        <briefdescription>
+<para>Returns species identifier. </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="App/Model/IBM/Landscape/LivingBeings/Animals/Species/AnimalSpecies.h" line="521" column="34" bodyfile="App/Model/IBM/Landscape/LivingBeings/Animals/Species/AnimalSpecies.h" bodystart="521" bodyend="524"/>
+      </memberdef>
+      <memberdef kind="function" id="group___species_resource_generation_1gaad4573fcc6dc6332a7221da536c14ab3" prot="public" static="no" const="yes" explicit="no" inline="no" virt="virtual">
+        <type>SpeciesType</type>
+        <definition>SpeciesType AnimalSpecies::getType</definition>
+        <argsstring>() const</argsstring>
+        <name>getType</name>
+        <qualifiedname>AnimalSpecies::getType</qualifiedname>
+        <reimplements refid="class_species_1a3e93041e1bc2deb860767a309a19a269">getType</reimplements>
+        <briefdescription>
+<para>Returns species type. </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="App/Model/IBM/Landscape/LivingBeings/Animals/Species/AnimalSpecies.h" line="537" column="13"/>
+      </memberdef>
+      <memberdef kind="function" id="group___species_resource_generation_1ga2d99cbef11a84248e4fa9c9b7a7b80ed" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void AnimalSpecies::initializeGeneticFiles</definition>
+        <argsstring>(const std::filesystem::path &amp;geneticsFolder)</argsstring>
+        <name>initializeGeneticFiles</name>
+        <qualifiedname>AnimalSpecies::initializeGeneticFiles</qualifiedname>
+        <param>
+          <type>const std::filesystem::path &amp;</type>
+          <declname>geneticsFolder</declname>
+        </param>
+        <briefdescription>
+<para>Initializes genetic files. </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="App/Model/IBM/Landscape/LivingBeings/Animals/Species/AnimalSpecies.h" line="527" column="6"/>
+      </memberdef>
+    </sectiondef>
+    <briefdescription>
+<para>Methods that compute which resources or species affect each instar. </para>
+    </briefdescription>
+    <detaileddescription>
+    </detaileddescription>
+  </compounddef>
+</doxygen>

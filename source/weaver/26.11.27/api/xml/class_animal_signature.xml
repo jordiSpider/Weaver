@@ -1,0 +1,352 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.18.0" xml:lang="en-US">
+  <compounddef id="class_animal_signature" kind="class" language="C++" prot="public">
+    <compoundname>AnimalSignature</compoundname>
+    <sectiondef kind="private-static-attrib">
+      <memberdef kind="variable" id="class_animal_signature_1a0f56903f660e35662c980ea79197a251" prot="private" static="yes" mutable="no">
+        <type>size_t</type>
+        <definition>size_t AnimalSignature::BITS_ANIMAL_SP_ID</definition>
+        <argsstring></argsstring>
+        <name>BITS_ANIMAL_SP_ID</name>
+        <qualifiedname>AnimalSignature::BITS_ANIMAL_SP_ID</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="App/Model/IBM/Landscape/LivingBeings/Animals/AnimalSignature.h" line="22" column="19" bodyfile="App/Model/IBM/Landscape/LivingBeings/Animals/AnimalSignature.h" bodystart="22" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="class_animal_signature_1a29bf7231fb61e290570f450ea3a2bed5" prot="private" static="yes" mutable="no">
+        <type>size_t</type>
+        <definition>size_t AnimalSignature::BITS_GENDER</definition>
+        <argsstring></argsstring>
+        <name>BITS_GENDER</name>
+        <qualifiedname>AnimalSignature::BITS_GENDER</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="App/Model/IBM/Landscape/LivingBeings/Animals/AnimalSignature.h" line="20" column="19" bodyfile="App/Model/IBM/Landscape/LivingBeings/Animals/AnimalSignature.h" bodystart="20" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="class_animal_signature_1ab77016d8f4d351f8ed9ad1dc80369c19" prot="private" static="yes" mutable="no">
+        <type>size_t</type>
+        <definition>size_t AnimalSignature::BITS_INSTAR</definition>
+        <argsstring></argsstring>
+        <name>BITS_INSTAR</name>
+        <qualifiedname>AnimalSignature::BITS_INSTAR</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="App/Model/IBM/Landscape/LivingBeings/Animals/AnimalSignature.h" line="21" column="19" bodyfile="App/Model/IBM/Landscape/LivingBeings/Animals/AnimalSignature.h" bodystart="21" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="class_animal_signature_1ab9588c60f895b51b6ced5d44b81affa1" prot="private" static="yes" mutable="no">
+        <type>size_t</type>
+        <definition>size_t AnimalSignature::BITS_LIFE_STAGE</definition>
+        <argsstring></argsstring>
+        <name>BITS_LIFE_STAGE</name>
+        <qualifiedname>AnimalSignature::BITS_LIFE_STAGE</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="App/Model/IBM/Landscape/LivingBeings/Animals/AnimalSignature.h" line="23" column="19" bodyfile="App/Model/IBM/Landscape/LivingBeings/Animals/AnimalSignature.h" bodystart="23" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="class_animal_signature_1a5ce1e407db86a2c089c495cb1c2124d3" prot="private" static="yes" mutable="no">
+        <type>size_t</type>
+        <definition>size_t AnimalSignature::SHIFT_ANIMAL_SP_ID</definition>
+        <argsstring></argsstring>
+        <name>SHIFT_ANIMAL_SP_ID</name>
+        <qualifiedname>AnimalSignature::SHIFT_ANIMAL_SP_ID</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="App/Model/IBM/Landscape/LivingBeings/Animals/AnimalSignature.h" line="27" column="19" bodyfile="App/Model/IBM/Landscape/LivingBeings/Animals/AnimalSignature.h" bodystart="27" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="class_animal_signature_1a1924ee47db24804b31c183626d387591" prot="private" static="yes" mutable="no">
+        <type>size_t</type>
+        <definition>size_t AnimalSignature::SHIFT_GENDER</definition>
+        <argsstring></argsstring>
+        <name>SHIFT_GENDER</name>
+        <qualifiedname>AnimalSignature::SHIFT_GENDER</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="App/Model/IBM/Landscape/LivingBeings/Animals/AnimalSignature.h" line="25" column="19" bodyfile="App/Model/IBM/Landscape/LivingBeings/Animals/AnimalSignature.h" bodystart="25" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="class_animal_signature_1a59eae9ad9f4af72a2c8c06d78a571ce5" prot="private" static="yes" mutable="no">
+        <type>size_t</type>
+        <definition>size_t AnimalSignature::SHIFT_INSTAR</definition>
+        <argsstring></argsstring>
+        <name>SHIFT_INSTAR</name>
+        <qualifiedname>AnimalSignature::SHIFT_INSTAR</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="App/Model/IBM/Landscape/LivingBeings/Animals/AnimalSignature.h" line="26" column="19" bodyfile="App/Model/IBM/Landscape/LivingBeings/Animals/AnimalSignature.h" bodystart="26" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="class_animal_signature_1a454541d733ea617b72214b46c85ebade" prot="private" static="yes" mutable="no">
+        <type>size_t</type>
+        <definition>size_t AnimalSignature::SHIFT_LIFE_STAGE</definition>
+        <argsstring></argsstring>
+        <name>SHIFT_LIFE_STAGE</name>
+        <qualifiedname>AnimalSignature::SHIFT_LIFE_STAGE</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="App/Model/IBM/Landscape/LivingBeings/Animals/AnimalSignature.h" line="28" column="19" bodyfile="App/Model/IBM/Landscape/LivingBeings/Animals/AnimalSignature.h" bodystart="28" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="class_animal_signature_1ac57d7c7928b51a2641f930e040a9874a" prot="private" static="yes" mutable="no">
+        <type>size_t</type>
+        <definition>size_t AnimalSignature::TOTAL_SIGNATURE_BITS</definition>
+        <argsstring></argsstring>
+        <name>TOTAL_SIGNATURE_BITS</name>
+        <qualifiedname>AnimalSignature::TOTAL_SIGNATURE_BITS</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="App/Model/IBM/Landscape/LivingBeings/Animals/AnimalSignature.h" line="30" column="19" bodyfile="App/Model/IBM/Landscape/LivingBeings/Animals/AnimalSignature.h" bodystart="30" bodyend="-1"/>
+      </memberdef>
+    </sectiondef>
+    <sectiondef kind="private-attrib">
+      <memberdef kind="variable" id="class_animal_signature_1a33ed99c9bb92c84b041be136789c7037" prot="private" static="no" mutable="no">
+        <type>uint32_t</type>
+        <definition>uint32_t AnimalSignature::value</definition>
+        <argsstring></argsstring>
+        <name>value</name>
+        <qualifiedname>AnimalSignature::value</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="App/Model/IBM/Landscape/LivingBeings/Animals/AnimalSignature.h" line="33" column="14" bodyfile="App/Model/IBM/Landscape/LivingBeings/Animals/AnimalSignature.h" bodystart="33" bodyend="-1"/>
+      </memberdef>
+    </sectiondef>
+    <sectiondef kind="public-static-attrib">
+      <memberdef kind="variable" id="class_animal_signature_1a5070511292098ec3dd756aa734067480" prot="public" static="yes" mutable="no">
+        <type>size_t</type>
+        <definition>size_t AnimalSignature::BITMASK_DYNAMIC_SIZE</definition>
+        <argsstring></argsstring>
+        <name>BITMASK_DYNAMIC_SIZE</name>
+        <qualifiedname>AnimalSignature::BITMASK_DYNAMIC_SIZE</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="App/Model/IBM/Landscape/LivingBeings/Animals/AnimalSignature.h" line="39" column="19" bodyfile="App/Model/IBM/Landscape/LivingBeings/Animals/AnimalSignature.h" bodystart="39" bodyend="-1"/>
+      </memberdef>
+    </sectiondef>
+    <sectiondef kind="private-static-func">
+      <memberdef kind="function" id="class_animal_signature_1a470e93da8327a265ead110102217e494" prot="private" static="yes" const="no" explicit="no" inline="no" noexcept="yes" virt="non-virtual">
+        <type>size_t</type>
+        <definition>static size_t AnimalSignature::bitsNeeded</definition>
+        <argsstring>(size_t count) noexcept</argsstring>
+        <name>bitsNeeded</name>
+        <qualifiedname>AnimalSignature::bitsNeeded</qualifiedname>
+        <param>
+          <type>size_t</type>
+          <declname>count</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="App/Model/IBM/Landscape/LivingBeings/Animals/AnimalSignature.h" line="36" column="19"/>
+      </memberdef>
+    </sectiondef>
+    <sectiondef kind="public-static-func">
+      <memberdef kind="function" id="class_animal_signature_1a2c0ef67c982ad9d00c9e627579afe60a" prot="public" static="yes" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>static void AnimalSignature::configureBits</definition>
+        <argsstring>(size_t maxNumberOfInstar, size_t numberOfAnimalSpecies)</argsstring>
+        <name>configureBits</name>
+        <qualifiedname>AnimalSignature::configureBits</qualifiedname>
+        <param>
+          <type>size_t</type>
+          <declname>maxNumberOfInstar</declname>
+        </param>
+        <param>
+          <type>size_t</type>
+          <declname>numberOfAnimalSpecies</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="App/Model/IBM/Landscape/LivingBeings/Animals/AnimalSignature.h" line="50" column="17"/>
+      </memberdef>
+      <memberdef kind="function" id="class_animal_signature_1aaa0036b6286becb65daa8980afd7243c" prot="public" static="yes" constexpr="yes" const="no" explicit="no" inline="yes" noexcept="yes" virt="non-virtual">
+        <type>uint32_t</type>
+        <definition>static constexpr uint32_t AnimalSignature::packSignature</definition>
+        <argsstring>(const LifeStage &amp;ls, const AnimalSpeciesID &amp;as, const Instar &amp;in, const Gender &amp;g) noexcept</argsstring>
+        <name>packSignature</name>
+        <qualifiedname>AnimalSignature::packSignature</qualifiedname>
+        <param>
+          <type>const LifeStage &amp;</type>
+          <declname>ls</declname>
+        </param>
+        <param>
+          <type>const <ref refid="class_animal_species_i_d" kindref="compound">AnimalSpeciesID</ref> &amp;</type>
+          <declname>as</declname>
+        </param>
+        <param>
+          <type>const <ref refid="class_instar" kindref="compound">Instar</ref> &amp;</type>
+          <declname>in</declname>
+        </param>
+        <param>
+          <type>const Gender &amp;</type>
+          <declname>g</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="App/Model/IBM/Landscape/LivingBeings/Animals/AnimalSignature.h" line="42" column="31" bodyfile="App/Model/IBM/Landscape/LivingBeings/Animals/AnimalSignature.h" bodystart="42" bodyend="48"/>
+      </memberdef>
+    </sectiondef>
+    <sectiondef kind="public-func">
+      <memberdef kind="function" id="class_animal_signature_1ada1d6fc26575ef79d3cd753d7ea2d277" prot="public" static="no" const="no" explicit="no" inline="yes" noexcept="yes" virt="non-virtual">
+        <type></type>
+        <definition>AnimalSignature::AnimalSignature</definition>
+        <argsstring>() noexcept</argsstring>
+        <name>AnimalSignature</name>
+        <qualifiedname>AnimalSignature::AnimalSignature</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="App/Model/IBM/Landscape/LivingBeings/Animals/AnimalSignature.h" line="53" column="1" bodyfile="App/Model/IBM/Landscape/LivingBeings/Animals/AnimalSignature.h" bodystart="53" bodyend="53"/>
+      </memberdef>
+      <memberdef kind="function" id="class_animal_signature_1ad2518c183a0f4f4444720f561fba299f" prot="public" static="no" const="no" explicit="no" inline="yes" noexcept="yes" virt="non-virtual">
+        <type></type>
+        <definition>AnimalSignature::AnimalSignature</definition>
+        <argsstring>(const LifeStage &amp;ls, const AnimalSpeciesID &amp;as, const Instar &amp;in, const Gender &amp;g) noexcept</argsstring>
+        <name>AnimalSignature</name>
+        <qualifiedname>AnimalSignature::AnimalSignature</qualifiedname>
+        <param>
+          <type>const LifeStage &amp;</type>
+          <declname>ls</declname>
+        </param>
+        <param>
+          <type>const <ref refid="class_animal_species_i_d" kindref="compound">AnimalSpeciesID</ref> &amp;</type>
+          <declname>as</declname>
+        </param>
+        <param>
+          <type>const <ref refid="class_instar" kindref="compound">Instar</ref> &amp;</type>
+          <declname>in</declname>
+        </param>
+        <param>
+          <type>const Gender &amp;</type>
+          <declname>g</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="App/Model/IBM/Landscape/LivingBeings/Animals/AnimalSignature.h" line="55" column="1" bodyfile="App/Model/IBM/Landscape/LivingBeings/Animals/AnimalSignature.h" bodystart="55" bodyend="57"/>
+      </memberdef>
+      <memberdef kind="function" id="class_animal_signature_1a1563352fa160ad387e6427833a7e753e" prot="public" static="no" const="yes" explicit="no" inline="yes" noexcept="yes" virt="non-virtual">
+        <type>uint32_t</type>
+        <definition>uint32_t AnimalSignature::getValue</definition>
+        <argsstring>() const noexcept</argsstring>
+        <name>getValue</name>
+        <qualifiedname>AnimalSignature::getValue</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="App/Model/IBM/Landscape/LivingBeings/Animals/AnimalSignature.h" line="60" column="21" bodyfile="App/Model/IBM/Landscape/LivingBeings/Animals/AnimalSignature.h" bodystart="60" bodyend="62"/>
+      </memberdef>
+      <memberdef kind="function" id="class_animal_signature_1a6382824bba66d0edbb9de22ce66ea26d" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <templateparamlist>
+          <param>
+            <type>class Archive</type>
+          </param>
+        </templateparamlist>
+        <type>void</type>
+        <definition>void AnimalSignature::serialize</definition>
+        <argsstring>(Archive &amp;ar, const unsigned int version)</argsstring>
+        <name>serialize</name>
+        <qualifiedname>AnimalSignature::serialize</qualifiedname>
+        <param>
+          <type>Archive &amp;</type>
+          <declname>ar</declname>
+        </param>
+        <param>
+          <type>const unsigned int</type>
+          <declname>version</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="App/Model/IBM/Landscape/LivingBeings/Animals/AnimalSignature.h" line="66" column="10"/>
+      </memberdef>
+    </sectiondef>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+    </detaileddescription>
+    <location file="App/Model/IBM/Landscape/LivingBeings/Animals/AnimalSignature.h" line="17" column="1" bodyfile="App/Model/IBM/Landscape/LivingBeings/Animals/AnimalSignature.h" bodystart="18" bodyend="67"/>
+    <listofallmembers>
+      <member refid="class_animal_signature_1ada1d6fc26575ef79d3cd753d7ea2d277" prot="public" virt="non-virtual"><scope>AnimalSignature</scope><name>AnimalSignature</name></member>
+      <member refid="class_animal_signature_1ad2518c183a0f4f4444720f561fba299f" prot="public" virt="non-virtual"><scope>AnimalSignature</scope><name>AnimalSignature</name></member>
+      <member refid="class_animal_signature_1a5070511292098ec3dd756aa734067480" prot="public" virt="non-virtual"><scope>AnimalSignature</scope><name>BITMASK_DYNAMIC_SIZE</name></member>
+      <member refid="class_animal_signature_1a0f56903f660e35662c980ea79197a251" prot="private" virt="non-virtual"><scope>AnimalSignature</scope><name>BITS_ANIMAL_SP_ID</name></member>
+      <member refid="class_animal_signature_1a29bf7231fb61e290570f450ea3a2bed5" prot="private" virt="non-virtual"><scope>AnimalSignature</scope><name>BITS_GENDER</name></member>
+      <member refid="class_animal_signature_1ab77016d8f4d351f8ed9ad1dc80369c19" prot="private" virt="non-virtual"><scope>AnimalSignature</scope><name>BITS_INSTAR</name></member>
+      <member refid="class_animal_signature_1ab9588c60f895b51b6ced5d44b81affa1" prot="private" virt="non-virtual"><scope>AnimalSignature</scope><name>BITS_LIFE_STAGE</name></member>
+      <member refid="class_animal_signature_1a470e93da8327a265ead110102217e494" prot="private" virt="non-virtual"><scope>AnimalSignature</scope><name>bitsNeeded</name></member>
+      <member refid="class_animal_signature_1a2c0ef67c982ad9d00c9e627579afe60a" prot="public" virt="non-virtual"><scope>AnimalSignature</scope><name>configureBits</name></member>
+      <member refid="class_animal_signature_1a1563352fa160ad387e6427833a7e753e" prot="public" virt="non-virtual"><scope>AnimalSignature</scope><name>getValue</name></member>
+      <member refid="class_animal_signature_1aaa0036b6286becb65daa8980afd7243c" prot="public" virt="non-virtual"><scope>AnimalSignature</scope><name>packSignature</name></member>
+      <member refid="class_animal_signature_1a6382824bba66d0edbb9de22ce66ea26d" prot="public" virt="non-virtual"><scope>AnimalSignature</scope><name>serialize</name></member>
+      <member refid="class_animal_signature_1a5ce1e407db86a2c089c495cb1c2124d3" prot="private" virt="non-virtual"><scope>AnimalSignature</scope><name>SHIFT_ANIMAL_SP_ID</name></member>
+      <member refid="class_animal_signature_1a1924ee47db24804b31c183626d387591" prot="private" virt="non-virtual"><scope>AnimalSignature</scope><name>SHIFT_GENDER</name></member>
+      <member refid="class_animal_signature_1a59eae9ad9f4af72a2c8c06d78a571ce5" prot="private" virt="non-virtual"><scope>AnimalSignature</scope><name>SHIFT_INSTAR</name></member>
+      <member refid="class_animal_signature_1a454541d733ea617b72214b46c85ebade" prot="private" virt="non-virtual"><scope>AnimalSignature</scope><name>SHIFT_LIFE_STAGE</name></member>
+      <member refid="class_animal_signature_1ac57d7c7928b51a2641f930e040a9874a" prot="private" virt="non-virtual"><scope>AnimalSignature</scope><name>TOTAL_SIGNATURE_BITS</name></member>
+      <member refid="class_animal_signature_1a33ed99c9bb92c84b041be136789c7037" prot="private" virt="non-virtual"><scope>AnimalSignature</scope><name>value</name></member>
+    </listofallmembers>
+  </compounddef>
+</doxygen>

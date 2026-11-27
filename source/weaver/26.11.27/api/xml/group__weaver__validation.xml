@@ -1,0 +1,22 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.18.0" xml:lang="en-US">
+  <compounddef id="group__weaver__validation" kind="group">
+    <compoundname>weaver_validation</compoundname>
+    <title>Validation</title>
+    <innerclass refid="class_array" prot="public">Array</innerclass>
+    <innerclass refid="class_boolean" prot="public">Boolean</innerclass>
+    <innerclass refid="class_element" prot="public">Element</innerclass>
+    <innerclass refid="class_element_factory" prot="public">ElementFactory</innerclass>
+    <innerclass refid="class_integer" prot="public">Integer</innerclass>
+    <innerclass refid="class_json_validator" prot="public">JsonValidator</innerclass>
+    <innerclass refid="class_number" prot="public">Number</innerclass>
+    <innerclass refid="class_object" prot="public">Object</innerclass>
+    <innerclass refid="class_string" prot="public">String</innerclass>
+    <innerclass refid="class_tuple" prot="public">Tuple</innerclass>
+    <briefdescription>
+<para>Configuration and JSON validation APIs. </para>
+    </briefdescription>
+    <detaileddescription>
+    </detaileddescription>
+  </compounddef>
+</doxygen>

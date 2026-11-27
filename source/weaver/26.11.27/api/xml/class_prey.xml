@@ -1,0 +1,531 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.18.0" xml:lang="en-US">
+  <compounddef id="class_prey" kind="class" language="C++" prot="public">
+    <compoundname>Prey</compoundname>
+    <includes refid="_prey_8h" local="no">Prey.h</includes>
+    <sectiondef kind="private-attrib">
+      <memberdef kind="variable" id="class_prey_1ae63b9987aec397bfdbdb2b0454c78a2d" prot="private" static="no" mutable="no">
+        <type><ref refid="class_dry_mass" kindref="compound">DryMass</ref></type>
+        <definition>DryMass Prey::foodDryMass</definition>
+        <argsstring></argsstring>
+        <name>foodDryMass</name>
+        <qualifiedname>Prey::foodDryMass</qualifiedname>
+        <briefdescription>
+<para>Remaining dry mass available as food. </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="App/Model/IBM/Landscape/LivingBeings/Animals/Prey.h" line="130" column="13" bodyfile="App/Model/IBM/Landscape/LivingBeings/Animals/Prey.h" bodystart="130" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="class_prey_1a1ccf22721980fe3661aef959ea6cb5ba" prot="private" static="no" mutable="no">
+        <type><ref refid="class_dry_mass" kindref="compound">DryMass</ref></type>
+        <definition>DryMass Prey::foodDryMassPerTimeStep</definition>
+        <argsstring></argsstring>
+        <name>foodDryMassPerTimeStep</name>
+        <qualifiedname>Prey::foodDryMassPerTimeStep</qualifiedname>
+        <briefdescription>
+<para>Dry mass available per simulation timestep. </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="App/Model/IBM/Landscape/LivingBeings/Animals/Prey.h" line="131" column="13" bodyfile="App/Model/IBM/Landscape/LivingBeings/Animals/Prey.h" bodystart="131" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="class_prey_1afeac88cdf68e71430d23d86d0d4dbbec" prot="private" static="no" mutable="no">
+        <type><ref refid="class_day" kindref="compound">Day</ref></type>
+        <definition>Day Prey::handlingTime</definition>
+        <argsstring></argsstring>
+        <name>handlingTime</name>
+        <qualifiedname>Prey::handlingTime</qualifiedname>
+        <briefdescription>
+<para>Handling time required by a predator. </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="App/Model/IBM/Landscape/LivingBeings/Animals/Prey.h" line="128" column="9" bodyfile="App/Model/IBM/Landscape/LivingBeings/Animals/Prey.h" bodystart="128" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="class_prey_1ae4cfcdde8104c143608ec0a757dbf1b0" prot="private" static="no" mutable="no">
+        <type><ref refid="class_species_1_1_i_d" kindref="compound">Species::ID</ref></type>
+        <definition>Species::ID Prey::id</definition>
+        <argsstring></argsstring>
+        <name>id</name>
+        <qualifiedname>Prey::id</qualifiedname>
+        <briefdescription>
+<para><ref refid="class_species" kindref="compound">Species</ref> identifier of the prey. </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="App/Model/IBM/Landscape/LivingBeings/Animals/Prey.h" line="125" column="13" bodyfile="App/Model/IBM/Landscape/LivingBeings/Animals/Prey.h" bodystart="125" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="class_prey_1a5dc501a12a3e8673e5d537c58da1f424" prot="private" static="no" mutable="no">
+        <type><ref refid="class_dry_mass" kindref="compound">DryMass</ref></type>
+        <definition>DryMass Prey::initialDryMass</definition>
+        <argsstring></argsstring>
+        <name>initialDryMass</name>
+        <qualifiedname>Prey::initialDryMass</qualifiedname>
+        <briefdescription>
+<para>Initial dry mass of the prey. </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="App/Model/IBM/Landscape/LivingBeings/Animals/Prey.h" line="127" column="13" bodyfile="App/Model/IBM/Landscape/LivingBeings/Animals/Prey.h" bodystart="127" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="class_prey_1a71fc8553a7bfaf2f38f000c840d9f31f" prot="private" static="no" mutable="no">
+        <type><ref refid="class_instar" kindref="compound">Instar</ref></type>
+        <definition>Instar Prey::instar</definition>
+        <argsstring></argsstring>
+        <name>instar</name>
+        <qualifiedname>Prey::instar</qualifiedname>
+        <briefdescription>
+<para>Growth stage of the prey. </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="App/Model/IBM/Landscape/LivingBeings/Animals/Prey.h" line="126" column="12" bodyfile="App/Model/IBM/Landscape/LivingBeings/Animals/Prey.h" bodystart="126" bodyend="-1"/>
+      </memberdef>
+    </sectiondef>
+    <sectiondef kind="public-func">
+      <memberdef kind="function" id="class_prey_1ac9425833a6e49d1a435500c5845f3af1" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type></type>
+        <definition>Prey::Prey</definition>
+        <argsstring>()</argsstring>
+        <name>Prey</name>
+        <qualifiedname>Prey::Prey</qualifiedname>
+        <briefdescription>
+<para>Default constructor. Initializes a <ref refid="class_prey" kindref="compound">Prey</ref> object with default values. </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="App/Model/IBM/Landscape/LivingBeings/Animals/Prey.h" line="43" column="1"/>
+      </memberdef>
+      <memberdef kind="function" id="class_prey_1af40ad2998a683296c78942aa44f53426" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type></type>
+        <definition>Prey::Prey</definition>
+        <argsstring>(const Prey &amp;other)</argsstring>
+        <name>Prey</name>
+        <qualifiedname>Prey::Prey</qualifiedname>
+        <param>
+          <type>const <ref refid="class_prey" kindref="compound">Prey</ref> &amp;</type>
+          <declname>other</declname>
+        </param>
+        <briefdescription>
+<para>Copy constructor. </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="App/Model/IBM/Landscape/LivingBeings/Animals/Prey.h" line="61" column="1"/>
+      </memberdef>
+      <memberdef kind="function" id="class_prey_1af51f2c92f5905d69ea36e6355a7bb91b" prot="public" static="no" const="no" explicit="yes" inline="no" virt="non-virtual">
+        <type></type>
+        <definition>Prey::Prey</definition>
+        <argsstring>(const Species::ID &amp;id, const Instar &amp;instar, const DryMass &amp;dryMass, const Day &amp;handlingTime, const PreciseDouble &amp;timeStepsPerDay)</argsstring>
+        <name>Prey</name>
+        <qualifiedname>Prey::Prey</qualifiedname>
+        <param>
+          <type>const <ref refid="class_species_1_1_i_d" kindref="compound">Species::ID</ref> &amp;</type>
+          <declname>id</declname>
+        </param>
+        <param>
+          <type>const <ref refid="class_instar" kindref="compound">Instar</ref> &amp;</type>
+          <declname>instar</declname>
+        </param>
+        <param>
+          <type>const <ref refid="class_dry_mass" kindref="compound">DryMass</ref> &amp;</type>
+          <declname>dryMass</declname>
+        </param>
+        <param>
+          <type>const <ref refid="class_day" kindref="compound">Day</ref> &amp;</type>
+          <declname>handlingTime</declname>
+        </param>
+        <param>
+          <type>const <ref refid="class_precise_double" kindref="compound">PreciseDouble</ref> &amp;</type>
+          <declname>timeStepsPerDay</declname>
+        </param>
+        <briefdescription>
+<para>Constructs a <ref refid="class_prey" kindref="compound">Prey</ref> with specific parameters. </para>
+        </briefdescription>
+        <detaileddescription>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>id</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>The species identifier of the prey. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>instar</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>The growth stage of the prey. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>dryMass</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>The initial dry mass of the prey. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>handlingTime</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>The time required for a predator to consume the prey. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>timeStepsPerDay</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>The number of simulation timesteps per day. </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="App/Model/IBM/Landscape/LivingBeings/Animals/Prey.h" line="53" column="10"/>
+      </memberdef>
+      <memberdef kind="function" id="class_prey_1a15ed39d04dcb3c4b1fa30cbfda726aca" prot="public" static="no" const="no" explicit="no" inline="no" virt="virtual">
+        <type></type>
+        <definition>virtual Prey::~Prey</definition>
+        <argsstring>()</argsstring>
+        <name>~Prey</name>
+        <qualifiedname>Prey::~Prey</qualifiedname>
+        <briefdescription>
+<para>Destructor. </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="App/Model/IBM/Landscape/LivingBeings/Animals/Prey.h" line="58" column="9"/>
+      </memberdef>
+      <memberdef kind="function" id="class_prey_1ac32dca7183d7b75c49fb78d03e91da23" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void Prey::decreaseFoodMass</definition>
+        <argsstring>(const DryMass &amp;foodToEliminate)</argsstring>
+        <name>decreaseFoodMass</name>
+        <qualifiedname>Prey::decreaseFoodMass</qualifiedname>
+        <param>
+          <type>const <ref refid="class_dry_mass" kindref="compound">DryMass</ref> &amp;</type>
+          <declname>foodToEliminate</declname>
+        </param>
+        <briefdescription>
+<para>Reduces the available food by a given amount. </para>
+        </briefdescription>
+        <detaileddescription>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>foodToEliminate</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>The <ref refid="class_dry_mass" kindref="compound">DryMass</ref> of food to subtract. </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="App/Model/IBM/Landscape/LivingBeings/Animals/Prey.h" line="106" column="6"/>
+      </memberdef>
+      <memberdef kind="function" id="class_prey_1a1f6ae850758ccd0f6c6b3e78d67fcd61" prot="public" static="no" const="yes" explicit="no" inline="no" virt="non-virtual">
+        <type>const <ref refid="class_dry_mass" kindref="compound">DryMass</ref> &amp;</type>
+        <definition>const DryMass &amp; Prey::getFoodDryMass</definition>
+        <argsstring>() const</argsstring>
+        <name>getFoodDryMass</name>
+        <qualifiedname>Prey::getFoodDryMass</qualifiedname>
+        <briefdescription>
+<para>Returns the remaining dry mass available for consumption. </para>
+        </briefdescription>
+        <detaileddescription>
+<para><simplesect kind="return"><para>Reference to the current <ref refid="class_dry_mass" kindref="compound">DryMass</ref> available as food. </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="App/Model/IBM/Landscape/LivingBeings/Animals/Prey.h" line="94" column="15"/>
+      </memberdef>
+      <memberdef kind="function" id="class_prey_1a1bbbe802303cbb41389281e6e0f99f1f" prot="public" static="no" const="yes" explicit="no" inline="no" virt="non-virtual">
+        <type>const <ref refid="class_dry_mass" kindref="compound">DryMass</ref> &amp;</type>
+        <definition>const DryMass &amp; Prey::getFoodDryMassPerTimeStep</definition>
+        <argsstring>() const</argsstring>
+        <name>getFoodDryMassPerTimeStep</name>
+        <qualifiedname>Prey::getFoodDryMassPerTimeStep</qualifiedname>
+        <briefdescription>
+<para>Returns the dry mass available per simulation timestep. </para>
+        </briefdescription>
+        <detaileddescription>
+<para><simplesect kind="return"><para>Reference to the <ref refid="class_dry_mass" kindref="compound">DryMass</ref> per timestep. </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="App/Model/IBM/Landscape/LivingBeings/Animals/Prey.h" line="100" column="15"/>
+      </memberdef>
+      <memberdef kind="function" id="class_prey_1a95ee131770329749ea3382302f62e4ea" prot="public" static="no" const="yes" explicit="no" inline="no" virt="non-virtual">
+        <type>const <ref refid="class_day" kindref="compound">Day</ref> &amp;</type>
+        <definition>const Day &amp; Prey::getHandlingTime</definition>
+        <argsstring>() const</argsstring>
+        <name>getHandlingTime</name>
+        <qualifiedname>Prey::getHandlingTime</qualifiedname>
+        <briefdescription>
+<para>Returns the handling time required for a predator to consume the prey. </para>
+        </briefdescription>
+        <detaileddescription>
+<para><simplesect kind="return"><para>Reference to the <ref refid="class_day" kindref="compound">Day</ref> representing handling time. </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="App/Model/IBM/Landscape/LivingBeings/Animals/Prey.h" line="88" column="11"/>
+      </memberdef>
+      <memberdef kind="function" id="class_prey_1a61c27bbed5eb1d747e33a05ceb8e7e2e" prot="public" static="no" const="yes" explicit="no" inline="no" virt="non-virtual">
+        <type>const <ref refid="class_species_1_1_i_d" kindref="compound">Species::ID</ref> &amp;</type>
+        <definition>const Species::ID &amp; Prey::getId</definition>
+        <argsstring>() const</argsstring>
+        <name>getId</name>
+        <qualifiedname>Prey::getId</qualifiedname>
+        <briefdescription>
+<para>Returns the species ID of the prey. </para>
+        </briefdescription>
+        <detaileddescription>
+<para><simplesect kind="return"><para>Reference to the <ref refid="class_species_1_1_i_d" kindref="compound">Species::ID</ref>. </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="App/Model/IBM/Landscape/LivingBeings/Animals/Prey.h" line="70" column="19"/>
+      </memberdef>
+      <memberdef kind="function" id="class_prey_1a6060a07228cb2b7ab305d7242b91b643" prot="public" static="no" const="yes" explicit="no" inline="no" virt="non-virtual">
+        <type>const <ref refid="class_dry_mass" kindref="compound">DryMass</ref> &amp;</type>
+        <definition>const DryMass &amp; Prey::getInitialDryMass</definition>
+        <argsstring>() const</argsstring>
+        <name>getInitialDryMass</name>
+        <qualifiedname>Prey::getInitialDryMass</qualifiedname>
+        <briefdescription>
+<para>Returns the initial dry mass of the prey. </para>
+        </briefdescription>
+        <detaileddescription>
+<para><simplesect kind="return"><para>Reference to the initial <ref refid="class_dry_mass" kindref="compound">DryMass</ref>. </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="App/Model/IBM/Landscape/LivingBeings/Animals/Prey.h" line="82" column="15"/>
+      </memberdef>
+      <memberdef kind="function" id="class_prey_1a0b7315d457520ffd9f9d8888cca415d0" prot="public" static="no" const="yes" explicit="no" inline="no" virt="non-virtual">
+        <type>const <ref refid="class_instar" kindref="compound">Instar</ref> &amp;</type>
+        <definition>const Instar &amp; Prey::getInstar</definition>
+        <argsstring>() const</argsstring>
+        <name>getInstar</name>
+        <qualifiedname>Prey::getInstar</qualifiedname>
+        <briefdescription>
+<para>Returns the instar (growth stage) of the prey. </para>
+        </briefdescription>
+        <detaileddescription>
+<para><simplesect kind="return"><para>Reference to the <ref refid="class_instar" kindref="compound">Instar</ref>. </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="App/Model/IBM/Landscape/LivingBeings/Animals/Prey.h" line="76" column="14"/>
+      </memberdef>
+      <memberdef kind="function" id="class_prey_1aa9756aae6883a35f4633f9954cffc28d" prot="public" static="no" const="yes" explicit="no" inline="no" virt="non-virtual">
+        <type>bool</type>
+        <definition>bool Prey::isThereLeftoverFood</definition>
+        <argsstring>() const</argsstring>
+        <name>isThereLeftoverFood</name>
+        <qualifiedname>Prey::isThereLeftoverFood</qualifiedname>
+        <briefdescription>
+<para>Checks if there is any remaining food in the prey. </para>
+        </briefdescription>
+        <detaileddescription>
+<para><simplesect kind="return"><para>True if food is still available, false otherwise. </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="App/Model/IBM/Landscape/LivingBeings/Animals/Prey.h" line="112" column="6"/>
+      </memberdef>
+      <memberdef kind="function" id="class_prey_1a728c3f86982275b97eda4f63669cd0de" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type><ref refid="class_prey" kindref="compound">Prey</ref> &amp;</type>
+        <definition>Prey &amp; Prey::operator=</definition>
+        <argsstring>(const Prey &amp;other)</argsstring>
+        <name>operator=</name>
+        <qualifiedname>Prey::operator=</qualifiedname>
+        <param>
+          <type>const <ref refid="class_prey" kindref="compound">Prey</ref> &amp;</type>
+          <declname>other</declname>
+        </param>
+        <briefdescription>
+<para>Copy assignment operator. </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="App/Model/IBM/Landscape/LivingBeings/Animals/Prey.h" line="64" column="6"/>
+      </memberdef>
+      <memberdef kind="function" id="class_prey_1af2574e3dc032dd68b864eae3ba525b10" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <templateparamlist>
+          <param>
+            <type>class Archive</type>
+          </param>
+        </templateparamlist>
+        <type>void</type>
+        <definition>void Prey::serialize</definition>
+        <argsstring>(Archive &amp;ar, const unsigned int version)</argsstring>
+        <name>serialize</name>
+        <qualifiedname>Prey::serialize</qualifiedname>
+        <param>
+          <type>Archive &amp;</type>
+          <declname>ar</declname>
+        </param>
+        <param>
+          <type>const unsigned int</type>
+          <declname>version</declname>
+        </param>
+        <briefdescription>
+<para>Serializes the object for persistence. </para>
+        </briefdescription>
+        <detaileddescription>
+<para><parameterlist kind="templateparam"><parameteritem>
+<parameternamelist>
+<parametername>Archive</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Serialization archive type. </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>ar</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Archive instance. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>version</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Serialization version. </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="App/Model/IBM/Landscape/LivingBeings/Animals/Prey.h" line="122" column="6"/>
+      </memberdef>
+    </sectiondef>
+    <briefdescription>
+<para>Represents a prey item in the ecosystem, including its species, growth stage, and available biomass. </para>
+    </briefdescription>
+    <detaileddescription>
+<para>The <ref refid="class_prey" kindref="compound">Prey</ref> class stores information about an individual prey item that can be consumed by predators. It tracks the species ID, instar (growth stage), initial dry mass, handling time, and the current food available for consumption. It also calculates the amount of food available per simulation timestep. </para>
+    </detaileddescription>
+    <collaborationgraph>
+      <node id="6">
+        <label>Day</label>
+        <link refid="class_day"/>
+        <childnode refid="5" relation="usage">
+          <edgelabel>value</edgelabel>
+        </childnode>
+      </node>
+      <node id="4">
+        <label>DryMass</label>
+        <link refid="class_dry_mass"/>
+        <childnode refid="5" relation="usage">
+          <edgelabel>value</edgelabel>
+        </childnode>
+      </node>
+      <node id="3">
+        <label>Instar</label>
+        <link refid="class_instar"/>
+      </node>
+      <node id="5">
+        <label>PreciseDouble</label>
+        <link refid="class_precise_double"/>
+      </node>
+      <node id="1">
+        <label>Prey</label>
+        <link refid="class_prey"/>
+        <childnode refid="2" relation="usage">
+          <edgelabel>id</edgelabel>
+        </childnode>
+        <childnode refid="3" relation="usage">
+          <edgelabel>instar</edgelabel>
+        </childnode>
+        <childnode refid="4" relation="usage">
+          <edgelabel>foodDryMass</edgelabel>
+          <edgelabel>foodDryMassPerTimeStep</edgelabel>
+          <edgelabel>initialDryMass</edgelabel>
+        </childnode>
+        <childnode refid="6" relation="usage">
+          <edgelabel>handlingTime</edgelabel>
+        </childnode>
+      </node>
+      <node id="2">
+        <label>Species::ID</label>
+        <link refid="class_species_1_1_i_d"/>
+      </node>
+    </collaborationgraph>
+    <location file="App/Model/IBM/Landscape/LivingBeings/Animals/Prey.h" line="37" column="1" bodyfile="App/Model/IBM/Landscape/LivingBeings/Animals/Prey.h" bodystart="38" bodyend="132"/>
+    <listofallmembers>
+      <member refid="class_prey_1ac32dca7183d7b75c49fb78d03e91da23" prot="public" virt="non-virtual"><scope>Prey</scope><name>decreaseFoodMass</name></member>
+      <member refid="class_prey_1ae63b9987aec397bfdbdb2b0454c78a2d" prot="private" virt="non-virtual"><scope>Prey</scope><name>foodDryMass</name></member>
+      <member refid="class_prey_1a1ccf22721980fe3661aef959ea6cb5ba" prot="private" virt="non-virtual"><scope>Prey</scope><name>foodDryMassPerTimeStep</name></member>
+      <member refid="class_prey_1a1f6ae850758ccd0f6c6b3e78d67fcd61" prot="public" virt="non-virtual"><scope>Prey</scope><name>getFoodDryMass</name></member>
+      <member refid="class_prey_1a1bbbe802303cbb41389281e6e0f99f1f" prot="public" virt="non-virtual"><scope>Prey</scope><name>getFoodDryMassPerTimeStep</name></member>
+      <member refid="class_prey_1a95ee131770329749ea3382302f62e4ea" prot="public" virt="non-virtual"><scope>Prey</scope><name>getHandlingTime</name></member>
+      <member refid="class_prey_1a61c27bbed5eb1d747e33a05ceb8e7e2e" prot="public" virt="non-virtual"><scope>Prey</scope><name>getId</name></member>
+      <member refid="class_prey_1a6060a07228cb2b7ab305d7242b91b643" prot="public" virt="non-virtual"><scope>Prey</scope><name>getInitialDryMass</name></member>
+      <member refid="class_prey_1a0b7315d457520ffd9f9d8888cca415d0" prot="public" virt="non-virtual"><scope>Prey</scope><name>getInstar</name></member>
+      <member refid="class_prey_1afeac88cdf68e71430d23d86d0d4dbbec" prot="private" virt="non-virtual"><scope>Prey</scope><name>handlingTime</name></member>
+      <member refid="class_prey_1ae4cfcdde8104c143608ec0a757dbf1b0" prot="private" virt="non-virtual"><scope>Prey</scope><name>id</name></member>
+      <member refid="class_prey_1a5dc501a12a3e8673e5d537c58da1f424" prot="private" virt="non-virtual"><scope>Prey</scope><name>initialDryMass</name></member>
+      <member refid="class_prey_1a71fc8553a7bfaf2f38f000c840d9f31f" prot="private" virt="non-virtual"><scope>Prey</scope><name>instar</name></member>
+      <member refid="class_prey_1aa9756aae6883a35f4633f9954cffc28d" prot="public" virt="non-virtual"><scope>Prey</scope><name>isThereLeftoverFood</name></member>
+      <member refid="class_prey_1a728c3f86982275b97eda4f63669cd0de" prot="public" virt="non-virtual"><scope>Prey</scope><name>operator=</name></member>
+      <member refid="class_prey_1ac9425833a6e49d1a435500c5845f3af1" prot="public" virt="non-virtual"><scope>Prey</scope><name>Prey</name></member>
+      <member refid="class_prey_1af51f2c92f5905d69ea36e6355a7bb91b" prot="public" virt="non-virtual"><scope>Prey</scope><name>Prey</name></member>
+      <member refid="class_prey_1af40ad2998a683296c78942aa44f53426" prot="public" virt="non-virtual"><scope>Prey</scope><name>Prey</name></member>
+      <member refid="class_prey_1af2574e3dc032dd68b864eae3ba525b10" prot="public" virt="non-virtual"><scope>Prey</scope><name>serialize</name></member>
+      <member refid="class_prey_1a15ed39d04dcb3c4b1fa30cbfda726aca" prot="public" virt="virtual"><scope>Prey</scope><name>~Prey</name></member>
+    </listofallmembers>
+  </compounddef>
+</doxygen>

@@ -1,0 +1,483 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.18.0" xml:lang="en-US">
+  <compounddef id="class_animal_decision_probability" kind="class" language="C++" prot="public">
+    <compoundname>AnimalDecisionProbability</compoundname>
+    <basecompoundref refid="class_decision_probability" prot="public" virt="non-virtual">DecisionProbability</basecompoundref>
+    <derivedcompoundref refid="class_escape_probability" prot="public" virt="non-virtual">EscapeProbability</derivedcompoundref>
+    <includes refid="_animal_decision_probability_8h" local="no">AnimalDecisionProbability.h</includes>
+    <sectiondef kind="private-attrib">
+      <memberdef kind="variable" id="class_animal_decision_probability_1a33eef7d981db77e4f2377c47fec4845a" prot="private" static="no" mutable="no">
+        <type>std::vector&lt; std::function&lt; <ref refid="class_precise_double" kindref="compound">PreciseDouble</ref>(const <ref refid="class_animal_non_statistical" kindref="compound">AnimalNonStatistical</ref> &amp;, const <ref refid="class_animal_non_statistical" kindref="compound">AnimalNonStatistical</ref> &amp;, const <ref refid="class_dry_mass" kindref="compound">DryMass</ref> &amp;)&gt; &gt;</type>
+        <definition>std::vector&lt;std::function&lt;PreciseDouble(const AnimalNonStatistical&amp;, const AnimalNonStatistical&amp;, const DryMass&amp;)&gt; &gt; AnimalDecisionProbability::probabilityFunctions</definition>
+        <argsstring></argsstring>
+        <name>probabilityFunctions</name>
+        <qualifiedname>AnimalDecisionProbability::probabilityFunctions</qualifiedname>
+        <briefdescription>
+<para>Vector of probability functions indexed by trait. </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="App/Model/IBM/Landscape/LivingBeings/Animals/Species/Decisions/DecisionProbability/AnimalDecisionProbability.h" line="104" column="17" bodyfile="App/Model/IBM/Landscape/LivingBeings/Animals/Species/Decisions/DecisionProbability/AnimalDecisionProbability.h" bodystart="104" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="class_animal_decision_probability_1a54c76ae4ab595eccafae67144f5b3c96" prot="private" static="no" mutable="no">
+        <type>std::function&lt; <ref refid="class_precise_double" kindref="compound">PreciseDouble</ref>(const <ref refid="class_animal_non_statistical" kindref="compound">AnimalNonStatistical</ref> &amp;, const <ref refid="class_animal_non_statistical" kindref="compound">AnimalNonStatistical</ref> &amp;, const <ref refid="class_dry_mass" kindref="compound">DryMass</ref> &amp;)&gt;</type>
+        <definition>std::function&lt;PreciseDouble(const AnimalNonStatistical&amp;, const AnimalNonStatistical&amp;, const DryMass&amp;)&gt; AnimalDecisionProbability::remainingProbabilityFunction</definition>
+        <argsstring></argsstring>
+        <name>remainingProbabilityFunction</name>
+        <qualifiedname>AnimalDecisionProbability::remainingProbabilityFunction</qualifiedname>
+        <briefdescription>
+<para>Function to handle remaining probabilities for unassigned indices. </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="App/Model/IBM/Landscape/LivingBeings/Animals/Species/Decisions/DecisionProbability/AnimalDecisionProbability.h" line="107" column="19" bodyfile="App/Model/IBM/Landscape/LivingBeings/Animals/Species/Decisions/DecisionProbability/AnimalDecisionProbability.h" bodystart="107" bodyend="-1"/>
+      </memberdef>
+    </sectiondef>
+    <sectiondef kind="public-func">
+      <memberdef kind="function" id="class_animal_decision_probability_1ac7000398c98d3ad4974f2db3f7ea30ef" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type></type>
+        <definition>AnimalDecisionProbability::AnimalDecisionProbability</definition>
+        <argsstring>()</argsstring>
+        <name>AnimalDecisionProbability</name>
+        <qualifiedname>AnimalDecisionProbability::AnimalDecisionProbability</qualifiedname>
+        <briefdescription>
+<para>Default constructor. </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="App/Model/IBM/Landscape/LivingBeings/Animals/Species/Decisions/DecisionProbability/AnimalDecisionProbability.h" line="34" column="5"/>
+      </memberdef>
+      <memberdef kind="function" id="class_animal_decision_probability_1a62aee0acf20b22389d84731641a6ae86" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type></type>
+        <definition>AnimalDecisionProbability::AnimalDecisionProbability</definition>
+        <argsstring>(const AnimalDecisionProbability &amp;)=delete</argsstring>
+        <name>AnimalDecisionProbability</name>
+        <qualifiedname>AnimalDecisionProbability::AnimalDecisionProbability</qualifiedname>
+        <param>
+          <type>const <ref refid="class_animal_decision_probability" kindref="compound">AnimalDecisionProbability</ref> &amp;</type>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="App/Model/IBM/Landscape/LivingBeings/Animals/Species/Decisions/DecisionProbability/AnimalDecisionProbability.h" line="50" column="5"/>
+      </memberdef>
+      <memberdef kind="function" id="class_animal_decision_probability_1aeccf273a60b20360f1e6929cd4d04b0b" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type></type>
+        <definition>AnimalDecisionProbability::AnimalDecisionProbability</definition>
+        <argsstring>(const nlohmann::json &amp;config, const std::vector&lt; Trait * &gt; &amp;probabilityWeightTraits)</argsstring>
+        <name>AnimalDecisionProbability</name>
+        <qualifiedname>AnimalDecisionProbability::AnimalDecisionProbability</qualifiedname>
+        <param>
+          <type>const nlohmann::json &amp;</type>
+          <declname>config</declname>
+        </param>
+        <param>
+          <type>const std::vector&lt; <ref refid="class_trait" kindref="compound">Trait</ref> * &gt; &amp;</type>
+          <declname>probabilityWeightTraits</declname>
+        </param>
+        <briefdescription>
+<para>Constructor with configuration and probability weight traits. </para>
+        </briefdescription>
+        <detaileddescription>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>config</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>JSON object containing configuration parameters. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>probabilityWeightTraits</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Vector of traits used to weight probabilities. </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="App/Model/IBM/Landscape/LivingBeings/Animals/Species/Decisions/DecisionProbability/AnimalDecisionProbability.h" line="42" column="5"/>
+      </memberdef>
+      <memberdef kind="function" id="class_animal_decision_probability_1a8767e5236fa56fec9c8c85bef5852ccb" prot="public" static="no" const="no" explicit="no" inline="no" virt="virtual">
+        <type></type>
+        <definition>virtual AnimalDecisionProbability::~AnimalDecisionProbability</definition>
+        <argsstring>()</argsstring>
+        <name>~AnimalDecisionProbability</name>
+        <qualifiedname>AnimalDecisionProbability::~AnimalDecisionProbability</qualifiedname>
+        <briefdescription>
+<para>Virtual destructor. </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="App/Model/IBM/Landscape/LivingBeings/Animals/Species/Decisions/DecisionProbability/AnimalDecisionProbability.h" line="47" column="13"/>
+      </memberdef>
+      <memberdef kind="function" id="class_animal_decision_probability_1a41e9d845915ed4acae4b63513b170c00" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type><ref refid="class_animal_decision_probability" kindref="compound">AnimalDecisionProbability</ref> &amp;</type>
+        <definition>AnimalDecisionProbability &amp; AnimalDecisionProbability::operator=</definition>
+        <argsstring>(const AnimalDecisionProbability &amp;)=delete</argsstring>
+        <name>operator=</name>
+        <qualifiedname>AnimalDecisionProbability::operator=</qualifiedname>
+        <param>
+          <type>const <ref refid="class_animal_decision_probability" kindref="compound">AnimalDecisionProbability</ref> &amp;</type>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="App/Model/IBM/Landscape/LivingBeings/Animals/Species/Decisions/DecisionProbability/AnimalDecisionProbability.h" line="53" column="27"/>
+      </memberdef>
+      <memberdef kind="function" id="class_animal_decision_probability_1a42fe7a11dc5b730336f83d70d2b85a53" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <templateparamlist>
+          <param>
+            <type>class Archive</type>
+          </param>
+        </templateparamlist>
+        <type>void</type>
+        <definition>void AnimalDecisionProbability::serialize</definition>
+        <argsstring>(Archive &amp;ar, const unsigned int version)</argsstring>
+        <name>serialize</name>
+        <qualifiedname>AnimalDecisionProbability::serialize</qualifiedname>
+        <param>
+          <type>Archive &amp;</type>
+          <declname>ar</declname>
+        </param>
+        <param>
+          <type>const unsigned int</type>
+          <declname>version</declname>
+        </param>
+        <briefdescription>
+<para>Serializes the object for persistence. </para>
+        </briefdescription>
+        <detaileddescription>
+<para><parameterlist kind="templateparam"><parameteritem>
+<parameternamelist>
+<parametername>Archive</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Serialization archive type. </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>ar</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Archive instance. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>version</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Serialization version. </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="App/Model/IBM/Landscape/LivingBeings/Animals/Species/Decisions/DecisionProbability/AnimalDecisionProbability.h" line="63" column="10"/>
+      </memberdef>
+    </sectiondef>
+    <sectiondef kind="protected-func">
+      <memberdef kind="function" id="class_animal_decision_probability_1a1e029fd139bd256022290493a0d92786" prot="protected" static="no" const="yes" explicit="no" inline="no" virt="virtual">
+        <type><ref refid="class_precise_double" kindref="compound">PreciseDouble</ref></type>
+        <definition>PreciseDouble AnimalDecisionProbability::applyProbabilityFunctions</definition>
+        <argsstring>(const size_t index, const AnimalNonStatistical &amp;predator, const Edible &amp;prey, const DryMass &amp;preyDryMass) const</argsstring>
+        <name>applyProbabilityFunctions</name>
+        <qualifiedname>AnimalDecisionProbability::applyProbabilityFunctions</qualifiedname>
+        <reimplements refid="class_decision_probability_1a07a2ed6874979a7aea09e12276d70066">applyProbabilityFunctions</reimplements>
+        <param>
+          <type>const size_t</type>
+          <declname>index</declname>
+        </param>
+        <param>
+          <type>const <ref refid="class_animal_non_statistical" kindref="compound">AnimalNonStatistical</ref> &amp;</type>
+          <declname>predator</declname>
+        </param>
+        <param>
+          <type>const <ref refid="class_edible" kindref="compound">Edible</ref> &amp;</type>
+          <declname>prey</declname>
+        </param>
+        <param>
+          <type>const <ref refid="class_dry_mass" kindref="compound">DryMass</ref> &amp;</type>
+          <declname>preyDryMass</declname>
+        </param>
+        <briefdescription>
+<para>Applies the probability function at a given index. </para>
+        </briefdescription>
+        <detaileddescription>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>index</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Index of the probability function. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>predator</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Predator individual. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>prey</parametername>
+</parameternamelist>
+<parameterdescription>
+<para><ref refid="class_prey" kindref="compound">Prey</ref> individual. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>preyDryMass</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Dry mass of the prey. </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<simplesect kind="return"><para>Computed probability as <ref refid="class_precise_double" kindref="compound">PreciseDouble</ref>. </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="App/Model/IBM/Landscape/LivingBeings/Animals/Species/Decisions/DecisionProbability/AnimalDecisionProbability.h" line="90" column="19"/>
+      </memberdef>
+      <memberdef kind="function" id="class_animal_decision_probability_1a7de4bc686ffb88e826034c4624e99e11" prot="protected" static="no" const="yes" explicit="no" inline="no" virt="virtual">
+        <type><ref refid="class_precise_double" kindref="compound">PreciseDouble</ref></type>
+        <definition>PreciseDouble AnimalDecisionProbability::applyRemainingProbabilityFunctions</definition>
+        <argsstring>(const AnimalNonStatistical &amp;predator, const Edible &amp;prey, const DryMass &amp;preyDryMass) const</argsstring>
+        <name>applyRemainingProbabilityFunctions</name>
+        <qualifiedname>AnimalDecisionProbability::applyRemainingProbabilityFunctions</qualifiedname>
+        <reimplements refid="class_decision_probability_1a1c93cb07ea512161f6c45bd2a1206293">applyRemainingProbabilityFunctions</reimplements>
+        <param>
+          <type>const <ref refid="class_animal_non_statistical" kindref="compound">AnimalNonStatistical</ref> &amp;</type>
+          <declname>predator</declname>
+        </param>
+        <param>
+          <type>const <ref refid="class_edible" kindref="compound">Edible</ref> &amp;</type>
+          <declname>prey</declname>
+        </param>
+        <param>
+          <type>const <ref refid="class_dry_mass" kindref="compound">DryMass</ref> &amp;</type>
+          <declname>preyDryMass</declname>
+        </param>
+        <briefdescription>
+<para>Applies the remaining probability function for unassigned indices. </para>
+        </briefdescription>
+        <detaileddescription>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>predator</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Predator individual. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>prey</parametername>
+</parameternamelist>
+<parameterdescription>
+<para><ref refid="class_prey" kindref="compound">Prey</ref> individual. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>preyDryMass</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Dry mass of the prey. </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<simplesect kind="return"><para>Computed probability as <ref refid="class_precise_double" kindref="compound">PreciseDouble</ref>. </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="App/Model/IBM/Landscape/LivingBeings/Animals/Species/Decisions/DecisionProbability/AnimalDecisionProbability.h" line="100" column="19"/>
+      </memberdef>
+      <memberdef kind="function" id="class_animal_decision_probability_1ae610a0625b25687051e445cc0bdd41cb" prot="protected" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void AnimalDecisionProbability::setProbabilityFunction</definition>
+        <argsstring>(const size_t index, const std::function&lt; PreciseDouble(const AnimalNonStatistical &amp;, const AnimalNonStatistical &amp;, const DryMass &amp;)&gt; &amp;newProbabilityFunction)</argsstring>
+        <name>setProbabilityFunction</name>
+        <qualifiedname>AnimalDecisionProbability::setProbabilityFunction</qualifiedname>
+        <param>
+          <type>const size_t</type>
+          <declname>index</declname>
+        </param>
+        <param>
+          <type>const std::function&lt; <ref refid="class_precise_double" kindref="compound">PreciseDouble</ref>(const <ref refid="class_animal_non_statistical" kindref="compound">AnimalNonStatistical</ref> &amp;, const <ref refid="class_animal_non_statistical" kindref="compound">AnimalNonStatistical</ref> &amp;, const <ref refid="class_dry_mass" kindref="compound">DryMass</ref> &amp;)&gt; &amp;</type>
+          <declname>newProbabilityFunction</declname>
+        </param>
+        <briefdescription>
+<para>Sets a probability function at a given index. </para>
+        </briefdescription>
+        <detaileddescription>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>index</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Index of the probability function. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>newProbabilityFunction</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Function to compute probability based on predator, prey, and prey dry mass. </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="App/Model/IBM/Landscape/LivingBeings/Animals/Species/Decisions/DecisionProbability/AnimalDecisionProbability.h" line="72" column="10"/>
+      </memberdef>
+      <memberdef kind="function" id="class_animal_decision_probability_1adc80f8b7286fb41f0da00aa4eee5f3f4" prot="protected" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void AnimalDecisionProbability::setRemainingProbabilityFunction</definition>
+        <argsstring>(const std::function&lt; PreciseDouble(const AnimalNonStatistical &amp;, const AnimalNonStatistical &amp;, const DryMass &amp;)&gt; &amp;newProbabilityFunction)</argsstring>
+        <name>setRemainingProbabilityFunction</name>
+        <qualifiedname>AnimalDecisionProbability::setRemainingProbabilityFunction</qualifiedname>
+        <param>
+          <type>const std::function&lt; <ref refid="class_precise_double" kindref="compound">PreciseDouble</ref>(const <ref refid="class_animal_non_statistical" kindref="compound">AnimalNonStatistical</ref> &amp;, const <ref refid="class_animal_non_statistical" kindref="compound">AnimalNonStatistical</ref> &amp;, const <ref refid="class_dry_mass" kindref="compound">DryMass</ref> &amp;)&gt; &amp;</type>
+          <declname>newProbabilityFunction</declname>
+        </param>
+        <briefdescription>
+<para>Sets the remaining probability function for indices not explicitly assigned. </para>
+        </briefdescription>
+        <detaileddescription>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>newProbabilityFunction</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Function to compute remaining probabilities. </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="App/Model/IBM/Landscape/LivingBeings/Animals/Species/Decisions/DecisionProbability/AnimalDecisionProbability.h" line="79" column="10"/>
+      </memberdef>
+    </sectiondef>
+    <sectiondef kind="private-func">
+      <memberdef kind="function" id="class_animal_decision_probability_1a5197801dc28c8916f2c6fd8dd3bb33a9" prot="private" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type><ref refid="class_precise_double" kindref="compound">PreciseDouble</ref></type>
+        <definition>PreciseDouble AnimalDecisionProbability::defaultProbabilityFunction</definition>
+        <argsstring>()</argsstring>
+        <name>defaultProbabilityFunction</name>
+        <qualifiedname>AnimalDecisionProbability::defaultProbabilityFunction</qualifiedname>
+        <briefdescription>
+<para>Default probability function returning a base probability. </para>
+        </briefdescription>
+        <detaileddescription>
+<para><simplesect kind="return"><para>Default probability value. </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="App/Model/IBM/Landscape/LivingBeings/Animals/Species/Decisions/DecisionProbability/AnimalDecisionProbability.h" line="115" column="19"/>
+      </memberdef>
+    </sectiondef>
+    <briefdescription>
+<para>Abstract class for decision probabilities specific to animal interactions. </para>
+    </briefdescription>
+    <detaileddescription>
+<para>This class extends <ref refid="class_decision_probability" kindref="compound">DecisionProbability</ref> to handle probabilities that depend on both predator and prey animals. It manages probability functions indexed by traits and provides a mechanism to apply them. </para>
+    </detaileddescription>
+    <inheritancegraph>
+      <node id="1">
+        <label>AnimalDecisionProbability</label>
+        <link refid="class_animal_decision_probability"/>
+        <childnode refid="2" relation="public-inheritance">
+        </childnode>
+      </node>
+      <node id="2">
+        <label>DecisionProbability</label>
+        <link refid="class_decision_probability"/>
+      </node>
+      <node id="3">
+        <label>EscapeProbability</label>
+        <link refid="class_escape_probability"/>
+        <childnode refid="1" relation="public-inheritance">
+        </childnode>
+      </node>
+    </inheritancegraph>
+    <collaborationgraph>
+      <node id="1">
+        <label>AnimalDecisionProbability</label>
+        <link refid="class_animal_decision_probability"/>
+        <childnode refid="2" relation="public-inheritance">
+        </childnode>
+      </node>
+      <node id="2">
+        <label>DecisionProbability</label>
+        <link refid="class_decision_probability"/>
+      </node>
+    </collaborationgraph>
+    <location file="App/Model/IBM/Landscape/LivingBeings/Animals/Species/Decisions/DecisionProbability/AnimalDecisionProbability.h" line="29" column="1" bodyfile="App/Model/IBM/Landscape/LivingBeings/Animals/Species/Decisions/DecisionProbability/AnimalDecisionProbability.h" bodystart="29" bodyend="116"/>
+    <listofallmembers>
+      <member refid="class_decision_probability_1a15878f995d07630d81e9077d9eda0c58" prot="private" virt="non-virtual"><scope>AnimalDecisionProbability</scope><name>additiveMechanism</name></member>
+      <member refid="class_animal_decision_probability_1ac7000398c98d3ad4974f2db3f7ea30ef" prot="public" virt="non-virtual"><scope>AnimalDecisionProbability</scope><name>AnimalDecisionProbability</name></member>
+      <member refid="class_animal_decision_probability_1aeccf273a60b20360f1e6929cd4d04b0b" prot="public" virt="non-virtual"><scope>AnimalDecisionProbability</scope><name>AnimalDecisionProbability</name></member>
+      <member refid="class_animal_decision_probability_1a62aee0acf20b22389d84731641a6ae86" prot="public" virt="non-virtual"><scope>AnimalDecisionProbability</scope><name>AnimalDecisionProbability</name></member>
+      <member refid="class_animal_decision_probability_1a1e029fd139bd256022290493a0d92786" prot="protected" virt="virtual"><scope>AnimalDecisionProbability</scope><name>applyProbabilityFunctions</name></member>
+      <member refid="class_animal_decision_probability_1a7de4bc686ffb88e826034c4624e99e11" prot="protected" virt="virtual"><scope>AnimalDecisionProbability</scope><name>applyRemainingProbabilityFunctions</name></member>
+      <member refid="class_decision_probability_1a78ea76b46ddf1fcb504e333c0033bbbf" prot="public" virt="virtual"><scope>AnimalDecisionProbability</scope><name>calculateValue</name></member>
+      <member refid="class_decision_probability_1a8617af574dffaae13dd8e4f66f2acb87" prot="private" virt="non-virtual"><scope>AnimalDecisionProbability</scope><name>computedRemainingWeight</name></member>
+      <member refid="class_decision_probability_1a0b0bec9634b88cc53b02b30e44806a5a" prot="private" virt="non-virtual"><scope>AnimalDecisionProbability</scope><name>computedWeights</name></member>
+      <member refid="class_decision_probability_1ae9c60f54b8c92d2fb992ae5ae2d9930f" prot="public" virt="non-virtual"><scope>AnimalDecisionProbability</scope><name>DecisionProbability</name></member>
+      <member refid="class_decision_probability_1a6ec7cdda0b8dac32f3f48adddb4f2daa" prot="public" virt="non-virtual"><scope>AnimalDecisionProbability</scope><name>DecisionProbability</name></member>
+      <member refid="class_decision_probability_1ae2a93245e2aec2d9ea721f8360f8f13f" prot="public" virt="non-virtual"><scope>AnimalDecisionProbability</scope><name>DecisionProbability</name></member>
+      <member refid="class_animal_decision_probability_1a5197801dc28c8916f2c6fd8dd3bb33a9" prot="private" virt="non-virtual"><scope>AnimalDecisionProbability</scope><name>defaultProbabilityFunction</name></member>
+      <member refid="class_decision_probability_1a38e6648ad78c90ef374b76763a388c36" prot="public" virt="virtual"><scope>AnimalDecisionProbability</scope><name>deserializeProbabilityFunctions</name></member>
+      <member refid="class_decision_probability_1a9cbf115641a517a81089cd2ded4ea1c1" prot="protected" virt="pure-virtual"><scope>AnimalDecisionProbability</scope><name>getWeightIndividualTraits</name></member>
+      <member refid="class_decision_probability_1a0876cb21faca366a7cbd028fca0a75e7" prot="protected" virt="pure-virtual"><scope>AnimalDecisionProbability</scope><name>initProbabilityFunctions</name></member>
+      <member refid="class_animal_decision_probability_1a41e9d845915ed4acae4b63513b170c00" prot="public" virt="non-virtual"><scope>AnimalDecisionProbability</scope><name>operator=</name></member>
+      <member refid="class_decision_probability_1a07ad5ef0c99eee9ee547b9a0c7b23ae9" prot="public" virt="non-virtual" ambiguityscope="DecisionProbability::"><scope>AnimalDecisionProbability</scope><name>operator=</name></member>
+      <member refid="class_animal_decision_probability_1a33eef7d981db77e4f2377c47fec4845a" prot="private" virt="non-virtual"><scope>AnimalDecisionProbability</scope><name>probabilityFunctions</name></member>
+      <member refid="class_animal_decision_probability_1a54c76ae4ab595eccafae67144f5b3c96" prot="private" virt="non-virtual"><scope>AnimalDecisionProbability</scope><name>remainingProbabilityFunction</name></member>
+      <member refid="class_animal_decision_probability_1a42fe7a11dc5b730336f83d70d2b85a53" prot="public" virt="non-virtual"><scope>AnimalDecisionProbability</scope><name>serialize</name></member>
+      <member refid="class_animal_decision_probability_1ae610a0625b25687051e445cc0bdd41cb" prot="protected" virt="non-virtual"><scope>AnimalDecisionProbability</scope><name>setProbabilityFunction</name></member>
+      <member refid="class_animal_decision_probability_1adc80f8b7286fb41f0da00aa4eee5f3f4" prot="protected" virt="non-virtual"><scope>AnimalDecisionProbability</scope><name>setRemainingProbabilityFunction</name></member>
+      <member refid="class_animal_decision_probability_1a8767e5236fa56fec9c8c85bef5852ccb" prot="public" virt="virtual"><scope>AnimalDecisionProbability</scope><name>~AnimalDecisionProbability</name></member>
+      <member refid="class_decision_probability_1adf91e66ca6f807f6c4d50c57aa9917d6" prot="public" virt="virtual"><scope>AnimalDecisionProbability</scope><name>~DecisionProbability</name></member>
+    </listofallmembers>
+  </compounddef>
+</doxygen>

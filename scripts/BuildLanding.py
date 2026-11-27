@@ -75,27 +75,19 @@ def main():
 
 	if not source_dir.is_dir():
 		raise FileNotFoundError(f"Landing source not found: {source_dir}")
-	source_root = Path(required_env("DOCS_SOURCE_ROOT"))
 	weaver_latest = latest_version(weaver_catalog)
 	manager_latest = latest_version(manager_catalog)
-	weaver_logo = source_root / "weaver" / weaver_latest / "_static" / "images" / "logo.png"
-	if not weaver_logo.is_file():
-		raise FileNotFoundError(f"Weaver logo not found for latest version {weaver_latest}: {weaver_logo}")
 	work_root.mkdir(parents=True, exist_ok=True)
 	with tempfile.TemporaryDirectory(prefix="landing-", dir=work_root) as temporary_root:
 		temp_root = Path(temporary_root)
 		work_source = temp_root / "source" / "landing"
 		copy_landing_sources(source_dir, work_source)
-		staged_logo = work_source.parent / "weaver" / "latest" / "_static" / "images" / "logo.png"
-		staged_logo.parent.mkdir(parents=True, exist_ok=True)
-		shutil.copy2(weaver_logo, staged_logo)
 
 		environment = os.environ.copy()
 		environment["DOCS_WEAVER_CATALOG"] = str(weaver_catalog)
 		environment["DOCS_MANAGER_CATALOG"] = str(manager_catalog)
 		environment["WEAVER_DOCS_CATALOG"] = str(weaver_catalog)
 		environment["WEAVER_MANAGER_DOCS_CATALOG"] = str(manager_catalog)
-		environment["DOCS_SOURCE_ROOT"] = str(source_root)
 		staged_output = temp_root / "html"
 		doctrees = temp_root / "doctrees"
 		command = [

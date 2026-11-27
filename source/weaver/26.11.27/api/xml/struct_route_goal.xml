@@ -1,0 +1,145 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.18.0" xml:lang="en-US">
+  <compounddef id="struct_route_goal" kind="struct" language="C++" prot="public">
+    <compoundname>RouteGoal</compoundname>
+    <sectiondef kind="public-attrib">
+      <memberdef kind="variable" id="struct_route_goal_1a8fd9e1f8a1872137f1b230fe033d6a64" prot="public" static="no" mutable="no">
+        <type>const <ref refid="class_terrain_cell" kindref="compound">TerrainCell</ref> *</type>
+        <definition>const TerrainCell* RouteGoal::cell</definition>
+        <argsstring></argsstring>
+        <name>cell</name>
+        <qualifiedname>RouteGoal::cell</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="App/Model/IBM/Landscape/Map/Navigation/RoutePlanner.h" line="19" column="19" bodyfile="App/Model/IBM/Landscape/Map/Navigation/RoutePlanner.h" bodystart="19" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="struct_route_goal_1a29cba8c86c4bbe21b510ba1101c1ec00" prot="public" static="no" mutable="no">
+        <type>PointContinuous</type>
+        <definition>PointContinuous RouteGoal::position</definition>
+        <argsstring></argsstring>
+        <name>position</name>
+        <qualifiedname>RouteGoal::position</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="App/Model/IBM/Landscape/Map/Navigation/RoutePlanner.h" line="20" column="17" bodyfile="App/Model/IBM/Landscape/Map/Navigation/RoutePlanner.h" bodystart="20" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="struct_route_goal_1a67ab4c87e0fb4fb2f2e262096405c577" prot="public" static="no" mutable="no">
+        <type>size_t</type>
+        <definition>size_t RouteGoal::priority</definition>
+        <argsstring></argsstring>
+        <name>priority</name>
+        <qualifiedname>RouteGoal::priority</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="App/Model/IBM/Landscape/Map/Navigation/RoutePlanner.h" line="21" column="8" bodyfile="App/Model/IBM/Landscape/Map/Navigation/RoutePlanner.h" bodystart="21" bodyend="-1"/>
+      </memberdef>
+    </sectiondef>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+    </detaileddescription>
+    <collaborationgraph>
+      <node id="5">
+        <label>CellElement</label>
+        <link refid="class_cell_element"/>
+      </node>
+      <node id="9">
+        <label>CellHabitatDomainInterface</label>
+        <link refid="class_cell_habitat_domain_interface"/>
+        <childnode refid="5" relation="public-inheritance">
+        </childnode>
+        <childnode refid="10" relation="usage">
+          <edgelabel>habitatDomainStatus</edgelabel>
+        </childnode>
+      </node>
+      <node id="4">
+        <label>CellMoistureInterface</label>
+        <link refid="class_cell_moisture_interface"/>
+        <childnode refid="5" relation="public-inheritance">
+        </childnode>
+        <childnode refid="6" relation="usage">
+          <edgelabel>totalMaximumResourceCapacity</edgelabel>
+        </childnode>
+      </node>
+      <node id="8">
+        <label>CellObstacleInterface</label>
+        <link refid="class_cell_obstacle_interface"/>
+        <childnode refid="5" relation="public-inheritance">
+        </childnode>
+      </node>
+      <node id="10">
+        <label>CustomIndexedVector&lt; AnimalSpeciesID, CustomIndexedVector&lt; Instar, bool &gt; &gt;</label>
+        <link refid="class_custom_indexed_vector"/>
+      </node>
+      <node id="3">
+        <label>PatchApplicator</label>
+        <link refid="class_patch_applicator"/>
+        <childnode refid="2" relation="usage">
+          <edgelabel>owner</edgelabel>
+        </childnode>
+        <childnode refid="4" relation="usage">
+          <edgelabel>cellMoisture</edgelabel>
+        </childnode>
+        <childnode refid="8" relation="usage">
+          <edgelabel>cellObstacle</edgelabel>
+        </childnode>
+        <childnode refid="9" relation="usage">
+          <edgelabel>cellHabitatDomain</edgelabel>
+        </childnode>
+      </node>
+      <node id="11">
+        <label>PointMap</label>
+        <link refid="class_point_map"/>
+      </node>
+      <node id="7">
+        <label>PreciseDouble</label>
+        <link refid="class_precise_double"/>
+      </node>
+      <node id="1">
+        <label>RouteGoal</label>
+        <childnode refid="2" relation="usage">
+          <edgelabel>cell</edgelabel>
+        </childnode>
+      </node>
+      <node id="2">
+        <label>TerrainCell</label>
+        <link refid="class_terrain_cell"/>
+        <childnode refid="3" relation="usage">
+          <edgelabel>patchApplicator</edgelabel>
+        </childnode>
+        <childnode refid="11" relation="usage">
+          <edgelabel>position</edgelabel>
+        </childnode>
+        <childnode refid="7" relation="usage">
+          <edgelabel>hyperVolume</edgelabel>
+          <edgelabel>size</edgelabel>
+        </childnode>
+      </node>
+      <node id="6">
+        <label>WetMass</label>
+        <link refid="class_wet_mass"/>
+        <childnode refid="7" relation="usage">
+          <edgelabel>value</edgelabel>
+        </childnode>
+      </node>
+    </collaborationgraph>
+    <location file="App/Model/IBM/Landscape/Map/Navigation/RoutePlanner.h" line="17" column="1" bodyfile="App/Model/IBM/Landscape/Map/Navigation/RoutePlanner.h" bodystart="18" bodyend="22"/>
+    <listofallmembers>
+      <member refid="struct_route_goal_1a8fd9e1f8a1872137f1b230fe033d6a64" prot="public" virt="non-virtual"><scope>RouteGoal</scope><name>cell</name></member>
+      <member refid="struct_route_goal_1a29cba8c86c4bbe21b510ba1101c1ec00" prot="public" virt="non-virtual"><scope>RouteGoal</scope><name>position</name></member>
+      <member refid="struct_route_goal_1a67ab4c87e0fb4fb2f2e262096405c577" prot="public" virt="non-virtual"><scope>RouteGoal</scope><name>priority</name></member>
+    </listofallmembers>
+  </compounddef>
+</doxygen>

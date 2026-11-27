@@ -1,0 +1,660 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.18.0" xml:lang="en-US">
+  <compounddef id="class_growth_rate_dynamics" kind="class" language="C++" prot="public">
+    <compoundname>GrowthRateDynamics</compoundname>
+    <basecompoundref refid="class_mass_based_dynamics" prot="public" virt="non-virtual">MassBasedDynamics</basecompoundref>
+    <includes refid="_growth_rate_dynamics_8h" local="no">GrowthRateDynamics.h</includes>
+    <sectiondef kind="private-static-attrib">
+      <memberdef kind="variable" id="class_growth_rate_dynamics_1aff9c67cf307403f9675e603afac83e19" prot="private" static="yes" constexpr="yes" mutable="no">
+        <type>double</type>
+        <definition>double GrowthRateDynamics::E</definition>
+        <argsstring></argsstring>
+        <name>E</name>
+        <qualifiedname>GrowthRateDynamics::E</qualifiedname>
+        <initializer>= 0.63</initializer>
+        <briefdescription>
+<para>Activation energy constant from Savage et al. 2004, Fig. 4B. </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="App/Model/IBM/Maths/Dynamics/MassBased/GrowthRateDynamics.h" line="99" column="25" bodyfile="App/Model/IBM/Maths/Dynamics/MassBased/GrowthRateDynamics.h" bodystart="99" bodyend="-1"/>
+      </memberdef>
+    </sectiondef>
+    <sectiondef kind="private-attrib">
+      <memberdef kind="variable" id="class_growth_rate_dynamics_1ac338bfb3175c90c58d9ba1fbaee2781d" prot="private" static="no" mutable="no">
+        <type><ref refid="class_precise_double" kindref="compound">PreciseDouble</ref></type>
+        <definition>PreciseDouble GrowthRateDynamics::activationEnergy</definition>
+        <argsstring></argsstring>
+        <name>activationEnergy</name>
+        <qualifiedname>GrowthRateDynamics::activationEnergy</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Activation energy for temperature effect </para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="App/Model/IBM/Maths/Dynamics/MassBased/GrowthRateDynamics.h" line="116" column="19" bodyfile="App/Model/IBM/Maths/Dynamics/MassBased/GrowthRateDynamics.h" bodystart="116" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="class_growth_rate_dynamics_1a67ceabaf546b137b02fad5cf68e60cff" prot="private" static="no" mutable="no">
+        <type><ref refid="class_precise_double" kindref="compound">PreciseDouble</ref></type>
+        <definition>PreciseDouble GrowthRateDynamics::energyDecay</definition>
+        <argsstring></argsstring>
+        <name>energyDecay</name>
+        <qualifiedname>GrowthRateDynamics::energyDecay</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Energy decay coefficient </para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="App/Model/IBM/Maths/Dynamics/MassBased/GrowthRateDynamics.h" line="115" column="19" bodyfile="App/Model/IBM/Maths/Dynamics/MassBased/GrowthRateDynamics.h" bodystart="115" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="class_growth_rate_dynamics_1aa81000938df22075318f57e63a44d5ab" prot="private" static="no" mutable="no">
+        <type><ref refid="class_precise_double" kindref="compound">PreciseDouble</ref></type>
+        <definition>PreciseDouble GrowthRateDynamics::initialValue</definition>
+        <argsstring></argsstring>
+        <name>initialValue</name>
+        <qualifiedname>GrowthRateDynamics::initialValue</qualifiedname>
+        <briefdescription>
+<para>Initial value of the growth rate. </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="App/Model/IBM/Maths/Dynamics/MassBased/GrowthRateDynamics.h" line="102" column="19" bodyfile="App/Model/IBM/Maths/Dynamics/MassBased/GrowthRateDynamics.h" bodystart="102" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="class_growth_rate_dynamics_1ad931d7a99cb7180cbad24cdf0b5e207e" prot="private" static="no" mutable="no">
+        <type><ref refid="class_precise_double" kindref="compound">PreciseDouble</ref></type>
+        <definition>PreciseDouble GrowthRateDynamics::M</definition>
+        <argsstring></argsstring>
+        <name>M</name>
+        <qualifiedname>GrowthRateDynamics::M</qualifiedname>
+        <briefdescription>
+<para>Mass of the organism or cell. </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="App/Model/IBM/Maths/Dynamics/MassBased/GrowthRateDynamics.h" line="108" column="19" bodyfile="App/Model/IBM/Maths/Dynamics/MassBased/GrowthRateDynamics.h" bodystart="108" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="class_growth_rate_dynamics_1a8ce15847043f0ce13531c344a632ea8c" prot="private" static="no" mutable="no">
+        <type><ref refid="class_wet_mass" kindref="compound">WetMass</ref></type>
+        <definition>WetMass GrowthRateDynamics::resourceMaximumCapacity</definition>
+        <argsstring></argsstring>
+        <name>resourceMaximumCapacity</name>
+        <qualifiedname>GrowthRateDynamics::resourceMaximumCapacity</qualifiedname>
+        <briefdescription>
+<para>Maximum resource carrying capacity. </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="App/Model/IBM/Maths/Dynamics/MassBased/GrowthRateDynamics.h" line="105" column="13" bodyfile="App/Model/IBM/Maths/Dynamics/MassBased/GrowthRateDynamics.h" bodystart="105" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="class_growth_rate_dynamics_1a303b9d9c5617d27330bdc737799809f6" prot="private" static="no" mutable="no">
+        <type><ref refid="class_precise_double" kindref="compound">PreciseDouble</ref></type>
+        <definition>PreciseDouble GrowthRateDynamics::rMaxScale</definition>
+        <argsstring></argsstring>
+        <name>rMaxScale</name>
+        <qualifiedname>GrowthRateDynamics::rMaxScale</qualifiedname>
+        <briefdescription>
+<para>Scaling factor for rMax. </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="App/Model/IBM/Maths/Dynamics/MassBased/GrowthRateDynamics.h" line="120" column="19" bodyfile="App/Model/IBM/Maths/Dynamics/MassBased/GrowthRateDynamics.h" bodystart="120" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="class_growth_rate_dynamics_1a23233cec8812ea9b501432d03c88a74a" prot="private" static="no" mutable="no">
+        <type><ref refid="class_temperature" kindref="compound">Temperature</ref></type>
+        <definition>Temperature GrowthRateDynamics::temperatureOptimal</definition>
+        <argsstring></argsstring>
+        <name>temperatureOptimal</name>
+        <qualifiedname>GrowthRateDynamics::temperatureOptimal</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Optimal temperature for growth </para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="App/Model/IBM/Maths/Dynamics/MassBased/GrowthRateDynamics.h" line="114" column="17" bodyfile="App/Model/IBM/Maths/Dynamics/MassBased/GrowthRateDynamics.h" bodystart="114" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="class_growth_rate_dynamics_1a4772c00a68343dd4f7fe5e8017e438ba" prot="private" static="no" mutable="no">
+        <type><ref refid="class_temperature" kindref="compound">Temperature</ref></type>
+        <definition>Temperature GrowthRateDynamics::temperatureRef</definition>
+        <argsstring></argsstring>
+        <name>temperatureRef</name>
+        <qualifiedname>GrowthRateDynamics::temperatureRef</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Reference temperature </para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="App/Model/IBM/Maths/Dynamics/MassBased/GrowthRateDynamics.h" line="117" column="17" bodyfile="App/Model/IBM/Maths/Dynamics/MassBased/GrowthRateDynamics.h" bodystart="117" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="class_growth_rate_dynamics_1a13fb780b37b25f312c3680a6033b7431" prot="private" static="no" mutable="no">
+        <type>bool</type>
+        <definition>bool GrowthRateDynamics::variableIntrinsicRateOfIncrease</definition>
+        <argsstring></argsstring>
+        <name>variableIntrinsicRateOfIncrease</name>
+        <qualifiedname>GrowthRateDynamics::variableIntrinsicRateOfIncrease</qualifiedname>
+        <briefdescription>
+<para>Flag indicating if the intrinsic rate of increase is variable. </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="App/Model/IBM/Maths/Dynamics/MassBased/GrowthRateDynamics.h" line="111" column="10" bodyfile="App/Model/IBM/Maths/Dynamics/MassBased/GrowthRateDynamics.h" bodystart="111" bodyend="-1"/>
+      </memberdef>
+    </sectiondef>
+    <sectiondef kind="public-func">
+      <memberdef kind="function" id="class_growth_rate_dynamics_1a9a7f603fe868928b5196f87e7f5bfe0a" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type></type>
+        <definition>GrowthRateDynamics::GrowthRateDynamics</definition>
+        <argsstring>()</argsstring>
+        <name>GrowthRateDynamics</name>
+        <qualifiedname>GrowthRateDynamics::GrowthRateDynamics</qualifiedname>
+        <briefdescription>
+<para>Default constructor for <ref refid="class_growth_rate_dynamics" kindref="compound">GrowthRateDynamics</ref>. </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="App/Model/IBM/Maths/Dynamics/MassBased/GrowthRateDynamics.h" line="42" column="5"/>
+      </memberdef>
+      <memberdef kind="function" id="class_growth_rate_dynamics_1a44bc45b0d99976c9958ae0842d8a8db9" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type></type>
+        <definition>GrowthRateDynamics::GrowthRateDynamics</definition>
+        <argsstring>(const nlohmann::json &amp;config, const PreciseDouble &amp;scaleMass, const WetMass &amp;cellMass, const PreciseDouble &amp;hyperVolume, const WetMass &amp;resourceMaximumCapacity)</argsstring>
+        <name>GrowthRateDynamics</name>
+        <qualifiedname>GrowthRateDynamics::GrowthRateDynamics</qualifiedname>
+        <param>
+          <type>const nlohmann::json &amp;</type>
+          <declname>config</declname>
+        </param>
+        <param>
+          <type>const <ref refid="class_precise_double" kindref="compound">PreciseDouble</ref> &amp;</type>
+          <declname>scaleMass</declname>
+        </param>
+        <param>
+          <type>const <ref refid="class_wet_mass" kindref="compound">WetMass</ref> &amp;</type>
+          <declname>cellMass</declname>
+        </param>
+        <param>
+          <type>const <ref refid="class_precise_double" kindref="compound">PreciseDouble</ref> &amp;</type>
+          <declname>hyperVolume</declname>
+        </param>
+        <param>
+          <type>const <ref refid="class_wet_mass" kindref="compound">WetMass</ref> &amp;</type>
+          <declname>resourceMaximumCapacity</declname>
+        </param>
+        <briefdescription>
+<para>Constructs a <ref refid="class_growth_rate_dynamics" kindref="compound">GrowthRateDynamics</ref> instance from JSON configuration. </para>
+        </briefdescription>
+        <detaileddescription>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>config</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>JSON object containing configuration parameters. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>scaleMass</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Scaling factor for mass-based dynamics. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>cellMass</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Wet mass of the cell or organism. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>hyperVolume</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Hyper-volume parameter used for scaling. </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="App/Model/IBM/Maths/Dynamics/MassBased/GrowthRateDynamics.h" line="51" column="5"/>
+      </memberdef>
+      <memberdef kind="function" id="class_growth_rate_dynamics_1a0139058dbe6ecf2397da9252fa068c7d" prot="public" static="no" const="no" explicit="no" inline="no" virt="virtual">
+        <type></type>
+        <definition>virtual GrowthRateDynamics::~GrowthRateDynamics</definition>
+        <argsstring>()</argsstring>
+        <name>~GrowthRateDynamics</name>
+        <qualifiedname>GrowthRateDynamics::~GrowthRateDynamics</qualifiedname>
+        <briefdescription>
+<para>Destructor for <ref refid="class_growth_rate_dynamics" kindref="compound">GrowthRateDynamics</ref>. </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="App/Model/IBM/Maths/Dynamics/MassBased/GrowthRateDynamics.h" line="56" column="13"/>
+      </memberdef>
+      <memberdef kind="function" id="class_growth_rate_dynamics_1aa9e623bbed6a7935d1d201c1542f0ff1" prot="public" static="no" const="yes" explicit="no" inline="no" virt="virtual">
+        <type><ref refid="class_precise_double" kindref="compound">PreciseDouble</ref></type>
+        <definition>PreciseDouble GrowthRateDynamics::getInitialValue</definition>
+        <argsstring>() const</argsstring>
+        <name>getInitialValue</name>
+        <qualifiedname>GrowthRateDynamics::getInitialValue</qualifiedname>
+        <reimplements refid="class_dynamics_1ae9000c3efeec95fe692d45a58ac0edd7">getInitialValue</reimplements>
+        <briefdescription>
+<para>Returns the initial value of the growth rate dynamics. </para>
+        </briefdescription>
+        <detaileddescription>
+<para><simplesect kind="return"><para>Initial value as <ref refid="class_precise_double" kindref="compound">PreciseDouble</ref>. </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="App/Model/IBM/Maths/Dynamics/MassBased/GrowthRateDynamics.h" line="62" column="19"/>
+      </memberdef>
+      <memberdef kind="function" id="class_growth_rate_dynamics_1a21c3dd7f21d1aefa970c9b91957d8a25" prot="public" static="no" const="yes" explicit="no" inline="no" virt="virtual">
+        <type><ref refid="class_precise_double" kindref="compound">PreciseDouble</ref></type>
+        <definition>PreciseDouble GrowthRateDynamics::getValue</definition>
+        <argsstring>(const PreciseDouble &amp;baseValue, bool competitionAmongResourceSpecies, const WetMass &amp;totalMaximumResourceCapacity, const PreciseDouble &amp;timeStepsPerDay, const Temperature &amp;temperature, const PreciseDouble &amp;moisture, const PreciseDouble &amp;minRH, const PreciseDouble &amp;maxRH) const</argsstring>
+        <name>getValue</name>
+        <qualifiedname>GrowthRateDynamics::getValue</qualifiedname>
+        <reimplements refid="class_dynamics_1ad0df4ad4f58fa172d6f8c330402ffe78">getValue</reimplements>
+        <param>
+          <type>const <ref refid="class_precise_double" kindref="compound">PreciseDouble</ref> &amp;</type>
+          <declname>baseValue</declname>
+        </param>
+        <param>
+          <type>bool</type>
+          <declname>competitionAmongResourceSpecies</declname>
+        </param>
+        <param>
+          <type>const <ref refid="class_wet_mass" kindref="compound">WetMass</ref> &amp;</type>
+          <declname>totalMaximumResourceCapacity</declname>
+        </param>
+        <param>
+          <type>const <ref refid="class_precise_double" kindref="compound">PreciseDouble</ref> &amp;</type>
+          <declname>timeStepsPerDay</declname>
+        </param>
+        <param>
+          <type>const <ref refid="class_temperature" kindref="compound">Temperature</ref> &amp;</type>
+          <declname>temperature</declname>
+        </param>
+        <param>
+          <type>const <ref refid="class_precise_double" kindref="compound">PreciseDouble</ref> &amp;</type>
+          <declname>moisture</declname>
+        </param>
+        <param>
+          <type>const <ref refid="class_precise_double" kindref="compound">PreciseDouble</ref> &amp;</type>
+          <declname>minRH</declname>
+        </param>
+        <param>
+          <type>const <ref refid="class_precise_double" kindref="compound">PreciseDouble</ref> &amp;</type>
+          <declname>maxRH</declname>
+        </param>
+        <briefdescription>
+<para>Computes the value of the growth rate at a given state. </para>
+        </briefdescription>
+        <detaileddescription>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>baseValue</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Base value for the dynamics. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>timeStepsPerDay</parametername>
+</parameternamelist>
+<parameterdescription>
+<para><ref refid="class_number" kindref="compound">Number</ref> of simulation time steps per day. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>temperature</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Current temperature. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>moisture</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Current moisture value. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>minRH</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Minimum relative humidity. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>maxRH</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Maximum relative humidity. </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<simplesect kind="return"><para>Computed growth rate as <ref refid="class_precise_double" kindref="compound">PreciseDouble</ref>. </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="App/Model/IBM/Maths/Dynamics/MassBased/GrowthRateDynamics.h" line="74" column="19"/>
+      </memberdef>
+      <memberdef kind="function" id="class_growth_rate_dynamics_1ab882d4353abd41e0e3c19b899aa5bc9e" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <templateparamlist>
+          <param>
+            <type>class Archive</type>
+          </param>
+        </templateparamlist>
+        <type>void</type>
+        <definition>void GrowthRateDynamics::serialize</definition>
+        <argsstring>(Archive &amp;ar, const unsigned int version)</argsstring>
+        <name>serialize</name>
+        <qualifiedname>GrowthRateDynamics::serialize</qualifiedname>
+        <param>
+          <type>Archive &amp;</type>
+          <declname>ar</declname>
+        </param>
+        <param>
+          <type>const unsigned int</type>
+          <declname>version</declname>
+        </param>
+        <briefdescription>
+<para>Serializes the object for Boost serialization. </para>
+        </briefdescription>
+        <detaileddescription>
+<para><parameterlist kind="templateparam"><parameteritem>
+<parameternamelist>
+<parametername>Archive</parametername>
+</parameternamelist>
+<parameterdescription>
+<para><ref refid="class_dynamics_1a3a0aec0c5657efbbb3df85fc244af169" kindref="member">Type</ref> of archive (binary/text, input/output). </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>ar</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Archive object. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>version</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Version of serialization format. </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="App/Model/IBM/Maths/Dynamics/MassBased/GrowthRateDynamics.h" line="95" column="10"/>
+      </memberdef>
+      <memberdef kind="function" id="class_growth_rate_dynamics_1a833a35c5d8dc84fe358db2b385de166e" prot="public" static="no" const="yes" explicit="no" inline="no" virt="virtual">
+        <type>std::string</type>
+        <definition>std::string GrowthRateDynamics::showInfo</definition>
+        <argsstring>(const std::string &amp;indentation) const</argsstring>
+        <name>showInfo</name>
+        <qualifiedname>GrowthRateDynamics::showInfo</qualifiedname>
+        <reimplements refid="class_dynamics_1a80ea07e58c041f77683f073e34eb403b">showInfo</reimplements>
+        <param>
+          <type>const std::string &amp;</type>
+          <declname>indentation</declname>
+        </param>
+        <briefdescription>
+<para>Returns a string describing the current state of the dynamics. </para>
+        </briefdescription>
+        <detaileddescription>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>indentation</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Indentation string for formatting output. </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<simplesect kind="return"><para>Formatted string with information about the dynamics. </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="App/Model/IBM/Maths/Dynamics/MassBased/GrowthRateDynamics.h" line="86" column="17"/>
+      </memberdef>
+      <memberdef kind="function" id="class_growth_rate_dynamics_1acdd7c02f33c3fae0bc3b883b7d5e5b07" prot="public" static="no" const="no" explicit="no" inline="no" virt="virtual">
+        <type>void</type>
+        <definition>void GrowthRateDynamics::update</definition>
+        <argsstring>()</argsstring>
+        <name>update</name>
+        <qualifiedname>GrowthRateDynamics::update</qualifiedname>
+        <reimplements refid="class_dynamics_1a2687d6e20817c0322fe04eb7dc30d3dc">update</reimplements>
+        <briefdescription>
+<para>Updates the internal state of the dynamics. </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="App/Model/IBM/Maths/Dynamics/MassBased/GrowthRateDynamics.h" line="79" column="10"/>
+      </memberdef>
+    </sectiondef>
+    <sectiondef kind="private-func">
+      <memberdef kind="function" id="class_growth_rate_dynamics_1ad0836c1c94d0182561b311313fb8fb7a" prot="private" static="no" const="yes" explicit="no" inline="no" virt="non-virtual">
+        <type><ref refid="class_precise_double" kindref="compound">PreciseDouble</ref></type>
+        <definition>PreciseDouble GrowthRateDynamics::getRateOfIncrease</definition>
+        <argsstring>(const Temperature &amp;temperature, const PreciseDouble &amp;moisture, const PreciseDouble &amp;minRH, const PreciseDouble &amp;maxRH) const</argsstring>
+        <name>getRateOfIncrease</name>
+        <qualifiedname>GrowthRateDynamics::getRateOfIncrease</qualifiedname>
+        <param>
+          <type>const <ref refid="class_temperature" kindref="compound">Temperature</ref> &amp;</type>
+          <declname>temperature</declname>
+        </param>
+        <param>
+          <type>const <ref refid="class_precise_double" kindref="compound">PreciseDouble</ref> &amp;</type>
+          <declname>moisture</declname>
+        </param>
+        <param>
+          <type>const <ref refid="class_precise_double" kindref="compound">PreciseDouble</ref> &amp;</type>
+          <declname>minRH</declname>
+        </param>
+        <param>
+          <type>const <ref refid="class_precise_double" kindref="compound">PreciseDouble</ref> &amp;</type>
+          <declname>maxRH</declname>
+        </param>
+        <briefdescription>
+<para>Computes the intrinsic rate of increase under given environmental conditions. </para>
+        </briefdescription>
+        <detaileddescription>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>temperature</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Current temperature. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>moisture</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Current moisture value. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>minRH</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Minimum relative humidity. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>maxRH</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Maximum relative humidity. </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<simplesect kind="return"><para>Rate of increase as <ref refid="class_precise_double" kindref="compound">PreciseDouble</ref>. </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="App/Model/IBM/Maths/Dynamics/MassBased/GrowthRateDynamics.h" line="130" column="19"/>
+      </memberdef>
+    </sectiondef>
+    <briefdescription>
+<para>Implements mass-based dynamics for growth rate of organisms. </para>
+    </briefdescription>
+    <detaileddescription>
+<para><ref refid="class_growth_rate_dynamics" kindref="compound">GrowthRateDynamics</ref> is a subclass of <ref refid="class_mass_based_dynamics" kindref="compound">MassBasedDynamics</ref> and calculates the growth rate based on environmental conditions, including temperature, moisture, and relative humidity. The implementation follows the model described in Savage et al. 2004, Fig. 4B. </para>
+    </detaileddescription>
+    <inheritancegraph>
+      <node id="3">
+        <label>Dynamics</label>
+        <link refid="class_dynamics"/>
+      </node>
+      <node id="1">
+        <label>GrowthRateDynamics</label>
+        <link refid="class_growth_rate_dynamics"/>
+        <childnode refid="2" relation="public-inheritance">
+        </childnode>
+      </node>
+      <node id="2">
+        <label>MassBasedDynamics</label>
+        <link refid="class_mass_based_dynamics"/>
+        <childnode refid="3" relation="public-inheritance">
+        </childnode>
+      </node>
+    </inheritancegraph>
+    <collaborationgraph>
+      <node id="3">
+        <label>Dynamics</label>
+        <link refid="class_dynamics"/>
+      </node>
+      <node id="1">
+        <label>GrowthRateDynamics</label>
+        <link refid="class_growth_rate_dynamics"/>
+        <childnode refid="2" relation="public-inheritance">
+        </childnode>
+        <childnode refid="4" relation="usage">
+          <edgelabel>M</edgelabel>
+          <edgelabel>activationEnergy</edgelabel>
+          <edgelabel>energyDecay</edgelabel>
+          <edgelabel>initialValue</edgelabel>
+          <edgelabel>rMaxScale</edgelabel>
+        </childnode>
+        <childnode refid="5" relation="usage">
+          <edgelabel>resourceMaximumCapacity</edgelabel>
+        </childnode>
+        <childnode refid="6" relation="usage">
+          <edgelabel>temperatureOptimal</edgelabel>
+          <edgelabel>temperatureRef</edgelabel>
+        </childnode>
+      </node>
+      <node id="2">
+        <label>MassBasedDynamics</label>
+        <link refid="class_mass_based_dynamics"/>
+        <childnode refid="3" relation="public-inheritance">
+        </childnode>
+      </node>
+      <node id="4">
+        <label>PreciseDouble</label>
+        <link refid="class_precise_double"/>
+      </node>
+      <node id="6">
+        <label>Temperature</label>
+        <link refid="class_temperature"/>
+        <childnode refid="4" relation="usage">
+          <edgelabel>temperatureCelsius</edgelabel>
+          <edgelabel>temperatureFahrenheit</edgelabel>
+          <edgelabel>temperatureKelvin</edgelabel>
+        </childnode>
+      </node>
+      <node id="5">
+        <label>WetMass</label>
+        <link refid="class_wet_mass"/>
+        <childnode refid="4" relation="usage">
+          <edgelabel>value</edgelabel>
+        </childnode>
+      </node>
+    </collaborationgraph>
+    <location file="App/Model/IBM/Maths/Dynamics/MassBased/GrowthRateDynamics.h" line="37" column="1" bodyfile="App/Model/IBM/Maths/Dynamics/MassBased/GrowthRateDynamics.h" bodystart="37" bodyend="131"/>
+    <listofallmembers>
+      <member refid="class_growth_rate_dynamics_1ac338bfb3175c90c58d9ba1fbaee2781d" prot="private" virt="non-virtual"><scope>GrowthRateDynamics</scope><name>activationEnergy</name></member>
+      <member refid="class_dynamics_1af42fb0a3c5a0076308b9e8e752195eb1" prot="public" virt="non-virtual"><scope>GrowthRateDynamics</scope><name>createInstance</name></member>
+      <member refid="class_dynamics_1ad09feb0a33b9dbc56f0dab4cb9d4b88e" prot="public" virt="non-virtual"><scope>GrowthRateDynamics</scope><name>createInstanceForResource</name></member>
+      <member refid="class_dynamics_1af3e1536fbe0ac872e65d1b0d5b8867a8" prot="public" virt="non-virtual"><scope>GrowthRateDynamics</scope><name>Dynamics</name></member>
+      <member refid="class_growth_rate_dynamics_1aff9c67cf307403f9675e603afac83e19" prot="private" virt="non-virtual"><scope>GrowthRateDynamics</scope><name>E</name></member>
+      <member refid="class_growth_rate_dynamics_1a67ceabaf546b137b02fad5cf68e60cff" prot="private" virt="non-virtual"><scope>GrowthRateDynamics</scope><name>energyDecay</name></member>
+      <member refid="class_growth_rate_dynamics_1aa9e623bbed6a7935d1d201c1542f0ff1" prot="public" virt="virtual"><scope>GrowthRateDynamics</scope><name>getInitialValue</name></member>
+      <member refid="class_growth_rate_dynamics_1ad0836c1c94d0182561b311313fb8fb7a" prot="private" virt="non-virtual"><scope>GrowthRateDynamics</scope><name>getRateOfIncrease</name></member>
+      <member refid="class_growth_rate_dynamics_1a21c3dd7f21d1aefa970c9b91957d8a25" prot="public" virt="virtual"><scope>GrowthRateDynamics</scope><name>getValue</name></member>
+      <member refid="class_growth_rate_dynamics_1a9a7f603fe868928b5196f87e7f5bfe0a" prot="public" virt="non-virtual"><scope>GrowthRateDynamics</scope><name>GrowthRateDynamics</name></member>
+      <member refid="class_growth_rate_dynamics_1a44bc45b0d99976c9958ae0842d8a8db9" prot="public" virt="non-virtual"><scope>GrowthRateDynamics</scope><name>GrowthRateDynamics</name></member>
+      <member refid="class_growth_rate_dynamics_1aa81000938df22075318f57e63a44d5ab" prot="private" virt="non-virtual"><scope>GrowthRateDynamics</scope><name>initialValue</name></member>
+      <member refid="class_growth_rate_dynamics_1ad931d7a99cb7180cbad24cdf0b5e207e" prot="private" virt="non-virtual"><scope>GrowthRateDynamics</scope><name>M</name></member>
+      <member refid="class_mass_based_dynamics_1afff3e6594c8355c09948392a8cb4e44f" prot="public" virt="non-virtual"><scope>GrowthRateDynamics</scope><name>MassBasedDynamics</name></member>
+      <member refid="class_growth_rate_dynamics_1a8ce15847043f0ce13531c344a632ea8c" prot="private" virt="non-virtual"><scope>GrowthRateDynamics</scope><name>resourceMaximumCapacity</name></member>
+      <member refid="class_growth_rate_dynamics_1a303b9d9c5617d27330bdc737799809f6" prot="private" virt="non-virtual"><scope>GrowthRateDynamics</scope><name>rMaxScale</name></member>
+      <member refid="class_growth_rate_dynamics_1ab882d4353abd41e0e3c19b899aa5bc9e" prot="public" virt="non-virtual"><scope>GrowthRateDynamics</scope><name>serialize</name></member>
+      <member refid="class_growth_rate_dynamics_1a833a35c5d8dc84fe358db2b385de166e" prot="public" virt="virtual"><scope>GrowthRateDynamics</scope><name>showInfo</name></member>
+      <member refid="class_growth_rate_dynamics_1a23233cec8812ea9b501432d03c88a74a" prot="private" virt="non-virtual"><scope>GrowthRateDynamics</scope><name>temperatureOptimal</name></member>
+      <member refid="class_growth_rate_dynamics_1a4772c00a68343dd4f7fe5e8017e438ba" prot="private" virt="non-virtual"><scope>GrowthRateDynamics</scope><name>temperatureRef</name></member>
+      <member refid="class_dynamics_1a3a0aec0c5657efbbb3df85fc244af169" prot="public" virt="non-virtual"><scope>GrowthRateDynamics</scope><name>Type</name></member>
+      <member refid="class_growth_rate_dynamics_1acdd7c02f33c3fae0bc3b883b7d5e5b07" prot="public" virt="virtual"><scope>GrowthRateDynamics</scope><name>update</name></member>
+      <member refid="class_growth_rate_dynamics_1a13fb780b37b25f312c3680a6033b7431" prot="private" virt="non-virtual"><scope>GrowthRateDynamics</scope><name>variableIntrinsicRateOfIncrease</name></member>
+      <member refid="class_dynamics_1ac8d12beac1e6e1c7895f5360b3800370" prot="public" virt="virtual"><scope>GrowthRateDynamics</scope><name>~Dynamics</name></member>
+      <member refid="class_growth_rate_dynamics_1a0139058dbe6ecf2397da9252fa068c7d" prot="public" virt="virtual"><scope>GrowthRateDynamics</scope><name>~GrowthRateDynamics</name></member>
+      <member refid="class_mass_based_dynamics_1a982a61dd42fe6b3ef56ce78c24a11139" prot="public" virt="virtual"><scope>GrowthRateDynamics</scope><name>~MassBasedDynamics</name></member>
+    </listofallmembers>
+  </compounddef>
+</doxygen>

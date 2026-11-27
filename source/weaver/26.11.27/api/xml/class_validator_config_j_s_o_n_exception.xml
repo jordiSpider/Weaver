@@ -1,0 +1,118 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.18.0" xml:lang="en-US">
+  <compounddef id="class_validator_config_j_s_o_n_exception" kind="class" language="C++" prot="public">
+    <compoundname>ValidatorConfigJSONException</compoundname>
+    <basecompoundref refid="class_validator_j_s_o_n_exception" prot="public" virt="non-virtual">ValidatorJSONException</basecompoundref>
+    <includes refid="_exceptions_8h" local="no">Exceptions.h</includes>
+    <sectiondef kind="public-func">
+      <memberdef kind="function" id="class_validator_config_j_s_o_n_exception_1a38d3097b5c5cb103549f4171ea0e4234" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type></type>
+        <definition>ValidatorConfigJSONException::ValidatorConfigJSONException</definition>
+        <argsstring>(const std::string &amp;message, const char *file, int line)</argsstring>
+        <name>ValidatorConfigJSONException</name>
+        <qualifiedname>ValidatorConfigJSONException::ValidatorConfigJSONException</qualifiedname>
+        <param>
+          <type>const std::string &amp;</type>
+          <declname>message</declname>
+        </param>
+        <param>
+          <type>const char *</type>
+          <declname>file</declname>
+        </param>
+        <param>
+          <type>int</type>
+          <declname>line</declname>
+        </param>
+        <briefdescription>
+<para>Constructs a <ref refid="class_validator_config_j_s_o_n_exception" kindref="compound">ValidatorConfigJSONException</ref>. </para>
+        </briefdescription>
+        <detaileddescription>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>message</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Error message describing the configuration issue. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>file</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Source file where the exception occurred. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>line</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Line number in the source file. </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="Misc/JsonValidator/Exceptions.h" line="57" column="5"/>
+      </memberdef>
+    </sectiondef>
+    <briefdescription>
+<para>Exception thrown when the JSON configuration is invalid. </para>
+    </briefdescription>
+    <detaileddescription>
+<para>Inherits from <ref refid="class_validator_j_s_o_n_exception" kindref="compound">ValidatorJSONException</ref>. </para>
+    </detaileddescription>
+    <inheritancegraph>
+      <node id="3">
+        <label>LineInfoException</label>
+        <link refid="class_line_info_exception"/>
+      </node>
+      <node id="1">
+        <label>ValidatorConfigJSONException</label>
+        <link refid="class_validator_config_j_s_o_n_exception"/>
+        <childnode refid="2" relation="public-inheritance">
+        </childnode>
+      </node>
+      <node id="2">
+        <label>ValidatorJSONException</label>
+        <link refid="class_validator_j_s_o_n_exception"/>
+        <childnode refid="3" relation="public-inheritance">
+        </childnode>
+      </node>
+    </inheritancegraph>
+    <collaborationgraph>
+      <node id="3">
+        <label>LineInfoException</label>
+        <link refid="class_line_info_exception"/>
+      </node>
+      <node id="1">
+        <label>ValidatorConfigJSONException</label>
+        <link refid="class_validator_config_j_s_o_n_exception"/>
+        <childnode refid="2" relation="public-inheritance">
+        </childnode>
+      </node>
+      <node id="2">
+        <label>ValidatorJSONException</label>
+        <link refid="class_validator_j_s_o_n_exception"/>
+        <childnode refid="3" relation="public-inheritance">
+        </childnode>
+      </node>
+    </collaborationgraph>
+    <location file="Misc/JsonValidator/Exceptions.h" line="48" column="1" bodyfile="Misc/JsonValidator/Exceptions.h" bodystart="49" bodyend="58"/>
+    <listofallmembers>
+      <member refid="class_line_info_exception_1a3e7afc9a4901b6a52c6d43b7fc988f94" prot="public" virt="non-virtual"><scope>ValidatorConfigJSONException</scope><name>addPostMessage</name></member>
+      <member refid="class_line_info_exception_1a013ace9d42fdae3abfbdc4b7444dfe96" prot="public" virt="non-virtual"><scope>ValidatorConfigJSONException</scope><name>addPreMessage</name></member>
+      <member refid="class_line_info_exception_1add6333c031e9843869263b649ecc79d7" prot="private" virt="non-virtual"><scope>ValidatorConfigJSONException</scope><name>file</name></member>
+      <member refid="class_line_info_exception_1a2d1573524967fd4fdb9ccdc425df431d" prot="private" virt="non-virtual"><scope>ValidatorConfigJSONException</scope><name>line</name></member>
+      <member refid="class_line_info_exception_1ad99dfed98ff166a17b984e8a08666765" prot="public" virt="non-virtual"><scope>ValidatorConfigJSONException</scope><name>LineInfoException</name></member>
+      <member refid="class_line_info_exception_1ae1570fd3a3123b43fc63eaeca24b4d66" prot="private" virt="non-virtual"><scope>ValidatorConfigJSONException</scope><name>message</name></member>
+      <member refid="class_validator_config_j_s_o_n_exception_1a38d3097b5c5cb103549f4171ea0e4234" prot="public" virt="non-virtual"><scope>ValidatorConfigJSONException</scope><name>ValidatorConfigJSONException</name></member>
+      <member refid="class_validator_j_s_o_n_exception_1a40dfb138cfcb2e91d9224b4284c49cb9" prot="public" virt="non-virtual"><scope>ValidatorConfigJSONException</scope><name>ValidatorJSONException</name></member>
+      <member refid="class_line_info_exception_1aeffc3769f72c14a0c2cf886badb8f28e" prot="public" virt="virtual"><scope>ValidatorConfigJSONException</scope><name>what</name></member>
+      <member refid="class_line_info_exception_1a6850a04a20647bda6615f079269ff787" prot="private" virt="non-virtual"><scope>ValidatorConfigJSONException</scope><name>what_text</name></member>
+    </listofallmembers>
+  </compounddef>
+</doxygen>

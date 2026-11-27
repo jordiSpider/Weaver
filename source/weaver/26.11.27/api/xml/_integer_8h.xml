@@ -1,0 +1,156 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.18.0" xml:lang="en-US">
+  <compounddef id="_integer_8h" kind="file" language="C++">
+    <compoundname>Integer.h</compoundname>
+    <includes local="no">unordered_map</includes>
+    <includes local="no">string</includes>
+    <includes local="no">limits</includes>
+    <includes local="no">nlohmann/json.hpp</includes>
+    <includes refid="_element_8h" local="yes">Misc/JsonValidator/Elements/Element.h</includes>
+    <includes refid="_exceptions_8h" local="yes">Misc/JsonValidator/Exceptions.h</includes>
+    <includedby refid="_element_factory_8h" local="yes">Misc/JsonValidator/Elements/ElementFactory.h</includedby>
+    <incdepgraph>
+      <node id="10">
+        <label>Exceptions/LineInfoException.h</label>
+        <link refid="_line_info_exception_8h_source"/>
+        <childnode refid="11" relation="include">
+        </childnode>
+        <childnode refid="3" relation="include">
+        </childnode>
+      </node>
+      <node id="6">
+        <label>Misc/JsonValidator/Elements/Element.h</label>
+        <link refid="_element_8h_source"/>
+        <childnode refid="7" relation="include">
+        </childnode>
+        <childnode refid="3" relation="include">
+        </childnode>
+        <childnode refid="8" relation="include">
+        </childnode>
+        <childnode refid="5" relation="include">
+        </childnode>
+        <childnode refid="9" relation="include">
+        </childnode>
+      </node>
+      <node id="1">
+        <label>Misc/JsonValidator/Elements/Integer.h</label>
+        <link refid="_integer_8h"/>
+        <childnode refid="2" relation="include">
+        </childnode>
+        <childnode refid="3" relation="include">
+        </childnode>
+        <childnode refid="4" relation="include">
+        </childnode>
+        <childnode refid="5" relation="include">
+        </childnode>
+        <childnode refid="6" relation="include">
+        </childnode>
+        <childnode refid="9" relation="include">
+        </childnode>
+      </node>
+      <node id="9">
+        <label>Misc/JsonValidator/Exceptions.h</label>
+        <link refid="_exceptions_8h_source"/>
+        <childnode refid="3" relation="include">
+        </childnode>
+        <childnode refid="10" relation="include">
+        </childnode>
+      </node>
+      <node id="11">
+        <label>exception</label>
+      </node>
+      <node id="4">
+        <label>limits</label>
+      </node>
+      <node id="5">
+        <label>nlohmann/json.hpp</label>
+      </node>
+      <node id="3">
+        <label>string</label>
+      </node>
+      <node id="2">
+        <label>unordered_map</label>
+      </node>
+      <node id="8">
+        <label>utility</label>
+      </node>
+      <node id="7">
+        <label>vector</label>
+      </node>
+    </incdepgraph>
+    <invincdepgraph>
+      <node id="2">
+        <label>Misc/JsonValidator/Elements/ElementFactory.h</label>
+        <link refid="_element_factory_8h_source"/>
+      </node>
+      <node id="1">
+        <label>Misc/JsonValidator/Elements/Integer.h</label>
+        <link refid="_integer_8h"/>
+        <childnode refid="2" relation="include">
+        </childnode>
+      </node>
+    </invincdepgraph>
+    <innerclass refid="class_integer" prot="public">Integer</innerclass>
+    <briefdescription>
+<para>Represents a JSON integer element with validation and constraints. </para>
+    </briefdescription>
+    <detaileddescription>
+    </detaileddescription>
+    <programlisting>
+<codeline lineno="1"><highlight class="normal"></highlight></codeline>
+<codeline lineno="5"><highlight class="normal"></highlight></codeline>
+<codeline lineno="6"><highlight class="normal"></highlight><highlight class="preprocessor">#ifndef<sp/>INTEGER_H_</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="7"><highlight class="normal"></highlight><highlight class="preprocessor">#define<sp/>INTEGER_H_</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="8"><highlight class="normal"></highlight></codeline>
+<codeline lineno="9"><highlight class="normal"></highlight></codeline>
+<codeline lineno="10"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&lt;unordered_map&gt;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="11"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&lt;string&gt;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="12"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&lt;limits&gt;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="13"><highlight class="normal"></highlight></codeline>
+<codeline lineno="14"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&lt;nlohmann/json.hpp&gt;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="15"><highlight class="normal"></highlight></codeline>
+<codeline lineno="16"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&quot;Misc/JsonValidator/Elements/Element.h&quot;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="17"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&quot;Misc/JsonValidator/Exceptions.h&quot;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="18"><highlight class="normal"></highlight></codeline>
+<codeline lineno="19"><highlight class="normal"></highlight></codeline>
+<codeline lineno="28" refid="class_integer" refkind="compound"><highlight class="normal"></highlight><highlight class="keyword">class<sp/></highlight><highlight class="normal"><ref refid="class_integer_1a3f3e3c8a7fb15fc94c395d136cf56710" kindref="member">Integer</ref><sp/>:<sp/></highlight><highlight class="keyword">public</highlight><highlight class="normal"><sp/><ref refid="class_element_1a5ef746a08042747acd608589686df030" kindref="member">Element</ref></highlight></codeline>
+<codeline lineno="29"><highlight class="normal">{</highlight></codeline>
+<codeline lineno="30"><highlight class="normal"></highlight><highlight class="keyword">protected</highlight><highlight class="normal">:</highlight></codeline>
+<codeline lineno="32" refid="class_integer_1a1d49dd293c7e453e5948a19db39bc5c4" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/><ref refid="class_integer_1a1d49dd293c7e453e5948a19db39bc5c4" kindref="member">minimum</ref>;</highlight></codeline>
+<codeline lineno="33"><highlight class="normal"></highlight></codeline>
+<codeline lineno="35" refid="class_integer_1a2911db6972ddaf2c19bbe82abb08a79d" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">bool</highlight><highlight class="normal"><sp/><ref refid="class_integer_1a2911db6972ddaf2c19bbe82abb08a79d" kindref="member">exclusiveMinimum</ref>;</highlight></codeline>
+<codeline lineno="36"><highlight class="normal"></highlight></codeline>
+<codeline lineno="38" refid="class_integer_1a6768de55815d62a3719c9febdfae20e2" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/><ref refid="class_integer_1a6768de55815d62a3719c9febdfae20e2" kindref="member">maximum</ref>;</highlight></codeline>
+<codeline lineno="39"><highlight class="normal"></highlight></codeline>
+<codeline lineno="41" refid="class_integer_1a286044f3c2ccf0ad2e8d224222dc769d" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">bool</highlight><highlight class="normal"><sp/><ref refid="class_integer_1a286044f3c2ccf0ad2e8d224222dc769d" kindref="member">exclusiveMaximum</ref>;</highlight></codeline>
+<codeline lineno="42"><highlight class="normal"></highlight></codeline>
+<codeline lineno="44" refid="class_integer_1a9285032ee249d3dde116ee19755de8c7" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/>std::pair&lt;bool,<sp/>int&gt;<sp/><ref refid="class_integer_1a9285032ee249d3dde116ee19755de8c7" kindref="member">multipleOf</ref>;</highlight></codeline>
+<codeline lineno="45"><highlight class="normal"></highlight></codeline>
+<codeline lineno="46"><highlight class="normal"></highlight></codeline>
+<codeline lineno="54" refid="class_integer_1a75332e1010229eb65afa21a270f6e156" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/><ref refid="class_integer_1a75332e1010229eb65afa21a270f6e156" kindref="member">validateElement</ref>(</highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/>nlohmann::json&amp;<sp/>config)<sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal">;</highlight></codeline>
+<codeline lineno="55"><highlight class="normal"></highlight></codeline>
+<codeline lineno="56"><highlight class="normal"></highlight><highlight class="keyword">public</highlight><highlight class="normal">:</highlight></codeline>
+<codeline lineno="61" refid="class_integer_1a3f3e3c8a7fb15fc94c395d136cf56710" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="class_integer_1a3f3e3c8a7fb15fc94c395d136cf56710" kindref="member">Integer</ref>(</highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/>nlohmann::json&amp;<sp/>info);</highlight></codeline>
+<codeline lineno="62"><highlight class="normal"></highlight></codeline>
+<codeline lineno="68" refid="class_integer_1a344e54172e2ba07fc55cb33d8ad89484" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="class_integer_1a344e54172e2ba07fc55cb33d8ad89484" kindref="member">Integer</ref>(</highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/><ref refid="class_integer_1a3f3e3c8a7fb15fc94c395d136cf56710" kindref="member">Integer</ref>&amp;<sp/>other,<sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordtype">bool</highlight><highlight class="normal"><sp/><ref refid="class_element_1a4318313abfd08feae300a12668cec95a" kindref="member">nullProperty</ref>);</highlight></codeline>
+<codeline lineno="69"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight></codeline>
+<codeline lineno="73" refid="class_integer_1a6caf6b3d10e4fbfce9d42b53cb4e6ada" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">virtual</highlight><highlight class="normal"><sp/><ref refid="class_integer_1a6caf6b3d10e4fbfce9d42b53cb4e6ada" kindref="member">~Integer</ref>();</highlight></codeline>
+<codeline lineno="74"><highlight class="normal"></highlight></codeline>
+<codeline lineno="79" refid="class_integer_1ab94dff0fc68241967363eaa30f3a95e1" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="class_element_1a009a3be4c3a037a72e292b2464c9cbc5" kindref="member">Type</ref><sp/><ref refid="class_integer_1ab94dff0fc68241967363eaa30f3a95e1" kindref="member">getType</ref>()<sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal">;</highlight></codeline>
+<codeline lineno="80"><highlight class="normal"></highlight></codeline>
+<codeline lineno="85" refid="class_integer_1a89468742a0df58791f125950eef52a72" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/><ref refid="class_integer_1a89468742a0df58791f125950eef52a72" kindref="member">getMinimum</ref>()<sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal">;</highlight></codeline>
+<codeline lineno="86"><highlight class="normal"></highlight></codeline>
+<codeline lineno="91" refid="class_integer_1a94ffa5a4658a5d8f2d5e6f62c4ae7c1d" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">bool</highlight><highlight class="normal"><sp/><ref refid="class_integer_1a94ffa5a4658a5d8f2d5e6f62c4ae7c1d" kindref="member">getExclusiveMinimum</ref>()<sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal">;</highlight></codeline>
+<codeline lineno="92"><highlight class="normal"></highlight></codeline>
+<codeline lineno="97" refid="class_integer_1aa9039f975160b2067064a9a1d3db4af1" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/><ref refid="class_integer_1aa9039f975160b2067064a9a1d3db4af1" kindref="member">getMaximum</ref>()<sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal">;</highlight></codeline>
+<codeline lineno="98"><highlight class="normal"></highlight></codeline>
+<codeline lineno="103" refid="class_integer_1aa1455d7cd3470762c83726c65f416a0c" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">bool</highlight><highlight class="normal"><sp/><ref refid="class_integer_1aa1455d7cd3470762c83726c65f416a0c" kindref="member">getExclusiveMaximum</ref>()<sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal">;</highlight></codeline>
+<codeline lineno="104"><highlight class="normal"></highlight></codeline>
+<codeline lineno="109" refid="class_integer_1a81c6b633018971289210d83e3466ab1a" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/>std::pair&lt;bool,<sp/>int&gt;&amp;<sp/><ref refid="class_integer_1a81c6b633018971289210d83e3466ab1a" kindref="member">getMultipleOf</ref>()<sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal">;</highlight></codeline>
+<codeline lineno="110"><highlight class="normal">};</highlight></codeline>
+<codeline lineno="111"><highlight class="normal"></highlight></codeline>
+<codeline lineno="112"><highlight class="normal"></highlight><highlight class="preprocessor">#endif<sp/></highlight><highlight class="comment">/*<sp/>INTEGER_H_<sp/>*/</highlight><highlight class="preprocessor"></highlight></codeline>
+    </programlisting>
+    <location file="Misc/JsonValidator/Elements/Integer.h"/>
+  </compounddef>
+</doxygen>

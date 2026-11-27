@@ -1,0 +1,440 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.18.0" xml:lang="en-US">
+  <compounddef id="class_animal_statistical_growth" kind="class" language="C++" prot="public">
+    <compoundname>AnimalStatisticalGrowth</compoundname>
+    <basecompoundref refid="class_animal_growth" prot="public" virt="non-virtual">AnimalGrowth</basecompoundref>
+    <includes refid="_animal_statistical_growth_8h" local="no">AnimalStatisticalGrowth.h</includes>
+    <sectiondef kind="public-func">
+      <memberdef kind="function" id="class_animal_statistical_growth_1a8bd3297f3b7b2d1a97fd56957d3d40b1" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type></type>
+        <definition>AnimalStatisticalGrowth::AnimalStatisticalGrowth</definition>
+        <argsstring>(AnimalSpeciesGrowth *const speciesGrowth, const Instar &amp;instar, const bool temperatureDependent, Gender gender, const std::vector&lt; IndividualTrait &gt; &amp;baseIndividualTraits, const PreciseDouble &amp;factorEggMassValue, const unsigned int femaleMaxReproductionEvents, const Temperature &amp;actualTemperature, const Temperature &amp;tempFromLab, const PreciseDouble &amp;timeStepsPerDay)</argsstring>
+        <name>AnimalStatisticalGrowth</name>
+        <qualifiedname>AnimalStatisticalGrowth::AnimalStatisticalGrowth</qualifiedname>
+        <param>
+          <type><ref refid="class_animal_species_growth" kindref="compound">AnimalSpeciesGrowth</ref> *const</type>
+          <declname>speciesGrowth</declname>
+        </param>
+        <param>
+          <type>const <ref refid="class_instar" kindref="compound">Instar</ref> &amp;</type>
+          <declname>instar</declname>
+        </param>
+        <param>
+          <type>const bool</type>
+          <declname>temperatureDependent</declname>
+        </param>
+        <param>
+          <type>Gender</type>
+          <declname>gender</declname>
+        </param>
+        <param>
+          <type>const std::vector&lt; <ref refid="class_individual_trait" kindref="compound">IndividualTrait</ref> &gt; &amp;</type>
+          <declname>baseIndividualTraits</declname>
+        </param>
+        <param>
+          <type>const <ref refid="class_precise_double" kindref="compound">PreciseDouble</ref> &amp;</type>
+          <declname>factorEggMassValue</declname>
+        </param>
+        <param>
+          <type>const unsigned int</type>
+          <declname>femaleMaxReproductionEvents</declname>
+        </param>
+        <param>
+          <type>const <ref refid="class_temperature" kindref="compound">Temperature</ref> &amp;</type>
+          <declname>actualTemperature</declname>
+        </param>
+        <param>
+          <type>const <ref refid="class_temperature" kindref="compound">Temperature</ref> &amp;</type>
+          <declname>tempFromLab</declname>
+        </param>
+        <param>
+          <type>const <ref refid="class_precise_double" kindref="compound">PreciseDouble</ref> &amp;</type>
+          <declname>timeStepsPerDay</declname>
+        </param>
+        <briefdescription>
+<para>Constructor for <ref refid="class_animal_statistical_growth" kindref="compound">AnimalStatisticalGrowth</ref>. </para>
+        </briefdescription>
+        <detaileddescription>
+<para>Initializes an animal&apos;s growth with species-specific parameters and individual traits.</para>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>speciesGrowth</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Pointer to the species growth data. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>instar</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Current instar of the animal. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>temperatureDependent</parametername>
+</parameternamelist>
+<parameterdescription>
+<para><ref refid="class_boolean" kindref="compound">Boolean</ref> indicating if growth is temperature-dependent. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>gender</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Gender of the animal. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>baseIndividualTraits</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Vector of individual traits affecting growth. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>factorEggMassValue</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Factor for scaling egg mass. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>femaleMaxReproductionEvents</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Maximum number of reproduction events for females. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>actualTemperature</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Current environmental temperature. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>tempFromLab</parametername>
+</parameternamelist>
+<parameterdescription>
+<para><ref refid="class_temperature" kindref="compound">Temperature</ref> data from laboratory experiments. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>timeStepsPerDay</parametername>
+</parameternamelist>
+<parameterdescription>
+<para><ref refid="class_number" kindref="compound">Number</ref> of simulation time steps per day. </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="App/Model/IBM/Landscape/LivingBeings/Animals/Growth/AnimalStatisticalGrowth.h" line="41" column="5"/>
+      </memberdef>
+      <memberdef kind="function" id="class_animal_statistical_growth_1a5fa9c8daf025e53a01130c84dfd7b796" prot="public" static="no" const="no" explicit="no" inline="no" virt="virtual">
+        <type></type>
+        <definition>virtual AnimalStatisticalGrowth::~AnimalStatisticalGrowth</definition>
+        <argsstring>()</argsstring>
+        <name>~AnimalStatisticalGrowth</name>
+        <qualifiedname>AnimalStatisticalGrowth::~AnimalStatisticalGrowth</qualifiedname>
+        <briefdescription>
+<para>Destructor for <ref refid="class_animal_statistical_growth" kindref="compound">AnimalStatisticalGrowth</ref>. </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="App/Model/IBM/Landscape/LivingBeings/Animals/Growth/AnimalStatisticalGrowth.h" line="46" column="13"/>
+      </memberdef>
+      <memberdef kind="function" id="class_animal_statistical_growth_1adf879fd94c3f989ddf37aed4b0d3319f" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void AnimalStatisticalGrowth::forceMolting</definition>
+        <argsstring>(const std::vector&lt; IndividualTrait &gt; &amp;baseIndividualTraits, Gender gender, const PreciseDouble &amp;timeStepsPerDay)</argsstring>
+        <name>forceMolting</name>
+        <qualifiedname>AnimalStatisticalGrowth::forceMolting</qualifiedname>
+        <param>
+          <type>const std::vector&lt; <ref refid="class_individual_trait" kindref="compound">IndividualTrait</ref> &gt; &amp;</type>
+          <declname>baseIndividualTraits</declname>
+        </param>
+        <param>
+          <type>Gender</type>
+          <declname>gender</declname>
+        </param>
+        <param>
+          <type>const <ref refid="class_precise_double" kindref="compound">PreciseDouble</ref> &amp;</type>
+          <declname>timeStepsPerDay</declname>
+        </param>
+        <briefdescription>
+<para>Forces molting for the animal. </para>
+        </briefdescription>
+        <detaileddescription>
+<para>Adjusts the animal&apos;s state to simulate molting events according to the base individual traits.</para>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>baseIndividualTraits</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Vector of traits influencing molting. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>gender</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Gender of the animal. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>timeStepsPerDay</parametername>
+</parameternamelist>
+<parameterdescription>
+<para><ref refid="class_number" kindref="compound">Number</ref> of simulation time steps per day. </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="App/Model/IBM/Landscape/LivingBeings/Animals/Growth/AnimalStatisticalGrowth.h" line="57" column="10"/>
+      </memberdef>
+      <memberdef kind="function" id="class_animal_statistical_growth_1a38de730ff183224a26465ffdf1744f16" prot="public" static="no" const="yes" explicit="no" inline="no" virt="virtual">
+        <type>bool</type>
+        <definition>bool AnimalStatisticalGrowth::hasCapitalBreeding</definition>
+        <argsstring>() const</argsstring>
+        <name>hasCapitalBreeding</name>
+        <qualifiedname>AnimalStatisticalGrowth::hasCapitalBreeding</qualifiedname>
+        <reimplements refid="class_animal_growth_1a2e227c236e3f2adafa592b6a87554160">hasCapitalBreeding</reimplements>
+        <briefdescription>
+<para>Checks whether the animal uses capital breeding. </para>
+        </briefdescription>
+        <detaileddescription>
+<para><simplesect kind="return"><para>True if the animal reproduces using capital breeding strategy, false otherwise. </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="App/Model/IBM/Landscape/LivingBeings/Animals/Growth/AnimalStatisticalGrowth.h" line="64" column="10"/>
+      </memberdef>
+    </sectiondef>
+    <briefdescription>
+<para>Represents an animal growth model based on statistical approaches. </para>
+    </briefdescription>
+    <detaileddescription>
+<para>This class implements the growth of animals using statistical models rather than deterministic curves. It is used for species where growth is influenced by probabilistic factors and variability among individuals. </para>
+    </detaileddescription>
+    <inheritancegraph>
+      <node id="2">
+        <label>AnimalGrowth</label>
+        <link refid="class_animal_growth"/>
+        <childnode refid="3" relation="public-inheritance">
+        </childnode>
+      </node>
+      <node id="1">
+        <label>AnimalStatisticalGrowth</label>
+        <link refid="class_animal_statistical_growth"/>
+        <childnode refid="2" relation="public-inheritance">
+        </childnode>
+      </node>
+      <node id="3">
+        <label>EdibleGrowth</label>
+        <link refid="class_edible_growth"/>
+      </node>
+    </inheritancegraph>
+    <collaborationgraph>
+      <node id="2">
+        <label>AnimalGrowth</label>
+        <link refid="class_animal_growth"/>
+        <childnode refid="3" relation="public-inheritance">
+        </childnode>
+        <childnode refid="10" relation="usage">
+          <edgelabel>individualInstarAgeVector</edgelabel>
+        </childnode>
+        <childnode refid="11" relation="usage">
+          <edgelabel>instarLengthsVector</edgelabel>
+        </childnode>
+        <childnode refid="12" relation="usage">
+          <edgelabel>instarMassesVector</edgelabel>
+        </childnode>
+        <childnode refid="13" relation="usage">
+          <edgelabel>individualGrowthModel</edgelabel>
+        </childnode>
+        <childnode refid="7" relation="usage">
+          <edgelabel>currentBodySize</edgelabel>
+          <edgelabel>currentEnergyTank</edgelabel>
+          <edgelabel>eggDryMassAtBirth</edgelabel>
+        </childnode>
+        <childnode refid="14" relation="usage">
+          <edgelabel>lengthAtBirth</edgelabel>
+        </childnode>
+        <childnode refid="8" relation="usage">
+          <edgelabel>baseDevTimeProportion</edgelabel>
+        </childnode>
+        <childnode refid="15" relation="usage">
+          <edgelabel>currentAge</edgelabel>
+        </childnode>
+      </node>
+      <node id="1">
+        <label>AnimalStatisticalGrowth</label>
+        <link refid="class_animal_statistical_growth"/>
+        <childnode refid="2" relation="public-inheritance">
+        </childnode>
+      </node>
+      <node id="12">
+        <label>CustomIndexedVector&lt; Instar, DryMass &gt;</label>
+        <link refid="class_custom_indexed_vector"/>
+      </node>
+      <node id="11">
+        <label>CustomIndexedVector&lt; Instar, Length &gt;</label>
+        <link refid="class_custom_indexed_vector"/>
+      </node>
+      <node id="6">
+        <label>CustomIndexedVector&lt; Instar, PreciseDouble &gt;</label>
+        <link refid="class_custom_indexed_vector"/>
+      </node>
+      <node id="10">
+        <label>CustomIndexedVector&lt; Instar, TimeStep &gt;</label>
+        <link refid="class_custom_indexed_vector"/>
+      </node>
+      <node id="7">
+        <label>DryMass</label>
+        <link refid="class_dry_mass"/>
+        <childnode refid="8" relation="usage">
+          <edgelabel>value</edgelabel>
+        </childnode>
+      </node>
+      <node id="3">
+        <label>EdibleGrowth</label>
+        <link refid="class_edible_growth"/>
+        <childnode refid="4" relation="usage">
+          <edgelabel>instar</edgelabel>
+        </childnode>
+        <childnode refid="5" relation="usage">
+          <edgelabel>speciesGrowth</edgelabel>
+        </childnode>
+        <childnode refid="7" relation="usage">
+          <edgelabel>currentTotalDryMass</edgelabel>
+        </childnode>
+        <childnode refid="9" relation="usage">
+          <edgelabel>currentTotalWetMass</edgelabel>
+        </childnode>
+      </node>
+      <node id="13">
+        <label>IndividualGrowthModel</label>
+        <link refid="class_individual_growth_model"/>
+      </node>
+      <node id="4">
+        <label>Instar</label>
+        <link refid="class_instar"/>
+      </node>
+      <node id="14">
+        <label>Length</label>
+        <link refid="class_length"/>
+        <childnode refid="8" relation="usage">
+          <edgelabel>value</edgelabel>
+        </childnode>
+      </node>
+      <node id="8">
+        <label>PreciseDouble</label>
+        <link refid="class_precise_double"/>
+      </node>
+      <node id="5">
+        <label>SpeciesGrowth</label>
+        <link refid="class_species_growth"/>
+        <childnode refid="4" relation="usage">
+          <edgelabel>lastInstar</edgelabel>
+        </childnode>
+        <childnode refid="6" relation="usage">
+          <edgelabel>conversionToWetMass</edgelabel>
+        </childnode>
+      </node>
+      <node id="15">
+        <label>TimeStep</label>
+        <link refid="class_time_step"/>
+      </node>
+      <node id="9">
+        <label>WetMass</label>
+        <link refid="class_wet_mass"/>
+        <childnode refid="8" relation="usage">
+          <edgelabel>value</edgelabel>
+        </childnode>
+      </node>
+    </collaborationgraph>
+    <location file="App/Model/IBM/Landscape/LivingBeings/Animals/Growth/AnimalStatisticalGrowth.h" line="22" column="1" bodyfile="App/Model/IBM/Landscape/LivingBeings/Animals/Growth/AnimalStatisticalGrowth.h" bodystart="23" bodyend="65"/>
+    <listofallmembers>
+      <member refid="class_animal_growth_1aff40ef147aeb41f2682cb0cc56af0530" prot="public" virt="non-virtual"><scope>AnimalStatisticalGrowth</scope><name>AnimalGrowth</name></member>
+      <member refid="class_animal_growth_1a88c50932e408c1bab893a7d1f5101fc8" prot="public" virt="non-virtual"><scope>AnimalStatisticalGrowth</scope><name>AnimalGrowth</name></member>
+      <member refid="class_animal_statistical_growth_1a8bd3297f3b7b2d1a97fd56957d3d40b1" prot="public" virt="non-virtual"><scope>AnimalStatisticalGrowth</scope><name>AnimalStatisticalGrowth</name></member>
+      <member refid="class_animal_growth_1a61050eebbb401dd9d2ee86b364e7681d" prot="protected" virt="non-virtual"><scope>AnimalStatisticalGrowth</scope><name>baseDevTimeProportion</name></member>
+      <member refid="class_animal_growth_1a69717562afb307545496853a9d97f229" prot="protected" virt="virtual"><scope>AnimalStatisticalGrowth</scope><name>calculateGrowthCurves</name></member>
+      <member refid="class_animal_growth_1a8d1f39a9a279b246cf03cdf89bf19137" prot="public" virt="non-virtual"><scope>AnimalStatisticalGrowth</scope><name>calculateGrowthModel</name></member>
+      <member refid="class_animal_growth_1a9806b3927c8dfe6e2a465e100f10023c" prot="protected" virt="non-virtual"><scope>AnimalStatisticalGrowth</scope><name>calculateValuesAtBirth</name></member>
+      <member refid="class_edible_growth_1a7d13e5b64cd9dfb03e882e4fd54d8517" prot="public" virt="non-virtual"><scope>AnimalStatisticalGrowth</scope><name>calculateWetMass</name></member>
+      <member refid="class_animal_growth_1ac319478246534b049dddf7b0d327b8f6" prot="protected" virt="non-virtual"><scope>AnimalStatisticalGrowth</scope><name>currentAge</name></member>
+      <member refid="class_animal_growth_1a3385e0a8be987648b0dcd0395e583c8e" prot="protected" virt="non-virtual"><scope>AnimalStatisticalGrowth</scope><name>currentBodySize</name></member>
+      <member refid="class_animal_growth_1a7dffb0074c9d67e6dadd15750383488e" prot="protected" virt="non-virtual"><scope>AnimalStatisticalGrowth</scope><name>currentEnergyTank</name></member>
+      <member refid="class_edible_growth_1abe02b9f653e00cfe6c32f83fa42eb98b" prot="protected" virt="non-virtual"><scope>AnimalStatisticalGrowth</scope><name>currentTotalDryMass</name></member>
+      <member refid="class_edible_growth_1a4e20f49c4c301d19a36cf8fc9157cbbe" prot="protected" virt="non-virtual"><scope>AnimalStatisticalGrowth</scope><name>currentTotalWetMass</name></member>
+      <member refid="class_edible_growth_1a434f78932717b2a19fa4b807f6dd1507" prot="public" virt="non-virtual"><scope>AnimalStatisticalGrowth</scope><name>EdibleGrowth</name></member>
+      <member refid="class_edible_growth_1a695321307197847fdc3dbd449f06e911" prot="public" virt="non-virtual"><scope>AnimalStatisticalGrowth</scope><name>EdibleGrowth</name></member>
+      <member refid="class_animal_growth_1a4c1ed24c36e706e26536bbc7b120ccd4" prot="protected" virt="non-virtual"><scope>AnimalStatisticalGrowth</scope><name>eggDryMassAtBirth</name></member>
+      <member refid="class_animal_statistical_growth_1adf879fd94c3f989ddf37aed4b0d3319f" prot="public" virt="non-virtual"><scope>AnimalStatisticalGrowth</scope><name>forceMolting</name></member>
+      <member refid="class_animal_growth_1ab2c397fa2832c642579ba428e3f06713" prot="public" virt="non-virtual"><scope>AnimalStatisticalGrowth</scope><name>getAgeOfFirstMaturation</name></member>
+      <member refid="class_animal_growth_1a05206a156a36dc2d9996a02d472ac542" prot="public" virt="non-virtual"><scope>AnimalStatisticalGrowth</scope><name>getCurrentAge</name></member>
+      <member refid="class_animal_growth_1a71a9723209bd32ae9ed138cf2a44f07e" prot="public" virt="non-virtual"><scope>AnimalStatisticalGrowth</scope><name>getCurrentBodySize</name></member>
+      <member refid="class_animal_growth_1a74118fabd37d2bea1fac241c8f2ceb8e" prot="public" virt="non-virtual"><scope>AnimalStatisticalGrowth</scope><name>getCurrentEnergyTank</name></member>
+      <member refid="class_edible_growth_1a2765a3227b64e25fedc75e79248bf96e" prot="public" virt="non-virtual"><scope>AnimalStatisticalGrowth</scope><name>getCurrentTotalDryMass</name></member>
+      <member refid="class_edible_growth_1a34d8ff3d9d6e7d747cfac7fac490fefe" prot="public" virt="non-virtual"><scope>AnimalStatisticalGrowth</scope><name>getCurrentTotalWetMass</name></member>
+      <member refid="class_animal_growth_1ac68e825cdd33cb592739872e94c6da5c" prot="public" virt="non-virtual"><scope>AnimalStatisticalGrowth</scope><name>getEggDryMassAtBirth</name></member>
+      <member refid="class_animal_growth_1a7cf20a02a8a83648d6e52759a1990b67" prot="public" virt="non-virtual"><scope>AnimalStatisticalGrowth</scope><name>getIndividualGrowthModel</name></member>
+      <member refid="class_animal_growth_1abd77b794339e23dbb01986bef172629d" prot="public" virt="non-virtual"><scope>AnimalStatisticalGrowth</scope><name>getIndividualInstarAgeVector</name></member>
+      <member refid="class_edible_growth_1a725bca5f926868c0bfe7a556cc8aacb3" prot="public" virt="non-virtual"><scope>AnimalStatisticalGrowth</scope><name>getInstar</name></member>
+      <member refid="class_animal_growth_1a84cb4b3b63c8ceadf6790f80e9340c62" prot="public" virt="non-virtual"><scope>AnimalStatisticalGrowth</scope><name>getInstarAge</name></member>
+      <member refid="class_animal_growth_1a96423df9ffd37c9d478e6175594ade73" prot="public" virt="non-virtual"><scope>AnimalStatisticalGrowth</scope><name>getLengthAtBirth</name></member>
+      <member refid="class_animal_growth_1a975d84e7599f977215c1e870b74c30dc" prot="protected" virt="virtual"><scope>AnimalStatisticalGrowth</scope><name>getMutableSpeciesGrowth</name></member>
+      <member refid="class_animal_growth_1a785511ae919600d2cb36e9659de9d1e1" prot="protected" virt="virtual"><scope>AnimalStatisticalGrowth</scope><name>getSpeciesGrowth</name></member>
+      <member refid="class_animal_statistical_growth_1a38de730ff183224a26465ffdf1744f16" prot="public" virt="virtual"><scope>AnimalStatisticalGrowth</scope><name>hasCapitalBreeding</name></member>
+      <member refid="class_animal_growth_1a467d5d2df3582d360bfa1facf839b5b0" prot="protected" virt="non-virtual"><scope>AnimalStatisticalGrowth</scope><name>individualGrowthModel</name></member>
+      <member refid="class_animal_growth_1aefb4e829a0df7023a6b15ec909d8f81a" prot="protected" virt="non-virtual"><scope>AnimalStatisticalGrowth</scope><name>individualInstarAgeVector</name></member>
+      <member refid="class_edible_growth_1adbbef8f3ed22941d3d4456bb26fb1da0" prot="protected" virt="non-virtual"><scope>AnimalStatisticalGrowth</scope><name>instar</name></member>
+      <member refid="class_animal_growth_1af4662b2619acb60a1330fb23c202dcd8" prot="protected" virt="non-virtual"><scope>AnimalStatisticalGrowth</scope><name>instarLengthsVector</name></member>
+      <member refid="class_animal_growth_1ab90d45bb872daed444bdd514df9c9090" prot="protected" virt="non-virtual"><scope>AnimalStatisticalGrowth</scope><name>instarMassesVector</name></member>
+      <member refid="class_animal_growth_1a245dba4ad1fb98f12653e41758a4ccbe" prot="public" virt="non-virtual"><scope>AnimalStatisticalGrowth</scope><name>isMature</name></member>
+      <member refid="class_animal_growth_1a90839d5eead786c7b0ea0591a2af2f6b" prot="protected" virt="non-virtual"><scope>AnimalStatisticalGrowth</scope><name>isTemperatureDependent</name></member>
+      <member refid="class_animal_growth_1a20b51b39c27cbc7fe38b5826fd379282" prot="protected" virt="non-virtual"><scope>AnimalStatisticalGrowth</scope><name>lengthAtBirth</name></member>
+      <member refid="class_animal_growth_1afabb7ad0c24b49aedfa2d8b94048b671" prot="protected" virt="non-virtual"><scope>AnimalStatisticalGrowth</scope><name>mature</name></member>
+      <member refid="class_animal_growth_1abbeab0e263957c81f6f5860bcbc864ec" prot="public" virt="non-virtual"><scope>AnimalStatisticalGrowth</scope><name>modifyEnergyTank</name></member>
+      <member refid="class_animal_growth_1a3be673078809845648c552a8009444f9" prot="public" virt="non-virtual"><scope>AnimalStatisticalGrowth</scope><name>serialize</name></member>
+      <member refid="class_animal_growth_1abbd0ec43a1794346ae018be9103c38c1" prot="public" virt="non-virtual"><scope>AnimalStatisticalGrowth</scope><name>setCurrentAge</name></member>
+      <member refid="class_animal_growth_1a9efc16a284ff4ebcc4109c6f5c15030b" prot="protected" virt="non-virtual"><scope>AnimalStatisticalGrowth</scope><name>setCurrentBodySize</name></member>
+      <member refid="class_edible_growth_1a3f62f12a015db71067ca349e705be612" prot="protected" virt="virtual"><scope>AnimalStatisticalGrowth</scope><name>setCurrentTotalDryMass</name></member>
+      <member refid="class_animal_growth_1ad42dcbde99112886b6ab8e69c1e7e0cc" prot="public" virt="virtual"><scope>AnimalStatisticalGrowth</scope><name>setCurrentTotalWetMass</name></member>
+      <member refid="class_animal_growth_1ae3a5e1c173b25503f0ec03af9c3cc855" prot="public" virt="non-virtual"><scope>AnimalStatisticalGrowth</scope><name>setDryMass</name></member>
+      <member refid="class_edible_growth_1abb4d581339a665f99bc894576c5f6500" prot="public" virt="non-virtual"><scope>AnimalStatisticalGrowth</scope><name>setInstar</name></member>
+      <member refid="class_animal_growth_1ae87dc85c5fb5ff798d104b9bd515c6b8" prot="protected" virt="non-virtual"><scope>AnimalStatisticalGrowth</scope><name>setMassElements</name></member>
+      <member refid="class_animal_growth_1af64d1223884ff9e6d7754aacdb2f34bb" prot="public" virt="virtual"><scope>AnimalStatisticalGrowth</scope><name>setMatureValue</name></member>
+      <member refid="class_edible_growth_1aa4acb69101c339b4dc76b2f4773bcb10" prot="public" virt="non-virtual"><scope>AnimalStatisticalGrowth</scope><name>setSpeciesGrowth</name></member>
+      <member refid="class_edible_growth_1ab6d39e45c0878f73dc17ec11a90b6b03" prot="protected" virt="non-virtual"><scope>AnimalStatisticalGrowth</scope><name>speciesGrowth</name></member>
+      <member refid="class_animal_growth_1a3c82a64e4cef505c1e713313e80e02b3" prot="protected" virt="non-virtual"><scope>AnimalStatisticalGrowth</scope><name>temperatureDependent</name></member>
+      <member refid="class_animal_growth_1a6eb57f587935b3c6d55ceb53cde23627" prot="protected" virt="non-virtual"><scope>AnimalStatisticalGrowth</scope><name>updateTotalMass</name></member>
+      <member refid="class_animal_growth_1aff60e16ef033488c69f6e9e8a629c1db" prot="public" virt="virtual"><scope>AnimalStatisticalGrowth</scope><name>~AnimalGrowth</name></member>
+      <member refid="class_animal_statistical_growth_1a5fa9c8daf025e53a01130c84dfd7b796" prot="public" virt="virtual"><scope>AnimalStatisticalGrowth</scope><name>~AnimalStatisticalGrowth</name></member>
+      <member refid="class_edible_growth_1aa828055f5f8bc5ca0d90e2274a58afd0" prot="public" virt="virtual"><scope>AnimalStatisticalGrowth</scope><name>~EdibleGrowth</name></member>
+    </listofallmembers>
+  </compounddef>
+</doxygen>

@@ -1,0 +1,199 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.18.0" xml:lang="en-US">
+  <compounddef id="class_checkbox" kind="class" language="C++" prot="public">
+    <compoundname>Checkbox</compoundname>
+    <basecompoundref prot="public" virt="non-virtual">nana::panel&lt; true &gt;</basecompoundref>
+    <includes refid="_checkbox_8h" local="no">Checkbox.h</includes>
+    <sectiondef kind="protected-attrib">
+      <memberdef kind="variable" id="class_checkbox_1aac990bceb251554de2a5c7dc082129c6" prot="protected" static="no" mutable="no">
+        <type>nana::checkbox</type>
+        <definition>nana::checkbox Checkbox::checkbox</definition>
+        <argsstring></argsstring>
+        <name>checkbox</name>
+        <qualifiedname>Checkbox::checkbox</qualifiedname>
+        <initializer>{*this}</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para><ref refid="class_checkbox" kindref="compound">Checkbox</ref> widget </para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="App/View/GUI/Widgets/Checkbox.h" line="61" column="20" bodyfile="App/View/GUI/Widgets/Checkbox.h" bodystart="61" bodyend="61"/>
+      </memberdef>
+      <memberdef kind="variable" id="class_checkbox_1a8f492cf95de6ecfa8d0aff1f80307359" prot="protected" static="no" mutable="no">
+        <type>nana::label</type>
+        <definition>nana::label Checkbox::label</definition>
+        <argsstring></argsstring>
+        <name>label</name>
+        <qualifiedname>Checkbox::label</qualifiedname>
+        <initializer>{*this}</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Label widget displayed next to the checkbox </para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="App/View/GUI/Widgets/Checkbox.h" line="60" column="17" bodyfile="App/View/GUI/Widgets/Checkbox.h" bodystart="60" bodyend="60"/>
+      </memberdef>
+      <memberdef kind="variable" id="class_checkbox_1a9f69957c4a1036e5d1707588f7b94170" prot="protected" static="no" mutable="no">
+        <type>nana::place</type>
+        <definition>nana::place Checkbox::layout</definition>
+        <argsstring></argsstring>
+        <name>layout</name>
+        <qualifiedname>Checkbox::layout</qualifiedname>
+        <initializer>{*this}</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Layout manager for arranging the label and checkbox </para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="App/View/GUI/Widgets/Checkbox.h" line="59" column="17" bodyfile="App/View/GUI/Widgets/Checkbox.h" bodystart="59" bodyend="59"/>
+      </memberdef>
+    </sectiondef>
+    <sectiondef kind="public-func">
+      <memberdef kind="function" id="class_checkbox_1af2f7a2c4cefc953c162d4e7a5cfb407d" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type></type>
+        <definition>Checkbox::Checkbox</definition>
+        <argsstring>(const Checkbox &amp;other)=delete</argsstring>
+        <name>Checkbox</name>
+        <qualifiedname>Checkbox::Checkbox</qualifiedname>
+        <param>
+          <type>const <ref refid="class_checkbox" kindref="compound">Checkbox</ref> &amp;</type>
+          <declname>other</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="App/View/GUI/Widgets/Checkbox.h" line="49" column="5"/>
+      </memberdef>
+      <memberdef kind="function" id="class_checkbox_1aaa8ea6bbca6f80f68e96190dc966ca9f" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type></type>
+        <definition>Checkbox::Checkbox</definition>
+        <argsstring>(nana::window parent, const std::string &amp;labelText, const bool defaultValue)</argsstring>
+        <name>Checkbox</name>
+        <qualifiedname>Checkbox::Checkbox</qualifiedname>
+        <param>
+          <type>nana::window</type>
+          <declname>parent</declname>
+        </param>
+        <param>
+          <type>const std::string &amp;</type>
+          <declname>labelText</declname>
+        </param>
+        <param>
+          <type>const bool</type>
+          <declname>defaultValue</declname>
+        </param>
+        <briefdescription>
+<para>Constructs a <ref refid="class_checkbox" kindref="compound">Checkbox</ref> widget. </para>
+        </briefdescription>
+        <detaileddescription>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>parent</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>The parent window. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>labelText</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>The text to display next to the checkbox. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>defaultValue</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Initial state of the checkbox (checked or not). </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="App/View/GUI/Widgets/Checkbox.h" line="41" column="5"/>
+      </memberdef>
+      <memberdef kind="function" id="class_checkbox_1a7aefc53807ff5fa08e7719330d6db83b" prot="public" static="no" const="no" explicit="no" inline="no" virt="virtual">
+        <type></type>
+        <definition>virtual Checkbox::~Checkbox</definition>
+        <argsstring>()</argsstring>
+        <name>~Checkbox</name>
+        <qualifiedname>Checkbox::~Checkbox</qualifiedname>
+        <briefdescription>
+<para>Destructor for <ref refid="class_checkbox" kindref="compound">Checkbox</ref>. </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="App/View/GUI/Widgets/Checkbox.h" line="46" column="13"/>
+      </memberdef>
+      <memberdef kind="function" id="class_checkbox_1a7a74a35d1b49e3b5ab88a3c056eabd33" prot="public" static="no" const="yes" explicit="no" inline="no" virt="non-virtual">
+        <type>bool</type>
+        <definition>bool Checkbox::checked</definition>
+        <argsstring>() const</argsstring>
+        <name>checked</name>
+        <qualifiedname>Checkbox::checked</qualifiedname>
+        <briefdescription>
+<para>Returns the current state of the checkbox. </para>
+        </briefdescription>
+        <detaileddescription>
+<para><simplesect kind="return"><para>true if checked, false otherwise. </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="App/View/GUI/Widgets/Checkbox.h" line="56" column="10"/>
+      </memberdef>
+      <memberdef kind="function" id="class_checkbox_1a1e8f775a6319c56fb28701d0ba780e38" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type><ref refid="class_checkbox" kindref="compound">Checkbox</ref> &amp;</type>
+        <definition>Checkbox &amp; Checkbox::operator=</definition>
+        <argsstring>(const Checkbox &amp;other)=delete</argsstring>
+        <name>operator=</name>
+        <qualifiedname>Checkbox::operator=</qualifiedname>
+        <param>
+          <type>const <ref refid="class_checkbox" kindref="compound">Checkbox</ref> &amp;</type>
+          <declname>other</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="App/View/GUI/Widgets/Checkbox.h" line="50" column="10"/>
+      </memberdef>
+    </sectiondef>
+    <briefdescription>
+<para>A custom <ref refid="class_checkbox" kindref="compound">Checkbox</ref> widget combining a label and a checkbox in a panel. </para>
+    </briefdescription>
+    <detaileddescription>
+<para>This class provides a simple checkbox with an associated label. It uses a Nana panel to arrange the label and checkbox horizontally. </para>
+    </detaileddescription>
+    <location file="App/View/GUI/Widgets/Checkbox.h" line="33" column="1" bodyfile="App/View/GUI/Widgets/Checkbox.h" bodystart="33" bodyend="62"/>
+    <listofallmembers>
+      <member refid="class_checkbox_1aaa8ea6bbca6f80f68e96190dc966ca9f" prot="public" virt="non-virtual"><scope>Checkbox</scope><name>Checkbox</name></member>
+      <member refid="class_checkbox_1af2f7a2c4cefc953c162d4e7a5cfb407d" prot="public" virt="non-virtual"><scope>Checkbox</scope><name>Checkbox</name></member>
+      <member refid="class_checkbox_1aac990bceb251554de2a5c7dc082129c6" prot="protected" virt="non-virtual"><scope>Checkbox</scope><name>checkbox</name></member>
+      <member refid="class_checkbox_1a7a74a35d1b49e3b5ab88a3c056eabd33" prot="public" virt="non-virtual"><scope>Checkbox</scope><name>checked</name></member>
+      <member refid="class_checkbox_1a8f492cf95de6ecfa8d0aff1f80307359" prot="protected" virt="non-virtual"><scope>Checkbox</scope><name>label</name></member>
+      <member refid="class_checkbox_1a9f69957c4a1036e5d1707588f7b94170" prot="protected" virt="non-virtual"><scope>Checkbox</scope><name>layout</name></member>
+      <member refid="class_checkbox_1a1e8f775a6319c56fb28701d0ba780e38" prot="public" virt="non-virtual"><scope>Checkbox</scope><name>operator=</name></member>
+      <member refid="class_checkbox_1a7aefc53807ff5fa08e7719330d6db83b" prot="public" virt="virtual"><scope>Checkbox</scope><name>~Checkbox</name></member>
+    </listofallmembers>
+  </compounddef>
+</doxygen>

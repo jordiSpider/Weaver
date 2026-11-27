@@ -1,0 +1,393 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.18.0" xml:lang="en-US">
+  <compounddef id="class_point_spatial_tree" kind="class" language="C++" prot="public">
+    <compoundname>PointSpatialTree</compoundname>
+    <basecompoundref refid="class_point_map" prot="public" virt="non-virtual">PointMap</basecompoundref>
+    <includes refid="_point_spatial_tree_8h" local="no">PointSpatialTree.h</includes>
+    <sectiondef kind="protected-attrib">
+      <memberdef kind="variable" id="class_point_spatial_tree_1ab78197f93538ca48cd63c83f8031d9aa" prot="protected" static="no" mutable="no">
+        <type>unsigned int</type>
+        <definition>unsigned int PointSpatialTree::depth</definition>
+        <argsstring></argsstring>
+        <name>depth</name>
+        <qualifiedname>PointSpatialTree::depth</qualifiedname>
+        <briefdescription>
+<para>Depth of the point in the spatial tree hierarchy. </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="App/Model/IBM/Landscape/Map/SpatialTree/Points/PointSpatialTree.h" line="32" column="14" bodyfile="App/Model/IBM/Landscape/Map/SpatialTree/Points/PointSpatialTree.h" bodystart="32" bodyend="-1"/>
+      </memberdef>
+    </sectiondef>
+    <sectiondef kind="public-func">
+      <memberdef kind="function" id="class_point_spatial_tree_1a4da2c7e4fa55baa4e792f1be4a3a63ed" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type></type>
+        <definition>PointSpatialTree::PointSpatialTree</definition>
+        <argsstring>()</argsstring>
+        <name>PointSpatialTree</name>
+        <qualifiedname>PointSpatialTree::PointSpatialTree</qualifiedname>
+        <briefdescription>
+<para>Default constructor. Initializes a point with depth 0. </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="App/Model/IBM/Landscape/Map/SpatialTree/Points/PointSpatialTree.h" line="36" column="1"/>
+      </memberdef>
+      <memberdef kind="function" id="class_point_spatial_tree_1aba1123deda97f8e14b7ee70243e5b48d" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type></type>
+        <definition>PointSpatialTree::PointSpatialTree</definition>
+        <argsstring>(const PointSpatialTree &amp;other)</argsstring>
+        <name>PointSpatialTree</name>
+        <qualifiedname>PointSpatialTree::PointSpatialTree</qualifiedname>
+        <param>
+          <type>const <ref refid="class_point_spatial_tree" kindref="compound">PointSpatialTree</ref> &amp;</type>
+          <declname>other</declname>
+        </param>
+        <briefdescription>
+<para>Copy constructor. </para>
+        </briefdescription>
+        <detaileddescription>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>other</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>The <ref refid="class_point_spatial_tree" kindref="compound">PointSpatialTree</ref> to copy from. </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="App/Model/IBM/Landscape/Map/SpatialTree/Points/PointSpatialTree.h" line="49" column="1"/>
+      </memberdef>
+      <memberdef kind="function" id="class_point_spatial_tree_1a86ba0460c4e67cacdaa15050b482bc37" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type></type>
+        <definition>PointSpatialTree::PointSpatialTree</definition>
+        <argsstring>(const std::vector&lt; unsigned int &gt; &amp;axisValues, const unsigned int &amp;depth)</argsstring>
+        <name>PointSpatialTree</name>
+        <qualifiedname>PointSpatialTree::PointSpatialTree</qualifiedname>
+        <param>
+          <type>const std::vector&lt; unsigned int &gt; &amp;</type>
+          <declname>axisValues</declname>
+        </param>
+        <param>
+          <type>const unsigned int &amp;</type>
+          <declname>depth</declname>
+        </param>
+        <briefdescription>
+<para>Constructor with axis values and depth. </para>
+        </briefdescription>
+        <detaileddescription>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>axisValues</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Coordinates along each axis. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>depth</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Depth of the point in the spatial tree. </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="App/Model/IBM/Landscape/Map/SpatialTree/Points/PointSpatialTree.h" line="43" column="1"/>
+      </memberdef>
+      <memberdef kind="function" id="class_point_spatial_tree_1a6a05131de27592fa54dc543bee8a5081" prot="public" static="no" const="no" explicit="no" inline="no" virt="virtual">
+        <type></type>
+        <definition>virtual PointSpatialTree::~PointSpatialTree</definition>
+        <argsstring>()</argsstring>
+        <name>~PointSpatialTree</name>
+        <qualifiedname>PointSpatialTree::~PointSpatialTree</qualifiedname>
+        <briefdescription>
+<para>Destructor. </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="App/Model/IBM/Landscape/Map/SpatialTree/Points/PointSpatialTree.h" line="59" column="9"/>
+      </memberdef>
+      <memberdef kind="function" id="class_point_spatial_tree_1a38a5237b74cccc9f9ac06a8a294af20e" prot="public" static="no" const="yes" explicit="no" inline="no" virt="non-virtual">
+        <type>unsigned int</type>
+        <definition>unsigned int PointSpatialTree::getDepth</definition>
+        <argsstring>() const</argsstring>
+        <name>getDepth</name>
+        <qualifiedname>PointSpatialTree::getDepth</qualifiedname>
+        <briefdescription>
+<para>Get the depth of the point in the spatial tree. </para>
+        </briefdescription>
+        <detaileddescription>
+<para><simplesect kind="return"><para>Depth as an unsigned integer. </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="App/Model/IBM/Landscape/Map/SpatialTree/Points/PointSpatialTree.h" line="65" column="14"/>
+      </memberdef>
+      <memberdef kind="function" id="class_point_spatial_tree_1a94e3ed7258a6ad78676e7177418aadfc" prot="public" static="no" const="yes" explicit="no" inline="no" virt="non-virtual">
+        <type>bool</type>
+        <definition>bool PointSpatialTree::operator!=</definition>
+        <argsstring>(const PointSpatialTree &amp;other) const</argsstring>
+        <name>operator!=</name>
+        <qualifiedname>PointSpatialTree::operator!=</qualifiedname>
+        <param>
+          <type>const <ref refid="class_point_spatial_tree" kindref="compound">PointSpatialTree</ref> &amp;</type>
+          <declname>other</declname>
+        </param>
+        <briefdescription>
+<para>Inequality comparison operator. </para>
+        </briefdescription>
+        <detaileddescription>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>other</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Another <ref refid="class_point_spatial_tree" kindref="compound">PointSpatialTree</ref> to compare with. </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<simplesect kind="return"><para>True if points differ in coordinates or depth. </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="App/Model/IBM/Landscape/Map/SpatialTree/Points/PointSpatialTree.h" line="79" column="6"/>
+      </memberdef>
+      <memberdef kind="function" id="class_point_spatial_tree_1aaa15341718f9872e74d3366d7e85e0f5" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type><ref refid="class_point_spatial_tree" kindref="compound">PointSpatialTree</ref> &amp;</type>
+        <definition>PointSpatialTree &amp; PointSpatialTree::operator=</definition>
+        <argsstring>(const PointSpatialTree &amp;other)</argsstring>
+        <name>operator=</name>
+        <qualifiedname>PointSpatialTree::operator=</qualifiedname>
+        <param>
+          <type>const <ref refid="class_point_spatial_tree" kindref="compound">PointSpatialTree</ref> &amp;</type>
+          <declname>other</declname>
+        </param>
+        <briefdescription>
+<para>Copy assignment operator. </para>
+        </briefdescription>
+        <detaileddescription>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>other</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>The <ref refid="class_point_spatial_tree" kindref="compound">PointSpatialTree</ref> to assign from. </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<simplesect kind="return"><para>Reference to this <ref refid="class_point_spatial_tree" kindref="compound">PointSpatialTree</ref>. </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="App/Model/IBM/Landscape/Map/SpatialTree/Points/PointSpatialTree.h" line="56" column="18"/>
+      </memberdef>
+      <memberdef kind="function" id="class_point_spatial_tree_1aeafa27da8f4b972228b76e204ded1bcb" prot="public" static="no" const="yes" explicit="no" inline="no" virt="non-virtual">
+        <type>bool</type>
+        <definition>bool PointSpatialTree::operator==</definition>
+        <argsstring>(const PointSpatialTree &amp;other) const</argsstring>
+        <name>operator==</name>
+        <qualifiedname>PointSpatialTree::operator==</qualifiedname>
+        <param>
+          <type>const <ref refid="class_point_spatial_tree" kindref="compound">PointSpatialTree</ref> &amp;</type>
+          <declname>other</declname>
+        </param>
+        <briefdescription>
+<para>Equality comparison operator. </para>
+        </briefdescription>
+        <detaileddescription>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>other</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Another <ref refid="class_point_spatial_tree" kindref="compound">PointSpatialTree</ref> to compare with. </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<simplesect kind="return"><para>True if both points have the same coordinates and depth. </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="App/Model/IBM/Landscape/Map/SpatialTree/Points/PointSpatialTree.h" line="72" column="6"/>
+      </memberdef>
+      <memberdef kind="function" id="class_point_spatial_tree_1a61f0bb50e5e62797c06db8d4cb94cadb" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <templateparamlist>
+          <param>
+            <type>class Archive</type>
+          </param>
+        </templateparamlist>
+        <type>void</type>
+        <definition>void PointSpatialTree::serialize</definition>
+        <argsstring>(Archive &amp;ar, const unsigned int version)</argsstring>
+        <name>serialize</name>
+        <qualifiedname>PointSpatialTree::serialize</qualifiedname>
+        <param>
+          <type>Archive &amp;</type>
+          <declname>ar</declname>
+        </param>
+        <param>
+          <type>const unsigned int</type>
+          <declname>version</declname>
+        </param>
+        <briefdescription>
+<para>Serialization function for saving/loading the object. </para>
+        </briefdescription>
+        <detaileddescription>
+<para><parameterlist kind="templateparam"><parameteritem>
+<parameternamelist>
+<parametername>Archive</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Type of the archive. </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>ar</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Archive object. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>version</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Serialization version. </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="App/Model/IBM/Landscape/Map/SpatialTree/Points/PointSpatialTree.h" line="96" column="10"/>
+      </memberdef>
+    </sectiondef>
+    <sectiondef kind="friend">
+      <memberdef kind="friend" id="class_point_spatial_tree_1ab55cf28d6b3dcbb5f02505ff7462366f" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>std::ostream &amp;</type>
+        <definition>std::ostream &amp; operator&lt;&lt;</definition>
+        <argsstring>(std::ostream &amp;os, const PointSpatialTree &amp;point)</argsstring>
+        <name>operator&lt;&lt;</name>
+        <qualifiedname>PointSpatialTree::operator&lt;&lt;</qualifiedname>
+        <param>
+          <type>std::ostream &amp;</type>
+          <declname>os</declname>
+        </param>
+        <param>
+          <type>const <ref refid="class_point_spatial_tree" kindref="compound">PointSpatialTree</ref> &amp;</type>
+          <declname>point</declname>
+        </param>
+        <briefdescription>
+<para>Output stream operator for printing the point. </para>
+        </briefdescription>
+        <detaileddescription>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>os</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Output stream. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>point</parametername>
+</parameternamelist>
+<parameterdescription>
+<para><ref refid="class_point_spatial_tree" kindref="compound">PointSpatialTree</ref> to print. </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<simplesect kind="return"><para>Reference to the output stream. </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="App/Model/IBM/Landscape/Map/SpatialTree/Points/PointSpatialTree.h" line="87" column="8"/>
+      </memberdef>
+    </sectiondef>
+    <briefdescription>
+<para>Represents a point in a spatial tree with a specific depth. </para>
+    </briefdescription>
+    <detaileddescription>
+<para>Extends <ref refid="class_point_map" kindref="compound">PointMap</ref> by adding the depth of the point in a spatial tree structure. This class is used to locate cells in hierarchical spatial trees for efficient terrain and landscape management. </para>
+    </detaileddescription>
+    <inheritancegraph>
+      <node id="2">
+        <label>PointMap</label>
+        <link refid="class_point_map"/>
+      </node>
+      <node id="1">
+        <label>PointSpatialTree</label>
+        <link refid="class_point_spatial_tree"/>
+        <childnode refid="2" relation="public-inheritance">
+        </childnode>
+      </node>
+    </inheritancegraph>
+    <collaborationgraph>
+      <node id="2">
+        <label>PointMap</label>
+        <link refid="class_point_map"/>
+      </node>
+      <node id="1">
+        <label>PointSpatialTree</label>
+        <link refid="class_point_spatial_tree"/>
+        <childnode refid="2" relation="public-inheritance">
+        </childnode>
+      </node>
+    </collaborationgraph>
+    <location file="App/Model/IBM/Landscape/Map/SpatialTree/Points/PointSpatialTree.h" line="29" column="1" bodyfile="App/Model/IBM/Landscape/Map/SpatialTree/Points/PointSpatialTree.h" bodystart="29" bodyend="97"/>
+    <listofallmembers>
+      <member refid="class_point_map_1a4ebcccffb8c690506809c4c19e010f5c" prot="protected" virt="non-virtual"><scope>PointSpatialTree</scope><name>axisValues</name></member>
+      <member refid="class_point_map_1a32589ab45fe36ba0a8b43292409d3f9b" prot="public" virt="non-virtual"><scope>PointSpatialTree</scope><name>createInstance</name></member>
+      <member refid="class_point_spatial_tree_1ab78197f93538ca48cd63c83f8031d9aa" prot="protected" virt="non-virtual"><scope>PointSpatialTree</scope><name>depth</name></member>
+      <member refid="class_point_map_1acb9ba1c8ce657701e587fe7155633eee" prot="public" virt="non-virtual"><scope>PointSpatialTree</scope><name>get</name></member>
+      <member refid="class_point_map_1a792c3b51274ada911bbf14df5ac46f69" prot="public" virt="non-virtual"><scope>PointSpatialTree</scope><name>getAxisValues</name></member>
+      <member refid="class_point_spatial_tree_1a38a5237b74cccc9f9ac06a8a294af20e" prot="public" virt="non-virtual"><scope>PointSpatialTree</scope><name>getDepth</name></member>
+      <member refid="class_point_spatial_tree_1a94e3ed7258a6ad78676e7177418aadfc" prot="public" virt="non-virtual"><scope>PointSpatialTree</scope><name>operator!=</name></member>
+      <member refid="class_point_map_1adacbd9c9a39da9d68744d48bd8b93d21" prot="public" virt="non-virtual" ambiguityscope="PointMap::"><scope>PointSpatialTree</scope><name>operator!=</name></member>
+      <member refid="class_point_spatial_tree_1ab55cf28d6b3dcbb5f02505ff7462366f" prot="public" virt="non-virtual"><scope>PointSpatialTree</scope><name>operator&lt;&lt;</name></member>
+      <member refid="class_point_spatial_tree_1aaa15341718f9872e74d3366d7e85e0f5" prot="public" virt="non-virtual"><scope>PointSpatialTree</scope><name>operator=</name></member>
+      <member refid="class_point_spatial_tree_1aeafa27da8f4b972228b76e204ded1bcb" prot="public" virt="non-virtual"><scope>PointSpatialTree</scope><name>operator==</name></member>
+      <member refid="class_point_map_1ae47c8117a6030e53297456acfcded8d6" prot="public" virt="non-virtual" ambiguityscope="PointMap::"><scope>PointSpatialTree</scope><name>operator==</name></member>
+      <member refid="class_point_map_1a53ae0d12b85d6c4c2d30875da9958129" prot="public" virt="non-virtual"><scope>PointSpatialTree</scope><name>PointMap</name></member>
+      <member refid="class_point_map_1a2fa997aade429db3fce42e516a9748a3" prot="public" virt="non-virtual"><scope>PointSpatialTree</scope><name>PointMap</name></member>
+      <member refid="class_point_map_1a84c1c5f131b765c854910281f7036b07" prot="public" virt="non-virtual"><scope>PointSpatialTree</scope><name>PointMap</name></member>
+      <member refid="class_point_spatial_tree_1a4da2c7e4fa55baa4e792f1be4a3a63ed" prot="public" virt="non-virtual"><scope>PointSpatialTree</scope><name>PointSpatialTree</name></member>
+      <member refid="class_point_spatial_tree_1a86ba0460c4e67cacdaa15050b482bc37" prot="public" virt="non-virtual"><scope>PointSpatialTree</scope><name>PointSpatialTree</name></member>
+      <member refid="class_point_spatial_tree_1aba1123deda97f8e14b7ee70243e5b48d" prot="public" virt="non-virtual"><scope>PointSpatialTree</scope><name>PointSpatialTree</name></member>
+      <member refid="class_point_spatial_tree_1a61f0bb50e5e62797c06db8d4cb94cadb" prot="public" virt="non-virtual"><scope>PointSpatialTree</scope><name>serialize</name></member>
+      <member refid="class_point_map_1aa307c1b940ea2d8f93190fee56fdfaef" prot="public" virt="non-virtual"><scope>PointSpatialTree</scope><name>set</name></member>
+      <member refid="class_point_map_1a3745b8dfcd1866b61db50007640e6836" prot="public" virt="virtual"><scope>PointSpatialTree</scope><name>~PointMap</name></member>
+      <member refid="class_point_spatial_tree_1a6a05131de27592fa54dc543bee8a5081" prot="public" virt="virtual"><scope>PointSpatialTree</scope><name>~PointSpatialTree</name></member>
+    </listofallmembers>
+  </compounddef>
+</doxygen>

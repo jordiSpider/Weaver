@@ -1,0 +1,203 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.18.0" xml:lang="en-US">
+  <compounddef id="class_individual_trait_temperature_section_none" kind="class" language="C++" prot="public">
+    <compoundname>IndividualTraitTemperatureSectionNone</compoundname>
+    <sectiondef kind="public-func">
+      <memberdef kind="function" id="class_individual_trait_temperature_section_none_1a671da6ab11f005fc0ba36e87de631e18" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type></type>
+        <definition>IndividualTraitTemperatureSectionNone::IndividualTraitTemperatureSectionNone</definition>
+        <argsstring>()</argsstring>
+        <name>IndividualTraitTemperatureSectionNone</name>
+        <qualifiedname>IndividualTraitTemperatureSectionNone::IndividualTraitTemperatureSectionNone</qualifiedname>
+        <briefdescription>
+<para>Default constructor. </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="App/Model/IBM/Landscape/LivingBeings/Animals/Genetics/Traits/IndividualTraitTemperatureSectionNone.h" line="32" column="5"/>
+      </memberdef>
+      <memberdef kind="function" id="class_individual_trait_temperature_section_none_1a8a4333ffc5e648d2147468ee73101846" prot="public" static="no" const="no" explicit="no" inline="no" virt="virtual">
+        <type></type>
+        <definition>virtual IndividualTraitTemperatureSectionNone::~IndividualTraitTemperatureSectionNone</definition>
+        <argsstring>()</argsstring>
+        <name>~IndividualTraitTemperatureSectionNone</name>
+        <qualifiedname>IndividualTraitTemperatureSectionNone::~IndividualTraitTemperatureSectionNone</qualifiedname>
+        <briefdescription>
+<para>Destructor. </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="App/Model/IBM/Landscape/LivingBeings/Animals/Genetics/Traits/IndividualTraitTemperatureSectionNone.h" line="37" column="13"/>
+      </memberdef>
+      <memberdef kind="function" id="class_individual_trait_temperature_section_none_1a409e655c6950b0c45081c18fa1f2e5dc" prot="public" static="no" const="yes" explicit="no" inline="no" virt="non-virtual">
+        <type><ref refid="class_precise_double" kindref="compound">PreciseDouble</ref></type>
+        <definition>PreciseDouble IndividualTraitTemperatureSectionNone::applyTemperatureDependency</definition>
+        <argsstring>(const Temperature &amp;temperature, const PreciseDouble &amp;traitValue, const PreciseDouble &amp;coefficientForMassAforMature, const PreciseDouble &amp;scaleForMassBforMature, const Temperature &amp;tempFromLab) const</argsstring>
+        <name>applyTemperatureDependency</name>
+        <qualifiedname>IndividualTraitTemperatureSectionNone::applyTemperatureDependency</qualifiedname>
+        <param>
+          <type>const <ref refid="class_temperature" kindref="compound">Temperature</ref> &amp;</type>
+          <declname>temperature</declname>
+        </param>
+        <param>
+          <type>const <ref refid="class_precise_double" kindref="compound">PreciseDouble</ref> &amp;</type>
+          <declname>traitValue</declname>
+        </param>
+        <param>
+          <type>const <ref refid="class_precise_double" kindref="compound">PreciseDouble</ref> &amp;</type>
+          <declname>coefficientForMassAforMature</declname>
+        </param>
+        <param>
+          <type>const <ref refid="class_precise_double" kindref="compound">PreciseDouble</ref> &amp;</type>
+          <declname>scaleForMassBforMature</declname>
+        </param>
+        <param>
+          <type>const <ref refid="class_temperature" kindref="compound">Temperature</ref> &amp;</type>
+          <declname>tempFromLab</declname>
+        </param>
+        <briefdescription>
+<para>Apply the temperature dependency to a trait value. </para>
+        </briefdescription>
+        <detaileddescription>
+<para>Computes the phenotypic value of a trait under the current environmental temperature using the Pawar temperature performance curve.</para>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>temperature</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Current environmental temperature. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>traitValue</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Current trait value. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>coefficientForMassAforMature</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Coefficient A for mature mass calculation. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>scaleForMassBforMature</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Scale B for mature mass calculation. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>tempFromLab</parametername>
+</parameternamelist>
+<parameterdescription>
+<para><ref refid="class_temperature" kindref="compound">Temperature</ref> from lab experiments. </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<simplesect kind="return"><para>Modified trait value considering temperature effects. </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="App/Model/IBM/Landscape/LivingBeings/Animals/Genetics/Traits/IndividualTraitTemperatureSectionNone.h" line="52" column="19"/>
+      </memberdef>
+      <memberdef kind="function" id="class_individual_trait_temperature_section_none_1af2ec8b900189f845603e787ba8b4581c" prot="public" static="no" const="yes" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void IndividualTraitTemperatureSectionNone::formatToBuffer</definition>
+        <argsstring>(std::string &amp;buffer) const</argsstring>
+        <name>formatToBuffer</name>
+        <qualifiedname>IndividualTraitTemperatureSectionNone::formatToBuffer</qualifiedname>
+        <param>
+          <type>std::string &amp;</type>
+          <declname>buffer</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="App/Model/IBM/Landscape/LivingBeings/Animals/Genetics/Traits/IndividualTraitTemperatureSectionNone.h" line="56" column="10"/>
+      </memberdef>
+      <memberdef kind="function" id="class_individual_trait_temperature_section_none_1a32c0b40f16499f29f6ce5526666a0f1e" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <templateparamlist>
+          <param>
+            <type>class Archive</type>
+          </param>
+        </templateparamlist>
+        <type>void</type>
+        <definition>void IndividualTraitTemperatureSectionNone::serialize</definition>
+        <argsstring>(Archive &amp;ar, const unsigned int version)</argsstring>
+        <name>serialize</name>
+        <qualifiedname>IndividualTraitTemperatureSectionNone::serialize</qualifiedname>
+        <param>
+          <type>Archive &amp;</type>
+          <declname>ar</declname>
+        </param>
+        <param>
+          <type>const unsigned int</type>
+          <declname>version</declname>
+        </param>
+        <briefdescription>
+<para>Serializes the object for persistence. </para>
+        </briefdescription>
+        <detaileddescription>
+<para><parameterlist kind="templateparam"><parameteritem>
+<parameternamelist>
+<parametername>Archive</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Serialization archive type. </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>ar</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Archive instance. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>version</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Serialization version. </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="App/Model/IBM/Landscape/LivingBeings/Animals/Genetics/Traits/IndividualTraitTemperatureSectionNone.h" line="66" column="10"/>
+      </memberdef>
+    </sectiondef>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+    </detaileddescription>
+    <location file="App/Model/IBM/Landscape/LivingBeings/Animals/Genetics/Traits/IndividualTraitTemperatureSectionNone.h" line="27" column="1" bodyfile="App/Model/IBM/Landscape/LivingBeings/Animals/Genetics/Traits/IndividualTraitTemperatureSectionNone.h" bodystart="27" bodyend="67"/>
+    <listofallmembers>
+      <member refid="class_individual_trait_temperature_section_none_1a409e655c6950b0c45081c18fa1f2e5dc" prot="public" virt="non-virtual"><scope>IndividualTraitTemperatureSectionNone</scope><name>applyTemperatureDependency</name></member>
+      <member refid="class_individual_trait_temperature_section_none_1af2ec8b900189f845603e787ba8b4581c" prot="public" virt="non-virtual"><scope>IndividualTraitTemperatureSectionNone</scope><name>formatToBuffer</name></member>
+      <member refid="class_individual_trait_temperature_section_none_1a671da6ab11f005fc0ba36e87de631e18" prot="public" virt="non-virtual"><scope>IndividualTraitTemperatureSectionNone</scope><name>IndividualTraitTemperatureSectionNone</name></member>
+      <member refid="class_individual_trait_temperature_section_none_1a32c0b40f16499f29f6ce5526666a0f1e" prot="public" virt="non-virtual"><scope>IndividualTraitTemperatureSectionNone</scope><name>serialize</name></member>
+      <member refid="class_individual_trait_temperature_section_none_1a8a4333ffc5e648d2147468ee73101846" prot="public" virt="virtual"><scope>IndividualTraitTemperatureSectionNone</scope><name>~IndividualTraitTemperatureSectionNone</name></member>
+    </listofallmembers>
+  </compounddef>
+</doxygen>
