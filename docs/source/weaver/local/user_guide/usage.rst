@@ -20,6 +20,12 @@ but differ in how user input is provided:
   or request them **interactively** if some parameters are missing.
 - The **GUI version** provides a **visual interface** to specify the same parameters.
 
+On Windows, when the Non-GUI executable opens its own interactive console (for
+example, when launched by double-clicking it), it waits for a key before
+closing so that its output and errors remain visible. It does not wait when run
+in an existing console or with redirected input or output. On other platforms,
+console closing is controlled by the terminal or launcher.
+
 Each version can also be compiled in two **build modes**:
 
 - **Normal build** — Prioritizes numerical accuracy.  
