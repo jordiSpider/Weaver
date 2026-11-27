@@ -46,6 +46,8 @@ cmake --workflow --preset manager-macos-release-pack
 
 The workflows configure, build, and package the Manager. Build products are written under `bin/<platform>/<configuration>` and installers under `installer`. The Windows test-feature build uses separate application and data-directory names, so it can coexist with the regular Windows build.
 
+Application and installer icons are sourced from [`assets/branding`](../assets/branding/README.md). Windows embeds separate Manager and uninstall icons in the executables and NSIS installer; Linux installs the Manager icon for its desktop entry.
+
 The test-feature preset enables **Add Test Installer** for trying a local package. It is not an automated unit-test suite; local packages are not verified against the signed release catalog.
 
 ## Release integrity and repository integration

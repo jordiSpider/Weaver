@@ -15,6 +15,9 @@ Var MANAGERINSTALLEDVERSIONFULL
 Var MANAGERINSTALLEDPRERELEASE
 Var MANAGERINSTALLEDROOT
 Var MANAGERVERSIONORDER
+Var MANAGERDESKTOPCHECKBOX
+Var MANAGERDESKTOPCHOICE
+Var MANAGERDESKTOPINITIALIZED
 
 !define MUI_PAGE_CUSTOMFUNCTION_PRE ManagerUpgradeCheck
 
@@ -189,6 +192,15 @@ ManagerDataDirLockControls:
 	EnableWindow $MANAGERDATADIRTEXT 0
 	EnableWindow $MANAGERDATARBROWSEBUTTON 0
 ManagerDataDirControlsReady:
+	StrCmp $MANAGERDESKTOPINITIALIZED "1" ManagerDesktopChoiceReady
+	ReadRegStr $MANAGERDESKTOPCHOICE HKLM "@WEAVER_MANAGER_REGISTRY_KEY@" "DesktopShortcut"
+	StrCpy $MANAGERDESKTOPINITIALIZED 1
+ManagerDesktopChoiceReady:
+	${NSD_CreateCheckbox} 0 65u 100% 14u "Create a desktop shortcut for all users"
+	Pop $MANAGERDESKTOPCHECKBOX
+	StrCmp $MANAGERDESKTOPCHOICE "1" 0 ManagerDesktopCheckboxReady
+	${NSD_Check} $MANAGERDESKTOPCHECKBOX
+ManagerDesktopCheckboxReady:
 
 	nsDialogs::Show
 FunctionEnd
@@ -208,6 +220,7 @@ Function ManagerDataDirPageLeave
 	MessageBox MB_ICONEXCLAMATION|MB_OK "Please choose an application data folder."
 	Abort
 valid:
+	${NSD_GetState} $MANAGERDESKTOPCHECKBOX $MANAGERDESKTOPCHOICE
 FunctionEnd
 
 !macro ManagerUpgradeCleanup
@@ -236,9 +249,73 @@ FunctionEnd
 !define MUI_FINISHPAGE_RUN_FUNCTION ManagerLaunchUnelevated
 
 !macro ManagerDataDirInstall
+	SetShellVarContext all
+	ReadRegStr $0 HKLM "@WEAVER_MANAGER_REGISTRY_KEY@" "DesktopShortcut"
+	StrCmp $MANAGERDESKTOPINITIALIZED "1" ManagerDesktopInstallChoiceReady
+	StrCpy $MANAGERDESKTOPCHOICE $0
+ManagerDesktopInstallChoiceReady:
+	StrCmp $MANAGERDESKTOPCHOICE "1" ManagerDesktopCreate
+	StrCmp $0 "1" 0 ManagerDesktopInstallDone
+	IfFileExists "$DESKTOP\@WEAVER_MANAGER_NAME@.lnk" 0 ManagerDesktopInstallDone
+	ClearErrors
+	Delete "$DESKTOP\@WEAVER_MANAGER_NAME@.lnk"
+	IfErrors ManagerDesktopInstallFailed ManagerDesktopInstallDone
+ManagerDesktopCreate:
+	StrCmp $0 "1" ManagerDesktopCreateLink
+	IfFileExists "$DESKTOP\@WEAVER_MANAGER_NAME@.lnk" ManagerDesktopAlreadyExists
+ManagerDesktopCreateLink:
+	ClearErrors
+	CreateShortCut "$DESKTOP\@WEAVER_MANAGER_NAME@.lnk" "$INSTDIR\bin\@WEAVER_MANAGER_EXECUTABLE_FILE_NAME@"
+	IfErrors ManagerDesktopInstallFailed ManagerDesktopInstallDone
+ManagerDesktopAlreadyExists:
+	MessageBox MB_ICONSTOP|MB_OK "A desktop shortcut named @WEAVER_MANAGER_NAME@ already exists. Rename or remove it and run the installer again."
+	Abort
+ManagerDesktopInstallFailed:
+	MessageBox MB_ICONSTOP|MB_OK "Could not update the @WEAVER_MANAGER_NAME@ desktop shortcut."
+	Abort
+ManagerDesktopInstallDone:
+	WriteRegStr HKLM "@WEAVER_MANAGER_REGISTRY_KEY@" "DesktopShortcut" "$MANAGERDESKTOPCHOICE"
+	WriteRegStr SHCTX "Software\Microsoft\Windows\CurrentVersion\Uninstall\@CPACK_PACKAGE_INSTALL_REGISTRY_KEY@" "Publisher" "@WEAVER_MANAGER_AUTHOR@"
 	CreateDirectory "$MANAGERDATADIR"
 	CreateDirectory "$MANAGERDATADIR\installed_versions"
 	CreateDirectory "$MANAGERDATADIR\logs"
 	WriteRegStr HKLM "@WEAVER_MANAGER_REGISTRY_KEY@" "DataDirectory" "$MANAGERDATADIR"
 	WriteRegStr HKLM "@WEAVER_MANAGER_REGISTRY_KEY@" "Prerelease" "@WEAVER_MANAGER_PRERELEASE@"
+!macroend
+
+!macro ManagerRenameUninstallShortcut
+	StrCpy $0 $STARTMENU_FOLDER 1
+	StrCmp $STARTMENU_FOLDER "" ManagerRenameUninstallShortcutDone
+	StrCmp $0 ">" ManagerRenameUninstallShortcutDone
+	Delete "$SMPROGRAMS\$STARTMENU_FOLDER\@CPACK_NSIS_UNINSTALL_NAME@.lnk"
+	ClearErrors
+	Rename "$SMPROGRAMS\$STARTMENU_FOLDER\Uninstall.lnk" "$SMPROGRAMS\$STARTMENU_FOLDER\@CPACK_NSIS_UNINSTALL_NAME@.lnk"
+	IfErrors 0 ManagerRenameUninstallShortcutDone
+	MessageBox MB_ICONEXCLAMATION|MB_OK "Could not rename the Weaver Manager uninstall shortcut."
+ManagerRenameUninstallShortcutDone:
+!macroend
+
+!macro ManagerDeleteUninstallShortcut
+	SetShellVarContext all
+	ReadRegStr $0 HKLM "@WEAVER_MANAGER_REGISTRY_KEY@" "DesktopShortcut"
+	StrCmp $0 "1" 0 ManagerDeleteDesktopShortcutDone
+	IfFileExists "$DESKTOP\@WEAVER_MANAGER_NAME@.lnk" 0 ManagerDeleteDesktopShortcutDone
+	ClearErrors
+	Delete "$DESKTOP\@WEAVER_MANAGER_NAME@.lnk"
+	IfErrors 0 ManagerDeleteDesktopShortcutDone
+	MessageBox MB_ICONSTOP|MB_OK "Could not remove the @WEAVER_MANAGER_NAME@ desktop shortcut."
+	Abort
+ManagerDeleteDesktopShortcutDone:
+	DeleteRegValue HKLM "@WEAVER_MANAGER_REGISTRY_KEY@" "DesktopShortcut"
+	!insertmacro MUI_STARTMENU_GETFOLDER Application $MUI_TEMP
+	StrCpy $0 $MUI_TEMP 1
+	StrCmp $MUI_TEMP "" ManagerDeleteStoredShortcut
+	StrCmp $0 ">" ManagerDeleteStoredShortcut
+	Delete "$SMPROGRAMS\$MUI_TEMP\@CPACK_NSIS_UNINSTALL_NAME@.lnk"
+ManagerDeleteStoredShortcut:
+	StrCpy $0 $START_MENU 1
+	StrCmp $START_MENU "" ManagerDeleteUninstallShortcutDone
+	StrCmp $0 ">" ManagerDeleteUninstallShortcutDone
+	Delete "$SMPROGRAMS\$START_MENU\@CPACK_NSIS_UNINSTALL_NAME@.lnk"
+ManagerDeleteUninstallShortcutDone:
 !macroend

@@ -189,9 +189,10 @@ From the ``docs`` directory, use the local documentation presets:
    cmake --workflow --preset generate-local-manager
 
 The HTML is written to ``docs/build/weaver/latest`` or
-``docs/build/weaver-manager/latest``. The ``generate-local-weaver-xml`` preset
-only generates Weaver's Doxygen XML. These workflows do not publish or push changes;
-the ``gh-pages`` branch has its own site generation and deployment workflows.
+``docs/build/weaver-manager/latest``. To prepare sources without building HTML,
+run ``prepare-local-weaver`` (branding and Doxygen XML) or
+``prepare-local-manager`` (branding). These workflows do not publish or push
+changes; the ``gh-pages`` branch has its own site generation and deployment workflows.
 
 
 **3. Common internal presets**

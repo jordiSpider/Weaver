@@ -1,5 +1,5 @@
 
-![Logo](docs/source/weaver/latest/_static/images/horizontal_centred_logo.png)
+![Logo](assets/branding/generated/weaver-header.png)
 
 ![License](https://img.shields.io/badge/license-MIT-green)
 ![C++](https://img.shields.io/badge/C++17-blue)

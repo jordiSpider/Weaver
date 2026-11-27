@@ -16,15 +16,6 @@
       }
     },
     {
-      "name": "local-weaver-xml",
-      "generator": "Ninja",
-      "binaryDir": "${sourceDir}/build/cmake/${presetName}",
-      "cacheVariables": {
-        "DOCS_GENERATION": "weaver-xml",
-        "DOCS_WORK_ROOT": "${sourceDir}/build/work"
-      }
-    },
-    {
       "name": "local-manager",
       "generator": "Ninja",
       "binaryDir": "${sourceDir}/build/cmake/${presetName}",
@@ -41,14 +32,19 @@
       "targets": [ "generate-local-weaver" ]
     },
     {
-      "name": "generate-local-weaver-xml",
-      "configurePreset": "local-weaver-xml",
-      "targets": [ "generate-local-weaver-xml" ]
+      "name": "prepare-local-weaver",
+      "configurePreset": "local-weaver",
+      "targets": [ "prepare-local-weaver" ]
     },
     {
       "name": "generate-local-manager",
       "configurePreset": "local-manager",
       "targets": [ "generate-local-manager" ]
+    },
+    {
+      "name": "prepare-local-manager",
+      "configurePreset": "local-manager",
+      "targets": [ "prepare-local-manager" ]
     }
   ],
   "workflowPresets": [
@@ -60,10 +56,10 @@
       ]
     },
     {
-      "name": "generate-local-weaver-xml",
+      "name": "prepare-local-weaver",
       "steps": [
-        { "type": "configure", "name": "local-weaver-xml" },
-        { "type": "build", "name": "generate-local-weaver-xml" }
+        { "type": "configure", "name": "local-weaver" },
+        { "type": "build", "name": "prepare-local-weaver" }
       ]
     },
     {
@@ -71,6 +67,13 @@
       "steps": [
         { "type": "configure", "name": "local-manager" },
         { "type": "build", "name": "generate-local-manager" }
+      ]
+    },
+    {
+      "name": "prepare-local-manager",
+      "steps": [
+        { "type": "configure", "name": "local-manager" },
+        { "type": "build", "name": "prepare-local-manager" }
       ]
     }
   ]

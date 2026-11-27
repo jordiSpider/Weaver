@@ -11,13 +11,9 @@ set(GUI_EXE_NAME "${PROJECT_NAME}GUI")
 # ---------------------------------------------------------
 # 🎯 Executable Target Declaration
 # ---------------------------------------------------------
+add_executable(${GUI_EXE_NAME} mainGUI.cpp)
 if(WIN32)
-    # Windows environments require the .rc resource file to embed application metadata (e.g., icons)
-    # add_executable(${GUI_EXE_NAME} mainGUI.cpp app_icon.rc)
-    add_executable(${GUI_EXE_NAME} mainGUI.cpp)
-else()
-    # Linux/Unix environments utilize standard source inputs without PE resource files
-    add_executable(${GUI_EXE_NAME} mainGUI.cpp)
+    target_sources(${GUI_EXE_NAME} PRIVATE "${WEAVER_APP_ICON_RC}")
 endif()
 
 # Append a suffix to the binary name during Debug builds to avoid overwriting Release assets

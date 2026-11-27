@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Wix xmlns="http://schemas.microsoft.com/wix/2006/wi">
+	<Fragment>
+		<DirectoryRef Id="TARGETDIR">
+			<Directory Id="DesktopFolder" Name="Desktop" />
+		</DirectoryRef>
+		<DirectoryRef Id="DesktopFolder">
+			<Component Id="weaverDesktopShortcut" Guid="@WEAVER_DESKTOP_SHORTCUT_GUID@" Transitive="yes">
+				<Condition>WEAVER_DESKTOP_SHORTCUT = "1"</Condition>
+				<Shortcut Id="weaverDesktopLink" Name="Weaver @PROGRAM_VERSION_PADDED@ @WEAVER_EDITION@ @WEAVER_DESKTOP_SHORTCUT_KIND@"
+					Target="[@WEAVER_DESKTOP_BIN_DIR_ID@]@WEAVER_DESKTOP_EXECUTABLE@.exe"
+					WorkingDirectory="@WEAVER_DESKTOP_BIN_DIR_ID@" />
+				<RegistryValue Root="HKLM" Key="Software\Weaver\@PROGRAM_VERSION_PADDED@\@WEAVER_EDITION@"
+					Name="DesktopShortcut" Type="string" Value="1" KeyPath="yes" />
+			</Component>
+		</DirectoryRef>
+	</Fragment>
+</Wix>

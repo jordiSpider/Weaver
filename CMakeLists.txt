@@ -141,10 +141,18 @@ if(BUILD_APP OR BUILD_BENCHMARKS)
     generate_third_party_notices(
         "${VCPKG_INSTALLED_DIR}" 
         "${CMAKE_CURRENT_SOURCE_DIR}"
+        "${CMAKE_CURRENT_SOURCE_DIR}/assets/branding/licenses/bootstrap-icons/LICENSE"
     )
 endif()
 
 if(BUILD_APP)
+    if(WIN32)
+        enable_language(RC)
+        set(WEAVER_APP_ICON_RC "${CMAKE_CURRENT_BINARY_DIR}/weaver_app_icon.rc")
+        configure_file("${CMAKE_CURRENT_SOURCE_DIR}/cmake/res/Windows/app_icon.rc.in"
+            "${WEAVER_APP_ICON_RC}" @ONLY)
+    endif()
+
     # 1. Always include the CLI target (serves as the core simulator foundation)
     add_subdirectory(src/cli)
 
@@ -364,6 +372,17 @@ if(BUILD_APP)
         set(WEAVER_CLI_BIN_DIR_ID "CM_DP_CLI.${_WEAVER_INSTALL_SUBDIR_ID}.bin")
         set(WEAVER_R_PAYLOAD_DIR_ID "CM_DP_RPackages.${_WEAVER_INSTALL_SUBDIR_ID}.R")
         set(WEAVER_VERSION_DIR_ID "CM_DP_Unspecified.${PROGRAM_VERSION_PADDED}")
+        if(ENABLE_GUI)
+            set(WEAVER_DESKTOP_FEATURE "CM_C_GUI")
+            set(WEAVER_DESKTOP_BIN_DIR_ID "CM_DP_GUI.${_WEAVER_INSTALL_SUBDIR_ID}.bin")
+            set(WEAVER_DESKTOP_EXECUTABLE "${PROJECT_NAME}GUI")
+            set(WEAVER_DESKTOP_SHORTCUT_KIND "Simulator")
+        else()
+            set(WEAVER_DESKTOP_FEATURE "CM_C_CLI")
+            set(WEAVER_DESKTOP_BIN_DIR_ID "${WEAVER_CLI_BIN_DIR_ID}")
+            set(WEAVER_DESKTOP_EXECUTABLE "${PROJECT_NAME}CLI")
+            set(WEAVER_DESKTOP_SHORTCUT_KIND "Terminal")
+        endif()
 
         # Distinct product/upgrade/component identities prevent Windows
         # Installer from treating another version as an upgrade of this one.
@@ -380,6 +399,8 @@ if(BUILD_APP)
             NAME "${WEAVER_INSTALLER_ID}-r-logs-component" TYPE SHA1)
         string(UUID WEAVER_REMOVE_INSTALL_DIR_GUID NAMESPACE "${_WEAVER_UUID_NAMESPACE}"
             NAME "${WEAVER_INSTALLER_ID}-remove-install-dir-component" TYPE SHA1)
+        string(UUID WEAVER_DESKTOP_SHORTCUT_GUID NAMESPACE "${_WEAVER_UUID_NAMESPACE}"
+            NAME "${WEAVER_INSTALLER_ID}-desktop-shortcut-component" TYPE SHA1)
         string(TOUPPER "${CPACK_WIX_PRODUCT_GUID}" CPACK_WIX_PRODUCT_GUID)
         string(TOUPPER "${CPACK_WIX_UPGRADE_GUID}" CPACK_WIX_UPGRADE_GUID)
         string(TOUPPER "${WEAVER_SET_PATH_GUID}" WEAVER_SET_PATH_GUID)
@@ -399,6 +420,11 @@ if(BUILD_APP)
             "${CMAKE_CURRENT_BINARY_DIR}/add_path.wxs"
             @ONLY
         )
+        configure_file(
+            "${CMAKE_CURRENT_SOURCE_DIR}/cmake/res/Windows/desktop_shortcut.wxs.in"
+            "${CMAKE_CURRENT_BINARY_DIR}/desktop_shortcut.wxs"
+            @ONLY
+        )
 
         # Customize major-upgrade behavior and expose the pre-install notices.
         set(CPACK_WIX_TEMPLATE "${CMAKE_CURRENT_SOURCE_DIR}/cmake/res/Windows/main.wxs.in")
@@ -409,6 +435,7 @@ if(BUILD_APP)
         # --- Settings for updating the PATH and custom UI ---
         set(CPACK_WIX_EXTRA_SOURCES
             "${CMAKE_CURRENT_BINARY_DIR}/add_path.wxs"
+            "${CMAKE_CURRENT_BINARY_DIR}/desktop_shortcut.wxs"
             "${CMAKE_CURRENT_SOURCE_DIR}/cmake/res/Windows/advanced_paths_ui.wxs"
             "${CMAKE_CURRENT_BINARY_DIR}/r_libs.wxs"
             "${CMAKE_CURRENT_BINARY_DIR}/weaver_r_setup_ca.wxs"
@@ -418,7 +445,10 @@ if(BUILD_APP)
         # It is needed by candle and light.
         set(CPACK_WIX_EXTENSIONS        "WixUtilExtension")
         set(CPACK_WIX_CANDLE_EXTENSIONS "WixUtilExtension")
- 
+        # DesktopFolder resolves to the common desktop in this per-machine MSI;
+        # these ICE checks incorrectly assume it is always a per-user folder.
+        set(CPACK_WIX_LIGHT_EXTRA_FLAGS "-sice:ICE38;-sice:ICE43;-sice:ICE57")
+
         # Use custom advanced UI with separate install and application data paths
         set(CPACK_WIX_UI_REF "WixUI_AdvancedPaths")
  
@@ -447,9 +477,9 @@ if(BUILD_APP)
         )
  
         set(CPACK_WIX_LICENSE_RTF "${CMAKE_CURRENT_SOURCE_DIR}/cmake/res/License.rtf")
- 
-        set(CPACK_WIX_PRODUCT_ICON "${CMAKE_CURRENT_SOURCE_DIR}/cmake/res/${PROJECT_NAME_LOWER}.ico")
- 
+
+        set(CPACK_WIX_PRODUCT_ICON "${CMAKE_CURRENT_SOURCE_DIR}/assets/branding/generated/weaver.ico")
+
         # Start Menu shortcuts. Syntax: "TargetExecutableName" "Display Name"
         # The first field must match the add_executable() target name.
         # The GUI shortcut only exists when the GUI is built.
@@ -478,7 +508,7 @@ if(BUILD_APP)
                 DESTINATION "/usr/share/applications"
                 COMPONENT GUI
             )
-            install(FILES "${CMAKE_CURRENT_SOURCE_DIR}/cmake/res/${PROJECT_NAME_LOWER}.svg"
+            install(FILES "${CMAKE_CURRENT_SOURCE_DIR}/assets/branding/source/weaver-icon-small.svg"
                 DESTINATION "/usr/share/icons/hicolor/scalable/apps"
                 RENAME "${WEAVER_DESKTOP_ID}.svg"
                 COMPONENT GUI
