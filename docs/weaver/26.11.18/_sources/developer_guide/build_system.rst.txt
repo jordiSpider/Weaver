@@ -93,35 +93,16 @@ To build the project documentation, the following tools are required:
                 sudo apt update
                 sudo apt install graphviz
 
-- **Python** 3.10+  
+- **Python** 3.10+ with pip
   Required to run Sphinx and its extensions.
 
   - Installation guide: https://www.python.org/downloads/
 
-- **Sphinx** 8.1.3+
-    Used to generate the general documentation in HTML and other formats.
-
-    - Install using Python's package manager:
-
-    .. code-block:: bash
-
-       python -m pip install sphinx==8.1.3
-
-- **Sphinx theme and extensions**
-
-    The documentation uses PyData Sphinx Theme for its HTML theme and Sphinx Internationalization
-    (``sphinx-intl``) to manage translations, and Breathe to include the Doxygen C++ API:
-
-    - ``pydata-sphinx-theme`` — provides the PyData HTML theme.  
-    - ``sphinx-intl`` — used to manage translations of the documentation.
-    - ``breathe`` — integrates Doxygen XML into Sphinx pages.
-
-
-    To install all required dependencies:
-
-    .. code-block:: bash
-
-       python -m pip install pydata-sphinx-theme sphinx-intl breathe
+The local HTML build installs the pinned Sphinx, PyData Sphinx Theme, sphinx-design,
+Breathe, and sphinx-copybutton dependencies from ``docs/requirements-docs.txt`` using
+CMake's selected Python interpreter. This modifies that interpreter's environment, so
+using a virtual environment is recommended. Package access is required and an
+installation failure stops the build. The XML-only target does not install these packages.
 
 
 Developer Setup
@@ -200,30 +181,17 @@ This command will:
 
 **2. Documentation builds**
 
-The project includes dedicated presets for generating and deploying documentation built with **Sphinx** and **Doxygen**.
-
-+---------------------------+--------------------------------------------------------------------+
-| **Preset**                | **Description**                                                    |
-+===========================+====================================================================+
-| ``build-docs-dev``        | Builds a local preview using the current ``gh-pages`` site as a    |
-|                           | baseline.                                                          |
-+---------------------------+--------------------------------------------------------------------+
-| ``build-docs-dev-clean``  | Builds a local preview from an empty site, without legacy content. |
-+---------------------------+--------------------------------------------------------------------+
-| ``deploy-docs``           | Builds documentation for deployment to GitHub Pages.               |
-+---------------------------+--------------------------------------------------------------------+
-| ``update-docs``           | Updates the existing deployed documentation.                       |
-+---------------------------+--------------------------------------------------------------------+
-| ``build-docs-locale``     | Generates translation files for documentation.                     |
-+---------------------------+--------------------------------------------------------------------+
-
-Example usage:
+From the ``docs`` directory, use the local documentation presets:
 
 .. code-block:: bash
 
-   cmake --workflow --preset build-docs-dev
+   cmake --workflow --preset generate-local-weaver
+   cmake --workflow --preset generate-local-manager
 
-The preview is written to ``docs/build/html``. This workflow only prepares the local site; it does not publish or push changes. Use ``build-docs-dev-clean`` to test the new site structure without carrying over the current ``gh-pages`` content.
+The HTML is written to ``docs/build/weaver/latest`` or
+``docs/build/weaver-manager/latest``. The ``generate-local-weaver-xml`` preset
+only generates Weaver's Doxygen XML. These workflows do not publish or push changes;
+the ``gh-pages`` branch has its own site generation and deployment workflows.
 
 
 **3. Common internal presets**
