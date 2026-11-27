@@ -107,6 +107,7 @@ def detect_push(base, head):
 		landing_changed = True
 
 	selected_versions = {product: sorted(items) for product, items in versions.items()}
+	# Each product generation target also rebuilds the landing page.
 	run_landing = landing_changed and not any(selected_versions.values())
 	has_work = run_landing or any(selected_versions.values())
 	return selected_versions, run_landing, "generate" if has_work else "none"

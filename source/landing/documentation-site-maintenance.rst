@@ -98,7 +98,9 @@ For automatic runs, the workflow selects the smallest applicable preset:
 * Landing/catalog/selector helper changes refresh the landing page. Changes to shared CMake configuration, pinned requirements, or the versioned documentation builder rebuild all local versions because they affect every rendered version.
 * Changes only under ``docs/`` do not trigger the workflow.
 
-The selected Sphinx generation is also the validation: Actions does not run a second, duplicate documentation build. If generation succeeds, it commits updated sources (for a manual removal), generated HTML, and catalogs to ``gh-pages``. Runs are serialized, and the last processed source revision is recorded so a later run can include changes from pushes queued while another build was running.
+When a push changes several versions or products, every affected version is generated. This also applies when landing files change in the same push: each product generation preset rebuilds the landing from its current sources, so a separate ``generate-landing`` run is not needed. A landing-only change uses ``generate-landing``. These rules also apply to branding files under each component's ``_static/branding/`` directory.
+
+Actions runs the build-selection regression tests before detecting affected documentation. The selected Sphinx generation is also the validation: Actions does not run a second, duplicate documentation build. If generation succeeds, it commits updated sources (for a manual removal), generated HTML, and catalogs to ``gh-pages``. Runs are serialized, and the last processed source revision is recorded so a later run can include changes from pushes queued while another build was running.
 
 Manual workflow scopes
 ----------------------
