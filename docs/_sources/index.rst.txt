@@ -8,12 +8,24 @@ Welcome to the documentation for the **Weaver Project**. Choose a product to fin
    :gutter: 3
 
    .. grid-item-card:: Weaver
+	  :class-card: product-card
+
+	  .. image:: _static/branding/weaver-icon.svg
+		 :alt: Weaver logo
+		 :width: 180px
+		 :class: product-logo
 
 	  The Weaver simulation platform, including user guides, configuration, development, testing, and API reference.
 
 	  `Open Weaver documentation`_
 
    .. grid-item-card:: Weaver Manager
+	  :class-card: product-card
+
+	  .. image:: _static/branding/weaver-manager.svg
+		 :alt: Weaver Manager logo
+		 :width: 180px
+		 :class: product-logo
 
 	  The desktop application for discovering Weaver releases and managing local installations.
 

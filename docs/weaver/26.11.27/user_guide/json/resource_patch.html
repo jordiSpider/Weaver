@@ -1,0 +1,1236 @@
+
+<!DOCTYPE html>
+
+
+<html lang="en" data-content_root="../../" >
+
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>resource_patch &#8212; Weaver  documentation</title>
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "";
+  </script>
+  <!--
+    this give us a css class that will be invisible only if js is disabled
+  -->
+  <noscript>
+    <style>
+      .pst-js-only { display: none !important; }
+
+    </style>
+  </noscript>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="../../_static/styles/theme.css?digest=a95f357e85573c9b56d5" rel="stylesheet" />
+<link href="../../_static/styles/pydata-sphinx-theme.css?digest=a95f357e85573c9b56d5" rel="stylesheet" />
+
+    <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=8f2a1f02" />
+    <link rel="stylesheet" type="text/css" href="../../_static/branding/branding.css?v=27f85c0d" />
+  
+  <!-- So that users can add custom icons -->
+  <script defer src="../../_static/scripts/fontawesome.js?digest=a95f357e85573c9b56d5"></script>
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="../../_static/scripts/bootstrap.js?digest=a95f357e85573c9b56d5" />
+<link rel="preload" as="script" href="../../_static/scripts/pydata-sphinx-theme.js?digest=a95f357e85573c9b56d5" />
+
+    <script src="../../_static/documentation_options.js?v=5929fcd5"></script>
+    <script src="../../_static/doctools.js?v=9bcbadda"></script>
+    <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script>DOCUMENTATION_OPTIONS.pagename = 'user_guide/json/resource_patch';</script>
+    <script>DOCUMENTATION_OPTIONS.search_as_you_type = false;</script>
+    <link rel="icon" href="../../_static/favicon.ico"/>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+    <link rel="next" title="species" href="species/species.html" />
+    <link rel="prev" title="resource" href="resource.html" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="docsearch:language" content="en"/>
+  <meta name="docsearch:version" content="26.11.18" />
+  
+    
+    <script src="../../_static/searchtools.js"></script>
+    <script src="../../_static/language_data.js"></script>
+    <script src="../../searchindex.js"></script>
+  
+<link rel="icon" type="image/svg+xml" href="../../_static/branding/favicon/favicon.svg">
+<link rel="icon" type="image/png" sizes="96x96" href="../../_static/branding/favicon/favicon-96x96.png">
+<link rel="apple-touch-icon" sizes="180x180" href="../../_static/branding/favicon/apple-touch-icon.png">
+<link rel="manifest" href="../../_static/branding/favicon/site.webmanifest">
+
+  </head>
+  <body data-default-mode="">
+  
+  
+  <div id="pst-skip-link" class="skip-link d-print-none"><a href="#main-content">Skip to main content</a></div>
+
+  
+  <div id="pst-scroll-pixel-helper"></div>
+  
+  <button type="button" class="btn rounded-pill" id="pst-back-to-top">
+    <i class="fa-solid fa-arrow-up"></i>Back to top</button>
+  
+  
+  
+  
+  <dialog id="pst-search-dialog">
+    
+<form class="bd-search d-flex align-items-center"
+      action="../../search.html"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         placeholder="Search the docs ..."
+         aria-label="Search the docs ..."
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form>
+  </dialog>
+
+  <div class="pst-async-banner-revealer d-none">
+  <aside id="bd-header-version-warning" class="d-none d-print-none" aria-label="Version warning"></aside>
+</div>
+
+  
+    <header id="pst-header" class="bd-header navbar navbar-expand-lg bd-navbar d-print-none">
+<div class="bd-header__inner bd-page-width">
+  <button class="pst-navbar-icon sidebar-toggle primary-toggle" aria-label="Site navigation">
+    <span class="fa-solid fa-bars"></span>
+  </button>
+  
+  
+  <div class="col-lg-3 navbar-header-items__start">
+    
+      <div class="navbar-item">
+
+  
+    
+  
+
+<a class="navbar-brand logo" href="../../index.html">
+  
+  
+  
+  
+  
+    
+    
+      
+    
+    
+    <img src="../../_static/weaver-logo-horizontal.svg" class="logo__image only-light" alt="Weaver  documentation - Home"/>
+    <img src="../../_static/weaver-logo-horizontal-dark.svg" class="logo__image only-dark pst-js-only" alt="Weaver  documentation - Home"/>
+  
+  
+</a></div>
+    
+  </div>
+  
+  <div class="col-lg-9 navbar-header-items">
+    
+    <div class="me-auto navbar-header-items__center">
+      
+        <div class="navbar-item">
+<nav>
+  <ul class="bd-navbar-elements navbar-nav">
+    
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../installation.html">
+    Installation
+  </a>
+</li>
+
+
+<li class="nav-item current active">
+  <a class="nav-link nav-internal" href="../configuration.html">
+    Configuration
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../usage.html">
+    Usage
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../examples.html">
+    Examples
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../troubleshooting.html">
+    Troubleshooting
+  </a>
+</li>
+
+            <li class="nav-item dropdown">
+                <button class="btn dropdown-toggle nav-item" type="button"
+                data-bs-toggle="dropdown" aria-expanded="false"
+                aria-controls="pst-nav-more-links">
+                    More
+                </button>
+                <ul id="pst-nav-more-links" class="dropdown-menu">
+                    
+<li class=" ">
+  <a class="nav-link dropdown-item nav-internal" href="../../developer_guide/build_system.html">
+    Build System
+  </a>
+</li>
+
+
+<li class=" ">
+  <a class="nav-link dropdown-item nav-internal" href="../../developer_guide/adding_features.html">
+    Adding Features
+  </a>
+</li>
+
+
+<li class=" ">
+  <a class="nav-link dropdown-item nav-internal" href="../../developer_guide/contribution.html">
+    Contribution
+  </a>
+</li>
+
+
+<li class=" ">
+  <a class="nav-link dropdown-item nav-internal" href="../../developer_guide/code_style.html">
+    Code Style
+  </a>
+</li>
+
+
+<li class=" ">
+  <a class="nav-link dropdown-item nav-internal" href="../../developer_guide/json_validator.html">
+    JSON validator
+  </a>
+</li>
+
+
+<li class=" ">
+  <a class="nav-link dropdown-item nav-internal" href="../../reference/api.html">
+    API
+  </a>
+</li>
+
+
+<li class=" ">
+  <a class="nav-link dropdown-item nav-internal" href="../../testing/overview.html">
+    Overview
+  </a>
+</li>
+
+
+<li class=" ">
+  <a class="nav-link dropdown-item nav-internal" href="../../testing/unit_tests.html">
+    Unit Tests
+  </a>
+</li>
+
+
+<li class=" ">
+  <a class="nav-link dropdown-item nav-internal" href="../../testing/ci_cd.html">
+    Continuous Integration & Continuous Deployment (CI/CD)
+  </a>
+</li>
+
+                </ul>
+            </li>
+            
+  </ul>
+</nav></div>
+      
+    </div>
+    
+    
+    <div class="navbar-header-items__end">
+      
+        <div class="navbar-item navbar-persistent--container">
+          
+
+<button class="btn search-button-field search-button__button pst-js-only" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+ <i class="fa-solid fa-magnifying-glass"></i>
+ <span class="search-button__default-text">Search</span>
+ <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+</button>
+        </div>
+      
+      
+        <div class="navbar-item"><div class="dropdown">
+  <button class="btn btn-sm btn-outline-secondary dropdown-toggle" type="button" id="version-switcher" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Select version" style="color: #198754 !important">
+    26.11.27 (stable, latest)
+  </button>
+  <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="version-switcher">
+    <li>
+      <a class="dropdown-item active" style="color: #198754 !important" href="../../index.html">
+        26.11.27 (stable, latest)
+      </a>
+    </li>
+    <li>
+      <a class="dropdown-item" style="color: #0d6efd !important" href="../../../26.11.18/index.html">
+        26.11.18 (stable)
+      </a>
+    </li>
+    </ul>
+</div></div>
+      
+        <div class="navbar-item"><div class="dropdown">
+  <button class="btn btn-sm btn-outline-secondary dropdown-toggle" type="button" id="language-switcher" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Select language">
+    en
+  </button>
+  <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="language-switcher">
+    
+    <li>
+      <a class="dropdown-item active" href="index.html">
+        en
+      </a>
+    </li>
+    
+  </ul>
+</div></div>
+      
+        <div class="navbar-item">
+
+<div class="theme-switch-container dropdown pst-js-only" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Color mode">
+  <button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button dropdown-toggle" aria-label="Color mode" data-bs-toggle="dropdown">
+    <i class="theme-switch fa-solid fa-sun fa-lg fa-fw" data-mode="light" title="Light"></i>
+    <i class="theme-switch fa-solid fa-moon fa-lg fa-fw" data-mode="dark" title="Dark"></i>
+    <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg fa-fw" data-mode="auto" title="System Settings"></i>
+  </button>
+  <ul class="dropdown-menu dropdown-menu-end">
+    <li><button class="dropdown-item d-flex align-items-center theme-change-button" data-mode="auto"><i class="fa-solid fa-circle-half-stroke fa-lg fa-fw me-1"></i>System Settings</button></li>
+    <li><button class="dropdown-item d-flex align-items-center theme-change-button" data-mode="light"><i class="fa-solid fa-sun fa-lg fa-fw me-1"></i>Light</button></li>
+    <li><button class="dropdown-item d-flex align-items-center theme-change-button" data-mode="dark"><i class="fa-solid fa-moon fa-lg fa-fw me-1"></i>Dark</button></li>
+  </ul>
+</div></div>
+      
+    </div>
+    
+  </div>
+  
+  
+    <div class="navbar-persistent--mobile">
+
+<button class="btn search-button-field search-button__button pst-js-only" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+ <i class="fa-solid fa-magnifying-glass"></i>
+ <span class="search-button__default-text">Search</span>
+ <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+</button>
+    </div>
+  
+
+  
+    <button class="pst-navbar-icon sidebar-toggle secondary-toggle" aria-label="On this page">
+      <span class="fa-solid fa-outdent"></span>
+    </button>
+  
+</div>
+
+    </header>
+  
+
+  <div class="bd-container">
+    <div class="bd-container__inner bd-page-width">
+      
+      
+      
+      <dialog id="pst-primary-sidebar-modal"></dialog>
+      <div id="pst-primary-sidebar" class="bd-sidebar-primary bd-sidebar hide-on-wide">
+        
+
+  
+  <div class="sidebar-header-items sidebar-primary__section">
+    
+    
+      <div class="sidebar-header-items__center">
+        
+          
+          
+            <div class="navbar-item">
+<nav>
+  <ul class="bd-navbar-elements navbar-nav">
+    
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../installation.html">
+    Installation
+  </a>
+</li>
+
+
+<li class="nav-item current active">
+  <a class="nav-link nav-internal" href="../configuration.html">
+    Configuration
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../usage.html">
+    Usage
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../examples.html">
+    Examples
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../troubleshooting.html">
+    Troubleshooting
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../../developer_guide/build_system.html">
+    Build System
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../../developer_guide/adding_features.html">
+    Adding Features
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../../developer_guide/contribution.html">
+    Contribution
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../../developer_guide/code_style.html">
+    Code Style
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../../developer_guide/json_validator.html">
+    JSON validator
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../../reference/api.html">
+    API
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../../testing/overview.html">
+    Overview
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../../testing/unit_tests.html">
+    Unit Tests
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../../testing/ci_cd.html">
+    Continuous Integration & Continuous Deployment (CI/CD)
+  </a>
+</li>
+
+  </ul>
+</nav></div>
+          
+        
+      </div>
+    
+    
+    
+      <div class="sidebar-header-items__end">
+        
+          <div class="navbar-item"><div class="dropdown">
+  <button class="btn btn-sm btn-outline-secondary dropdown-toggle" type="button" id="version-switcher" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Select version" style="color: #198754 !important">
+    26.11.27 (stable, latest)
+  </button>
+  <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="version-switcher">
+    <li>
+      <a class="dropdown-item active" style="color: #198754 !important" href="../../index.html">
+        26.11.27 (stable, latest)
+      </a>
+    </li>
+    <li>
+      <a class="dropdown-item" style="color: #0d6efd !important" href="../../../26.11.18/index.html">
+        26.11.18 (stable)
+      </a>
+    </li>
+    </ul>
+</div></div>
+        
+          <div class="navbar-item"><div class="dropdown">
+  <button class="btn btn-sm btn-outline-secondary dropdown-toggle" type="button" id="language-switcher" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Select language">
+    en
+  </button>
+  <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="language-switcher">
+    
+    <li>
+      <a class="dropdown-item active" href="index.html">
+        en
+      </a>
+    </li>
+    
+  </ul>
+</div></div>
+        
+          <div class="navbar-item">
+
+<div class="theme-switch-container dropdown pst-js-only" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Color mode">
+  <button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button dropdown-toggle" aria-label="Color mode" data-bs-toggle="dropdown">
+    <i class="theme-switch fa-solid fa-sun fa-lg fa-fw" data-mode="light" title="Light"></i>
+    <i class="theme-switch fa-solid fa-moon fa-lg fa-fw" data-mode="dark" title="Dark"></i>
+    <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg fa-fw" data-mode="auto" title="System Settings"></i>
+  </button>
+  <ul class="dropdown-menu dropdown-menu-end">
+    <li><button class="dropdown-item d-flex align-items-center theme-change-button" data-mode="auto"><i class="fa-solid fa-circle-half-stroke fa-lg fa-fw me-1"></i>System Settings</button></li>
+    <li><button class="dropdown-item d-flex align-items-center theme-change-button" data-mode="light"><i class="fa-solid fa-sun fa-lg fa-fw me-1"></i>Light</button></li>
+    <li><button class="dropdown-item d-flex align-items-center theme-change-button" data-mode="dark"><i class="fa-solid fa-moon fa-lg fa-fw me-1"></i>Dark</button></li>
+  </ul>
+</div></div>
+        
+      </div>
+    
+  </div>
+  
+  
+  <div class="sidebar-primary-items__end sidebar-primary__section">
+      <div class="sidebar-primary-item">
+<div id="ethical-ad-placement"
+      class="flat"
+      data-ea-publisher="readthedocs"
+      data-ea-type="readthedocs-sidebar"
+      data-ea-manual="true">
+</div></div>
+  </div>
+
+
+      </div>
+      
+      <main id="main-content" class="bd-main" role="main">
+        
+        
+          <div class="bd-content">
+            <div class="bd-article-container">
+              
+              <div class="bd-header-article d-print-none">
+<div class="header-article-items header-article__inner">
+  
+    <div class="header-article-items__start">
+      
+        <div class="header-article-item">
+
+<nav aria-label="Breadcrumb" class="d-print-none">
+  <ul class="bd-breadcrumbs">
+    
+    <li class="breadcrumb-item breadcrumb-home">
+      <a href="../../index.html" class="nav-link" aria-label="Home">
+        <i class="fa-solid fa-home"></i>
+      </a>
+    </li>
+    
+    <li class="breadcrumb-item"><a href="../configuration.html" class="nav-link">Configuration</a></li>
+    
+    <li class="breadcrumb-item active" aria-current="page"><span class="ellipsis">resource_patch</span></li>
+  </ul>
+</nav>
+</div>
+      
+    </div>
+  
+  
+</div>
+</div>
+              
+              
+              
+                
+<div id="searchbox"></div>
+                <article class="bd-article">
+                  
+  <section id="resource-patch">
+<h1>resource_patch<a class="headerlink" href="#resource-patch" title="Link to this heading">#</a></h1>
+<p>It describes the resource patch configuration, including resource species, growth dynamics, and geometric shape in the environment.</p>
+<section id="main-properties">
+<h2>Main Properties<a class="headerlink" href="#main-properties" title="Link to this heading">#</a></h2>
+<p>Properties:</p>
+<div class="pst-scrollable-table-container"><table class="table table-left">
+<colgroup>
+<col style="width: 25.0%" />
+<col style="width: 15.0%" />
+<col style="width: 60.0%" />
+</colgroup>
+<thead>
+<tr class="row-odd"><th class="head"><p><strong>Name</strong></p></th>
+<th class="head"><p><strong>Type</strong></p></th>
+<th class="head"><p><strong>Description</strong></p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">version</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">string</span></code></p></td>
+<td><p>Patch version.</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">patch</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">object</span></code></p></td>
+<td><p>Object defining the resource patch properties.</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+</section>
+<section id="object-patch">
+<h2>Object <code class="docutils literal notranslate"><span class="pre">patch</span></code><a class="headerlink" href="#object-patch" title="Link to this heading">#</a></h2>
+<p>Properties:</p>
+<div class="pst-scrollable-table-container"><table class="table table-left">
+<colgroup>
+<col style="width: 25.0%" />
+<col style="width: 15.0%" />
+<col style="width: 60.0%" />
+</colgroup>
+<thead>
+<tr class="row-odd"><th class="head"><p><strong>Name</strong></p></th>
+<th class="head"><p><strong>Type</strong></p></th>
+<th class="head"><p><strong>Description</strong></p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">resourceSpecies</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">string</span></code></p></td>
+<td><p>Identifier of the resource species affected by the patch.</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">priority</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">integer</span></code></p></td>
+<td><p>Patch priority. Minimum value: <code class="docutils literal notranslate"><span class="pre">1</span></code>.</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">source</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">object</span></code></p></td>
+<td><p>Defines resource source dynamics and parameters.</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">shape</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">object</span></code></p></td>
+<td><p>Defines the geometric shape of the patch area.</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+</section>
+<section id="object-source">
+<h2>Object <code class="docutils literal notranslate"><span class="pre">source</span></code><a class="headerlink" href="#object-source" title="Link to this heading">#</a></h2>
+<p>Properties:</p>
+<div class="pst-scrollable-table-container"><table class="table table-left">
+<colgroup>
+<col style="width: 25.0%" />
+<col style="width: 15.0%" />
+<col style="width: 60.0%" />
+</colgroup>
+<thead>
+<tr class="row-odd"><th class="head"><p><strong>Name</strong></p></th>
+<th class="head"><p><strong>Type</strong></p></th>
+<th class="head"><p><strong>Description</strong></p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">resourceMaximumCapacityDensity</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">number</span></code></p></td>
+<td><p>Maximum carrying capacity density for the resource.</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">edibleFractionOfMaxCarryingCapacity</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">number</span></code></p></td>
+<td><p>Fraction of the maximum carrying capacity that is edible.</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">patchSpread</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">boolean</span></code></p></td>
+<td><p>Indicates whether the patch spreads across neighboring regions.</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">growthDynamics</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">object</span></code></p></td>
+<td><p>Describes the temporal evolution of the resource availability.</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+</section>
+<section id="object-growthdynamics">
+<h2>Object <code class="docutils literal notranslate"><span class="pre">growthDynamics</span></code><a class="headerlink" href="#object-growthdynamics" title="Link to this heading">#</a></h2>
+<p>Properties:</p>
+<div class="pst-scrollable-table-container"><table class="table table-left">
+<colgroup>
+<col style="width: 25.0%" />
+<col style="width: 15.0%" />
+<col style="width: 60.0%" />
+</colgroup>
+<thead>
+<tr class="row-odd"><th class="head"><p><strong>Name</strong></p></th>
+<th class="head"><p><strong>Type</strong></p></th>
+<th class="head"><p><strong>Description</strong></p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">dynamicsType</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">string</span> <span class="pre">(enum)</span></code></p></td>
+<td><p>Type of resource dynamic. Possible values:
+- <code class="docutils literal notranslate"><span class="pre">Cycle</span></code>
+- <code class="docutils literal notranslate"><span class="pre">Pulse</span></code>
+- <code class="docutils literal notranslate"><span class="pre">GrowthRate</span></code></p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">cycleParams</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">object</span></code></p></td>
+<td><p>Parameters for cyclic resource dynamics.</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">pulseParams</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">object</span></code></p></td>
+<td><p>Parameters for pulsed resource dynamics.</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">growthRateParams</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">object</span></code></p></td>
+<td><p>Parameters for continuous growth rate dynamics.</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+</section>
+<section id="object-cycleparams">
+<h2>Object <code class="docutils literal notranslate"><span class="pre">cycleParams</span></code><a class="headerlink" href="#object-cycleparams" title="Link to this heading">#</a></h2>
+<p>Properties:</p>
+<div class="pst-scrollable-table-container"><table class="table table-left">
+<colgroup>
+<col style="width: 25.0%" />
+<col style="width: 15.0%" />
+<col style="width: 60.0%" />
+</colgroup>
+<thead>
+<tr class="row-odd"><th class="head"><p><strong>Name</strong></p></th>
+<th class="head"><p><strong>Type</strong></p></th>
+<th class="head"><p><strong>Description</strong></p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">cycle</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">array[number]</span></code></p></td>
+<td><p>List of cycle values between <code class="docutils literal notranslate"><span class="pre">0.0</span></code> (exclusive) and <code class="docutils literal notranslate"><span class="pre">1.0</span></code> (inclusive). Minimum one element.</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+</section>
+<section id="object-pulseparams">
+<h2>Object <code class="docutils literal notranslate"><span class="pre">pulseParams</span></code><a class="headerlink" href="#object-pulseparams" title="Link to this heading">#</a></h2>
+<p>Properties:</p>
+<div class="pst-scrollable-table-container"><table class="table table-left">
+<colgroup>
+<col style="width: 25.0%" />
+<col style="width: 15.0%" />
+<col style="width: 60.0%" />
+</colgroup>
+<thead>
+<tr class="row-odd"><th class="head"><p><strong>Name</strong></p></th>
+<th class="head"><p><strong>Type</strong></p></th>
+<th class="head"><p><strong>Description</strong></p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">daysBetweenPulsesRange</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">object</span></code></p></td>
+<td><p>Range of days between pulses.</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">pulsePeakValueRange</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">object</span></code></p></td>
+<td><p>Range of pulse peak values (0.0–1.0).</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">decay</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">object</span></code></p></td>
+<td><p>Defines the decay behavior of each pulse.</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+</section>
+<section id="object-daysbetweenpulsesrange-pulsepeakvaluerange">
+<h2>Object <code class="docutils literal notranslate"><span class="pre">daysBetweenPulsesRange</span></code> / <code class="docutils literal notranslate"><span class="pre">pulsePeakValueRange</span></code><a class="headerlink" href="#object-daysbetweenpulsesrange-pulsepeakvaluerange" title="Link to this heading">#</a></h2>
+<p>Properties:</p>
+<div class="pst-scrollable-table-container"><table class="table table-left">
+<colgroup>
+<col style="width: 25.0%" />
+<col style="width: 15.0%" />
+<col style="width: 60.0%" />
+</colgroup>
+<thead>
+<tr class="row-odd"><th class="head"><p><strong>Name</strong></p></th>
+<th class="head"><p><strong>Type</strong></p></th>
+<th class="head"><p><strong>Description</strong></p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">min</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">number</span></code></p></td>
+<td><p>Minimum value (&gt; 0.0).</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">max</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">number</span></code></p></td>
+<td><p>Maximum value (&gt; 0.0).</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+</section>
+<section id="object-decay">
+<h2>Object <code class="docutils literal notranslate"><span class="pre">decay</span></code><a class="headerlink" href="#object-decay" title="Link to this heading">#</a></h2>
+<p>Properties:</p>
+<div class="pst-scrollable-table-container"><table class="table table-left">
+<colgroup>
+<col style="width: 25.0%" />
+<col style="width: 15.0%" />
+<col style="width: 60.0%" />
+</colgroup>
+<thead>
+<tr class="row-odd"><th class="head"><p><strong>Name</strong></p></th>
+<th class="head"><p><strong>Type</strong></p></th>
+<th class="head"><p><strong>Description</strong></p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">decayType</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">string</span> <span class="pre">(enum)</span></code></p></td>
+<td><p>Decay type. Possible values:
+- <code class="docutils literal notranslate"><span class="pre">NonDecay</span></code>
+- <code class="docutils literal notranslate"><span class="pre">Lineal</span></code></p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">linealDecayParams</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">object</span></code></p></td>
+<td><p>Parameters for linear decay behavior.</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+</section>
+<section id="object-linealdecayparams">
+<h2>Object <code class="docutils literal notranslate"><span class="pre">linealDecayParams</span></code><a class="headerlink" href="#object-linealdecayparams" title="Link to this heading">#</a></h2>
+<p>Properties:</p>
+<div class="pst-scrollable-table-container"><table class="table table-left">
+<colgroup>
+<col style="width: 25.0%" />
+<col style="width: 15.0%" />
+<col style="width: 60.0%" />
+</colgroup>
+<thead>
+<tr class="row-odd"><th class="head"><p><strong>Name</strong></p></th>
+<th class="head"><p><strong>Type</strong></p></th>
+<th class="head"><p><strong>Description</strong></p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">decayOverTime</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">number</span></code></p></td>
+<td><p>Decay intensity over time, between (0.0, 1.0].</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+</section>
+<section id="object-growthrateparams">
+<h2>Object <code class="docutils literal notranslate"><span class="pre">growthRateParams</span></code><a class="headerlink" href="#object-growthrateparams" title="Link to this heading">#</a></h2>
+<p>Properties:</p>
+<div class="pst-scrollable-table-container"><table class="table table-left">
+<colgroup>
+<col style="width: 25.0%" />
+<col style="width: 15.0%" />
+<col style="width: 60.0%" />
+</colgroup>
+<thead>
+<tr class="row-odd"><th class="head"><p><strong>Name</strong></p></th>
+<th class="head"><p><strong>Type</strong></p></th>
+<th class="head"><p><strong>Description</strong></p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">initialValue</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">number</span></code></p></td>
+<td><p>Initial value of the resource (0.0–1.0).</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">rMaxScale</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">number</span></code></p></td>
+<td><p>Scaling factor for the maximum growth rate.</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">variableIntrinsicRateOfIncrease</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">boolean</span></code></p></td>
+<td><p>Whether the intrinsic rate of increase depends on temperature.</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">temperature</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">object</span></code></p></td>
+<td><p>Parameters that describe the temperature dependency (used only if <code class="docutils literal notranslate"><span class="pre">variableIntrinsicRateOfIncrease</span></code> is true).</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+</section>
+<section id="object-temperature">
+<h2>Object <code class="docutils literal notranslate"><span class="pre">temperature</span></code><a class="headerlink" href="#object-temperature" title="Link to this heading">#</a></h2>
+<p>Properties:</p>
+<div class="pst-scrollable-table-container"><table class="table table-left">
+<colgroup>
+<col style="width: 25.0%" />
+<col style="width: 15.0%" />
+<col style="width: 60.0%" />
+</colgroup>
+<thead>
+<tr class="row-odd"><th class="head"><p><strong>Name</strong></p></th>
+<th class="head"><p><strong>Type</strong></p></th>
+<th class="head"><p><strong>Description</strong></p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">activationEnergy</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">number</span></code></p></td>
+<td><p>Activation energy of growth.</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">energyDecay</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">number</span></code></p></td>
+<td><p>Energy decay rate.</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">temperatureOptimal</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">number</span></code></p></td>
+<td><p>Optimal temperature for growth.</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">temperatureRef</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">number</span></code></p></td>
+<td><p>Reference temperature.</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+</section>
+<section id="object-shape">
+<h2>Object <code class="docutils literal notranslate"><span class="pre">shape</span></code><a class="headerlink" href="#object-shape" title="Link to this heading">#</a></h2>
+<p>Properties:</p>
+<div class="pst-scrollable-table-container"><table class="table table-left">
+<colgroup>
+<col style="width: 25.0%" />
+<col style="width: 15.0%" />
+<col style="width: 60.0%" />
+</colgroup>
+<thead>
+<tr class="row-odd"><th class="head"><p><strong>Name</strong></p></th>
+<th class="head"><p><strong>Type</strong></p></th>
+<th class="head"><p><strong>Description</strong></p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">type</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">string</span> <span class="pre">(enum)</span></code></p></td>
+<td><p>Geometric shape type. Possible values:
+- <code class="docutils literal notranslate"><span class="pre">Homogeneous</span></code>
+- <code class="docutils literal notranslate"><span class="pre">Gaussian</span></code>
+- <code class="docutils literal notranslate"><span class="pre">Spherical</span></code>
+- <code class="docutils literal notranslate"><span class="pre">Cubic</span></code>
+- <code class="docutils literal notranslate"><span class="pre">RandomGaussian</span></code></p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">cubicParams</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">object</span></code></p></td>
+<td><p>Parameters for cubic shapes.</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">sphericalParams</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">object</span></code></p></td>
+<td><p>Parameters for spherical shapes.</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">homogeneousParams</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">object</span></code></p></td>
+<td><p>Parameters for homogeneous shapes.</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">gaussianParams</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">object</span></code></p></td>
+<td><p>Parameters for Gaussian shapes.</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">randomGaussianParams</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">object</span></code></p></td>
+<td><p>Parameters for random Gaussian shapes.</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+</section>
+<section id="object-cubicparams">
+<h2>Object <code class="docutils literal notranslate"><span class="pre">cubicParams</span></code><a class="headerlink" href="#object-cubicparams" title="Link to this heading">#</a></h2>
+<p>Properties:</p>
+<div class="pst-scrollable-table-container"><table class="table table-left">
+<colgroup>
+<col style="width: 25.0%" />
+<col style="width: 15.0%" />
+<col style="width: 60.0%" />
+</colgroup>
+<thead>
+<tr class="row-odd"><th class="head"><p><strong>Name</strong></p></th>
+<th class="head"><p><strong>Type</strong></p></th>
+<th class="head"><p><strong>Description</strong></p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">bottomLeftCorner</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">array[number]</span></code></p></td>
+<td><p>Coordinates of the bottom-left corner.</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">topRightCorner</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">array[number]</span></code></p></td>
+<td><p>Coordinates of the top-right corner.</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+</section>
+<section id="object-sphericalparams">
+<h2>Object <code class="docutils literal notranslate"><span class="pre">sphericalParams</span></code><a class="headerlink" href="#object-sphericalparams" title="Link to this heading">#</a></h2>
+<p>Properties:</p>
+<div class="pst-scrollable-table-container"><table class="table table-left">
+<colgroup>
+<col style="width: 25.0%" />
+<col style="width: 15.0%" />
+<col style="width: 60.0%" />
+</colgroup>
+<thead>
+<tr class="row-odd"><th class="head"><p><strong>Name</strong></p></th>
+<th class="head"><p><strong>Type</strong></p></th>
+<th class="head"><p><strong>Description</strong></p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">center</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">array[number]</span></code></p></td>
+<td><p>Center coordinates of the sphere.</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">radius</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">number</span></code></p></td>
+<td><p>Radius of the sphere. Minimum value: <code class="docutils literal notranslate"><span class="pre">0.0</span></code>.</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+</section>
+<section id="object-homogeneousparams">
+<h2>Object <code class="docutils literal notranslate"><span class="pre">homogeneousParams</span></code><a class="headerlink" href="#object-homogeneousparams" title="Link to this heading">#</a></h2>
+<p>Currently does not contain any specific properties.</p>
+</section>
+<section id="object-gaussianparams">
+<h2>Object <code class="docutils literal notranslate"><span class="pre">gaussianParams</span></code><a class="headerlink" href="#object-gaussianparams" title="Link to this heading">#</a></h2>
+<p>Currently does not contain any specific properties.</p>
+</section>
+<section id="object-randomgaussianparams">
+<h2>Object <code class="docutils literal notranslate"><span class="pre">randomGaussianParams</span></code><a class="headerlink" href="#object-randomgaussianparams" title="Link to this heading">#</a></h2>
+<p>Currently does not contain any specific properties.</p>
+</section>
+<section id="hierarchical-summary">
+<h2>Hierarchical Summary<a class="headerlink" href="#hierarchical-summary" title="Link to this heading">#</a></h2>
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>resource_patch
+├── version: string
+└── patch: object
+    ├── resourceSpecies: string
+    ├── priority: integer ≥ 1
+    ├── source:
+    │   ├── resourceMaximumCapacityDensity: number
+    │   ├── edibleFractionOfMaxCarryingCapacity: number
+    │   ├── patchSpread: boolean
+    │   └── growthDynamics:
+    │       ├── dynamicsType: enum [Cycle, Pulse, GrowthRate]
+    │       ├── cycleParams:
+    │       │   └── cycle: array[number] (0.0–1.0)
+    │       ├── pulseParams:
+    │       │   ├── daysBetweenPulsesRange:
+    │       │   │   ├── min: number &gt; 0.0
+    │       │   │   └── max: number &gt; 0.0
+    │       │   ├── pulsePeakValueRange:
+    │       │   │   ├── min: number (0.0–1.0)
+    │       │   │   └── max: number (0.0–1.0)
+    │       │   └── decay:
+    │       │       ├── decayType: enum [NonDecay, Lineal]
+    │       │       └── linealDecayParams:
+    │       │           └── decayOverTime: number (0.0–1.0)
+    │       └── growthRateParams:
+    │           ├── initialValue: number (0.0–1.0)
+    │           ├── rMaxScale: number
+    │           ├── variableIntrinsicRateOfIncrease: boolean
+    │           └── temperature:
+    │               ├── activationEnergy: number
+    │               ├── energyDecay: number
+    │               ├── temperatureOptimal: number
+    │               └── temperatureRef: number
+    └── shape:
+        ├── type: enum [Homogeneous, Gaussian, Spherical, Cubic, RandomGaussian]
+        ├── cubicParams:
+        │   ├── bottomLeftCorner: array[number]
+        │   └── topRightCorner: array[number]
+        ├── sphericalParams:
+        │   ├── center: array[number]
+        │   └── radius: number ≥ 0.0
+        ├── homogeneousParams: {}
+        ├── gaussianParams: {}
+        └── randomGaussianParams: {}
+</pre></div>
+</div>
+</section>
+</section>
+
+
+                </article>
+              
+              
+              
+              
+              
+                <footer class="prev-next-footer d-print-none">
+                  
+<div class="prev-next-area">
+    <a class="left-prev"
+       href="resource.html"
+       title="previous page">
+      <i class="fa-solid fa-angle-left"></i>
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">previous</p>
+        <p class="prev-next-title">resource</p>
+      </div>
+    </a>
+    <a class="right-next"
+       href="species/species.html"
+       title="next page">
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">next</p>
+        <p class="prev-next-title">species</p>
+      </div>
+      <i class="fa-solid fa-angle-right"></i>
+    </a>
+</div>
+                </footer>
+              
+            </div>
+            
+            
+              
+                <dialog id="pst-secondary-sidebar-modal"></dialog>
+                <div id="pst-secondary-sidebar" class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
+
+
+  <div class="sidebar-secondary-item">
+<div
+    id="pst-page-navigation-heading-2"
+    class="page-toc tocsection onthispage">
+    <i class="fa-solid fa-list"></i> On this page
+  </div>
+  <nav id="pst-page-toc-nav" class="page-toc" aria-labelledby="pst-page-navigation-heading-2">
+    <ul class="pst-show_toc_level nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#main-properties">Main Properties</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#object-patch">Object <code class="docutils literal notranslate"><span class="pre">patch</span></code></a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#object-source">Object <code class="docutils literal notranslate"><span class="pre">source</span></code></a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#object-growthdynamics">Object <code class="docutils literal notranslate"><span class="pre">growthDynamics</span></code></a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#object-cycleparams">Object <code class="docutils literal notranslate"><span class="pre">cycleParams</span></code></a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#object-pulseparams">Object <code class="docutils literal notranslate"><span class="pre">pulseParams</span></code></a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#object-daysbetweenpulsesrange-pulsepeakvaluerange">Object <code class="docutils literal notranslate"><span class="pre">daysBetweenPulsesRange</span></code> / <code class="docutils literal notranslate"><span class="pre">pulsePeakValueRange</span></code></a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#object-decay">Object <code class="docutils literal notranslate"><span class="pre">decay</span></code></a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#object-linealdecayparams">Object <code class="docutils literal notranslate"><span class="pre">linealDecayParams</span></code></a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#object-growthrateparams">Object <code class="docutils literal notranslate"><span class="pre">growthRateParams</span></code></a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#object-temperature">Object <code class="docutils literal notranslate"><span class="pre">temperature</span></code></a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#object-shape">Object <code class="docutils literal notranslate"><span class="pre">shape</span></code></a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#object-cubicparams">Object <code class="docutils literal notranslate"><span class="pre">cubicParams</span></code></a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#object-sphericalparams">Object <code class="docutils literal notranslate"><span class="pre">sphericalParams</span></code></a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#object-homogeneousparams">Object <code class="docutils literal notranslate"><span class="pre">homogeneousParams</span></code></a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#object-gaussianparams">Object <code class="docutils literal notranslate"><span class="pre">gaussianParams</span></code></a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#object-randomgaussianparams">Object <code class="docutils literal notranslate"><span class="pre">randomGaussianParams</span></code></a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#hierarchical-summary">Hierarchical Summary</a></li>
+</ul>
+  </nav></div>
+
+  <div class="sidebar-secondary-item">
+
+  <div class="tocsection sourcelink">
+    <a href="../../_sources/user_guide/json/resource_patch.rst.txt">
+      <i class="fa-solid fa-file-lines"></i> Show Source
+    </a>
+  </div>
+</div>
+
+</div></div>
+              
+            
+          </div>
+          <footer class="bd-footer-content">
+            
+          </footer>
+        
+      </main>
+    </div>
+  </div>
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script defer src="../../_static/scripts/bootstrap.js?digest=a95f357e85573c9b56d5"></script>
+<script defer src="../../_static/scripts/pydata-sphinx-theme.js?digest=a95f357e85573c9b56d5"></script>
+
+  <footer class="bd-footer">
+<div class="bd-footer__inner bd-page-width">
+  
+    <div class="footer-items__start">
+      
+        <div class="footer-item">
+
+  <p class="copyright">
+    
+      © Copyright 2025, Jordi Moya Laraño.
+      <br/>
+    
+  </p>
+</div>
+      
+        <div class="footer-item">
+
+  <p class="sphinx-version">
+    Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 8.1.3.
+    <br/>
+  </p>
+</div>
+      
+    </div>
+  
+  
+  
+    <div class="footer-items__end">
+      
+        <div class="footer-item">
+<p class="theme-version">
+  <!-- # L10n: Setting the PST URL as an argument as this does not need to be localized -->
+  Built with the <a href="https://pydata-sphinx-theme.readthedocs.io/en/stable/index.html">PyData Sphinx Theme</a> 0.19.0.
+</p></div>
+      
+    </div>
+  
+</div>
+
+  </footer>
+  </body>
+</html>

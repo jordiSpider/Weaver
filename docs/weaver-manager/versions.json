@@ -1,13 +1,21 @@
 {
   "schema_version": 1,
   "product": "weaver-manager",
-  "latest": "1.2.0-manager",
+  "latest": "1.2.1-manager",
   "versions": [
+    {
+      "version": "1.2.1-manager",
+      "tag": "v1.2.1-manager",
+      "channel": "stable",
+      "latest": true,
+      "published_at": "2026-11-27T11:03:15Z",
+      "html_url": "https://github.com/jordiSpider/Weaver/releases/tag/v1.2.1-manager"
+    },
     {
       "version": "1.2.0-manager",
       "tag": "v1.2.0-manager",
       "channel": "stable",
-      "latest": true,
+      "latest": false,
       "published_at": "2026-11-26T11:15:43Z",
       "html_url": "https://github.com/jordiSpider/Weaver/releases/tag/v1.2.0-manager"
     },

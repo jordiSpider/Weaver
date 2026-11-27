@@ -1,0 +1,1317 @@
+
+<!DOCTYPE html>
+
+
+<html lang="en" data-content_root="../../" >
+
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>Advanced Features &#8212; Weaver  documentation</title>
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "";
+  </script>
+  <!--
+    this give us a css class that will be invisible only if js is disabled
+  -->
+  <noscript>
+    <style>
+      .pst-js-only { display: none !important; }
+
+    </style>
+  </noscript>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="../../_static/styles/theme.css?digest=a95f357e85573c9b56d5" rel="stylesheet" />
+<link href="../../_static/styles/pydata-sphinx-theme.css?digest=a95f357e85573c9b56d5" rel="stylesheet" />
+
+    <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=8f2a1f02" />
+    <link rel="stylesheet" type="text/css" href="../../_static/branding/branding.css?v=27f85c0d" />
+  
+  <!-- So that users can add custom icons -->
+  <script defer src="../../_static/scripts/fontawesome.js?digest=a95f357e85573c9b56d5"></script>
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="../../_static/scripts/bootstrap.js?digest=a95f357e85573c9b56d5" />
+<link rel="preload" as="script" href="../../_static/scripts/pydata-sphinx-theme.js?digest=a95f357e85573c9b56d5" />
+
+    <script src="../../_static/documentation_options.js?v=5929fcd5"></script>
+    <script src="../../_static/doctools.js?v=9bcbadda"></script>
+    <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script>DOCUMENTATION_OPTIONS.pagename = 'developer_guide/json_validator/advanced_features';</script>
+    <script>DOCUMENTATION_OPTIONS.search_as_you_type = false;</script>
+    <link rel="icon" href="../../_static/favicon.ico"/>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+    <link rel="next" title="API" href="../../reference/api.html" />
+    <link rel="prev" title="Tuple Type" href="element_types/tuple.html" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="docsearch:language" content="en"/>
+  <meta name="docsearch:version" content="26.11.18" />
+  
+    
+    <script src="../../_static/searchtools.js"></script>
+    <script src="../../_static/language_data.js"></script>
+    <script src="../../searchindex.js"></script>
+  
+<link rel="icon" type="image/svg+xml" href="../../_static/branding/favicon/favicon.svg">
+<link rel="icon" type="image/png" sizes="96x96" href="../../_static/branding/favicon/favicon-96x96.png">
+<link rel="apple-touch-icon" sizes="180x180" href="../../_static/branding/favicon/apple-touch-icon.png">
+<link rel="manifest" href="../../_static/branding/favicon/site.webmanifest">
+
+  </head>
+  <body data-default-mode="">
+  
+  
+  <div id="pst-skip-link" class="skip-link d-print-none"><a href="#main-content">Skip to main content</a></div>
+
+  
+  <div id="pst-scroll-pixel-helper"></div>
+  
+  <button type="button" class="btn rounded-pill" id="pst-back-to-top">
+    <i class="fa-solid fa-arrow-up"></i>Back to top</button>
+  
+  
+  
+  
+  <dialog id="pst-search-dialog">
+    
+<form class="bd-search d-flex align-items-center"
+      action="../../search.html"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         placeholder="Search the docs ..."
+         aria-label="Search the docs ..."
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form>
+  </dialog>
+
+  <div class="pst-async-banner-revealer d-none">
+  <aside id="bd-header-version-warning" class="d-none d-print-none" aria-label="Version warning"></aside>
+</div>
+
+  
+    <header id="pst-header" class="bd-header navbar navbar-expand-lg bd-navbar d-print-none">
+<div class="bd-header__inner bd-page-width">
+  <button class="pst-navbar-icon sidebar-toggle primary-toggle" aria-label="Site navigation">
+    <span class="fa-solid fa-bars"></span>
+  </button>
+  
+  
+  <div class="col-lg-3 navbar-header-items__start">
+    
+      <div class="navbar-item">
+
+  
+    
+  
+
+<a class="navbar-brand logo" href="../../index.html">
+  
+  
+  
+  
+  
+    
+    
+      
+    
+    
+    <img src="../../_static/weaver-logo-horizontal.svg" class="logo__image only-light" alt="Weaver  documentation - Home"/>
+    <img src="../../_static/weaver-logo-horizontal-dark.svg" class="logo__image only-dark pst-js-only" alt="Weaver  documentation - Home"/>
+  
+  
+</a></div>
+    
+  </div>
+  
+  <div class="col-lg-9 navbar-header-items">
+    
+    <div class="me-auto navbar-header-items__center">
+      
+        <div class="navbar-item">
+<nav>
+  <ul class="bd-navbar-elements navbar-nav">
+    
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../../user_guide/installation.html">
+    Installation
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../../user_guide/configuration.html">
+    Configuration
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../../user_guide/usage.html">
+    Usage
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../../user_guide/examples.html">
+    Examples
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../../user_guide/troubleshooting.html">
+    Troubleshooting
+  </a>
+</li>
+
+            <li class="nav-item dropdown">
+                <button class="btn dropdown-toggle nav-item" type="button"
+                data-bs-toggle="dropdown" aria-expanded="false"
+                aria-controls="pst-nav-more-links">
+                    More
+                </button>
+                <ul id="pst-nav-more-links" class="dropdown-menu">
+                    
+<li class=" ">
+  <a class="nav-link dropdown-item nav-internal" href="../build_system.html">
+    Build System
+  </a>
+</li>
+
+
+<li class=" ">
+  <a class="nav-link dropdown-item nav-internal" href="../adding_features.html">
+    Adding Features
+  </a>
+</li>
+
+
+<li class=" ">
+  <a class="nav-link dropdown-item nav-internal" href="../contribution.html">
+    Contribution
+  </a>
+</li>
+
+
+<li class=" ">
+  <a class="nav-link dropdown-item nav-internal" href="../code_style.html">
+    Code Style
+  </a>
+</li>
+
+
+<li class=" current active">
+  <a class="nav-link dropdown-item nav-internal" href="../json_validator.html">
+    JSON validator
+  </a>
+</li>
+
+
+<li class=" ">
+  <a class="nav-link dropdown-item nav-internal" href="../../reference/api.html">
+    API
+  </a>
+</li>
+
+
+<li class=" ">
+  <a class="nav-link dropdown-item nav-internal" href="../../testing/overview.html">
+    Overview
+  </a>
+</li>
+
+
+<li class=" ">
+  <a class="nav-link dropdown-item nav-internal" href="../../testing/unit_tests.html">
+    Unit Tests
+  </a>
+</li>
+
+
+<li class=" ">
+  <a class="nav-link dropdown-item nav-internal" href="../../testing/ci_cd.html">
+    Continuous Integration & Continuous Deployment (CI/CD)
+  </a>
+</li>
+
+                </ul>
+            </li>
+            
+  </ul>
+</nav></div>
+      
+    </div>
+    
+    
+    <div class="navbar-header-items__end">
+      
+        <div class="navbar-item navbar-persistent--container">
+          
+
+<button class="btn search-button-field search-button__button pst-js-only" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+ <i class="fa-solid fa-magnifying-glass"></i>
+ <span class="search-button__default-text">Search</span>
+ <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+</button>
+        </div>
+      
+      
+        <div class="navbar-item"><div class="dropdown">
+  <button class="btn btn-sm btn-outline-secondary dropdown-toggle" type="button" id="version-switcher" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Select version" style="color: #198754 !important">
+    26.11.27 (stable, latest)
+  </button>
+  <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="version-switcher">
+    <li>
+      <a class="dropdown-item active" style="color: #198754 !important" href="../../index.html">
+        26.11.27 (stable, latest)
+      </a>
+    </li>
+    <li>
+      <a class="dropdown-item" style="color: #0d6efd !important" href="../../../26.11.18/index.html">
+        26.11.18 (stable)
+      </a>
+    </li>
+    </ul>
+</div></div>
+      
+        <div class="navbar-item"><div class="dropdown">
+  <button class="btn btn-sm btn-outline-secondary dropdown-toggle" type="button" id="language-switcher" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Select language">
+    en
+  </button>
+  <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="language-switcher">
+    
+    <li>
+      <a class="dropdown-item active" href="index.html">
+        en
+      </a>
+    </li>
+    
+  </ul>
+</div></div>
+      
+        <div class="navbar-item">
+
+<div class="theme-switch-container dropdown pst-js-only" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Color mode">
+  <button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button dropdown-toggle" aria-label="Color mode" data-bs-toggle="dropdown">
+    <i class="theme-switch fa-solid fa-sun fa-lg fa-fw" data-mode="light" title="Light"></i>
+    <i class="theme-switch fa-solid fa-moon fa-lg fa-fw" data-mode="dark" title="Dark"></i>
+    <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg fa-fw" data-mode="auto" title="System Settings"></i>
+  </button>
+  <ul class="dropdown-menu dropdown-menu-end">
+    <li><button class="dropdown-item d-flex align-items-center theme-change-button" data-mode="auto"><i class="fa-solid fa-circle-half-stroke fa-lg fa-fw me-1"></i>System Settings</button></li>
+    <li><button class="dropdown-item d-flex align-items-center theme-change-button" data-mode="light"><i class="fa-solid fa-sun fa-lg fa-fw me-1"></i>Light</button></li>
+    <li><button class="dropdown-item d-flex align-items-center theme-change-button" data-mode="dark"><i class="fa-solid fa-moon fa-lg fa-fw me-1"></i>Dark</button></li>
+  </ul>
+</div></div>
+      
+    </div>
+    
+  </div>
+  
+  
+    <div class="navbar-persistent--mobile">
+
+<button class="btn search-button-field search-button__button pst-js-only" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+ <i class="fa-solid fa-magnifying-glass"></i>
+ <span class="search-button__default-text">Search</span>
+ <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+</button>
+    </div>
+  
+
+  
+    <button class="pst-navbar-icon sidebar-toggle secondary-toggle" aria-label="On this page">
+      <span class="fa-solid fa-outdent"></span>
+    </button>
+  
+</div>
+
+    </header>
+  
+
+  <div class="bd-container">
+    <div class="bd-container__inner bd-page-width">
+      
+      
+      
+      <dialog id="pst-primary-sidebar-modal"></dialog>
+      <div id="pst-primary-sidebar" class="bd-sidebar-primary bd-sidebar hide-on-wide">
+        
+
+  
+  <div class="sidebar-header-items sidebar-primary__section">
+    
+    
+      <div class="sidebar-header-items__center">
+        
+          
+          
+            <div class="navbar-item">
+<nav>
+  <ul class="bd-navbar-elements navbar-nav">
+    
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../../user_guide/installation.html">
+    Installation
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../../user_guide/configuration.html">
+    Configuration
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../../user_guide/usage.html">
+    Usage
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../../user_guide/examples.html">
+    Examples
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../../user_guide/troubleshooting.html">
+    Troubleshooting
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../build_system.html">
+    Build System
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../adding_features.html">
+    Adding Features
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../contribution.html">
+    Contribution
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../code_style.html">
+    Code Style
+  </a>
+</li>
+
+
+<li class="nav-item current active">
+  <a class="nav-link nav-internal" href="../json_validator.html">
+    JSON validator
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../../reference/api.html">
+    API
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../../testing/overview.html">
+    Overview
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../../testing/unit_tests.html">
+    Unit Tests
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../../testing/ci_cd.html">
+    Continuous Integration & Continuous Deployment (CI/CD)
+  </a>
+</li>
+
+  </ul>
+</nav></div>
+          
+        
+      </div>
+    
+    
+    
+      <div class="sidebar-header-items__end">
+        
+          <div class="navbar-item"><div class="dropdown">
+  <button class="btn btn-sm btn-outline-secondary dropdown-toggle" type="button" id="version-switcher" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Select version" style="color: #198754 !important">
+    26.11.27 (stable, latest)
+  </button>
+  <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="version-switcher">
+    <li>
+      <a class="dropdown-item active" style="color: #198754 !important" href="../../index.html">
+        26.11.27 (stable, latest)
+      </a>
+    </li>
+    <li>
+      <a class="dropdown-item" style="color: #0d6efd !important" href="../../../26.11.18/index.html">
+        26.11.18 (stable)
+      </a>
+    </li>
+    </ul>
+</div></div>
+        
+          <div class="navbar-item"><div class="dropdown">
+  <button class="btn btn-sm btn-outline-secondary dropdown-toggle" type="button" id="language-switcher" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Select language">
+    en
+  </button>
+  <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="language-switcher">
+    
+    <li>
+      <a class="dropdown-item active" href="index.html">
+        en
+      </a>
+    </li>
+    
+  </ul>
+</div></div>
+        
+          <div class="navbar-item">
+
+<div class="theme-switch-container dropdown pst-js-only" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Color mode">
+  <button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button dropdown-toggle" aria-label="Color mode" data-bs-toggle="dropdown">
+    <i class="theme-switch fa-solid fa-sun fa-lg fa-fw" data-mode="light" title="Light"></i>
+    <i class="theme-switch fa-solid fa-moon fa-lg fa-fw" data-mode="dark" title="Dark"></i>
+    <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg fa-fw" data-mode="auto" title="System Settings"></i>
+  </button>
+  <ul class="dropdown-menu dropdown-menu-end">
+    <li><button class="dropdown-item d-flex align-items-center theme-change-button" data-mode="auto"><i class="fa-solid fa-circle-half-stroke fa-lg fa-fw me-1"></i>System Settings</button></li>
+    <li><button class="dropdown-item d-flex align-items-center theme-change-button" data-mode="light"><i class="fa-solid fa-sun fa-lg fa-fw me-1"></i>Light</button></li>
+    <li><button class="dropdown-item d-flex align-items-center theme-change-button" data-mode="dark"><i class="fa-solid fa-moon fa-lg fa-fw me-1"></i>Dark</button></li>
+  </ul>
+</div></div>
+        
+      </div>
+    
+  </div>
+  
+  
+  <div class="sidebar-primary-items__end sidebar-primary__section">
+      <div class="sidebar-primary-item">
+<div id="ethical-ad-placement"
+      class="flat"
+      data-ea-publisher="readthedocs"
+      data-ea-type="readthedocs-sidebar"
+      data-ea-manual="true">
+</div></div>
+  </div>
+
+
+      </div>
+      
+      <main id="main-content" class="bd-main" role="main">
+        
+        
+          <div class="bd-content">
+            <div class="bd-article-container">
+              
+              <div class="bd-header-article d-print-none">
+<div class="header-article-items header-article__inner">
+  
+    <div class="header-article-items__start">
+      
+        <div class="header-article-item">
+
+<nav aria-label="Breadcrumb" class="d-print-none">
+  <ul class="bd-breadcrumbs">
+    
+    <li class="breadcrumb-item breadcrumb-home">
+      <a href="../../index.html" class="nav-link" aria-label="Home">
+        <i class="fa-solid fa-home"></i>
+      </a>
+    </li>
+    
+    <li class="breadcrumb-item"><a href="../json_validator.html" class="nav-link">JSON validator</a></li>
+    
+    <li class="breadcrumb-item active" aria-current="page"><span class="ellipsis">Advanced Features</span></li>
+  </ul>
+</nav>
+</div>
+      
+    </div>
+  
+  
+</div>
+</div>
+              
+              
+              
+                
+<div id="searchbox"></div>
+                <article class="bd-article">
+                  
+  <section id="advanced-features">
+<h1>Advanced Features<a class="headerlink" href="#advanced-features" title="Link to this heading">#</a></h1>
+<p>This section covers the advanced features of the JSON Schema validator. These features provide enhanced capabilities and
+customization options for schema validation.</p>
+<section id="operators-of-json-schema">
+<h2>Operators of JSON Schema<a class="headerlink" href="#operators-of-json-schema" title="Link to this heading">#</a></h2>
+<p id="id1">In JSON Schema, operators are used to define constraints and conditions. This section details the various operators available,
+their usage, and examples. The result of any operator will be a value of a basic type, such as an integer, boolean, string, etc.</p>
+<p>Each operator is defined by a dictionary (or object) with several fields describing the type of the operator and the properties
+of each operator.</p>
+<p>The type of the operator is defined through the field ‘<strong>operatorType</strong>’, the content of which is a string. The available types are
+shown below:</p>
+<blockquote>
+<div><ul>
+<li><p><a class="reference internal" href="#id2"><span class="std std-ref">Equality and Comparison Operators</span></a></p>
+<blockquote>
+<div><div class="highlight-json notranslate"><div class="highlight"><pre><span></span><span class="p">{</span>
+<span class="w">    </span><span class="nt">"operatorType"</span><span class="p">:</span><span class="w"> </span><span class="s2">"comparison"</span>
+<span class="w">    </span><span class="c1">// Remaining fields</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+</div></blockquote>
+</li>
+<li><p><a class="reference internal" href="#id3"><span class="std std-ref">Logical Operators</span></a></p>
+<blockquote>
+<div><div class="highlight-json notranslate"><div class="highlight"><pre><span></span><span class="p">{</span>
+<span class="w">    </span><span class="nt">"operatorType"</span><span class="p">:</span><span class="w"> </span><span class="s2">"logical"</span>
+<span class="w">    </span><span class="c1">// Remaining fields</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+</div></blockquote>
+</li>
+<li><p><a class="reference internal" href="#id4"><span class="std std-ref">Property Operators</span></a></p>
+<blockquote>
+<div><div class="highlight-json notranslate"><div class="highlight"><pre><span></span><span class="p">{</span>
+<span class="w">    </span><span class="nt">"operatorType"</span><span class="p">:</span><span class="w"> </span><span class="s2">"property"</span>
+<span class="w">    </span><span class="c1">// Remaining fields</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+</div></blockquote>
+</li>
+<li><p><a class="reference internal" href="#id5"><span class="std std-ref">Constant Operators</span></a></p>
+<blockquote>
+<div><div class="highlight-json notranslate"><div class="highlight"><pre><span></span><span class="p">{</span>
+<span class="w">    </span><span class="nt">"operatorType"</span><span class="p">:</span><span class="w"> </span><span class="s2">"constant"</span>
+<span class="w">    </span><span class="c1">// Remaining fields</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+</div></blockquote>
+</li>
+<li><p><a class="reference internal" href="#id6"><span class="std std-ref">Arithmetical Operators</span></a></p>
+<blockquote>
+<div><div class="highlight-json notranslate"><div class="highlight"><pre><span></span><span class="p">{</span>
+<span class="w">    </span><span class="nt">"operatorType"</span><span class="p">:</span><span class="w"> </span><span class="s2">"arithmetical"</span>
+<span class="w">    </span><span class="c1">// Remaining fields</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+</div></blockquote>
+</li>
+</ul>
+</div></blockquote>
+<section id="equality-and-comparison-operators">
+<h3>Equality and Comparison Operators<a class="headerlink" href="#equality-and-comparison-operators" title="Link to this heading">#</a></h3>
+<p id="id2">These operators are used to compare values and define constraints based on those comparisons. Each comparison involves two
+parts: the left-hand side (<cite>lhs</cite>) and the right-hand side (<cite>rhs</cite>). On both sides another operator must be defined.</p>
+<p>The type of the comparison operator is defined through the field ‘<strong>comparisonType</strong>’, the content of which is a string. The
+comparison types are defined below:</p>
+<section id="equal">
+<h4>Equal (==)<a class="headerlink" href="#equal" title="Link to this heading">#</a></h4>
+<blockquote>
+<div><p>Checks if the ‘<strong>lhs</strong>’ is <strong>equal to</strong> the ‘<strong>rhs</strong>’. The value of the ‘<strong>comparisonType</strong>’ field is <strong>“equal”</strong>.</p>
+<p>Example:</p>
+<div class="highlight-json notranslate"><div class="highlight"><pre><span></span><span class="p">{</span>
+<span class="w">    </span><span class="nt">"operatorType"</span><span class="p">:</span><span class="w"> </span><span class="s2">"comparison"</span><span class="p">,</span>
+<span class="w">    </span><span class="nt">"comparisonType"</span><span class="p">:</span><span class="w"> </span><span class="s2">"equal"</span><span class="p">,</span>
+<span class="w">    </span><span class="nt">"lhs"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+<span class="w">        </span><span class="c1">// Define another operator</span>
+<span class="w">    </span><span class="p">},</span>
+<span class="w">    </span><span class="nt">"rhs"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+<span class="w">        </span><span class="c1">// Define another operator</span>
+<span class="w">    </span><span class="p">}</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+</div></blockquote>
+</section>
+<section id="not-equal">
+<h4>Not Equal (!=)<a class="headerlink" href="#not-equal" title="Link to this heading">#</a></h4>
+<blockquote>
+<div><p>Checks if the ‘<strong>lhs</strong>’ is <strong>not equal to</strong> the ‘<strong>rhs</strong>’. The value of the ‘<strong>comparisonType</strong>’ field is <strong>“not_equal”</strong>.</p>
+<p>Example:</p>
+<div class="highlight-json notranslate"><div class="highlight"><pre><span></span><span class="p">{</span>
+<span class="w">    </span><span class="nt">"operatorType"</span><span class="p">:</span><span class="w"> </span><span class="s2">"comparison"</span><span class="p">,</span>
+<span class="w">    </span><span class="nt">"comparisonType"</span><span class="p">:</span><span class="w"> </span><span class="s2">"not_equal"</span><span class="p">,</span>
+<span class="w">    </span><span class="nt">"lhs"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+<span class="w">        </span><span class="c1">// Define another operator</span>
+<span class="w">    </span><span class="p">},</span>
+<span class="w">    </span><span class="nt">"rhs"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+<span class="w">        </span><span class="c1">// Define another operator</span>
+<span class="w">    </span><span class="p">}</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+</div></blockquote>
+</section>
+<section id="less-than">
+<h4>Less Than (&lt;)<a class="headerlink" href="#less-than" title="Link to this heading">#</a></h4>
+<blockquote>
+<div><p>Checks if the ‘<strong>lhs</strong>’ is <strong>less than</strong> the ‘<strong>rhs</strong>’. The value of the ‘<strong>comparisonType</strong>’ field is <strong>“less_than”</strong>.</p>
+<p>Example:</p>
+<div class="highlight-json notranslate"><div class="highlight"><pre><span></span><span class="p">{</span>
+<span class="w">    </span><span class="nt">"operatorType"</span><span class="p">:</span><span class="w"> </span><span class="s2">"comparison"</span><span class="p">,</span>
+<span class="w">    </span><span class="nt">"comparisonType"</span><span class="p">:</span><span class="w"> </span><span class="s2">"less_than"</span><span class="p">,</span>
+<span class="w">    </span><span class="nt">"lhs"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+<span class="w">        </span><span class="c1">// Define another operator</span>
+<span class="w">    </span><span class="p">},</span>
+<span class="w">    </span><span class="nt">"rhs"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+<span class="w">        </span><span class="c1">// Define another operator</span>
+<span class="w">    </span><span class="p">}</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+</div></blockquote>
+</section>
+<section id="less-than-or-equal">
+<h4>Less Than or Equal (&lt;=)<a class="headerlink" href="#less-than-or-equal" title="Link to this heading">#</a></h4>
+<blockquote>
+<div><p>Checks if the ‘<strong>lhs</strong>’ is <strong>less than or equal to</strong> the ‘<strong>rhs</strong>’. The value of the ‘<strong>comparisonType</strong>’ field is <strong>“less_equal_than”</strong>.</p>
+<p>Example:</p>
+<div class="highlight-json notranslate"><div class="highlight"><pre><span></span><span class="p">{</span>
+<span class="w">    </span><span class="nt">"operatorType"</span><span class="p">:</span><span class="w"> </span><span class="s2">"comparison"</span><span class="p">,</span>
+<span class="w">    </span><span class="nt">"comparisonType"</span><span class="p">:</span><span class="w"> </span><span class="s2">"less_equal_than"</span><span class="p">,</span>
+<span class="w">    </span><span class="nt">"lhs"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+<span class="w">        </span><span class="c1">// Define another operator</span>
+<span class="w">    </span><span class="p">},</span>
+<span class="w">    </span><span class="nt">"rhs"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+<span class="w">        </span><span class="c1">// Define another operator</span>
+<span class="w">    </span><span class="p">}</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+</div></blockquote>
+</section>
+<section id="greater-than">
+<h4>Greater Than (&gt;)<a class="headerlink" href="#greater-than" title="Link to this heading">#</a></h4>
+<blockquote>
+<div><p>Checks if the ‘<strong>lhs</strong>’ is <strong>greater than</strong> the ‘<strong>rhs</strong>’. The value of the ‘<strong>comparisonType</strong>’ field is <strong>“greater_than”</strong>.</p>
+<p>Example:</p>
+<div class="highlight-json notranslate"><div class="highlight"><pre><span></span><span class="p">{</span>
+<span class="w">    </span><span class="nt">"operatorType"</span><span class="p">:</span><span class="w"> </span><span class="s2">"comparison"</span><span class="p">,</span>
+<span class="w">    </span><span class="nt">"comparisonType"</span><span class="p">:</span><span class="w"> </span><span class="s2">"greater_than"</span><span class="p">,</span>
+<span class="w">    </span><span class="nt">"lhs"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+<span class="w">        </span><span class="c1">// Define another operator</span>
+<span class="w">    </span><span class="p">},</span>
+<span class="w">    </span><span class="nt">"rhs"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+<span class="w">        </span><span class="c1">// Define another operator</span>
+<span class="w">    </span><span class="p">}</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+</div></blockquote>
+</section>
+<section id="greater-than-or-equal">
+<h4>Greater Than or Equal (&gt;=)<a class="headerlink" href="#greater-than-or-equal" title="Link to this heading">#</a></h4>
+<blockquote>
+<div><p>Checks if the ‘<strong>lhs</strong>’ is <strong>greater than or equal to</strong> the ‘<strong>rhs</strong>’. The value of the ‘<strong>comparisonType</strong>’ field is <strong>“greater_equal_than”</strong>.</p>
+<p>Example:</p>
+<div class="highlight-json notranslate"><div class="highlight"><pre><span></span><span class="p">{</span>
+<span class="w">    </span><span class="nt">"operatorType"</span><span class="p">:</span><span class="w"> </span><span class="s2">"comparison"</span><span class="p">,</span>
+<span class="w">    </span><span class="nt">"comparisonType"</span><span class="p">:</span><span class="w"> </span><span class="s2">"greater_equal_than"</span><span class="p">,</span>
+<span class="w">    </span><span class="nt">"lhs"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+<span class="w">        </span><span class="c1">// Define another operator</span>
+<span class="w">    </span><span class="p">},</span>
+<span class="w">    </span><span class="nt">"rhs"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+<span class="w">        </span><span class="c1">// Define another operator</span>
+<span class="w">    </span><span class="p">}</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+</div></blockquote>
+</section>
+</section>
+<section id="logical-operators">
+<h3>Logical Operators<a class="headerlink" href="#logical-operators" title="Link to this heading">#</a></h3>
+<p id="id3">These operators are used to combine or negate conditions. Each logical operator involves a list of operands, with each operand
+defining another operator.</p>
+<p>The type of the logical operator is defined through the field ‘<strong>logicalType</strong>’, the content of which is a string. The
+logical types are defined below:</p>
+<section id="negation-not">
+<h4>Negation (not)<a class="headerlink" href="#negation-not" title="Link to this heading">#</a></h4>
+<blockquote>
+<div><div class="admonition warning">
+<p class="admonition-title">Warning</p>
+<p>Negation needs only one operand.</p>
+</div>
+<p>Negates a operand. The value of the ‘<strong>logicalType</strong>’ field is <strong>“negation”</strong>.</p>
+<p>Example:</p>
+<div class="highlight-json notranslate"><div class="highlight"><pre><span></span><span class="p">{</span>
+<span class="w">    </span><span class="nt">"operatorType"</span><span class="p">:</span><span class="w"> </span><span class="s2">"logical"</span><span class="p">,</span>
+<span class="w">    </span><span class="nt">"logicalType"</span><span class="p">:</span><span class="w"> </span><span class="s2">"negation"</span><span class="p">,</span>
+<span class="w">    </span><span class="nt">"operands"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span>
+<span class="w">        </span><span class="p">{</span>
+<span class="w">            </span><span class="c1">// Define another operator</span>
+<span class="w">        </span><span class="p">}</span>
+<span class="w">    </span><span class="p">]</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+</div></blockquote>
+</section>
+<section id="conjunction-and">
+<h4>Conjunction (and)<a class="headerlink" href="#conjunction-and" title="Link to this heading">#</a></h4>
+<blockquote>
+<div><p>Checks if all operands are true. The value of the ‘<strong>logicalType</strong>’ field is <strong>“conjunction”</strong>.</p>
+<p>Example:</p>
+<div class="highlight-json notranslate"><div class="highlight"><pre><span></span><span class="p">{</span>
+<span class="w">    </span><span class="nt">"operatorType"</span><span class="p">:</span><span class="w"> </span><span class="s2">"logical"</span><span class="p">,</span>
+<span class="w">    </span><span class="nt">"logicalType"</span><span class="p">:</span><span class="w"> </span><span class="s2">"conjunction"</span><span class="p">,</span>
+<span class="w">    </span><span class="nt">"operands"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span>
+<span class="w">        </span><span class="p">{</span>
+<span class="w">            </span><span class="c1">// Define another operator</span>
+<span class="w">        </span><span class="p">},</span>
+<span class="w">        </span><span class="p">{</span>
+<span class="w">            </span><span class="c1">// Define another operator</span>
+<span class="w">        </span><span class="p">},</span>
+<span class="w">        </span><span class="p">{</span>
+<span class="w">            </span><span class="c1">// Define another operator</span>
+<span class="w">        </span><span class="p">}</span>
+<span class="w">    </span><span class="p">]</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+</div></blockquote>
+</section>
+<section id="disjunction-or">
+<h4>Disjunction (or)<a class="headerlink" href="#disjunction-or" title="Link to this heading">#</a></h4>
+<blockquote>
+<div><p>Checks if at least one operand is true. The value of the ‘<strong>logicalType</strong>’ field is <strong>“disjunction”</strong>.</p>
+<p>Example:</p>
+<div class="highlight-json notranslate"><div class="highlight"><pre><span></span><span class="p">{</span>
+<span class="w">    </span><span class="nt">"operatorType"</span><span class="p">:</span><span class="w"> </span><span class="s2">"logical"</span><span class="p">,</span>
+<span class="w">    </span><span class="nt">"logicalType"</span><span class="p">:</span><span class="w"> </span><span class="s2">"disjunction"</span><span class="p">,</span>
+<span class="w">    </span><span class="nt">"operands"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span>
+<span class="w">        </span><span class="p">{</span>
+<span class="w">            </span><span class="c1">// Define another operator</span>
+<span class="w">        </span><span class="p">},</span>
+<span class="w">        </span><span class="p">{</span>
+<span class="w">            </span><span class="c1">// Define another operator</span>
+<span class="w">        </span><span class="p">},</span>
+<span class="w">        </span><span class="p">{</span>
+<span class="w">            </span><span class="c1">// Define another operator</span>
+<span class="w">        </span><span class="p">}</span>
+<span class="w">    </span><span class="p">]</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+</div></blockquote>
+</section>
+</section>
+<section id="property-operators">
+<h3>Property Operators<a class="headerlink" href="#property-operators" title="Link to this heading">#</a></h3>
+<p id="id4">These operators are used to extract the characteristics of schema properties; such as the value associated with the property in
+the configuration and checking for the possibility that the property is null, or in the case of an array property, the size of
+the array or the value of an array element.</p>
+<p>All property operators have a field called ‘<strong>relativePath</strong>’, where the path to the desired property is defined by a list of
+strings.</p>
+<p>The property element to be extracted is defined through the field ‘<strong>propertyElement</strong>’, whose content is a string. The property
+elements are defined below:</p>
+<section id="value-of-the-property">
+<h4>Value of the Property<a class="headerlink" href="#value-of-the-property" title="Link to this heading">#</a></h4>
+<blockquote>
+<div><p>Extracts the value associated with the property in the configuration. The value of the ‘<strong>propertyElement</strong>’ field is <strong>“value”</strong>.</p>
+<p>Example:</p>
+<div class="highlight-json notranslate"><div class="highlight"><pre><span></span><span class="p">{</span>
+<span class="w">    </span><span class="nt">"operatorType"</span><span class="p">:</span><span class="w"> </span><span class="s2">"property"</span><span class="p">,</span>
+<span class="w">    </span><span class="nt">"propertyElement"</span><span class="p">:</span><span class="w"> </span><span class="s2">"value"</span><span class="p">,</span>
+<span class="w">    </span><span class="nt">"relativePath"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span>
+<span class="w">        </span><span class="s2">"path"</span><span class="p">,</span>
+<span class="w">        </span><span class="s2">"to"</span><span class="p">,</span>
+<span class="w">        </span><span class="s2">"property"</span>
+<span class="w">    </span><span class="p">]</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+</div></blockquote>
+</section>
+<section id="item-of-the-property">
+<h4>Item of the Property<a class="headerlink" href="#item-of-the-property" title="Link to this heading">#</a></h4>
+<blockquote>
+<div><p>Extracts the value of the desired item of the property in the configuration. The value of the ‘<strong>propertyElement</strong>’ field is <strong>“item”</strong>.</p>
+<p>The selection of the item is defined through the ‘<strong>selectedItem</strong>’ field, which can be defined as a positive integer or as an operator.</p>
+<p>Example:</p>
+<div class="highlight-json notranslate"><div class="highlight"><pre><span></span><span class="p">{</span>
+<span class="w">    </span><span class="nt">"operatorType"</span><span class="p">:</span><span class="w"> </span><span class="s2">"property"</span><span class="p">,</span>
+<span class="w">    </span><span class="nt">"propertyElement"</span><span class="p">:</span><span class="w"> </span><span class="s2">"item"</span><span class="p">,</span>
+<span class="w">    </span><span class="nt">"relativePath"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span>
+<span class="w">        </span><span class="s2">"path"</span><span class="p">,</span>
+<span class="w">        </span><span class="s2">"to"</span><span class="p">,</span>
+<span class="w">        </span><span class="s2">"property"</span>
+<span class="w">    </span><span class="p">],</span>
+<span class="w">    </span><span class="nt">"selectedItem"</span><span class="p">:</span><span class="w"> </span><span class="mi">2</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<div class="highlight-json notranslate"><div class="highlight"><pre><span></span><span class="p">{</span>
+<span class="w">    </span><span class="nt">"operatorType"</span><span class="p">:</span><span class="w"> </span><span class="s2">"property"</span><span class="p">,</span>
+<span class="w">    </span><span class="nt">"propertyElement"</span><span class="p">:</span><span class="w"> </span><span class="s2">"item"</span><span class="p">,</span>
+<span class="w">    </span><span class="nt">"relativePath"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span>
+<span class="w">        </span><span class="s2">"path"</span><span class="p">,</span>
+<span class="w">        </span><span class="s2">"to"</span><span class="p">,</span>
+<span class="w">        </span><span class="s2">"property"</span>
+<span class="w">    </span><span class="p">],</span>
+<span class="w">    </span><span class="nt">"selectedItem"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+<span class="w">        </span><span class="c1">// Define another operator</span>
+<span class="w">    </span><span class="p">}</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+</div></blockquote>
+</section>
+<section id="size-of-the-property">
+<h4>Size of the Property<a class="headerlink" href="#size-of-the-property" title="Link to this heading">#</a></h4>
+<blockquote>
+<div><p>Extracts the size of the property defined in the configuration. The value of the ‘<strong>propertyElement</strong>’ field is <strong>“size”</strong>.</p>
+<p>Example:</p>
+<div class="highlight-json notranslate"><div class="highlight"><pre><span></span><span class="p">{</span>
+<span class="w">    </span><span class="nt">"operatorType"</span><span class="p">:</span><span class="w"> </span><span class="s2">"property"</span><span class="p">,</span>
+<span class="w">    </span><span class="nt">"propertyElement"</span><span class="p">:</span><span class="w"> </span><span class="s2">"size"</span><span class="p">,</span>
+<span class="w">    </span><span class="nt">"relativePath"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span>
+<span class="w">        </span><span class="s2">"path"</span><span class="p">,</span>
+<span class="w">        </span><span class="s2">"to"</span><span class="p">,</span>
+<span class="w">        </span><span class="s2">"property"</span>
+<span class="w">    </span><span class="p">]</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+</div></blockquote>
+</section>
+<section id="null-status-of-the-property">
+<h4>Null Status of the Property<a class="headerlink" href="#null-status-of-the-property" title="Link to this heading">#</a></h4>
+<blockquote>
+<div><div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>Always returns a boolean value</p>
+</div>
+<p>Extracts the possibility of being or not being null of the property. The value of the ‘<strong>propertyElement</strong>’ field is <strong>“nullProperty”</strong>.</p>
+<p>Example:</p>
+<div class="highlight-json notranslate"><div class="highlight"><pre><span></span><span class="p">{</span>
+<span class="w">    </span><span class="nt">"operatorType"</span><span class="p">:</span><span class="w"> </span><span class="s2">"property"</span><span class="p">,</span>
+<span class="w">    </span><span class="nt">"propertyElement"</span><span class="p">:</span><span class="w"> </span><span class="s2">"nullProperty"</span><span class="p">,</span>
+<span class="w">    </span><span class="nt">"relativePath"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span>
+<span class="w">        </span><span class="s2">"path"</span><span class="p">,</span>
+<span class="w">        </span><span class="s2">"to"</span><span class="p">,</span>
+<span class="w">        </span><span class="s2">"property"</span>
+<span class="w">    </span><span class="p">]</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+</div></blockquote>
+</section>
+</section>
+<section id="constant-operators">
+<h3>Constant Operators<a class="headerlink" href="#constant-operators" title="Link to this heading">#</a></h3>
+<p id="id5">These operators are used to return constant values independent of the configuration used. The constant value is defined through
+the ‘<strong>value</strong>’ field, which takes values of a basic type such as an integer, a string, a boolean or a floating point number.</p>
+<p>Example:</p>
+<div class="highlight-json notranslate"><div class="highlight"><pre><span></span><span class="p">{</span>
+<span class="w">    </span><span class="nt">"operatorType"</span><span class="p">:</span><span class="w"> </span><span class="s2">"constant"</span><span class="p">,</span>
+<span class="w">    </span><span class="nt">"value"</span><span class="p">:</span><span class="w"> </span><span class="mi">6</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<div class="highlight-json notranslate"><div class="highlight"><pre><span></span><span class="p">{</span>
+<span class="w">    </span><span class="nt">"operatorType"</span><span class="p">:</span><span class="w"> </span><span class="s2">"constant"</span><span class="p">,</span>
+<span class="w">    </span><span class="nt">"value"</span><span class="p">:</span><span class="w"> </span><span class="s2">"string"</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<div class="highlight-json notranslate"><div class="highlight"><pre><span></span><span class="p">{</span>
+<span class="w">    </span><span class="nt">"operatorType"</span><span class="p">:</span><span class="w"> </span><span class="s2">"constant"</span><span class="p">,</span>
+<span class="w">    </span><span class="nt">"value"</span><span class="p">:</span><span class="w"> </span><span class="kc">false</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<div class="highlight-json notranslate"><div class="highlight"><pre><span></span><span class="p">{</span>
+<span class="w">    </span><span class="nt">"operatorType"</span><span class="p">:</span><span class="w"> </span><span class="s2">"constant"</span><span class="p">,</span>
+<span class="w">    </span><span class="nt">"value"</span><span class="p">:</span><span class="w"> </span><span class="mf">5.7</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+</section>
+<section id="arithmetical-operators">
+<h3>Arithmetical Operators<a class="headerlink" href="#arithmetical-operators" title="Link to this heading">#</a></h3>
+<p id="id6">In JSON Schema, arithmetical operators are used to perform basic arithmetic operations and define numeric constraints. Each
+arithmetic operation consists of two parts: the left-hand side (<cite>lhs</cite>) and the right-hand side (<cite>rhs</cite>). On both sides another
+operator must be defined.</p>
+<p>The type of the arithmetic operator is defined by the field ‘<strong>arithmeticalType</strong>’, whose content is a string. The arithmetic
+operator types are defined below:</p>
+<section id="subtract">
+<h4>Subtract (-)<a class="headerlink" href="#subtract" title="Link to this heading">#</a></h4>
+<blockquote>
+<div><p>The subtract operator is used to subtract one number from another. The value of the ‘<strong>arithmeticalType</strong>’ field is <strong>“subtract”</strong>.</p>
+<p>Example:</p>
+<div class="highlight-json notranslate"><div class="highlight"><pre><span></span><span class="p">{</span>
+<span class="w">    </span><span class="nt">"operatorType"</span><span class="p">:</span><span class="w"> </span><span class="s2">"arithmetical"</span><span class="p">,</span>
+<span class="w">    </span><span class="nt">"arithmeticalType"</span><span class="p">:</span><span class="w"> </span><span class="s2">"subtract"</span><span class="p">,</span>
+<span class="w">    </span><span class="nt">"lhs"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+<span class="w">        </span><span class="c1">// Define another operator</span>
+<span class="w">    </span><span class="p">},</span>
+<span class="w">    </span><span class="nt">"rhs"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+<span class="w">        </span><span class="c1">// Define another operator</span>
+<span class="w">    </span><span class="p">}</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+</div></blockquote>
+</section>
+<section id="addition">
+<h4>Addition (+)<a class="headerlink" href="#addition" title="Link to this heading">#</a></h4>
+<blockquote>
+<div><p>The addition operator is used to sum two numbers. The value of the ‘<strong>arithmeticalType</strong>’ field is <strong>“addition”</strong>.</p>
+<p>Example:</p>
+<div class="highlight-json notranslate"><div class="highlight"><pre><span></span><span class="p">{</span>
+<span class="w">    </span><span class="nt">"operatorType"</span><span class="p">:</span><span class="w"> </span><span class="s2">"arithmetical"</span><span class="p">,</span>
+<span class="w">    </span><span class="nt">"arithmeticalType"</span><span class="p">:</span><span class="w"> </span><span class="s2">"addition"</span><span class="p">,</span>
+<span class="w">    </span><span class="nt">"lhs"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+<span class="w">        </span><span class="c1">// Define another operator</span>
+<span class="w">    </span><span class="p">},</span>
+<span class="w">    </span><span class="nt">"rhs"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+<span class="w">        </span><span class="c1">// Define another operator</span>
+<span class="w">    </span><span class="p">}</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+</div></blockquote>
+</section>
+<section id="multiply">
+<h4>Multiply (*)<a class="headerlink" href="#multiply" title="Link to this heading">#</a></h4>
+<blockquote>
+<div><p>The multiply operator is used to multiply two numbers. The value of the ‘<strong>arithmeticalType</strong>’ field is <strong>“multiply”</strong>.</p>
+<p>Example:</p>
+<div class="highlight-json notranslate"><div class="highlight"><pre><span></span><span class="p">{</span>
+<span class="w">    </span><span class="nt">"operatorType"</span><span class="p">:</span><span class="w"> </span><span class="s2">"arithmetical"</span><span class="p">,</span>
+<span class="w">    </span><span class="nt">"arithmeticalType"</span><span class="p">:</span><span class="w"> </span><span class="s2">"multiply"</span><span class="p">,</span>
+<span class="w">    </span><span class="nt">"lhs"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+<span class="w">        </span><span class="c1">// Define another operator</span>
+<span class="w">    </span><span class="p">},</span>
+<span class="w">    </span><span class="nt">"rhs"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+<span class="w">        </span><span class="c1">// Define another operator</span>
+<span class="w">    </span><span class="p">}</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+</div></blockquote>
+</section>
+<section id="division">
+<h4>Division (/)<a class="headerlink" href="#division" title="Link to this heading">#</a></h4>
+<blockquote>
+<div><p>The division operator is used to divide one number by another. The value of the ‘<strong>arithmeticalType</strong>’ field is <strong>“division”</strong>.</p>
+<p>Example:</p>
+<div class="highlight-json notranslate"><div class="highlight"><pre><span></span><span class="p">{</span>
+<span class="w">    </span><span class="nt">"operatorType"</span><span class="p">:</span><span class="w"> </span><span class="s2">"arithmetical"</span><span class="p">,</span>
+<span class="w">    </span><span class="nt">"arithmeticalType"</span><span class="p">:</span><span class="w"> </span><span class="s2">"division"</span><span class="p">,</span>
+<span class="w">    </span><span class="nt">"lhs"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+<span class="w">        </span><span class="c1">// Define another operator</span>
+<span class="w">    </span><span class="p">},</span>
+<span class="w">    </span><span class="nt">"rhs"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+<span class="w">        </span><span class="c1">// Define another operator</span>
+<span class="w">    </span><span class="p">}</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+</div></blockquote>
+</section>
+<section id="module">
+<h4>Module (%)<a class="headerlink" href="#module" title="Link to this heading">#</a></h4>
+<blockquote>
+<div><p>The module operator is used to find the remainder of the division of one number by another. The value of the ‘<strong>arithmeticalType</strong>’ field is <strong>“module”</strong>.</p>
+<p>Example:</p>
+<div class="highlight-json notranslate"><div class="highlight"><pre><span></span><span class="p">{</span>
+<span class="w">    </span><span class="nt">"operatorType"</span><span class="p">:</span><span class="w"> </span><span class="s2">"arithmetical"</span><span class="p">,</span>
+<span class="w">    </span><span class="nt">"arithmeticalType"</span><span class="p">:</span><span class="w"> </span><span class="s2">"module"</span><span class="p">,</span>
+<span class="w">    </span><span class="nt">"lhs"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+<span class="w">        </span><span class="c1">// Define another operator</span>
+<span class="w">    </span><span class="p">},</span>
+<span class="w">    </span><span class="nt">"rhs"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+<span class="w">        </span><span class="c1">// Define another operator</span>
+<span class="w">    </span><span class="p">}</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+</div></blockquote>
+</section>
+</section>
+</section>
+<section id="conditionals-of-json-schema">
+<h2>Conditionals of JSON Schema<a class="headerlink" href="#conditionals-of-json-schema" title="Link to this heading">#</a></h2>
+<p id="id7">Conditionals in JSON schemas function as schema modifiers based on the values of the configuration used in the validation. Each
+conditional is defined by a dictionary (or object). These conditionals, like a conditional in programming, have three distinct
+parts, which are defined in three fields:</p>
+<section id="condition">
+<h3>Condition<a class="headerlink" href="#condition" title="Link to this heading">#</a></h3>
+<blockquote>
+<div><p>The ‘<strong>condition</strong>’ field is in charge of deciding which block of the conditional will modify the schema,
+the <a class="reference internal" href="#id8"><span class="std std-ref">Then Block</span></a> or the <a class="reference internal" href="#id9"><span class="std std-ref">Else Block</span></a>.</p>
+<p>This field is defined by the use of operators. The result of the operator resolution shall be evaluated as a condition. For more
+information on operators, see the <a class="reference internal" href="#id1"><span class="std std-ref">Operators of JSON Schema</span></a> section.</p>
+</div></blockquote>
+</section>
+<section id="then-block">
+<h3>Then Block<a class="headerlink" href="#then-block" title="Link to this heading">#</a></h3>
+<blockquote id="id8">
+<div><p>The block defined in the ‘<strong>then</strong>’ field shall be applied in case the conditional condition is true.</p>
+<p>This block is defined by a dictionary (or object), which has three fields to be defined, as follows:</p>
+<ul>
+<li><p><strong>workingPath</strong>:</p>
+<blockquote>
+<div><div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>The ‘<strong>workingPath</strong>’ field is optional. Its default value is the height within the scheme in which the conditional is defined.</p>
+</div>
+<p>It is defined as a list of strings, which indicates the relative path to the current position within the schema where the modification is to be applied.</p>
+<p>This field is necessary because it may be the case that the zone where the modification is to be applied is at a different height from the zone where the values for the resolution of the condition are obtained.</p>
+</div></blockquote>
+</li>
+<li><p><strong>add</strong>:</p>
+<blockquote>
+<div><p>The ‘<strong>add</strong>’ field is defined as a dictionary (or object), in which different fields are defined depending on the additions to be made to the schema. The available modification fields are the following:</p>
+<ul>
+<li><p><strong>nullProperty</strong>:</p>
+<blockquote>
+<div><p>The purpose of this field is to activate the possibility of a schema element to have a null value in the configuration. The way to define this field is through a list of strings indicating the names of the affected properties.</p>
+</div></blockquote>
+</li>
+</ul>
+</div></blockquote>
+</li>
+<li><p><strong>remove</strong>:</p>
+<blockquote>
+<div><p>The ‘<strong>remove</strong>’ field is defined as a dictionary (or object), in which different fields are defined depending on the deletions to be made in the schema. The following modification fields are available:</p>
+<ul>
+<li><p><strong>nullProperty</strong>:</p>
+<blockquote>
+<div><p>The purpose of this field is to disable the possibility that a schema element can take a null value in the configuration. The way to define this field is through a list of strings indicating the names of the affected properties.</p>
+</div></blockquote>
+</li>
+</ul>
+</div></blockquote>
+</li>
+</ul>
+</div></blockquote>
+</section>
+<section id="else-block">
+<h3>Else Block<a class="headerlink" href="#else-block" title="Link to this heading">#</a></h3>
+<blockquote id="id9">
+<div><p>The block defined in the “<strong>else</strong>” field shall be applied in case the conditional condition is false.</p>
+<p>The structure of this block is exactly the same as in the <a class="reference internal" href="#id8"><span class="std std-ref">Then Block</span></a> section.</p>
+</div></blockquote>
+<p>In the case of having defined a pattern-based conditional, the above structure is maintained in its entirety except for a single
+addition, the possibility of using the value that matches the pattern.</p>
+<p>This value can be used within the path defined by the ‘<strong>workingPath</strong>’ field as well as in the schema modification fields, such
+as ‘<strong>nullProperty</strong>’. To use this value, the string <strong>“&lt;pattern&gt;”</strong> must be placed, which will be replaced by the value matching
+the pattern automatically within the validator.</p>
+</section>
+</section>
+<section id="conditions-of-json-schema">
+<h2>Conditions of JSON Schema<a class="headerlink" href="#conditions-of-json-schema" title="Link to this heading">#</a></h2>
+<p id="id10">Conditions in JSON schemas are used to define certain restrictions that warn the user with errors or warnings of possible
+malfunctioning of the validation due to the configuration values used.</p>
+<p>Al igual que sucede con los condicionales, estas condiciones se definen como un diccionario (o objeto) en el cuál existe un campo ‘<strong>condition</strong>’, cuya estructura es exactamente igual a la del campo ‘condition’ de los condicionales, la cual se puede ver en la sección Condition; y un campo donde se define la advertencia. Esta campo de advertencia se define como una cadena, que representa el mensaje a mostrar al usuario. Si la advertencia es de error se define el campo ‘<strong>error</strong>’, mientras que si la advertencia es de aviso se define el campo ‘<strong>warning</strong>’.</p>
+</section>
+</section>
+
+
+                </article>
+              
+              
+              
+              
+              
+                <footer class="prev-next-footer d-print-none">
+                  
+<div class="prev-next-area">
+    <a class="left-prev"
+       href="element_types/tuple.html"
+       title="previous page">
+      <i class="fa-solid fa-angle-left"></i>
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">previous</p>
+        <p class="prev-next-title">Tuple Type</p>
+      </div>
+    </a>
+    <a class="right-next"
+       href="../../reference/api.html"
+       title="next page">
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">next</p>
+        <p class="prev-next-title">API</p>
+      </div>
+      <i class="fa-solid fa-angle-right"></i>
+    </a>
+</div>
+                </footer>
+              
+            </div>
+            
+            
+              
+                <dialog id="pst-secondary-sidebar-modal"></dialog>
+                <div id="pst-secondary-sidebar" class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
+
+
+  <div class="sidebar-secondary-item">
+<div
+    id="pst-page-navigation-heading-2"
+    class="page-toc tocsection onthispage">
+    <i class="fa-solid fa-list"></i> On this page
+  </div>
+  <nav id="pst-page-toc-nav" class="page-toc" aria-labelledby="pst-page-navigation-heading-2">
+    <ul class="pst-show_toc_level nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#operators-of-json-schema">Operators of JSON Schema</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#equality-and-comparison-operators">Equality and Comparison Operators</a><ul class="nav section-nav flex-column">
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#equal">Equal (==)</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#not-equal">Not Equal (!=)</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#less-than">Less Than (&lt;)</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#less-than-or-equal">Less Than or Equal (&lt;=)</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#greater-than">Greater Than (&gt;)</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#greater-than-or-equal">Greater Than or Equal (&gt;=)</a></li>
+</ul>
+</li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#logical-operators">Logical Operators</a><ul class="nav section-nav flex-column">
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#negation-not">Negation (not)</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#conjunction-and">Conjunction (and)</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#disjunction-or">Disjunction (or)</a></li>
+</ul>
+</li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#property-operators">Property Operators</a><ul class="nav section-nav flex-column">
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#value-of-the-property">Value of the Property</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#item-of-the-property">Item of the Property</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#size-of-the-property">Size of the Property</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#null-status-of-the-property">Null Status of the Property</a></li>
+</ul>
+</li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#constant-operators">Constant Operators</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#arithmetical-operators">Arithmetical Operators</a><ul class="nav section-nav flex-column">
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#subtract">Subtract (-)</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#addition">Addition (+)</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#multiply">Multiply (*)</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#division">Division (/)</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#module">Module (%)</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#conditionals-of-json-schema">Conditionals of JSON Schema</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#condition">Condition</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#then-block">Then Block</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#else-block">Else Block</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#conditions-of-json-schema">Conditions of JSON Schema</a></li>
+</ul>
+  </nav></div>
+
+  <div class="sidebar-secondary-item">
+
+  <div class="tocsection sourcelink">
+    <a href="../../_sources/developer_guide/json_validator/advanced_features.rst.txt">
+      <i class="fa-solid fa-file-lines"></i> Show Source
+    </a>
+  </div>
+</div>
+
+</div></div>
+              
+            
+          </div>
+          <footer class="bd-footer-content">
+            
+          </footer>
+        
+      </main>
+    </div>
+  </div>
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script defer src="../../_static/scripts/bootstrap.js?digest=a95f357e85573c9b56d5"></script>
+<script defer src="../../_static/scripts/pydata-sphinx-theme.js?digest=a95f357e85573c9b56d5"></script>
+
+  <footer class="bd-footer">
+<div class="bd-footer__inner bd-page-width">
+  
+    <div class="footer-items__start">
+      
+        <div class="footer-item">
+
+  <p class="copyright">
+    
+      © Copyright 2025, Jordi Moya Laraño.
+      <br/>
+    
+  </p>
+</div>
+      
+        <div class="footer-item">
+
+  <p class="sphinx-version">
+    Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 8.1.3.
+    <br/>
+  </p>
+</div>
+      
+    </div>
+  
+  
+  
+    <div class="footer-items__end">
+      
+        <div class="footer-item">
+<p class="theme-version">
+  <!-- # L10n: Setting the PST URL as an argument as this does not need to be localized -->
+  Built with the <a href="https://pydata-sphinx-theme.readthedocs.io/en/stable/index.html">PyData Sphinx Theme</a> 0.19.0.
+</p></div>
+      
+    </div>
+  
+</div>
+
+  </footer>
+  </body>
+</html>

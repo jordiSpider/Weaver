@@ -32,6 +32,7 @@
 
     <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=8f2a1f02" />
     <link rel="stylesheet" type="text/css" href="_static/sphinx-design.min.css?v=95c83b7e" />
+    <link rel="stylesheet" type="text/css" href="_static/landing.css?v=606e5776" />
   
   <!-- So that users can add custom icons -->
   <script defer src="_static/scripts/fontawesome.js?digest=a95f357e85573c9b56d5"></script>
@@ -45,6 +46,7 @@
     <script src="_static/design-tabs.js?v=f930bc37"></script>
     <script>DOCUMENTATION_OPTIONS.pagename = 'documentation-site-maintenance';</script>
     <script>DOCUMENTATION_OPTIONS.search_as_you_type = false;</script>
+    <link rel="icon" href="_static/favicon.ico"/>
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
     <link rel="prev" title="Weaver Project" href="index.html" />
@@ -122,8 +124,8 @@
       
     
     
-    <img src="_static/logo.png" class="logo__image only-light" alt="Weaver Project - Home"/>
-    <img src="_static/logo.png" class="logo__image only-dark pst-js-only" alt="Weaver Project - Home"/>
+    <img src="_static/weaver-logo-horizontal.svg" class="logo__image only-light" alt="Weaver Project - Home"/>
+    <img src="_static/weaver-logo-horizontal-dark.svg" class="logo__image only-dark pst-js-only" alt="Weaver Project - Home"/>
   
   
 </a></div>
@@ -338,7 +340,7 @@ source/weaver-manager/&lt;version&gt;/_templates/
 </pre></div>
 </div>
 <p>Version directory names are normalized release tags: remove the leading <code class="docutils literal notranslate"><span class="pre">v</span></code> but retain the rest of the tag. For example, <code class="docutils literal notranslate"><span class="pre">v26.10.04-rc.1</span></code> maps to <code class="docutils literal notranslate"><span class="pre">source/weaver/26.10.04-rc.1/</span></code>. Manager tags can have their own suffix, such as <code class="docutils literal notranslate"><span class="pre">v1.0.0-manager</span></code> mapping to <code class="docutils literal notranslate"><span class="pre">source/weaver-manager/1.0.0-manager/</span></code>.</p>
-<p>Each version directory owns its templates and static assets, including its logo. Changes to one version therefore do not alter another version’s files.</p>
+<p>Each version directory owns its templates and static assets, including its logo. Changes to one version therefore do not alter another version’s files. The landing page uses its own branding in <code class="docutils literal notranslate"><span class="pre">source/landing/_static/branding/</span></code> and its own licenses in <code class="docutils literal notranslate"><span class="pre">source/landing/licenses/</span></code>; it does not load branding from product versions. Its product cards use the landing’s Weaver and Weaver Manager icons. The <a class="reference external" href="bootstrap-icons/LICENSE">Bootstrap Icons license</a> is published with the landing page.</p>
 <p>Generated files are stored under <code class="docutils literal notranslate"><span class="pre">docs/</span></code>:</p>
 <div class="highlight-text notranslate"><div class="highlight"><pre><span></span>docs/index.html
 docs/weaver/versions.json

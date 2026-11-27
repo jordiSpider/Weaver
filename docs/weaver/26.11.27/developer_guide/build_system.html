@@ -1,0 +1,990 @@
+
+<!DOCTYPE html>
+
+
+<html lang="en" data-content_root="../" >
+
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>Build System &#8212; Weaver  documentation</title>
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "";
+  </script>
+  <!--
+    this give us a css class that will be invisible only if js is disabled
+  -->
+  <noscript>
+    <style>
+      .pst-js-only { display: none !important; }
+
+    </style>
+  </noscript>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="../_static/styles/theme.css?digest=a95f357e85573c9b56d5" rel="stylesheet" />
+<link href="../_static/styles/pydata-sphinx-theme.css?digest=a95f357e85573c9b56d5" rel="stylesheet" />
+
+    <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=8f2a1f02" />
+    <link rel="stylesheet" type="text/css" href="../_static/branding/branding.css?v=27f85c0d" />
+  
+  <!-- So that users can add custom icons -->
+  <script defer src="../_static/scripts/fontawesome.js?digest=a95f357e85573c9b56d5"></script>
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="../_static/scripts/bootstrap.js?digest=a95f357e85573c9b56d5" />
+<link rel="preload" as="script" href="../_static/scripts/pydata-sphinx-theme.js?digest=a95f357e85573c9b56d5" />
+
+    <script src="../_static/documentation_options.js?v=5929fcd5"></script>
+    <script src="../_static/doctools.js?v=9bcbadda"></script>
+    <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script>DOCUMENTATION_OPTIONS.pagename = 'developer_guide/build_system';</script>
+    <script>DOCUMENTATION_OPTIONS.search_as_you_type = false;</script>
+    <link rel="icon" href="../_static/favicon.ico"/>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="Adding Features" href="adding_features.html" />
+    <link rel="prev" title="Troubleshooting" href="../user_guide/troubleshooting.html" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="docsearch:language" content="en"/>
+  <meta name="docsearch:version" content="26.11.18" />
+  
+    
+    <script src="../_static/searchtools.js"></script>
+    <script src="../_static/language_data.js"></script>
+    <script src="../searchindex.js"></script>
+  
+<link rel="icon" type="image/svg+xml" href="../_static/branding/favicon/favicon.svg">
+<link rel="icon" type="image/png" sizes="96x96" href="../_static/branding/favicon/favicon-96x96.png">
+<link rel="apple-touch-icon" sizes="180x180" href="../_static/branding/favicon/apple-touch-icon.png">
+<link rel="manifest" href="../_static/branding/favicon/site.webmanifest">
+
+  </head>
+  <body data-default-mode="">
+  
+  
+  <div id="pst-skip-link" class="skip-link d-print-none"><a href="#main-content">Skip to main content</a></div>
+
+  
+  <div id="pst-scroll-pixel-helper"></div>
+  
+  <button type="button" class="btn rounded-pill" id="pst-back-to-top">
+    <i class="fa-solid fa-arrow-up"></i>Back to top</button>
+  
+  
+  
+  
+  <dialog id="pst-search-dialog">
+    
+<form class="bd-search d-flex align-items-center"
+      action="../search.html"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         placeholder="Search the docs ..."
+         aria-label="Search the docs ..."
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form>
+  </dialog>
+
+  <div class="pst-async-banner-revealer d-none">
+  <aside id="bd-header-version-warning" class="d-none d-print-none" aria-label="Version warning"></aside>
+</div>
+
+  
+    <header id="pst-header" class="bd-header navbar navbar-expand-lg bd-navbar d-print-none">
+<div class="bd-header__inner bd-page-width">
+  <button class="pst-navbar-icon sidebar-toggle primary-toggle" aria-label="Site navigation">
+    <span class="fa-solid fa-bars"></span>
+  </button>
+  
+  
+  <div class="col-lg-3 navbar-header-items__start">
+    
+      <div class="navbar-item">
+
+  
+    
+  
+
+<a class="navbar-brand logo" href="../index.html">
+  
+  
+  
+  
+  
+    
+    
+      
+    
+    
+    <img src="../_static/weaver-logo-horizontal.svg" class="logo__image only-light" alt="Weaver  documentation - Home"/>
+    <img src="../_static/weaver-logo-horizontal-dark.svg" class="logo__image only-dark pst-js-only" alt="Weaver  documentation - Home"/>
+  
+  
+</a></div>
+    
+  </div>
+  
+  <div class="col-lg-9 navbar-header-items">
+    
+    <div class="me-auto navbar-header-items__center">
+      
+        <div class="navbar-item">
+<nav>
+  <ul class="bd-navbar-elements navbar-nav">
+    
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../user_guide/installation.html">
+    Installation
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../user_guide/configuration.html">
+    Configuration
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../user_guide/usage.html">
+    Usage
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../user_guide/examples.html">
+    Examples
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../user_guide/troubleshooting.html">
+    Troubleshooting
+  </a>
+</li>
+
+            <li class="nav-item dropdown">
+                <button class="btn dropdown-toggle nav-item" type="button"
+                data-bs-toggle="dropdown" aria-expanded="false"
+                aria-controls="pst-nav-more-links">
+                    More
+                </button>
+                <ul id="pst-nav-more-links" class="dropdown-menu">
+                    
+<li class=" current active">
+  <a class="nav-link dropdown-item nav-internal" href="#">
+    Build System
+  </a>
+</li>
+
+
+<li class=" ">
+  <a class="nav-link dropdown-item nav-internal" href="adding_features.html">
+    Adding Features
+  </a>
+</li>
+
+
+<li class=" ">
+  <a class="nav-link dropdown-item nav-internal" href="contribution.html">
+    Contribution
+  </a>
+</li>
+
+
+<li class=" ">
+  <a class="nav-link dropdown-item nav-internal" href="code_style.html">
+    Code Style
+  </a>
+</li>
+
+
+<li class=" ">
+  <a class="nav-link dropdown-item nav-internal" href="json_validator.html">
+    JSON validator
+  </a>
+</li>
+
+
+<li class=" ">
+  <a class="nav-link dropdown-item nav-internal" href="../reference/api.html">
+    API
+  </a>
+</li>
+
+
+<li class=" ">
+  <a class="nav-link dropdown-item nav-internal" href="../testing/overview.html">
+    Overview
+  </a>
+</li>
+
+
+<li class=" ">
+  <a class="nav-link dropdown-item nav-internal" href="../testing/unit_tests.html">
+    Unit Tests
+  </a>
+</li>
+
+
+<li class=" ">
+  <a class="nav-link dropdown-item nav-internal" href="../testing/ci_cd.html">
+    Continuous Integration & Continuous Deployment (CI/CD)
+  </a>
+</li>
+
+                </ul>
+            </li>
+            
+  </ul>
+</nav></div>
+      
+    </div>
+    
+    
+    <div class="navbar-header-items__end">
+      
+        <div class="navbar-item navbar-persistent--container">
+          
+
+<button class="btn search-button-field search-button__button pst-js-only" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+ <i class="fa-solid fa-magnifying-glass"></i>
+ <span class="search-button__default-text">Search</span>
+ <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+</button>
+        </div>
+      
+      
+        <div class="navbar-item"><div class="dropdown">
+  <button class="btn btn-sm btn-outline-secondary dropdown-toggle" type="button" id="version-switcher" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Select version" style="color: #198754 !important">
+    26.11.27 (stable, latest)
+  </button>
+  <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="version-switcher">
+    <li>
+      <a class="dropdown-item active" style="color: #198754 !important" href="../index.html">
+        26.11.27 (stable, latest)
+      </a>
+    </li>
+    <li>
+      <a class="dropdown-item" style="color: #0d6efd !important" href="../../26.11.18/index.html">
+        26.11.18 (stable)
+      </a>
+    </li>
+    </ul>
+</div></div>
+      
+        <div class="navbar-item"><div class="dropdown">
+  <button class="btn btn-sm btn-outline-secondary dropdown-toggle" type="button" id="language-switcher" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Select language">
+    en
+  </button>
+  <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="language-switcher">
+    
+    <li>
+      <a class="dropdown-item active" href="index.html">
+        en
+      </a>
+    </li>
+    
+  </ul>
+</div></div>
+      
+        <div class="navbar-item">
+
+<div class="theme-switch-container dropdown pst-js-only" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Color mode">
+  <button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button dropdown-toggle" aria-label="Color mode" data-bs-toggle="dropdown">
+    <i class="theme-switch fa-solid fa-sun fa-lg fa-fw" data-mode="light" title="Light"></i>
+    <i class="theme-switch fa-solid fa-moon fa-lg fa-fw" data-mode="dark" title="Dark"></i>
+    <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg fa-fw" data-mode="auto" title="System Settings"></i>
+  </button>
+  <ul class="dropdown-menu dropdown-menu-end">
+    <li><button class="dropdown-item d-flex align-items-center theme-change-button" data-mode="auto"><i class="fa-solid fa-circle-half-stroke fa-lg fa-fw me-1"></i>System Settings</button></li>
+    <li><button class="dropdown-item d-flex align-items-center theme-change-button" data-mode="light"><i class="fa-solid fa-sun fa-lg fa-fw me-1"></i>Light</button></li>
+    <li><button class="dropdown-item d-flex align-items-center theme-change-button" data-mode="dark"><i class="fa-solid fa-moon fa-lg fa-fw me-1"></i>Dark</button></li>
+  </ul>
+</div></div>
+      
+    </div>
+    
+  </div>
+  
+  
+    <div class="navbar-persistent--mobile">
+
+<button class="btn search-button-field search-button__button pst-js-only" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+ <i class="fa-solid fa-magnifying-glass"></i>
+ <span class="search-button__default-text">Search</span>
+ <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+</button>
+    </div>
+  
+
+  
+    <button class="pst-navbar-icon sidebar-toggle secondary-toggle" aria-label="On this page">
+      <span class="fa-solid fa-outdent"></span>
+    </button>
+  
+</div>
+
+    </header>
+  
+
+  <div class="bd-container">
+    <div class="bd-container__inner bd-page-width">
+      
+      
+      
+      <dialog id="pst-primary-sidebar-modal"></dialog>
+      <div id="pst-primary-sidebar" class="bd-sidebar-primary bd-sidebar hide-on-wide">
+        
+
+  
+  <div class="sidebar-header-items sidebar-primary__section">
+    
+    
+      <div class="sidebar-header-items__center">
+        
+          
+          
+            <div class="navbar-item">
+<nav>
+  <ul class="bd-navbar-elements navbar-nav">
+    
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../user_guide/installation.html">
+    Installation
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../user_guide/configuration.html">
+    Configuration
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../user_guide/usage.html">
+    Usage
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../user_guide/examples.html">
+    Examples
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../user_guide/troubleshooting.html">
+    Troubleshooting
+  </a>
+</li>
+
+
+<li class="nav-item current active">
+  <a class="nav-link nav-internal" href="#">
+    Build System
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="adding_features.html">
+    Adding Features
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="contribution.html">
+    Contribution
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="code_style.html">
+    Code Style
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="json_validator.html">
+    JSON validator
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../reference/api.html">
+    API
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../testing/overview.html">
+    Overview
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../testing/unit_tests.html">
+    Unit Tests
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../testing/ci_cd.html">
+    Continuous Integration & Continuous Deployment (CI/CD)
+  </a>
+</li>
+
+  </ul>
+</nav></div>
+          
+        
+      </div>
+    
+    
+    
+      <div class="sidebar-header-items__end">
+        
+          <div class="navbar-item"><div class="dropdown">
+  <button class="btn btn-sm btn-outline-secondary dropdown-toggle" type="button" id="version-switcher" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Select version" style="color: #198754 !important">
+    26.11.27 (stable, latest)
+  </button>
+  <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="version-switcher">
+    <li>
+      <a class="dropdown-item active" style="color: #198754 !important" href="../index.html">
+        26.11.27 (stable, latest)
+      </a>
+    </li>
+    <li>
+      <a class="dropdown-item" style="color: #0d6efd !important" href="../../26.11.18/index.html">
+        26.11.18 (stable)
+      </a>
+    </li>
+    </ul>
+</div></div>
+        
+          <div class="navbar-item"><div class="dropdown">
+  <button class="btn btn-sm btn-outline-secondary dropdown-toggle" type="button" id="language-switcher" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Select language">
+    en
+  </button>
+  <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="language-switcher">
+    
+    <li>
+      <a class="dropdown-item active" href="index.html">
+        en
+      </a>
+    </li>
+    
+  </ul>
+</div></div>
+        
+          <div class="navbar-item">
+
+<div class="theme-switch-container dropdown pst-js-only" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Color mode">
+  <button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button dropdown-toggle" aria-label="Color mode" data-bs-toggle="dropdown">
+    <i class="theme-switch fa-solid fa-sun fa-lg fa-fw" data-mode="light" title="Light"></i>
+    <i class="theme-switch fa-solid fa-moon fa-lg fa-fw" data-mode="dark" title="Dark"></i>
+    <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg fa-fw" data-mode="auto" title="System Settings"></i>
+  </button>
+  <ul class="dropdown-menu dropdown-menu-end">
+    <li><button class="dropdown-item d-flex align-items-center theme-change-button" data-mode="auto"><i class="fa-solid fa-circle-half-stroke fa-lg fa-fw me-1"></i>System Settings</button></li>
+    <li><button class="dropdown-item d-flex align-items-center theme-change-button" data-mode="light"><i class="fa-solid fa-sun fa-lg fa-fw me-1"></i>Light</button></li>
+    <li><button class="dropdown-item d-flex align-items-center theme-change-button" data-mode="dark"><i class="fa-solid fa-moon fa-lg fa-fw me-1"></i>Dark</button></li>
+  </ul>
+</div></div>
+        
+      </div>
+    
+  </div>
+  
+  
+  <div class="sidebar-primary-items__end sidebar-primary__section">
+      <div class="sidebar-primary-item">
+<div id="ethical-ad-placement"
+      class="flat"
+      data-ea-publisher="readthedocs"
+      data-ea-type="readthedocs-sidebar"
+      data-ea-manual="true">
+</div></div>
+  </div>
+
+
+      </div>
+      
+      <main id="main-content" class="bd-main" role="main">
+        
+        
+          <div class="bd-content">
+            <div class="bd-article-container">
+              
+              <div class="bd-header-article d-print-none">
+<div class="header-article-items header-article__inner">
+  
+    <div class="header-article-items__start">
+      
+        <div class="header-article-item">
+
+<nav aria-label="Breadcrumb" class="d-print-none">
+  <ul class="bd-breadcrumbs">
+    
+    <li class="breadcrumb-item breadcrumb-home">
+      <a href="../index.html" class="nav-link" aria-label="Home">
+        <i class="fa-solid fa-home"></i>
+      </a>
+    </li>
+    <li class="breadcrumb-item active" aria-current="page"><span class="ellipsis">Build System</span></li>
+  </ul>
+</nav>
+</div>
+      
+    </div>
+  
+  
+</div>
+</div>
+              
+              
+              
+                
+<div id="searchbox"></div>
+                <article class="bd-article">
+                  
+  <section id="build-system">
+<h1>Build System<a class="headerlink" href="#build-system" title="Link to this heading">#</a></h1>
+<section id="common-requirements">
+<h2>Common Requirements<a class="headerlink" href="#common-requirements" title="Link to this heading">#</a></h2>
+<p>Before building, make sure you have the following tools installed:</p>
+<ul class="simple">
+<li><p>A <strong>C++17</strong> compatible compiler</p></li>
+<li><p><a class="reference external" href="https://cmake.org/download/">CMake 3.25+</a></p></li>
+</ul>
+<section id="compiler-installation-by-operating-system">
+<h3>Compiler installation by operating system<a class="headerlink" href="#compiler-installation-by-operating-system" title="Link to this heading">#</a></h3>
+<section id="windows">
+<h4><strong>Windows</strong><a class="headerlink" href="#windows" title="Link to this heading">#</a></h4>
+<p>On Windows, we recommend using <strong>Microsoft Visual Studio 17 2022</strong> as the CMake generator and compiler.</p>
+<p>Download and install <strong>Visual Studio 2022</strong> (Community, Professional, or Enterprise edition) from: <a class="reference external" href="https://visualstudio.microsoft.com/vs/">https://visualstudio.microsoft.com/vs/</a></p>
+<dl class="simple">
+<dt>During installation, make sure to select the following components:</dt><dd><ul class="simple">
+<li><p><em>Desktop development with C++</em></p></li>
+</ul>
+</dd>
+</dl>
+</section>
+<section id="linux">
+<h4><strong>Linux</strong><a class="headerlink" href="#linux" title="Link to this heading">#</a></h4>
+<p>On Linux, you can use <strong>g++</strong> as your C++17-compatible compiler.</p>
+<p>Install all requirements using your package manager. For example:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="c1"># Ubuntu</span>
+sudo<span class="w"> </span>apt<span class="w"> </span>update
+sudo<span class="w"> </span>apt<span class="w"> </span>install<span class="w"> </span>-y<span class="w"> </span>g++<span class="w"> </span>cmake<span class="w"> </span>make<span class="w"> </span>curl<span class="w"> </span>pkg-config<span class="w"> </span>libx11-dev<span class="w"> </span>libxft-dev<span class="w"> </span>libxcursor-dev
+</pre></div>
+</div>
+</section>
+</section>
+</section>
+<section id="release-requirements">
+<h2>Release Requirements<a class="headerlink" href="#release-requirements" title="Link to this heading">#</a></h2>
+<section id="id1">
+<h3>Windows<a class="headerlink" href="#id1" title="Link to this heading">#</a></h3>
+<p>For Windows release packaging, the <strong>Nullsoft Scriptable Install System (NSIS)</strong> is required.</p>
+<ul class="simple">
+<li><p><strong>NSIS</strong> — used to generate the project installer (<cite>.exe</cite>) during the release build.</p></li>
+<li><p>Installation guide: <a class="reference external" href="https://nsis.sourceforge.io/Download">https://nsis.sourceforge.io/Download</a></p></li>
+</ul>
+</section>
+<section id="id2">
+<h3>Linux<a class="headerlink" href="#id2" title="Link to this heading">#</a></h3>
+<p>For Linux release packaging, there are no mandatory external requirements for the CPack packaging tool to generate the launch package in TGZ (tar.gz) format.</p>
+</section>
+</section>
+<section id="documentation-requirements">
+<h2>Documentation Requirements<a class="headerlink" href="#documentation-requirements" title="Link to this heading">#</a></h2>
+<p>To build the project documentation, the following tools are required:</p>
+<ul>
+<li><dl>
+<dt><strong>Doxygen</strong> 1.9.8+</dt><dd><p>Used to generate the C++ API reference documentation.</p>
+<ul>
+<li><p><strong>Windows</strong></p>
+<blockquote>
+<div><ul class="simple">
+<li><p>Download the Windows installer from: <a class="reference external" href="https://www.doxygen.nl/download.html">https://www.doxygen.nl/download.html</a></p></li>
+<li><dl class="simple">
+<dt>During installation, make sure to check:</dt><dd><p><code class="docutils literal notranslate"><span class="pre">Add</span> <span class="pre">doxygen</span> <span class="pre">to</span> <span class="pre">the</span> <span class="pre">system</span> <span class="pre">PATH</span></code>.</p>
+</dd>
+</dl>
+</li>
+</ul>
+</div></blockquote>
+</li>
+<li><dl>
+<dt><strong>Linux</strong></dt><dd><ul>
+<li><p>On Ubuntu-based systems:</p>
+<blockquote>
+<div><div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>sudo<span class="w"> </span>apt<span class="w"> </span>update
+sudo<span class="w"> </span>apt<span class="w"> </span>install<span class="w"> </span>doxygen
+</pre></div>
+</div>
+</div></blockquote>
+</li>
+</ul>
+</dd>
+</dl>
+</li>
+</ul>
+</dd>
+</dl>
+</li>
+<li><dl>
+<dt><strong>Doxygen extensions</strong></dt><dd><p>In order to include class diagrams and dependency graphs, <strong>Graphviz</strong> must also be installed.</p>
+<ul>
+<li><p><strong>Windows</strong></p>
+<blockquote>
+<div><ul class="simple">
+<li><p>Download the installer from: <a class="reference external" href="https://graphviz.org/download/">https://graphviz.org/download/</a></p></li>
+<li><p>Ensure you select the option to add Graphviz to your <code class="docutils literal notranslate"><span class="pre">PATH</span></code> during installation.</p></li>
+</ul>
+</div></blockquote>
+</li>
+<li><p><strong>Linux</strong></p>
+<blockquote>
+<div><ul>
+<li><p>On Ubuntu-based systems:</p>
+<blockquote>
+<div><div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>sudo<span class="w"> </span>apt<span class="w"> </span>update
+sudo<span class="w"> </span>apt<span class="w"> </span>install<span class="w"> </span>graphviz
+</pre></div>
+</div>
+</div></blockquote>
+</li>
+</ul>
+</div></blockquote>
+</li>
+</ul>
+</dd>
+</dl>
+</li>
+<li><p><strong>Python</strong> 3.10+ with pip
+Required to run Sphinx and its extensions.</p>
+<ul class="simple">
+<li><p>Installation guide: <a class="reference external" href="https://www.python.org/downloads/">https://www.python.org/downloads/</a></p></li>
+</ul>
+</li>
+</ul>
+<p>The local HTML build installs the pinned Sphinx, PyData Sphinx Theme, sphinx-design,
+Breathe, and sphinx-copybutton dependencies from <code class="docutils literal notranslate"><span class="pre">docs/requirements-docs.txt</span></code> using
+CMake’s selected Python interpreter. This modifies that interpreter’s environment, so
+using a virtual environment is recommended. Package access is required and an
+installation failure stops the build. The XML-only target does not install these packages.</p>
+</section>
+<section id="developer-setup">
+<h2>Developer Setup<a class="headerlink" href="#developer-setup" title="Link to this heading">#</a></h2>
+<p>To get started with the project, make sure <strong>Git</strong> is installed on your system.</p>
+<ul class="simple">
+<li><p><strong>Install Git:</strong> You can download and install it from the official website: <a class="reference external" href="https://git-scm.com/downloads">https://git-scm.com/downloads</a></p></li>
+</ul>
+<p>Once Git is available, clone the repository from GitHub:</p>
+<pre class="literal-block"># Clone the repository and submodules
+git clone --recurse-submodules <a class="github reference external" href="https://github.com/jordiSpider/Weaver.git">jordiSpider/Weaver.git</a></pre>
+</section>
+<section id="cmake-presets">
+<h2>CMake Presets<a class="headerlink" href="#cmake-presets" title="Link to this heading">#</a></h2>
+<p>This project uses <strong>CMakePresets.json</strong> to manage all build configurations, documentation builds, and deployment workflows.</p>
+<p>Presets provide predefined configurations for consistent builds across different systems and environments.
+All presets can be listed using:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>cmake<span class="w"> </span>--list-presets
+</pre></div>
+</div>
+<p>or executed as workflows with:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>cmake<span class="w"> </span>--workflow<span class="w"> </span>--preset<span class="w"> </span>&lt;preset-name&gt;
+</pre></div>
+</div>
+<section id="available-presets">
+<h3>Available Presets<a class="headerlink" href="#available-presets" title="Link to this heading">#</a></h3>
+<p>The presets are organized into three categories:</p>
+<p><strong>1. Executable builds</strong></p>
+<p>These presets compile the main application, either with or without a graphical interface.</p>
+<div class="pst-scrollable-table-container"><table class="table">
+<thead>
+<tr class="row-odd"><th class="head"><p><strong>Preset</strong></p></th>
+<th class="head"><p><strong>Description</strong></p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">windows-gui-debug</span></code></p></td>
+<td><p>Builds the Windows GUI version in <em>Debug</em> mode.</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">windows-gui-release</span></code></p></td>
+<td><p>Builds the Windows GUI version in <em>Release</em> mode.</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">windows-non-gui-debug</span></code></p></td>
+<td><p>Builds the Windows non-GUI version in <em>Debug</em> mode.</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">windows-non-gui-release</span></code></p></td>
+<td><p>Builds the Windows non-GUI version in <em>Release</em> mode.</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">linux-gui-debug</span></code></p></td>
+<td><p>Builds the Linux GUI version in <em>Debug</em> mode.</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">linux-gui-release</span></code></p></td>
+<td><p>Builds the Linux GUI version in <em>Release</em> mode.</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">linux-non-gui-debug</span></code></p></td>
+<td><p>Builds the Linux non-GUI version in <em>Debug</em> mode.</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">linux-non-gui-release</span></code></p></td>
+<td><p>Builds the Linux non-GUI version in <em>Release</em> mode.</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<p>Example usage:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>cmake<span class="w"> </span>--workflow<span class="w"> </span>--preset<span class="w"> </span>windows-non-gui-release
+</pre></div>
+</div>
+<dl class="simple">
+<dt>This command will:</dt><dd><ol class="arabic simple">
+<li><p>Configure CMake with all preset options.</p></li>
+<li><p>Build the project using the specified compiler and triplet.</p></li>
+</ol>
+</dd>
+</dl>
+<p><strong>2. Documentation builds</strong></p>
+<p>From the <code class="docutils literal notranslate"><span class="pre">docs</span></code> directory, use the local documentation presets:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>cmake<span class="w"> </span>--workflow<span class="w"> </span>--preset<span class="w"> </span>generate-local-weaver
+cmake<span class="w"> </span>--workflow<span class="w"> </span>--preset<span class="w"> </span>generate-local-manager
+</pre></div>
+</div>
+<p>The HTML is written to <code class="docutils literal notranslate"><span class="pre">docs/build/weaver/latest</span></code> or
+<code class="docutils literal notranslate"><span class="pre">docs/build/weaver-manager/latest</span></code>. To prepare sources without building HTML,
+run <code class="docutils literal notranslate"><span class="pre">prepare-local-weaver</span></code> (branding and Doxygen XML) or
+<code class="docutils literal notranslate"><span class="pre">prepare-local-manager</span></code> (branding). These workflows do not publish or push
+changes; the <code class="docutils literal notranslate"><span class="pre">gh-pages</span></code> branch has its own site generation and deployment workflows.</p>
+<p><strong>3. Common internal presets</strong></p>
+<p>The following presets define shared variables and configurations used by other presets.
+They are marked as <em>hidden</em> and should not be invoked directly:</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">common</span></code> → Defines global paths and metadata.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">executables</span></code> → Base for all executable builds.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">gui</span></code> / <code class="docutils literal notranslate"><span class="pre">non-gui</span></code> → Enable or disable GUI mode.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">debug</span></code> / <code class="docutils literal notranslate"><span class="pre">release</span></code> → Define build type (Debug or Release).</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">docs</span></code> → Base for documentation-related builds.</p></li>
+</ul>
+</section>
+</section>
+<section id="updating-vcpkg-version">
+<h2>Updating vcpkg Version<a class="headerlink" href="#updating-vcpkg-version" title="Link to this heading">#</a></h2>
+<p>The project includes <strong>vcpkg</strong> as a Git submodule under <code class="docutils literal notranslate"><span class="pre">external/vcpkg</span></code>.
+Occasionally, it may be necessary to update the version of vcpkg used by the project
+(e.g., to obtain newer libraries or fixes).</p>
+<p>When updating the vcpkg submodule, the following steps <strong>must</strong> be performed:</p>
+<ol class="arabic">
+<li><p><strong>Update the submodule</strong></p>
+<blockquote>
+<div><div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="nb">cd</span><span class="w"> </span>external/vcpkg
+git<span class="w"> </span>pull<span class="w"> </span>origin<span class="w"> </span>master
+</pre></div>
+</div>
+</div></blockquote>
+</li>
+<li><p><strong>Obtain the new commit hash</strong></p>
+<blockquote>
+<div><p>The current vcpkg commit is used as a baseline reference in the project’s
+<code class="docutils literal notranslate"><span class="pre">vcpkg.json</span></code> file (field <code class="docutils literal notranslate"><span class="pre">builtin-baseline</span></code>).
+After updating the submodule, retrieve the new commit hash with:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>rev-parse<span class="w"> </span>HEAD
+</pre></div>
+</div>
+</div></blockquote>
+</li>
+<li><p><strong>Update the `builtin-baseline` field</strong></p>
+<blockquote>
+<div><p>Copy the hash obtained in the previous step and update the value of
+<code class="docutils literal notranslate"><span class="pre">builtin-baseline</span></code> in your <code class="docutils literal notranslate"><span class="pre">vcpkg.json</span></code> file accordingly:</p>
+<div class="highlight-json notranslate"><div class="highlight"><pre><span></span><span class="p">{</span>
+<span class="w">     </span><span class="nt">"builtin-baseline"</span><span class="p">:</span><span class="w"> </span><span class="s2">"new_commit_hash_here"</span><span class="p">,</span>
+<span class="w">     </span><span class="nt">"dependencies"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span>
+
+<span class="w">     </span><span class="p">]</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+</div></blockquote>
+</li>
+<li><p><strong>Commit the changes</strong></p>
+<blockquote>
+<div><p>Once the submodule and baseline have been updated, commit the modifications:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>git<span class="w"> </span>add<span class="w"> </span>external/vcpkg<span class="w"> </span>vcpkg.json
+git<span class="w"> </span>commit<span class="w"> </span>-m<span class="w"> </span><span class="s2">"Update vcpkg submodule and builtin-baseline"</span>
+</pre></div>
+</div>
+</div></blockquote>
+</li>
+</ol>
+</section>
+</section>
+
+
+                </article>
+              
+              
+              
+              
+              
+                <footer class="prev-next-footer d-print-none">
+                  
+<div class="prev-next-area">
+    <a class="left-prev"
+       href="../user_guide/troubleshooting.html"
+       title="previous page">
+      <i class="fa-solid fa-angle-left"></i>
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">previous</p>
+        <p class="prev-next-title">Troubleshooting</p>
+      </div>
+    </a>
+    <a class="right-next"
+       href="adding_features.html"
+       title="next page">
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">next</p>
+        <p class="prev-next-title">Adding Features</p>
+      </div>
+      <i class="fa-solid fa-angle-right"></i>
+    </a>
+</div>
+                </footer>
+              
+            </div>
+            
+            
+              
+                <dialog id="pst-secondary-sidebar-modal"></dialog>
+                <div id="pst-secondary-sidebar" class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
+
+
+  <div class="sidebar-secondary-item">
+<div
+    id="pst-page-navigation-heading-2"
+    class="page-toc tocsection onthispage">
+    <i class="fa-solid fa-list"></i> On this page
+  </div>
+  <nav id="pst-page-toc-nav" class="page-toc" aria-labelledby="pst-page-navigation-heading-2">
+    <ul class="pst-show_toc_level nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#common-requirements">Common Requirements</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#compiler-installation-by-operating-system">Compiler installation by operating system</a><ul class="nav section-nav flex-column">
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#windows"><strong>Windows</strong></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#linux"><strong>Linux</strong></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#release-requirements">Release Requirements</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id1">Windows</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id2">Linux</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#documentation-requirements">Documentation Requirements</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#developer-setup">Developer Setup</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#cmake-presets">CMake Presets</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#available-presets">Available Presets</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#updating-vcpkg-version">Updating vcpkg Version</a></li>
+</ul>
+  </nav></div>
+
+  <div class="sidebar-secondary-item">
+
+  <div class="tocsection sourcelink">
+    <a href="../_sources/developer_guide/build_system.rst.txt">
+      <i class="fa-solid fa-file-lines"></i> Show Source
+    </a>
+  </div>
+</div>
+
+</div></div>
+              
+            
+          </div>
+          <footer class="bd-footer-content">
+            
+          </footer>
+        
+      </main>
+    </div>
+  </div>
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script defer src="../_static/scripts/bootstrap.js?digest=a95f357e85573c9b56d5"></script>
+<script defer src="../_static/scripts/pydata-sphinx-theme.js?digest=a95f357e85573c9b56d5"></script>
+
+  <footer class="bd-footer">
+<div class="bd-footer__inner bd-page-width">
+  
+    <div class="footer-items__start">
+      
+        <div class="footer-item">
+
+  <p class="copyright">
+    
+      © Copyright 2025, Jordi Moya Laraño.
+      <br/>
+    
+  </p>
+</div>
+      
+        <div class="footer-item">
+
+  <p class="sphinx-version">
+    Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 8.1.3.
+    <br/>
+  </p>
+</div>
+      
+    </div>
+  
+  
+  
+    <div class="footer-items__end">
+      
+        <div class="footer-item">
+<p class="theme-version">
+  <!-- # L10n: Setting the PST URL as an argument as this does not need to be localized -->
+  Built with the <a href="https://pydata-sphinx-theme.readthedocs.io/en/stable/index.html">PyData Sphinx Theme</a> 0.19.0.
+</p></div>
+      
+    </div>
+  
+</div>
+
+  </footer>
+  </body>
+</html>

@@ -1,0 +1,968 @@
+
+<!DOCTYPE html>
+
+
+<html lang="en" data-content_root="../" >
+
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>Configuration &#8212; Weaver  documentation</title>
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "";
+  </script>
+  <!--
+    this give us a css class that will be invisible only if js is disabled
+  -->
+  <noscript>
+    <style>
+      .pst-js-only { display: none !important; }
+
+    </style>
+  </noscript>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="../_static/styles/theme.css?digest=a95f357e85573c9b56d5" rel="stylesheet" />
+<link href="../_static/styles/pydata-sphinx-theme.css?digest=a95f357e85573c9b56d5" rel="stylesheet" />
+
+    <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=8f2a1f02" />
+    <link rel="stylesheet" type="text/css" href="../_static/branding/branding.css?v=27f85c0d" />
+  
+  <!-- So that users can add custom icons -->
+  <script defer src="../_static/scripts/fontawesome.js?digest=a95f357e85573c9b56d5"></script>
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="../_static/scripts/bootstrap.js?digest=a95f357e85573c9b56d5" />
+<link rel="preload" as="script" href="../_static/scripts/pydata-sphinx-theme.js?digest=a95f357e85573c9b56d5" />
+
+    <script src="../_static/documentation_options.js?v=5929fcd5"></script>
+    <script src="../_static/doctools.js?v=9bcbadda"></script>
+    <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script>DOCUMENTATION_OPTIONS.pagename = 'user_guide/configuration';</script>
+    <script>DOCUMENTATION_OPTIONS.search_as_you_type = false;</script>
+    <link rel="icon" href="../_static/favicon.ico"/>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="simulation_params" href="json/simulation_params.html" />
+    <link rel="prev" title="Installation" href="installation.html" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="docsearch:language" content="en"/>
+  <meta name="docsearch:version" content="26.11.18" />
+  
+    
+    <script src="../_static/searchtools.js"></script>
+    <script src="../_static/language_data.js"></script>
+    <script src="../searchindex.js"></script>
+  
+<link rel="icon" type="image/svg+xml" href="../_static/branding/favicon/favicon.svg">
+<link rel="icon" type="image/png" sizes="96x96" href="../_static/branding/favicon/favicon-96x96.png">
+<link rel="apple-touch-icon" sizes="180x180" href="../_static/branding/favicon/apple-touch-icon.png">
+<link rel="manifest" href="../_static/branding/favicon/site.webmanifest">
+
+  </head>
+  <body data-default-mode="">
+  
+  
+  <div id="pst-skip-link" class="skip-link d-print-none"><a href="#main-content">Skip to main content</a></div>
+
+  
+  <div id="pst-scroll-pixel-helper"></div>
+  
+  <button type="button" class="btn rounded-pill" id="pst-back-to-top">
+    <i class="fa-solid fa-arrow-up"></i>Back to top</button>
+  
+  
+  
+  
+  <dialog id="pst-search-dialog">
+    
+<form class="bd-search d-flex align-items-center"
+      action="../search.html"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         placeholder="Search the docs ..."
+         aria-label="Search the docs ..."
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form>
+  </dialog>
+
+  <div class="pst-async-banner-revealer d-none">
+  <aside id="bd-header-version-warning" class="d-none d-print-none" aria-label="Version warning"></aside>
+</div>
+
+  
+    <header id="pst-header" class="bd-header navbar navbar-expand-lg bd-navbar d-print-none">
+<div class="bd-header__inner bd-page-width">
+  <button class="pst-navbar-icon sidebar-toggle primary-toggle" aria-label="Site navigation">
+    <span class="fa-solid fa-bars"></span>
+  </button>
+  
+  
+  <div class="col-lg-3 navbar-header-items__start">
+    
+      <div class="navbar-item">
+
+  
+    
+  
+
+<a class="navbar-brand logo" href="../index.html">
+  
+  
+  
+  
+  
+    
+    
+      
+    
+    
+    <img src="../_static/weaver-logo-horizontal.svg" class="logo__image only-light" alt="Weaver  documentation - Home"/>
+    <img src="../_static/weaver-logo-horizontal-dark.svg" class="logo__image only-dark pst-js-only" alt="Weaver  documentation - Home"/>
+  
+  
+</a></div>
+    
+  </div>
+  
+  <div class="col-lg-9 navbar-header-items">
+    
+    <div class="me-auto navbar-header-items__center">
+      
+        <div class="navbar-item">
+<nav>
+  <ul class="bd-navbar-elements navbar-nav">
+    
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="installation.html">
+    Installation
+  </a>
+</li>
+
+
+<li class="nav-item current active">
+  <a class="nav-link nav-internal" href="#">
+    Configuration
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="usage.html">
+    Usage
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="examples.html">
+    Examples
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="troubleshooting.html">
+    Troubleshooting
+  </a>
+</li>
+
+            <li class="nav-item dropdown">
+                <button class="btn dropdown-toggle nav-item" type="button"
+                data-bs-toggle="dropdown" aria-expanded="false"
+                aria-controls="pst-nav-more-links">
+                    More
+                </button>
+                <ul id="pst-nav-more-links" class="dropdown-menu">
+                    
+<li class=" ">
+  <a class="nav-link dropdown-item nav-internal" href="../developer_guide/build_system.html">
+    Build System
+  </a>
+</li>
+
+
+<li class=" ">
+  <a class="nav-link dropdown-item nav-internal" href="../developer_guide/adding_features.html">
+    Adding Features
+  </a>
+</li>
+
+
+<li class=" ">
+  <a class="nav-link dropdown-item nav-internal" href="../developer_guide/contribution.html">
+    Contribution
+  </a>
+</li>
+
+
+<li class=" ">
+  <a class="nav-link dropdown-item nav-internal" href="../developer_guide/code_style.html">
+    Code Style
+  </a>
+</li>
+
+
+<li class=" ">
+  <a class="nav-link dropdown-item nav-internal" href="../developer_guide/json_validator.html">
+    JSON validator
+  </a>
+</li>
+
+
+<li class=" ">
+  <a class="nav-link dropdown-item nav-internal" href="../reference/api.html">
+    API
+  </a>
+</li>
+
+
+<li class=" ">
+  <a class="nav-link dropdown-item nav-internal" href="../testing/overview.html">
+    Overview
+  </a>
+</li>
+
+
+<li class=" ">
+  <a class="nav-link dropdown-item nav-internal" href="../testing/unit_tests.html">
+    Unit Tests
+  </a>
+</li>
+
+
+<li class=" ">
+  <a class="nav-link dropdown-item nav-internal" href="../testing/ci_cd.html">
+    Continuous Integration & Continuous Deployment (CI/CD)
+  </a>
+</li>
+
+                </ul>
+            </li>
+            
+  </ul>
+</nav></div>
+      
+    </div>
+    
+    
+    <div class="navbar-header-items__end">
+      
+        <div class="navbar-item navbar-persistent--container">
+          
+
+<button class="btn search-button-field search-button__button pst-js-only" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+ <i class="fa-solid fa-magnifying-glass"></i>
+ <span class="search-button__default-text">Search</span>
+ <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+</button>
+        </div>
+      
+      
+        <div class="navbar-item"><div class="dropdown">
+  <button class="btn btn-sm btn-outline-secondary dropdown-toggle" type="button" id="version-switcher" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Select version" style="color: #198754 !important">
+    26.11.27 (stable, latest)
+  </button>
+  <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="version-switcher">
+    <li>
+      <a class="dropdown-item active" style="color: #198754 !important" href="../index.html">
+        26.11.27 (stable, latest)
+      </a>
+    </li>
+    <li>
+      <a class="dropdown-item" style="color: #0d6efd !important" href="../../26.11.18/index.html">
+        26.11.18 (stable)
+      </a>
+    </li>
+    </ul>
+</div></div>
+      
+        <div class="navbar-item"><div class="dropdown">
+  <button class="btn btn-sm btn-outline-secondary dropdown-toggle" type="button" id="language-switcher" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Select language">
+    en
+  </button>
+  <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="language-switcher">
+    
+    <li>
+      <a class="dropdown-item active" href="index.html">
+        en
+      </a>
+    </li>
+    
+  </ul>
+</div></div>
+      
+        <div class="navbar-item">
+
+<div class="theme-switch-container dropdown pst-js-only" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Color mode">
+  <button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button dropdown-toggle" aria-label="Color mode" data-bs-toggle="dropdown">
+    <i class="theme-switch fa-solid fa-sun fa-lg fa-fw" data-mode="light" title="Light"></i>
+    <i class="theme-switch fa-solid fa-moon fa-lg fa-fw" data-mode="dark" title="Dark"></i>
+    <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg fa-fw" data-mode="auto" title="System Settings"></i>
+  </button>
+  <ul class="dropdown-menu dropdown-menu-end">
+    <li><button class="dropdown-item d-flex align-items-center theme-change-button" data-mode="auto"><i class="fa-solid fa-circle-half-stroke fa-lg fa-fw me-1"></i>System Settings</button></li>
+    <li><button class="dropdown-item d-flex align-items-center theme-change-button" data-mode="light"><i class="fa-solid fa-sun fa-lg fa-fw me-1"></i>Light</button></li>
+    <li><button class="dropdown-item d-flex align-items-center theme-change-button" data-mode="dark"><i class="fa-solid fa-moon fa-lg fa-fw me-1"></i>Dark</button></li>
+  </ul>
+</div></div>
+      
+    </div>
+    
+  </div>
+  
+  
+    <div class="navbar-persistent--mobile">
+
+<button class="btn search-button-field search-button__button pst-js-only" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+ <i class="fa-solid fa-magnifying-glass"></i>
+ <span class="search-button__default-text">Search</span>
+ <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+</button>
+    </div>
+  
+
+  
+    <button class="pst-navbar-icon sidebar-toggle secondary-toggle" aria-label="On this page">
+      <span class="fa-solid fa-outdent"></span>
+    </button>
+  
+</div>
+
+    </header>
+  
+
+  <div class="bd-container">
+    <div class="bd-container__inner bd-page-width">
+      
+      
+      
+      <dialog id="pst-primary-sidebar-modal"></dialog>
+      <div id="pst-primary-sidebar" class="bd-sidebar-primary bd-sidebar hide-on-wide">
+        
+
+  
+  <div class="sidebar-header-items sidebar-primary__section">
+    
+    
+      <div class="sidebar-header-items__center">
+        
+          
+          
+            <div class="navbar-item">
+<nav>
+  <ul class="bd-navbar-elements navbar-nav">
+    
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="installation.html">
+    Installation
+  </a>
+</li>
+
+
+<li class="nav-item current active">
+  <a class="nav-link nav-internal" href="#">
+    Configuration
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="usage.html">
+    Usage
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="examples.html">
+    Examples
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="troubleshooting.html">
+    Troubleshooting
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../developer_guide/build_system.html">
+    Build System
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../developer_guide/adding_features.html">
+    Adding Features
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../developer_guide/contribution.html">
+    Contribution
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../developer_guide/code_style.html">
+    Code Style
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../developer_guide/json_validator.html">
+    JSON validator
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../reference/api.html">
+    API
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../testing/overview.html">
+    Overview
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../testing/unit_tests.html">
+    Unit Tests
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../testing/ci_cd.html">
+    Continuous Integration & Continuous Deployment (CI/CD)
+  </a>
+</li>
+
+  </ul>
+</nav></div>
+          
+        
+      </div>
+    
+    
+    
+      <div class="sidebar-header-items__end">
+        
+          <div class="navbar-item"><div class="dropdown">
+  <button class="btn btn-sm btn-outline-secondary dropdown-toggle" type="button" id="version-switcher" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Select version" style="color: #198754 !important">
+    26.11.27 (stable, latest)
+  </button>
+  <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="version-switcher">
+    <li>
+      <a class="dropdown-item active" style="color: #198754 !important" href="../index.html">
+        26.11.27 (stable, latest)
+      </a>
+    </li>
+    <li>
+      <a class="dropdown-item" style="color: #0d6efd !important" href="../../26.11.18/index.html">
+        26.11.18 (stable)
+      </a>
+    </li>
+    </ul>
+</div></div>
+        
+          <div class="navbar-item"><div class="dropdown">
+  <button class="btn btn-sm btn-outline-secondary dropdown-toggle" type="button" id="language-switcher" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Select language">
+    en
+  </button>
+  <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="language-switcher">
+    
+    <li>
+      <a class="dropdown-item active" href="index.html">
+        en
+      </a>
+    </li>
+    
+  </ul>
+</div></div>
+        
+          <div class="navbar-item">
+
+<div class="theme-switch-container dropdown pst-js-only" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Color mode">
+  <button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button dropdown-toggle" aria-label="Color mode" data-bs-toggle="dropdown">
+    <i class="theme-switch fa-solid fa-sun fa-lg fa-fw" data-mode="light" title="Light"></i>
+    <i class="theme-switch fa-solid fa-moon fa-lg fa-fw" data-mode="dark" title="Dark"></i>
+    <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg fa-fw" data-mode="auto" title="System Settings"></i>
+  </button>
+  <ul class="dropdown-menu dropdown-menu-end">
+    <li><button class="dropdown-item d-flex align-items-center theme-change-button" data-mode="auto"><i class="fa-solid fa-circle-half-stroke fa-lg fa-fw me-1"></i>System Settings</button></li>
+    <li><button class="dropdown-item d-flex align-items-center theme-change-button" data-mode="light"><i class="fa-solid fa-sun fa-lg fa-fw me-1"></i>Light</button></li>
+    <li><button class="dropdown-item d-flex align-items-center theme-change-button" data-mode="dark"><i class="fa-solid fa-moon fa-lg fa-fw me-1"></i>Dark</button></li>
+  </ul>
+</div></div>
+        
+      </div>
+    
+  </div>
+  
+  
+  <div class="sidebar-primary-items__end sidebar-primary__section">
+      <div class="sidebar-primary-item">
+<div id="ethical-ad-placement"
+      class="flat"
+      data-ea-publisher="readthedocs"
+      data-ea-type="readthedocs-sidebar"
+      data-ea-manual="true">
+</div></div>
+  </div>
+
+
+      </div>
+      
+      <main id="main-content" class="bd-main" role="main">
+        
+        
+          <div class="bd-content">
+            <div class="bd-article-container">
+              
+              <div class="bd-header-article d-print-none">
+<div class="header-article-items header-article__inner">
+  
+    <div class="header-article-items__start">
+      
+        <div class="header-article-item">
+
+<nav aria-label="Breadcrumb" class="d-print-none">
+  <ul class="bd-breadcrumbs">
+    
+    <li class="breadcrumb-item breadcrumb-home">
+      <a href="../index.html" class="nav-link" aria-label="Home">
+        <i class="fa-solid fa-home"></i>
+      </a>
+    </li>
+    <li class="breadcrumb-item active" aria-current="page"><span class="ellipsis">Configuration</span></li>
+  </ul>
+</nav>
+</div>
+      
+    </div>
+  
+  
+</div>
+</div>
+              
+              
+              
+                
+<div id="searchbox"></div>
+                <article class="bd-article">
+                  
+  <section id="configuration">
+<span id="id1"></span><h1>Configuration<a class="headerlink" href="#configuration" title="Link to this heading">#</a></h1>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>During installation, two main configuration folders are created:</p>
+<ul class="simple">
+<li><p><strong>config/</strong> — located in the program’s installation directory.
+This folder contains <strong>default configuration examples</strong> provided with the program.</p></li>
+<li><p><strong>user_config/</strong> — Created automatically in the user’s <em>Documents</em> folder (or the system-specific equivalent).
+This folder is intended for user-defined configurations.
+While configurations can be stored anywhere, it is recommended to place them here for convenience.</p></li>
+</ul>
+</div>
+<p>Program configurations define <strong>all the parameters of the simulation</strong>.
+Each configuration is composed of several <strong>JSON</strong> and <strong>CSV</strong> files organized in a hierarchical directory structure.
+Together, these files describe the environment, species, interactions, and runtime behavior of the simulation.</p>
+<section id="types-of-configurations">
+<h2>Types of Configurations<a class="headerlink" href="#types-of-configurations" title="Link to this heading">#</a></h2>
+<p>There are two main configuration modes, depending on how the landscape state is initialized:</p>
+<ul class="simple">
+<li><dl class="simple">
+<dt><strong>Initial Landscape Configuration (Mode: FromConfig)</strong></dt><dd><p>The simulation starts from an empty landscape.
+All parameters and entities are defined through JSON files and all species interactions are defined through CSV files.
+This mode provides full control over every aspect of the simulation setup.</p>
+</dd>
+</dl>
+</li>
+<li><dl class="simple">
+<dt><strong>Checkpoint-based Configuration (Mode: FromTextCheckpoint or FromBinaryCheckpoint)</strong></dt><dd><p>The simulation starts from a previously saved landscape state (a <em>checkpoint</em>).
+In this case, the configuration directory contains:</p>
+<ul>
+<li><p>A <strong>checkpoint file</strong> (either text or binary, depending on the mode).</p></li>
+<li><p>Additional <strong>JSON</strong> files defining modifications or updates to apply over the loaded landscape.</p></li>
+<li><p>The same <strong>CSV</strong> files that describe species interactions.</p></li>
+</ul>
+</dd>
+</dl>
+</li>
+</ul>
+</section>
+<section id="folder-structure">
+<h2>Folder Structure<a class="headerlink" href="#folder-structure" title="Link to this heading">#</a></h2>
+<p><strong>Initial Landscape configuration:</strong></p>
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>my_landscape_config/
+├── simulation_params.json
+├── landscape_params.json
+├── habitat_domain/
+│   ├── habitat_domain_patch_1.json
+│   ├── habitat_domain_patch_2.json
+│   └── .....
+├── moisture/
+│   ├── moisture_patch_1.json
+│   ├── moisture_patch_2.json
+│   └── .....
+├── obstacle/
+│   ├── obstacle_patch_1.json
+│   ├── obstacle_patch_2.json
+│   └── .....
+├── resource/
+│   ├── resource_1.json
+│   ├── resource_2.json
+│   ├── .....
+│   └── patches/
+│       ├── resource_patch_1.json
+│       ├── resource_patch_2.json
+│       └── .....
+└── species/
+    ├── species_1.json
+    ├── species_2.json
+    ├── .....
+    ├── ontogeneticLinksPreference.csv
+    └── ontogeneticLinksProfitability.csv
+</pre></div>
+</div>
+<p><strong>Checkpoint-based configuration:</strong></p>
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>my_checkpoint_config/
+├── simulation_params.json
+├── landscape_params.json
+├── checkpoint/
+│   └── checkpoint.bin / checkpoint.txt
+├── habitat_domain/
+│   ├── habitat_domain_patch_1.json
+│   ├── habitat_domain_patch_2.json
+│   └── .....
+├── moisture/
+│   ├── moisture_patch_1.json
+│   ├── moisture_patch_2.json
+│   └── .....
+├── obstacle/
+│   ├── obstacle_patch_1.json
+│   ├── obstacle_patch_2.json
+│   └── .....
+├── resource/
+│   ├── resource_1.json
+│   ├── resource_2.json
+│   ├── .....
+│   └── patches/
+│       ├── resource_patch_1.json
+│       ├── resource_patch_2.json
+│       └── .....
+└── species/
+    ├── species_1.json
+    ├── species_2.json
+    ├── .....
+    ├── ontogeneticLinksPreference.csv
+    └── ontogeneticLinksProfitability.csv
+</pre></div>
+</div>
+</section>
+<section id="file-descriptions">
+<h2>File Descriptions<a class="headerlink" href="#file-descriptions" title="Link to this heading">#</a></h2>
+<section id="simulation-params-json">
+<h3>simulation_params.json<a class="headerlink" href="#simulation-params-json" title="Link to this heading">#</a></h3>
+<div class="admonition important">
+<p class="admonition-title">Important</p>
+<p>The file name <strong>must be exactly</strong> <code class="docutils literal notranslate"><span class="pre">simulation_params.json</span></code>.
+The program explicitly looks for this file to load global simulation control parameters.</p>
+</div>
+<p>Defines high-level control aspects of the simulation:
+- Enabling or disabling data outputs.
+- Total simulation time.
+- Time step between iterations.
+- Stop and checkpoint conditions.
+- Control of output frequency and verbosity.</p>
+</section>
+<section id="landscape-params-json">
+<h3>landscape_params.json<a class="headerlink" href="#landscape-params-json" title="Link to this heading">#</a></h3>
+<div class="admonition important">
+<p class="admonition-title">Important</p>
+<p>The file name <strong>must be exactly</strong> <code class="docutils literal notranslate"><span class="pre">landscape_params.json</span></code>.
+This file establishes the global physical and environmental parameters for the simulation.</p>
+</div>
+<p>Defines:
+- Landscape dimensions and resolution.
+- Base humidity and temperature.
+- Global baseline for resource capacity.</p>
+</section>
+<section id="habitat-domain-patch-json">
+<h3>habitat_domain_patch.json<a class="headerlink" href="#habitat-domain-patch-json" title="Link to this heading">#</a></h3>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>The file name <strong>can be arbitrary</strong>, provided it is stored within the appropriate
+subfolder <code class="docutils literal notranslate"><span class="pre">habitat_domain/</span></code>.
+You can define <strong>multiple habitat domain patch</strong> files to compose complex environmental maps.</p>
+</div>
+<p>Defines habitat domains for animal species.</p>
+</section>
+<section id="moisture-patch-json">
+<h3>moisture_patch.json<a class="headerlink" href="#moisture-patch-json" title="Link to this heading">#</a></h3>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>The file name <strong>can be arbitrary</strong>, provided it is stored within the appropriate
+subfolder <code class="docutils literal notranslate"><span class="pre">moisture/</span></code>.
+You can define <strong>multiple moisture patch</strong> files to compose complex environmental maps.</p>
+</div>
+<p>Defines prioritized regions that locally modify:
+- Humidity.
+- Temperature.
+- Resource capacity.</p>
+</section>
+<section id="obstacle-patch-json">
+<h3>obstacle_patch.json<a class="headerlink" href="#obstacle-patch-json" title="Link to this heading">#</a></h3>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>The file name <strong>can be arbitrary</strong>, provided it is stored within the appropriate
+subfolder <code class="docutils literal notranslate"><span class="pre">obstacle/</span></code>.
+You can define <strong>multiple obstacle patch</strong> files to compose complex environmental maps.</p>
+</div>
+<p>Defines prioritized zones that act as <strong>impassable obstacles</strong> for all species.</p>
+</section>
+<section id="resource-json">
+<h3>resource.json<a class="headerlink" href="#resource-json" title="Link to this heading">#</a></h3>
+<div class="admonition important">
+<p class="admonition-title">Important</p>
+<p>The file name <strong>can be arbitrary</strong>, provided it is stored within the appropriate
+subfolder <code class="docutils literal notranslate"><span class="pre">resource/</span></code>.</p>
+</div>
+<p>Defines all the parameters of a resource species.</p>
+</section>
+<section id="resource-patch-json">
+<h3>resource_patch.json<a class="headerlink" href="#resource-patch-json" title="Link to this heading">#</a></h3>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>The file name <strong>can be arbitrary</strong>, provided it is stored within the appropriate
+subfolder <code class="docutils literal notranslate"><span class="pre">resource/patches/</span></code>.
+You can define <strong>multiple resource patch</strong> files to compose complex environmental maps.</p>
+</div>
+<p>Defines prioritized zones that promote resource growth.</p>
+</section>
+<section id="species-json">
+<h3>species.json<a class="headerlink" href="#species-json" title="Link to this heading">#</a></h3>
+<div class="admonition important">
+<p class="admonition-title">Important</p>
+<p>The file name <strong>can be arbitrary</strong>, provided it is stored within the appropriate
+subfolder <code class="docutils literal notranslate"><span class="pre">species/</span></code>.</p>
+</div>
+<p>Defines all the parameters of an animal species.</p>
+</section>
+<section id="ontogeneticlinkspreference-csv">
+<h3>ontogeneticLinksPreference.csv<a class="headerlink" href="#ontogeneticlinkspreference-csv" title="Link to this heading">#</a></h3>
+<div class="admonition important">
+<p class="admonition-title">Important</p>
+<p>The file name <strong>must be exactly</strong> <code class="docutils literal notranslate"><span class="pre">ontogeneticLinksPreference.csv</span></code>.
+The program explicitly loads this file to read inter-species preference data.</p>
+</div>
+<p>Defines the <strong>preference relationships</strong> between species (animals and resources).
+Each entry specifies how much a given species prefers interacting (e.g., feeding) with another.</p>
+<p>Typical contents include:
+- Predator–prey or consumer–resource preference strength.
+- Symbiotic or competitive interactions between animal species.</p>
+</section>
+<section id="ontogeneticlinksprofitability-csv">
+<h3>ontogeneticLinksProfitability.csv<a class="headerlink" href="#ontogeneticlinksprofitability-csv" title="Link to this heading">#</a></h3>
+<div class="admonition important">
+<p class="admonition-title">Important</p>
+<p>The file name <strong>must be exactly</strong> <code class="docutils literal notranslate"><span class="pre">ontogeneticLinksProfitability.csv</span></code>.
+This file provides the <strong>profitability relationships</strong> between species.</p>
+</div>
+<p>Defines the <strong>energy or benefit gain</strong> that a species obtains when interacting with another.</p>
+</section>
+<section id="checkpoint-bin-checkpoint-txt">
+<h3>checkpoint.bin / checkpoint.txt<a class="headerlink" href="#checkpoint-bin-checkpoint-txt" title="Link to this heading">#</a></h3>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>The file name <strong>can be arbitrary</strong>, provided it is stored within the appropriate
+subfolder <code class="docutils literal notranslate"><span class="pre">checkpoint/</span></code>.</p>
+</div>
+<p>Represents a saved state of the simulation (binary or text format).
+Used in checkpoint-based configurations to resume or modify a simulation.</p>
+</section>
+</section>
+<section id="configuration-parameters">
+<h2>Configuration Parameters<a class="headerlink" href="#configuration-parameters" title="Link to this heading">#</a></h2>
+<p>Every configuration file follows a <strong>strict JSON schema</strong> that defines its expected structure
+and data types.
+When a simulation starts, all JSON files are automatically <strong>validated against these schemas</strong>
+before execution.</p>
+<p>For more information on how this validation is implemented and enforced, see <a class="reference internal" href="../developer_guide/json_validator.html#id1"><span class="std std-ref">JSON validator</span></a>.</p>
+<p>Refer to the dedicated sections below for details on each file type:</p>
+<div class="toctree-wrapper compound">
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="json/simulation_params.html">simulation_params</a></li>
+<li class="toctree-l1"><a class="reference internal" href="json/landscape_params.html">landscape_params</a></li>
+<li class="toctree-l1"><a class="reference internal" href="json/habitat_domain_patch.html">habitat_domain_patch</a></li>
+<li class="toctree-l1"><a class="reference internal" href="json/moisture_patch.html">moisture_patch</a></li>
+<li class="toctree-l1"><a class="reference internal" href="json/obstacle_patch.html">obstacle_patch</a></li>
+<li class="toctree-l1"><a class="reference internal" href="json/resource.html">resource</a></li>
+<li class="toctree-l1"><a class="reference internal" href="json/resource_patch.html">resource_patch</a></li>
+<li class="toctree-l1"><a class="reference internal" href="json/species/species.html">species</a></li>
+<li class="toctree-l1"><a class="reference internal" href="json/ontogeneticLinksPreference.html">ontogeneticLinksPreference</a></li>
+<li class="toctree-l1"><a class="reference internal" href="json/ontogeneticLinksProfitability.html">ontogeneticLinksProfitability</a></li>
+</ul>
+</div>
+</section>
+</section>
+
+
+                </article>
+              
+              
+              
+              
+              
+                <footer class="prev-next-footer d-print-none">
+                  
+<div class="prev-next-area">
+    <a class="left-prev"
+       href="installation.html"
+       title="previous page">
+      <i class="fa-solid fa-angle-left"></i>
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">previous</p>
+        <p class="prev-next-title">Installation</p>
+      </div>
+    </a>
+    <a class="right-next"
+       href="json/simulation_params.html"
+       title="next page">
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">next</p>
+        <p class="prev-next-title">simulation_params</p>
+      </div>
+      <i class="fa-solid fa-angle-right"></i>
+    </a>
+</div>
+                </footer>
+              
+            </div>
+            
+            
+              
+                <dialog id="pst-secondary-sidebar-modal"></dialog>
+                <div id="pst-secondary-sidebar" class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
+
+
+  <div class="sidebar-secondary-item">
+<div
+    id="pst-page-navigation-heading-2"
+    class="page-toc tocsection onthispage">
+    <i class="fa-solid fa-list"></i> On this page
+  </div>
+  <nav id="pst-page-toc-nav" class="page-toc" aria-labelledby="pst-page-navigation-heading-2">
+    <ul class="pst-show_toc_level nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#types-of-configurations">Types of Configurations</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#folder-structure">Folder Structure</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#file-descriptions">File Descriptions</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#simulation-params-json">simulation_params.json</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#landscape-params-json">landscape_params.json</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#habitat-domain-patch-json">habitat_domain_patch.json</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#moisture-patch-json">moisture_patch.json</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#obstacle-patch-json">obstacle_patch.json</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#resource-json">resource.json</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#resource-patch-json">resource_patch.json</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#species-json">species.json</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#ontogeneticlinkspreference-csv">ontogeneticLinksPreference.csv</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#ontogeneticlinksprofitability-csv">ontogeneticLinksProfitability.csv</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#checkpoint-bin-checkpoint-txt">checkpoint.bin / checkpoint.txt</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#configuration-parameters">Configuration Parameters</a></li>
+</ul>
+  </nav></div>
+
+  <div class="sidebar-secondary-item">
+
+  <div class="tocsection sourcelink">
+    <a href="../_sources/user_guide/configuration.rst.txt">
+      <i class="fa-solid fa-file-lines"></i> Show Source
+    </a>
+  </div>
+</div>
+
+</div></div>
+              
+            
+          </div>
+          <footer class="bd-footer-content">
+            
+          </footer>
+        
+      </main>
+    </div>
+  </div>
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script defer src="../_static/scripts/bootstrap.js?digest=a95f357e85573c9b56d5"></script>
+<script defer src="../_static/scripts/pydata-sphinx-theme.js?digest=a95f357e85573c9b56d5"></script>
+
+  <footer class="bd-footer">
+<div class="bd-footer__inner bd-page-width">
+  
+    <div class="footer-items__start">
+      
+        <div class="footer-item">
+
+  <p class="copyright">
+    
+      © Copyright 2025, Jordi Moya Laraño.
+      <br/>
+    
+  </p>
+</div>
+      
+        <div class="footer-item">
+
+  <p class="sphinx-version">
+    Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 8.1.3.
+    <br/>
+  </p>
+</div>
+      
+    </div>
+  
+  
+  
+    <div class="footer-items__end">
+      
+        <div class="footer-item">
+<p class="theme-version">
+  <!-- # L10n: Setting the PST URL as an argument as this does not need to be localized -->
+  Built with the <a href="https://pydata-sphinx-theme.readthedocs.io/en/stable/index.html">PyData Sphinx Theme</a> 0.19.0.
+</p></div>
+      
+    </div>
+  
+</div>
+
+  </footer>
+  </body>
+</html>
