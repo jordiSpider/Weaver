@@ -3,14 +3,14 @@ project(WeaverLocalDocs NONE)
 
 find_package(Python3 3.10 REQUIRED COMPONENTS Interpreter)
 
-set(DOCS_GENERATION "" CACHE STRING "Local documentation product to build: weaver, weaver-xml, or manager")
+set(DOCS_GENERATION "" CACHE STRING "Local documentation product to build: weaver or manager")
 set(DOCS_WORK_ROOT "${CMAKE_CURRENT_BINARY_DIR}/work" CACHE PATH "Temporary local documentation build directory")
 set(DOCS_DEFAULT_LANGUAGE "en" CACHE STRING "Default Sphinx output language")
 set(DOCS_SPHINX_JOBS "1" CACHE STRING "Number of Sphinx workers")
 set(DOCS_SCRIPT_DIR "${CMAKE_CURRENT_SOURCE_DIR}/scripts")
 
-if(NOT DOCS_GENERATION MATCHES "^(weaver|weaver-xml|manager)$")
-	message(FATAL_ERROR "DOCS_GENERATION must be weaver, weaver-xml, or manager")
+if(NOT DOCS_GENERATION MATCHES "^(weaver|manager)$")
+	message(FATAL_ERROR "DOCS_GENERATION must be weaver or manager")
 endif()
 
 if(DOCS_GENERATION STREQUAL "manager")
@@ -32,9 +32,17 @@ add_custom_target(install-docs-python-dependencies
 foreach(product weaver weaver-manager)
 	if(product STREQUAL "weaver")
 		set(target generate-local-weaver)
+		set(prerequisites prepare-local-weaver)
 	else()
 		set(target generate-local-manager)
+		set(prerequisites prepare-local-manager)
 	endif()
+	add_custom_target(${prerequisites}
+		COMMAND "${Python3_EXECUTABLE}" "${DOCS_SCRIPT_DIR}/PrepareBranding.py"
+			"${CMAKE_CURRENT_SOURCE_DIR}/source/${product}/local"
+		VERBATIM
+		COMMENT "Preparing ${product} documentation branding"
+	)
 	add_custom_target(${target}
 		COMMAND "${Python3_EXECUTABLE}" "${DOCS_SCRIPT_DIR}/BuildLocalDocs.py"
 			--product "${product}"
@@ -46,10 +54,10 @@ foreach(product weaver weaver-manager)
 		VERBATIM
 		COMMENT "Generating local ${product} documentation as latest"
 	)
-	add_dependencies(${target} install-docs-python-dependencies)
+	add_dependencies(${target} install-docs-python-dependencies ${prerequisites})
 endforeach()
 
-if(DOCS_GENERATION MATCHES "^(weaver|weaver-xml)$")
+if(DOCS_GENERATION STREQUAL "weaver")
 	set(DOCS_DIR "${CMAKE_CURRENT_SOURCE_DIR}")
 	set(INCLUDE_DIR "${CMAKE_CURRENT_SOURCE_DIR}/../include")
 	set(DOXYGEN_VERSION "1.9.8" CACHE STRING "Minimum Doxygen version")
@@ -82,7 +90,5 @@ if(DOCS_GENERATION MATCHES "^(weaver|weaver-xml)$")
 		VERBATIM
 	)
 	add_dependencies(generate-local-weaver-xml clean-local-weaver-xml)
-	if(DOCS_GENERATION STREQUAL "weaver")
-		add_dependencies(generate-local-weaver generate-local-weaver-xml)
-	endif()
+	add_dependencies(prepare-local-weaver generate-local-weaver-xml)
 endif()

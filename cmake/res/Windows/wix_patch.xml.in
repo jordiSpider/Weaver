@@ -11,7 +11,16 @@
 		<ComponentRef Id="removeRInstallerLogs"/>
 	</CPackWiXFragment>
 
+	<CPackWiXFragment Id="@WEAVER_DESKTOP_FEATURE@">
+		<ComponentRef Id="weaverDesktopShortcut"/>
+	</CPackWiXFragment>
+
 	<CPackWiXFragment Id="#PRODUCT">
+		<Property Id="WEAVER_DESKTOP_SHORTCUT" Secure="yes">
+			<RegistrySearch Id="SearchWeaverDesktopShortcut" Root="HKLM"
+				Key="Software\Weaver\@PROGRAM_VERSION_PADDED@\@WEAVER_EDITION@"
+				Name="DesktopShortcut" Type="raw" />
+		</Property>
 		<!-- Public property holding the application data folder chosen by the user -->
 		<Property Id="APPDATADIR" Secure="yes">
 			<RegistrySearch Id="SearchWeaverAppDataPath"

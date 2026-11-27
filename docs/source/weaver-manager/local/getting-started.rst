@@ -49,9 +49,9 @@ Download the Manager package for your operating system from the `Weaver Manager 
 
          Program installation folder page with the default path ``C:\Program Files\Weaver Manager``.
 
-      **Phase 5 — Program shortcut**
+      **Phase 5 — Start Menu shortcut**
 
-      Choose whether the installer should create a program shortcut, then continue.
+      Choose the Start Menu folder for the program shortcut, then continue.
 
       .. figure:: _static/images/installation/windows/04-shortcut.png
          :alt: Installer page for choosing whether to create a program shortcut.
@@ -62,7 +62,7 @@ Download the Manager package for your operating system from the `Weaver Manager 
 
       **Phase 6 — Application data folder**
 
-      Choose where Weaver Manager should store its mutable data, installed Weaver versions, and logs. The default is ``Documents\Weaver Manager``. Keep this location or choose another folder, then continue.
+      Choose where Weaver Manager should store its mutable data, installed Weaver versions, and logs. The default is ``Documents\Weaver Manager``. Keep this location or choose another folder, then continue. Optionally select **Create a desktop shortcut for all users**; it is unchecked by default. The choice is remembered on updates, and the shortcut is removed on uninstall.
 
       .. figure:: _static/images/installation/windows/05-data-folder.png
          :alt: Application data folder page showing the suggested Documents location.

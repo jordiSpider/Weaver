@@ -2,10 +2,9 @@ import os
 import json
 
 project = "Weaver Manager"
-author = "Weaver project"
+author = "Jordi Moya Laraño"
 copyright = "2025, Jordi Moya Laraño"
 html_title = "Weaver Manager Documentation"
-html_logo = "_static/images/logo.png"
 
 default_version = os.environ.get("WEAVER_MANAGER_DOCS_DEFAULT_VERSION", "latest")
 default_language = os.environ.get("WEAVER_MANAGER_DOCS_DEFAULT_LANGUAGE", "en")
@@ -35,7 +34,14 @@ html_sidebars = {"**": []}
 templates_path = ["_templates"]
 html_theme_options = {
 	"navbar_end": ["version-switcher", "language-switcher", "theme-switcher"],
+	"logo": {
+		"image_light": "_static/branding/weaver-logo-horizontal.svg",
+		"image_dark": "_static/branding/weaver-logo-horizontal-dark.svg",
+	},
 }
+html_favicon = "_static/branding/favicon/favicon.ico"
+html_static_path = ["_static"]
+html_css_files = ["branding/branding.css"]
 exclude_patterns = ["_build", "Thumbs.db", ".DS_Store"]
 
 site_root = os.environ.get("WEAVER_MANAGER_DOCS_SITE_ROOT")

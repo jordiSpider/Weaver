@@ -1,0 +1,9 @@
+{% extends "!layout.html" %}
+
+{% block extrahead %}
+{{ super() }}
+<link rel="icon" type="image/svg+xml" href="{{ pathto('_static/branding/favicon/favicon.svg', 1) }}">
+<link rel="icon" type="image/png" sizes="96x96" href="{{ pathto('_static/branding/favicon/favicon-96x96.png', 1) }}">
+<link rel="apple-touch-icon" sizes="180x180" href="{{ pathto('_static/branding/favicon/apple-touch-icon.png', 1) }}">
+<link rel="manifest" href="{{ pathto('_static/branding/favicon/site.webmanifest', 1) }}">
+{% endblock %}

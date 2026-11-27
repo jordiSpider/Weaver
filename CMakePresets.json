@@ -73,9 +73,7 @@
       "cacheVariables": {
         "VCPKG_TARGET_TRIPLET": "x64-windows-static",
         "VCPKG_HOST_TRIPLET": "x64-windows-static",
-        "CMAKE_MSVC_RUNTIME_LIBRARY": "MultiThreaded$<$<CONFIG:Debug>:Debug>",
-        "CPACK_NSIS_MUI_ICON": "${sourceDir}/icons/icon.ico",
-        "CPACK_NSIS_MUI_UNIICON": "${sourceDir}/icons/uninstall_icon.ico"
+        "CMAKE_MSVC_RUNTIME_LIBRARY": "MultiThreaded$<$<CONFIG:Debug>:Debug>"
       }
     },
     {

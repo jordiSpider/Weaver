@@ -79,16 +79,20 @@ gettext_compact = False
 # ----------------------------------------------------------------------------------------------------
 # HTML Output Configuration
 # ----------------------------------------------------------------------------------------------------
-# Defines the HTML theme, logo, and additional static resources.
+# Defines the HTML theme and additional static resources.
 # ----------------------------------------------------------------------------------------------------
-html_logo = "_static/images/logo.png"
-
 html_theme = "pydata_sphinx_theme"
 html_sidebars = {"**": []}
 templates_path = ["_templates"]
 html_theme_options = {
     "navbar_end": ["version-switcher", "language-switcher", "theme-switcher"],
+    "logo": {
+        "image_light": "_static/branding/weaver-logo-horizontal.svg",
+        "image_dark": "_static/branding/weaver-logo-horizontal-dark.svg",
+    },
 }
+html_favicon = "_static/branding/favicon/favicon.ico"
+html_css_files = ["branding/branding.css"]
 
 # Additional static files (CSS, JS, images)
 # These files override Sphinx defaults if names match.

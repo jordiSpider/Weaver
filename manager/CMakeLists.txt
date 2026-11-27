@@ -9,7 +9,7 @@ if(DEFINED ENV{VCPKG_DEFAULT_BINARY_CACHE})
 endif()
 
 
-project(WeaverManager VERSION 1.2.0 LANGUAGES CXX)
+project(WeaverManager VERSION 1.2.1 LANGUAGES CXX)
 
 option(ENABLE_TEST "Enable test-only Manager features" OFF)
 set(WEAVER_MANAGER_PRERELEASE "" CACHE STRING "Numeric Weaver Manager release-candidate number")
@@ -109,12 +109,34 @@ else()
     message(STATUS "Release verification key file not found; using WEAVER_RELEASE_PUBLIC_KEY_BASE64 fallback")
 endif()
 file(MAKE_DIRECTORY "${CMAKE_CURRENT_BINARY_DIR}/generated")
+set(WEAVER_BRANDING_GENERATED "${CMAKE_CURRENT_SOURCE_DIR}/../assets/branding/generated")
+set(WEAVER_BRANDING_SOURCE "${CMAKE_CURRENT_SOURCE_DIR}/../assets/branding/source")
+string(TOLOWER "${WEAVER_MANAGER_DIRECTORY_SUFFIX}" _weaver_manager_icon_suffix)
+string(REGEX REPLACE "[^a-z0-9]+" "-" _weaver_manager_icon_suffix "${_weaver_manager_icon_suffix}")
+string(REGEX REPLACE "-+$" "" _weaver_manager_icon_suffix "${_weaver_manager_icon_suffix}")
+set(WEAVER_MANAGER_DESKTOP_ICON "weaver-manager${_weaver_manager_icon_suffix}")
 configure_file(src/release_trust_config.h.in
     "${CMAKE_CURRENT_BINARY_DIR}/generated/release_trust_config.h" @ONLY)
 configure_file(resources/weaver-manager.desktop
     "${CMAKE_CURRENT_BINARY_DIR}/generated/weaver-manager.desktop" @ONLY)
+configure_file(resources/branding.qrc.in
+    "${CMAKE_CURRENT_BINARY_DIR}/generated/branding.qrc" @ONLY)
+
+if(WIN32)
+    enable_language(RC)
+    foreach(_icon IN ITEMS manager uninstall)
+        set(WEAVER_WINDOWS_ICON "${WEAVER_BRANDING_GENERATED}/weaver-${_icon}.ico")
+        set(_icon_rc "${CMAKE_CURRENT_BINARY_DIR}/generated/${_icon}_icon.rc")
+        configure_file(resources/app_icon.rc.in "${_icon_rc}" @ONLY)
+        set_source_files_properties("${_icon_rc}" PROPERTIES OBJECT_DEPENDS "${WEAVER_WINDOWS_ICON}")
+    endforeach()
+endif()
 
 add_subdirectory(src)
+target_sources(WeaverManager PRIVATE "${CMAKE_CURRENT_BINARY_DIR}/generated/branding.qrc")
+if(WIN32)
+    target_sources(WeaverManager PRIVATE "${CMAKE_CURRENT_BINARY_DIR}/generated/manager_icon.rc")
+endif()
 set_target_properties(WeaverManager PROPERTIES OUTPUT_NAME "${WEAVER_MANAGER_EXECUTABLE_NAME}")
 target_include_directories(WeaverManager PRIVATE "${CMAKE_CURRENT_BINARY_DIR}/generated")
 target_link_libraries(WeaverManager PRIVATE Qt6::Widgets Qt6::Network OpenSSL::Crypto)
@@ -129,7 +151,9 @@ if(WIN32)
         REQUIRED
     )
 
-    add_executable(WeaverManagerUninstaller WIN32 src/manager_uninstaller.cpp)
+    add_executable(WeaverManagerUninstaller WIN32 src/manager_uninstaller.cpp
+        "${CMAKE_CURRENT_BINARY_DIR}/generated/uninstall_icon.rc"
+        "${CMAKE_CURRENT_BINARY_DIR}/generated/branding.qrc")
     target_link_libraries(WeaverManagerUninstaller PRIVATE Qt6::Widgets)
     target_compile_definitions(WeaverManagerUninstaller PRIVATE
         WEAVER_MANAGER_NAME="${WEAVER_MANAGER_NAME}"
@@ -170,13 +194,26 @@ endif()
 install(SCRIPT ${deploy_script})
 install(FILES "${CMAKE_CURRENT_BINARY_DIR}/generated/weaver-manager.desktop"
     DESTINATION ${CMAKE_INSTALL_DATAROOTDIR}/applications OPTIONAL)
+if(UNIX AND NOT APPLE)
+    install(FILES "${WEAVER_BRANDING_SOURCE}/weaver-manager.svg"
+        DESTINATION "${CMAKE_INSTALL_DATAROOTDIR}/icons/hicolor/scalable/apps"
+        RENAME "${WEAVER_MANAGER_DESKTOP_ICON}.svg")
+endif()
 install(FILES "${CMAKE_CURRENT_SOURCE_DIR}/../LICENSE"
     DESTINATION "${CMAKE_INSTALL_DATAROOTDIR}/licenses/${WEAVER_MANAGER_NAME}"
     RENAME LICENSE)
+install(FILES "${CMAKE_CURRENT_SOURCE_DIR}/../assets/branding/licenses/bootstrap-icons/LICENSE"
+    DESTINATION "${CMAKE_INSTALL_DATAROOTDIR}/licenses/${WEAVER_MANAGER_NAME}"
+    RENAME bootstrap-icons-LICENSE)
 
+set(WEAVER_MANAGER_AUTHOR "Jordi Moya Laraño")
 set(CPACK_PACKAGE_NAME "${WEAVER_MANAGER_NAME}")
 set(CPACK_PACKAGE_INSTALL_REGISTRY_KEY "${WEAVER_MANAGER_NAME}")
-set(CPACK_PACKAGE_VENDOR "Weaver Project")
+set(CPACK_PACKAGE_VENDOR "${WEAVER_MANAGER_AUTHOR}")
+if(WIN32)
+    # CPack uses the vendor in its NSIS registry paths; preserve existing installs.
+    set(CPACK_PACKAGE_VENDOR "Weaver Project")
+endif()
 set(CPACK_PACKAGE_DESCRIPTION_SUMMARY "Manage parallel Weaver installations")
 set(CPACK_PACKAGE_LICENSE "MIT")
 set(CPACK_RESOURCE_FILE_LICENSE "${CMAKE_CURRENT_SOURCE_DIR}/../LICENSE")
@@ -211,7 +248,11 @@ set(CPACK_PACKAGE_CONTACT "jordi@eeza.csic.es")
 set(CPACK_PACKAGE_EXECUTABLES "${WEAVER_MANAGER_EXECUTABLE_NAME}" "${WEAVER_MANAGER_NAME}")
 if(WIN32)
     set(CPACK_GENERATOR "NSIS")
+    set(CPACK_NSIS_MUI_ICON "${WEAVER_BRANDING_GENERATED}/weaver-manager.ico")
+    set(CPACK_NSIS_MUI_UNIICON "${WEAVER_BRANDING_GENERATED}/weaver-uninstall.ico")
+    set(CPACK_NSIS_INSTALLED_ICON_NAME "bin\\\\${WEAVER_MANAGER_EXECUTABLE_FILE_NAME}")
     set(CPACK_NSIS_ENABLE_UNINSTALL_BEFORE_INSTALL OFF)
+    set(CPACK_NSIS_UNINSTALL_NAME "Uninstall ${WEAVER_MANAGER_NAME}")
     configure_file(resources/manager_data_directory.nsh.in
         "${CMAKE_CURRENT_BINARY_DIR}/generated/manager_data_directory.nsh" @ONLY)
     file(READ "${CMAKE_CURRENT_BINARY_DIR}/generated/manager_data_directory.nsh"
@@ -224,13 +265,12 @@ if(WIN32)
     set(CPACK_NSIS_DISPLAY_NAME "${WEAVER_MANAGER_NAME}")
     set(CPACK_NSIS_PACKAGE_NAME "${WEAVER_MANAGER_NAME}")
     set(CPACK_NSIS_INSTALL_ROOT "\$PROGRAMFILES64")
-    set(CPACK_NSIS_UNINSTALL_NAME "Uninstall ${WEAVER_MANAGER_NAME}")
     set(CPACK_NSIS_URL_INFO_ABOUT "https://github.com/jordiSpider/Weaver")
     set(CPACK_NSIS_CONTACT "jordi@eeza.csic.es")
     set(CPACK_NSIS_MENU_LINKS "bin/${WEAVER_MANAGER_EXECUTABLE_FILE_NAME}" "${WEAVER_MANAGER_NAME}")
     set(CPACK_NSIS_MUI_FINISHPAGE_RUN "${WEAVER_MANAGER_EXECUTABLE_FILE_NAME}")
     set(CPACK_NSIS_EXTRA_PREINSTALL_COMMANDS "!insertmacro ManagerUpgradeCleanup")
-    set(CPACK_NSIS_EXTRA_INSTALL_COMMANDS "!insertmacro ManagerDataDirInstall")
+    set(CPACK_NSIS_EXTRA_INSTALL_COMMANDS "!insertmacro ManagerDataDirInstall\n!insertmacro ManagerRenameUninstallShortcut")
     set(CPACK_NSIS_EXTRA_UNINSTALL_COMMANDS [=[
 ClearErrors
 ExecWait '\"$INSTDIR/bin/WeaverManagerUninstaller.exe\"' $0
@@ -240,6 +280,7 @@ uninstall_managed_versions_failed:
 MessageBox MB_ICONSTOP \"Weaver Manager cannot be removed because one or more managed Weaver versions could not be uninstalled.\"
 Abort
 uninstall_managed_versions_done:
+!insertmacro ManagerDeleteUninstallShortcut
 ]=])
 elseif(APPLE)
     set(CPACK_GENERATOR "DragNDrop;TGZ")
@@ -247,7 +288,7 @@ else()
     set(CPACK_GENERATOR "DEB")
     string(TOLOWER "${WEAVER_MANAGER_INSTALLER_SUFFIX}" WEAVER_MANAGER_DEBIAN_SUFFIX)
     set(CPACK_DEBIAN_PACKAGE_NAME "weaver-manager${WEAVER_MANAGER_DEBIAN_SUFFIX}")
-    set(CPACK_DEBIAN_PACKAGE_MAINTAINER "Weaver Project")
+    set(CPACK_DEBIAN_PACKAGE_MAINTAINER "${WEAVER_MANAGER_AUTHOR} <${CPACK_PACKAGE_CONTACT}>")
     set(CPACK_DEBIAN_PACKAGE_SECTION "science")
     set(CPACK_DEBIAN_PACKAGE_DEPENDS "libqt6widgets6, libqt6network6, libcrypto3")
 endif()

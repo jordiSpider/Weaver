@@ -8,13 +8,9 @@ set(CLI_EXE_NAME "${PROJECT_NAME}CLI")
 # ---------------------------------------------------------
 # 🎯 Executable Target Declaration
 # ---------------------------------------------------------
+add_executable(${CLI_EXE_NAME} mainCLI.cpp)
 if(WIN32)
-    # Windows environments require the .rc resource file to embed application metadata (e.g., icons)
-    # add_executable(${CLI_EXE_NAME} mainCLI.cpp app_icon.rc)
-    add_executable(${CLI_EXE_NAME} mainCLI.cpp)
-else()
-    # Linux/Unix environments utilize standard source inputs without PE resource files
-    add_executable(${CLI_EXE_NAME} mainCLI.cpp)
+    target_sources(${CLI_EXE_NAME} PRIVATE "${WEAVER_APP_ICON_RC}")
 endif()
 
 # Append a suffix to the binary name during Debug builds to avoid overwriting Release assets

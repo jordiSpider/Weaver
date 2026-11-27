@@ -3,6 +3,7 @@
 #include <QDir>
 #include <QFile>
 #include <QFileInfo>
+#include <QIcon>
 #include <QMessageBox>
 #include <QProcess>
 #include <QRegularExpression>
@@ -84,6 +85,7 @@ int showFailure(const QString &message) {
 // Uninstall managed Weaver products first, then remove only Manager-owned data.
 int main(int argc, char *argv[]) {
 	QApplication app(argc, argv);
+	app.setWindowIcon(QIcon(QStringLiteral(":/branding/uninstall.png")));
 	QCoreApplication::setApplicationName(WEAVER_MANAGER_NAME);
 	const QStringList arguments = app.arguments();
 	if (arguments.size() != 1)
